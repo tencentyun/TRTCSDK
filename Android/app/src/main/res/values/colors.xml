@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="tencent_tls_ui_white">#FFFFFF</color>
+    <color name="tencent_tls_ui_gray">#444444</color>
+    <color name="tencent_tls_ui_shadowgray">#CCCCCC</color>
+    <color name="tencent_tls_ui_deepgray">#777777</color>
+    <color name="tencent_tls_ui_countryCodeColor">#009900</color>
+    <color name="tencent_tls_ui_black">#000000</color>
+    <color name="tencent_tls_ui_titleBackground">#FFFFFF</color>
+    <color name="tencent_tls_ui_titleFontColor">#000000</color>
+    <color name="tencent_tls_ui_defaultButtonColor">#0099FF</color>
+    <color name="tencent_tls_ui_pressedButtonColor">#0066CC</color>
+    <color name="tencent_tls_ui_background">#EEEEEE</color>
+    <color name="tencent_tls_ui_transparent">#9000</color>
+
+    <color name="c1">#0ACCAC</color>
+    <color name="c2">#222b48</color>
+    <color name="c3">#F3F3F3</color>
+    <color name="c4">#F5F5F5</color>
+    <color name="c5">#D8D8D8</color>
+    <color name="c6">#FFFFFF</color>
+    <color name="c7">#000000</color>
+    <color name="c8">#FFFFFF</color>
+    <color name="c9">#777777</color>
+
+    <color name="color_bottom_bar_background">#222B48</color>
+    <color name="colorPrimaryDark">#21a3f5</color>
+    <color name="colorAccent">#0accac</color>
+    <color name="transparent">#00000000</color>
+    <color name="colorBlue">#440accac</color>
+    <color name="colorActivityBackground">#F3F3F3</color>
+    <color name="colorTransparentGray">#88ffffff</color>
+    <color name="colorDarkTransparentGray">#a4000000</color>
+    <color name="colorVeryDarkTransparentGray">#d4000000</color>
+    <color name="colorLightTransparentGray">#22ffffff</color>
+    <color name="color_input_dialog_background">#b4ffffff</color>
+
+    <color name="colorTransparentBlack">#44777777</color>
+
+    <color name="colorDanmuMsg">#30e7d5</color>
+
+    <color name="background">#f3f3f3</color>
+    <color name="background_gray1">#EBEBEB</color>
+    <color name="background_gray2">#E6E6E6</color>
+    <color name="background_gray3">#D4D4D4</color>
+    <color name="background_gray4">#EFEFF4</color>
+    <color name="line">#DDDDDD</color>
+    <color name="line_btn">#BBBBBB</color>
+    <color name="text_gray1">#777777</color>
+    <color name="text_gray2">#767676</color>
+    <color name="text_blue1">#1173CB</color>
+    <color name="text_blue2">#1173CA</color>
+    <color name="panel_black">#25272A</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="btn_red">#D63F41</color>
+    <color name="btn_red_hover">#E8484B</color>
+    <color name="btn_blue">#0F73CB</color>
+    <color name="btn_blue_hover">#1E86E4</color>
+    <color name="btn_text">#FFFFFF</color>
+    <color name="btn_text_hover">#CCFFFFFF</color>
+    <color name="btn_live">#5F6164</color>
+    <color name="btn_live_press">#2F3134</color>
+    <!--蒙版-->
+    <color name="colorMask">#66000000</color>
+    <color name="dialog_btn_pressed_color">#efefef</color>
+
+    <!--app主色调，背景色-->
+    <color name="colorPrimary">#FFFFFF</color>
+    <!--背景色-->
+    <color name="colorBackground">#F5F5F5</color>
+    <!--app主题色，应用于导航，按钮-->
+    <color name="colorTheme">#80407A</color>
+    <!--主题色激活态，如按钮高亮-->
+    <color name="colorThemeActive">#A15C9A</color>
+    <!--红色标签/提示-->
+    <color name="colorLabelRed">#FF447D</color>
+    <!--红色标签/提示高亮-->
+    <color name="colorLabelRedActive">#FF89AB</color>
+    <!--黄色色标签/提示-->
+    <color name="colorLabelYellow">#FFAE20</color>
+    <!--黄色色标签/提示高亮-->
+    <color name="colorLabelYellowActive">#FFCD35</color>
+    <!--黄色蒙版-->
+    <color name="colorLabelYellowMask">#4DFFAE20</color>
+    <!--红色-->
+    <color name="colorRed">#FF3333</color>
+    <!--文字白色-->
+    <color name="colorTextWhite">#FFFFFF</color>
+    <!--文字G1-->
+    <color name="colorTextG1">#CCCCCC</color>
+    <!--文字G2-->
+    <color name="colorTextG2">#999999</color>
+    <!--文字G3-->
+    <color name="colorTextG3">#666666</color>
+    <!--文字G4-->
+    <color name="colorTextG4">#333333</color>
+    <!--文字black-->
+    <color name="colorTextBlack">#000000</color>
+    <!--gray1-->
+    <color name="colorGray1">#F0F0F0</color>
+    <!--light gray-->
+    <color name="colorLightGray">#E6E6E6</color>
+    <!--gray2-->
+    <color name="colorGray2">#DCDCDC</color>
+    <!--gray3-->
+    <color name="colorGray3">#C8C8C8</color>
+    <!--gray4-->
+    <color name="colorGray4">#787878</color>
+    <!--gray5-->
+    <color name="colorGray5">#505050</color>
+    <!--gray6-->
+    <color name="colorGray6">#141414</color>
+    <!--gray7-->
+    <color name="colorGray7">#D8D8D8</color>
+    <!--gray8-->
+    <color name="colorGray8">#181818</color>
+    <!--green-->
+    <color name="colorGreen">#0accac</color>
+
+
+    <color name="colorSendName">#9966cc</color>
+    <color name="colorSendName1">#F12B5B</color>
+    <color name="colorSendName2">#2B7DE2</color>
+    <color name="colorSendName3">#006599</color>
+    <color name="colorSendName4">#FF7906</color>
+    <color name="colorSendName5">#1FBCB6</color>
+    <color name="colorSendName6">#FFAE1F</color>
+    <color name="colorSendName7">#FF437D</color>
+    <!--蒙版-->
+
+    <color name="camera_video_grid_bg_color">#F3F4F6</color>
+    <color name="pink">#f90051</color>
+
+    <color name="umeng_white">#ffffff</color>
+    <color name="umeng_blue">#0086DC</color>
+    <color name="umeng_black">#000000</color>
+    <color name="umeng_background">#D4E0E5</color>
+    <color name="umeng_text_color">#575A5C</color>
+    <color name="umeng_divide">#C3C6C9</color>
+
+    <color name="edit_red">#f00</color>
+    <color name="edit_yellow">#FECD52</color>
+    <color name="edit_blue">#145CB9</color>
+    <color name="edit_green">#21AE58</color>
+
+    <color name="record_progress_bg">#66000000</color> <!-- 40%不透明度 -->
+    <color name="record_progress">#00f5ac</color>
+    <color name="record_progress_pending">#10acc0</color>
+
+    <color name="record_speed_text_normal">#ffffff</color>
+    <color name="record_speed_text_select">#00f5ac</color>
+
+    <color name="record_settings_tip">#999999</color>
+    <color name="input_text_color">#00f5ac</color>
+    <color name="paster_activity_background_color">#0d0d0d</color>
+    <color name="bubble_panel_background_color">#0d0d0d</color>
+
+
+    <!--?xml version="1.0" encoding="UTF-8"?-->
+    <color name="primaryColor">#b0bec5</color>
+    <color name="primaryLightColor">#e2f1f8</color>
+    <color name="primaryDarkColor">#808e95</color>
+    <color name="primaryTextColor">#000000</color>
+
+    <color name="time_bg_normal">#0accac</color>
+    <color name="time_bg_selected">#AA0ACCAC</color>
+
+    <!-- 裁剪范围颜色 -->
+    <color name="colorAccentTransparent30">#4d0accac</color>
+    <color name="colorTintRed">#FF4C58</color>
+
+    <color name="biz_audio_progress_bg">#00b2ff</color>
+    <color name="biz_audio_progress_first">#ffffff</color>
+    <color name="biz_audio_progress_second">#6b6666</color>
+
+    <color name="default_bg">#aa000000</color>
+    <color name="select_color">#00b2ff</color>
+    <color name="normal_color">#ffffffff</color>
+    <color name="divider_color">#55504a</color>
+    <!--special color-->
+    <color name="black_a10_color">#1a000000</color>
+    <!--MainActivity item被选中的颜色-->
+    <color name="main_item_selected_color">#555555</color>
+    <color name="main_item_unselected_color">#2A2A2A</color>
+    <color name="main_item_divide_color">#0d0d0d</color>
+
+    <color name="super_vod_vtt_bg">#7E000000</color>
+
+    <color name="colorBlack">#000000</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorComBg">#0B1829</color>
+    <color name="colorBtn">#016EFF</color>
+    <color name="hlfTransparent">#30000000</color>
+
+</resources>
