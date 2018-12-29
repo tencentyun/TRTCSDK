@@ -25,7 +25,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self loadJsonConfig];
+    if (![self loadJsonConfig]) {
+        [self alert:@"请从控制台下载config.json替换工程内的同名文件。"];
+    }
 
     [TRTCCloud setLogCompressEnabled:NO];
     [TRTCCloud setConsoleEnabled:YES];
@@ -59,12 +61,7 @@
     NSAlert *alert = [[NSAlert alloc] init];
     [alert setMessageText:message];
     [alert setAlertStyle:NSAlertStyleInformational];
-    [alert.window setFrame:NSMakeRect(0, 0, 300, 150) display:YES animate:YES];
-    [alert beginSheetModalForWindow:self.view.window completionHandler:^(NSModalResponse returnCode) {
-        if (returnCode == NSAlertFirstButtonReturn) {
-            
-        }
-    }];
+    [alert runModal];
 }
 
 - (void)controlTextDidChange:(NSNotification *)obj {
