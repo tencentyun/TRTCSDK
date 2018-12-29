@@ -19,6 +19,6 @@
 {"userId":"iOS_trtc_04","userToken":"eJxlj0tPg0...4xt*T2Cp"}]}
 ```
 
-### 2. 编译运行
+### 3. 编译运行
 
 修改/config.json，写入从控制台获得的配置信息并编译运行。
