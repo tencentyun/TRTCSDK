@@ -90,7 +90,7 @@
                     [[TRTCSettingBitrateTable alloc] initWithResolution:TRTCVideoResolution_960_540 defaultBitrate:800 minBitrate:400 maxBitrate:1600 step:50],
                     [[TRTCSettingBitrateTable alloc] initWithResolution:TRTCVideoResolution_1280_720 defaultBitrate:1150 minBitrate:500 maxBitrate:2000 step:50]];
     
-    _fpsArray = @[@(15), @(24), @(30)];
+    _fpsArray = @[@(15), @(20), @(24)];
     
     _selectResolution = [TRTCSettingViewController getResolution];
     _selectBitrate = [TRTCSettingViewController getBitrate];
@@ -314,8 +314,8 @@
         [_actionSheet showInView:self.view];
         
     } else if (indexPath.section == SECTION_FPS) {
-        _actionSheet = [[UIActionSheet alloc] initWithTitle:@"帧率" delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:@"15",@"24",@"30",nil];
-        _actionSheet.tag = 1;
+        _actionSheet = [[UIActionSheet alloc] initWithTitle:@"帧率" delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:@"15", @"20", @"24",nil];
+        _actionSheet.tag = TAG_SETTING_FPS;
         _actionSheet.actionSheetStyle = UIBarStyleDefault;
         [_actionSheet showInView:self.view];
     } else if (indexPath.section == SECTION_QOS) {
