@@ -125,6 +125,7 @@
     // 配置工具栏按钮样式
     [self _configButton:self.micBtn title:@"静音"];
     [self _configButton:self.videoBtn title:@"停止视频"];
+    [self _configButton:self.beautyBtn title:@"美颜" color:[NSColor redColor]];
     [self _configButton:self.closeBtn title:@"结束会议" color:[NSColor redColor]];
     [self _configButton:self.logBtn title:@"仪表盘" color:[NSColor redColor]];
     [self _configButton:self.videoLayoutStyleBtn title:@"画廊视图"];
@@ -791,7 +792,6 @@
     [self.audioSelectView enclosingScrollView].hidden = YES;
     [self.videoSelectView enclosingScrollView].hidden = YES;
 }
-
 
 #pragma mark - 渲染视图中的工具按钮事件
 - (void)onRenderViewToolbarRotateClicked:(NSString *)userId {

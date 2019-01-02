@@ -90,7 +90,7 @@ DECL_DEFAULT_KEY(QosMode)
     NSArray<TRTCMediaDeviceInfo*> *cameras = [self.trtcEngine getCameraDevicesList];
     
     NSArray *resolutionArr = @[@"160x160", @"320x180", @"320x240", @"480x480", @"640x360", @"640x480", @"960x540",@"1280x720"];
-    NSArray *fpsArr = @[@"15fps", @"24fps", @"30fps"];
+    NSArray *fpsArr = @[@"15fps", @"20fps", @"24fps"];
     
     _paramArray = @[[[TRTCSettingBitrateTable alloc] initWithResolution:TRTCVideoResolution_160_160 defaultBitrate:150 minBitrate:40 maxBitrate:120 step:10],
                     [[TRTCSettingBitrateTable alloc] initWithResolution:TRTCVideoResolution_320_180 defaultBitrate:250 minBitrate:80 maxBitrate:240 step:10],
@@ -261,9 +261,9 @@ DECL_DEFAULT_KEY(QosMode)
     if (fpsIndex == 0) {
         fps = 15;
     } else if (fpsIndex == 1) {
-        fps = 24;
+        fps = 20;
     } else if (fpsIndex == 2) {
-        fps = 30;
+        fps = 24;
     }
 
     [[NSUserDefaults standardUserDefaults] setInteger:fps forKey:DefaultKeyFPS];
