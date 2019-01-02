@@ -47,8 +47,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// 日志按钮
 @property (strong) IBOutlet NSButton *logBtn;
 
-/// 美颜按钮
+/// 美颜窗口
 @property (strong) IBOutlet NSPanel *beautyPanel;
+
+/// 美颜按钮
+@property (strong) IBOutlet NSButton *beautyBtn;
 
 ///是否开启美颜（磨皮）
 @property BOOL beautyEnabled;
