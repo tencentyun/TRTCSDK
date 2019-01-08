@@ -35,13 +35,11 @@ import java.lang.ref.WeakReference;
  */
 public class TRTCMainActivity extends Activity implements View.OnClickListener, TRTCSettingDialog.ISettingListener {
     private final static String TAG = TRTCMainActivity.class.getSimpleName();
-//    private final static int    STATUS_IN_ROOM = 0;
-//    private final static int    STATUS_IN_ROOM = 1;
+
     private boolean bFrontCamera = true, bBeautyEnable = true, bMicEnable = true;
     private int iDebugLevel = 0;
-    private int roomStatus;
 
-    private TextView tvRoomId, tvUserId;
+    private TextView tvRoomId;
     private ImageView ivShowMode, ivSwitch, ivBeauty, ivMic, ivLog;
     private TRTCSettingDialog settingDlg;
     private TRTCVideoViewLayout mVideoViewLayout;
@@ -66,7 +64,7 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
         String selfUserId   = intent.getStringExtra("userId");
         String userSig      = intent.getStringExtra("userSig");
 
-        trtcParams = new TRTCCloudDef.TRTCParams(sdkAppId, selfUserId, userSig, roomId, "", "");
+        trtcParams = new TRTCCloudDef.TRTCParams(sdkAppId, selfUserId, userSig, String.valueOf(roomId), "", "");
 
         //初始化 UI 控件
         initView();
@@ -89,7 +87,10 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
     protected void onDestroy() {
         super.onDestroy();
         //销毁 trtc 实例
-        TRTCCloud.destroy();
+        if (trtcCloud != null) {
+            trtcCloud.setListener(null);
+            trtcCloud.destroy();
+        }
         trtcCloud = null;
     }
 
@@ -131,25 +132,30 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
     private void setTRTCCloudParam() {
 
         // 大画面的编码器参数设置
-        // 设置视频编码参数，包括分辨率、帧率、码率等等，这些编码参数来自于 TRTCSettingViewController 的设置
+        // 设置视频编码参数，包括分辨率、帧率、码率等等，这些编码参数来自于 TRTCSettingDialog 的设置
         // 注意（1）：不要在码率很低的情况下设置很高的分辨率，会出现较大的马赛克
         // 注意（2）：不要设置超过25FPS以上的帧率，因为电影才使用24FPS，我们一般推荐15FPS，这样能将更多的码率分配给画质
-        TRTCCloudDef.TRTCVideoEncParam config = new TRTCCloudDef.TRTCVideoEncParam();
-        config.videoResolution = settingDlg.getResolution();
-        config.videoFps = settingDlg.getVideoFps();
-        config.videoBitrate = settingDlg.getVideoBitrate();
-        config.videoResolutionMode = TRTCCloudDef.TRTC_VIDEO_RESOLUTION_MODE_PORTRAIT;
-        trtcCloud.setLocalVideoQuality(config, settingDlg.getQosMode(), settingDlg.getQosPreference());
+        TRTCCloudDef.TRTCVideoEncParam encParam = new TRTCCloudDef.TRTCVideoEncParam();
+        encParam.videoResolution = settingDlg.getResolution();
+        encParam.videoFps = settingDlg.getVideoFps();
+        encParam.videoBitrate = settingDlg.getVideoBitrate();
+        encParam.videoResolutionMode = TRTCCloudDef.TRTC_VIDEO_RESOLUTION_MODE_PORTRAIT;
+        trtcCloud.setVideoEncoderParam(encParam);
+
+        TRTCCloudDef.TRTCNetworkQosParam qosParam = new TRTCCloudDef.TRTCNetworkQosParam();
+        qosParam.controlMode    = settingDlg.getQosMode();
+        qosParam.preference     = settingDlg.getQosPreference();
+        trtcCloud.setNetworkQosParam(qosParam);
 
         //小画面的编码器参数设置
         //TRTC SDK 支持大小两路画面的同时编码和传输，这样网速不理想的用户可以选择观看小画面
         //注意：iPhone & Android 不要开启大小双路画面，非常浪费流量，大小路画面适合 Windows 和 MAC 这样的有线网络环境
-        TRTCCloudDef.TRTCVideoEncParam smallConfig = new TRTCCloudDef.TRTCVideoEncParam();
-        smallConfig.videoResolution = TRTCCloudDef.TRTC_VIDEO_RESOLUTION_160_90;
-        smallConfig.videoFps = settingDlg.getVideoFps();
-        smallConfig.videoBitrate = 100;
-        smallConfig.videoResolutionMode = TRTCCloudDef.TRTC_VIDEO_RESOLUTION_MODE_PORTRAIT;
-        trtcCloud.enableEncSmallVideoStream(settingDlg.enableSmall, smallConfig);
+        TRTCCloudDef.TRTCVideoEncParam smallParam = new TRTCCloudDef.TRTCVideoEncParam();
+        smallParam.videoResolution = TRTCCloudDef.TRTC_VIDEO_RESOLUTION_160_90;
+        smallParam.videoFps = settingDlg.getVideoFps();
+        smallParam.videoBitrate = 100;
+        smallParam.videoResolutionMode = TRTCCloudDef.TRTC_VIDEO_RESOLUTION_MODE_PORTRAIT;
+        trtcCloud.enableEncSmallVideoStream(settingDlg.enableSmall, smallParam);
 
         trtcCloud.setPriorRemoteVideoStreamType(settingDlg.priorSmall?TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SMALL:TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG);
     }
@@ -165,13 +171,14 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
         TXCloudVideoView localVideoView = mVideoViewLayout.getCloudVideoViewByIndex(0);
         localVideoView.setUserId(trtcParams.userId);
         localVideoView.setVisibility(View.VISIBLE);
-        trtcCloud.setLocalViewFillMode(TRTCCloudDef.TRTC_VIDEO_RENDER_MODE_FIT);
+        trtcCloud.setLocalViewFillMode(TRTCCloudDef.TRTC_VIDEO_RENDER_MODE_FILL);
         trtcCloud.startLocalPreview(true, localVideoView);
-
-        Toast.makeText(this, "开始进房", Toast.LENGTH_SHORT).show();
+        trtcCloud.startLocalAudio();
 
         //进房
         trtcCloud.enterRoom(trtcParams);
+
+        Toast.makeText(this, "开始进房", Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -189,7 +196,6 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
     private void initView() {
         setContentView(R.layout.main_activity);
         tvRoomId = (TextView) findViewById(R.id.tv_room_id);
-        tvUserId = (TextView) findViewById(R.id.tv_user_id);
         initClickableLayout(R.id.ll_switch);
         initClickableLayout(R.id.ll_beauty);
         initClickableLayout(R.id.ll_voice);
@@ -206,7 +212,6 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
         ivLog = (ImageView) findViewById(R.id.iv_log);
 
         tvRoomId.setText("" + trtcParams.roomId);
-        tvUserId.setText(trtcParams.userId);
 
         settingDlg = new TRTCSettingDialog(this, this);
         findViewById(R.id.rtc_double_room_back_button).setOnClickListener(new View.OnClickListener() {
@@ -222,7 +227,7 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
      */
     private void onChangeLogStatus() {
         iDebugLevel = (iDebugLevel + 1) % 3;
-        ivLog.setImageResource((0 != iDebugLevel) ? R.mipmap.log2 : R.mipmap.log);
+        ivLog.setImageResource((0 == iDebugLevel) ? R.mipmap.log2 : R.mipmap.log);
 
         trtcCloud.showDebugView(iDebugLevel);
     }

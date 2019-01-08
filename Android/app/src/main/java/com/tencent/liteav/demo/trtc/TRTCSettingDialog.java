@@ -75,7 +75,7 @@ public class TRTCSettingDialog extends Dialog {
     private int videoFps = DEFAULT_FPS;
     private int videoBitrate = DEFAULT_BITRATE;
     private boolean highQuality = true;
-    private boolean saveFlag = false;
+    private boolean saveFlag = true;
     public boolean enableSmall = false;
     public boolean priorSmall = false;
     private int qosPreference = TRTCCloudDef.TRTC_VIDEO_QOS_PREFERENCE_CLEAR;
@@ -205,8 +205,18 @@ public class TRTCSettingDialog extends Dialog {
 
                 enableSmall = cbEnableSmall.isChecked();
                 priorSmall = cbPriorSmall.isChecked();
-                if (cbSave.isChecked()) {
+                saveFlag = cbSave.isChecked();
+                if (saveFlag) {
                     saveCache(getContext());
+                } else {
+                    try {
+                        SharedPreferences shareInfo = getContext().getSharedPreferences(PER_DATA, 0);
+                        SharedPreferences.Editor editor = shareInfo.edit();
+                        editor.putBoolean(PER_SAVEFLAG, saveFlag);
+                        editor.commit();
+                    } catch (Exception e) {
+
+                    }
                 }
 
                 ISettingListener api = settingListener.get();
@@ -366,7 +376,7 @@ public class TRTCSettingDialog extends Dialog {
             videoBitrate = shareInfo.getInt(PER_VIDEOBITRATE, DEFAULT_BITRATE);
             highQuality = shareInfo.getBoolean(PER_HIGHQUALITY, true);
             qosPreference = shareInfo.getInt(PER_QOSTYPE, TRTCCloudDef.TRTC_VIDEO_QOS_PREFERENCE_CLEAR);
-            saveFlag = shareInfo.getBoolean(PER_SAVEFLAG, false);
+            saveFlag = shareInfo.getBoolean(PER_SAVEFLAG, true);
             enableSmall = shareInfo.getBoolean(PER_ENABLE_SMALL, false);
             priorSmall = shareInfo.getBoolean(PER_PRIOR_SMALL, false);
         } catch (Exception e) {
