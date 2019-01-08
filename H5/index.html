@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>WEBRTC Demo</title>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <link href='./css/bootstrap.css' rel="stylesheet">
+  <link href='./css/style.css' rel='stylesheet'>
+  <link rel="stylesheet" href="./css/pure-min.css">
+  <link rel="stylesheet" href="./css/baby-blue.css">
+  <style>
+      #remote-video-wrap div{max-width:400px;display: inline-block;padding:10px}
+  </style>
+</head>
+<body>
+
+  <!-- 登录  -->
+  <div id="input-container" class="container">
+    
+    <div class="login-box">
+      <div class="form-group">
+        <div class="hide">
+          <label for="sdkappid">SDKAPPID:&nbsp;</label>
+          <input class="form-control" id="sdkappid" type="text" value="1400037025" />
+        </div>
+          <label for="userId">用户名:</label>
+          <select class="form-control" id="userId"></select>
+          <!-- <input class="form-control" id="userId" type="text" value="" /> -->
+          <label for="room-number">房间号:</label>
+          <input class="form-control" id="roomid" type="text" value="113355">
+      </div>
+      <button class="btn btn-default" type="button" onclick="push()">我要视频通话</button>
+      <br />
+      <p>注意：如果房间已经存在，则加入房间</p>
+    </div>
+  </div>
+  <!-- 登录  -->
+
+  <!-- RTC  -->
+  <div id="video-section" style="display: none">
+    <p>当前房间号：<span id="c_roomid"></span>  当前用户： <span id="c_userid"></span></p>
+    <button class="btn btn-default" type="button" onclick="quitRTC()">退房</button>
+    <button class="btn btn-default" type="button" onclick="stopRTC()">停止推流</button>
+    <button class="btn btn-default" type="button" onclick="startRTC()">开始推流</button>
+        <div id="remote-video-wrap">
+
+        </div>
+    </div>
+  </div>
+  <!-- RTC  -->
+
+  <!-- jquery Demo用到，WebRTCAPI不依赖 -->
+  <script src="./libs/jquery.min.js"></script>
+  <!-- demo 部分 -->
+  <script src="https://sqimg.qq.com/expert_qq/webrtc/2.6.2/WebRTCAPI.min.js"></script>
+  <script>
+    document.write('<script src="./js/config.js?v='+new Date()+'" type="text/javascript"></scr'+'ipt>')
+    document.write('<script src="./js/index.js?v='+new Date()+'" type="text/javascript"></scr'+'ipt>')
+  </script>
+    <script>
+        var _mtac = {"senseHash":0};
+        (function() {
+            var mta = document.createElement("script");
+            mta.src = "//pingjs.qq.com/h5/stats.js";
+            mta.setAttribute("name", "MTAH5");
+            mta.setAttribute("sid", "500538821");
+            mta.setAttribute("cid", "500538834");
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(mta, s);
+        })();
+    </script>
+<!-- Global site tag (gtag.js) - Google Analytics --> <script async src="https://www.googletagmanager.com/gtag/js?id=UA-121844058-1"></script> <script>   window.dataLayer = window.dataLayer || [];   function gtag(){dataLayer.push(arguments);}   gtag('js', new Date());    gtag('config', 'UA-121844058-1'); </script></body>
+</html>
