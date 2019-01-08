@@ -142,7 +142,12 @@ public class TRTCNewActivity extends Activity {
                         intent.putExtra("userSig", userSig);
                         startActivity(intent);
                     } else {
-                        Toast.makeText(getContext(), "从服务器获取userSig失败", Toast.LENGTH_SHORT).show();
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getContext(), "从服务器获取userSig失败", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
                 }
             });
