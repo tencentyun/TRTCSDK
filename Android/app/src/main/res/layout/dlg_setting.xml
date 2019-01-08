@@ -73,12 +73,12 @@
         android:layout_height="wrap_content">
         <RadioButton
             android:id="@+id/rb_smooth"
-            android:text="流畅"
+            android:text="优先流畅"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <RadioButton
             android:id="@+id/rb_clear"
-            android:text="清晰"
+            android:text="优先清晰"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </RadioGroup>

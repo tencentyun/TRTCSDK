@@ -14,14 +14,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/ll_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             android:fitsSystemWindows="true"
             android:orientation="horizontal">
-
             <ImageButton
                 android:id="@+id/rtc_double_room_back_button"
                 android:layout_width="40dp"
@@ -37,21 +36,14 @@
             <TextView
                 android:id="@+id/tv_room_id"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
+                android:layout_gravity="left|center_vertical"
                 android:gravity="center"
                 android:singleLine="true"
                 android:textColor="@color/colorWhite"
                 android:textSize="23dp" />
 
-            <TextView
-                android:id="@+id/tv_user_id"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textColor="@color/colorWhite"
-                android:textSize="10dp"
-                android:visibility="gone" />
-        </LinearLayout>
+        </RelativeLayout>
 
         <LinearLayout
             android:id="@+id/ll_control"
@@ -148,7 +140,7 @@
                     android:id="@+id/iv_log"
                     android:layout_width="@dimen/icon_width"
                     android:layout_height="@dimen/icon_height"
-                    android:src="@mipmap/log" />
+                    android:src="@mipmap/log2" />
 
             </LinearLayout>
         </LinearLayout>
