@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "视频通话",
+  "usingComponents":{
+    "i-icon":"/iview/icon/index"
+  }
+}
