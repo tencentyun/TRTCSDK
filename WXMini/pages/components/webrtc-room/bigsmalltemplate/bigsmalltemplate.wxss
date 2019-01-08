@@ -1,0 +1,63 @@
+.bigsmalltemplate.videoview {
+  position: relative;
+  background-repeat:no-repeat;
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.bigsmalltemplate .pusher-box {
+	position: absolute; 
+	display: inline-block; 
+	overflow: hidden;
+	text-align: center;
+}
+
+.bigsmalltemplate live-pusher {
+  width: 100%;
+	height: 100%; 
+}
+
+.bigsmalltemplate .player-box {
+	position: relative; 
+	display: inline-block; 
+	overflow: hidden;
+	width: 100%;
+	height: 100%; 
+	text-align: center;
+  vertical-align: top;
+}
+
+.bigsmalltemplate .poster {
+	position: absolute;
+  width: 100%;
+	height: 100%;
+  top: 0;
+  left: 0;
+	background-color: #000;
+}
+
+.bigsmalltemplate .set {
+  position: absolute;
+  width: 100%;
+	height: 100%; 
+}
+
+.bigsmalltemplate live-player {
+  width: 100%;
+	height: 100%; 
+}
+
+.bigsmalltemplate .loading {
+  position: absolute;
+  width: 100%;  
+  height: 100%; 
+}
+
+.bigsmalltemplate .loading cover-image {
+  position: absolute;
+  top: calc(50% - 15px);
+  left: calc(50% - 15px);
+  width: 30px;
+  height: 30px;
+}

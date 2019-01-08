@@ -1,0 +1,26 @@
+@import "/iview/icon/index.wxss";
+
+.container-box {
+  background-image: url(https://mc.qcloudimg.com/static/img/7da57e0050d308e2e1b1e31afbc42929/bg.png);
+  background-color: #fff;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.camera-box {
+  width: 100vw;
+  height: 100%;
+}
+
+
+.room-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #666;
+  font-size: 16px;
+  height: 60rpx;
+  line-height: 60rpx;
+}
