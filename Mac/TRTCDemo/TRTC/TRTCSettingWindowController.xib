@@ -15,8 +15,6 @@
                 <outlet property="cameraItems" destination="EIX-vg-Irh" id="o8j-l6-zF4"/>
                 <outlet property="cameraPreview" destination="XTZ-1A-vJN" id="JTW-Zc-5KZ"/>
                 <outlet property="clearBtn" destination="u66-7h-nNI" id="C7h-g1-Hxn"/>
-                <outlet property="clientBtn" destination="iDL-z5-1Nh" id="Q2q-ka-TfQ"/>
-                <outlet property="cloudBtn" destination="Y0L-cq-gzj" id="KhQ-cG-cLT"/>
                 <outlet property="fpsItems" destination="XgV-Am-82s" id="LJ4-fv-e2I"/>
                 <outlet property="micItems" destination="yMp-MO-hpy" id="qtz-AQ-J9j"/>
                 <outlet property="micVolumeSlider" destination="cUG-ch-JAE" id="tZB-ZG-wlg"/>
@@ -270,7 +268,7 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                 </customView>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DV1-ht-95G">
-                    <rect key="frame" x="126" y="222" width="58" height="17"/>
+                    <rect key="frame" x="125" y="222" width="58" height="17"/>
                     <autoresizingMask key="autoresizingMask"/>
                     <textFieldCell key="cell" lineBreakMode="clipping" title="摄像头：" id="Gl0-7O-NyK">
                         <font key="font" usesAppearanceFont="YES"/>
@@ -278,17 +276,8 @@
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zFs-0M-j7Q">
-                    <rect key="frame" x="125" y="176" width="58" height="17"/>
-                    <autoresizingMask key="autoresizingMask"/>
-                    <textFieldCell key="cell" lineBreakMode="clipping" title="分辨率：" id="WF4-g9-zvS">
-                        <font key="font" usesAppearanceFont="YES"/>
-                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="clb-aJ-9j7">
-                    <rect key="frame" x="113" y="127" width="71" height="17"/>
+                    <rect key="frame" x="112" y="128" width="71" height="17"/>
                     <autoresizingMask key="autoresizingMask"/>
                     <textFieldCell key="cell" lineBreakMode="clipping" title="视频帧率：" id="bvH-2C-hUQ">
                         <font key="font" usesAppearanceFont="YES"/>
@@ -297,7 +286,7 @@
                     </textFieldCell>
                 </textField>
                 <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="m23-ed-bBV">
-                    <rect key="frame" x="126" y="80" width="257" height="17"/>
+                    <rect key="frame" x="182" y="81" width="230" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <sliderCell key="cell" continuous="YES" state="on" alignment="left" minValue="200" maxValue="1000" doubleValue="500" tickMarkPosition="above" sliderType="linear" id="qmP-bB-9YM"/>
                     <connections>
@@ -305,25 +294,14 @@
                     </connections>
                 </slider>
                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="p07-jw-ZmW">
-                    <rect key="frame" x="247" y="45" width="49" height="18"/>
+                    <rect key="frame" x="183" y="33" width="49" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="radio" title="流畅" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="2Vl-Wy-V61">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" usesAppearanceFont="YES"/>
                     </buttonCell>
                     <connections>
-                        <action selector="selectBitrate:" target="-2" id="xcZ-2U-XGx"/>
-                    </connections>
-                </button>
-                <button verticalHuggingPriority="750" fixedFrame="YES" tag="1" translatesAutoresizingMaskIntoConstraints="NO" id="u66-7h-nNI">
-                    <rect key="frame" x="322" y="45" width="49" height="18"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <buttonCell key="cell" type="radio" title="清晰" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="A8G-Em-joN">
-                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                        <font key="font" usesAppearanceFont="YES"/>
-                    </buttonCell>
-                    <connections>
-                        <action selector="selectBitrate:" target="-2" id="BhE-qb-3gL"/>
+                        <action selector="onChangeControlMode:" target="-2" id="FtZ-Rh-lVl"/>
                     </connections>
                 </button>
                 <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EIX-vg-Irh">
@@ -345,7 +323,7 @@
                     </connections>
                 </popUpButton>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="h4l-I2-DSJ">
-                    <rect key="frame" x="396" y="80" width="71" height="17"/>
+                    <rect key="frame" x="416" y="81" width="71" height="17"/>
                     <autoresizingMask key="autoresizingMask"/>
                     <textFieldCell key="cell" lineBreakMode="clipping" title="500kbps" id="crs-y9-Ttp">
                         <font key="font" metaFont="system"/>
@@ -353,30 +331,8 @@
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iDL-z5-1Nh">
-                    <rect key="frame" x="66" y="45" width="62" height="18"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <buttonCell key="cell" type="radio" title="客户端" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="ykY-EJ-hWD">
-                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                        <font key="font" size="13" name=".PingFangSC-Regular"/>
-                    </buttonCell>
-                    <connections>
-                        <action selector="selectBitrate:" target="-2" id="xlT-w8-iCD"/>
-                    </connections>
-                </button>
-                <button verticalHuggingPriority="750" fixedFrame="YES" tag="1" translatesAutoresizingMaskIntoConstraints="NO" id="Y0L-cq-gzj">
-                    <rect key="frame" x="141" y="45" width="49" height="18"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <buttonCell key="cell" type="radio" title="云控" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="W5I-Ph-dag">
-                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                        <font key="font" size="13" name=".PingFangSC-Regular"/>
-                    </buttonCell>
-                    <connections>
-                        <action selector="selectBitrate:" target="-2" id="FV7-L0-j4e"/>
-                    </connections>
-                </button>
                 <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IBs-ON-Mo7">
-                    <rect key="frame" x="182" y="171" width="231" height="25"/>
+                    <rect key="frame" x="182" y="170" width="231" height="25"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="89W-BL-3LI" id="r6u-9t-nRK">
                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
@@ -394,7 +350,7 @@
                     </connections>
                 </popUpButton>
                 <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XgV-Am-82s">
-                    <rect key="frame" x="182" y="122" width="231" height="25"/>
+                    <rect key="frame" x="182" y="123" width="231" height="25"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="zxj-dp-uBa" id="R4q-RQ-oay">
                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
@@ -411,8 +367,46 @@
                         <action selector="selectFps:" target="-2" id="fFZ-nD-XNI"/>
                     </connections>
                 </popUpButton>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xtb-Nw-bXQ">
+                    <rect key="frame" x="112" y="34" width="71" height="17"/>
+                    <autoresizingMask key="autoresizingMask"/>
+                    <textFieldCell key="cell" lineBreakMode="clipping" title="流控模式：" id="UjA-Hl-RXc">
+                        <font key="font" usesAppearanceFont="YES"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NlS-pF-25L">
+                    <rect key="frame" x="112" y="81" width="71" height="17"/>
+                    <autoresizingMask key="autoresizingMask"/>
+                    <textFieldCell key="cell" lineBreakMode="clipping" title="视频码率：" id="fg7-5v-Xm1">
+                        <font key="font" usesAppearanceFont="YES"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zFs-0M-j7Q">
+                    <rect key="frame" x="125" y="175" width="58" height="17"/>
+                    <autoresizingMask key="autoresizingMask"/>
+                    <textFieldCell key="cell" lineBreakMode="clipping" title="分辨率：" id="WF4-g9-zvS">
+                        <font key="font" usesAppearanceFont="YES"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <button verticalHuggingPriority="750" fixedFrame="YES" tag="1" translatesAutoresizingMaskIntoConstraints="NO" id="u66-7h-nNI">
+                    <rect key="frame" x="237" y="33" width="49" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="radio" title="清晰" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="A8G-Em-joN">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" usesAppearanceFont="YES"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="onChangeControlMode:" target="-2" id="tXu-bW-APF"/>
+                    </connections>
+                </button>
             </subviews>
-            <point key="canvasLocation" x="526" y="772"/>
+            <point key="canvasLocation" x="387" y="764"/>
         </customView>
     </objects>
     <resources>

@@ -1,5 +1,5 @@
 /*
- * Module:   TRTCNewViewController
+ * Module:   TRTCNewWindowController
  *
  * Function: 该界面可以让用户输入一个【房间号】和一个【用户名】
  *
@@ -11,20 +11,20 @@
  *       比如视频会议中的会议号是会控系统提前预定好的，客服系统中的房间号也是根据客服员工的工号决定的。
  */
 
-#import "TRTCNewViewController.h"
+#import "TRTCNewWindowController.h"
 #import "TRTCCloud.h"
 
-@interface TRTCNewViewController()
+@interface TRTCNewWindowController()
 {
     UInt32 _sdkAppID;
     NSArray *_users;
 }
 @end
 
-@implementation TRTCNewViewController
+@implementation TRTCNewWindowController
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
+- (void)windowDidLoad {
+    [super windowDidLoad];
     if (![self loadJsonConfig]) {
         [self alert:@"请从控制台下载config.json替换工程内的同名文件。"];
     }
@@ -64,15 +64,17 @@
     [alert runModal];
 }
 
-- (void)controlTextDidChange:(NSNotification *)obj {
-    NSInteger roomID = self.roomidField.integerValue;
-    if (roomID > 0) {
-        self.roomidField.stringValue = @(self.roomidField.integerValue).stringValue;
-    } else {
-        self.roomidField.stringValue = @"";
+- (void)controlTextDidChange:(NSNotification *)notification {
+    if (notification.object == self.roomidField) {
+        NSInteger roomID = self.roomidField.integerValue;
+        if (roomID > 0) {
+            self.roomidField.stringValue = @(self.roomidField.integerValue).stringValue;
+        } else {
+            self.roomidField.stringValue = @"";
+        }
+        [[NSUserDefaults standardUserDefaults] setObject:self.roomidField.stringValue
+                                                  forKey:@"login_roomID"];
     }
-    [[NSUserDefaults standardUserDefaults] setObject:self.roomidField.stringValue
-                                              forKey:@"login_roomID"];
 }
 
 /**
@@ -110,7 +112,7 @@
         param.sdkAppId = _sdkAppID;
         param.userId = uid;
         param.userSig = token;
-        param.roomId = (UInt32)roomID;
+        param.roomId = self.roomidField.integerValue;
 
         [self enterRoomWithParam:param];
     }
@@ -119,7 +121,7 @@
 - (void)enterRoomWithParam:(TRTCParams *)params {
     _wc = [[TRTCMainWindowController alloc] initWithParams:params];
     [_wc.window orderFront:nil];
-    [self.view.window close];
+    [self.window close];
 }
 
 @end

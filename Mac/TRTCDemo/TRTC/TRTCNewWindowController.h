@@ -1,5 +1,5 @@
 /*
- * Module:   TRTCNewViewController
+ * Module:   TRTCNewWindowController
  *
  * Function: 该界面可以让用户输入一个【房间号】和一个【用户名】
  *
@@ -14,7 +14,7 @@
 #import <Cocoa/Cocoa.h>
 #import "TRTCMainWindowController.h"
 // 登录
-@interface TRTCNewViewController : NSViewController
+@interface TRTCNewWindowController : NSWindowController
 {
     TRTCMainWindowController *_wc;
 }

@@ -101,7 +101,12 @@ static const CGFloat ItemSize = 22;
 
 - (void)onButtonClick:(id)_ {
     TXRenderViewToolbarItemObject *object = self.representedObject;
+
+    
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
     [object.target performSelector:object.action withObject:object.context];
+#pragma clang diagnostic pop
 }
 @end
 
