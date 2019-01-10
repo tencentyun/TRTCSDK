@@ -21,13 +21,13 @@
 #import "TRTCGetUserIDAndUserSig.h"
 #import "MBProgressHUD.h"
 
-
 @interface TRTCNewViewController () <UITextFieldDelegate,UIPickerViewDelegate, UIPickerViewDataSource> {
     UILabel           *_tipLabel;
     UITextField       *_roomIdTextField;
     UITextField       *_userIdTextField;
     UIButton          *_joinBtn;
     UIPickerView      *_userIdPicker;
+
     TRTCGetUserIDAndUserSig *_userInfo;
     uint32_t         _sdkAppid;
     NSString          *_selfPwd;
@@ -92,7 +92,6 @@
     [_joinBtn setTitle:@"创建并自动加入该房间" forState:UIControlStateNormal];
     [_joinBtn addTarget:self action:@selector(onJoinBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_joinBtn];
-    
     _userInfo = [[TRTCGetUserIDAndUserSig alloc] init];
     if (_userInfo.configSdkAppid) {
         _userIdPicker = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 200)];
@@ -101,11 +100,8 @@
         _userIdTextField.inputView = _userIdPicker;
         _userIdTextField.text = _userInfo.configUserIdArray[0];
         _sdkAppid = _userInfo.configSdkAppid;
-    } else {
-
-
     }
-    
+
     if (_sdkAppid == 0) {
         _userIdTextField.enabled = NO;
         UIAlertController *ac = [UIAlertController alertControllerWithTitle:@"提示" message:@"config.json 加载失败！" preferredStyle:UIAlertControllerStyleAlert];
@@ -160,7 +156,7 @@
     TRTCParams *param = [[TRTCParams alloc] init];
     param.sdkAppId = _sdkAppid;
     param.userId = userId;
-    param.roomId = [roomId intValue];
+    param.roomId = (UInt32)roomId.integerValue;
     param.privateMapKey = @"";
     param.bussInfo = @"";
     vc.param = param;
@@ -172,22 +168,6 @@
             param.userSig = _userInfo.configUserSigArray[row];
             [self.navigationController pushViewController:vc animated:YES];
         }
-    } else if (_selfPwd) {
-	// 通过 http 协议向一台服务器获取 userid 对应的 usersig
-        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        hud.label.text = @"登录中";
-        [hud setRemoveFromSuperViewOnHide:YES];
-
-        [_userInfo getUserSigFromServer:userId pwd:_selfPwd roomID:param.roomId sdkappid:(uint32_t)_sdkAppid withCompletion:^(NSString *userSig, NSString *error) {
-            hud.label.text = error;
-            if (userSig) {
-                param.userSig = userSig;
-                [self.navigationController pushViewController:vc animated:YES];
-                [hud hideAnimated:NO];
-            } else {
-                [hud hideAnimated:YES afterDelay:0.2];
-            }
-        }];
     }
 }
 
