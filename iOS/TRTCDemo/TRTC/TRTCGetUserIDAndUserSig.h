@@ -26,14 +26,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)loadFromConfig;
 
-/**
- * 通过 http 请求到客户的业务服务器上获取 userid 和 usersig
- * 这种方式可以将签发 usersig 的计算工作放在您的业务服务器上进行，这样一来，usersig 的签发工作就可以安全可控
- *
- * 但本demo中的 getUserSigFromServer 函数仅作为示例代码，要跑通该逻辑，您需要参考：https://cloud.tencent.com/document/product/647/17275#GetFromServer
- */
-- (void)getUserSigFromServer:(NSString *)userID pwd:(NSString *)pwd roomID:(uint32_t)roomID sdkappid:(uint32_t)sdkappid withCompletion:(void (^)(NSString *userSig, NSString *error))completion;
-
 @end
 
 NS_ASSUME_NONNULL_END
