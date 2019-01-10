@@ -139,7 +139,6 @@
     [self.audioSelectBtn setHover];
     [self.closeBtn setHover];
     [self.videoLayoutStyleBtn setHover];
-
     // 进房
     [self enterRoom];
 }
@@ -231,7 +230,7 @@
 }
 
 #pragma mark - Accessors
-- (UInt32)roomID {
+- (uint32_t)roomID {
     return _currentUserParam.roomId;
 }
 
@@ -393,7 +392,7 @@
 
 #pragma mark - 进房与音视频事件
 /**
- * 加入视频房间：使用从 TRTCNewViewController 实例化时传入的 TRTCParams
+ * 加入视频房间：使用从 TRTCNewWindowController 实例化时传入的 TRTCParams
  */
 - (void)enterRoom {
     TRTCParams *param = _currentUserParam;
@@ -402,7 +401,7 @@
     qualityConfig.videoFps = TRTCSettingWindowController.fps;
     qualityConfig.videoBitrate = TRTCSettingWindowController.bitrate;
     
-    [self.trtcEngine setLocalVideoQuality:qualityConfig qosControl:TRTCSettingWindowController.qosControlMode qosPreference:TRTCSettingWindowController.qosControlPreference];
+    [self.trtcEngine setVideoEncoderParam:qualityConfig];
     [self.trtcEngine setLocalViewFillMode:TRTCVideoFillMode_Fit];
     
     //        [self.trtcEngine setPriorRemoteVideoStreamType:TRTCVideoStreamTypeSmall];
@@ -419,6 +418,7 @@
     NSView *videoView = [self addRenderViewAt:self.userId];
     [self.trtcEngine setLocalViewFillMode:TRTCVideoFillMode_Fit];
     [self.trtcEngine startLocalPreview:videoView];
+    [self.trtcEngine startLocalAudio];
     // 进房
     [self.trtcEngine enterRoom:param];
 }

@@ -23,7 +23,7 @@ typedef NS_ENUM(NSUInteger, TXAVSettingTabIndex) {
 @property (class, readonly) TRTCVideoResolution resolution;
 @property (class, readonly) int bitrate;
 @property (class, readonly) TRTCVideoQosPreference qosControlPreference;
-@property (class, readonly) TRTCQosMode qosControlMode;
+@property (class, readonly) TRTCQosControlMode qosControlMode;
 
 // 音频设置界面
 @property (strong) IBOutlet NSView *audioSettingView;

@@ -61,8 +61,18 @@ typedef enum TXLiteAVError
     ERR_ROOM_REQUEST_CHANGE_ABILITY_TIMEOUT         = -3311,    ///< 请求修改视频能力项超时
     ERR_ROOM_REQUEST_STATUS_REPORT_TIMEOUT          = -3312,    ///< 请求状态上报超时
     ERR_ROOM_REQUEST_CLOSE_VIDEO_TIMEOUT            = -3313,    ///< 请求关闭视频超时
-    ERR_ROOM_REQUEST_SET_RECEIVE_TIMEOUT            = -3314,    ///< 请求特定接收视频项超时
-    ERR_ROOM_REQUEST_TOKEN_INVALID_PARAMETER        = -3315,    ///< 请求特定无效参数
+    ERR_ROOM_REQUEST_SET_RECEIVE_TIMEOUT            = -3314,    ///< 请求接收视频项超时
+    ERR_ROOM_REQUEST_TOKEN_INVALID_PARAMETER        = -3315,    ///< 请求token无效参数
+    ERR_ENTER_ROOM_PARAM_NULL                       = -3316,    ///< 进房参数为空
+    ERR_SDK_APPID_INVALID                           = -3317,    ///< 进房参数sdkappid错误
+    ERR_ROOM_ID_INVALID                             = -3318,    ///< 进房参数roomId错误
+    ERR_USER_ID_INVALID                             = -3319,    ///< 进房参数userID不正确
+    ERR_USER_SIG_INVALID                            = -3320,    ///< 进房参数userSig不正确
+    
+    ERR_PUBLISH_CDN_STREAM_REQUEST_TIME_OUT         = -3321,    ///< 旁路转推请求超时
+    ERR_CLOUD_MIX_TRANSCODING_REQUEST_TIME_OUT      = -3322,    ///< 云端混流请求超时
+    ERR_PUBLISH_CDN_STREAM_RESPON_ERROR             = -3323,    ///< 旁路转推回包异常
+    ERR_CLOUD_MIX_TRANSCODING_RESPON_ERROR          = -3323,    ///< 云端混流回包异常
 
     // Info服务器(查询接口机IP), 服务器错误码，数值范围[-100000, -110000]，但命名、含义在确认中
 
@@ -229,6 +239,7 @@ typedef enum TXLiteAVEvent
     EVT_AUDIO_JITTER_STATE_LOADING                  = 2024,     ///<  音频正在加载 (SDK内部事件，不会对外抛出)
     EVT_AUDIO_JITTER_STATE_PLAYING                  = 2025,     ///<  音频正在播放 (SDK内部事件，不会对外抛出)
     EVT_AUDIO_JITTER_STATE_FIRST_PLAY               = 2026,     ///<  音频首次播放 (SDK内部事件，不会对外抛出)
+    EVT_MIC_START_SUCC                              = 2027,     ///<  麦克风启动成功
 
     EVT_ROOM_ENTER                                  = 1018,     ///<  进入房间成功
     EVT_ROOM_EXIT                                   = 1019,     ///<  退出房间

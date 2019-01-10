@@ -44,8 +44,8 @@ typedef NS_ENUM(NSInteger, TRTCVideoResolution) {
     TRTCVideoResolution_960_720 = 64,    ///< 建议码率 1000kbps
     
     /// 宽高比16:9
-    TRTCVideoResolution_160_90  = 100,
-    TRTCVideoResolution_256_144 = 102,
+    TRTCVideoResolution_160_90  = 100,   ///< 建议码率 150kbps
+    TRTCVideoResolution_256_144 = 102,   ///< 建议码率 200kbps
     TRTCVideoResolution_320_180 = 104,   ///< 建议码率 250kbps
     TRTCVideoResolution_480_270 = 106,   ///< 建议码率 350kbps
     TRTCVideoResolution_640_360 = 108,   ///< 建议码率 550kbps
@@ -77,21 +77,21 @@ typedef NS_ENUM(NSInteger, TRTCVideoStreamType) {
 /**
  * Qos流控模式，本地控制还是云端控制
  */
-typedef NS_ENUM(NSInteger, TRTCQosMode)
+typedef NS_ENUM(NSInteger, TRTCQosControlMode)
 {
-    TRTCQosModeClient,        ///< 客户端控制（用于SDK开发内部调试，客户勿用）
-    TRTCQosModeServer,        ///< 云端控制（推荐线上使用）
+    TRTCQosControlModeClient,        ///< 客户端控制（用于SDK开发内部调试，客户请勿使用）
+    TRTCQosControlModeServer,        ///< 云端控制 （默认）
 };
 
 /**
- * 对于画面质量偏好
- * 流畅 - 在遭遇弱网环境时，画面会变得模糊，且会有较多马赛克，但可以保持流畅不卡顿
- * 清晰 - 在遭遇弱网环境时，画面会尽可能保持清晰，但可能会更容易出现卡顿
+ * 弱网下是“保清晰”还是“保流畅”
+ * 弱网下保流畅 - 在遭遇弱网环境时，画面会变得模糊，且会有较多马赛克，但可以保持流畅不卡顿
+ * 弱网下保清晰 - 在遭遇弱网环境时，画面会尽可能保持清晰，但可能会更容易出现卡顿
  */
 typedef NS_ENUM(NSInteger, TRTCVideoQosPreference)
 {
-    TRTCVideoQosPreferenceSmooth = 1,      ///< 流畅
-    TRTCVideoQosPreferenceClear = 2,       ///< 清晰
+    TRTCVideoQosPreferenceSmooth = 1,      ///< 弱网下保流畅
+    TRTCVideoQosPreferenceClear = 2,       ///< 弱网下保清晰
 };
 
 /// 日志等级
@@ -226,30 +226,34 @@ typedef NS_ENUM(NSInteger, TRTCVideoBufferType) {
 //
 //                      【进房参数 TRTCParams】
 //                   
-//   作为 TRTC SDK 的进房参数，只有该参数填写正确，才能顺利进入 roomId 制定的视频房间
+//   作为 TRTC SDK 的进房参数，只有该参数填写正确，才能顺利进入roomid所指定的音视频房间
 //
 /////////////////////////////////////////////////////////////////////////////////
 #pragma mark -
 
 /** 进房参数 TRTCParams
  *
- * 作为 TRTC SDK 的进房参数，只有该参数填写正确，才能顺利进入 roomId 制定的视频房间
+ * 作为 TRTC SDK 的进房参数，只有该参数填写正确，才能顺利进入roomid所指定的音视频房间
  */
 @interface TRTCParams : NSObject
 
 /// 应用标识 [必填] 腾讯视频云基于 sdkAppId 完成计费统计
 @property (nonatomic, assign) UInt32   sdkAppId;
+
 /// 用户标识 [必填] 当前用户的 userid，相当于用户名
-@property (nonatomic, strong) NSString* _Nonnull userId;
+@property (nonatomic, strong, nonnull) NSString* userId;
+
 /// 用户签名 [必填] 当前 userId 对应的验证签名，相当于登录密码
-@property (nonatomic, strong) NSString* _Nonnull userSig;
+@property (nonatomic, strong, nonnull) NSString* userSig;
+
 /// 房间号码 [必填] 指定房间号，在同一个房间里的用户（userId）可以彼此看到对方并进行视频通话
-@property (nonatomic, assign) UInt32   roomId;
+@property (nonatomic, assign) UInt32 roomId;
 
 /// 房间签名 [非必选] 如果您希望某个房间（roomId）只让特定的某些用户（userId）才能进入，就需要使用 privateMapKey 进行权限保护
-@property (nonatomic, strong) NSString* _Nonnull privateMapKey;
+@property (nonatomic, strong, nullable) NSString* privateMapKey;
+
 /// 业务数据 [非必选] 某些非常用的高级特性才需要用到此字段
-@property (nonatomic, strong) NSString* _Nonnull bussInfo;
+@property (nonatomic, strong, nullable) NSString* bussInfo;
 @end
 
 
@@ -257,7 +261,7 @@ typedef NS_ENUM(NSInteger, TRTCVideoBufferType) {
 //
 //                      【编码参数 TRTCVideoEncParam】
 //                   
-//   作为 TRTC SDK 的进房参数，只有该参数填写正确，才能顺利进入 roomId 制定的视频房间
+//   视频编码器相关参数，该设置决定了远端用户看到的画面质量（同时也是云端录制出的视频文件的画面质量）
 //
 /////////////////////////////////////////////////////////////////////////////////
 #pragma mark -
@@ -266,7 +270,7 @@ typedef NS_ENUM(NSInteger, TRTCVideoBufferType) {
 /// 视频分辨率
 ///
 /// @note 您在 TRTCVideoResolution 只能找到横屏模式的分辨率，比如： 640x360 这样的分辨率
-///       如果想要使用竖屏分辨率，请指定 ResolutionMode 为 Portrait，比如：640x360 + Portrait = 360x640
+///       如果想要使用竖屏分辨率，请指定 resMode 为 Portrait，比如：640x360 + Portrait = 360x640
 @property (nonatomic, assign) TRTCVideoResolution videoResolution;
 
 /// 分辨率模式（横屏分辨率 - 竖屏分辨率）
@@ -290,6 +294,31 @@ typedef NS_ENUM(NSInteger, TRTCVideoBufferType) {
 /// 
 /// @note 推荐设置请参考 TRTCVideoResolution 定义处的注释说明
 @property (nonatomic, assign) int videoBitrate;
+
+@end
+
+
+/////////////////////////////////////////////////////////////////////////////////
+//
+//                    【网络流控相关参数 TRTCNetworkQosParam】
+//                   
+//   网络流控相关参数，该设置决定了SDK在各种网络环境下的调控方向（比如弱网下是“保清晰”还是“保流畅”）
+//
+/////////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+@interface TRTCNetworkQosParam : NSObject
+
+/// 弱网下是“保清晰”还是“保流畅”
+///
+/// 弱网下保流畅 - 在遭遇弱网环境时，画面会变得模糊，且会有较多马赛克，但可以保持流畅不卡顿
+/// 弱网下保清晰 - 在遭遇弱网环境时，画面会尽可能保持清晰，但可能会更容易出现卡顿
+@property (nonatomic, assign) TRTCVideoQosPreference preference;
+
+/// 视频分辨率（云端控制 - 客户端控制）
+///
+/// Client 模式：客户端控制模式，用于SDK开发内部调试，客户请勿使用
+/// Server 模式（默认）：云端控制模式，若没有特殊原因，请直接使用该模式
+@property (nonatomic, assign) TRTCQosControlMode controlMode;
 
 @end
 
@@ -423,3 +452,89 @@ typedef NS_ENUM(NSInteger, TRTCMediaDeviceType) {
 /// 视频像素的顺时针旋转角度
 @property (nonatomic) TRTCVideoRotation rotation;
 @end
+
+/////////////////////////////////////////////////////////////////////////////////
+//
+//              【音频帧数据 TRTCAudioFrame】
+//
+/////////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+@interface TRTCAudioFrame : NSObject
+/// 音频数据
+@property (nonatomic, retain, nonnull) NSData * data;
+/// 采样率
+@property (nonatomic, assign) TRTCAudioSampleRate sampleRate;
+/// 声道数
+@property (nonatomic, assign) int channels;
+/// 时间戳，单位ms
+@property (nonatomic, assign) uint64_t timestamp;
+@end
+
+
+/////////////////////////////////////////////////////////////////////////////////
+//
+//              【旁路推流参数 TRTCPublishCDNParam】
+//
+/////////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+@interface TRTCPublishCDNParam : NSObject
+/// 腾讯云 AppID，在直播控制台-直播码接入可查询到
+@property (nonatomic) int appId;
+
+/// 腾讯云直播bizid，在直播控制台-直播码接入可查询到
+@property (nonatomic) int bizId;
+
+/// 旁路转推的URL
+@property (nonatomic, strong, nonnull) NSString * url;
+
+/// 是否允许转码混流
+/// 1. enableTranscoding = YES : 需要调用startCloudMixTranscoding对多路画面进行混合，发布到CDN上的是混合之后的一路音视频流
+/// 2. enableTranscoding = NO  : 不经过云端转码，只是把当前用户的音视频画面转推到 url 参数所指定的 rtmp 推流地址上。
+@property (nonatomic) BOOL enableTranscoding;
+@end
+
+
+/////////////////////////////////////////////////////////////////////////////////
+//
+//              【转码混流配置 TRTCTranscodingConfig】
+//
+/////////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+
+typedef NS_ENUM(NSInteger, TRTCTranscodingConfigMode) {
+    TRTCTranscodingConfigMode_Unknown = 0,
+    
+    // 手动配置混流混流参数，需要指定 TRTCTranscodingConfig 的全部参数
+    TRTCTranscodingConfigMode_Manual = 1,
+
+};
+
+// 用于指定每一路视频画面的具体摆放位置
+@interface TRTCMixUser : NSObject
+/// 参与混流的userId
+@property(nonatomic, copy) NSString * userId;
+/// 图层位置坐标以及大小，左上角为坐标原点(0,0) （绝对像素值）
+@property(nonatomic, assign) CGRect rect;
+/// 图层层次 （1-16） 不可重复
+@property(nonatomic, assign) int zOrder;
+@end
+
+
+@interface TRTCTranscodingConfig : NSObject
+@property(nonatomic, assign) TRTCTranscodingConfigMode mode; ///< 转码config模式 @see TRTCTranscodingConfigMode
+
+@property(nonatomic, assign) int videoWidth;       ///< 视频分辨率：宽
+@property(nonatomic, assign) int videoHeight;      ///< 视频分辨率：高
+@property(nonatomic, assign) int videoBitrate;     ///< 视频码率
+@property(nonatomic, assign) int videoFramerate;   ///< 视频帧率
+@property(nonatomic, assign) int videoGOP;         ///< 视频GOP，单位秒
+
+@property(nonatomic, assign) int audioSampleRate;  ///< 音频采样率 48000
+@property(nonatomic, assign) int audioBitrate;     ///< 音频码率   64K
+@property(nonatomic, assign) int audioChannels;    ///< 声道数     2
+
+@property(nonatomic, copy) NSString * mixExtraInfo; ///< SEI信息
+@property(nonatomic, copy) NSArray<TRTCMixUser *> * mixUsers; ///< 混流配置
+@end
+
+
