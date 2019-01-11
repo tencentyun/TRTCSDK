@@ -60,17 +60,20 @@ typedef NS_ENUM(NSInteger, TRTCVideoResolutionMode) {
 };
 
 
-typedef NS_ENUM(NSInteger, TRTCVideoCodecMode) {
-	TRTCVideoCodecModeSmooth     = 0,  ///< 启用流畅编码模式，该模式下视频的弱网抗性和卡顿率明显好于兼容模式
-    TRTCVideoCodecModeCompatible = 1,  ///< 强制启用兼容编码模式，支持绝大多数硬件编码器，性能优异，但卡顿率高于流畅编码模式
+typedef NS_ENUM(NSInteger, TRTCAppScene) {
+	TRTCAppSceneVideoCall     = 1,  ///< 视频通话场景，即绝大多数时间都是两人或两人以上视频通话的场景
+	                                ///  内部编码器和网络协议优化侧重流畅性，降低通话延迟和卡顿率
+									
+    TRTCAppSceneLIVE          = 2,  ///< 直播场景，即绝大多数时间都是一人直播，偶尔有多人视频互动的场景
+	                                ///  内部编码器和网络协议优化侧重性能和兼容性，性能和清晰度表现更佳
 };
 
 
 
 typedef NS_ENUM(NSInteger, TRTCVideoStreamType) {
-    TRTCVideoStreamTypeBig = 0,     ///< 大画面视频流
-    TRTCVideoStreamTypeSmall = 1,   ///< 小画面视频流
-    TRTCVideoStreamTypeSub = 2,     ///< 辅流（屏幕分享）
+    TRTCVideoStreamTypeBig   = 0,     ///< 大画面视频流
+    TRTCVideoStreamTypeSmall = 1,     ///< 小画面视频流
+    TRTCVideoStreamTypeSub   = 2,     ///< 辅流（屏幕分享）
 
 };
 
@@ -278,12 +281,6 @@ typedef NS_ENUM(NSInteger, TRTCVideoBufferType) {
 /// @note 如果 videoResolution 指定分辨率 640x360，resMode 指定模式为 Portrait，则最终编码出的分辨率为 360x640
 @property (nonatomic, assign) TRTCVideoResolutionMode resMode;
 
-/// 编码器的编码模式（流畅 - 兼容）
-///
-/// Smooth 模式（默认）：能够获得理论上最低的卡顿率，但性能略逊于 Compatible 模式
-/// Compatible 模式：使用最标准的视频编码模式，卡顿率高于 Smooth 模式，但性能优异，推荐在低端设备上开启
-@property (nonatomic, assign) TRTCVideoCodecMode codecMode;
-
 /// 视频采集帧率，推荐设置为 15fps 或 20fps，10fps以下会有明显的卡顿感，20fps以上则没有必要
 ///
 /// @note 很多 Android 手机的前置摄像头并不支持 15fps 以上的采集帧率
@@ -487,8 +484,10 @@ typedef NS_ENUM(NSInteger, TRTCMediaDeviceType) {
 /// 旁路转推的URL
 @property (nonatomic, strong, nonnull) NSString * url;
 
-/// 是否允许转码混流
+/// @brief 是否允许转码混流
+/// @desc
 /// 1. enableTranscoding = YES : 需要调用startCloudMixTranscoding对多路画面进行混合，发布到CDN上的是混合之后的一路音视频流
+///
 /// 2. enableTranscoding = NO  : 不经过云端转码，只是把当前用户的音视频画面转推到 url 参数所指定的 rtmp 推流地址上。
 @property (nonatomic) BOOL enableTranscoding;
 @end
@@ -515,7 +514,7 @@ typedef NS_ENUM(NSInteger, TRTCTranscodingConfigMode) {
 @property(nonatomic, copy) NSString * userId;
 /// 图层位置坐标以及大小，左上角为坐标原点(0,0) （绝对像素值）
 @property(nonatomic, assign) CGRect rect;
-/// 图层层次 （1-16） 不可重复
+/// 图层层次 （1-15） 不可重复
 @property(nonatomic, assign) int zOrder;
 @end
 

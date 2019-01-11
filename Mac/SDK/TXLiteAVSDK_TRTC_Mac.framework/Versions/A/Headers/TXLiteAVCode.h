@@ -198,7 +198,7 @@ typedef enum TXLiteAVWarning
 typedef enum TXLiteAVEvent
 {
     EVT_RTMP_PUSH_CONNECT_SUCC                      = 1001,     ///<  直播，已经连接RTMP推流服务器
-    EVT_RTMP_PUSH_BEGIN                             = 1002,     ///<  直播，已经与RTMP服务器握手完毕,开始推流
+    EVT_RTMP_PUSH_BEGIN                             = 1002,     ///<  直播，已经与RTMP服务器握手完毕，开始推流
     EVT_CAMERA_START_SUCC                           = 1003,     ///<  打开摄像头成功
     EVT_SCREEN_CAPTURE_SUCC                         = 1004,     ///<  录屏启动成功
     EVT_UP_CHANGE_RESOLUTION                        = 1005,     ///<  上行动态调整分辨率

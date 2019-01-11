@@ -232,7 +232,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 #if !TARGET_OS_IPHONE && TARGET_OS_MAC
 /**
- * 7.4 本地设备通断回调，
+ * 7.4 本地设备通断回调
  * @param deviceId 设备id
  * @param deviceType 设备类型 @see TRTCMediaDeviceType
  * @param state   0: 设备断开   1: 设备连接

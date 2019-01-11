@@ -32,9 +32,10 @@
 /**
  * 1.1 进入房间
  * @param param 进房参数，请参考 TRTCParams
+ * @param scene 应用场景，目前支持视频通话（VideoCall）和在线直播（Live）两种场景
  * @note 不管进房是否成功，都必须与exitRoom配对使用，在调用 exitRoom 前再次调用 enterRoom 函数会导致不可预期的错误问题
  */
-- (void)enterRoom:(TRTCParams *)param;
+- (void)enterRoom:(TRTCParams *)param appScene:(TRTCAppScene)scene;
 
 /**
  * 1.2 离开房间
@@ -182,6 +183,15 @@
  * @param type 默认观看大画面还是小画面
  */
 - (void)setPriorRemoteVideoStreamType:(TRTCVideoStreamType)type;
+
+#if !TARGET_OS_IPHONE && TARGET_OS_MAC
+/**
+ * 2.18 设置摄像头本地预览是否开镜像
+ *
+ * @param mirror 是否开启预览镜像
+ */
+- (void)setLocalVideoMirror:(BOOL)mirror;
+#endif
 
 /// @}
 
@@ -458,7 +468,7 @@
 /**
  * 7.2 设置远端视频的自定义渲染回调
  * @note 设置此方法后，SDK内部会把远端的数据解码后回调出来，SDK跳过自己原来的渲染流程，您需要自己完成画面的渲染
- * @note 需要调用 startRemoteView 来决定回调哪一路 userid 的视频画面
+ * @note setRemoteVideoRenderDelegate 之前需要调用 startRemoteView 来开启对应 userid 的视频画面，才有数据回调出来。
  *
  * @param userId    自定义渲染回调
  * @param delegate    自定义渲染的回调
@@ -588,7 +598,7 @@ withProgressNotify:(void (^)(NSInteger progressMS, NSInteger durationMS))progres
 /**
  * 10.1 开始进行网络测速(视频通话期间请勿测试，以免影响通话质量)
  *
- * 测速结果将会用于优化 SDK 接下来的服务器选择策略，因此推荐您在用户首次通话前先进行一次测速，这将有助于我们最佳的服务器
+ * 测速结果将会用于优化 SDK 接下来的服务器选择策略，因此推荐您在用户首次通话前先进行一次测速，这将有助于我们选择最佳的服务器
  * 同时，如果测试结果非常不理想，您可以通过醒目的 UI 提示用户选择更好的网络
  * 
  * 注意：测速本身会消耗一定的流量，所以也会产生少量额外的流量费用
@@ -679,14 +689,15 @@ withProgressNotify:(void (^)(NSInteger progressMS, NSInteger durationMS))progres
 - (void) stopPublishCDNStream;
 
 /**
- * 11.3 启动云端的混流转码：通过腾讯云的转码服务，将房间里的多路画面叠加到一路画面上
- *
- *      【画面1】=> 解码 => => 
- *                             \
- *      【画面2】=> 解码 =>  画面混合 => 编码 => 【混合后的画面】
- *                             /
- *      【画面3】=> 解码 => =>
- *
+ * @brief 11.3 启动云端的混流转码：通过腾讯云的转码服务，将房间里的多路画面叠加到一路画面上
+ * @desc
+ * <pre>
+ * 【画面1】=> 解码 => =>
+ *                         \
+ * 【画面2】=> 解码 =>  画面混合 => 编码 => 【混合后的画面】
+ *                         /
+ * 【画面3】=> 解码 => =>
+ * </pre>
  * @param config 请参考 TRTCCloudDef.h 中关于 TRTCTranscodingConfig 的介绍
  */
 - (void) startCloudMixTranscoding:(TRTCTranscodingConfig*)config;
