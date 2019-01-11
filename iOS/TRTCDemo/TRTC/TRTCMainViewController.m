@@ -332,7 +332,7 @@ typedef enum : NSUInteger {
     [self toastTip:@"开始进房"];
     
     // 进房
-    [_trtc enterRoom:self.param];
+    [_trtc enterRoom:self.param appScene:TRTCAppSceneVideoCall];
 }
 
 - (void)onStatistics:(TRTCStatistics *)statistics
