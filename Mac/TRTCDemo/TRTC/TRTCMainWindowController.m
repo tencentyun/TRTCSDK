@@ -420,7 +420,7 @@
     [self.trtcEngine startLocalPreview:videoView];
     [self.trtcEngine startLocalAudio];
     // 进房
-    [self.trtcEngine enterRoom:param];
+    [self.trtcEngine enterRoom:param appScene:TRTCAppSceneVideoCall];
 }
 
 - (void)onEnterRoom:(NSInteger)elapsed{
