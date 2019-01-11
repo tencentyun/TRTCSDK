@@ -112,7 +112,7 @@
         param.sdkAppId = _sdkAppID;
         param.userId = uid;
         param.userSig = token;
-        param.roomId = self.roomidField.integerValue;
+        param.roomId = (UInt32)self.roomidField.integerValue;
 
         [self enterRoomWithParam:param];
     }
