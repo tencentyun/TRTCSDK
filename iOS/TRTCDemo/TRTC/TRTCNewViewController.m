@@ -39,7 +39,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = @"TRTC";
+    self.title = @"腾讯视频通话";
+    
+    
     [self.view setBackgroundColor:UIColorFromRGB(0x333333)];
     
     _tipLabel = [[UILabel alloc] initWithFrame:CGRectMake(18, 100, 200, 30)];
@@ -208,6 +210,7 @@
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     [self.view endEditing:NO];
 }
+
 
 #pragma mark - picker
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView

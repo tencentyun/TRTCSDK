@@ -14,7 +14,6 @@
 #define TRTC_SETTING_FPS        @"TRTC_SETTING_FPS"
 #define TRTC_SETTING_BITRATE    @"TRTC_SETTING_BITRATE"
 #define TRTC_SETTING_QOS_TYPE   @"TRTC_SETTING_QOS_TYPE"
-#define TRTC_SETTING_QOS_CTRL_TYPE   @"TRTC_SETTING_QOS_CTRL_TYPE" // 客户端控、云控
 #define TRTC_SETTING_ENABLE_SMALL_STREAM    @"TRTC_SETTING_ENABLE_SMALL_STREAM"
 #define TRTC_SETTING_PRIOR_SMALL_STREAM     @"TRTC_SETTING_PRIOR_SMALL_STREAM"
 
@@ -63,7 +62,6 @@
     int _selectResolution;
     int _selectBitrate;
     int _selectFps;
-    int _selectCtrlQos;
     int _selectQosType;
     
     UIActionSheet *_actionSheet;
@@ -183,11 +181,7 @@
 }
 
 + (int)getQosCtrlType {
-    NSNumber *d = [[NSUserDefaults standardUserDefaults] objectForKey:TRTC_SETTING_QOS_CTRL_TYPE];
-    if (d != nil) {
-        return [d intValue];
-    }
-    return 0;
+    return TRTCQosControlModeServer;
 }
 
 + (BOOL)getEnableSmallStream {
@@ -228,7 +222,6 @@
         [[NSUserDefaults standardUserDefaults] setObject:@(_selectResolution) forKey:TRTC_SETTING_RESOLUTION];
         [[NSUserDefaults standardUserDefaults] setObject:@(_selectFps) forKey:TRTC_SETTING_FPS];
         [[NSUserDefaults standardUserDefaults] setObject:@(_selectBitrate) forKey:TRTC_SETTING_BITRATE];
-        [[NSUserDefaults standardUserDefaults] setObject:@(_selectCtrlQos) forKey:TRTC_SETTING_QOS_CTRL_TYPE];
         [[NSUserDefaults standardUserDefaults] setObject:@(_selectQosType) forKey:TRTC_SETTING_QOS_TYPE];
         [[NSUserDefaults standardUserDefaults] setObject:@(_smallStreamSwitch.on) forKey:TRTC_SETTING_ENABLE_SMALL_STREAM];
         [[NSUserDefaults standardUserDefaults] setObject:@(_priorSmallStreamSwitch.on) forKey:TRTC_SETTING_PRIOR_SMALL_STREAM];
