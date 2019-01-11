@@ -61,10 +61,10 @@ typedef NS_ENUM(NSInteger, TRTCVideoResolutionMode) {
 
 
 typedef NS_ENUM(NSInteger, TRTCAppScene) {
-	TRTCAppSceneVideoCall     = 1,  ///< 视频通话场景，即绝大多数时间都是两人或两人以上视频通话的场景
+	TRTCAppSceneVideoCall     = 0,  ///< 视频通话场景，即绝大多数时间都是两人或两人以上视频通话的场景
 	                                ///  内部编码器和网络协议优化侧重流畅性，降低通话延迟和卡顿率
 									
-    TRTCAppSceneLIVE          = 2,  ///< 直播场景，即绝大多数时间都是一人直播，偶尔有多人视频互动的场景
+    TRTCAppSceneLIVE          = 1,  ///< 直播场景，即绝大多数时间都是一人直播，偶尔有多人视频互动的场景
 	                                ///  内部编码器和网络协议优化侧重性能和兼容性，性能和清晰度表现更佳
 };
 
