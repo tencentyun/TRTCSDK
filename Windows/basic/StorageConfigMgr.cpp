@@ -292,10 +292,10 @@ void TRTCStorageConfigMgr::ReadStorageConfig()
     videoEncParams.videoFps = _wtoi(strParam.c_str());
 
     strParam = m_pConfigMgr->GetValue(INI_ROOT_KEY, INI_KEY_VIDEO_QUALITY);
-    videoQosPreference = (TRTCVideoQosPreference)_wtoi(strParam.c_str());
+    qosParams.preference = (TRTCVideoQosPreference)_wtoi(strParam.c_str());
 
     strParam = m_pConfigMgr->GetValue(INI_ROOT_KEY, INI_KEY_VIDEO_QUALITY_CONTROL);
-    qosMode = (TRTCQosMode)_wtoi(strParam.c_str());
+    qosParams.controlMode = (TRTCQosControlMode)_wtoi(strParam.c_str());
 
     strParam = m_pConfigMgr->GetValue(INI_ROOT_KEY, INI_KEY_SET_PUSH_SMALLVIDEO);
     bPushSmallVideo = _wtoi(strParam.c_str());
@@ -317,10 +317,10 @@ void TRTCStorageConfigMgr::WriteStorageConfig()
     strFormat = format(L"%d", videoEncParams.videoFps);
     m_pConfigMgr->SetValue(INI_ROOT_KEY, INI_KEY_VIDEO_FPS, strFormat.c_str());
 
-    strFormat = format(L"%d", videoQosPreference);
+    strFormat = format(L"%d", qosParams.preference);
     m_pConfigMgr->SetValue(INI_ROOT_KEY, INI_KEY_VIDEO_QUALITY, strFormat.c_str());
 
-    strFormat = format(L"%d", qosMode);
+    strFormat = format(L"%d", qosParams.controlMode);
     m_pConfigMgr->SetValue(INI_ROOT_KEY, INI_KEY_VIDEO_QUALITY_CONTROL, strFormat.c_str());
 
     strFormat = format(L"%d", bPushSmallVideo);

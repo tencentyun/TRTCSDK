@@ -108,11 +108,10 @@ BOOL TRTCSettingViewController::OnInitDialog()
 
     m_qualityCombo.AddString(L"流畅");
     m_qualityCombo.AddString(L"清晰");
-    if (m_videoQosPreference == TRTCVideoQosPreferenceSmooth)
+    if (m_qosParams.preference == TRTCVideoQosPreferenceSmooth)
         m_qualityCombo.SetCurSel(0);
-    if (m_videoQosPreference == TRTCVideoQosPreferenceClear)
+    if (m_qosParams.preference == TRTCVideoQosPreferenceClear)
         m_qualityCombo.SetCurSel(1);
-
 
     TRTCSettingBitrateTable sliderInfo = getVideoConfigInfo(m_videoEncParams.videoResolution);
     m_bitrateSlider.SetRange(sliderInfo.minBitrate, sliderInfo.maxBitrate);
@@ -180,16 +179,17 @@ BOOL TRTCSettingViewController::OnInitDialog()
 void TRTCSettingViewController::OnBnClickedButtonSave()
 {
     TRTCVideoEncParam& _videoEncParams = TRTCStorageConfigMgr::GetInstance()->videoEncParams;
-    TRTCQosMode _videoQosMode = TRTCStorageConfigMgr::GetInstance()->qosMode;
-    TRTCVideoQosPreference _videoQosPreference = TRTCStorageConfigMgr::GetInstance()->videoQosPreference;
+    TRTCNetworkQosParam& _qosParams = TRTCStorageConfigMgr::GetInstance()->qosParams;
     if (_videoEncParams.videoBitrate != m_videoEncParams.videoBitrate ||
         _videoEncParams.videoFps != m_videoEncParams.videoFps ||
-        _videoEncParams.videoResolution != m_videoEncParams.videoResolution ||
-        _videoQosMode != m_videoQosMode ||
-        _videoQosPreference != m_videoQosPreference
-        )
+        _videoEncParams.videoResolution != m_videoEncParams.videoResolution)
     {
-        getTRTCCloud()->setLocalVideoQuality(m_videoEncParams, m_videoQosMode, m_videoQosPreference);
+        getTRTCCloud()->setVideoEncoderParam(m_videoEncParams);
+    }
+
+    if (_qosParams.controlMode != m_qosParams.controlMode || _qosParams.preference != m_qosParams.preference)
+    {
+        getTRTCCloud()->setNetworkQosParam(m_qosParams);
     }
 
     bool _bPushSmallVideo = TRTCStorageConfigMgr::GetInstance()->bPushSmallVideo;
@@ -215,8 +215,7 @@ void TRTCSettingViewController::OnBnClickedButtonSave()
     }
 
     TRTCStorageConfigMgr::GetInstance()->videoEncParams = m_videoEncParams;
-    TRTCStorageConfigMgr::GetInstance()->qosMode = m_videoQosMode;
-    TRTCStorageConfigMgr::GetInstance()->videoQosPreference = m_videoQosPreference;
+    TRTCStorageConfigMgr::GetInstance()->qosParams = m_qosParams;
     TRTCStorageConfigMgr::GetInstance()->bPushSmallVideo = m_bPushSmallVideo;
     TRTCStorageConfigMgr::GetInstance()->bPlaySmallVideo = m_bPlaySmallVideo;
 
@@ -265,8 +264,7 @@ void TRTCSettingViewController::OnCbnSelchangeComboResolution()
 void TRTCSettingViewController::InitStorageConfig()
 {
     m_videoEncParams = TRTCStorageConfigMgr::GetInstance()->videoEncParams;
-    m_videoQosMode = TRTCStorageConfigMgr::GetInstance()->qosMode;
-    m_videoQosPreference = TRTCStorageConfigMgr::GetInstance()->videoQosPreference;
+    m_qosParams = TRTCStorageConfigMgr::GetInstance()->qosParams;
     m_bPushSmallVideo = TRTCStorageConfigMgr::GetInstance()->bPushSmallVideo;
     m_bPlaySmallVideo = TRTCStorageConfigMgr::GetInstance()->bPlaySmallVideo;
 }
@@ -352,9 +350,9 @@ void TRTCSettingViewController::OnCbnSelchangeComboQuality()
     // TODO: 在此添加控件通知处理程序代码
     DWORD nIndex = m_qualityCombo.GetCurSel();
     if (nIndex == 0)
-        m_videoQosPreference = TRTCVideoQosPreferenceSmooth;
+        m_qosParams.preference = TRTCVideoQosPreferenceSmooth;
     if (nIndex == 1)
-        m_videoQosPreference = TRTCVideoQosPreferenceClear;
+        m_qosParams.preference = TRTCVideoQosPreferenceClear;
 
     CWnd *pSaveBtn = GetDlgItem(IDC_BUTTON_SAVE);
     if (pSaveBtn)
