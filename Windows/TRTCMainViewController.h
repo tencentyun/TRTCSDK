@@ -54,12 +54,13 @@ protected:
     DECLARE_MESSAGE_MAP()
 protected:
     void switchToMainThread(std::function<void(void)> func);
+
+    virtual void onError(TXLiteAVError errCode, const char* errMsg, void* arg);
+    virtual void onWarning(TXLiteAVWarning warningCode, const char* warningMsg, void* arg);
     virtual void onEnterRoom(uint64_t elapsed);
     virtual void onExitRoom(int reason);
     virtual void onUserEnter(const char* userId);
     virtual void onUserExit(const char* userId, int reason);
-
-    
 private:
     int FindIdleRemoteVideoView();
     int FindOccupyRemoteVideoView(std::string userId);

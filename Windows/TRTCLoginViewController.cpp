@@ -155,7 +155,7 @@ void TRTCLoginViewController::joinRoom(int roomId)
 
         TRTCParams params;
         params.sdkAppId = TRTCGetUserIDAndUserSig::instance().getConfigSdkAppId();
-        params.roomId = roomId;
+        params.roomId = roomId;//std::to_string(roomId).c_str();
         params.userId = info.userId.c_str();
         params.userSig = info.userSig.c_str();
         params.privateMapKey = "";
