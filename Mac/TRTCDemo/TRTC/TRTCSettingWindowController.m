@@ -45,7 +45,7 @@ DECL_DEFAULT_KEY(QosMode)
                                                               DefaultKeyResolution: @(TRTCVideoResolution_640_480),
                                                               DefaultKeyBitrate: @500,
                                                               DefaultKeyQosPreference: @(TRTCVideoQosPreferenceSmooth),
-                                                              DefaultKeyQosMode: @(TRTCQosModeServer)
+                                                              DefaultKeyQosMode: @(TRTCQosControlModeServer)
                                                               }];
 }
 
@@ -81,8 +81,8 @@ DECL_DEFAULT_KEY(QosMode)
     return (TRTCVideoQosPreference)[[NSUserDefaults standardUserDefaults] integerForKey:DefaultKeyQosPreference];
 }
 
-+ (TRTCQosMode)qosControlMode {
-    return (TRTCQosMode)[[NSUserDefaults standardUserDefaults] integerForKey:DefaultKeyQosMode];
++ (TRTCQosControlMode)qosControlMode {
+    return (TRTCQosControlMode)[[NSUserDefaults standardUserDefaults] integerForKey:DefaultKeyQosMode];
 }
 
 #pragma mark -
@@ -140,6 +140,13 @@ DECL_DEFAULT_KEY(QosMode)
     self.micVolumeSlider.floatValue = [self.trtcEngine getCurrentMicDeviceVolume];
     self.speakerVolumeSlider.floatValue = [self.trtcEngine getCurrentSpeakerDeviceVolume];
 
+    // 配置清晰流畅
+    if (TRTCSettingWindowController.qosControlPreference == TRTCVideoQosPreferenceSmooth) {
+        self.smoothBtn.state = NSControlStateValueOn;
+    } else {
+        self.clearBtn.state  = NSControlStateValueOn;
+    }
+    
     // 添加设置界面
     [self.settingField addSubview:self.videoSettingView];
     [self.settingField addSubview:self.audioSettingView];
@@ -301,7 +308,7 @@ DECL_DEFAULT_KEY(QosMode)
 
 // 开始扬声器测试
 - (IBAction)speakerTest:(NSButton *)sender {
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"test-32000-mono" ofType:@"mp3"];
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"test" ofType:@"mp3"];
 
     NSButton *btn = (NSButton *)sender;
     if (btn.state == NSControlStateValueOn) {
@@ -328,11 +335,11 @@ DECL_DEFAULT_KEY(QosMode)
 }
 
 //  更改流控方式，使用SDK固定配置还是使用下发配置
-- (IBAction)onChangeControlType:(NSButton *)sender {
-    TRTCQosMode mode = sender.tag == 0 ? TRTCQosModeClient : TRTCQosModeServer;
-    [[NSUserDefaults standardUserDefaults] setInteger:mode forKey:DefaultKeyQosMode];
-    [self _updateVideoQuality];
-}
+//- (IBAction)onChangeControlType:(NSButton *)sender {
+//    TRTCQosControlMode mode = sender.tag == 0 ? TRTCQosControlModeClient : TRTCQosControlModeServer;
+//    [[NSUserDefaults standardUserDefaults] setInteger:mode forKey:DefaultKeyQosMode];
+//    [self _updateVideoQuality];
+//}
 
 #pragma mark - Utils
 - (TRTCVideoResolution)resolutionFromIndex:(NSInteger)resolutionIndex
@@ -374,13 +381,12 @@ DECL_DEFAULT_KEY(QosMode)
 #pragma mark - 数据更新
 - (void)_updateVideoQuality {
     NSInteger resolutionIndex = [self.resolutionItems indexOfSelectedItem];
-    int videoRate = [self.bitrateSlider intValue];
     
     TRTCVideoEncParam *config = [TRTCVideoEncParam new];
-    config.videoBitrate = videoRate ;
+    config.videoBitrate = TRTCSettingWindowController.bitrate ;
     config.videoResolution = [self resolutionFromIndex:resolutionIndex];
     config.videoFps = TRTCSettingWindowController.fps;
-    [self.trtcEngine setLocalVideoQuality:config qosControl:TRTCSettingWindowController.qosControlMode qosPreference:TRTCSettingWindowController.qosControlPreference];
+    [self.trtcEngine setVideoEncoderParam:config];
 }
 
 // 更新麦克音量指示器

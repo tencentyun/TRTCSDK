@@ -133,6 +133,16 @@ void TRTCMainViewController::switchToMainThread(std::function<void(void)> func)
     PostMessage(WM_CUSTOM_MESSAGE, (WPARAM)msg, 0);
 }
 
+void TRTCMainViewController::onError(TXLiteAVError errCode, const char* errMsg, void* arg)
+{
+
+}
+
+void TRTCMainViewController::onWarning(TXLiteAVWarning warningCode, const char* warningMsg, void* arg)
+{
+
+}
+
 void TRTCMainViewController::onEnterRoom(uint64_t elapsed)
 {
     //
@@ -141,6 +151,7 @@ void TRTCMainViewController::onEnterRoom(uint64_t elapsed)
         HWND hwnd = pLocalVideoView->GetSafeHwnd();
         getTRTCCloud()->setLocalViewFillMode(TRTCVideoFillMode_Fit);
         getTRTCCloud()->startLocalPreview(hwnd);
+        getTRTCCloud()->startLocalAudio();
 
 
         std::vector<UserInfo> userInfos = TRTCGetUserIDAndUserSig::instance().getConfigUserIdArray();
@@ -354,9 +365,9 @@ void TRTCMainViewController::enterRoom(TRTCParams& params)
     // 注意（1）：不要在码率很低的情况下设置很高的分辨率，会出现较大的马赛克
     // 注意（2）：不要设置超过25FPS以上的帧率，因为电影才使用24FPS，我们一般推荐15FPS，这样能将更多的码率分配给画质
     TRTCVideoEncParam& encParams = TRTCStorageConfigMgr::GetInstance()->videoEncParams;
-    TRTCQosMode& qosMode = TRTCStorageConfigMgr::GetInstance()->qosMode;
-    TRTCVideoQosPreference qosPreference = TRTCStorageConfigMgr::GetInstance()->videoQosPreference;
-    getTRTCCloud()->setLocalVideoQuality(encParams, qosMode, qosPreference);
+    TRTCNetworkQosParam qosParams = TRTCStorageConfigMgr::GetInstance()->qosParams;
+    getTRTCCloud()->setVideoEncoderParam(encParams);
+    getTRTCCloud()->setNetworkQosParam(qosParams);
     
     bool m_bPushSmallVideo = TRTCStorageConfigMgr::GetInstance()->bPushSmallVideo;
     bool m_bPlaySmallVideo = TRTCStorageConfigMgr::GetInstance()->bPlaySmallVideo;
@@ -378,7 +389,7 @@ void TRTCMainViewController::enterRoom(TRTCParams& params)
         getTRTCCloud()->setPriorRemoteVideoStreamType(TRTCVideoStreamTypeSmall);
     }
 
-    getTRTCCloud()->enterRoom(params);
+    getTRTCCloud()->enterRoom(params, TRTCAppSceneVideoCall);
 
     std::wstring title = format(L"TRTCDemo【房间ID: %d, 用户ID: %s】", params.roomId, Ansi2Wide(params.userId.c_str()).c_str());
 

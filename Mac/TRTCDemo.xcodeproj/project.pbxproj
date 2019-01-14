@@ -7,10 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		453167F221E45560007A91CB /* TRTCNewWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 453167EF21E4555F007A91CB /* TRTCNewWindowController.m */; };
+		453167F321E45560007A91CB /* TRTCNewWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 453167F021E4555F007A91CB /* TRTCNewWindowController.xib */; };
 		45AD957121D6532C007B2EAF /* TRTCSettingWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45AD956821D6532B007B2EAF /* TRTCSettingWindowController.xib */; };
 		45AD957221D6532C007B2EAF /* HoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = 45AD956B21D6532B007B2EAF /* HoverView.m */; };
 		45AD957321D6532C007B2EAF /* TRTCSettingWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45AD956E21D6532C007B2EAF /* TRTCSettingWindowController.m */; };
-		45AD957421D6532C007B2EAF /* TRTCNewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45AD956F21D6532C007B2EAF /* TRTCNewViewController.m */; };
 		45AD957721D653FB007B2EAF /* config.json in Resources */ = {isa = PBXBuildFile; fileRef = 45AD957621D653FA007B2EAF /* config.json */; };
 		45AD957B21D656C2007B2EAF /* TRTCMainWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45AD957921D656C2007B2EAF /* TRTCMainWindowController.xib */; };
 		45AD95BF21D72C0F007B2EAF /* TRTCMainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45AD95BE21D72C0F007B2EAF /* TRTCMainWindowController.m */; };
@@ -25,13 +26,14 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		453167EF21E4555F007A91CB /* TRTCNewWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCNewWindowController.m; sourceTree = "<group>"; };
+		453167F021E4555F007A91CB /* TRTCNewWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TRTCNewWindowController.xib; sourceTree = "<group>"; };
+		453167F121E4555F007A91CB /* TRTCNewWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCNewWindowController.h; sourceTree = "<group>"; };
 		45AD956821D6532B007B2EAF /* TRTCSettingWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TRTCSettingWindowController.xib; sourceTree = "<group>"; };
 		45AD956A21D6532B007B2EAF /* HoverView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HoverView.h; sourceTree = "<group>"; };
 		45AD956B21D6532B007B2EAF /* HoverView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HoverView.m; sourceTree = "<group>"; };
 		45AD956C21D6532B007B2EAF /* TRTCSettingWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCSettingWindowController.h; sourceTree = "<group>"; };
-		45AD956D21D6532C007B2EAF /* TRTCNewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCNewViewController.h; sourceTree = "<group>"; };
 		45AD956E21D6532C007B2EAF /* TRTCSettingWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCSettingWindowController.m; sourceTree = "<group>"; };
-		45AD956F21D6532C007B2EAF /* TRTCNewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCNewViewController.m; sourceTree = "<group>"; };
 		45AD957621D653FA007B2EAF /* config.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = config.json; sourceTree = "<group>"; };
 		45AD957821D656C2007B2EAF /* TRTCMainWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCMainWindowController.h; sourceTree = "<group>"; };
 		45AD957921D656C2007B2EAF /* TRTCMainWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TRTCMainWindowController.xib; sourceTree = "<group>"; };
@@ -112,11 +114,12 @@
 			children = (
 				D689A97721CCC41100C7C618 /* RenderView */,
 				45AD956921D6532B007B2EAF /* HoverView */,
+				453167F121E4555F007A91CB /* TRTCNewWindowController.h */,
+				453167EF21E4555F007A91CB /* TRTCNewWindowController.m */,
+				453167F021E4555F007A91CB /* TRTCNewWindowController.xib */,
 				45AD957821D656C2007B2EAF /* TRTCMainWindowController.h */,
 				45AD95BE21D72C0F007B2EAF /* TRTCMainWindowController.m */,
 				45AD957921D656C2007B2EAF /* TRTCMainWindowController.xib */,
-				45AD956D21D6532C007B2EAF /* TRTCNewViewController.h */,
-				45AD956F21D6532C007B2EAF /* TRTCNewViewController.m */,
 				45AD956C21D6532B007B2EAF /* TRTCSettingWindowController.h */,
 				45AD956E21D6532C007B2EAF /* TRTCSettingWindowController.m */,
 				45AD956821D6532B007B2EAF /* TRTCSettingWindowController.xib */,
@@ -208,6 +211,7 @@
 				D689A93621CC97F400C7C618 /* Assets.xcassets in Resources */,
 				45AD957B21D656C2007B2EAF /* TRTCMainWindowController.xib in Resources */,
 				45AD957721D653FB007B2EAF /* config.json in Resources */,
+				453167F321E45560007A91CB /* TRTCNewWindowController.xib in Resources */,
 				45AD957121D6532C007B2EAF /* TRTCSettingWindowController.xib in Resources */,
 				D689A93921CC97F400C7C618 /* Main.storyboard in Resources */,
 			);
@@ -223,10 +227,10 @@
 				D689A93C21CC97F400C7C618 /* main.m in Sources */,
 				45AD957221D6532C007B2EAF /* HoverView.m in Sources */,
 				45AD957321D6532C007B2EAF /* TRTCSettingWindowController.m in Sources */,
-				45AD957421D6532C007B2EAF /* TRTCNewViewController.m in Sources */,
 				45AD95BF21D72C0F007B2EAF /* TRTCMainWindowController.m in Sources */,
 				D689A98121CCC41200C7C618 /* TXRenderView.m in Sources */,
 				D689A93121CC97F300C7C618 /* AppDelegate.m in Sources */,
+				453167F221E45560007A91CB /* TRTCNewWindowController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

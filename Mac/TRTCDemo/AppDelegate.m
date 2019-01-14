@@ -7,14 +7,14 @@
 //
 
 #import "AppDelegate.h"
-#import "TRTCNewViewController.h"
+#import "TRTCNewWindowController.h"
 #import "TRTCSettingWindowController.h"
 
 @interface AppDelegate ()
 {
+    TRTCNewWindowController *_loginWindowController;
     TRTCSettingWindowController *_settingWindowController;
     TRTCCloud* _trtcEngine;
-    
 }
 @end
 
@@ -22,7 +22,8 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onWindowClose:) name:NSWindowWillCloseNotification object:nil];
-    //    [self onShowCameraWindow:nil];
+    _loginWindowController = [[TRTCNewWindowController alloc] initWithWindowNibName:NSStringFromClass([TRTCNewWindowController class])];
+    [_loginWindowController showWindow:nil];
 }
 
 
@@ -63,9 +64,7 @@
 }
 
 - (void)showLoginWindow {
-    NSStoryboard *board = [NSStoryboard storyboardWithName:@"Main" bundle:nil];
-    NSWindowController *wc = [board instantiateInitialController];
-    [wc showWindow:nil];
+    [_loginWindowController showWindow:nil];
 }
 
 // Menu Actions

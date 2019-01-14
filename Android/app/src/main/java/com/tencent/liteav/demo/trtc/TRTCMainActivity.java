@@ -64,7 +64,7 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
         String selfUserId   = intent.getStringExtra("userId");
         String userSig      = intent.getStringExtra("userSig");
 
-        trtcParams = new TRTCCloudDef.TRTCParams(sdkAppId, selfUserId, userSig, String.valueOf(roomId), "", "");
+        trtcParams = new TRTCCloudDef.TRTCParams(sdkAppId, selfUserId, userSig, roomId, "", "");
 
         //初始化 UI 控件
         initView();
@@ -176,7 +176,7 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
         trtcCloud.startLocalAudio();
 
         //进房
-        trtcCloud.enterRoom(trtcParams);
+        trtcCloud.enterRoom(trtcParams, TRTCCloudDef.TRTC_APP_SCENE_VIDEOCALL);
 
         Toast.makeText(this, "开始进房", Toast.LENGTH_SHORT).show();
     }

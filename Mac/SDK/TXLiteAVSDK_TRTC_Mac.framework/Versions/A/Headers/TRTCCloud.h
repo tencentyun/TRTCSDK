@@ -31,10 +31,11 @@
 /// @{
 /**
  * 1.1 进入房间
- * @param param 进房参数，请参考 DOC-TO-DO
+ * @param param 进房参数，请参考 TRTCParams
+ * @param scene 应用场景，目前支持视频通话（VideoCall）和在线直播（Live）两种场景
  * @note 不管进房是否成功，都必须与exitRoom配对使用，在调用 exitRoom 前再次调用 enterRoom 函数会导致不可预期的错误问题
  */
-- (void)enterRoom:(TRTCParams *)param;
+- (void)enterRoom:(TRTCParams *)param appScene:(TRTCAppScene)scene;
 
 /**
  * 1.2 离开房间
@@ -90,15 +91,7 @@
 - (void)stopAllRemoteView;
 
 /**
- * 2.6 设置本地的视频编码质量
- * @param param         视频编码参数，详情请参考 TRTCCloudDef.h 中的 TRTCVideoEncParam 定义
- * @param qosControl    流控模式选择，默认选择【云控】模式，便于获得更好的效果，【终端】模式则用于特殊的调试场景
- * @param qosPreference 画面质量偏好，有【流畅】和【清晰】两种模式可供选择，详情请参考 TRTCVideoQosPreference 的定义
- */ 
-- (void)setLocalVideoQuality:(TRTCVideoEncParam*)param qosControl:(TRTCQosMode)qosControl qosPreference:(TRTCVideoQosPreference)qosPreference;
-
-/**
- * 2.7 是否屏蔽本地视频
+ * 2.6 是否屏蔽本地视频
  * 
  * 当屏蔽本地视频后，房间里的其它成员将会收到 onUserVideoAvailable 回调通知
  * @param mute YES:屏蔽 NO:开启
@@ -106,14 +99,26 @@
 - (void)muteLocalVideo:(BOOL)mute;
 
 /**
- * 2.8 设置本地图像的渲染模式
+ * 2.7 设置视频编码器相关参数，该设置决定了远端用户看到的画面质量（同时也是云端录制出的视频文件的画面质量）
+ * @param param         视频编码参数，详情请参考 TRTCCloudDef.h 中的 TRTCVideoEncParam 定义
+ */ 
+- (void)setVideoEncoderParam:(TRTCVideoEncParam*)param;
+
+/**
+ * 2.8 设置网络流控相关参数，该设置决定了SDK在各种网络环境下的调控策略（比如弱网下是“保清晰”还是“保流畅”）
+ * @param param         网络流控参数，详情请参考 TRTCCloudDef.h 中的 TRTCNetworkQosParam 定义
+ */ 
+- (void)setNetworkQosParam:(TRTCNetworkQosParam*)param;
+
+/**
+ * 2.9 设置本地图像的渲染模式
  *
  * @param mode 填充（画面可能会被拉伸裁剪）还是适应（画面可能会有黑边）
  */
 - (void)setLocalViewFillMode:(TRTCVideoFillMode)mode;
 
 /**
- * 2.9 设置远端图像的渲染模式
+ * 2.10 设置远端图像的渲染模式
  *
  * @param userId 用户的id
  * @param mode 填充（画面可能会被拉伸裁剪）还是适应（画面可能会有黑边）
@@ -121,32 +126,32 @@
 - (void)setRemoteViewFillMode:(NSString*)userId mode:(TRTCVideoFillMode)mode;
 
 /**
- * 2.10 设置本地图像的顺时针旋转角度
+ * 2.11 设置本地图像的顺时针旋转角度
  * @param rotation 支持 90、180、270 旋转角度
  */
 - (void)setLocalViewRotation:(TRTCVideoRotation)rotation;
 
 /**
- * 2.11 设置远端图像的顺时针旋转角度
+ * 2.12 设置远端图像的顺时针旋转角度
  * @param userId 用户Id
  * @param rotation 支持 90、180、270 旋转角度
  */
 - (void)setRemoteViewRotation:(NSString*)userId rotation:(TRTCVideoRotation)rotation;
 
 /**
- * 2.12 设置视频编码输出的（也就是远端用户观看到的，以及服务器录制下来的）画面方向
- * @param rotation 支持 90、180、270 旋转角度
+ * 2.13 设置视频编码输出的（也就是远端用户观看到的，以及服务器录制下来的）画面方向
+ * @param rotation 支持 0 和 180 两个旋转角度
  */
-- (void)setVideoOutputRotation:(TRTCVideoRotation)rotation;
+- (void)setVideoEncoderRotation:(TRTCVideoRotation)rotation;
 
 /**
- * 2.13 设置重力感应的适应模式
+ * 2.14 设置重力感应的适应模式
  * @param mode 重力感应模式，详情请参考 TRTCGSensorMode 的定义
  */
 - (void)setGSensorMode:(TRTCGSensorMode) mode;
 
 /**
- * 2.14 开启大小画面双路编码模式
+ * 2.15 开启大小画面双路编码模式
  *
  * 如果当前用户是房间中的主要角色（比如主播、老师、主持人...），并且使用 PC 或者 Mac 环境，可以开启该模式
  * 开启该模式后，当前用户会同时输出【高清】和【低清】两路视频流（但只有一路音频流）
@@ -161,7 +166,7 @@
 - (int)enableEncSmallVideoStream:(BOOL)enable withQuality:(TRTCVideoEncParam*)smallVideoEncParam;
 
 /**
- * 2.15 选定观看指定 uid 的大画面还是小画面
+ * 2.16 选定观看指定 uid 的大画面还是小画面
  *
  * 此功能需要该 uid 通过 enableEncSmallVideoStream 提前开启双路编码模式
  * 如果该 uid 没有开启双路编码模式，则此操作无效
@@ -171,13 +176,22 @@
 - (void)setRemoteVideoStreamType:(NSString*)userId type:(TRTCVideoStreamType)type;
 
 /**
- * 2.16 设定观看方优先选择的视频质量
+ * 2.17 设定观看方优先选择的视频质量
  *
  * 低端设备推荐优先选择低清晰度的小画面
  * 如果对方没有开启双路视频模式，则此操作无效
  * @param type 默认观看大画面还是小画面
  */
 - (void)setPriorRemoteVideoStreamType:(TRTCVideoStreamType)type;
+
+#if !TARGET_OS_IPHONE && TARGET_OS_MAC
+/**
+ * 2.18 设置摄像头本地预览是否开镜像
+ *
+ * @param mirror 是否开启预览镜像
+ */
+- (void)setLocalVideoMirror:(BOOL)mirror;
+#endif
 
 /// @}
 
@@ -189,9 +203,22 @@
 #pragma mark - 音频相关接口函数
 /// @name 音频相关接口函数
 /// @{
+	
+/**
+ * 3.1 开启本地音频流，该函数会启动麦克风采集，并将音频数据广播给房间里的其他用户
+ *
+ * @note TRTC SDK 并不会默认打开本地的麦克风采集。
+ * @note 该函数会检查麦克风使用权限，如果没有麦克风权限，SDK 会向用户申请开启
+ */
+- (void)startLocalAudio;
 
 /**
- * 3.1 是否屏蔽本地音频
+ * 3.2 关闭本地音频流
+ */
+- (void)stopLocalAudio;
+
+/**
+ * 3.3 是否屏蔽本地音频
  *
  * 当屏蔽本地音频后，房间里的其它成员会收到 onUserAudioAvailable 回调通知
  * @param mute YES:屏蔽 NO:开启
@@ -199,33 +226,26 @@
 - (void)muteLocalAudio:(BOOL)mute;
 
 /**
- * 3.2 设置音频路由
+ * 3.4 设置音频路由
  * @param route 音频路由即声音由哪里输出（扬声器、听筒）
  */
 - (void)setAudioRoute:(TRTCAudioRoute)route;
 
 /**
- * 3.3 设置指定用户是否静音
+ * 3.5 设置指定用户是否静音
  * @param userId 对方的用户标识
  * @param mute YES:静音 NO:非静音
  */
 - (void)muteRemoteAudio:(NSString *)userId mute:(BOOL)mute;
 
 /**
- * 3.4 设置所有远端用户是否静音
+ * 3.6 设置所有远端用户是否静音
  * @param mute YES:静音 NO:非静音
  */
 - (void)muteAllRemoteAudio:(BOOL)mute;
 
 /**
- * 3.5 设置指定用户音量
- * @param userId 用户Id
- * @param volume 音量
- */
-- (void)setRemoteAudioVolume:(NSString*)userId volume:(float)volume;
-
-/**
- * 3.6 启用音量大小提示
+ * 3.7 启用音量大小提示
  *
  * 开启后会在 onUserVoiceVolume 中获取到 SDK 对音量大小值的评估
  * @param interval     报告间隔单位为ms, 最小间隔20ms, 如果小于等于0则会关闭回调，建议设置为大于200ms
@@ -323,7 +343,7 @@
 //                      （五）音频设备相关接口函数
 //
 /////////////////////////////////////////////////////////////////////////////////
-#pragma mark - （五）音频设备相关接口函数
+#pragma mark - 音频设备相关接口函数
 /// @name 音频设备相关接口函数
 /// @{
 #if !TARGET_OS_IPHONE  && TARGET_OS_MAC
@@ -356,7 +376,7 @@
  * 5.5 设置麦克风设备的音量
  * @param volume 麦克风音量值, 范围0~100
  */
-- (void)setCurrentMicDeviceVolume:(float)volume;
+- (void)setCurrentMicDeviceVolume:(NSInteger)volume;
 
 /** 
  * 5.6 获取扬声器设备列表
@@ -388,7 +408,7 @@
  * @param volume 设置的扬声器音量, 范围0~100
  * @return 0:成功  <0:调用失败
  */
-- (int)setCurrentSpeakerDeviceVolume:(float)volume;
+- (int)setCurrentSpeakerDeviceVolume:(NSInteger)volume;
 
 #endif
 /// @}
@@ -425,61 +445,10 @@
 - (void)setWatermark:(TXImage*)image rect:(CGRect)rect;
 /// @}
 
-/////////////////////////////////////////////////////////////////////////////////
-//
-//                      （七）屏幕共享接口函数(MAC)
-//
-/////////////////////////////////////////////////////////////////////////////////
-#pragma mark - 屏幕共享接口函数(MAC)
-/// @name 屏幕共享接口函数(MAC)
-/// @{
-#if !TARGET_OS_IPHONE && TARGET_OS_MAC
-/**
- *  7.1 开始全屏采集
- *  @param displayID    显示器Id
- *  @param captureFreq  采集fps
- *  @param bitRate      采集码率
- *  @param rect         采集区域
- *  @param view         预览View
- *  @return 0 when executed successfully. return negative value if failed.
- */
-- (int)startScreenCaptureWithDisplayID:(CGDirectDisplayID)displayID
-                           captureFreq:(NSUInteger)captureFreq
-                               bitRate:(NSInteger)bitRate
-                                  rect:(CGRect)rect
-                            renderView:(NSView*)view;
-
-/**
- *  7.2 开始窗口采集
- *  @param windowID     窗口ID
- *  @param captureFreq  采集fps
- *  @param bitRate      采集码率
- *  @param view         预览View
- *  @return 0 when executed successfully. return negative value if failed.
- */
-- (int)startScreenCaptureWithWindowID:(CGWindowID)windowID
-                          captureFreq:(NSUInteger)captureFreq
-                              bitRate:(NSInteger)bitRate
-                           renderView:(NSView*)view;
-/**
- *  7.3 停止屏幕采集
- *
- *  @return 0：成功 <0:失败
- */
-- (int)stopScreenCapture;
-
-/**
- *  7.4 更新采集区域
- *
- *  @return 0：成功 <0:失败
- */
-- (int)resetScreenCaptureRect:(CGRect)rect;
-#endif
-/// @}
 
 /////////////////////////////////////////////////////////////////////////////////
 //
-//                      （八）音视频自定义接口
+//                      （七）音视频自定义接口
 //
 /////////////////////////////////////////////////////////////////////////////////
 #pragma mark - 音视频自定义接口
@@ -487,53 +456,24 @@
 /// @{
 
 /**
- * 8.1 启用视频自定义采集模式，即放弃SDK原来的视频采集流程，改用sendVideoSampleBuffer向SDK塞入自己采集的视频画面
- * @param enable 是否启用
- */
-- (void)enableCustomVideoCapture:(BOOL)enable;
-
-/**
- * 8.2 发送自定义的SampleBuffer
- *
- * 内部有简单的帧率调控逻辑，如果该方法被调用得太频繁，SDK会自动丢弃一些视频帧；如果该方法被调用得太慢，SDK会自动补充一些重复的画面
- *
- * @note 相关属性设置请参考TXLivePushConfig，autoSampleBufferSize优先级高于sampleBufferSize
- * @param sampleBuffer sampleBuffer视频数据
- */
-- (void)sendVideoSampleBuffer:(CMSampleBufferRef)sampleBuffer;
-
-/**
- * 8.3 启用音频自定义采集模式，即放弃SDK原来的声音采集流程，改用enableCustomAudioCapture向SDK塞入自己采集的声音数据（PCM格式）
- * @param enable 是否启用
- */
-- (void)enableCustomAudioCapture:(BOOL)enable;
-
-/**
- * 8.4 发送客户自定义的音频PCM数据
- *
- * @note 如果是单声道，请保证每次传入的PCM长度为2048个采样点；如果是双声道，请保证每次传入的PCM长度为4096个采样点
- * @note 要求每个采样点的位宽是 16bit
- */
-- (void)sendCustomPCMData:(unsigned char *)data len:(unsigned int)len;
-
-/**
- * 8.5 设置本地视频的自定义渲染回调
+ * 7.1 设置本地视频的自定义渲染回调
  * @note 设置此方法后，SDK内部会把采集到的数据回调出来，SDK跳过自己原来的渲染流程，您需要自己完成画面的渲染
  * @param delegate    自定义渲染回调
- * @param pixelFormat 指定回调的像素格式
+ * @param pixelFormat 指定回调的像素格式, 目前仅支持 TRTCVideoPixelFormat_I420
+ * @param bufferType  SDK为了提高回调性能，提供了两种PixelBuffer格式，一种是iOS原始的(TRTCVideoBufferType_PixelBuffer)，一种是经过内存整理的(TRTCVideoBufferType_NSData)
  * @return 0:成功 <0 错误
  */
 - (int)setLocalVideoRenderDelegate:(id<TRTCVideoRenderDelegate>)delegate pixelFormat:(TRTCVideoPixelFormat)pixelFormat bufferType:(TRTCVideoBufferType)bufferType;
 
 /**
- * 8.6 设置远端视频的自定义渲染回调
+ * 7.2 设置远端视频的自定义渲染回调
  * @note 设置此方法后，SDK内部会把远端的数据解码后回调出来，SDK跳过自己原来的渲染流程，您需要自己完成画面的渲染
- * @note 需要调用 startRemoteView 来决定回调哪一路 userid 的视频画面
+ * @note setRemoteVideoRenderDelegate 之前需要调用 startRemoteView 来开启对应 userid 的视频画面，才有数据回调出来。
  *
  * @param userId    自定义渲染回调
  * @param delegate    自定义渲染的回调
- * @param pixelFormat 指定回调的像素格式
- * @param bufferType  SDK为了提高回调性能，提供了两种PixelBuffer格式，一种是iOS原始的，一种是经过内存整理的
+ * @param pixelFormat 指定回调的像素格式，目前仅支持 TRTCVideoPixelFormat_I420
+ * @param bufferType  SDK为了提高回调性能，提供了两种PixelBuffer格式，一种是iOS原始的(TRTCVideoBufferType_PixelBuffer)，一种是经过内存整理的(TRTCVideoBufferType_NSData)
  * @return 0:成功 <0 错误
  */
 - (int)setRemoteVideoRenderDelegate:(NSString*)userId delegate:(id<TRTCVideoRenderDelegate>)delegate pixelFormat:(TRTCVideoPixelFormat)pixelFormat bufferType:(TRTCVideoBufferType)bufferType;
@@ -542,7 +482,7 @@
 
 /////////////////////////////////////////////////////////////////////////////////
 //
-//                      （九）自定义消息发送
+//                      （八）自定义消息发送
 //
 /////////////////////////////////////////////////////////////////////////////////
 #pragma mark - 自定义消息发送
@@ -550,7 +490,7 @@
 /// @{
 
 /**
- * 9.1 发送自定义消息给房间内所有用户
+ * 8.1 发送自定义消息给房间内所有用户
  *
  * @param cmdID    消息ID，取值范围为 1 ~ 10
  * @param data     待发送的消息，最大支持 1KB（1000字节）的数据大小
@@ -572,14 +512,14 @@
 
 /////////////////////////////////////////////////////////////////////////////////
 //
-//                      （十）背景混音相关接口函数
+//                      （九）背景混音相关接口函数
 //
 /////////////////////////////////////////////////////////////////////////////////
 #pragma mark - 背景混音相关接口函数
 /// @name 背景混音相关接口函数
 /// @{
 /**
- * 10.1 播放背景音乐
+ * 9.1 播放背景音乐
  * @param path 音乐文件路径
  * @param beginNotify 音乐播放开始的回调通知
  * @param progressNotify 音乐播放的进度通知，单位毫秒
@@ -591,30 +531,30 @@ withProgressNotify:(void (^)(NSInteger progressMS, NSInteger durationMS))progres
  andCompleteNotify:(void (^)(NSInteger errCode))completeNotify;
 
 /**
- * 10.2 停止播放背景音乐
+ * 9.2 停止播放背景音乐
  */
 - (void)stopBGM;
 
 /**
- * 10.3 暂停播放背景音乐
+ * 9.3 暂停播放背景音乐
  */
 - (void)pauseBGM;
 
 /**
- * 10.4 继续播放背景音乐
+ * 9.4 继续播放背景音乐
  */
 - (void)resumeBGM;
 
 
 /**
- * 10.5 获取音乐文件总时长，单位毫秒
+ * 9.5 获取音乐文件总时长，单位毫秒
  * @param path 音乐文件路径，如果path为空，那么返回当前正在播放的music时长
  * @return 成功返回时长， 失败返回-1
  */
 - (NSInteger)getBGMDuration:(NSString *)path;
 
 /**
- * 10.6 设置BGM播放进度
+ * 9.6 设置BGM播放进度
  * @param pos 单位毫秒
  * @return 0:成功  -1:失败
  */
@@ -622,25 +562,25 @@ withProgressNotify:(void (^)(NSInteger progressMS, NSInteger durationMS))progres
 
 
 /** 
- * 10.7 设置麦克风的音量大小，播放背景音乐混音时使用，用来控制麦克风音量大小
- * @param volume 音量大小，1为正常音量，值为0~2
+ * 9.7 设置麦克风的音量大小，播放背景音乐混音时使用，用来控制麦克风音量大小
+ * @param volume 音量大小，100为正常音量，值为0~200
  */
-- (void)setMicVolumeOnMixing:(float)volume;
+- (void)setMicVolumeOnMixing:(NSInteger)volume;
 
 /**
- * 10.8 设置背景音乐的音量大小，播放背景音乐混音时使用，用来控制背景音音量大小
- * @param volume 音量大小，1为正常音量，建议值为0~2，如果需要调大背景音量可以设置更大的值
+ * 9.8 设置背景音乐的音量大小，播放背景音乐混音时使用，用来控制背景音音量大小
+ * @param volume 音量大小，100为正常音量，建议值为0~200，如果需要调大背景音量可以设置更大的值
  */
-- (void)setBGMVolume:(float)volume;
+- (void)setBGMVolume:(NSInteger)volume;
 
 /**
- * 10.9 设置混响效果 (目前仅iOS)
+ * 9.9 设置混响效果 (目前仅iOS)
  * @param reverbType ：混响类型 ，详见 TXReverbType
  */
 - (void)setReverbType:(TRTCReverbType)reverbType;
 
 /**
- * 10.10 设置变声类型 (目前仅iOS)
+ * 9.10 设置变声类型 (目前仅iOS)
  * @param voiceChangerType 变声类型, 详见 TXVoiceChangerType
  */
 - (void)setVoiceChangerType:(TRTCVoiceChangerType)voiceChangerType;
@@ -648,7 +588,7 @@ withProgressNotify:(void (^)(NSInteger progressMS, NSInteger durationMS))progres
 
 /////////////////////////////////////////////////////////////////////////////////
 //
-//                      （十一）设备和网络测试
+//                      （十）设备和网络测试
 //
 /////////////////////////////////////////////////////////////////////////////////
 #pragma mark - 设备和网络测试
@@ -656,9 +596,9 @@ withProgressNotify:(void (^)(NSInteger progressMS, NSInteger durationMS))progres
 /// @{
 
 /**
- * 11.1 开始进行网络测速(视频通话期间请勿测试，以免影响通话质量)
+ * 10.1 开始进行网络测速(视频通话期间请勿测试，以免影响通话质量)
  *
- * 测速结果将会用于优化 SDK 接下来的服务器选择策略，因此推荐您在用户首次通话前先进行一次测速，这将有助于我们最佳的服务器
+ * 测速结果将会用于优化 SDK 接下来的服务器选择策略，因此推荐您在用户首次通话前先进行一次测速，这将有助于我们选择最佳的服务器
  * 同时，如果测试结果非常不理想，您可以通过醒目的 UI 提示用户选择更好的网络
  * 
  * 注意：测速本身会消耗一定的流量，所以也会产生少量额外的流量费用
@@ -671,49 +611,101 @@ withProgressNotify:(void (^)(NSInteger progressMS, NSInteger durationMS))progres
 - (void)startSpeedTest:(uint32_t)sdkAppId userId:(NSString *)userId userSig:(NSString *)userSig completion:(void(^)(TRTCSpeedTestResult* result, NSInteger completedCount, NSInteger totalCount))completion;
 
 /**
- * 11.2 停止服务器测速
+ * 10.2 停止服务器测速
  */
 - (void)stopSpeedTest;
 
 
 #if TARGET_OS_OSX
 /**
- * 11.3 开始进行摄像头测试
+ * 10.3 开始进行摄像头测试
  * @note 在测试过程中可以使用 setCurrentCameraDevice 接口切换摄像头
  * @param view 预览控件所在的父控件
  */
 - (void)startCameraDeviceTestInView:(NSView *)view;
 
 /**
- * 11.4 结束视频测试预览
+ * 10.4 结束视频测试预览
  */
 - (void)stopCameraDeviceTest;
 
 
 /**
- * 11.5 开始进行麦克风测试
+ * 10.5 开始进行麦克风测试
  * 该方法测试麦克风是否能正常工作, volume的取值范围为 0~100
  */
 - (void)startMicDeviceTest:(NSInteger)interval testEcho:(void (^)(NSInteger volume))testEcho;
 
 /**
- * 11.6 停止麦克风测试
+ * 10.6 停止麦克风测试
  */
 - (void)stopMicDeviceTest;
 
 /**
- * 11.7 开始扬声器测试
+ * 10.7 开始扬声器测试
  * 该方法播放指定的音频文件测试播放设备是否能正常工作。如果能听到声音，说明播放设备能正常工作。
  */
 - (void)startSpeakerDeviceTest:(NSString*)audioFilePath onVolumeChanged:(void (^)(NSInteger volume, BOOL isLastFrame))volumeBlock;
 
 /**
- * 11.8 停止扬声器测试
+ * 10.8 停止扬声器测试
  */
 - (void)stopSpeakerDeviceTest;
 
 #endif
 
+/// @}
+
+/////////////////////////////////////////////////////////////////////////////////
+//
+//                      （十一）混流转码并发布到CDN
+//
+/////////////////////////////////////////////////////////////////////////////////
+#pragma mark - 旁路推流
+/// @name 混流转码并发布到CDN
+/// @{
+	
+/**
+ * 11.1 启动CDN发布：通过腾讯云将当前房间的音视频流发布到直播CDN上
+ *
+ * 由于 TRTC 的线路费用是按照时长收费的，并且房间容量有限（< 1000人）
+ * 当您有大规模并发观看的需求时，将房间里的音视频流发布到低成本高并发的直播CDN上是一种较为理想的选择。
+ *
+ * 目前支持两种发布方案：
+ *
+ * 【1】先混流在发布，TRTCPublishCDNParam.enableTranscoding = YES
+ *      需要您先调用startCloudMixTranscoding对多路画面进行混合，发布到CDN上的是混合之后的音视频流
+ *
+ * 【2】不混流直接发布，TRTCPublishCDNParam.enableTranscoding = NO
+ *      发布当前房间里的各路音视频画面，每一路画面都有一个独立的地址，相互之间无影响，调用startCloudMixTranscoding将无效
+ *
+ * @param param 请参考 TRTCCloudDef.h 中关于 TRTCPublishCDNParam 的介绍
+ */
+- (void) startPublishCDNStream:(TRTCPublishCDNParam*)param;
+
+/**
+ * 11.2 停止CDN发布
+ */
+- (void) stopPublishCDNStream;
+
+/**
+ * @brief 11.3 启动云端的混流转码：通过腾讯云的转码服务，将房间里的多路画面叠加到一路画面上
+ * @desc
+ * <pre>
+ * 【画面1】=> 解码 => =>
+ *                         \
+ * 【画面2】=> 解码 =>  画面混合 => 编码 => 【混合后的画面】
+ *                         /
+ * 【画面3】=> 解码 => =>
+ * </pre>
+ * @param config 请参考 TRTCCloudDef.h 中关于 TRTCTranscodingConfig 的介绍
+ */
+- (void) startCloudMixTranscoding:(TRTCTranscodingConfig*)config;
+
+/**
+ * 11.4 停止云端的混流转码
+ */
+- (void) stopCloudMixTranscoding;
 /// @}
 
 /////////////////////////////////////////////////////////////////////////////////

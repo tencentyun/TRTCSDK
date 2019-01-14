@@ -215,9 +215,14 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)onCameraDidReady;
 
+/**
+ * 7.2 麦克风准备就绪
+ */
+- (void)onMicDidReady;
+
 #if TARGET_OS_IPHONE
 /**
- * 7.2 音频路由发生变化(仅iOS)，音频路由即声音由哪里输出（扬声器、听筒）
+ * 7.3 音频路由发生变化(仅iOS)，音频路由即声音由哪里输出（扬声器、听筒）
  * @param route     当前音频路由
  * @param fromRoute 变更前的音频路由
  */
@@ -227,7 +232,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 #if !TARGET_OS_IPHONE && TARGET_OS_MAC
 /**
- * 7.3 本地设备通断回调，
+ * 7.4 本地设备通断回调
  * @param deviceId 设备id
  * @param deviceType 设备类型 @see TRTCMediaDeviceType
  * @param state   0: 设备断开   1: 设备连接
@@ -242,8 +247,7 @@ NS_ASSUME_NONNULL_BEGIN
 /////////////////////////////////////////////////////////////////////////////////
 //
 //                      （八）自定义消息的接收回调
-//
-//    当房间中的某个用户使用 sendCustomCmdMsg 发送自定义消息时，房间中的其它用户会通过如下接口获知回调消息
+// 
 //
 /////////////////////////////////////////////////////////////////////////////////
 
@@ -251,34 +255,47 @@ NS_ASSUME_NONNULL_BEGIN
 /// @{
 
 /**
- * 收到对端用户发来的消息
- * @param roomNum 房间号
+ * 当房间中的某个用户使用 sendCustomCmdMsg 发送自定义消息时，房间中的其它用户可以通过 onRecvCustomCmdMsg 接口接收消息
+ *
  * @param userId 用户标识
  * @param cmdID 命令ID
  * @param seq   消息序号
  * @param message 消息数据
- * @note 该消息由 sendCustomCmdMsg 发送
  */
-- (void)onRecvCustomCmdMsg:(NSString *)roomNum userId:(NSString *)userId cmdID:(NSInteger)cmdID seq:(UInt32)seq message:(NSData *)message;
+- (void)onRecvCustomCmdMsgUserId:(NSString *)userId cmdID:(NSInteger)cmdID seq:(UInt32)seq message:(NSData *)message;
 
 /**
- * 接收对方数据流消息错误的回调，只有发送端设置了可靠传输，该接口才起作用
- * @param roomNum 房间号
+ * TRTC所使用的传输通道为UDP通道，所以即使设置了 reliable，也做不到100%不丢失，只是丢消息概率极低，能满足常规可靠性要求。
+ * 在过去的一段时间内（通常为5s），自定义消息在传输途中丢失的消息数量的统计，SDK 都会通过此回调通知出来
+ *   
+ * @note  只有在发送端设置了可靠传输(reliable)，接收方才能收到消息的丢失回调
  * @param userId 用户标识
  * @param cmdID 命令ID
- * @param errCode 错误码，当前版本为-1
+ * @param errCode 错误码
  * @param missed 丢失的消息数量
  */
-- (void)onRecvCustomCmdMsgError:(NSString *)roomNum userId:(NSString *)userId cmdID:(NSInteger)cmdID errCode:(NSInteger)errCode missed:(NSInteger)missed;
+- (void)onMissCustomCmdMsgUserId:(NSString *)userId cmdID:(NSInteger)cmdID errCode:(NSInteger)errCode missed:(NSInteger)missed;
 
+/// @}
+
+/////////////////////////////////////////////////////////////////////////////////
+//
+//                      （九）旁路转推和混流回调
+//
+/////////////////////////////////////////////////////////////////////////////////
+/// @name 旁路转推和混流回调
+/// @{
+- (void)onStartPublishCDNStream:(int)err errMsg:(NSString *)errMsg;
+- (void)onStopPublishCDNStream:(int)err errMsg:(NSString *)errMsg;
+- (void)onStartCloudMixTranscoding:(int)err errMsg:(NSString *)errMsg;
+- (void)onStopCloudMixTranscoding:(int)err errMsg:(NSString *)errMsg;
 /// @}
 
 @end
 
-
 /////////////////////////////////////////////////////////////////////////////////
 //
-//                      （九）自定义视频渲染回调
+//                      （十）自定义视频渲染回调
 //
 /////////////////////////////////////////////////////////////////////////////////
 /**
@@ -297,11 +314,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-// 待补充
-
 /////////////////////////////////////////////////////////////////////////////////
 //
-//                      （十）Log 信息回调
+//                      （十一）Log 信息回调
 //
 /////////////////////////////////////////////////////////////////////////////////
 

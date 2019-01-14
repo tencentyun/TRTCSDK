@@ -16,7 +16,6 @@
 #import "TRTCSettingViewController.h"
 #import "UIView+Additions.h"
 #import "ColorMacro.h"
-#import "AFNetworking.h"
 #import "TRTCCloud.h"
 #import "TRTCCloudDelegate.h"
 #import "TRTCVideoViewLayout.h"
@@ -54,7 +53,7 @@ typedef enum : NSUInteger {
 }
 
 @property uint32_t sdkAppid;
-@property (nonatomic, assign) UInt32 roomID;
+@property (nonatomic, copy) NSString* roomID;
 @property (nonatomic, copy) NSString* selfUserID;
 @property NSString  *selfUserSig;
 
@@ -102,7 +101,7 @@ typedef enum : NSUInteger {
     _sdkAppid = param.sdkAppId;
     _selfUserID = param.userId;
     _selfUserSig = param.userSig;
-    _roomID = param.roomId;
+    _roomID = @(param.roomId).stringValue;
 }
 
 - (void)viewDidLoad {
@@ -169,7 +168,7 @@ typedef enum : NSUInteger {
  * 初始化界面控件，包括主要的视频显示View，以及底部的一排功能按钮
  */
 - (void)initUI {
-    self.title = [NSString stringWithFormat:@"%u", _roomID];
+    self.title = _roomID;
     [self.view setBackgroundColor:UIColorFromRGB(0x333333)];
     
     
@@ -300,12 +299,17 @@ typedef enum : NSUInteger {
     // 设置视频编码参数，包括分辨率、帧率、码率等等，这些编码参数来自于 TRTCSettingViewController 的设置
 	// 注意（1）：不要在码率很低的情况下设置很高的分辨率，会出现较大的马赛克
 	// 注意（2）：不要设置超过25FPS以上的帧率，因为电影才使用24FPS，我们一般推荐15FPS，这样能将更多的码率分配给画质
-    TRTCVideoEncParam* qualityConfig = [TRTCVideoEncParam new];
-    qualityConfig.videoResolution = [TRTCSettingViewController getResolution];
-    qualityConfig.videoBitrate = [TRTCSettingViewController getBitrate];
-    qualityConfig.videoFps = [TRTCSettingViewController getFPS];
-    qualityConfig.resMode = TRTCVideoResolutionModePortrait;
-    [_trtc setLocalVideoQuality:qualityConfig qosControl:[TRTCSettingViewController getQosCtrlType] qosPreference:[TRTCSettingViewController getQosType] + 1];
+    TRTCVideoEncParam* encParam = [TRTCVideoEncParam new];
+    encParam.videoResolution = [TRTCSettingViewController getResolution];
+    encParam.videoBitrate = [TRTCSettingViewController getBitrate];
+    encParam.videoFps = [TRTCSettingViewController getFPS];
+    encParam.resMode = TRTCVideoResolutionModePortrait;
+    [_trtc setVideoEncoderParam:encParam];
+    
+    TRTCNetworkQosParam * qosParam = [TRTCNetworkQosParam new];
+    qosParam.preference = [TRTCSettingViewController getQosType] + 1;
+    qosParam.controlMode = [TRTCSettingViewController getQosCtrlType];
+    [_trtc setNetworkQosParam:qosParam];
 	
 	//小画面的编码器参数设置
 	//TRTC SDK 支持大小两路画面的同时编码和传输，这样网速不理想的用户可以选择观看小画面
@@ -318,16 +322,17 @@ typedef enum : NSUInteger {
     [_trtc enableEncSmallVideoStream:[TRTCSettingViewController getEnableSmallStream] withQuality:smallVideoConfig];
     [_trtc setPriorRemoteVideoStreamType:[TRTCSettingViewController getPriorSmallStream]];
 	
-    [_trtc setLocalViewFillMode:TRTCVideoFillMode_Fit];
+//    [_trtc setLocalViewFillMode:TRTCVideoFillMode_Fit];
     [_trtc setGSensorMode:TRTCGSensorMode_UIAutoLayout];
 
     // 开启视频采集预览
     [_trtc startLocalPreview:YES view:_localView];
+    [_trtc startLocalAudio];
     
     [self toastTip:@"开始进房"];
     
     // 进房
-    [_trtc enterRoom:self.param];
+    [_trtc enterRoom:self.param appScene:TRTCAppSceneVideoCall];
 }
 
 - (void)onStatistics:(TRTCStatistics *)statistics
@@ -456,14 +461,14 @@ typedef enum : NSUInteger {
 
 
 - (void)onEnterRoom:(NSInteger)elapsed {
-    NSString *msg = [NSString stringWithFormat:@"[%@]进房成功[%u]: elapsed[%ld]", _selfUserID, _roomID, (long)elapsed];
+    NSString *msg = [NSString stringWithFormat:@"[%@]进房成功[%@]: elapsed[%ld]", _selfUserID, _roomID, (long)elapsed];
     [self toastTip:msg];
     
     [self setRoomStatus:TRTC_ENTERED];
 }
 
 - (void)onExitRoom:(NSInteger)reason {
-    NSString *msg = [NSString stringWithFormat:@"离开房间[%u]: reason[%ld]", _roomID, (long)reason];
+    NSString *msg = [NSString stringWithFormat:@"离开房间[%@]: reason[%ld]", _roomID, (long)reason];
     [self toastTip:msg];
 }
 
@@ -524,12 +529,17 @@ typedef enum : NSUInteger {
 - (void)settingVC:(TRTCSettingViewController *)settingVC
          Property:(TRTCSettingsProperty *)property {
 
-    TRTCVideoEncParam* configuration = [[TRTCVideoEncParam alloc] init];
-    configuration.videoResolution = property.resolution;
-    configuration.videoFps = property.fps;
-    configuration.videoBitrate = property.bitRate;
+    TRTCVideoEncParam* encParam = [[TRTCVideoEncParam alloc] init];
+    encParam.videoResolution = property.resolution;
+    encParam.videoFps = property.fps;
+    encParam.videoBitrate = property.bitRate;
 
-    [_trtc setLocalVideoQuality:configuration qosControl:TRTCQosModeServer qosPreference:property.qosType + 1];
+    [_trtc setVideoEncoderParam:encParam];
+    
+    TRTCNetworkQosParam * qosParam = [TRTCNetworkQosParam new];
+    qosParam.preference = property.qosType + 1;
+    qosParam.controlMode = TRTCQosControlModeServer;
+    [_trtc setNetworkQosParam:qosParam];
     
     TRTCVideoEncParam* smallVideoConfig = [TRTCVideoEncParam new];
     smallVideoConfig.videoResolution = TRTCVideoResolution_160_120;
@@ -588,11 +598,11 @@ typedef enum : NSUInteger {
     dispatch_after(popTime, dispatch_get_main_queue(), ^() {
         [toastView removeFromSuperview];
         toastView = nil;
-        if (_toastMsgCount > 0) {
-            _toastMsgCount--;
+        if (self->_toastMsgCount > 0) {
+            self->_toastMsgCount--;
         }
-        if (_toastMsgCount == 0) {
-            _toastMsgHeight = 0;
+        if (self->_toastMsgCount == 0) {
+            self->_toastMsgHeight = 0;
         }
     });
 }
