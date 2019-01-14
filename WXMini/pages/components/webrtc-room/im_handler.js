@@ -1,4 +1,4 @@
-const webim = require('../../../utils/webim_wx');
+const webim = require('./webim_wx');
 
 module.exports = {
   initData(userData, groupData = {}) {
