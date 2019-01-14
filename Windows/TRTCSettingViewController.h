@@ -66,8 +66,7 @@ protected:
     TRTCSettingBitrateTable getVideoConfigInfo(int resolution);
 private:
     TRTCVideoEncParam m_videoEncParams;
-    TRTCVideoQosPreference m_videoQosPreference = TRTCVideoQosPreferenceClear;
-    TRTCQosMode m_videoQosMode = TRTCQosModeServer;
+    TRTCNetworkQosParam m_qosParams;
     bool m_bPushSmallVideo = false; //推流打开小流设置。
     bool m_bPlaySmallVideo = false; //拉流打开小流设置。
     std::map<int, TRTCSettingBitrateTable> m_videoConfigMap;

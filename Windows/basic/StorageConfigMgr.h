@@ -64,9 +64,8 @@ public:
 
 public: //trtc 
     // 视频流控类型
-    TRTCQosMode qosMode = TRTCQosModeServer;
-    TRTCVideoQosPreference videoQosPreference = TRTCVideoQosPreferenceClear;
     TRTCVideoEncParam videoEncParams;
+    TRTCNetworkQosParam qosParams;
     bool bPushSmallVideo = false; //推流打开推双流标志。
     bool bPlaySmallVideo = false; //默认拉低请视频流标志。
 private:
