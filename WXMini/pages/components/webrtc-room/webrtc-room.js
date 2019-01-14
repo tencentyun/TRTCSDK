@@ -1,5 +1,4 @@
 const imHandler = require('./im_handler.js');
-const webim = require('../../../utils/webim_wx');
 const CONSTANT = require('./config.js');
 const app = getApp()
 
