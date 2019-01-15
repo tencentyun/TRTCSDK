@@ -1,7 +1,7 @@
 ## iOS 
-> [蒲公英体验地址](https://fir.im/4egn?release_id=5c3bfd70959d69188cb023d8)
+> [APPStore 体验地址](https://itunes.apple.com/cn/app/id1400663224?mt=8)（新版本尚在审核中）
 
-![](https://main.qcloudimg.com/raw/ff450515b2665c0ffa130db1b54b1e52.jpg)
+![](https://main.qcloudimg.com/raw/fa84e7c632b74483e9dc91dc04a8255e.jpg)
 
 ## Android 
 > [应用宝体验地址](https://android.myapp.com/myapp/detail.htm?apkName=com.tencent.trtc&ADTAG=mobile)
