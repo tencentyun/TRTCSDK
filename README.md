@@ -1,5 +1,5 @@
 ## iOS 
-> [APPStore 体验地址](https://itunes.apple.com/cn/app/id1400663224?mt=8)（新版本尚在审核中）
+> [APPStore 体验地址](https://itunes.apple.com/cn/app/id1400663224?mt=8)
 
 ![](https://main.qcloudimg.com/raw/fa84e7c632b74483e9dc91dc04a8255e.jpg)
 
