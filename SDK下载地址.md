@@ -1,7 +1,7 @@
 源码中除iOS均包含了SDK, 如果需要单独下载SDK, 可从以下地址获取。
 
 ### iOS
-http://liteavsdk-1252463788.cosgz.myqcloud.com/6.0/TXLiteAVSDK_TRTC_iOS_6.0.6320.zip
+http://liteavsdk-1252463788.cosgz.myqcloud.com/6.0/TXLiteAVSDK_TRTC_iOS_6.0.6321.zip
 
 ### Mac
 
