@@ -28,16 +28,12 @@
 
 ![](https://main.qcloudimg.com/raw/56e2bbc928a11bac85e5b78ac171b3bc.jpg)
 
-## 符号冲突（Symbol Duplicate）
-
-如果您的项目中已经使用过腾讯视频云 LiteAV 体系的相关产品，可能会出现符号冲突的问题（symbol duplicate）的问题。
-
-这是由于以上 SDK 均是基于腾讯视频云 LiteAV 架构开发的，它们共同复用了相同的采集模块、编解码器、降噪模块、前处理等底层基础模块，所以才会出现符号重复。
+## LiteAVSDK
 
 ![](https://main.qcloudimg.com/raw/1332cdccd195ef61848e0b588fd12c5c.jpg)
 
+如果您的项目中已经使用过腾讯视频云 LiteAV 体系的相关产品，可能会出现符号冲突的问题（symbol duplicate）的问题。这是由于它们共同复用了相同的采集模块、编解码器、降噪模块、前处理等底层基础模块，所以才会出现符号重复。
+
 您可以下载腾讯视频 LiteAV_Professional 版本，该版本集成了以上 SDK 的全部功能，而且由于 60% 以上的底层模块是复用的，所以产生的安装包体积增量远远小于集成两个独立的 SDK（音视频 SDK 中的主要体积增量源于编解码等各种基础模块）。
 
-| 专业版（iOS）| 专业版（Android） | 
-|:-------:|:-------:|
-| [**LiteAV_Professional_iOS_6.0.6400**](http://liteavsdk-1252463788.cosgz.myqcloud.com/6.0/TXLiteAVSDK_Professional_iOS_6.0.6400.zip) | [**LiteAV_Professional_Adroid_6.0.6400**](http://liteavsdk-1252463788.cosgz.myqcloud.com/6.0/LiteAVSDK_Professional_Android_6.0.6400.zip)|
+> [**专业版下载地址**](https://github.com/tencentyun/TRTCSDK/blob/master/SDK%E4%B8%8B%E8%BD%BD%E5%9C%B0%E5%9D%80.md)
