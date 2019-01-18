@@ -10,6 +10,6 @@
 
 | 专业版（iOS）| 专业版（Android） | 
 |:-------:|:-------:|
-| [**LiteAV_Professional_iOS_6.0.6400**](http://liteavsdk-1252463788.cosgz.myqcloud.com/6.0/TXLiteAVSDK_Professional_iOS_6.0.6400.zip) | [**LiteAV_Professional_Adroid_6.0.6400**](http://liteavsdk-1252463788.cosgz.myqcloud.com/6.0/LiteAVSDK_Professional_Android_6.0.6400.zip)|
+| [**LiteAV_Professional_iOS_6.0.6400**](http://liteavsdk-1252463788.cosgz.myqcloud.com/6.0/TXLiteAVSDK_Professional_iOS_6.0.6400.zip) | [**LiteAV_Professional_Android_6.0.6400**](http://liteavsdk-1252463788.cosgz.myqcloud.com/6.0/LiteAVSDK_Professional_Android_6.0.6400.zip)|
 
 
