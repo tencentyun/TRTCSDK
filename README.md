@@ -36,4 +36,4 @@
 
 您可以下载腾讯视频 LiteAV_Professional 版本，该版本集成了以上 SDK 的全部功能，而且由于 60% 以上的底层模块是复用的，所以产生的安装包体积增量远远小于集成两个独立的 SDK（音视频 SDK 中的主要体积增量源于编解码等各种基础模块）。
 
-> [**专业版下载地址**](https://github.com/tencentyun/TRTCSDK/blob/master/SDK%E4%B8%8B%E8%BD%BD%E5%9C%B0%E5%9D%80.md)
+> [**专业版下载地址**](https://github.com/tencentyun/TRTCSDK/blob/master/SDK%E4%B8%93%E4%B8%9A%E7%89%88.md)
