@@ -32,7 +32,7 @@
 ## 6. 运行 Demo
 - step1：使用最新版本的 Chrome 浏览器打开 index.html
 
->!
+> 注意：
 > - 一般情况下体验 demo 需要部署至服务器，通过 [https://域名/xxx] 访问，或者直接在本地搭建服务器，通过 [localhost：端口] 访问，避免浏览器限制在 file 协议下进行 WebRTC 通信。
 > - 目前 Chrome 浏览器较完整支持 WebRTC 的特性，因此建议使用 Chrome 浏览器进行体验。
 
