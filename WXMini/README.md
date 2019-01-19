@@ -2,12 +2,14 @@
 
 ## 1. 创建新的应用
 进入腾讯云实时音视频 [控制台](https://console.cloud.tencent.com/rav)，如果您还没有创建过一个应用，可以先创建一个新应用，即可获得 SDKAppid，并且可以继续下一步：
+
 ![](https://main.qcloudimg.com/raw/32065cbcd4cac9d8051a045cb1ae5d63.png)
 
 ## 2. 购买测试套餐
 单击【购买6.6元测试体验包】按钮，为上一步中创建的 SDKAppid 充值一定分钟数的测试用视频通话时长。
 
 ![](https://main.qcloudimg.com/raw/24ee79290d7c328ee654bdb0643c55cb.png)
+
 ## 3. 下载 Demo 源码
 充值完体验包之后，回到实时音视频控制台页面，单击第一步新创建的应用名称，进入该应用的详情页，在页面的第一步指引中即可看到源码下载地址：
 
