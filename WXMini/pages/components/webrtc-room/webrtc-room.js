@@ -787,9 +787,13 @@ Component({
     // 标签错误处理
     onError: function (e) {
       console.error('onError: ', e);
-      e.detail.errCode == 10001 ? (e.detail.errMsg = '未获取到摄像头功能权限，请删除小程序后重新打开') : '';
-      e.detail.errCode == 10002 ? (e.detail.errMsg = '未获取到录音功能权限，请删除小程序后重新打开') : '';
-      self.postErrorEvent(self.data.ERROR_CAMERA_MIC_PERMISSION, e.detail.errMsg || '未获取到摄像头、录音功能权限，请删除小程序后重新打开')
+      // 最新版的微信在live-pusher上有坑，binderror事件返回的数据有问题，原来返回的数据是在detail字段中，最新版本返回在details中  
+      // 这里已经和微信小程序的开发确认过，下一个版本会修复成detail。
+      // 当前版本需要做兼容处理。
+      let detail = e.detail || e.details;
+      detail.errCode == 10001 ? (detail.errMsg = '未获取到摄像头功能权限，请删除小程序后重新打开') : '';
+      detail.errCode == 10002 ? (detail.errMsg = '未获取到录音功能权限，请删除小程序后重新打开') : '';
+      self.postErrorEvent(self.data.ERROR_CAMERA_MIC_PERMISSION, detail.errMsg || '未获取到摄像头、录音功能权限，请删除小程序后重新打开')
     },
 
     //播放器live-player回调
