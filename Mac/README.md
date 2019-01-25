@@ -1,98 +1,43 @@
-本文主要介绍如何快速地将腾讯云 TRTC SDK 集成到您的项目中，只要按照如下步骤进行配置，就可以完成 SDK 的集成工作。
+本文主要介绍如何快速地将腾讯云实时音视频 Demo(iOS&Mac) 工程运行起来，您只需参考如下步骤依次执行即可。
 
+## 1. 创建新的应用
+进入腾讯云实时音视频 [控制台](https://console.cloud.tencent.com/rav)，如果您还没有创建过一个应用，可以先创建一个新应用，即可获得 SDKAppid，并且可以继续下一步：
 
-## 开发环境要求
+![](https://main.qcloudimg.com/raw/32065cbcd4cac9d8051a045cb1ae5d63.png)
+
+## 2. 购买测试套餐
+单击【购买6.6元测试体验包】按钮，为上一步中创建的 SDKAppid 充值一定分钟数的测试用视频通话时长。
+
+![](https://main.qcloudimg.com/raw/24ee79290d7c328ee654bdb0643c55cb.png)
+
+## 3. 下载 Demo 源码
+充值完体验包之后，回到实时音视频控制台页面，单击第一步新创建的应用名称，进入该应用的详情页，在页面的第一步指引中即可看到源码下载地址：
+
+![](https://main.qcloudimg.com/raw/064819772bf0ef727a377a4ee23f03eb.png)
+
+## 4. 下载私钥文件
+单击**下载公私钥**的链接，即可获得一个名为 **keys.zip** 的压缩包，解压后可以得到两个文件，即 public_key 和 private_key，用记事本打开 **private_key** 文件，并将其中的内容拷贝到控制台应用详情页的第三步**生成Demo配置文件内容**的文本输入框中。
+![](https://main.qcloudimg.com/raw/75edc5d22563c32aace232543915bbff.png)
+
+## 5. 获得配置文件
+单击【生成Demo配置文件内容】按钮，即可获得一段 json 格式的文本内容，这段内容是由控制台根据您在第四步中填写的 private_key 基于非对称加密算法，生成的一组测试用的 userid 和 usersig。
+
+![](https://main.qcloudimg.com/raw/5de8161bb72b2e19ebdb24ef6056751c.png)
+
+复制上面的 json 内容，并粘贴到源码根目录下的 `Config.json` 文件中（如果已经存在示例内容，请覆盖之）。
+
+## 6. 编译运行
+使用 XCode （9.0 以上的版本） 打开源码目录下的 TRTCDemo.xcodeproj 工程，如果您已经按照上面的步骤配置过 config.json，直接单击运行按钮即可。
+
+## 常见问题
+### 1. 开发环境要求
 - Xcode 9.0+
-- OS X10.10+的Mac真机
-- 项目已配置有效的开发者签名
+- 请确保您的项目已设置有效的开发者签名。
 
-## 集成 TRTC SDK
-您可以选择使用 CocoaPods 自动加载的方式，或者先下载 SDK 再将其导入到您当前的工程项目中。
+### 2. 防火墙限制
+由于 SDK 使用 UDP 协议进行音视频传输，所以对 UDP 有拦截的办公网络下无法使用，如遇到类似问题，请将如下端口加入防火墙的安全白名单中。
 
-### CocoaPods
-#### 1. 安装 CocoaPods
-在终端窗口中输入如下命令（需要提前在 Mac 中安装 Ruby 环境）
-```
-sudo gem install cocoapods
-```
-
-#### 2. 创建 Podfile 文件
-进入项目所在路径，然后输入以下命令行，之后项目路径下会出现一个 Podfile 文件。
-```
-pod init
-```
-
-#### 3. 编辑 Podfile 文件
-编辑 Podfile 文件，有如下有两种设置方式
-
-- 3.1 方式一：使用腾讯云 LiteAV SDK 的pod路径。
-
-	```
-	platform :macOS, '10.10'
-
-	target 'Your Target' do
-	pod 'TXLiteAVSDK_TRTC_Mac', :podspec => 'http://pod-1252463788.cosgz.myqcloud.com/liteavsdkspec/TXLiteAVSDK_TRTC_Mac.podspec'
-	end
-	```
-
-- 3.2 方式二：使用CocoaPod官方源，支持选择版本号
-
-	```
-	platform :macOS, '10.10'
-	source 'https://github.com/CocoaPods/Specs.git'
-
-	target 'Your Target' do
-	pod 'TXLiteAVSDK_TRTC_Mac'
-	end
-	```
-
-#### 4. 安装与更新 SDK
-在终端窗口中输入如下命令执行安装 TRTC SDK
-```
-pod install
-```
-或使用以下命令更新本地库版本:
-```
-pod update
-```
-
-pod命令执行完后，会生成集成了SDK的 .xcworkspace 后缀的工程文件，双击打开即可。
-
-### 手动集成
-1. 下载 [TRTC-SDK ]() ，完成后进行解压
-2. 打开您的 Xcode 工程项目，选择要运行的 target , 选中 Build Phases 项
-![](https://main.qcloudimg.com/raw/b5097f8ac4cbaa5044d92b2a96ea2b9e.jpg)
-
-3. 单击 **Link Binary with Libraries** 项展开，点底下的 + 号图标去添加依赖库
-![](https://main.qcloudimg.com/raw/17046154417930f9d31b6452782df55d.jpg)
-
-4. 依次添加所下载的SDK Framework及其所需依赖库: 
-    - `AudioUnit.framework` 
-    - `libc++.tbd`
-    
- 添加后如下图所示：
-![](https://main.qcloudimg.com/raw/7bddb832347a971f3e69238480fa3e8d.jpg)
-
-## 授权摄像头和麦克风使用权限
-使用SDK的音视频功能，需要授权麦克风和摄像头的使用权限。在 App 的 Info.plist 中添加以下两项，分别对应麦克风和摄像头在系统弹出授权对话框时的提示信息。
-- **Privacy - Microphone Usage Description**，并填入麦克风使用目的提示语
-- **Privacy - Camera Usage Description**，并填入摄像头使用目的提示语 
-如下图所示
-![](https://main.qcloudimg.com/raw/be76bd6f3f22d31385d871710b51b771.jpg) 
-
-
-## 引用 TRTC SDK
-项目代码中使用 SDK 有两种方式
-- 方式一： 在项目需要使用SDK API的文件里，添加模块引用
-
-```
-@import TXLiteAVSDK_TRTC_Mac;
-```
-
-- 方式二：在项目需要使用SDK API的文件里，引入具体的头文件
-
-```
-#import TXLiteAVSDK_TRTC_Mac/TRTCCloud.h
-```
-
-
+| 协议 | 端口号 |
+|:--------:|:--------:|
+| HTTPS | 443 |
+| UDP | 8000 |
