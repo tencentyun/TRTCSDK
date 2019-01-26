@@ -1,14 +1,16 @@
 # 腾讯云实时音视频终端组件 TRTC SDK
 覆盖iOS、Android、Windows、Mac、浏览器和微信小程序六大应用平台，致力于提供全球最好的视频通话和直播连麦解决方案。
 
-## 文档专区
+## 参考文档
 
-- [**iOS&Mac** ](https://cloud.tencent.com/document/product/647/32258)
-- [**Android**](https://cloud.tencent.com/document/product/647/32267)
-- [**Windows**](https://cloud.tencent.com/document/product/647/32268)
-- [**Web(WebRTC)**](https://cloud.tencent.com/document/product/647/17249)
-- [**微信小程序**](https://cloud.tencent.com/document/product/647/17018)
-- [**错误码表**](https://cloud.tencent.com/document/product/647/32257)
+| 所属平台 | Github 地址 | Demo运行说明 | SDK集成指引 | API 列表 |
+|:---------:| :--------:|:--------:| :--------:|:--------:|
+| iOS | [GitHub](https://github.com/tencentyun/TRTCSDK/tree/master/iOS)| [DOC](https://cloud.tencent.com/document/product/647/32396)| [DOC](https://cloud.tencent.com/document/product/647/32173) | [API](https://cloud.tencent.com/document/product/647/32258) |
+| Android | [GitHub](https://github.com/tencentyun/TRTCSDK/tree/master/Android)| [DOC](https://cloud.tencent.com/document/product/647/32166)| [DOC](https://cloud.tencent.com/document/product/647/32175) | [API](https://cloud.tencent.com/document/product/647/32267) |
+| Windows| [GitHub](https://github.com/tencentyun/TRTCSDK/tree/master/Windows)| [DOC](https://cloud.tencent.com/document/product/647/32397)| [DOC](https://cloud.tencent.com/document/product/647/32178) | [API](https://cloud.tencent.com/document/product/647/32268) |
+| Mac| [GitHub](https://github.com/tencentyun/TRTCSDK/tree/master/Mac)| [DOC](https://cloud.tencent.com/document/product/647/32396)| [DOC](https://cloud.tencent.com/document/product/647/32176) |[API](https://cloud.tencent.com/document/product/647/32258) |
+| Web | [GitHub](https://github.com/tencentyun/TRTCSDK/tree/master/H5)| [DOC](https://cloud.tencent.com/document/product/647/32398)| [DOC](https://cloud.tencent.com/document/product/647/16863) |[API](https://cloud.tencent.com/document/product/647/17249) |
+| 微信小程序| [GitHub](https://github.com/tencentyun/TRTCSDK/tree/master/WXMini)| [DOC](https://cloud.tencent.com/document/product/647/32399)| [DOC](https://cloud.tencent.com/document/product/647/32183) |[API](https://cloud.tencent.com/document/product/647/17018) |
 
 ## iOS TRTC Demo
 > [APPStore 体验地址](https://itunes.apple.com/cn/app/id1400663224?mt=8)
