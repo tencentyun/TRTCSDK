@@ -1,3 +1,6 @@
+# 腾讯云实时音视频终端组件 TRTC SDK
+覆盖iOS、Android、Windows、Mac、浏览器和微信小程序六大应用平台，致力于提供全球最好的视频通话和直播连麦解决方案。
+
 ## 文档专区
 
 - [**iOS&Mac** ](https://cloud.tencent.com/document/product/647/32258)
