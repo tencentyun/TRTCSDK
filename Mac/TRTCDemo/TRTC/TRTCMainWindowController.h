@@ -12,10 +12,13 @@
 
 #import <Cocoa/Cocoa.h>
 #import <objc/runtime.h>
-#import "TRTCCloud.h"
+#import "SDKHeader.h"
 NS_ASSUME_NONNULL_BEGIN
 
 @interface TRTCMainWindowController : NSWindowController
+
+/// 录屏预览窗口
+@property (strong) IBOutlet NSWindow *capturePreviewWindow;
 
 /// 视频开关
 @property (strong) IBOutlet NSButton *videoBtn;
@@ -40,6 +43,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// 退房按钮
 @property (strong) IBOutlet NSButton *closeBtn;
+/// 屏幕分享
+@property (strong) IBOutlet NSButton *screenShareBtn;
 
 /// 布局切换按钮（九宫格 OR 前后叠加）
 @property (strong) IBOutlet NSButton *videoLayoutStyleBtn;
@@ -63,7 +68,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property TRTCBeautyStyle beautyStyle;
 
 
-- (instancetype)initWithParams:(TRTCParams *)params;
+- (instancetype)initWithParams:(TRTCParams *)params scene:(TRTCAppScene)scene audioOnly:(BOOL)audioOnly;
 @end
 
 NS_ASSUME_NONNULL_END

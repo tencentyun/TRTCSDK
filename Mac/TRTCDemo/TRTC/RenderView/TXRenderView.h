@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface TXRenderView : NSView
 - (void)addToolbarItem:(NSString *)title target:(id)target action:(SEL)action context:(id)context;
+- (void)removeToolbarWithTitle:(NSString *)title;
 @end
 
 NS_ASSUME_NONNULL_END

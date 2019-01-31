@@ -9,13 +9,14 @@
 // 用于对视频通话的分辨率、帧率和流畅模式进行调整，并支持记录下这些设置项
 
 #import <Cocoa/Cocoa.h>
-#import "TRTCCloud.h"
+#import "SDKHeader.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 typedef NS_ENUM(NSUInteger, TXAVSettingTabIndex) {
     TXAVSettingTabIndexVideo,
-    TXAVSettingTabIndexAudio
+    TXAVSettingTabIndexAudio,
+    TXAVSettingTabIndexSubStream
 };
 
 @interface TRTCSettingWindowController : NSWindowController
@@ -25,10 +26,20 @@ typedef NS_ENUM(NSUInteger, TXAVSettingTabIndex) {
 @property (class, readonly) TRTCVideoQosPreference qosControlPreference;
 @property (class, readonly) TRTCQosControlMode qosControlMode;
 
+@property (class, readonly) int subStreamFps;
+@property (class, readonly) TRTCVideoResolution subStreamResolution;
+@property (class, readonly) int subStreamBitrate;
+
+@property (class, readonly) BOOL pushDoubleStream;
+@property (class, readonly) BOOL playSmallStream;
+
+
 // 音频设置界面
 @property (strong) IBOutlet NSView *audioSettingView;
 // 视频设置界面
 @property (strong) IBOutlet NSView *videoSettingView;
+// 辅流设置界面
+@property (strong) IBOutlet NSView *subStreamSettingView;
 // 设置界面容器
 @property (strong) IBOutlet NSView *settingField;
 // 视频设置界面预览视图
@@ -55,6 +66,10 @@ typedef NS_ENUM(NSUInteger, TXAVSettingTabIndex) {
 @property (strong) IBOutlet NSSlider *micVolumeSlider;
 // 扬声器音量滑杆
 @property (strong) IBOutlet NSSlider *speakerVolumeSlider;
+// 录音音量指示器
+@property (weak) IBOutlet NSLevelIndicator *volumeMeter;
+// 扬声器音量指示器
+@property (weak) IBOutlet NSLevelIndicator *speakerVolumeMeter;
 
 // 流畅按钮
 @property (strong) IBOutlet NSButton *smoothBtn;
@@ -66,8 +81,26 @@ typedef NS_ENUM(NSUInteger, TXAVSettingTabIndex) {
 // 云控
 @property (strong) IBOutlet NSButton *cloudBtn;
 
+// 辅流分辨率选择控件
+@property (strong) IBOutlet NSPopUpButton *substreamResolutionItems;
+// 辅流fps选择控件
+@property (strong) IBOutlet NSPopUpButton *substreamFpsItems;
+// 辅流码率显示
+@property (strong) IBOutlet NSTextField *substreamBitrateLabel;
+// 辅流码率滑杆
+@property (strong) IBOutlet NSSlider *substreamBitrateSlider;
+
+// 推流设置
+@property (assign, nonatomic) BOOL pushDoubleStream;
+@property (assign, nonatomic) BOOL playSmallStream;
+
 - (instancetype)initWithWindowNibName:(NSNibName)windowNibName engine:(TRTCCloud *)engine;
 
+// 更改流控模式，流畅还是清晰
+- (IBAction)onChangeQOSPreference:(NSButton *)sender;
+
+//  更改流控方式，使用SDK固定配置还是使用下发配置
+- (IBAction)onChangeQOSControlMode:(NSButton *)sender;
 @end
 
 NS_ASSUME_NONNULL_END

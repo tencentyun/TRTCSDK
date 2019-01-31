@@ -10,11 +10,14 @@
             <connections>
                 <outlet property="audioSelectBtn" destination="Z7q-MT-4Rz" id="GuA-UL-98n"/>
                 <outlet property="audioSelectView" destination="ngc-WU-p48" id="czs-SF-csm"/>
+                <outlet property="beautyBtn" destination="DXi-7m-JGm" id="wNW-Ea-KxC"/>
                 <outlet property="beautyPanel" destination="Qct-Sr-neU" id="eYG-y8-MDV"/>
+                <outlet property="capturePreviewWindow" destination="HAX-Qb-qO6" id="eOQ-5y-3xZ"/>
                 <outlet property="closeBtn" destination="3Ct-i8-fYX" id="tyA-HM-obk"/>
                 <outlet property="controlBar" destination="689-E1-lRQ" id="MB3-Wk-zjc"/>
                 <outlet property="logBtn" destination="iQ7-Ua-LdZ" id="ocD-T2-wer"/>
                 <outlet property="micBtn" destination="ROi-ON-19P" id="Q5X-ii-xc4"/>
+                <outlet property="screenShareBtn" destination="sF1-9g-r48" id="oeY-x5-qx8"/>
                 <outlet property="videoBtn" destination="21N-PC-NE0" id="qps-aa-RZl"/>
                 <outlet property="videoLayoutStyleBtn" destination="Ycs-SV-Q28" id="nFe-KF-Z1v"/>
                 <outlet property="videoSelectBtn" destination="ah1-uI-jL4" id="Pcs-Dk-zjZ"/>
@@ -42,7 +45,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="video_on" imagePosition="above" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="oT9-dI-B7t">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="systemBold"/>
+                                    <font key="font" metaFont="systemSemibold" size="13"/>
                                 </buttonCell>
                                 <connections>
                                     <action selector="videoBtnClick:" target="-2" id="emq-XE-GTY"/>
@@ -75,7 +78,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="mic" imagePosition="above" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="RnM-Kh-Dti">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="systemBold"/>
+                                    <font key="font" metaFont="systemSemibold" size="13"/>
                                 </buttonCell>
                                 <color key="contentTintColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 <connections>
@@ -87,10 +90,21 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                 <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="CW8-xf-Mds">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="systemBold"/>
+                                    <font key="font" metaFont="systemSemibold" size="14"/>
                                 </buttonCell>
                                 <connections>
                                     <action selector="closeRoom:" target="-2" id="bWo-Ig-h2d"/>
+                                </connections>
+                            </button>
+                            <button fixedFrame="YES" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sF1-9g-r48">
+                                <rect key="frame" x="192" y="0.0" width="56" height="57"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="square" title="屏幕分享" bezelStyle="shadowlessSquare" image="toolbar_share_normal" imagePosition="above" alignment="center" alternateImage="toolbar_share_press" imageScaling="proportionallyUpOrDown" inset="2" id="3yX-AN-T9e">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="systemSemibold" size="13"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="onShowInputSource:" target="-2" id="f29-Vb-QR7"/>
                                 </connections>
                             </button>
                             <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iQ7-Ua-LdZ">
@@ -98,7 +112,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                 <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="zP5-VK-3KK">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="systemBold"/>
+                                    <font key="font" metaFont="systemSemibold" size="14"/>
                                 </buttonCell>
                                 <connections>
                                     <action selector="showLog:" target="-2" id="p6r-aE-8r2"/>
@@ -109,7 +123,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                 <buttonCell key="cell" type="square" title="美颜" bezelStyle="shadowlessSquare" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="uQN-e8-PrX">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="systemBold"/>
+                                    <font key="font" metaFont="systemSemibold" size="14"/>
                                 </buttonCell>
                                 <color key="contentTintColor" name="systemRedColor" catalog="System" colorSpace="catalog"/>
                                 <connections>
@@ -375,7 +389,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="square" title="画廊视图" bezelStyle="shadowlessSquare" image="galleryMode" imagePosition="left" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="wZb-MD-Ars">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                            <font key="font" metaFont="systemBold"/>
+                            <font key="font" metaFont="systemSemibold" size="13"/>
                         </buttonCell>
                         <connections>
                             <action selector="videoLayoutChange:" target="-2" id="R8R-0h-Wo5"/>
@@ -386,7 +400,7 @@
             <connections>
                 <outlet property="delegate" destination="-2" id="0bl-1N-AYu"/>
             </connections>
-            <point key="canvasLocation" x="-189" y="71"/>
+            <point key="canvasLocation" x="81" y="-69"/>
         </window>
         <window title="美颜" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="Qct-Sr-neU" customClass="NSPanel">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" utility="YES"/>
@@ -503,12 +517,43 @@
             <point key="canvasLocation" x="-795" y="-115"/>
         </window>
         <userDefaultsController representsSharedInstance="YES" id="P8f-Ad-DEv"/>
+        <window title="ScreenCapture" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="HAX-Qb-qO6">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="283" y="305" width="555" height="323"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
+            <view key="contentView" id="0Ad-eX-AEI">
+                <rect key="frame" x="0.0" y="0.0" width="555" height="323"/>
+                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            </view>
+            <toolbar key="toolbar" implicitIdentifier="1270D28A-B408-4BEF-B8DA-A9DFDBA73644" autosavesConfiguration="NO" allowsUserCustomization="NO" prefersToBeShown="NO" displayMode="iconAndLabel" sizeMode="regular" id="zWi-Jy-R95">
+                <allowedToolbarItems>
+                    <toolbarItem implicitItemIdentifier="CFEA5A39-2BFC-4F97-BBFB-4FA417DA4226" label="Log" paletteLabel="Log" tag="-1" image="NSInfo" id="G7n-PX-j9w">
+                        <size key="minSize" width="32" height="32"/>
+                        <size key="maxSize" width="32" height="32"/>
+                    </toolbarItem>
+                    <toolbarItem implicitItemIdentifier="9F1B0CF9-F65E-42DC-B31A-A4F61BBCF188" label="Preference" paletteLabel="Preference" tag="-1" image="NSPreferencesGeneral" id="hkg-hB-FXc">
+                        <size key="minSize" width="32" height="32"/>
+                        <size key="maxSize" width="32" height="32"/>
+                    </toolbarItem>
+                </allowedToolbarItems>
+                <defaultToolbarItems>
+                    <toolbarItem reference="G7n-PX-j9w"/>
+                    <toolbarItem reference="hkg-hB-FXc"/>
+                </defaultToolbarItems>
+            </toolbar>
+            <point key="canvasLocation" x="-104" y="546"/>
+        </window>
     </objects>
     <resources>
+        <image name="NSInfo" width="32" height="32"/>
+        <image name="NSPreferencesGeneral" width="32" height="32"/>
         <image name="check" width="12" height="12"/>
         <image name="galleryMode" width="23" height="24"/>
-        <image name="mic" width="30" height="30"/>
+        <image name="mic" width="70" height="70"/>
         <image name="more_arrow" width="14" height="8"/>
+        <image name="toolbar_share_normal" width="30" height="30"/>
+        <image name="toolbar_share_press" width="30" height="30"/>
         <image name="video_on" width="30" height="30"/>
     </resources>
 </document>

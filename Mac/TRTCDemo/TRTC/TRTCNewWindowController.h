@@ -21,6 +21,6 @@
 // 房间号输入框
 @property (strong) IBOutlet NSTextField *roomidField;
 @property (strong) IBOutlet NSPopUpButton *useridPopUp;
-
+- (IBAction)onSelectRoomScene:(id)sender;
 @end
 

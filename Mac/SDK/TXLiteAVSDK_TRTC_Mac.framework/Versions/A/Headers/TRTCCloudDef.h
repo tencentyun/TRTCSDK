@@ -24,33 +24,38 @@ typedef NSEdgeInsets TXEdgeInsets;
 //                   
 //   此处仅有横屏分辨率，如果要使用 360x640 这样的竖屏分辨率，需要指定 ResolutionMode 为 Portrait
 //
+//   [C]标记表示摄像头采集可以使用该分辨率
+//   [S]标记表示屏幕采集可以使用该分辨率
+//
 /////////////////////////////////////////////////////////////////////////////////
 
 typedef NS_ENUM(NSInteger, TRTCVideoResolution) {
     /// 宽高比1:1
-    TRTCVideoResolution_120_120 = 1,     ///< 建议码率 80kbps
-    TRTCVideoResolution_160_160 = 3,     ///< 建议码率 100kbps
-    TRTCVideoResolution_270_270 = 5,     ///< 建议码率 200kbps
-    TRTCVideoResolution_480_480 = 7,     ///< 建议码率 350kbps
+    TRTCVideoResolution_120_120     = 1,    /// [C] 建议码率 80kbps
+    TRTCVideoResolution_160_160     = 3,    /// [C] 建议码率 100kbps
+    TRTCVideoResolution_270_270     = 5,    /// [C] 建议码率 200kbps
+    TRTCVideoResolution_480_480     = 7,    /// [C] 建议码率 350kbps
     
     /// 宽高比4:3
-    TRTCVideoResolution_160_120 = 50,    ///< 建议码率 100kbps
-    TRTCVideoResolution_240_180 = 52,    ///< 建议码率 150kbps
-    TRTCVideoResolution_280_210 = 54,    ///< 建议码率 200kbps
-    TRTCVideoResolution_320_240 = 56,    ///< 建议码率 250kbps
-    TRTCVideoResolution_400_300 = 58,    ///< 建议码率 300kbps
-    TRTCVideoResolution_480_360 = 60,    ///< 建议码率 400kbps
-    TRTCVideoResolution_640_480 = 62,    ///< 建议码率 600kbps
-    TRTCVideoResolution_960_720 = 64,    ///< 建议码率 1000kbps
+    TRTCVideoResolution_160_120     = 50,   /// [C] 建议码率 100kbps
+    TRTCVideoResolution_240_180     = 52,   /// [C] 建议码率 150kbps
+    TRTCVideoResolution_280_210     = 54,   /// [C] 建议码率 200kbps
+    TRTCVideoResolution_320_240     = 56,   /// [C] 建议码率 250kbps
+    TRTCVideoResolution_400_300     = 58,   /// [C] 建议码率 300kbps
+    TRTCVideoResolution_480_360     = 60,   /// [C] 建议码率 400kbps
+    TRTCVideoResolution_640_480     = 62,   /// [C] 建议码率 600kbps
+    TRTCVideoResolution_960_720     = 64,   /// [C] 建议码率 1000kbps
     
     /// 宽高比16:9
-    TRTCVideoResolution_160_90  = 100,   ///< 建议码率 150kbps
-    TRTCVideoResolution_256_144 = 102,   ///< 建议码率 200kbps
-    TRTCVideoResolution_320_180 = 104,   ///< 建议码率 250kbps
-    TRTCVideoResolution_480_270 = 106,   ///< 建议码率 350kbps
-    TRTCVideoResolution_640_360 = 108,   ///< 建议码率 550kbps
-    TRTCVideoResolution_960_540 = 110,   ///< 建议码率 850kbps
-    TRTCVideoResolution_1280_720 = 112,  ///< 建议码率 1200kbps
+    TRTCVideoResolution_160_90      = 100,  /// [C]
+    TRTCVideoResolution_256_144     = 102,  /// [C]
+    TRTCVideoResolution_320_180     = 104,  /// [C] 建议码率 250kbps
+    TRTCVideoResolution_480_270     = 106,  /// [C] 建议码率 350kbps
+    TRTCVideoResolution_640_360     = 108,  /// [C] 建议码率 550kbps
+    TRTCVideoResolution_960_540     = 110,  /// [C] 建议码率 850kbps
+    TRTCVideoResolution_1280_720    = 112,  /// [C] 摄像头采集 - 建议码率 1200kbps
+                                            /// [S] 屏幕分享   - 建议码率 低清：400kbps 高清：600kbps
+    TRTCVideoResolution_1920_1080   = 114,  /// [S] 屏幕分享   - 建议码率 800kbps
 };
 
 
@@ -370,6 +375,7 @@ typedef NS_ENUM(NSInteger, TRTCMediaDeviceType) {
     TRTCMediaDeviceTypeVideoWindow  =    3,
     TRTCMediaDeviceTypeVideoScreen  =    4,
 };
+
 #pragma mark -
 @interface TRTCMediaDeviceInfo : NSObject
 /// 设备类型
@@ -378,6 +384,34 @@ typedef NS_ENUM(NSInteger, TRTCMediaDeviceType) {
 @property (copy, nonatomic, nullable) NSString * deviceId;
 /// 设备名称
 @property (copy, nonatomic, nullable) NSString * deviceName;
+@end
+
+/////////////////////////////////////////////////////////////////////////////////
+//
+//        【屏幕分享目标 TRTCScreenCaptureSourceInfo】（仅适用于 MAC OS）
+//                   
+/////////////////////////////////////////////////////////////////////////////////
+
+#pragma mark -
+/// 屏幕分享目标
+typedef NS_ENUM(NSInteger, TRTCScreenCaptureSourceType) {
+    TRTCScreenCaptureSourceTypeUnknown      =   -1,
+    TRTCScreenCaptureSourceTypeWindow       =    0,    ///< 该分享目标是某一个Mac窗口
+    TRTCScreenCaptureSourceTypeScreen       =    1,    ///< 该分享目标是整个Mac桌面
+};
+@interface TRTCScreenCaptureSourceInfo : NSObject
+/// 采集源是整个屏幕？还是某个窗口？
+@property (assign, nonatomic) TRTCScreenCaptureSourceType type;
+/// 采集源ID
+@property (copy, nonatomic, nullable) NSString * sourceId;
+/// 采集源名称
+@property (copy, nonatomic, nullable) NSString * sourceName;
+/// 采集源属性
+@property (nonatomic, strong, nullable) NSDictionary * extInfo;
+/// 窗体的缩略图
+@property (nonatomic, readonly, nullable) NSImage *thumbnail;
+/// 窗体的图标
+@property (nonatomic, readonly, nullable) NSImage *icon;
 @end
 #endif
 
@@ -483,13 +517,6 @@ typedef NS_ENUM(NSInteger, TRTCMediaDeviceType) {
 
 /// 旁路转推的URL
 @property (nonatomic, strong, nonnull) NSString * url;
-
-/// @brief 是否允许转码混流
-/// @desc
-/// 1. enableTranscoding = YES : 需要调用startCloudMixTranscoding对多路画面进行混合，发布到CDN上的是混合之后的一路音视频流
-///
-/// 2. enableTranscoding = NO  : 不经过云端转码，只是把当前用户的音视频画面转推到 url 参数所指定的 rtmp 推流地址上。
-@property (nonatomic) BOOL enableTranscoding;
 @end
 
 
@@ -504,11 +531,14 @@ typedef NS_ENUM(NSInteger, TRTCTranscodingConfigMode) {
     TRTCTranscodingConfigMode_Unknown = 0,
     
     // 手动配置混流混流参数，需要指定 TRTCTranscodingConfig 的全部参数
-    TRTCTranscodingConfigMode_Manual = 1,
+    TRTCTranscodingConfigMode_Manual  = 1,
 
 };
 
-// 用于指定每一路视频画面的具体摆放位置
+
+/**
+ * TRTCMixUser 用于指定每一路(即每一个userId)视频画面的具体摆放位置
+ */
 @interface TRTCMixUser : NSObject
 /// 参与混流的userId
 @property(nonatomic, copy) NSString * userId;
@@ -516,12 +546,18 @@ typedef NS_ENUM(NSInteger, TRTCTranscodingConfigMode) {
 @property(nonatomic, assign) CGRect rect;
 /// 图层层次 （1-15） 不可重复
 @property(nonatomic, assign) int zOrder;
+/// 参与混合的是主路画面(TRTCVideoStreamTypeBig)还是屏幕分享(TRTCVideoStreamTypeSub)画面
+@property (nonatomic) TRTCVideoStreamType streamType;
 @end
 
-
+/**
+ * TRTCTranscodingConfig 云端转码配置，包括最终编码质量和各路画面的摆放位置
+ */
 @interface TRTCTranscodingConfig : NSObject
 @property(nonatomic, assign) TRTCTranscodingConfigMode mode; ///< 转码config模式 @see TRTCTranscodingConfigMode
 
+@property (nonatomic) int appId;                   ///< 腾讯云 AppID，在直播控制台-直播码接入可查询到
+@property (nonatomic) int bizId;                   ///< 腾讯云直播bizid，在直播控制台-直播码接入可查询到
 @property(nonatomic, assign) int videoWidth;       ///< 视频分辨率：宽
 @property(nonatomic, assign) int videoHeight;      ///< 视频分辨率：高
 @property(nonatomic, assign) int videoBitrate;     ///< 视频码率
@@ -531,8 +567,6 @@ typedef NS_ENUM(NSInteger, TRTCTranscodingConfigMode) {
 @property(nonatomic, assign) int audioSampleRate;  ///< 音频采样率 48000
 @property(nonatomic, assign) int audioBitrate;     ///< 音频码率   64K
 @property(nonatomic, assign) int audioChannels;    ///< 声道数     2
-
-@property(nonatomic, copy) NSString * mixExtraInfo; ///< SEI信息
 @property(nonatomic, copy) NSArray<TRTCMixUser *> * mixUsers; ///< 混流配置
 @end
 

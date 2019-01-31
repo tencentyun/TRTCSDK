@@ -12,12 +12,45 @@
 
 #define CLAMP(x, min, max) MIN(MAX((x),(min)), (max))
 
-#define DECL_DEFAULT_KEY(x) static NSString * const DefaultKey##x = @"TRTC_"#x;
-DECL_DEFAULT_KEY(FPS)
-DECL_DEFAULT_KEY(Resolution)
-DECL_DEFAULT_KEY(Bitrate)
-DECL_DEFAULT_KEY(QosPreference)
-DECL_DEFAULT_KEY(QosMode)
+#define DECL_DEFAULT_KEY(type, x) \
+static NSString * const DefaultKey##x = @"TRTC_"#x; \
+static type s_##x; \
+NS_INLINE void setGlobalDefault##x(type value) { \
+s_##x = value; \
+} \
+NS_INLINE type getGlobalDefault##x(void) { \
+return s_##x; \
+}
+
+#define DEFAULT_GETTER_KEY_PAIR(key) getGlobalDefault##key, (__bridge void *)DefaultKey##key
+#define DEFAULT_SETTER_KEY_PAIR(key) setGlobalDefault##key, (__bridge void *)DefaultKey##key
+
+// 去掉未使用的方法警告
+#define UNUSED_ACCESSOR(type, x) \
+static type getGlobalDefault##x(void) __attribute__((unused)); \
+static void setGlobalDefault##x(type) __attribute__((unused));
+
+UNUSED_ACCESSOR(BOOL, ShouldSaveToDefaults)
+
+// 生成配置项的UserDefaults Key以及对应的accessor
+// 大小流
+DECL_DEFAULT_KEY(int, Fps)
+DECL_DEFAULT_KEY(TRTCVideoResolution, Resolution)
+DECL_DEFAULT_KEY(int, Bitrate)
+DECL_DEFAULT_KEY(TRTCVideoQosPreference, QosPreference)
+DECL_DEFAULT_KEY(TRTCQosControlMode, QosControlMode)
+
+// 是否保存配置。当设置为不保存时应用退出后所有设置将被恢复
+DECL_DEFAULT_KEY(BOOL, ShouldSaveToDefaults)
+
+// 辅流配置
+DECL_DEFAULT_KEY(int, SubStreamFps)
+DECL_DEFAULT_KEY(TRTCVideoResolution, SubStreamResolution)
+DECL_DEFAULT_KEY(TRTCVideoQosPreference, SubStreamBitrate)
+
+// 推拉流类型配置
+DECL_DEFAULT_KEY(int, PushDoubleStream)
+DECL_DEFAULT_KEY(int, PlaySmallStream)
 
 @interface TRTCSettingBitrateTable : NSObject
 @property (nonatomic, assign) int resolution;
@@ -25,6 +58,7 @@ DECL_DEFAULT_KEY(QosMode)
 @property (nonatomic, assign) int minBitrate;
 @property (nonatomic, assign) int maxBitrate;
 @property (nonatomic, assign) int step;
+
 - (instancetype)initWithResolution:(int)resolution defaultBitrate:(int)defaultBitrate
                         minBitrate:(int)minBitrate maxBitrate:(int)maxBitrate step:(int)step;
 @end
@@ -32,26 +66,56 @@ DECL_DEFAULT_KEY(QosMode)
 @interface TRTCSettingWindowController () <NSTableViewDelegate,NSTableViewDataSource,NSWindowDelegate>
 {
     NSArray<TRTCSettingBitrateTable *> *_paramArray;
+    NSArray<NSArray<NSString*>*>* _menu;
 }
-@property (weak) IBOutlet NSLevelIndicator *volumeMeter;
-@property (weak) IBOutlet NSLevelIndicator *speakerVolumeMeter;
 @property (nonatomic, strong) TRTCCloud *trtcEngine;
+@property (nonatomic, readonly) BOOL shouldSaveToDefaults;
 @end
 
 @implementation TRTCSettingWindowController
 + (void)load {
-    [[NSUserDefaults standardUserDefaults] registerDefaults:@{
-                                                              DefaultKeyFPS : @15,
-                                                              DefaultKeyResolution: @(TRTCVideoResolution_640_480),
-                                                              DefaultKeyBitrate: @500,
-                                                              DefaultKeyQosPreference: @(TRTCVideoQosPreferenceSmooth),
-                                                              DefaultKeyQosMode: @(TRTCQosControlModeServer)
-                                                              }];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults registerDefaults:@{
+                                 DefaultKeyShouldSaveToDefaults: @(YES),
+                                 DefaultKeyFps : @(15),
+                                 DefaultKeyResolution: @(TRTCVideoResolution_640_480),
+                                 DefaultKeyBitrate: @500,
+                                 DefaultKeyQosPreference: @(TRTCVideoQosPreferenceSmooth),
+                                 DefaultKeyQosControlMode: @(TRTCQosControlModeServer),
+
+                                 DefaultKeySubStreamFps: @10,
+                                 DefaultKeySubStreamBitrate: @(800),
+                                 DefaultKeySubStreamResolution: @(TRTCVideoResolution_1280_720),
+                                 
+                                 DefaultKeyPushDoubleStream: @(NO),
+                                 DefaultKeyPlaySmallStream: @(NO),
+                                 }];
+    void * pairs[] = {
+        DEFAULT_SETTER_KEY_PAIR(Fps),
+        DEFAULT_SETTER_KEY_PAIR(Resolution),
+        DEFAULT_SETTER_KEY_PAIR(Bitrate),
+        DEFAULT_SETTER_KEY_PAIR(QosPreference),
+        DEFAULT_SETTER_KEY_PAIR(QosControlMode),
+        DEFAULT_SETTER_KEY_PAIR(SubStreamFps),
+        DEFAULT_SETTER_KEY_PAIR(SubStreamResolution),
+        DEFAULT_SETTER_KEY_PAIR(SubStreamBitrate),
+        DEFAULT_SETTER_KEY_PAIR(PushDoubleStream),
+        DEFAULT_SETTER_KEY_PAIR(PlaySmallStream),
+        NULL
+    };
+    int i = 0;
+    while (pairs[i] != NULL) {
+        void(*setter)(int) = (void(*)(int))pairs[i];
+        NSString *key = (__bridge NSString *)pairs[i+1];
+        setter((int)[defaults integerForKey:key]);
+        i+=2;
+    }
 }
 
 - (instancetype)initWithWindowNibName:(NSNibName)windowNibName engine:(TRTCCloud *)engine {
     if (self = [super initWithWindowNibName:windowNibName]) {
         self.trtcEngine = engine;
+        _menu = @[@[@"视频", @"video_on"], @[@"音频", @"audio"], @[@"辅流", @""]];
         _tabIndex = TXAVSettingTabIndexVideo;
     }
     return self;
@@ -64,29 +128,118 @@ DECL_DEFAULT_KEY(QosMode)
     [self setup];
 }
 
+-(void)windowWillClose:(NSNotification *)notification{
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:DefaultKeyShouldSaveToDefaults]) {
+        [self _writeSettingsToUserDefaults];
+    }
+}
+
 #pragma mark - Class Properties
+#pragma mark Main Stream
 + (int)fps {
-    return (int)[[NSUserDefaults standardUserDefaults] integerForKey:DefaultKeyFPS];
+    return (int)[[NSUserDefaults standardUserDefaults] integerForKey:DefaultKeyFps];
 }
 
 + (TRTCVideoResolution)resolution {
-    return (int)[[NSUserDefaults standardUserDefaults] integerForKey:DefaultKeyResolution];
+    return getGlobalDefaultResolution();
 }
 
 + (int)bitrate {
-    return (int)[[NSUserDefaults standardUserDefaults] integerForKey:DefaultKeyBitrate];
+    return getGlobalDefaultBitrate();
 }
 
 + (TRTCVideoQosPreference)qosControlPreference {
-    return (TRTCVideoQosPreference)[[NSUserDefaults standardUserDefaults] integerForKey:DefaultKeyQosPreference];
+    return getGlobalDefaultQosPreference();
 }
 
 + (TRTCQosControlMode)qosControlMode {
-    return (TRTCQosControlMode)[[NSUserDefaults standardUserDefaults] integerForKey:DefaultKeyQosMode];
+    return getGlobalDefaultQosControlMode();
 }
 
-#pragma mark -
+#pragma mark Sub Stream
++ (int)subStreamFps {
+    return getGlobalDefaultSubStreamFps();
+}
+
++ (TRTCVideoResolution)subStreamResolution {
+    return getGlobalDefaultSubStreamResolution();
+}
+
++ (int)subStreamBitrate {
+    return getGlobalDefaultSubStreamBitrate();
+}
+
+#pragma mark Push & Play
+
++ (BOOL)pushDoubleStream {
+    return getGlobalDefaultPushDoubleStream();
+}
+
++ (BOOL)playSmallStream {
+    return getGlobalDefaultPlaySmallStream();
+}
+
+
+#pragma mark - Accessors
+- (BOOL)shouldSaveToDefaults {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:DefaultKeyShouldSaveToDefaults];
+}
+
+- (void)setPlaySmallStream:(BOOL)playSmallStream {
+    setGlobalDefaultPlaySmallStream(playSmallStream);
+}
+
+- (BOOL)playSmallStream {
+    return getGlobalDefaultPlaySmallStream();
+}
+
+- (void)setPushDoubleStream:(BOOL)pushDoubleStream {
+    setGlobalDefaultPushDoubleStream(pushDoubleStream);
+}
+
+- (BOOL)pushDoubleStream {
+    return getGlobalDefaultPushDoubleStream();
+}
+
+#pragma mark - Defaults Writer
+- (void)_writeSettingsToUserDefaults {
+    [self.trtcEngine stopCameraDeviceTest];
+    [self.trtcEngine stopMicDeviceTest];
+    if (self.shouldSaveToDefaults) {
+        void *intValueAndKeys[] = {
+            DEFAULT_GETTER_KEY_PAIR(Fps),
+            DEFAULT_GETTER_KEY_PAIR(Bitrate),
+            DEFAULT_GETTER_KEY_PAIR(QosPreference),
+            DEFAULT_GETTER_KEY_PAIR(QosControlMode),
+            DEFAULT_GETTER_KEY_PAIR(Resolution),
+            DEFAULT_GETTER_KEY_PAIR(SubStreamFps),
+            DEFAULT_GETTER_KEY_PAIR(SubStreamResolution),
+            DEFAULT_GETTER_KEY_PAIR(SubStreamBitrate),
+            DEFAULT_GETTER_KEY_PAIR(PushDoubleStream),
+            DEFAULT_GETTER_KEY_PAIR(PlaySmallStream),
+            NULL
+        };
+        
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        int i = 0;
+        while (1) {
+            if (intValueAndKeys[i] == NULL) {
+                break;
+            }
+            
+            int(*valueFunc)(void) = (int(*)(void))intValueAndKeys[i];
+            NSString *key = (__bridge NSString *)intValueAndKeys[i+1];
+            [defaults setInteger:valueFunc() forKey:key];
+            i += 2;
+        };
+        [defaults synchronize];
+    }
+
+}
+
+#pragma mark - UI Setup
 - (void)setup {
+    self.window.titleVisibility = NSWindowTitleHidden;
     NSArray<TRTCMediaDeviceInfo*> *cameras = [self.trtcEngine getCameraDevicesList];
     
     NSArray *resolutionArr = @[@"160x160", @"320x180", @"320x240", @"480x480", @"640x360", @"640x480", @"960x540",@"1280x720"];
@@ -125,32 +278,53 @@ DECL_DEFAULT_KEY(QosMode)
     [self.resolutionItems removeAllItems];
     NSString *resolution = [self resolutionString:[[self class] resolution]];
     [self.resolutionItems addItemsWithTitles:resolutionArr];
+
     NSInteger index = [resolutionArr indexOfObject:resolution];
     TRTCSettingBitrateTable *config = _paramArray[index];
     [self.resolutionItems selectItemAtIndex:index];
+    
     self.bitrateSlider.minValue = config.minBitrate;
     self.bitrateSlider.maxValue = config.maxBitrate;
-    self.bitrateSlider.integerValue = config.defaultBitrate;
+    
+    [self _setBitRate:[[self class] bitrate]];
+
     // 配置fps
     [self.fpsItems removeAllItems];
     [self.fpsItems addItemsWithTitles:fpsArr];
     [self.fpsItems selectItemAtIndex:[fpsArr indexOfObject:[NSString stringWithFormat:@"%dfps", [[self class] fps]]]];
     
+    // 辅流
+    [self.substreamResolutionItems removeAllItems];
+    [self.substreamResolutionItems addItemsWithTitles:resolutionArr];
+    [self.substreamResolutionItems selectItemAtIndex:[resolutionArr indexOfObject:[self resolutionString:[[self class] subStreamResolution]]]];
+    
+    [self.substreamFpsItems removeAllItems];
+    [self.substreamFpsItems addItemsWithTitles: [@[@"10fps"] arrayByAddingObjectsFromArray:fpsArr]];
+    [self.substreamFpsItems selectItemAtIndex:[self.substreamFpsItems.itemTitles indexOfObject:[NSString stringWithFormat:@"%dfps", [[self class] subStreamFps]]]];
+
+    self.substreamBitrateSlider.intValue = [self.class subStreamBitrate];
+    
     // 配置音量
     self.micVolumeSlider.floatValue = [self.trtcEngine getCurrentMicDeviceVolume];
     self.speakerVolumeSlider.floatValue = [self.trtcEngine getCurrentSpeakerDeviceVolume];
-
+    
     // 配置清晰流畅
     if (TRTCSettingWindowController.qosControlPreference == TRTCVideoQosPreferenceSmooth) {
         self.smoothBtn.state = NSControlStateValueOn;
     } else {
         self.clearBtn.state  = NSControlStateValueOn;
     }
+    if (TRTCSettingWindowController.qosControlMode == TRTCQosControlModeClient) {
+        self.clientBtn.state = NSControlStateValueOn;
+    } else {
+        self.cloudBtn.state  = NSControlStateValueOn;
+    }
     
     // 添加设置界面
     [self.settingField addSubview:self.videoSettingView];
     [self.settingField addSubview:self.audioSettingView];
-    
+    [self.settingField addSubview:self.subStreamSettingView];
+
     // 配置侧栏菜单
     [self _configureSidebarMenu];
 }
@@ -165,22 +339,25 @@ DECL_DEFAULT_KEY(QosMode)
     self.speakerVolumeSlider.floatValue = [self.trtcEngine getCurrentSpeakerDeviceVolume] / 100.f;
 }
 
--(void)windowWillClose:(NSNotification *)notification{
-    [self.trtcEngine stopCameraDeviceTest];
-    [self.trtcEngine stopMicDeviceTest];
-}
 
 - (void)_configureSidebarMenu {
+    self.videoSettingView.hidden     = YES;
+    self.audioSettingView.hidden     = YES;
+    self.subStreamSettingView.hidden = YES;
+    
     switch(_tabIndex) {
         case TXAVSettingTabIndexAudio: {
-            self.videoSettingView.hidden = YES;
             self.audioSettingView.hidden = NO;
             [self.sidebarMenu selectRowIndexes:[NSIndexSet indexSetWithIndex:1] byExtendingSelection:NO];
         } break;
         case TXAVSettingTabIndexVideo: {
             self.videoSettingView.hidden = NO;
-            self.audioSettingView.hidden = YES;
             [self.sidebarMenu selectRowIndexes:[NSIndexSet indexSetWithIndex:0] byExtendingSelection:NO];
+            [self.trtcEngine stopMicDeviceTest];
+            [self.trtcEngine stopSpeakerDeviceTest];
+        } break;
+        case TXAVSettingTabIndexSubStream: {
+            self.subStreamSettingView.hidden = NO;
             [self.trtcEngine stopMicDeviceTest];
             [self.trtcEngine stopSpeakerDeviceTest];
         } break;
@@ -195,20 +372,17 @@ DECL_DEFAULT_KEY(QosMode)
 
 #pragma mark - NSTableViewDataSource
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
-    return 2;
+    return _menu.count;
 }
 
 #pragma mark - NSTableViewDelegate
 - (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
     NSTableCellView *cellView = [tableView makeViewWithIdentifier:@"SettingModeRow" owner:tableView];
-    if (row == 0) {
-        cellView.textField.stringValue = @"视频";
-        cellView.imageView.image = [NSImage imageNamed:@"video_on"];
-    }
-    else if(row== 1){
-        cellView.textField.stringValue = @"音频";
-        cellView.imageView.image = [NSImage imageNamed:@"audio"];
-    }
+    NSArray *item = _menu[row];
+    
+    cellView.textField.stringValue = item.firstObject;
+    cellView.imageView.image = [NSImage imageNamed:item.lastObject];
+    
     return cellView;
 }
 
@@ -256,10 +430,20 @@ DECL_DEFAULT_KEY(QosMode)
     TRTCSettingBitrateTable *config = _paramArray[index];
     self.bitrateSlider.minValue = config.minBitrate;
     self.bitrateSlider.maxValue = config.maxBitrate;
-    self.bitrateSlider.doubleValue = CLAMP(self.bitrateSlider.doubleValue, config.minBitrate, config.maxBitrate);
-    [[NSUserDefaults standardUserDefaults] setInteger:config.resolution forKey:DefaultKeyResolution];
+    [self _setBitRate:self.bitrateSlider.doubleValue];
+    setGlobalDefaultResolution([self _resolutionFromIndex:index]);
     [self _updateVideoQuality];
 }
+
+- (void)_setBitRate:(double)bitrate {
+    NSInteger index = self.resolutionItems.indexOfSelectedItem;
+    TRTCSettingBitrateTable *config = _paramArray[index];
+    double value = CLAMP(bitrate, config.minBitrate, config.maxBitrate);
+    self.bitrateSlider.doubleValue = value;
+    self.bitrateLabel.stringValue = [NSString stringWithFormat:@"%.0lfkbps", value];
+    setGlobalDefaultBitrate(value);
+}
+
 
 // 帧率选则
 - (IBAction)selectFps:(NSPopUpButton *)sender {
@@ -272,9 +456,7 @@ DECL_DEFAULT_KEY(QosMode)
     } else if (fpsIndex == 2) {
         fps = 24;
     }
-
-    [[NSUserDefaults standardUserDefaults] setInteger:fps forKey:DefaultKeyFPS];
-
+    setGlobalDefaultFps(fps);
     [self _updateVideoQuality];
 }
 
@@ -282,7 +464,7 @@ DECL_DEFAULT_KEY(QosMode)
 - (IBAction)selectBitrate:(id)sender {
     NSSlider *slider = sender;
     int value = slider.intValue;
-    [[NSUserDefaults standardUserDefaults] setInteger:value forKey:DefaultKeyBitrate];
+    setGlobalDefaultBitrate(value);
     self.bitrateLabel.stringValue = [NSString stringWithFormat:@"%dkbps",value];
     [self _updateVideoQuality];
 }
@@ -309,7 +491,7 @@ DECL_DEFAULT_KEY(QosMode)
 // 开始扬声器测试
 - (IBAction)speakerTest:(NSButton *)sender {
     NSString *path = [[NSBundle mainBundle] pathForResource:@"test" ofType:@"mp3"];
-
+    
     NSButton *btn = (NSButton *)sender;
     if (btn.state == NSControlStateValueOn) {
         __weak __typeof(self) wself = self;
@@ -328,21 +510,21 @@ DECL_DEFAULT_KEY(QosMode)
 }
 
 // 更改流控模式，流畅还是清晰
-- (IBAction)onChangeControlMode:(NSButton *)sender {
+- (IBAction)onChangeQOSPreference:(NSButton *)sender {
     TRTCVideoQosPreference preference = sender.tag == 0 ? TRTCVideoQosPreferenceSmooth : TRTCVideoQosPreferenceClear;
-    [[NSUserDefaults standardUserDefaults] setInteger:preference forKey:DefaultKeyQosPreference];
-    [self _updateVideoQuality];
+    setGlobalDefaultQosPreference(preference);
+    [self _updateQOSParam];
 }
 
 //  更改流控方式，使用SDK固定配置还是使用下发配置
-//- (IBAction)onChangeControlType:(NSButton *)sender {
-//    TRTCQosControlMode mode = sender.tag == 0 ? TRTCQosControlModeClient : TRTCQosControlModeServer;
-//    [[NSUserDefaults standardUserDefaults] setInteger:mode forKey:DefaultKeyQosMode];
-//    [self _updateVideoQuality];
-//}
+- (IBAction)onChangeQOSControlMode:(NSButton *)sender {
+    TRTCQosControlMode mode = sender.tag == 0 ? TRTCQosControlModeClient : TRTCQosControlModeServer;
+    setGlobalDefaultQosControlMode(mode);
+    [self _updateQOSParam];
+}
 
 #pragma mark - Utils
-- (TRTCVideoResolution)resolutionFromIndex:(NSInteger)resolutionIndex
+- (TRTCVideoResolution)_resolutionFromIndex:(NSInteger)resolutionIndex
 {
     switch (resolutionIndex) {
         case 0:
@@ -384,9 +566,16 @@ DECL_DEFAULT_KEY(QosMode)
     
     TRTCVideoEncParam *config = [TRTCVideoEncParam new];
     config.videoBitrate = TRTCSettingWindowController.bitrate ;
-    config.videoResolution = [self resolutionFromIndex:resolutionIndex];
+    config.videoResolution = [self _resolutionFromIndex:resolutionIndex];
     config.videoFps = TRTCSettingWindowController.fps;
+    
     [self.trtcEngine setVideoEncoderParam:config];
+}
+- (void)_updateQOSParam {
+    TRTCNetworkQosParam *param = [[TRTCNetworkQosParam alloc] init];
+    param.preference = getGlobalDefaultQosPreference();
+    param.controlMode = getGlobalDefaultQosControlMode();
+    [self.trtcEngine setNetworkQosParam:param];
 }
 
 // 更新麦克音量指示器
@@ -398,6 +587,80 @@ DECL_DEFAULT_KEY(QosMode)
 // 更新扬声器音量指示器
 - (void)_updateOutputVolume:(NSInteger)volume {
     self.speakerVolumeMeter.doubleValue = volume / 255.0 * 10;
+}
+
+#pragma mark - Sub Stream Settings
+
+// 分辨率选则
+- (IBAction)subStram_selectResolution:(id)sender {
+    NSInteger index = self.resolutionItems.indexOfSelectedItem;
+    setGlobalDefaultSubStreamResolution([self _resolutionFromIndex:index]);
+    [self _subStram_updateVideoQuality];
+}
+
+- (void)_subStream_setBitRate:(double)bitrate {
+    NSInteger index = self.resolutionItems.indexOfSelectedItem;
+    TRTCSettingBitrateTable *config = _paramArray[index];
+    double value = CLAMP(bitrate, config.minBitrate, config.maxBitrate);
+    self.substreamBitrateSlider.minValue = config.minBitrate;
+    self.substreamBitrateSlider.maxValue = config.maxBitrate;
+    setGlobalDefaultSubStreamBitrate(value);
+    self.substreamBitrateSlider.doubleValue = value;
+    self.substreamBitrateLabel.stringValue = [NSString stringWithFormat:@"%.0lfkbps", value];
+    [self _subStram_updateVideoQuality];
+
+}
+
+
+// 帧率选则
+- (int)_subStreamFpsFromIndex:(NSInteger)fpsIndex {
+    int fps = 0;
+    if (fpsIndex == 0) {
+        fps = 10;
+    } else if (fpsIndex == 1) {
+        fps = 15;
+    } else if (fpsIndex == 2) {
+        fps = 20;
+    } else {
+        fps = 24;
+    }
+    return fps;
+}
+
+- (IBAction)subStram_selectFps:(NSPopUpButton *)sender {
+    NSInteger fpsIndex = sender.indexOfSelectedItem;
+    setGlobalDefaultSubStreamFps([self _subStreamFpsFromIndex:fpsIndex]);
+    [self _subStram_updateVideoQuality];
+}
+
+// 比特率选则
+- (IBAction)subStram_selectBitrate:(id)sender {
+    NSSlider *slider = sender;
+    int value = slider.intValue;
+    [self _subStream_setBitRate: value];
+}
+
+- (void)_subStram_updateVideoQuality {
+    NSInteger resolutionIndex = [self.substreamResolutionItems indexOfSelectedItem];
+    
+    TRTCVideoEncParam *config = [TRTCVideoEncParam new];
+    config.videoBitrate = self.substreamBitrateSlider.intValue;
+    config.videoResolution = [self _resolutionFromIndex:resolutionIndex];
+    
+    NSInteger fpsIndex = self.substreamFpsItems.indexOfSelectedItem;
+    int fps = 0;
+    if (fpsIndex == 0) {
+        fps = 10;
+    } else if (fpsIndex == 1) {
+        fps = 15;
+    } else if (fpsIndex == 2) {
+        fps = 20;
+    } else {
+        fps = 24;
+    }
+
+    config.videoFps =  fps;
+    [self.trtcEngine setSubStreamEncoderParam:config];
 }
 
 @end

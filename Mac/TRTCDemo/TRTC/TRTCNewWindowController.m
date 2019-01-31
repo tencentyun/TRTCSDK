@@ -12,13 +12,15 @@
  */
 
 #import "TRTCNewWindowController.h"
-#import "TRTCCloud.h"
+#import "SDKHeader.h"
 
 @interface TRTCNewWindowController()
 {
     UInt32 _sdkAppID;
     NSArray *_users;
+    TRTCAppScene _scene;
 }
+@property BOOL audioOnly;
 @end
 
 @implementation TRTCNewWindowController
@@ -62,6 +64,14 @@
     [alert setMessageText:message];
     [alert setAlertStyle:NSAlertStyleInformational];
     [alert runModal];
+}
+
+- (IBAction)onSelectRoomScene:(NSButton *)sender {
+    if (sender.tag == 0) {
+        _scene = TRTCAppSceneLIVE;
+    } else {
+        _scene = TRTCAppSceneVideoCall;
+    }
 }
 
 - (void)controlTextDidChange:(NSNotification *)notification {
@@ -119,7 +129,7 @@
 }
 
 - (void)enterRoomWithParam:(TRTCParams *)params {
-    _wc = [[TRTCMainWindowController alloc] initWithParams:params];
+    _wc = [[TRTCMainWindowController alloc] initWithParams:params scene:_scene audioOnly:self.audioOnly];
     [_wc.window orderFront:nil];
     [self.window close];
 }

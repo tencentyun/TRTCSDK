@@ -15,6 +15,8 @@
                 <outlet property="cameraItems" destination="EIX-vg-Irh" id="o8j-l6-zF4"/>
                 <outlet property="cameraPreview" destination="XTZ-1A-vJN" id="JTW-Zc-5KZ"/>
                 <outlet property="clearBtn" destination="u66-7h-nNI" id="C7h-g1-Hxn"/>
+                <outlet property="clientBtn" destination="KOF-FY-3t3" id="4my-DD-JKK"/>
+                <outlet property="cloudBtn" destination="iId-hW-o9Z" id="FN0-RY-FU7"/>
                 <outlet property="fpsItems" destination="XgV-Am-82s" id="LJ4-fv-e2I"/>
                 <outlet property="micItems" destination="yMp-MO-hpy" id="qtz-AQ-J9j"/>
                 <outlet property="micVolumeSlider" destination="cUG-ch-JAE" id="tZB-ZG-wlg"/>
@@ -25,6 +27,11 @@
                 <outlet property="speakerItems" destination="i9j-ro-YP9" id="FPa-5M-D0N"/>
                 <outlet property="speakerVolumeMeter" destination="gnK-mW-NBr" id="5Q3-BF-npK"/>
                 <outlet property="speakerVolumeSlider" destination="Ysw-t5-D6g" id="WEB-88-Kut"/>
+                <outlet property="subStreamSettingView" destination="AGu-L6-WsF" id="VYa-gB-54z"/>
+                <outlet property="substreamBitrateLabel" destination="FQI-eE-uht" id="wwz-ba-qLx"/>
+                <outlet property="substreamBitrateSlider" destination="JkF-Cm-cdv" id="h8N-za-ZHC"/>
+                <outlet property="substreamFpsItems" destination="4ax-QR-6Yv" id="Snn-hz-HdJ"/>
+                <outlet property="substreamResolutionItems" destination="nbr-Vs-9UJ" id="Gag-KK-7FZ"/>
                 <outlet property="videoSettingView" destination="b7d-u1-ZE9" id="ziV-Im-Mvb"/>
                 <outlet property="volumeMeter" destination="shb-Bh-b4T" id="UVd-PU-5Hu"/>
                 <outlet property="window" destination="F0z-JX-Cv5" id="gIp-Ho-8D9"/>
@@ -39,7 +46,7 @@
             <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
             <view key="contentView" wantsLayer="YES" id="se5-gp-TjO">
                 <rect key="frame" x="0.0" y="0.0" width="654" height="532"/>
-                <autoresizingMask key="autoresizingMask"/>
+                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
                     <scrollView fixedFrame="YES" autohidesScrollers="YES" horizontalLineScroll="28" horizontalPageScroll="10" verticalLineScroll="28" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Iby-Nk-hki">
                         <rect key="frame" x="-1" y="-1" width="133" height="534"/>
@@ -121,10 +128,57 @@
                     </customView>
                 </subviews>
             </view>
+            <toolbar key="toolbar" implicitIdentifier="D602EBA6-3A95-44A5-B90F-159EFC6ACFAE" centeredItem="MYc-s4-3CV" autosavesConfiguration="NO" allowsUserCustomization="NO" displayMode="iconOnly" sizeMode="regular" id="E0D-wZ-bLR">
+                <allowedToolbarItems>
+                    <toolbarItem implicitItemIdentifier="B4630459-2700-40CD-8F5F-E8B63F6349E4" label="" paletteLabel="" sizingBehavior="auto" id="MYc-s4-3CV">
+                        <nil key="toolTip"/>
+                        <textField key="view" horizontalHuggingPriority="251" verticalHuggingPriority="750" id="eez-gF-1Wk">
+                            <rect key="frame" x="0.0" y="14" width="35" height="17"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                            <textFieldCell key="cell" lineBreakMode="clipping" title="设置" id="Afc-Xi-InE">
+                                <font key="font" usesAppearanceFont="YES"/>
+                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
+                    </toolbarItem>
+                    <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="fEt-Xz-d8O"/>
+                    <toolbarItem implicitItemIdentifier="1F0C5E23-D5D8-4744-9BDF-032C4B841B3B" label="" paletteLabel="" tag="-1" sizingBehavior="auto" id="PQJ-Xn-cLv">
+                        <nil key="toolTip"/>
+                        <box key="view" borderType="none" title="Box" titlePosition="noTitle" transparent="YES" id="pum-ee-6Lj">
+                            <rect key="frame" x="0.0" y="14" width="76" height="33"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <view key="contentView" id="Cl5-Es-iyT">
+                                <rect key="frame" x="0.0" y="0.0" width="76" height="33"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <subviews>
+                                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tn9-9j-QUO">
+                                        <rect key="frame" x="0.0" y="0.0" width="76" height="25"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <buttonCell key="cell" type="check" title="保存设置" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="d9v-L9-AId">
+                                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                            <font key="font" usesAppearanceFont="YES"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <binding destination="Drv-s7-YI5" name="value" keyPath="values.TRTC_ShouldSaveToDefaults" id="EIs-J3-eHg"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </view>
+                        </box>
+                    </toolbarItem>
+                </allowedToolbarItems>
+                <defaultToolbarItems>
+                    <toolbarItem reference="PQJ-Xn-cLv"/>
+                    <toolbarItem reference="fEt-Xz-d8O"/>
+                    <toolbarItem reference="MYc-s4-3CV"/>
+                    <toolbarItem reference="fEt-Xz-d8O"/>
+                </defaultToolbarItems>
+            </toolbar>
             <connections>
                 <outlet property="delegate" destination="-2" id="0bl-1N-AYu"/>
             </connections>
-            <point key="canvasLocation" x="58" y="-5"/>
+            <point key="canvasLocation" x="336" y="-159"/>
         </window>
         <customView id="VRc-bg-2hi">
             <rect key="frame" x="0.0" y="0.0" width="524" height="532"/>
@@ -294,14 +348,14 @@
                     </connections>
                 </slider>
                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="p07-jw-ZmW">
-                    <rect key="frame" x="183" y="33" width="49" height="18"/>
+                    <rect key="frame" x="183" y="46" width="49" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="radio" title="流畅" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="2Vl-Wy-V61">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" usesAppearanceFont="YES"/>
                     </buttonCell>
                     <connections>
-                        <action selector="onChangeControlMode:" target="-2" id="FtZ-Rh-lVl"/>
+                        <action selector="onChangeQOSPreference:" target="-2" id="DwC-4R-Jq9"/>
                     </connections>
                 </button>
                 <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EIX-vg-Irh">
@@ -368,7 +422,7 @@
                     </connections>
                 </popUpButton>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xtb-Nw-bXQ">
-                    <rect key="frame" x="112" y="34" width="71" height="17"/>
+                    <rect key="frame" x="112" y="47" width="71" height="17"/>
                     <autoresizingMask key="autoresizingMask"/>
                     <textFieldCell key="cell" lineBreakMode="clipping" title="流控模式：" id="UjA-Hl-RXc">
                         <font key="font" usesAppearanceFont="YES"/>
@@ -395,18 +449,179 @@
                     </textFieldCell>
                 </textField>
                 <button verticalHuggingPriority="750" fixedFrame="YES" tag="1" translatesAutoresizingMaskIntoConstraints="NO" id="u66-7h-nNI">
-                    <rect key="frame" x="237" y="33" width="49" height="18"/>
+                    <rect key="frame" x="237" y="46" width="49" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="radio" title="清晰" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="A8G-Em-joN">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" usesAppearanceFont="YES"/>
                     </buttonCell>
                     <connections>
-                        <action selector="onChangeControlMode:" target="-2" id="tXu-bW-APF"/>
+                        <action selector="onChangeQOSPreference:" target="-2" id="rEI-QZ-gBX"/>
+                    </connections>
+                </button>
+                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KOF-FY-3t3">
+                    <rect key="frame" x="183" y="19" width="49" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="radio" title="本地" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="qiw-dp-ekV">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" usesAppearanceFont="YES"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="onChangeQOSControlMode:" target="-2" id="fwC-DE-H1b"/>
+                    </connections>
+                </button>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2rv-Zj-XeW">
+                    <rect key="frame" x="112" y="20" width="71" height="17"/>
+                    <autoresizingMask key="autoresizingMask"/>
+                    <textFieldCell key="cell" lineBreakMode="clipping" title="流控策略：" id="X8G-te-oEj">
+                        <font key="font" usesAppearanceFont="YES"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <button verticalHuggingPriority="750" fixedFrame="YES" tag="1" translatesAutoresizingMaskIntoConstraints="NO" id="iId-hW-o9Z">
+                    <rect key="frame" x="237" y="19" width="49" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="radio" title="云端" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="9QZ-JQ-iAc">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" usesAppearanceFont="YES"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="onChangeQOSControlMode:" target="-2" id="XlR-pc-Lxj"/>
                     </connections>
                 </button>
             </subviews>
-            <point key="canvasLocation" x="387" y="764"/>
+            <point key="canvasLocation" x="728" y="741"/>
+        </customView>
+        <userDefaultsController representsSharedInstance="YES" id="Drv-s7-YI5"/>
+        <customView id="AGu-L6-WsF">
+            <rect key="frame" x="0.0" y="0.0" width="524" height="532"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <box autoresizesSubviews="NO" fixedFrame="YES" borderType="line" title="辅流设置(录屏推流)" translatesAutoresizingMaskIntoConstraints="NO" id="R2F-ql-TWH">
+                    <rect key="frame" x="37" y="326" width="450" height="171"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <view key="contentView" id="KSG-GL-VnU">
+                        <rect key="frame" x="3" y="3" width="444" height="153"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="87d-3b-fwu">
+                                <rect key="frame" x="31" y="114" width="58" height="17"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" title="分辨率：" id="z8l-SL-8oD">
+                                    <font key="font" usesAppearanceFont="YES"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FQI-eE-uht">
+                                <rect key="frame" x="355" y="22" width="71" height="17"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" title="500kbps" id="qF6-ID-PDI">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MwM-XE-JBj">
+                                <rect key="frame" x="18" y="67" width="71" height="17"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" title="视频帧率：" id="vj7-DM-2Zg">
+                                    <font key="font" usesAppearanceFont="YES"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JkF-Cm-cdv">
+                                <rect key="frame" x="104" y="20" width="230" height="17"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <sliderCell key="cell" continuous="YES" state="on" alignment="left" minValue="200" maxValue="5000" doubleValue="500" tickMarkPosition="above" sliderType="linear" id="Uam-bU-2Pk"/>
+                                <connections>
+                                    <action selector="subStram_selectBitrate:" target="-2" id="ANV-fK-6L5"/>
+                                </connections>
+                            </slider>
+                            <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4ax-QR-6Yv">
+                                <rect key="frame" x="104" y="62" width="231" height="25"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="Ok1-GK-b1o" id="38r-sH-nYA">
+                                    <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="menu"/>
+                                    <menu key="menu" id="GJs-ns-QkM">
+                                        <items>
+                                            <menuItem title="Item 1" state="on" id="Ok1-GK-b1o"/>
+                                            <menuItem title="Item 2" id="yUw-gA-gwt"/>
+                                            <menuItem title="Item 3" id="G6w-0w-KgX"/>
+                                        </items>
+                                    </menu>
+                                </popUpButtonCell>
+                                <connections>
+                                    <action selector="subStram_selectFps:" target="-2" id="QrM-sK-unN"/>
+                                </connections>
+                            </popUpButton>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kSN-LT-rkw">
+                                <rect key="frame" x="18" y="20" width="71" height="17"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" title="视频码率：" id="qw5-dJ-lHZ">
+                                    <font key="font" usesAppearanceFont="YES"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nbr-Vs-9UJ">
+                                <rect key="frame" x="104" y="109" width="231" height="25"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="3bH-Bc-jGK" id="0PO-3a-pZI">
+                                    <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="menu"/>
+                                    <menu key="menu" id="TbP-3G-x0h">
+                                        <items>
+                                            <menuItem title="Item 1" state="on" id="3bH-Bc-jGK"/>
+                                            <menuItem title="Item 2" id="1f1-KO-B5Z"/>
+                                            <menuItem title="Item 3" id="e4y-Kz-PxD"/>
+                                        </items>
+                                    </menu>
+                                </popUpButtonCell>
+                                <connections>
+                                    <action selector="subStram_selectResolution:" target="-2" id="8Tn-AQ-usq"/>
+                                </connections>
+                            </popUpButton>
+                        </subviews>
+                    </view>
+                </box>
+                <box fixedFrame="YES" title="推流设置" translatesAutoresizingMaskIntoConstraints="NO" id="hR6-UP-YU4">
+                    <rect key="frame" x="37" y="219" width="450" height="90"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <view key="contentView" id="m35-W7-K5B">
+                        <rect key="frame" x="3" y="3" width="444" height="72"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8Vg-ZR-3XH">
+                                <rect key="frame" x="10" y="45" width="102" height="18"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="check" title="默认观看小流" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="wOG-Ru-O6P">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" usesAppearanceFont="YES"/>
+                                </buttonCell>
+                                <connections>
+                                    <binding destination="-2" name="value" keyPath="playSmallStream" id="Ve5-L7-aGr"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="f6E-6V-bfj">
+                                <rect key="frame" x="10" y="15" width="151" height="18"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="check" title="开启双路编码(推小流)" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="FLK-JV-j90">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" usesAppearanceFont="YES"/>
+                                </buttonCell>
+                                <connections>
+                                    <binding destination="-2" name="value" keyPath="pushDoubleStream" id="Z84-td-AVA"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                    </view>
+                </box>
+            </subviews>
+            <point key="canvasLocation" x="167" y="741"/>
         </customView>
     </objects>
     <resources>

@@ -7,8 +7,9 @@
 //
 
 #import "TRTCMainWindowController.h"
-#import "TRTCCloud.h"
+#import "SDKHeader.h"
 #import <AVFoundation/AVFoundation.h>
+#import "TXCaptureSourceWindowController.h"
 #import "AppDelegate.h"
 #import "TXRenderView.h"
 #import "HoverView.h"
@@ -19,6 +20,8 @@
 
 // 进房参数
 @property(nonatomic,readonly,strong) TRTCParams *currentUserParam;
+@property(nonatomic,readonly,assign) TRTCAppScene scene;
+@property(nonatomic,readonly,assign) BOOL audioOnly;
 // 用于鼠标移出后隐藏菜单栏
 @property(nonatomic,strong) NSTrackingArea *trackingArea;
 @property (nonatomic, copy) NSTimer *mouseTimer;
@@ -37,6 +40,11 @@
 @property(nonatomic,strong) NSMutableArray *allUids;
 // 1. 画廊模式, 2. 演讲者模式
 @property(nonatomic,assign) int layoutStyle;
+
+// 屏幕捕捉
+@property(nonatomic,strong) TXCaptureSourceWindowController *captureSourceWindowController;
+@property(nonatomic,copy) NSString * presentingScreenCaptureUid;
+
 // 各路视频的旋转方向, key为uid
 @property(nonatomic,strong) NSMutableDictionary<NSString *, NSNumber *> *rotationState;
 // 各路视频的大小流设置, key为uid
@@ -46,10 +54,11 @@
 
 @implementation TRTCMainWindowController
 
-- (instancetype)initWithParams:(TRTCParams *)params {
+- (instancetype)initWithParams:(TRTCParams *)params scene:(TRTCAppScene)scene audioOnly:(BOOL)audioOnly {
     if (self = [super initWithWindowNibName:@"TRTCMainWindowController"]) {
         _currentUserParam = params;
-        
+        _scene = scene;
+        _audioOnly = audioOnly;
         self.layoutStyle = 1;
         self.trtcEngine = [(AppDelegate*)[NSApp delegate] getTRTCEngine];
         self.trtcEngine.delegate = self;
@@ -62,12 +71,17 @@
     return self;
 }
 
+- (void)awakeFromNib {
+    [super awakeFromNib];
+}
+
 - (void)_configButton:(NSButton *)button title:(NSString *)title color:(NSColor *)color {
     button.title = title;
     button.attributedTitle = [[NSMutableAttributedString alloc] initWithString:title attributes:@{NSForegroundColorAttributeName:color}];
     button.imagePosition = NSImageAbove;
     button.imageScaling = NSImageScaleNone;
 }
+
 - (void)_configButton:(NSButton *)button title:(NSString *)title {
     [self _configButton:button title:title color:[NSColor whiteColor]];
 }
@@ -85,7 +99,7 @@
 // 窗口加载后初始化控件
 - (void)windowDidLoad {
     [super windowDidLoad];
-    
+
     // 重置美颜窗口位置与参数
     NSRect frame = self.beautyPanel.frame;
     frame.origin.x = NSMinX(self.window.frame) - NSWidth(frame);
@@ -124,6 +138,7 @@
     
     // 配置工具栏按钮样式
     [self _configButton:self.micBtn title:@"静音"];
+    [self _configButton:self.screenShareBtn title:@"分享"];
     [self _configButton:self.videoBtn title:@"停止视频"];
     [self _configButton:self.beautyBtn title:@"美颜" color:[NSColor redColor]];
     [self _configButton:self.closeBtn title:@"结束会议" color:[NSColor redColor]];
@@ -139,6 +154,8 @@
     [self.audioSelectBtn setHover];
     [self.closeBtn setHover];
     [self.videoLayoutStyleBtn setHover];
+    [self.screenShareBtn setHover];
+
     // 进房
     [self enterRoom];
 }
@@ -201,6 +218,8 @@
     [self.mouseTimer invalidate];
     self.mouseTimer = nil;
     [(AppDelegate*)[NSApp delegate] closePreference];
+    [self.beautyPanel close];
+    [self.capturePreviewWindow close];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"Logout" object:self];
 }
 
@@ -240,8 +259,11 @@
 
 
 // 本地预览视图
-- (NSView *)localVideoRenderView {
+- (TXRenderView *)localVideoRenderView {
     return _allRenderViews[self.userId];
+}
+- (TXRenderView *)renderViewForUser:(NSString *)userId {
+    return _allRenderViews[userId];
 }
 
 #pragma mark -
@@ -339,6 +361,33 @@
     [self.cameraArr insertObject:@"选择摄像头" atIndex:0];
     [self.videoSelectView reloadData];
 }
+
+- (IBAction)onShowInputSource:(id)sender {
+    self.captureSourceWindowController = [[TXCaptureSourceWindowController alloc] initWithTRTCCloud:_trtcEngine];
+    __weak TRTCMainWindowController *wself = self;
+    self.captureSourceWindowController.onSelectSource = ^(TRTCScreenCaptureSourceInfo * _Nonnull source) {
+        if (source == nil) {
+            [wself.trtcEngine startLocalPreview:wself.allRenderViews[wself.userId]];
+        } else if (source.type == TRTCScreenCaptureSourceTypeWindow) {
+            [wself.trtcEngine selectScreenCaptureTarget:source rect:CGRectZero capturesCursor:NO highlight:YES];
+        } else if (source.type == TRTCScreenCaptureSourceTypeScreen) {
+            [wself.trtcEngine selectScreenCaptureTarget:source rect:CGRectZero capturesCursor:NO highlight:YES];
+        }
+        if (source == nil) {
+            [wself.trtcEngine stopScreenCapture];
+        } else {
+            [wself.trtcEngine startScreenCapture:wself.capturePreviewWindow.contentView];
+        }
+        [wself.window endSheet:wself.captureSourceWindowController.window];
+        [wself.captureSourceWindowController.window close];
+    };
+    NSRect frame = self.window.frame;
+    NSWindow *window = self.captureSourceWindowController.window;
+    [window setFrame:frame display:YES animate:NO];
+    [self.window beginSheet:window completionHandler:nil];
+    [self.window addChildWindow:window ordered:NSWindowAbove];
+}
+
 - (IBAction)closeRoom:(id)sender {
     [self close];
     _trtcEngine = nil;
@@ -389,6 +438,13 @@
 - (void)onCameraDidReady {
     
 }
+#pragma mark - 播放录屏
+- (void)_playScreenCaptureForUser:(NSString *)userId {
+    [self.trtcEngine startRemoteSubStreamView:userId view:self.capturePreviewWindow.contentView];
+    [self.capturePreviewWindow orderFront:self];
+    self.capturePreviewWindow.title = [NSString stringWithFormat:@"%@的屏幕分享", userId];
+    self.presentingScreenCaptureUid = userId;
+}
 
 #pragma mark - 进房与音视频事件
 /**
@@ -405,27 +461,33 @@
     [self.trtcEngine setLocalViewFillMode:TRTCVideoFillMode_Fit];
     
     //        [self.trtcEngine setPriorRemoteVideoStreamType:TRTCVideoStreamTypeSmall];
-    
-    TRTCVideoEncParam *smallVideoConfig = [[TRTCVideoEncParam alloc] init];
-    smallVideoConfig.videoResolution = TRTCVideoResolution_160_120;
-    smallVideoConfig.videoFps = 15;
-    smallVideoConfig.videoBitrate = 100;
-    
-    [self.trtcEngine enableEncSmallVideoStream:YES withQuality:smallVideoConfig];
+    if (TRTCSettingWindowController.pushDoubleStream) {
+        TRTCVideoEncParam *smallVideoConfig = [[TRTCVideoEncParam alloc] init];
+        smallVideoConfig.videoResolution = TRTCVideoResolution_160_120;
+        smallVideoConfig.videoFps = 15;
+        smallVideoConfig.videoBitrate = 100;
+        
+        [self.trtcEngine enableEncSmallVideoStream:TRTCSettingWindowController.pushDoubleStream
+                                       withQuality:smallVideoConfig];
+    }
     //        config.renderMode = ETRTCVideoRenderModeFit; // 默认带黑边的渲染模式
     
     // 开启视频采集预览
     NSView *videoView = [self addRenderViewAt:self.userId];
     [self.trtcEngine setLocalViewFillMode:TRTCVideoFillMode_Fit];
-    [self.trtcEngine startLocalPreview:videoView];
+    if (!self.audioOnly) {
+        [self.trtcEngine startLocalPreview:videoView];
+    }
     [self.trtcEngine startLocalAudio];
     // 进房
-    [self.trtcEngine enterRoom:param appScene:TRTCAppSceneVideoCall];
+    [self.trtcEngine enterRoom:param appScene:_scene];
 }
 
 - (void)onEnterRoom:(NSInteger)elapsed{
 //  [self.trtcEngine enableAudioVolumeIndication:0.1 smooth:3];
-    
+    if (self.audioOnly) {
+        [self.trtcEngine muteLocalVideo:YES];
+    }
     self.controlBar.hidden = NO;
     [self updateLayoutVideoFrame];
     
@@ -438,13 +500,35 @@
 }
 
 - (void)onUserExit:(NSString *)userId reason:(NSInteger)reason {
-    [self removeRenderViewAt:userId];
+    [self onUserSubStreamAvailable:userId available:NO];
+    [self removeRenderViewForUser:userId];
+}
+
+- (void)onUserSubStreamAvailable:(NSString *)userId available:(BOOL)available {
+    if (available) {
+        if (![self.capturePreviewWindow isVisible]) {
+            [self _playScreenCaptureForUser:userId];
+        }
+        TXRenderView *renderView = [self renderViewForUser: userId];
+        [renderView addToolbarItem:@"屏" target:self action:@selector(onRenderViewToolbarScreenShareClicked:) context:userId];
+    } else {
+        if ([userId isEqualToString:self.presentingScreenCaptureUid]){
+            [self.capturePreviewWindow orderOut:nil];
+        }
+        TXRenderView *renderView = [self renderViewForUser: userId];
+        [renderView removeToolbarWithTitle:@"屏"];
+    }
 }
 
 - (void)onUserEnter:(NSString *)userId {
     NSView *videoView = [self addRenderViewAt:userId];
     [self.trtcEngine startRemoteView:userId view:videoView];
     [self.trtcEngine setRemoteViewFillMode:userId mode:TRTCVideoFillMode_Fit];
+    if (TRTCSettingWindowController.playSmallStream) {
+        self.bigSmallStreamState[userId] = @(TRTCVideoStreamTypeSmall);
+        [self.trtcEngine setRemoteVideoStreamType:userId type:TRTCVideoStreamTypeSmall];
+    }
+
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self updateLayoutVideoFrame];
     });
@@ -490,6 +574,7 @@
         if (![videoId isEqualToString:self.userId]) {
             [videoView addToolbarItem:@"流" target:self action:@selector(onRenderViewToolbarStreamClicked:) context:videoId];
         }
+
         if (![videoId isEqualToString:self.userId] && [_allUids.firstObject isEqualToString:self.userId]) {
             [_allUids removeObject:self.userId];
             [_allUids insertObject:self.userId atIndex:0];
@@ -518,12 +603,12 @@
     return videoView;
 }
 
-- (void)removeRenderViewAt:(NSString *)videoId{
-    NSView *videoView = _allRenderViews[videoId];
+- (void)removeRenderViewForUser:(NSString *)userId{
+    NSView *videoView = _allRenderViews[userId];
     [videoView removeFromSuperview];
-    [_allRenderViews removeObjectForKey:videoId];
-    [_allUids removeObject:videoId];
-    [self.rotationState removeObjectForKey:videoId];
+    [_allRenderViews removeObjectForKey:userId];
+    [_allUids removeObject:userId];
+    [self.rotationState removeObjectForKey:userId];
     [self updateLayoutVideoFrame];
 }
 
@@ -809,10 +894,15 @@
 
 - (void)onRenderViewToolbarStreamClicked:(NSString *)userId {
     NSNumber *box = self.bigSmallStreamState[userId];
-    TRTCVideoStreamType type = box ? box.integerValue : TRTCVideoStreamTypeBig;
-    type = type == TRTCVideoStreamTypeBig ? TRTCVideoStreamTypeSmall : TRTCVideoStreamTypeBig;
+    TRTCVideoStreamType typeList[] = {TRTCVideoStreamTypeBig, TRTCVideoStreamTypeSmall};
+    NSInteger index = (box.integerValue + 1) % 2;
+    TRTCVideoStreamType type = typeList[index];
     self.bigSmallStreamState[userId] = @(type);
     [self.trtcEngine setRemoteVideoStreamType:userId type:type];
+}
+
+- (void)onRenderViewToolbarScreenShareClicked:(NSString *)userId {
+    [self _playScreenCaptureForUser:userId];
 }
 @end
 

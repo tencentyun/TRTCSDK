@@ -15,33 +15,33 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			eH+iTxUlUBRrymUfgypkDWasVKU=
+			vVTLeMbVYD+MFfcjRjOObZ64rYI=
 			</data>
 			<key>hash2</key>
 			<data>
-			aicPYuOxk5QtiJc2kx2oQpPD1H+qBly+EBEgpiTy/FU=
+			t7x1y0S7CEVBvgDiGJlpcIgCyTdw3oFa2WcjMXt03kQ=
 			</data>
 		</dict>
 		<key>Headers/TRTCCloudDef.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			1KWZD29SU1KWuniPeepMqJ6caBE=
+			44nQBcDOmzWfitguEdwF+LfpxQM=
 			</data>
 			<key>hash2</key>
 			<data>
-			x0l1hUT60+COO+SxKh2Ds2K4PREIU9hI9zPuRbbrbqk=
+			+KtSfWIdc/3VwMOdosXeZR95oZMCCc11TtZMTGqbXY0=
 			</data>
 		</dict>
 		<key>Headers/TRTCCloudDelegate.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			0Zf+IVbqdB90wAUktwXRMLX7kEA=
+			kbFj4pd+PaYTeGkWhCtCbwJroC4=
 			</data>
 			<key>hash2</key>
 			<data>
-			92kTnXnPZ7SV0Ci210cdisxsj9j4+MuyCKHr4B67xmY=
+			uYepS/akKVIR7g3p4HViQDozu8UR/fW4OtbrNVeJ10w=
 			</data>
 		</dict>
 		<key>Headers/TRTCStatistics.h</key>
@@ -59,11 +59,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			o6oHpMw7WiZXNs+JfI6U3kmoC0w=
+			P1k/a1c62xqYBYXFprM3DyaKZn0=
 			</data>
 			<key>hash2</key>
 			<data>
-			+jt0Hvbge7N8fgxJCE7icF4LfCKHparEp4ZRtk6A/QU=
+			PlWeMGzY1XNdXoxY0PGqbw+NPOyswtDNTbwW8d/Jwgw=
 			</data>
 		</dict>
 		<key>Headers/TXLiteAVSDK.h</key>

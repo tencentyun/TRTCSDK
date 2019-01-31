@@ -78,34 +78,41 @@ NS_ASSUME_NONNULL_BEGIN
 /// @{
 
 /**
- * 3.1 成员进入房间事件
+ * 3.1 userid对应的成员的进房通知，您可以在这个回调中调用 startRemoteView 显示该 userid 的视频画面
  * @param userId 用户标识
  */
 - (void)onUserEnter:(NSString *)userId;
 
 /**
- * 3.2 成员离开房间事件
+ * 3.2 userid对应的成员的退房通知，您可以在这个回调中调用 stopRemoteView 关闭该 userid 的视频画面
  * @param userId 用户标识
  * @param reason 离开原因代码
  */
 - (void)onUserExit:(NSString *)userId reason:(NSInteger)reason; 
 
 /**
- * 3.3 成员屏蔽自己的画面
+ * 3.3 userid对应的远端主路（即摄像头）画面的状态通知
  * @param userId 用户标识
  * @param available 画面是否开启
  */
 - (void)onUserVideoAvailable:(NSString *)userId available:(BOOL)available;
 
 /**
- * 3.4 成员屏蔽自己的声音
+  *3.4 userid对应的远端辅路（屏幕分享等）画面的状态通知
+  * @param userId 用户标识
+  * @param available 屏幕分享是否开启
+  */
+- (void)onUserSubStreamAvailable:(NSString *)userId available:(BOOL)available;
+
+/**
+ * 3.5 userid对应的远端声音的状态通知
  * @param userId 用户标识
  * @param available 声音是否开启
  */
 - (void)onUserAudioAvailable:(NSString *)userId available:(BOOL)available;
 
 /**
- * 3.5 成员语音音量回调
+ * 3.6 userid对应的成员语音音量
  * 通过调用 TRTCCloud enableAudioVolumeEvaluation:smooth: 来开关这个回调
  * @param userVolumes  每位发言者的语音音量，取值范围 0~100
  * @param totalVolume  总的语音音量, 取值范围 0~100
@@ -275,27 +282,64 @@ NS_ASSUME_NONNULL_BEGIN
  * @param missed 丢失的消息数量
  */
 - (void)onMissCustomCmdMsgUserId:(NSString *)userId cmdID:(NSInteger)cmdID errCode:(NSInteger)errCode missed:(NSInteger)missed;
-
 /// @}
 
 /////////////////////////////////////////////////////////////////////////////////
 //
-//                      （九）旁路转推和混流回调
+//                      （九）CDN旁路转推回调
 //
 /////////////////////////////////////////////////////////////////////////////////
-/// @name 旁路转推和混流回调
+/// @name CDN旁路转推回调
 /// @{
+	
+/**
+ * 旁路推流到CDN的回调，对应于 TRTCCloud 的 startPublishCDNStream() 接口
+ *
+ * @note Start回调如果成功，只能说明转推请求已经成功告知给腾讯云，如果目标服务器有异常，还是有可能会转推失败
+ */	
 - (void)onStartPublishCDNStream:(int)err errMsg:(NSString *)errMsg;
 - (void)onStopPublishCDNStream:(int)err errMsg:(NSString *)errMsg;
-- (void)onStartCloudMixTranscoding:(int)err errMsg:(NSString *)errMsg;
-- (void)onStopCloudMixTranscoding:(int)err errMsg:(NSString *)errMsg;
+
 /// @}
 
+/////////////////////////////////////////////////////////////////////////////////
+//
+//                      （十）屏幕分享回调
+//
+//
+/////////////////////////////////////////////////////////////////////////////////
+
+/// @name 自定义消息的接收回调
+/// @{
+
+/**
+ * 当屏幕分享开始时，SDK会通过此回调通知
+ */
+- (void)onScreenCaptureStarted;
+
+/**
+ * 当屏幕分享暂停时，SDK会通过此回调通知
+ * @param reason   原因，0:用户主动暂停 1:屏幕窗口不可见暂停
+ */
+- (void)onScreenCapturePaused:(int)reason;
+
+/**
+ * 当屏幕分享开始时，SDK会通过此回调通知
+ * @param reason   原因，0:用户主动恢复 1:屏幕窗口恢复可见导致恢复分享
+ */
+- (void)onScreenCaptureResumed:(int)reason;
+
+/**
+ * 当屏幕分享开始时，SDK会通过此回调通知
+ * @param reason   原因，0:用户主动停止 1:屏幕窗口关闭导致停止
+ */
+- (void)onScreenCaptureStoped:(int)reason;
+/// @}
 @end
 
 /////////////////////////////////////////////////////////////////////////////////
 //
-//                      （十）自定义视频渲染回调
+//                      （十一）自定义视频渲染回调
 //
 /////////////////////////////////////////////////////////////////////////////////
 /**
@@ -316,7 +360,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /////////////////////////////////////////////////////////////////////////////////
 //
-//                      （十一）Log 信息回调
+//                      （十二）Log 信息回调
 //
 /////////////////////////////////////////////////////////////////////////////////
 
