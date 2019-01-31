@@ -21,6 +21,8 @@
 #import "TRTCGetUserIDAndUserSig.h"
 #import "MBProgressHUD.h"
 
+#import "AppDelegate.h"
+
 @interface TRTCNewViewController () <UITextFieldDelegate,UIPickerViewDelegate, UIPickerViewDataSource> {
     UILabel           *_tipLabel;
     UITextField       *_roomIdTextField;
@@ -32,6 +34,7 @@
     uint32_t         _sdkAppid;
     NSString          *_selfPwd;
 }
+@property (nonatomic, retain) UISwitch* talkModeSwitch;
 @end
 
 @implementation TRTCNewViewController
@@ -94,6 +97,17 @@
     [_joinBtn setTitle:@"创建并自动加入该房间" forState:UIControlStateNormal];
     [_joinBtn addTarget:self action:@selector(onJoinBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_joinBtn];
+#ifndef APPSTORE
+    _talkModeSwitch = [[UISwitch alloc] init];
+    _talkModeSwitch.frame = CGRectMake(_userIdTextField.width - _talkModeSwitch.width - 10, _userIdTextField.bottom + 10, _talkModeSwitch.width, _talkModeSwitch.height);
+    [self.view addSubview:self.talkModeSwitch];
+    UILabel* talkModeLabel = [[UILabel alloc] init];
+    talkModeLabel.textColor = userTipLabel.textColor;
+    talkModeLabel.text = @"纯音频模式";
+    [talkModeLabel sizeToFit];
+    talkModeLabel.center = CGPointMake(userTipLabel.x + talkModeLabel.width / 2, _talkModeSwitch.center.y);
+    [self.view addSubview:talkModeLabel];
+#endif
     _userInfo = [[TRTCGetUserIDAndUserSig alloc] init];
     if (_userInfo.configSdkAppid) {
         _userIdPicker = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 200)];
@@ -112,6 +126,8 @@
         [self.navigationController presentViewController:ac animated:YES completion:nil];
         return;
     }
+    
+    HelpBtnUI(TRTC)
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -154,6 +170,7 @@
     [[NSUserDefaults standardUserDefaults] setObject:userId forKey:KEY_CURRENT_USERID];
     [[NSUserDefaults standardUserDefaults] synchronize];
     TRTCMainViewController *vc = [[TRTCMainViewController alloc] init];
+    vc.pureAudioMode = _talkModeSwitch.isOn;
     
     TRTCParams *param = [[TRTCParams alloc] init];
     param.sdkAppId = _sdkAppid;
@@ -171,6 +188,8 @@
             [self.navigationController pushViewController:vc animated:YES];
         }
     }
+    
+    
 }
 
 - (NSString *)getUserId {

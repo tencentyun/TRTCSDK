@@ -248,7 +248,7 @@ typedef enum : NSUInteger {
     NSMutableArray *views = @[].mutableCopy;
     if ([_mainViewUserId isEqual:@""] || [_mainViewUserId isEqual:_selfUserID]) {
         [views addObject:_localView];
-    } else {
+    } else if([_remoteViewDic objectForKey:_mainViewUserId] != nil) {
         [views addObject:_remoteViewDic[_mainViewUserId]];
     }
     for (id userID in _remoteViewDic) {
@@ -299,40 +299,43 @@ typedef enum : NSUInteger {
     // 设置视频编码参数，包括分辨率、帧率、码率等等，这些编码参数来自于 TRTCSettingViewController 的设置
 	// 注意（1）：不要在码率很低的情况下设置很高的分辨率，会出现较大的马赛克
 	// 注意（2）：不要设置超过25FPS以上的帧率，因为电影才使用24FPS，我们一般推荐15FPS，这样能将更多的码率分配给画质
-    TRTCVideoEncParam* encParam = [TRTCVideoEncParam new];
-    encParam.videoResolution = [TRTCSettingViewController getResolution];
-    encParam.videoBitrate = [TRTCSettingViewController getBitrate];
-    encParam.videoFps = [TRTCSettingViewController getFPS];
-    encParam.resMode = TRTCVideoResolutionModePortrait;
-    [_trtc setVideoEncoderParam:encParam];
-    
-    TRTCNetworkQosParam * qosParam = [TRTCNetworkQosParam new];
-    qosParam.preference = [TRTCSettingViewController getQosType] + 1;
-    qosParam.controlMode = [TRTCSettingViewController getQosCtrlType];
-    [_trtc setNetworkQosParam:qosParam];
-	
-	//小画面的编码器参数设置
-	//TRTC SDK 支持大小两路画面的同时编码和传输，这样网速不理想的用户可以选择观看小画面
-	//注意：iPhone & Android 不要开启大小双路画面，非常浪费流量，大小路画面适合 Windows 和 MAC 这样的有线网络环境
-    TRTCVideoEncParam* smallVideoConfig = [TRTCVideoEncParam new];
-    smallVideoConfig.videoResolution = TRTCVideoResolution_160_90;
-    smallVideoConfig.videoFps = [TRTCSettingViewController getFPS];
-    smallVideoConfig.videoBitrate = 100;
-	
-    [_trtc enableEncSmallVideoStream:[TRTCSettingViewController getEnableSmallStream] withQuality:smallVideoConfig];
-    [_trtc setPriorRemoteVideoStreamType:[TRTCSettingViewController getPriorSmallStream]];
-	
-//    [_trtc setLocalViewFillMode:TRTCVideoFillMode_Fit];
-    [_trtc setGSensorMode:TRTCGSensorMode_UIAutoLayout];
+    if (!_pureAudioMode) {
+        TRTCVideoEncParam* encParam = [TRTCVideoEncParam new];
+        encParam.videoResolution = [TRTCSettingViewController getResolution];
+        encParam.videoBitrate = [TRTCSettingViewController getBitrate];
+        encParam.videoFps = [TRTCSettingViewController getFPS];
+        encParam.resMode = TRTCVideoResolutionModePortrait;
+        [_trtc setVideoEncoderParam:encParam];
+        
+        TRTCNetworkQosParam * qosParam = [TRTCNetworkQosParam new];
+        qosParam.preference = [TRTCSettingViewController getQosType] + 1;
+        qosParam.controlMode = [TRTCSettingViewController getQosCtrlType];
+        [_trtc setNetworkQosParam:qosParam];
+        
+        //小画面的编码器参数设置
+        //TRTC SDK 支持大小两路画面的同时编码和传输，这样网速不理想的用户可以选择观看小画面
+        //注意：iPhone & Android 不要开启大小双路画面，非常浪费流量，大小路画面适合 Windows 和 MAC 这样的有线网络环境
+        TRTCVideoEncParam* smallVideoConfig = [TRTCVideoEncParam new];
+        smallVideoConfig.videoResolution = TRTCVideoResolution_160_90;
+        smallVideoConfig.videoFps = [TRTCSettingViewController getFPS];
+        smallVideoConfig.videoBitrate = 100;
+        
+        [_trtc enableEncSmallVideoStream:[TRTCSettingViewController getEnableSmallStream] withQuality:smallVideoConfig];
+        [_trtc setPriorRemoteVideoStreamType:[TRTCSettingViewController getPriorSmallStream]];
+        
+    //    [_trtc setLocalViewFillMode:TRTCVideoFillMode_Fit];
+        [_trtc setGSensorMode:TRTCGSensorMode_UIAutoLayout];
 
-    // 开启视频采集预览
-    [_trtc startLocalPreview:YES view:_localView];
+        // 开启视频采集预览
+        [_trtc startLocalPreview:YES view:_localView];
+    }
     [_trtc startLocalAudio];
     
     [self toastTip:@"开始进房"];
     
     // 进房
-    [_trtc enterRoom:self.param appScene:TRTCAppSceneVideoCall];
+    TRTCAppScene scene = [TRTCSettingViewController getAppScene];
+    [_trtc enterRoom:self.param appScene:scene];
 }
 
 - (void)onStatistics:(TRTCStatistics *)statistics
@@ -443,6 +446,7 @@ typedef enum : NSUInteger {
     
 }
 
+
 /**
  * WARNING 大多是不可恢复的错误，需要通过 UI 提示用户
  */
@@ -485,7 +489,6 @@ typedef enum : NSUInteger {
     // 启动远程画面的解码和显示逻辑，FillMode 可以设置是否显示黑边
     [_trtc startRemoteView:userId view:remoteView];
     [_trtc setRemoteViewFillMode:userId mode:TRTCVideoFillMode_Fit];
-    
     // 将新进来的成员设置成大画面
     _mainViewUserId = userId;
     
@@ -501,8 +504,13 @@ typedef enum : NSUInteger {
     [playerView removeFromSuperview];
     [_remoteViewDic removeObjectForKey:userId];
     
+    NSString* subViewId = [NSString stringWithFormat:@"%@-sub", userId];
+    UIView *subStreamPlayerView = [_remoteViewDic objectForKey:subViewId];
+    [subStreamPlayerView removeFromSuperview];
+    [_remoteViewDic removeObjectForKey:subViewId];
+    
     // 如果该成员是大画面，则当其离开后，大画面设置为本地推流画面
-    if ([userId isEqual:_mainViewUserId]) {
+    if ([userId isEqual:_mainViewUserId] || [subViewId isEqualToString:_mainViewUserId]) {
         _mainViewUserId = _selfUserID;
     }
     
@@ -518,7 +526,34 @@ typedef enum : NSUInteger {
 - (void)onUserVideoAvailable:(NSString *)userId available:(BOOL)available
 {
     NSLog(@"onUserVideoAvailable:userId:%@ alailable:%u", userId, available);
+    
 
+}
+
+- (void)onUserSubStreamAvailable:(NSString *)userId available:(BOOL)available
+{
+    NSLog(@"onUserSubStreamAvailable:userId:%@ alailable:%u", userId, available);
+    NSString* viewId = [NSString stringWithFormat:@"%@-sub", userId];
+    if (available) {
+        UIView *remoteView = [[UIView alloc] init];
+        [remoteView setBackgroundColor:UIColorFromRGB(0x262626)];
+        [self.view addSubview:remoteView];
+        [_remoteViewDic setObject:remoteView forKey:viewId];
+        
+        [_trtc startRemoteSubStreamView:userId view:remoteView];
+        [_trtc setRemoteSubStreamViewFillMode:userId mode:TRTCVideoFillMode_Fit];
+    }
+    else {
+        UIView *playerView = [_remoteViewDic objectForKey:viewId];
+        [playerView removeFromSuperview];
+        [_remoteViewDic removeObjectForKey:viewId];
+        [_trtc stopRemoteSubStreamView:userId];
+        
+        if ([viewId isEqual:_mainViewUserId]) {
+            _mainViewUserId = _selfUserID;
+        }
+    }
+    [self relayout];
 }
 
 - (void)onAudioRouteChanged:(TRTCAudioRoute)route fromRoute:(TRTCAudioRoute)fromRoute {
@@ -538,7 +573,8 @@ typedef enum : NSUInteger {
     
     TRTCNetworkQosParam * qosParam = [TRTCNetworkQosParam new];
     qosParam.preference = property.qosType + 1;
-    qosParam.controlMode = TRTCQosControlModeServer;
+    TRTCQosControlMode qosControl = property.qosControl;
+    qosParam.controlMode = qosControl;
     [_trtc setNetworkQosParam:qosParam];
     
     TRTCVideoEncParam* smallVideoConfig = [TRTCVideoEncParam new];
@@ -548,8 +584,8 @@ typedef enum : NSUInteger {
     [_trtc enableEncSmallVideoStream:property.enableSmallStream withQuality:smallVideoConfig];
     
     [_trtc setPriorRemoteVideoStreamType:property.priorSmallStream];
+    
 }
-
 #pragma mark - UITextFieldDelegate
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
