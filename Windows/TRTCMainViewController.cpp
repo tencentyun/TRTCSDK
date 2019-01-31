@@ -27,9 +27,6 @@
 #define new DEBUG_NEW
 #endif
 
-// 推荐用户自定义消息至少是WM_USER+100，因为很多新控件也要使用WM_USER消息。
-#define WM_CUSTOM_MESSAGE (WM_USER + 100)
-
 TRTCCloud* getTRTCCloud()
 {
     if (TRTCMainViewController::g_cloud == nullptr)
@@ -47,23 +44,6 @@ void destroyTRTCCloud()
 }
 
 TRTCCloud* TRTCMainViewController::g_cloud = nullptr;
-class CCustomMessageWrapper
-{
-public:
-    CCustomMessageWrapper(std::function<void(void)> func) : m_func(func) {}
-    ~CCustomMessageWrapper() {}
-
-    void exec()
-    {
-        if (m_func)
-        {
-            m_func();
-        }
-    }
-private:
-    std::function<void(void)> m_func;
-};
-
 
 // CTRTCDemoDlg 对话框
 
@@ -79,7 +59,7 @@ void TRTCMainViewController::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(TRTCMainViewController, CDialogEx)
-    ON_MESSAGE(WM_CUSTOM_MESSAGE, OnCustomMessage)
+    ON_WM_CLOSE(OnClose)
     ON_MESSAGE(WM_CUSTOM_CLOSE_SETTINGVIEW, OnMsgSettingViewClose)
     ON_BN_CLICKED(IDC_EXIT_ROOM, &TRTCMainViewController::OnBnClickedExitRoom)
     ON_BN_CLICKED(IDC_BTN_SETTING, &TRTCMainViewController::OnBnClickedSetting)
@@ -123,16 +103,6 @@ BOOL TRTCMainViewController::OnInitDialog()
     return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 
-/**
-* switchToMainThread + CCustomMessageWrapper提供跳转主线程执行task的能力。
-* SDK内部会在异步线程回调callback。如果涉及UI更新等操作，必须切回主线程。
-*/
-void TRTCMainViewController::switchToMainThread(std::function<void(void)> func)
-{
-    CCustomMessageWrapper* msg = new CCustomMessageWrapper(func);
-    PostMessage(WM_CUSTOM_MESSAGE, (WPARAM)msg, 0);
-}
-
 void TRTCMainViewController::onError(TXLiteAVError errCode, const char* errMsg, void* arg)
 {
 
@@ -145,82 +115,76 @@ void TRTCMainViewController::onWarning(TXLiteAVWarning warningCode, const char* 
 
 void TRTCMainViewController::onEnterRoom(uint64_t elapsed)
 {
-    //
-    switchToMainThread([=] {
-        CWnd *pLocalVideoView = GetDlgItem(IDC_LOCAL_VIDEO_VIEW);
-        HWND hwnd = pLocalVideoView->GetSafeHwnd();
-        getTRTCCloud()->setLocalViewFillMode(TRTCVideoFillMode_Fit);
-        getTRTCCloud()->startLocalPreview(hwnd);
-        getTRTCCloud()->startLocalAudio();
+    CWnd *pLocalVideoView = GetDlgItem(IDC_LOCAL_VIDEO_VIEW);
+    HWND hwnd = pLocalVideoView->GetSafeHwnd();
+    getTRTCCloud()->setLocalViewFillMode(TRTCVideoFillMode_Fit);
+    getTRTCCloud()->startLocalPreview(hwnd);
+    getTRTCCloud()->startLocalAudio();
 
 
-        std::vector<UserInfo> userInfos = TRTCGetUserIDAndUserSig::instance().getConfigUserIdArray();
-        if (userInfos.empty())
-            return;
-        UserInfo info = userInfos[0];   // 登录第一个用户
-        CWnd *pStatic = GetDlgItem(IDC_STATIC_LOCAL_USERID);
-        pStatic->SetWindowTextW(UTF82Wide(info.userId).c_str());
-        pStatic->SetFont(&newFont);
-    });
+    std::vector<UserInfo> userInfos = TRTCGetUserIDAndUserSig::instance().getConfigUserIdArray();
+    if (userInfos.empty())
+        return;
+    UserInfo info = userInfos[0];   // 登录第一个用户
+    CWnd *pStatic = GetDlgItem(IDC_STATIC_LOCAL_USERID);
+    pStatic->SetWindowTextW(UTF82Wide(info.userId).c_str());
+    pStatic->SetFont(&newFont);
 }
 
 void TRTCMainViewController::onExitRoom(int reason)
 {
-    switchToMainThread([=] {
-        getTRTCCloud()->removeCallback(this);
-        getTRTCCloud()->stopLocalPreview();
-        getTRTCCloud()->stopAllRemoteView();
-        
-        CWnd *pStatic = GetDlgItem(IDC_STATIC_LOCAL_USERID);
-        pStatic->SetWindowTextW(L"");
+    getTRTCCloud()->removeCallback(this);
+    getTRTCCloud()->stopLocalPreview();
+    getTRTCCloud()->stopAllRemoteView();
 
-        UpdateRemoteViewInfo(IDC_REMOTE_VIDEO_VIEW1, "");
-        UpdateRemoteViewInfo(IDC_REMOTE_VIDEO_VIEW2, "");
-        UpdateRemoteViewInfo(IDC_REMOTE_VIDEO_VIEW3, "");
+    CWnd *pStatic = GetDlgItem(IDC_STATIC_LOCAL_USERID);
+    pStatic->SetWindowTextW(L"");
 
-        //切换回登录界面
-        ShowWindow(SW_HIDE);
-        CWnd* pWnd = GetParent();
-        if (pWnd)
-        {
-            pWnd->ShowWindow(SW_NORMAL);
-            ::PostMessage(pWnd->GetSafeHwnd(), WM_CUSTOM_CLOSE_MAINVIEW, 0, 0);
-        }
-    });
+    UpdateRemoteViewInfo(IDC_REMOTE_VIDEO_VIEW1, "");
+    UpdateRemoteViewInfo(IDC_REMOTE_VIDEO_VIEW2, "");
+    UpdateRemoteViewInfo(IDC_REMOTE_VIDEO_VIEW3, "");
+
+    //切换回登录界面
+    ShowWindow(SW_HIDE);
+    CWnd* pWnd = GetParent();
+    if (pWnd)
+    {
+        pWnd->ShowWindow(SW_NORMAL);
+        ::PostMessage(pWnd->GetSafeHwnd(), WM_CUSTOM_CLOSE_MAINVIEW, 0, 0);
+    }
 }
 
 void TRTCMainViewController::onUserEnter(const char* userId)
 {
-    std::string strUserId = userId;
-    switchToMainThread([=] {
-        int viewId = FindIdleRemoteVideoView();
-        if (viewId != 0) 
-        {
-            UpdateRemoteViewInfo(viewId, strUserId);
-            CWnd *pRemoteVideoView = GetDlgItem(viewId);
-            HWND hwnd = pRemoteVideoView->GetSafeHwnd();
-            getTRTCCloud()->setRemoteViewFillMode(strUserId.c_str(), TRTCVideoFillMode_Fit);
-            getTRTCCloud()->startRemoteView(strUserId.c_str(), hwnd);
-        }
-        else
-        {
-            // no find view to render remote video
-        }
-    });
+    int viewId = FindIdleRemoteVideoView();
+    if (viewId != 0)
+    {
+        UpdateRemoteViewInfo(viewId, userId);
+        CWnd *pRemoteVideoView = GetDlgItem(viewId);
+        HWND hwnd = pRemoteVideoView->GetSafeHwnd();
+        getTRTCCloud()->setRemoteViewFillMode(userId, TRTCVideoFillMode_Fit);
+        getTRTCCloud()->startRemoteView(userId, hwnd);
+    }
+    else
+    {
+        // no find view to render remote video
+    }
 }
 
 void TRTCMainViewController::onUserExit(const char* userId, int reason)
 {
-    std::string strUserId = userId;
-    switchToMainThread([=] {
-        int viewId = FindOccupyRemoteVideoView(strUserId);
+    int viewId = FindOccupyRemoteVideoView(userId);
 
-        if (viewId != 0)
-        {
-            getTRTCCloud()->stopRemoteView(strUserId.c_str());
-            UpdateRemoteViewInfo(viewId, "");
-        }
-    });
+    if (viewId != 0)
+    {
+        getTRTCCloud()->stopRemoteView(userId);
+        UpdateRemoteViewInfo(viewId, "");
+    }
+}
+
+void TRTCMainViewController::OnClose()
+{
+    getTRTCCloud()->exitRoom();
 }
 
 HBRUSH TRTCMainViewController::OnCtlColor(CDC * pDC, CWnd * pWnd, UINT nCtlColor)
@@ -330,18 +294,6 @@ void TRTCMainViewController::UpdateRemoteViewInfo(int id, std::string userId)
         pStatic->SetFont(&newFont);
         m_remoteUserInfo[id] = userId;
     }
-}
-
-LRESULT TRTCMainViewController::OnCustomMessage(WPARAM wParam, LPARAM lParam)
-{
-    CCustomMessageWrapper* msg = reinterpret_cast<CCustomMessageWrapper*>(wParam);
-    if (msg)
-    {
-        msg->exec();
-        delete msg;
-    }
-
-    return S_OK;
 }
 
 LRESULT TRTCMainViewController::OnMsgSettingViewClose(WPARAM wParam, LPARAM lParam)
