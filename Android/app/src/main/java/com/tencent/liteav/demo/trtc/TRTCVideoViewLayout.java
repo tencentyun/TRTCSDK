@@ -26,7 +26,7 @@ public class TRTCVideoViewLayout extends RelativeLayout {
     private final static String TAG     = TRTCVideoViewLayout.class.getSimpleName();
     public static final int MODE_FLOAT  = 1;  // 前后堆叠模式
     public static final int MODE_GRID   = 2;  // 九宫格模式
-
+    public static final int MAX_USER    = 7;
     private Context mContext;
     private ArrayList<TXCloudVideoView> mVideoViewList;
     private ArrayList<RelativeLayout.LayoutParams> mFloatParamList;
@@ -229,7 +229,7 @@ public class TRTCVideoViewLayout extends RelativeLayout {
 
     public void initTXCloudVideoView() {
         mVideoViewList = new ArrayList<TXCloudVideoView>();
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < MAX_USER; i++) {
             TXCloudVideoView cloudVideoView = new TXCloudVideoView(mContext);
             cloudVideoView.setVisibility(GONE);
             cloudVideoView.setId(1000 + i);
@@ -247,8 +247,10 @@ public class TRTCVideoViewLayout extends RelativeLayout {
     public void updateLayoutFloat() {
         for (int i = 0; i < mVideoViewList.size(); i++) {
             TXCloudVideoView cloudVideoView = mVideoViewList.get(i);
-            RelativeLayout.LayoutParams layoutParams = mFloatParamList.get(i);
-            cloudVideoView.setLayoutParams(layoutParams);
+            if ( i < mFloatParamList.size()) {
+                RelativeLayout.LayoutParams layoutParams = mFloatParamList.get(i);
+                cloudVideoView.setLayoutParams(layoutParams);
+            }
             cloudVideoView.setTag(R.string.str_tag_pos, i);
             cloudVideoView.setClickable(true);
             cloudVideoView.setOnClickListener(new View.OnClickListener() {
@@ -269,14 +271,6 @@ public class TRTCVideoViewLayout extends RelativeLayout {
     }
 
     public void updateLayoutGrid() {
-        int local = 0;
-        int size = mVideoViewList.size();
-        for (int i = 0; i < size; i++) { //查找自己的TXCloudVideoView
-            TXCloudVideoView cloudVideoView = mVideoViewList.get(i);
-            if (cloudVideoView != null && cloudVideoView.getUserId() != null && cloudVideoView.getUserId().equalsIgnoreCase(mSelfUserId)) {
-                local = i;
-            }
-        }
         ArrayList<LayoutParams> paramList;
         if (mCount <= 4) {
             paramList = mGrid4ParamList;
@@ -284,23 +278,18 @@ public class TRTCVideoViewLayout extends RelativeLayout {
             paramList = mGrid9ParamList;
         }
 
-        for (int i = 0; i < mCount; i++) {
+        int layoutIndex = 1;
+        for (int i = 0; i < mVideoViewList.size(); i++) {
             TXCloudVideoView cloudVideoView = mVideoViewList.get(i);
             cloudVideoView.setClickable(false);
             cloudVideoView.setOnClickListener(null);
-            RelativeLayout.LayoutParams param0 = paramList.get(0);
-            RelativeLayout.LayoutParams paramlocal = paramList.get(local);
-
-            RelativeLayout.LayoutParams paramother = null;
-            if (i != 0 && i != local) {
-                paramother = paramList.get(i);
-            }
-            if (i == local) {
-                cloudVideoView.setLayoutParams(param0);
-            } else if (i == 0) {
-                cloudVideoView.setLayoutParams(paramlocal);
-            } else {
-                cloudVideoView.setLayoutParams(paramother);
+            String userId = cloudVideoView.getUserId();
+            if (!TextUtils.isEmpty(userId)) {
+                if (userId.equalsIgnoreCase(mSelfUserId)) {
+                    cloudVideoView.setLayoutParams(paramList.get(0));
+                } else if (layoutIndex < paramList.size()){
+                    cloudVideoView.setLayoutParams(paramList.get(layoutIndex++));
+                }
             }
         }
     }
@@ -345,6 +334,18 @@ public class TRTCVideoViewLayout extends RelativeLayout {
         return (int) (dpValue * scale + 0.5f);
     }
 
+    public void showDebugView(int type) {
+        for (int i = 0; i < mVideoViewList.size(); i++) {
+            TXCloudVideoView renderView = mVideoViewList.get(i);
+            if (renderView != null) {
+                String vUserId = renderView.getUserId();
+                if (!TextUtils.isEmpty(vUserId)){
+                    renderView.showVideoDebugLog(type);
+                }
+
+            }
+        }
+    }
     /**
      * 更新进入房间人数，4个人以下用四宫格，4个人以上用9宫格
      *
@@ -359,13 +360,13 @@ public class TRTCVideoViewLayout extends RelativeLayout {
             if (renderView != null) {
                 String vUserId = renderView.getUserId();
                 if (userId.equalsIgnoreCase(vUserId)){
-                    return null;
+                    return renderView;
                 }
                 if (videoView == null && TextUtils.isEmpty(vUserId)){
                     renderView.setUserId(userId);
                     videoView = renderView;
                     posIdx = i;
-                } else if (vUserId.equalsIgnoreCase(mSelfUserId)) {
+                } else if (!TextUtils.isEmpty(vUserId) && vUserId.equalsIgnoreCase(mSelfUserId)) {
                     posLocal = i;
                 }
             }
@@ -387,7 +388,7 @@ public class TRTCVideoViewLayout extends RelativeLayout {
     }
 
     public void onMemberLeave(String userId) {
-        int posIdx = 0, posLocal = mVideoViewList.size();
+        int posIdx = -1, posLocal = mVideoViewList.size();
         for (int i = 0; i < mVideoViewList.size(); i++) {
             TXCloudVideoView renderView = mVideoViewList.get(i);
             if (renderView != null && null != renderView.getUserId()) {
@@ -404,8 +405,10 @@ public class TRTCVideoViewLayout extends RelativeLayout {
         if (0 == posIdx) {
             swapViewByIndex(posIdx, posLocal);
         }
+        if (posIdx != -1) {
+            mCount--;
+        }
 
-        mCount--;
         if (mMode == MODE_FLOAT) {
             updateLayoutFloat();
         } else {
