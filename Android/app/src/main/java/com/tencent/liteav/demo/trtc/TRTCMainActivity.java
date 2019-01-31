@@ -346,20 +346,7 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
          */
         @Override
         public void onUserEnter(String userId) {
-            TRTCMainActivity activity = mContext.get();
-            if (activity != null) {
-                // 创建一个View用来显示新的一路画面
-                TXCloudVideoView renderView = activity.mVideoViewLayout.onMemberEnter(userId);
-                if (renderView != null) {
-                    // 启动远程画面的解码和显示逻辑，FillMode 可以设置是否显示黑边
-                    activity.trtcCloud.setRemoteViewFillMode(userId, TRTCCloudDef.TRTC_VIDEO_RENDER_MODE_FIT);
-                    activity.trtcCloud.startRemoteView(userId, renderView);
 
-                    // 设置仪表盘数据显示
-                    activity.trtcCloud.showDebugView(activity.iDebugLevel);
-                    activity.trtcCloud.setDebugViewMargin(userId, new TRTCCloud.TRTCViewMargin(0.0f, 0.0f, 0.1f, 0.0f));
-                }
-            }
         }
 
         /**
@@ -369,19 +356,41 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
         public void onUserExit(String userId, int reason) {
             TRTCMainActivity activity = mContext.get();
             if (activity != null) {
-                //停止观看画面
                 activity.trtcCloud.stopRemoteView(userId);
+                activity.mVideoViewLayout.onMemberLeave(userId+TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG);
 
-                //更新视频UI
-                activity.mVideoViewLayout.onMemberLeave(userId);
+                activity.trtcCloud.stopRemoteSubStreamView(userId);
+                activity.mVideoViewLayout.onMemberLeave(userId+TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SUB);
             }
+
         }
         /**
          * 有用户屏蔽了画面
          */
         @Override
-        public void onUserVideoAvailable(String userId, boolean available){
-            Log.d(TAG, "sdk callback onUserVideoAvailable " +available);
+        public void onUserVideoAvailable(final String userId, boolean available){
+            TRTCMainActivity activity = mContext.get();
+            if (activity != null) {
+                if (available) {
+                    final TXCloudVideoView renderView = activity.mVideoViewLayout.onMemberEnter(userId+TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG);
+                    if (renderView != null) {
+                        // 启动远程画面的解码和显示逻辑，FillMode 可以设置是否显示黑边
+                        activity.trtcCloud.setRemoteViewFillMode(userId, TRTCCloudDef.TRTC_VIDEO_RENDER_MODE_FIT);
+                        activity.trtcCloud.showDebugView(activity.iDebugLevel);
+                        activity.trtcCloud.setDebugViewMargin(userId, new TRTCCloud.TRTCViewMargin(0.0f, 0.0f, 0.1f, 0.0f));
+                        activity.trtcCloud.startRemoteView(userId, renderView);
+                        activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                renderView.setUserId(userId+TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG);
+                            }
+                        });
+                    }
+                } else {
+                    activity.trtcCloud.stopRemoteView(userId);
+                    activity.mVideoViewLayout.onMemberLeave(userId+TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG);
+                }
+            }
         }
         /**
          * 有用户屏蔽了声音
@@ -389,6 +398,30 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
         @Override
         public void onUserAudioAvailable(String userId, boolean available){
             Log.d(TAG, "sdk callback onUserAudioAvailable " +available);
+        }
+
+        public void onUserSubStreamAvailable(final String userId, boolean available){
+            TRTCMainActivity activity = mContext.get();
+            if (activity != null) {
+                if (available) {
+                    final TXCloudVideoView renderView = activity.mVideoViewLayout.onMemberEnter(userId+TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SUB);
+                    if (renderView != null) {
+                        // 启动远程画面的解码和显示逻辑，FillMode 可以设置是否显示黑边
+                        activity.trtcCloud.setRemoteViewFillMode(userId, TRTCCloudDef.TRTC_VIDEO_RENDER_MODE_FIT);
+                        activity.trtcCloud.startRemoteSubStreamView(userId, renderView);
+                        activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                renderView.setUserId(userId+TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SUB);
+                            }
+                        });
+                    }
+
+                } else {
+                    activity.trtcCloud.stopRemoteSubStreamView(userId);
+                    activity.mVideoViewLayout.onMemberLeave(userId+TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SUB);
+                }
+            }
         }
     }
 }
