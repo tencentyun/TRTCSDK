@@ -294,8 +294,8 @@ void TRTCStorageConfigMgr::ReadStorageConfig()
     strParam = m_pConfigMgr->GetValue(INI_ROOT_KEY, INI_KEY_VIDEO_QUALITY);
     qosParams.preference = (TRTCVideoQosPreference)_wtoi(strParam.c_str());
 
-    strParam = m_pConfigMgr->GetValue(INI_ROOT_KEY, INI_KEY_VIDEO_QUALITY_CONTROL);
-    qosParams.controlMode = (TRTCQosControlMode)_wtoi(strParam.c_str());
+    //strParam = m_pConfigMgr->GetValue(INI_ROOT_KEY, INI_KEY_VIDEO_QUALITY_CONTROL);
+    qosParams.controlMode = TRTCQosControlModeServer;
 
     strParam = m_pConfigMgr->GetValue(INI_ROOT_KEY, INI_KEY_SET_PUSH_SMALLVIDEO);
     bPushSmallVideo = _wtoi(strParam.c_str());

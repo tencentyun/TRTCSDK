@@ -68,11 +68,12 @@ typedef enum TXLiteAVError
     ERR_ROOM_ID_INVALID                             = -3318,    ///< 进房参数roomId错误
     ERR_USER_ID_INVALID                             = -3319,    ///< 进房参数userID不正确
     ERR_USER_SIG_INVALID                            = -3320,    ///< 进房参数userSig不正确
-    
+
     ERR_PUBLISH_CDN_STREAM_REQUEST_TIME_OUT         = -3321,    ///< 旁路转推请求超时
     ERR_CLOUD_MIX_TRANSCODING_REQUEST_TIME_OUT      = -3322,    ///< 云端混流请求超时
     ERR_PUBLISH_CDN_STREAM_RESPON_ERROR             = -3323,    ///< 旁路转推回包异常
-    ERR_CLOUD_MIX_TRANSCODING_RESPON_ERROR          = -3323,    ///< 云端混流回包异常
+    ERR_CLOUD_MIX_TRANSCODING_RESPON_ERROR          = -3324,    ///< 云端混流回包异常
+    ERR_ROOM_REQUEST_QUIT_ROOM_TIMEOUT              = -3325,    ///< 请求退房超时
 
     // Info服务器(查询接口机IP), 服务器错误码，数值范围[-100000, -110000]，但命名、含义在确认中
 
@@ -174,6 +175,7 @@ typedef enum TXLiteAVWarning
     WARNING_VIDEO_DECODER_HW_TO_SW                  = 2108,     ///<  当前流硬解第一个I帧失败，SDK自动切软解
     WARNING_SW_DECODER_START_FAIL                   = 2109,     ///<  软解码器启动失败
 
+    WARNING_RTMP_DNS_FAIL                           = 3001,     ///<  直播，DNS解析失败
     WARNING_RTMP_SEVER_CONN_FAIL                    = 3002,     ///<  直播，服务器连接失败
     WARNING_RTMP_SHAKE_FAIL                         = 3003,     ///<  直播，与RTMP服务器握手失败
     WARNING_RTMP_SERVER_BREAK_CONNECT               = 3004,     ///<  直播，服务器主动断开
