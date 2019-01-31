@@ -20,7 +20,7 @@ static const CGFloat ItemSize = 22;
 @interface TXRenderViewToolbarItem : NSCollectionViewItem
 @end
 
-@interface TXRenderView () <NSCollectionViewDelegate, NSCollectionViewDataSource>
+@interface TXRenderView () <NSCollectionViewDelegate>
 @end
 
 @implementation TXRenderView
@@ -68,6 +68,14 @@ static const CGFloat ItemSize = 22;
     [self addSubview:_collectionView];
 }
 
+- (void)_updateCollectionView {
+    CGFloat height = ItemSize * _items.count;
+    NSRect frame = NSMakeRect(NSWidth(self.bounds) - ItemSize, NSHeight(self.bounds) - height, ItemSize, height);
+    _collectionView.frame = frame;
+    _collectionView.content = _items;
+}
+
+#pragma mark - Public Methods
 - (void)addToolbarItem:(NSString *)title target:(id)target action:(SEL)action context:(id)context
 {
     TXRenderViewToolbarItemObject *item = [[TXRenderViewToolbarItemObject alloc] init];
@@ -76,10 +84,17 @@ static const CGFloat ItemSize = 22;
     item.action = action;
     item.context = context;
     [_items addObject:item];
-    CGFloat height = ItemSize * _items.count;
-    NSRect frame = NSMakeRect(NSWidth(self.bounds) - ItemSize, NSHeight(self.bounds) - height, ItemSize, height);
-    _collectionView.frame = frame;
-    _collectionView.content = _items;
+    [self _updateCollectionView];
+}
+
+- (void)removeToolbarWithTitle:(NSString *)title {
+    for (TXRenderViewToolbarItemObject *item in [_items reverseObjectEnumerator]) {
+        if ([item.title isEqualToString:title]) {
+            [_items removeObject:item];
+            break;
+        }
+    }
+    [self _updateCollectionView];
 }
 
 @end
