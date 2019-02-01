@@ -15,4 +15,7 @@
 
 - [**LiteAV_Professional_Android_6.1.6453(zip)**](http://liteavsdk-1252463788.cosgz.myqcloud.com/6.1/LiteAVSDK_Professional_Android_6.1.6453.zip)
 
-> 注意： 请使用 LiteAV_Professional 版本替换掉原来的独立功能版本（比如 LiteAV_Player 或者 LiteAV_Smart），而不是再次集成一个 LiteAV_Professional 版本。
+> **注意**： 
+> 1. 请使用 LiteAV_Professional 版本替换掉原来的独立功能版本（比如 LiteAV_Player 或者 LiteAV_Smart），而不是再次集成一个 LiteAV_Professional 版本。
+>
+> 2. **Windows** 和 **Mac** 版本的 SDK 暂时没有计划提供短视频和超级播放器等功能，所以只有专业版这一种版本形式，不需要考虑上述问题。
