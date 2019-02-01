@@ -126,8 +126,6 @@
         [self.navigationController presentViewController:ac animated:YES completion:nil];
         return;
     }
-    
-    HelpBtnUI(TRTC)
 }
 
 - (void)viewWillAppear:(BOOL)animated {
