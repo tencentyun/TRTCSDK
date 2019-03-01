@@ -76,6 +76,25 @@ function onWebSocketClose() {
     RTC.quit();
 }
 
+function gotStream( opt ,succ){
+    RTC.getLocalStream({
+        video:true,
+        audio:true,
+        videoDevice:opt.videoDevice,
+        // 如需指定分辨率，可以在attributes中增加对width和height的约束
+        // 否则将获取摄像头的默认分辨率
+        // 更多配置项 请参考 接口API
+        // https://cloud.tencent.com/document/product/647/17251#webrtcapi.getlocalstream
+        // attributes:{
+        //     width:640,
+        //     height:320
+        // }
+    },function(info){
+        var stream = info.stream;
+        succ ( stream )
+    });
+}
+
 function initRTC(opts) {
     window.RTC = new WebRTCAPI({
         userId: opts.userId,
@@ -83,12 +102,22 @@ function initRTC(opts) {
         sdkAppId: opts.sdkappid,
         accountType: opts.accountType
     }, function () {
-        RTC.createRoom({
+        // RTC.createRoom({
+        RTC.enterRoom({
             roomid: opts.roomid * 1,
             privateMapKey: opts.privateMapKey,
             role: "user",
         }, function (info) {
             console.warn("init succ", info)
+            gotStream({
+                audio:true,
+                video:true
+            },function(stream){
+                RTC.startRTC({
+                    stream: stream,
+                    role: 'user'
+                });
+            })
         }, function (error) {
             console.error("init error", error)
         });
@@ -114,7 +143,7 @@ function initRTC(opts) {
         }
     });
     RTC.on("onStreamNotify", function (info) {
-        // console.warn('onStreamNotify', info)
+        console.warn('onStreamNotify', info)
     });
     RTC.on("onWebSocketNotify", function (info) {
         // console.warn('onWebSocketNotify', info)
@@ -141,6 +170,7 @@ function push() {
         "userSig": userSig,
         "sdkappid": sdkappid,
         "accountType": 1, // 随便传一个值，现在没有啥用处
+        "closeLocalMedia": false,
         "roomid": roomid
     });
 }
@@ -163,9 +193,9 @@ function stopWs() {
 
 function startRTC() {
     RTC.startRTC(0, function (info) {
-        // console.debug(info)
+        console.debug('success', info)
     }, function (info) {
-        // console.debug(info)
+        console.debug('failed', info)
     });
 }
 

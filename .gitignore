@@ -29,3 +29,5 @@ Android/.idea/libraries/Gradle__com_squareup_okhttp3_logging_interceptor_3_8_1_j
 Android/.idea/libraries/Gradle__com_squareup_okhttp3_okhttp_3_8_1_jar.xml
 Android/.idea/libraries/Gradle__com_squareup_okio_okio_1_13_0_jar.xml
 Android/.idea/libraries/Gradle__LiteAVSDK_TRTC_release__aar.xml
+Android/.settings/*
+.project
