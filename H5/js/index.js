@@ -102,7 +102,6 @@ function initRTC(opts) {
         sdkAppId: opts.sdkappid,
         accountType: opts.accountType
     }, function () {
-        // RTC.createRoom({
         RTC.enterRoom({
             roomid: opts.roomid * 1,
             privateMapKey: opts.privateMapKey,
@@ -143,7 +142,7 @@ function initRTC(opts) {
         }
     });
     RTC.on("onStreamNotify", function (info) {
-        console.warn('onStreamNotify', info)
+        // console.warn('onStreamNotify', info)
     });
     RTC.on("onWebSocketNotify", function (info) {
         // console.warn('onWebSocketNotify', info)
@@ -170,7 +169,6 @@ function push() {
         "userSig": userSig,
         "sdkappid": sdkappid,
         "accountType": 1, // 随便传一个值，现在没有啥用处
-        "closeLocalMedia": false,
         "roomid": roomid
     });
 }
