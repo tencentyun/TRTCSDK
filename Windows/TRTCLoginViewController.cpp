@@ -152,13 +152,13 @@ void TRTCLoginViewController::joinRoom(int roomId)
     if (selIndex >= 0 && selIndex < userInfos.size())
     {
         UserInfo info = userInfos[selIndex];   // 登录第一个用户
-
+        std::string privateMapKey = "";
         TRTCParams params;
         params.sdkAppId = TRTCGetUserIDAndUserSig::instance().getConfigSdkAppId();
         params.roomId = roomId;//std::to_string(roomId).c_str();
         params.userId = info.userId.c_str();
         params.userSig = info.userSig.c_str();
-        params.privateMapKey = "";
+        params.privateMapKey = privateMapKey.c_str();
 
         m_pTRTCMainViewController->enterRoom(params);
 

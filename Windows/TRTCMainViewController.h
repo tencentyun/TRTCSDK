@@ -12,14 +12,14 @@
 
 #pragma once
 
-#include "TRTCCloud.h"
+#include "ITRTCCloud.h"
 
 #include <string>
 #include <functional>
 #include <map>
 
 
-TRTCCloud* getTRTCCloud();
+ITRTCCloud* getTRTCCloud();
 void destroyTRTCCloud();
 // CTRTCDemoDlg ¶Ô»°¿ò
 class TRTCSettingViewController;
@@ -64,7 +64,7 @@ private:
     int FindOccupyRemoteVideoView(std::string userId);
     void UpdateRemoteViewInfo(int id, std::string userId);
 public:
-    static TRTCCloud* g_cloud;
+    static ITRTCCloud* g_cloud;
     afx_msg void OnClose();
     afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
     afx_msg LRESULT OnMsgSettingViewClose(WPARAM wParam, LPARAM lParam);

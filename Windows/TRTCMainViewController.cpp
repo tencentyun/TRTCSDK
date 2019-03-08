@@ -27,11 +27,11 @@
 #define new DEBUG_NEW
 #endif
 
-TRTCCloud* getTRTCCloud()
+ITRTCCloud* getTRTCCloud()
 {
     if (TRTCMainViewController::g_cloud == nullptr)
     {
-        TRTCMainViewController::g_cloud = new TRTCCloud();
+        TRTCMainViewController::g_cloud = getTRTCShareInstance();
     }
     return TRTCMainViewController::g_cloud;
 }
@@ -39,11 +39,11 @@ TRTCCloud* getTRTCCloud()
 void destroyTRTCCloud()
 {
     if (TRTCMainViewController::g_cloud != nullptr)
-        delete TRTCMainViewController::g_cloud;
+        destroyTRTCShareInstance();
     TRTCMainViewController::g_cloud = nullptr;
 }
 
-TRTCCloud* TRTCMainViewController::g_cloud = nullptr;
+ITRTCCloud* TRTCMainViewController::g_cloud = nullptr;
 
 // CTRTCDemoDlg 对话框
 
@@ -342,8 +342,8 @@ void TRTCMainViewController::enterRoom(TRTCParams& params)
     }
 
     getTRTCCloud()->enterRoom(params, TRTCAppSceneVideoCall);
-
-    std::wstring title = format(L"TRTCDemo【房间ID: %d, 用户ID: %s】", params.roomId, Ansi2Wide(params.userId.c_str()).c_str());
+    std::string userId(params.userId);
+    std::wstring title = format(L"TRTCDemo【房间ID: %d, 用户ID: %s】", params.roomId, Ansi2Wide(userId.c_str()).c_str());
 
     SetWindowText(title.c_str());
 
@@ -371,5 +371,5 @@ void TRTCMainViewController::OnBnClickedLog()
     m_showDebugView++;
     int style = m_showDebugView % 3;
     if (getTRTCCloud())
-        TRTCCloud::showDebugView(style);
+        getTRTCCloud()->showDebugView(style);
 }
