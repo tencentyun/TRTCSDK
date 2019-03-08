@@ -18,6 +18,8 @@
 #define TRTC_SETTING_ENABLE_SMALL_STREAM    @"TRTC_SETTING_ENABLE_SMALL_STREAM"
 #define TRTC_SETTING_PRIOR_SMALL_STREAM     @"TRTC_SETTING_PRIOR_SMALL_STREAM"
 #define TRTC_SETTING_SENCE      @"TRTC_SETTING_SCENE"
+#define TRTC_SETTING_RESMODE   @"TRTC_SETTING_RES_MODE"
+
 
 #define TAG_SETTING_RESOLUTION 5001
 #define TAG_SETTING_FPS       5002
@@ -25,6 +27,7 @@
 #define TAG_SETTING_CTRL_QOS  5004
 #define TAG_SETTING_QOS       5005
 #define TAG_SETTING_SCENE     5006
+#define TAG_SETTING_RES_MODE  5007
 
 #define SECTION_RESOLUTION 0
 #define SECTION_FPS        1
@@ -34,8 +37,9 @@
 #define SECTION_PRIOR_SMALL_STREAM    5
 #define SECTION_QOS         6
 #define SECTION_SAVE        7
-#define SECTION_QOS_CTRL    7
-#define SECTION_SCENE       8
+#define SECTION_RESMODE     7
+#define SECTION_QOS_CTRL    8
+#define SECTION_SCENE       9
 
 @implementation TRTCSettingsProperty
 @end
@@ -70,6 +74,7 @@
     int _selectQosType;
     int _selectQosCtrlType;
     int _selectScene;
+    int _selectResMode;
     
     UIActionSheet *_actionSheet;
     UITableView *_mainTableView;
@@ -100,6 +105,7 @@
     _selectResolution = [TRTCSettingViewController getResolution];
     _selectBitrate = [TRTCSettingViewController getBitrate];
     _selectFps = [TRTCSettingViewController getFPS];
+    _selectResMode = [TRTCSettingViewController getResMode];
     
     _bitrateValueLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.view.width-80*kScaleX, 0, 80*kScaleX, 40*kScaleY)];
     _bitrateValueLabel.text = [NSString stringWithFormat:@"%dkbps", _selectBitrate];
@@ -206,6 +212,15 @@
     return TRTCAppSceneVideoCall;
 }
 
++ (int)getResMode {
+    NSNumber *d = [[NSUserDefaults standardUserDefaults] objectForKey:TRTC_SETTING_RESMODE];
+    if (d != nil) {
+        return [d intValue];
+    }
+    
+    return TRTCVideoResolutionModePortrait;
+}
+
 + (BOOL)getEnableSmallStream {
     NSNumber *d = [[NSUserDefaults standardUserDefaults] objectForKey:TRTC_SETTING_ENABLE_SMALL_STREAM];
     if (d != nil) {
@@ -267,6 +282,7 @@
         [[NSUserDefaults standardUserDefaults] setObject:@(_selectQosType) forKey:TRTC_SETTING_QOS_TYPE];
         [[NSUserDefaults standardUserDefaults] setObject:@(_selectQosCtrlType) forKey:TRTC_SETTING_QOS_CONTROL];
         [[NSUserDefaults standardUserDefaults] setObject:@(_selectScene) forKey:TRTC_SETTING_SENCE];
+        [[NSUserDefaults standardUserDefaults] setObject:@(_selectResMode) forKey:TRTC_SETTING_RESMODE];
         [[NSUserDefaults standardUserDefaults] setObject:@(_smallStreamSwitch.on) forKey:TRTC_SETTING_ENABLE_SMALL_STREAM];
         [[NSUserDefaults standardUserDefaults] setObject:@(_priorSmallStreamSwitch.on) forKey:TRTC_SETTING_PRIOR_SMALL_STREAM];
         [[NSUserDefaults standardUserDefaults] synchronize];
@@ -280,6 +296,7 @@
         property.bitRate = _selectBitrate;
         property.qosType = _selectQosType;
         property.qosControl = _selectQosCtrlType;
+        property.resMode = _selectResMode;
         property.enableSmallStream = _smallStreamSwitch.on;
         property.priorSmallStream = _priorSmallStreamSwitch.on;
         
@@ -292,7 +309,7 @@
 #pragma mark - UITableView delegate
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 9;
+    return 10;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -319,7 +336,11 @@
     } else if (indexPath.section == SECTION_QOS) {
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.textLabel.text = (_selectQosType == 0)?@"流畅":@"清晰";
-    } else if (indexPath.section == SECTION_SAVE_PARAM) {
+    } else if (indexPath.section == SECTION_RESMODE) {
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.textLabel.text = (_selectResMode == 0)?@"横屏模式":@"竖屏模式";
+    }
+    else if (indexPath.section == SECTION_SAVE_PARAM) {
         cell.textLabel.text = @"记住设置的参数";
         cell.accessoryView = _saveSwith;
     } else if (indexPath.section == SECTION_QOS_CTRL) {
@@ -345,6 +366,9 @@
     }
     if (section == SECTION_QOS) {
         return @"画质偏好";
+    }
+    if (section == SECTION_RESMODE) {
+        return @"画面方向";
     }
     if (section == SECTION_QOS_CTRL) {
         return @"流控方案";
@@ -373,7 +397,13 @@
         _actionSheet.tag = TAG_SETTING_QOS;
         _actionSheet.actionSheetStyle = UIBarStyleDefault;
         [_actionSheet showInView:self.view];
-    } else if (indexPath.section == SECTION_QOS_CTRL) {
+    } else if (indexPath.section == SECTION_RESMODE) {
+        _actionSheet = [[UIActionSheet alloc] initWithTitle:@"画面方向" delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:@"横屏模式",@"竖屏模式",nil];
+        _actionSheet.tag = TAG_SETTING_RES_MODE;
+        _actionSheet.actionSheetStyle = UIBarStyleDefault;
+        [_actionSheet showInView:self.view];
+    }
+    else if (indexPath.section == SECTION_QOS_CTRL) {
         _actionSheet = [[UIActionSheet alloc] initWithTitle:@"流控方案" delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:@"客户端流控", @"云端流控", nil];
         _actionSheet.tag = TAG_SETTING_CTRL_QOS;
         _actionSheet.actionSheetStyle = UIBarStyleDefault;
@@ -405,7 +435,10 @@
         _selectFps = [_fpsArray[buttonIndex] intValue];
     } else if (actionSheet.tag == TAG_SETTING_QOS) {
         _selectQosType = (int)buttonIndex;
-    } else if(actionSheet.tag == TAG_SETTING_CTRL_QOS) {
+    } else if (actionSheet.tag == TAG_SETTING_RES_MODE) {
+        _selectResMode = (int)buttonIndex;
+    }
+    else if(actionSheet.tag == TAG_SETTING_CTRL_QOS) {
         _selectQosCtrlType = (int)buttonIndex;
     } else if (actionSheet.tag == TAG_SETTING_SCENE) {
         _selectScene = (int)buttonIndex;

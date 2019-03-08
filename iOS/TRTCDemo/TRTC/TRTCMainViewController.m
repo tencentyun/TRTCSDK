@@ -19,13 +19,15 @@
 #import "TRTCCloud.h"
 #import "TRTCCloudDelegate.h"
 #import "TRTCVideoViewLayout.h"
+#import "TRTCVideoView.h"
+#import "TRTCMoreSettingViewController.h"
 
 typedef enum : NSUInteger {
     TRTC_IDLE,       // SDK 没有进入视频通话状态
     TRTC_ENTERED,    // SDK 视频通话进行中
 } TRTCStatus;
 
-@interface TRTCMainViewController() <UITextFieldDelegate, TRTCCloudDelegate, TRTCSettingVCDelegate> {
+@interface TRTCMainViewController() <UITextFieldDelegate, TRTCCloudDelegate, TRTCSettingVCDelegate, TRTCVideoViewDelegate, TRTCMoreSettingDelegate> {
     TRTCCloud                *_trtc;               //TRTC SDK 实例对象
     TRTCStatus                _roomStatus;
     
@@ -36,20 +38,24 @@ typedef enum : NSUInteger {
     TRTCVideoViewLayout      *_layoutEngine;
     UIView                   *_holderView;
     
-    UIView                   *_localView;          //本地画面的view
+    TRTCVideoView                   *_localView;          //本地画面的view
     NSMutableDictionary*      _remoteViewDic;      //一个或者多个远程画面的view
     
     UIButton                 *_btnLog;             //用于显示通话质量的log按钮
-    UIButton                 *_btnCameraSwitch;    //前置和后置摄像头切换
+    UIButton                 *_btnVideoMute;        //上行静画
     UIButton                 *_btnLayoutSwitch;    //布局切换按钮（九宫格 OR 前后叠加）
     UIButton                 *_btnBeauty;          //是否开启美颜（磨皮）
-    UIButton                 *_btnMute;            //是否静音本地画面
+    UIButton                 *_btnMute;            //上行静音
     UIButton                 *_btnSetting;         //设置面板，关联打开 TRTCSettingViewController
+    UIButton                 *_btnMore;            //更多设置
     
     NSInteger                _showLogType;         //LOG浮层显示详细信息还是精简信息
-    BOOL                     _cameraSwitch;
+    BOOL                     _videoMuted;
     BOOL                     _beautySwitch;
     BOOL                     _muteSwitch;
+    CGFloat                  _dashboardTopMargin;
+    
+    TRTCMoreSettingViewController* _moreSettingVC;
 }
 
 @property uint32_t sdkAppid;
@@ -76,7 +82,7 @@ typedef enum : NSUInteger {
  */
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
+    _dashboardTopMargin = [UIApplication sharedApplication].statusBarFrame.size.height + self.navigationController.navigationBar.frame.size.height;
 #if !TARGET_IPHONE_SIMULATOR
     //是否有摄像头权限
     AVAuthorizationStatus statusVideo = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
@@ -106,15 +112,16 @@ typedef enum : NSUInteger {
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onAppDidEnterBackGround:) name:UIApplicationDidEnterBackgroundNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onAppWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onAppDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onAppWillEnterForeground:) name:UIApplicationWillEnterForegroundNotification object:nil];
     
-    _trtc = [[TRTCCloud alloc] init];
-    [_trtc setDelegate:self];
-    
+    _dashboardTopMargin = 0.15;
+    if (_trtc == nil) {
+        _trtc = [TRTCCloud sharedInstance];
+        [_trtc setDelegate:self];
+    }
     _roomStatus = TRTC_IDLE;
     _remoteViewDic = [[NSMutableDictionary alloc] init];
     _mainViewUserId = @"";
@@ -157,10 +164,9 @@ typedef enum : NSUInteger {
     if (_trtc != nil) {
         [_trtc exitRoom];
     }
-    
+    [TRTCCloud destroySharedIntance];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
-
 
 #pragma mark - initUI
 
@@ -175,8 +181,8 @@ typedef enum : NSUInteger {
     CGSize size = [[UIScreen mainScreen] bounds].size;
     int ICON_SIZE = size.width / 8;
     
-    float startSpace = 20;
-    float centerInterVal = (size.width - 2 * startSpace - ICON_SIZE) / 5  - ICON_SIZE;
+    float startSpace = 10;
+    float centerInterVal = (size.width - 2 * startSpace - ICON_SIZE) / 6  - ICON_SIZE;
     float iconY = size.height - ICON_SIZE / 2 - 10;
     
     _btnLayoutSwitch = [self createBottomBtnIcon:@"float_b"
@@ -185,37 +191,45 @@ typedef enum : NSUInteger {
                                             Size:ICON_SIZE];
     [_btnLayoutSwitch setImage:[UIImage imageNamed:@"gird_b"] forState:UIControlStateSelected];
     
-    _cameraSwitch = NO;
-    _btnCameraSwitch = [self createBottomBtnIcon:@"camera_b"
-                                          Action:@selector(clickCamera:)
-                                          Center:CGPointMake(_btnLayoutSwitch.center.x + ICON_SIZE + centerInterVal, iconY)
-                                            Size:ICON_SIZE];
     
     _beautySwitch = NO;
     _btnBeauty = [self createBottomBtnIcon:@"beauty_b2"
                                           Action:@selector(clickBeauty:)
-                                          Center:CGPointMake(_btnCameraSwitch.center.x + ICON_SIZE + centerInterVal, iconY)
+                                          Center:CGPointMake(_btnLayoutSwitch.center.x + ICON_SIZE + centerInterVal, iconY)
+                                            Size:ICON_SIZE];
+    
+    _videoMuted = NO;
+    _btnVideoMute = [self createBottomBtnIcon:@"muteVideo"
+                                          Action:@selector(clickVideoMute:)
+                                          Center:CGPointMake(_btnBeauty.center.x + ICON_SIZE + centerInterVal, iconY)
                                             Size:ICON_SIZE];
     
     _muteSwitch = NO;
     _btnMute = [self createBottomBtnIcon:@"mute_b"
                                   Action:@selector(clickMute:)
-                                  Center:CGPointMake(_btnBeauty.center.x + ICON_SIZE + centerInterVal, iconY)
+                                  Center:CGPointMake(_btnVideoMute.center.x + ICON_SIZE + centerInterVal, iconY)
                                     Size:ICON_SIZE];
-    
-    _btnSetting = [self createBottomBtnIcon:@"set_b"
-                                 Action:@selector(clickSetting:)
-                                 Center:CGPointMake(_btnMute.center.x + ICON_SIZE + centerInterVal, iconY)
-                                   Size:ICON_SIZE];
     
     _showLogType = 0;
     _btnLog = [self createBottomBtnIcon:@"log_b2"
                                  Action:@selector(clickLog:)
-                                 Center:CGPointMake(_btnSetting.center.x + ICON_SIZE + centerInterVal, iconY)
+                                 Center:CGPointMake(_btnMute.center.x + ICON_SIZE + centerInterVal, iconY)
                                    Size:ICON_SIZE];
     
+    _btnSetting = [self createBottomBtnIcon:@"set_b"
+                                 Action:@selector(clickSetting:)
+                                 Center:CGPointMake(_btnLog.center.x + ICON_SIZE + centerInterVal, iconY)
+                                   Size:ICON_SIZE];
+    
+
+    _btnMore = [self createBottomBtnIcon:@"more_b"
+                                  Action:@selector(clickMore:)
+                                  Center:CGPointMake(_btnSetting.center.x + ICON_SIZE + centerInterVal, iconY)
+                                    Size:ICON_SIZE];
+    
     // 本地预览view
-    _localView = [[UIView alloc] initWithFrame:self.view.bounds];
+    _localView = [TRTCVideoView newVideoViewWithType:VideoViewType_Local userId:_selfUserID];
+    _localView.delegate = self;
     [_localView setBackgroundColor:UIColorFromRGB(0x262626)];
     
     _holderView = [[UIView alloc] initWithFrame:self.view.bounds];
@@ -259,17 +273,23 @@ typedef enum : NSUInteger {
             [views addObject:playerView];
         }
     }
-    UIEdgeInsets edge = UIEdgeInsetsZero;
-    if (_layoutEngine.type == TC_Float || views.count == 1) {
-        edge = UIEdgeInsetsMake(0.12, 0, 0, 0);
-    }
-    if ([_mainViewUserId isEqual:@""]) {
-        [_trtc setDebugViewMargin:_selfUserID margin:edge];
-    } else {
-        [_trtc setDebugViewMargin:_mainViewUserId margin:edge];
-    }
     
     [_layoutEngine relayout:views];
+    
+    // 更新 dashboard 边距
+    UIEdgeInsets margin = UIEdgeInsetsMake(_dashboardTopMargin,  0, 0, 0);
+    if (_remoteViewDic.count == 0) {
+        [_trtc setDebugViewMargin:_selfUserID margin:margin];
+    } else {
+        NSMutableArray *uids = [NSMutableArray arrayWithObject:_selfUserID];
+        [uids addObjectsFromArray:[_remoteViewDic allKeys]];
+        [uids removeObject:_mainViewUserId];
+        for (NSString *uid in uids) {
+            [_trtc setDebugViewMargin:uid margin:UIEdgeInsetsZero];
+        }
+        
+        [_trtc setDebugViewMargin:_mainViewUserId margin:(_layoutEngine.type == TC_Float || _remoteViewDic.count == 0) ? margin : UIEdgeInsetsZero];
+    }
 }
 
 /**
@@ -299,12 +319,12 @@ typedef enum : NSUInteger {
     // 设置视频编码参数，包括分辨率、帧率、码率等等，这些编码参数来自于 TRTCSettingViewController 的设置
 	// 注意（1）：不要在码率很低的情况下设置很高的分辨率，会出现较大的马赛克
 	// 注意（2）：不要设置超过25FPS以上的帧率，因为电影才使用24FPS，我们一般推荐15FPS，这样能将更多的码率分配给画质
-    if (!_pureAudioMode) {
+//    if (!_pureAudioMode) {
         TRTCVideoEncParam* encParam = [TRTCVideoEncParam new];
         encParam.videoResolution = [TRTCSettingViewController getResolution];
         encParam.videoBitrate = [TRTCSettingViewController getBitrate];
         encParam.videoFps = [TRTCSettingViewController getFPS];
-        encParam.resMode = TRTCVideoResolutionModePortrait;
+        encParam.resMode = [TRTCSettingViewController getResMode];
         [_trtc setVideoEncoderParam:encParam];
         
         TRTCNetworkQosParam * qosParam = [TRTCNetworkQosParam new];
@@ -322,14 +342,19 @@ typedef enum : NSUInteger {
         
         [_trtc enableEncSmallVideoStream:[TRTCSettingViewController getEnableSmallStream] withQuality:smallVideoConfig];
         [_trtc setPriorRemoteVideoStreamType:[TRTCSettingViewController getPriorSmallStream]];
-        
-    //    [_trtc setLocalViewFillMode:TRTCVideoFillMode_Fit];
-        [_trtc setGSensorMode:TRTCGSensorMode_UIAutoLayout];
-
+    
+        [_trtc setLocalViewFillMode:[TRTCMoreSettingViewController isFitScaleMode] ? TRTCVideoFillMode_Fit : TRTCVideoFillMode_Fill];
+        [_trtc setGSensorMode:[TRTCMoreSettingViewController isGsensorEnable] ? TRTCGSensorMode_UIFixLayout: TRTCGSensorMode_Disable];
+        [_trtc setAudioRoute:[TRTCMoreSettingViewController isSpeakphoneMode] ? TRTCAudioModeSpeakerphone : TRTCAudioModeEarpiece];
+        [_trtc enableAudioVolumeEvaluation:[TRTCMoreSettingViewController isAudioVolumeEnable]?300:0 smooth:5];
         // 开启视频采集预览
-        [_trtc startLocalPreview:YES view:_localView];
+        [_trtc startLocalPreview:[TRTCMoreSettingViewController isFrontCamera] view:_localView];
+//    }
+    if ([TRTCMoreSettingViewController isAudioCaptureEnable])
+        [_trtc startLocalAudio];
+    else {
+        [_trtc stopLocalAudio];
     }
-    [_trtc startLocalAudio];
     
     [self toastTip:@"开始进房"];
     
@@ -338,15 +363,6 @@ typedef enum : NSUInteger {
     [_trtc enterRoom:self.param appScene:scene];
 }
 
-- (void)onStatistics:(TRTCStatistics *)statistics
-{
-
-}
-
-- (void)onNetworkQuality:(TRTCQualityInfo *)localQuality remoteQuality:(NSArray<TRTCQualityInfo *> *)remoteQuality
-{
-
-}
 
 /**
  * 退出房间，并且退出该页面
@@ -359,6 +375,146 @@ typedef enum : NSUInteger {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self.navigationController popViewControllerAnimated:YES];
     });
+}
+
+- (void)updateCloudMixtureParams
+{
+    BOOL enable = [TRTCMoreSettingViewController isCloudMixingEnable];
+    if (enable) {
+        int videoWidth  = 720;
+        int videoHeight = 1280;
+        
+        // 小画面宽高
+        int subWidth  = 180;
+        int subHeight = 320;
+        
+        int offsetX = 5;
+        int offsetY = 50;
+        
+        int bitrate = 200;
+        
+        int resolution = [TRTCSettingViewController getResolution];
+        switch (resolution) {
+                
+            case TRTCVideoResolution_160_160:
+            {
+                videoWidth  = 160;
+                videoHeight = 160;
+                subWidth    = 27;
+                subHeight   = 48;
+                offsetY     = 20;
+                bitrate     = 200;
+                break;
+            }
+            case TRTCVideoResolution_320_180:
+            {
+                videoWidth  = 192;
+                videoHeight = 336;
+                subWidth    = 54;
+                subHeight   = 96;
+                offsetY     = 30;
+                bitrate     = 400;
+                break;
+            }
+            case TRTCVideoResolution_320_240:
+            {
+                videoWidth  = 240;
+                videoHeight = 320;
+                subWidth    = 54;
+                subHeight   = 96;
+                bitrate     = 400;
+                break;
+            }
+            case TRTCVideoResolution_480_480:
+            {
+                videoWidth  = 480;
+                videoHeight = 480;
+                subWidth    = 72;
+                subHeight   = 128;
+                bitrate     = 600;
+                break;
+            }
+            case TRTCVideoResolution_640_360:
+            {
+                videoWidth  = 368;
+                videoHeight = 640;
+                subWidth    = 90;
+                subHeight   = 160;
+                bitrate     = 800;
+                break;
+            }
+            case TRTCVideoResolution_640_480:
+            {
+                videoWidth  = 480;
+                videoHeight = 640;
+                subWidth    = 90;
+                subHeight   = 160;
+                bitrate     = 800;
+                break;
+            }
+            case TRTCVideoResolution_960_540:
+            {
+                videoWidth  = 544;
+                videoHeight = 960;
+                subWidth    = 171;
+                subHeight   = 304;
+                bitrate     = 1000;
+                break;
+            }
+            case TRTCVideoResolution_1280_720:
+            {
+                videoWidth  = 720;
+                videoHeight = 1280;
+                subWidth    = 180;
+                subHeight   = 320;
+                bitrate     = 1500;
+                break;
+            }
+        }
+        
+        TRTCTranscodingConfig* config = [TRTCTranscodingConfig new];
+        config.appId = 1252463788;
+        config.bizId = 3891;
+        config.videoWidth = videoWidth;
+        config.videoHeight = videoHeight;
+        config.videoGOP = 3;
+        config.videoFramerate = 15;
+        config.videoBitrate = bitrate;
+        config.audioSampleRate = 48000;
+        config.audioBitrate = 64;
+        config.audioChannels = 1;
+        
+        // 设置混流后主播的画面位置
+        TRTCMixUser* broadCaster = [TRTCMixUser new];
+        broadCaster.userId = _selfUserID; // 以主播uid为broadcaster为例
+        broadCaster.zOrder = 0;
+        broadCaster.rect = CGRectMake(0, 0, videoWidth, videoHeight);
+        
+        NSMutableArray* mixUsers = [NSMutableArray new];
+        [mixUsers addObject:broadCaster];
+        
+        // 设置混流后各个小画面的位置
+        int index = 0;
+        for (NSString* userId in _remoteViewDic.allKeys) {
+            TRTCMixUser* audience = [TRTCMixUser new];
+            audience.userId = userId;
+            audience.zOrder = 1 + index;
+            if (index < 3) {
+                // 前三个小画面靠右从下往上铺
+                audience.rect = CGRectMake(videoWidth - offsetX - subWidth, videoHeight - offsetY - index * subHeight - subHeight, subWidth, subHeight);
+            } else if (index < 6) {
+                // 后三个小画面靠左从下往上铺
+                audience.rect = CGRectMake(offsetX, videoHeight - offsetY - (index - 3) * subHeight - subHeight, subWidth, subHeight);
+            } else {
+                // 最多只叠加六个小画面
+            }
+            
+            [mixUsers addObject:audience];
+            ++index;
+        }
+        config.mixUsers = mixUsers;
+        [_trtc setMixTranscodingConfig:config];
+    }
 }
 
 #pragma mark - button
@@ -385,21 +541,32 @@ typedef enum : NSUInteger {
     btn.selected = !btn.selected;
     if (btn.selected) {
         _layoutEngine.type = TC_Gird;
+        [_trtc setDebugViewMargin:_mainViewUserId margin:UIEdgeInsetsZero];
     } else {
         _layoutEngine.type = TC_Float;
+        [_trtc setDebugViewMargin:_mainViewUserId margin:UIEdgeInsetsMake(_dashboardTopMargin, 0, 0, 0)];
     }
+    
     [_trtc showDebugView:_showLogType];
 }
 
 /**
- * 点击切换前后置摄像头
+ * 打开或关闭本地视频上行
  */
-- (void)clickCamera:(UIButton *)btn {
-    _cameraSwitch = !_cameraSwitch;
+- (void)clickVideoMute:(UIButton *)btn {
+    _videoMuted = !_videoMuted;
     
-    [btn setImage:[UIImage imageNamed:(_cameraSwitch ? @"camera_b2" : @"camera_b")] forState:UIControlStateNormal];
+    [btn setImage:[UIImage imageNamed:(_videoMuted ? @"unmuteVideo" : @"muteVideo")] forState:UIControlStateNormal];
     
-    [_trtc switchCamera];
+    if (_videoMuted) {
+        [_trtc stopLocalPreview];
+        [_localView showVideoCloseTip:YES];
+    }
+    else {
+        [_trtc startLocalPreview:YES view:_localView];
+        [_localView showVideoCloseTip:NO];
+    }
+    [_trtc muteLocalVideo:_videoMuted];
 }
 
 /**
@@ -419,7 +586,7 @@ typedef enum : NSUInteger {
 }
 
 /**
- * 点击关闭或者打开本地的麦克风采集
+ * 点击关闭或者打开本地的音频上行
  */
 - (void)clickMute:(UIButton *)btn {
     _muteSwitch = !_muteSwitch;
@@ -436,6 +603,72 @@ typedef enum : NSUInteger {
     [vc setDelegate:self];
     [self.navigationController pushViewController:vc animated:YES];
 }
+
+/**
+ * 打开更多功能的设置面板
+ */
+- (void)clickMore:(UIButton*)btn
+{
+    if (!_moreSettingVC) {
+        _moreSettingVC = [[TRTCMoreSettingViewController alloc] initWithTRTCEngine:_trtc roomId:_roomID userId:_selfUserID];
+        _moreSettingVC.delegate = self;
+        [self addChildViewController:_moreSettingVC];
+        _moreSettingVC.view.frame = CGRectMake(0, self.view.height * 0.15, self.view.width, self.view.height * 0.7);
+        [self.view addSubview:_moreSettingVC.view];
+        [_moreSettingVC didMoveToParentViewController:self];
+    }
+    else {
+        [_moreSettingVC willMoveToParentViewController:nil];
+        [_moreSettingVC.view removeFromSuperview];
+        [_moreSettingVC removeFromParentViewController];
+        _moreSettingVC = nil;
+    }
+}
+
+#pragma mark - TRTCMoreSettingDelegate
+- (void)onAudioVolumeEnableChanged:(BOOL)enable
+{
+    for (TRTCVideoView* videoView in _remoteViewDic.allValues) {
+        [videoView showAudioVolume:enable];
+    }
+}
+
+- (void)onCloudMixingEnable:(BOOL)enable
+{
+    if (enable) {
+        [self updateCloudMixtureParams];
+    }
+    else {
+        [_trtc setMixTranscodingConfig:nil];
+    }
+}
+
+#pragma mark TRTCVideoViewDelegate
+- (void)onMuteVideoBtnClick:(TRTCVideoView *)view stateChanged:(BOOL)stateChanged
+{
+    if (stateChanged) {
+        [_trtc stopRemoteView:view.userId];
+    }
+    else {
+        [_trtc startRemoteView:view.userId view:view];
+    }
+}
+
+- (void)onMuteAudioBtnClick:(TRTCVideoView *)view stateChanged:(BOOL)stateChanged
+{
+    [_trtc muteRemoteAudio:view.userId mute:stateChanged];
+}
+
+- (void)onScaleModeBtnClick:(TRTCVideoView *)view stateChanged:(BOOL)stateChanged
+{
+    if (stateChanged) {
+        [_trtc setRemoteViewFillMode:view.userId mode:TRTCVideoFillMode_Fill];
+    }
+    else {
+        [_trtc setRemoteViewFillMode:view.userId mode:TRTCVideoFillMode_Fit];
+    }
+}
+
 
 #pragma mark - TRtcEngineDelegate
 
@@ -481,18 +714,24 @@ typedef enum : NSUInteger {
  */
 - (void)onUserEnter:(NSString *)userId {
     // 创建一个新的 View 用来显示新的一路画面
-    UIView *remoteView = [[UIView alloc] init];
+    TRTCVideoView *remoteView = [TRTCVideoView newVideoViewWithType:VideoViewType_Remote userId:userId];
+    if (![TRTCMoreSettingViewController isAudioVolumeEnable]) {
+        [remoteView showAudioVolume:NO];
+    }
+    remoteView.delegate = self;
     [remoteView setBackgroundColor:UIColorFromRGB(0x262626)];
     [self.view addSubview:remoteView];
     [_remoteViewDic setObject:remoteView forKey:userId];
-    
+
     // 启动远程画面的解码和显示逻辑，FillMode 可以设置是否显示黑边
     [_trtc startRemoteView:userId view:remoteView];
     [_trtc setRemoteViewFillMode:userId mode:TRTCVideoFillMode_Fit];
     // 将新进来的成员设置成大画面
     _mainViewUserId = userId;
-    
+
     [self relayout];
+    [self updateCloudMixtureParams];
+
 }
 
 /**
@@ -503,30 +742,70 @@ typedef enum : NSUInteger {
     UIView *playerView = [_remoteViewDic objectForKey:userId];
     [playerView removeFromSuperview];
     [_remoteViewDic removeObjectForKey:userId];
-    
+
     NSString* subViewId = [NSString stringWithFormat:@"%@-sub", userId];
     UIView *subStreamPlayerView = [_remoteViewDic objectForKey:subViewId];
     [subStreamPlayerView removeFromSuperview];
     [_remoteViewDic removeObjectForKey:subViewId];
-    
+
     // 如果该成员是大画面，则当其离开后，大画面设置为本地推流画面
     if ([userId isEqual:_mainViewUserId] || [subViewId isEqualToString:_mainViewUserId]) {
         _mainViewUserId = _selfUserID;
     }
-    
+
     [self relayout];
+    [self updateCloudMixtureParams];
+
 }
 
 - (void)onUserAudioAvailable:(NSString *)userId available:(BOOL)available
 {
+    TRTCVideoView *playerView = [_remoteViewDic objectForKey:userId];
+    if (!available) {
+        [playerView setAudioVolumeRadio:0.f];
+    }
     NSLog(@"onUserAudioAvailable:userId:%@ alailable:%u", userId, available);
 }
 
 
 - (void)onUserVideoAvailable:(NSString *)userId available:(BOOL)available
 {
-    NSLog(@"onUserVideoAvailable:userId:%@ alailable:%u", userId, available);
+//    if (available) {
+//        TRTCVideoView *remoteView = [TRTCVideoView newVideoViewWithType:VideoViewType_Remote userId:userId];
+//        remoteView.delegate = self;
+//        [remoteView setBackgroundColor:UIColorFromRGB(0x262626)];
+//        [self.view addSubview:remoteView];
+//        [_remoteViewDic setObject:remoteView forKey:userId];
+//
+//        // 启动远程画面的解码和显示逻辑，FillMode 可以设置是否显示黑边
+//        [_trtc startRemoteView:userId view:remoteView];
+//        [_trtc setRemoteViewFillMode:userId mode:TRTCVideoFillMode_Fit];
+//        // 将新进来的成员设置成大画面
+//        _mainViewUserId = userId;
+//
+//    }
+//    else {
+//        UIView *playerView = [_remoteViewDic objectForKey:userId];
+//        [playerView removeFromSuperview];
+//        [_remoteViewDic removeObjectForKey:userId];
+//
+//        NSString* subViewId = [NSString stringWithFormat:@"%@-sub", userId];
+//        UIView *subStreamPlayerView = [_remoteViewDic objectForKey:subViewId];
+//        [subStreamPlayerView removeFromSuperview];
+//        [_remoteViewDic removeObjectForKey:subViewId];
+//
+//        // 如果该成员是大画面，则当其离开后，大画面设置为本地推流画面
+//        if ([userId isEqual:_mainViewUserId] || [subViewId isEqualToString:_mainViewUserId]) {
+//            _mainViewUserId = _selfUserID;
+//        }
+//
+//    }
+//    [self relayout];
+    TRTCVideoView* videoView = [_remoteViewDic objectForKey:userId];
+    [videoView showVideoCloseTip:!available];
     
+
+    NSLog(@"onUserVideoAvailable:userId:%@ alailable:%u", userId, available);
 
 }
 
@@ -535,7 +814,11 @@ typedef enum : NSUInteger {
     NSLog(@"onUserSubStreamAvailable:userId:%@ alailable:%u", userId, available);
     NSString* viewId = [NSString stringWithFormat:@"%@-sub", userId];
     if (available) {
-        UIView *remoteView = [[UIView alloc] init];
+        TRTCVideoView *remoteView = [TRTCVideoView newVideoViewWithType:VideoViewType_Remote userId:userId];
+        if (![TRTCMoreSettingViewController isAudioVolumeEnable]) {
+            [remoteView showAudioVolume:NO];
+        }
+        remoteView.delegate = self;
         [remoteView setBackgroundColor:UIColorFromRGB(0x262626)];
         [self.view addSubview:remoteView];
         [_remoteViewDic setObject:remoteView forKey:viewId];
@@ -557,7 +840,7 @@ typedef enum : NSUInteger {
 }
 
 - (void)onAudioRouteChanged:(TRTCAudioRoute)route fromRoute:(TRTCAudioRoute)fromRoute {
-    NSLog(@"TRTC onAudioRouteChanged %ld -> %ld", fromRoute, route);
+    NSLog(@"TRTC onAudioRouteChanged %ld -> %ld", (long)fromRoute, route);
 }
 #pragma mark - TRTCSettingVCDelegate
 
@@ -568,6 +851,7 @@ typedef enum : NSUInteger {
     encParam.videoResolution = property.resolution;
     encParam.videoFps = property.fps;
     encParam.videoBitrate = property.bitRate;
+    encParam.resMode = property.resMode;
 
     [_trtc setVideoEncoderParam:encParam];
     
@@ -581,10 +865,69 @@ typedef enum : NSUInteger {
     smallVideoConfig.videoResolution = TRTCVideoResolution_160_120;
     smallVideoConfig.videoFps = property.fps;
     smallVideoConfig.videoBitrate = 100;
+    smallVideoConfig.resMode = property.resMode;
     [_trtc enableEncSmallVideoStream:property.enableSmallStream withQuality:smallVideoConfig];
     
     [_trtc setPriorRemoteVideoStreamType:property.priorSmallStream];
     
+}
+
+
+- (void)onConnectOtherRoom:(NSString *)userId errCode:(TXLiteAVError)errCode errMsg:(NSString *)errMsg
+{
+    [self toastTip:[NSString stringWithFormat:@"连麦结果:%u %@", errCode, errMsg]];
+}
+
+- (void)onStatistics:(TRTCStatistics *)statistics
+{
+    
+}
+
+- (void)onNetworkQuality:(TRTCQualityInfo *)localQuality remoteQuality:(NSArray<TRTCQualityInfo *> *)remoteQuality
+{
+    [_localView setNetworkIndicatorImage:[self imageForNetworkQuality:localQuality.quality]];
+    for (TRTCQualityInfo* qualityInfo in remoteQuality) {
+        TRTCVideoView* remoteVideoView = [_remoteViewDic objectForKey:qualityInfo.userId];
+        [remoteVideoView setNetworkIndicatorImage:[self imageForNetworkQuality:qualityInfo.quality]];
+    }
+}
+
+- (void)onUserVoiceVolume:(NSArray<TRTCVolumeInfo *> *)userVolumes totalVolume:(NSInteger)totalVolume
+{
+    for (TRTCVolumeInfo* volumeInfo in userVolumes) {
+        TRTCVideoView* videoView = [_remoteViewDic objectForKey:volumeInfo.userId];
+        if (videoView) {
+            float radio = (float)volumeInfo.volume / 100;
+            [videoView setAudioVolumeRadio:radio];
+        }
+    }
+}
+
+- (UIImage*)imageForNetworkQuality:(TRTCQuality)quality
+{
+    UIImage* image = nil;
+    switch (quality) {
+        case TRTCQuality_Down:
+        case TRTCQuality_Vbad:
+            image = [UIImage imageNamed:@"signal5"];
+            break;
+        case TRTCQuality_Bad:
+            image = [UIImage imageNamed:@"signal4"];
+            break;
+        case TRTCQuality_Poor:
+            image = [UIImage imageNamed:@"signal3"];
+            break;
+        case TRTCQuality_Good:
+            image = [UIImage imageNamed:@"signal2"];
+            break;
+        case TRTCQuality_Excellent:
+            image = [UIImage imageNamed:@"signal1"];
+            break;
+        default:
+            break;
+    }
+    
+    return image;
 }
 #pragma mark - UITextFieldDelegate
 

@@ -14,6 +14,7 @@
 @property(nonatomic, assign)int bitRate;
 @property(nonatomic, assign)int qosType;
 @property(nonatomic, assign)int qosControl;
+@property(nonatomic, assign)int resMode;
 @property(nonatomic, assign)BOOL enableSmallStream;
 @property(nonatomic, assign)BOOL priorSmallStream;
 @end
@@ -43,6 +44,7 @@
 + (int)getQosType;
 + (int)getQosCtrlType;
 + (int)getAppScene;
++ (int)getResMode;
 + (BOOL)getEnableSmallStream;
 + (BOOL)getPriorSmallStream;
 @end

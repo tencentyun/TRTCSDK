@@ -12,6 +12,11 @@
 		918EFF7E21D727C3007CF83A /* TRTCVideoViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 918EFF7B21D727C3007CF83A /* TRTCVideoViewLayout.m */; };
 		918EFF8221D727DC007CF83A /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 918EFF8121D727DC007CF83A /* MBProgressHUD.m */; };
 		918EFFED21D79A2E007CF83A /* config.json in Resources */ = {isa = PBXBuildFile; fileRef = 918EFFEC21D79A2E007CF83A /* config.json */; };
+		D660B0CF22329A2A009851F3 /* NSString+UISize.m in Sources */ = {isa = PBXBuildFile; fileRef = D660B0CB22329A2A009851F3 /* NSString+UISize.m */; };
+		D660B0D522329A3C009851F3 /* TRTCMoreSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D660B0D122329A3C009851F3 /* TRTCMoreSettingViewController.m */; };
+		D660B0D622329A3C009851F3 /* TRTCVideoView.m in Sources */ = {isa = PBXBuildFile; fileRef = D660B0D422329A3C009851F3 /* TRTCVideoView.m */; };
+		D660B0D922329AB1009851F3 /* NSString+Common.m in Sources */ = {isa = PBXBuildFile; fileRef = D660B0D722329AB0009851F3 /* NSString+Common.m */; };
+		D660B0DC22329B04009851F3 /* NSData+Common.m in Sources */ = {isa = PBXBuildFile; fileRef = D660B0DB22329B04009851F3 /* NSData+Common.m */; };
 		D689A8C921CC8D4E00C7C618 /* TRTCNewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D689A89A21CC8D4E00C7C618 /* TRTCNewViewController.m */; };
 		D689A8CB21CC8D4E00C7C618 /* TRTCSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D689A89E21CC8D4E00C7C618 /* TRTCSettingViewController.m */; };
 		D689A8CC21CC8D4E00C7C618 /* UIView+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = D689A8A021CC8D4E00C7C618 /* UIView+Additions.m */; };
@@ -49,6 +54,16 @@
 		918EFF8021D727DC007CF83A /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		918EFF8121D727DC007CF83A /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		918EFFEC21D79A2E007CF83A /* config.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = config.json; sourceTree = "<group>"; };
+		D660B0CB22329A2A009851F3 /* NSString+UISize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+UISize.m"; sourceTree = "<group>"; };
+		D660B0CE22329A2A009851F3 /* NSString+UISize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+UISize.h"; sourceTree = "<group>"; };
+		D660B0D122329A3C009851F3 /* TRTCMoreSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCMoreSettingViewController.m; sourceTree = "<group>"; };
+		D660B0D222329A3C009851F3 /* TRTCVideoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCVideoView.h; sourceTree = "<group>"; };
+		D660B0D322329A3C009851F3 /* TRTCMoreSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCMoreSettingViewController.h; sourceTree = "<group>"; };
+		D660B0D422329A3C009851F3 /* TRTCVideoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCVideoView.m; sourceTree = "<group>"; };
+		D660B0D722329AB0009851F3 /* NSString+Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Common.m"; sourceTree = "<group>"; };
+		D660B0D822329AB1009851F3 /* NSString+Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Common.h"; sourceTree = "<group>"; };
+		D660B0DA22329B04009851F3 /* NSData+Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Common.h"; sourceTree = "<group>"; };
+		D660B0DB22329B04009851F3 /* NSData+Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Common.m"; sourceTree = "<group>"; };
 		D689A89921CC8D4E00C7C618 /* TRTCSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCSettingViewController.h; sourceTree = "<group>"; };
 		D689A89A21CC8D4E00C7C618 /* TRTCNewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCNewViewController.m; sourceTree = "<group>"; };
 		D689A89D21CC8D4E00C7C618 /* TRTCNewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCNewViewController.h; sourceTree = "<group>"; };
@@ -136,6 +151,10 @@
 				D689A89A21CC8D4E00C7C618 /* TRTCNewViewController.m */,
 				D689A89921CC8D4E00C7C618 /* TRTCSettingViewController.h */,
 				D689A89E21CC8D4E00C7C618 /* TRTCSettingViewController.m */,
+				D660B0D322329A3C009851F3 /* TRTCMoreSettingViewController.h */,
+				D660B0D122329A3C009851F3 /* TRTCMoreSettingViewController.m */,
+				D660B0D222329A3C009851F3 /* TRTCVideoView.h */,
+				D660B0D422329A3C009851F3 /* TRTCVideoView.m */,
 			);
 			path = TRTC;
 			sourceTree = "<group>";
@@ -143,6 +162,12 @@
 		D689A89F21CC8D4E00C7C618 /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				D660B0DA22329B04009851F3 /* NSData+Common.h */,
+				D660B0DB22329B04009851F3 /* NSData+Common.m */,
+				D660B0D822329AB1009851F3 /* NSString+Common.h */,
+				D660B0D722329AB0009851F3 /* NSString+Common.m */,
+				D660B0CE22329A2A009851F3 /* NSString+UISize.h */,
+				D660B0CB22329A2A009851F3 /* NSString+UISize.m */,
 				D689A8A021CC8D4E00C7C618 /* UIView+Additions.m */,
 				D689A8A121CC8D4E00C7C618 /* UIView+Additions.h */,
 				D689A8A221CC8D4E00C7C618 /* ColorMacro.h */,
@@ -332,6 +357,7 @@
 			files = (
 				918EFF7D21D727C3007CF83A /* TRTCMainViewController.m in Sources */,
 				D689A8D421CC8D4E00C7C618 /* AFAutoPurgingImageCache.m in Sources */,
+				D660B0DC22329B04009851F3 /* NSData+Common.m in Sources */,
 				D689A8CD21CC8D4E00C7C618 /* UIProgressView+AFNetworking.m in Sources */,
 				D689A8C921CC8D4E00C7C618 /* TRTCNewViewController.m in Sources */,
 				D689A8D721CC8D4E00C7C618 /* AFHTTPSessionManager.m in Sources */,
@@ -345,8 +371,12 @@
 				D689A8DA21CC8D4E00C7C618 /* AFNetworkReachabilityManager.m in Sources */,
 				D689A8D821CC8D4E00C7C618 /* AFURLSessionManager.m in Sources */,
 				D689A8CE21CC8D4E00C7C618 /* UIRefreshControl+AFNetworking.m in Sources */,
+				D660B0D522329A3C009851F3 /* TRTCMoreSettingViewController.m in Sources */,
+				D660B0D922329AB1009851F3 /* NSString+Common.m in Sources */,
+				D660B0D622329A3C009851F3 /* TRTCVideoView.m in Sources */,
 				D689A8CB21CC8D4E00C7C618 /* TRTCSettingViewController.m in Sources */,
 				D689A8CC21CC8D4E00C7C618 /* UIView+Additions.m in Sources */,
+				D660B0CF22329A2A009851F3 /* NSString+UISize.m in Sources */,
 				D689A8D621CC8D4E00C7C618 /* AFURLResponseSerialization.m in Sources */,
 				D689A8D321CC8D4E00C7C618 /* UIWebView+AFNetworking.m in Sources */,
 				D689A8D021CC8D4E00C7C618 /* UIImageView+AFNetworking.m in Sources */,

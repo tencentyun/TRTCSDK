@@ -6,6 +6,7 @@
  */
 
 #import "TRTCVideoViewLayout.h"
+#import "TRTCVideoView.h"
 
 const static float VSPACE = 10.f;
 const static float HSPACE = 20.f;
@@ -31,6 +32,17 @@ const static float MARGIN = 10.f;
     for (UIView * player in self.subViews) {
         [self.view addSubview:player];
         [self.view bringSubviewToFront:player];
+        
+        
+        if (self.type == TC_Float) {
+            [((TRTCVideoView*)player) hideButtons:YES];
+        }
+        else if (self.type == TC_Gird ) {
+            TRTCVideoView* playerView = ((TRTCVideoView*)player);
+            if (playerView.type != VideoViewType_Local)
+                [playerView hideButtons:NO];
+        }
+        
     }
     if (players.count == 1) {
         players[0].frame = (CGRect){.origin = CGPointZero, .size = self.view.frame.size};

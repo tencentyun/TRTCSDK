@@ -16,6 +16,6 @@
 @interface TRTCMainViewController : UIViewController 
 
 @property (nonatomic) TRTCParams *param;    /// TRTC SDK 视频通话房间进入所必须的参数
-@property (nonatomic) BOOL  pureAudioMode;
+//@property (nonatomic) BOOL  pureAudioMode;
 
 @end
