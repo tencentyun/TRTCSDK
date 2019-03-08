@@ -11,7 +11,9 @@
 static const CGFloat ItemSize = 22;
 
 @interface TXRenderViewToolbarItemObject : NSObject
-@property (copy, nonatomic) NSString *title;
+@property (copy, nonatomic) NSArray<NSString *> *titles;
+@property (strong, nonatomic) NSArray<NSImage *> *images;
+@property (assign, nonatomic) NSUInteger index;
 @property (weak, nonatomic) id target;
 @property (nonatomic) SEL action;
 @property (strong, nonatomic) id context;
@@ -21,13 +23,16 @@ static const CGFloat ItemSize = 22;
 @end
 
 @interface TXRenderView () <NSCollectionViewDelegate>
-@end
-
-@implementation TXRenderView
 {
     NSMutableArray<TXRenderViewToolbarItemObject*> *_items;
     NSCollectionView *_collectionView;
+    NSLevelIndicator *_volumeIndicator;
+    NSImageView *_signalIndicator;    
 }
+@end
+
+@implementation TXRenderView
+
 - (instancetype)initWithCoder:(NSCoder *)coder
 {
     self = [super initWithCoder:coder];
@@ -45,15 +50,11 @@ static const CGFloat ItemSize = 22;
     return self;
 }
 
-- (void)addSubview:(NSView *)view positioned:(NSWindowOrderingMode)place relativeTo:(NSView *)otherView
-{
-    [super addSubview:view positioned:place relativeTo:otherView];
-    if (view != _collectionView) {
-        [self addSubview:_collectionView];
-    }
-}
-
 - (void)setup {
+    _contentView = [[NSView alloc] initWithFrame:self.bounds];
+    _contentView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
+    [self addSubview:_contentView];
+    
     _items = [[NSMutableArray alloc] init];
     _collectionView = [[NSCollectionView alloc] initWithFrame:NSMakeRect(NSWidth(self.bounds) - ItemSize, 0, 24, NSHeight(self.bounds))];
     _collectionView.autoresizingMask = NSViewMinXMargin | NSViewMinYMargin;
@@ -64,22 +65,50 @@ static const CGFloat ItemSize = 22;
     _collectionView.delegate = self;
     _collectionView.backgroundColors = @[[NSColor colorWithWhite:1 alpha:0.5]];
 
-
     [self addSubview:_collectionView];
+    
+    _volumeIndicator = [[NSLevelIndicator alloc] initWithFrame:NSMakeRect(2.5, NSMaxY(self.bounds) - 20 - 12.5, 15, 10)];
+    _volumeIndicator.levelIndicatorStyle = NSLevelIndicatorStyleContinuousCapacity;
+    _volumeIndicator.autoresizingMask = NSViewMaxXMargin | NSViewMinYMargin;
+    _volumeIndicator.minValue = 0.0;
+    _volumeIndicator.maxValue = 1.0;
+    [_volumeIndicator setFrameCenterRotation:90];
+    [self addSubview:_volumeIndicator];
+    
+    _signalIndicator = [[NSImageView alloc] initWithFrame:NSMakeRect(20, NSMaxY(self.bounds) - 20 - 15, 26, 15)];
+    _signalIndicator.autoresizingMask = NSViewMaxXMargin | NSViewMinYMargin;
+    _signalIndicator.imageScaling = NSImageScaleProportionallyDown;
+    [self addSubview:_signalIndicator];
 }
 
 - (void)_updateCollectionView {
-    CGFloat height = ItemSize * _items.count;
-    NSRect frame = NSMakeRect(NSWidth(self.bounds) - ItemSize, NSHeight(self.bounds) - height, ItemSize, height);
+    CGFloat width = ItemSize * _items.count;
+    NSRect frame = NSMakeRect(NSWidth(self.bounds) - width, NSHeight(self.bounds) - ItemSize, width, ItemSize);
     _collectionView.frame = frame;
     _collectionView.content = _items;
 }
 
 #pragma mark - Public Methods
-- (void)addToolbarItem:(NSString *)title target:(id)target action:(SEL)action context:(id)context
+- (void)setVolumeHidden:(BOOL)volumeHidden {
+    _volumeHidden = volumeHidden;
+    _volumeIndicator.hidden = volumeHidden;
+}
+- (void)addTextToolbarItem:(NSString *)title target:(id)target action:(SEL)action context:(id)context
+{
+    [self addToolbarItemWithTitles:@[title] images:nil target:target action:action context:context];
+}
+- (void)addImageToolbarItem:(NSImage *)image target:(id)target action:(SEL)action context:(id)context {
+    [self addToolbarItemWithTitles:nil images:@[image] target:target action:action context:context];
+}
+
+- (void)addToolbarItemWithTitles:(NSArray<NSString *> *)titles images:(NSArray<NSImage *> *)images target:(id)target action:(SEL)action context:(id)context
 {
     TXRenderViewToolbarItemObject *item = [[TXRenderViewToolbarItemObject alloc] init];
-    item.title = title;
+    [images enumerateObjectsUsingBlock:^(NSImage * _Nonnull image, NSUInteger idx, BOOL * _Nonnull stop) {
+        [image setSize:NSMakeSize(ItemSize, ItemSize)];
+    }];
+    item.titles = titles;
+    item.images = images;
     item.target = target;
     item.action = action;
     item.context = context;
@@ -87,9 +116,14 @@ static const CGFloat ItemSize = 22;
     [self _updateCollectionView];
 }
 
+- (void)addToggleImageToolbarItem:(NSArray<NSImage *> *)images target:(id)target action:(SEL)action context:(id)context
+{
+    [self addToolbarItemWithTitles:nil images:images target:target action:action context:context];
+}
+
 - (void)removeToolbarWithTitle:(NSString *)title {
     for (TXRenderViewToolbarItemObject *item in [_items reverseObjectEnumerator]) {
-        if ([item.title isEqualToString:title]) {
+        if ([item.titles.firstObject isEqualToString:title]) {
             [_items removeObject:item];
             break;
         }
@@ -97,6 +131,14 @@ static const CGFloat ItemSize = 22;
     [self _updateCollectionView];
 }
 
+- (void)setVolume:(float)volume {
+    _volumeIndicator.doubleValue = volume;
+}
+
+- (void)setSignal:(TRTCQuality)volume
+{
+    _signalIndicator.image = [NSImage imageNamed:[NSString stringWithFormat:@"signal%d", (int)volume]];
+}
 @end
 
 @implementation TXRenderViewToolbarItem
@@ -109,18 +151,40 @@ static const CGFloat ItemSize = 22;
     [super setRepresentedObject:representedObject];
     NSButton *button = (NSButton *)[self view];
     button.font = [NSFont systemFontOfSize:10];
-    [button setTitle:representedObject.title ?: @""];
+    button.imageScaling = NSImageScaleProportionallyDown;
+    [self _updateButtonWithObject];
     button.target = self;
     button.action = @selector(onButtonClick:);
 }
 
+- (void)_updateButtonWithObject {
+    TXRenderViewToolbarItemObject *representedObject = self.representedObject;
+    NSButton *button = (NSButton *)[self view];
+    if (representedObject.titles) {
+        [button setTitle:representedObject.titles[representedObject.index]];
+        [button setImage:nil];
+    } else {
+        [button setTitle:@""];
+        [button setImage:representedObject.images[representedObject.index]];
+    }
+}
+
 - (void)onButtonClick:(id)_ {
     TXRenderViewToolbarItemObject *object = self.representedObject;
-
-    
+    if (object.titles) {
+        object.index = (object.index + 1) % object.titles.count;
+    } else {
+        object.index = (object.index + 1) % object.images.count;
+    }
+    [self _updateButtonWithObject];
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-    [object.target performSelector:object.action withObject:object.context];
+    NSMethodSignature *sig = [object.target methodSignatureForSelector:object.action];
+    if (sig.numberOfArguments == 3) {
+        [object.target performSelector:object.action withObject:object.context];
+    } else {
+        [object.target performSelector:object.action withObject:object.context withObject:@(object.index)];
+    }
 #pragma clang diagnostic pop
 }
 @end
