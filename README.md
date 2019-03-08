@@ -4,13 +4,13 @@
 ## 最新版本 6.2.7005 @ 2019.03.08
 
 Android、iOS、Mac、Windows
-1. 增加跨房间通话能力connectOtherRoom() ，即已经存在的两个TRTC房间可以相互连通，该功能可用于直播间中的主播 PK 功能。
+1. 增加跨房间通话能力connectOtherRoom，即已存在的两个TRTC房间可以相互连通，该功能可用于直播间中的主播PK功能。
 2. 增加 sendSEIMsg() 接口，支持通过视频帧中的 SEI 头信息发送自定义消息，一般用于在视频流中塞入时间戳信息。
-3. 优化 SDK CPU使用率和稳定性。
+3. 优化 CPU 使用率和稳定性。
 4. 修复纯语音通话场景（比如狼人杀）下的旁路推流功能，需要配合 TRTCParam 中的 bussInfo 字段使用。
 5. 提升弱网（即较差的网络环境）下的画面清晰度。
-6. 取消TRTCCloud的多实例能力，创建模式改为单例模式，多实例模式下会出现网络资源相互抢占的情况，影响最终体验效果。
-7. 增加滤镜浓度设置接口 setFilterConcentration。
+6. 取消TRTCCloud的多实例能力，创建模式改为单例模式，避免多个TRTCCloud实例相互抢占网络资源，影响体验效果。
+7. 增加滤镜浓度设置接口 setFilterConcentration() 。
 
 Windows
 1. TRTCCloud 类改为纯虚接口 ITRTCCloud，支持通过 LoadLibirary 动态加载dll。
