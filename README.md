@@ -2,24 +2,19 @@
 覆盖iOS、Android、Windows、Mac、浏览器和微信小程序六大应用平台，致力于提供全球最好的视频通话和直播连麦解决方案。
 
 ## 最新版本 6.2.7005 @ 2019.03.08
+
 Android、iOS、Mac、Windows
-1. 改为单例形式
-2. 增加跨房连麦功能
-3. 增加sendSEIMsg接口，支持通过SEI发送自定义消息
-4. 优化性能和稳定性
-5. 支持纯语音流旁路
-6. 提升弱网下画质
-
-Android
-1. 增加滤镜浓度设置接口setFilterConcentration
-
-iOS、Mac
-1. 增加滤镜浓度设置接口setFilterConcentration
- 
+1. 增加跨房间通话能力connectOtherRoom() ，即已经存在的两个TRTC房间可以相互连通，该功能可用于直播间中的主播 PK 功能。
+2. 增加 sendSEIMsg() 接口，支持通过视频帧中的 SEI 头信息发送自定义消息，一般用于在视频流中塞入时间戳信息。
+3. 优化 SDK CPU使用率和稳定性。
+4. 修复纯语音通话场景（比如狼人杀）下的旁路推流功能，需要配合 TRTCParam 中的 bussInfo 字段使用。
+5. 提升弱网（即较差的网络环境）下的画面清晰度。
+6. 取消TRTCCloud的多实例能力，创建模式改为单例模式，多实例模式下会出现网络资源相互抢占的情况，影响最终体验效果。
+7. 增加滤镜浓度设置接口 setFilterConcentration。
 
 Windows
-1. 改为纯虚接口，支持动态加载dll
-2. 增加音频数据回调 ITRTCAudioFrameCallback
+1. TRTCCloud 类改为纯虚接口 ITRTCCloud，支持通过 LoadLibirary 动态加载dll。
+2. 增加音频数据回调 ITRTCAudioFrameCallback。
 3. 优化camera兼容性及采集性能
 
 ## API 文档及使用指引
