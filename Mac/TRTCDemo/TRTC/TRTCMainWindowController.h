@@ -20,6 +20,13 @@ NS_ASSUME_NONNULL_BEGIN
 /// 录屏预览窗口
 @property (strong) IBOutlet NSWindow *capturePreviewWindow;
 
+/// 跨房通话窗口
+@property (strong) IBOutlet NSWindow *connectRoomWindow;
+@property (strong) NSString *connectRoomId;
+@property (strong) NSString *connectUserId;
+@property (assign, nonatomic, readonly) BOOL canConnectRoom;
+@property (assign, nonatomic) BOOL connectingRoom;
+
 /// 视频开关
 @property (strong) IBOutlet NSButton *videoBtn;
 
@@ -43,8 +50,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// 退房按钮
 @property (strong) IBOutlet NSButton *closeBtn;
+
 /// 屏幕分享
 @property (strong) IBOutlet NSButton *screenShareBtn;
+
+@property (strong) IBOutlet NSButton *connectRoomBtn;
 
 /// 布局切换按钮（九宫格 OR 前后叠加）
 @property (strong) IBOutlet NSButton *videoLayoutStyleBtn;
@@ -67,8 +77,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property NSInteger whitenessLevel;
 @property TRTCBeautyStyle beautyStyle;
 
+@property (copy, nonatomic) void(^onVideoSettingsButton)(void);
+@property (copy, nonatomic) void(^onAudioSettingsButton)(void);
 
-- (instancetype)initWithParams:(TRTCParams *)params scene:(TRTCAppScene)scene audioOnly:(BOOL)audioOnly;
+- (instancetype)initWithEngine:(TRTCCloud *)engine params:(TRTCParams *)params scene:(TRTCAppScene)scene;
+
 @end
 
 NS_ASSUME_NONNULL_END

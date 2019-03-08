@@ -20,7 +20,6 @@
     NSArray *_users;
     TRTCAppScene _scene;
 }
-@property BOOL audioOnly;
 @end
 
 @implementation TRTCNewWindowController
@@ -129,9 +128,9 @@
 }
 
 - (void)enterRoomWithParam:(TRTCParams *)params {
-    _wc = [[TRTCMainWindowController alloc] initWithParams:params scene:_scene audioOnly:self.audioOnly];
-    [_wc.window orderFront:nil];
-    [self.window close];
+    if (self.onLogin) {
+        self.onLogin(params);
+    }
 }
 
 @end

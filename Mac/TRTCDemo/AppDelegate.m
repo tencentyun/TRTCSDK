@@ -7,23 +7,20 @@
 //
 
 #import "AppDelegate.h"
-#import "TRTCNewWindowController.h"
-#import "TRTCSettingWindowController.h"
+#import "TRTCApp.h"
 
 @interface AppDelegate ()
 {
-    TRTCNewWindowController *_loginWindowController;
-    TRTCSettingWindowController *_settingWindowController;
-    TRTCCloud* _trtcEngine;
+    TRTCApp* _trtcApp;
 }
 @end
 
 @implementation AppDelegate
-
+- (void)awakeFromNib {
+    _trtcApp = [[TRTCApp alloc] init];
+}
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onWindowClose:) name:NSWindowWillCloseNotification object:nil];
-    _loginWindowController = [[TRTCNewWindowController alloc] initWithWindowNibName:NSStringFromClass([TRTCNewWindowController class])];
-    [_loginWindowController showWindow:nil];
+    [_trtcApp start];
 }
 
 
@@ -33,56 +30,13 @@
 
 - (BOOL)applicationShouldHandleReopen:(NSApplication *)sender hasVisibleWindows:(BOOL)flag {
     if (!flag) {
-        [self showLoginWindow];
+        [_trtcApp awake];
     }
     return YES;
 }
 
 - (IBAction)onPreference:(id)sender {
-    [self showPreferenceWithTabIndex:TXAVSettingTabIndexVideo];
+    [_trtcApp showPreference];
 }
-
-- (void)showPreferenceWithTabIndex:(TXAVSettingTabIndex)index
-{
-    if (nil ==_settingWindowController) {
-        _settingWindowController = [[TRTCSettingWindowController alloc] initWithWindowNibName:@"TRTCSettingWindowController" engine:[self getTRTCEngine]];
-    }
-    _settingWindowController.tabIndex = index;
-    [_settingWindowController showWindow:self];
-}
-
-- (void)closePreference{
-    [_settingWindowController close];
-    _settingWindowController = nil;
-}
-
-- (void)onWindowClose:(NSNotification *)notification {
-    if ([[notification.object nextResponder] isKindOfClass:[TRTCMainWindowController class]]) {
-        _trtcEngine = nil;
-        [self showLoginWindow];
-    }
-}
-
-- (void)showLoginWindow {
-    [_loginWindowController showWindow:nil];
-}
-
-// Menu Actions
-//- (IBAction)onShowCameraWindow:(id)sender {
-//    if (_cameraPreviewController == nil) {
-//        _cameraPreviewController = [[TXCameraPreviewWindowController alloc] initWithWindowNibName:@"TXCameraPreviewWindowController"];
-//    }
-//    [_cameraPreviewController showWindow:nil];
-//}
-
-- (TRTCCloud*)getTRTCEngine
-{
-    if (!_trtcEngine) {
-        _trtcEngine = [TRTCCloud new];
-    }
-    
-    return _trtcEngine;
-}
-
 
 @end

@@ -22,6 +22,7 @@
 		45AD957721D653FB007B2EAF /* config.json in Resources */ = {isa = PBXBuildFile; fileRef = 45AD957621D653FA007B2EAF /* config.json */; };
 		45AD957B21D656C2007B2EAF /* TRTCMainWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45AD957921D656C2007B2EAF /* TRTCMainWindowController.xib */; };
 		45AD95BF21D72C0F007B2EAF /* TRTCMainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45AD95BE21D72C0F007B2EAF /* TRTCMainWindowController.m */; };
+		45F96FC9223296E600E861EC /* TRTCApp.m in Sources */ = {isa = PBXBuildFile; fileRef = 45F96FC7223296E600E861EC /* TRTCApp.m */; };
 		D689A93121CC97F300C7C618 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D689A93021CC97F300C7C618 /* AppDelegate.m */; };
 		D689A93621CC97F400C7C618 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D689A93521CC97F400C7C618 /* Assets.xcassets */; };
 		D689A93921CC97F400C7C618 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D689A93721CC97F400C7C618 /* Main.storyboard */; };
@@ -57,6 +58,8 @@
 		45AD957821D656C2007B2EAF /* TRTCMainWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCMainWindowController.h; sourceTree = "<group>"; };
 		45AD957921D656C2007B2EAF /* TRTCMainWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TRTCMainWindowController.xib; sourceTree = "<group>"; };
 		45AD95BE21D72C0F007B2EAF /* TRTCMainWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCMainWindowController.m; sourceTree = "<group>"; };
+		45F96FC7223296E600E861EC /* TRTCApp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCApp.m; sourceTree = "<group>"; };
+		45F96FC8223296E600E861EC /* TRTCApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCApp.h; sourceTree = "<group>"; };
 		D689A92C21CC97F300C7C618 /* TRTCDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TRTCDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D689A92F21CC97F300C7C618 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		D689A93021CC97F300C7C618 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -150,6 +153,8 @@
 		D689A95221CC9AE400C7C618 /* TRTC */ = {
 			isa = PBXGroup;
 			children = (
+				45F96FC8223296E600E861EC /* TRTCApp.h */,
+				45F96FC7223296E600E861EC /* TRTCApp.m */,
 				457A706F2200814D00DD193B /* CaptureSource */,
 				D689A97721CCC41100C7C618 /* RenderView */,
 				45AD956921D6532B007B2EAF /* HoverView */,
@@ -274,6 +279,7 @@
 				457A707D2200814E00DD193B /* TXCaptureSourceCollectionHeaderView.m in Sources */,
 				45AD95BF21D72C0F007B2EAF /* TRTCMainWindowController.m in Sources */,
 				D689A98121CCC41200C7C618 /* TXRenderView.m in Sources */,
+				45F96FC9223296E600E861EC /* TRTCApp.m in Sources */,
 				D689A93121CC97F300C7C618 /* AppDelegate.m in Sources */,
 				457A707F2200814E00DD193B /* CaptureSourceCollectionItem.m in Sources */,
 				453167F221E45560007A91CB /* TRTCNewWindowController.m in Sources */,
