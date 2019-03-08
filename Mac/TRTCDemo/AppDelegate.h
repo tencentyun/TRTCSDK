@@ -11,9 +11,6 @@
 #import "TRTCCloud.h"
 
 @interface AppDelegate : NSObject <NSApplicationDelegate>
-- (void)showPreferenceWithTabIndex:(TXAVSettingTabIndex)index;
-- (TRTCCloud*)getTRTCEngine;
-- (void)closePreference;
 
 @end
 

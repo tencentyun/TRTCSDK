@@ -3,7 +3,7 @@
  * 
  * Function: 腾讯云视频通话功能的主要接口类
  *
- * Version: 6.1.6454
+ * Version: 6.2.7005
  */
 
 #import <Foundation/Foundation.h>
@@ -13,6 +13,20 @@
 
 @interface TRTCCloud : NSObject
 
+// 请使用 +sharedIntance 方法
++ (instancetype)new  __attribute__((unavailable("Use +sharedInstance instead")));
+- (instancetype)init __attribute__((unavailable("Use +sharedInstance instead")));
+
+/// @name 创建与销毁
+/// @{
+
+/// 创建TRTCCloud单例
++ (instancetype)sharedInstance;
+
+/// 销毁TRTCCloud单例
++ (void)destroySharedIntance;
+
+/// @}
 
 /// 设置回调接口 TRTCCloudDelegate，用户获得来自 TRTCCloud 的各种状态通知
 @property (nonatomic, weak) id<TRTCCloudDelegate> delegate;
@@ -43,6 +57,21 @@
  * 1.2 离开房间
  */
 - (void)exitRoom;
+
+/**
+ * 1.3 请求跨房连麦
+ * @param param json字符串连麦参数，包含以下字段:
+ * roomId: int  //连麦房间号
+ * userId: String                    //被连麦帐号
+ * sign: String                      //跨房连麦签名，加密内容为TC_ConnRoomSig，由第三方后台加密生成，是否使用由spear配置决定
+ **/
+- (void)connectOtherRoom:(NSString *)param;
+
+/**
+ * 取消跨房连麦
+ **/
+- (void)disconnectOtherRoom;
+
 /// @}
 
 /////////////////////////////////////////////////////////////////////////////////
@@ -78,6 +107,7 @@
  * 2.3 启动渲染远端视频画面
  * @param userId 对方的用户标识
  * @param view 指定渲染控件所在的父控件，SDK会在 view 内部创建一个等大的子控件用来渲染远端画面
+ * @note 在 onUserVideoAvailable 回调时，调用这个接口
  */
 - (void)startRemoteView:(NSString *)userId view:(TXView *)view;
 
@@ -440,7 +470,13 @@
 - (void)setFilter:(TXImage *)image;
 
 /**
- * 6.3 添加水印
+ * 6.3 设置滤镜浓度
+ * @param concentration 从0到1，越大滤镜效果越明显，默认值为0.5
+ */
+- (void)setFilterConcentration:(float)concentration;
+
+/**
+ * 6.4 添加水印
  * @param image 水印图片
  * @param streamType (TRTCVideoStreamTypeBig、TRTCVideoStreamTypeSub)
  * @param rect 水印相对于编码分辨率的归一化坐标，x,y,width,height 取值范围 0~1；height不用设置，sdk内部会根据水印宽高比自动计算height
@@ -462,6 +498,7 @@
  *
  * @param userId 对方的用户标识
  * @param view 渲染控件所在的父控件
+ * @note 在 onUserSubStreamAvailable 回调时，调用这个接口
  */
 - (void)startRemoteSubStreamView:(NSString *)userId view:(TXView *)view;
 
@@ -550,11 +587,11 @@
 
 /////////////////////////////////////////////////////////////////////////////////
 //
-//                      （八）音视频自定义接口
+//                      （八）自定义采集和渲染
 //
 /////////////////////////////////////////////////////////////////////////////////
-#pragma mark - 音视频自定义接口
-/// @name 音视频自定义接口
+#pragma mark - 自定义采集和渲染
+/// @name 自定义采集和渲染
 /// @{
 
 /**
@@ -593,6 +630,14 @@
  */
 - (int)setRemoteVideoRenderDelegate:(NSString*)userId delegate:(id<TRTCVideoRenderDelegate>)delegate pixelFormat:(TRTCVideoPixelFormat)pixelFormat bufferType:(TRTCVideoBufferType)bufferType;
 
+/**
+ * 8.6 调用实验性API接口
+ *
+ * @note 该接口用于调用一些实验性功能
+ * @param jsonStr 接口及参数描述的json字符串
+ */
+- (void)callExperimentalAPI:(NSString*)jsonStr;
+
 /// @}
 
 
@@ -623,6 +668,22 @@
  *       强烈建议不同类型的消息使用不同的 cmdID，这样可以在要求有序的情况下减小消息时延
  */
 - (BOOL)sendCustomCmdMsg:(NSInteger)cmdID data:(NSData *)data reliable:(BOOL)reliable ordered:(BOOL)ordered;
+
+/**
+ * 9.2 发送自定义消息给房间内所有用户
+ *
+ * @param data          待发送的数据，最大支持 1kb（1000字节）的数据大小
+ * @param repeatCount   发送数据次数
+ * @return YES:消息已通过限制，等待后续视频帧发送 NO:消息被限制发送
+ *
+ * @note 限制1：数据在接口调用完后不会被即时发送出去，而是从下一帧视频帧开始带在视频帧中发送
+ *       限制2：发送消息到房间内所有用户，每秒最多能发送 30 条消息 (**与sendCustomCmdMsg共享限制**)
+ *       限制2：每个包最大为1KB，若发送大量数据，会导致视频码率增大，可能导致视频画质下降甚至卡顿 (**与sendCustomCmdMsg共享限制**)
+ *       限制4：每个客户端每秒最多能发送总计 8 KB 数据 (**与sendCustomCmdMsg共享限制**)
+ *       限制5：若指定多次发送（repeatCount>1）,则数据会被带在后续的连续repeatCount个视频帧中发送出去，同样会导致视频码率增大
+ *       限制6: 如果repeatCount>1,多次发送，接收消息onRecvSEIMsg回调也可能会收到多次相同的消息，需要去重
+ */
+- (BOOL)sendSEIMsg:(NSData *)data  repeatCount:(int)repeatCount;
 
 /// @}
 

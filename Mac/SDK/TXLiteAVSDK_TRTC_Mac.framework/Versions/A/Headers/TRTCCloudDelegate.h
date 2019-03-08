@@ -66,6 +66,17 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)onExitRoom:(NSInteger)reason;
 
+
+/**
+ * 2.3 跨房连麦成功回调
+ */
+- (void)onConnectOtherRoom:(NSString*)userId errCode:(TXLiteAVError)errCode errMsg:(nullable NSString *)errMsg;
+
+
+/**
+ * 2.4 断开跨房连麦回调
+ */
+- (void)onDisconnectOtherRoom:(TXLiteAVError)errCode errMsg:(nullable NSString *)errMsg;
 /// @}
 
 /////////////////////////////////////////////////////////////////////////////////
@@ -282,6 +293,14 @@ NS_ASSUME_NONNULL_BEGIN
  * @param missed 丢失的消息数量
  */
 - (void)onMissCustomCmdMsgUserId:(NSString *)userId cmdID:(NSInteger)cmdID errCode:(NSInteger)errCode missed:(NSInteger)missed;
+
+/**
+ * 当房间中的某个用户使用sendSEIMsg发送数据时，房间中的其它用户可以通过onRecvSEIMsg接口接收数据
+ * @param userId   用户标识
+ * @param message  数据
+ */
+- (void)onRecvSEIMsg:(NSString *)userId message:(NSData*)message;
+
 /// @}
 
 /////////////////////////////////////////////////////////////////////////////////

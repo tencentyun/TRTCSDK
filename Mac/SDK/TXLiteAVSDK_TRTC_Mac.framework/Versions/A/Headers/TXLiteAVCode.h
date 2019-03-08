@@ -74,7 +74,9 @@ typedef enum TXLiteAVError
     ERR_PUBLISH_CDN_STREAM_RESPON_ERROR             = -3323,    ///< 旁路转推回包异常
     ERR_CLOUD_MIX_TRANSCODING_RESPON_ERROR          = -3324,    ///< 云端混流回包异常
     ERR_ROOM_REQUEST_QUIT_ROOM_TIMEOUT              = -3325,    ///< 请求退房超时
-
+    ERR_ROOM_REQUEST_CONN_ROOM_TIMEOUT              = -3326,    ///< 请求连麦超时
+    ERR_ROOM_REQUEST_DISCONN_ROOM_TIMEOUT           = -3327,    ///< 请求退出连麦超时
+    ERR_ROOM_REQUEST_CONN_ROOM_INVALID_PARAM        = -3328,    ///< 无效参数
     // Info服务器(查询接口机IP), 服务器错误码，数值范围[-100000, -110000]，但命名、含义在确认中
 
     ERR_SERVER_INFO_UNPACKING_ERROR                 = -100000,  ///< 请求解包错误

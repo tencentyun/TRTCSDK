@@ -10,18 +10,43 @@
 #import "SDKHeader.h"
 #import <AVFoundation/AVFoundation.h>
 #import "TXCaptureSourceWindowController.h"
-#import "AppDelegate.h"
+#import "TRTCSettingWindowController.h"
 #import "TXRenderView.h"
 #import "HoverView.h"
+#import <CommonCrypto/CommonCrypto.h>
+
+static NSString * const AudioIcon[2] = {@"main_tool_audio_on", @"main_tool_audio_off"};
+static NSString * const VideoIcon[2] = {@"main_tool_video_on", @"main_tool_video_off"};
+
+@interface UserVideoInfo : NSObject
+@property (nonatomic, strong) NSString *userId;
+@property (nonatomic, assign) uint32_t width;
+@property (nonatomic, assign) uint32_t height;
+@property (nonatomic, assign) uint32_t fps;
+@property (nonatomic, assign) TRTCVideoStreamType streamType;
+@property (nonatomic, assign) uint32_t videoBitrate;
+@end
+@implementation UserVideoInfo
+- (BOOL)isEqual:(UserVideoInfo *)object
+{
+    if (self == object) return YES;
+    if (object == nil)  return NO;
+    return self.width == object.width  && self.height == object.height ;//&&
+//           self.fps == object.fps      && self.streamType == object.streamType &&
+//           self.videoBitrate == object.videoBitrate && [self.userId isEqualToString:object.userId];
+}
+@end
 
 @interface TRTCMainWindowController () <NSWindowDelegate,NSTableViewDelegate,NSTableViewDataSource, TRTCCloudDelegate, TRTCLogDelegate>
+{
+    NSMutableDictionary *_mixTransCodeInfo;
+}
 /// TRTC SDK 实例对象
 @property(nonatomic,strong) TRTCCloud *trtcEngine;
 
 // 进房参数
 @property(nonatomic,readonly,strong) TRTCParams *currentUserParam;
 @property(nonatomic,readonly,assign) TRTCAppScene scene;
-@property(nonatomic,readonly,assign) BOOL audioOnly;
 // 用于鼠标移出后隐藏菜单栏
 @property(nonatomic,strong) NSTrackingArea *trackingArea;
 @property (nonatomic, copy) NSTimer *mouseTimer;
@@ -54,19 +79,18 @@
 
 @implementation TRTCMainWindowController
 
-- (instancetype)initWithParams:(TRTCParams *)params scene:(TRTCAppScene)scene audioOnly:(BOOL)audioOnly {
+- (instancetype)initWithEngine:(TRTCCloud *)engine params:(TRTCParams *)params scene:(TRTCAppScene)scene {
     if (self = [super initWithWindowNibName:@"TRTCMainWindowController"]) {
         _currentUserParam = params;
         _scene = scene;
-        _audioOnly = audioOnly;
         self.layoutStyle = 1;
-        self.trtcEngine = [(AppDelegate*)[NSApp delegate] getTRTCEngine];
+        self.trtcEngine = engine;
         self.trtcEngine.delegate = self;
         self.allRenderViews = [NSMutableDictionary dictionary];
         self.rotationState = [NSMutableDictionary dictionary];
         self.bigSmallStreamState = [NSMutableDictionary dictionary];
-        
         self.allUids = [NSMutableArray array];
+        _mixTransCodeInfo = [NSMutableDictionary dictionary];
     }
     return self;
 }
@@ -77,9 +101,13 @@
 
 - (void)_configButton:(NSButton *)button title:(NSString *)title color:(NSColor *)color {
     button.title = title;
-    button.attributedTitle = [[NSMutableAttributedString alloc] initWithString:title attributes:@{NSForegroundColorAttributeName:color}];
+    NSMutableParagraphStyle *style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+    [style setAlignment:NSCenterTextAlignment];
+    button.attributedTitle = [[NSMutableAttributedString alloc] initWithString:title attributes:@{NSForegroundColorAttributeName:color,
+                                                                                                  NSParagraphStyleAttributeName: style}];
     button.imagePosition = NSImageAbove;
-    button.imageScaling = NSImageScaleNone;
+    button.imageScaling = NSImageScaleProportionallyDown;
+    button.alignment = NSTextAlignmentCenter;
 }
 
 - (void)_configButton:(NSButton *)button title:(NSString *)title {
@@ -99,7 +127,6 @@
 // 窗口加载后初始化控件
 - (void)windowDidLoad {
     [super windowDidLoad];
-
     // 重置美颜窗口位置与参数
     NSRect frame = self.beautyPanel.frame;
     frame.origin.x = NSMinX(self.window.frame) - NSWidth(frame);
@@ -137,24 +164,18 @@
     self.videoSelectView.frame = CGRectMake(self.videoSelectView.frame.origin.x, self.videoSelectView.frame.origin.y, self.videoSelectView.frame.size.width, (self.micArr.count+1)*26);
     
     // 配置工具栏按钮样式
-    [self _configButton:self.micBtn title:@"静音"];
-    [self _configButton:self.screenShareBtn title:@"分享"];
-    [self _configButton:self.videoBtn title:@"停止视频"];
-    [self _configButton:self.beautyBtn title:@"美颜" color:[NSColor redColor]];
-    [self _configButton:self.closeBtn title:@"结束会议" color:[NSColor redColor]];
-    [self _configButton:self.logBtn title:@"仪表盘" color:[NSColor redColor]];
-    [self _configButton:self.videoLayoutStyleBtn title:@"画廊视图"];
     self.videoLayoutStyleBtn.layer.backgroundColor = [NSColor colorWithRed:0.18 green:0.18 blue:0.18 alpha:1.0].CGColor;
     self.videoLayoutStyleBtn.hidden = YES;
 
     // 设置按钮在鼠标悬浮时高亮
-    [self.micBtn setHover];
-    [self.videoBtn setHover];
-    [self.videoSelectBtn setHover];
-    [self.audioSelectBtn setHover];
-    [self.closeBtn setHover];
-    [self.videoLayoutStyleBtn setHover];
-    [self.screenShareBtn setHover];
+    [self.controlBar.subviews enumerateObjectsUsingBlock:^(__kindof NSButton * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if ([obj isKindOfClass:[NSButton class]] && obj.title.length > 0) {
+            [self _configButton:obj title:obj.title];
+        }
+        [obj setHover];
+
+    }];
+    [self _configButton:self.videoLayoutStyleBtn title:self.videoLayoutStyleBtn.title];
 
     // 进房
     [self enterRoom];
@@ -217,7 +238,6 @@
     [self.trtcEngine stopLocalPreview];
     [self.mouseTimer invalidate];
     self.mouseTimer = nil;
-    [(AppDelegate*)[NSApp delegate] closePreference];
     [self.beautyPanel close];
     [self.capturePreviewWindow close];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"Logout" object:self];
@@ -257,7 +277,6 @@
     return _currentUserParam.userId;
 }
 
-
 // 本地预览视图
 - (TXRenderView *)localVideoRenderView {
     return _allRenderViews[self.userId];
@@ -294,17 +313,16 @@
 - (IBAction)micBtnClick:(id)sender {
     NSButton *shareBtn = (NSButton *)sender;
     if (shareBtn.state == 1) {
-        [self.micBtn setImage:[NSImage imageNamed:@"mic_dis"]];
+        [self.micBtn setImage:[NSImage imageNamed:AudioIcon[1]]];
         self.micBtn.title = @"解除静音";
         NSMutableAttributedString *attTitle = [[NSMutableAttributedString alloc]initWithAttributedString:self.micBtn.attributedTitle];
         NSDictionary *dicAtt =@{NSForegroundColorAttributeName:[NSColor whiteColor]};
         [attTitle addAttributes:dicAtt range:NSMakeRange(0,4)];
         self.micBtn.attributedTitle = attTitle;
         [self.trtcEngine muteLocalAudio:YES];
-
     }
     else{
-        [self.micBtn setImage:[NSImage imageNamed:@"mic"]];
+        [self.micBtn setImage:[NSImage imageNamed:AudioIcon[0]]];
         self.micBtn.title = @"静音";
         NSMutableAttributedString *attTitle = [[NSMutableAttributedString alloc]initWithAttributedString:self.micBtn.attributedTitle];
         NSDictionary *dicAtt =@{NSForegroundColorAttributeName:[NSColor whiteColor]};
@@ -317,7 +335,7 @@
 - (IBAction)videoBtnClick:(id)sender {
     NSButton *shareBtn = (NSButton *)sender;
     if (shareBtn.state == 1) {
-        [self.videoBtn setImage:[NSImage imageNamed:@"video_off"]];
+        [self.videoBtn setImage:[NSImage imageNamed:VideoIcon[1]]];
         self.videoBtn.title = @"开启视频";
         NSMutableAttributedString *attTitle = [[NSMutableAttributedString alloc]initWithAttributedString:self.videoBtn.attributedTitle];
         NSDictionary *dicAtt =@{NSForegroundColorAttributeName:[NSColor whiteColor]};
@@ -327,13 +345,13 @@
         [self.trtcEngine stopLocalPreview];
     }
     else{
-        [self.videoBtn setImage:[NSImage imageNamed:@"video_on"]];
+        [self.videoBtn setImage:[NSImage imageNamed:VideoIcon[0]]];
         self.videoBtn.title = @"停止视频";
         NSMutableAttributedString *attTitle = [[NSMutableAttributedString alloc]initWithAttributedString:self.videoBtn.attributedTitle];
         NSDictionary *dicAtt =@{NSForegroundColorAttributeName:[NSColor whiteColor]};
         [attTitle addAttributes:dicAtt range:NSMakeRange(0,4)];
         self.videoBtn.attributedTitle = attTitle;
-        [self.trtcEngine startLocalPreview:_allRenderViews[self.userId]];
+        [self.trtcEngine startLocalPreview:[self renderViewForUser:self.userId].contentView];
     }
 }
 
@@ -367,7 +385,7 @@
     __weak TRTCMainWindowController *wself = self;
     self.captureSourceWindowController.onSelectSource = ^(TRTCScreenCaptureSourceInfo * _Nonnull source) {
         if (source == nil) {
-            [wself.trtcEngine startLocalPreview:wself.allRenderViews[wself.userId]];
+            [wself.trtcEngine startLocalPreview:[wself.allRenderViews[wself.userId] contentView]];
         } else if (source.type == TRTCScreenCaptureSourceTypeWindow) {
             [wself.trtcEngine selectScreenCaptureTarget:source rect:CGRectZero capturesCursor:NO highlight:YES];
         } else if (source.type == TRTCScreenCaptureSourceTypeScreen) {
@@ -376,6 +394,12 @@
         if (source == nil) {
             [wself.trtcEngine stopScreenCapture];
         } else {
+            TRTCVideoEncParam* subEncParam = [TRTCVideoEncParam new];
+            subEncParam.videoResolution = TRTCSettingWindowController.subStreamResolution;
+            subEncParam.videoFps = TRTCSettingWindowController.subStreamFps;
+            subEncParam.videoBitrate = TRTCSettingWindowController.subStreamBitrate;
+            [wself.trtcEngine setSubStreamEncoderParam:subEncParam];
+            
             [wself.trtcEngine startScreenCapture:wself.capturePreviewWindow.contentView];
         }
         [wself.window endSheet:wself.captureSourceWindowController.window];
@@ -389,6 +413,7 @@
 }
 
 - (IBAction)closeRoom:(id)sender {
+    [_trtcEngine exitRoom];
     [self close];
     _trtcEngine = nil;
 }
@@ -415,7 +440,7 @@
     else if(self.layoutStyle == 2){
         self.layoutStyle = 1;
         self.videoLayoutStyleBtn.title = @"画廊视图";
-        self.videoLayoutStyleBtn.image = [NSImage imageNamed:@"galleryMode"];
+        self.videoLayoutStyleBtn.image = [NSImage imageNamed:@"main_layout_gallery"];
         NSMutableAttributedString *attTitle = [[NSMutableAttributedString alloc]initWithAttributedString:self.videoLayoutStyleBtn.attributedTitle];
         NSDictionary *dicAtt =@{NSForegroundColorAttributeName:[NSColor whiteColor]};
         [attTitle addAttributes:dicAtt range:NSMakeRange(0,4)];
@@ -438,6 +463,48 @@
 - (void)onCameraDidReady {
     
 }
+
+#pragma makr - 跨房通话
+- (IBAction)onConnectAnotherRoom:(id)sender {
+
+    [self.window beginSheet:self.connectRoomWindow completionHandler:^(NSModalResponse returnCode) {
+    }];
+}
+
++ (NSSet *)keyPathsForValuesAffectingCanConnectRoom {
+    return [NSSet setWithObjects:@"connectingRoom", @"connectRoomId", @"connectUserId", nil];
+}
++ (NSSet *)keyPathsForValuesAffectingCanStopConnectRoom {
+    return [NSSet setWithObjects:@"connectingRoom", nil];
+}
+- (IBAction)onConfirmConnectRoom:(id)sender {
+    NSString *signature = @"";
+    NSDictionary *param = @{@"strRoomId": self.connectRoomId, @"userId": self.connectUserId, @"sign":signature};
+    NSError *error = nil;
+    NSData *data = [NSJSONSerialization dataWithJSONObject:param options:0 error:&error];
+    if (error) {
+        NSLog(@"error when creating connect room param: %@", error);
+        return;
+    }
+    NSString *jsonString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    self.connectingRoom = YES;
+    [self.trtcEngine connectOtherRoom:jsonString];
+    [self.window endSheet:self.connectRoomWindow];
+}
+- (IBAction)onCloseConnectRoom:(id)sender {
+    [self.window endSheet:self.connectRoomWindow];
+}
+- (IBAction)onStopConnectRoom:(id)sender {
+    [self.trtcEngine disconnectOtherRoom];
+    self.connectingRoom = NO;
+}
+
+- (BOOL)canConnectRoom {
+    return self.connectRoomId.length > 0 && self.connectUserId.length > 0 && !self.connectingRoom;
+}
+- (BOOL)canStopConnectRoom {
+    return self.connectingRoom;
+}
 #pragma mark - 播放录屏
 - (void)_playScreenCaptureForUser:(NSString *)userId {
     [self.trtcEngine startRemoteSubStreamView:userId view:self.capturePreviewWindow.contentView];
@@ -456,7 +523,7 @@
     qualityConfig.videoResolution = TRTCSettingWindowController.resolution;
     qualityConfig.videoFps = TRTCSettingWindowController.fps;
     qualityConfig.videoBitrate = TRTCSettingWindowController.bitrate;
-    
+    qualityConfig.resMode = TRTCSettingWindowController.resolutionMode;
     [self.trtcEngine setVideoEncoderParam:qualityConfig];
     [self.trtcEngine setLocalViewFillMode:TRTCVideoFillMode_Fit];
     
@@ -473,21 +540,16 @@
     //        config.renderMode = ETRTCVideoRenderModeFit; // 默认带黑边的渲染模式
     
     // 开启视频采集预览
-    NSView *videoView = [self addRenderViewAt:self.userId];
+    TXRenderView *videoView = [self addRenderViewAt:self.userId];
     [self.trtcEngine setLocalViewFillMode:TRTCVideoFillMode_Fit];
-    if (!self.audioOnly) {
-        [self.trtcEngine startLocalPreview:videoView];
-    }
+    [self.trtcEngine startLocalPreview:videoView.contentView];
     [self.trtcEngine startLocalAudio];
     // 进房
     [self.trtcEngine enterRoom:param appScene:_scene];
 }
 
 - (void)onEnterRoom:(NSInteger)elapsed{
-//  [self.trtcEngine enableAudioVolumeIndication:0.1 smooth:3];
-    if (self.audioOnly) {
-        [self.trtcEngine muteLocalVideo:YES];
-    }
+    [self.trtcEngine enableAudioVolumeEvaluation:100 smooth:3];
     self.controlBar.hidden = NO;
     [self updateLayoutVideoFrame];
     
@@ -510,7 +572,7 @@
             [self _playScreenCaptureForUser:userId];
         }
         TXRenderView *renderView = [self renderViewForUser: userId];
-        [renderView addToolbarItem:@"屏" target:self action:@selector(onRenderViewToolbarScreenShareClicked:) context:userId];
+        [renderView addTextToolbarItem:@"屏" target:self action:@selector(onRenderViewToolbarScreenShareClicked:) context:userId];
     } else {
         if ([userId isEqualToString:self.presentingScreenCaptureUid]){
             [self.capturePreviewWindow orderOut:nil];
@@ -521,18 +583,17 @@
 }
 
 - (void)onUserEnter:(NSString *)userId {
-    NSView *videoView = [self addRenderViewAt:userId];
-    [self.trtcEngine startRemoteView:userId view:videoView];
+    NSView *videoView = [self addRenderViewAt:userId].contentView;
     [self.trtcEngine setRemoteViewFillMode:userId mode:TRTCVideoFillMode_Fit];
     if (TRTCSettingWindowController.playSmallStream) {
         self.bigSmallStreamState[userId] = @(TRTCVideoStreamTypeSmall);
         [self.trtcEngine setRemoteVideoStreamType:userId type:TRTCVideoStreamTypeSmall];
     }
+    [self.trtcEngine startRemoteView:userId view:videoView];
 
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self updateLayoutVideoFrame];
     });
-    
 }
 
 - (void)onDevice:(NSString *)deviceId type:(TRTCMediaDeviceType)deviceType stateChanged:(NSInteger)state
@@ -551,6 +612,159 @@
     for (TRTCQualityInfo* qualityInfo in remoteQuality) {
         NSLog(@"remote:%@ quality:%ld", qualityInfo.userId, (long)(unsigned)qualityInfo.quality);
     }
+    
+    [[self localVideoRenderView] setSignal:localQuality.quality];
+    
+    for (TRTCQualityInfo* qualityInfo in remoteQuality) {
+        [[self renderViewForUser:qualityInfo.userId] setSignal:qualityInfo.quality];
+    }
+
+}
+
+- (void)onUserVoiceVolume:(NSArray<TRTCVolumeInfo *> *)userVolumes totalVolume:(NSInteger)totalVolume
+{
+    [userVolumes enumerateObjectsUsingBlock:^(TRTCVolumeInfo * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSString *uid = obj.userId;
+        if (uid == nil) {
+            [self.localVideoRenderView setVolume:obj.volume / 100.f];
+        } else {
+            TXRenderView *view = [self renderViewForUser:obj.userId];
+            [view setVolume:obj.volume/100.f];
+        }
+    }];
+}
+
+- (void)onStatistics:(TRTCStatistics *)statistics {
+    if (TRTCSettingWindowController.cloudMixEnabled) {
+        TRTCLocalStatistics *statistic = [statistics.localStatistics filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"streamType = %d", TRTCVideoStreamTypeBig]].lastObject;
+        NSMutableArray *videoInfoArray = [[NSMutableArray alloc]initWithCapacity:4];
+        if (statistic) {
+            UserVideoInfo *info = [[UserVideoInfo alloc] init];
+            info.userId = self.currentUserParam.userId;
+            info.width = statistic.width;
+            info.height = statistic.height;
+            info.streamType = statistic.streamType;
+            info.fps = statistic.frameRate;
+            info.videoBitrate = statistic.videoBitrate;
+            [videoInfoArray addObject:info];
+        } else {
+            // 确保第一个是local
+            [videoInfoArray addObject:[[UserVideoInfo alloc] init]];
+        }
+        for (TRTCRemoteStatistics *statistic in statistics.remoteStatistics) {
+            if (statistic.streamType == TRTCVideoStreamTypeBig) {
+                UserVideoInfo *info = [[UserVideoInfo alloc] init];
+                info.userId = statistic.userId;
+                info.width = statistic.width;
+                info.height = statistic.height;
+                info.streamType = statistic.streamType;
+                [videoInfoArray addObject:info];
+            }
+        }
+        [self setupTranscoding:videoInfoArray];
+    } else {
+        [self stopTranscoding];
+    }
+}
+#pragma mark - 混流
+- (void)stopTranscoding {
+    _mixTransCodeInfo = [NSMutableDictionary dictionary];
+    [self.trtcEngine setMixTranscodingConfig:nil];
+}
+
+- (void)setupTranscoding:(NSArray<UserVideoInfo *> *)userInfoArray {
+    UserVideoInfo *localInfo = userInfoArray.firstObject;
+    if (localInfo.userId == nil) {
+        if (_mixTransCodeInfo.count > 0) {
+            [self stopTranscoding];
+        }
+        return;
+    }
+    if (_mixTransCodeInfo.count == 0) {
+        NSString* streamId = [NSString stringWithFormat:@"%u_%@_main", self.currentUserParam.roomId, self.currentUserParam.userId] ;
+        const char *cStr = [streamId UTF8String];
+        unsigned char result[CC_MD5_DIGEST_LENGTH];
+        CC_MD5(cStr, (uint32_t)strlen(cStr), result);
+        NSString *md5StreamId = [NSString stringWithFormat:
+                                @"%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
+                                result[0], result[1], result[2], result[3], result[4], result[5], result[6], result[7],
+                                result[8], result[9], result[10], result[11], result[12], result[13], result[14], result[15]
+                                ];
+        
+       
+        NSString* playUrl = [NSString stringWithFormat:@"http://3891.liveplay.myqcloud.com/live/3891_%@.flv", md5StreamId];
+        NSLog(@"play address: %@", playUrl);
+    }
+    if (userInfoArray.count != _mixTransCodeInfo.count) {
+        [_mixTransCodeInfo removeAllObjects];
+    } else {
+        BOOL allEqual = YES;
+        for (UserVideoInfo *info in userInfoArray) {
+            if (![_mixTransCodeInfo[info.userId] isEqual:info]) {
+                [_mixTransCodeInfo removeAllObjects];
+                allEqual = NO;
+                break;
+            }
+        }
+        if (allEqual) {
+            return;
+        }
+    }
+    
+    for (UserVideoInfo *info in userInfoArray) {
+        _mixTransCodeInfo[info.userId] = info;
+    }
+    
+    // 更新混流信息
+    TRTCTranscodingConfig *config = [[TRTCTranscodingConfig alloc] init];
+    config.mode = TRTCTranscodingConfigMode_Manual;
+    config.appId = 1252463788;
+    config.bizId = 3891;
+    config.videoWidth = localInfo.width;
+    config.videoHeight = localInfo.height;
+    config.videoBitrate = localInfo.videoBitrate;
+    config.videoFramerate = 15;
+    config.videoGOP = 3;
+    config.audioSampleRate = 48000;
+    config.audioBitrate = 64;
+    config.audioChannels = 1;
+    
+    NSUInteger remoteCount = userInfoArray.count - 1;
+    NSMutableArray *mixUserArray = [[NSMutableArray alloc] initWithCapacity:remoteCount];
+    TRTCMixUser *localUser = [[TRTCMixUser alloc]init];
+    localUser.userId = localInfo.userId;
+    localUser.rect = CGRectMake(0, 0, localInfo.width, localInfo.height);
+    localUser.zOrder = 1;
+    localUser.streamType = TRTCVideoStreamTypeBig;
+    [mixUserArray addObject:localUser];
+    
+    if (remoteCount > 0) {
+        int zOrder = 2;
+        int mixWidth = localInfo.width / 3.0;
+        int mixHeight = localInfo.height / 3.0;
+
+        // 最多叠加6路小画面
+        for (NSInteger i = 1; i < remoteCount + 1 && i < 7; ++i) {
+            UserVideoInfo *info = userInfoArray[i];
+            TRTCMixUser *mixUser = [[TRTCMixUser alloc]init];
+            mixUser.userId = info.userId;
+            CGRect container;
+            // 前三个小画面靠右从下往上铺
+            if (i < 4) {
+                container = CGRectMake(config.videoWidth - mixWidth, localInfo.height - i * mixHeight, mixWidth, mixHeight);
+            } else {
+                // 后三个小画面靠左从下往上铺
+                container = CGRectMake(0, localInfo.height - (i - 3) * mixHeight, mixWidth, mixHeight);
+            }
+            mixUser.rect = AVMakeRectWithAspectRatioInsideRect(CGSizeMake(info.width, info.height), container);
+            mixUser.zOrder = zOrder;
+            mixUser.streamType = TRTCVideoStreamTypeBig;
+            zOrder++;
+            [mixUserArray addObject:mixUser];
+        }
+    }
+    config.mixUsers = mixUserArray;
+    [self.trtcEngine setMixTranscodingConfig:config];
 }
 
 #pragma mark - 画面布局渲染
@@ -565,15 +779,19 @@
     return _videoLayoutView;
 }
 
-- (NSView *)addRenderViewAt:(NSString *)videoId{
+- (TXRenderView *)addRenderViewAt:(NSString *)videoId{
     TXRenderView *videoView = _allRenderViews[videoId];
     if (!videoView) {
         videoView = [[TXRenderView alloc] init];
-        [videoView addToolbarItem:@"R" target:self action:@selector(onRenderViewToolbarRotateClicked:) context:videoId];
+        videoView.volumeHidden = ![TRTCSettingWindowController showVolume];
+        [videoView addImageToolbarItem:[NSImage imageNamed:@"stream_rotate"] target:self action:@selector(onRenderViewToolbarRotateClicked:) context:videoId];
 
         if (![videoId isEqualToString:self.userId]) {
-            [videoView addToolbarItem:@"流" target:self action:@selector(onRenderViewToolbarStreamClicked:) context:videoId];
+            [videoView addTextToolbarItem:@"流" target:self action:@selector(onRenderViewToolbarStreamClicked:) context:videoId];
+            [videoView addToggleImageToolbarItem:@[[NSImage imageNamed:@"main_tool_video_on"], [NSImage imageNamed:@"main_tool_video_off"]] target:self action:@selector(onRenderViewToolbarVideoClicked:index:) context:videoId];
+            [videoView addToggleImageToolbarItem:@[[NSImage imageNamed:@"main_tool_audio_on"], [NSImage imageNamed:@"main_tool_audio_off"]] target:self action:@selector(onRenderViewToolbarAudioClicked:index:) context:videoId];
         }
+        [videoView addToggleImageToolbarItem:@[[NSImage imageNamed:@"stream_fill_mode"], [NSImage imageNamed:@"stream_fill_mode"]] target:self action:@selector(onRenderViewToolbarFillModeChanged:index:) context:videoId];
 
         if (![videoId isEqualToString:self.userId] && [_allUids.firstObject isEqualToString:self.userId]) {
             [_allUids removeObject:self.userId];
@@ -701,6 +919,24 @@
     else{
         self.videoLayoutStyleBtn.hidden = YES;
     }
+}
+
+#pragma mark - 连麦回调
+- (void)onConnectOtherRoom:(NSString*)userId errCode:(TXLiteAVError)errCode errMsg:(nullable NSString *)errMsg;
+{
+    if (errCode != 0) {
+        self.connectingRoom = NO;
+        NSString *msg = [NSString stringWithFormat:@"%@ (%d)", errMsg, (int)errCode];
+        [self.window presentError:[NSError errorWithDomain:@"TRTC" code:errCode userInfo:@{NSLocalizedDescriptionKey: msg}]];
+    }
+}
+
+- (void)onDisconnectOtherRoom:(TXLiteAVError)errCode errMsg:(NSString *)errMsg {
+    if (errCode != 0) {
+        NSString *msg = [NSString stringWithFormat:@"%@ (%d)", errMsg, (int)errCode];
+        [self.window presentError:[NSError errorWithDomain:@"TRTC" code:errCode userInfo:@{NSLocalizedDescriptionKey: msg}]];
+    }
+    self.connectingRoom = NO;
 }
 
 #pragma mark - 音频设备列表
@@ -848,7 +1084,9 @@
     if ([object isKindOfClass:[TRTCMediaDeviceInfo class]]) {
         [self.trtcEngine setCurrentCameraDevice:((TRTCMediaDeviceInfo *)object).deviceId];
     } else if ([object isKindOfClass:[NSString class]]&& [object isEqualToString:@"视频设置"]){
-        [(AppDelegate*)[NSApp delegate] showPreferenceWithTabIndex:TXAVSettingTabIndexVideo];
+        if (self.onVideoSettingsButton) {
+            self.onVideoSettingsButton();
+        }
     }
     [self.audioSelectView enclosingScrollView].hidden = YES;
     [self.videoSelectView enclosingScrollView].hidden = YES;
@@ -872,7 +1110,9 @@
         }
     }
     else if ([object isKindOfClass:[NSString class]] && [object isEqualToString:@"音频设置"]){
-        [(AppDelegate*)[NSApp delegate] showPreferenceWithTabIndex:TXAVSettingTabIndexAudio];
+        if (self.onAudioSettingsButton) {
+            self.onAudioSettingsButton();
+        }
     }
     [self.audioSelectView enclosingScrollView].hidden = YES;
     [self.videoSelectView enclosingScrollView].hidden = YES;
@@ -901,8 +1141,30 @@
     [self.trtcEngine setRemoteVideoStreamType:userId type:type];
 }
 
+- (void)onRenderViewToolbarVideoClicked:(NSString *)userId index:(NSNumber *)index {
+    if (index.intValue == 1) {
+        [self.trtcEngine stopRemoteView:userId];
+    } else {
+        [self.trtcEngine startRemoteView:userId view:[self renderViewForUser:userId].contentView];
+    }
+
+}
+
+- (void)onRenderViewToolbarAudioClicked:(NSString *)userId index:(NSNumber *)index {
+    [self.trtcEngine muteRemoteAudio:userId mute:index.intValue == 1];
+}
+
 - (void)onRenderViewToolbarScreenShareClicked:(NSString *)userId {
     [self _playScreenCaptureForUser:userId];
+}
+
+- (void)onRenderViewToolbarFillModeChanged:(NSString *)userId index:(NSNumber *)index {
+    TRTCVideoFillMode mode = index.intValue == 1 ? TRTCVideoFillMode_Fill : TRTCVideoFillMode_Fit;
+    if ([userId isEqualToString:self.currentUserParam.userId]) {
+        [self.trtcEngine setLocalViewFillMode:mode];
+    } else {
+        [self.trtcEngine setRemoteViewFillMode:userId mode:mode];
+    }
 }
 @end
 

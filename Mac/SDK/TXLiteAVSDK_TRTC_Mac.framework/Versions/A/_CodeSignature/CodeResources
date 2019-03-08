@@ -15,11 +15,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			vVTLeMbVYD+MFfcjRjOObZ64rYI=
+			SA3OtovR8ciZEXojh3Z1a8fJE5M=
 			</data>
 			<key>hash2</key>
 			<data>
-			t7x1y0S7CEVBvgDiGJlpcIgCyTdw3oFa2WcjMXt03kQ=
+			nUaKNind0/ok8z/umpNAqt89YwDDUx/NuQTsMjobt3U=
 			</data>
 		</dict>
 		<key>Headers/TRTCCloudDef.h</key>
@@ -37,11 +37,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			kbFj4pd+PaYTeGkWhCtCbwJroC4=
+			9hbC+pjnZJLz1oWjPrpKIScWLk8=
 			</data>
 			<key>hash2</key>
 			<data>
-			uYepS/akKVIR7g3p4HViQDozu8UR/fW4OtbrNVeJ10w=
+			3EB3EQGevNH7bTAZCRBerGuvYtxtWYsuUMKuFHg8xkg=
 			</data>
 		</dict>
 		<key>Headers/TRTCStatistics.h</key>
@@ -55,26 +55,158 @@
 			6MlVjnKy3yQwijWpRg0xzsGd8VkgqtdSZJcYl3s6o/U=
 			</data>
 		</dict>
+		<key>Headers/TXAudioCustomProcessDelegate.h</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			AqxwFIQR/9ZV4Ztfk576Q0C+Sak=
+			</data>
+			<key>hash2</key>
+			<data>
+			W3l360S1Wtgh/3wVB7B/SozPNeb1c9HDvT9pyuvJk08=
+			</data>
+		</dict>
+		<key>Headers/TXAudioRawDataDelegate.h</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			dUzhS++XImgd2PgTrxF4KAzfiZA=
+			</data>
+			<key>hash2</key>
+			<data>
+			7Q11ZX0DqtvsHRkweaXwo9lcm2YG61eptw2B6rZfHRU=
+			</data>
+		</dict>
 		<key>Headers/TXLiteAVCode.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			P1k/a1c62xqYBYXFprM3DyaKZn0=
+			SwnhBHsN0nkPtGkpus0PMEFuoGg=
 			</data>
 			<key>hash2</key>
 			<data>
-			PlWeMGzY1XNdXoxY0PGqbw+NPOyswtDNTbwW8d/Jwgw=
+			3FEor2cvj/bzqF4qN/lZfQtnKXD1B9VbCG3WLNX86TE=
 			</data>
 		</dict>
 		<key>Headers/TXLiteAVSDK.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			J+6hWgz1u4FgCMZURCf1I+eKo+g=
+			n6QQKWzORBypMpz53wBxT5Gi0W8=
 			</data>
 			<key>hash2</key>
 			<data>
-			irJ1DZoNiCv5mAZTOjsKKc3VHI3EM6hJr5BdVJPQF2I=
+			+wNloVOfthO4B9prIbnJZp/QcbrzRcjNCgld+Z+pLag=
+			</data>
+		</dict>
+		<key>Headers/TXLiveAudioSessionDelegate.h</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			Kf/Tzk/48U5MBCp6Mmufsn8RPjs=
+			</data>
+			<key>hash2</key>
+			<data>
+			FPDMSFImg2HTR6reAzaLylhZW9XFxjDRFYci45k+rcY=
+			</data>
+		</dict>
+		<key>Headers/TXLiveBase.h</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			bF6lvk5T7jsulW9WWn1yvuRoL+0=
+			</data>
+			<key>hash2</key>
+			<data>
+			c55Lzx0NMOESw1y/aXVrYPnyB7+APH1bM0y+YX6xS+E=
+			</data>
+		</dict>
+		<key>Headers/TXLivePlayConfig.h</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			fpBmfX6gbAavweY8jJGsSBDlLsE=
+			</data>
+			<key>hash2</key>
+			<data>
+			+3VMxzFdpnjdJ5feeak8nigo/Pe5L4tp8p6ZwHLKjFQ=
+			</data>
+		</dict>
+		<key>Headers/TXLivePlayListener.h</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			aJfF/YxDowBJiLXXTEaGZ156jKo=
+			</data>
+			<key>hash2</key>
+			<data>
+			tTTfmb6APuffyOgsp1dX3rnKSPRnrhgOCSX8iNzV4Hg=
+			</data>
+		</dict>
+		<key>Headers/TXLivePlayer.h</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			R7EqUGmloZNcHaJUG4CYQhlqWIQ=
+			</data>
+			<key>hash2</key>
+			<data>
+			UAzKVPVh64zzzdVdTnJmn/dzw+835DlpXB7PxMoULjs=
+			</data>
+		</dict>
+		<key>Headers/TXLiveRecordListener.h</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			96JyRyAMAv5Eh+kQm0blHeRb0EQ=
+			</data>
+			<key>hash2</key>
+			<data>
+			MF7ar+U8T3I4Lvyf4m9V0VznV/7bUVVHPXVGLyCE2M0=
+			</data>
+		</dict>
+		<key>Headers/TXLiveRecordTypeDef.h</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			X/HYb7Xv6fQJ/AR6iPHW48P5Ckk=
+			</data>
+			<key>hash2</key>
+			<data>
+			LDxSK3kMnyal2gN5P81q7FMR5dUi7GhU/qhFJrFCffE=
+			</data>
+		</dict>
+		<key>Headers/TXLiveSDKEventDef.h</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			JJTt/ki3GADOfffMGDP/lwqxCwE=
+			</data>
+			<key>hash2</key>
+			<data>
+			7r6+3wAfwiJM8t+MWY6SekfeasyCn5QsHgSYDd3GHSk=
+			</data>
+		</dict>
+		<key>Headers/TXLiveSDKTypeDef.h</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			HdhWR30I2yTOWq9qOBd02wO4VvU=
+			</data>
+			<key>hash2</key>
+			<data>
+			iCsFGxmBEgfebSNrqPZXJzTPip/vzj49bMDMxzATEik=
+			</data>
+		</dict>
+		<key>Headers/TXVideoCustomProcessDelegate.h</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			jNAyis6/ZO1KJ0Ya7qakP4BREHM=
+			</data>
+			<key>hash2</key>
+			<data>
+			CcX0VDui1BEtWaKQEzpBJA/vz96a+dzkii0hqHTL67o=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>

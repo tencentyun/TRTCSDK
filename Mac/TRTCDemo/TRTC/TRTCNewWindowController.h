@@ -13,6 +13,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import "TRTCMainWindowController.h"
+#import "SDKHeader.h"
 // 登录
 @interface TRTCNewWindowController : NSWindowController
 {
@@ -22,5 +23,6 @@
 @property (strong) IBOutlet NSTextField *roomidField;
 @property (strong) IBOutlet NSPopUpButton *useridPopUp;
 - (IBAction)onSelectRoomScene:(id)sender;
+@property (copy, nonatomic) void(^onLogin)(TRTCParams *param);
 @end
 
