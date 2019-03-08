@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 
 import com.tencent.liteav.demo.R;
+import com.tencent.trtc.TRTCCloud;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -98,6 +99,8 @@ public class TRTCNewActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        //销毁 trtc 单例，释放资源
+        TRTCCloud.destroySharedInstance();
     }
 
     /**

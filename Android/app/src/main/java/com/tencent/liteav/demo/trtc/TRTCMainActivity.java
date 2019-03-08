@@ -44,9 +44,9 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
     private TRTCSettingDialog settingDlg;
     private TRTCVideoViewLayout mVideoViewLayout;
 
-    private TRTCCloudDef.TRTCParams trtcParams;     /// TRTC SDK 视频通话房间进入所必须的参数
-    private TRTCCloud trtcCloud;              /// TRTC SDK 实例对象
-    private TRTCCloudListener trtcListener;    /// TRTC SDK 回调监听
+    private TRTCCloudDef.TRTCParams trtcParams; /// TRTC SDK 视频通话房间进入所必须的参数
+    private TRTCCloud trtcCloud;                /// TRTC SDK 实例对象
+    private TRTCCloudListener trtcListener;     /// TRTC SDK 回调监听
 
     @Override
     protected void onCreate( Bundle savedInstanceState) {
@@ -69,9 +69,10 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
         //初始化 UI 控件
         initView();
 
-        //创建 TRTC SDK 实例
+        //获取 TRTC SDK 单例
         trtcListener = new TRTCCloudListenerImpl(this);
-        trtcCloud = TRTCCloud.create(this, trtcListener);
+        trtcCloud = TRTCCloud.sharedInstance(this);
+        trtcCloud.setListener(trtcListener);
 
         //开始进入视频通话房间
         enterRoom();
@@ -86,12 +87,10 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        //销毁 trtc 实例
         if (trtcCloud != null) {
+            //取消SDK回调
             trtcCloud.setListener(null);
-            trtcCloud.destroy();
         }
-        trtcCloud = null;
     }
 
     @Override
