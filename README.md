@@ -1,15 +1,26 @@
 # 腾讯云实时音视频终端组件 TRTC SDK
 覆盖iOS、Android、Windows、Mac、浏览器和微信小程序六大应用平台，致力于提供全球最好的视频通话和直播连麦解决方案。
 
-## 最新版本 6.1.6454 @ 2019.01.31
-1. Windows、Mac支持屏幕分享
-2. 支持观看屏幕分享流
-3. 支持发送自定义视频数据
-4. 优化转推CDN和混流实现
-5. 进房区分直播和视频通话场景
-6. 提升稳定性，解决一些偶现crash
-7. 优化iOS、Windows内存占用
-8. 优化流控，提升弱网表现
+## 最新版本 6.2.7005 @ 2019.03.08
+Android、iOS、Mac、Windows
+1. 改为单例形式
+2. 增加跨房连麦功能
+3. 增加sendSEIMsg接口，支持通过SEI发送自定义消息
+4. 优化性能和稳定性
+5. 支持纯语音流旁路
+6. 提升弱网下画质
+
+Android
+1. 增加滤镜浓度设置接口setFilterConcentration
+
+iOS、Mac
+1. 增加滤镜浓度设置接口setFilterConcentration
+ 
+
+Windows
+1. 改为纯虚接口，支持动态加载dll
+2. 增加音频数据回调 ITRTCAudioFrameCallback
+3. 优化camera兼容性及采集性能
 
 ## API 文档及使用指引
 
