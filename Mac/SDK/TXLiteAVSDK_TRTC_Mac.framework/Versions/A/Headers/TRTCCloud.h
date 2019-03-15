@@ -3,7 +3,7 @@
  * 
  * Function: 腾讯云视频通话功能的主要接口类
  *
- * Version: 6.2.7005
+ * Version: 6.2.7006
  */
 
 #import <Foundation/Foundation.h>
