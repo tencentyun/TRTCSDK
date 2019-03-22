@@ -8,12 +8,12 @@
 
 ## 专业版下载地址
 
-- [**LiteAV_Professional_iOS_6.2.7006(framework)**](http://liteavsdk-1252463788.cosgz.myqcloud.com/6.2/TXLiteAVSDK_Professional_iOS_6.2.7006.zip)
+- [**LiteAV_Professional_iOS_6.3.7031(framework)**](http://liteavsdk-1252463788.cosgz.myqcloud.com/6.3/TXLiteAVSDK_Professional_iOS_6.3.7031.zip)
 
 
-- [**LiteAV_Professional_Android_6.2.7006(aar)**](http://liteavsdk-1252463788.cosgz.myqcloud.com/6.2/TXLiteAVSDK_Professional_Android_6.2.7006.aar)
+- [**LiteAV_Professional_Android_6.3.7031(aar)**](http://liteavsdk-1252463788.cosgz.myqcloud.com/6.3/LiteAVSDK_Professional_6.3.7031.aar)
 
-- [**LiteAV_Professional_Android_6.2.7006(zip)**](http://liteavsdk-1252463788.cosgz.myqcloud.com/6.2/TXLiteAVSDK_Professional_Android_6.2.7006.zip)
+- [**LiteAV_Professional_Android_6.3.7031(zip)**](http://liteavsdk-1252463788.cosgz.myqcloud.com/6.3/LiteAVSDK_Professional_6.3.7031.zip)
 
 > **注意**： 
 > 1. 请使用 LiteAV_Professional 版本替换掉原来的独立功能版本（比如 LiteAV_Player 或者 LiteAV_Smart），而不是再次集成一个 LiteAV_Professional 版本。
