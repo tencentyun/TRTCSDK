@@ -4,10 +4,13 @@
 ## 最新版本 6.3.7031 @ 2019.03.22
 
 Android、iOS、Windows
-1. 增加自定义音频发送接口。
-2. 增加自定义视频发送接口。
-3. 增加音频录制回调。
-4. 增加音频播放的每一路数据回调及混流数据回调。
+1. 增加自定义视频采集接口: TRTCCloud >> sendCustomVideoData
+2. 增加自定义音频采集接口: TRTCCloud >> sendCustomAudioData
+3. 增加自定义视频渲染接口：TRTCCloud >> setLocalVideoRenderDelegate + setRemoteVideoRenderDelegate
+4. 增加自定义音频数据回调接口：TRTCCloud >> setAudioFrameDelegate 支持：
+   4.1) 返回麦克风采集数据 TRTCAudioFrameDelegate >> onCapturedAudioFrame
+   4.2）返回每一路远程用户的音频数据 TRTCAudioFrameDelegate >> onPlayAudioFrame
+   4.3）返回混合后送入喇叭播放的音频数据 TRTCAudioFrameDelegate >>onMixedPlayAudioFrame
 
 
 ## API 文档及使用指引
