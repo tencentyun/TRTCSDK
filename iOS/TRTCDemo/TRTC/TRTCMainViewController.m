@@ -20,7 +20,10 @@
 #import "TRTCCloudDelegate.h"
 #import "TRTCVideoViewLayout.h"
 #import "TRTCVideoView.h"
-#import "TRTCMoreSettingViewController.h"
+#import "TRTCMoreViewController.h"
+#import "TRTCCloudDef.h"
+#import "TestSendCustomVideoData.h"
+#import "TestRenderVideoFrame.h"
 
 typedef enum : NSUInteger {
     TRTC_IDLE,       // SDK 没有进入视频通话状态
@@ -28,17 +31,13 @@ typedef enum : NSUInteger {
 } TRTCStatus;
 
 @interface TRTCMainViewController() <UITextFieldDelegate, TRTCCloudDelegate, TRTCSettingVCDelegate, TRTCVideoViewDelegate, TRTCMoreSettingDelegate> {
-    TRTCCloud                *_trtc;               //TRTC SDK 实例对象
     TRTCStatus                _roomStatus;
     
     NSString                 *_mainViewUserId;     //视频画面支持点击切换，需要用一个变量记录当前哪一路画面是全屏状态的
     
-    NSInteger                 _toastMsgCount;      //当前tips数量
-    NSInteger                 _toastMsgHeight;
     TRTCVideoViewLayout      *_layoutEngine;
     UIView                   *_holderView;
     
-    TRTCVideoView                   *_localView;          //本地画面的view
     NSMutableDictionary*      _remoteViewDic;      //一个或者多个远程画面的view
     
     UIButton                 *_btnLog;             //用于显示通话质量的log按钮
@@ -55,13 +54,22 @@ typedef enum : NSUInteger {
     BOOL                     _muteSwitch;
     CGFloat                  _dashboardTopMargin;
     
-    TRTCMoreSettingViewController* _moreSettingVC;
+    
+    TRTCMoreViewController* _moreSettingVC;
 }
 
 @property uint32_t sdkAppid;
 @property (nonatomic, copy) NSString* roomID;
 @property (nonatomic, copy) NSString* selfUserID;
 @property NSString  *selfUserSig;
+@property (nonatomic, assign) NSInteger toastMsgCount;      //当前tips数量
+@property (nonatomic, assign) NSInteger toastMsgHeight;
+@property (nonatomic, retain) TRTCCloud *trtc;               //TRTC SDK 实例对象
+@property (nonatomic, retain) TestSendCustomVideoData* customVideoCaptureTester; //测试自定义采集
+@property (nonatomic, retain) TestRenderVideoFrame* customVideoRenderTester; //测试自定义渲染
+@property (nonatomic, retain) TRTCVideoView* localView;          //本地画面的view
+
+
 
 @end
 
@@ -146,12 +154,14 @@ typedef enum : NSUInteger {
     if (_trtc != nil) {
         ;
     }
+    [_trtc startLocalAudio];
 }
 
 - (void)onAppDidEnterBackGround:(NSNotification *)notification {
     if (_trtc != nil) {
         ;
     }
+    [_trtc stopLocalAudio];
 }
 
 - (void)onAppWillEnterForeground:(NSNotification *)notification {
@@ -163,6 +173,8 @@ typedef enum : NSUInteger {
 - (void)dealloc {
     if (_trtc != nil) {
         [_trtc exitRoom];
+        [_customVideoCaptureTester stop];
+        _customVideoCaptureTester = nil;
     }
     [TRTCCloud destroySharedIntance];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -226,6 +238,7 @@ typedef enum : NSUInteger {
                                   Action:@selector(clickMore:)
                                   Center:CGPointMake(_btnSetting.center.x + ICON_SIZE + centerInterVal, iconY)
                                     Size:ICON_SIZE];
+    _btnMore.tag = 0;
     
     // 本地预览view
     _localView = [TRTCVideoView newVideoViewWithType:VideoViewType_Local userId:_selfUserID];
@@ -319,40 +332,55 @@ typedef enum : NSUInteger {
     // 设置视频编码参数，包括分辨率、帧率、码率等等，这些编码参数来自于 TRTCSettingViewController 的设置
 	// 注意（1）：不要在码率很低的情况下设置很高的分辨率，会出现较大的马赛克
 	// 注意（2）：不要设置超过25FPS以上的帧率，因为电影才使用24FPS，我们一般推荐15FPS，这样能将更多的码率分配给画质
-//    if (!_pureAudioMode) {
-        TRTCVideoEncParam* encParam = [TRTCVideoEncParam new];
-        encParam.videoResolution = [TRTCSettingViewController getResolution];
-        encParam.videoBitrate = [TRTCSettingViewController getBitrate];
-        encParam.videoFps = [TRTCSettingViewController getFPS];
-        encParam.resMode = [TRTCSettingViewController getResMode];
-        [_trtc setVideoEncoderParam:encParam];
-        
-        TRTCNetworkQosParam * qosParam = [TRTCNetworkQosParam new];
-        qosParam.preference = [TRTCSettingViewController getQosType] + 1;
-        qosParam.controlMode = [TRTCSettingViewController getQosCtrlType];
-        [_trtc setNetworkQosParam:qosParam];
-        
-        //小画面的编码器参数设置
-        //TRTC SDK 支持大小两路画面的同时编码和传输，这样网速不理想的用户可以选择观看小画面
-        //注意：iPhone & Android 不要开启大小双路画面，非常浪费流量，大小路画面适合 Windows 和 MAC 这样的有线网络环境
-        TRTCVideoEncParam* smallVideoConfig = [TRTCVideoEncParam new];
-        smallVideoConfig.videoResolution = TRTCVideoResolution_160_90;
-        smallVideoConfig.videoFps = [TRTCSettingViewController getFPS];
-        smallVideoConfig.videoBitrate = 100;
-        
-        [_trtc enableEncSmallVideoStream:[TRTCSettingViewController getEnableSmallStream] withQuality:smallVideoConfig];
-        [_trtc setPriorRemoteVideoStreamType:[TRTCSettingViewController getPriorSmallStream]];
+    TRTCVideoEncParam* encParam = [TRTCVideoEncParam new];
+    encParam.videoResolution = [TRTCSettingViewController getResolution];
+    encParam.videoBitrate = [TRTCSettingViewController getBitrate];
+    encParam.videoFps = [TRTCSettingViewController getFPS];
+    encParam.resMode = [TRTCSettingViewController getResMode];
+
+    TRTCNetworkQosParam * qosParam = [TRTCNetworkQosParam new];
+    qosParam.preference = [TRTCSettingViewController getQosType] + 1;
+    qosParam.controlMode = [TRTCSettingViewController getQosCtrlType];
+    [_trtc setNetworkQosParam:qosParam];
+
+    //小画面的编码器参数设置
+    //TRTC SDK 支持大小两路画面的同时编码和传输，这样网速不理想的用户可以选择观看小画面
+    //注意：iPhone & Android 不要开启大小双路画面，非常浪费流量，大小路画面适合 Windows 和 MAC 这样的有线网络环境
+    TRTCVideoEncParam* smallVideoConfig = [TRTCVideoEncParam new];
+    smallVideoConfig.videoResolution = TRTCVideoResolution_160_90;
+    smallVideoConfig.videoFps = [TRTCSettingViewController getFPS];
+    smallVideoConfig.videoBitrate = 100;
     
-        [_trtc setLocalViewFillMode:[TRTCMoreSettingViewController isFitScaleMode] ? TRTCVideoFillMode_Fit : TRTCVideoFillMode_Fill];
-        [_trtc setGSensorMode:[TRTCMoreSettingViewController isGsensorEnable] ? TRTCGSensorMode_UIFixLayout: TRTCGSensorMode_Disable];
-        [_trtc setAudioRoute:[TRTCMoreSettingViewController isSpeakphoneMode] ? TRTCAudioModeSpeakerphone : TRTCAudioModeEarpiece];
-        [_trtc enableAudioVolumeEvaluation:[TRTCMoreSettingViewController isAudioVolumeEnable]?300:0 smooth:5];
-        // 开启视频采集预览
-        [_trtc startLocalPreview:[TRTCMoreSettingViewController isFrontCamera] view:_localView];
-//    }
-    if ([TRTCMoreSettingViewController isAudioCaptureEnable])
-        [_trtc startLocalAudio];
+    [_trtc setLocalViewFillMode:[TRTCMoreViewController isFitScaleMode] ? TRTCVideoFillMode_Fit : TRTCVideoFillMode_Fill];
+    [_trtc setGSensorMode:[TRTCMoreViewController isGsensorEnable] ? TRTCGSensorMode_UIFixLayout: TRTCGSensorMode_Disable];
+    // 开启视频采集预览
+    
+    if (self.enableCustomVideoCapture && self.customMediaAsset) {
+
+        [_trtc enableCustomVideoCapture:YES];
+        _customVideoCaptureTester = [[TestSendCustomVideoData alloc] initWithTRTCCloud:_trtc mediaAsset:self.customMediaAsset];
+        encParam.videoFps = _customVideoCaptureTester.mediaReader.fps;
+        smallVideoConfig.videoFps = _customVideoCaptureTester.mediaReader.fps;
+        
+        //同时测试自定义渲染
+        _customVideoRenderTester = [TestRenderVideoFrame new];
+        [_trtc setLocalVideoRenderDelegate:_customVideoRenderTester pixelFormat:TRTCVideoPixelFormat_NV12 bufferType:TRTCVideoBufferType_PixelBuffer];
+        [_customVideoRenderTester addUser:nil videoView:_localView];
+    }
     else {
+        [_trtc startLocalPreview:[TRTCMoreViewController isFrontCamera] view:_localView];
+    }
+    [_trtc setVideoEncoderParam:encParam];
+    [_trtc enableEncSmallVideoStream:[TRTCSettingViewController getEnableSmallStream] withQuality:smallVideoConfig];
+
+
+    [_trtc setPriorRemoteVideoStreamType:[TRTCSettingViewController getPriorSmallStream]];
+    [_trtc setAudioRoute:[TRTCMoreViewController isSpeakphoneMode] ? TRTCAudioModeSpeakerphone : TRTCAudioModeEarpiece];
+    [_trtc enableAudioVolumeEvaluation:[TRTCMoreViewController isAudioVolumeEnable]?300:0 smooth:5];
+    
+    if ([TRTCMoreViewController isAudioCaptureEnable]) {
+        [_trtc startLocalAudio];
+    } else {
         [_trtc stopLocalAudio];
     }
     
@@ -369,6 +397,8 @@ typedef enum : NSUInteger {
  */
 - (void)exitRoom {
     [_trtc exitRoom];
+    [_customVideoCaptureTester stop];
+    _customVideoRenderTester = nil;
     
     [self setRoomStatus:TRTC_IDLE];
     
@@ -379,7 +409,7 @@ typedef enum : NSUInteger {
 
 - (void)updateCloudMixtureParams
 {
-    BOOL enable = [TRTCMoreSettingViewController isCloudMixingEnable];
+    BOOL enable = [TRTCMoreViewController isCloudMixingEnable];
     if (enable) {
         int videoWidth  = 720;
         int videoHeight = 1280;
@@ -610,18 +640,21 @@ typedef enum : NSUInteger {
 - (void)clickMore:(UIButton*)btn
 {
     if (!_moreSettingVC) {
-        _moreSettingVC = [[TRTCMoreSettingViewController alloc] initWithTRTCEngine:_trtc roomId:_roomID userId:_selfUserID];
+        _moreSettingVC = [[TRTCMoreViewController alloc] initWithTRTCEngine:_trtc roomId:_roomID userId:_selfUserID];
         _moreSettingVC.delegate = self;
+    }
+    if (btn.tag == 0) {
+        btn.tag = 1;
         [self addChildViewController:_moreSettingVC];
         _moreSettingVC.view.frame = CGRectMake(0, self.view.height * 0.15, self.view.width, self.view.height * 0.7);
         [self.view addSubview:_moreSettingVC.view];
         [_moreSettingVC didMoveToParentViewController:self];
     }
     else {
+        btn.tag = 0;
         [_moreSettingVC willMoveToParentViewController:nil];
         [_moreSettingVC.view removeFromSuperview];
         [_moreSettingVC removeFromParentViewController];
-        _moreSettingVC = nil;
     }
 }
 
@@ -692,6 +725,7 @@ typedef enum : NSUInteger {
         return;
     }
     
+    
     NSString *msg = [NSString stringWithFormat:@"didOccurError: %@[%d]", errMsg, errCode];
     [self toastTip:msg];
 }
@@ -702,7 +736,12 @@ typedef enum : NSUInteger {
     [self toastTip:msg];
     
     [self setRoomStatus:TRTC_ENTERED];
+    
+    if (self.enableCustomVideoCapture) {
+        [self.customVideoCaptureTester start];
+    }
 }
+
 
 - (void)onExitRoom:(NSInteger)reason {
     NSString *msg = [NSString stringWithFormat:@"离开房间[%@]: reason[%ld]", _roomID, (long)reason];
@@ -715,7 +754,7 @@ typedef enum : NSUInteger {
 - (void)onUserEnter:(NSString *)userId {
     // 创建一个新的 View 用来显示新的一路画面
     TRTCVideoView *remoteView = [TRTCVideoView newVideoViewWithType:VideoViewType_Remote userId:userId];
-    if (![TRTCMoreSettingViewController isAudioVolumeEnable]) {
+    if (![TRTCMoreViewController isAudioVolumeEnable]) {
         [remoteView showAudioVolume:NO];
     }
     remoteView.delegate = self;
@@ -724,8 +763,16 @@ typedef enum : NSUInteger {
     [_remoteViewDic setObject:remoteView forKey:userId];
 
     // 启动远程画面的解码和显示逻辑，FillMode 可以设置是否显示黑边
-    [_trtc startRemoteView:userId view:remoteView];
-    [_trtc setRemoteViewFillMode:userId mode:TRTCVideoFillMode_Fit];
+    if (!self.enableCustomVideoCapture) {
+        [_trtc startRemoteView:userId view:remoteView];
+        [_trtc setRemoteViewFillMode:userId mode:TRTCVideoFillMode_Fit];
+    }
+    else {
+        //测试自定义渲染
+        [_trtc setRemoteVideoRenderDelegate:userId delegate:_customVideoRenderTester pixelFormat:TRTCVideoPixelFormat_NV12 bufferType:TRTCVideoBufferType_PixelBuffer];
+        [_customVideoRenderTester addUser:userId videoView:remoteView];
+        [_trtc startRemoteView:userId view:nil];
+    }
     // 将新进来的成员设置成大画面
     _mainViewUserId = userId;
 
@@ -815,7 +862,7 @@ typedef enum : NSUInteger {
     NSString* viewId = [NSString stringWithFormat:@"%@-sub", userId];
     if (available) {
         TRTCVideoView *remoteView = [TRTCVideoView newVideoViewWithType:VideoViewType_Remote userId:userId];
-        if (![TRTCMoreSettingViewController isAudioVolumeEnable]) {
+        if (![TRTCMoreViewController isAudioVolumeEnable]) {
             [remoteView showAudioVolume:NO];
         }
         remoteView.delegate = self;
@@ -974,14 +1021,15 @@ typedef enum : NSUInteger {
     
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 2 * NSEC_PER_SEC);
     
+    __weak __typeof(self) weakSelf = self;
     dispatch_after(popTime, dispatch_get_main_queue(), ^() {
         [toastView removeFromSuperview];
         toastView = nil;
-        if (self->_toastMsgCount > 0) {
-            self->_toastMsgCount--;
+        if (weakSelf.toastMsgCount > 0) {
+            weakSelf.toastMsgCount--;
         }
-        if (self->_toastMsgCount == 0) {
-            self->_toastMsgHeight = 0;
+        if (weakSelf.toastMsgCount == 0) {
+            weakSelf.toastMsgHeight = 0;
         }
     });
 }
@@ -991,6 +1039,9 @@ typedef enum : NSUInteger {
  * 在前后堆叠模式下，响应手指触控事件，用来切换视频画面的布局
  */
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    if (((UITouch*)touches.anyObject).tapCount != 2)
+        return;
+    
     if (_roomStatus != TRTC_ENTERED) {
         return;
     }
@@ -1017,5 +1068,15 @@ typedef enum : NSUInteger {
         }
     }
 }
+
+- (void)onAudioCapturePcm:(NSData *)pcmData sampleRate:(int)sampleRate channels:(int)channels ts:(uint32_t)timestampMs {
+    TRTCAudioFrame * frame = [[TRTCAudioFrame alloc] init];
+    frame.data = pcmData;
+    frame.sampleRate = sampleRate;
+    frame.channels = channels;
+    frame.timestamp = timestampMs;
+    [_trtc sendCustomAudioData:frame];
+}
+
 
 @end

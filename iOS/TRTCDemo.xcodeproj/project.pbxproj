@@ -12,8 +12,22 @@
 		918EFF7E21D727C3007CF83A /* TRTCVideoViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 918EFF7B21D727C3007CF83A /* TRTCVideoViewLayout.m */; };
 		918EFF8221D727DC007CF83A /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 918EFF8121D727DC007CF83A /* MBProgressHUD.m */; };
 		918EFFED21D79A2E007CF83A /* config.json in Resources */ = {isa = PBXBuildFile; fileRef = 918EFFEC21D79A2E007CF83A /* config.json */; };
+		D6033184224E475A0019E640 /* TRTCMoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D603317C224E475A0019E640 /* TRTCMoreViewController.m */; };
+		D6033185224E475A0019E640 /* TCMediaFileReader.m in Sources */ = {isa = PBXBuildFile; fileRef = D603317E224E475A0019E640 /* TCMediaFileReader.m */; };
+		D6033186224E475A0019E640 /* TestRenderVideoFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = D603317F224E475A0019E640 /* TestRenderVideoFrame.m */; };
+		D6033187224E475A0019E640 /* TestSendCustomVideoData.m in Sources */ = {isa = PBXBuildFile; fileRef = D6033182224E475A0019E640 /* TestSendCustomVideoData.m */; };
+		D60331A4224E47860019E640 /* QBImagePicker.strings in Resources */ = {isa = PBXBuildFile; fileRef = D6033189224E47860019E640 /* QBImagePicker.strings */; };
+		D60331A5224E47860019E640 /* QBVideoIconView.m in Sources */ = {isa = PBXBuildFile; fileRef = D6033190224E47860019E640 /* QBVideoIconView.m */; };
+		D60331A6224E47860019E640 /* QBVideoIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = D6033191224E47860019E640 /* QBVideoIndicatorView.m */; };
+		D60331A7224E47860019E640 /* QBAlbumCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D6033198224E47860019E640 /* QBAlbumCell.m */; };
+		D60331A8224E47860019E640 /* QBImagePicker.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D6033199224E47860019E640 /* QBImagePicker.storyboard */; };
+		D60331A9224E47860019E640 /* QBAlbumsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D603319B224E47860019E640 /* QBAlbumsViewController.m */; };
+		D60331AA224E47860019E640 /* QBAssetsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D603319D224E47860019E640 /* QBAssetsViewController.m */; };
+		D60331AB224E47860019E640 /* QBImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = D603319E224E47860019E640 /* QBImagePickerController.m */; };
+		D60331AC224E47860019E640 /* QBCheckmarkView.m in Sources */ = {isa = PBXBuildFile; fileRef = D60331A0224E47860019E640 /* QBCheckmarkView.m */; };
+		D60331AD224E47860019E640 /* QBSlomoIconView.m in Sources */ = {isa = PBXBuildFile; fileRef = D60331A2224E47860019E640 /* QBSlomoIconView.m */; };
+		D60331AE224E47860019E640 /* QBAssetCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D60331A3224E47860019E640 /* QBAssetCell.m */; };
 		D660B0CF22329A2A009851F3 /* NSString+UISize.m in Sources */ = {isa = PBXBuildFile; fileRef = D660B0CB22329A2A009851F3 /* NSString+UISize.m */; };
-		D660B0D522329A3C009851F3 /* TRTCMoreSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D660B0D122329A3C009851F3 /* TRTCMoreSettingViewController.m */; };
 		D660B0D622329A3C009851F3 /* TRTCVideoView.m in Sources */ = {isa = PBXBuildFile; fileRef = D660B0D422329A3C009851F3 /* TRTCVideoView.m */; };
 		D660B0D922329AB1009851F3 /* NSString+Common.m in Sources */ = {isa = PBXBuildFile; fileRef = D660B0D722329AB0009851F3 /* NSString+Common.m */; };
 		D660B0DC22329B04009851F3 /* NSData+Common.m in Sources */ = {isa = PBXBuildFile; fileRef = D660B0DB22329B04009851F3 /* NSData+Common.m */; };
@@ -54,11 +68,43 @@
 		918EFF8021D727DC007CF83A /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		918EFF8121D727DC007CF83A /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		918EFFEC21D79A2E007CF83A /* config.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = config.json; sourceTree = "<group>"; };
+		D603317B224E475A0019E640 /* TRTCMoreViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCMoreViewController.h; sourceTree = "<group>"; };
+		D603317C224E475A0019E640 /* TRTCMoreViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCMoreViewController.m; sourceTree = "<group>"; };
+		D603317E224E475A0019E640 /* TCMediaFileReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCMediaFileReader.m; sourceTree = "<group>"; };
+		D603317F224E475A0019E640 /* TestRenderVideoFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestRenderVideoFrame.m; sourceTree = "<group>"; };
+		D6033180224E475A0019E640 /* TestSendCustomVideoData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestSendCustomVideoData.h; sourceTree = "<group>"; };
+		D6033181224E475A0019E640 /* TCMediaFileReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCMediaFileReader.h; sourceTree = "<group>"; };
+		D6033182224E475A0019E640 /* TestSendCustomVideoData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestSendCustomVideoData.m; sourceTree = "<group>"; };
+		D6033183224E475A0019E640 /* TestRenderVideoFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestRenderVideoFrame.h; sourceTree = "<group>"; };
+		D603318A224E47860019E640 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/QBImagePicker.strings; sourceTree = "<group>"; };
+		D603318B224E47860019E640 /* QBImagePickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBImagePickerController.h; sourceTree = "<group>"; };
+		D603318C224E47860019E640 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/QBImagePicker.strings"; sourceTree = "<group>"; };
+		D603318D224E47860019E640 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/QBImagePicker.strings; sourceTree = "<group>"; };
+		D603318E224E47860019E640 /* QBAssetsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBAssetsViewController.h; sourceTree = "<group>"; };
+		D603318F224E47860019E640 /* QBAlbumsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBAlbumsViewController.h; sourceTree = "<group>"; };
+		D6033190224E47860019E640 /* QBVideoIconView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBVideoIconView.m; sourceTree = "<group>"; };
+		D6033191224E47860019E640 /* QBVideoIndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBVideoIndicatorView.m; sourceTree = "<group>"; };
+		D6033192224E47860019E640 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/QBImagePicker.strings; sourceTree = "<group>"; };
+		D6033193224E47860019E640 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/QBImagePicker.strings; sourceTree = "<group>"; };
+		D6033194224E47860019E640 /* QBCheckmarkView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBCheckmarkView.h; sourceTree = "<group>"; };
+		D6033195224E47860019E640 /* QBImagePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBImagePicker.h; sourceTree = "<group>"; };
+		D6033196224E47860019E640 /* QBAssetCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBAssetCell.h; sourceTree = "<group>"; };
+		D6033197224E47860019E640 /* QBSlomoIconView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBSlomoIconView.h; sourceTree = "<group>"; };
+		D6033198224E47860019E640 /* QBAlbumCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBAlbumCell.m; sourceTree = "<group>"; };
+		D6033199224E47860019E640 /* QBImagePicker.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = QBImagePicker.storyboard; sourceTree = "<group>"; };
+		D603319A224E47860019E640 /* QBVideoIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBVideoIndicatorView.h; sourceTree = "<group>"; };
+		D603319B224E47860019E640 /* QBAlbumsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBAlbumsViewController.m; sourceTree = "<group>"; };
+		D603319C224E47860019E640 /* QBVideoIconView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBVideoIconView.h; sourceTree = "<group>"; };
+		D603319D224E47860019E640 /* QBAssetsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBAssetsViewController.m; sourceTree = "<group>"; };
+		D603319E224E47860019E640 /* QBImagePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBImagePickerController.m; sourceTree = "<group>"; };
+		D603319F224E47860019E640 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/QBImagePicker.strings; sourceTree = "<group>"; };
+		D60331A0224E47860019E640 /* QBCheckmarkView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBCheckmarkView.m; sourceTree = "<group>"; };
+		D60331A1224E47860019E640 /* QBAlbumCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBAlbumCell.h; sourceTree = "<group>"; };
+		D60331A2224E47860019E640 /* QBSlomoIconView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBSlomoIconView.m; sourceTree = "<group>"; };
+		D60331A3224E47860019E640 /* QBAssetCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBAssetCell.m; sourceTree = "<group>"; };
 		D660B0CB22329A2A009851F3 /* NSString+UISize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+UISize.m"; sourceTree = "<group>"; };
 		D660B0CE22329A2A009851F3 /* NSString+UISize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+UISize.h"; sourceTree = "<group>"; };
-		D660B0D122329A3C009851F3 /* TRTCMoreSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCMoreSettingViewController.m; sourceTree = "<group>"; };
 		D660B0D222329A3C009851F3 /* TRTCVideoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCVideoView.h; sourceTree = "<group>"; };
-		D660B0D322329A3C009851F3 /* TRTCMoreSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCMoreSettingViewController.h; sourceTree = "<group>"; };
 		D660B0D422329A3C009851F3 /* TRTCVideoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCVideoView.m; sourceTree = "<group>"; };
 		D660B0D722329AB0009851F3 /* NSString+Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Common.m"; sourceTree = "<group>"; };
 		D660B0D822329AB1009851F3 /* NSString+Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Common.h"; sourceTree = "<group>"; };
@@ -138,9 +184,51 @@
 			path = MBProgressHUD;
 			sourceTree = "<group>";
 		};
+		D603317D224E475A0019E640 /* testCustomVideo */ = {
+			isa = PBXGroup;
+			children = (
+				D6033181224E475A0019E640 /* TCMediaFileReader.h */,
+				D603317E224E475A0019E640 /* TCMediaFileReader.m */,
+				D6033183224E475A0019E640 /* TestRenderVideoFrame.h */,
+				D603317F224E475A0019E640 /* TestRenderVideoFrame.m */,
+				D6033180224E475A0019E640 /* TestSendCustomVideoData.h */,
+				D6033182224E475A0019E640 /* TestSendCustomVideoData.m */,
+			);
+			path = testCustomVideo;
+			sourceTree = "<group>";
+		};
+		D6033188224E47860019E640 /* QBImagePicker */ = {
+			isa = PBXGroup;
+			children = (
+				D6033189224E47860019E640 /* QBImagePicker.strings */,
+				D603318B224E47860019E640 /* QBImagePickerController.h */,
+				D603318E224E47860019E640 /* QBAssetsViewController.h */,
+				D603318F224E47860019E640 /* QBAlbumsViewController.h */,
+				D6033190224E47860019E640 /* QBVideoIconView.m */,
+				D6033191224E47860019E640 /* QBVideoIndicatorView.m */,
+				D6033194224E47860019E640 /* QBCheckmarkView.h */,
+				D6033195224E47860019E640 /* QBImagePicker.h */,
+				D6033196224E47860019E640 /* QBAssetCell.h */,
+				D6033197224E47860019E640 /* QBSlomoIconView.h */,
+				D6033198224E47860019E640 /* QBAlbumCell.m */,
+				D6033199224E47860019E640 /* QBImagePicker.storyboard */,
+				D603319A224E47860019E640 /* QBVideoIndicatorView.h */,
+				D603319B224E47860019E640 /* QBAlbumsViewController.m */,
+				D603319C224E47860019E640 /* QBVideoIconView.h */,
+				D603319D224E47860019E640 /* QBAssetsViewController.m */,
+				D603319E224E47860019E640 /* QBImagePickerController.m */,
+				D60331A0224E47860019E640 /* QBCheckmarkView.m */,
+				D60331A1224E47860019E640 /* QBAlbumCell.h */,
+				D60331A2224E47860019E640 /* QBSlomoIconView.m */,
+				D60331A3224E47860019E640 /* QBAssetCell.m */,
+			);
+			path = QBImagePicker;
+			sourceTree = "<group>";
+		};
 		D689A89621CC8D4E00C7C618 /* TRTC */ = {
 			isa = PBXGroup;
 			children = (
+				D603317D224E475A0019E640 /* testCustomVideo */,
 				918EFF7A21D727C3007CF83A /* TRTCGetUserIDAndUserSig.h */,
 				918EFF7621D727C2007CF83A /* TRTCGetUserIDAndUserSig.m */,
 				918EFF7721D727C3007CF83A /* TRTCMainViewController.h */,
@@ -151,8 +239,8 @@
 				D689A89A21CC8D4E00C7C618 /* TRTCNewViewController.m */,
 				D689A89921CC8D4E00C7C618 /* TRTCSettingViewController.h */,
 				D689A89E21CC8D4E00C7C618 /* TRTCSettingViewController.m */,
-				D660B0D322329A3C009851F3 /* TRTCMoreSettingViewController.h */,
-				D660B0D122329A3C009851F3 /* TRTCMoreSettingViewController.m */,
+				D603317B224E475A0019E640 /* TRTCMoreViewController.h */,
+				D603317C224E475A0019E640 /* TRTCMoreViewController.m */,
 				D660B0D222329A3C009851F3 /* TRTCVideoView.h */,
 				D660B0D422329A3C009851F3 /* TRTCVideoView.m */,
 			);
@@ -178,6 +266,7 @@
 		D689A8A321CC8D4E00C7C618 /* Third */ = {
 			isa = PBXGroup;
 			children = (
+				D6033188224E47860019E640 /* QBImagePicker */,
 				918EFF7F21D727DC007CF83A /* MBProgressHUD */,
 				D689A8A421CC8D4E00C7C618 /* AFNetworking */,
 			);
@@ -325,6 +414,11 @@
 			knownRegions = (
 				en,
 				Base,
+				de,
+				"zh-Hans",
+				ja,
+				es,
+				pl,
 			);
 			mainGroup = D6940FDD21CC8A1000469982;
 			productRefGroup = D6940FE721CC8A1000469982 /* Products */;
@@ -341,10 +435,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D60331A4224E47860019E640 /* QBImagePicker.strings in Resources */,
 				D6940FF621CC8A1100469982 /* LaunchScreen.storyboard in Resources */,
 				918EFFED21D79A2E007CF83A /* config.json in Resources */,
 				D6940FF321CC8A1100469982 /* Assets.xcassets in Resources */,
 				D6940FF121CC8A1000469982 /* Main.storyboard in Resources */,
+				D60331A8224E47860019E640 /* QBImagePicker.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -360,18 +456,26 @@
 				D660B0DC22329B04009851F3 /* NSData+Common.m in Sources */,
 				D689A8CD21CC8D4E00C7C618 /* UIProgressView+AFNetworking.m in Sources */,
 				D689A8C921CC8D4E00C7C618 /* TRTCNewViewController.m in Sources */,
+				D60331AD224E47860019E640 /* QBSlomoIconView.m in Sources */,
+				D6033185224E475A0019E640 /* TCMediaFileReader.m in Sources */,
 				D689A8D721CC8D4E00C7C618 /* AFHTTPSessionManager.m in Sources */,
 				D689A8D121CC8D4E00C7C618 /* UIButton+AFNetworking.m in Sources */,
+				D6033187224E475A0019E640 /* TestSendCustomVideoData.m in Sources */,
 				D6940FF921CC8A1100469982 /* main.m in Sources */,
 				918EFF8221D727DC007CF83A /* MBProgressHUD.m in Sources */,
 				918EFF7C21D727C3007CF83A /* TRTCGetUserIDAndUserSig.m in Sources */,
 				D689A8D921CC8D4E00C7C618 /* AFURLRequestSerialization.m in Sources */,
+				D60331A9224E47860019E640 /* QBAlbumsViewController.m in Sources */,
 				D689A8CF21CC8D4E00C7C618 /* AFNetworkActivityIndicatorManager.m in Sources */,
 				D689A8D521CC8D4E00C7C618 /* AFImageDownloader.m in Sources */,
 				D689A8DA21CC8D4E00C7C618 /* AFNetworkReachabilityManager.m in Sources */,
+				D6033184224E475A0019E640 /* TRTCMoreViewController.m in Sources */,
+				D60331AC224E47860019E640 /* QBCheckmarkView.m in Sources */,
+				D60331A6224E47860019E640 /* QBVideoIndicatorView.m in Sources */,
 				D689A8D821CC8D4E00C7C618 /* AFURLSessionManager.m in Sources */,
 				D689A8CE21CC8D4E00C7C618 /* UIRefreshControl+AFNetworking.m in Sources */,
-				D660B0D522329A3C009851F3 /* TRTCMoreSettingViewController.m in Sources */,
+				D6033186224E475A0019E640 /* TestRenderVideoFrame.m in Sources */,
+				D60331A7224E47860019E640 /* QBAlbumCell.m in Sources */,
 				D660B0D922329AB1009851F3 /* NSString+Common.m in Sources */,
 				D660B0D622329A3C009851F3 /* TRTCVideoView.m in Sources */,
 				D689A8CB21CC8D4E00C7C618 /* TRTCSettingViewController.m in Sources */,
@@ -379,17 +483,34 @@
 				D660B0CF22329A2A009851F3 /* NSString+UISize.m in Sources */,
 				D689A8D621CC8D4E00C7C618 /* AFURLResponseSerialization.m in Sources */,
 				D689A8D321CC8D4E00C7C618 /* UIWebView+AFNetworking.m in Sources */,
+				D60331AB224E47860019E640 /* QBImagePickerController.m in Sources */,
+				D60331AE224E47860019E640 /* QBAssetCell.m in Sources */,
+				D60331AA224E47860019E640 /* QBAssetsViewController.m in Sources */,
 				D689A8D021CC8D4E00C7C618 /* UIImageView+AFNetworking.m in Sources */,
 				D6940FEB21CC8A1000469982 /* AppDelegate.m in Sources */,
 				918EFF7E21D727C3007CF83A /* TRTCVideoViewLayout.m in Sources */,
 				D689A8DB21CC8D4E00C7C618 /* AFSecurityPolicy.m in Sources */,
 				D689A8D221CC8D4E00C7C618 /* UIActivityIndicatorView+AFNetworking.m in Sources */,
+				D60331A5224E47860019E640 /* QBVideoIconView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		D6033189224E47860019E640 /* QBImagePicker.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D603318A224E47860019E640 /* de */,
+				D603318C224E47860019E640 /* zh-Hans */,
+				D603318D224E47860019E640 /* ja */,
+				D6033192224E47860019E640 /* en */,
+				D6033193224E47860019E640 /* es */,
+				D603319F224E47860019E640 /* pl */,
+			);
+			name = QBImagePicker.strings;
+			sourceTree = "<group>";
+		};
 		D6940FEF21CC8A1000469982 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

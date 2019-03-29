@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@interface TRTCMoreSettingViewController : UITableViewController
+@interface TRTCMoreViewController : UITableViewController
 
 @property (nonatomic, weak) id<TRTCMoreSettingDelegate> delegate;
 

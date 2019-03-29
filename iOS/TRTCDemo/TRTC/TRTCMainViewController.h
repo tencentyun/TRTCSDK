@@ -11,11 +11,15 @@
  */
 
 #import <UIKit/UIKit.h>
+#import <AVFoundation/AVFoundation.h>
 #import "TRTCCloud.h"
+
 
 @interface TRTCMainViewController : UIViewController 
 
 @property (nonatomic) TRTCParams *param;    /// TRTC SDK 视频通话房间进入所必须的参数
 //@property (nonatomic) BOOL  pureAudioMode;
+@property (nonatomic, assign) BOOL enableCustomVideoCapture;
+@property (nonatomic, retain) AVAsset* customMediaAsset;
 
 @end

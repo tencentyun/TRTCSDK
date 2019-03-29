@@ -6,7 +6,7 @@
 //  Copyright © 2019 Tencent. All rights reserved.
 //
 
-#import "TRTCMoreSettingViewController.h"
+#import "TRTCMoreViewController.h"
 #import "UIView+Additions.h"
 #import "NSString+Common.h"
 
@@ -38,13 +38,13 @@
 #define TAG_SHARE_PLAYURL            1007
 #define TAG_PK                       1008
 
-@interface TRTCMoreSettingViewController ()
+@interface TRTCMoreViewController ()
 @property (nonatomic, retain) TRTCCloud* trtcEngine;
 @property (nonatomic, copy) NSString* roomId;
 @property (nonatomic, copy) NSString* userId;
 @end
 
-@implementation TRTCMoreSettingViewController {
+@implementation TRTCMoreViewController {
     UISegmentedControl* _cameraSegment;
 }
 
@@ -365,7 +365,7 @@
             textField.placeholder = @"sign(选填)";
         }];
         [pkInputVC addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
-        __weak TRTCMoreSettingViewController* weakSelf = self;
+        __weak TRTCMoreViewController* weakSelf = self;
         [pkInputVC addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             NSArray<UITextField*>* textFields = pkInputVC.textFields;
             NSString* roomIdStr = textFields[0].text;

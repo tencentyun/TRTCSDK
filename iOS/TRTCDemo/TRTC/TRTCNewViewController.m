@@ -20,6 +20,7 @@
 
 #import "TRTCGetUserIDAndUserSig.h"
 #import "MBProgressHUD.h"
+#import "QBImagePickerController.h"
 
 #import "AppDelegate.h"
 
@@ -35,6 +36,9 @@
     NSString          *_selfPwd;
 }
 @property (nonatomic, retain) UISwitch* talkModeSwitch;
+@property (nonatomic, retain) UISegmentedControl* customVideoCaptureSeg;
+@property (nonatomic, retain) AVAsset*  customSourceAsset;
+
 @end
 
 @implementation TRTCNewViewController
@@ -85,6 +89,30 @@
     _userIdTextField.textColor = UIColorFromRGB(0x939393);
     _userIdTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
     [self.view addSubview:_userIdTextField];
+    
+
+    _customVideoCaptureSeg = [[UISegmentedControl alloc] initWithItems:@[@"摄像头", @"本地视频"]];
+    UIFont *font = [UIFont boldSystemFontOfSize:14.0f];
+    NSDictionary *attributes = [NSDictionary dictionaryWithObject:font
+                                                           forKey:NSFontAttributeName];
+    [_customVideoCaptureSeg setTitleTextAttributes:attributes
+                               forState:UIControlStateNormal];
+    _customVideoCaptureSeg.bounds = CGRectMake(0, 0, self.view.width * 0.4, 35);
+    _customVideoCaptureSeg.center = CGPointMake(self.view.width - _customVideoCaptureSeg.width / 2 - 10, _userIdTextField.bottom + 30);
+    _customVideoCaptureSeg.tintColor = UIColorFromRGB(0x05a764);
+    _customVideoCaptureSeg.selectedSegmentIndex = 0;
+    [_customVideoCaptureSeg setTitleTextAttributes:@{NSForegroundColorAttributeName:UIColor.whiteColor} forState:UIControlStateSelected];
+    [_customVideoCaptureSeg setTitleTextAttributes:@{NSForegroundColorAttributeName:UIColorFromRGB(0x939393)} forState:UIControlStateNormal];
+
+    [self.view addSubview:_customVideoCaptureSeg];
+    //    [_customVideoCaptureSwitch addTarget:self action:@selector(onCustomVideoSwitchClicked:) forControlEvents:UIControlEventTouchUpInside];
+    UILabel *customVideoCaptureLabel = [[UILabel alloc] init];
+    customVideoCaptureLabel.textColor = userTipLabel.textColor;
+    customVideoCaptureLabel.text = @"视频源";
+    [customVideoCaptureLabel sizeToFit];
+    customVideoCaptureLabel.center = CGPointMake(userTipLabel.x + customVideoCaptureLabel.width / 2, _customVideoCaptureSeg.center.y);
+    [self.view addSubview:customVideoCaptureLabel];
+    
     
     _joinBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     _joinBtn.frame = CGRectMake(40, self.view.height - 70, self.view.width - 80, 50);
@@ -139,6 +167,52 @@
     self.navigationController.navigationBar.hidden = YES;
 }
 
+
+
+- (void)showMeidaPicker
+{
+    QBImagePickerController* imagePicker = [[QBImagePickerController alloc] init];
+    imagePicker.delegate = self;
+    imagePicker.allowsMultipleSelection = YES;
+    imagePicker.showsNumberOfSelectedAssets = YES;
+    imagePicker.minimumNumberOfSelection = 1;
+    imagePicker.maximumNumberOfSelection = 1;
+    imagePicker.mediaType = QBImagePickerMediaTypeVideo;
+    imagePicker.title = @"选择视频源";
+
+    [self.navigationController pushViewController:imagePicker animated:YES];
+}
+
+#pragma mark - QBImagePickerControllerDelegate
+- (void)qb_imagePickerController:(QBImagePickerController *)imagePickerController didFinishPickingAssets:(NSArray *)assets
+{
+    [self.navigationController popViewControllerAnimated:YES];
+    PHVideoRequestOptions *options = [PHVideoRequestOptions new];
+    // 最高质量的视频
+    options.deliveryMode = PHVideoRequestOptionsDeliveryModeHighQualityFormat;
+    // 可从iCloud中获取图片
+    options.networkAccessAllowed = YES;
+    
+    __weak __typeof(self) weakSelf = self;
+    [[PHImageManager defaultManager] requestAVAssetForVideo:assets.firstObject options:options resultHandler:^(AVAsset * _Nullable avAsset, AVAudioMix * _Nullable audioMix, NSDictionary * _Nullable info) {
+        weakSelf.customSourceAsset = avAsset;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            @autoreleasepool {
+                [weakSelf joinRoom];
+
+            };
+        });
+    }];
+}
+
+- (void)qb_imagePickerControllerDidCancel:(QBImagePickerController *)imagePickerController
+{
+    NSLog(@"imagePicker Canceled.");
+    _customVideoCaptureSeg.selectedSegmentIndex = 0;
+    [self.navigationController popViewControllerAnimated:YES];
+    
+}
+
 /**
  *  Function: 读取用户输入，并创建（或加入）音视频房间
  *
@@ -154,7 +228,9 @@
  *
  *  参考文档：https://cloud.tencent.com/document/product/647/17275
  */
-- (void)onJoinBtnClicked:(UIButton *)sender {
+
+- (void)joinRoom
+{
     NSString *roomId = _roomIdTextField.text;
     if (roomId.length == 0) {
         roomId = _roomIdTextField.placeholder;
@@ -166,10 +242,12 @@
         int user = ((uint64_t)(tt * 1000.0)) % 100000000;
         userId = [NSString stringWithFormat:@"%d", user];
     }
+    
+    NSString* lastUserId = [self getUserId];
     [[NSUserDefaults standardUserDefaults] setObject:userId forKey:KEY_CURRENT_USERID];
     [[NSUserDefaults standardUserDefaults] synchronize];
     TRTCMainViewController *vc = [[TRTCMainViewController alloc] init];
-//    vc.pureAudioMode = _talkModeSwitch.isOn;
+    //    vc.pureAudioMode = _talkModeSwitch.isOn;
     
     TRTCParams *param = [[TRTCParams alloc] init];
     param.sdkAppId = _sdkAppid;
@@ -178,8 +256,11 @@
     param.privateMapKey = @"";
     param.bussInfo = @"";
     vc.param = param;
-	
-	// 从控制台获取的 json 文件中，简单获取几组已经提前计算好的 userid 和 usersig
+
+    vc.enableCustomVideoCapture = _customVideoCaptureSeg.selectedSegmentIndex == 1;
+    vc.customMediaAsset = _customSourceAsset;
+    
+    // 从控制台获取的 json 文件中，简单获取几组已经提前计算好的 userid 和 usersig
     if (_sdkAppid == _userInfo.configSdkAppid && _userInfo.configSdkAppid > 0) {
         NSInteger row = [_userInfo.configUserIdArray indexOfObject:userId];
         if (row != NSNotFound) {
@@ -187,8 +268,17 @@
             [self.navigationController pushViewController:vc animated:YES];
         }
     }
+}
+
+- (void)onJoinBtnClicked:(UIButton *)sender {
     
-    
+    if (_customVideoCaptureSeg.selectedSegmentIndex == 1) {
+        [self showMeidaPicker];
+    }
+    else {
+        [self joinRoom];
+    }
+   
 }
 
 - (NSString *)getUserId {
@@ -205,6 +295,7 @@
     }
     return userId;
 }
+
 
 #pragma mark - UITextFieldDelegate
 

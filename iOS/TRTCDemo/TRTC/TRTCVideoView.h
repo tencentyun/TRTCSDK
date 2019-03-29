@@ -25,7 +25,7 @@ typedef NS_ENUM(NSUInteger, VideoViewType) {
 - (void)onScaleModeBtnClick:(TRTCVideoView*)view stateChanged:(BOOL)stateChanged;
 @end
 
-@interface TRTCVideoView : UIView
+@interface TRTCVideoView : UIImageView
 
 @property (nonatomic, weak) id<TRTCVideoViewDelegate> delegate;
 @property (nonatomic, readonly) NSString* userId;
