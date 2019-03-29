@@ -3,22 +3,31 @@ package com.tencent.liteav.demo.trtc;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
 
 import com.tencent.liteav.demo.R;
 import com.tencent.trtc.TRTCCloud;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,37 +46,53 @@ import java.util.List;
  */
 public class TRTCNewActivity extends Activity {
     private final static int REQ_PERMISSION_CODE = 0x1000;
-
     private TRTCGetUserIDAndUserSig mUserInfoLoader;
+    private String mUserId = "";
+    private String mUserSig= "";
+    private String mVideoFile = "";
     @Override
     protected void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_activity);
 
         final EditText etRoomId = (EditText)findViewById(R.id.et_room_name);
-        etRoomId.setText("999");
-
         final EditText etUserId = (EditText)findViewById(R.id.et_user_name);
-        etUserId.setText(String.valueOf(System.currentTimeMillis() % 1000000));
+
+        loadUserInfo(etRoomId, etUserId);
+
+        RadioButton rbCamera = (RadioButton) findViewById(R.id.rb_camera);
+        rbCamera.setChecked(true);
+
+        TextView title = (TextView) findViewById(R.id.main_title);
+        title.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                File logFile = getLastModifiedLogFile();
+                if (logFile != null) {
+                    Intent intent = new Intent(Intent.ACTION_SEND);
+                    intent.setType("application/octet-stream");
+                    intent.setPackage("com.tencent.mobileqq");
+                    intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(logFile));
+                    startActivity(Intent.createChooser(intent, "分享日志"));
+                } else {
+                    Toast.makeText(TRTCNewActivity.this.getApplicationContext(), "日志文件不存在！", Toast.LENGTH_SHORT);
+                }
+                return false;
+            }
+        });
 
         TextView tvEnterRoom = (TextView)findViewById(R.id.tv_enter);
         tvEnterRoom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int roomId = 123;
-                try{
-                    roomId = Integer.valueOf(etRoomId.getText().toString());
-                }catch (Exception e){
-                    Toast.makeText(getContext(), "请输入有效的房间号", Toast.LENGTH_SHORT).show();
+                if (((RadioButton)findViewById(R.id.rb_video_file)).isChecked()) {
+                    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                    intent.setType("video/*");
+//                    intent.addCategory(Intent.CATEGORY_OPENABLE);
+                    startActivityForResult(intent, 1);
                     return;
                 }
-                final String userId = etUserId.getText().toString();
-                if(TextUtils.isEmpty(userId)) {
-                    Toast.makeText(getContext(), "请输入有效的用户名", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                onJoinRoom(roomId, userId);
+                startJoinRoom();
             }
         });
 
@@ -99,9 +124,8 @@ public class TRTCNewActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        //销毁 trtc 单例，释放资源
-        TRTCCloud.destroySharedInstance();
     }
+
 
     /**
      *  Function: 读取用户输入，并创建（或加入）音视频房间
@@ -118,10 +142,17 @@ public class TRTCNewActivity extends Activity {
      *
      *  参考文档：https://cloud.tencent.com/document/product/647/17275
      */
-    private void onJoinRoom(int roomId, final String userId) {
+    private void onJoinRoom(final int roomId, final String userId) {
         final Intent intent = new Intent(getContext(), TRTCMainActivity.class);
         intent.putExtra("roomId", roomId);
         intent.putExtra("userId", userId);
+
+        boolean isCustomVideoCapture = ((RadioButton)findViewById(R.id.rb_video_file)).isChecked();
+        if (TextUtils.isEmpty(mVideoFile)) isCustomVideoCapture = false;
+        intent.putExtra("customAudioCapture", ((CheckBox)findViewById(R.id.cb_enable_custom_audio_capture)).isChecked());
+        intent.putExtra("customVideoCapture", isCustomVideoCapture);
+        intent.putExtra("videoFile", mVideoFile);
+
         final int sdkAppId = mUserInfoLoader.getSdkAppIdFromConfig();
         if (sdkAppId > 0) {
             //（1） 从控制台获取的 json 文件中，简单获取几组已经提前计算好的 userid 和 usersig
@@ -136,25 +167,70 @@ public class TRTCNewActivity extends Activity {
             intent.putExtra("userSig", userSig);
             startActivity(intent);
         } else {
-            //（2） 通过 http 协议向一台服务器获取 userid 对应的 usersig
-            mUserInfoLoader.getUserSigFromServer(1400037025, roomId, userId, "12345678", new TRTCGetUserIDAndUserSig.IGetUserSigListener() {
-                @Override
-                public void onComplete(String userSig, String errMsg) {
-                    if (!TextUtils.isEmpty(userSig)) {
-                        intent.putExtra("sdkAppId", 1400037025);
-                        intent.putExtra("userSig", userSig);
-                        startActivity(intent);
-                    } else {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(getContext(), "从服务器获取userSig失败", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+            if(!TextUtils.isEmpty(mUserId) && mUserId.equalsIgnoreCase(userId) && !TextUtils.isEmpty(mUserSig)) {
+                intent.putExtra("sdkAppId", 1400188366);
+                intent.putExtra("userSig", mUserSig);
+                saveUserInfo(String.valueOf(roomId), userId, mUserSig);
+                startActivity(intent);
+            } else {
+                //（2） 通过 http 协议向一台服务器获取 userid 对应的 usersig
+                mUserInfoLoader.getUserSigFromServer(1400188366, roomId, userId, "12345678", new TRTCGetUserIDAndUserSig.IGetUserSigListener() {
+                    @Override
+                    public void onComplete(String userSig, String errMsg) {
+                        if (!TextUtils.isEmpty(userSig)) {
+                            intent.putExtra("sdkAppId", 1400188366);
+                            intent.putExtra("userSig", userSig);
+                            saveUserInfo(String.valueOf(roomId), userId, userSig);
+                            startActivity(intent);
+                        } else {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(getContext(), "从服务器获取userSig失败", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
                     }
-                }
-            });
+                });
+            }
         }
+    }
+
+    private void startJoinRoom() {
+        final EditText etRoomId = (EditText)findViewById(R.id.et_room_name);
+        final EditText etUserId = (EditText)findViewById(R.id.et_user_name);
+        int roomId = 123;
+        try{
+            roomId = Integer.valueOf(etRoomId.getText().toString());
+        }catch (Exception e){
+            Toast.makeText(getContext(), "请输入有效的房间号", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        final String userId = etUserId.getText().toString();
+        if(TextUtils.isEmpty(userId)) {
+            Toast.makeText(getContext(), "请输入有效的用户名", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        onJoinRoom(roomId, userId);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == Activity.RESULT_OK) {
+            Uri uri = data.getData();
+            if ("file".equalsIgnoreCase(uri.getScheme())){//使用第三方应用打开
+                mVideoFile = uri.getPath();
+            } else {
+                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {//4.4以后
+                    mVideoFile = getPath(this, uri);
+                } else {//4.4以下下系统调用方法
+                    mVideoFile = getRealPathFromURI(uri);
+                }
+            }
+        }
+
+        startJoinRoom();
     }
 
     private Context getContext(){
@@ -213,4 +289,180 @@ public class TRTCNewActivity extends Activity {
         }
     }
 
+    private void saveUserInfo(String roomId, String userId, String userSig) {
+        try {
+            mUserId = userId;
+            mUserSig= userSig;
+            SharedPreferences shareInfo = this.getSharedPreferences("per_data", 0);
+            SharedPreferences.Editor editor = shareInfo.edit();
+            editor.putString("userId", userId);
+            editor.putString("roomId", roomId);
+            editor.putString("userSig", userSig);
+            editor.putLong("userTime", System.currentTimeMillis());
+            editor.commit();
+        } catch (Exception e) {
+
+        }
+    }
+
+    private void loadUserInfo(EditText etRoomId, EditText etUserId) {
+        try {
+            TRTCCloud.getSDKVersion();
+            SharedPreferences shareInfo = this.getSharedPreferences("per_data", 0);
+            mUserId = shareInfo.getString("userId", "");
+            String roomId = shareInfo.getString("roomId", "");
+            mUserSig= shareInfo.getString("userSig", "");
+            if (TextUtils.isEmpty(roomId)) {
+                etRoomId.setText("999");
+            } else {
+                etRoomId.setText(roomId);
+            }
+            if (TextUtils.isEmpty(mUserId)) {
+                etUserId.setText(String.valueOf(System.currentTimeMillis() % 1000000));
+            } else {
+                etUserId.setText(mUserId);
+            }
+        } catch (Exception e) {
+
+        }
+    }
+
+    private File getLastModifiedLogFile() {
+        File retFile = null;
+
+        File directory = new File("/sdcard/log/tencent/liteav");
+        if (directory != null && directory.exists() && directory.isDirectory()) {
+            long lastModify = 0;
+            File files[] = directory.listFiles();
+            if (files != null && files.length > 0) {
+                for (File file : files) {
+                    if (file.getName().endsWith("xlog")) {
+                        if (file.lastModified() > lastModify) {
+                            retFile = file;
+                            lastModify = file.lastModified();
+                        }
+                    }
+                }
+            }
+        }
+
+        return retFile;
+    }
+
+    public String getRealPathFromURI(Uri contentUri) {
+        String res = null;
+        String[] proj = { MediaStore.Images.Media.DATA };
+        Cursor cursor = getContentResolver().query(contentUri, proj, null, null, null);
+        if(null!=cursor&&cursor.moveToFirst()){;
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            res = cursor.getString(column_index);
+            cursor.close();
+        }
+        return res;
+    }
+
+    /**
+     * 专为Android4.4设计的从Uri获取文件绝对路径，以前的方法已不好使
+     */
+    public String getPath(final Context context, final Uri uri) {
+
+        final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
+
+        // DocumentProvider
+        if (isKitKat && DocumentsContract.isDocumentUri(context, uri)) {
+            // ExternalStorageProvider
+            if (isExternalStorageDocument(uri)) {
+                final String docId = DocumentsContract.getDocumentId(uri);
+                final String[] split = docId.split(":");
+                final String type = split[0];
+
+                if ("primary".equalsIgnoreCase(type)) {
+                    return Environment.getExternalStorageDirectory() + "/" + split[1];
+                }
+            }
+            // DownloadsProvider
+            else if (isDownloadsDocument(uri)) {
+
+                final String id = DocumentsContract.getDocumentId(uri);
+                final Uri contentUri = ContentUris.withAppendedId(
+                        Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
+
+                return getDataColumn(context, contentUri, null, null);
+            }
+            // MediaProvider
+            else if (isMediaDocument(uri)) {
+                final String docId = DocumentsContract.getDocumentId(uri);
+                final String[] split = docId.split(":");
+                final String type = split[0];
+
+                Uri contentUri = null;
+                if ("image".equals(type)) {
+                    contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+                } else if ("video".equals(type)) {
+                    contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+                } else if ("audio".equals(type)) {
+                    contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+                }
+
+                final String selection = "_id=?";
+                final String[] selectionArgs = new String[]{split[1]};
+
+                return getDataColumn(context, contentUri, selection, selectionArgs);
+            }
+        }
+        // MediaStore (and general)
+        else if ("content".equalsIgnoreCase(uri.getScheme())) {
+            return getDataColumn(context, uri, null, null);
+        }
+        // File
+        else if ("file".equalsIgnoreCase(uri.getScheme())) {
+            return uri.getPath();
+        }
+        return null;
+    }
+
+    public String getDataColumn(Context context, Uri uri, String selection,
+                                String[] selectionArgs) {
+
+        Cursor cursor = null;
+        final String column = "_data";
+        final String[] projection = {column};
+
+        try {
+            cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs,
+                    null);
+            if (cursor != null && cursor.moveToFirst()) {
+                final int column_index = cursor.getColumnIndexOrThrow(column);
+                return cursor.getString(column_index);
+            }
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
+        return null;
+    }
+
+    /**
+     * @param uri The Uri to check.
+     * @return Whether the Uri authority is ExternalStorageProvider.
+     */
+    public boolean isExternalStorageDocument(Uri uri) {
+        return "com.android.externalstorage.documents".equals(uri.getAuthority());
+    }
+
+    /**
+     * @param uri The Uri to check.
+     * @return Whether the Uri authority is DownloadsProvider.
+     */
+    public boolean isDownloadsDocument(Uri uri) {
+        return "com.android.providers.downloads.documents".equals(uri.getAuthority());
+    }
+
+    /**
+     * @param uri The Uri to check.
+     * @return Whether the Uri authority is MediaProvider.
+     */
+    public boolean isMediaDocument(Uri uri) {
+        return "com.android.providers.media.documents".equals(uri.getAuthority());
+    }
 }

@@ -5,16 +5,26 @@ import android.graphics.Color;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.tencent.liteav.demo.R;
 import com.tencent.rtmp.TXLog;
 import com.tencent.rtmp.ui.TXCloudVideoView;
+import com.tencent.trtc.TRTCCloudDef;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Module:   TRTCVideoViewLayout
@@ -37,6 +47,15 @@ public class TRTCVideoViewLayout extends RelativeLayout {
     private int mMode;
 
     private String mSelfUserId;
+    private WeakReference<ITRTCVideoViewLayoutListener> mListener = new WeakReference<>(null);
+
+    HashMap<Integer, Integer> mapNetworkQuality = null;
+
+    public interface ITRTCVideoViewLayoutListener {
+        void onEnableRemoteVideo(String userId, boolean enable);
+        void onEnableRemoteAudio(String userId, boolean enable);
+        void onChangeVideoFillMode(String userId, boolean adjustMode);
+    }
 
     public TRTCVideoViewLayout(Context context) {
         super(context);
@@ -58,6 +77,10 @@ public class TRTCVideoViewLayout extends RelativeLayout {
         mSelfUserId = userId;
     }
 
+    public void setListener(ITRTCVideoViewLayoutListener listener) {
+        mListener = new WeakReference<>(listener);
+    }
+
     private void initView(Context context) {
         mContext = context;
         LayoutInflater.from(context).inflate(R.layout.room_show_view, this);
@@ -67,6 +90,14 @@ public class TRTCVideoViewLayout extends RelativeLayout {
         initTXCloudVideoView();
         initGridLayoutParams();
         showView();
+
+        mapNetworkQuality = new HashMap<>();
+        mapNetworkQuality.put(Integer.valueOf(TRTCCloudDef.TRTC_QUALITY_Down), Integer.valueOf(R.mipmap.signal1));
+        mapNetworkQuality.put(Integer.valueOf(TRTCCloudDef.TRTC_QUALITY_Vbad), Integer.valueOf(R.mipmap.signal2));
+        mapNetworkQuality.put(Integer.valueOf(TRTCCloudDef.TRTC_QUALITY_Bad), Integer.valueOf(R.mipmap.signal3));
+        mapNetworkQuality.put(Integer.valueOf(TRTCCloudDef.TRTC_QUALITY_Poor), Integer.valueOf(R.mipmap.signal4));
+        mapNetworkQuality.put(Integer.valueOf(TRTCCloudDef.TRTC_QUALITY_Good), Integer.valueOf(R.mipmap.signal5));
+        mapNetworkQuality.put(Integer.valueOf(TRTCCloudDef.TRTC_QUALITY_Excellent), Integer.valueOf(R.mipmap.signal6));
 
         mMode = MODE_FLOAT;
     }
@@ -236,12 +267,23 @@ public class TRTCVideoViewLayout extends RelativeLayout {
             cloudVideoView.setClickable(true);
             cloudVideoView.setTag(R.string.str_tag_pos, i);
             cloudVideoView.setBackgroundColor(Color.BLACK);
+            addToolbarLayout(cloudVideoView);
             mVideoViewList.add(i, cloudVideoView);
         }
     }
 
     public TXCloudVideoView getCloudVideoViewByIndex(int index) {
         return mVideoViewList.get(index);
+    }
+
+    public TXCloudVideoView getCloudVideoViewByUseId(String userId) {
+        for (TXCloudVideoView videoView: mVideoViewList) {
+            String tempUserID = videoView.getUserId();
+            if (tempUserID != null && tempUserID.equalsIgnoreCase(userId)) {
+                return videoView;
+            }
+        }
+        return null;
     }
 
     public void updateLayoutFloat() {
@@ -256,12 +298,16 @@ public class TRTCVideoViewLayout extends RelativeLayout {
             cloudVideoView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int pos = (int) v.getTag(R.string.str_tag_pos);
-                    TXCloudVideoView renderView = (TXCloudVideoView) v;
-                    TXLog.i(TAG, "click on pos: " + pos + "/userId: " + renderView.getUserId());
-                    if (null != renderView.getUserId()) {
-                        swapViewByIndex(0, pos);
+                    Object object = v.getTag(R.string.str_tag_pos);
+                    if (object != null) {
+                        int pos = (int) object;
+                        TXCloudVideoView renderView = (TXCloudVideoView) v;
+                        TXLog.i(TAG, "click on pos: " + pos + "/userId: " + renderView.getUserId());
+                        if (null != renderView.getUserId()) {
+                            swapViewByIndex(0, pos);
+                        }
                     }
+
                 }
             });
             if (i != 0) {
@@ -304,6 +350,7 @@ public class TRTCVideoViewLayout extends RelativeLayout {
 
             updateLayoutFloat();
         }
+        freshToolbarLayout();
         return mMode;
     }
 
@@ -351,6 +398,8 @@ public class TRTCVideoViewLayout extends RelativeLayout {
      *
      */
     public TXCloudVideoView onMemberEnter(String userId) {
+        Log.e(TAG, "onMemberEnter: userId = " + userId);
+
         if (TextUtils.isEmpty(userId)) return null;
         TXCloudVideoView videoView = null;
         int posIdx = 0;
@@ -366,6 +415,7 @@ public class TRTCVideoViewLayout extends RelativeLayout {
                     renderView.setUserId(userId);
                     videoView = renderView;
                     posIdx = i;
+                    mCount++;
                 } else if (!TextUtils.isEmpty(vUserId) && vUserId.equalsIgnoreCase(mSelfUserId)) {
                     posLocal = i;
                 }
@@ -373,11 +423,10 @@ public class TRTCVideoViewLayout extends RelativeLayout {
         }
         TXLog.i("lyj", "onMemberEnter->posIdx: " + posIdx + ", posLast: " + posLocal);
 
-        if (0 == posLocal) {
+         if (0 == posLocal) {
             swapViewByIndex(posIdx, posLocal);
         }
 
-        mCount++;
         if (mMode == MODE_FLOAT) {
             updateLayoutFloat();
         } else {
@@ -388,14 +437,18 @@ public class TRTCVideoViewLayout extends RelativeLayout {
     }
 
     public void onMemberLeave(String userId) {
-        int posIdx = -1, posLocal = mVideoViewList.size();
+        Log.e(TAG, "onMemberLeave: userId = " + userId);
+
+        int posIdx = 0, posLocal = mVideoViewList.size();
         for (int i = 0; i < mVideoViewList.size(); i++) {
             TXCloudVideoView renderView = mVideoViewList.get(i);
             if (renderView != null && null != renderView.getUserId()) {
                 if (renderView.getUserId().equals(userId)) {
                     renderView.setUserId(null);
                     renderView.setVisibility(View.GONE);
+                    freshToolbarLayoutOnMemberLeave(renderView);
                     posIdx = i;
+                    mCount--;
                 } else if (renderView.getUserId().equalsIgnoreCase(mSelfUserId)) {
                     posLocal = i;
                 }
@@ -404,9 +457,6 @@ public class TRTCVideoViewLayout extends RelativeLayout {
 
         if (0 == posIdx) {
             swapViewByIndex(posIdx, posLocal);
-        }
-        if (posIdx != -1) {
-            mCount--;
         }
 
         if (mMode == MODE_FLOAT) {
@@ -445,5 +495,280 @@ public class TRTCVideoViewLayout extends RelativeLayout {
             statusBarHeight1 = context.getResources().getDimensionPixelSize(resourceId);
         }
         return statusBarHeight1;
+    }
+
+    private void addToolbarLayout(final TXCloudVideoView videoView) {
+        View view = videoView.findViewById(R.id.layout_toolbar);
+        if (view == null) {
+            view = LayoutInflater.from(mContext).inflate(R.layout.layout_toolbar, videoView);
+            view.setVisibility(GONE);
+
+            final Button btnRemoteVideo = (Button)view.findViewById(R.id.btn_remote_video);
+            btnRemoteVideo.setTag(R.mipmap.remote_video_enable);
+            btnRemoteVideo.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String userId = videoView.getUserId();
+                    if (userId != null && userId.length() > 0) {
+                        userId = userId.substring(0, userId.length() - 1);
+                    }
+                    if (userId != null && userId.length() > 0) {
+                        int currentTag = (int)btnRemoteVideo.getTag();
+                        boolean enable = currentTag != R.mipmap.remote_video_enable;
+                        ITRTCVideoViewLayoutListener listener = mListener.get();
+                        if (listener != null) {
+                            listener.onEnableRemoteVideo(userId, enable);
+                        }
+                        btnRemoteVideo.setTag(enable ? R.mipmap.remote_video_enable : R.mipmap.remote_video_disable);
+                        btnRemoteVideo.setBackgroundResource(enable ? R.mipmap.remote_video_enable : R.mipmap.remote_video_disable);
+                    }
+                }
+            });
+
+            final Button btnRemoteAudio = (Button)view.findViewById(R.id.btn_remote_audio);
+            btnRemoteAudio.setTag(R.mipmap.remote_audio_enable);
+            btnRemoteAudio.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String userId = videoView.getUserId();
+                    if (userId != null && userId.length() > 0) {
+                        userId = userId.substring(0, userId.length() - 1);
+                    }
+                    if (userId != null && userId.length() > 0) {
+                        int currentTag = (int)btnRemoteAudio.getTag();
+                        boolean enable = currentTag != R.mipmap.remote_audio_enable;
+                        ITRTCVideoViewLayoutListener listener = mListener.get();
+                        if (listener != null) {
+                            listener.onEnableRemoteAudio(userId, enable);
+                        }
+                        btnRemoteAudio.setTag(enable ? R.mipmap.remote_audio_enable : R.mipmap.remote_audio_disable);
+                        btnRemoteAudio.setBackgroundResource(enable ? R.mipmap.remote_audio_enable : R.mipmap.remote_audio_disable);
+                    }
+                }
+            });
+
+            final Button btnFillMode = (Button)view.findViewById(R.id.btn_fill_mode);
+            btnFillMode.setTag(R.mipmap.fill_scale);
+            btnFillMode.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String userId = videoView.getUserId();
+                    if (userId != null && userId.length() > 0) {
+                        userId = userId.substring(0, userId.length() - 1);
+                    }
+                    if (userId != null && userId.length() > 0) {
+                        int currentTag = (int)btnFillMode.getTag();
+                        boolean adjustMode = currentTag != R.mipmap.fill_scale;
+                        ITRTCVideoViewLayoutListener listener = mListener.get();
+                        if (listener != null) {
+                            listener.onChangeVideoFillMode(userId, adjustMode);
+                        }
+                        btnFillMode.setTag(adjustMode ? R.mipmap.fill_scale : R.mipmap.fill_adjust);
+                        btnFillMode.setBackgroundResource(adjustMode ? R.mipmap.fill_scale : R.mipmap.fill_adjust);
+                    }
+                }
+            });
+        }
+    }
+
+    private void clearVideoViewExtraData(TXCloudVideoView videoView) {
+        Button btnRemoteVideo = (Button)videoView.findViewById(R.id.btn_remote_video);
+        btnRemoteVideo.setTag(R.mipmap.remote_video_enable);
+        btnRemoteVideo.setBackgroundResource(R.mipmap.remote_video_enable);
+
+        Button btnRemoteAudio = (Button)videoView.findViewById(R.id.btn_remote_audio);
+        btnRemoteAudio.setTag(R.mipmap.remote_audio_enable);
+        btnRemoteAudio.setBackgroundResource(R.mipmap.remote_audio_enable);
+
+        Button btnFillMode = (Button)videoView.findViewById(R.id.btn_fill_mode);
+        btnFillMode.setTag(R.mipmap.fill_scale);
+        btnFillMode.setBackgroundResource(R.mipmap.fill_scale);
+    }
+
+    public void freshToolbarLayout() {
+        for (TXCloudVideoView videoView: mVideoViewList) {
+            String userId = videoView.getUserId();
+
+            View layoutToolbar = videoView.findViewById(R.id.layout_toolbar);
+            if (userId != null && userId.isEmpty() == false) {
+                if (userId.equalsIgnoreCase(mSelfUserId)) {
+                    View view = videoView.findViewById(R.id.layout_no_video);
+                    if (view != null) {
+                        Object tag = view.getTag();
+                        if (tag != null) {
+                            if ((int) tag == VISIBLE) {
+                                view.setVisibility(VISIBLE);
+                                if (layoutToolbar != null) {
+                                    layoutToolbar.bringToFront();
+                                    layoutToolbar.setVisibility(VISIBLE);
+                                }
+                            }
+                            else {
+                                view.setVisibility(GONE);
+                            }
+                        }
+                    }
+                    showToolbarButtons(videoView, false);
+                }
+                else {
+                    if (videoView.getVisibility() == VISIBLE) {
+                        if (layoutToolbar != null) {
+                            layoutToolbar.bringToFront();
+                            layoutToolbar.setVisibility(VISIBLE);
+                            showToolbarButtons(videoView, mMode == MODE_GRID);
+                        }
+                    }
+                    else {
+                        layoutToolbar.setVisibility(GONE);
+                        freshToolbarLayoutOnMemberLeave(videoView);
+                    }
+                }
+            }
+            else {
+                layoutToolbar.setVisibility(GONE);
+                freshToolbarLayoutOnMemberLeave(videoView);
+            }
+        }
+    }
+
+    public void freshToolbarLayoutOnMemberEnter(String userID) {
+        for (TXCloudVideoView videoView: mVideoViewList) {
+            String tempUserID = videoView.getUserId();
+            if (tempUserID != null && tempUserID.equalsIgnoreCase(userID)) {
+                View layoutToolbar = videoView.findViewById(R.id.layout_toolbar);
+                if (layoutToolbar != null) {
+                    layoutToolbar.bringToFront();
+                    layoutToolbar.setVisibility(VISIBLE);
+                    showToolbarButtons(videoView, mMode == MODE_GRID);
+                }
+            }
+        }
+    }
+
+    private void freshToolbarLayoutOnMemberLeave(TXCloudVideoView videoView) {
+        showAudioVolumeProgressBar(videoView, false);
+        showToolbarButtons(videoView, false);
+        showNoVideoLayout(videoView, false);
+        clearVideoViewExtraData(videoView);
+    }
+
+    private void showToolbarButtons(TXCloudVideoView videoView, boolean bShow) {
+        View view = videoView.findViewById(R.id.toolbar_buttons);
+        if (view != null) {
+            view.setVisibility(bShow ? VISIBLE : GONE);
+        }
+    }
+
+    public void hideAudioVolumeProgressBar() {
+        for (TXCloudVideoView videoView: mVideoViewList) {
+            showAudioVolumeProgressBar(videoView, false);
+        }
+    }
+
+    private void showAudioVolumeProgressBar(TXCloudVideoView videoView, boolean bShow) {
+        View view = videoView.findViewById(R.id.audio_volume);
+        if (view != null) {
+            view.setVisibility(bShow ? VISIBLE : GONE);
+        }
+    }
+
+    private void showNoVideoLayout(TXCloudVideoView videoView, boolean bShow) {
+        View view = videoView.findViewById(R.id.layout_no_video);
+        if (view != null) {
+            view.setVisibility(bShow ? VISIBLE : GONE);
+            view.setTag(Integer.valueOf(bShow ? VISIBLE : GONE));
+        }
+    }
+
+    public void updateAudioVolume(String userID, int audioVolume) {
+        for (TXCloudVideoView videoView: mVideoViewList) {
+            if (videoView.getVisibility() == VISIBLE) {
+                String tempUserID = videoView.getUserId();
+                if (tempUserID != null && tempUserID.startsWith(userID)) {
+                    View layoutToolbar = videoView.findViewById(R.id.layout_toolbar);
+                    if (layoutToolbar != null) {
+                        layoutToolbar.bringToFront();
+                        layoutToolbar.setVisibility(VISIBLE);
+                    }
+
+                    int maxVolume = 15; //>TRTC接口显示audioVolume的取值范围是0-100，实际回调出来的数据非常小，为了效果明显一点，先设置为15
+
+                    int adjustVolume = (int)Math.ceil(maxVolume * audioVolume / maxVolume);
+                    if (adjustVolume < 0) {
+                        adjustVolume = 0;
+                    }
+                    if (adjustVolume > maxVolume) {
+                        adjustVolume = maxVolume;
+                    }
+
+                    ProgressBar progressBar = (ProgressBar)videoView.findViewById(R.id.audio_volume);
+                    if (progressBar != null) {
+                        progressBar.setVisibility(VISIBLE);
+                        progressBar.setMax(maxVolume);
+                        progressBar.setProgress(adjustVolume);
+                    }
+                }
+            }
+        }
+    }
+
+    public void updateNetworkQuality(String userID, int quality) {
+        for (TXCloudVideoView videoView: mVideoViewList) {
+            if (videoView.getVisibility() == VISIBLE) {
+                String tempUserID = videoView.getUserId();
+                if (tempUserID != null && tempUserID.startsWith(userID)) {
+                    ImageView imageView = (ImageView)videoView.findViewById(videoView.hashCode());
+                    if (imageView == null) {
+                        imageView = new ImageView(mContext);
+                        imageView.setId(videoView.hashCode());
+                        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(60, 45, Gravity.TOP | Gravity.RIGHT);
+                        params.setMargins(0,8,8,0);
+                        videoView.addView(imageView, params);
+                    }
+
+                    if (quality < TRTCCloudDef.TRTC_QUALITY_Excellent) {
+                        quality = TRTCCloudDef.TRTC_QUALITY_Excellent;
+                    }
+                    if (quality > TRTCCloudDef.TRTC_QUALITY_Down) {
+                        quality = TRTCCloudDef.TRTC_QUALITY_Down;
+                    }
+
+                    if (imageView != null) {
+                        imageView.bringToFront();
+                        imageView.setVisibility(VISIBLE);
+                        imageView.setImageResource(mapNetworkQuality.get(Integer.valueOf(quality).intValue()));
+                    }
+                }
+            }
+        }
+    }
+
+    public void updateVideoStatus(String userID, boolean bHasVideo) {
+        for (TXCloudVideoView videoView: mVideoViewList) {
+            if (videoView.getVisibility() == VISIBLE) {
+                String tempUserID = videoView.getUserId();
+                if (tempUserID != null && tempUserID.startsWith(userID)) {
+                    TextView textView = (TextView)videoView.findViewById(R.id.textview_userid);
+                    if (textView != null) {
+                        if (mSelfUserId.equalsIgnoreCase(userID)) {
+                            userID += "(您自己)";
+                        }
+                        textView.setText(userID);
+                    }
+                    if (bHasVideo == false) {
+                        View layoutToolbar = videoView.findViewById(R.id.layout_toolbar);
+                        if (layoutToolbar != null) {
+                            layoutToolbar.bringToFront();
+                            layoutToolbar.setVisibility(VISIBLE);
+                        }
+
+                        showNoVideoLayout(videoView, true);
+                    }
+                    else {
+                        showNoVideoLayout(videoView, false);
+                    }
+                }
+            }
+        }
     }
 }

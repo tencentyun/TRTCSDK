@@ -1,6 +1,7 @@
 package com.tencent.liteav.demo.trtc;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.tencent.liteav.demo.R;
 
@@ -66,13 +67,22 @@ public class TRTCGetUserIDAndUserSig {
      *
      */
     public void loadFromConfig(Context context) {
+        InputStream is = null;
         try {
-            InputStream is = context.getResources().openRawResource(R.raw.config);
+            is = context.getResources().openRawResource(R.raw.config);
             String jsonData = readTextFromInputStream(is);
             loadJsonData(jsonData);
         } catch (Exception e) {
             mUserIdArray = new ArrayList<>();
             mUserSigArray = new ArrayList<>();
+        } finally {
+            try {
+                if (is != null) {
+                    is.close();
+                }
+            } catch (Exception e) {
+
+            }
         }
     }
 
@@ -108,6 +118,7 @@ public class TRTCGetUserIDAndUserSig {
 
     /** 解析JSON配置文件 */
     private void loadJsonData(String jsonData) {
+        if (TextUtils.isEmpty(jsonData)) return;
         try {
             JSONTokener jsonTokener = new JSONTokener(jsonData);
             JSONObject msgJson = (JSONObject) jsonTokener.nextValue();

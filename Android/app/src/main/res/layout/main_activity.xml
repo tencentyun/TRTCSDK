@@ -60,23 +60,6 @@
                 android:src="@mipmap/ic_float" />
 
             <LinearLayout
-                android:id="@+id/ll_switch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/icon_margin"
-                android:clickable="true"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:id="@+id/iv_switch"
-                    android:layout_width="@dimen/icon_width"
-                    android:layout_height="@dimen/icon_height"
-                    android:src="@mipmap/camera" />
-
-            </LinearLayout>
-
-            <LinearLayout
                 android:id="@+id/ll_beauty"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -94,6 +77,23 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_camera"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/icon_margin"
+                android:clickable="true"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/iv_camera"
+                    android:layout_width="@dimen/icon_width"
+                    android:layout_height="@dimen/icon_height"
+                    android:src="@mipmap/remote_video_enable" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/ll_voice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -106,7 +106,24 @@
                     android:id="@+id/iv_mic"
                     android:layout_width="@dimen/icon_width"
                     android:layout_height="@dimen/icon_height"
-                    android:src="@mipmap/mic" />
+                    android:src="@mipmap/mic_enable" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_log"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/icon_margin"
+                android:clickable="true"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/iv_log"
+                    android:layout_width="@dimen/icon_width"
+                    android:layout_height="@dimen/icon_height"
+                    android:src="@mipmap/log2" />
 
             </LinearLayout>
 
@@ -128,7 +145,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/ll_log"
+                android:id="@+id/ll_more"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/icon_margin"
@@ -137,15 +154,121 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:id="@+id/iv_log"
+                    android:id="@+id/iv_more"
                     android:layout_width="@dimen/icon_width"
                     android:layout_height="@dimen/icon_height"
-                    android:src="@mipmap/log2" />
+                    android:src="@mipmap/more" />
 
             </LinearLayout>
+
         </LinearLayout>
 
     </RelativeLayout>
+
+
+    <FrameLayout
+        android:id="@+id/layout_linkmic"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:visibility="gone"
+        android:background="@android:color/transparent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:clickable="true"
+            android:background="@drawable/shape_round_corner_trtc"
+            android:layout_gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:textSize="20dp"
+                android:clickable="true"
+                android:text="跨房通话"/>
+
+            <EditText
+                android:id="@+id/edit_room_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="20dp"
+                android:singleLine="true"
+                android:textSize="15dp"
+                android:hint="请输入目标房间号"/>
+
+            <EditText
+                android:id="@+id/edit_user_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
+                android:singleLine="true"
+                android:textSize="15dp"
+                android:hint="请输入目标用户ID"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1">
+                    <Button
+                        android:id="@+id/btn_confirm"
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:textSize="16dp"
+                        android:text="确定"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1">
+                    <Button
+                        android:id="@+id/btn_cancel"
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:textSize="16dp"
+                        android:text="取消"/>
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/layout_linkmic_loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:visibility="gone"
+        android:background="@android:color/transparent">
+
+        <ImageView
+            android:id="@+id/imageview_linkmic_loading"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:clickable="true"/>
+
+    </FrameLayout>
 
 
 </FrameLayout>

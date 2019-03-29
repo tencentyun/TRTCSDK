@@ -1,71 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@mipmap/com_bg"
+    android:background="#333333"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
+    
     <TextView
-        android:id="@+id/main_title"
+    android:id="@+id/main_title"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    android:layout_marginTop="15dp"
+    android:gravity="center"
+    android:text="腾讯视频通话"
+    android:textColor="#ffffff"
+    android:textSize="22dp" />
+    
+    <TextView
+    android:text="请输入房间号："
+    android:layout_marginTop="30dp"
+    android:layout_marginLeft="30dp"
+    android:layout_marginRight="30dp"
+    android:layout_marginBottom="5dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textSize="16dp"
+    android:textColor="#999999"/>
+    <EditText
+    android:id="@+id/et_room_name"
+    android:paddingLeft="30dp"
+    android:paddingRight="30dp"
+    android:background="#4a4a4a"
+    android:textColor="#939393"
+    android:singleLine="true"
+    android:inputType="number"
+    android:hint="@string/str_room_id_tips"
+    android:textSize="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="35dp" />
+    <TextView
+    android:text="请输入用户名："
+    android:layout_marginTop="10dp"
+    android:layout_marginLeft="30dp"
+    android:layout_marginRight="30dp"
+    android:layout_marginBottom="5dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textSize="16dp"
+    android:textColor="#999999"/>
+    <EditText
+    android:id="@+id/et_user_name"
+    android:paddingLeft="30dp"
+    android:paddingRight="30dp"
+    android:background="#4a4a4a"
+    android:textColor="#939393"
+    android:singleLine="true"
+    android:hint="@string/str_user_id_tips"
+    android:textSize="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="35dp" />
+    
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="20dp"
-        android:gravity="center"
-        android:text="@string/app_name"
-        android:textColor="#ffffff"
-        android:textSize="26dp" />
-
-    <TextView
-        android:text="房间号"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="30dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <EditText
-        android:id="@+id/et_room_name"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:background="@color/hlfTransparent"
-        android:textColor="@color/colorWhite"
-        android:singleLine="true"
-        android:inputType="number"
-        android:hint="@string/str_room_id_tips"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <TextView
-        android:text="用户名"
-        android:layout_marginTop="30dp"
-        android:layout_marginLeft="30dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <EditText
-        android:id="@+id/et_user_name"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:background="@color/hlfTransparent"
-        android:textColor="@color/colorWhite"
-        android:singleLine="true"
-        android:hint="@string/str_user_id_tips"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="2dp">
+        <TextView
+        android:text="视频源   "
+        android:textSize="18sp"
+        android:layout_gravity="center"
+        android:textColor="@color/line_btn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        />
+        <RadioGroup
+            android:orientation="horizontal"
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <RadioButton
+            android:id="@+id/rb_camera"
+            android:text="摄像头"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#999999"/>
+            <RadioButton
+            android:id="@+id/rb_video_file"
+            android:text="视频文件"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#999999"/>
+        </RadioGroup>
+    </LinearLayout>
+    
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:visibility="gone">
+        
+        <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="自定义声音采集"
+        android:textColor="@color/line_btn"
+        android:textSize="16sp" />
+        <CheckBox
+        android:id="@+id/cb_enable_custom_audio_capture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"/>
+    </LinearLayout>
+    
     <View
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
-
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="1" />
+    
     <TextView
-        android:id="@+id/tv_enter"
-        android:text="@string/str_enter_room_btn"
-        android:textColor="@color/colorWhite"
-        android:textSize="20dp"
-        android:layout_margin="20dp"
-        android:gravity="center"
-        android:padding="10dp"
-        android:background="@drawable/radio_border"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
+    android:id="@+id/tv_enter"
+    android:text="创建并自动加入该房间"
+    android:textColor="@color/colorWhite"
+    android:textSize="18dp"
+    android:layout_margin="20dp"
+    android:gravity="center"
+    android:padding="10dp"
+    android:background="@drawable/rtmproom_create_room_seletor"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" />
+    
 </LinearLayout>

@@ -17,4 +17,17 @@
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowCloseOnTouchOutside">true</item>
     </style>
+
+    <style name="room_more_dlg" parent="@android:style/Theme.Holo.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+    </style>
+
+    <style name="progressBarHorizontal_indeter" parent="android:Widget.ProgressBar.Horizontal">
+        <item name="android:minHeight">3dp</item>
+        <item name="android:maxHeight">3dp</item>
+    </style>
+
 </resources>

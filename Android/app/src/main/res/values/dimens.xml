@@ -216,7 +216,7 @@
     <dimen name="media_panel_width">330dp</dimen>
 
     <dimen name="icon_text_size">12dp</dimen>
-    <dimen name="icon_margin">18dp</dimen>
+    <dimen name="icon_margin">14dp</dimen>
     <dimen name="icon_width">40dp</dimen>
     <dimen name="icon_height">40dp</dimen>
 
