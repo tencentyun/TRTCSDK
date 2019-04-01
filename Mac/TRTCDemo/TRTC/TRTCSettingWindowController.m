@@ -220,7 +220,7 @@ DECL_DEFAULT_KEY(BOOL, PlaySmallStream, playSmallStream)
     if (self.class.scene == TRTCAppSceneVideoCall) {
         self.callSceneButton.state = NSOnState;
     } else {
-        self.callSceneButton.state = NSOffState;
+        self.liveSceneButton.state = NSOnState;
     }
     self.callSceneButton.tag = TRTCAppSceneVideoCall;
     self.liveSceneButton.tag = TRTCAppSceneLIVE;

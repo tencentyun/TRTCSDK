@@ -40,6 +40,7 @@ static NSString * const VideoIcon[2] = {@"main_tool_video_on", @"main_tool_video
 @interface TRTCMainWindowController () <NSWindowDelegate,NSTableViewDelegate,NSTableViewDataSource, TRTCCloudDelegate, TRTCLogDelegate>
 {
     NSMutableDictionary *_mixTransCodeInfo;
+    NSString *_screenShareUidSuffix;
 }
 /// TRTC SDK 实例对象
 @property(nonatomic,strong) TRTCCloud *trtcEngine;
@@ -91,6 +92,7 @@ static NSString * const VideoIcon[2] = {@"main_tool_video_on", @"main_tool_video
         self.bigSmallStreamState = [NSMutableDictionary dictionary];
         self.allUids = [NSMutableArray array];
         _mixTransCodeInfo = [NSMutableDictionary dictionary];
+        _screenShareUidSuffix = @"屏幕分享";
     }
     return self;
 }
@@ -281,6 +283,21 @@ static NSString * const VideoIcon[2] = {@"main_tool_video_on", @"main_tool_video
 - (TXRenderView *)localVideoRenderView {
     return _allRenderViews[self.userId];
 }
+
+- (NSString *)localScreenshareUid {
+    NSString *uid = [NSString stringWithFormat:@"%@-%@", self.currentUserParam.userId, _screenShareUidSuffix];
+    return uid;
+}
+
+- (TXRenderView *)localScreenSharePreview {
+    NSString *uid = [self localScreenshareUid];
+    TXRenderView *view = _allRenderViews[uid];
+    if (nil == view) {
+        view = [self addRenderViewAt:uid];
+    }
+    return view;
+}
+
 - (TXRenderView *)renderViewForUser:(NSString *)userId {
     return _allRenderViews[userId];
 }
@@ -393,14 +410,14 @@ static NSString * const VideoIcon[2] = {@"main_tool_video_on", @"main_tool_video
         }
         if (source == nil) {
             [wself.trtcEngine stopScreenCapture];
+            [wself removeRenderViewForUser:[wself localScreenshareUid]];
         } else {
             TRTCVideoEncParam* subEncParam = [TRTCVideoEncParam new];
             subEncParam.videoResolution = TRTCSettingWindowController.subStreamResolution;
             subEncParam.videoFps = TRTCSettingWindowController.subStreamFps;
             subEncParam.videoBitrate = TRTCSettingWindowController.subStreamBitrate;
             [wself.trtcEngine setSubStreamEncoderParam:subEncParam];
-            
-            [wself.trtcEngine startScreenCapture:wself.capturePreviewWindow.contentView];
+            [wself.trtcEngine startScreenCapture:[wself localScreenSharePreview]];
         }
         [wself.window endSheet:wself.captureSourceWindowController.window];
         [wself.captureSourceWindowController.window close];
@@ -413,7 +430,6 @@ static NSString * const VideoIcon[2] = {@"main_tool_video_on", @"main_tool_video
 }
 
 - (IBAction)closeRoom:(id)sender {
-    [_trtcEngine exitRoom];
     [self close];
     _trtcEngine = nil;
 }
@@ -544,6 +560,7 @@ static NSString * const VideoIcon[2] = {@"main_tool_video_on", @"main_tool_video
     [self.trtcEngine setLocalViewFillMode:TRTCVideoFillMode_Fit];
     [self.trtcEngine startLocalPreview:videoView.contentView];
     [self.trtcEngine startLocalAudio];
+    [self.trtcEngine muteLocalAudio:NO];
     // 进房
     [self.trtcEngine enterRoom:param appScene:_scene];
 }
