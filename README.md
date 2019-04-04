@@ -3,8 +3,14 @@
 
 ## 最新版本 6.3.7089 @ 2019.04.02
 
-1. Android：支持 64 位平台。
-2. 全平台：修复过去一周客户反馈的若干bug。
+1. 增加 Android 平台 64 位的支持。
+2. 增加自定义视频采集接口: TRTCCloud >> sendCustomVideoData
+3. 增加自定义音频采集接口: TRTCCloud >> sendCustomAudioData
+4. 增加自定义视频渲染接口：TRTCCloud >> setLocalVideoRenderDelegate + setRemoteVideoRenderDelegate
+5. 增加自定义音频数据回调接口：TRTCCloud >> setAudioFrameDelegate 支持：
+- 返回麦克风采集数据 TRTCAudioFrameDelegate >> onCapturedAudioFrame
+- 返回每一路远程用户的音频数据 TRTCAudioFrameDelegate >> onPlayAudioFrame
+- 返回混合后送入喇叭播放的音频数据 TRTCAudioFrameDelegate >>onMixedPlayAudioFrame
 
 
 ## API 文档及使用指引
