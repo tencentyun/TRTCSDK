@@ -1,16 +1,10 @@
 # 腾讯云实时音视频终端组件 TRTC SDK
 覆盖iOS、Android、Windows、Mac、浏览器和微信小程序六大应用平台，致力于提供全球最好的视频通话和直播连麦解决方案。
 
-## 最新版本 6.3.7031 @ 2019.03.22
+## 最新版本 6.3.7089 @ 2019.03.22
 
-Android、iOS、Windows
-1. 增加自定义视频采集接口: TRTCCloud >> sendCustomVideoData
-2. 增加自定义音频采集接口: TRTCCloud >> sendCustomAudioData
-3. 增加自定义视频渲染接口：TRTCCloud >> setLocalVideoRenderDelegate + setRemoteVideoRenderDelegate
-4. 增加自定义音频数据回调接口：TRTCCloud >> setAudioFrameDelegate 支持：
-  + 返回麦克风采集数据 TRTCAudioFrameDelegate >> onCapturedAudioFrame
-  + 返回每一路远程用户的音频数据 TRTCAudioFrameDelegate >> onPlayAudioFrame
-  + 返回混合后送入喇叭播放的音频数据 TRTCAudioFrameDelegate >>onMixedPlayAudioFrame
+1. Android：支持 64 位平台。
+2. 全平台：修复过去一周客户反馈的若干bug。
 
 
 ## API 文档及使用指引
