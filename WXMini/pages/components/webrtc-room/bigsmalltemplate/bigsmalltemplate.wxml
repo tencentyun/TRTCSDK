@@ -4,7 +4,7 @@
       <view class="poster">
         <cover-image class="set" wx:if="{{playerBackgroundImg}}" src="{{playerBackgroundImg}}"></cover-image>
       </view>
-      <live-player id="{{fixPlayId || members[0].userID}}" autoplay mode="RTC" min-cache="0.1" max-cache="0.3" src="{{members[0].accelerateURL}}" debug="{{debug}}" background-mute="{{true}}" bindstatechange="onPlay">
+      <live-player id="{{fixPlayId || members[0].userID}}" autoplay mode="RTC" object-fit="fillCrop" min-cache="0.1" max-cache="0.3" src="{{members[0].accelerateURL}}" debug="{{debug}}" background-mute="{{true}}" bindstatechange="onPlay">
         <cover-view class="loading" wx:if="{{members[0].loading && loadingImg}}">
           <cover-image src="{{loadingImg}}"></cover-image>
         </cover-view>

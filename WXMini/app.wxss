@@ -155,12 +155,12 @@ body, page {
   height: 44rpx;
 }
 .img-box {
-  position: relative;
-  display:inline-block;
+  /* position: relative; */
+  /* display:inline-block; */
   height: 50px;
-  width: 13.6vw;
-  vertical-align: middle;
-  margin:0 3vw;
+  width: 15vw;
+  /* vertical-align: middle; */
+  margin:0 1.5vw;
 }
 .img-view {
   position: relative;
@@ -180,15 +180,18 @@ body, page {
   text-align: center;
 } 
 .operate {
+  display:flex;  
+  flex-direction: row;
+  justify-content: center;
   position: absolute;
   /* margin-left: auto;
   margin-right: auto; */
-  margin:0 10vw;
+  /* margin:0 5vw; */
   right: 0;
   left: 0;
   bottom: 2vh;
   /* width: fit-content; */
-  width:80vw;
+  width: 100%;
   height: 50px;
 }
 .close {
