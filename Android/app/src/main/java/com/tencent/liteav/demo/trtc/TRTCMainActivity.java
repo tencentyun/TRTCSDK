@@ -72,6 +72,7 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
     private TestSendCustomVideoData mCustomCapture;
     private TestRenderVideoFrame mCustomRender;
     private String mVideoFile;
+    private int mSdkAppId = -1;
     @Override
     protected void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,7 +84,7 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
 
         //获取前一个页面得到的进房参数
         Intent intent       = getIntent();
-        int sdkAppId        = intent.getIntExtra("sdkAppId", 0);
+        mSdkAppId        = intent.getIntExtra("sdkAppId", 0);
         int roomId          = intent.getIntExtra("roomId", 0);
         String selfUserId   = intent.getStringExtra("userId");
         String userSig      = intent.getStringExtra("userSig");
@@ -95,7 +96,7 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
             mCustomCapture = new TestSendCustomVideoData(this);
             mCustomRender = new TestRenderVideoFrame(this);
         }
-        trtcParams = new TRTCCloudDef.TRTCParams(sdkAppId, selfUserId, userSig, roomId, "", "");
+        trtcParams = new TRTCCloudDef.TRTCParams(mSdkAppId, selfUserId, userSig, roomId, "", "");
 
         //初始化 UI 控件
         initView();
@@ -803,25 +804,8 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
         }
     }
 
-//    CustomAudioFileReader.TXICustomAudioFileReadListener fileReadListener = new CustomAudioFileReader.TXICustomAudioFileReadListener() {
-//        @Override
-//        public void onAudioCapturePcm(byte[] data, int sampleRate, int channels, long timestampMs) {
-//            TRTCCloudDef.TRTCAudioFrame frame = new TRTCCloudDef.TRTCAudioFrame();
-//            frame.data = data;
-//            frame.sampleRate = sampleRate;
-//            frame.channel = channels;
-//            frame.timestamp = timestampMs;
-//            trtcCloud.sendCustomAudioData(frame);
-//        }
-//    };
     private void enableCustomAudioCapture() {
         trtcCloud.enableCustomAudioCapture(mEnableCustomAudioCapture);
-//        if (mEnableCustomAudioCapture) {
-//            CustomAudioFileReader.getInstance().setCustomAudioFileReadListener(fileReadListener);
-//            CustomAudioFileReader.getInstance().start(48000, 1, 960*2, this);
-//        } else {
-//            CustomAudioFileReader.getInstance().stop();
-//        }
     }
 
     private void updateCloudMixtureParams() {
@@ -918,7 +902,7 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
         }
 
         TRTCCloudDef.TRTCTranscodingConfig config = new TRTCCloudDef.TRTCTranscodingConfig();
-        config.appId = 1252463788;
+        config.appId = mSdkAppId;
         config.bizId = 3891;
         config.videoWidth = videoWidth;
         config.videoHeight = videoHeight;

@@ -153,7 +153,7 @@ public class TRTCNewActivity extends Activity {
         intent.putExtra("customVideoCapture", isCustomVideoCapture);
         intent.putExtra("videoFile", mVideoFile);
 
-        final int sdkAppId = mUserInfoLoader.getSdkAppIdFromConfig();
+        int sdkAppId = mUserInfoLoader.getSdkAppIdFromConfig();
         if (sdkAppId > 0) {
             //（1） 从控制台获取的 json 文件中，简单获取几组已经提前计算好的 userid 和 usersig
             ArrayList<String> userIdList = mUserInfoLoader.getUserIdFromConfig();
@@ -167,18 +167,21 @@ public class TRTCNewActivity extends Activity {
             intent.putExtra("userSig", userSig);
             startActivity(intent);
         } else {
+            //appId 可以在腾讯云实时音视频控制台（https://console.cloud.tencent.com/rav）获取
+            sdkAppId = -1;
             if(!TextUtils.isEmpty(mUserId) && mUserId.equalsIgnoreCase(userId) && !TextUtils.isEmpty(mUserSig)) {
-                intent.putExtra("sdkAppId", 1400188366);
+                intent.putExtra("sdkAppId", sdkAppId);
                 intent.putExtra("userSig", mUserSig);
                 saveUserInfo(String.valueOf(roomId), userId, mUserSig);
                 startActivity(intent);
             } else {
                 //（2） 通过 http 协议向一台服务器获取 userid 对应的 usersig
-                mUserInfoLoader.getUserSigFromServer(1400188366, roomId, userId, "12345678", new TRTCGetUserIDAndUserSig.IGetUserSigListener() {
+                final int finalSdkAppId = sdkAppId;
+                mUserInfoLoader.getUserSigFromServer(sdkAppId, roomId, userId, "12345678", new TRTCGetUserIDAndUserSig.IGetUserSigListener() {
                     @Override
                     public void onComplete(String userSig, String errMsg) {
                         if (!TextUtils.isEmpty(userSig)) {
-                            intent.putExtra("sdkAppId", 1400188366);
+                            intent.putExtra("sdkAppId", finalSdkAppId);
                             intent.putExtra("userSig", userSig);
                             saveUserInfo(String.valueOf(roomId), userId, userSig);
                             startActivity(intent);
