@@ -503,8 +503,8 @@ typedef enum : NSUInteger {
         }
         
         TRTCTranscodingConfig* config = [TRTCTranscodingConfig new];
-        config.appId = 1252463788;
-        config.bizId = 3891;
+        config.appId = self.param.sdkAppId;
+        config.bizId = <#bizID#>; // 请进入 "实时音视频"控制台 https://console.cloud.tencent.com/rav，点击对应的应用，然后进入“帐号信息”菜单中，复制“直播信息”模块中的"bizid"
         config.videoWidth = videoWidth;
         config.videoHeight = videoHeight;
         config.videoGOP = 3;
