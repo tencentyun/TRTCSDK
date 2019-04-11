@@ -1,17 +1,14 @@
 .grid.videoview {
-  background-repeat:no-repeat;
-  background-size: cover;
   padding-left: 3.5vw;
-  padding-top: 3.5vw;
+  padding-top: 20vw;
   width: 100%;
   height: 100%;
-  position: absolute;
 }
 
 .grid .pusher-box {
 	position: relative; 
-	display: inline-block; 
-	overflow: hidden;
+  display: inline-block; 
+  overflow: hidden;
   width: 46vw;
 	height: 61.33vw; 
 	text-align: center;
@@ -40,7 +37,7 @@
 
 .grid .poster {
 	position: absolute;  
-    width: 100%;
+  width: 100%;
 	height: 100%; 
 	background-color: #000;
   opacity:0.55;

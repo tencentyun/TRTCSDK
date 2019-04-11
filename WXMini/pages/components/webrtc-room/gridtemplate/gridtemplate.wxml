@@ -2,7 +2,8 @@
     <slot name="grid"></slot>
     <view class='grid videoview'>
         <view class="pusher-box">
-            <live-pusher id="rtcpusher" autopush mode="RTC" url="{{pushURL}}" aspect="{{aspect}}" min-bitrate="{{minBitrate}}" max-bitrate="{{maxBitrate}}" audio-quality="high" beauty="{{beauty}}" muted="{{muted}}" waiting-image="{{waitingImg}}" background-mute="{{true}}" debug="{{debug}}" bindstatechange="onPush" binderror="onError"></live-pusher>
+            <live-pusher id="rtcpusher" autopush mode="RTC" url="{{pushURL}}" aspect="{{aspect}}" min-bitrate="{{minBitrate}}" max-bitrate="{{maxBitrate}}" audio-quality="high" beauty="{{beauty}}" muted="{{muted}}" waiting-image="{{waitingImg}}" background-mute="{{true}}" debug="{{debug}}" bindstatechange="onPush" binderror="onError">
+            </live-pusher>
         </view>
         <view class="player-box" wx:for="{{members}}" wx:key="userID">
             <view class='poster'>
