@@ -735,8 +735,8 @@ static NSString * const VideoIcon[2] = {@"main_tool_video_on", @"main_tool_video
     // 更新混流信息
     TRTCTranscodingConfig *config = [[TRTCTranscodingConfig alloc] init];
     config.mode = TRTCTranscodingConfigMode_Manual;
-    config.appId = 1252463788;
-    config.bizId = 3891;
+    config.appId = _currentUserParam.sdkAppId;
+    config.bizId = 0; // 请从"实时音视频"控制台的帐号信息中获取
     config.videoWidth = localInfo.width;
     config.videoHeight = localInfo.height;
     config.videoBitrate = localInfo.videoBitrate;
