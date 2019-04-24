@@ -32,6 +32,7 @@ import java.lang.ref.WeakReference;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 
 
@@ -66,13 +67,16 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
 
     private HashSet<String> mRoomMembers = new HashSet<>();
 
-    private boolean mEnableCustomAudioCapture = false;
-
     private boolean mEnableCustomVideoCapture;
     private TestSendCustomVideoData mCustomCapture;
     private TestRenderVideoFrame mCustomRender;
     private String mVideoFile;
-    private int mSdkAppId = -1;
+
+    private int              mBeautyLevel = 5;
+    private int              mWhiteningLevel = 3;
+    private int              mRuddyLevel = 2;
+    private int              mBeautyStyle = TRTCCloudDef.TRTC_BEAUTY_STYLE_SMOOTH;
+    private int              mSdkAppId = -1;
     @Override
     protected void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,7 +93,6 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
         String selfUserId   = intent.getStringExtra("userId");
         String userSig      = intent.getStringExtra("userSig");
         mEnableCustomVideoCapture = intent.getBooleanExtra("customVideoCapture", false);
-        mEnableCustomAudioCapture = intent.getBooleanExtra("customAudioCapture", false);
 
         if (mEnableCustomVideoCapture) {
             mVideoFile = intent.getStringExtra("videoFile");
@@ -122,6 +125,7 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
         //销毁 trtc 实例
         TRTCCloud.destroySharedInstance();
         trtcCloud = null;
+
     }
 
     @Override
@@ -172,6 +176,7 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
                 exitRoom();
             }
         });
+
     }
 
     private LinearLayout initClickableLayout(int resId) {
@@ -208,7 +213,7 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
         smallParam.videoResolution = TRTCCloudDef.TRTC_VIDEO_RESOLUTION_160_90;
         smallParam.videoFps = settingDlg.getVideoFps();
         smallParam.videoBitrate = 100;
-        smallParam.videoResolutionMode = TRTCCloudDef.TRTC_VIDEO_RESOLUTION_MODE_PORTRAIT;
+        smallParam.videoResolutionMode = settingDlg.isVideoVertical() ? TRTCCloudDef.TRTC_VIDEO_RESOLUTION_MODE_PORTRAIT : TRTCCloudDef.TRTC_VIDEO_RESOLUTION_MODE_LANDSCAPE;
         trtcCloud.enableEncSmallVideoStream(settingDlg.enableSmall, smallParam);
 
         trtcCloud.setPriorRemoteVideoStreamType(settingDlg.priorSmall?TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SMALL:TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG);
@@ -221,37 +226,13 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
         // 预览前配置默认参数
         setTRTCCloudParam();
 
-        TXCloudVideoView localVideoView = mVideoViewLayout.getCloudVideoViewByUseId(trtcParams.userId);;
-        localVideoView.setUserId(trtcParams.userId);
-        localVideoView.setVisibility(View.VISIBLE);
-
         // 开启视频采集预览
-        // 设置 TRTC SDK 的状态
-        trtcCloud.enableCustomVideoCapture(mEnableCustomVideoCapture);
-        if (mEnableCustomVideoCapture) {
-            //启动本地视频文件采集
-            if (mCustomCapture != null) {
-                mCustomCapture.start(mVideoFile);
-            }
-
-            // 设置 TRTC SDK 的状态为本地自定义渲染，视频格式为纹理
-            trtcCloud.setLocalVideoRenderListener(TRTCCloudDef.TRTC_VIDEO_PIXEL_FORMAT_Texture_2D, TRTCCloudDef.TRTC_VIDEO_BUFFER_TYPE_TEXTURE, (TRTCCloudListener.TRTCVideoRenderListener)mCustomRender);
-
-            //启动本地自定义渲染
-            if (mCustomRender != null) {
-                TextureView textureView = new TextureView(this);
-                localVideoView.addVideoView(textureView);
-                mCustomRender.start(textureView);
-            }
-        } else {
-            //启动SDK摄像头采集和渲染
-            trtcCloud.startLocalPreview(moreDlg.isCameraFront(), localVideoView);
-        }
+        startLocalVideo(true);
 
         trtcCloud.setBeautyStyle(TRTCCloudDef.TRTC_BEAUTY_STYLE_SMOOTH, 5, 5, 5);
 
         if (moreDlg.isEnableAudioCapture()) {
-            enableCustomAudioCapture();
+//            enableCustomAudioCapture();
             trtcCloud.startLocalAudio();
         }
 
@@ -264,6 +245,10 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
         enableGSensor(moreDlg.isEnableGSensorMode());
 
         enableAudioVolumeEvaluation(moreDlg.isAudioVolumeEvaluation());
+
+        enableVideoEncMirror(moreDlg.isRemoteVideoMirror());
+
+        setLocalViewMirrorMode(moreDlg.getLocalVideoMirror());
 
         mRoomMembers.clear();
 
@@ -361,6 +346,7 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
      * 点击打开仪表盘浮层，仪表盘浮层是SDK中覆盖在视频画面上的一系列数值状态
      */
     private void onChangeLogStatus() {
+
         iDebugLevel = (iDebugLevel + 1) % 3;
         ivLog.setImageResource((0 == iDebugLevel) ? R.mipmap.log2 : R.mipmap.log);
 
@@ -394,9 +380,11 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
     static class TRTCCloudListenerImpl extends TRTCCloudListener implements TRTCCloudListener.TRTCVideoRenderListener {
 
         private WeakReference<TRTCMainActivity> mContext;
+        private HashMap<String,TestRenderVideoFrame> mCustomRender;
         public TRTCCloudListenerImpl(TRTCMainActivity activity) {
             super();
             mContext = new WeakReference<>(activity);
+            mCustomRender = new HashMap<>(10);
         }
 
         /**
@@ -460,7 +448,14 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
                     renderView.setVisibility(View.VISIBLE);
                     activity.trtcCloud.showDebugView(activity.iDebugLevel);
                     activity.trtcCloud.setDebugViewMargin(userId, new TRTCCloud.TRTCViewMargin(0.0f, 0.0f, 0.1f, 0.0f));
-//                    activity.trtcCloud.setRemoteVideoRenderListener(userId, TRTCCloudDef.TRTC_VIDEO_PIXEL_FORMAT_I420, TRTCCloudDef.TRTC_VIDEO_BUFFER_TYPE_BYTE_ARRAY, this);
+                    if (activity.mEnableCustomVideoCapture) {
+                        TestRenderVideoFrame customRender = new TestRenderVideoFrame(activity);
+                        mCustomRender.put(userId, customRender);
+                        activity.trtcCloud.setRemoteVideoRenderListener(userId, TRTCCloudDef.TRTC_VIDEO_PIXEL_FORMAT_I420, TRTCCloudDef.TRTC_VIDEO_BUFFER_TYPE_BYTE_ARRAY, customRender);
+                        TextureView textureView = new TextureView(activity);
+                        renderView.addVideoView(textureView);
+                        customRender.start(textureView);
+                    }
                 }
             }
         }
@@ -480,7 +475,11 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
                 activity.mVideoViewLayout.onMemberLeave(userId+TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SUB);
                 activity.mRoomMembers.remove(userId);
                 activity.updateCloudMixtureParams();
-
+                TestRenderVideoFrame customRender = mCustomRender.get(userId);
+                if (customRender != null) {
+                    customRender.stop();
+                    mCustomRender.remove(userId);
+                }
                 //跨房连麦
                 if (activity.beingLinkMic) {
                     if (userId.equalsIgnoreCase(activity.mUserIdBeingLink)) {
@@ -501,7 +500,11 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
                     if (renderView != null) {
                         // 启动远程画面的解码和显示逻辑，FillMode 可以设置是否显示黑边
                         activity.trtcCloud.setRemoteViewFillMode(userId, TRTCCloudDef.TRTC_VIDEO_RENDER_MODE_FIT);
-                        activity.trtcCloud.startRemoteView(userId, renderView);
+                        if (activity.mEnableCustomVideoCapture) {
+                            activity.trtcCloud.startRemoteView(userId, null);
+                        } else {
+                            activity.trtcCloud.startRemoteView(userId, renderView);
+                        }
                         activity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -695,13 +698,13 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
     }
 
     @Override
-    public void onMirrorLocalVideo(boolean bMirror){
-
+    public void onMirrorLocalVideo(int localViewMirror){
+        setLocalViewMirrorMode(localViewMirror);
     }
 
     @Override
     public void onMirrorRemoteVideo(boolean bMirror){
-
+        enableVideoEncMirror(bMirror);
     }
 
     @Override
@@ -785,6 +788,14 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
         }
     }
 
+    private void enableVideoEncMirror(boolean bMirror) {
+        trtcCloud.setVideoEncoderMirror(bMirror);
+    }
+
+    private void setLocalViewMirrorMode(int mirrorMode) {
+        trtcCloud.setLocalViewMirror(mirrorMode);
+    }
+
     private void enableGSensor(boolean bEnable) {
         if (bEnable) {
             trtcCloud.setGSensorMode(TRTCCloudDef.TRTC_GSENSOR_MODE_UIFIXLAYOUT);
@@ -796,16 +807,12 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
 
     private void enableAudioVolumeEvaluation(boolean bEnable) {
         if (bEnable) {
-            trtcCloud.enableAudioVolumeEvaluation(200, 9);
+            trtcCloud.enableAudioVolumeEvaluation(200);
         }
         else {
-            trtcCloud.enableAudioVolumeEvaluation(0, 0);
+            trtcCloud.enableAudioVolumeEvaluation(0);
             mVideoViewLayout.hideAudioVolumeProgressBar();
         }
-    }
-
-    private void enableCustomAudioCapture() {
-        trtcCloud.enableCustomAudioCapture(mEnableCustomAudioCapture);
     }
 
     private void updateCloudMixtureParams() {
@@ -902,8 +909,12 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
         }
 
         TRTCCloudDef.TRTCTranscodingConfig config = new TRTCCloudDef.TRTCTranscodingConfig();
-        config.appId = mSdkAppId;
-        config.bizId = 3891;
+        config.appId = -1;  // 请从"实时音视频"控制台的帐号信息中获取
+        config.bizId = -1;  // 请进入 "实时音视频"控制台 https://console.cloud.tencent.com/rav，点击对应的应用，然后进入“帐号信息”菜单中，复制“直播信息”模块中的"bizid"
+        config.videoWidth = videoWidth;
+        config.videoHeight = videoHeight;
+        config.videoGOP = 3;
+
         config.videoWidth = videoWidth;
         config.videoHeight = videoHeight;
         config.videoGOP = 3;
@@ -1041,15 +1052,38 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
     }
 
     private void startLocalVideo(boolean enable) {
-        if(mEnableCustomVideoCapture) return;
         TXCloudVideoView localVideoView = mVideoViewLayout.getCloudVideoViewByUseId(trtcParams.userId);;
         localVideoView.setUserId(trtcParams.userId);
         localVideoView.setVisibility(View.VISIBLE);
         if (enable) {
-            //启动SDK摄像头采集和渲染
-            trtcCloud.startLocalPreview(moreDlg.isCameraFront(), localVideoView);
+            // 设置 TRTC SDK 的状态
+            trtcCloud.enableCustomVideoCapture(mEnableCustomVideoCapture);
+            if (mEnableCustomVideoCapture) {
+                //启动本地视频文件采集
+                if (mCustomCapture != null) {
+                    mCustomCapture.start(mVideoFile);
+                }
+
+                // 设置 TRTC SDK 的状态为本地自定义渲染，视频格式为纹理
+                trtcCloud.setLocalVideoRenderListener(TRTCCloudDef.TRTC_VIDEO_PIXEL_FORMAT_Texture_2D, TRTCCloudDef.TRTC_VIDEO_BUFFER_TYPE_TEXTURE, (TRTCCloudListener.TRTCVideoRenderListener)mCustomRender);
+
+                //启动本地自定义渲染
+                if (mCustomRender != null) {
+                    TextureView textureView = new TextureView(this);
+                    localVideoView.addVideoView(textureView);
+                    mCustomRender.start(textureView);
+                }
+            } else {
+                //启动SDK摄像头采集和渲染
+                trtcCloud.startLocalPreview(moreDlg.isCameraFront(), localVideoView);
+            }
         } else {
-            trtcCloud.stopLocalPreview();
+            if (mEnableCustomVideoCapture) {
+                if (mCustomCapture != null) mCustomCapture.stop();
+                if (mCustomRender != null)  mCustomRender.stop();
+            } else {
+                trtcCloud.stopLocalPreview();
+            }
         }
 
     }

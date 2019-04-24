@@ -109,6 +109,7 @@ public class GLThread {
                     initSurfaceTexture();
 
                     mGLFilter = new GLTextureOESFilter();
+                    mGLFilter.setOutputResolution(mInputWidth, mInputHeight);
                 }
 
                 @Override
@@ -120,7 +121,7 @@ public class GLThread {
 
                     if (mGLFilter != null) {
                         mGLFilter.setMatrix(mSTMatrix);
-                        int textureId = mGLFilter.drawToTexture(mTextureID[0], mInputWidth, mInputHeight);
+                        int textureId = mGLFilter.drawToTexture(mTextureID[0]);
 
                         IGLSurfaceTextureListener listener = mListener;
                         if (listener != null) {

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Window>
+	<HorizontalLayout bkcolor="#FF050505">
+	   <!--左侧视频区域-->
+	   <VerticalLayout bkcolor="#FF000000" minwidth="600">
+		  <!-- video render area-->
+		  <!-- lecture video render area-->
+		  <VerticalLayout name="lecture_layout_videoview_container" bordersize="1" borderround="5,5">
+		 	<!-- top remote video render area-->
+		 	<HorizontalLayout name="view_sublayout_container1" inset="2,6,2,6" bkcolor="#FF101010" height="138" childpadding="4" bordersize="1" borderround="5,5" visible="false">
+				<VerticalLayout/>
+				<!-- top video render window 2-->
+				<VideoCanvasContainer name="lecture_view2" width="230" bkcolor="#FF000000"/>
+				<!-- top video render window 3-->
+				<VideoCanvasContainer name="lecture_view3" width="230" bkcolor="#FF000000"/>
+				<!-- top video render window 4-->
+				<VideoCanvasContainer name="lecture_view4" width="230" bkcolor="#FF000000"/>
+				<!-- top video render window 5-->
+				<VideoCanvasContainer name="lecture_view5" width="230" bkcolor="#FF000000"/>
+				<!-- top video render window 6-->
+				<VideoCanvasContainer name="lecture_view6" width="230" bkcolor="#FF000000"/>
+				<!-- top video render window 7-->
+				<VideoCanvasContainer name="lecture_view7" width="230" bkcolor="#FF000000"/>
+				<!-- top video render window 8-->
+				<VideoCanvasContainer name="lecture_view8" width="230" bkcolor="#FF000000"/>
+				<!-- top video render window 9-->
+				<VideoCanvasContainer name="lecture_view9" width="230" bkcolor="#FF000000"/>
+
+				<VerticalLayout/>
+		 	</HorizontalLayout>
+		 	<!-- top main video render area-->
+		 	<VideoCanvasContainer name="lecture_view1" bkcolor="#FF000000"/>
+		  </VerticalLayout>
+		  <!-- gallery video render area  -->
+		  <VerticalLayout name="gallery_layout_videoview_container" bordersize="1" borderround="5,5" visible="false" childpadding="4">
+			  <!--video render window line 1-->
+			  <HorizontalLayout name="view_sublayout_line1" childpadding="2">
+				<VideoCanvasContainer name="gallery_view1" bkcolor="#FF000000"/>
+				<VideoCanvasContainer name="gallery_view2" bkcolor="#FF000000"/>
+				<VideoCanvasContainer name="gallery_view7" bkcolor="#FF000000"/>
+			  </HorizontalLayout>
+			  <!--video render window line 2-->
+			  <HorizontalLayout name="view_sublayout_line2" childpadding="2" visible="false">
+				<VideoCanvasContainer name="gallery_view3" bkcolor="#FF000000"/>
+				<VideoCanvasContainer name="gallery_view4" bkcolor="#FF000000"/>
+				<VideoCanvasContainer name="gallery_view8" bkcolor="#FF000000"/>
+			  </HorizontalLayout>
+			  <!--video render window line 3-->
+			  <HorizontalLayout name="view_sublayout_line3" childpadding="2" visible="false">
+				<VideoCanvasContainer name="gallery_view5" bkcolor="#FF000000"/>
+				<VideoCanvasContainer name="gallery_view6" bkcolor="#FF000000"/>
+				<VideoCanvasContainer name="gallery_view9" bkcolor="#FF000000"/>
+			  </HorizontalLayout>
+		  </VerticalLayout>
+		  <!--右上角 布局切换-->
+		  <HorizontalLayout name="layout_top_tool_area" visible="false" childvalign="center" childalign="true">
+			<Button name="btn_change_view_mode" text="画廊视图" textcolor="#FFFFFFFF" hottextcolor="#FFA0A0A0" pushedtextcolor="#FF707070" font="8" height="20" width="88" textpadding="0,0,0,0" align="right" padding="0,0,0,0" foreimage="dest='4,4,20,19' source='0,0,16,18' res='videoview/gallery.png'"/>
+		  </HorizontalLayout>
+		  <!--连麦 view-->
+		  <HorizontalLayout name="layout_container_pkview" bkcolor="#B0101010" height="36" inset="6,6,6,6" bordercolor="80404040" bordersize="2" borderround="4,4" visible="false">
+		  	<VerticalLayout>
+				<HorizontalLayout childpadding="10" height="18" inset="0,0,0,0">
+					<Label name="" text="   跨房通话" font="1" height="18" width="100" textcolor="#FFFFFFFF" showhtml="true"/>
+					<HorizontalLayout/>
+					<Button name="btn_close_pkview" width="16" height="16" bkclolor="#FFFF0000" normalimage="bottom/close_hover.png" hotimage="bottom/close_hover.png" pushedimage="bottom/close.png"/>
+				</HorizontalLayout>
+				<HorizontalLayout height="4"/>
+				<HorizontalLayout height="15">
+					<Label name="" text="       与正在其他房间的用户进行通话" align="left" font="7" height="16" textcolor="#FFA0A0A0" showhtml="true"/>
+				</HorizontalLayout>
+				<HorizontalLayout height="16"/>
+				<VerticalLayout childpadding="6" childalign="center" inset="5,0,5,0">
+					<Edit name="edit_pk_roomid" text="" padding="10,0,10,0" height="36" font="9" align="center" numberonly="true" textpadding="20,0,20,0" tipvalue="目标房间号" tipvaluecolor="#FF808080" tipvaluealign="center" normalimage="res='login/edit_normal.png' corner='6,6,6,6'" focusedimage="res='login/edit_focus.png' corner='6,6,6,6'"/>
+					<HorizontalLayout height="6"/>
+					<Edit name="edit_pk_userid" text="" padding="10,0,10,0" wordbreak="true" height="36" font="9" align="center" numberonly="true" textpadding="20,0,20,0" tipvalue="目标用户号" tipvaluecolor="#FF808080" tipvaluealign="center" normalimage="res='login/edit_normal.png' corner='6,6,6,6'" focusedimage="res='login/edit_focus.png' corner='6,6,6,6'"/>
+					<Label name="label_pkview_status" text="" font="7" height="16" align="center" valign="center" textcolor="#FFFF7256" showhtml="true"/>
+					<HorizontalLayout height="2"/>
+					<HorizontalLayout childalign="center" childpadding="10" inset="50,0,0,0" >
+						<Button name="btn_pkview_start" text="跨房通话" textcolor="#FFFFFFFF" textpadding="6,0,6,0" padding="0,0,0,0" width="96" height="30" normalimage="res='login/btn_normal.png' corner='2,2,2,2'" hotimage="res='login/btn_hover.png' corner='2,2,2,2'" pushedimage="res='login/btn_hover.png' corner='2,2,2,2'"/>
+						<Button name="btn_pkview_stop"  text="结束连麦" textcolor="#FFFFFFFF" enabled="false" textpadding="6,0,6,0" padding="0,0,0,0" width="96" height="30" normalimage="res='login/btn_normal.png' corner='2,2,2,2'" hotimage="res='login/btn_hover.png' corner='2,2,2,2'" pushedimage="res='login/btn_hover.png' corner='2,2,2,2'"/>
+					</HorizontalLayout>
+				</VerticalLayout>
+			</VerticalLayout>
+		  </HorizontalLayout>
+		  <!--bottom 工具条-->
+		  <VerticalLayout name="layout_bottom_tool_area" float="true" floatalign="bottom" pos="1,1,0,54" bkimage="res='bottom/bg.png' corner='4,4,4,4'" bordercolor="FF101010" bordersize="1" borderround="2,2">
+		 	 <!--float="true" pos="0,0,0,0" floatalign="bottom" width="980"-->
+		 	 <HorizontalLayout>
+		 		 <HorizontalLayout name="btn_tool_left" width="450" inset="0,1,0,1">
+		 			 <Button name="btn_open_audio" text="静音" textcolor="#FFFFFFFF" hotbkcolor="#FF404040" pushedbkcolor="#FF505050" pushedtextcolor="#FFA0A0A0" font="4" height="54" width="74" textpadding="0,0,0,4" align="center" valign="bottom" foreimage="dest='24,4,50,30' source='0,0,26,26' res='bottom/audio_start.png'"/>
+		 			 <Button name="btn_audio_device" hotbkcolor="#FF404040" pushedbkcolor="#FF505050" height="54" width="20" align="center" valign="bottom" foreimage="dest='3,23,17,31' source='0,0,14,8' res='bottom/device_ico.png'"/>
+		 			 <Button name="btn_open_video" text="停止视频" textcolor="#FFFFFFFF" hotbkcolor="#FF404040" pushedbkcolor="#FF505050" pushedtextcolor="#FFA0A0A0" font="4" height="54" width="74" textpadding="0,0,0,4" align="center" valign="bottom" foreimage="dest='24,4,50,30' source='0,0,26,26' res='bottom/camera_start.png'"/>
+		 			 <Button name="btn_video_device" hotbkcolor="#FF404040" pushedbkcolor="#FF505050" height="54" width="20" align="center" valign="bottom" foreimage="dest='3,23,17,31' source='0,0,14,8' res='bottom/device_ico.png'"/>
+					 <Button name="btn_open_screen" text="开始分享" textcolor="#FFFFFFFF" hotbkcolor="#FF404040" pushedbkcolor="#FF505050" pushedtextcolor="#FFA0A0A0" font="4" height="54" width="74" textpadding="0,0,0,4" align="center" valign="bottom" foreimage="dest='24,4,50,30' source='0,0,26,26' res='bottom/screen_share_normal.png'"/>
+					 <HorizontalLayout width="2"/>
+					 <!--<Button name="btn_open_pkview" text="" height="52" width="52" hotbkcolor="#FF404040" pushedbkcolor="#FF505050" foreimage="res='bottom/pk_close.png'"/>-->
+					 <Button name="btn_open_pkview" text="跨房通话" textcolor="#FFFFFFFF" hotbkcolor="#FF404040" pushedbkcolor="#FF505050" pushedtextcolor="#FFA0A0A0" font="4" height="54" width="74" textpadding="0,0,0,4" align="center" valign="bottom" foreimage="dest='24,4,50,30' source='0,0,26,26' res='bottom/pk_link.png'"/>
+					 <Button name="btn_open_log" text="仪表盘" textcolor="#FFFFFFFF" hotbkcolor="#FF404040" pushedbkcolor="#FF505050" pushedtextcolor="#FFA0A0A0" font="4" height="54" width="74" textpadding="0,0,0,4" align="center" valign="bottom" foreimage="dest='24,4,50,30' source='0,0,26,26' res='bottom/daboard.png'"/>
+					 <!-- <Button name="btn_play" text="开始播片" textcolor="#FFFFFFFF" hotbkcolor="#FF404040" pushedbkcolor="#FF505050" pushedtextcolor="#FFA0A0A0" font="4" height="54" width="74" textpadding="0,0,0,4" align="center" valign="bottom" foreimage="dest='22,5,45,28' res='bottom/play_file.png'"/> -->
+		 		 </HorizontalLayout>
+		 		 <HorizontalLayout />
+		 		 <HorizontalLayout name="btn_tool_right" width="74" inset="0,1,0,1">
+		 			 <!--
+		 			 <Button name="btn_show_member_list" text="参与者" textcolor="#FF000000" style="btn_style" height="54" width="74" textpadding="0,0,0,5" align="center" valign="bottom" foreimage="dest='29,7,45,23' res='common/icon.png'" />
+		 			 <Button name="btn_show_im" text="聊天" textcolor="#FF000000" style="btn_style" height="54" width="74" textpadding="0,0,0,5" align="center" valign="bottom" foreimage="dest='29,7,45,23' res='common/icon.png'" />
+		 			 normalimage="file='login/btn_login.png' corner='6,6,6,6' source='0,0,108,26'" hotforeimage="file='login/btn_login.png' corner='6,6,6,6' source='108,0,108,26'" pushedimage="file='login/btn_login.png' corner='6,6,6,6' source='216,0,108,26'"
+					 -->
+		 			 <!--<Button name="btn_open_log" text="仪表盘" font="5" textcolor="#FFEE6A50" pushedtextcolor="#FFB22222" hotbkcolor="#FF404040" pushedbkcolor="#FF505050" width="60" height="54" align="center" valign="center"/>
+		 			 <Button name="btn_open_log" text="" height="52" width="52" hotbkcolor="#FF404040" pushedbkcolor="#FF505050" foreimage="res='bottom/logo_close.png'"/>
+					 <Button name="btn_quit_room" text="退出房间" font="5" textcolor="#FFEE6A50" pushedtextcolor="#FFB22222" hotbkcolor="#FF404040" pushedbkcolor="#FF505050" width="84" height="54" align="center" valign="center"/>
+					 <HorizontalLayout width="2"/>-->
+					 <Button name="btn_quit_room" text="退出房间" textcolor="#FFFFFFFF" hotbkcolor="#FF404040" pushedbkcolor="#FF505050" pushedtextcolor="#FFA0A0A0" font="4" height="54" width="74" textpadding="0,0,0,4" align="center" valign="bottom" foreimage="dest='24,4,50,30' source='0,0,30,30' res='bottom/quit_room.png'"/>
+		 		 </HorizontalLayout>
+		 	 </HorizontalLayout>
+		  </VerticalLayout>
+	   </VerticalLayout>
+	   <!--右侧IM\Member List区域-->
+	   <HorizontalLayout name="layout_im_meber_area" bkcolor="#FFFFFFFF" visible="false" sepimm="true" sepwidth="-10" width="320" minwidth="320" bordersize="2" borderround="5,5">
+       </HorizontalLayout>
+	</HorizontalLayout>
+</Window>

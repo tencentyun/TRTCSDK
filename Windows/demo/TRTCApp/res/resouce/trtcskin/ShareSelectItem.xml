@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Window>
+	<VerticalLayout padding="0,2,0,0" bordersize="1" bordercolor="0xAABBBBBB">
+		<ImageCanvas width="120" height="70" padding="15,5,0,0"/>
+		<Control width="120" height="70" padding="15,5,0,0" bkimage="shareWhiteBoard.png"/>
+		
+		<HorizontalLayout>
+			<Control width="20"/>
+			<Label text="这是窗口标题" align="center" endellipsis="true"/>
+			<Control width="20"/>
+		</HorizontalLayout>
+		
+		<Option float="true" pos="0,0,150,100" width="150" height="100" bkcolor="0x00000000"/>
+	</VerticalLayout>
+</Window>

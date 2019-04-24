@@ -10,7 +10,7 @@ import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
 /**
- * 将外部纹理转为普通纹理。需要在OpenGL环境中使用
+ * 将外部纹理转为普通纹理，需要在OpenGL环境中使用
  */
 public class GLTextureOESFilter {
 
@@ -81,8 +81,7 @@ public class GLTextureOESFilter {
         mSTMatrix = mtx;
     }
 
-    public int drawToTexture(int textureId, int width, int height) {
-        setOutputResolution(width, height);
+    public int drawToTexture(int textureId) {
 
         if (mFrameBufferID == INVALID_TEXTURE_ID) {
             Log.d(TAG, "invalid frame buffer id");
@@ -138,7 +137,7 @@ public class GLTextureOESFilter {
         }
     }
 
-    private void setOutputResolution(int width, int height) {
+    public void setOutputResolution(int width, int height) {
         if (width == mOutputWidth && height == mOutputHeight) {
             return;
         }
@@ -147,7 +146,7 @@ public class GLTextureOESFilter {
         mOutputHeight = height;
 
         if (width > height) {
-            Matrix.orthoM(mProjectionMatrix, 0, -1.f, 1.f, -1f, 1f, -1f, 1f);
+            Matrix.orthoM(mProjectionMatrix, 0, - 1.f, 1.f, -1f, 1f, -1f, 1f);
         } else {
             Matrix.orthoM(mProjectionMatrix, 0, -1f, 1f, -1.f, 1.f, -1f, 1f);
         }
@@ -184,7 +183,9 @@ public class GLTextureOESFilter {
 
         Matrix.setIdentityM(mMVPMatrix, 0);
         Matrix.setIdentityM(mModeMatrix, 0);
+        Matrix.scaleM(mModeMatrix, 0, -1, 1, 1);
         Matrix.rotateM(mModeMatrix, 0, 180, 0, 0, -1);
+
         Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mModeMatrix, 0);
 
         GLES20.glUniformMatrix4fv(muMVPMatrixHandle, 1, false, mMVPMatrix, 0);

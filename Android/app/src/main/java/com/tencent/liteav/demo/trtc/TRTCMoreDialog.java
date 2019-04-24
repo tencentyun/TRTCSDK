@@ -12,6 +12,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.tencent.liteav.demo.R;
+import com.tencent.trtc.TRTCCloudDef;
 
 import java.lang.ref.WeakReference;
 
@@ -31,18 +32,16 @@ public class TRTCMoreDialog extends Dialog implements View.OnClickListener {
     private final static String KEY_AUDIO_VOLUME_EVALUATION             = "KEY_ENABLE_VOLUME_EVALUATION";
     private final static String KEY_ENABLE_CLOUD_MIXTURE                = "KEY_ENABLE_CLOUD_MIXTURE";
 
-
     private boolean mCameraFront                                        = true;
     private boolean mVideoFillMode                                      = true;
     private boolean mVideoVertical                                      = true;
     private boolean mEnableAudioCapture                                 = true;
     private boolean mAudioHandFreeMode                                  = true;
-    private boolean mLocalVideoMirror                                   = true;
-    private boolean mRemoteVideoMirror                                  = true;
     private boolean mEnableGSensorMode                                  = false;
     private boolean mAudioVolumeEvaluation                              = true;
     private boolean mEnableCloudMixture                                 = true;
-
+    private boolean mEnableVideoEncMirror                               = false;
+    private int     mLocalVideoViewMirror                               = 0;//TRTCCloudDef.TRTC_VIDEO_MIRROR_TYPE_AUTO;
 
     private RadioButton mRbCameraFront;
     private RadioButton mRbCameraBack;
@@ -50,11 +49,13 @@ public class TRTCMoreDialog extends Dialog implements View.OnClickListener {
     private RadioButton mRbVideoAdjust;
     private RadioButton mRbVideoVertical;
     private RadioButton mRbVideoHorizontal;
+    private RadioButton mRbLocalVideoMirrorAuto;
+    private RadioButton mRbLocalVideoMirrorEnable;
+    private RadioButton mRbLocalVideoMirrorDisable;
 
     private CheckBox    mCbEnableAudio;
     private CheckBox    mCbAudioHandFree;
-    private CheckBox    mCbLocalVideoMirror;
-    private CheckBox    mCbRemoteVideoMirror;
+    private CheckBox    mCbVideoEncMirror;
     private CheckBox    mCbEnableGSensor;
     private CheckBox    mCbAudioVolumeEvaluation;
     private CheckBox    mCbEnableCloudMixture;
@@ -66,7 +67,7 @@ public class TRTCMoreDialog extends Dialog implements View.OnClickListener {
         void onVideoRotationChange(boolean bVertical);
         void onEnableAudioCapture(boolean bEnable);
         void onEnableAudioHandFree(boolean bEnable);
-        void onMirrorLocalVideo(boolean bMirror);
+        void onMirrorLocalVideo(int mirrorType);
         void onMirrorRemoteVideo(boolean bMirror);
         void onEnableGSensor(boolean bEnable);
         void onEnableAudioVolumeEvaluation(boolean bEnable);
@@ -99,11 +100,13 @@ public class TRTCMoreDialog extends Dialog implements View.OnClickListener {
         mRbVideoAdjust           = (RadioButton)findViewById(R.id.mode_adjust);
         mRbVideoVertical         = (RadioButton)findViewById(R.id.mode_vertical);
         mRbVideoHorizontal       = (RadioButton)findViewById(R.id.mode_horizontal);
+        mRbLocalVideoMirrorAuto  = (RadioButton)findViewById(R.id.mirror_auto);
+        mRbLocalVideoMirrorEnable  = (RadioButton)findViewById(R.id.mirror_enable);
+        mRbLocalVideoMirrorDisable = (RadioButton)findViewById(R.id.mirror_disable);
 
         mCbEnableAudio           = (CheckBox)findViewById(R.id.enable_audio);
         mCbAudioHandFree         = (CheckBox)findViewById(R.id.audio_handfree);
-        mCbLocalVideoMirror      = (CheckBox)findViewById(R.id.mirror_local_video);
-        mCbRemoteVideoMirror     = (CheckBox)findViewById(R.id.mirror_remote_video);
+        mCbVideoEncMirror        = (CheckBox)findViewById(R.id.video_enc_mirror);
         mCbEnableGSensor         = (CheckBox)findViewById(R.id.enable_gsensor);
         mCbAudioVolumeEvaluation = (CheckBox)findViewById(R.id.enable_audio_volume_evaluation);
         mCbEnableCloudMixture    = (CheckBox)findViewById(R.id.enable_cloud_mixture);
@@ -114,13 +117,15 @@ public class TRTCMoreDialog extends Dialog implements View.OnClickListener {
         mRbVideoAdjust.setChecked(!mVideoFillMode);
         mRbVideoVertical.setChecked(mVideoVertical);
         mRbVideoHorizontal.setChecked(!mVideoVertical);
+//        mRbLocalVideoMirrorAuto.setChecked(mLocalVideoViewMirror == TRTCCloudDef.TRTC_VIDEO_MIRROR_TYPE_AUTO);
+//        mRbLocalVideoMirrorEnable.setChecked(mLocalVideoViewMirror == TRTCCloudDef.TRTC_VIDEO_MIRROR_TYPE_ENABLE);
+//        mRbLocalVideoMirrorDisable.setChecked(mLocalVideoViewMirror == TRTCCloudDef.TRTC_VIDEO_MIRROR_TYPE_DISABLE);
         mCbEnableAudio.setChecked(mEnableAudioCapture);
         mCbAudioHandFree.setChecked(mAudioHandFreeMode);
-        mCbLocalVideoMirror.setChecked(mLocalVideoMirror);
-        mCbRemoteVideoMirror.setChecked(mRemoteVideoMirror);
         mCbEnableGSensor.setChecked(mEnableGSensorMode);
         mCbAudioVolumeEvaluation.setChecked(mAudioVolumeEvaluation);
         mCbEnableCloudMixture.setChecked(mEnableCloudMixture);
+        mCbVideoEncMirror.setChecked(mEnableVideoEncMirror);
 
         mRbCameraFront.setOnClickListener(this);
         mRbCameraBack.setOnClickListener(this);
@@ -128,10 +133,13 @@ public class TRTCMoreDialog extends Dialog implements View.OnClickListener {
         mRbVideoAdjust.setOnClickListener(this);
         mRbVideoVertical.setOnClickListener(this);
         mRbVideoHorizontal.setOnClickListener(this);
+        mRbLocalVideoMirrorAuto.setOnClickListener(this);
+        mRbLocalVideoMirrorEnable.setOnClickListener(this);
+        mRbLocalVideoMirrorDisable.setOnClickListener(this);
         mCbEnableAudio.setOnClickListener(this);
         mCbAudioHandFree.setOnClickListener(this);
-        mCbLocalVideoMirror.setOnClickListener(this);
-        mCbRemoteVideoMirror.setOnClickListener(this);
+        mCbVideoEncMirror.setOnClickListener(this);
+        mCbVideoEncMirror.setOnClickListener(this);
         mCbEnableGSensor.setOnClickListener(this);
         mCbAudioVolumeEvaluation.setOnClickListener(this);
         mCbEnableCloudMixture.setOnClickListener(this);
@@ -160,12 +168,12 @@ public class TRTCMoreDialog extends Dialog implements View.OnClickListener {
         return mAudioHandFreeMode;
     }
 
-    public boolean isLocalVideoMirror() {
-        return mLocalVideoMirror;
+    public int getLocalVideoMirror() {
+        return mLocalVideoViewMirror;
     }
 
     public boolean isRemoteVideoMirror() {
-        return mRemoteVideoMirror;
+        return mEnableVideoEncMirror;
     }
 
     public boolean isEnableGSensorMode() {
@@ -189,8 +197,8 @@ public class TRTCMoreDialog extends Dialog implements View.OnClickListener {
             mVideoVertical          = shareInfo.getBoolean(KEY_VIDEO_VERTICAL,          mVideoVertical);
             mEnableAudioCapture     = shareInfo.getBoolean(KEY_ENABLE_AUDIO_CAPTURE,    mEnableAudioCapture);
             mAudioHandFreeMode      = shareInfo.getBoolean(KEY_AUDIO_HAND_FREE_MODE,    mAudioHandFreeMode);
-            mLocalVideoMirror       = shareInfo.getBoolean(KEY_LOCAL_VIDEO_MIRROR,      mLocalVideoMirror);
-            mRemoteVideoMirror      = shareInfo.getBoolean(KEY_REMOTE_VIDEO_MIRROR,     mRemoteVideoMirror);
+            mLocalVideoViewMirror   = shareInfo.getInt(KEY_LOCAL_VIDEO_MIRROR,          mLocalVideoViewMirror);
+            mEnableVideoEncMirror   = shareInfo.getBoolean(KEY_REMOTE_VIDEO_MIRROR,     mEnableVideoEncMirror);
             mEnableGSensorMode      = shareInfo.getBoolean(KEY_ENABLE_GSENSOR_MODE,     mEnableGSensorMode);
             mAudioVolumeEvaluation  = shareInfo.getBoolean(KEY_AUDIO_VOLUME_EVALUATION, mAudioVolumeEvaluation);
             mEnableCloudMixture     = shareInfo.getBoolean(KEY_ENABLE_CLOUD_MIXTURE,    mEnableCloudMixture);
@@ -210,8 +218,8 @@ public class TRTCMoreDialog extends Dialog implements View.OnClickListener {
             editor.putBoolean(KEY_VIDEO_VERTICAL,          mVideoVertical);
             editor.putBoolean(KEY_ENABLE_AUDIO_CAPTURE,    mEnableAudioCapture);
             editor.putBoolean(KEY_AUDIO_HAND_FREE_MODE,    mAudioHandFreeMode);
-            editor.putBoolean(KEY_LOCAL_VIDEO_MIRROR,      mLocalVideoMirror);
-            editor.putBoolean(KEY_REMOTE_VIDEO_MIRROR,     mRemoteVideoMirror);
+            editor.putInt(KEY_LOCAL_VIDEO_MIRROR,          mLocalVideoViewMirror);
+            editor.putBoolean(KEY_REMOTE_VIDEO_MIRROR,     mEnableVideoEncMirror);
             editor.putBoolean(KEY_ENABLE_GSENSOR_MODE,     mEnableGSensorMode);
             editor.putBoolean(KEY_AUDIO_VOLUME_EVALUATION, mAudioVolumeEvaluation);
             editor.putBoolean(KEY_ENABLE_CLOUD_MIXTURE,    mEnableCloudMixture);
@@ -287,24 +295,31 @@ public class TRTCMoreDialog extends Dialog implements View.OnClickListener {
                 }
                 break;
             }
-            case R.id.mirror_local_video:
+            case R.id.mirror_auto:
+            case R.id.mirror_enable:
+            case R.id.mirror_disable:
             {
-                boolean localVideoMirror = mCbLocalVideoMirror.isChecked();
-                if (localVideoMirror != mLocalVideoMirror) {
-                    mLocalVideoMirror = localVideoMirror;
+                int mirrorType = TRTCCloudDef.TRTC_VIDEO_MIRROR_TYPE_AUTO;
+                if (id == R.id.mirror_enable) {
+                    mirrorType = TRTCCloudDef.TRTC_VIDEO_MIRROR_TYPE_ENABLE;
+                } else if (id == R.id.mirror_disable) {
+                    mirrorType = TRTCCloudDef.TRTC_VIDEO_MIRROR_TYPE_DISABLE;
+                }
+                if (mirrorType != mLocalVideoViewMirror) {
+                    mLocalVideoViewMirror = mirrorType;
                     if (listener != null) {
-                        listener.onMirrorLocalVideo(mLocalVideoMirror);
+                        listener.onMirrorLocalVideo(mLocalVideoViewMirror);
                     }
                 }
                 break;
             }
-            case R.id.mirror_remote_video:
+            case R.id.video_enc_mirror:
             {
-                boolean remoteVideoMirror = mCbRemoteVideoMirror.isChecked();
-                if (remoteVideoMirror != mRemoteVideoMirror) {
-                    mRemoteVideoMirror = remoteVideoMirror;
+                boolean remoteVideoMirror = mCbVideoEncMirror.isChecked();
+                if (remoteVideoMirror != mEnableVideoEncMirror) {
+                    mEnableVideoEncMirror = remoteVideoMirror;
                     if (listener != null) {
-                        listener.onMirrorRemoteVideo(mRemoteVideoMirror);
+                        listener.onMirrorRemoteVideo(mEnableVideoEncMirror);
                     }
                 }
                 break;

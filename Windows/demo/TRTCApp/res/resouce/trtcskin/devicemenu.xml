@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window bktrans="true" roundcorner="4,4">
+<Font id="0" name="微软雅黑" size="12" bold="false" />
+<!-- Menu标签的属性要通过Default来定义，为了让下级菜单也能拥有同样的外观 -->
+<Menu bkcolor="#D8303030" itemtextcolor="#FFB0B0B0" itembkcolor="#D8303030" itemselectedtextcolor="#FFB0B0B0" itemselectedbkcolor="D8505050" itemfont="0" itemtextpadding="26,0,10,0" itemdisabledbkcolor="#D8303030">
+</Menu>
+</Window>
