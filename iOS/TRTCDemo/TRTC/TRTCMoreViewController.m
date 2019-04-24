@@ -20,13 +20,16 @@
 
 #define CELL_CAMERA_SWITCH           0
 #define CELL_FILL_MODE               1
-#define CELL_AUDIO_CAPTURE           2
-#define CELL_AUDIO_ROUTE             3
-#define CELL_GSENSOR                 4
-#define CELL_AUDIO_VOLUME            5
-#define CELL_VIDEO_MIXING            6
-#define CELL_SHARE_PLAYURL           7
-#define CELL_PK                      8
+#define CELL_LOCAL_MIRROR            2
+#define CELL_REMOTE_MIRROR           3
+#define CELL_AUDIO_CAPTURE           4
+#define CELL_AUDIO_ROUTE             5
+#define CELL_GSENSOR                 6
+#define CELL_AUDIO_VOLUME            7
+#define CELL_VIDEO_MIXING            8
+#define CELL_SHARE_PLAYURL           9
+#define CELL_PK                      10
+
 
 #define TAG_CAMERA_SWITCH            1000
 #define TAG_FILL_MODE                1001
@@ -37,11 +40,14 @@
 #define TAG_VIDEO_MIXING             1006
 #define TAG_SHARE_PLAYURL            1007
 #define TAG_PK                       1008
+#define TAG_LOCAL_MIRROR             1009
+#define TAG_REMOTE_MIRROR            1010
 
 @interface TRTCMoreViewController ()
 @property (nonatomic, retain) TRTCCloud* trtcEngine;
 @property (nonatomic, copy) NSString* roomId;
 @property (nonatomic, copy) NSString* userId;
+@property (nonatomic, retain) NSMutableDictionary* pkInfos;
 @end
 
 @implementation TRTCMoreViewController {
@@ -90,9 +96,15 @@
         _trtcEngine = engine;
         _roomId = roomId;
         _userId = userId;
+        _pkInfos = [NSMutableDictionary new];
     }
     
     return self;
+}
+
+- (NSMutableDictionary*)getPKInfo
+{
+    return self.pkInfos;
 }
 
 - (void)viewDidLoad
@@ -102,6 +114,8 @@
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     self.tableView.contentInset = UIEdgeInsetsMake(30, 0, 0, 30);
+    self.tableView.bounces = NO;
+    self.tableView.showsHorizontalScrollIndicator = NO;
 }
 
 
@@ -129,7 +143,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 9;
+    return 11;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -153,8 +167,8 @@
             
             cell.accessoryView = _cameraSegment;
             _cameraSegment.selectedSegmentIndex = [[self class] getSettingWithKey:SETTING_CAMERA].integerValue ? 0 : 1;
-        }
             break;
+        }
         case CELL_FILL_MODE: {
             cell.textLabel.text = @"画面填充模式";
             UISegmentedControl* fillModeSeg = [[UISegmentedControl alloc] initWithItems:@[@"填充", @"适应"]];
@@ -165,8 +179,32 @@
 
             cell.accessoryView = fillModeSeg;
             fillModeSeg.selectedSegmentIndex = [[self class] getSettingWithKey:SETTING_FILL_MODE].integerValue;
-        }
             break;
+
+        }
+        case CELL_LOCAL_MIRROR: {
+            cell.textLabel.text = @"本地镜像模式";
+            UISegmentedControl* localMirrorSeg = [[UISegmentedControl alloc] initWithItems:@[@"自动", @"开启", @"关闭"]];
+            localMirrorSeg.bounds = CGRectMake(0, 0, self.view.width * 0.3, localMirrorSeg.height);
+            localMirrorSeg.tag = TAG_LOCAL_MIRROR;
+            [localMirrorSeg addTarget:self action:@selector(onSegmentTap:) forControlEvents:UIControlEventValueChanged];
+            [localMirrorSeg setTitleTextAttributes:@{NSForegroundColorAttributeName:UIColor.whiteColor} forState:UIControlStateSelected];
+            localMirrorSeg.selectedSegmentIndex = 0;
+            cell.accessoryView = localMirrorSeg;
+            break;
+
+        }
+        case CELL_REMOTE_MIRROR: {
+            cell.textLabel.text = @"开启远程镜像";
+            UISwitch*  remoteMirrorSwitch = [[UISwitch alloc] init];
+            remoteMirrorSwitch.tag = TAG_REMOTE_MIRROR;
+            [remoteMirrorSwitch addTarget:self action:@selector(onSwitchTap:) forControlEvents:UIControlEventTouchUpInside];
+            cell.accessoryView = remoteMirrorSwitch;
+            remoteMirrorSwitch.tintColor = _cameraSegment.tintColor;
+            remoteMirrorSwitch.onTintColor = _cameraSegment.tintColor;
+            remoteMirrorSwitch.on = NO;
+            break;
+        }
         case CELL_AUDIO_CAPTURE: {
             cell.textLabel.text = @"开启声音采集";
             UISwitch*  audioCapSwitch = [[UISwitch alloc] init];
@@ -282,6 +320,10 @@
         }
         [[self class] setSettingValue:@(idx) key:SETTING_FILL_MODE];
     }
+    else if (segment.tag == TAG_LOCAL_MIRROR) {
+        NSInteger idx = segment.selectedSegmentIndex;
+        [_trtcEngine setLocalViewMirror:(TRTCLocalVideoMirrorType)idx];
+    }
 }
 
 - (void)onSwitchTap:(UISwitch*)switchBtn
@@ -294,6 +336,9 @@
             [_trtcEngine stopLocalAudio];
         }
         [[self class] setSettingValue:@(switchBtn.isOn) key:SETTING_AUDIO_CAPTURE];
+    }
+    else if (switchBtn.tag == TAG_REMOTE_MIRROR) {
+        [_trtcEngine setVideoEncoderMirror:switchBtn.isOn];
     }
     else if (switchBtn.tag == TAG_AUDIO_ROUTE) {
         if (switchBtn.isOn) {
@@ -318,10 +363,10 @@
     }
     else if (switchBtn.tag == TAG_AUDIO_VOLUME) {
         if (switchBtn.isOn) {
-            [_trtcEngine enableAudioVolumeEvaluation:300 smooth:5];
+            [_trtcEngine enableAudioVolumeEvaluation:300];
         }
         else {
-            [_trtcEngine enableAudioVolumeEvaluation:0 smooth:5];
+            [_trtcEngine enableAudioVolumeEvaluation:0];
         }
         [[self class] setSettingValue:@(switchBtn.isOn) key:SETTING_AUDIO_VOLUME];
         if ([self.delegate respondsToSelector:@selector(onAudioVolumeEnableChanged:)]) {
@@ -351,6 +396,7 @@
     else if (button.tag == TAG_PK) {
         if ([button.titleLabel.text isEqualToString:@"结束"]) {
             [self.trtcEngine disconnectOtherRoom];
+            [self.pkInfos removeAllObjects];
             [button setTitle:@"开始" forState:UIControlStateNormal];
             return;
         }
@@ -367,6 +413,7 @@
         [pkInputVC addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
         __weak TRTCMoreViewController* weakSelf = self;
         [pkInputVC addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            TRTCMoreViewController* strongSelf = weakSelf;
             NSArray<UITextField*>* textFields = pkInputVC.textFields;
             NSString* roomIdStr = textFields[0].text;
             NSString* userIdStr = textFields[1].text;
@@ -383,6 +430,7 @@
             NSData* jsonData = [NSJSONSerialization dataWithJSONObject:pkParams options:NSJSONWritingPrettyPrinted error:nil];
             NSString* jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
             [weakSelf.trtcEngine connectOtherRoom:jsonString];
+            [weakSelf.pkInfos setObject:roomIdStr forKey:userIdStr];
             [button setTitle:@"结束" forState:UIControlStateNormal];
 
         }]];

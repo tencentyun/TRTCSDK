@@ -179,7 +179,7 @@
                                          Size:ICON_SIZE];
     
     _audioVolumeIndicator = [UIProgressView new];
-    _audioVolumeIndicator.width = 3;
+//    _audioVolumeIndicator.width = 3;
     _audioVolumeIndicator.progressTintColor = UIColor.yellowColor;
     _audioVolumeIndicator.progress = 0.0;
     

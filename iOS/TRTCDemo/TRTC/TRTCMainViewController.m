@@ -24,6 +24,8 @@
 #import "TRTCCloudDef.h"
 #import "TestSendCustomVideoData.h"
 #import "TestRenderVideoFrame.h"
+#import "BeautySettingPanel.h"
+
 
 typedef enum : NSUInteger {
     TRTC_IDLE,       // SDK 没有进入视频通话状态
@@ -54,7 +56,7 @@ typedef enum : NSUInteger {
     BOOL                     _muteSwitch;
     CGFloat                  _dashboardTopMargin;
     
-    
+    BeautySettingPanel*     _vBeauty;
     TRTCMoreViewController* _moreSettingVC;
 }
 
@@ -154,14 +156,12 @@ typedef enum : NSUInteger {
     if (_trtc != nil) {
         ;
     }
-    [_trtc startLocalAudio];
 }
 
 - (void)onAppDidEnterBackGround:(NSNotification *)notification {
     if (_trtc != nil) {
         ;
     }
-    [_trtc stopLocalAudio];
 }
 
 - (void)onAppWillEnterForeground:(NSNotification *)notification {
@@ -205,7 +205,7 @@ typedef enum : NSUInteger {
     
     
     _beautySwitch = NO;
-    _btnBeauty = [self createBottomBtnIcon:@"beauty_b2"
+    _btnBeauty = [self createBottomBtnIcon:@"beauty_b"
                                           Action:@selector(clickBeauty:)
                                           Center:CGPointMake(_btnLayoutSwitch.center.x + ICON_SIZE + centerInterVal, iconY)
                                             Size:ICON_SIZE];
@@ -251,8 +251,15 @@ typedef enum : NSUInteger {
     
     _layoutEngine = [[TRTCVideoViewLayout alloc] init];
     _layoutEngine.view = _holderView;
-    
     [self relayout];
+
+    NSUInteger controlHeight = [BeautySettingPanel getHeight];
+    _vBeauty = [[BeautySettingPanel alloc] initWithFrame:CGRectMake(0, _btnBeauty.y - controlHeight, self.view.frame.size.width, controlHeight)];
+    _vBeauty.hidden = YES;
+    _vBeauty.delegate = self;
+    _vBeauty.pituDelegate = self;
+    [self.view addSubview:_vBeauty];
+    
 }
 
 - (UIButton*)createBottomBtnIcon:(NSString*)icon Action:(SEL)action Center:(CGPoint)center  Size:(int)size
@@ -369,6 +376,8 @@ typedef enum : NSUInteger {
     }
     else {
         [_trtc startLocalPreview:[TRTCMoreViewController isFrontCamera] view:_localView];
+        [_vBeauty resetValues];
+        [_vBeauty trigglerValues];
     }
     [_trtc setVideoEncoderParam:encParam];
     [_trtc enableEncSmallVideoStream:[TRTCSettingViewController getEnableSmallStream] withQuality:smallVideoConfig];
@@ -376,7 +385,7 @@ typedef enum : NSUInteger {
 
     [_trtc setPriorRemoteVideoStreamType:[TRTCSettingViewController getPriorSmallStream]];
     [_trtc setAudioRoute:[TRTCMoreViewController isSpeakphoneMode] ? TRTCAudioModeSpeakerphone : TRTCAudioModeEarpiece];
-    [_trtc enableAudioVolumeEvaluation:[TRTCMoreViewController isAudioVolumeEnable]?300:0 smooth:5];
+    [_trtc enableAudioVolumeEvaluation:[TRTCMoreViewController isAudioVolumeEnable]?300:0];
     
     if ([TRTCMoreViewController isAudioCaptureEnable]) {
         [_trtc startLocalAudio];
@@ -503,8 +512,8 @@ typedef enum : NSUInteger {
         }
         
         TRTCTranscodingConfig* config = [TRTCTranscodingConfig new];
-        config.appId = self.param.sdkAppId;
-        config.bizId = <#bizID#>; // 请进入 "实时音视频"控制台 https://console.cloud.tencent.com/rav，点击对应的应用，然后进入“帐号信息”菜单中，复制“直播信息”模块中的"bizid"
+        config.appId = 1252463788;
+        config.bizId = 3891;
         config.videoWidth = videoWidth;
         config.videoHeight = videoHeight;
         config.videoGOP = 3;
@@ -519,16 +528,19 @@ typedef enum : NSUInteger {
         broadCaster.userId = _selfUserID; // 以主播uid为broadcaster为例
         broadCaster.zOrder = 0;
         broadCaster.rect = CGRectMake(0, 0, videoWidth, videoHeight);
+        broadCaster.roomID = nil;
         
         NSMutableArray* mixUsers = [NSMutableArray new];
         [mixUsers addObject:broadCaster];
         
         // 设置混流后各个小画面的位置
         int index = 0;
+        NSDictionary* pkUsers = _moreSettingVC.getPKInfo;
         for (NSString* userId in _remoteViewDic.allKeys) {
             TRTCMixUser* audience = [TRTCMixUser new];
             audience.userId = userId;
             audience.zOrder = 1 + index;
+            audience.roomID = [pkUsers objectForKey:userId];
             if (index < 3) {
                 // 前三个小画面靠右从下往上铺
                 audience.rect = CGRectMake(videoWidth - offsetX - subWidth, videoHeight - offsetY - index * subHeight - subHeight, subWidth, subHeight);
@@ -545,6 +557,16 @@ typedef enum : NSUInteger {
         config.mixUsers = mixUsers;
         [_trtc setMixTranscodingConfig:config];
     }
+}
+
+- (void)onSetMixTranscodingConfig:(int)err errMsg:(NSString *)errMsg
+{
+    NSLog(@"onSetMixTranscodingConfig err:%d errMsg:%@", err, errMsg);
+}
+
+- (void)onStatistics:(TRTCStatistics *)statistics
+{
+
 }
 
 #pragma mark - button
@@ -604,15 +626,7 @@ typedef enum : NSUInteger {
  */
 - (void)clickBeauty:(UIButton *)btn {
     _beautySwitch = !_beautySwitch;
-    [btn setImage:[UIImage imageNamed:(_beautySwitch ? @"beauty_b" : @"beauty_b2")] forState:UIControlStateNormal];
-    
-    if (_beautySwitch) {
-        // 为了简单，全部使用默认值
-        [_trtc setBeautyStyle:TRTCBeautyStyleNature beautyLevel:5 whitenessLevel:5 ruddinessLevel:5];
-    } else {
-        // 全部设置0表示关闭美颜
-        [_trtc setBeautyStyle:TRTCBeautyStyleNature beautyLevel:0 whitenessLevel:0 ruddinessLevel:0];
-    }
+    _vBeauty.hidden = !_beautySwitch;
 }
 
 /**
@@ -923,11 +937,9 @@ typedef enum : NSUInteger {
 - (void)onConnectOtherRoom:(NSString *)userId errCode:(TXLiteAVError)errCode errMsg:(NSString *)errMsg
 {
     [self toastTip:[NSString stringWithFormat:@"连麦结果:%u %@", errCode, errMsg]];
-}
-
-- (void)onStatistics:(TRTCStatistics *)statistics
-{
-    
+    if (errCode != 0) {
+        [_moreSettingVC.getPKInfo removeObjectForKey:userId];
+    }
 }
 
 - (void)onNetworkQuality:(TRTCQualityInfo *)localQuality remoteQuality:(NSArray<TRTCQualityInfo *> *)remoteQuality
@@ -941,10 +953,15 @@ typedef enum : NSUInteger {
 
 - (void)onUserVoiceVolume:(NSArray<TRTCVolumeInfo *> *)userVolumes totalVolume:(NSInteger)totalVolume
 {
+    [_remoteViewDic enumerateKeysAndObjectsUsingBlock:^(NSString *  _Nonnull key, TRTCVideoView * _Nonnull obj, BOOL * _Nonnull stop) {
+        [obj setAudioVolumeRadio:0.f];
+        [obj showAudioVolume:YES];
+    }];
+    
     for (TRTCVolumeInfo* volumeInfo in userVolumes) {
         TRTCVideoView* videoView = [_remoteViewDic objectForKey:volumeInfo.userId];
         if (videoView) {
-            float radio = (float)volumeInfo.volume / 100;
+            float radio = ((float)volumeInfo.volume) / 100;
             [videoView setAudioVolumeRadio:radio];
         }
     }
@@ -1039,6 +1056,8 @@ typedef enum : NSUInteger {
  * 在前后堆叠模式下，响应手指触控事件，用来切换视频画面的布局
  */
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+     _vBeauty.hidden = YES;
+    
     if (((UITouch*)touches.anyObject).tapCount != 2)
         return;
     
@@ -1078,5 +1097,86 @@ typedef enum : NSUInteger {
     [_trtc sendCustomAudioData:frame];
 }
 
+#pragma mark - BeautyLoadPituDelegate
+- (void)onLoadPituStart
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self toastTip:@"开始加载资源"];
+    });
+}
+- (void)onLoadPituProgress:(CGFloat)progress
+{
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//        [self toastTip:[NSString stringWithFormat:@"正在加载资源%d %%",(int)(progress * 100)]];
+//    });
+}
+- (void)onLoadPituFinished
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self toastTip:@"资源加载成功"];
+    });
+}
+- (void)onLoadPituFailed
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self toastTip:@"资源加载失败"];
+    });
+}
+
+#pragma mark - BeautySettingPanelDelegate
+- (void)onSetBeautyStyle:(int)beautyStyle beautyLevel:(float)beautyLevel whitenessLevel:(float)whitenessLevel ruddinessLevel:(float)ruddinessLevel
+{
+    [_trtc setBeautyStyle:beautyStyle beautyLevel:beautyLevel whitenessLevel:whitenessLevel ruddinessLevel:ruddinessLevel];
+}
+
+- (void)onSetEyeScaleLevel:(float)eyeScaleLevel
+{
+    [_trtc setEyeScaleLevel:eyeScaleLevel];
+}
+
+- (void)onSetFaceScaleLevel:(float)faceScaleLevel
+{
+    [_trtc setFaceScaleLevel:faceScaleLevel];
+}
+
+- (void)onSetFilter:(UIImage *)filterImage
+{
+    [_trtc setFilter:filterImage];
+}
+
+- (void)onSetGreenScreenFile:(NSURL *)file
+{
+    [_trtc setGreenScreenFile:file];
+}
+
+- (void)onSelectMotionTmpl:(NSString *)tmplName inDir:(NSString *)tmplDir
+{
+    [_trtc selectMotionTmpl:[tmplDir stringByAppendingPathComponent:tmplName]];
+}
+
+- (void)onSetFaceVLevel:(float)vLevel
+{
+    [_trtc setFaceVLevel:vLevel];
+}
+
+- (void)onSetFaceShortLevel:(float)shortLevel
+{
+    [_trtc setFaceShortLevel:shortLevel];
+}
+
+- (void)onSetNoseSlimLevel:(float)slimLevel
+{
+    [_trtc setNoseSlimLevel:slimLevel];
+}
+
+- (void)onSetChinLevel:(float)chinLevel
+{
+    [_trtc setChinLevel:chinLevel];
+}
+
+- (void)onSetMixLevel:(float)mixLevel
+{
+    [_trtc setFilterConcentration:mixLevel / 10.0];
+}
 
 @end

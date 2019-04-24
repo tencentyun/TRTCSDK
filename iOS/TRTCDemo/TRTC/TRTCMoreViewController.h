@@ -31,6 +31,8 @@ NS_ASSUME_NONNULL_BEGIN
 + (BOOL)isAudioVolumeEnable;
 + (BOOL)isCloudMixingEnable;
 
+- (NSMutableDictionary*)getPKInfo;
+
 - (instancetype)initWithTRTCEngine:(TRTCCloud*)engine roomId:(NSString*)roomId userId:(NSString*)userId;
 @end
 

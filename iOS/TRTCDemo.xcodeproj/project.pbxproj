@@ -27,6 +27,11 @@
 		D60331AC224E47860019E640 /* QBCheckmarkView.m in Sources */ = {isa = PBXBuildFile; fileRef = D60331A0224E47860019E640 /* QBCheckmarkView.m */; };
 		D60331AD224E47860019E640 /* QBSlomoIconView.m in Sources */ = {isa = PBXBuildFile; fileRef = D60331A2224E47860019E640 /* QBSlomoIconView.m */; };
 		D60331AE224E47860019E640 /* QBAssetCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D60331A3224E47860019E640 /* QBAssetCell.m */; };
+		D622D0E6227051B900E4D569 /* BeautySettingPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = D622D0E0227051B900E4D569 /* BeautySettingPanel.m */; };
+		D622D0E7227051B900E4D569 /* TextCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D622D0E2227051B900E4D569 /* TextCell.m */; };
+		D622D0E8227051B900E4D569 /* ControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = D622D0E3227051B900E4D569 /* ControlView.m */; };
+		D622D0EE227051D800E4D569 /* goodluck.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = D622D0EB227051D800E4D569 /* goodluck.mp4 */; };
+		D622D0EF227051D800E4D569 /* FilterResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D622D0ED227051D800E4D569 /* FilterResource.bundle */; };
 		D660B0CF22329A2A009851F3 /* NSString+UISize.m in Sources */ = {isa = PBXBuildFile; fileRef = D660B0CB22329A2A009851F3 /* NSString+UISize.m */; };
 		D660B0D622329A3C009851F3 /* TRTCVideoView.m in Sources */ = {isa = PBXBuildFile; fileRef = D660B0D422329A3C009851F3 /* TRTCVideoView.m */; };
 		D660B0D922329AB1009851F3 /* NSString+Common.m in Sources */ = {isa = PBXBuildFile; fileRef = D660B0D722329AB0009851F3 /* NSString+Common.m */; };
@@ -102,6 +107,15 @@
 		D60331A1224E47860019E640 /* QBAlbumCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBAlbumCell.h; sourceTree = "<group>"; };
 		D60331A2224E47860019E640 /* QBSlomoIconView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBSlomoIconView.m; sourceTree = "<group>"; };
 		D60331A3224E47860019E640 /* QBAssetCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBAssetCell.m; sourceTree = "<group>"; };
+		D622D0DF227051B900E4D569 /* ControlView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControlView.h; sourceTree = "<group>"; };
+		D622D0E0227051B900E4D569 /* BeautySettingPanel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BeautySettingPanel.m; sourceTree = "<group>"; };
+		D622D0E1227051B900E4D569 /* PituMotionAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PituMotionAddress.h; sourceTree = "<group>"; };
+		D622D0E2227051B900E4D569 /* TextCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextCell.m; sourceTree = "<group>"; };
+		D622D0E3227051B900E4D569 /* ControlView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ControlView.m; sourceTree = "<group>"; };
+		D622D0E4227051B900E4D569 /* BeautySettingPanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BeautySettingPanel.h; sourceTree = "<group>"; };
+		D622D0E5227051B900E4D569 /* TextCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextCell.h; sourceTree = "<group>"; };
+		D622D0EB227051D800E4D569 /* goodluck.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = goodluck.mp4; sourceTree = "<group>"; };
+		D622D0ED227051D800E4D569 /* FilterResource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FilterResource.bundle; sourceTree = "<group>"; };
 		D660B0CB22329A2A009851F3 /* NSString+UISize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+UISize.m"; sourceTree = "<group>"; };
 		D660B0CE22329A2A009851F3 /* NSString+UISize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+UISize.h"; sourceTree = "<group>"; };
 		D660B0D222329A3C009851F3 /* TRTCVideoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCVideoView.h; sourceTree = "<group>"; };
@@ -225,6 +239,45 @@
 			path = QBImagePicker;
 			sourceTree = "<group>";
 		};
+		D622D0DE227051B900E4D569 /* BeautySettingPanel */ = {
+			isa = PBXGroup;
+			children = (
+				D622D0DF227051B900E4D569 /* ControlView.h */,
+				D622D0E3227051B900E4D569 /* ControlView.m */,
+				D622D0E4227051B900E4D569 /* BeautySettingPanel.h */,
+				D622D0E0227051B900E4D569 /* BeautySettingPanel.m */,
+				D622D0E1227051B900E4D569 /* PituMotionAddress.h */,
+				D622D0E5227051B900E4D569 /* TextCell.h */,
+				D622D0E2227051B900E4D569 /* TextCell.m */,
+			);
+			path = BeautySettingPanel;
+			sourceTree = "<group>";
+		};
+		D622D0E9227051D800E4D569 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				D622D0EA227051D800E4D569 /* Filter */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		D622D0EA227051D800E4D569 /* Filter */ = {
+			isa = PBXGroup;
+			children = (
+				D622D0EB227051D800E4D569 /* goodluck.mp4 */,
+				D622D0EC227051D800E4D569 /* fiter */,
+				D622D0ED227051D800E4D569 /* FilterResource.bundle */,
+			);
+			path = Filter;
+			sourceTree = "<group>";
+		};
+		D622D0EC227051D800E4D569 /* fiter */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = fiter;
+			sourceTree = "<group>";
+		};
 		D689A89621CC8D4E00C7C618 /* TRTC */ = {
 			isa = PBXGroup;
 			children = (
@@ -250,6 +303,7 @@
 		D689A89F21CC8D4E00C7C618 /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				D622D0DE227051B900E4D569 /* BeautySettingPanel */,
 				D660B0DA22329B04009851F3 /* NSData+Common.h */,
 				D660B0DB22329B04009851F3 /* NSData+Common.m */,
 				D660B0D822329AB1009851F3 /* NSString+Common.h */,
@@ -364,6 +418,7 @@
 				D689A89621CC8D4E00C7C618 /* TRTC */,
 				D689A8A321CC8D4E00C7C618 /* Third */,
 				D689A89F21CC8D4E00C7C618 /* Util */,
+				D622D0E9227051D800E4D569 /* Resources */,
 				D6940FEF21CC8A1000469982 /* Main.storyboard */,
 				D6940FF221CC8A1100469982 /* Assets.xcassets */,
 				D6940FF421CC8A1100469982 /* LaunchScreen.storyboard */,
@@ -437,6 +492,8 @@
 			files = (
 				D60331A4224E47860019E640 /* QBImagePicker.strings in Resources */,
 				D6940FF621CC8A1100469982 /* LaunchScreen.storyboard in Resources */,
+				D622D0EE227051D800E4D569 /* goodluck.mp4 in Resources */,
+				D622D0EF227051D800E4D569 /* FilterResource.bundle in Resources */,
 				918EFFED21D79A2E007CF83A /* config.json in Resources */,
 				D6940FF321CC8A1100469982 /* Assets.xcassets in Resources */,
 				D6940FF121CC8A1000469982 /* Main.storyboard in Resources */,
@@ -452,6 +509,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				918EFF7D21D727C3007CF83A /* TRTCMainViewController.m in Sources */,
+				D622D0E6227051B900E4D569 /* BeautySettingPanel.m in Sources */,
 				D689A8D421CC8D4E00C7C618 /* AFAutoPurgingImageCache.m in Sources */,
 				D660B0DC22329B04009851F3 /* NSData+Common.m in Sources */,
 				D689A8CD21CC8D4E00C7C618 /* UIProgressView+AFNetworking.m in Sources */,
@@ -470,6 +528,7 @@
 				D689A8D521CC8D4E00C7C618 /* AFImageDownloader.m in Sources */,
 				D689A8DA21CC8D4E00C7C618 /* AFNetworkReachabilityManager.m in Sources */,
 				D6033184224E475A0019E640 /* TRTCMoreViewController.m in Sources */,
+				D622D0E8227051B900E4D569 /* ControlView.m in Sources */,
 				D60331AC224E47860019E640 /* QBCheckmarkView.m in Sources */,
 				D60331A6224E47860019E640 /* QBVideoIndicatorView.m in Sources */,
 				D689A8D821CC8D4E00C7C618 /* AFURLSessionManager.m in Sources */,
@@ -492,6 +551,7 @@
 				D689A8DB21CC8D4E00C7C618 /* AFSecurityPolicy.m in Sources */,
 				D689A8D221CC8D4E00C7C618 /* UIActivityIndicatorView+AFNetworking.m in Sources */,
 				D60331A5224E47860019E640 /* QBVideoIconView.m in Sources */,
+				D622D0E7227051B900E4D569 /* TextCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
