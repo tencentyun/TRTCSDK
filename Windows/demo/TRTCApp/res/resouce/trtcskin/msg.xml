@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Window caption="0,0,0,40" size="400,195" showshadow="true" shadowimage="msgbox/shadow.png" shadowsize="6" shadowcorner="8,8,8,8">
+  <Font id="0" name="微软雅黑" size="12" default="true"/>
+  <Font id="1" name="微软雅黑" size="14"/>
+  <Font id="2" name="微软雅黑" size="16"/>
+  <Style name="btnstyle_queding" shared="true" value="stateimage=&quot;res='msgbox/queding.png' corner='6,6,6,6'&quot; statecount=&quot;3&quot; width=&quot;59&quot; height=&quot;23&quot; tooltip=&quot;确定&quot;"  />
+  <Style name="btnstyle_quxiao" shared="true" value="stateimage=&quot;res='msgbox/quxiao.png'&quot; statecount=&quot;3&quot; width=&quot;59&quot; height=&quot;23&quot; tooltip=&quot;取消&quot;"  />
+
+  <VerticalLayout bkcolor="#FF666666">
+    <HorizontalLayout name="appbar" height="36" inset="6,-1" bkcolor="#FF202223">
+	  <Label name="MessageTitle" valign="vcenter" text="提示" textcolor="#FFFFFFFF" font="1" width="358"/>
+      <Button name="closebtn" width="39" height="20" tooltip="关闭" normalimage="file='msgbox/btn_close_normal.png'" hotimage="file='msgbox/btn_close_highlight.png'" pushedimage="file='msgbox/btn_close_down.png'"/>
+    </HorizontalLayout>
+    <VerticalLayout inset="30,5,30,5" childvalign="vcenter">
+	  <VerticalLayout/>
+      <Label name="MessageText" textcolor="#FFFFFFFF" font="2" align="left" valign="vcenter" wordbreak="true" textpadding="2,5,2,2" autocalcwidth="true"/>
+	  <VerticalLayout/>
+	</VerticalLayout>
+    <HorizontalLayout height="40" inset="10,0,10,10">
+      <Control />
+      <Button name="confirm_btn" style="btnstyle_queding"/>
+      <Control width="20"/>
+      <Button name="cancel_btn" style="btnstyle_quxiao"/>
+      <Control width="30"/>
+    </HorizontalLayout>
+  </VerticalLayout>
+</Window>

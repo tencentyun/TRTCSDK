@@ -1,0 +1,164 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="..\Common\json\jsoncpp.cpp">
+      <Filter>utils\json</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\http\HttpClient.cpp">
+      <Filter>utils\http</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\util\crashdump.cpp">
+      <Filter>utils\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\util\log.cpp">
+      <Filter>utils\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\util\md5.cpp">
+      <Filter>utils\util</Filter>
+    </ClCompile>
+    <ClCompile Include="utils\ConfigMgr.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="utils\DataCenter.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="utils\TrtcUtil.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="uicontrol\MainViewBottomBar.cpp">
+      <Filter>uicontrol</Filter>
+    </ClCompile>
+    <ClCompile Include="uicontrol\MsgBoxWnd.cpp">
+      <Filter>uicontrol</Filter>
+    </ClCompile>
+    <ClCompile Include="uicontrol\PopBoxWnd.cpp">
+      <Filter>uicontrol</Filter>
+    </ClCompile>
+    <ClCompile Include="uicontrol\TXLiveAvVideoView.cpp">
+      <Filter>uicontrol</Filter>
+    </ClCompile>
+    <ClCompile Include="core\TRTCCloudCore.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="TRTCGetUserIDAndUserSig.cpp" />
+    <ClCompile Include="TRTCLoginViewController.cpp" />
+    <ClCompile Include="TRTCMainViewController.cpp" />
+    <ClCompile Include="TRTCSettingViewController.cpp" />
+    <ClCompile Include="TRTCVideoViewLayout.cpp" />
+    <ClCompile Include="screenshare\ImageCanvas.cpp">
+      <Filter>screenshare</Filter>
+    </ClCompile>
+    <ClCompile Include="screenshare\ShareSelectItem.cpp">
+      <Filter>screenshare</Filter>
+    </ClCompile>
+    <ClCompile Include="screenshare\UiShareSelect.cpp">
+      <Filter>screenshare</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="resource.h">
+      <Filter>res</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\json\json.h">
+      <Filter>utils\json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\json\json-forwards.h">
+      <Filter>utils\json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\http\HttpClient.h">
+      <Filter>utils\http</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\util\Base.h">
+      <Filter>utils\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\util\crashdump.h">
+      <Filter>utils\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\util\log.h">
+      <Filter>utils\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\util\md5.h">
+      <Filter>utils\util</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\ConfigMgr.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\DataCenter.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\TrtcUtil.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="uicontrol\MainViewBottomBar.h">
+      <Filter>uicontrol</Filter>
+    </ClInclude>
+    <ClInclude Include="uicontrol\MsgBoxWnd.h">
+      <Filter>uicontrol</Filter>
+    </ClInclude>
+    <ClInclude Include="uicontrol\PopBoxWnd.h">
+      <Filter>uicontrol</Filter>
+    </ClInclude>
+    <ClInclude Include="uicontrol\TXLiveAvVideoView.h">
+      <Filter>uicontrol</Filter>
+    </ClInclude>
+    <ClInclude Include="core\TRTCCloudCore.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\UserMassegeIdDefine.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="TRTCGetUserIDAndUserSig.h" />
+    <ClInclude Include="TRTCLoginViewController.h" />
+    <ClInclude Include="TRTCMainViewController.h" />
+    <ClInclude Include="TRTCSettingViewController.h" />
+    <ClInclude Include="TRTCVideoViewLayout.h" />
+    <ClInclude Include="screenshare\ImageCanvas.h">
+      <Filter>screenshare</Filter>
+    </ClInclude>
+    <ClInclude Include="screenshare\ShareSelectItem.h">
+      <Filter>screenshare</Filter>
+    </ClInclude>
+    <ClInclude Include="screenshare\UiShareSelect.h">
+      <Filter>screenshare</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="res">
+      <UniqueIdentifier>{76047b7e-fd08-46d0-b090-b2174ef183d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="screenshare">
+      <UniqueIdentifier>{ac8e600b-1b47-4e70-a45d-4395a7ad2a26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="uicontrol">
+      <UniqueIdentifier>{72103c92-9e61-47dc-ab53-20645b689220}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core">
+      <UniqueIdentifier>{7cfaa939-707f-4135-9680-26d2628f145b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="utils">
+      <UniqueIdentifier>{12fe8f76-38b1-4606-b669-f31e4580ff48}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="utils\json">
+      <UniqueIdentifier>{e7dc9957-e346-439e-b9ae-d7e9c139c50a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="utils\http">
+      <UniqueIdentifier>{6ee29e15-6888-45b5-85c5-43f9373ee239}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="utils\util">
+      <UniqueIdentifier>{39346321-cf72-49a5-b75b-eeefdd9e10b7}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="TRTCApp.rc">
+      <Filter>res</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\trtc.ico">
+      <Filter>res</Filter>
+    </Image>
+  </ItemGroup>
+</Project>

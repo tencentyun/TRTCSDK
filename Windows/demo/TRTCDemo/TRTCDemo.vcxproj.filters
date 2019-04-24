@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{66f825d2-9b54-4920-8369-fe37a4e84aee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common">
+      <UniqueIdentifier>{291f2b9e-6cb6-4c63-be7b-84cb603ce7bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\http">
+      <UniqueIdentifier>{c374459f-be70-419a-9d11-6e319d94c932}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\json">
+      <UniqueIdentifier>{3fa2b468-e811-46fe-a68d-f28cde7b0d66}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="TRTCGetUserIDAndUserSig.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="TRTCLoginViewController.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="TRTCMainViewController.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="TRTCSettingViewController.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="TRTCDemo.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="StorageConfigMgr.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\json\json.h">
+      <Filter>Common\json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\json\json-forwards.h">
+      <Filter>Common\json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\http\HttpClient.h">
+      <Filter>Common\http</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="TRTCGetUserIDAndUserSig.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="TRTCLoginViewController.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="TRTCMainViewController.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="TRTCSettingViewController.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="TRTCDemo.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="StorageConfigMgr.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\json\jsoncpp.cpp">
+      <Filter>Common\json</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\http\HttpClient.cpp">
+      <Filter>Common\http</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="TRTCDemo.rc">
+      <Filter>资源文件</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\TRTCDemo.ico">
+      <Filter>资源文件</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\TRTCDemo.rc2">
+      <Filter>资源文件</Filter>
+    </None>
+  </ItemGroup>
+</Project>
