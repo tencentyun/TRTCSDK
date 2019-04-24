@@ -6,7 +6,7 @@ import android.opengl.Matrix;
 import java.nio.FloatBuffer;
 
 /**
- * 渲染GL_TEXTURE_2D到EGLSurface上，如TextureView的SurfaceTexture等
+ * 渲染GL_TEXTURE_2D到EGLSurface上，如果EGLSurface绑定TextureView的SurfaceTexture，就可以在TextureView上显示出来
  */
 public class GLTexture2DFilter {
 
