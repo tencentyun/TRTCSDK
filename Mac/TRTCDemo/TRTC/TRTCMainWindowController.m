@@ -566,7 +566,7 @@ static NSString * const VideoIcon[2] = {@"main_tool_video_on", @"main_tool_video
 }
 
 - (void)onEnterRoom:(NSInteger)elapsed{
-    [self.trtcEngine enableAudioVolumeEvaluation:100 smooth:3];
+    [self.trtcEngine enableAudioVolumeEvaluation:300];
     self.controlBar.hidden = NO;
     [self updateLayoutVideoFrame];
     
