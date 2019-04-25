@@ -39,7 +39,7 @@ Windows
 6. 优化美颜和渲染模块在部分 Windows 版本下的兼容和性能问题。
 
 
-## API 文档及使用指引
+## API 文档指引
 
 | 所属平台 | Github 地址 | Demo运行说明 | SDK集成指引 | API 列表 |
 |:---------:| :--------:|:--------:| :--------:|:--------:|
@@ -49,6 +49,10 @@ Windows
 | Mac| [GitHub](https://github.com/tencentyun/TRTCSDK/tree/master/Mac)| [DOC](https://cloud.tencent.com/document/product/647/32396)| [DOC](https://cloud.tencent.com/document/product/647/32176) |[API](https://cloud.tencent.com/document/product/647/32258) |
 | Web | [GitHub](https://github.com/tencentyun/TRTCSDK/tree/master/H5)| [DOC](https://cloud.tencent.com/document/product/647/32398)| [DOC](https://cloud.tencent.com/document/product/647/16863) |[API](https://cloud.tencent.com/document/product/647/17249) |
 | 微信小程序| [GitHub](https://github.com/tencentyun/TRTCSDK/tree/master/WXMini)| [DOC](https://cloud.tencent.com/document/product/647/32399)| [DOC](https://cloud.tencent.com/document/product/647/32183) |[API](https://cloud.tencent.com/document/product/647/17018) |
+
+## SDK 下载地址
+
+> [**SDK 下载地址**](https://github.com/tencentyun/TRTCSDK/blob/master/SDK%E4%B8%8B%E8%BD%BD.md)
 
 ## iOS TRTC Demo
 > [APPStore 体验地址](https://itunes.apple.com/cn/app/id1400663224?mt=8)
@@ -80,12 +84,4 @@ Windows
 
 ![](https://main.qcloudimg.com/raw/56e2bbc928a11bac85e5b78ac171b3bc.jpg)
 
-## LiteAVSDK
 
-![](https://main.qcloudimg.com/raw/1332cdccd195ef61848e0b588fd12c5c.jpg)
-
-如果您的项目中已经使用过腾讯视频云 LiteAV 体系的相关产品，可能会出现符号冲突的问题（symbol duplicate）的问题。这是由于它们共同复用了相同的采集模块、编解码器、降噪模块、前处理等底层基础模块，所以才会出现符号重复。
-
-您可以下载腾讯视频 LiteAV_Professional 版本，该版本集成了以上 SDK 的全部功能，而且由于 60% 以上的底层模块是复用的，所以产生的安装包体积增量远远小于集成两个独立的 SDK（音视频 SDK 中的主要体积增量源于编解码等各种基础模块）。
-
-> [**专业版下载地址**](https://github.com/tencentyun/TRTCSDK/blob/master/SDK%E4%B8%93%E4%B8%9A%E7%89%88.md)
