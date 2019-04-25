@@ -1,7 +1,7 @@
 ## 目录结构
 - SDK : 包含Liteav SDK库文件和头文件
-- TRTCDuilibDemo : 基于MFC GUI实现的简单使用SDK Demo。
-- TRTCMfcDemo : 基于Duilib GUI实现的复杂使用SDK Demo。
+- DuilibDemo : 基于MFC GUI实现的简单使用SDK Demo。
+- MFCDemo : 基于Duilib GUI实现的复杂使用SDK Demo。
 
 本文主要介绍如何快速地将腾讯云实时音视频 Demo(Windows) 工程运行起来，您只需参考如下步骤依次执行即可。
 
