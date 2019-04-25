@@ -52,7 +52,7 @@ Windows
 
 ## SDK 下载地址
 
-> [**SDK 下载地址**](https://github.com/tencentyun/TRTCSDK/blob/master/SDK%E4%B8%8B%E8%BD%BD.md)
+> [**SDK 各版本下载地址（精简版、专业版、企业版）**](https://github.com/tencentyun/TRTCSDK/blob/master/SDK%E4%B8%8B%E8%BD%BD.md)
 
 ## iOS TRTC Demo
 > [APPStore 体验地址](https://itunes.apple.com/cn/app/id1400663224?mt=8)
