@@ -21,19 +21,13 @@ android {
         }
     }
 
-    sourceSets {
-        main {
-            jniLibs.srcDirs = ['libs']
-        }
-    }
 }
 
 dependencies {
 
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
-//    compile(name: 'LiteAVSDK_TRTC_6.4.7108', ext: 'aar')
-    compile 'com.tencent.liteav:LiteAVSDK_TRTC:6.4.7108'
+    compile 'com.tencent.liteav:LiteAVSDK_TRTC:latest.release'
     compile 'com.squareup.okhttp3:logging-interceptor:3.8.1'
     compile 'com.android.support:multidex:1.0.0'
     compile 'com.android.support:appcompat-v7:26.+'
