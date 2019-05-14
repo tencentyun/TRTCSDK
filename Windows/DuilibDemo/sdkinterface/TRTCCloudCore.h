@@ -1,6 +1,7 @@
 #pragma once
 #include "ITRTCCloud.h"
 #include "ITXVodPlayer.h"
+#include "DataCenter.h"
 #include <map>
 #include <string>
 #include <mutex>
@@ -10,19 +11,6 @@ struct DashboardInfo
     int streamType = -1;
     std::string userId;
     std::string buffer;   
-};
-
-struct UserVideoInfo
-{
-    std::string userId = "";
-    std::string roomId = "";
-
-    uint32_t width;
-    uint32_t height;
-    uint32_t fps;
-    uint32_t streamType;
-    uint32_t videoBitrate;
-    bool bPureAudio = false;
 };
 
 class TRTCCloudCore 
@@ -80,6 +68,7 @@ public:
     virtual void onPlayAudioFrame(TRTCAudioFrame *frame, const char* userId);
     virtual void onMixedPlayAudioFrame(TRTCAudioFrame *frame);
     virtual void onSetMixTranscodingConfig(int errCode, const char* errMsg);
+    virtual void onFirstVideoFrame(const char* userId, uint32_t width, uint32_t height);
 public:
     void regSDKMsgObserver(uint32_t msg, HWND hwnd);
     void removeSDKMsgObserver(uint32_t msg, HWND hwnd);
@@ -109,7 +98,7 @@ public:
 
     void startCloudMixStream(std::string localUserId);
     void stopCloudMixStream();
-    void updateMixTranCodeInfo(std::vector<UserVideoInfo> vec, UserVideoInfo& localInfo);
+    void updateMixTranCodeInfo(std::vector<UserVideoInfo> vec, UserVideoInfo& localInfo, bool bForce = false);
 
     void startCustomCaptureAudio(std::wstring filePath, int samplerate, int channel);
     void stopCustomCaptureAudio();

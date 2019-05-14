@@ -1,7 +1,6 @@
 #include "StdAfx.h"
 #include "TRTCCloudCore.h"
 #include "UserMassegeIdDefine.h"
-#include "DataCenter.h"
 #include "util/log.h"
 #include "util/Base.h"
 #include "json/json.h"
@@ -273,6 +272,7 @@ void TRTCCloudCore::onStatistics(const TRTCStatistics& statis)
     // todo 更新流统计信息内容。
     
     //更新云端混流的结构信息
+    /*
     if (m_bStartCloudMixStream)
     {
         std::vector<UserVideoInfo>* vecList = new std::vector<UserVideoInfo>;
@@ -286,9 +286,7 @@ void TRTCCloudCore::onStatistics(const TRTCStatistics& statis)
                 {
                     localInfo->width = statis.localStatisticsArray[i].width;
                     localInfo->height = statis.localStatisticsArray[i].height;
-                    localInfo->streamType = statis.localStatisticsArray[i].streamType;
                     localInfo->fps = statis.localStatisticsArray[i].frameRate;
-                    localInfo->videoBitrate = statis.localStatisticsArray[i].videoBitrate;
                 }
             }
         }
@@ -302,7 +300,6 @@ void TRTCCloudCore::onStatistics(const TRTCStatistics& statis)
                     info.userId = std::string(statis.remoteStatisticsArray[i].userId);
                     info.width = statis.remoteStatisticsArray[i].width;
                     info.height = statis.remoteStatisticsArray[i].height;
-                    info.streamType = statis.remoteStatisticsArray[i].streamType;
                     vecList->push_back(info);
                 }
             }
@@ -316,6 +313,7 @@ void TRTCCloudCore::onStatistics(const TRTCStatistics& statis)
             }
         }
     }
+    */
 }
 
 void TRTCCloudCore::onScreenCaptureStarted()
@@ -488,6 +486,22 @@ void TRTCCloudCore::onMixedPlayAudioFrame(TRTCAudioFrame * frame)
 void TRTCCloudCore::onSetMixTranscodingConfig(int errCode, const char * errMsg)
 {
     LINFO(L"onSetMixTranscodingConfig errCode[%d], errMsg[%s]\n", errCode, UTF82Wide(errMsg).c_str());
+}
+
+void TRTCCloudCore::onFirstVideoFrame(const char* userId, uint32_t width, uint32_t height)
+{
+    LINFO(L"onFirstVideoFrame userId[%s], width[%d], height[%d]\n", UTF82Wide(userId).c_str(), width, height);
+    
+    std::unique_lock<std::mutex> lck(m_mutexMsgFilter);
+    for (auto& itr : m_mapSDKMsgFilter)
+    {
+        if (itr.first == WM_USER_CMD_FirstVideoFrame && itr.second != nullptr)
+        {
+            std::string * str = new std::string(userId);
+            uint32_t resolution = width << 16 + height;
+            ::PostMessage(itr.second, WM_USER_CMD_FirstVideoFrame, (WPARAM)str, resolution);
+        }
+    }
 }
 
 void TRTCCloudCore::onConnectionLost()
@@ -891,6 +905,8 @@ void TRTCCloudCore::startCloudMixStream(std::string localUserId)
 {
     m_localUserId = localUserId;
     m_bStartCloudMixStream = true;
+
+    updateMixTranCodeInfo(CDataCenter::GetInstance()->_remoteVideoInfo, CDataCenter::GetInstance()->_localVideoInfo, true);
 }
 
 void TRTCCloudCore::stopCloudMixStream()
@@ -919,7 +935,7 @@ bool TRTCCloudCore::isChangeMixTranCodeInfo(std::vector<UserVideoInfo> vec)
     return false;
 }
 
-void TRTCCloudCore::updateMixTranCodeInfo(std::vector<UserVideoInfo> vec, UserVideoInfo& localInfo)
+void TRTCCloudCore::updateMixTranCodeInfo(std::vector<UserVideoInfo> vec, UserVideoInfo& localInfo, bool bForce)
 {
     if (m_bStartCloudMixStream == false)
         return;
@@ -930,7 +946,7 @@ void TRTCCloudCore::updateMixTranCodeInfo(std::vector<UserVideoInfo> vec, UserVi
         return;
     }
 
-    if (isChangeMixTranCodeInfo(vec) == false)
+    if (isChangeMixTranCodeInfo(vec) == false && bForce == false)
         return;
     if (localInfo.userId.compare("") == 0)
         return;

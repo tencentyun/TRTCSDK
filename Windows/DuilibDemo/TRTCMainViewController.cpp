@@ -174,12 +174,13 @@ void TRTCMainViewController::InitWindow()
 	TRTCCloudCore::GetInstance()->regSDKMsgObserver(WM_USER_CMD_VodStart, GetHWND());
 	TRTCCloudCore::GetInstance()->regSDKMsgObserver(WM_USER_CMD_VodEnd, GetHWND());
     TRTCCloudCore::GetInstance()->regSDKMsgObserver(WM_USER_CMD_UserVoiceVolume, GetHWND());
-    TRTCCloudCore::GetInstance()->regSDKMsgObserver(WM_USER_CMD_UserListStaticChange, GetHWND());
+    //TRTCCloudCore::GetInstance()->regSDKMsgObserver(WM_USER_CMD_UserListStaticChange, GetHWND());
     TRTCCloudCore::GetInstance()->regSDKMsgObserver(WM_USER_CMD_PKConnectStatus, GetHWND());
     TRTCCloudCore::GetInstance()->regSDKMsgObserver(WM_USER_CMD_PKDisConnectStatus, GetHWND());
     TRTCCloudCore::GetInstance()->regSDKMsgObserver(WM_USER_CMD_NetworkQuality, GetHWND());
     TRTCCloudCore::GetInstance()->regSDKMsgObserver(WM_USER_CMD_CustomVideoCapture, GetHWND());
     TRTCCloudCore::GetInstance()->regSDKMsgObserver(WM_USER_CMD_CustomAudioCapture, GetHWND());
+    TRTCCloudCore::GetInstance()->regSDKMsgObserver(WM_USER_CMD_FirstVideoFrame, GetHWND());
 
     //设置连接环境
     bool bLinkTestServer = CDataCenter::GetInstance()->m_bLinkTestServer;
@@ -516,6 +517,7 @@ LRESULT TRTCMainViewController::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM l
         delete userId;
         userId = nullptr;
     }
+    /*
     else if (uMsg == WM_USER_CMD_UserListStaticChange)
     {
         std::vector<UserVideoInfo>* vecList = (std::vector<UserVideoInfo>*)wParam;
@@ -527,6 +529,7 @@ LRESULT TRTCMainViewController::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM l
         delete localInfo;
         localInfo = nullptr;
     }
+    */
     else if (uMsg == WM_USER_SET_SHOW_VOICEVOLUME)
     {
         bool bShow = (bool)wParam;
@@ -602,6 +605,16 @@ LRESULT TRTCMainViewController::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM l
         }
 
     }
+    else if (uMsg == WM_USER_CMD_FirstVideoFrame)
+    {
+        std::string * userId = (std::string *)wParam;
+        uint32_t resolution = (uint32_t)lParam;
+        uint32_t width = resolution >> 16;
+        uint32_t height = resolution - width << 16;
+        onFirstVideoFrame(*userId, width, height);
+        delete userId;
+        userId = nullptr;
+    }
     LRESULT lRes = 0;
     if (m_pmUI.MessageHandler(uMsg, wParam, lParam, lRes))
         return lRes;
@@ -636,10 +649,19 @@ void TRTCMainViewController::onEnterRoom(uint32_t useTime)
     TXLiveAvVideoView::appendEventLogText(info._userId, TRTCVideoStreamTypeBig, strFormat.GetData());
     //m_pViewDispatch->AppendEventLogText(info._userId, strFormat.GetData());
     info._bEnterRoom = true;
+
+    CDataCenter::GetInstance()->_localVideoInfo.userId = info._userId;
+    TRTCVideoEncParam params = CDataCenter::GetInstance()->m_videoEncParams;
+    long cWidth = 640, cHeight = 360;
+    convertCaptureResolution(params.videoResolution, cWidth, cHeight);
+    CDataCenter::GetInstance()->_localVideoInfo.width = cWidth;
+    CDataCenter::GetInstance()->_localVideoInfo.height = cHeight;
+    TRTCCloudCore::GetInstance()->updateMixTranCodeInfo(CDataCenter::GetInstance()->_remoteVideoInfo, CDataCenter::GetInstance()->_localVideoInfo);
 }
 
 void TRTCMainViewController::onExitRoom(int reason)
 {
+    CDataCenter::GetInstance()->_remoteVideoInfo.clear();
     CDataCenter::GetInstance()->CleanRoomInfo();
     TRTCCloudCore::GetInstance()->Uninit();
     TRTCLoginViewController* pLogin = new TRTCLoginViewController();
@@ -654,24 +676,7 @@ void TRTCMainViewController::onExitRoom(int reason)
 void TRTCMainViewController::onUserEnter(std::string userId)
 {
     uint32_t roomId = 0;
-    bool bPKUser = m_pMainViewBottomBar->onPKUserEnterRoom(userId, roomId);
-    int bRet = 0;
-    if (bPKUser)
-        bRet = m_pVideoViewLayout->dispatchPKVideoView(Ansi2Wide(userId), TRTCVideoStreamType::TRTCVideoStreamTypeBig, roomId);
-    else
-        bRet = m_pVideoViewLayout->dispatchVideoView(Ansi2Wide(userId), TRTCVideoStreamType::TRTCVideoStreamTypeBig);
-
-    RemoteUserInfo remoteInfo;
-    remoteInfo._bSubscribeAudio = true;
-    if (bRet == 0 && TRTCCloudCore::GetInstance()->getTRTCCloud()) {
-        TRTCCloudCore::GetInstance()->getTRTCCloud()->startRemoteView(userId.c_str(), NULL);
-        remoteInfo._bSubscribeVideo = true;
-    }
-    else
-        remoteInfo._bSubscribeVideo = false;
-
-    std::pair<std::string, TRTCVideoStreamType> key = { userId, TRTCVideoStreamTypeBig };
-    CDataCenter::GetInstance()->m_remoteUser.insert({ key, remoteInfo });
+    m_pMainViewBottomBar->onPKUserEnterRoom(userId, roomId);
 
     CDataCenter::LocalUserInfo info = CDataCenter::GetInstance()->getLocalUserInfo();
     CDuiString strFormat;
@@ -711,6 +716,26 @@ void TRTCMainViewController::onUserExit(std::string userId)
         else
             iter++;
     }
+
+    std::vector<UserVideoInfo>::iterator iter_vec;
+    for (iter_vec = CDataCenter::GetInstance()->_remoteVideoInfo.begin(); iter_vec != CDataCenter::GetInstance()->_remoteVideoInfo.end();)
+    {
+        if (iter_vec->userId == userId)
+        {
+            iter_vec = CDataCenter::GetInstance()->_remoteVideoInfo.erase(iter_vec);
+            break;
+        }
+        else
+            iter_vec++;
+    }
+
+    TRTCVideoEncParam params = CDataCenter::GetInstance()->m_videoEncParams;
+    long cWidth = 640, cHeight = 360;
+    convertCaptureResolution(params.videoResolution, cWidth, cHeight);
+    CDataCenter::GetInstance()->_localVideoInfo.width = cWidth;
+    CDataCenter::GetInstance()->_localVideoInfo.height = cHeight;
+
+    TRTCCloudCore::GetInstance()->updateMixTranCodeInfo(CDataCenter::GetInstance()->_remoteVideoInfo, CDataCenter::GetInstance()->_localVideoInfo);
 }
 
 void TRTCMainViewController::onSubVideoAvailable(std::string userId, bool available)
@@ -750,19 +775,57 @@ void TRTCMainViewController::onSubVideoAvailable(std::string userId, bool availa
 
 void TRTCMainViewController::onVideoAvailable(std::string userId, bool available)
 {
-    /*
-	if (available) {
-		int bRet = m_pViewDispatch->dispatchVideoView(Ansi2Wide(userId), TRTCVideoStreamType::TRTCVideoStreamTypeBig);
-		if (bRet == 0 && TRTCCloudCore::GetInstance()->getTRTCCloud()) {
-			TRTCCloudCore::GetInstance()->getTRTCCloud()->startRemoteView(userId.c_str(), NULL);
-		}
-	}
-	else {
-		if (TRTCCloudCore::GetInstance()->getTRTCCloud())
-			TRTCCloudCore::GetInstance()->getTRTCCloud()->stopRemoteView(userId.c_str());
-		m_pViewDispatch->deleteVideoView(Ansi2Wide(userId), TRTCVideoStreamType::TRTCVideoStreamTypeBig);
-	}
-    */
+    if (available) {
+        RemoteUserInfo remoteInfo;
+        remoteInfo._bSubscribeVideo = false;
+        int bRet = m_pVideoViewLayout->dispatchVideoView(Ansi2Wide(userId), TRTCVideoStreamTypeBig);
+        if (bRet == 0 && TRTCCloudCore::GetInstance()->getTRTCCloud()) {
+            TRTCCloudCore::GetInstance()->getTRTCCloud()->startRemoteView(userId.c_str(), NULL);
+            remoteInfo._bSubscribeVideo = true;
+        }
+        std::pair<std::string, TRTCVideoStreamType> key = { userId, TRTCVideoStreamTypeBig };
+        CDataCenter::GetInstance()->m_remoteUser.insert({ key, remoteInfo });
+
+    }
+    else {
+        if (TRTCCloudCore::GetInstance()->getTRTCCloud())
+            TRTCCloudCore::GetInstance()->getTRTCCloud()->stopRemoteView(userId.c_str());
+        m_pVideoViewLayout->deleteVideoView(Ansi2Wide(userId), TRTCVideoStreamTypeBig);
+
+        RemoteUserListMap& _remoteList = CDataCenter::GetInstance()->m_remoteUser;
+        RemoteUserListMap::iterator iter;//定义一个迭代指针iter
+        for (iter = _remoteList.begin(); iter != _remoteList.end();)
+        {
+            if (iter->first == std::make_pair(userId, TRTCVideoStreamTypeBig))
+            {
+                iter = _remoteList.erase(iter);
+                break;
+            }
+            else
+                iter++;
+        }
+
+        std::vector<UserVideoInfo>::iterator iter_vec;
+        for (iter_vec = CDataCenter::GetInstance()->_remoteVideoInfo.begin(); iter_vec != CDataCenter::GetInstance()->_remoteVideoInfo.end();)
+        {
+            if (iter_vec->userId == userId)
+            {
+                iter_vec = CDataCenter::GetInstance()->_remoteVideoInfo.erase(iter_vec);
+                break;
+            }
+            else
+                iter_vec++;
+        }
+
+        TRTCVideoEncParam params = CDataCenter::GetInstance()->m_videoEncParams;
+        long cWidth = 640, cHeight = 360;
+        convertCaptureResolution(params.videoResolution, cWidth, cHeight);
+        CDataCenter::GetInstance()->_localVideoInfo.width = cWidth;
+        CDataCenter::GetInstance()->_localVideoInfo.height = cHeight;
+
+        TRTCCloudCore::GetInstance()->updateMixTranCodeInfo(CDataCenter::GetInstance()->_remoteVideoInfo, CDataCenter::GetInstance()->_localVideoInfo);
+
+    }
 }
 
 void TRTCMainViewController::onError(int errCode)
@@ -820,10 +883,12 @@ void TRTCMainViewController::onNetworkQuality(std::string userId, int quality)
         m_pVideoViewLayout->updateNetSignal(Ansi2Wide(userId), quality);
 }
 
+/*
 void TRTCMainViewController::onUserVideoListChange(std::vector<UserVideoInfo> vec, UserVideoInfo& localInfo)
 {
     TRTCCloudCore::GetInstance()->updateMixTranCodeInfo(vec, localInfo);
 }
+*/
 
 void TRTCMainViewController::onViewBtnClickEvent(int id, std::wstring userId, int streamType)
 {
@@ -1003,6 +1068,37 @@ void TRTCMainViewController::DoExitRoom()
     }
 }
 
+void TRTCMainViewController::onFirstVideoFrame(std::string userId, uint32_t width, uint32_t height)
+{
+    bool bFind = false;
+    for (auto& it : CDataCenter::GetInstance()->_remoteVideoInfo)
+    {
+        if (it.userId == userId)
+        {
+            it.width = width;
+            it.height = height;
+            bFind = true;
+            break;
+        }
+    }
+    if (bFind == false)
+    {
+        UserVideoInfo info;
+        info.userId = userId;
+        info.width = width;
+        info.height = height;
+        CDataCenter::GetInstance()->_remoteVideoInfo.push_back(info);
+    }
+
+    TRTCVideoEncParam params = CDataCenter::GetInstance()->m_videoEncParams;
+    long cWidth = 640, cHeight = 360;
+    convertCaptureResolution(params.videoResolution, cWidth, cHeight);
+    CDataCenter::GetInstance()->_localVideoInfo.width = cWidth;
+    CDataCenter::GetInstance()->_localVideoInfo.height = cHeight;
+
+    TRTCCloudCore::GetInstance()->updateMixTranCodeInfo(CDataCenter::GetInstance()->_remoteVideoInfo, CDataCenter::GetInstance()->_localVideoInfo);
+}
+
 bool TRTCMainViewController::isTestStringRoomId()
 {
     WCHAR fileBuffer[MAX_PATH] = { 0 };
@@ -1023,4 +1119,137 @@ bool TRTCMainViewController::isTestStringRoomId()
     }
 
     return false;
+}
+
+void TRTCMainViewController::getSizeAlign16(long originWidth, long originHeight, long& align16Width, long& align16Height)
+{
+    // 转换16对齐的宽高
+    // 宽度和高度能被16整除，并尽量保留宽高比
+
+#if defined(_WIN32)
+    assert(originWidth > 0 && originHeight > 0);
+#endif
+
+    // 640x360 或 360x640，通常换算为640x368 或 368x640，但实际656x368 或 368x656更加接近原始宽高比，做下适配
+    if (640 == originWidth && 360 == originHeight)
+    {
+        align16Width = 640;
+        align16Height = 368;
+
+        return;
+    }
+    else if (360 == originWidth && 640 == originHeight)
+    {
+        align16Width = 368;
+        align16Height = 640;
+
+        return;
+    }
+
+    bool isWidthAlign16 = (0 == originWidth % 16);
+    bool isHeightAlign16 = (0 == originHeight % 16);
+    if (isWidthAlign16 && isHeightAlign16) {
+        align16Width = originWidth;
+        align16Height = originHeight;
+    }
+    else if (!isWidthAlign16 && isHeightAlign16) {
+        align16Width = (originWidth + 15) / 16 * 16;
+
+        double originRatio = (double)originWidth / originHeight;
+        double modRatio = (double)align16Width / originHeight;
+        double add16Ratio = (double)align16Width / (originHeight + 16);
+        if (std::fabs(modRatio - originRatio) <= std::fabs(add16Ratio - originRatio)) {
+            align16Height = originHeight;
+        }
+        else {
+            align16Height = originHeight + 16;
+        }
+    }
+    else if (isWidthAlign16 && !isHeightAlign16) {
+        align16Height = (originHeight + 15) / 16 * 16;
+
+        double originRatio = (double)originWidth / originHeight;
+        double modRatio = (double)originWidth / align16Height;
+        double add16Ratio = (double)(originWidth + 16) / align16Height;
+        if (std::fabs(modRatio - originRatio) <= std::fabs(add16Ratio - originRatio)) {
+            align16Width = originWidth;
+        }
+        else {
+            align16Width = originWidth + 16;
+        }
+    }
+    else { // !isWidthAlign16 && !isHeightAlign16
+        align16Width = (originWidth + 15) / 16 * 16;
+        align16Height = (originHeight + 15) / 16 * 16;
+    }
+}
+
+void TRTCMainViewController::convertCaptureResolution(TRTCVideoResolution resolution, long& width, long& height)
+{
+    switch (resolution)
+    {
+    case TRTCVideoResolution_120_120:
+        getSizeAlign16(120, 120, width, height);
+        break;
+    case TRTCVideoResolution_160_160:
+        getSizeAlign16(160, 160, width, height);
+        break;
+    case TRTCVideoResolution_270_270:
+        getSizeAlign16(270, 270, width, height);
+        break;
+    case TRTCVideoResolution_480_480:
+        getSizeAlign16(480, 480, width, height);
+        break;
+    case TRTCVideoResolution_160_120:
+        getSizeAlign16(160, 120, width, height);
+        break;
+    case TRTCVideoResolution_240_180:
+        getSizeAlign16(240, 180, width, height);
+        break;
+    case TRTCVideoResolution_280_210:
+        getSizeAlign16(280, 210, width, height);
+        break;
+    case TRTCVideoResolution_320_240:
+        getSizeAlign16(320, 240, width, height);
+        break;
+    case TRTCVideoResolution_400_300:
+        getSizeAlign16(400, 300, width, height);
+        break;
+    case TRTCVideoResolution_480_360:
+        getSizeAlign16(480, 360, width, height);
+        break;
+    case TRTCVideoResolution_640_480:
+        getSizeAlign16(640, 480, width, height);
+        break;
+    case TRTCVideoResolution_960_720:
+        getSizeAlign16(960, 720, width, height);
+        break;
+    case TRTCVideoResolution_160_90:
+        getSizeAlign16(160, 90, width, height);
+        break;
+    case TRTCVideoResolution_256_144:
+        getSizeAlign16(256, 144, width, height);
+        break;
+    case TRTCVideoResolution_320_180:
+        getSizeAlign16(320, 180, width, height);
+        break;
+    case TRTCVideoResolution_480_270:
+        getSizeAlign16(480, 270, width, height);
+        break;
+    case TRTCVideoResolution_640_360:
+        getSizeAlign16(640, 360, width, height);
+        break;
+    case TRTCVideoResolution_960_540:
+        getSizeAlign16(960, 540, width, height);
+        break;
+    case TRTCVideoResolution_1280_720:
+        getSizeAlign16(1280, 720, width, height);
+        break;
+    case TRTCVideoResolution_1920_1080:
+        getSizeAlign16(1920, 1080, width, height);
+        break;
+    default:
+        assert(false);
+        break;
+    }
 }

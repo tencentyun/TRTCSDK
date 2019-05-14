@@ -27,10 +27,11 @@
 #define WM_USER_CMD_VodStart             WM_USER_CMD + 54     //播片分享开始
 #define WM_USER_CMD_VodEnd             WM_USER_CMD + 55     //播片分享关闭
 #define WM_USER_CMD_UserVoiceVolume    WM_USER_CMD + 56     //用户声音音量值
-#define WM_USER_CMD_UserListStaticChange    WM_USER_CMD + 57     //用户声音音量值
+//#define WM_USER_CMD_UserListStaticChange    WM_USER_CMD + 57     //用户声音音量值
 #define WM_USER_CMD_PKConnectStatus    WM_USER_CMD + 58     //用户声音音量值
 #define WM_USER_CMD_PKDisConnectStatus    WM_USER_CMD + 59     //用户声音音量值
 #define WM_USER_CMD_NetworkQuality    WM_USER_CMD + 60     //用户声音音量值
+#define WM_USER_CMD_FirstVideoFrame    WM_USER_CMD + 61     //第一帧视频数据。
 
 //音视频数据消息
 #define WM_USER_MEDIA_DATA WM_USER + 200

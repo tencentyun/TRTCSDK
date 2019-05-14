@@ -22,6 +22,17 @@ typedef struct _tagPKUserInfo
     bool bEnterRoom = false;
 }PKUserInfo;
 
+struct UserVideoInfo
+{
+    std::string userId = "";
+    std::string roomId = "";
+
+    uint32_t width;
+    uint32_t height;
+    uint32_t fps;
+    bool bPureAudio = false;
+};
+
 typedef std::multimap<std::pair<std::string, TRTCVideoStreamType>, RemoteUserInfo> RemoteUserListMap;
 
 class CDataCenter
@@ -114,5 +125,9 @@ public: //trtc
 public:
     LocalUserInfo m_loginInfo;
     CConfigMgr* m_pConfigMgr;
+
+
+    UserVideoInfo _localVideoInfo;
+    std::vector<UserVideoInfo> _remoteVideoInfo;
 };
 

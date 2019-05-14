@@ -46,8 +46,9 @@ public:
     void onSDKEventData(int streamType, std::string userId, std::string data);
     void onUserVoiceVolume(std::string userId, uint32_t volume);
     void onNetworkQuality(std::string userId, int quality);
-    void onUserVideoListChange(std::vector<UserVideoInfo> vec, UserVideoInfo& localInfo);
+    //void onUserVideoListChange(std::vector<UserVideoInfo> vec, UserVideoInfo& localInfo);
     void DoExitRoom();
+    void onFirstVideoFrame(std::string userId, uint32_t width, uint32_t height);
 private:
     void InitWindow();
     void CheckDeviceStatus();
@@ -61,6 +62,8 @@ public:
     TRTCVideoViewLayout* getTRTCVideoViewLayout();
 private:
     bool isTestStringRoomId();
+    void getSizeAlign16(long originWidth, long originHeight, long& align16Width, long& align16Height);
+    void convertCaptureResolution(TRTCVideoResolution resolution, long& width, long& height);
 private:
     MainViewBottomBar* m_pMainViewBottomBar = nullptr;
     TRTCVideoViewLayout* m_pVideoViewLayout = nullptr;
@@ -70,4 +73,5 @@ private:
 
     UINT m_nCustomVideoTimerID = 10001;
     UINT m_nCustomAudioTimerID = 10002;
+
 };
