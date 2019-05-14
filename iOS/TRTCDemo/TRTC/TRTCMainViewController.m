@@ -776,17 +776,6 @@ typedef enum : NSUInteger {
     [self.view addSubview:remoteView];
     [_remoteViewDic setObject:remoteView forKey:userId];
 
-    // 启动远程画面的解码和显示逻辑，FillMode 可以设置是否显示黑边
-    if (!self.enableCustomVideoCapture) {
-        [_trtc startRemoteView:userId view:remoteView];
-        [_trtc setRemoteViewFillMode:userId mode:TRTCVideoFillMode_Fit];
-    }
-    else {
-        //测试自定义渲染
-        [_trtc setRemoteVideoRenderDelegate:userId delegate:_customVideoRenderTester pixelFormat:TRTCVideoPixelFormat_NV12 bufferType:TRTCVideoBufferType_PixelBuffer];
-        [_customVideoRenderTester addUser:userId videoView:remoteView];
-        [_trtc startRemoteView:userId view:nil];
-    }
     // 将新进来的成员设置成大画面
     _mainViewUserId = userId;
 
@@ -831,40 +820,27 @@ typedef enum : NSUInteger {
 
 - (void)onUserVideoAvailable:(NSString *)userId available:(BOOL)available
 {
-//    if (available) {
-//        TRTCVideoView *remoteView = [TRTCVideoView newVideoViewWithType:VideoViewType_Remote userId:userId];
-//        remoteView.delegate = self;
-//        [remoteView setBackgroundColor:UIColorFromRGB(0x262626)];
-//        [self.view addSubview:remoteView];
-//        [_remoteViewDic setObject:remoteView forKey:userId];
-//
-//        // 启动远程画面的解码和显示逻辑，FillMode 可以设置是否显示黑边
-//        [_trtc startRemoteView:userId view:remoteView];
-//        [_trtc setRemoteViewFillMode:userId mode:TRTCVideoFillMode_Fit];
-//        // 将新进来的成员设置成大画面
-//        _mainViewUserId = userId;
-//
-//    }
-//    else {
-//        UIView *playerView = [_remoteViewDic objectForKey:userId];
-//        [playerView removeFromSuperview];
-//        [_remoteViewDic removeObjectForKey:userId];
-//
-//        NSString* subViewId = [NSString stringWithFormat:@"%@-sub", userId];
-//        UIView *subStreamPlayerView = [_remoteViewDic objectForKey:subViewId];
-//        [subStreamPlayerView removeFromSuperview];
-//        [_remoteViewDic removeObjectForKey:subViewId];
-//
-//        // 如果该成员是大画面，则当其离开后，大画面设置为本地推流画面
-//        if ([userId isEqual:_mainViewUserId] || [subViewId isEqualToString:_mainViewUserId]) {
-//            _mainViewUserId = _selfUserID;
-//        }
-//
-//    }
-//    [self relayout];
-    TRTCVideoView* videoView = [_remoteViewDic objectForKey:userId];
-    [videoView showVideoCloseTip:!available];
-    
+    if (userId != nil) {
+        TRTCVideoView* remoteView = [_remoteViewDic objectForKey:userId];
+        if (available) {
+            // 启动远程画面的解码和显示逻辑，FillMode 可以设置是否显示黑边
+            if (!self.enableCustomVideoCapture) {
+                [_trtc startRemoteView:userId view:remoteView];
+                [_trtc setRemoteViewFillMode:userId mode:TRTCVideoFillMode_Fit];
+            }
+            else {
+                //测试自定义渲染
+                [_trtc setRemoteVideoRenderDelegate:userId delegate:_customVideoRenderTester pixelFormat:TRTCVideoPixelFormat_NV12 bufferType:TRTCVideoBufferType_PixelBuffer];
+                [_customVideoRenderTester addUser:userId videoView:remoteView];
+                [_trtc startRemoteView:userId view:nil];
+            }
+        }
+        else {
+            [_trtc stopRemoteView:userId];
+        }
+        
+        [remoteView showVideoCloseTip:!available];
+    }
 
     NSLog(@"onUserVideoAvailable:userId:%@ alailable:%u", userId, available);
 

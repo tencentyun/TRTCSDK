@@ -606,11 +606,24 @@ static NSString * const VideoIcon[2] = {@"main_tool_video_on", @"main_tool_video
         self.bigSmallStreamState[userId] = @(TRTCVideoStreamTypeSmall);
         [self.trtcEngine setRemoteVideoStreamType:userId type:TRTCVideoStreamTypeSmall];
     }
-    [self.trtcEngine startRemoteView:userId view:videoView];
 
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self updateLayoutVideoFrame];
     });
+}
+
+- (void)onUserVideoAvailable:(NSString *)userId available:(BOOL)available
+{
+    //远程画面
+    if (userId != nil) {
+        TXRenderView* videoView = [self renderViewForUser:userId];
+        if (available) {
+            [self.trtcEngine startRemoteView:userId view:videoView];
+        }
+        else {
+            [self.trtcEngine stopRemoteView:userId];
+        }
+    }
 }
 
 - (void)onDevice:(NSString *)deviceId type:(TRTCMediaDeviceType)deviceType stateChanged:(NSInteger)state
