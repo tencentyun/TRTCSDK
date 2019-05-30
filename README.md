@@ -1,5 +1,6 @@
-# 腾讯云实时音视频终端组件 TRTC SDK
-覆盖iOS、Android、Windows、Mac、浏览器和微信小程序六大应用平台，致力于提供全球最好的视频通话和直播连麦解决方案。
+## 分流下载
+腾讯云分流下载地址，适用于访问 Github 较慢的客户 ：[DOWNLOAD](https://github-1252463788.cos.ap-shanghai.myqcloud.com/trtcsdk/TRTCSDK-6.4.7110.zip)
+
 
 ## 最新版本 6.4.7110 @ 2019.04.25
 
