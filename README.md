@@ -74,10 +74,10 @@ Windows
 ![](https://main.qcloudimg.com/raw/00ec3ebc86902044c51a5487c18dcd0c.jpg)
 
 ### 微信小程序
-![](https://main.qcloudimg.com/raw/81662cce932b2500addac28baf6a83b3.jpg)
+>![](https://main.qcloudimg.com/raw/81662cce932b2500addac28baf6a83b3.jpg)
 
 ### Web 网页
-> [谷歌浏览器打开体验](https://sxb.qcloud.com/miniApp/?from=qcloud.com)
+> [Chrome 打开体验](https://sxb.qcloud.com/miniApp/?from=qcloud.com)
 ![](https://main.qcloudimg.com/raw/56e2bbc928a11bac85e5b78ac171b3bc.jpg)
 
 
