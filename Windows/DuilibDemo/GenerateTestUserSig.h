@@ -36,8 +36,8 @@ struct TXCloudAccountInfo
     *  NOTE: 【此处是一个“无效”的私钥样例，仅仅代码编写参考】
     */
     const char* _PRIVATEKEY = "-----BEGIN PRIVATE KEY-----\n"
-        "MIGHAgEAMBM  “无效”的私钥样例，仅仅代码编写参考   GBB6RtS7EMWX\n"
-        "nnXrYKui2gM  “无效”的私钥样例，仅仅代码编写参考   IlzTwqs0DD03\n"
+        "MIGHAgEAMBM  “无效”的私钥样例，仅仅代码编写参考   GBB4h682EMWX\n"
+        "nnXrYKui2gM  “无效”的私钥样例，仅仅代码编写参考   Ilzaqs04A03\n"
         "ELuZK8EIQWA  “无效”的私钥样例，仅仅代码编写参考   pBKP\n"
         "-----END PRIVATE KEY-----\n";
 
