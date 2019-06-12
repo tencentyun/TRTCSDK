@@ -1,5 +1,8 @@
 # 腾讯云实时音视频终端组件 TRTC SDK
 
+## 分流下载
+腾讯云分流下载地址，适用于访问 Github 较慢的客户 ：[DOWNLOAD](https://github-1252463788.cos.ap-shanghai.myqcloud.com/trtcsdk/TRTCSDK-6.5.7272.zip)
+
 ## 最新版本 6.5.7272 @ 2019.06.12
 
 ### 新增特性
