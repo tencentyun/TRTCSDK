@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.tencent.liteav.demo.R;
 import com.tencent.trtc.TRTCCloud;
+import com.tencent.trtc.TRTCCloudDef;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -44,7 +45,7 @@ import java.util.List;
  *  （2）在真实的使用场景中，房间号大多不是用户手动输入的，而是系统分配的，
  *       比如视频会议中的会议号是会控系统提前预定好的，客服系统中的房间号也是根据客服员工的工号决定的。
  */
-public class TRTCNewActivity extends Activity {
+public class TRTCNewActivity extends Activity implements View.OnClickListener {
     private final static int REQ_PERMISSION_CODE = 0x1000;
     private TRTCGetUserIDAndUserSig mUserInfoLoader;
     private String mUserId = "";
@@ -59,6 +60,16 @@ public class TRTCNewActivity extends Activity {
         final EditText etUserId = (EditText)findViewById(R.id.et_user_name);
 
         loadUserInfo(etRoomId, etUserId);
+
+        RadioButton rbLive = (RadioButton) findViewById(R.id.rb_live);
+        rbLive.setOnClickListener(this);
+
+        RadioButton rbVideoCall = (RadioButton) findViewById(R.id.rb_videocall);
+        rbVideoCall.setChecked(true);
+        rbVideoCall.setOnClickListener(this);
+
+        RadioButton rbAnchor = (RadioButton) findViewById(R.id.rb_anchor);
+        rbAnchor.setChecked(true);
 
         RadioButton rbCamera = (RadioButton) findViewById(R.id.rb_camera);
         rbCamera.setChecked(true);
@@ -120,13 +131,6 @@ public class TRTCNewActivity extends Activity {
         // 申请动态权限
         checkPermission();
     }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-
     /**
      *  Function: 读取用户输入，并创建（或加入）音视频房间
      *
@@ -147,9 +151,22 @@ public class TRTCNewActivity extends Activity {
         intent.putExtra("roomId", roomId);
         intent.putExtra("userId", userId);
 
+        RadioButton rbLive = (RadioButton) findViewById(R.id.rb_live);
+        if (rbLive.isChecked()) {
+            intent.putExtra("AppScene", TRTCCloudDef.TRTC_APP_SCENE_LIVE);
+            RadioButton rbAnchor = (RadioButton) findViewById(R.id.rb_anchor);
+            if (rbAnchor.isChecked())  {
+                intent.putExtra("role", TRTCCloudDef.TRTCRoleAnchor);
+            } else {
+                intent.putExtra("role", TRTCCloudDef.TRTCRoleAudience);
+            }
+        } else {
+            intent.putExtra("AppScene", TRTCCloudDef.TRTC_APP_SCENE_VIDEOCALL);
+        }
+
+
         boolean isCustomVideoCapture = ((RadioButton)findViewById(R.id.rb_video_file)).isChecked();
         if (TextUtils.isEmpty(mVideoFile)) isCustomVideoCapture = false;
-        intent.putExtra("customAudioCapture", ((CheckBox)findViewById(R.id.cb_enable_custom_audio_capture)).isChecked());
         intent.putExtra("customVideoCapture", isCustomVideoCapture);
         intent.putExtra("videoFile", mVideoFile);
 
@@ -197,6 +214,12 @@ public class TRTCNewActivity extends Activity {
                 });
             }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
     }
 
     private void startJoinRoom() {
@@ -467,5 +490,20 @@ public class TRTCNewActivity extends Activity {
      */
     public boolean isMediaDocument(Uri uri) {
         return "com.android.providers.media.documents".equals(uri.getAuthority());
+    }
+
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        switch (id) {
+            case R.id.rb_live: {
+                findViewById(R.id.role).setVisibility(View.VISIBLE);
+                break;
+            }
+            case R.id.rb_videocall: {
+                findViewById(R.id.role).setVisibility(View.GONE);
+                break;
+            }
+        }
     }
 }

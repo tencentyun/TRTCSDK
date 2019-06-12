@@ -5,7 +5,8 @@
     </style>
     <style name="AppTheme" parent="AppBaseTheme">
     </style>
-
+    <style name="NewActivityTheme" parent="Theme.AppCompat.NoActionBar">
+    </style>
     <style name="common_dlg" parent="@android:style/Theme.Holo.Light.Dialog">
         <item name="android:windowNoTitle">false</item>
         <item name="android:windowCloseOnTouchOutside">true</item>

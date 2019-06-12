@@ -33,7 +33,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 
 
 /**
@@ -47,12 +46,13 @@ import java.util.HashSet;
  *
  *    3. 创建或者加入某一个通话房间，需要先指定 roomId 和 userId，这部分由 TRTCNewActivity 来实现
  */
-public class TRTCMainActivity extends Activity implements View.OnClickListener, TRTCSettingDialog.ISettingListener, TRTCMoreDialog.IMoreListener, TRTCVideoViewLayout.ITRTCVideoViewLayoutListener {
+public class TRTCMainActivity extends Activity implements View.OnClickListener, TRTCSettingDialog.ISettingListener, TRTCMoreDialog.IMoreListener, TRTCVideoViewLayout.ITRTCVideoViewLayoutListener , TRTCBeautySettingPanel.IOnBeautyParamsChangeListener{
     private final static String TAG = TRTCMainActivity.class.getSimpleName();
 
     private boolean bBeautyEnable = true, bEnableVideo = true, bEnableAudio = true, beingLinkMic = false;
     private int iDebugLevel = 0;
     private String mUserIdBeingLink = "";
+    private String mRoomIdBeingLink = "";
 
     private TextView tvRoomId;
     private EditText etRoomId, etUserId;
@@ -60,12 +60,11 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
     private TRTCSettingDialog settingDlg;
     private TRTCMoreDialog moreDlg;
     private TRTCVideoViewLayout mVideoViewLayout;
+    private TRTCBeautySettingPanel mBeautyPannelView;
 
     private TRTCCloudDef.TRTCParams trtcParams;     /// TRTC SDK 视频通话房间进入所必须的参数
     private TRTCCloud trtcCloud;              /// TRTC SDK 实例对象
     private TRTCCloudListenerImpl trtcListener;    /// TRTC SDK 回调监听
-
-    private HashSet<String> mRoomMembers = new HashSet<>();
 
     private boolean mEnableCustomVideoCapture;
     private TestSendCustomVideoData mCustomCapture;
@@ -77,6 +76,19 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
     private int              mRuddyLevel = 2;
     private int              mBeautyStyle = TRTCCloudDef.TRTC_BEAUTY_STYLE_SMOOTH;
     private int              mSdkAppId = -1;
+    private int              mAppScene = TRTCCloudDef.TRTC_APP_SCENE_VIDEOCALL;
+
+    private static class VideoStream {
+        String  userId;
+        int     streamType;
+        public boolean equals(Object obj) {
+            if(obj == null || userId == null) return false;
+            VideoStream stream = (VideoStream) obj;
+            return (this.streamType == stream.streamType && this.userId.equals(stream.userId));
+        }
+    }
+    private ArrayList<VideoStream> mVideosInRoom = new ArrayList<>();
+
     @Override
     protected void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,7 +100,7 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
 
         //获取前一个页面得到的进房参数
         Intent intent       = getIntent();
-        mSdkAppId        = intent.getIntExtra("sdkAppId", 0);
+        mSdkAppId           = intent.getIntExtra("sdkAppId", 0);
         int roomId          = intent.getIntExtra("roomId", 0);
         String selfUserId   = intent.getStringExtra("userId");
         String userSig      = intent.getStringExtra("userSig");
@@ -100,6 +112,9 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
             mCustomRender = new TestRenderVideoFrame(this);
         }
         trtcParams = new TRTCCloudDef.TRTCParams(mSdkAppId, selfUserId, userSig, roomId, "", "");
+        trtcParams.role = intent.getIntExtra("role", TRTCCloudDef.TRTCRoleAnchor);
+
+        mAppScene = intent.getIntExtra("AppScene", TRTCCloudDef.TRTC_APP_SCENE_VIDEOCALL);
 
         //初始化 UI 控件
         initView();
@@ -121,11 +136,8 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-        //销毁 trtc 实例
+        trtcCloud.setListener(null);
         TRTCCloud.destroySharedInstance();
-        trtcCloud = null;
-
     }
 
     @Override
@@ -149,8 +161,6 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
         mVideoViewLayout = (TRTCVideoViewLayout) findViewById(R.id.ll_mainview);
         mVideoViewLayout.setUserId(trtcParams.userId);
         mVideoViewLayout.setListener(this);
-        TXCloudVideoView localVideoView = mVideoViewLayout.getCloudVideoViewByIndex(0);
-        localVideoView.setUserId(trtcParams.userId);
 
         ivShowMode = (ImageView) findViewById(R.id.iv_show_mode);
         ivShowMode.setOnClickListener(this);
@@ -168,7 +178,7 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
         tvRoomId = (TextView) findViewById(R.id.tv_room_id);
         tvRoomId.setText("" + trtcParams.roomId);
 
-        settingDlg = new TRTCSettingDialog(this, this);
+        settingDlg = new TRTCSettingDialog(this, this, mAppScene);
         moreDlg = new TRTCMoreDialog(this, this);
         findViewById(R.id.rtc_double_room_back_button).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -177,6 +187,9 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
             }
         });
 
+        //美颜p图部分
+        mBeautyPannelView = (TRTCBeautySettingPanel) findViewById(R.id.layoutFaceBeauty);
+        mBeautyPannelView.setBeautyParamsChangeListener(this);
     }
 
     private LinearLayout initClickableLayout(int resId) {
@@ -227,12 +240,13 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
         setTRTCCloudParam();
 
         // 开启视频采集预览
-        startLocalVideo(true);
+        if (trtcParams.role == TRTCCloudDef.TRTCRoleAnchor) {
+            startLocalVideo(true);
+        }
 
         trtcCloud.setBeautyStyle(TRTCCloudDef.TRTC_BEAUTY_STYLE_SMOOTH, 5, 5, 5);
 
-        if (moreDlg.isEnableAudioCapture()) {
-//            enableCustomAudioCapture();
+        if (trtcParams.role == TRTCCloudDef.TRTCRoleAnchor && moreDlg.isEnableAudioCapture()) {
             trtcCloud.startLocalAudio();
         }
 
@@ -250,9 +264,9 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
 
         setLocalViewMirrorMode(moreDlg.getLocalVideoMirror());
 
-        mRoomMembers.clear();
+        mVideosInRoom.clear();
 
-        trtcCloud.enterRoom(trtcParams, settingDlg.getAppScene());
+        trtcCloud.enterRoom(trtcParams, mAppScene);
 
         Toast.makeText(this, "开始进房", Toast.LENGTH_SHORT).show();
     }
@@ -270,7 +284,8 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
         if (trtcCloud != null) {
             trtcCloud.exitRoom();
         }
-//        CustomAudioFileReader.getInstance().stop();
+
+        finish();
     }
 
     @Override
@@ -309,14 +324,9 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
      */
     private void onChangeBeauty() {
         bBeautyEnable = !bBeautyEnable;
-        if (bBeautyEnable) {
-            // 为了简单，全部使用默认值
-            trtcCloud.setBeautyStyle(TRTCCloudDef.TRTC_BEAUTY_STYLE_SMOOTH, 5, 5, 5);
-        } else {
-            // 全部设置0表示关闭美颜
-            trtcCloud.setBeautyStyle(TRTCCloudDef.TRTC_BEAUTY_STYLE_NATURE, 0, 0, 0);
-        }
-        ivBeauty.setImageResource(bBeautyEnable ? R.mipmap.beauty : R.mipmap.beauty2);
+
+        mBeautyPannelView.setVisibility(bBeautyEnable ? View.VISIBLE : View.GONE);
+
     }
 
     /**
@@ -364,7 +374,8 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
      * 打开更多参数设置面板
      */
     private void onShowMoreDlg() {
-        moreDlg.show(beingLinkMic);
+        moreDlg.setRole(trtcParams.role);
+        moreDlg.show(beingLinkMic, mAppScene);
     }
 
     @Override
@@ -397,6 +408,7 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
                 Toast.makeText(activity, "加入房间成功", Toast.LENGTH_SHORT).show();
                 activity.mVideoViewLayout.onRoomEnter();
                 activity.updateCloudMixtureParams();
+                activity.enableAudioVolumeEvaluation(activity.moreDlg.isAudioVolumeEvaluation());
             }
         }
 
@@ -405,10 +417,7 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
          */
         @Override
         public void onExitRoom(int reason) {
-            TRTCMainActivity activity = mContext.get();
-            if (activity != null) {
-                activity.finish();
-            }
+
         }
 
         /**
@@ -418,12 +427,102 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
         public void onError(int errCode, String errMsg, Bundle extraInfo) {
             Log.d(TAG, "sdk callback onError");
             TRTCMainActivity activity = mContext.get();
-            if (activity != null) {
-                Toast.makeText(activity, "onError: " + errMsg + "[" + errCode+ "]" , Toast.LENGTH_SHORT).show();
-                if (errCode == TXLiteAVCode.ERR_ROOM_ENTER_FAIL) {
-                    activity.exitRoom();
-                }
+            if (activity == null) return;
+
+            if(errCode == TXLiteAVCode.ERR_ROOM_REQUEST_TOKEN_HTTPS_TIMEOUT ||
+                    errCode == TXLiteAVCode.ERR_ROOM_REQUEST_IP_TIMEOUT ||
+                    errCode == TXLiteAVCode.ERR_ROOM_REQUEST_ENTER_ROOM_TIMEOUT) {
+                Toast.makeText(activity, "进房超时，请检查网络或稍后重试:" + errCode + "[" + errMsg+ "]" , Toast.LENGTH_SHORT).show();
+                activity.exitRoom();
+                return;
             }
+
+            if(errCode == TXLiteAVCode.ERR_ROOM_REQUEST_TOKEN_INVALID_PARAMETER ||
+                    errCode == TXLiteAVCode.ERR_ENTER_ROOM_PARAM_NULL ||
+                    errCode == TXLiteAVCode.ERR_SDK_APPID_INVALID ||
+                    errCode == TXLiteAVCode.ERR_ROOM_ID_INVALID ||
+                    errCode == TXLiteAVCode.ERR_USER_ID_INVALID ||
+                    errCode == TXLiteAVCode.ERR_USER_SIG_INVALID) {
+                Toast.makeText(activity, "进房参数错误:" + errCode + "[" + errMsg+ "]" , Toast.LENGTH_SHORT).show();
+                activity.exitRoom();
+                return;
+            }
+
+            if(errCode == TXLiteAVCode.ERR_ACCIP_LIST_EMPTY ||
+                    errCode == TXLiteAVCode.ERR_SERVER_INFO_UNPACKING_ERROR ||
+                    errCode == TXLiteAVCode.ERR_SERVER_INFO_TOKEN_ERROR ||
+                    errCode == TXLiteAVCode.ERR_SERVER_INFO_ALLOCATE_ACCESS_FAILED ||
+                    errCode == TXLiteAVCode.ERR_SERVER_INFO_GENERATE_SIGN_FAILED ||
+                    errCode == TXLiteAVCode.ERR_SERVER_INFO_TOKEN_TIMEOUT ||
+                    errCode == TXLiteAVCode.ERR_SERVER_INFO_INVALID_COMMAND ||
+                    errCode == TXLiteAVCode.ERR_SERVER_INFO_GENERATE_KEN_ERROR ||
+                    errCode == TXLiteAVCode.ERR_SERVER_INFO_GENERATE_TOKEN_ERROR ||
+                    errCode == TXLiteAVCode.ERR_SERVER_INFO_DATABASE ||
+                    errCode == TXLiteAVCode.ERR_SERVER_INFO_BAD_ROOMID ||
+                    errCode == TXLiteAVCode.ERR_SERVER_INFO_BAD_SCENE_OR_ROLE ||
+                    errCode == TXLiteAVCode.ERR_SERVER_INFO_ROOMID_EXCHANGE_FAILED ||
+                    errCode == TXLiteAVCode.ERR_SERVER_INFO_STRGROUP_HAS_INVALID_CHARS ||
+                    errCode == TXLiteAVCode.ERR_SERVER_ACC_TOKEN_TIMEOUT ||
+                    errCode == TXLiteAVCode.ERR_SERVER_ACC_SIGN_ERROR ||
+                    errCode == TXLiteAVCode.ERR_SERVER_ACC_SIGN_TIMEOUT ||
+                    errCode == TXLiteAVCode.ERR_SERVER_CENTER_INVALID_ROOMID ||
+                    errCode == TXLiteAVCode.ERR_SERVER_CENTER_CREATE_ROOM_FAILED ||
+                    errCode == TXLiteAVCode.ERR_SERVER_CENTER_SIGN_ERROR ||
+                    errCode == TXLiteAVCode.ERR_SERVER_CENTER_SIGN_TIMEOUT ||
+                    errCode == TXLiteAVCode.ERR_SERVER_CENTER_ADD_USER_FAILED ||
+                    errCode == TXLiteAVCode.ERR_SERVER_CENTER_FIND_USER_FAILED ||
+                    errCode == TXLiteAVCode.ERR_SERVER_CENTER_SWITCH_TERMINATION_FREQUENTLY ||
+                    errCode == TXLiteAVCode.ERR_SERVER_CENTER_LOCATION_NOT_EXIST ||
+                    errCode == TXLiteAVCode.ERR_SERVER_CENTER_ROUTE_TABLE_ERROR ||
+                    errCode ==TXLiteAVCode. ERR_SERVER_CENTER_INVALID_PARAMETER) {
+                Toast.makeText(activity, "进房失败，请稍后重试:" + errCode + "[" + errMsg+ "]" , Toast.LENGTH_SHORT).show();
+                activity.exitRoom();
+                return;
+            }
+
+            if(errCode == TXLiteAVCode.ERR_SERVER_CENTER_ROOM_FULL ||
+                    errCode == TXLiteAVCode.ERR_SERVER_CENTER_REACH_PROXY_MAX) {
+                Toast.makeText(activity, "进房失败，房间满了，请稍后重试:" + errCode + "[" + errMsg+ "]" , Toast.LENGTH_SHORT).show();
+                activity.exitRoom();
+                return;
+            }
+
+            if(errCode == TXLiteAVCode.ERR_SERVER_CENTER_ROOM_ID_TOO_LONG) {
+                Toast.makeText(activity, "进房失败，roomID超出有效范围:" + errCode + "[" + errMsg+ "]" , Toast.LENGTH_SHORT).show();
+                activity.exitRoom();
+                return;
+            }
+
+            if(errCode == TXLiteAVCode.ERR_SERVER_ACC_ROOM_NOT_EXIST ||
+                    errCode == TXLiteAVCode.ERR_SERVER_CENTER_ROOM_NOT_EXIST) {
+                Toast.makeText(activity, "进房失败，请确认房间号正确:" + errCode + "[" + errMsg+ "]" , Toast.LENGTH_SHORT).show();
+                activity.exitRoom();
+                return;
+            }
+
+            if(errCode == TXLiteAVCode.ERR_SERVER_INFO_SERVICE_SUSPENDED) {
+                Toast.makeText(activity, "进房失败，请确认腾讯云实时音视频账号状态是否欠费:" + errCode + "[" + errMsg+ "]" , Toast.LENGTH_SHORT).show();
+                activity.exitRoom();
+                return;
+            }
+
+            if(errCode == TXLiteAVCode.ERR_SERVER_INFO_PRIVILEGE_FLAG_ERROR ||
+                    errCode == TXLiteAVCode.ERR_SERVER_CENTER_NO_PRIVILEDGE_CREATE_ROOM ||
+                    errCode == TXLiteAVCode.ERR_SERVER_CENTER_NO_PRIVILEDGE_ENTER_ROOM) {
+                Toast.makeText(activity, "进房失败，无权限进入房间:" + errCode + "[" + errMsg+ "]" , Toast.LENGTH_SHORT).show();
+                activity.exitRoom();
+                return;
+            }
+
+            if(errCode <= TXLiteAVCode.ERR_SERVER_SSO_SIG_EXPIRED  &&
+                    errCode >= TXLiteAVCode.ERR_SERVER_SSO_INTERNAL_ERROR) {
+                // 错误参考 https://cloud.tencent.com/document/product/269/1671#.E5.B8.90.E5.8F.B7.E7.B3.BB.E7.BB.9F
+                Toast.makeText(activity, "进房失败，userSig错误:" + errCode + "[" + errMsg+ "]" , Toast.LENGTH_SHORT).show();
+                activity.exitRoom();
+                return;
+            }
+
+            Toast.makeText(activity, "onError: " + errMsg + "[" + errCode+ "]" , Toast.LENGTH_SHORT).show();
         }
 
         /**
@@ -457,6 +556,7 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
                         customRender.start(textureView);
                     }
                 }
+                activity.enableAudioVolumeEvaluation(activity.moreDlg.isAudioVolumeEvaluation());
             }
         }
 
@@ -473,7 +573,7 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
                 //更新视频UI
                 activity.mVideoViewLayout.onMemberLeave(userId+TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG);
                 activity.mVideoViewLayout.onMemberLeave(userId+TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SUB);
-                activity.mRoomMembers.remove(userId);
+
                 activity.updateCloudMixtureParams();
                 TestRenderVideoFrame customRender = mCustomRender.get(userId);
                 if (customRender != null) {
@@ -495,6 +595,9 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
         public void onUserVideoAvailable(final String userId, boolean available){
             TRTCMainActivity activity = mContext.get();
             if (activity != null) {
+                VideoStream userStream = new VideoStream();
+                userStream.userId = userId;
+                userStream.streamType = TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG;
                 if (available) {
                     final TXCloudVideoView renderView = activity.mVideoViewLayout.onMemberEnter(userId+TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG);
                     if (renderView != null) {
@@ -513,16 +616,15 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
                         });
                     }
 
-                    activity.mRoomMembers.add(userId);
-                    activity.updateCloudMixtureParams();
+                    activity.mVideosInRoom.add(userStream);
                 } else {
                     activity.trtcCloud.stopRemoteView(userId);
                     //activity.mVideoViewLayout.onMemberLeave(userId+TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG);
 
-                    activity.mRoomMembers.remove(userId);
-                    activity.updateCloudMixtureParams();
+                    activity.mVideosInRoom.remove(userStream);
                 }
-                activity.mVideoViewLayout.updateVideoStatus(userId, available);
+                activity.updateCloudMixtureParams();
+                activity.mVideoViewLayout.updateVideoStatus(userId+TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG, available);
             }
 
         }
@@ -530,6 +632,9 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
         public void onUserSubStreamAvailable(final String userId, boolean available){
             TRTCMainActivity activity = mContext.get();
             if (activity != null) {
+                VideoStream userStream = new VideoStream();
+                userStream.userId = userId;
+                userStream.streamType = TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SUB;
                 if (available) {
                     final TXCloudVideoView renderView = activity.mVideoViewLayout.onMemberEnter(userId+TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SUB);
                     if (renderView != null) {
@@ -544,11 +649,13 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
                             }
                         });
                     }
-
+                    activity.mVideosInRoom.add(userStream);
                 } else {
                     activity.trtcCloud.stopRemoteSubStreamView(userId);
                     activity.mVideoViewLayout.onMemberLeave(userId+TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SUB);
+                    activity.mVideosInRoom.remove(userStream);
                 }
+                activity.updateCloudMixtureParams();
             }
         }
         /**
@@ -571,7 +678,7 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
          * 首帧渲染回调
          */
         @Override
-        public void onFirstVideoFrame(String userId, int width, int height){
+        public void onFirstVideoFrame(String userId, int streamType, int width, int height){
             TRTCMainActivity activity = mContext.get();
             if (activity != null) {
                 activity.mVideoViewLayout.freshToolbarLayoutOnMemberEnter(userId + TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG);
@@ -591,6 +698,7 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
         }
 
         public  void onUserVoiceVolume(ArrayList<TRTCCloudDef.TRTCVolumeInfo> userVolumes, int totalVolume) {
+            mContext.get().mVideoViewLayout.resetAudioVolume();
             for (int i = 0; i < userVolumes.size(); ++i) {
                 mContext.get().mVideoViewLayout.updateAudioVolume(userVolumes.get(i).userId, userVolumes.get(i).volume);
             }
@@ -612,6 +720,7 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
                 }
                 else {
                     activity.mUserIdBeingLink = "";
+                    activity.mRoomIdBeingLink = "";
                     activity.beingLinkMic = false;
                     activity.moreDlg.updateLinkMicState(false);
                     Toast.makeText(activity.getApplicationContext(), "连麦失败", Toast.LENGTH_LONG).show();
@@ -624,6 +733,7 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
             TRTCMainActivity activity = mContext.get();
             if (activity != null) {
                 activity.mUserIdBeingLink = "";
+                activity.mRoomIdBeingLink = "";
                 activity.beingLinkMic = false;
                 activity.moreDlg.updateLinkMicState(false);
             }
@@ -752,6 +862,101 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
         }
     }
 
+    @Override
+    public void onChangeRole(int role) {
+        if (trtcCloud != null) {
+            trtcCloud.switchRole(role);
+        }
+        if (role == TRTCCloudDef.TRTCRoleAnchor) {
+            startLocalVideo(true);
+            if (moreDlg.isEnableAudioCapture()) {
+                trtcCloud.startLocalAudio();
+            }
+        } else {
+            startLocalVideo(false);
+            trtcCloud.stopLocalAudio();
+            TXCloudVideoView localVideoView = mVideoViewLayout.getCloudVideoViewByUseId(trtcParams.userId);
+            if (localVideoView != null) {
+                localVideoView.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    @Override
+    public void onBeautyParamsChange(TRTCBeautySettingPanel.BeautyParams params, int key) {
+        switch (key) {
+            case TRTCBeautySettingPanel.BEAUTYPARAM_BEAUTY:
+                mBeautyStyle = params.mBeautyStyle;
+                mBeautyLevel = params.mBeautyLevel;
+                if (trtcCloud != null) {
+                    trtcCloud.setBeautyStyle(mBeautyStyle, mBeautyLevel, mWhiteningLevel, mRuddyLevel);
+                }
+                break;
+            case TRTCBeautySettingPanel.BEAUTYPARAM_WHITE:
+                mWhiteningLevel = params.mWhiteLevel;
+                if (trtcCloud != null) {
+                    trtcCloud.setBeautyStyle(mBeautyStyle, mBeautyLevel, mWhiteningLevel, mRuddyLevel);
+                }
+                break;
+            case TRTCBeautySettingPanel.BEAUTYPARAM_BIG_EYE:
+                if (trtcCloud != null) {
+                    trtcCloud.setEyeScaleLevel(params.mBigEyeLevel);
+                }
+                break;
+            case TRTCBeautySettingPanel.BEAUTYPARAM_FACE_LIFT:
+                if (trtcCloud != null) {
+                    trtcCloud.setFaceSlimLevel(params.mFaceSlimLevel);
+                }
+                break;
+            case TRTCBeautySettingPanel.BEAUTYPARAM_FILTER:
+                if (trtcCloud != null) {
+                    trtcCloud.setFilter(params.mFilterBmp);
+                }
+                break;
+            case TRTCBeautySettingPanel.BEAUTYPARAM_GREEN:
+                if (trtcCloud != null) {
+                    trtcCloud.setGreenScreenFile(params.mGreenFile);
+                }
+                break;
+            case TRTCBeautySettingPanel.BEAUTYPARAM_MOTION_TMPL:
+                if (trtcCloud != null) {
+                    trtcCloud.selectMotionTmpl(params.mMotionTmplPath);
+                }
+                break;
+            case TRTCBeautySettingPanel.BEAUTYPARAM_RUDDY:
+                mRuddyLevel = params.mRuddyLevel;
+                if (trtcCloud != null) {
+                    trtcCloud.setBeautyStyle(mBeautyStyle, mBeautyLevel, mWhiteningLevel, mRuddyLevel);
+                }
+                break;
+            case TRTCBeautySettingPanel.BEAUTYPARAM_FACEV:
+                if (trtcCloud != null) {
+                    trtcCloud.setFaceVLevel(params.mFaceVLevel);
+                }
+                break;
+            case TRTCBeautySettingPanel.BEAUTYPARAM_FACESHORT:
+                if (trtcCloud != null) {
+                    trtcCloud.setFaceShortLevel(params.mFaceShortLevel);
+                }
+                break;
+            case TRTCBeautySettingPanel.BEAUTYPARAM_CHINSLIME:
+                if (trtcCloud != null) {
+                    trtcCloud.setChinLevel(params.mChinSlimLevel);
+                }
+                break;
+            case TRTCBeautySettingPanel.BEAUTYPARAM_NOSESCALE:
+                if (trtcCloud != null) {
+                    trtcCloud.setNoseSlimLevel(params.mNoseScaleLevel);
+                }
+                break;
+            case TRTCBeautySettingPanel.BEAUTYPARAM_FILTER_MIX_LEVEL:
+                if (trtcCloud != null) {
+                    trtcCloud.setFilterConcentration(params.mFilterMixLevel/10.f);
+                }
+                break;
+        }
+    }
+
     private void setVideoFillMode(boolean bFillMode) {
         if (bFillMode) {
             trtcCloud.setLocalViewFillMode(TRTCCloudDef.TRTC_VIDEO_RENDER_MODE_FILL);
@@ -807,11 +1012,12 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
 
     private void enableAudioVolumeEvaluation(boolean bEnable) {
         if (bEnable) {
-            trtcCloud.enableAudioVolumeEvaluation(200);
+            trtcCloud.enableAudioVolumeEvaluation(300);
+            mVideoViewLayout.showAllAudioVolumeProgressBar();
         }
         else {
             trtcCloud.enableAudioVolumeEvaluation(0);
-            mVideoViewLayout.hideAudioVolumeProgressBar();
+            mVideoViewLayout.hideAllAudioVolumeProgressBar();
         }
     }
 
@@ -913,11 +1119,7 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
         config.bizId = -1;  // 请进入 "实时音视频"控制台 https://console.cloud.tencent.com/rav，点击对应的应用，然后进入“帐号信息”菜单中，复制“直播信息”模块中的"bizid"
         config.videoWidth = videoWidth;
         config.videoHeight = videoHeight;
-        config.videoGOP = 3;
-
-        config.videoWidth = videoWidth;
-        config.videoHeight = videoHeight;
-        config.videoGOP = 3;
+        config.videoGOP = 1;
         config.videoFramerate = 15;
         config.videoBitrate = bitrate;
         config.audioSampleRate = 48000;
@@ -939,9 +1141,14 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
         // 设置混流后各个小画面的位置
         if (moreDlg.isEnableCloudMixture()) {
             int index = 0;
-            for (String userId : mRoomMembers) {
+            for (VideoStream userStream : mVideosInRoom) {
                 TRTCCloudDef.TRTCMixUser audience = new TRTCCloudDef.TRTCMixUser();
-                audience.userId = userId;
+                if (beingLinkMic && userStream.userId.equalsIgnoreCase(mUserIdBeingLink)) {
+                    audience.roomId = mRoomIdBeingLink;
+                }
+
+                audience.userId = userStream.userId;
+                audience.streamType = userStream.streamType;
                 audience.zOrder = 1 + index;
                 if (index < 3) {
                     // 前三个小画面靠右从下往上铺
@@ -1040,7 +1247,7 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
         }
 
         mUserIdBeingLink = userId;
-
+        mRoomIdBeingLink = roomId;
         trtcCloud.ConnectOtherRoom(String.format("{\"roomId\":%s,\"userId\":\"%s\"}", roomId, userId));
 
         hideLinkMicLayout();
@@ -1052,7 +1259,10 @@ public class TRTCMainActivity extends Activity implements View.OnClickListener, 
     }
 
     private void startLocalVideo(boolean enable) {
-        TXCloudVideoView localVideoView = mVideoViewLayout.getCloudVideoViewByUseId(trtcParams.userId);;
+        TXCloudVideoView localVideoView = mVideoViewLayout.getCloudVideoViewByUseId(trtcParams.userId);
+        if (localVideoView == null) {
+            localVideoView = mVideoViewLayout.getFreeCloudVideoView();
+        }
         localVideoView.setUserId(trtcParams.userId);
         localVideoView.setVisibility(View.VISIBLE);
         if (enable) {

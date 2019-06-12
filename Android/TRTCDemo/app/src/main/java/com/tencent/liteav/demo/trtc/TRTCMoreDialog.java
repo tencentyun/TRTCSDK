@@ -41,7 +41,8 @@ public class TRTCMoreDialog extends Dialog implements View.OnClickListener {
     private boolean mAudioVolumeEvaluation                              = true;
     private boolean mEnableCloudMixture                                 = true;
     private boolean mEnableVideoEncMirror                               = false;
-    private int     mLocalVideoViewMirror                               = 0;//TRTCCloudDef.TRTC_VIDEO_MIRROR_TYPE_AUTO;
+    private int     mLocalVideoViewMirror                               = TRTCCloudDef.TRTC_VIDEO_MIRROR_TYPE_AUTO;
+    private int     mRole                                               = TRTCCloudDef.TRTCRoleAnchor;
 
     private RadioButton mRbCameraFront;
     private RadioButton mRbCameraBack;
@@ -50,8 +51,9 @@ public class TRTCMoreDialog extends Dialog implements View.OnClickListener {
     private RadioButton mRbVideoVertical;
     private RadioButton mRbVideoHorizontal;
     private RadioButton mRbLocalVideoMirrorAuto;
-    private RadioButton mRbLocalVideoMirrorEnable;
     private RadioButton mRbLocalVideoMirrorDisable;
+    private RadioButton mRbRoleAnchor;
+    private RadioButton mRbRoleAudience;
 
     private CheckBox    mCbEnableAudio;
     private CheckBox    mCbAudioHandFree;
@@ -74,6 +76,7 @@ public class TRTCMoreDialog extends Dialog implements View.OnClickListener {
         void onEnableCloudMixture(boolean bEnable);
         void onClickButtonGetPlayUrl();
         void onClickButtonLinkMic();
+        void onChangeRole(int role);
     }
 
     private WeakReference<IMoreListener> mMoreListener;
@@ -101,8 +104,9 @@ public class TRTCMoreDialog extends Dialog implements View.OnClickListener {
         mRbVideoVertical         = (RadioButton)findViewById(R.id.mode_vertical);
         mRbVideoHorizontal       = (RadioButton)findViewById(R.id.mode_horizontal);
         mRbLocalVideoMirrorAuto  = (RadioButton)findViewById(R.id.mirror_auto);
-        mRbLocalVideoMirrorEnable  = (RadioButton)findViewById(R.id.mirror_enable);
         mRbLocalVideoMirrorDisable = (RadioButton)findViewById(R.id.mirror_disable);
+        mRbRoleAnchor               = (RadioButton)findViewById(R.id.role_anchor);
+        mRbRoleAudience             = (RadioButton)findViewById(R.id.role_audience);
 
         mCbEnableAudio           = (CheckBox)findViewById(R.id.enable_audio);
         mCbAudioHandFree         = (CheckBox)findViewById(R.id.audio_handfree);
@@ -117,9 +121,11 @@ public class TRTCMoreDialog extends Dialog implements View.OnClickListener {
         mRbVideoAdjust.setChecked(!mVideoFillMode);
         mRbVideoVertical.setChecked(mVideoVertical);
         mRbVideoHorizontal.setChecked(!mVideoVertical);
-//        mRbLocalVideoMirrorAuto.setChecked(mLocalVideoViewMirror == TRTCCloudDef.TRTC_VIDEO_MIRROR_TYPE_AUTO);
-//        mRbLocalVideoMirrorEnable.setChecked(mLocalVideoViewMirror == TRTCCloudDef.TRTC_VIDEO_MIRROR_TYPE_ENABLE);
-//        mRbLocalVideoMirrorDisable.setChecked(mLocalVideoViewMirror == TRTCCloudDef.TRTC_VIDEO_MIRROR_TYPE_DISABLE);
+        mRbLocalVideoMirrorAuto.setChecked(mLocalVideoViewMirror == TRTCCloudDef.TRTC_VIDEO_MIRROR_TYPE_AUTO);
+        mRbLocalVideoMirrorDisable.setChecked(mLocalVideoViewMirror == TRTCCloudDef.TRTC_VIDEO_MIRROR_TYPE_DISABLE);
+        mRbRoleAnchor.setChecked(mRole == TRTCCloudDef.TRTCRoleAnchor);
+        mRbRoleAudience.setChecked(mRole == TRTCCloudDef.TRTCRoleAudience);
+
         mCbEnableAudio.setChecked(mEnableAudioCapture);
         mCbAudioHandFree.setChecked(mAudioHandFreeMode);
         mCbEnableGSensor.setChecked(mEnableGSensorMode);
@@ -134,8 +140,10 @@ public class TRTCMoreDialog extends Dialog implements View.OnClickListener {
         mRbVideoVertical.setOnClickListener(this);
         mRbVideoHorizontal.setOnClickListener(this);
         mRbLocalVideoMirrorAuto.setOnClickListener(this);
-        mRbLocalVideoMirrorEnable.setOnClickListener(this);
         mRbLocalVideoMirrorDisable.setOnClickListener(this);
+        mRbRoleAnchor.setOnClickListener(this);
+        mRbRoleAudience.setOnClickListener(this);
+
         mCbEnableAudio.setOnClickListener(this);
         mCbAudioHandFree.setOnClickListener(this);
         mCbVideoEncMirror.setOnClickListener(this);
@@ -186,6 +194,10 @@ public class TRTCMoreDialog extends Dialog implements View.OnClickListener {
 
     public boolean isEnableCloudMixture() {
         return mEnableCloudMixture;
+    }
+
+    public void setRole(int role) {
+        mRole = role;
     }
 
     private void loadLocalCache(Context context) {
@@ -296,12 +308,11 @@ public class TRTCMoreDialog extends Dialog implements View.OnClickListener {
                 break;
             }
             case R.id.mirror_auto:
-            case R.id.mirror_enable:
             case R.id.mirror_disable:
             {
                 int mirrorType = TRTCCloudDef.TRTC_VIDEO_MIRROR_TYPE_AUTO;
-                if (id == R.id.mirror_enable) {
-                    mirrorType = TRTCCloudDef.TRTC_VIDEO_MIRROR_TYPE_ENABLE;
+                if (id == R.id.mirror_auto) {
+                    mirrorType = TRTCCloudDef.TRTC_VIDEO_MIRROR_TYPE_AUTO;
                 } else if (id == R.id.mirror_disable) {
                     mirrorType = TRTCCloudDef.TRTC_VIDEO_MIRROR_TYPE_DISABLE;
                 }
@@ -372,14 +383,31 @@ public class TRTCMoreDialog extends Dialog implements View.OnClickListener {
                 dismiss();
                 break;
             }
+            case R.id.role_anchor:
+            {
+                if(listener != null) {
+                    listener.onChangeRole(TRTCCloudDef.TRTCRoleAnchor);
+                }
+                mRole = TRTCCloudDef.TRTCRoleAnchor;
+                break;
+            }
+            case R.id.role_audience:
+            {
+                if(listener != null) {
+                    listener.onChangeRole(TRTCCloudDef.TRTCRoleAudience);
+                }
+                mRole = TRTCCloudDef.TRTCRoleAudience;
+                break;
+            }
         }
 
         saveData(getContext());
     }
 
-    public void show(boolean beingLinkMic) {
-        updateLinkMicState(beingLinkMic);
+    public void show(boolean beingLinkMic, int appScene) {
         show();
+        updateLinkMicState(beingLinkMic);
+        updateAppScene(appScene);
     }
 
     public void updateLinkMicState(boolean beingLinkMic) {
@@ -405,5 +433,14 @@ public class TRTCMoreDialog extends Dialog implements View.OnClickListener {
         mVideoFillMode = bFillMode;
 
         saveData(getContext());
+    }
+
+    private void updateAppScene(int appScene) {
+        View layout = findViewById(R.id.role_layout);
+        if (appScene == TRTCCloudDef.TRTC_APP_SCENE_LIVE) {
+            if (layout != null) layout.setVisibility(View.VISIBLE);
+        } else {
+            if (layout != null) layout.setVisibility(View.GONE);
+        }
     }
 }

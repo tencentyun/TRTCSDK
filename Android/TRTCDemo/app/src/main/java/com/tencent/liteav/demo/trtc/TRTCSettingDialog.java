@@ -33,7 +33,7 @@ public class TRTCSettingDialog extends Dialog {
     private Spinner spSolution, spFps;
     private SeekBar sbVideoBitrate;
     private CheckBox cbSave, cbPriorSmall, cbEnableSmall;
-    private RadioButton rbSmooth, rbClear, rbHorizontal, rbVertical, rbServer, rbClient, rbVoiceCall, rbLive;
+    private RadioButton rbSmooth, rbClear, rbHorizontal, rbVertical, rbServer, rbClient;
     private TextView tvVideoBitrate, tvSubmit;
     private int curRes = 2;
 
@@ -83,16 +83,17 @@ public class TRTCSettingDialog extends Dialog {
     public boolean priorSmall = false;
     private int qosPreference = TRTCCloudDef.TRTC_VIDEO_QOS_PREFERENCE_CLEAR;
     private int qosMode = TRTCCloudDef.VIDEO_QOS_CONTROL_SERVER;
-    private int appScene = TRTCCloudDef.TRTC_APP_SCENE_VIDEOCALL;
+    private int mAppScene = TRTCCloudDef.TRTC_APP_SCENE_VIDEOCALL;
 
     public interface ISettingListener {
         void onComplete();
     }
     private WeakReference<ISettingListener> settingListener;
-    public TRTCSettingDialog(Context context, ISettingListener listener) {
+    public TRTCSettingDialog(Context context, ISettingListener listener, int appScene) {
         super(context, R.style.room_setting_dlg);
         settingListener = new WeakReference<>(listener);
 
+        mAppScene = appScene;
         loadCache(context);
     }
 
@@ -121,8 +122,6 @@ public class TRTCSettingDialog extends Dialog {
         return videoBitrate;
     }
 
-    public int getAppScene() {return appScene;}
-
     public void show() {
         super.show();
         updateDialogValue();
@@ -133,15 +132,16 @@ public class TRTCSettingDialog extends Dialog {
         setContentView(R.layout.dlg_setting);
         getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
+        boolean isVideoCall = mAppScene == TRTCCloudDef.TRTC_APP_SCENE_VIDEOCALL;
         paramArray = new ArrayList<>();
-        paramArray.add(new TRTCSettingBitrateTable(TRTCCloudDef.TRTC_VIDEO_RESOLUTION_160_160,  250,  40,  300,  10));
-        paramArray.add(new TRTCSettingBitrateTable(TRTCCloudDef.TRTC_VIDEO_RESOLUTION_320_180,  350,  80,  350,  10));
-        paramArray.add(new TRTCSettingBitrateTable(TRTCCloudDef.TRTC_VIDEO_RESOLUTION_320_240,  400,  100, 400,  10));
-        paramArray.add(new TRTCSettingBitrateTable(TRTCCloudDef.TRTC_VIDEO_RESOLUTION_480_480,  500,  200, 1000, 10));
-        paramArray.add(new TRTCSettingBitrateTable(TRTCCloudDef.TRTC_VIDEO_RESOLUTION_640_360,  600,  200, 1000, 10));
-        paramArray.add(new TRTCSettingBitrateTable(TRTCCloudDef.TRTC_VIDEO_RESOLUTION_640_480,  700,  250, 1000, 50));
-        paramArray.add(new TRTCSettingBitrateTable(TRTCCloudDef.TRTC_VIDEO_RESOLUTION_960_540,  900,  400, 1600, 50));
-        paramArray.add(new TRTCSettingBitrateTable(TRTCCloudDef.TRTC_VIDEO_RESOLUTION_1280_720, 1250, 500, 2000, 50));
+        paramArray.add(new TRTCSettingBitrateTable(TRTCCloudDef.TRTC_VIDEO_RESOLUTION_160_160,  isVideoCall?250:300,  40,  300,  10));
+        paramArray.add(new TRTCSettingBitrateTable(TRTCCloudDef.TRTC_VIDEO_RESOLUTION_320_180,  isVideoCall?350:350,  80,  350,  10));
+        paramArray.add(new TRTCSettingBitrateTable(TRTCCloudDef.TRTC_VIDEO_RESOLUTION_320_240,  isVideoCall?400:400,  100, 400,  10));
+        paramArray.add(new TRTCSettingBitrateTable(TRTCCloudDef.TRTC_VIDEO_RESOLUTION_480_480,  isVideoCall?500:750,  200, 1000, 10));
+        paramArray.add(new TRTCSettingBitrateTable(TRTCCloudDef.TRTC_VIDEO_RESOLUTION_640_360,  isVideoCall?600:900,  200, 1000, 10));
+        paramArray.add(new TRTCSettingBitrateTable(TRTCCloudDef.TRTC_VIDEO_RESOLUTION_640_480,  isVideoCall?700:1000,  250, 1000, 50));
+        paramArray.add(new TRTCSettingBitrateTable(TRTCCloudDef.TRTC_VIDEO_RESOLUTION_960_540,  isVideoCall?900:1350,  400, 1600, 50));
+        paramArray.add(new TRTCSettingBitrateTable(TRTCCloudDef.TRTC_VIDEO_RESOLUTION_1280_720, isVideoCall?1250:1850, 500, 2000, 50));
 
         initView();
     }
@@ -161,8 +161,6 @@ public class TRTCSettingDialog extends Dialog {
         rbVertical = (RadioButton) findViewById(R.id.rb_vertical);
         rbClient = (RadioButton) findViewById(R.id.rb_client);
         rbServer = (RadioButton) findViewById(R.id.rb_server);
-        rbLive = (RadioButton) findViewById(R.id.rb_live);
-        rbVoiceCall = (RadioButton) findViewById(R.id.rb_voicecall);
 
         ArrayAdapter<String> spinnerAadapter = new ArrayAdapter<String>(getContext(),
                 R.layout.textview_spinner, getContext().getResources().getStringArray(R.array.solution));
@@ -214,7 +212,6 @@ public class TRTCSettingDialog extends Dialog {
                 qosPreference   = rbSmooth.isChecked() ? TRTCCloudDef.TRTC_VIDEO_QOS_PREFERENCE_SMOOTH : TRTCCloudDef.TRTC_VIDEO_QOS_PREFERENCE_CLEAR;
                 videoVertical   = rbVertical.isChecked();
                 qosMode         = rbClient.isChecked() ? TRTCCloudDef.VIDEO_QOS_CONTROL_CLIENT : TRTCCloudDef.VIDEO_QOS_CONTROL_SERVER;
-                appScene        = rbLive.isChecked() ? TRTCCloudDef.TRTC_APP_SCENE_LIVE : TRTCCloudDef.TRTC_APP_SCENE_VIDEOCALL;
                 enableSmall     = cbEnableSmall.isChecked();
                 priorSmall      = cbPriorSmall.isChecked();
                 saveFlag        = cbSave.isChecked();
@@ -265,11 +262,6 @@ public class TRTCSettingDialog extends Dialog {
             rbClient.setChecked(true);
         } else {
             rbServer.setChecked(true);
-        }
-        if (appScene == TRTCCloudDef.TRTC_APP_SCENE_LIVE) {
-            rbLive.setChecked(true);
-        } else {
-            rbVoiceCall.setChecked(true);
         }
     }
 
@@ -380,7 +372,6 @@ public class TRTCSettingDialog extends Dialog {
             editor.putBoolean(PER_VIDEO_ORIENTATION, videoVertical);
             editor.putInt(PER_QOSTYPE, qosPreference);
             editor.putInt(PER_CON_TYPE, qosMode);
-            editor.putInt(PER_APP_SCENCE, appScene);
             editor.putBoolean(PER_SAVEFLAG, saveFlag);
             editor.putBoolean(PER_ENABLE_SMALL, enableSmall);
             editor.putBoolean(PER_PRIOR_SMALL, priorSmall);
@@ -404,7 +395,6 @@ public class TRTCSettingDialog extends Dialog {
             enableSmall = shareInfo.getBoolean(PER_ENABLE_SMALL, false);
             priorSmall = shareInfo.getBoolean(PER_PRIOR_SMALL, false);
             qosMode = shareInfo.getInt(PER_CON_TYPE, TRTCCloudDef.VIDEO_QOS_CONTROL_SERVER);
-            appScene = shareInfo.getInt(PER_APP_SCENCE, TRTCCloudDef.TRTC_APP_SCENE_VIDEOCALL);
         } catch (Exception e) {
 
         }

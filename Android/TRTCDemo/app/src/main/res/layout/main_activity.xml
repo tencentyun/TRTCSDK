@@ -163,6 +163,15 @@
 
         </LinearLayout>
 
+        <com.tencent.liteav.demo.trtc.TRTCBeautySettingPanel
+            android:id="@+id/layoutFaceBeauty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_above="@id/ll_control"
+            android:clickable="true"
+            android:visibility="gone"/>
+
     </RelativeLayout>
 
 

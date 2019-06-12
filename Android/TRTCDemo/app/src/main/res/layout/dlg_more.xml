@@ -101,25 +101,16 @@
             android:gravity="center_horizontal"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2">
+            android:layout_weight="1">
             <RadioButton
                 android:id="@+id/mirror_auto"
                 android:text="自动"
-                android:textSize="12sp"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"/>
-            <RadioButton
-                android:id="@+id/mirror_enable"
-                android:text="镜像"
-                android:textSize="12sp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"/>
             <RadioButton
                 android:id="@+id/mirror_disable"
-                android:text="非镜像"
-                android:textSize="12sp"
+                android:text="关闭"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"/>
@@ -157,6 +148,43 @@
             <RadioButton
                 android:id="@+id/mode_horizontal"
                 android:text="横屏"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+        </RadioGroup>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/role_layout"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="2dp">
+        <TextView
+            android:text="直播角色切换"
+            android:textSize="16sp"
+            android:layout_gravity="center"
+            android:textColor="@color/line_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            />
+        <RadioGroup
+            android:orientation="horizontal"
+            android:gravity="center_horizontal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+            <RadioButton
+                android:id="@+id/role_anchor"
+                android:text="主播"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+            <RadioButton
+                android:id="@+id/role_audience"
+                android:text="观众"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"/>

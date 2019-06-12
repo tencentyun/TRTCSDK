@@ -26,6 +26,7 @@
 
         <activity
             android:name=".trtc.TRTCNewActivity"
+            android:theme="@style/NewActivityTheme"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/app_name"
             android:launchMode="singleTop"
