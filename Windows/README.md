@@ -25,11 +25,10 @@
 ![](https://main.qcloudimg.com/raw/75edc5d22563c32aace232543915bbff.png)
 
 
-## 5. 获得配置文件
-单击【生成Demo配置文件内容】按钮，即可获得一段 json 格式的文本内容，这段内容是由控制台根据您在第四步中填写的 private_key 基于非对称加密算法，生成的一组测试用的 userid 和 usersig。
-![](https://main.qcloudimg.com/raw/5de8161bb72b2e19ebdb24ef6056751c.png)
-
-复制上面的 json 内容，并粘贴到源码根目录下的 `Config.json` 文件中（如果已经存在示例内容，请覆盖之）。
+## 5. 修改Demo
+修改Demo源文件：GenerateTestUserSig.h
+把`_sdkAppId` 和 `_PRIVATEKEY`修改为您自己的 SDKAppId 和上一步下载的私钥 private_key 的内容
+![](https://main.qcloudimg.com/raw/25d95c5e5761a2f82d93228ce9e67a92.png)
 
 
 ## 6. 编译运行
