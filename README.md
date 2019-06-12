@@ -34,7 +34,7 @@
 2. 切换角色：switchRole，在房期间，动态切换主播、观众角色，用于观众和主播进行连麦。
 3. 新增回调：切换角色成功或失败的回调 onSwitchRole。
 4. 回调变更：onFirstVideoFrame 接口新增 streamType 参数，指明视频流类型。
-5. Windows: getCurrentCameraDevice、getCurrentMicDevice、getCurrentSpeakerDevice 接口返回类型调整为 ITRTCDeviceInfo *，支持 getDeviceName 和 getDevicePID
+5. Windows: getCurrentCameraDevice、getCurrentMicDevice、getCurrentSpeakerDevice 接口返回类型调整为 ITRTCDeviceInfo \*，支持 getDeviceName 和 getDevicePID
 
 
 ## API 文档指引
