@@ -1,41 +1,37 @@
 # 腾讯云实时音视频终端组件 TRTC SDK
 
-## 最新版本 6.4.7110 @ 2019.04.25
+## 最新版本 6.5.7272 @ 2019.06.12
 
-全平台优化
-1. 提升弱网环境下的流畅度。
-3. 修复直播(TXLivePlayer)延时可能会升高且不恢复的bug。
-4. 优化音量大小的回调算法，音量回调数值更加合理。
-5. 发送自定义音频、视频数据支持外部指定数据帧时间戳。
-6. 增加混流  setMixTranscodingConfig API 的设置回调函数。
-7. 强化 setMixTranscodingConfig 接口，支持 roomID 参数，用于跨房连麦流混流。
-8. 强化 setMixTranscodingConfig 接口，支持 pureAudio 参数，用于纯语音通话场景下的语音混流和录制。
+### 新增特性
+1. 【全平台】直播模式（TRTCAppSceneLIVE）新增“低延时大房间”功能：
+   - 采用专为音视频优化过的 UDP 协议，超强抗弱网能力。
+   - 平均观看延迟一秒作为，提升观众和主播之间的互动积极性。
+   - 最多支持 10万人进入同一个房间。
+2. 【全平台】优化音量评估算法（enableAudioVolumeEvaluation），音量评估更灵敏。
+3. 【全平台】优化高延迟和高丢包网络环境下的 QoE 算法，增强弱网抗性。
+4. 【Android】修复自定义渲染回调(setRemoteVideoRenderDelegate)，远端画面在分辨率是540P以上（包括540P）时只回调10次的bug。
+5. 【全平台】优化onStatistics状态回调，仅回调存在的流
+6. 【全平台】优化视频通话（TRTCAppSceneVideoCall）模式下的 QoE 算法，进一步提升 1v1 通话模式下的弱网流畅性。
+7. 【全平台】修复偶现的 enterRoom 没有回调的 bug。
+8. 【Android】优化解码器性能，修复超低端 Android 手机上延迟越来越高的bug。
+9. 【全平台】优化弱网下音画不同步的 Bug
+10.【全平台】优化先 muteLocalVideo 之后再取消播放端画面的恢复速度。
+11.【全平台】优化直播 TXLivePlayer 播放缓冲逻辑，降低卡顿率。
+12.【iOS】修复耳返只有一边有声音的bug。
+13.【Android】修复关闭音频采集之后，播放也没有声音的 bug。
+14.【Android】修复移除后再添加本地渲染 view 之后绿屏的 bug。
+15.【MAC】优化屏幕分享的画面清晰度。
+16.【Mac】支持音频外部采集发送数据。
+17.【Windows】优化屏幕分享的画面清晰度。
+18.【Windows】优化 SDK 体积，SDK 体积缩减为原来的 50%。
+19.【Windows】修复屏幕分享过程中直接退房，高亮窗口还残留的bug。
 
-Android
-1. 增加商用企业版支持（增加大眼、瘦脸、V脸 和 动效挂架功能）。
-1. 修复声音免提切换无效bug。
-2. 优化低端 Android 设备上解码 720p 视频的性能问题。
-3. 修复 Android 禁用麦克风权限后，没有错误回调bug。
-5. 增加本地显示镜像和编码器输出镜像接口。
-6. 修复直播场景setVideoEncoderRotation无效的bug。
-7. 修复音量调节按钮无法调整观众端声音大小的问题。
-8. 修复 Android 9.0 系统上 Demo 打开后弹窗的问题。
-
-iOS、Mac
-1. 修复符号重复bug。
-2. iOS 优化低端机器性能。
-3. iOS 增加商用企业版支持（增加大眼、瘦脸、V脸 和 动效挂架功能）。
-4. 增加本地显示镜像和编码器输出镜像接口。
-5. sendCustomVideoData 支持 NSData 数据格式。
-6. 修复开启 Xcode 中 Dead Code Stripping 选项后编译失败的问题。
-
-Windows
-1. 新增基于 Duilib 库的全功能版本 Demo。
-2. 优化摄像头配置选择策略，设备选择支持传 deviceId。
-3. 修复设置日志路径为中文路径后日志文件位置异常bug。
-4. 修复直播(TXLivePlayer) 播放混流和旁路直播流时音画不同步的bug。
-5. 修复直播屏幕分享参数设置bug。
-6. 优化美颜和渲染模块在部分 Windows 版本下的兼容和性能问题。
+### 接口变更
+1. 用户角色：TRTCParams 新增 role 属性，用于在进房时指明角色（主播、观众）。
+2. 切换角色：switchRole，在房期间，动态切换主播、观众角色，用于观众和主播进行连麦。
+3. 新增回调：切换角色成功或失败的回调 onSwitchRole。
+4. 回调变更：onFirstVideoFrame 接口新增 streamType 参数，指明视频流类型。
+5. Windows: getCurrentCameraDevice、getCurrentMicDevice、getCurrentSpeakerDevice 接口返回类型调整为 ITRTCDeviceInfo *，支持 getDeviceName 和 getDevicePID
 
 
 ## API 文档指引
