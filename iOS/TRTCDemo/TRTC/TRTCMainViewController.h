@@ -21,5 +21,8 @@
 //@property (nonatomic) BOOL  pureAudioMode;
 @property (nonatomic, assign) BOOL enableCustomVideoCapture;
 @property (nonatomic, retain) AVAsset* customMediaAsset;
+@property (nonatomic, assign) TRTCAppScene appScene;
+
+- (void)setLocalView:(UIView*)localView remoteViewDic:(NSMutableDictionary*)remoteViewDic;
 
 @end

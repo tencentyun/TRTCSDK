@@ -20,6 +20,7 @@
     @try {
         NSString *filePath = [[NSBundle mainBundle] pathForResource:@"config" ofType:@"json"];
         NSData *json = [NSData dataWithContentsOfFile:filePath];
+        if(json == nil) return;
         NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:json options:NSJSONReadingAllowFragments error:nil];
         _configSdkAppid = (uint32_t)[[dict objectForKey:@"sdkappid"] integerValue];
         NSMutableArray *userId = @[].mutableCopy;

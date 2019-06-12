@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @optional
 - (void)onAudioVolumeEnableChanged:(BOOL)enable;
 - (void)onCloudMixingEnable:(BOOL)enable;
+- (void)onClickedSwitch2Role:(BOOL)isAudience;
 
 @end
 
@@ -30,10 +31,14 @@ NS_ASSUME_NONNULL_BEGIN
 + (BOOL)isGsensorEnable;
 + (BOOL)isAudioVolumeEnable;
 + (BOOL)isCloudMixingEnable;
-
-- (NSMutableDictionary*)getPKInfo;
++ (BOOL)isAudience;
++ (void)setRole:(TRTCRoleType)role;
 
 - (instancetype)initWithTRTCEngine:(TRTCCloud*)engine roomId:(NSString*)roomId userId:(NSString*)userId;
+
+- (NSMutableDictionary*)getPKInfo;
+- (void)enableRoleSwitch:(BOOL)enable;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -37,13 +37,15 @@
 @interface TRTCSettingViewController : UIViewController
 @property (nonatomic, weak) id<TRTCSettingVCDelegate> delegate;
 
+//appScene由外部传入，针对不同的场景值的参数设置有区别
++ (void)setAppScene:(int)appScene;
+
 /* 从文件中读取配置 */
 + (int)getResolution;
 + (int)getFPS;
 + (int)getBitrate;
 + (int)getQosType;
 + (int)getQosCtrlType;
-+ (int)getAppScene;
 + (int)getResMode;
 + (BOOL)getEnableSmallStream;
 + (BOOL)getPriorSmallStream;

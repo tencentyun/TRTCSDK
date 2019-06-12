@@ -16,6 +16,7 @@
 @property (nonatomic, copy) NSString* userId;
 @property (nonatomic, assign) VideoViewType type;
 
+@property (nonatomic, assign) CGPoint touchPoint;
 
 @property (nonatomic, retain) UIView* tipBgView;
 @property (nonatomic, weak) UIImageView* faceImageView;
@@ -115,6 +116,11 @@
     self.audioVolumeIndicator.hidden = !show;
 }
 
+- (void)showNetworkIndicatorImage:(BOOL)show
+{
+    self.networkIndicator.hidden = !show;
+}
+
 - (NSString*)userId
 {
     return _userId;
@@ -146,7 +152,7 @@
     _btnMuteAudio.center = CGPointMake(_btnMuteVideo.center.x + ICON_SIZE + centerInterVal, iconY);
     _btnScaleMode.center = CGPointMake(_btnMuteAudio.center.x + ICON_SIZE + centerInterVal, iconY);
     _networkIndicator.bounds = CGRectMake(0, 0, 28, 21);
-    _networkIndicator.center = CGPointMake(size.width - _networkIndicator.width / 2 - 3, _networkIndicator.height / 2 + 3);
+    _networkIndicator.center = CGPointMake(size.width - _networkIndicator.width / 2 - 6, _networkIndicator.height / 2 + 8);
     _audioVolumeIndicator.frame = CGRectMake(0, size.height - 2, size.width, 2);
     
     if (_tipBgView) {
@@ -164,6 +170,7 @@
 - (void)setup
 {
     self.userInteractionEnabled = YES;
+    _enableMove = YES;
     int ICON_SIZE = 50;
     
     _btnMuteVideo = [self createBottomBtnIcon:@"muteVideo"
@@ -244,7 +251,15 @@
     }
 }
 
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    _touchPoint = self.center;
+}
+
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
+    
+    if (!_enableMove)
+        return;
     
     UITouch *touch = [touches anyObject];
     
@@ -258,8 +273,35 @@
     
     center.x += (currentPoint.x - previousPoint.x);
     center.y += (currentPoint.y - previousPoint.y);
+    
+    if (center.x < self.width / 2)
+        center.x = self.width / 2;
+    
+    if (center.x > self.superview.frame.size.width - self.width / 2) {
+        center.x = self.superview.frame.size.width - self.width / 2;
+    }
+    
+    if (center.y < self.height / 2)
+        center.y = self.height / 2;
+    
+    if (center.y > self.superview.frame.size.height - self.height / 2) {
+        center.y = self.superview.frame.size.height - self.height / 2;
+    }
+    
     // 修改当前view的中点(中点改变view的位置就会改变)
     self.center = center;
+}
+
+- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    CGPoint center = self.center;
+    
+    if (fabs(center.x - _touchPoint.x) > 0.000001f || fabs(center.y - _touchPoint.y) > 0.0000001f)
+        return;
+    
+    if ([self.delegate respondsToSelector:@selector(onViewTap:touchCount:)]) {
+        [self.delegate onViewTap:self touchCount:touches.anyObject.tapCount];
+    }
 }
 
 @end

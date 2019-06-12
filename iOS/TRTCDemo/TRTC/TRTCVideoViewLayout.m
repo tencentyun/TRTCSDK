@@ -32,6 +32,7 @@ const static float MARGIN = 10.f;
     for (UIView * player in self.subViews) {
         [self.view addSubview:player];
         [self.view bringSubviewToFront:player];
+        player.userInteractionEnabled = YES;
         
         
         if (self.type == TC_Float) {

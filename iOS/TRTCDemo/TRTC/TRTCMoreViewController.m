@@ -17,18 +17,20 @@
 #define SETTING_GSENSOR              @"MORE_SETTING_GSENSOR"
 #define SETTING_AUDIO_VOLUME         @"MORE_SETTING_AUDIO_VOLUME"
 #define SETTING_VIDEO_MIXING         @"MORE_SETTING_VIDEO_MIXING"
+#define SETTING_ROLE                 @"MORE_SETTING_ROLE"
 
 #define CELL_CAMERA_SWITCH           0
 #define CELL_FILL_MODE               1
 #define CELL_LOCAL_MIRROR            2
 #define CELL_REMOTE_MIRROR           3
-#define CELL_AUDIO_CAPTURE           4
-#define CELL_AUDIO_ROUTE             5
-#define CELL_GSENSOR                 6
-#define CELL_AUDIO_VOLUME            7
-#define CELL_VIDEO_MIXING            8
-#define CELL_SHARE_PLAYURL           9
-#define CELL_PK                      10
+#define CELL_SWITCH_ROLE             4
+#define CELL_AUDIO_CAPTURE           5
+#define CELL_AUDIO_ROUTE             6
+#define CELL_GSENSOR                 7
+#define CELL_AUDIO_VOLUME            8
+#define CELL_VIDEO_MIXING            9
+#define CELL_SHARE_PLAYURL           10
+#define CELL_PK                      11
 
 
 #define TAG_CAMERA_SWITCH            1000
@@ -42,6 +44,7 @@
 #define TAG_PK                       1008
 #define TAG_LOCAL_MIRROR             1009
 #define TAG_REMOTE_MIRROR            1010
+#define TAG_SWITCH_ROLE              1011
 
 @interface TRTCMoreViewController ()
 @property (nonatomic, retain) TRTCCloud* trtcEngine;
@@ -52,6 +55,7 @@
 
 @implementation TRTCMoreViewController {
     UISegmentedControl* _cameraSegment;
+    BOOL                _enableRoleSwitch;
 }
 
 
@@ -90,6 +94,14 @@
     return [[self class] getSettingWithKey:SETTING_VIDEO_MIXING].boolValue;
 }
 
++ (BOOL)isAudience {
+    return [[self class] getSettingWithKey:SETTING_ROLE].boolValue;
+}
+
++ (void)setRole:(TRTCRoleType)role {
+    [[self class] setSettingValue:@(role == TRTCRoleAudience ? YES : NO) key:SETTING_ROLE];
+}
+
 - (instancetype)initWithTRTCEngine:(TRTCCloud *)engine roomId:(nonnull NSString *)roomId userId:(nonnull NSString *)userId
 {
     if (self = [super init]) {
@@ -107,13 +119,18 @@
     return self.pkInfos;
 }
 
+- (void)enableRoleSwitch:(BOOL)enable
+{
+    _enableRoleSwitch = enable;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor.blackColor colorWithAlphaComponent:0.3];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
-    self.tableView.contentInset = UIEdgeInsetsMake(30, 0, 0, 30);
+    self.tableView.contentInset = UIEdgeInsetsMake(30, 0, 30, 0);
     self.tableView.bounces = NO;
     self.tableView.showsHorizontalScrollIndicator = NO;
 }
@@ -143,7 +160,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 11;
+    return 12;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -294,6 +311,18 @@
 
             break;
         }
+        case CELL_SWITCH_ROLE: {
+            cell.textLabel.text = @"使用观众角色";
+            UISwitch* switchBtn = [[UISwitch alloc] init];
+            switchBtn.tag = TAG_SWITCH_ROLE;
+            [switchBtn addTarget:self action:@selector(onSwitchTap:) forControlEvents:UIControlEventTouchUpInside];
+            cell.accessoryView = switchBtn;
+            switchBtn.tintColor = _cameraSegment.tintColor;
+            switchBtn.onTintColor = _cameraSegment.tintColor;
+            switchBtn.on = [[self class] getSettingWithKey:SETTING_ROLE].boolValue;
+            switchBtn.enabled = _enableRoleSwitch;
+            break;
+        }
         default:
             break;
     }
@@ -380,6 +409,13 @@
 
         if ([self.delegate respondsToSelector:@selector(onCloudMixingEnable:)]) {
             [self.delegate onCloudMixingEnable:switchBtn.isOn];
+        }
+    }
+    else if(switchBtn.tag == TAG_SWITCH_ROLE) {
+        [[self class] setSettingValue:@(switchBtn.isOn) key:SETTING_ROLE];
+
+        if ([self.delegate respondsToSelector:@selector(onClickedSwitch2Role:)]) {
+            [self.delegate onClickedSwitch2Role:switchBtn.isOn];
         }
     }
 }

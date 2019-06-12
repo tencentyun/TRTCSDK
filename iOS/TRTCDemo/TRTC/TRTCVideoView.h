@@ -23,6 +23,7 @@ typedef NS_ENUM(NSUInteger, VideoViewType) {
 - (void)onMuteVideoBtnClick:(TRTCVideoView*)view stateChanged:(BOOL)stateChanged;
 - (void)onMuteAudioBtnClick:(TRTCVideoView*)view stateChanged:(BOOL)stateChanged;
 - (void)onScaleModeBtnClick:(TRTCVideoView*)view stateChanged:(BOOL)stateChanged;
+- (void)onViewTap:(TRTCVideoView*)view touchCount:(NSInteger)touchCount;
 @end
 
 @interface TRTCVideoView : UIImageView
@@ -30,6 +31,7 @@ typedef NS_ENUM(NSUInteger, VideoViewType) {
 @property (nonatomic, weak) id<TRTCVideoViewDelegate> delegate;
 @property (nonatomic, readonly) NSString* userId;
 @property (nonatomic, readonly) VideoViewType type;
+@property (nonatomic, assign) BOOL enableMove;
 
 @property (nonatomic, retain) UIButton* btnMuteVideo;
 @property (nonatomic, retain) UIButton* btnMuteAudio;
@@ -43,6 +45,7 @@ typedef NS_ENUM(NSUInteger, VideoViewType) {
 - (void)setAudioVolumeRadio:(float)volumeRadio;
 - (void)showVideoCloseTip:(BOOL)show;
 - (void)showAudioVolume:(BOOL)show;
+- (void)showNetworkIndicatorImage:(BOOL)show;
 
 @end
 

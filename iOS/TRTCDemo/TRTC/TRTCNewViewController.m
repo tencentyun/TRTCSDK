@@ -21,6 +21,7 @@
 #import "TRTCGetUserIDAndUserSig.h"
 #import "MBProgressHUD.h"
 #import "QBImagePickerController.h"
+#import "TRTCFloatWindow.h"
 
 #import "AppDelegate.h"
 
@@ -35,8 +36,11 @@
     uint32_t         _sdkAppid;
     NSString          *_selfPwd;
 }
+@property (nonatomic, assign) TRTCRoleType role;
 @property (nonatomic, retain) UISwitch* talkModeSwitch;
 @property (nonatomic, retain) UISegmentedControl* customVideoCaptureSeg;
+@property (nonatomic, retain) UISegmentedControl* appSenceSeg;
+@property (nonatomic, retain) UISegmentedControl* roleSeg;
 @property (nonatomic, retain) AVAsset*  customSourceAsset;
 
 @end
@@ -48,6 +52,8 @@
     
     self.title = @"腾讯视频通话";
     
+
+    _role = TRTCRoleAnchor;
     
     [self.view setBackgroundColor:UIColorFromRGB(0x333333)];
     
@@ -91,24 +97,23 @@
     [self.view addSubview:_userIdTextField];
     
 
-    _customVideoCaptureSeg = [[UISegmentedControl alloc] initWithItems:@[@"摄像头", @"本地视频"]];
+    _customVideoCaptureSeg = [[UISegmentedControl alloc] initWithItems:@[@"前摄像头", @"视频文件"]];
     UIFont *font = [UIFont boldSystemFontOfSize:14.0f];
     NSDictionary *attributes = [NSDictionary dictionaryWithObject:font
                                                            forKey:NSFontAttributeName];
     [_customVideoCaptureSeg setTitleTextAttributes:attributes
                                forState:UIControlStateNormal];
     _customVideoCaptureSeg.bounds = CGRectMake(0, 0, self.view.width * 0.4, 35);
-    _customVideoCaptureSeg.center = CGPointMake(self.view.width - _customVideoCaptureSeg.width / 2 - 10, _userIdTextField.bottom + 30);
+    _customVideoCaptureSeg.center = CGPointMake(self.view.width - _customVideoCaptureSeg.width / 2 - 10, _userIdTextField.bottom + 45);
     _customVideoCaptureSeg.tintColor = UIColorFromRGB(0x05a764);
     _customVideoCaptureSeg.selectedSegmentIndex = 0;
     [_customVideoCaptureSeg setTitleTextAttributes:@{NSForegroundColorAttributeName:UIColor.whiteColor} forState:UIControlStateSelected];
     [_customVideoCaptureSeg setTitleTextAttributes:@{NSForegroundColorAttributeName:UIColorFromRGB(0x939393)} forState:UIControlStateNormal];
 
     [self.view addSubview:_customVideoCaptureSeg];
-    //    [_customVideoCaptureSwitch addTarget:self action:@selector(onCustomVideoSwitchClicked:) forControlEvents:UIControlEventTouchUpInside];
     UILabel *customVideoCaptureLabel = [[UILabel alloc] init];
     customVideoCaptureLabel.textColor = userTipLabel.textColor;
-    customVideoCaptureLabel.text = @"视频源";
+    customVideoCaptureLabel.text = @"视频输入";
     [customVideoCaptureLabel sizeToFit];
     customVideoCaptureLabel.center = CGPointMake(userTipLabel.x + customVideoCaptureLabel.width / 2, _customVideoCaptureSeg.center.y);
     [self.view addSubview:customVideoCaptureLabel];
@@ -125,6 +130,39 @@
     [_joinBtn setTitle:@"创建并自动加入该房间" forState:UIControlStateNormal];
     [_joinBtn addTarget:self action:@selector(onJoinBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_joinBtn];
+    
+    _appSenceSeg = [[UISegmentedControl alloc] initWithItems:@[@"视频通话", @"在线直播"]];
+    _appSenceSeg.frame = CGRectMake(_userIdTextField.width - _customVideoCaptureSeg.width - 10, _customVideoCaptureSeg.bottom + 10, _customVideoCaptureSeg.width, _customVideoCaptureSeg.height);
+    _appSenceSeg.tintColor = UIColorFromRGB(0x05a764);
+    _appSenceSeg.selectedSegmentIndex = 0;
+    [_appSenceSeg setTitleTextAttributes:@{NSForegroundColorAttributeName:UIColor.whiteColor} forState:UIControlStateSelected];
+    [_appSenceSeg setTitleTextAttributes:@{NSForegroundColorAttributeName:UIColorFromRGB(0x939393)} forState:UIControlStateNormal];
+    [_appSenceSeg addTarget:self action:@selector(onSegmentValueChange:) forControlEvents:UIControlEventValueChanged];
+    [self.view addSubview:_appSenceSeg];
+    
+    UILabel *senceLabel = [[UILabel alloc] init];
+    senceLabel.textColor = userTipLabel.textColor;
+    senceLabel.text = @"应用场景";
+    [senceLabel sizeToFit];
+    senceLabel.center = CGPointMake(customVideoCaptureLabel.x + senceLabel.width / 2, _appSenceSeg.center.y);
+    [self.view addSubview:senceLabel];
+    
+    
+    _roleSeg = [[UISegmentedControl alloc] initWithItems:@[@"上麦主播", @"普通观众"]];
+    _roleSeg.frame = CGRectMake(_userIdTextField.width - _customVideoCaptureSeg.width - 10, _appSenceSeg.bottom + 10, _customVideoCaptureSeg.width, _customVideoCaptureSeg.height);
+    _roleSeg.tintColor = UIColorFromRGB(0x05a764);
+    _roleSeg.selectedSegmentIndex = 0;
+    [_roleSeg setTitleTextAttributes:@{NSForegroundColorAttributeName:UIColor.whiteColor} forState:UIControlStateSelected];
+    [_roleSeg setTitleTextAttributes:@{NSForegroundColorAttributeName:UIColorFromRGB(0x939393)} forState:UIControlStateNormal];
+    [self.view addSubview:_roleSeg];
+    
+    UILabel* roleLabel = [[UILabel alloc] init];
+    roleLabel.textColor = userTipLabel.textColor;
+    roleLabel.text = @"角色选择";
+    [roleLabel sizeToFit];
+    roleLabel.center = CGPointMake(customVideoCaptureLabel.x + roleLabel.width / 2, _roleSeg.center.y);
+    [self.view addSubview:roleLabel];
+    _roleSeg.enabled = NO;
 #ifndef APPSTORE
 //    _talkModeSwitch = [[UISwitch alloc] init];
 //    _talkModeSwitch.frame = CGRectMake(_userIdTextField.width - _talkModeSwitch.width - 10, _userIdTextField.bottom + 10, _talkModeSwitch.width, _talkModeSwitch.height);
@@ -167,6 +205,21 @@
     self.navigationController.navigationBar.hidden = YES;
 }
 
+#pragma mark - UIControl event handle
+- (void)onSegmentValueChange:(UISegmentedControl*)seg
+{
+    if (seg == _appSenceSeg) {
+        BOOL roleEnable = YES;
+        if (_appSenceSeg.selectedSegmentIndex == 1) {
+            roleEnable = YES;
+        }
+        else {
+            roleEnable = NO;
+            _roleSeg.selectedSegmentIndex = 0;
+        }
+        _roleSeg.enabled = roleEnable;
+    }
+}
 
 
 - (void)showMeidaPicker
@@ -248,17 +301,19 @@
     [[NSUserDefaults standardUserDefaults] synchronize];
     TRTCMainViewController *vc = [[TRTCMainViewController alloc] init];
     //    vc.pureAudioMode = _talkModeSwitch.isOn;
-    
+
     TRTCParams *param = [[TRTCParams alloc] init];
     param.sdkAppId = _sdkAppid;
     param.userId = userId;
     param.roomId = (UInt32)roomId.integerValue;
     param.privateMapKey = @"";
     param.bussInfo = @"";
+    param.role = _role;
     vc.param = param;
 
     vc.enableCustomVideoCapture = _customVideoCaptureSeg.selectedSegmentIndex == 1;
     vc.customMediaAsset = _customSourceAsset;
+    vc.appScene = _appSenceSeg.selectedSegmentIndex == 0 ? TRTCAppSceneVideoCall : TRTCAppSceneLIVE;
     
     // 从控制台获取的 json 文件中，简单获取几组已经提前计算好的 userid 和 usersig
     if (_sdkAppid == _userInfo.configSdkAppid && _userInfo.configSdkAppid > 0) {
@@ -271,6 +326,13 @@
 }
 
 - (void)onJoinBtnClicked:(UIButton *)sender {
+    if ([TRTCFloatWindow sharedInstance].localView) {
+        [[TRTCFloatWindow sharedInstance] close];
+    }
+    
+    if (_roleSeg != nil) {
+        _role = _roleSeg.selectedSegmentIndex == 1 ? TRTCRoleAudience : TRTCRoleAnchor;
+    }
     
     if (_customVideoCaptureSeg.selectedSegmentIndex == 1) {
         [self showMeidaPicker];
@@ -341,6 +403,11 @@
 {
     _userIdTextField.text = _userInfo.configUserIdArray[row];
     [self.view endEditing:YES];
+}
+
+- (void)dealloc
+{
+    [[TRTCFloatWindow sharedInstance] close];
 }
 
 @end

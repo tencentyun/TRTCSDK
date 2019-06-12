@@ -22,24 +22,23 @@
 
 
 #define TAG_SETTING_RESOLUTION 5001
-#define TAG_SETTING_FPS       5002
-#define TAG_SETTING_BITRATE   5003
-#define TAG_SETTING_CTRL_QOS  5004
-#define TAG_SETTING_QOS       5005
-#define TAG_SETTING_SCENE     5006
-#define TAG_SETTING_RES_MODE  5007
+#define TAG_SETTING_FPS        5002
+#define TAG_SETTING_BITRATE    5003
+#define TAG_SETTING_CTRL_QOS   5004
+#define TAG_SETTING_QOS        5005
+#define TAG_SETTING_SCENE      5006
+#define TAG_SETTING_RES_MODE   5007
 
-#define SECTION_RESOLUTION 0
-#define SECTION_FPS        1
-#define SECTION_BITRATE    2
-#define SECTION_SAVE_PARAM         3
-#define SECTION_ENABLE_SMALL_STREAM    4
-#define SECTION_PRIOR_SMALL_STREAM    5
-#define SECTION_QOS         6
-#define SECTION_SAVE        7
-#define SECTION_RESMODE     7
-#define SECTION_QOS_CTRL    8
-#define SECTION_SCENE       9
+#define SECTION_RESOLUTION              0
+#define SECTION_FPS                     1
+#define SECTION_BITRATE                 2
+#define SECTION_QOS                     3
+#define SECTION_RESMODE                 4
+#define SECTION_QOS_CTRL                5
+#define SECTION_ENABLE_SMALL_STREAM     6
+#define SECTION_PRIOR_SMALL_STREAM      7
+#define SECTION_SAVE_PARAM              8
+#define SECTION_SCENE                   9
 
 @implementation TRTCSettingsProperty
 @end
@@ -91,6 +90,8 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"取消" style:UIBarButtonItemStylePlain target:self action:@selector(onClickedCancel:)];;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"完成" style:UIBarButtonItemStylePlain target:self action:@selector(onClickedOK:)];;
     
+    TRTCAppScene scene = [[self class] getAppScene];
+    //视频通话的模式码率设置
     _paramArray = @[[[TRTCSettingBitrateTable alloc] initWithResolution:TRTCVideoResolution_160_160 defaultBitrate:150 minBitrate:40 maxBitrate:300 step:10],
                     [[TRTCSettingBitrateTable alloc] initWithResolution:TRTCVideoResolution_320_180 defaultBitrate:250 minBitrate:80 maxBitrate:350 step:10],
                     [[TRTCSettingBitrateTable alloc] initWithResolution:TRTCVideoResolution_320_240 defaultBitrate:300 minBitrate:100 maxBitrate:400 step:10],
@@ -99,6 +100,17 @@
                     [[TRTCSettingBitrateTable alloc] initWithResolution:TRTCVideoResolution_640_480 defaultBitrate:600 minBitrate:250 maxBitrate:1000 step:50],
                     [[TRTCSettingBitrateTable alloc] initWithResolution:TRTCVideoResolution_960_540 defaultBitrate:800 minBitrate:400 maxBitrate:1600 step:50],
                     [[TRTCSettingBitrateTable alloc] initWithResolution:TRTCVideoResolution_1280_720 defaultBitrate:1150 minBitrate:500 maxBitrate:2000 step:50]];
+    //直播模式的码率设置
+    if (scene == TRTCAppSceneLIVE) {
+        _paramArray = @[[[TRTCSettingBitrateTable alloc] initWithResolution:TRTCVideoResolution_160_160 defaultBitrate:225 minBitrate:40 maxBitrate:300 step:10],
+                        [[TRTCSettingBitrateTable alloc] initWithResolution:TRTCVideoResolution_320_180 defaultBitrate:350 minBitrate:80 maxBitrate:350 step:10],
+                        [[TRTCSettingBitrateTable alloc] initWithResolution:TRTCVideoResolution_320_240 defaultBitrate:400 minBitrate:100 maxBitrate:400 step:10],
+                        [[TRTCSettingBitrateTable alloc] initWithResolution:TRTCVideoResolution_640_360 defaultBitrate:750 minBitrate:200 maxBitrate:1000 step:10],
+                        [[TRTCSettingBitrateTable alloc] initWithResolution:TRTCVideoResolution_480_480 defaultBitrate:600 minBitrate:200 maxBitrate:1000 step:10],
+                        [[TRTCSettingBitrateTable alloc] initWithResolution:TRTCVideoResolution_640_480 defaultBitrate:900 minBitrate:250 maxBitrate:1000 step:50],
+                        [[TRTCSettingBitrateTable alloc] initWithResolution:TRTCVideoResolution_960_540 defaultBitrate:1200 minBitrate:400 maxBitrate:1600 step:50],
+                        [[TRTCSettingBitrateTable alloc] initWithResolution:TRTCVideoResolution_1280_720 defaultBitrate:1750 minBitrate:500 maxBitrate:2000 step:50]];
+    }
     
     _fpsArray = @[@(15), @(20), @(24)];
     
@@ -179,11 +191,25 @@
     return 15;
 }
 
++ (int)getAppScene {
+    NSNumber *d = [[NSUserDefaults standardUserDefaults] objectForKey:TRTC_SETTING_SENCE];
+    if (d != nil) {
+        return [d intValue];
+    }
+    
+    return TRTCAppSceneVideoCall;
+}
+
 + (int)getBitrate {
     NSNumber *d = [[NSUserDefaults standardUserDefaults] objectForKey:TRTC_SETTING_BITRATE];
     if (d != nil) {
         return [d intValue];
     }
+    
+    //直播默认值为通话的1.5倍
+    if ([[self class] getAppScene] == TRTCAppSceneLIVE)
+        return 750;
+    
     return 500;
 }
 
@@ -203,14 +229,6 @@
     return TRTCQosControlModeServer;
 }
 
-+ (int)getAppScene {
-    NSNumber *d = [[NSUserDefaults standardUserDefaults] objectForKey:TRTC_SETTING_SENCE];
-    if (d != nil) {
-        return [d intValue];
-    }
-    
-    return TRTCAppSceneVideoCall;
-}
 
 + (int)getResMode {
     NSNumber *d = [[NSUserDefaults standardUserDefaults] objectForKey:TRTC_SETTING_RESMODE];
@@ -235,6 +253,11 @@
         return [d intValue];
     }
     return 0;
+}
+
++ (void)setAppScene:(int)appScene
+{
+    [[NSUserDefaults standardUserDefaults] setObject:@(appScene) forKey:TRTC_SETTING_SENCE];
 }
 
 - (NSString *)resolutionStr:(int)resolution {
@@ -309,7 +332,7 @@
 #pragma mark - UITableView delegate
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 10;
+    return 9;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -335,7 +358,7 @@
         cell.accessoryView = _priorSmallStreamSwitch;
     } else if (indexPath.section == SECTION_QOS) {
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        cell.textLabel.text = (_selectQosType == 0)?@"流畅":@"清晰";
+        cell.textLabel.text = (_selectQosType == 0)?@"优先流畅":@"优先清晰";
     } else if (indexPath.section == SECTION_RESMODE) {
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.textLabel.text = (_selectResMode == 0)?@"横屏模式":@"竖屏模式";
