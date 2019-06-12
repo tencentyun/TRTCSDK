@@ -50,11 +50,13 @@ public:
     afx_msg void OnBnClickedCheckPlaySamllVideo();
     afx_msg void OnCbnSelchangeComboFps();
     afx_msg void OnCbnSelchangeComboQuality();
+    afx_msg void OnCbnSelchangeComboSense();
     afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 
     CComboBox m_resolutionCombo;
     CComboBox m_fpsCombo;
     CComboBox m_qualityCombo;
+    CComboBox m_senseCombo;
     CSliderCtrl m_bitrateSlider;
     CButton m_pushSmallVideoCheck;
     CButton m_playSmallVideoCheck;
@@ -67,9 +69,10 @@ protected:
 private:
     TRTCVideoEncParam m_videoEncParams;
     TRTCNetworkQosParam m_qosParams;
+    TRTCAppScene m_appScene;
+    
     bool m_bPushSmallVideo = false; //推流打开小流设置。
     bool m_bPlaySmallVideo = false; //拉流打开小流设置。
     std::map<int, TRTCSettingBitrateTable> m_videoConfigMap;
-public:
     
 };

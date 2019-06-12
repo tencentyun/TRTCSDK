@@ -97,15 +97,15 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;UILIB_STATIC;USE_LOG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)Common\duilib;$(ProjectDir)..\SDK\liteav\Win32\include;$(ProjectDir)..\SDK\liteav\Win32\include\Live;$(ProjectDir)..\SDK\liteav\Win32\include\TRTC;$(ProjectDir)..\SDK\liteav\Win32\include\Vod;$(ProjectDir)Common\libyuv\Win32\include;$(ProjectDir)Common;$(ProjectDir)sdkinterface\;$(ProjectDir)screenshare\;$(ProjectDir)uicontrol\;$(ProjectDir)utils\;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Common\duilib;$(ProjectDir)..\SDK\liteav\Win32\include;$(ProjectDir)..\SDK\liteav\Win32\include\Live;$(ProjectDir)..\SDK\liteav\Win32\include\TRTC;$(ProjectDir)..\SDK\liteav\Win32\include\Vod;$(ProjectDir)Common\libyuv\Win32\include;$(ProjectDir)Common\usersig\include;$(ProjectDir)Common;$(ProjectDir)sdkinterface\;$(ProjectDir)screenshare\;$(ProjectDir)uicontrol\;$(ProjectDir)utils\;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <AdditionalOptions>/source-charset:.65001 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>liteav.lib;winhttp.lib;httpapi.lib;crypt32.lib;wldap32.lib;yuv.lib;Gdiplus.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\SDK\liteav\Win32\lib;$(ProjectDir)Common\libyuv\Win32\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>liteav.lib;winhttp.lib;httpapi.lib;crypt32.lib;wldap32.lib;yuv.lib;Gdiplus.lib;mbedcrypto_d.lib;tlsignature_d.lib;zlibstatic_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\SDK\liteav\Win32\lib;$(ProjectDir)Common\libyuv\Win32\lib;$(ProjectDir)Common\usersig\lib\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>copy /Y "$(ProjectDir)..\SDK\liteav\Win32\lib\*.dll" "$(OutDir)"
@@ -146,7 +146,7 @@ xcopy /E /Y "$(ProjectDir)res\resouce" "$(OutDir)"</Command>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;UILIB_STATIC;USE_LOG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalOptions>/source-charset:.65001 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>$(ProjectDir)Common\duilib;$(ProjectDir)..\SDK\liteav\Win32\include;$(ProjectDir)..\SDK\liteav\Win32\include\Live;$(ProjectDir)..\SDK\liteav\Win32\include\TRTC;$(ProjectDir)..\SDK\liteav\Win32\include\Vod;$(ProjectDir)Common;$(ProjectDir)Common\libyuv\Win32\include;$(ProjectDir)sdkinterface\;$(ProjectDir)screenshare\;$(ProjectDir)uicontrol\;$(ProjectDir)utils\;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Common\duilib;$(ProjectDir)..\SDK\liteav\Win32\include;$(ProjectDir)..\SDK\liteav\Win32\include\Live;$(ProjectDir)..\SDK\liteav\Win32\include\TRTC;$(ProjectDir)..\SDK\liteav\Win32\include\Vod;$(ProjectDir)Common;$(ProjectDir)Common\libyuv\Win32\include;$(ProjectDir)Common\usersig\include;$(ProjectDir)sdkinterface\;$(ProjectDir)screenshare\;$(ProjectDir)uicontrol\;$(ProjectDir)utils\;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -154,8 +154,8 @@ xcopy /E /Y "$(ProjectDir)res\resouce" "$(OutDir)"</Command>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>yuv.lib;liteav.lib;winhttp.lib;httpapi.lib;crypt32.lib;wldap32.lib;Gdiplus.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\SDK\liteav\Win32\lib;$(ProjectDir)Common\libyuv\Win32\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>yuv.lib;liteav.lib;winhttp.lib;httpapi.lib;crypt32.lib;wldap32.lib;Gdiplus.lib;mbedcrypto.lib;tlsignature.lib;zlibstatic.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\SDK\liteav\Win32\lib;$(ProjectDir)Common\libyuv\Win32\lib;$(ProjectDir)Common\usersig\lib\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>copy /Y "$(ProjectDir)..\SDK\liteav\Win32\lib\*.dll" "$(OutDir)"
@@ -197,16 +197,17 @@ xcopy /E /Y "$(ProjectDir)res\resouce" "$(OutDir)"</Command>
     <ClCompile Include="Common\util\crashdump.cpp" />
     <ClCompile Include="Common\util\log.cpp" />
     <ClCompile Include="Common\util\md5.cpp" />
+    <ClCompile Include="GenerateTestUserSig.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="screenshare\ImageCanvas.cpp" />
     <ClCompile Include="screenshare\ShareSelectItem.cpp" />
+    <ClCompile Include="screenshare\TRTCScreenShareToolWnd.cpp" />
     <ClCompile Include="screenshare\UiShareSelect.cpp" />
     <ClCompile Include="sdkinterface\TRTCCloudCore.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="TRTCGetUserIDAndUserSig.cpp" />
     <ClCompile Include="TRTCLoginViewController.cpp" />
     <ClCompile Include="TRTCMainViewController.cpp" />
     <ClCompile Include="TRTCSettingViewController.cpp" />
@@ -227,14 +228,15 @@ xcopy /E /Y "$(ProjectDir)res\resouce" "$(OutDir)"</Command>
     <ClInclude Include="Common\util\crashdump.h" />
     <ClInclude Include="Common\util\log.h" />
     <ClInclude Include="Common\util\md5.h" />
+    <ClInclude Include="GenerateTestUserSig.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="screenshare\ImageCanvas.h" />
     <ClInclude Include="screenshare\ShareSelectItem.h" />
+    <ClInclude Include="screenshare\TRTCScreenShareToolWnd.h" />
     <ClInclude Include="screenshare\UiShareSelect.h" />
     <ClInclude Include="sdkinterface\TRTCCloudCore.h" />
     <ClInclude Include="sdkinterface\UserMassegeIdDefine.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="TRTCGetUserIDAndUserSig.h" />
     <ClInclude Include="TRTCLoginViewController.h" />
     <ClInclude Include="TRTCMainViewController.h" />
     <ClInclude Include="TRTCSettingViewController.h" />

@@ -68,7 +68,7 @@ public:
     virtual void onPlayAudioFrame(TRTCAudioFrame *frame, const char* userId);
     virtual void onMixedPlayAudioFrame(TRTCAudioFrame *frame);
     virtual void onSetMixTranscodingConfig(int errCode, const char* errMsg);
-    virtual void onFirstVideoFrame(const char* userId, uint32_t width, uint32_t height);
+    virtual void onFirstVideoFrame(const char* userId, TRTCVideoStreamType streamType, uint32_t width, uint32_t height);
 public:
     void regSDKMsgObserver(uint32_t msg, HWND hwnd);
     void removeSDKMsgObserver(uint32_t msg, HWND hwnd);
@@ -96,9 +96,9 @@ public:
 
     void connectOtherRoom(std::string userId, uint32_t roomId);
 
-    void startCloudMixStream(std::string localUserId);
+    void startCloudMixStream();
     void stopCloudMixStream();
-    void updateMixTranCodeInfo(std::vector<UserVideoInfo> vec, UserVideoInfo& localInfo, bool bForce = false);
+    void updateMixTranCodeInfo();
 
     void startCustomCaptureAudio(std::wstring filePath, int samplerate, int channel);
     void stopCustomCaptureAudio();
@@ -107,10 +107,9 @@ public:
 
     void sendCustomAudioFrame();
     void sendCustomVideoFrame();
-protected:
-    bool isChangeMixTranCodeInfo(std::vector<UserVideoInfo> vec);
 private:
     static TRTCCloudCore* m_instance;
+    std::string m_localUserId;
 
     std::vector<MediaDeviceInfo> m_vecSpeakDevice;
     std::vector<MediaDeviceInfo> m_vecMicDevice;
@@ -124,9 +123,9 @@ private:
     bool m_bFirstUpdateDevice = false;
 
     //云端混流功能
-    std::string m_localUserId;
+
     bool m_bStartCloudMixStream = false;
-    std::map<std::string, UserVideoInfo> m_mapMixTranCodeInfo;
+    std::map<std::string, UserVideoMeta> m_mapMixTranCodeInfo;
 
     //自定义采集功能:
     std::wstring m_videoFilePath, m_audioFilePath;

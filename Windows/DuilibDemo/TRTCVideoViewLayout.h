@@ -189,5 +189,6 @@ private:
 
     CVerticalLayoutUI* lecture_layout_videoview_container = nullptr;       //
     CVerticalLayoutUI* gallery_layout_videoview_container = nullptr;       //
+    CLabelUI* mainview_container_bgtext = nullptr;       //
 };
 

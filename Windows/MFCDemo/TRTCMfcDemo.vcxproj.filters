@@ -22,9 +22,6 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="TRTCGetUserIDAndUserSig.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="TRTCLoginViewController.h">
       <Filter>src</Filter>
     </ClInclude>
@@ -58,11 +55,11 @@
     <ClInclude Include="Common\http\HttpClient.h">
       <Filter>Common\http</Filter>
     </ClInclude>
+    <ClInclude Include="GenerateTestUserSig.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="TRTCGetUserIDAndUserSig.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="TRTCLoginViewController.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -86,6 +83,9 @@
     </ClCompile>
     <ClCompile Include="Common\http\HttpClient.cpp">
       <Filter>Common\http</Filter>
+    </ClCompile>
+    <ClCompile Include="GenerateTestUserSig.cpp">
+      <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

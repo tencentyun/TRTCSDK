@@ -36,7 +36,7 @@ public:
     void onClickMuteVideoBtn();
     void onClickMuteAudioBtn();
 
-    void OpenScreenBtnEvent(CButtonUI* pBtn, const TRTCScreenCaptureSourceInfo &source);
+    void OpenScreenBtnEvent(const TRTCScreenCaptureSourceInfo &source);
 
     bool onPKUserLeaveRoom(std::string userId);
     bool onPKUserEnterRoom(std::string userId, uint32_t& roomId);
@@ -45,10 +45,7 @@ public:
 private:
     TRTCSettingViewController* m_pSettingWnd = nullptr;
     TRTCMainViewController *m_pMainWnd = nullptr;
-    bool m_bOpenIMView = false;
-	bool m_bOpenScreen = false;
 	bool m_bPlay = false;
-	bool m_bGreenScreen = false;
     bool m_bShowLectureModeUi = false;
     int m_showDashboardStyle = 0;
 

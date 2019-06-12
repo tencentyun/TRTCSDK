@@ -34,40 +34,39 @@ public: //overwrite
     virtual LRESULT HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam);
     virtual void Notify(TNotifyUI& msg);
     virtual CControlUI* CreateControl(LPCTSTR pstrClass);
+public: 
+    void exitRoom();
+    void enterRoom();
 public:
-    void onEnterRoom(uint32_t useTime);
-    void onExitRoom(int reason);
-    void onUserEnter(std::string userId);
-    void onUserExit(std::string userId);
-	void onSubVideoAvailable(std::string userId, bool available);
-	void onVideoAvailable(std::string userId, bool available);
-    void onError(int errCode);
-    void onDashBoardData(int streamType, std::string userId, std::string data);
-    void onSDKEventData(int streamType, std::string userId, std::string data);
-    void onUserVoiceVolume(std::string userId, uint32_t volume);
-    void onNetworkQuality(std::string userId, int quality);
-    //void onUserVideoListChange(std::vector<UserVideoInfo> vec, UserVideoInfo& localInfo);
-    void DoExitRoom();
-    void onFirstVideoFrame(std::string userId, uint32_t width, uint32_t height);
+    //消息响应函数：
+    void onEnterRoom(uint32_t useTime);     //进房成功响应
+    void onExitRoom(int reason);            //退出成功响应
+    void onUserEnter(std::string userId);   //远端用户进房响应
+    void onUserExit(std::string userId);    //远端用户退房响应
+	void onSubVideoAvailable(std::string userId, bool available);   //远端辅路视频状态切换通知。
+	void onVideoAvailable(std::string userId, bool available);      //远端主路视频状态切换通知。
+    void onError(int errCode, std::string errMsg);                  //SDK错误码事件通知。
+    void onDashBoardData(int streamType, std::string userId, std::string data); //仪表盘数据
+    void onSDKEventData(int streamType, std::string userId, std::string data);  //SDK事件通知
+    void onUserVoiceVolume(std::string userId, uint32_t volume);                //用户音量
+    void onNetworkQuality(std::string userId, int quality);                     //网络质量状态
+    void onFirstVideoFrame(TRTCVideoStreamType streamType, std::string userId, uint32_t width, uint32_t height);//第一帧数据
+    void onAnchorToAudience();                                                  //主播切观众时。
 private:
-    void InitWindow();
-    void CheckDeviceStatus();
+    void CheckLocalUiStatus();
     void onViewBtnClickEvent(int id, std::wstring userId, int streamType);
     void onLocalVideoPublishChange(std::wstring userId, int streamType);
     void onLocalAudioPublishChange(std::wstring userId, int streamType);
     void onRemoteVideoSubscribeChange(std::wstring userId, int streamType);
     void onRemoteAudioSubscribeChange(std::wstring userId, int streamType);
+    //void updateMixTranscodingConfig();      //更新混流信息
 public:
     CPaintManagerUI& getPaintManagerUI();
     TRTCVideoViewLayout* getTRTCVideoViewLayout();
 private:
-    bool isTestStringRoomId();
-    void getSizeAlign16(long originWidth, long originHeight, long& align16Width, long& align16Height);
-    void convertCaptureResolution(TRTCVideoResolution resolution, long& width, long& height);
-private:
-    MainViewBottomBar* m_pMainViewBottomBar = nullptr;
-    TRTCVideoViewLayout* m_pVideoViewLayout = nullptr;
-    CBaseLayoutUI * m_pBaseLayoutUI = nullptr;
+    MainViewBottomBar* m_pMainViewBottomBar = nullptr;  //管理主面板下功能按钮列表。
+    TRTCVideoViewLayout* m_pVideoViewLayout = nullptr;  //管理主面板的视频渲染窗口分配。
+    CBaseLayoutUI * m_pBaseLayoutUI = nullptr;          //
     CPaintManagerUI m_pmUI;
     bool m_bQuit = true;
 

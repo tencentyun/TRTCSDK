@@ -16,7 +16,7 @@
 #include "afxdialogex.h"
 #include "StorageConfigMgr.h"
 #include "TRTCLoginViewController.h"
-#include "TRTCGetUserIDAndUserSig.h"
+#include "GenerateTestUserSig.h"
 #include "TRTCMainViewController.h"
 #include "util/Base.h"
 // TRTCLoginViewController 对话框
@@ -39,18 +39,17 @@ BOOL TRTCLoginViewController::OnInitDialog()
     CDialogEx::OnInitDialog();
     TRTCStorageConfigMgr::GetInstance()->ReadStorageConfig();
     newFont.CreatePointFont(120, L"微软雅黑");
-    m_userIdCombo.SetFont(&newFont);
     // 设置此对话框的图标。  当应用程序主窗口不是对话框时，框架将自动
     // 执行此操作
     //SetIcon(m_hIcon, TRUE);         // 设置大图标
     //SetIcon(m_hIcon, FALSE);        // 设置小图标
 
-    bool ret = TRTCGetUserIDAndUserSig::instance().loadFromConfig();
-    if (!ret)
+    int sdkAppID = GenerateTestUserSig::instance().getSdkAppId();
+    if (sdkAppID == 0)
     {
         CWnd *pEnterRoomBtn = GetDlgItem(IDC_ENTER_ROOM);
         pEnterRoomBtn->EnableWindow(FALSE);
-        MessageBoxW(L"解析Config.json失败", L"错误", MB_OK);
+        MessageBoxW(L"你需要补齐腾讯云账号信息到 GenerateTestUserSig.h 才能运行demo。", L"错误", MB_OK);
         return FALSE;
     }
 
@@ -70,17 +69,9 @@ BOOL TRTCLoginViewController::OnInitDialog()
     pStaticUser->SetWindowTextW(L"用户：");
     pStaticUser->SetFont(&newFont);
 
-    std::vector<UserInfo> userInfos = TRTCGetUserIDAndUserSig::instance().getConfigUserIdArray();
-    if (userInfos.empty())
-        return FALSE;
-
-    int userCnt = userInfos.size();
-    for (int i = 0; i < userCnt; i++)
-    {
-        UserInfo info = userInfos[i];
-        m_userIdCombo.AddString(UTF82Wide(info.userId).c_str());
-    }
-    m_userIdCombo.SetCurSel(0);
+    CWnd *pEditUserId = GetDlgItem(IDC_EDIT_USER_ID);
+    pEditUserId->SetWindowTextW(L"TRTC_TEST_USER01");
+    pEditUserId->SetFont(&newFont);
 
     CWnd *pEnterRoomBtn = GetDlgItem(IDC_ENTER_ROOM);
     pEnterRoomBtn->EnableWindow(TRUE);
@@ -99,7 +90,6 @@ BOOL TRTCLoginViewController::OnInitDialog()
 void TRTCLoginViewController::DoDataExchange(CDataExchange* pDX)
 {
     CDialogEx::DoDataExchange(pDX);
-    DDX_Control(pDX, IDC_COMBO_USERLIST, m_userIdCombo);
 }
 
 void TRTCLoginViewController::OnCancel()
@@ -132,48 +122,52 @@ END_MESSAGE_MAP()
 
 void TRTCLoginViewController::joinRoom(int roomId)
 {
-    // TODO: 在此添加控件通知处理程序代码
+    // 从控制台获取的 json 文件中，简单获取几组已经提前计算好的 userid 和 usersig
+    wchar_t buffer[MAX_PATH];
+    CWnd *pEditUserID = GetDlgItem(IDC_EDIT_USER_ID);
+    pEditUserID->GetWindowTextW(buffer, _countof(buffer));
+    std::wstring strUserId = buffer;
+    if (strUserId == L"")
+    {
+        MessageBoxW(L"用户ID不能为空！", L"错误", MB_OK);
+        return;
+    }
+    std::string userId = Wide2Ansi(strUserId);
+
+    //从本地计算法方法获取 userid 对应的 usersig
+    std::string userSig = GenerateTestUserSig::instance().getUserSigFromLocal(userId);
+    if (userSig == "")
+    {
+        //也可以通过 http 协议向一台服务器获取 userid 对应的 usersig
+        //示例：TRTCGetUserIDAndUserSig::instance().getUserSigFromServer();
+        MessageBoxW(L"userSig 获取失败，请检查是否填写账号信息！", L"错误", MB_OK);
+        return;
+    }
+
     if (m_pTRTCMainViewController == nullptr)
     {
         m_pTRTCMainViewController = new TRTCMainViewController(this);
         m_pTRTCMainViewController->Create(IDD_TESTTRTCAPP_DIALOG, this);
         m_pTRTCMainViewController->ShowWindow(SW_SHOW);
     }
+    
+    std::string privateMapKey = "";
+    TRTCParams params;
+    params.sdkAppId = GenerateTestUserSig::instance().getSdkAppId();
+    params.roomId = roomId;//std::to_string(roomId).c_str();
+    params.userId = userId.c_str();
+    params.userSig = userSig.c_str();
+    params.privateMapKey = privateMapKey.c_str();
 
-    // 从控制台获取的 json 文件中，简单获取几组已经提前计算好的 userid 和 usersig
-    std::vector<UserInfo> userInfos = TRTCGetUserIDAndUserSig::instance().getConfigUserIdArray();
-    if (userInfos.empty())
-    {   
-        //也可以通过 http 协议向一台服务器获取 userid 对应的 usersig
-        //示例：TRTCGetUserIDAndUserSig::instance().getUserSigFromServer();
-        return;
-    }
-    int selIndex = m_userIdCombo.GetCurSel();
-    if (selIndex >= 0 && selIndex < userInfos.size())
-    {
-        UserInfo info = userInfos[selIndex];   // 登录第一个用户
-        std::string privateMapKey = "";
-        TRTCParams params;
-        params.sdkAppId = TRTCGetUserIDAndUserSig::instance().getConfigSdkAppId();
-        params.roomId = roomId;//std::to_string(roomId).c_str();
-        params.userId = info.userId.c_str();
-        params.userSig = info.userSig.c_str();
-        params.privateMapKey = privateMapKey.c_str();
+    m_pTRTCMainViewController->enterRoom(params);
 
-        m_pTRTCMainViewController->enterRoom(params);
-
-        ShowWindow(SW_HIDE);
-    }
-    else
-    {
-        MessageBoxW(L"选择用户出错！", L"错误", MB_OK);
-    }
+    ShowWindow(SW_HIDE);
 }
 
 
 void TRTCLoginViewController::OnBnClickedEnterRoom()
 {
-    wchar_t buffer[256] = { 0 };
+    wchar_t buffer[MAX_PATH] = { 0 };
     CWnd *pEdit = GetDlgItem(IDC_EDIT_ROOM_ID);
     pEdit->GetWindowTextW(buffer, _countof(buffer));
     std::wstring strRoomId = buffer;
@@ -184,6 +178,7 @@ void TRTCLoginViewController::OnBnClickedEnterRoom()
     }
     uint32_t roomId = 0;
     ::swscanf_s(buffer, L"%lu", &roomId);
+
     joinRoom(roomId);
 }
 

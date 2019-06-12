@@ -43,7 +43,6 @@ public: //overwrite
     virtual LRESULT HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam);
 public: //cb
     virtual void Notify(TNotifyUI& msg);
-    virtual void NotifySubVideoTab(TNotifyUI& msg);
     virtual void NotifyOtherTab(TNotifyUI& msg);
     virtual CControlUI* CreateControl(LPCTSTR pstrClass);
 
@@ -64,13 +63,14 @@ private:
     void InitWindow();
     void InitNormalTab();
     void InitAudioTab();
-    void InitSubVideoTab();
     void InitVideoTab();
     void InitOtherTab();
     void UpdateCameraDevice();
     void UpdateMicDevice();
     void UpdateSpeakerDevice();
     void ResetBeautyConfig();
+private:
+    void updateVideoBitrateUi();
 public:
     SettingTagEnum m_eTagType = SettingTag_Video;
     CPaintManagerUI m_pmUI;

@@ -18,6 +18,9 @@
 #include <time.h>
 #include "util/log.h"
 //#include "common/Base.h"
+
+static CCriticalSection g_viewMgrCS;
+
 using namespace Gdiplus;
 //////////////////////////////////////////////////////////////////////////
 
@@ -44,6 +47,7 @@ public:
     }
     void AddView(const std::string& userId, const TRTCVideoStreamType type, TXLiveAvVideoView* view)
     {
+        CCSGuard guard(g_viewMgrCS);
         bool bFind = false;
         for (auto& itr : m_mapViews)
         {
@@ -62,6 +66,7 @@ public:
 
     void RemoveView(const std::string& userId, const TRTCVideoStreamType type, TXLiveAvVideoView* view)
     {
+        CCSGuard guard(g_viewMgrCS);
         std::map<std::pair<std::string, TRTCVideoStreamType>, TXLiveAvVideoView*>::iterator itr = m_mapViews.begin();
         for (; itr != m_mapViews.end(); itr++)
         {
@@ -73,10 +78,12 @@ public:
         }
     }
     void RemoveAllView() {
+        CCSGuard guard(g_viewMgrCS);
         m_mapViews.clear();
     }
     uint32_t GetRef()
     {
+        CCSGuard guard(g_viewMgrCS);
         return m_mapViews.size();
     }
 public:
@@ -90,41 +97,39 @@ public:
             {
                 streamTypeTemp = TRTCVideoStreamTypeBig;
             }
-            for (auto& itr : m_mapViews)
+            size_t viewCnt = 0;
             {
-                if (itr.first == std::make_pair(std::string(userId), streamTypeTemp) && itr.second != nullptr)
+                CCSGuard guard(g_viewMgrCS);
+                viewCnt = m_mapViews.size();
+            }
+            //此处复杂遍历迭代器，主要是为了释放锁，避免性能瓶颈。
+            for (size_t i = 0; i < viewCnt; i++)
+            {
+                TXLiveAvVideoView* viewPtr = nullptr;
+                int index = 0;
                 {
-                    itr.second->AppendVideoFrame((unsigned char *)frame->data, frame->length, frame->width, frame->height, frame->videoFormat, frame->rotation);
+                    CCSGuard guard(g_viewMgrCS);
+                    for (auto& itr : m_mapViews)
+                    {
+                        if (index < i)
+                        {
+                            index++;
+                            continue;
+                        }
+                        if (index == i)
+                        {
+                            if (itr.first == std::make_pair(std::string(userId), streamTypeTemp) && itr.second != nullptr)
+                                viewPtr = itr.second;
+                            break;
+                        }
+                    }
                 }
+                if (viewPtr != nullptr)
+                    viewPtr->AppendVideoFrame((unsigned char *)frame->data, frame->length, frame->width, frame->height, frame->videoFormat, frame->rotation);
             }
+            
         }
     }
-    /*
-    virtual bool onLocalVideoFrameAfterProcess(TRTCVideoFrame* frame)
-    {
-        for (auto& itr : m_mapViews)
-        {
-            if (itr.first.compare("") == 0 && itr.second != nullptr)
-            {
-                itr.second->AppendVideoFrame((unsigned char *)frame->data, frame->length, frame->width, frame->height, frame->videoFormat);
-            }
-        }
-        return true;
-    }
-
-    virtual bool onRemoteVideoFrame(const char* userId, TRTCVideoFrame* frame)
-    {
-        // todo kamis rotation
-        for (auto& itr : m_mapViews)
-        {
-            if (itr.first.compare(userId) == 0 && itr.second != nullptr)
-            {
-                itr.second->AppendVideoFrame((unsigned char *)frame->data, frame->length, frame->width, frame->height, frame->videoFormat);
-            }
-        }
-        return true;
-    }
-    */
 private:
     ULONG_PTR m_gdiplusToken = 0;
     std::multimap<std::pair<std::string, TRTCVideoStreamType>, TXLiveAvVideoView*> m_mapViews;    // userId和VideoView*的映射map
@@ -133,14 +138,14 @@ private:
 //////////////////////////////////////////////////////////////////////////TXLiveAvVideoView
 std::multimap<std::pair<std::string, TRTCVideoStreamType>, std::vector<std::wstring>> TXLiveAvVideoView::g_mapEventLogText;
 std::multimap<std::pair<std::string, TRTCVideoStreamType>, std::wstring> TXLiveAvVideoView::g_mapDashboardLogText;
-static UINT g_nTimerCnt = 1;
-UINT g_DefineMsg = WM_USER + 1000;
+//static UINT g_nTimerCnt = 1;
+static UINT g_DefineMsg = WM_USER + 1000;
 TXLiveAvVideoView::ViewDashboardStyleEnum TXLiveAvVideoView::g_nStyleDashboard = EViewDashboardNoVisible;
 
 TXLiveAvVideoView::TXLiveAvVideoView()
 {
     m_nDefineMsg = g_DefineMsg++;
-    m_nTimerID = g_nTimerCnt++;
+    //m_nTimerID = g_nTimerCnt++;
     memset(&m_bmi, 0, sizeof(BITMAPINFO));
 }
 
@@ -156,11 +161,13 @@ TXLiveAvVideoView::~TXLiveAvVideoView()
     releaseBuffer(m_argbRotationFrame);
     releaseBuffer(m_argbRenderFrame);
 
+    /*
     if (m_nTimerID != 0)
     {
         KillTimer(m_nTimerID);
         m_nTimerID = 0;
     }
+    */
 }
 
 bool TXLiveAvVideoView::RegEngine(const std::string & userId, TRTCVideoStreamType type, ITRTCCloud * engine, bool bLocal)
@@ -196,13 +203,16 @@ bool TXLiveAvVideoView::RegEngine(const std::string & userId, TRTCVideoStreamTyp
         CTXLiveAvVideoViewMgr::instance().AddView(userId, type, this);
 
     m_hWnd = m_pManager->GetPaintWindow();
-    releaseBuffer(m_argbSrcFrame);
+    {
+        CCSGuard guard(m_viewCs);
+        releaseBuffer(m_argbSrcFrame);
+    }
     releaseBuffer(m_argbRotationFrame);
     releaseBuffer(m_argbRenderFrame);
 
     m_bOccupy = true;
     NeedUpdate();
-    SetTimer(m_nTimerID, 1000);
+    //SetTimer(m_nTimerID, 1000);
     return true;
 }
 
@@ -227,7 +237,10 @@ void TXLiveAvVideoView::RemoveEngine(ITRTCCloud * engine)
     }
     {
         m_hWnd = nullptr;
-        releaseBuffer(m_argbSrcFrame);
+        {
+            CCSGuard guard(m_viewCs);
+            releaseBuffer(m_argbSrcFrame);
+        }
         releaseBuffer(m_argbRotationFrame);
         releaseBuffer(m_argbRenderFrame);
     }
@@ -237,8 +250,12 @@ void TXLiveAvVideoView::RemoveEngine(ITRTCCloud * engine)
         m_bLocalView = false;
         bFirstFrame = false;
         dwLastAppendFrameTicket = 0;
-        KillTimer(m_nTimerID);
-        m_nTimerID = 0;
+        /*
+        if (m_nTimerID)
+        {
+            KillTimer(m_nTimerID);
+        }
+        */
     }
     NeedUpdate();
 }
@@ -266,13 +283,22 @@ void TXLiveAvVideoView::SetPause(bool bPause)
         {
             this->SetBkColor(0xFF000000);
             //避免刷新最后一帧数据。
-            releaseBuffer(m_argbSrcFrame);
+            {
+                CCSGuard guard(m_viewCs);
+                releaseBuffer(m_argbSrcFrame);
+            }
             releaseBuffer(m_argbRotationFrame);
             releaseBuffer(m_argbRenderFrame);
         }
         if (m_hWnd)
             ::PostMessage(m_hWnd, m_nDefineMsg, m_argbSrcFrame.width, m_argbSrcFrame.height);
     }
+}
+
+void TXLiveAvVideoView::RemoveAllRegEngine()
+{
+    CTXLiveAvVideoViewMgr::instance().RemoveAllView();
+    //g_nTimerCnt = 1;
 }
 
 void TXLiveAvVideoView::GetVideoResolution(int & width, int & height)
@@ -340,7 +366,6 @@ void TXLiveAvVideoView::appendEventLogText(const std::string& userId, TRTCVideoS
                 break;
             }
         }
-        //g_mapEventLogText[userId].push_back(logText);
     }
     if (!bFind) {
         std::pair<std::string, TRTCVideoStreamType> key = { userId, steamType };
@@ -348,8 +373,6 @@ void TXLiveAvVideoView::appendEventLogText(const std::string& userId, TRTCVideoS
         value.push_back(logText);
         g_mapEventLogText.insert({ key, value });
     }
-    //if (g_mapEventLogText[userId].size() > 60)
-    //    g_mapEventLogText[userId].erase(g_mapEventLogText[userId].begin(), g_mapEventLogText[userId].begin() + 40);
 }
 
 void TXLiveAvVideoView::clearUserEventLogText(const std::string & userId)
@@ -365,12 +388,6 @@ void TXLiveAvVideoView::clearUserEventLogText(const std::string & userId)
         else
             iter++;
     }
-    //auto it = g_mapEventLogText.find(userId);
-    //if (g_mapEventLogText.end() != it)
-    //{
-    //    g_mapEventLogText[userId].clear();
-    //    g_mapEventLogText.erase(it);
-    //}
 }
 
 void TXLiveAvVideoView::clearAllLogText()
@@ -432,6 +449,10 @@ bool TXLiveAvVideoView::DoPaint(HDC hDC, const RECT & rcPaint, CControlUI * pSto
     //处理选择
     int w_rotation = 0, h_rotation = 0;
     {
+        CCSGuard guard(m_viewCs);
+        if (m_argbSrcFrame.frameBuf == nullptr)
+            return true;
+
         resetBuffer(width, height, m_argbRotationFrame.width, m_argbRotationFrame.height, &m_argbRotationFrame.frameBuf);
         libyuv::RotationMode mode = (libyuv::RotationMode)getRotationAngle(m_argbSrcFrame.rotation);
         w_rotation = m_argbRotationFrame.width;
@@ -441,6 +462,9 @@ bool TXLiveAvVideoView::DoPaint(HDC hDC, const RECT & rcPaint, CControlUI * pSto
             int temp = w_rotation;
             w_rotation = h_rotation;
             h_rotation = temp;
+
+            //ARGBRotate 做了XMirror，如果是90/270度旋转，需要调整
+            mode = (libyuv::RotationMode)((mode + 180) % 360);
         }
         int src_stride_argb = width * 4;
         int dst_stride_argb = w_rotation * 4;
@@ -648,7 +672,7 @@ bool TXLiveAvVideoView::AppendVideoFrame(unsigned char * data, uint32_t length, 
     if (bFirstFrame == false)
     {
         bFirstFrame = true;
-        //LINFO(L"TXLiveAvVideoView::AppendVideoFrame m_userId[%s], bFirstFrame = true\n",Ansi2Wide(m_userId).c_str());
+        LINFO(L"TXLiveAvVideoView::AppendVideoFrame m_userId[%s], bFirstFrame = true\n",Ansi2Wide(m_userId).c_str());
     }
     if (m_bPause)
         return false;
@@ -656,19 +680,57 @@ bool TXLiveAvVideoView::AppendVideoFrame(unsigned char * data, uint32_t length, 
         return false;
     if (videoFormat == TRTCVideoPixelFormat_BGRA32 && length != width * height * 4)
         return false;
-    if (videoFormat == TRTCVideoPixelFormat_I420) //当下不支持YUV
+    if (videoFormat == TRTCVideoPixelFormat_I420 && length != width * height * 3 / 2) //当下不支持YUV
         return false;
 
-    if (m_argbSrcFrame.frameBuf == nullptr || m_argbSrcFrame.width != width || m_argbSrcFrame.height != height)
+    if (videoFormat == TRTCVideoPixelFormat_I420)
     {
-        releaseBuffer(m_argbSrcFrame);
-        m_argbSrcFrame.width = width;
-        m_argbSrcFrame.height = height;
-        m_argbSrcFrame.frameBuf = new unsigned char[length];
+        CCSGuard guard(m_viewCs);
+        if (m_argbSrcFrame.frameBuf == nullptr || m_argbSrcFrame.width != width || m_argbSrcFrame.height != height)
+        {
+            releaseBuffer(m_argbSrcFrame);
+            m_argbSrcFrame.width = width;
+            m_argbSrcFrame.height = height;
+            m_argbSrcFrame.frameBuf = new unsigned char[width * height * 4 + 16];
+        }
+        //转码
+        unsigned char* src_y = data;
+        int y_stride = width;
+
+        unsigned char* src_u = data + width * height;
+        int u_stride = width / 2;
+
+        unsigned char* src_v = data + width * height * 5 / 4;
+        int v_stride = width / 2;
+
+        int argb_stride = width * 4;
+
+        libyuv::I420ToARGB(src_y, y_stride,
+            src_u, u_stride,
+            src_v, v_stride,
+            m_argbSrcFrame.frameBuf,
+            argb_stride,
+            width, height);
+        //::memcpy(m_argbSrcFrame.frameBuf, data, length);
+        m_argbSrcFrame.newFrame = true;
+        m_argbSrcFrame.rotation = rotation;
     }
-    ::memcpy(m_argbSrcFrame.frameBuf, data, length);
-    m_argbSrcFrame.newFrame = true;
-    m_argbSrcFrame.rotation = rotation;
+    else
+    {
+        CCSGuard guard(m_viewCs);
+        if (m_argbSrcFrame.frameBuf == nullptr || m_argbSrcFrame.width != width || m_argbSrcFrame.height != height)
+        {
+            releaseBuffer(m_argbSrcFrame);
+            m_argbSrcFrame.width = width;
+            m_argbSrcFrame.height = height;
+            m_argbSrcFrame.frameBuf = new unsigned char[length];
+        }
+        ::memcpy(m_argbSrcFrame.frameBuf, data, length);
+        m_argbSrcFrame.newFrame = true;
+        m_argbSrcFrame.rotation = rotation;
+    }
+
+
     if (m_hWnd)
         ::PostMessage(m_hWnd, m_nDefineMsg, m_argbSrcFrame.width, m_argbSrcFrame.height);
 
@@ -692,6 +754,7 @@ bool TXLiveAvVideoView::AppendVideoFrame(unsigned char * data, uint32_t length, 
 void TXLiveAvVideoView::DoEvent(TEventUI & event)
 {
     CControlUI::DoEvent(event);
+    /*
     if (event.Type == UIEVENT_TIMER)
     {
         if (event.wParam == m_nTimerID)
@@ -703,6 +766,7 @@ void TXLiveAvVideoView::DoEvent(TEventUI & event)
             }
         }
     }
+    */
 }
 
 bool TXLiveAvVideoView::DoPaintText(HDC hDC, const RECT& rcText, const RECT& rcLog, bool bDrawAVFrame)

@@ -24,7 +24,6 @@
       <Filter>uicontrol</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="TRTCGetUserIDAndUserSig.cpp" />
     <ClCompile Include="TRTCLoginViewController.cpp" />
     <ClCompile Include="TRTCMainViewController.cpp" />
     <ClCompile Include="TRTCSettingViewController.cpp" />
@@ -56,6 +55,10 @@
     <ClCompile Include="Common\http\HttpClient.cpp">
       <Filter>utils\http</Filter>
     </ClCompile>
+    <ClCompile Include="screenshare\TRTCScreenShareToolWnd.cpp">
+      <Filter>screenshare</Filter>
+    </ClCompile>
+    <ClCompile Include="GenerateTestUserSig.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -83,7 +86,6 @@
     <ClInclude Include="uicontrol\TXLiveAvVideoView.h">
       <Filter>uicontrol</Filter>
     </ClInclude>
-    <ClInclude Include="TRTCGetUserIDAndUserSig.h" />
     <ClInclude Include="TRTCLoginViewController.h" />
     <ClInclude Include="TRTCMainViewController.h" />
     <ClInclude Include="TRTCSettingViewController.h" />
@@ -124,6 +126,10 @@
     <ClInclude Include="Common\http\HttpClient.h">
       <Filter>utils\http</Filter>
     </ClInclude>
+    <ClInclude Include="screenshare\TRTCScreenShareToolWnd.h">
+      <Filter>screenshare</Filter>
+    </ClInclude>
+    <ClInclude Include="GenerateTestUserSig.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="res">

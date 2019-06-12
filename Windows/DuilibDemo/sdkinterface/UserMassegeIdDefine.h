@@ -32,6 +32,7 @@
 #define WM_USER_CMD_PKDisConnectStatus    WM_USER_CMD + 59     //用户声音音量值
 #define WM_USER_CMD_NetworkQuality    WM_USER_CMD + 60     //用户声音音量值
 #define WM_USER_CMD_FirstVideoFrame    WM_USER_CMD + 61     //第一帧视频数据。
+#define WM_USER_CMD_RemoteScreenStop     WM_USER_CMD + 62     //远端屏幕分享结束
 
 //音视频数据消息
 #define WM_USER_MEDIA_DATA WM_USER + 200
@@ -47,3 +48,4 @@
 #define WM_USER_VIEW_BTN_CLICK              WM_USER_UI_MSG_ID + 3    //View的按钮被点击了。
 #define WM_USER_CMD_CustomVideoCapture      WM_USER_UI_MSG_ID + 4     //
 #define WM_USER_CMD_CustomAudioCapture      WM_USER_UI_MSG_ID + 5
+#define WM_USER_CMD_RoleChange              WM_USER_UI_MSG_ID + 6     //用户角色变化了

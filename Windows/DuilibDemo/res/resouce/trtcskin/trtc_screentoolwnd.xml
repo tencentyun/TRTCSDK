@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Window mininfo="230, 30" size="230, 30" bktrans="true">
+	<Font id="1" name="微软雅黑" size="16" bold="false"/>
+	<Style name="btn_style" shared="true" value="normalimage=&quot;res='login/btn_normal.png' corner='2,2,2,2'&quot; hotimage=&quot;res='login/btn_hover.png' corner='2,2,2,2'&quot; pushedimage=&quot;res='login/btn_hover.png' corner='2,2,2,2'&quot; width=&quot;108&quot; height=&quot;23&quot; tooltip=&quot;登录&quot;" />
+	<VerticalLayout  bkcolor="#FFFFFFFF">
+		<Label name="screenshare_userinfo_tip" text="正在屏幕共享" font="1" align="center" valign="center" textcolor="#FFFF5050" padding="0,0,0,0"/>
+	</VerticalLayout>
+</Window>

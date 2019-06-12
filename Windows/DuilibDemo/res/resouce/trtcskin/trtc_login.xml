@@ -12,10 +12,10 @@
 		<Edit name="edit_roomid" text="" height="44" font="0" align="center" numberonly="true" textpadding="20,0,20,0" tipvalue="输入房间ID" tipvaluecolor="#FF808080" tipvaluealign="center" normalimage="res='login/edit_normal.png' corner='6,6,6,6'" focusedimage="res='login/edit_focus.png' corner='6,6,6,6'"/>
 		<VerticalLayout height="20"/>
 		<Edit name="edit_nameid" height="44" font="0" align="center" textpadding="20,0,20,0" tipvalue="输入用户ID" tipvaluecolor="#FF808080" tipvaluealign="center" normalimage="res='login/edit_normal.png' corner='6,6,6,6'" focusedimage="res='login/edit_focus.png' corner='6,6,6,6'"/>
-		<Combo name="combo_nameid" height="44" style="devicecombo" align="center" textpadding="10,0,0,0" visible="false" dropbox="bordercolor=&quot;#FF1E90FF&quot; bordersize=&quot;1&quot; bkcolor=&quot;#FFFFFFFF&quot;"/>
 		<VerticalLayout height="25"/>
-		<HorizontalLayout name="test_netenv_container" childalign="center" visible="false"  height="26" childpadding="10" inset="90,0,0,0">
+		<HorizontalLayout name="test_netenv_container" childalign="center" visible="false"  height="26" childpadding="10" inset="40,0,0,0">
 		    <Option name="test_netenv" group="netenvstyle" text="测试环境" style="radio_style" width="0" autocalcwidth="true"/>
+			<Option name="pretest_netenv" group="netenvstyle" text="体验环境" style="radio_style" width="0" autocalcwidth="true"/>
 		    <Option name="product_netenv" group="netenvstyle" text="正式环境" style="radio_style" width="0" autocalcwidth="true"/>
 		</HorizontalLayout>
 		<HorizontalLayout name="test_call_container" childalign="center" visible="false"  height="26" childpadding="10" inset="90,0,0,0">

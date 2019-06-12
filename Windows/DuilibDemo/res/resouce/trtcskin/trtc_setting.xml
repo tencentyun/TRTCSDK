@@ -19,7 +19,6 @@
 			<Option height="30" text="常规设置" name="normal_tab" font="1" hotbkcolor="#FFEEEEEE" selectedbkcolor="#FFD8D8D8" group="tab_setting" foreimage="dest='20,7,36,23' res='setting/normal_normal.png'"/>
 			<Option height="30" text="视频设置" name="video_tab" font="1" hotbkcolor="#FFEEEEEE" selectedbkcolor="#FFD8D8D8" group="tab_setting" foreimage="dest='20,7,36,23' res='setting/video_normal.png'"/>
 			<Option height="30" text="声音设置" name="audio_tab" font="1" hotbkcolor="#FFEEEEEE" selectedbkcolor="#FFD8D8D8" group="tab_setting" foreimage="dest='20,7,36,23' res='setting/audio_normal.png'"/>
-			<Option height="30" text="屏幕分享" name="subvideo_tab" font="1" hotbkcolor="#FFEEEEEE" selectedbkcolor="#FFD8D8D8" group="tab_setting" foreimage="dest='20,7,36,23' res='setting/share_normal.png'"/>
 			<Option height="30" text="其他设置" name="other_tab" font="1" hotbkcolor="#FFEEEEEE" selectedbkcolor="#FFD8D8D8" group="tab_setting" foreimage="dest='20,7,36,23' res='setting/other_set.png'"/>
 		</VerticalLayout>
 		<VerticalLayout width="2" bkcolor="#FF808080"/>
@@ -28,7 +27,7 @@
 			<!--normal setting page-->
 			<VerticalLayout name="normal_tab_layout" childpadding="10">
 				<HorizontalLayout height="10"/>
-					<GroupBox text="场景设置" padding="20,0,20,0" childpadding="15" bordercolor="#FF808080" bkcolor="#FFF8F8F8" bordersize="1" height="230">
+					<GroupBox name="normal_groupbox" text="场景设置" padding="20,0,20,0" childpadding="15" bordercolor="#FF808080" bkcolor="#FFF8F8F8" bordersize="1" height="250">
 						<HorizontalLayout childvalign="left" height="24">
 							<HorizontalLayout childvalign="left" inset="8,8,0,0" childpadding="10">
 							  <Label text="应用场景: " font="2" width="100" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,0"/>
@@ -36,6 +35,15 @@
 							  <Option name="scene_live" group="scenestyle" text="在线直播" style="radio_style" width="0" autocalcwidth="true"/>
 							  <VerticalLayout width="10"/>
 							  <Option name="scene_call" group="scenestyle" text="视频通话" style="radio_style" width="0" autocalcwidth="true"/>
+							</HorizontalLayout>
+						</HorizontalLayout>
+						<HorizontalLayout name="choose_role" childvalign="left" height="24" visible="false">
+							<HorizontalLayout childvalign="left" inset="8,8,0,0" childpadding="10">
+							  <Label text="进房角色: " font="2" width="100" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,0"/>
+							  <VerticalLayout width="20"/>
+							  <Option name="role_anchor" group="rolestyle" text="主播    " style="radio_style" width="0" autocalcwidth="true"/>
+							  <VerticalLayout width="10"/>
+							  <Option name="role_audience" group="rolestyle" text="观众    " style="radio_style" width="0" autocalcwidth="true"/>
 							</HorizontalLayout>
 						</HorizontalLayout>
 						<HorizontalLayout childvalign="left" height="24">
@@ -188,34 +196,6 @@
 					<Button name="btn_testbgm" text="启动BGM测试" textcolor="#FF000000" textpadding="6,0,6,0" style="btn_style" width="108" height="30" />
 				</HorizontalLayout>
 				<HorizontalLayout/>
-			</VerticalLayout>
-			<!--subvideo setting page-->
-			<VerticalLayout name="subvideo_tab_layout" childpadding="10">
-				<HorizontalLayout height="10"/>
-				<GroupBox text="辅流设置(屏幕分享)" padding="20,0,20,0" childpadding="20" bordercolor="#FF808080" bkcolor="#FFF0F0F0" bordersize="1" height="190">
-					<HorizontalLayout inset="10,0,0,0" childvalign="center" height="30">
-						<Label text="分辨率: " font="2" width="100" align="right" valign="center" textcolor="#FF000000" showhtml="true"/>
-						<Combo name="combo_subvideoresolution" width="250" height="36" style="devicecombo" dropboxsize="0,106" dropbox="bordercolor=&quot;#FF1E90FF&quot; bordersize=&quot;1&quot; bkcolor=&quot;#FFFFFFFF&quot;">
-							<ListLabelElement text="960x720"/>
-							<ListLabelElement text="960x540"/>
-							<ListLabelElement text="1280x720"/>
-							<ListLabelElement text="1920x1080"/>
-						</Combo>  
-					</HorizontalLayout>
-					<HorizontalLayout inset="10,0,0,0" childvalign="center" height="30">
-						<Label text="辅流帧率: " font="2" width="100" align="right" valign="center" textcolor="#FF000000" showhtml="true"/>
-						<Combo name="combo_subvideofps" width="250" height="36" style="devicecombo" dropboxsize="0,80" dropbox="bordercolor=&quot;#FF1E90FF&quot; bordersize=&quot;1&quot; bkcolor=&quot;#FFFFFFFF&quot;">
-							<ListLabelElement text="10 fps"/>
-							<ListLabelElement text="12 fps"/>
-							<ListLabelElement text="15 fps"/>
-						</Combo>  
-					</HorizontalLayout>
-					<HorizontalLayout inset="10,10,0,0" childvalign="center" height="30" childpadding="15">
-						<Label text="辅流码率: " font="2" width="100" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,2"/>
-						<Slider name="slider_subvideobitrate" enabled="true" width="200" height="20" value="45" min="0" max="90" style="slider_style"/>
-						<Label name="slider_subvideobitrate_value" text="450kbps" font="2" width="80" height="16" align="left" valign="bottom" padding="0,2,0,0" textcolor="#FF000000"/>
-					</HorizontalLayout>
-				</GroupBox>
 			</VerticalLayout>
 			<!--other setting page-->
 			<VerticalLayout name="other_tab_layout" childpadding="10">

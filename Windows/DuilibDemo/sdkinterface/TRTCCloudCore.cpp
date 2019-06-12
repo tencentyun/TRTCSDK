@@ -8,7 +8,8 @@
 #include <iostream>
 #include <fstream>
 #include <cstdint>
-#include "TRTCGetUserIDAndUserSig.h"
+#include "GenerateTestUserSig.h"
+#include "utils/TrtcUtil.h"
 
 TRTCCloudCore* TRTCCloudCore::m_instance = nullptr;
 static std::mutex engine_mex;
@@ -51,6 +52,7 @@ TRTCCloudCore::~TRTCCloudCore()
 void TRTCCloudCore::Init()
 {
     //检查默认选择设备
+    m_localUserId = CDataCenter::GetInstance()->getLocalUserID();
 
     m_pCloud->addCallback(this);
     m_pCloud->setLogCallback(this);
@@ -93,7 +95,10 @@ void TRTCCloudCore::onError(TXLiteAVError errCode, const char* errMsg, void* arg
     {
         if (itr.first == WM_USER_CMD_Error && itr.second != nullptr)
         {
-            ::PostMessage(itr.second, WM_USER_CMD_Error, (WPARAM)0, errCode);
+            std::string * str = new std::string();
+            if (errMsg != nullptr)
+                *str = errMsg;
+            ::PostMessage(itr.second, WM_USER_CMD_Error, (WPARAM)errCode, (LPARAM)str);
         }
     }
 }
@@ -101,35 +106,6 @@ void TRTCCloudCore::onError(TXLiteAVError errCode, const char* errMsg, void* arg
 void TRTCCloudCore::onWarning(TXLiteAVWarning warningCode, const char* warningMsg, void* arg)
 {
     LINFO(L"onWarning errorCode[%d], errorInfo[%s]\n", warningCode, UTF82Wide(warningMsg).c_str());
-
-    // 临时方案 todo
-    /*
-    int type = (int)warningCode;
-    if (type == -1 && warningMsg && arg)
-    {
-        for (auto& itr : m_mapSDKMsgFilter)
-        {
-            if (itr.first == WM_USER_CMD_Dashboard && itr.second != nullptr)
-            {
-                std::string* strUserid = new std::string((char*)arg);
-                std::string* value = new std::string(warningMsg);
-                ::PostMessage(itr.second, WM_USER_CMD_Dashboard, (WPARAM)strUserid, (LPARAM)value);
-            }
-        }
-    }
-    else if (type == -2 && warningMsg && arg)
-    {
-        for (auto& itr : m_mapSDKMsgFilter)
-        {
-            if (itr.first == WM_USER_CMD_SDKEventMsg && itr.second != nullptr)
-            {
-                std::string* strUserid = new std::string((char*)arg);
-                std::string* value = new std::string(warningMsg);
-                ::PostMessage(itr.second, WM_USER_CMD_SDKEventMsg, (WPARAM)strUserid, (LPARAM)value);
-            }
-        }
-    }
-    */
 }
 
 void TRTCCloudCore::onEnterRoom(uint64_t elapsed)
@@ -268,52 +244,34 @@ void TRTCCloudCore::onUserVideoAvailable(const char * userId, bool available)
 
 void TRTCCloudCore::onStatistics(const TRTCStatistics& statis)
 {
-    // todo kamis
-    // todo 更新流统计信息内容。
-    
     //更新云端混流的结构信息
-    /*
-    if (m_bStartCloudMixStream)
+    if (statis.localStatisticsArray != nullptr && statis.localStatisticsArraySize != 0)
     {
-        std::vector<UserVideoInfo>* vecList = new std::vector<UserVideoInfo>;
-        UserVideoInfo* localInfo = new UserVideoInfo;
-        localInfo->userId = m_localUserId;
-        if (statis.localStatisticsArray != nullptr && statis.localStatisticsArraySize != 0)
+        for (int i = 0; i < statis.localStatisticsArraySize; i++)
         {
-            for (int i = 0; i < statis.localStatisticsArraySize; i++)
+            if (statis.localStatisticsArray[i].streamType == TRTCVideoStreamTypeSub)
             {
-                if (statis.localStatisticsArray[i].streamType == TRTCVideoStreamTypeBig)
+                uint32_t width = statis.localStatisticsArray[i].width;
+                uint32_t height = statis.localStatisticsArray[i].height;
+                TRTCVideoStreamType streamType = statis.localStatisticsArray[i].streamType;
+                std::unique_lock<std::mutex> lck(m_mutexMsgFilter);
+                for (auto& itr : m_mapSDKMsgFilter)
                 {
-                    localInfo->width = statis.localStatisticsArray[i].width;
-                    localInfo->height = statis.localStatisticsArray[i].height;
-                    localInfo->fps = statis.localStatisticsArray[i].frameRate;
+                    if (itr.first == WM_USER_CMD_FirstVideoFrame && itr.second != nullptr)
+                    {
+                        std::string * str = new std::string(m_localUserId);
+                        //高14位width，低14位height，低4位streamType
+                        uint32_t _width = width << 20;
+                        uint32_t _height = height << 4;
+                        uint32_t videoInfo = _width + _height + (int)streamType;
+                        ::PostMessage(itr.second, WM_USER_CMD_FirstVideoFrame, (WPARAM)str, videoInfo);
+                    }
                 }
-            }
-        }
-        if (statis.remoteStatisticsArray != nullptr && statis.remoteStatisticsArraySize != 0)
-        {
-            for (int i = 0; i < statis.remoteStatisticsArraySize; i++)
-            {
-                if (statis.remoteStatisticsArray[i].streamType == TRTCVideoStreamTypeBig)
-                {
-                    UserVideoInfo info;
-                    info.userId = std::string(statis.remoteStatisticsArray[i].userId);
-                    info.width = statis.remoteStatisticsArray[i].width;
-                    info.height = statis.remoteStatisticsArray[i].height;
-                    vecList->push_back(info);
-                }
-            }
-        }
-        //updateMixTranCodeInfo(*vecList, localInfo);
-        for (auto& itr : m_mapSDKMsgFilter)
-        {
-            if (itr.first == WM_USER_CMD_UserListStaticChange && itr.second != nullptr)
-            {
-                ::PostMessage(itr.second, WM_USER_CMD_UserListStaticChange, (WPARAM)vecList, (LPARAM)localInfo);
+
             }
         }
     }
-    */
+
 }
 
 void TRTCCloudCore::onScreenCaptureStarted()
@@ -396,8 +354,6 @@ void TRTCCloudCore::onLog(const char* log, TRTCLogLevel level, const char* modul
                 info->userId.assign(module);
                 info->buffer.assign(log);
                 info->streamType = streamType;
-                //std::string* strUserid = new std::string((char*)module);
-                //std::string* value = new std::string(log);
                 ::PostMessage(itr.second, WM_USER_CMD_Dashboard, 0, (LPARAM)info);
             }
         }
@@ -413,8 +369,6 @@ void TRTCCloudCore::onLog(const char* log, TRTCLogLevel level, const char* modul
                 info->userId.assign(module);
                 info->buffer.assign(log);
                 info->streamType = streamType;
-                //std::string* strUserid = new std::string((char*)module);
-                //std::string* value = new std::string(log);
                 ::PostMessage(itr.second, WM_USER_CMD_SDKEventMsg, 0, (LPARAM)info);
             }
         }
@@ -488,7 +442,7 @@ void TRTCCloudCore::onSetMixTranscodingConfig(int errCode, const char * errMsg)
     LINFO(L"onSetMixTranscodingConfig errCode[%d], errMsg[%s]\n", errCode, UTF82Wide(errMsg).c_str());
 }
 
-void TRTCCloudCore::onFirstVideoFrame(const char* userId, uint32_t width, uint32_t height)
+void TRTCCloudCore::onFirstVideoFrame(const char* userId, TRTCVideoStreamType streamType, uint32_t width, uint32_t height)
 {
     LINFO(L"onFirstVideoFrame userId[%s], width[%d], height[%d]\n", UTF82Wide(userId).c_str(), width, height);
     
@@ -498,8 +452,11 @@ void TRTCCloudCore::onFirstVideoFrame(const char* userId, uint32_t width, uint32
         if (itr.first == WM_USER_CMD_FirstVideoFrame && itr.second != nullptr)
         {
             std::string * str = new std::string(userId);
-            uint32_t resolution = width << 16 + height;
-            ::PostMessage(itr.second, WM_USER_CMD_FirstVideoFrame, (WPARAM)str, resolution);
+            //高14位width，低14位height，低4位streamType
+            uint32_t _width = width << 20;
+            uint32_t _height = height << 4;
+            uint32_t videoInfo = _width + _height + (int)streamType;
+            ::PostMessage(itr.second, WM_USER_CMD_FirstVideoFrame, (WPARAM)str, videoInfo);
         }
     }
 }
@@ -901,58 +858,47 @@ void TRTCCloudCore::connectOtherRoom(std::string userId, uint32_t roomId)
     }
 }
 
-void TRTCCloudCore::startCloudMixStream(std::string localUserId)
+void TRTCCloudCore::startCloudMixStream()
 {
-    m_localUserId = localUserId;
     m_bStartCloudMixStream = true;
 
-    updateMixTranCodeInfo(CDataCenter::GetInstance()->_remoteVideoInfo, CDataCenter::GetInstance()->_localVideoInfo, true);
+    updateMixTranCodeInfo();
 }
 
 void TRTCCloudCore::stopCloudMixStream()
 {
     m_bStartCloudMixStream = false;
-    m_localUserId = "";
-    m_mapMixTranCodeInfo.clear();
     if (m_pCloud)
     {
         m_pCloud->setMixTranscodingConfig(NULL);
     }
 }
 
-bool TRTCCloudCore::isChangeMixTranCodeInfo(std::vector<UserVideoInfo> vec)
-{
-    if (m_mapMixTranCodeInfo.size() != vec.size() )
-    {
-        return true;
-    }
-    for (auto it : vec)
-    {
-        if (m_mapMixTranCodeInfo.find(it.userId) == m_mapMixTranCodeInfo.end())
-            return true;
-    }
 
-    return false;
-}
-
-void TRTCCloudCore::updateMixTranCodeInfo(std::vector<UserVideoInfo> vec, UserVideoInfo& localInfo, bool bForce)
+void TRTCCloudCore::updateMixTranCodeInfo()
 {
     if (m_bStartCloudMixStream == false)
         return;
-    if (vec.size() == 0 && m_mapMixTranCodeInfo.size() > 0)
+
+    std::vector<UserVideoMeta>& videoMeta = CDataCenter::GetInstance()->mixStreamVideoMeta;
+
+    TRTCVideoEncParam params = CDataCenter::GetInstance()->m_videoEncParams;
+    if (videoMeta.size() == 0)
     {
         m_pCloud->setMixTranscodingConfig(NULL);
-        m_mapMixTranCodeInfo.clear();
         return;
     }
 
-    if (isChangeMixTranCodeInfo(vec) == false && bForce == false)
-        return;
-    if (localInfo.userId.compare("") == 0)
-        return;
-    m_mapMixTranCodeInfo.clear();
+    if (CDataCenter::GetInstance()->m_bPureAudioStyle) 
+    {
+        for (auto& it : videoMeta)
+            it.bPureAudio = true;
+    }
 
-    for (auto& it : vec)
+    UserVideoMeta localMainVideo;
+    localMainVideo.userId = m_localUserId;
+
+    for (auto& it : videoMeta)
     {
         std::vector<PKUserInfo>& pkList = CDataCenter::GetInstance()->m_vecPKUserList;
         std::vector<PKUserInfo>::iterator result;
@@ -965,21 +911,11 @@ void TRTCCloudCore::updateMixTranCodeInfo(std::vector<UserVideoInfo> vec, UserVi
             }
         }
     }
-    if (CDataCenter::GetInstance()->m_bPureAudioStyle)
-    {
-        localInfo.bPureAudio = true;
-        for (auto& it : vec)
-            it.bPureAudio = true;
-    }
-
-
-    for (auto it : vec)
-        m_mapMixTranCodeInfo.insert(std::pair<std::string, UserVideoInfo>(it.userId, it));
 
     int canvasWidth = 960, canvasHeight = 720;
 
-    int appId = TRTCGetUserIDAndUserSig::instance().getTXCloudAccountInfo()._appId;
-    int bizId = TRTCGetUserIDAndUserSig::instance().getTXCloudAccountInfo()._bizId;
+    int appId = GenerateTestUserSig::instance().getTXCloudAccountInfo()._appId;
+    int bizId = GenerateTestUserSig::instance().getTXCloudAccountInfo()._bizId;
 
     if (appId == 0 || bizId == 0)
     {
@@ -999,24 +935,25 @@ void TRTCCloudCore::updateMixTranCodeInfo(std::vector<UserVideoInfo> vec, UserVi
     config.audioSampleRate = 48000;
     config.audioBitrate = 64;
     config.audioChannels = 1;
-    config.mixUsersArraySize = 1 + vec.size();
+    config.mixUsersArraySize = 1 + videoMeta.size();
 
     TRTCMixUser* mixUsersArray = new TRTCMixUser[config.mixUsersArraySize];
     config.mixUsersArray = mixUsersArray;
 
     int zOrder = 1, index = 0;
     mixUsersArray[index].roomId = nullptr;
-    mixUsersArray[index].userId = localInfo.userId.c_str();
-    mixUsersArray[index].pureAudio = localInfo.bPureAudio;
+    mixUsersArray[index].userId = localMainVideo.userId.c_str();
+    mixUsersArray[index].pureAudio = localMainVideo.bPureAudio;
     mixUsersArray[index].rect.left = 0;
     mixUsersArray[index].rect.top = 0;
     mixUsersArray[index].rect.right = canvasWidth;
     mixUsersArray[index].rect.bottom = canvasHeight;
+    mixUsersArray[index].streamType = (TRTCVideoStreamType)localMainVideo.streamType;
     mixUsersArray[index].zOrder = zOrder++;
 
     index++;
 
-    for (auto& it : vec)
+    for (auto& it : videoMeta)
     {
         int left = 20, top = 40;
 
@@ -1062,6 +999,7 @@ void TRTCCloudCore::updateMixTranCodeInfo(std::vector<UserVideoInfo> vec, UserVi
         mixUsersArray[index].rect.top = top;
         mixUsersArray[index].rect.right = right;
         mixUsersArray[index].rect.bottom = bottom;
+        mixUsersArray[index].streamType = (TRTCVideoStreamType)it.streamType;
         mixUsersArray[index].zOrder = zOrder;
         zOrder++;
         index++;

@@ -25,7 +25,7 @@ TRTCDemo.rc
 res\TRTCDemo.ico
     这是用作应用程序图标的图标文件。此图标包括在主资源文件 TRTCDemo.rc 中。
 
-res\TRTCDemo.rc2
+res\TRTCMfcDemo.rc2
     此文件包含不在 Microsoft Visual C++ 中进行编辑的资源。您应该将不可由资源编辑器编辑的所有资源放在此文件中。
 
 

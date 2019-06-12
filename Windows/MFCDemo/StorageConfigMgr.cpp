@@ -302,6 +302,9 @@ void TRTCStorageConfigMgr::ReadStorageConfig()
 
     strParam = m_pConfigMgr->GetValue(INI_ROOT_KEY, INI_KEY_SET_PLAY_SMALLVIDEO);
     bPlaySmallVideo = _wtoi(strParam.c_str());
+
+    strParam = m_pConfigMgr->GetValue(INI_ROOT_KEY, INI_KEY_SET_APP_SENSE);
+    appScene = (TRTCAppScene)_wtoi(strParam.c_str());
 }
 
 void TRTCStorageConfigMgr::WriteStorageConfig()
@@ -328,4 +331,7 @@ void TRTCStorageConfigMgr::WriteStorageConfig()
 
     strFormat = format(L"%d", bPlaySmallVideo);
     m_pConfigMgr->SetValue(INI_ROOT_KEY, INI_KEY_SET_PLAY_SMALLVIDEO, strFormat.c_str());
+
+    strFormat = format(L"%d", appScene);
+    m_pConfigMgr->SetValue(INI_ROOT_KEY, INI_KEY_SET_APP_SENSE, strFormat.c_str());
 }

@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Window>
-	<HorizontalLayout bkcolor="#FF050505">
+	<HorizontalLayout bkcolor="#FF404040">
 	   <!--左侧视频区域-->
-	   <VerticalLayout bkcolor="#FF000000" minwidth="600">
+	   <VerticalLayout bkcolor="#FF404040" minwidth="600" text="" font="1" align="center" valign="center" textcolor="#FF000000">
+		  <!-- bg text -->
+		  <Label name="mainview_container_bgtext" text="当前没可显示视频" font="1" align="center" valign="center" textcolor="#FFFFFFFF" showhtml="true" visible="false"/>
 		  <!-- video render area-->
 		  <!-- lecture video render area-->
 		  <VerticalLayout name="lecture_layout_videoview_container" bordersize="1" borderround="5,5">

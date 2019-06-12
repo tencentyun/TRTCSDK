@@ -13,6 +13,28 @@
 #include "UIlib.h"
 using namespace DuiLib;
 #include <vector>
+
+
+class CCriticalSection
+{
+public:
+    CCriticalSection() { ::InitializeCriticalSection(&m_Cs); }
+    ~CCriticalSection() { ::DeleteCriticalSection(&m_Cs); }
+public:
+    void          Enter() { ::EnterCriticalSection(&m_Cs); }
+    void          Leave() { ::LeaveCriticalSection(&m_Cs); }
+protected:
+    CRITICAL_SECTION    m_Cs;
+};
+class CCSGuard
+{
+public:
+    CCSGuard(CCriticalSection &Cs) : m_Cs(Cs) { m_Cs.Enter(); };
+    ~CCSGuard() { m_Cs.Leave(); };
+protected:
+    CCriticalSection &m_Cs;
+};
+
 class CTXLiveAvVideoViewMgr;
 class TXLiveAvVideoView : public CControlUI, public IMessageFilterUI
 {
@@ -66,6 +88,11 @@ public:
     */
     void SetPause(bool bPause);
 
+    /**
+    * \brief：清除所有映射信息
+    * \param：bPause
+    */
+    static void RemoveAllRegEngine();
 public:
     /**
     * \brief：view层 显示仪表盘和事件信息。
@@ -134,7 +161,7 @@ private:
     bool m_bLocalView = false;
 private: //统计
     bool bFirstFrame = false;
-    UINT m_nTimerID = 0;
+    //UINT m_nTimerID = 0;
     int nCntSDKFps = 0;
     int nCntPaintFps = 0;
     int nCntPaint = 0;
@@ -144,4 +171,6 @@ private: //统计
 
     uint64_t m_i64TotalFrame;
     uint64_t m_i64TotalTicketTime;
+
+    CCriticalSection m_viewCs;
 };

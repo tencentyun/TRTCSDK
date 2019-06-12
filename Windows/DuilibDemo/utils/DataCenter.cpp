@@ -61,20 +61,6 @@ CDataCenter::CDataCenter()
     VideoResBitrateTable& info17 = m_videoConfigMap[TRTCVideoResolution_1280_720];
     info17.init(1250, 500, 2000);     
 
-
-    VideoResBitrateTable& infoSub1 = m_subVideoConfigMap[TRTCVideoResolution_960_720];
-    infoSub1.init(500, 300, 1200);
-    VideoResBitrateTable& infoSub2 = m_subVideoConfigMap[TRTCVideoResolution_960_540];
-    infoSub2.init(450, 300, 1200);
-    VideoResBitrateTable& infoSub3 = m_subVideoConfigMap[TRTCVideoResolution_1280_720];
-    infoSub3.init(600, 400, 1600);
-    VideoResBitrateTable& infoSub4 = m_subVideoConfigMap[TRTCVideoResolution_1920_1080];
-    infoSub4.init(800, 400, 2000);
-
-    m_subVideoEncParams.videoFps = 10;
-    m_subVideoEncParams.videoResolution = TRTCVideoResolution_1280_720;
-    m_subVideoEncParams.videoBitrate = 600;
-
     m_sceneParams = TRTCAppSceneVideoCall;
 }
 
@@ -112,21 +98,12 @@ CDataCenter::LocalUserInfo & CDataCenter::getLocalUserInfo()
 
 CDataCenter::VideoResBitrateTable CDataCenter::getVideoConfigInfo(int resolution)
 {
+    VideoResBitrateTable info;
     if (m_videoConfigMap.find(resolution) != m_videoConfigMap.end())
-    {
-        return m_videoConfigMap[resolution];
-    }
-    VideoResBitrateTable info;
-    return info;
-}
+        info = m_videoConfigMap[resolution];
 
-CDataCenter::VideoResBitrateTable CDataCenter::getSubVideoConfigInfo(int resolution)
-{
-    if (m_subVideoConfigMap.find(resolution) != m_subVideoConfigMap.end())
-    {
-        return m_subVideoConfigMap[resolution];
-    }
-    VideoResBitrateTable info;
+    if (m_sceneParams == TRTCAppSceneLIVE)
+        info.resetLiveSence();
     return info;
 }
 
@@ -183,6 +160,12 @@ void CDataCenter::Init()
     else
         m_sceneParams = TRTCAppSceneVideoCall;
 
+    bRet = m_pConfigMgr->GetValue(INI_ROOT_KEY, INI_KEY_ROLE_TYPE, strParam);
+    if (bRet)
+        m_roleType = (TRTCRoleType)_wtoi(strParam.c_str());
+    else
+        m_roleType = TRTCRoleAnchor;
+
     bRet = m_pConfigMgr->GetValue(INI_ROOT_KEY, INI_KEY_BEAUTY_OPEN, strParam);
     if (bRet)
         m_beautyConfig._bOpenBeauty = _wtoi(strParam.c_str());
@@ -227,9 +210,9 @@ void CDataCenter::Init()
 
     bRet = m_pConfigMgr->GetValue(INI_ROOT_KEY, INI_KEY_SET_NETENV_STYLE, strParam);
     if (bRet)
-        m_bLinkTestServer = _wtoi(strParam.c_str());
+        m_nLinkTestServer = _wtoi(strParam.c_str());
     else
-        m_bLinkTestServer = false;
+        m_nLinkTestServer = 0;
 
     bRet = m_pConfigMgr->GetValue(INI_ROOT_KEY, INI_KEY_ROOMCALL_STYLE, strParam);
     if (bRet)
@@ -237,37 +220,11 @@ void CDataCenter::Init()
     else
         m_bPureAudioStyle = false;
 
-    bRet = m_pConfigMgr->GetValue(INI_ROOT_KEY, INI_KEY_SUBVIDEO_BITRATE, strParam);
-    if (bRet)
-        m_subVideoEncParams.videoBitrate = _wtoi(strParam.c_str());
-    else
-        m_subVideoEncParams.videoBitrate = 600;
-
-    bRet = m_pConfigMgr->GetValue(INI_ROOT_KEY, INI_KEY_SUBVIDEO_RESOLUTION, strParam);
-    if (bRet)
-        m_subVideoEncParams.videoResolution = (TRTCVideoResolution)_wtoi(strParam.c_str());
-    else
-        m_subVideoEncParams.videoResolution = TRTCVideoResolution_1280_720;
-
-    bRet = m_pConfigMgr->GetValue(INI_ROOT_KEY, INI_KEY_SUBVIDEO_FPS, strParam);
-    if (bRet)
-        m_subVideoEncParams.videoFps = _wtoi(strParam.c_str());
-    else
-        m_subVideoEncParams.videoFps = 10;
-
     bRet = m_pConfigMgr->GetValue(INI_ROOT_KEY, INI_KEY_VIDEO_RES_MODE, strParam);
     if (bRet)
         m_videoEncParams.resMode = (TRTCVideoResolutionMode)_wtoi(strParam.c_str());
     else
         m_videoEncParams.resMode = TRTCVideoResolutionModeLandscape;
-
-    /*
-    bRet = m_pConfigMgr->GetValue(INI_ROOT_KEY, INI_KEY_LOCAL_VIDEO_MIRROR, strParam);
-    if (bRet)
-        m_bLocalVideoMirror = _wtoi(strParam.c_str());
-    else
-        m_bLocalVideoMirror = false;
-    */
 
     bRet = m_pConfigMgr->GetValue(INI_ROOT_KEY, INI_KEY_REMOTE_VIDEO_MIRROR, strParam);
     if (bRet)
@@ -325,6 +282,8 @@ void CDataCenter::WriteEngineConfig()
     m_pConfigMgr->SetValue(INI_ROOT_KEY, INI_KEY_VIDEO_QUALITY_CONTROL, strFormat.GetData());
     strFormat.Format(L"%d", m_sceneParams);
     m_pConfigMgr->SetValue(INI_ROOT_KEY, INI_KEY_VIDEO_APP_SCENE, strFormat.GetData());
+    strFormat.Format(L"%d", m_roleType);
+    m_pConfigMgr->SetValue(INI_ROOT_KEY, INI_KEY_ROLE_TYPE, strFormat.GetData());
 
     strFormat.Format(L"%d", m_beautyConfig._bOpenBeauty);
     m_pConfigMgr->SetValue(INI_ROOT_KEY, INI_KEY_BEAUTY_OPEN, strFormat.GetData());
@@ -341,19 +300,10 @@ void CDataCenter::WriteEngineConfig()
     m_pConfigMgr->SetValue(INI_ROOT_KEY, INI_KEY_SET_PUSH_SMALLVIDEO, strFormat.GetData());
     strFormat.Format(L"%d", m_bPlaySmallVideo);
     m_pConfigMgr->SetValue(INI_ROOT_KEY, INI_KEY_SET_PLAY_SMALLVIDEO, strFormat.GetData());
-    strFormat.Format(L"%d", m_bLinkTestServer);
+    strFormat.Format(L"%d", m_nLinkTestServer);
     m_pConfigMgr->SetValue(INI_ROOT_KEY, INI_KEY_SET_NETENV_STYLE, strFormat.GetData());
     strFormat.Format(L"%d", m_bPureAudioStyle);
     m_pConfigMgr->SetValue(INI_ROOT_KEY, INI_KEY_ROOMCALL_STYLE, strFormat.GetData());
-
-    strFormat.Format(L"%d", m_subVideoEncParams.videoBitrate);
-    m_pConfigMgr->SetValue(INI_ROOT_KEY, INI_KEY_SUBVIDEO_BITRATE, strFormat.GetData());
-    strFormat.Format(L"%d", m_subVideoEncParams.videoResolution);
-    m_pConfigMgr->SetValue(INI_ROOT_KEY, INI_KEY_SUBVIDEO_RESOLUTION, strFormat.GetData());
-    strFormat.Format(L"%d", m_subVideoEncParams.resMode);
-    m_pConfigMgr->SetValue(INI_ROOT_KEY, INI_KEY_VIDEO_RES_MODE, strFormat.GetData());
-    strFormat.Format(L"%d", m_subVideoEncParams.videoFps);
-    m_pConfigMgr->SetValue(INI_ROOT_KEY, INI_KEY_SUBVIDEO_FPS, strFormat.GetData());
 
     strFormat.Format(L"%d", m_bLocalVideoMirror);
     m_pConfigMgr->SetValue(INI_ROOT_KEY, INI_KEY_LOCAL_VIDEO_MIRROR, strFormat.GetData());
@@ -374,4 +324,50 @@ CDataCenter::BeautyConfig & CDataCenter::GetBeautyConfig()
 {
     // TODO: 在此处插入 return 语句
     return m_beautyConfig;
+}
+
+void CDataCenter::removeVideoMeta(std::string userId, int streamType)
+{
+    std::vector<UserVideoMeta>::iterator iter_vec;
+    for (iter_vec = mixStreamVideoMeta.begin(); iter_vec != mixStreamVideoMeta.end();)
+    {
+        if (iter_vec->userId == userId && iter_vec->streamType == streamType)
+        {
+            iter_vec = mixStreamVideoMeta.erase(iter_vec);
+            break;
+        }
+        else
+            iter_vec++;
+    }
+}
+
+void CDataCenter::removeRemoteUser(std::string userId, int streamType)
+{
+    if (streamType == -1)
+    {
+        RemoteUserListMap& _remoteList = m_remoteUser;
+        RemoteUserListMap::iterator iter;//定义一个迭代指针iter
+        for (iter = _remoteList.begin(); iter != _remoteList.end();)
+        {
+            if (iter->first.first.compare(userId) == 0)
+            {
+                iter = _remoteList.erase(iter);
+            }
+            else
+                iter++;
+        }
+        return;
+    }
+    RemoteUserListMap& _remoteList = m_remoteUser;
+    RemoteUserListMap::iterator iter;//定义一个迭代指针iter
+    for (iter = _remoteList.begin(); iter != _remoteList.end();)
+    {
+        if (iter->first == std::make_pair(userId, (TRTCVideoStreamType)streamType))
+        {
+            iter = _remoteList.erase(iter);
+            break;
+        }
+        else
+            iter++;
+    }
 }

@@ -598,14 +598,12 @@ CControlUI * TRTCVideoViewLayout::CreateControl(LPCTSTR pstrClass, CPaintManager
         m_pmUI = pPM;
     if (_tcsicmp(pstrClass, _T("VideoCanvasContainer")) == 0) 
     {
-        
         VideoCanvasContainer  *pVideoRenderUI = new VideoCanvasContainer(this);
         g_VideoCanvasContainerList.push_back(pVideoRenderUI);
         pVideoRenderUI->SetBorderSize(1);
         pVideoRenderUI->SetBorderColor(0xFF999999);
         nTotalRenderWindowCnt++;
         return pVideoRenderUI;
-        
     }
     return nullptr;
 }
@@ -640,7 +638,8 @@ void TRTCVideoViewLayout::initRenderUI()
 
     lecture_layout_videoview_container = static_cast<CVerticalLayoutUI*>(m_pmUI->FindControl(_T("lecture_layout_videoview_container")));;       //
     gallery_layout_videoview_container = static_cast<CVerticalLayoutUI*>(m_pmUI->FindControl(_T("gallery_layout_videoview_container")));;       //
-
+    mainview_container_bgtext = static_cast<CLabelUI*>(m_pmUI->FindControl(_T("mainview_container_bgtext")));;
+    mainview_container_bgtext->SetVisible(false);
     if (mViewLayoutStyleEnum == ViewLayoutStyle_Lecture)
     {
         lecture_layout_videoview_container->SetVisible(true);
@@ -669,6 +668,7 @@ void TRTCVideoViewLayout::unInitRenderUI()
             itr.second._viewLayout->resetViewUIStatus(L"");
         }
     }
+    TXLiveAvVideoView::RemoveAllRegEngine();
 }
 
 /*
@@ -693,6 +693,7 @@ int TRTCVideoViewLayout::dispatchVideoView(std::wstring userId, TRTCVideoStreamT
         info._userId = userId;
         info._streamType = type;
         if (bPKUser) info._viewLayout->showPKIcon(true, roomId);
+        info._viewLayout->cleanViewStatus();
         info._viewLayout->resetViewUIStatus(userId.c_str(), type);
         info._viewLayout->SetVisible(true);
         nHadUseCnt++;
@@ -830,7 +831,7 @@ bool TRTCVideoViewLayout::SwapVideoView(std::wstring userIdA, std::wstring userI
     TRTCVideoViewLayout::switchVideoRenderInfo(minInfoA, minInfoB);
 
     minInfoA._viewLayout->resetViewUIStatus(minInfoA._userId.c_str(), minInfoA._streamType);
-    minInfoB._viewLayout->resetViewUIStatus(minInfoB._userId.c_str(), minInfoB._streamType);
+    minInfoB._viewLayout->resetViewUIStatus(minInfoB._userId.c_str(), minInfoB._streamType);  
     return true;
 }
 

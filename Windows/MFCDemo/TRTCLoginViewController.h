@@ -44,6 +44,4 @@ protected:
 private:
     CFont newFont;
     TRTCMainViewController * m_pTRTCMainViewController = nullptr;
-public:
-    CComboBox m_userIdCombo;
 };

@@ -22,15 +22,17 @@ typedef struct _tagPKUserInfo
     bool bEnterRoom = false;
 }PKUserInfo;
 
-struct UserVideoInfo
+struct UserVideoMeta
 {
     std::string userId = "";
     std::string roomId = "";
 
-    uint32_t width;
-    uint32_t height;
-    uint32_t fps;
+    int streamType = 0;
+    uint32_t width = 0;
+    uint32_t height = 0;
+    uint32_t fps = 0;
     bool bPureAudio = false;
+    bool bMainStream = false;
 };
 
 typedef std::multimap<std::pair<std::string, TRTCVideoStreamType>, RemoteUserInfo> RemoteUserListMap;
@@ -71,6 +73,12 @@ public:
             minBitrate = minBit;
             maxBitrate = maxBit;
         }
+        void resetLiveSence()
+        {
+            defaultBitrate = defaultBitrate * 15 / 10;
+            minBitrate = minBitrate * 15 / 10;
+            maxBitrate = maxBitrate * 15 / 10;
+        }
     }VideoResBitrateTable;
 public:
     static std::shared_ptr<CDataCenter> GetInstance();
@@ -83,7 +91,6 @@ public:
     LocalUserInfo& getLocalUserInfo();
     std::string getLocalUserID() { return m_loginInfo._userId; };
     VideoResBitrateTable getVideoConfigInfo(int resolution);
-    VideoResBitrateTable getSubVideoConfigInfo(int resolution);
 public:
     void WriteEngineConfig();
     BeautyConfig& GetBeautyConfig();
@@ -93,16 +100,25 @@ public: //trtc
     std::wstring m_selectCamera;
 
     TRTCVideoEncParam m_videoEncParams;
-    TRTCVideoEncParam m_subVideoEncParams;
     TRTCNetworkQosParam m_qosParams;
     TRTCAppScene m_sceneParams = TRTCAppSceneVideoCall;
+    TRTCRoleType m_roleType = TRTCRoleAnchor;
 
     //美颜参数
     BeautyConfig m_beautyConfig;
 
     bool m_bPushSmallVideo = false; //推流打开小流设置。
     bool m_bPlaySmallVideo = false; //拉流打开小流设置。
-    bool m_bLinkTestServer = false; //是否连接测试环境。
+
+    /*
+    enum {
+        Env_PROD = 0,   // 正式环境
+        Env_DEV = 1,    // 开发测试环境
+        Env_UAT = 2,    // 体验环境
+    };
+    */
+    int m_nLinkTestServer = 0; //是否连接测试环境。
+
     bool m_bPureAudioStyle = false; //是否纯音频模式。
 
     bool m_bLocalVideoMirror = false;      //本地镜像
@@ -113,21 +129,27 @@ public: //trtc
     bool m_bCustomAudioCapture = false;    //自定义采集音频
     bool m_bCustomVideoCapture = false;    //自定义采集视频
 
+    bool m_bStartScreenShare = false;
+
     std::map<int, VideoResBitrateTable> m_videoConfigMap;
-    std::map<int, VideoResBitrateTable> m_subVideoConfigMap;
 
-    RemoteUserListMap m_remoteUser;
-    //std::map<string, RemoteUserInfo> m_remoteUser;
-    std::vector<PKUserInfo> m_vecPKUserList;
 
-    uint32_t m_micVolume = 50;
+    uint32_t m_micVolume = 100;
     uint32_t m_speakerVolume = 50;
+public:  //混流信息
+    std::vector<UserVideoMeta> mixStreamVideoMeta;
+    void removeVideoMeta(std::string userId, int streamType);
+
+public:  //视频窗口信息
+    RemoteUserListMap m_remoteUser;
+    void removeRemoteUser(std::string userId, int streamType = -1);
 public:
-    LocalUserInfo m_loginInfo;
     CConfigMgr* m_pConfigMgr;
 
+    LocalUserInfo m_loginInfo;
 
-    UserVideoInfo _localVideoInfo;
-    std::vector<UserVideoInfo> _remoteVideoInfo;
+    std::vector<PKUserInfo> m_vecPKUserList;
+
+
 };
 

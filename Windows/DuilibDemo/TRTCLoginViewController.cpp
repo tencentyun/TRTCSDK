@@ -17,7 +17,7 @@
 #include "TRTCCloudCore.h"
 #include "TRTCMainViewController.h"
 #include "TRTCSettingViewController.h"
-#include "TRTCGetUserIDAndUserSig.h"
+#include "GenerateTestUserSig.h"
 #include "util/Base.h"
 #include "util/log.h"
 #include "json/json.h"
@@ -50,16 +50,19 @@ void TRTCLoginViewController::Notify(TNotifyUI & msg)
     if (msg.sType == _T("selectchanged"))
     {
         if (name.CompareNoCase(_T("test_netenv")) == 0) {
-            CDataCenter::GetInstance()->m_bLinkTestServer = true;
+            CDataCenter::GetInstance()->m_nLinkTestServer = 1;
+        }
+        else if (name.CompareNoCase(_T("pretest_netenv")) == 0) {
+            CDataCenter::GetInstance()->m_nLinkTestServer = 2;
         }
         else if (name.CompareNoCase(_T("product_netenv")) == 0) {
-            CDataCenter::GetInstance()->m_bLinkTestServer = false;
+            CDataCenter::GetInstance()->m_nLinkTestServer = 0;
         }
         else if (name.CompareNoCase(_T("audio_call")) == 0) {
             CDataCenter::GetInstance()->m_bPureAudioStyle = true;
         }
         else if (name.CompareNoCase(_T("video_call")) == 0) {
-            CDataCenter::GetInstance()->m_bPureAudioStyle = false;
+            CDataCenter::GetInstance()->m_bPureAudioStyle = false; 
         }
     }
 }
@@ -82,51 +85,21 @@ void TRTCLoginViewController::InitLoginView()
     m_pLoginStatus = static_cast<CLabelUI*>(m_pmUI.FindControl(_T("label_loginstatus")));
     m_pmUI.SetFocus(nullptr);
 
-
-    //判断本地是否配置了账号信息。
-    if (TRTCGetUserIDAndUserSig::instance().loadFromConfig() == true)
-    {
-        CEditUI* pEditName = static_cast<CEditUI*>(m_pmUI.FindControl(_T("edit_nameid")));
-        if (pEditName != nullptr)
-            pEditName->SetVisible(false);
-
-        CComboUI* pComboName = static_cast<CComboUI*>(m_pmUI.FindControl(_T("combo_nameid")));
-        if (pComboName != nullptr)
-        {
-            pComboName->SetVisible(true);
-            pComboName->RemoveAll();
-            std::vector<UserInfo> userInfoVec = TRTCGetUserIDAndUserSig::instance().getConfigUserIdArray();
-            for (auto info : userInfoVec)
-            {
-                CListLabelElementUI* pElement = new CListLabelElementUI;
-                pElement->SetText(Ansi2Wide(info.userId).c_str());
-                pElement->SetText(Ansi2Wide(info.userId).c_str());
-                pComboName->Add(pElement);
-            }
-            pComboName->SelectItem(0);
-        }
-        m_bConfigUserSign = true;
-    }
-
-    COptionUI* pLinkTestServer = static_cast<COptionUI*>(m_pmUI.FindControl(_T("check_link_testserver")));
-    if (pLinkTestServer)
-    {
-        pLinkTestServer->Selected(false);
-        if (CDataCenter::GetInstance()->m_bLinkTestServer)
-            pLinkTestServer->Selected(true);
-    }
-
     //初始化房间基础配置信息
     if (isTestEnv())
     {
-        bool bLinkTestServer = CDataCenter::GetInstance()->m_bLinkTestServer;
+        int nLinkTestServer = CDataCenter::GetInstance()->m_nLinkTestServer;
         COptionUI* pTestNetEnv = static_cast<COptionUI*>(m_pmUI.FindControl(_T("test_netenv")));
+        COptionUI* pPreTestNetEnv = static_cast<COptionUI*>(m_pmUI.FindControl(_T("pretest_netenv")));
         COptionUI* pProductNetEnv = static_cast<COptionUI*>(m_pmUI.FindControl(_T("product_netenv")));
-        if (pTestNetEnv && pProductNetEnv) {
+        if (pTestNetEnv && pProductNetEnv && pPreTestNetEnv) {
             pTestNetEnv->Selected(false);
+            pPreTestNetEnv->Selected(false);
             pProductNetEnv->Selected(false);
-            if (bLinkTestServer)
+            if (nLinkTestServer == 1)
                 pTestNetEnv->Selected(true);
+            else if (nLinkTestServer == 2)
+                pPreTestNetEnv->Selected(true);
             else
                 pProductNetEnv->Selected(true);
         }
@@ -162,7 +135,7 @@ void TRTCLoginViewController::InitLoginView()
 void TRTCLoginViewController::onBtnOpenSetting()
 {
     //先检查是否填写了 sdkappid ,只有填写了sdkappid才可以正常使用TRTCDuilibDemo信息。
-    if (TRTCGetUserIDAndUserSig::instance().getSdkAppId() == 0)
+    if (GenerateTestUserSig::instance().getSdkAppId() == 0)
     {
         CMsgWnd::ShowMessageBox(GetHWND(), _T("TRTCDuilibDemo"), _T("Error: 请先在 TRTCGetUserIDAndUserSig::TXCloudAccountInfo 填写 sdkappid 信息"), 0xFFF08080);
         return;
@@ -182,9 +155,9 @@ void TRTCLoginViewController::onBtnOpenSetting()
 void TRTCLoginViewController::onBtnEnterRoom()
 {
     //先检查是否填写了 sdkappid ,只有填写了sdkappid才可以正常使用TRTCDuilibDemo信息。
-    if (TRTCGetUserIDAndUserSig::instance().getSdkAppId() == 0)
+    if (GenerateTestUserSig::instance().getSdkAppId() == 0)
     {
-        CMsgWnd::ShowMessageBox(GetHWND(), _T("TRTCDuilibDemo"), _T("Error: 请先在 TRTCGetUserIDAndUserSig::TXCloudAccountInfo 填写 sdkappid 信息"), 0xFFF08080);
+        CMsgWnd::ShowMessageBox(GetHWND(), _T("TRTCDuilibDemo"), _T("Error: 请先在 TRTCGetUserIDAndUserSig::TXCloudAccountInfo 填写 sdkappid | _PRIVATEKEY信息"), 0xFFF08080);
         return;
     }
 
@@ -202,52 +175,25 @@ void TRTCLoginViewController::onBtnEnterRoom()
         info._roomId = _wtoi(strRoomId.c_str());
     }
 
-    if (m_bConfigUserSign == false)
+    CEditUI* pEditName = static_cast<CEditUI*>(m_pmUI.FindControl(_T("edit_nameid")));
+    if (pEditName != nullptr)
     {
-        CEditUI* pEditName = static_cast<CEditUI*>(m_pmUI.FindControl(_T("edit_nameid")));
-        if (pEditName != nullptr)
-        {
-            std::wstring strUserId = pEditName->GetText();
-            if (strUserId.compare(L"") == 0)
-            {
-                if (m_pLoginStatus != nullptr)
-                    m_pLoginStatus->SetText(L"用户不能为空");
-                return;
-            }
-            info._userId = Wide2Ansi(strUserId);
-        }
-
-        info._userSig = TRTCGetUserIDAndUserSig::instance().getUserSigFromServer(info._userId, info._pwd, info._roomId);
-        if (info._userSig == "")
+        std::wstring strUserId = pEditName->GetText();
+        if (strUserId.compare(L"") == 0)
         {
             if (m_pLoginStatus != nullptr)
-                m_pLoginStatus->SetText(L"user sign 获取失败");
+                m_pLoginStatus->SetText(L"用户不能为空");
             return;
         }
+        info._userId = Wide2Ansi(strUserId);
     }
-    else
+
+    info._userSig = GenerateTestUserSig::instance().getUserSigFromLocal(info._userId);
+    if (info._userSig == "")
     {
-        CComboUI* pComboName = static_cast<CComboUI*>(m_pmUI.FindControl(_T("combo_nameid")));
-        if (pComboName != nullptr)
-        {
-            std::wstring strUserId = pComboName->GetText();
-            if (strUserId.compare(L"") == 0)
-            {
-                if (m_pLoginStatus != nullptr)
-                    m_pLoginStatus->SetText(L"用户不能为空");
-                return;
-            }
-            info._userId = Wide2Ansi(strUserId);
-            std::vector<UserInfo> userInfoVec = TRTCGetUserIDAndUserSig::instance().getConfigUserIdArray();
-            for (auto itr : userInfoVec)
-            {
-                if (info._userId == itr.userId)
-                {
-                    info._userSig = itr.userSig;
-                    break;
-                }
-            }
-        }
+        if (m_pLoginStatus != nullptr)
+            m_pLoginStatus->SetText(L"user sign 获取失败");
+        return;
     }
 
     if (m_pSettingWnd) {
@@ -260,18 +206,22 @@ void TRTCLoginViewController::onBtnEnterRoom()
     if (pFrame == NULL)
         return;
     CDuiString strFormat;
-    if (CDataCenter::GetInstance()->m_bLinkTestServer)
+    if (CDataCenter::GetInstance()->m_nLinkTestServer == 1)
     {
-        strFormat.Format(L"TRTCDuilibDemo 【房间ID: %d, 用户ID: %s】【测试服】", info._roomId, Ansi2Wide(info._userId).c_str());
+        strFormat.Format(L"TRTCDuilibDemo 【房间ID: %d, 用户ID: %s】【测试环境】", info._roomId, Ansi2Wide(info._userId).c_str());
+    }
+    else if (CDataCenter::GetInstance()->m_nLinkTestServer == 2)
+    {
+        strFormat.Format(L"TRTCDuilibDemo 【房间ID: %d, 用户ID: %s】【体验环境】", info._roomId, Ansi2Wide(info._userId).c_str());
     }
     else
     {
-        strFormat.Format(L"TRTCDuilibDemo 【房间ID: %d, 用户ID: %s】", info._roomId, Ansi2Wide(info._userId).c_str());
+        strFormat.Format(L"TRTCDuilibDemo 【房间ID: %d, 用户ID: %s】【正式环境】", info._roomId, Ansi2Wide(info._userId).c_str());
     }
 
     pFrame->Create(NULL, strFormat.GetData(), UI_WNDSTYLE_FRAME | WS_CLIPCHILDREN, WS_EX_WINDOWEDGE);
     pFrame->CenterWindow();
-    pFrame->ShowWindow(true);
+    pFrame->ShowWindow(true); 
     Close(ID_CLOSE_WINDOW_NO_QUIT_MSGLOOP);
 }
 

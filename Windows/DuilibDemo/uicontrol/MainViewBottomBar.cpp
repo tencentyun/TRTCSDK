@@ -10,6 +10,7 @@
 #include "util/log.h"
 #include "MsgBoxWnd.h"
 #include "TXLiveAvVideoView.h"
+#include "TRTCScreenShareToolWnd.h"
 #include <Commdlg.h>
 #include "UserMassegeIdDefine.h"
 
@@ -31,46 +32,14 @@ void MainViewBottomBar::InitBottomUI()
 void MainViewBottomBar::UnInitBottomUI()
 {
     m_pMainWnd->getPaintManagerUI().RemovePreMessageFilter(this);
-
-    if (m_pSettingWnd) {
-        if (TRTCSettingViewController::getRef() > 0)
-            m_pSettingWnd->preUnInit();
-    }
+    TRTCShareScreenToolMgr::GetInstance()->destroyToolWnd();
 }
 
 void MainViewBottomBar::Notify(TNotifyUI& msg)
 {
     if (msg.sType == _T("click"))
     {
-        if (msg.pSender->GetName() == _T("btn_show_im") && m_pMainWnd)
-        {
-            CHorizontalLayoutUI* pIMAream = static_cast<CHorizontalLayoutUI*>(m_pMainWnd->getPaintManagerUI().FindControl(_T("layout_im_meber_area")));
-            int nImAreaWidth = 0;
-            if (pIMAream) 
-            {
-                nImAreaWidth = pIMAream->GetFixedWidth();
-            }
-            if (nImAreaWidth > 0)
-            {
-                if (m_bOpenIMView)
-                {
-                    pIMAream->SetVisible(true);
-                    SIZE sz = m_pMainWnd->getPaintManagerUI().GetClientSize();
-                    sz.cx = sz.cx + nImAreaWidth;
-                    if (m_pMainWnd)
-                        m_pMainWnd->ResizeClient(sz.cx, sz.cy);
-                }
-                else
-                {
-                    pIMAream->SetVisible(false);
-                    SIZE sz = m_pMainWnd->getPaintManagerUI().GetClientSize();
-                    sz.cx = sz.cx - nImAreaWidth;
-                    if (m_pMainWnd)
-                        m_pMainWnd->ResizeClient(sz.cx, sz.cy);
-                }
-            }
-        }
-        else if (msg.pSender->GetName() == _T("btn_change_view_mode") && m_pMainWnd)
+        if (msg.pSender->GetName() == _T("btn_change_view_mode") && m_pMainWnd)
         {
             CButtonUI* pBtn = static_cast<CButtonUI*>(msg.pSender);
             if (pBtn)
@@ -111,7 +80,7 @@ void MainViewBottomBar::Notify(TNotifyUI& msg)
         else if (msg.pSender->GetName() == _T("btn_quit_room"))
         {
             if (m_pMainWnd)
-                m_pMainWnd->DoExitRoom();
+                m_pMainWnd->exitRoom();
         }
         else if (msg.pSender->GetName() == _T("btn_audio_device"))
         {
@@ -266,12 +235,12 @@ void MainViewBottomBar::Notify(TNotifyUI& msg)
             pMenu->ResizeMenu();
         }
 		else if (msg.pSender->GetName() == _T("btn_open_screen")) {
-			if (m_bOpenScreen) {
+			if (CDataCenter::GetInstance()->m_bStartScreenShare) {
 				CButtonUI* pBtn = static_cast<CButtonUI*>(msg.pSender);
 				if (pBtn){
                     TRTCScreenCaptureSourceInfo info{};
                     info.type = TRTCScreenCaptureSourceTypeUnknown;
-					OpenScreenBtnEvent(pBtn, info);
+					OpenScreenBtnEvent(info);
                 }
 			}
 			else {
@@ -284,73 +253,9 @@ void MainViewBottomBar::Notify(TNotifyUI& msg)
 					TRTCScreenCaptureSourceInfo info = uiShareSelect.getSelectWnd();
 					CButtonUI* pBtn = static_cast<CButtonUI*>(msg.pSender);
 					if (pBtn)
-						OpenScreenBtnEvent(pBtn, info);
+						OpenScreenBtnEvent(info);
 				}
 			}		
-		}
-		else if (msg.pSender->GetName() == _T("btn_play")) {
-			CButtonUI* pBtn = static_cast<CButtonUI*>(msg.pSender);
-			if (!pBtn) return;
-			if (m_bPlay)
-			{				
-				TRTCCloudCore::GetInstance()->stopMedia();
-			}
-			else
-			{				
-				OPENFILENAME ofn;       // common dialog box structure
-				wchar_t szFile[260];       // buffer for file name
-				//HANDLE hf;              // file handle
-				ZeroMemory(&ofn, sizeof(ofn));
-				ofn.lStructSize = sizeof(ofn);
-				ofn.hwndOwner = m_pMainWnd->GetHWND();
-				ofn.lpstrFile = szFile;
-				ofn.lpstrFile[0] = '\0';
-				ofn.nMaxFile = sizeof(szFile);
-				ofn.nFilterIndex = 1;
-				ofn.lpstrFileTitle = NULL;
-				ofn.nMaxFileTitle = 0;
-				ofn.lpstrInitialDir = NULL;
-				ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
-				if (GetOpenFileName(&ofn) == TRUE) {
-					TRTCCloudCore::GetInstance()->startMedia(Wide2Ansi(ofn.lpstrFile).c_str(), NULL);
-					
-				}
-			}
-		}
-		else if (msg.pSender->GetName() == _T("btn_green_screen")) {
-			CButtonUI* pBtn = static_cast<CButtonUI*>(msg.pSender);
-			if (!pBtn) return;
-			if (m_bGreenScreen)
-			{
-				//pBtn->SetForeImage(L"dest='22,3,52,33' source='0,0,30,30' res='bottom/camera_close.png'");
-				pBtn->SetText(L"启动绿幕");
-				m_bGreenScreen = false;
-				//TRTCCloudCore::GetInstance()->stopGreenScreen();
-			}
-			else
-			{
-				m_bGreenScreen = true;
-				//pBtn->SetForeImage(L"dest='22,3,52,33' source='0,0,30,30' res='bottom/camera_open.png'");
-				pBtn->SetText(L"关闭绿幕");
-				OPENFILENAME ofn;       // common dialog box structure
-				wchar_t szFile[260];       // buffer for file name
-				HANDLE hf;              // file handle
-				ZeroMemory(&ofn, sizeof(ofn));
-				ofn.lStructSize = sizeof(ofn);
-				ofn.hwndOwner = m_pMainWnd->GetHWND();
-				ofn.lpstrFile = szFile;
-				ofn.lpstrFile[0] = '\0';
-				ofn.nMaxFile = sizeof(szFile);
-				ofn.nFilterIndex = 1;
-				ofn.lpstrFileTitle = NULL;
-				ofn.nMaxFileTitle = 0;
-				ofn.lpstrInitialDir = NULL;
-				ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
-
-				if (GetOpenFileName(&ofn) == TRUE) {
-					//TRTCCloudCore::GetInstance()->startGreenScreen(Wide2Ansi(ofn.lpstrFile));
-				}
-			}
 		}
         else if (msg.pSender->GetName() == _T("btn_open_pkview"))
         {
@@ -481,25 +386,30 @@ LRESULT MainViewBottomBar::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lPara
     }
 	else if (uMsg == WM_USER_CMD_ScreenStart)
 	{
+        LINFO(L"WM_USER_CMD_ScreenStart m_bStartScreenShare: %d", CDataCenter::GetInstance()->m_bStartScreenShare);
 		CButtonUI* pBtn = static_cast<CButtonUI*>(m_pMainWnd->getPaintManagerUI().FindControl(_T("btn_open_screen")));
 		if (pBtn) {
 			pBtn->SetForeImage(L"dest='24,4,50,30' source='0,0,26,26' res='bottom/screen_share_start.png'");
 			pBtn->SetText(L"关闭分享");
 		}
-		m_bOpenScreen = true;		
-		CDataCenter::LocalUserInfo info = CDataCenter::GetInstance()->getLocalUserInfo();
-		m_pMainWnd->getTRTCVideoViewLayout()->dispatchVideoView(Ansi2Wide(info._userId), TRTCVideoStreamType::TRTCVideoStreamTypeSub);
+        CDataCenter::GetInstance()->m_bStartScreenShare = true;
+        TRTCShareScreenToolMgr::GetInstance()->createToolWnd(CDataCenter::GetInstance()->getLocalUserID());
+        //TRTCShareScreenToolMgr::GetInstance()->showScreenVideoView(true);
 	}
 	else if (uMsg == WM_USER_CMD_ScreenEnd)
 	{
+        LINFO(L"WM_USER_CMD_ScreenEnd m_bStartScreenShare: %d", CDataCenter::GetInstance()->m_bStartScreenShare);
 		CButtonUI* pBtn = static_cast<CButtonUI*>(m_pMainWnd->getPaintManagerUI().FindControl(_T("btn_open_screen")));
 		if (pBtn) {
             pBtn->SetForeImage(L"dest='24,4,50,30' source='0,0,26,26' res='bottom/screen_share_normal.png'");
 			pBtn->SetText(L"启动分享");
 		}
-		m_bOpenScreen = false;
-		CDataCenter::LocalUserInfo info = CDataCenter::GetInstance()->getLocalUserInfo();
-		m_pMainWnd->getTRTCVideoViewLayout()->deleteVideoView(Ansi2Wide(info._userId), TRTCVideoStreamType::TRTCVideoStreamTypeSub);
+        TRTCCloudCore::GetInstance()->stopScreen();
+        TRTCShareScreenToolMgr::GetInstance()->destroyToolWnd();
+
+        CDataCenter::GetInstance()->m_bStartScreenShare = false;
+        CDataCenter::GetInstance()->removeVideoMeta(CDataCenter::GetInstance()->getLocalUserID(), TRTCVideoStreamTypeSub);
+        TRTCCloudCore::GetInstance()->updateMixTranCodeInfo();
 	}
 	else if (uMsg == WM_USER_CMD_VodStart)
 	{
@@ -655,7 +565,7 @@ bool MainViewBottomBar::onPKUserLeaveRoom(std::string userId)
             std::string localUserId = CDataCenter::GetInstance()->getLocalUserID();
             CDuiString strFormat;
             strFormat.Format(L"%s连麦用户[%s]离开房间", Log::_GetDateTimeString().c_str(), Ansi2Wide(userId).c_str());
-            TXLiveAvVideoView::appendEventLogText(localUserId, TRTCVideoStreamTypeBig, strFormat.GetData());
+            TXLiveAvVideoView::appendEventLogText(localUserId, TRTCVideoStreamTypeBig, strFormat.GetData(), true);
             return true;
         }
     }
@@ -675,7 +585,7 @@ bool MainViewBottomBar::onPKUserEnterRoom(std::string userId, uint32_t& roomId)
             std::string localUserId = CDataCenter::GetInstance()->getLocalUserID();
             CDuiString strFormat;
             strFormat.Format(L"%s连麦用户[%s]进入房间", Log::_GetDateTimeString().c_str(), Ansi2Wide(userId).c_str());
-            TXLiveAvVideoView::appendEventLogText(localUserId, TRTCVideoStreamTypeBig, strFormat.GetData());
+            TXLiveAvVideoView::appendEventLogText(localUserId, TRTCVideoStreamTypeBig, strFormat.GetData(), true);
             return true;
         }
     }
@@ -702,7 +612,7 @@ void MainViewBottomBar::onConnectOtherRoom(int errCode, std::string errMsg)
         pStatus->SetText(statusText.c_str());
 
         strFormat.Format(L"%s连麦成功[room:%d, user:%s])", Log::_GetDateTimeString().c_str(), info._roomId, m_pkUserId.c_str());
-        TXLiveAvVideoView::appendEventLogText(localUserId, TRTCVideoStreamTypeBig, strFormat.GetData());
+        TXLiveAvVideoView::appendEventLogText(localUserId, TRTCVideoStreamTypeBig, strFormat.GetData(), true);
 
         std::vector<PKUserInfo>& pkList = CDataCenter::GetInstance()->m_vecPKUserList;
         pkList.push_back(info);
@@ -719,7 +629,7 @@ void MainViewBottomBar::onConnectOtherRoom(int errCode, std::string errMsg)
             pStatus->SetText(statusText.c_str());
         }
         strFormat.Format(L"%s连麦失败[userId:%s, roomId:%s, errCode:%d, msg:%s]", m_pkUserId.c_str(), m_pkRoomId.c_str() ,Log::_GetDateTimeString().c_str(), errCode, UTF82Wide(errMsg).c_str());
-        TXLiveAvVideoView::appendEventLogText(localUserId, TRTCVideoStreamTypeBig, strFormat.GetData());
+        TXLiveAvVideoView::appendEventLogText(localUserId, TRTCVideoStreamTypeBig, strFormat.GetData(), true);
     }
 }
 
@@ -738,7 +648,7 @@ void MainViewBottomBar::onDisconnectOtherRoom(int errCode, std::string errMsg)
         std::vector<PKUserInfo>& pkList = CDataCenter::GetInstance()->m_vecPKUserList;
         pkList.clear();
         strFormat.Format(L"%s取消连麦成功[msg:%s]", Log::_GetDateTimeString().c_str(), UTF82Wide(errMsg).c_str());
-        TXLiveAvVideoView::appendEventLogText(localUserId, TRTCVideoStreamTypeBig, strFormat.GetData());
+        TXLiveAvVideoView::appendEventLogText(localUserId, TRTCVideoStreamTypeBig, strFormat.GetData(), true);
     }
     else
     {
@@ -748,7 +658,7 @@ void MainViewBottomBar::onDisconnectOtherRoom(int errCode, std::string errMsg)
             pStatus->SetText(statusText.c_str());
 
         strFormat.Format(L"%s取消连麦失败:[room:%d, user:%s])", Log::_GetDateTimeString().c_str(), errCode, UTF82Wide(errMsg).c_str());
-        TXLiveAvVideoView::appendEventLogText(localUserId, TRTCVideoStreamTypeBig, strFormat.GetData());
+        TXLiveAvVideoView::appendEventLogText(localUserId, TRTCVideoStreamTypeBig, strFormat.GetData(), true);
     }
 }
 
@@ -770,11 +680,13 @@ void MainViewBottomBar::onClickMuteAudioBtn()
     ::PostMessage(m_pMainWnd->GetHWND(), WM_USER_VIEW_BTN_CLICK, (WPARAM)msg, 0);
 }
 
-void MainViewBottomBar::OpenScreenBtnEvent(CButtonUI * pBtn, const TRTCScreenCaptureSourceInfo &source)
+void MainViewBottomBar::OpenScreenBtnEvent(const TRTCScreenCaptureSourceInfo &source)
 {
-	if (m_bOpenScreen)
+    LINFO(L"OpenScreenBtnEvent, m_bStartScreenShare:%d", CDataCenter::GetInstance()->m_bStartScreenShare);
+	if (CDataCenter::GetInstance()->m_bStartScreenShare)
 	{		
 		TRTCCloudCore::GetInstance()->stopScreen();
+        CDataCenter::GetInstance()->m_bStartScreenShare = false;
 	}
 	else
 	{
@@ -784,6 +696,7 @@ void MainViewBottomBar::OpenScreenBtnEvent(CButtonUI * pBtn, const TRTCScreenCap
 		rect.right = 0;
 		rect.top = 0;
 		TRTCCloudCore::GetInstance()->selectScreenCaptureTarget(source, rect);
-		TRTCCloudCore::GetInstance()->startScreen(NULL);
-	}
+		TRTCCloudCore::GetInstance()->startScreen(nullptr);
+	
+    }
 }

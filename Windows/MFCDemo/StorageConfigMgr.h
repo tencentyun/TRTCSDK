@@ -13,6 +13,7 @@ namespace Config {
     #define INI_KEY_VIDEO_QUALITY_CONTROL L"INI_KEY_VIDEO_QUALITY_CONTROL"
     #define INI_KEY_SET_PUSH_SMALLVIDEO L"INI_KEY_SET_PUSH_SMALLVIDEO"
     #define INI_KEY_SET_PLAY_SMALLVIDEO L"INI_KEY_SET_PLAY_SMALLVIDEO"
+    #define INI_KEY_SET_APP_SENSE L"INI_KEY_SET_APP_SENSE"
 };
 
 class SubNode
@@ -66,6 +67,7 @@ public: //trtc
     // 视频流控类型
     TRTCVideoEncParam videoEncParams;
     TRTCNetworkQosParam qosParams;
+    TRTCAppScene appScene = TRTCAppSceneVideoCall;
     bool bPushSmallVideo = false; //推流打开推双流标志。
     bool bPlaySmallVideo = false; //默认拉低请视频流标志。
 private:

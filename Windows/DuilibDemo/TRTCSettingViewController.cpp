@@ -115,7 +115,6 @@ int TRTCSettingViewController::getRef()
 
 void TRTCSettingViewController::Notify(TNotifyUI & msg)
 {
-    NotifySubVideoTab(msg);
     NotifyOtherTab(msg);
     CDuiString name = msg.pSender->GetName();
     if (msg.sType == _T("selectchanged")) 
@@ -124,8 +123,7 @@ void TRTCSettingViewController::Notify(TNotifyUI & msg)
         if (name.CompareNoCase(_T("normal_tab")) == 0) pTabSwitch->SelectItem(0);
         if (name.CompareNoCase(_T("video_tab")) == 0) pTabSwitch->SelectItem(1);
         if (name.CompareNoCase(_T("audio_tab")) == 0) pTabSwitch->SelectItem(2);
-        if (name.CompareNoCase(_T("subvideo_tab")) == 0) pTabSwitch->SelectItem(3);
-        if (name.CompareNoCase(_T("other_tab")) == 0) pTabSwitch->SelectItem(4);
+        if (name.CompareNoCase(_T("other_tab")) == 0) pTabSwitch->SelectItem(3);
         if (name.CompareNoCase(_T("qos_smooth")) == 0) {  
             CDataCenter::GetInstance()->m_qosParams.preference = TRTCVideoQosPreferenceSmooth;
 
@@ -158,10 +156,48 @@ void TRTCSettingViewController::Notify(TNotifyUI & msg)
             }
         }
         if (name.CompareNoCase(_T("scene_live")) == 0) {
+            CGroupBoxUI* normalContainer = static_cast<CGroupBoxUI*>(m_pmUI.FindControl(_T("normal_groupbox")));
+            if (normalContainer)
+                normalContainer->SetFixedHeight(270);
+            CHorizontalLayoutUI* roleContainer = static_cast<CHorizontalLayoutUI*>(m_pmUI.FindControl(_T("choose_role")));
+            if (roleContainer)
+                roleContainer->SetVisible(true);
             CDataCenter::GetInstance()->m_sceneParams = TRTCAppSceneLIVE;
+            //直播场景和视频通话场景默认码率值不一样。
+            updateVideoBitrateUi();
         }
         if (name.CompareNoCase(_T("scene_call")) == 0) {
+            CGroupBoxUI* normalContainer = static_cast<CGroupBoxUI*>(m_pmUI.FindControl(_T("normal_groupbox")));
+            if (normalContainer)
+                normalContainer->SetFixedHeight(230);
+            CHorizontalLayoutUI* roleContainer = static_cast<CHorizontalLayoutUI*>(m_pmUI.FindControl(_T("choose_role")));
+            if (roleContainer)
+                roleContainer->SetVisible(false);
             CDataCenter::GetInstance()->m_sceneParams = TRTCAppSceneVideoCall;
+            CDataCenter::GetInstance()->m_roleType = TRTCRoleAnchor;
+            if (CDataCenter::GetInstance()->m_loginInfo._bEnterRoom)
+            {
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->switchRole(CDataCenter::GetInstance()->m_roleType);
+            }
+            //直播场景和视频通话场景默认码率值不一样。
+            updateVideoBitrateUi();
+        }
+        if (name.CompareNoCase(_T("role_anchor")) == 0) {
+            CDataCenter::GetInstance()->m_roleType = TRTCRoleAnchor;
+            if (CDataCenter::GetInstance()->m_loginInfo._bEnterRoom)
+            {
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->switchRole(CDataCenter::GetInstance()->m_roleType);
+                ::PostMessage(m_parentHwnd, WM_USER_CMD_RoleChange, (WPARAM)CDataCenter::GetInstance()->m_roleType, 0);
+            }
+        }
+        if (name.CompareNoCase(_T("role_audience")) == 0) {
+            CDataCenter::GetInstance()->m_roleType = TRTCRoleAudience;
+            if (CDataCenter::GetInstance()->m_loginInfo._bEnterRoom)
+            {
+                //需要关闭所有的流：
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->switchRole(CDataCenter::GetInstance()->m_roleType);
+                ::PostMessage(m_parentHwnd, WM_USER_CMD_RoleChange, (WPARAM)CDataCenter::GetInstance()->m_roleType, 0);
+            }
         }
         if (name.CompareNoCase(_T("smooth_beauty")) == 0) {
             CDataCenter::GetInstance()->m_beautyConfig._beautyStyle = TRTCBeautyStyleSmooth;
@@ -283,26 +319,7 @@ void TRTCSettingViewController::Notify(TNotifyUI & msg)
             else if (msg.wParam == 16)
                 CDataCenter::GetInstance()->m_videoEncParams.videoResolution = TRTCVideoResolution_1280_720;
 
-            TRTCVideoEncParam& encParam = CDataCenter::GetInstance()->m_videoEncParams;
-            CDataCenter::VideoResBitrateTable sliderInfo = CDataCenter::GetInstance()->getVideoConfigInfo(encParam.videoResolution);
-            if (encParam.videoBitrate < sliderInfo.minBitrate || encParam.videoBitrate > sliderInfo.maxBitrate)
-                encParam.videoBitrate = sliderInfo.defaultBitrate;
-            int bitrate_value = encParam.videoBitrate;
-
-            CSliderUI* pSlider = static_cast<CSliderUI*>(m_pmUI.FindControl(_T("slider_videobitrate")));
-            if (pSlider)
-            {
-                pSlider->SetMaxValue(sliderInfo.maxBitrate);
-                pSlider->SetMinValue(sliderInfo.minBitrate);
-                pSlider->SetValue(encParam.videoBitrate);
-            }
-            CLabelUI* pLabelValue = static_cast<CLabelUI*>(m_pmUI.FindControl(_T("slider_videobitrate_value")));
-            if (pLabelValue)
-            {
-                CDuiString sText;
-                sText.Format(_T("%dkbps"), encParam.videoBitrate);
-                pLabelValue->SetText(sText);
-            }
+            updateVideoBitrateUi();
 
             TRTCCloudCore::GetInstance()->getTRTCCloud()->setVideoEncoderParam(CDataCenter::GetInstance()->m_videoEncParams);
         }
@@ -612,78 +629,6 @@ void TRTCSettingViewController::Notify(TNotifyUI & msg)
     }
 }
 
-void TRTCSettingViewController::NotifySubVideoTab(TNotifyUI& msg)
-{
-    CDuiString name = msg.pSender->GetName();
-    if (msg.sType == _T("valuechanged"))
-    {
-        if (name.CompareNoCase(_T("slider_subvideobitrate")) == 0)
-        {
-            TRTCVideoEncParam& encParam = CDataCenter::GetInstance()->m_subVideoEncParams;
-            CProgressUI* pSlider = static_cast<CProgressUI*>(m_pmUI.FindControl(_T("slider_subvideobitrate")));
-            CLabelUI* pLabelValue = static_cast<CLabelUI*>(m_pmUI.FindControl(_T("slider_subvideobitrate_value")));
-            CDuiString sText;
-            int bitrate = pSlider->GetValue();
-            bitrate = (bitrate + 1) / 10 * 10;
-            if (bitrate > pSlider->GetMaxValue())
-                bitrate = pSlider->GetMaxValue();
-            sText.Format(_T("%dkbps"), bitrate);
-            pLabelValue->SetText(sText);
-
-            encParam.videoBitrate = bitrate;
-            TRTCCloudCore::GetInstance()->getTRTCCloud()->setSubStreamEncoderParam(encParam);
-        }
-    }
-    else if (msg.sType == _T("itemselect"))
-    {
-        if (name.CompareNoCase(_T("combo_subvideofps")) == 0) {
-            TRTCVideoEncParam& encParam = CDataCenter::GetInstance()->m_subVideoEncParams;
-            if (msg.wParam == 0)
-                encParam.videoFps = 10;
-            if (msg.wParam == 1)
-                encParam.videoFps = 12;
-            if (msg.wParam == 2)
-                encParam.videoFps = 15;
-
-            TRTCCloudCore::GetInstance()->getTRTCCloud()->setSubStreamEncoderParam(encParam);
-        }
-        else if (name.CompareNoCase(_T("combo_subvideoresolution")) == 0) {
-            TRTCVideoEncParam& encParam = CDataCenter::GetInstance()->m_subVideoEncParams;
-
-            if (msg.wParam == 0)
-                encParam.videoResolution = TRTCVideoResolution_960_720;
-            else if (msg.wParam == 1)
-                encParam.videoResolution = TRTCVideoResolution_960_540;
-            else if (msg.wParam == 2)
-                encParam.videoResolution = TRTCVideoResolution_1280_720;
-            else if (msg.wParam == 3)
-                encParam.videoResolution = TRTCVideoResolution_1920_1080;
-
-            CDataCenter::VideoResBitrateTable sliderInfo = CDataCenter::GetInstance()->getSubVideoConfigInfo(encParam.videoResolution);
-            if (encParam.videoBitrate <= sliderInfo.minBitrate || encParam.videoBitrate >= sliderInfo.maxBitrate)
-                encParam.videoBitrate = sliderInfo.defaultBitrate;
-            int bitrate_value = encParam.videoBitrate;
-
-            CSliderUI* pSlider = static_cast<CSliderUI*>(m_pmUI.FindControl(_T("slider_subvideobitrate")));
-            if (pSlider)
-            {
-                pSlider->SetMaxValue(sliderInfo.maxBitrate);
-                pSlider->SetMinValue(sliderInfo.minBitrate);
-                pSlider->SetValue(encParam.videoBitrate);
-            }
-            CLabelUI* pLabelValue = static_cast<CLabelUI*>(m_pmUI.FindControl(_T("slider_subvideobitrate_value")));
-            if (pLabelValue)
-            {
-                CDuiString sText;
-                sText.Format(_T("%dkbps"), encParam.videoBitrate);
-                pLabelValue->SetText(sText);
-            }
-
-            TRTCCloudCore::GetInstance()->getTRTCCloud()->setSubStreamEncoderParam(encParam);
-        }
-    }
-}
-
 void TRTCSettingViewController::NotifyOtherTab(TNotifyUI & msg)
 {
     CDuiString name = msg.pSender->GetName();
@@ -755,7 +700,7 @@ void TRTCSettingViewController::NotifyOtherTab(TNotifyUI & msg)
             if (pOpenSender->IsSelected() == false) //事件值是反的
             {
                 CDataCenter::GetInstance()->m_bCDNMixTranscoding = true;
-                TRTCCloudCore::GetInstance()->startCloudMixStream(CDataCenter::GetInstance()->getLocalUserID());
+                TRTCCloudCore::GetInstance()->startCloudMixStream();
             }
             else
             {
@@ -866,11 +811,10 @@ void TRTCSettingViewController::InitWindow()
     TRTCCloudCore::GetInstance()->regSDKMsgObserver(WM_USER_CMD_DeviceChange, GetHWND());
     SetIcon(IDR_MAINFRAME);
 
-    InitVideoTab();
-    InitSubVideoTab();
-    InitOtherTab();
-    InitAudioTab();
     InitNormalTab();
+    InitAudioTab();
+    InitVideoTab();
+    InitOtherTab();
 
     //初始化tab面板  
     CTabLayoutUI* pTabSwitch = static_cast<CTabLayoutUI*>(m_pmUI.FindControl(_T("tab_switch")));
@@ -941,6 +885,19 @@ void TRTCSettingViewController::InitNormalTab()
             pSceneLive->Selected(true);
     }
 
+    TRTCRoleType roleType = CDataCenter::GetInstance()->m_roleType;
+    COptionUI* pRoleAnchor = static_cast<COptionUI*>(m_pmUI.FindControl(_T("role_anchor")));
+    COptionUI* pRoleAudience = static_cast<COptionUI*>(m_pmUI.FindControl(_T("role_audience")));
+    if (pRoleAnchor && pRoleAudience)
+    {
+        pRoleAnchor->Selected(false);
+        pRoleAudience->Selected(false);
+        if (roleType == TRTCRoleAnchor)
+            pRoleAnchor->Selected(true);
+        if (roleType == TRTCRoleAudience)
+            pRoleAudience->Selected(true);
+    }
+
     //处理大小流的设置配置
     COptionUI* pPushSmallVideo = static_cast<COptionUI*>(m_pmUI.FindControl(_T("check_push_smallvideo")));
     COptionUI* pPlaySmallVideo = static_cast<COptionUI*>(m_pmUI.FindControl(_T("check_play_smallvideo")));
@@ -991,62 +948,6 @@ void TRTCSettingViewController::InitNormalTab()
             pWhiteSlider->SetEnabled(false);
         }
     }
-
-    //其他设置
-
-    //其他设置
-    COptionUI* pLoacalMirror = static_cast<COptionUI*>(m_pmUI.FindControl(_T("check_local_mirror")));
-    if (pLoacalMirror)
-    {
-        pLoacalMirror->Selected(false);
-        if (CDataCenter::GetInstance()->m_bLocalVideoMirror)
-            pLoacalMirror->Selected(true);
-    }
-
-    COptionUI* pShowAudioVolume = static_cast<COptionUI*>(m_pmUI.FindControl(_T("check_voice_volume")));
-    if (pShowAudioVolume)
-    {
-        pShowAudioVolume->Selected(false);
-        if (CDataCenter::GetInstance()->m_bShowAudioVolume)
-            pShowAudioVolume->Selected(true);
-    }
-
-    COptionUI* pCdnMixVideo = static_cast<COptionUI*>(m_pmUI.FindControl(_T("check_cdnmix_video")));
-    if (pCdnMixVideo)
-    {
-        pCdnMixVideo->Selected(false);
-        if (CDataCenter::GetInstance()->m_bCDNMixTranscoding)
-            pCdnMixVideo->Selected(true);
-    }
-
-
-    COptionUI* pCustomAuidoCheck = static_cast<COptionUI*>(m_pmUI.FindControl(_T("check_custom_audio")));
-    if (pCustomAuidoCheck)
-    {
-        pCustomAuidoCheck->Selected(false);
-        if (CDataCenter::GetInstance()->m_bCustomAudioCapture)
-            pCustomAuidoCheck->Selected(true);
-    }
-
-    COptionUI* pCustomVideoCheck = static_cast<COptionUI*>(m_pmUI.FindControl(_T("check_custom_video")));
-    if (pCustomVideoCheck)
-    {
-        pCustomVideoCheck->Selected(false);
-        if (CDataCenter::GetInstance()->m_bCustomVideoCapture)
-            pCustomVideoCheck->Selected(true);
-    }
-
-    CComboUI* pAudioFileCombo = static_cast<CComboUI*>(m_pmUI.FindControl(_T("combo_audio_pcmfile")));
-    if (pAudioFileCombo)
-    {
-        pAudioFileCombo->SelectItem(0);
-    }
-
-    CComboUI* pVideoFileCombo = static_cast<CComboUI*>(m_pmUI.FindControl(_T("combo_video_yuvfile")));
-    if (pVideoFileCombo)
-    {
-        pVideoFileCombo->SelectItem(0);
-    }
 }
 
 void TRTCSettingViewController::InitAudioTab()
@@ -1092,104 +993,12 @@ void TRTCSettingViewController::InitAudioTab()
     m_pProgressTestNetwork = static_cast<CProgressUI*>(m_pmUI.FindControl(_T("progress_testnetwork")));;
 }
 
-void TRTCSettingViewController::InitSubVideoTab()
-{
-    TRTCVideoEncParam& encParam = CDataCenter::GetInstance()->m_subVideoEncParams;
-    CDataCenter::VideoResBitrateTable sliderInfo = CDataCenter::GetInstance()->getSubVideoConfigInfo(encParam.videoResolution);
-    if (encParam.videoBitrate < sliderInfo.minBitrate)
-        encParam.videoBitrate = sliderInfo.minBitrate;
-    if (encParam.videoBitrate > sliderInfo.maxBitrate)
-        encParam.videoBitrate = sliderInfo.maxBitrate;
-    int bitrate_value = encParam.videoBitrate;
-
-    CSliderUI* pSlider = static_cast<CSliderUI*>(m_pmUI.FindControl(_T("slider_subvideobitrate")));
-    if (pSlider)
-    {
-        pSlider->SetMaxValue(sliderInfo.maxBitrate);
-        pSlider->SetMinValue(sliderInfo.minBitrate);
-        pSlider->SetValue(encParam.videoBitrate);
-    }
-    CLabelUI* pLabelValue = static_cast<CLabelUI*>(m_pmUI.FindControl(_T("slider_subvideobitrate_value")));
-    if (pLabelValue)
-    {
-        CDuiString sText;
-        sText.Format(_T("%dkbps"), encParam.videoBitrate);
-        pLabelValue->SetText(sText);
-    }
-
-    CComboUI* pFpsCombo = static_cast<CComboUI*>(m_pmUI.FindControl(_T("combo_subvideofps")));
-    if (pFpsCombo)
-    {
-        if (encParam.videoFps == 10)
-            pFpsCombo->SelectItem(0);
-        else if (encParam.videoFps == 12)
-            pFpsCombo->SelectItem(1);
-        else if (encParam.videoFps == 15)
-            pFpsCombo->SelectItem(2);
-        else
-        {
-            encParam.videoFps = 10;
-            pFpsCombo->SelectItem(0);
-        }
-    }
-
-    //初始化分辨率 
-    CComboUI* pResolutionCombo = static_cast<CComboUI*>(m_pmUI.FindControl(_T("combo_subvideoresolution")));
-    if (pResolutionCombo)
-    {
-        bool bSetDefaultItem = false;
-        if (encParam.videoResolution == TRTCVideoResolution_960_720)
-        {
-            pResolutionCombo->SelectItem(0); bSetDefaultItem = true;
-        }
-        else if (encParam.videoResolution == TRTCVideoResolution_960_540)
-        {
-            pResolutionCombo->SelectItem(1);  bSetDefaultItem = true;
-        }
-        else if (encParam.videoResolution == TRTCVideoResolution_1280_720)
-        {
-            pResolutionCombo->SelectItem(2);  bSetDefaultItem = true;
-        }
-        else if (encParam.videoResolution == TRTCVideoResolution_1920_1080)
-        {
-            pResolutionCombo->SelectItem(3);  bSetDefaultItem = true;
-        }
-        if (bSetDefaultItem == false)
-        {
-            encParam.videoResolution = TRTCVideoResolution_1280_720;
-            pResolutionCombo->SelectItem(2);
-        }
-    }
-}
-
 void TRTCSettingViewController::InitVideoTab()
 {
     //初始化设备
     UpdateCameraDevice();
-    {
-        TRTCVideoEncParam& encParam = CDataCenter::GetInstance()->m_videoEncParams;
-        CDataCenter::VideoResBitrateTable sliderInfo = CDataCenter::GetInstance()->getVideoConfigInfo(encParam.videoResolution);
-        if (encParam.videoBitrate < sliderInfo.minBitrate)
-            encParam.videoBitrate = sliderInfo.minBitrate;
-        if (encParam.videoBitrate > sliderInfo.maxBitrate)
-            encParam.videoBitrate = sliderInfo.maxBitrate;
-        int bitrate_value = encParam.videoBitrate;
 
-        CSliderUI* pSlider = static_cast<CSliderUI*>(m_pmUI.FindControl(_T("slider_videobitrate")));
-        if (pSlider)
-        {
-            pSlider->SetMaxValue(sliderInfo.maxBitrate);
-            pSlider->SetMinValue(sliderInfo.minBitrate);
-            pSlider->SetValue(encParam.videoBitrate);
-        }
-        CLabelUI* pLabelValue = static_cast<CLabelUI*>(m_pmUI.FindControl(_T("slider_videobitrate_value")));
-        if (pLabelValue)
-        {
-            CDuiString sText;
-            sText.Format(_T("%dkbps"), encParam.videoBitrate);
-            pLabelValue->SetText(sText);
-        }
-    }
+    updateVideoBitrateUi();
 
     CComboUI* pFpsCombo = static_cast<CComboUI*>(m_pmUI.FindControl(_T("combo_videofps")));
     if (pFpsCombo)
@@ -1304,6 +1113,59 @@ void TRTCSettingViewController::InitVideoTab()
 
 void TRTCSettingViewController::InitOtherTab()
 {
+    //其他设置
+    COptionUI* pLoacalMirror = static_cast<COptionUI*>(m_pmUI.FindControl(_T("check_local_mirror")));
+    if (pLoacalMirror)
+    {
+        pLoacalMirror->Selected(false);
+        if (CDataCenter::GetInstance()->m_bLocalVideoMirror)
+            pLoacalMirror->Selected(true);
+    }
+
+    COptionUI* pShowAudioVolume = static_cast<COptionUI*>(m_pmUI.FindControl(_T("check_voice_volume")));
+    if (pShowAudioVolume)
+    {
+        pShowAudioVolume->Selected(false);
+        if (CDataCenter::GetInstance()->m_bShowAudioVolume)
+            pShowAudioVolume->Selected(true);
+    }
+
+    COptionUI* pCdnMixVideo = static_cast<COptionUI*>(m_pmUI.FindControl(_T("check_cdnmix_video")));
+    if (pCdnMixVideo)
+    {
+        pCdnMixVideo->Selected(false);
+        if (CDataCenter::GetInstance()->m_bCDNMixTranscoding)
+            pCdnMixVideo->Selected(true);
+    }
+
+
+    COptionUI* pCustomAuidoCheck = static_cast<COptionUI*>(m_pmUI.FindControl(_T("check_custom_audio")));
+    if (pCustomAuidoCheck)
+    {
+        pCustomAuidoCheck->Selected(false);
+        if (CDataCenter::GetInstance()->m_bCustomAudioCapture)
+            pCustomAuidoCheck->Selected(true);
+    }
+
+    COptionUI* pCustomVideoCheck = static_cast<COptionUI*>(m_pmUI.FindControl(_T("check_custom_video")));
+    if (pCustomVideoCheck)
+    {
+        pCustomVideoCheck->Selected(false);
+        if (CDataCenter::GetInstance()->m_bCustomVideoCapture)
+            pCustomVideoCheck->Selected(true);
+    }
+
+    CComboUI* pAudioFileCombo = static_cast<CComboUI*>(m_pmUI.FindControl(_T("combo_audio_pcmfile")));
+    if (pAudioFileCombo)
+    {
+        pAudioFileCombo->SelectItem(0);
+    }
+
+    CComboUI* pVideoFileCombo = static_cast<CComboUI*>(m_pmUI.FindControl(_T("combo_video_yuvfile")));
+    if (pVideoFileCombo)
+    {
+        pVideoFileCombo->SelectItem(0);
+    }
 }
 
 void TRTCSettingViewController::UpdateCameraDevice()
@@ -1412,6 +1274,29 @@ void TRTCSettingViewController::ResetBeautyConfig()
     else
     {
         TRTCCloudCore::GetInstance()->getTRTCCloud()->setBeautyStyle(beautyConfig._beautyStyle, 0, 0, 0);
+    }
+}
+
+void TRTCSettingViewController::updateVideoBitrateUi()
+{
+    TRTCVideoEncParam& encParam = CDataCenter::GetInstance()->m_videoEncParams;
+    CDataCenter::VideoResBitrateTable sliderInfo = CDataCenter::GetInstance()->getVideoConfigInfo(encParam.videoResolution);
+    if (encParam.videoBitrate < sliderInfo.minBitrate || encParam.videoBitrate > sliderInfo.maxBitrate)
+        encParam.videoBitrate = sliderInfo.defaultBitrate;
+
+    CSliderUI* pSlider = static_cast<CSliderUI*>(m_pmUI.FindControl(_T("slider_videobitrate")));
+    if (pSlider)
+    {
+        pSlider->SetMaxValue(sliderInfo.maxBitrate);
+        pSlider->SetMinValue(sliderInfo.minBitrate);
+        pSlider->SetValue(encParam.videoBitrate);
+    }
+    CLabelUI* pLabelValue = static_cast<CLabelUI*>(m_pmUI.FindControl(_T("slider_videobitrate_value")));
+    if (pLabelValue)
+    {
+        CDuiString sText;
+        sText.Format(_T("%dkbps"), encParam.videoBitrate);
+        pLabelValue->SetText(sText);
     }
 }
 

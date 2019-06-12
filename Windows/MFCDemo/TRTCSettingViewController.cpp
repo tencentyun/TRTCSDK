@@ -34,6 +34,7 @@ void TRTCSettingViewController::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_COMBO_RESOLUTION, m_resolutionCombo);
     DDX_Control(pDX, IDC_COMBO_FPS, m_fpsCombo);
     DDX_Control(pDX, IDC_COMBO_QUALITY, m_qualityCombo);
+    DDX_Control(pDX, IDC_COMBO_SENSE, m_senseCombo);
     DDX_Control(pDX, IDC_SLIDER_BITRATE, m_bitrateSlider);
     DDX_Control(pDX, IDC_CHECK_PUSH_SAMLL_VIDEO, m_pushSmallVideoCheck);
     DDX_Control(pDX, IDC_CHECK_PLAY_SAMLL_VIDEO, m_playSmallVideoCheck);
@@ -48,6 +49,7 @@ BEGIN_MESSAGE_MAP(TRTCSettingViewController, CDialogEx)
     ON_BN_CLICKED(IDC_CHECK_PLAY_SAMLL_VIDEO, &TRTCSettingViewController::OnBnClickedCheckPlaySamllVideo)
     ON_CBN_SELCHANGE(IDC_COMBO_FPS, &TRTCSettingViewController::OnCbnSelchangeComboFps)
     ON_CBN_SELCHANGE(IDC_COMBO_QUALITY, &TRTCSettingViewController::OnCbnSelchangeComboQuality)
+    ON_CBN_SELCHANGE(IDC_COMBO_SENSE, &TRTCSettingViewController::OnCbnSelchangeComboSense)
     ON_WM_HSCROLL()
 END_MESSAGE_MAP()
 
@@ -60,6 +62,7 @@ BOOL TRTCSettingViewController::OnInitDialog()
     m_resolutionCombo.SetFont(&newFont);
     m_fpsCombo.SetFont(&newFont);
     m_qualityCombo.SetFont(&newFont);
+    m_senseCombo.SetFont(&newFont);
     m_bitrateSlider.SetFont(&newFont);
     m_pushSmallVideoCheck.SetFont(&newFont);
     m_playSmallVideoCheck.SetFont(&newFont);
@@ -75,7 +78,7 @@ BOOL TRTCSettingViewController::OnInitDialog()
     TRTCSettingBitrateTable& info5 = m_videoConfigMap[TRTCVideoResolution_960_540];
     info5.init(800, 400, 1000);
     TRTCSettingBitrateTable& info6 = m_videoConfigMap[TRTCVideoResolution_1280_720];
-    info6.init(1000, 500, 1500);
+    info6.init(1000, 500, 2500);
 
     m_resolutionCombo.AddString(L"320 x 180");
     m_resolutionCombo.AddString(L"320 x 240");
@@ -112,6 +115,13 @@ BOOL TRTCSettingViewController::OnInitDialog()
         m_qualityCombo.SetCurSel(0);
     if (m_qosParams.preference == TRTCVideoQosPreferenceClear)
         m_qualityCombo.SetCurSel(1);
+
+    m_senseCombo.AddString(L"在线直播");
+    m_senseCombo.AddString(L"视频通话");
+    if (m_appScene == TRTCAppSceneLIVE )
+        m_senseCombo.SetCurSel(0);
+    if (m_appScene == TRTCAppSceneVideoCall)
+        m_senseCombo.SetCurSel(1);
 
     TRTCSettingBitrateTable sliderInfo = getVideoConfigInfo(m_videoEncParams.videoResolution);
     m_bitrateSlider.SetRange(sliderInfo.minBitrate, sliderInfo.maxBitrate);
@@ -218,6 +228,7 @@ void TRTCSettingViewController::OnBnClickedButtonSave()
     TRTCStorageConfigMgr::GetInstance()->qosParams = m_qosParams;
     TRTCStorageConfigMgr::GetInstance()->bPushSmallVideo = m_bPushSmallVideo;
     TRTCStorageConfigMgr::GetInstance()->bPlaySmallVideo = m_bPlaySmallVideo;
+    TRTCStorageConfigMgr::GetInstance()->appScene = m_appScene;
 
     CWnd *pSaveBtn = GetDlgItem(IDC_BUTTON_SAVE);
     if (pSaveBtn)
@@ -267,6 +278,7 @@ void TRTCSettingViewController::InitStorageConfig()
     m_qosParams = TRTCStorageConfigMgr::GetInstance()->qosParams;
     m_bPushSmallVideo = TRTCStorageConfigMgr::GetInstance()->bPushSmallVideo;
     m_bPlaySmallVideo = TRTCStorageConfigMgr::GetInstance()->bPlaySmallVideo;
+    m_appScene = TRTCStorageConfigMgr::GetInstance()->appScene;
 }
 
 void TRTCSettingViewController::InitVideoTableConfig()
@@ -358,6 +370,23 @@ void TRTCSettingViewController::OnCbnSelchangeComboQuality()
     if (pSaveBtn)
         pSaveBtn->EnableWindow(TRUE);
 }
+
+
+
+void TRTCSettingViewController::OnCbnSelchangeComboSense()
+{
+    // TODO: 在此添加控件通知处理程序代码
+    DWORD nIndex = m_senseCombo.GetCurSel();
+    if (nIndex == 0)
+        m_appScene = TRTCAppSceneLIVE;
+    if (nIndex == 1)
+        m_appScene = TRTCAppSceneVideoCall;
+
+    CWnd *pSaveBtn = GetDlgItem(IDC_BUTTON_SAVE);
+    if (pSaveBtn)
+        pSaveBtn->EnableWindow(TRUE);
+}
+
 
 void TRTCSettingViewController::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {

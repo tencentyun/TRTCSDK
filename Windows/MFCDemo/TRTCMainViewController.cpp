@@ -17,7 +17,6 @@
 #include "util/Base.h"
 #include "StorageConfigMgr.h"
 #include "TRTCMainViewController.h"
-#include "TRTCGetUserIDAndUserSig.h"
 #include "TRTCSettingViewController.h"
 
 #include <ctime>
@@ -91,6 +90,11 @@ BOOL TRTCMainViewController::OnInitDialog()
     UpdateRemoteViewInfo(IDC_REMOTE_VIDEO_VIEW1, "");
     UpdateRemoteViewInfo(IDC_REMOTE_VIDEO_VIEW2, "");
     UpdateRemoteViewInfo(IDC_REMOTE_VIDEO_VIEW3, "");
+    UpdateRemoteViewInfo(IDC_REMOTE_VIDEO_VIEW4, "");
+    UpdateRemoteViewInfo(IDC_REMOTE_VIDEO_VIEW5, "");
+    UpdateRemoteViewInfo(IDC_REMOTE_VIDEO_VIEW6, "");
+    UpdateRemoteViewInfo(IDC_REMOTE_VIDEO_VIEW7, "");
+    UpdateRemoteViewInfo(IDC_REMOTE_VIDEO_VIEW8, "");
 
     ShowWindow(SW_NORMAL);
 
@@ -138,6 +142,11 @@ void TRTCMainViewController::onExitRoom(int reason)
     UpdateRemoteViewInfo(IDC_REMOTE_VIDEO_VIEW1, "");
     UpdateRemoteViewInfo(IDC_REMOTE_VIDEO_VIEW2, "");
     UpdateRemoteViewInfo(IDC_REMOTE_VIDEO_VIEW3, "");
+    UpdateRemoteViewInfo(IDC_REMOTE_VIDEO_VIEW4, "");
+    UpdateRemoteViewInfo(IDC_REMOTE_VIDEO_VIEW5, "");
+    UpdateRemoteViewInfo(IDC_REMOTE_VIDEO_VIEW6, "");
+    UpdateRemoteViewInfo(IDC_REMOTE_VIDEO_VIEW7, "");
+    UpdateRemoteViewInfo(IDC_REMOTE_VIDEO_VIEW8, "");
 
     //«–ªªªÿµ«¬ºΩÁ√Ê
     ShowWindow(SW_HIDE);
@@ -190,8 +199,13 @@ HBRUSH TRTCMainViewController::OnCtlColor(CDC * pDC, CWnd * pWnd, UINT nCtlColor
        
         if (pWnd->GetDlgCtrlID() == IDC_STATIC_LOCAL_BORD ||
             pWnd->GetDlgCtrlID() == IDC_STATIC_REMOTE_BORD1 ||
-            pWnd->GetDlgCtrlID() == IDC_STATIC_REMOTE_BORD2 || 
-            pWnd->GetDlgCtrlID() == IDC_STATIC_REMOTE_BORD3)
+            pWnd->GetDlgCtrlID() == IDC_STATIC_REMOTE_BORD2 ||
+            pWnd->GetDlgCtrlID() == IDC_STATIC_REMOTE_BORD3 ||
+            pWnd->GetDlgCtrlID() == IDC_STATIC_REMOTE_BORD4 ||
+            pWnd->GetDlgCtrlID() == IDC_STATIC_REMOTE_BORD5 ||
+            pWnd->GetDlgCtrlID() == IDC_STATIC_REMOTE_BORD6 ||
+            pWnd->GetDlgCtrlID() == IDC_STATIC_REMOTE_BORD7 ||
+            pWnd->GetDlgCtrlID() == IDC_STATIC_REMOTE_BORD8)
         {
             static CBrush brh(RGB(210, 210, 210));//æ≤Ã¨ª≠À¢◊ ‘¥
             CRect rect;
@@ -203,6 +217,16 @@ HBRUSH TRTCMainViewController::OnCtlColor(CDC * pDC, CWnd * pWnd, UINT nCtlColor
                 GetDlgItem(IDC_STATIC_REMOTE_BORD2)->GetClientRect(rect);
             if (pWnd->GetDlgCtrlID() == IDC_STATIC_REMOTE_BORD3)
                 GetDlgItem(IDC_STATIC_REMOTE_BORD3)->GetClientRect(rect);
+            if (pWnd->GetDlgCtrlID() == IDC_STATIC_REMOTE_BORD4)
+                GetDlgItem(IDC_STATIC_REMOTE_BORD4)->GetClientRect(rect);
+            if (pWnd->GetDlgCtrlID() == IDC_STATIC_REMOTE_BORD5)
+                GetDlgItem(IDC_STATIC_REMOTE_BORD5)->GetClientRect(rect);
+            if (pWnd->GetDlgCtrlID() == IDC_STATIC_REMOTE_BORD6)
+                GetDlgItem(IDC_STATIC_REMOTE_BORD6)->GetClientRect(rect);
+            if (pWnd->GetDlgCtrlID() == IDC_STATIC_REMOTE_BORD7)
+                GetDlgItem(IDC_STATIC_REMOTE_BORD7)->GetClientRect(rect);
+            if (pWnd->GetDlgCtrlID() == IDC_STATIC_REMOTE_BORD8)
+                GetDlgItem(IDC_STATIC_REMOTE_BORD8)->GetClientRect(rect);
 
             rect.InflateRect(-3, -7, -3, -3);
             pDC->FillRect(rect, &brh);//ÃÓ≥‰Groupboxæÿ–Œ±≥æ∞…´
@@ -212,7 +236,12 @@ HBRUSH TRTCMainViewController::OnCtlColor(CDC * pDC, CWnd * pWnd, UINT nCtlColor
         if (pWnd->GetDlgCtrlID() == IDC_STATIC_LOCAL_USERID ||
             pWnd->GetDlgCtrlID() == IDC_STATIC_REMOTE_USERID1 ||
             pWnd->GetDlgCtrlID() == IDC_STATIC_REMOTE_USERID2 ||
-            pWnd->GetDlgCtrlID() == IDC_STATIC_REMOTE_USERID3)
+            pWnd->GetDlgCtrlID() == IDC_STATIC_REMOTE_USERID3 ||
+            pWnd->GetDlgCtrlID() == IDC_STATIC_REMOTE_USERID4 ||
+            pWnd->GetDlgCtrlID() == IDC_STATIC_REMOTE_USERID5 ||
+            pWnd->GetDlgCtrlID() == IDC_STATIC_REMOTE_USERID6 ||
+            pWnd->GetDlgCtrlID() == IDC_STATIC_REMOTE_USERID7 ||
+            pWnd->GetDlgCtrlID() == IDC_STATIC_REMOTE_USERID8)
         {
             static CBrush brh(RGB(210, 210, 210));//æ≤Ã¨ª≠À¢◊ ‘¥
             CRect rect;
@@ -224,6 +253,17 @@ HBRUSH TRTCMainViewController::OnCtlColor(CDC * pDC, CWnd * pWnd, UINT nCtlColor
                 GetDlgItem(IDC_STATIC_REMOTE_USERID2)->GetClientRect(rect);
             if (pWnd->GetDlgCtrlID() == IDC_STATIC_REMOTE_USERID3)
                 GetDlgItem(IDC_STATIC_REMOTE_USERID3)->GetClientRect(rect);
+            if (pWnd->GetDlgCtrlID() == IDC_STATIC_REMOTE_USERID4)
+                GetDlgItem(IDC_STATIC_REMOTE_USERID4)->GetClientRect(rect);
+            if (pWnd->GetDlgCtrlID() == IDC_STATIC_REMOTE_USERID5)
+                GetDlgItem(IDC_STATIC_REMOTE_USERID5)->GetClientRect(rect);
+            if (pWnd->GetDlgCtrlID() == IDC_STATIC_REMOTE_USERID6)
+                GetDlgItem(IDC_STATIC_REMOTE_USERID6)->GetClientRect(rect);
+            if (pWnd->GetDlgCtrlID() == IDC_STATIC_REMOTE_USERID7)
+                GetDlgItem(IDC_STATIC_REMOTE_USERID7)->GetClientRect(rect);
+            if (pWnd->GetDlgCtrlID() == IDC_STATIC_REMOTE_USERID8)
+                GetDlgItem(IDC_STATIC_REMOTE_USERID8)->GetClientRect(rect);
+
             pDC->FillRect(rect, &brh);//ÃÓ≥‰Groupboxæÿ–Œ±≥æ∞…´
             pDC->SetBkMode(TRANSPARENT);
             return (HBRUSH)brh.m_hObject;//∑µªÿGroupbox±≥æ∞ª≠À¢ªÊ÷∆ª≠À¢
@@ -246,6 +286,26 @@ int TRTCMainViewController::FindIdleRemoteVideoView()
     {
         return IDC_REMOTE_VIDEO_VIEW3;
     }
+    if (m_remoteUserInfo[IDC_REMOTE_VIDEO_VIEW4].compare("") == 0)
+    {
+        return IDC_REMOTE_VIDEO_VIEW4;
+    }
+    if (m_remoteUserInfo[IDC_REMOTE_VIDEO_VIEW5].compare("") == 0)
+    {
+        return IDC_REMOTE_VIDEO_VIEW5;
+    }
+    if (m_remoteUserInfo[IDC_REMOTE_VIDEO_VIEW6].compare("") == 0)
+    {
+        return IDC_REMOTE_VIDEO_VIEW6;
+    }
+    if (m_remoteUserInfo[IDC_REMOTE_VIDEO_VIEW7].compare("") == 0)
+    {
+        return IDC_REMOTE_VIDEO_VIEW7;
+    }
+    if (m_remoteUserInfo[IDC_REMOTE_VIDEO_VIEW8].compare("") == 0)
+    {
+        return IDC_REMOTE_VIDEO_VIEW8;
+    }
     return 0;
 }
 
@@ -262,6 +322,26 @@ int TRTCMainViewController::FindOccupyRemoteVideoView(std::string userId)
     if (m_remoteUserInfo[IDC_REMOTE_VIDEO_VIEW3].compare(userId.c_str()) == 0)
     {
         return IDC_REMOTE_VIDEO_VIEW3;
+    }
+    if (m_remoteUserInfo[IDC_REMOTE_VIDEO_VIEW4].compare(userId.c_str()) == 0)
+    {
+        return IDC_REMOTE_VIDEO_VIEW4;
+    }
+    if (m_remoteUserInfo[IDC_REMOTE_VIDEO_VIEW5].compare(userId.c_str()) == 0)
+    {
+        return IDC_REMOTE_VIDEO_VIEW5;
+    }
+    if (m_remoteUserInfo[IDC_REMOTE_VIDEO_VIEW6].compare(userId.c_str()) == 0)
+    {
+        return IDC_REMOTE_VIDEO_VIEW6;
+    }
+    if (m_remoteUserInfo[IDC_REMOTE_VIDEO_VIEW7].compare(userId.c_str()) == 0)
+    {
+        return IDC_REMOTE_VIDEO_VIEW7;
+    }
+    if (m_remoteUserInfo[IDC_REMOTE_VIDEO_VIEW8].compare(userId.c_str()) == 0)
+    {
+        return IDC_REMOTE_VIDEO_VIEW8;
     }
     return 0;
 }
@@ -285,6 +365,41 @@ void TRTCMainViewController::UpdateRemoteViewInfo(int id, std::string userId)
     if (id == IDC_REMOTE_VIDEO_VIEW3)
     {
         CWnd *pStatic = GetDlgItem(IDC_STATIC_REMOTE_USERID3);
+        pStatic->SetWindowTextW(UTF82Wide(userId).c_str());
+        pStatic->SetFont(&newFont);
+        m_remoteUserInfo[id] = userId;
+    }
+    if (id == IDC_REMOTE_VIDEO_VIEW4)
+    {
+        CWnd *pStatic = GetDlgItem(IDC_STATIC_REMOTE_USERID4);
+        pStatic->SetWindowTextW(UTF82Wide(userId).c_str());
+        pStatic->SetFont(&newFont);
+        m_remoteUserInfo[id] = userId;
+    }
+    if (id == IDC_REMOTE_VIDEO_VIEW5)
+    {
+        CWnd *pStatic = GetDlgItem(IDC_STATIC_REMOTE_USERID5);
+        pStatic->SetWindowTextW(UTF82Wide(userId).c_str());
+        pStatic->SetFont(&newFont);
+        m_remoteUserInfo[id] = userId;
+    }
+    if (id == IDC_REMOTE_VIDEO_VIEW6)
+    {
+        CWnd *pStatic = GetDlgItem(IDC_STATIC_REMOTE_USERID6);
+        pStatic->SetWindowTextW(UTF82Wide(userId).c_str());
+        pStatic->SetFont(&newFont);
+        m_remoteUserInfo[id] = userId;
+    }
+    if (id == IDC_REMOTE_VIDEO_VIEW7)
+    {
+        CWnd *pStatic = GetDlgItem(IDC_STATIC_REMOTE_USERID7);
+        pStatic->SetWindowTextW(UTF82Wide(userId).c_str());
+        pStatic->SetFont(&newFont);
+        m_remoteUserInfo[id] = userId;
+    }
+    if (id == IDC_REMOTE_VIDEO_VIEW8)
+    {
+        CWnd *pStatic = GetDlgItem(IDC_STATIC_REMOTE_USERID8);
         pStatic->SetWindowTextW(UTF82Wide(userId).c_str());
         pStatic->SetFont(&newFont);
         m_remoteUserInfo[id] = userId;
@@ -336,7 +451,7 @@ void TRTCMainViewController::enterRoom(TRTCParams& params)
         getTRTCCloud()->setPriorRemoteVideoStreamType(TRTCVideoStreamTypeSmall);
     }
 
-    getTRTCCloud()->enterRoom(params, TRTCAppSceneVideoCall);
+    getTRTCCloud()->enterRoom(params, TRTCStorageConfigMgr::GetInstance()->appScene);
     std::string userId(params.userId);
     m_userId = userId;
     std::wstring title = format(L"TRTCDemo°æ∑øº‰ID: %d, ”√ªßID: %s°ø", params.roomId, Ansi2Wide(userId.c_str()).c_str());
