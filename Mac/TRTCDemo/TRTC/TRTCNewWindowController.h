@@ -22,6 +22,7 @@
 // 房间号输入框
 @property (strong) IBOutlet NSTextField *roomidField;
 @property (strong) IBOutlet NSPopUpButton *useridPopUp;
+@property BOOL audioOnly;
 - (IBAction)onSelectRoomScene:(id)sender;
 @property (copy, nonatomic) void(^onLogin)(TRTCParams *param);
 @end

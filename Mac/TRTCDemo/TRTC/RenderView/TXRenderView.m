@@ -9,6 +9,8 @@
 #import "TXRenderView.h"
 
 static const CGFloat ItemSize = 22;
+static const CGFloat TopMargin = 20;
+static const CGFloat LeftMargin = 20;
 
 @interface TXRenderViewToolbarItemObject : NSObject
 @property (copy, nonatomic) NSArray<NSString *> *titles;
@@ -27,7 +29,8 @@ static const CGFloat ItemSize = 22;
     NSMutableArray<TXRenderViewToolbarItemObject*> *_items;
     NSCollectionView *_collectionView;
     NSLevelIndicator *_volumeIndicator;
-    NSImageView *_signalIndicator;    
+    NSImageView *_signalIndicator;
+    NSLayoutConstraint *_textLabelTopConstrataint;
 }
 @end
 
@@ -55,6 +58,7 @@ static const CGFloat ItemSize = 22;
     _contentView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
     [self addSubview:_contentView];
     
+   
     _items = [[NSMutableArray alloc] init];
     _collectionView = [[NSCollectionView alloc] initWithFrame:NSMakeRect(NSWidth(self.bounds) - ItemSize, 0, 24, NSHeight(self.bounds))];
     _collectionView.autoresizingMask = NSViewMinXMargin | NSViewMinYMargin;
@@ -67,7 +71,7 @@ static const CGFloat ItemSize = 22;
 
     [self addSubview:_collectionView];
     
-    _volumeIndicator = [[NSLevelIndicator alloc] initWithFrame:NSMakeRect(2.5, NSMaxY(self.bounds) - 20 - 12.5, 15, 10)];
+    _volumeIndicator = [[NSLevelIndicator alloc] initWithFrame:NSMakeRect(2.5, NSMaxY(self.bounds) - TopMargin - 12.5, 15, 10)];
     _volumeIndicator.levelIndicatorStyle = NSLevelIndicatorStyleContinuousCapacity;
     _volumeIndicator.autoresizingMask = NSViewMaxXMargin | NSViewMinYMargin;
     _volumeIndicator.minValue = 0.0;
@@ -75,10 +79,29 @@ static const CGFloat ItemSize = 22;
     [_volumeIndicator setFrameCenterRotation:90];
     [self addSubview:_volumeIndicator];
     
-    _signalIndicator = [[NSImageView alloc] initWithFrame:NSMakeRect(20, NSMaxY(self.bounds) - 20 - 15, 26, 15)];
+    _signalIndicator = [[NSImageView alloc] initWithFrame:NSMakeRect(20, NSMaxY(self.bounds) - TopMargin - 15, 26, 15)];
     _signalIndicator.autoresizingMask = NSViewMaxXMargin | NSViewMinYMargin;
     _signalIndicator.imageScaling = NSImageScaleProportionallyDown;
     [self addSubview:_signalIndicator];
+    
+    _textLabel = [[NSTextField alloc] initWithFrame:NSMakeRect(LeftMargin, 100, NSHeight(self.bounds) - TopMargin - 15, 15)];
+    _textLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    [self addSubview:_textLabel];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:_textLabel
+                                                     attribute:NSLayoutAttributeLeft
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:self
+                                                     attribute:NSLayoutAttributeLeft
+                                                    multiplier:1.0
+                                                      constant:LeftMargin]];
+    _textLabelTopConstrataint = [NSLayoutConstraint constraintWithItem:_textLabel
+                                                             attribute:NSLayoutAttributeTop
+                                                             relatedBy:NSLayoutRelationEqual
+                                                                toItem:self
+                                                             attribute:NSLayoutAttributeTop
+                                                            multiplier:1.0
+                                                              constant:TopMargin];
+    [self addConstraint: _textLabelTopConstrataint];
 }
 
 - (void)_updateCollectionView {
@@ -139,6 +162,15 @@ static const CGFloat ItemSize = 22;
 {
     _signalIndicator.image = [NSImage imageNamed:[NSString stringWithFormat:@"signal%d", (int)volume]];
 }
+
+- (void)setTopIndicatorMargin:(CGFloat)topIndicatorMargin {
+    _topIndicatorMargin = topIndicatorMargin;
+    _volumeIndicator.frame = NSMakeRect(LeftMargin + 2.5, NSHeight(self.bounds) - TopMargin - topIndicatorMargin - 12.5, 15, 10);
+    _signalIndicator.frame = NSMakeRect(LeftMargin,  NSHeight(self.bounds) - TopMargin - topIndicatorMargin - 15, 26, 15);
+    _textLabelTopConstrataint.constant = topIndicatorMargin;
+    [self layoutSubtreeIfNeeded];
+}
+
 @end
 
 @implementation TXRenderViewToolbarItem

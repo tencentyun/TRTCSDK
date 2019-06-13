@@ -16,8 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 typedef NS_ENUM(NSUInteger, TXAVSettingTabIndex) {
     TXAVSettingTabIndexGeneral,
     TXAVSettingTabIndexVideo,
-    TXAVSettingTabIndexAudio,
-    TXAVSettingTabIndexSubStream
+    TXAVSettingTabIndexAudio
 };
 
 @interface TRTCSettingWindowController : NSWindowController
@@ -28,15 +27,16 @@ typedef NS_ENUM(NSUInteger, TXAVSettingTabIndex) {
 @property (class, readonly) TRTCVideoQosPreference qosPreference;
 @property (class, readonly) TRTCQosControlMode qosControlMode;
 
-@property (class, readonly) int subStreamFps;
-@property (class, readonly) TRTCVideoResolution subStreamResolution;
-@property (class, readonly) int subStreamBitrate;
-
 @property (class, readonly) BOOL pushDoubleStream;
 @property (class, readonly) BOOL playSmallStream;
 @property (class, readonly) TRTCAppScene scene;
 @property (class, readonly) BOOL showVolume;
 @property (class, readonly) BOOL cloudMixEnabled;
+
+
+@property (nonatomic, strong, nullable) NSString *userID;
+@property (nonatomic, strong, nullable) NSString *roomID;
+
 // 通话场景按钮
 @property (strong) IBOutlet NSButton *callSceneButton;
 // 直播场景按钮
@@ -64,8 +64,6 @@ typedef NS_ENUM(NSUInteger, TXAVSettingTabIndex) {
 @property (strong) IBOutlet NSView *audioSettingView;
 // 视频设置界面
 @property (strong) IBOutlet NSView *videoSettingView;
-// 辅流设置界面
-@property (strong) IBOutlet NSView *subStreamSettingView;
 // 设置界面容器
 @property (strong) IBOutlet NSView *settingField;
 // 视频设置界面预览视图
@@ -96,16 +94,8 @@ typedef NS_ENUM(NSUInteger, TXAVSettingTabIndex) {
 @property (weak) IBOutlet NSLevelIndicator *volumeMeter;
 // 扬声器音量指示器
 @property (weak) IBOutlet NSLevelIndicator *speakerVolumeMeter;
-
-
-// 辅流分辨率选择控件
-@property (strong) IBOutlet NSPopUpButton *substreamResolutionItems;
-// 辅流fps选择控件
-@property (strong) IBOutlet NSPopUpButton *substreamFpsItems;
-// 辅流码率显示
-@property (strong) IBOutlet NSTextField *substreamBitrateLabel;
-// 辅流码率滑杆
-@property (strong) IBOutlet NSSlider *substreamBitrateSlider;
+// 分享按钮
+@property (weak) IBOutlet NSButton *shareButton;
 
 // For Cocoa Bindings
 // 推流设置
@@ -114,41 +104,41 @@ typedef NS_ENUM(NSUInteger, TXAVSettingTabIndex) {
 @property (assign, nonatomic) BOOL showVolume;
 // 开启云端混流
 @property (assign, nonatomic) BOOL cloudMixEnabled;
+@property (assign, nonatomic) BOOL isAudience;
 
 - (instancetype)initWithWindowNibName:(NSNibName)windowNibName engine:(TRTCCloud *)engine;
 
-- (IBAction)selectScene:(NSButton *)sender;
+- (IBAction)onSelectScene:(NSButton *)sender;
 
-- (IBAction)selectResolutionMode:(NSButton *)sender;
+- (IBAction)onRoleBtnClicked:(NSButton *)sender;
 
-- (IBAction)selectCamera:(id)sender;
+- (IBAction)onSelectResolutionMode:(NSButton *)sender;
 
-- (IBAction)selectSpeaker:(id)sender;
+- (IBAction)onSelectCamera:(id)sender;
 
-- (IBAction)selectMic:(id)sender;
+- (IBAction)onSelectSpeaker:(id)sender;
+
+- (IBAction)onSelectMic:(id)sender;
 // 更改扬声器音量
-- (IBAction)speakerVolumChange:(id)sender;
+- (IBAction)onSpeakerVolumChange:(id)sender;
 // 更改麦克风音量
-- (IBAction)micVolumChange:(id)sender;
+- (IBAction)onMicVolumChange:(id)sender;
 // 分辨率选则
-- (IBAction)selectResolution:(id)sender;
+- (IBAction)onSelectResolution:(id)sender;
 // 帧率选则
-- (IBAction)selectFps:(NSPopUpButton *)sender;
+- (IBAction)onSelectFps:(NSPopUpButton *)sender;
 // 比特率选则
-- (IBAction)selectBitrate:(id)sender;
+- (IBAction)onSelectBitrate:(id)sender;
 // 麦克风测试
-- (IBAction)micTest:(id)sender;
+- (IBAction)onClickMicTest:(id)sender;
 // 开始扬声器测试
-- (IBAction)speakerTest:(NSButton *)sender;
+- (IBAction)onClickSpeakerTest:(NSButton *)sender;
 // 更改流控模式，流畅还是清晰
-- (IBAction)onChangeQOSPreference:(NSButton *)sender;
+- (IBAction)onClickQOSPreference:(NSButton *)sender;
 //  更改流控方式，使用SDK固定配置还是使用下发配置
-- (IBAction)onChangeQOSControlMode:(NSButton *)sender;
-// 屏幕分享分辨率选则
-- (IBAction)subStram_selectResolution:(id)sender;
-// 屏幕分享fps选则
-- (IBAction)subStram_selectFps:(NSPopUpButton *)sender;
-// 屏幕分享比特率选则
-- (IBAction)subStram_selectBitrate:(id)sender;@end
+- (IBAction)onClickQOSControlMode:(NSButton *)sender;
+// 响应分享播放地址按钮
+- (IBAction)onClickShowCloudMixURL:(id)sender;
+@end
 
 NS_ASSUME_NONNULL_END

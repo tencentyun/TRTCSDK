@@ -15,7 +15,7 @@
                 <outlet property="beautyPanel" destination="Qct-Sr-neU" id="eYG-y8-MDV"/>
                 <outlet property="capturePreviewWindow" destination="HAX-Qb-qO6" id="eOQ-5y-3xZ"/>
                 <outlet property="closeBtn" destination="3Ct-i8-fYX" id="tyA-HM-obk"/>
-                <outlet property="conenctRoomBtn" destination="8nq-xi-6Nd" id="1iY-8U-WLB"/>
+                <outlet property="connectRoomBtn" destination="8nq-xi-6Nd" id="7gN-4z-i5W"/>
                 <outlet property="connectRoomWindow" destination="t9g-hL-Q1U" id="TFu-Bb-Boi"/>
                 <outlet property="controlBar" destination="689-E1-lRQ" id="MB3-Wk-zjc"/>
                 <outlet property="logBtn" destination="iQ7-Ua-LdZ" id="ocD-T2-wer"/>
@@ -33,15 +33,15 @@
         <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="F0z-JX-Cv5">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="773" y="322" width="1024" height="579"/>
+            <rect key="contentRect" x="773" y="322" width="828" height="579"/>
             <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
             <value key="minSize" type="size" width="854" height="467"/>
             <view key="contentView" wantsLayer="YES" id="se5-gp-TjO">
-                <rect key="frame" x="0.0" y="0.0" width="1024" height="579"/>
+                <rect key="frame" x="0.0" y="0.0" width="828" height="579"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="689-E1-lRQ">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="60"/>
+                        <rect key="frame" x="0.0" y="0.0" width="828" height="60"/>
                         <subviews>
                             <button imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="21N-PC-NE0">
                                 <rect key="frame" x="155" y="0.0" width="60" height="60"/>
@@ -54,7 +54,7 @@
                                     <font key="font" metaFont="systemSemibold" size="13"/>
                                 </buttonCell>
                                 <connections>
-                                    <action selector="videoBtnClick:" target="-2" id="emq-XE-GTY"/>
+                                    <action selector="onClickVideoMute:" target="-2" id="emq-XE-GTY"/>
                                 </connections>
                             </button>
                             <button translatesAutoresizingMaskIntoConstraints="NO" id="Z7q-MT-4Rz">
@@ -68,7 +68,7 @@
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
                                 <connections>
-                                    <action selector="audioSelect:" target="-2" id="Di3-Da-3Jt"/>
+                                    <action selector="onClickAudioSource:" target="-2" id="Di3-Da-3Jt"/>
                                 </connections>
                             </button>
                             <button translatesAutoresizingMaskIntoConstraints="NO" id="ah1-uI-jL4">
@@ -82,11 +82,11 @@
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
                                 <connections>
-                                    <action selector="videoSelect:" target="-2" id="QiM-jl-qH0"/>
+                                    <action selector="onClickCameraSource:" target="-2" id="QiM-jl-qH0"/>
                                 </connections>
                             </button>
                             <button imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3Ct-i8-fYX">
-                                <rect key="frame" x="940" y="0.0" width="54" height="60"/>
+                                <rect key="frame" x="744" y="0.0" width="54" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="54" id="9aB-vF-I9F"/>
                                     <constraint firstAttribute="height" constant="60" id="RzU-eu-6bw"/>
@@ -96,7 +96,7 @@
                                     <font key="font" metaFont="systemSemibold" size="13"/>
                                 </buttonCell>
                                 <connections>
-                                    <action selector="closeRoom:" target="-2" id="bWo-Ig-h2d"/>
+                                    <action selector="onClickClose:" target="-2" id="bWo-Ig-h2d"/>
                                 </connections>
                             </button>
                             <button imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sF1-9g-r48">
@@ -109,11 +109,11 @@
                                     <font key="font" metaFont="systemSemibold" size="13"/>
                                 </buttonCell>
                                 <connections>
-                                    <action selector="onShowInputSource:" target="-2" id="f29-Vb-QR7"/>
+                                    <action selector="onClickScreenCapture:" target="-2" id="f29-Vb-QR7"/>
                                 </connections>
                             </button>
                             <button imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iQ7-Ua-LdZ">
-                                <rect key="frame" x="820" y="0.0" width="54" height="60"/>
+                                <rect key="frame" x="624" y="0.0" width="54" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="54" id="gtV-Ue-Wbi"/>
                                     <constraint firstAttribute="height" constant="60" id="ofa-DG-MZY"/>
@@ -123,11 +123,11 @@
                                     <font key="font" metaFont="systemSemibold" size="13"/>
                                 </buttonCell>
                                 <connections>
-                                    <action selector="showLog:" target="-2" id="p6r-aE-8r2"/>
+                                    <action selector="onClickLog:" target="-2" id="p6r-aE-8r2"/>
                                 </connections>
                             </button>
                             <button imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DXi-7m-JGm">
-                                <rect key="frame" x="700" y="0.0" width="54" height="60"/>
+                                <rect key="frame" x="504" y="0.0" width="54" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="54" id="8Vg-iL-1uA"/>
                                     <constraint firstAttribute="height" constant="60" id="E4K-sU-4uC"/>
@@ -137,7 +137,7 @@
                                     <font key="font" metaFont="systemSemibold" size="13"/>
                                 </buttonCell>
                                 <connections>
-                                    <action selector="onShowBeautyPanel:" target="-2" id="sWP-hQ-Pr2"/>
+                                    <action selector="onClickBeauty:" target="-2" id="PUJ-DY-Tc0"/>
                                 </connections>
                             </button>
                             <button imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8nq-xi-6Nd">
@@ -165,7 +165,7 @@
                                     <font key="font" metaFont="systemSemibold" size="13"/>
                                 </buttonCell>
                                 <connections>
-                                    <action selector="micBtnClick:" target="-2" id="2JE-C9-Hib"/>
+                                    <action selector="onClickAudioMute:" target="-2" id="2JE-C9-Hib"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -192,7 +192,7 @@
                         </constraints>
                     </customView>
                     <scrollView fixedFrame="YES" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rvS-oU-TmM">
-                        <rect key="frame" x="67" y="107" width="270" height="221"/>
+                        <rect key="frame" x="67" y="68" width="270" height="221"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <clipView key="contentView" ambiguous="YES" id="k6S-hS-5B0">
                             <rect key="frame" x="1" y="1" width="268" height="219"/>
@@ -324,7 +324,7 @@
                                         </tableColumn>
                                     </tableColumns>
                                     <connections>
-                                        <action selector="audioSelectViewClick:" target="-2" id="Noi-U4-412"/>
+                                        <action selector="onClickAudioSourceTableItem:" target="-2" id="Noi-U4-412"/>
                                     </connections>
                                 </tableView>
                             </subviews>
@@ -339,7 +339,7 @@
                         </scroller>
                     </scrollView>
                     <scrollView fixedFrame="YES" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L4J-pU-mbv">
-                        <rect key="frame" x="164" y="107" width="270" height="221"/>
+                        <rect key="frame" x="164" y="68" width="270" height="221"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <clipView key="contentView" ambiguous="YES" id="Gs8-2S-Mlg">
                             <rect key="frame" x="1" y="1" width="268" height="219"/>
@@ -429,7 +429,7 @@
                                         </tableColumn>
                                     </tableColumns>
                                     <connections>
-                                        <action selector="videoSelectViewClick:" target="-2" id="GIF-0b-8wa"/>
+                                        <action selector="onClickCameraSourceTableItem:" target="-2" id="GIF-0b-8wa"/>
                                     </connections>
                                 </tableView>
                             </subviews>
@@ -451,7 +451,7 @@
                             <font key="font" metaFont="systemSemibold" size="13"/>
                         </buttonCell>
                         <connections>
-                            <action selector="videoLayoutChange:" target="-2" id="R8R-0h-Wo5"/>
+                            <action selector="onClickLayout:" target="-2" id="xcD-WF-Slk"/>
                         </connections>
                     </button>
                 </subviews>
@@ -464,7 +464,7 @@
             <connections>
                 <outlet property="delegate" destination="-2" id="0bl-1N-AYu"/>
             </connections>
-            <point key="canvasLocation" x="-591" y="-677"/>
+            <point key="canvasLocation" x="-807" y="-765.5"/>
         </window>
         <window title="美颜" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="Qct-Sr-neU" customClass="NSPanel">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" utility="YES"/>
@@ -540,7 +540,7 @@
                             <font key="font" usesAppearanceFont="YES"/>
                         </buttonCell>
                         <connections>
-                            <action selector="onChangeStyle:" target="-2" id="Xls-yd-JdW"/>
+                            <action selector="onChangeBeautyStyle:" target="-2" id="Xls-yd-JdW"/>
                         </connections>
                     </button>
                     <button verticalHuggingPriority="750" tag="1" translatesAutoresizingMaskIntoConstraints="NO" id="KAm-es-u0e">
@@ -550,7 +550,7 @@
                             <font key="font" usesAppearanceFont="YES"/>
                         </buttonCell>
                         <connections>
-                            <action selector="onChangeStyle:" target="-2" id="eN0-nF-RbT"/>
+                            <action selector="onChangeBeautyStyle:" target="-2" id="eN0-nF-RbT"/>
                         </connections>
                     </button>
                 </subviews>
@@ -578,7 +578,7 @@
                     <constraint firstItem="89n-j5-5sD" firstAttribute="centerY" secondItem="Jvo-Rj-Q9k" secondAttribute="centerY" id="ypK-YN-rGJ"/>
                 </constraints>
             </view>
-            <point key="canvasLocation" x="-795" y="-115"/>
+            <point key="canvasLocation" x="-636" y="-259"/>
         </window>
         <userDefaultsController representsSharedInstance="YES" id="P8f-Ad-DEv"/>
         <window title="ScreenCapture" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="HAX-Qb-qO6">
