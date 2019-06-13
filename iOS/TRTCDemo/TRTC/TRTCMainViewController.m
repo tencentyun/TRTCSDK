@@ -864,14 +864,99 @@ typedef enum : NSUInteger {
  */
 - (void)onError:(TXLiteAVError)errCode errMsg:(NSString *)errMsg extInfo:(nullable NSDictionary *)extInfo {
 
-    
-    if (errCode == ERR_ROOM_ENTER_FAIL) {
-        [self toastTip:[NSString stringWithFormat:@"无法进入音视频房间[%@]", errMsg]];
+    if(errCode == ERR_ROOM_REQUEST_TOKEN_HTTPS_TIMEOUT ||
+       errCode == ERR_ROOM_REQUEST_IP_TIMEOUT ||
+       errCode == ERR_ROOM_REQUEST_ENTER_ROOM_TIMEOUT) {
+        [self toastTip:[NSString stringWithFormat:@"进房超时，请检查网络或稍后重试:%d[%@]", errCode, errMsg]];
         [self exitRoom];
         return;
     }
     
+    if(errCode == ERR_ROOM_REQUEST_TOKEN_INVALID_PARAMETER ||
+       errCode == ERR_ENTER_ROOM_PARAM_NULL ||
+       errCode == ERR_SDK_APPID_INVALID ||
+       errCode == ERR_ROOM_ID_INVALID ||
+       errCode == ERR_USER_ID_INVALID ||
+       errCode == ERR_USER_SIG_INVALID) {
+        [self toastTip:[NSString stringWithFormat:@"进房参数错误:%d[%@]", errCode, errMsg]];
+        [self exitRoom];
+        return;
+    }
     
+    if(errCode == ERR_ACCIP_LIST_EMPTY ||
+       errCode == ERR_SERVER_INFO_UNPACKING_ERROR ||
+       errCode == ERR_SERVER_INFO_TOKEN_ERROR ||
+       errCode == ERR_SERVER_INFO_ALLOCATE_ACCESS_FAILED ||
+       errCode == ERR_SERVER_INFO_GENERATE_SIGN_FAILED ||
+       errCode == ERR_SERVER_INFO_TOKEN_TIMEOUT ||
+       errCode == ERR_SERVER_INFO_INVALID_COMMAND ||
+       errCode == ERR_SERVER_INFO_GENERATE_KEN_ERROR ||
+       errCode == ERR_SERVER_INFO_GENERATE_TOKEN_ERROR ||
+       errCode == ERR_SERVER_INFO_DATABASE ||
+       errCode == ERR_SERVER_INFO_BAD_ROOMID ||
+       errCode == ERR_SERVER_INFO_BAD_SCENE_OR_ROLE ||
+       errCode == ERR_SERVER_INFO_ROOMID_EXCHANGE_FAILED ||
+       errCode == ERR_SERVER_INFO_STRGROUP_HAS_INVALID_CHARS ||
+       errCode == ERR_SERVER_ACC_TOKEN_TIMEOUT ||
+       errCode == ERR_SERVER_ACC_SIGN_ERROR ||
+       errCode == ERR_SERVER_ACC_SIGN_TIMEOUT ||
+       errCode == ERR_SERVER_CENTER_INVALID_ROOMID ||
+       errCode == ERR_SERVER_CENTER_CREATE_ROOM_FAILED ||
+       errCode == ERR_SERVER_CENTER_SIGN_ERROR ||
+       errCode == ERR_SERVER_CENTER_SIGN_TIMEOUT ||
+       errCode == ERR_SERVER_CENTER_ADD_USER_FAILED ||
+       errCode == ERR_SERVER_CENTER_FIND_USER_FAILED ||
+       errCode == ERR_SERVER_CENTER_SWITCH_TERMINATION_FREQUENTLY ||
+       errCode == ERR_SERVER_CENTER_LOCATION_NOT_EXIST ||
+       errCode == ERR_SERVER_CENTER_ROUTE_TABLE_ERROR ||
+       errCode == ERR_SERVER_CENTER_INVALID_PARAMETER) {
+        [self toastTip:[NSString stringWithFormat:@"进房失败，请稍后重试:%d[%@]", errCode, errMsg]];
+        [self exitRoom];
+        return;
+    }
+    
+    if(errCode == ERR_SERVER_CENTER_ROOM_FULL ||
+       errCode == ERR_SERVER_CENTER_REACH_PROXY_MAX) {
+        [self toastTip:[NSString stringWithFormat:@"进房失败，房间满了，请稍后重试:%d[%@]", errCode, errMsg]];
+        [self exitRoom];
+        return;
+    }
+    
+    if(errCode == ERR_SERVER_CENTER_ROOM_ID_TOO_LONG) {
+        [self toastTip:[NSString stringWithFormat:@"进房失败，roomID超出有效范围:%d[%@]", errCode, errMsg]];
+        [self exitRoom];
+        return;
+    }
+    
+    if(errCode == ERR_SERVER_ACC_ROOM_NOT_EXIST ||
+       errCode == ERR_SERVER_CENTER_ROOM_NOT_EXIST) {
+        [self toastTip:[NSString stringWithFormat:@"进房失败，请确认房间号正确:%d[%@]", errCode, errMsg]];
+        [self exitRoom];
+        return;
+    }
+    
+    if(errCode == ERR_SERVER_INFO_SERVICE_SUSPENDED) {
+        [self toastTip:[NSString stringWithFormat:@"进房失败，请确认腾讯云实时音视频账号状态是否欠费:%d[%@]", errCode, errMsg]];
+        [self exitRoom];
+        return;
+    }
+    
+    if(errCode == ERR_SERVER_INFO_PRIVILEGE_FLAG_ERROR ||
+       errCode == ERR_SERVER_CENTER_NO_PRIVILEDGE_CREATE_ROOM ||
+       errCode == ERR_SERVER_CENTER_NO_PRIVILEDGE_ENTER_ROOM) {
+        [self toastTip:[NSString stringWithFormat:@"进房失败，无权限进入房间:%d[%@]", errCode, errMsg]];
+        [self exitRoom];
+        return;
+    }
+    
+    if(errCode <= ERR_SERVER_SSO_SIG_EXPIRED  &&
+       errCode >= ERR_SERVER_SSO_INTERNAL_ERROR) {
+        // 错误参考 https://cloud.tencent.com/document/product/269/1671#.E5.B8.90.E5.8F.B7.E7.B3.BB.E7.BB.9F
+        [self toastTip:[NSString stringWithFormat:@"进房失败，userSig错误:%d[%@]", errCode, errMsg]];
+        [self exitRoom];
+        return;
+    }
+
     NSString *msg = [NSString stringWithFormat:@"didOccurError: %@[%d]", errMsg, errCode];
     [self toastTip:msg];
 }
