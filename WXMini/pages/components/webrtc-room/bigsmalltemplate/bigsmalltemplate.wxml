@@ -1,0 +1,21 @@
+<template name="bigsmalltemplate">
+  <view class="bigsmalltemplate videoview">
+    <view class="player-box">
+      <view class="poster">
+        <cover-image class="set" wx:if="{{playerBackgroundImg}}" src="{{playerBackgroundImg}}"></cover-image>
+      </view>
+      <live-player id="{{fixPlayId || members[0].userID}}" autoplay mode="RTC" object-fit="fillCrop" min-cache="0.1" max-cache="0.3" src="{{members[0].accelerateURL}}" debug="{{debug}}" background-mute="{{true}}" bindstatechange="onPlay">
+        <cover-view class="loading" wx:if="{{members[0].loading && loadingImg}}">
+          <cover-image src="{{loadingImg}}"></cover-image>
+        </cover-view>
+        <cover-view class="poster" wx:if="{{!startPlay && playerBackgroundImg}}">
+          <cover-image class="set" src="{{playerBackgroundImg}}"></cover-image>
+        </cover-view>
+        <slot name="bigsmall"></slot>
+      </live-player>
+    </view>
+    <view class="pusher-box" style="display:{{enableCamera ? 'block': 'none'}};top:{{smallViewTop || '1vw'}};left:{{smallViewLeft || '1vw'}}; width:{{smallViewWidth || '30vw'}};height:{{smallViewHeight || '40vw'}};">
+      <live-pusher wx:if="{{pushURL}}" id="rtcpusher" autopush mode="RTC" url="{{pushURL}}" aspect="{{aspect}}" min-bitrate="{{minBitrate}}" max-bitrate="{{maxBitrate}}" audio-quality="high" beauty="{{beauty}}" whiteness="{{whiteness}}" muted="{{muted}}" waiting-image="{{waitingImg}}" background-mute="{{true}}" debug="{{debug}}" bindstatechange="onPush" binderror="onError" enable-camera="{{enableCamera}}"></live-pusher>
+    </view>
+  </view>
+</template>

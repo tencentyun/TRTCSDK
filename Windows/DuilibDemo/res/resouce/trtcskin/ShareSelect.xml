@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window size="480,400" caption="0,0,0,32">
+  <Font id="0" name="微软雅黑" size="15" bold="false" default="false" />
+  <Style name="btn_style" shared="true" value="normalimage=&quot;res='login/btn_normal.png' corner='2,2,2,2'&quot; hotimage=&quot;res='login/btn_hover.png' corner='2,2,2,2'&quot; pushedimage=&quot;res='login/btn_hover.png' corner='2,2,2,2'&quot; width=&quot;102&quot; height=&quot;27&quot; " />
+  <VerticalLayout bkcolor="#FFDFDFDF" borderround="3,3" bordersize="1" bordercolor="0xAABBBBBB">
+    <!-- 标题栏 -->
+    <HorizontalLayout height="32" bkcolor="#FFFFFFFF" bordersize="1" bordercolor="0xAABBBBBB">
+      <Button name="closebtn" width="16" height="16" bkclolor="#FFFF0000" padding="6,6,6,0" normalimage="bottom/close.png" hotimage="bottom/close_hover.png" pushedimage="bottom/close.png"/>
+      <Label text="选择分享内容" padding="5,0,0,4" font="0"/>
+    </HorizontalLayout>
+
+    <!-- 窗口主体内容 -->
+    <TileLayout name="layoutBody" columns="3" childpadding="4" vscrollbar="true" inset="5,0,0,0">
+    </TileLayout>
+
+    <HorizontalLayout height="50" childalign="center" inset="0,10,0,0">
+		<VerticalLayout width="185"/>
+      <Button name="btnConfirm" text="开始共享" textcolor="#FF000000" textpadding="6,0,6,0" style="btn_style" width="110" height="28"/>
+    </HorizontalLayout>
+  </VerticalLayout>
+</Window>

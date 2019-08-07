@@ -1,0 +1,19 @@
+<template name='gridtemplate'>
+    <slot name="grid"></slot>
+    <view class='grid videoview'>
+        <view class="pusher-box">
+            <live-pusher id="rtcpusher" autopush mode="RTC" url="{{pushURL}}" aspect="{{aspect}}" min-bitrate="{{minBitrate}}" max-bitrate="{{maxBitrate}}" audio-quality="high" beauty="{{beauty}}" muted="{{muted}}" waiting-image="{{waitingImg}}" background-mute="{{true}}" debug="{{debug}}" bindstatechange="onPush" binderror="onError">
+            </live-pusher>
+        </view>
+        <view class="player-box" wx:for="{{members}}" wx:key="userID">
+            <view class='poster'>
+                <cover-image class='set' src="https://miniprogram-1252463788.file.myqcloud.com/roomset_{{index + 2}}.png"></cover-image>
+            </view>
+            <live-player id="{{item.userID}}" autoplay mode="RTC" wx:if="{{item.accelerateURL}}" object-fit="fillCrop" min-cache="0.1" max-cache="0.3" src="{{item.accelerateURL}}" debug="{{debug}}" background-mute="{{true}}" bindstatechange="onPlay">
+                <cover-view class='loading' wx:if="{{item.loading && loadingImg}}">
+                    <cover-image src="{{loadingImg}}"></cover-image>
+                </cover-view>
+            </live-player>
+        </view>
+    </view>
+</template>

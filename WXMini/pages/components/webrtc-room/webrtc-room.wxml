@@ -1,0 +1,15 @@
+<import src='./gridtemplate/gridtemplate.wxml' />
+<import src='./floattemplate/floattemplate.wxml' />
+<import src='./bigsmalltemplate/bigsmalltemplate.wxml' />
+
+<view class='conponent-box'>
+  <block wx:if="{{template == 'float'}}">
+    <template is='floattemplate' data="{{pushURL, aspect, minBitrate, maxBitrate, beauty, whiteness, enableCamera, muted, debug, members, autoplay, playerMutedStatus, playerVideoStatus,roomName, playerBackgroundImg, waitingImg, loadingImg}}" />
+  </block>
+  <block wx:elif="{{template == 'grid'}}">
+    <template is='gridtemplate' data="{{pushURL, aspect, minBitrate, maxBitrate, beauty, whiteness, enableCamera, muted, debug, members, autoplay, playerMutedStatus, playerVideoStatus,roomName, playerBackgroundImg, waitingImg, loadingImg}}" />
+  </block>
+  <block wx:elif="{{template == 'bigsmall'}}">
+    <template is='bigsmalltemplate' data="{{pushURL, aspect, minBitrate, maxBitrate, beauty, whiteness, enableCamera, muted, debug, members, autoplay, playerMutedStatus, playerVideoStatus,roomName, smallViewLeft, smallViewTop, smallViewWidth, smallViewHeight, startPlay, fixPlayId, playerBackgroundImg, waitingImg, loadingImg}}" />
+  </block>
+</view>

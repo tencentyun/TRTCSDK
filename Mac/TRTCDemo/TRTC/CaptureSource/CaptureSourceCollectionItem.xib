@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner"/>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="Hz6-mo-xeY">
+            <rect key="frame" x="0.0" y="0.0" width="225" height="258"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="dbs-kU-yGV">
+                    <rect key="frame" x="0.0" y="33" width="225" height="225"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="dbs-kU-yGV" secondAttribute="height" multiplier="1:1" id="CaL-1q-ywe"/>
+                    </constraints>
+                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="UeJ-wZ-RRD"/>
+                    <connections>
+                        <binding destination="5RF-Mi-hFI" name="value" keyPath="image" id="5PS-MW-tNb"/>
+                    </connections>
+                </imageView>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="pOd-iL-0PB">
+                    <rect key="frame" x="97" y="8" width="31" height="17"/>
+                    <textFieldCell key="cell" title="Title" id="uzq-ov-iBo">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                    <connections>
+                        <binding destination="5RF-Mi-hFI" name="value" keyPath="title" id="EOQ-4c-SBl"/>
+                    </connections>
+                </textField>
+                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="q0i-aA-R2y">
+                    <rect key="frame" x="89" y="33" width="48" height="48"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="48" id="3jR-jd-XFv"/>
+                        <constraint firstAttribute="height" constant="48" id="crq-o6-pbE"/>
+                    </constraints>
+                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="XDT-Wk-qoE"/>
+                    <connections>
+                        <binding destination="5RF-Mi-hFI" name="value" keyPath="icon" id="t07-nG-j6y"/>
+                    </connections>
+                </imageView>
+            </subviews>
+            <constraints>
+                <constraint firstItem="dbs-kU-yGV" firstAttribute="centerX" secondItem="Hz6-mo-xeY" secondAttribute="centerX" id="LCG-sz-N1T"/>
+                <constraint firstAttribute="bottom" secondItem="pOd-iL-0PB" secondAttribute="bottom" constant="8" id="MWj-BM-1WK"/>
+                <constraint firstItem="dbs-kU-yGV" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="RNc-eK-grB"/>
+                <constraint firstItem="dbs-kU-yGV" firstAttribute="width" relation="lessThanOrEqual" secondItem="Hz6-mo-xeY" secondAttribute="width" id="YF7-dw-oWw"/>
+                <constraint firstItem="q0i-aA-R2y" firstAttribute="centerX" secondItem="dbs-kU-yGV" secondAttribute="centerX" id="bMA-fs-9x0"/>
+                <constraint firstItem="pOd-iL-0PB" firstAttribute="centerX" secondItem="Hz6-mo-xeY" secondAttribute="centerX" id="qOt-mL-wb2"/>
+                <constraint firstAttribute="bottom" secondItem="dbs-kU-yGV" secondAttribute="bottom" constant="33" id="u9X-3C-qQU"/>
+                <constraint firstItem="pOd-iL-0PB" firstAttribute="top" secondItem="q0i-aA-R2y" secondAttribute="bottom" constant="8" id="vXD-91-jmX"/>
+            </constraints>
+            <point key="canvasLocation" x="-28" y="-58"/>
+        </customView>
+        <collectionViewItem id="5RF-Mi-hFI" customClass="CaptureSourceCollectionItem">
+            <connections>
+                <outlet property="imageView" destination="dbs-kU-yGV" id="FvS-Rs-rM8"/>
+                <outlet property="textField" destination="pOd-iL-0PB" id="ISg-f5-8Pc"/>
+                <outlet property="view" destination="Hz6-mo-xeY" id="dwy-US-TWp"/>
+            </connections>
+        </collectionViewItem>
+        <userDefaultsController representsSharedInstance="YES" id="A8F-z4-JOZ"/>
+    </objects>
+</document>

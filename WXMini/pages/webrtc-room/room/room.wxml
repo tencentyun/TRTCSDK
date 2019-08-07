@@ -1,0 +1,45 @@
+<view class="container-box">
+  <view class="camera-box">
+    <webrtc-room id="webrtcroom" template="{{template}}" autoplay="{{autoplay}}" enableCamera="{{enableCamera}}" roomID="{{roomID}}" roomName="{{roomName}}" userID="{{userID}}" roomCreator="{{roomCreator}}" userSig="{{userSig}}" sdkAppID="{{sdkAppID}}" accountType="{{accountType}}" privateMapKey="{{privateMapKey}}" beauty="{{beauty}}" muted="{{muted}}" debug="{{debug}}" bindRoomEvent="onRoomEvent" bindIMEvent="onIMEvent" enableIM="{{false}}" smallViewLeft="{{smallViewLeft}}" smallViewTop="{{smallViewTop}}" smallViewWidth="{{smallViewWidth}}" smallViewHeight="{{smallViewHeight}}">
+      <view  wx:if="{{template == 'grid'}}" slot="grid" style='height:100%;width:100%;position:absolute;'>
+        <view class="operate">
+          <view class='img-box'>
+            <image class='img-view' src='/pages/Resources/camera{{frontCamera?"":"-gray"}}.png' bindtap="changeCamera"></image>
+          </view>
+          <view class='img-box'>
+            <image class='img-view' src='/pages/Resources/{{beauty > 0? "beauty" : "beauty-dis"}}.png' bindtap="setBeauty"></image>
+          </view>
+          <view class='img-box'>
+            <image class='img-view' src='/pages/Resources/{{muted ? "mic-dis" : "mic"}}.png' bindtap="changeMute"></image>
+          </view>
+          <view class='img-box'>
+            <image class='img-view' src='/pages/Resources/{{debug? "log" : "log2"}}.png' bindtap="showLog"></image>
+          </view>
+          <view class='img-box'> 
+            <image class='img-view' src='/pages/Resources/endcall.png' bindtap="goBack"></image>
+          </view>
+        </view>
+      </view>
+       <cover-view  wx:else slot="{{template}}" style='height:100%;width:100%;position: absolute;'>
+        <cover-view class="operate">
+          <cover-view class='img-box'>
+            <cover-image class='img-view' src='/pages/Resources/camera{{frontCamera?"":"-gray"}}.png' bindtap="changeCamera"></cover-image>
+          </cover-view>
+          <cover-view class='img-box'>
+            <cover-image class='img-view' src='/pages/Resources/{{beauty > 0? "beauty" : "beauty-dis"}}.png' bindtap="setBeauty"></cover-image>
+          </cover-view>
+          <cover-view class='img-box'>
+            <cover-image class='img-view' src='/pages/Resources/{{muted ? "mic-dis" : "mic"}}.png' bindtap="changeMute"></cover-image>
+          </cover-view>
+          <cover-view class='img-box'>
+            <cover-image class='img-view' src='/pages/Resources/{{debug? "log" : "log2"}}.png' bindtap="showLog"></cover-image>
+          </cover-view>
+          <cover-view class='img-box'> 
+            <cover-image class='img-view' src='/pages/Resources/endcall.png' bindtap="goBack"></cover-image>
+          </cover-view>
+        </cover-view>
+      </cover-view>
+
+    </webrtc-room>
+  </view>
+</view>

@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "视频通话",
+  "usingComponents": {
+    "webrtc-room": "/pages/components/webrtc-room/webrtc-room"
+  },
+  "navigationStyle": "custom"
+}

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#333333"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/main_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        android:text="腾讯视频通话"
+        android:textColor="#ffffff"
+        android:textSize="22dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="5dp"
+        android:text="请输入房间号："
+        android:textColor="#999999"
+        android:textSize="16dp" />
+
+    <EditText
+        android:id="@+id/et_room_name"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:background="#4a4a4a"
+        android:hint="@string/str_room_id_tips"
+        android:inputType="number"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:singleLine="true"
+        android:textColor="#939393"
+        android:textSize="16dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="5dp"
+        android:text="请输入用户名："
+        android:textColor="#999999"
+        android:textSize="16dp" />
+
+    <EditText
+        android:id="@+id/et_user_name"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:background="#4a4a4a"
+        android:hint="@string/str_user_id_tips"
+        android:paddingLeft="10dp"
+        android:paddingRight="30dp"
+        android:singleLine="true"
+        android:textColor="#939393"
+        android:textSize="16dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="2dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:text="视频输入"
+            android:textColor="@color/line_btn"
+            android:textSize="18sp" />
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rb_camera"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="前摄像头"
+                android:textColor="#999999"
+                android:textSize="18sp" />
+
+            <RadioButton
+                android:id="@+id/rb_video_file"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="视频文件"
+                android:textColor="#999999"
+                android:textSize="18sp" />
+        </RadioGroup>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/role"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="2dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:text="角色选择"
+            android:textColor="@color/line_btn"
+            android:textSize="18sp" />
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rb_anchor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="上麦主播"
+                android:textColor="#999999"
+                android:textSize="18sp" />
+
+            <RadioButton
+                android:id="@+id/rb_audience"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="普通观众"
+                android:textColor="#999999"
+                android:textSize="18sp" />
+        </RadioGroup>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <TextView
+        android:id="@+id/tv_enter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:background="@drawable/radio_border"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="创建并自动加入该房间"
+        android:textColor="@color/colorWhite"
+        android:textSize="18dp" />
+
+</LinearLayout>

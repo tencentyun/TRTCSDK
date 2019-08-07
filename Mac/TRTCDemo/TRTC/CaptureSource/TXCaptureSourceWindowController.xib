@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14313.18"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="TXCaptureSourceWindowController">
+            <connections>
+                <outlet property="collectionView" destination="qag-xx-n95" id="9zL-Xk-cJv"/>
+                <outlet property="window" destination="Tjf-3m-zhm" id="S8V-Yy-jH7"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" frameAutosaveName="" animationBehavior="default" id="Tjf-3m-zhm" customClass="NSPanel">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" utility="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="283" y="305" width="652" height="429"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
+            <view key="contentView" id="WKx-td-Zy0">
+                <rect key="frame" x="0.0" y="0.0" width="652" height="429"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <scrollView wantsLayer="YES" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SXN-27-AMK">
+                        <rect key="frame" x="0.0" y="39" width="652" height="390"/>
+                        <clipView key="contentView" id="Q9a-1m-acI">
+                            <rect key="frame" x="1" y="1" width="650" height="388"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <subviews>
+                                <collectionView selectable="YES" id="qag-xx-n95">
+                                    <rect key="frame" x="0.0" y="0.0" width="650" height="388"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
+                                    <collectionViewGridLayout key="collectionViewLayout" id="Xra-di-YpM"/>
+                                    <color key="primaryBackgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </collectionView>
+                            </subviews>
+                        </clipView>
+                        <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="2Us-VX-Sba">
+                            <rect key="frame" x="-100" y="-100" width="233" height="15"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </scroller>
+                        <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="WR6-Ud-rbE">
+                            <rect key="frame" x="234" y="1" width="15" height="143"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </scroller>
+                    </scrollView>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="HgH-VX-XqH">
+                        <rect key="frame" x="15" y="2" width="67" height="32"/>
+                        <buttonCell key="cell" type="push" title="取消" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="WuY-Km-oPK">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" size="13" name=".PingFangSC-Regular"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="onClose:" target="-2" id="Uu2-za-q6r"/>
+                        </connections>
+                    </button>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="dn9-Hy-9kE">
+                        <rect key="frame" x="82" y="2" width="120" height="32"/>
+                        <buttonCell key="cell" type="push" title="结束屏幕分享" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="6R6-w6-VRO">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" size="13" name=".PingFangSC-Regular"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="endScreenShare:" target="-2" id="MuW-Fu-yvt"/>
+                        </connections>
+                    </button>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="SXN-27-AMK" secondAttribute="bottom" constant="39" id="9G6-0p-ReV"/>
+                    <constraint firstItem="SXN-27-AMK" firstAttribute="leading" secondItem="WKx-td-Zy0" secondAttribute="leading" id="GGb-1h-oQO"/>
+                    <constraint firstAttribute="bottom" secondItem="HgH-VX-XqH" secondAttribute="bottom" constant="9" id="Hgc-3e-2BP"/>
+                    <constraint firstAttribute="trailing" secondItem="SXN-27-AMK" secondAttribute="trailing" id="UR5-kC-Amz"/>
+                    <constraint firstItem="SXN-27-AMK" firstAttribute="top" secondItem="WKx-td-Zy0" secondAttribute="top" id="eBa-dU-ip0"/>
+                    <constraint firstItem="HgH-VX-XqH" firstAttribute="leading" secondItem="WKx-td-Zy0" secondAttribute="leading" constant="21" id="nRb-rs-UES"/>
+                    <constraint firstItem="dn9-Hy-9kE" firstAttribute="leading" secondItem="HgH-VX-XqH" secondAttribute="trailing" constant="12" id="x8e-ho-Frb"/>
+                    <constraint firstAttribute="bottom" secondItem="dn9-Hy-9kE" secondAttribute="bottom" constant="9" id="zZB-Ys-ocH"/>
+                </constraints>
+            </view>
+            <point key="canvasLocation" x="-333" y="-423.5"/>
+        </window>
+        <collectionViewItem id="sFe-OA-Jje"/>
+    </objects>
+</document>

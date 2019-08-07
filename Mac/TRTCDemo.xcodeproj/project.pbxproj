@@ -1,0 +1,496 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		453167F221E45560007A91CB /* TRTCNewWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 453167EF21E4555F007A91CB /* TRTCNewWindowController.m */; };
+		453167F321E45560007A91CB /* TRTCNewWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 453167F021E4555F007A91CB /* TRTCNewWindowController.xib */; };
+		457A707B2200814E00DD193B /* CaptureSourceCollectionItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = 457A70702200814D00DD193B /* CaptureSourceCollectionItem.xib */; };
+		457A707C2200814E00DD193B /* TXCaptureSourceWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 457A70712200814D00DD193B /* TXCaptureSourceWindowController.m */; };
+		457A707D2200814E00DD193B /* TXCaptureSourceCollectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 457A70722200814D00DD193B /* TXCaptureSourceCollectionHeaderView.m */; };
+		457A707E2200814E00DD193B /* TXCaptureSourceWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 457A70732200814D00DD193B /* TXCaptureSourceWindowController.xib */; };
+		457A707F2200814E00DD193B /* CaptureSourceCollectionItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 457A70742200814D00DD193B /* CaptureSourceCollectionItem.m */; };
+		457A70802200814E00DD193B /* TXCaptureSourceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 457A70752200814D00DD193B /* TXCaptureSourceViewController.xib */; };
+		457A70812200814E00DD193B /* TXCaptureSourceCollectionHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 457A70782200814D00DD193B /* TXCaptureSourceCollectionHeaderView.xib */; };
+		45AD957121D6532C007B2EAF /* TRTCSettingWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45AD956821D6532B007B2EAF /* TRTCSettingWindowController.xib */; };
+		45AD957221D6532C007B2EAF /* HoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = 45AD956B21D6532B007B2EAF /* HoverView.m */; };
+		45AD957321D6532C007B2EAF /* TRTCSettingWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45AD956E21D6532C007B2EAF /* TRTCSettingWindowController.m */; };
+		45AD957721D653FB007B2EAF /* config.json in Resources */ = {isa = PBXBuildFile; fileRef = 45AD957621D653FA007B2EAF /* config.json */; };
+		45AD957B21D656C2007B2EAF /* TRTCMainWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45AD957921D656C2007B2EAF /* TRTCMainWindowController.xib */; };
+		45AD95BF21D72C0F007B2EAF /* TRTCMainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45AD95BE21D72C0F007B2EAF /* TRTCMainWindowController.m */; };
+		45F96FC9223296E600E861EC /* TRTCApp.m in Sources */ = {isa = PBXBuildFile; fileRef = 45F96FC7223296E600E861EC /* TRTCApp.m */; };
+		D689A93121CC97F300C7C618 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D689A93021CC97F300C7C618 /* AppDelegate.m */; };
+		D689A93621CC97F400C7C618 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D689A93521CC97F400C7C618 /* Assets.xcassets */; };
+		D689A93921CC97F400C7C618 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D689A93721CC97F400C7C618 /* Main.storyboard */; };
+		D689A93C21CC97F400C7C618 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D689A93B21CC97F400C7C618 /* main.m */; };
+		D689A96821CCADD700C7C618 /* TXLiteAVSDK_TRTC_Mac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D689A96721CCADD700C7C618 /* TXLiteAVSDK_TRTC_Mac.framework */; };
+		D689A98121CCC41200C7C618 /* TXRenderView.m in Sources */ = {isa = PBXBuildFile; fileRef = D689A97921CCC41100C7C618 /* TXRenderView.m */; };
+		D689A99A21CCC6E700C7C618 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D689A99921CCC6E700C7C618 /* libc++.tbd */; };
+		D689A99C21CCC70100C7C618 /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D689A99B21CCC70100C7C618 /* AudioUnit.framework */; };
+		D697C3C122F3164100E80A2A /* GenerateTestUserSig.m in Sources */ = {isa = PBXBuildFile; fileRef = D697C3C022F3164100E80A2A /* GenerateTestUserSig.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		453167EF21E4555F007A91CB /* TRTCNewWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCNewWindowController.m; sourceTree = "<group>"; };
+		453167F021E4555F007A91CB /* TRTCNewWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TRTCNewWindowController.xib; sourceTree = "<group>"; };
+		453167F121E4555F007A91CB /* TRTCNewWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCNewWindowController.h; sourceTree = "<group>"; };
+		457A700022006BEC00DD193B /* SDKHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SDKHeader.h; sourceTree = "<group>"; };
+		457A70702200814D00DD193B /* CaptureSourceCollectionItem.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CaptureSourceCollectionItem.xib; sourceTree = "<group>"; };
+		457A70712200814D00DD193B /* TXCaptureSourceWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TXCaptureSourceWindowController.m; sourceTree = "<group>"; };
+		457A70722200814D00DD193B /* TXCaptureSourceCollectionHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TXCaptureSourceCollectionHeaderView.m; sourceTree = "<group>"; };
+		457A70732200814D00DD193B /* TXCaptureSourceWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TXCaptureSourceWindowController.xib; sourceTree = "<group>"; };
+		457A70742200814D00DD193B /* CaptureSourceCollectionItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CaptureSourceCollectionItem.m; sourceTree = "<group>"; };
+		457A70752200814D00DD193B /* TXCaptureSourceViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TXCaptureSourceViewController.xib; sourceTree = "<group>"; };
+		457A70762200814D00DD193B /* TXCaptureSourceWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXCaptureSourceWindowController.h; sourceTree = "<group>"; };
+		457A70772200814D00DD193B /* TXCaptureSourceCollectionHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXCaptureSourceCollectionHeaderView.h; sourceTree = "<group>"; };
+		457A70782200814D00DD193B /* TXCaptureSourceCollectionHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TXCaptureSourceCollectionHeaderView.xib; sourceTree = "<group>"; };
+		457A70792200814D00DD193B /* CaptureSourceCollectionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CaptureSourceCollectionItem.h; sourceTree = "<group>"; };
+		457A707A2200814D00DD193B /* TXCaptureSourceCollectionHeaderItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXCaptureSourceCollectionHeaderItem.h; sourceTree = "<group>"; };
+		45AD956821D6532B007B2EAF /* TRTCSettingWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TRTCSettingWindowController.xib; sourceTree = "<group>"; };
+		45AD956A21D6532B007B2EAF /* HoverView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HoverView.h; sourceTree = "<group>"; };
+		45AD956B21D6532B007B2EAF /* HoverView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HoverView.m; sourceTree = "<group>"; };
+		45AD956C21D6532B007B2EAF /* TRTCSettingWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCSettingWindowController.h; sourceTree = "<group>"; };
+		45AD956E21D6532C007B2EAF /* TRTCSettingWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCSettingWindowController.m; sourceTree = "<group>"; };
+		45AD957621D653FA007B2EAF /* config.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = config.json; sourceTree = "<group>"; };
+		45AD957821D656C2007B2EAF /* TRTCMainWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCMainWindowController.h; sourceTree = "<group>"; };
+		45AD957921D656C2007B2EAF /* TRTCMainWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TRTCMainWindowController.xib; sourceTree = "<group>"; };
+		45AD95BE21D72C0F007B2EAF /* TRTCMainWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCMainWindowController.m; sourceTree = "<group>"; };
+		45F96FC7223296E600E861EC /* TRTCApp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCApp.m; sourceTree = "<group>"; };
+		45F96FC8223296E600E861EC /* TRTCApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCApp.h; sourceTree = "<group>"; };
+		D689A92C21CC97F300C7C618 /* TRTCDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TRTCDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D689A92F21CC97F300C7C618 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		D689A93021CC97F300C7C618 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		D689A93521CC97F400C7C618 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		D689A93821CC97F400C7C618 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		D689A93A21CC97F400C7C618 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D689A93B21CC97F400C7C618 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		D689A93D21CC97F400C7C618 /* TRTCDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TRTCDemo.entitlements; sourceTree = "<group>"; };
+		D689A96721CCADD700C7C618 /* TXLiteAVSDK_TRTC_Mac.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TXLiteAVSDK_TRTC_Mac.framework; path = SDK/TXLiteAVSDK_TRTC_Mac.framework; sourceTree = "<group>"; };
+		D689A97821CCC41100C7C618 /* TXRenderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXRenderView.h; sourceTree = "<group>"; };
+		D689A97921CCC41100C7C618 /* TXRenderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TXRenderView.m; sourceTree = "<group>"; };
+		D689A99921CCC6E700C7C618 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		D689A99B21CCC70100C7C618 /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = System/Library/Frameworks/AudioUnit.framework; sourceTree = SDKROOT; };
+		D697C3BF22F3164100E80A2A /* GenerateTestUserSig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GenerateTestUserSig.h; sourceTree = "<group>"; };
+		D697C3C022F3164100E80A2A /* GenerateTestUserSig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenerateTestUserSig.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D689A92921CC97F300C7C618 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D689A99C21CCC70100C7C618 /* AudioUnit.framework in Frameworks */,
+				D689A99A21CCC6E700C7C618 /* libc++.tbd in Frameworks */,
+				D689A96821CCADD700C7C618 /* TXLiteAVSDK_TRTC_Mac.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		457A706F2200814D00DD193B /* CaptureSource */ = {
+			isa = PBXGroup;
+			children = (
+				457A70792200814D00DD193B /* CaptureSourceCollectionItem.h */,
+				457A70742200814D00DD193B /* CaptureSourceCollectionItem.m */,
+				457A70702200814D00DD193B /* CaptureSourceCollectionItem.xib */,
+				457A707A2200814D00DD193B /* TXCaptureSourceCollectionHeaderItem.h */,
+				457A70772200814D00DD193B /* TXCaptureSourceCollectionHeaderView.h */,
+				457A70722200814D00DD193B /* TXCaptureSourceCollectionHeaderView.m */,
+				457A70782200814D00DD193B /* TXCaptureSourceCollectionHeaderView.xib */,
+				457A70752200814D00DD193B /* TXCaptureSourceViewController.xib */,
+				457A70762200814D00DD193B /* TXCaptureSourceWindowController.h */,
+				457A70712200814D00DD193B /* TXCaptureSourceWindowController.m */,
+				457A70732200814D00DD193B /* TXCaptureSourceWindowController.xib */,
+			);
+			path = CaptureSource;
+			sourceTree = "<group>";
+		};
+		45AD956921D6532B007B2EAF /* HoverView */ = {
+			isa = PBXGroup;
+			children = (
+				45AD956A21D6532B007B2EAF /* HoverView.h */,
+				45AD956B21D6532B007B2EAF /* HoverView.m */,
+			);
+			path = HoverView;
+			sourceTree = "<group>";
+		};
+		D689A92321CC97F300C7C618 = {
+			isa = PBXGroup;
+			children = (
+				D689A92E21CC97F300C7C618 /* TRTCDemo */,
+				D689A92D21CC97F300C7C618 /* Products */,
+				D689A96621CCADD600C7C618 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		D689A92D21CC97F300C7C618 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D689A92C21CC97F300C7C618 /* TRTCDemo.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D689A92E21CC97F300C7C618 /* TRTCDemo */ = {
+			isa = PBXGroup;
+			children = (
+				457A700022006BEC00DD193B /* SDKHeader.h */,
+				45AD957621D653FA007B2EAF /* config.json */,
+				D689A92F21CC97F300C7C618 /* AppDelegate.h */,
+				D689A93021CC97F300C7C618 /* AppDelegate.m */,
+				D689A95221CC9AE400C7C618 /* TRTC */,
+				D689A93521CC97F400C7C618 /* Assets.xcassets */,
+				D689A93721CC97F400C7C618 /* Main.storyboard */,
+				D689A93A21CC97F400C7C618 /* Info.plist */,
+				D689A93B21CC97F400C7C618 /* main.m */,
+				D689A93D21CC97F400C7C618 /* TRTCDemo.entitlements */,
+			);
+			path = TRTCDemo;
+			sourceTree = "<group>";
+		};
+		D689A95221CC9AE400C7C618 /* TRTC */ = {
+			isa = PBXGroup;
+			children = (
+				D697C3BF22F3164100E80A2A /* GenerateTestUserSig.h */,
+				D697C3C022F3164100E80A2A /* GenerateTestUserSig.m */,
+				45F96FC8223296E600E861EC /* TRTCApp.h */,
+				45F96FC7223296E600E861EC /* TRTCApp.m */,
+				457A706F2200814D00DD193B /* CaptureSource */,
+				D689A97721CCC41100C7C618 /* RenderView */,
+				45AD956921D6532B007B2EAF /* HoverView */,
+				453167F121E4555F007A91CB /* TRTCNewWindowController.h */,
+				453167EF21E4555F007A91CB /* TRTCNewWindowController.m */,
+				453167F021E4555F007A91CB /* TRTCNewWindowController.xib */,
+				45AD957821D656C2007B2EAF /* TRTCMainWindowController.h */,
+				45AD95BE21D72C0F007B2EAF /* TRTCMainWindowController.m */,
+				45AD957921D656C2007B2EAF /* TRTCMainWindowController.xib */,
+				45AD956C21D6532B007B2EAF /* TRTCSettingWindowController.h */,
+				45AD956E21D6532C007B2EAF /* TRTCSettingWindowController.m */,
+				45AD956821D6532B007B2EAF /* TRTCSettingWindowController.xib */,
+			);
+			path = TRTC;
+			sourceTree = "<group>";
+		};
+		D689A96621CCADD600C7C618 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D689A99B21CCC70100C7C618 /* AudioUnit.framework */,
+				D689A99921CCC6E700C7C618 /* libc++.tbd */,
+				D689A96721CCADD700C7C618 /* TXLiteAVSDK_TRTC_Mac.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D689A97721CCC41100C7C618 /* RenderView */ = {
+			isa = PBXGroup;
+			children = (
+				D689A97821CCC41100C7C618 /* TXRenderView.h */,
+				D689A97921CCC41100C7C618 /* TXRenderView.m */,
+			);
+			path = RenderView;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		D689A92B21CC97F300C7C618 /* TRTCDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D689A94021CC97F400C7C618 /* Build configuration list for PBXNativeTarget "TRTCDemo" */;
+			buildPhases = (
+				D689A92821CC97F300C7C618 /* Sources */,
+				D689A92921CC97F300C7C618 /* Frameworks */,
+				D689A92A21CC97F300C7C618 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TRTCDemo;
+			productName = TRTCDemo;
+			productReference = D689A92C21CC97F300C7C618 /* TRTCDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D689A92421CC97F300C7C618 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1010;
+				ORGANIZATIONNAME = rushanting;
+				TargetAttributes = {
+					D689A92B21CC97F300C7C618 = {
+						CreatedOnToolsVersion = 10.1;
+						SystemCapabilities = {
+							com.apple.Sandbox = {
+								enabled = 1;
+							};
+						};
+					};
+				};
+			};
+			buildConfigurationList = D689A92721CC97F300C7C618 /* Build configuration list for PBXProject "TRTCDemo" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = D689A92321CC97F300C7C618;
+			productRefGroup = D689A92D21CC97F300C7C618 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D689A92B21CC97F300C7C618 /* TRTCDemo */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D689A92A21CC97F300C7C618 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D689A93621CC97F400C7C618 /* Assets.xcassets in Resources */,
+				457A707E2200814E00DD193B /* TXCaptureSourceWindowController.xib in Resources */,
+				45AD957B21D656C2007B2EAF /* TRTCMainWindowController.xib in Resources */,
+				45AD957721D653FB007B2EAF /* config.json in Resources */,
+				453167F321E45560007A91CB /* TRTCNewWindowController.xib in Resources */,
+				45AD957121D6532C007B2EAF /* TRTCSettingWindowController.xib in Resources */,
+				D689A93921CC97F400C7C618 /* Main.storyboard in Resources */,
+				457A70812200814E00DD193B /* TXCaptureSourceCollectionHeaderView.xib in Resources */,
+				457A707B2200814E00DD193B /* CaptureSourceCollectionItem.xib in Resources */,
+				457A70802200814E00DD193B /* TXCaptureSourceViewController.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D689A92821CC97F300C7C618 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D689A93C21CC97F400C7C618 /* main.m in Sources */,
+				45AD957221D6532C007B2EAF /* HoverView.m in Sources */,
+				45AD957321D6532C007B2EAF /* TRTCSettingWindowController.m in Sources */,
+				457A707C2200814E00DD193B /* TXCaptureSourceWindowController.m in Sources */,
+				457A707D2200814E00DD193B /* TXCaptureSourceCollectionHeaderView.m in Sources */,
+				D697C3C122F3164100E80A2A /* GenerateTestUserSig.m in Sources */,
+				45AD95BF21D72C0F007B2EAF /* TRTCMainWindowController.m in Sources */,
+				D689A98121CCC41200C7C618 /* TXRenderView.m in Sources */,
+				45F96FC9223296E600E861EC /* TRTCApp.m in Sources */,
+				D689A93121CC97F300C7C618 /* AppDelegate.m in Sources */,
+				457A707F2200814E00DD193B /* CaptureSourceCollectionItem.m in Sources */,
+				453167F221E45560007A91CB /* TRTCNewWindowController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		D689A93721CC97F400C7C618 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D689A93821CC97F400C7C618 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		D689A93E21CC97F400C7C618 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		D689A93F21CC97F400C7C618 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		D689A94121CC97F400C7C618 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = TRTCDemo/TRTCDemo.entitlements;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = "";
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/SDK";
+				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/SDK/TXLiteAVSDK_TRTC_Mac.framework/Headers\"";
+				INFOPLIST_FILE = TRTCDemo/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_BUNDLE_IDENTIFIER = tencent.TRTCDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				USER_HEADER_SEARCH_PATHS = "";
+				USE_HEADERMAP = YES;
+			};
+			name = Debug;
+		};
+		D689A94221CC97F400C7C618 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = TRTCDemo/TRTCDemo.entitlements;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = "";
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/SDK";
+				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/SDK/TXLiteAVSDK_TRTC_Mac.framework/Headers\"";
+				INFOPLIST_FILE = TRTCDemo/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_BUNDLE_IDENTIFIER = tencent.TRTCDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				USER_HEADER_SEARCH_PATHS = "";
+				USE_HEADERMAP = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D689A92721CC97F300C7C618 /* Build configuration list for PBXProject "TRTCDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D689A93E21CC97F400C7C618 /* Debug */,
+				D689A93F21CC97F400C7C618 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D689A94021CC97F400C7C618 /* Build configuration list for PBXNativeTarget "TRTCDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D689A94121CC97F400C7C618 /* Debug */,
+				D689A94221CC97F400C7C618 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D689A92421CC97F300C7C618 /* Project object */;
+}
