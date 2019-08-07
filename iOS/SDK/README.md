@@ -1,7 +1,7 @@
 # TRTC SDK （iOS）
 
 ## 下载地址
-- 精简版：[DOWNLOAD](http://liteavsdk-1252463788.cosgz.myqcloud.com/6.6/TXLiteAVSDK_TRTC_iOS_6.6.7459_SDK.zip)
+- 精简版：[DOWNLOAD](http://liteavsdk-1252463788.cosgz.myqcloud.com/6.6/TXLiteAVSDK_TRTC_iOS_6.6.7460_SDK.zip)
 - 版本号：6.6.7459
 
 ## 手动集成
