@@ -225,7 +225,9 @@ public class TRTCVideoLayoutManager extends RelativeLayout implements TRTCVideoL
             // 当前离开的是处于0号位的人，那么需要将我换到这个位置
             if (userId.equals(entity.userId) && entity.streamType == streamType) {
                 TRTCLayoutEntity myEntity = findEntity(mSelfUserId);
-                makeFullVideoView(myEntity.index);
+                if (myEntity != null) {
+                    makeFullVideoView(myEntity.index);
+                }
             }
         } else {
         }

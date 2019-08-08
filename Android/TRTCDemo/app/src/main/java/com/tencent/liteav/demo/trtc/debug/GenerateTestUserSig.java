@@ -157,6 +157,8 @@ public class GenerateTestUserSig {
             return "";
         } catch (InvalidKeyException e) {
             return "";
+        } catch (Exception e) {
+            return "";
         }
     }
 
