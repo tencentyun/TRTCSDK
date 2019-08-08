@@ -10,7 +10,6 @@
 		918EFF7D21D727C3007CF83A /* TRTCMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 918EFF7821D727C3007CF83A /* TRTCMainViewController.m */; };
 		918EFF7E21D727C3007CF83A /* TRTCVideoViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 918EFF7B21D727C3007CF83A /* TRTCVideoViewLayout.m */; };
 		918EFF8221D727DC007CF83A /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 918EFF8121D727DC007CF83A /* MBProgressHUD.m */; };
-		918EFFED21D79A2E007CF83A /* config.json in Resources */ = {isa = PBXBuildFile; fileRef = 918EFFEC21D79A2E007CF83A /* config.json */; };
 		D6033184224E475A0019E640 /* TRTCMoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D603317C224E475A0019E640 /* TRTCMoreViewController.m */; };
 		D6033185224E475A0019E640 /* TCMediaFileReader.m in Sources */ = {isa = PBXBuildFile; fileRef = D603317E224E475A0019E640 /* TCMediaFileReader.m */; };
 		D6033186224E475A0019E640 /* TestRenderVideoFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = D603317F224E475A0019E640 /* TestRenderVideoFrame.m */; };
@@ -54,8 +53,6 @@
 		D689A8D921CC8D4E00C7C618 /* AFURLRequestSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = D689A8C321CC8D4E00C7C618 /* AFURLRequestSerialization.m */; };
 		D689A8DA21CC8D4E00C7C618 /* AFNetworkReachabilityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D689A8C521CC8D4E00C7C618 /* AFNetworkReachabilityManager.m */; };
 		D689A8DB21CC8D4E00C7C618 /* AFSecurityPolicy.m in Sources */ = {isa = PBXBuildFile; fileRef = D689A8C621CC8D4E00C7C618 /* AFSecurityPolicy.m */; };
-		D689A92021CC921700C7C618 /* TXLiteAVSDK_TRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D689A91F21CC921700C7C618 /* TXLiteAVSDK_TRTC.framework */; };
-		D689A92221CC927A00C7C618 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D689A92121CC927A00C7C618 /* libc++.tbd */; };
 		D6940FEB21CC8A1000469982 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D6940FEA21CC8A1000469982 /* AppDelegate.m */; };
 		D6940FF121CC8A1000469982 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D6940FEF21CC8A1000469982 /* Main.storyboard */; };
 		D6940FF321CC8A1100469982 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D6940FF221CC8A1100469982 /* Assets.xcassets */; };
@@ -73,7 +70,6 @@
 		918EFF7B21D727C3007CF83A /* TRTCVideoViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCVideoViewLayout.m; sourceTree = "<group>"; };
 		918EFF8021D727DC007CF83A /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		918EFF8121D727DC007CF83A /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
-		918EFFEC21D79A2E007CF83A /* config.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = config.json; sourceTree = "<group>"; };
 		D603317B224E475A0019E640 /* TRTCMoreViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCMoreViewController.h; sourceTree = "<group>"; };
 		D603317C224E475A0019E640 /* TRTCMoreViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCMoreViewController.m; sourceTree = "<group>"; };
 		D603317E224E475A0019E640 /* TCMediaFileReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCMediaFileReader.m; sourceTree = "<group>"; };
@@ -167,8 +163,6 @@
 		D689A8C521CC8D4E00C7C618 /* AFNetworkReachabilityManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFNetworkReachabilityManager.m; sourceTree = "<group>"; };
 		D689A8C621CC8D4E00C7C618 /* AFSecurityPolicy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFSecurityPolicy.m; sourceTree = "<group>"; };
 		D689A8C721CC8D4E00C7C618 /* AFHTTPSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPSessionManager.h; sourceTree = "<group>"; };
-		D689A91F21CC921700C7C618 /* TXLiteAVSDK_TRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TXLiteAVSDK_TRTC.framework; path = SDK/TXLiteAVSDK_TRTC/TXLiteAVSDK_TRTC.framework; sourceTree = "<group>"; };
-		D689A92121CC927A00C7C618 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		D6940FE621CC8A1000469982 /* TRTCDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TRTCDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6940FE921CC8A1000469982 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		D6940FEA21CC8A1000469982 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -190,8 +184,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D689A92221CC927A00C7C618 /* libc++.tbd in Frameworks */,
-				D689A92021CC921700C7C618 /* TXLiteAVSDK_TRTC.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -397,8 +389,6 @@
 		D689A91E21CC921700C7C618 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				D689A92121CC927A00C7C618 /* libc++.tbd */,
-				D689A91F21CC921700C7C618 /* TXLiteAVSDK_TRTC.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -406,7 +396,6 @@
 		D6940FDD21CC8A1000469982 = {
 			isa = PBXGroup;
 			children = (
-				918EFFEC21D79A2E007CF83A /* config.json */,
 				D6940FE821CC8A1000469982 /* TRTCDemo */,
 				D6940FE721CC8A1000469982 /* Products */,
 				D689A91E21CC921700C7C618 /* Frameworks */,
@@ -509,7 +498,6 @@
 				D6940FF621CC8A1100469982 /* LaunchScreen.storyboard in Resources */,
 				D622D0EE227051D800E4D569 /* goodluck.mp4 in Resources */,
 				D622D0EF227051D800E4D569 /* FilterResource.bundle in Resources */,
-				918EFFED21D79A2E007CF83A /* config.json in Resources */,
 				D6940FF321CC8A1100469982 /* Assets.xcassets in Resources */,
 				D6940FF121CC8A1000469982 /* Main.storyboard in Resources */,
 				D60331A8224E47860019E640 /* QBImagePicker.storyboard in Resources */,
@@ -669,8 +657,8 @@
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = FN2V63AD2J;
 				ENABLE_BITCODE = NO;
-				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/SDK/TXLiteAVSDK_TRTC";
-				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/SDK/TXLiteAVSDK_TRTC/TXLiteAVSDK_TRTC.framework/Headers";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = TRTCDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -803,8 +791,8 @@
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = QE8PS7F45A;
 				ENABLE_BITCODE = NO;
-				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/SDK/TXLiteAVSDK_TRTC";
-				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/SDK/TXLiteAVSDK_TRTC/TXLiteAVSDK_TRTC.framework/Headers";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = TRTCDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -825,8 +813,8 @@
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
-				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/SDK/TXLiteAVSDK_TRTC";
-				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/SDK/TXLiteAVSDK_TRTC/TXLiteAVSDK_TRTC.framework/Headers";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = TRTCDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = (

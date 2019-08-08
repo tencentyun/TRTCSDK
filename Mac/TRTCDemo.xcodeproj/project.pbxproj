@@ -19,7 +19,6 @@
 		45AD957121D6532C007B2EAF /* TRTCSettingWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45AD956821D6532B007B2EAF /* TRTCSettingWindowController.xib */; };
 		45AD957221D6532C007B2EAF /* HoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = 45AD956B21D6532B007B2EAF /* HoverView.m */; };
 		45AD957321D6532C007B2EAF /* TRTCSettingWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45AD956E21D6532C007B2EAF /* TRTCSettingWindowController.m */; };
-		45AD957721D653FB007B2EAF /* config.json in Resources */ = {isa = PBXBuildFile; fileRef = 45AD957621D653FA007B2EAF /* config.json */; };
 		45AD957B21D656C2007B2EAF /* TRTCMainWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45AD957921D656C2007B2EAF /* TRTCMainWindowController.xib */; };
 		45AD95BF21D72C0F007B2EAF /* TRTCMainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45AD95BE21D72C0F007B2EAF /* TRTCMainWindowController.m */; };
 		45F96FC9223296E600E861EC /* TRTCApp.m in Sources */ = {isa = PBXBuildFile; fileRef = 45F96FC7223296E600E861EC /* TRTCApp.m */; };
@@ -27,10 +26,7 @@
 		D689A93621CC97F400C7C618 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D689A93521CC97F400C7C618 /* Assets.xcassets */; };
 		D689A93921CC97F400C7C618 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D689A93721CC97F400C7C618 /* Main.storyboard */; };
 		D689A93C21CC97F400C7C618 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D689A93B21CC97F400C7C618 /* main.m */; };
-		D689A96821CCADD700C7C618 /* TXLiteAVSDK_TRTC_Mac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D689A96721CCADD700C7C618 /* TXLiteAVSDK_TRTC_Mac.framework */; };
 		D689A98121CCC41200C7C618 /* TXRenderView.m in Sources */ = {isa = PBXBuildFile; fileRef = D689A97921CCC41100C7C618 /* TXRenderView.m */; };
-		D689A99A21CCC6E700C7C618 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D689A99921CCC6E700C7C618 /* libc++.tbd */; };
-		D689A99C21CCC70100C7C618 /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D689A99B21CCC70100C7C618 /* AudioUnit.framework */; };
 		D697C3C122F3164100E80A2A /* GenerateTestUserSig.m in Sources */ = {isa = PBXBuildFile; fileRef = D697C3C022F3164100E80A2A /* GenerateTestUserSig.m */; };
 /* End PBXBuildFile section */
 
@@ -55,7 +51,6 @@
 		45AD956B21D6532B007B2EAF /* HoverView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HoverView.m; sourceTree = "<group>"; };
 		45AD956C21D6532B007B2EAF /* TRTCSettingWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCSettingWindowController.h; sourceTree = "<group>"; };
 		45AD956E21D6532C007B2EAF /* TRTCSettingWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCSettingWindowController.m; sourceTree = "<group>"; };
-		45AD957621D653FA007B2EAF /* config.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = config.json; sourceTree = "<group>"; };
 		45AD957821D656C2007B2EAF /* TRTCMainWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCMainWindowController.h; sourceTree = "<group>"; };
 		45AD957921D656C2007B2EAF /* TRTCMainWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TRTCMainWindowController.xib; sourceTree = "<group>"; };
 		45AD95BE21D72C0F007B2EAF /* TRTCMainWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCMainWindowController.m; sourceTree = "<group>"; };
@@ -69,11 +64,8 @@
 		D689A93A21CC97F400C7C618 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D689A93B21CC97F400C7C618 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		D689A93D21CC97F400C7C618 /* TRTCDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TRTCDemo.entitlements; sourceTree = "<group>"; };
-		D689A96721CCADD700C7C618 /* TXLiteAVSDK_TRTC_Mac.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TXLiteAVSDK_TRTC_Mac.framework; path = SDK/TXLiteAVSDK_TRTC_Mac.framework; sourceTree = "<group>"; };
 		D689A97821CCC41100C7C618 /* TXRenderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXRenderView.h; sourceTree = "<group>"; };
 		D689A97921CCC41100C7C618 /* TXRenderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TXRenderView.m; sourceTree = "<group>"; };
-		D689A99921CCC6E700C7C618 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
-		D689A99B21CCC70100C7C618 /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = System/Library/Frameworks/AudioUnit.framework; sourceTree = SDKROOT; };
 		D697C3BF22F3164100E80A2A /* GenerateTestUserSig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GenerateTestUserSig.h; sourceTree = "<group>"; };
 		D697C3C022F3164100E80A2A /* GenerateTestUserSig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenerateTestUserSig.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -83,9 +75,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D689A99C21CCC70100C7C618 /* AudioUnit.framework in Frameworks */,
-				D689A99A21CCC6E700C7C618 /* libc++.tbd in Frameworks */,
-				D689A96821CCADD700C7C618 /* TXLiteAVSDK_TRTC_Mac.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -140,7 +129,6 @@
 			isa = PBXGroup;
 			children = (
 				457A700022006BEC00DD193B /* SDKHeader.h */,
-				45AD957621D653FA007B2EAF /* config.json */,
 				D689A92F21CC97F300C7C618 /* AppDelegate.h */,
 				D689A93021CC97F300C7C618 /* AppDelegate.m */,
 				D689A95221CC9AE400C7C618 /* TRTC */,
@@ -179,9 +167,6 @@
 		D689A96621CCADD600C7C618 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				D689A99B21CCC70100C7C618 /* AudioUnit.framework */,
-				D689A99921CCC6E700C7C618 /* libc++.tbd */,
-				D689A96721CCADD700C7C618 /* TXLiteAVSDK_TRTC_Mac.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -260,7 +245,6 @@
 				D689A93621CC97F400C7C618 /* Assets.xcassets in Resources */,
 				457A707E2200814E00DD193B /* TXCaptureSourceWindowController.xib in Resources */,
 				45AD957B21D656C2007B2EAF /* TRTCMainWindowController.xib in Resources */,
-				45AD957721D653FB007B2EAF /* config.json in Resources */,
 				453167F321E45560007A91CB /* TRTCNewWindowController.xib in Resources */,
 				45AD957121D6532C007B2EAF /* TRTCSettingWindowController.xib in Resources */,
 				D689A93921CC97F400C7C618 /* Main.storyboard in Resources */,
@@ -427,8 +411,8 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = "";
-				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/SDK";
-				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/SDK/TXLiteAVSDK_TRTC_Mac.framework/Headers\"";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = TRTCDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -453,8 +437,8 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = "";
-				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/SDK";
-				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/SDK/TXLiteAVSDK_TRTC_Mac.framework/Headers\"";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = TRTCDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
