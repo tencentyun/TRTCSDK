@@ -1,8 +1,7 @@
 # TRTC SDK （iOS）
 
 ## 下载地址
-- 精简版：[DOWNLOAD](http://liteavsdk-1252463788.cosgz.myqcloud.com/6.6/TXLiteAVSDK_TRTC_iOS_6.6.7460.zip)
-- 版本号：6.6.7460
+- 精简版：[DOWNLOAD](http://liteavsdk-1252463788.cosgz.myqcloud.com/TXLiteAVSDK_TRTC_iOS_latest.zip)
 
 ## 手动集成
 
@@ -19,7 +18,7 @@
 
 
 
-## CocoaPods 
+## CocoaPods
 #### 1. 安装 CocoaPods
 在终端窗口中输入如下命令（需要提前在 Mac 中安装 Ruby 环境）：
 ```
@@ -37,7 +36,7 @@ pod init
 -  方式一：使用腾讯云 LiteAV SDK 的podspec 文件路径。
 ```
   platform :ios, '8.0'
-  
+
   target 'App' do
   pod 'TXLiteAVSDK_TRTC', :podspec => 'http://pod-1252463788.cosgz.myqcloud.com/liteavsdkspec/TXLiteAVSDK_TRTC.podspec'
   end
@@ -47,12 +46,12 @@ pod init
 ```
    platform :ios, '8.0'
    source 'https://github.com/CocoaPods/Specs.git'
-   
+
    target 'App' do
    pod 'TXLiteAVSDK_TRTC'
    end
 ```
-  
+
 #### 4. 更新并安装 SDK
 在终端窗口中输入如下命令以更新本地库文件，并安装 TRTC SDK：
 ```

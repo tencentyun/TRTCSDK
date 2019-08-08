@@ -31,3 +31,11 @@ Android/.idea/libraries/Gradle__com_squareup_okio_okio_1_13_0_jar.xml
 Android/.idea/libraries/Gradle__LiteAVSDK_TRTC_release__aar.xml
 Android/.settings/*
 .project
+Android/TRTCDemo/local.properties
+Android/TRTCDemo/build
+iOS/Pods/*
+iOS/Podfile.lock
+iOS/TRTCDemo.xcworkspace
+Mac/Pods/*
+Mac/Podfile.lock
+Mac/TRTCDemo.xcworkspace

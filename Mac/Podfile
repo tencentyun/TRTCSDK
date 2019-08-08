@@ -1,6 +1,10 @@
-platform :osx, '10.10'
+source 'https://github.com/CocoaPods/Specs.git'
 
- target 'TRTCDemo' do
-# pod 'TXLiteAVSDK_TRTC_Mac', :podspec => 'http://pod-1252463788.cosgz.myqcloud.com/liteavsdkspec/TXLiteAVSDK_TRTC_Mac.podspec'
- pod 'TXLiteAVSDK_TRTC_Mac'
- end
+platform :ios, '8.0'
+
+target 'TRTCDemo' do
+
+#pod 'TXLiteAVSDK_TRTC_Mac'
+pod 'TXLiteAVSDK_TRTC_Mac', :podspec => 'http://pod-1252463788.cosgz.myqcloud.com/liteavsdkspec/TXLiteAVSDK_TRTC.podspec'
+
+end
