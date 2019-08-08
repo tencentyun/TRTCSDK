@@ -247,4 +247,19 @@
   <PropertyGroup>
     <PostBuildEvent>copy /Y "$(ProjectDir)..\SDK\CSharp\Win32\lib\*.dll" "$(ProjectDir)$(OutDir)"</PostBuildEvent>
   </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>@echo off
+
+echo check local sdk if exist
+
+set SourceFile=$(ProjectDir)..\SDK\CSharp\Win32\lib\liteav.dll
+
+if exist %25SourceFile%25 (
+ echo sdk is exist!
+) else (
+    echo sdk is not exist! you must down sdk first!
+ echo 1. download sdk url http://liteavsdk-1252463788.cosgz.myqcloud.com/TXLiteAVSDK_TRTC_Win_latest.zip
+ echo 2. copy sdk file to ..\SDK\  Directory
+)</PreBuildEvent>
+  </PropertyGroup>
 </Project>
