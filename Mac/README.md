@@ -41,7 +41,15 @@
 > [安全方案](https://cloud.tencent.com/document/product/647/17275#Server)：将 UserSig 的计算代码和加密密钥放在您的业务服务器上，然后由 App 按需向您的服务器获取实时算出的 UserSig。由于攻破服务器的成本要远高于破解客户端 App，所以服务器计算的方案能够更好地保护您的加密密钥。
 
 ## 5. 编译运行
-使用 XCode （9.0 以上的版本） 打开源码目录下的 TRTCDemo.xcodeproj 工程，编译并运行 Demo 工程即可。
+在终端窗口中 cd 到 Podfile 所在目录执行以下命令安装 TRTC SDK
+```
+pod install
+```
+或使用以下命令更新本地库版本：
+```
+pod update
+```
+使用 XCode （9.0 以上的版本） 打开源码目录下的 TRTCDemo.xcworkspace 工程，编译并运行 Demo 工程即可。
 
 ## 常见问题
 
