@@ -41,7 +41,7 @@
 > [安全方案](https://cloud.tencent.com/document/product/647/17275#Server)：将 UserSig 的计算代码和加密密钥放在您的业务服务器上，然后由 App 按需向您的服务器获取实时算出的 UserSig。由于攻破服务器的成本要远高于破解客户端 App，所以服务器计算的方案能够更好地保护您的加密密钥。
 
 ## 5. 编译运行
-在终端窗口中cd到Podfile所在目录执行以下命令cocoapods更新SDK
+在终端窗口中 cd 到 Podfile 所在目录执行以下命令安装 TRTC SDK
 ```
 pod install
 ```
