@@ -36,6 +36,7 @@ Android/TRTCDemo/build
 iOS/Pods/*
 iOS/Podfile.lock
 iOS/TRTCDemo.xcworkspace
+iOS/SDK/*.framework
 Mac/Pods/*
 Mac/Podfile.lock
 Mac/TRTCDemo.xcworkspace
