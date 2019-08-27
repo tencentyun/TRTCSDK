@@ -532,7 +532,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ ! -e \"${PROJECT_DIR}/SDK/TXLiteAVSDK_TRTC.framework\" ]; then\ncurl http://liteavsdk-1252463788.cosgz.myqcloud.com/TXLiteAVSDK_TRTC_iOS_latest.zip --output ${PROJECT_DIR}/SDK/TXLiteAVSDK_TRTC.zip\ncd ${PROJECT_DIR}/SDK\nunzip TXLiteAVSDK_TRTC.zip\nrm -rf __MACOSX\nmv TXLiteAVSDK_TRTC/*.framework .\nrmdir TXLiteAVSDK_TRTC\nrm TXLiteAVSDK_TRTC.zip\nfi\n";
+			shellScript = "if [ ! -e \"${PROJECT_DIR}/SDK/TXLiteAVSDK_TRTC.framework\" ]; then\nURL=\"$(cat ./SDK/README.md | grep -o 'http.*zip')\"\necho \"Downloading SDK from $URL\"\ncurl \"$URL\" --output ${PROJECT_DIR}/SDK/TXLiteAVSDK_TRTC_iOS.zip\ncd ${PROJECT_DIR}/SDK\nunzip TXLiteAVSDK_TRTC_iOS.zip\nrm -rf __MACOSX\nmv TXLiteAVSDK_TRTC/*.framework .\nrmdir TXLiteAVSDK_TRTC\nrm TXLiteAVSDK_TRTC_iOS.zip\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
