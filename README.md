@@ -1,7 +1,7 @@
 # 腾讯云实时音视频终端组件 TRTC SDK
 
 ## 国内镜像
-访问 Github 较慢的客户可以考虑使用 [Gitee](https://gitee.com/cloudtencent/TRTCSDK) 上的镜像仓库。
+访问 Github 较慢的客户可以考虑使用国内下载地址： [DOWNLOAD](https://cloud.tencent.com/document/product/454/7873) 。
 
 ## 最新版本 6.6 @ 2019.08.02
 
