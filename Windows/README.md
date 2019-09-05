@@ -1,7 +1,9 @@
+warning 由于仓库容量限制，需要进Windows\SDK目录进行手动下载SDK并引用才能跑通Demo。
+
 ## 目录结构
 - SDK : 包含Liteav SDK库文件和头文件
-- DuilibDemo : 基于MFC GUI实现的简单使用 C++ SDK Demo。
-- MFCDemo : 基于Duilib GUI实现的复杂使用 C++ SDK Demo。
+- DuilibDemo : 基于MFC GUI实现的复杂使用 C++ SDK Demo。
+- MFCDemo : 基于Duilib GUI实现的简单使用 C++ SDK Demo。
 - CSharpDemo :  基于.Net Framework Winform 实现的复杂使用 C# SDK Demo。
 
 本文主要介绍如何快速地将腾讯云 TRTC Demo 运行起来，您只需参考如下步骤依次执行即可。
