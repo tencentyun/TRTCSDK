@@ -2,6 +2,6 @@
 
 ## 下载地址
 
-[下载 AAR](http://liteavsdk-1252463788.cosgz.myqcloud.com/TXLiteAVSDK_TRTC_Android_latest.aar)
+[下载 AAR](http://liteavsdk-1252463788.cosgz.myqcloud.com/6.6/LiteAVSDK_TRTC_6.6.7551.aar)
 
-[下载 ZIP](http://liteavsdk-1252463788.cosgz.myqcloud.com/TXLiteAVSDK_TRTC_Android_latest.zip)
+[下载 ZIP](http://liteavsdk-1252463788.cosgz.myqcloud.com/6.6/LiteAVSDK_TRTC_6.6.7551.zip)
