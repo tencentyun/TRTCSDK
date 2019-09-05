@@ -22,6 +22,9 @@
 		45AD957B21D656C2007B2EAF /* TRTCMainWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45AD957921D656C2007B2EAF /* TRTCMainWindowController.xib */; };
 		45AD95BF21D72C0F007B2EAF /* TRTCMainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45AD95BE21D72C0F007B2EAF /* TRTCMainWindowController.m */; };
 		45F96FC9223296E600E861EC /* TRTCApp.m in Sources */ = {isa = PBXBuildFile; fileRef = 45F96FC7223296E600E861EC /* TRTCApp.m */; };
+		A0933EB82321116400565F64 /* TXLiteAVSDK_TRTC_Mac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0933EB72321116400565F64 /* TXLiteAVSDK_TRTC_Mac.framework */; };
+		A0933EBA232111B400565F64 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A0933EB9232111B400565F64 /* libc++.tbd */; };
+		A0933EBC232111BA00565F64 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0933EBB232111BA00565F64 /* OpenAL.framework */; };
 		D689A93121CC97F300C7C618 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D689A93021CC97F300C7C618 /* AppDelegate.m */; };
 		D689A93621CC97F400C7C618 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D689A93521CC97F400C7C618 /* Assets.xcassets */; };
 		D689A93921CC97F400C7C618 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D689A93721CC97F400C7C618 /* Main.storyboard */; };
@@ -56,6 +59,9 @@
 		45AD95BE21D72C0F007B2EAF /* TRTCMainWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCMainWindowController.m; sourceTree = "<group>"; };
 		45F96FC7223296E600E861EC /* TRTCApp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCApp.m; sourceTree = "<group>"; };
 		45F96FC8223296E600E861EC /* TRTCApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCApp.h; sourceTree = "<group>"; };
+		A0933EB72321116400565F64 /* TXLiteAVSDK_TRTC_Mac.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TXLiteAVSDK_TRTC_Mac.framework; path = SDK/TXLiteAVSDK_TRTC_Mac.framework; sourceTree = "<group>"; };
+		A0933EB9232111B400565F64 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		A0933EBB232111BA00565F64 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
 		D689A92C21CC97F300C7C618 /* TRTCDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TRTCDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D689A92F21CC97F300C7C618 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		D689A93021CC97F300C7C618 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -75,6 +81,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A0933EBC232111BA00565F64 /* OpenAL.framework in Frameworks */,
+				A0933EBA232111B400565F64 /* libc++.tbd in Frameworks */,
+				A0933EB82321116400565F64 /* TXLiteAVSDK_TRTC_Mac.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -167,6 +176,9 @@
 		D689A96621CCADD600C7C618 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A0933EBB232111BA00565F64 /* OpenAL.framework */,
+				A0933EB9232111B400565F64 /* libc++.tbd */,
+				A0933EB72321116400565F64 /* TXLiteAVSDK_TRTC_Mac.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -187,6 +199,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D689A94021CC97F400C7C618 /* Build configuration list for PBXNativeTarget "TRTCDemo" */;
 			buildPhases = (
+				A0933EB6232110E700565F64 /* Download SDK */,
 				D689A92821CC97F300C7C618 /* Sources */,
 				D689A92921CC97F300C7C618 /* Frameworks */,
 				D689A92A21CC97F300C7C618 /* Resources */,
@@ -255,6 +268,27 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		A0933EB6232110E700565F64 /* Download SDK */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Download SDK";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ ! -e \"${PROJECT_DIR}/Pods\" ]; then\nif [ ! -e \"${PROJECT_DIR}/SDK/TXLiteAVSDK_TRTC_Mac.framework\" ]; then\nURL=\"$(cat ./SDK/README.md | grep -o 'http.*bz2')\"\necho \"Downloading SDK from $URL\"\ncurl \"$URL\" --output ${PROJECT_DIR}/SDK/TXLiteAVSDK_TRTC_Mac.tar.bz2\ncd ${PROJECT_DIR}/SDK\ntar -zxvf TXLiteAVSDK_TRTC_Mac.tar.bz2\nmv ./TXLiteAVSDK_TRTC_Mac_*/SDK/*.framework .\nrm -rf TXLiteAVSDK_TRTC_Mac_*\nrm TXLiteAVSDK_TRTC_Mac.tar.bz2\nfi\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		D689A92821CC97F300C7C618 /* Sources */ = {
@@ -411,8 +445,14 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = "";
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				HEADER_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/SDK",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/SDK/TXLiteAVSDK_TRTC_Mac.framework/Headers",
+				);
 				INFOPLIST_FILE = TRTCDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -437,8 +477,14 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = "";
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				HEADER_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/SDK",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/SDK/TXLiteAVSDK_TRTC_Mac.framework/Headers",
+				);
 				INFOPLIST_FILE = TRTCDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

@@ -532,7 +532,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ ! -e \"${PROJECT_DIR}/SDK/TXLiteAVSDK_TRTC.framework\" ]; then\nURL=\"$(cat ./SDK/README.md | grep -o 'http.*zip')\"\necho \"Downloading SDK from $URL\"\ncurl \"$URL\" --output ${PROJECT_DIR}/SDK/TXLiteAVSDK_TRTC_iOS.zip\ncd ${PROJECT_DIR}/SDK\nunzip TXLiteAVSDK_TRTC_iOS.zip\nrm -rf __MACOSX\nmv TXLiteAVSDK_TRTC/*.framework .\nrmdir TXLiteAVSDK_TRTC\nrm TXLiteAVSDK_TRTC_iOS.zip\nfi\n";
+			shellScript = "if [ ! -e \"${PROJECT_DIR}/Pods\" ]; then\nif [ ! -e \"${PROJECT_DIR}/SDK/TXLiteAVSDK_TRTC.framework\" ]; then\nURL=\"$(cat ./SDK/README.md | grep -o 'http.*zip')\"\necho \"Downloading SDK from $URL\"\ncurl \"$URL\" --output ${PROJECT_DIR}/SDK/TXLiteAVSDK_TRTC_iOS.zip\ncd ${PROJECT_DIR}/SDK\nunzip TXLiteAVSDK_TRTC_iOS.zip\nrm -rf __MACOSX\nmv TXLiteAVSDK_TRTC_*/SDK/*.framework .\nrm -rf TXLiteAVSDK_TRTC_*\nfi\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -687,8 +687,14 @@
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = FN2V63AD2J;
 				ENABLE_BITCODE = NO;
-				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/SDK";
-				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/SDK/TXLiteAVSDK_TRTC.framework/Headers";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/SDK",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/SDK/TXLiteAVSDK_TRTC.framework/Headers",
+				);
 				INFOPLIST_FILE = TRTCDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -821,8 +827,14 @@
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 5GHU44CJHG;
 				ENABLE_BITCODE = NO;
-				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/SDK";
-				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/SDK/TXLiteAVSDK_TRTC.framework/Headers";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/SDK",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/SDK/TXLiteAVSDK_TRTC.framework/Headers",
+				);
 				INFOPLIST_FILE = TRTCDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -843,8 +855,14 @@
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
-				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/SDK";
-				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/SDK/TXLiteAVSDK_TRTC.framework/Headers";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/SDK",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/SDK/TXLiteAVSDK_TRTC.framework/Headers",
+				);
 				INFOPLIST_FILE = TRTCDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = (
