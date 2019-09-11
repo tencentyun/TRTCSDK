@@ -14,10 +14,10 @@
 点击**查看密钥**按钮，即可看到用于计算 UserSig 的加密密钥，点击“复制密钥”按钮，可以将密钥拷贝到剪贴板中。
 ![](https://main.qcloudimg.com/raw/5843542ec2e0446d326d7d44f96a5ec0.png)
 
-<h2 id="CopyKey"> 4. 粘贴密钥到Demo工程的指定文件中 </h2>
+## 4. 粘贴密钥到Demo工程的指定文件中
 我们在各个平台的 Demo 的源码工程中都提供了一个叫做 “GenerateTestUserSig” 的文件，它可以通过 HMAC-SHA256 算法本地计算出 UserSig，用于快速跑通 Demo。您只需要将第1步中获得的 SDKAppID 和第3步中获得的加密密钥拷贝到文件中的指定位置即可，如下所示：
 
-![](https://main.qcloudimg.com/raw/9275a5f99bf00467eac6c34f6ddd3ca5.jpg)
+![](https://main.qcloudimg.com/raw/d8f5960ab7c08bb0a488ac7e98d162ba.png)
 
 ## 5. 编译运行
 使用 Chrome 浏览器打开 Demo 根目录下的 **index.html** 即可运行 Demo。由于 WebRTC 需要使用摄像头和麦克风采集，所以在体验过程中您可能会收到来自 Chrome 浏览器的如下提示，点击“允许”即可。
