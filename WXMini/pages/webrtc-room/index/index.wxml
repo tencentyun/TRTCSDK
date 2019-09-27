@@ -1,8 +1,12 @@
+<!-- 这里是用户选择加入会议室的界面，不再保留用户选择画面结构，而采用自适应布局，先目前支持布局待定 -->
 <view class='container-box'>
   <view class="input-box">
     <input value="{{roomNo}}" maxlength="20" bindinput='bindRoomNo' placeholder="请输入房间号" placeholder-style="color:#ffffff;opacity: 0.55;" />
   </view>
-  <radio-group class="radio-group" bindchange="radioChange">
+  <view class="input-box">
+    <input value="{{user-name}}" maxlength="20" bindinput='bindUserName' placeholder="请输入参与会议姓名" placeholder-style="color:#ffffff;opacity: 0.55;" />
+  </view>
+  <!-- <radio-group class="radio-group" bindchange="radioChange">
     <label class="radio">
       <radio color='#006eff' value="bigsmall" checked='true' id="bigsmall" />
       大小画面
@@ -15,7 +19,7 @@
       <radio color='#006eff' value="grid" id="grid" />
       网格布局
     </label>
-  </radio-group>
+  </radio-group> 
   <view class="PrevImgBox">
     <view class="PrevCell">
       <label for="bigsmall">
@@ -32,8 +36,8 @@
         <image src="/assets/images/grid.png" style="width:200rpx;height:228rpx" class="{{template==='grid'?'selected':''}}" />
       </label>
     </view>
-  </view>
+  </view>-->
 </view>
 <view class='bottom-btn'>
-  <button type="primary" bindtap="joinRoom" hover-class="none">创建/进入房间</button>
+  <button type="primary" bindtap="joinRoom" hover-class="none">进入房间</button>
 </view>

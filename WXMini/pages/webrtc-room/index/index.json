@@ -1,5 +1,5 @@
 {
-  "navigationBarTitleText": "视频通话",
+  "navigationBarTitleText": "加入会议",
   "usingComponents":{
     "i-icon":"/iview/icon/index"
   }

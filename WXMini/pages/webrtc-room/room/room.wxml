@@ -18,9 +18,12 @@
           <view class='img-box'> 
             <image class='img-view' src='/pages/Resources/endcall.png' bindtap="goBack"></image>
           </view>
+          <cover-view class='img-box'> 
+            <cover-image class='img-view' src='/pages/Resources/endcall.png' bindtap="managment"></cover-image>
+          </cover-view>
         </view>
       </view>
-       <cover-view  wx:else slot="{{template}}" style='height:100%;width:100%;position: absolute;'>
+       <cover-view  wx:else slot="{{template}}" style='height:100%;width:100%;position: absolute; z-index: 99999;'>
         <cover-view class="operate">
           <cover-view class='img-box'>
             <cover-image class='img-view' src='/pages/Resources/camera{{frontCamera?"":"-gray"}}.png' bindtap="changeCamera"></cover-image>
@@ -36,6 +39,9 @@
           </cover-view>
           <cover-view class='img-box'> 
             <cover-image class='img-view' src='/pages/Resources/endcall.png' bindtap="goBack"></cover-image>
+          </cover-view>
+          <cover-view class='img-box'> 
+            <cover-image class='img-view' src='/pages/Resources/endcall.png' bindtap="managment"></cover-image>
           </cover-view>
         </cover-view>
       </cover-view>
