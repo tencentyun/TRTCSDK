@@ -13,14 +13,16 @@
 | Web | [下载](http://liteavsdk-1252463788.cosgz.myqcloud.com/TXLiteAVSDK_TRTC_H5_latest.zip)| [DOC](https://cloud.tencent.com/document/product/647/32398)| [DOC](https://cloud.tencent.com/document/product/647/16863) |[API](https://cloud.tencent.com/document/product/647/17249) |
 | 微信小程序| [下载](http://liteavsdk-1252463788.cosgz.myqcloud.com/TRTC_WXMini_latest.zip)| [DOC](https://cloud.tencent.com/document/product/647/32399)| [DOC](https://cloud.tencent.com/document/product/647/32183) |[API](https://cloud.tencent.com/document/product/647/17018) |
 
-## 最新版本 6.6Patch @ 2019.09.10
+## 最新版本 6.7.7733 @ 2019.09.29
 
-1. 【iOS】iOS13 兼容性支持。
-2. 【iOS&Android】自定义音频回调数据支持可修改。
-3. 【MAC】解决部分机型有杂音、声音变形的兼容性问题。
-4. 【Windows&MAC】新增 AGC 支持，解决部分机型声音小的问题。
-5. 【全平台】新增系统音量类型设置接口。
-6. 【全平台】新增音效接口，支持播放短音效。
+1. 【iOS】新增耳返支持。
+2. 【Android】AAR 打包新增权限获取配置。
+3. 【Android】增加 Android 8.0以上系统 CPU 占用评估。
+4. 【windows】新增音效接口支持。
+5. 【windows】新增64位 C# API 支持。
+6. 【MAC】优化进房和出帧速度。
+7. 【全平台】转推耗时优化。
+8. 【全平台】支持单个用户播放音量独立调节能力。
 
 ## Demo 体验地址
 
