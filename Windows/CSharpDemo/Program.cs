@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using TRTCCSharpDemo.Common;
 using System.Diagnostics;
 using System.Threading;
-using ManageLiteAV;
 
 namespace TRTCCSharpDemo
 {
@@ -24,6 +21,9 @@ namespace TRTCCSharpDemo
         [STAThread]
         static void Main()
         {
+            ManageLiteAV.CrashDump dump = new ManageLiteAV.CrashDump();
+            dump.open();
+
             // 尝试创建一个命名事件
             bool createNew;
             ProgramStarted = new EventWaitHandle(false, EventResetMode.AutoReset, "TRTCStartEvent", out createNew);
@@ -37,13 +37,9 @@ namespace TRTCCSharpDemo
 
             SetProcessDPIAware();   // 默认关闭高DPI，避免SDK录制出错
 
-            // 统一在程序运行时获取ITRTCCloud实例
-            ITRTCCloud cloud = ITRTCCloud.getTRTCShareInstance();
-
-            ManageLiteAV.CrashDump dump = new ManageLiteAV.CrashDump();
-            dump.open();
-
             Log.Open();
+            // 初始化SDK的 Local 配置信息
+            DataManager.GetInstance().InitConfig();
 
             Process processes = Process.GetCurrentProcess();
             Log.I(String.Format("Progress <{0}, {1}>", processes.ProcessName, processes.Id));
@@ -52,13 +48,13 @@ namespace TRTCCSharpDemo
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new TRTCCSharpDemo.TRTCLoginForm());
 
+            // 退出程序前写入最新的 Local 配置信息。
+            DataManager.GetInstance().Uninit();
+            DataManager.GetInstance().Dispose();
+
             Log.Close();
 
             dump.close();
-
-            // 在程序结束后调用 Dispose 方法清理资源，并摧毁ITRTCCloud实例。
-            cloud.Dispose();
-            ITRTCCloud.destroyTRTCShareInstance();
         }
     }
 }

@@ -123,7 +123,8 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <PostBuildEvent>
-      <Command>copy /Y "$(ProjectDir)..\SDK\CPlusPlus\Win32\lib\*.dll" "$(OutDir)"</Command>
+      <Command>copy /Y "$(ProjectDir)..\SDK\CPlusPlus\Win32\lib\*.dll" "$(OutDir)"
+copy /Y "$(ProjectDir)config.json" "$(OutDir)"</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>@echo off
@@ -137,7 +138,7 @@ if exist %SourceFile% (
 ) else (
     echo sdk is not exist! you must down sdk first!
 	echo 1. download sdk url http://liteavsdk-1252463788.cosgz.myqcloud.com/TXLiteAVSDK_TRTC_Win_latest.zip
-	echo 2. copy sdk file to ./SDK/  Directory
+	echo 2. copy sdk file to ../SDK/  Directory
 )</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
@@ -148,7 +149,7 @@ if exist %SourceFile% (
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_WINDOWS;_DEBUG;_CRT_SECURE_NO_WARNINGS%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\SDK\CPlusPlus\liteav\Win64\include;$(ProjectDir)..\SDK\CPlusPlus\liteav\Win64\include\TRTC;$(ProjectDir)Common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\SDK\CPlusPlus\Win64\include;$(ProjectDir)..\SDK\CPlusPlus\Win64\include\TRTC;$(ProjectDir)Common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -200,7 +201,8 @@ if exist %SourceFile% (
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <PostBuildEvent>
-      <Command>copy /Y "$(ProjectDir)..\SDK\CPlusPlus\Win32\lib\*.dll" "$(OutDir)"</Command>
+      <Command>copy /Y "$(ProjectDir)..\SDK\CPlusPlus\Win32\lib\*.dll" "$(OutDir)"
+copy /Y "$(ProjectDir)config.json" "$(OutDir)"</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>@echo off
@@ -214,7 +216,7 @@ if exist %SourceFile% (
 ) else (
     echo sdk is not exist! you must down sdk first!
 	echo 1. download sdk url http://liteavsdk-1252463788.cosgz.myqcloud.com/TXLiteAVSDK_TRTC_Win_latest.zip
-	echo 2. copy sdk file to ./SDK/  Directory
+	echo 2. copy sdk file to ../SDK/  Directory
 )</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
@@ -227,7 +229,7 @@ if exist %SourceFile% (
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>_WINDOWS;NDEBUG;_CRT_SECURE_NO_WARNINGS%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\SDK\CPlusPlus\liteav\Win64\include;$(ProjectDir))..\SDK\CPlusPlus\liteav\Win64\include\TRTC;$(ProjectDir)Common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\SDK\CPlusPlus\Win64\include;$(ProjectDir)..\SDK\CPlusPlus\Win64\include\TRTC;$(ProjectDir)Common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>

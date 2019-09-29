@@ -131,6 +131,10 @@ public: //trtc
 
     bool m_bStartScreenShare = false;
 
+    bool m_bEnableAec = true;
+    bool m_bEnableAns = true;
+    bool m_bEnableAgc = true;
+
     std::map<int, VideoResBitrateTable> m_videoConfigMap;
 
 

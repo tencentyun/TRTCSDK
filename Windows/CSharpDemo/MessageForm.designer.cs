@@ -73,7 +73,7 @@
             this.exitPicBox.BackgroundImage = global::TRTCCSharpDemo.Properties.Resources.close_normal;
             this.exitPicBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.exitPicBox.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.exitPicBox.Location = new System.Drawing.Point(369, 3);
+            this.exitPicBox.Location = new System.Drawing.Point(370, 2);
             this.exitPicBox.Name = "exitPicBox";
             this.exitPicBox.Size = new System.Drawing.Size(25, 25);
             this.exitPicBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -137,10 +137,13 @@
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
             this.ClientSize = new System.Drawing.Size(400, 120);
             this.Controls.Add(this.panel1);
+            this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MaximumSize = new System.Drawing.Size(400, 400);
             this.Name = "MessageForm";
             this.Padding = new System.Windows.Forms.Padding(1);
+            this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "MessageForm";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form_Closing);
             this.Load += new System.EventHandler(this.MessageForm_Load);

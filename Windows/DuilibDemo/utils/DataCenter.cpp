@@ -255,6 +255,24 @@ void CDataCenter::Init()
         m_speakerVolume = _wtoi(strParam.c_str());
     else
         m_speakerVolume = 100;
+
+    bRet = m_pConfigMgr->GetValue(INI_ROOT_KEY, INI_KEY_ENABLE_AEC, strParam);
+    if (bRet)
+        m_bEnableAec = _wtoi(strParam.c_str());
+    else
+        m_bEnableAec = 0;
+
+    bRet = m_pConfigMgr->GetValue(INI_ROOT_KEY, INI_KEY_ENABLE_ANS, strParam);
+    if (bRet)
+        m_bEnableAns = _wtoi(strParam.c_str());
+    else
+        m_bEnableAns = 0;
+
+    bRet = m_pConfigMgr->GetValue(INI_ROOT_KEY, INI_KEY_ENABLE_AGC, strParam);
+    if (bRet)
+        m_bEnableAgc = _wtoi(strParam.c_str());
+    else
+        m_bEnableAgc = 0;
 }
 
 void CDataCenter::WriteEngineConfig()
@@ -263,10 +281,6 @@ void CDataCenter::WriteEngineConfig()
     m_pConfigMgr->SetValue(INI_ROOT_KEY, INI_KEY_USER_ID, UTF82Wide(m_loginInfo._userId));
     //m_pConfigMgr->SetValue(INI_ROOT_KEY, INI_KEY_USER_ID, UTF82Wide(""));
     //设备选项
-
-    //m_pConfigMgr->SetValue(INI_ROOT_KEY, INI_KEY_CHOOSE_MIC, m_selectMic);
-    //m_pConfigMgr->SetValue(INI_ROOT_KEY, INI_KEY_CHOOSE_CAMERA, m_selectCamera);
-    //m_pConfigMgr->SetValue(INI_ROOT_KEY, INI_KEY_CHOOSE_SPEAK, m_selectSpeak);
 
     //音视频参数配置
     DuiLib::CDuiString strFormat;
@@ -318,6 +332,13 @@ void CDataCenter::WriteEngineConfig()
     m_pConfigMgr->SetValue(INI_ROOT_KEY, INI_KEY_MIC_VOLUME, strFormat.GetData());
     strFormat.Format(L"%d", m_speakerVolume);
     m_pConfigMgr->SetValue(INI_ROOT_KEY, INI_KEY_SPEAKER_VOLUME, strFormat.GetData());
+
+    strFormat.Format(L"%d", m_bEnableAec);
+    m_pConfigMgr->SetValue(INI_ROOT_KEY, INI_KEY_ENABLE_AEC, strFormat.GetData());
+    strFormat.Format(L"%d", m_bEnableAns);
+    m_pConfigMgr->SetValue(INI_ROOT_KEY, INI_KEY_ENABLE_ANS, strFormat.GetData());
+    strFormat.Format(L"%d", m_bEnableAgc);
+    m_pConfigMgr->SetValue(INI_ROOT_KEY, INI_KEY_ENABLE_AGC, strFormat.GetData());
 }
 
 CDataCenter::BeautyConfig & CDataCenter::GetBeautyConfig()

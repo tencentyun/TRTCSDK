@@ -27,28 +27,8 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>x86</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>
-    </StartupObject>
+    <StartupObject>TRTCCSharpDemo.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -64,7 +44,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x86</PlatformTarget>
@@ -92,8 +72,35 @@
   <PropertyGroup>
     <ApplicationIcon>Resources\trtc.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ManageLiteAV">
+    <Reference Include="ManageLiteAV" Condition="'$(Platform)' == 'x64'">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SDK\CSharp\Win64\lib\ManageLiteAV.dll</HintPath>
+    </Reference>
+    <Reference Include="ManageLiteAV" Condition="'$(Platform)' == 'AnyCPU'">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SDK\CSharp\Win64\lib\ManageLiteAV.dll</HintPath>
+    </Reference>
+    <Reference Include="ManageLiteAV" Condition="'$(Platform)' == 'x86'">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\SDK\CSharp\Win32\lib\ManageLiteAV.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
@@ -115,9 +122,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\HttpClient.cs" />
     <Compile Include="Common\Log.cs" />
     <Compile Include="Common\Util.cs" />
+    <Compile Include="DataManager.cs" />
     <Compile Include="MessageForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -133,11 +140,29 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="TLSSigAPIv2.cs" />
+    <Compile Include="ToastForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ToastForm.Designer.cs">
+      <DependentUpon>ToastForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="TRTCBeautyForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="TRTCBeautyForm.Designer.cs">
       <DependentUpon>TRTCBeautyForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TRTCConnectionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TRTCConnectionForm.Designer.cs">
+      <DependentUpon>TRTCConnectionForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TRTCCustomCaptureForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TRTCCustomCaptureForm.designer.cs">
+      <DependentUpon>TRTCCustomCaptureForm.cs</DependentUpon>
     </Compile>
     <Compile Include="TRTCDeviceForm.cs">
       <SubType>Form</SubType>
@@ -151,17 +176,17 @@
     <Compile Include="TRTCDeviceTestForm.Designer.cs">
       <DependentUpon>TRTCDeviceTestForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="TRTCMainForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TRTCMainForm.Designer.cs">
-      <DependentUpon>TRTCMainForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="TRTCLoginForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="TRTCLoginForm.Designer.cs">
       <DependentUpon>TRTCLoginForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TRTCMainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TRTCMainForm.Designer.cs">
+      <DependentUpon>TRTCMainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="TRTCScreenForm.cs">
       <SubType>Form</SubType>
@@ -175,6 +200,9 @@
     <Compile Include="TRTCSettingForm.Designer.cs">
       <DependentUpon>TRTCSettingForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="CustomVideoPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <EmbeddedResource Include="MessageForm.resx">
       <DependentUpon>MessageForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -183,8 +211,17 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="ToastForm.resx">
+      <DependentUpon>ToastForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TRTCBeautyForm.resx">
       <DependentUpon>TRTCBeautyForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TRTCConnectionForm.resx">
+      <DependentUpon>TRTCConnectionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TRTCCustomCaptureForm.resx">
+      <DependentUpon>TRTCCustomCaptureForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TRTCDeviceForm.resx">
       <DependentUpon>TRTCDeviceForm.cs</DependentUpon>
@@ -192,11 +229,11 @@
     <EmbeddedResource Include="TRTCDeviceTestForm.resx">
       <DependentUpon>TRTCDeviceTestForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TRTCMainForm.resx">
-      <DependentUpon>TRTCMainForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="TRTCLoginForm.resx">
       <DependentUpon>TRTCLoginForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TRTCMainForm.resx">
+      <DependentUpon>TRTCMainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TRTCScreenForm.resx">
       <DependentUpon>TRTCScreenForm.cs</DependentUpon>
@@ -243,9 +280,19 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\trtcskin\close_white.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy /Y "$(ProjectDir)..\SDK\CSharp\Win32\lib\*.dll" "$(ProjectDir)$(OutDir)"</PostBuildEvent>
+    <PostBuildEvent>set Platform=Win64
+SETLOCAL ENABLEDELAYEDEXPANSION
+if $(PlatformName)==x86 ( 
+  echo %25winPlatformName%25
+  set Platform=Win32
+)
+copy /Y "$(ProjectDir)..\SDK\CSharp\!Platform!\lib\*.dll" "$(ProjectDir)$(OutDir)"
+ENDLOCAL</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>@echo off
@@ -258,8 +305,8 @@ if exist %25SourceFile%25 (
  echo sdk is exist!
 ) else (
     echo sdk is not exist! you must down sdk first!
- echo 1. download sdk url http://liteavsdk-1252463788.cosgz.myqcloud.com/TXLiteAVSDK_TRTC_Win_latest.zip
- echo 2. copy sdk file to ..\SDK\  Directory
+    echo 1. download sdk url http://liteavsdk-1252463788.cosgz.myqcloud.com/TXLiteAVSDK_TRTC_Win_latest.zip
+    echo 2. copy sdk file to ..\SDK\  Directory
 )</PreBuildEvent>
   </PropertyGroup>
 </Project>

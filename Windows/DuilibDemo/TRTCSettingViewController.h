@@ -43,6 +43,7 @@ public: //overwrite
     virtual LRESULT HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam);
 public: //cb
     virtual void Notify(TNotifyUI& msg);
+    virtual void NotifyAudioEffectTab(TNotifyUI& msg);
     virtual void NotifyOtherTab(TNotifyUI& msg);
     virtual CControlUI* CreateControl(LPCTSTR pstrClass);
 
@@ -63,12 +64,15 @@ private:
     void InitWindow();
     void InitNormalTab();
     void InitAudioTab();
+    void InitAudioEffectTab();
     void InitVideoTab();
     void InitOtherTab();
     void UpdateCameraDevice();
     void UpdateMicDevice();
     void UpdateSpeakerDevice();
     void ResetBeautyConfig();
+
+    void stopAllTestSetting();
 private:
     void updateVideoBitrateUi();
 public:
@@ -86,6 +90,11 @@ public:
     bool m_bStartTestBGM = false;
     bool m_bStartTestNetwork = false;
     bool m_bStartSystemVoice = false;
+
+    bool m_bMuteRemotesAudio = false;
+    TRTCAudioEffectParam* m_audioEffectParam1;
+    TRTCAudioEffectParam* m_audioEffectParam2;
+    TRTCAudioEffectParam* m_audioEffectParam3;
 
     static int m_ref;
     static std::vector<TRTCSettingViewControllerNotify*> vecNotifyList;

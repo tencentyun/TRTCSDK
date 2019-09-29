@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using ManageLiteAV;
 using TRTCCSharpDemo.Common;
 using System.Threading;
+using System.Timers;
+using TRTCCSharpDemo.CustomControl;
 using System.Runtime.InteropServices;
 
 /// <summary>
@@ -22,102 +20,179 @@ using System.Runtime.InteropServices;
 /// 2. 支持对视频通话的分辨率、帧率和流畅模式进行调整，该部分由 TRTCSettingForm 来实现
 ///
 /// 3. 创建或者加入某一个通话房间，需要先指定 roomid 和 userid，这部分由 TRTCLoginForm 来实现
+/// 
+/// 4. 下面的窗口实现了 SDK 的内部回调，最后在回调数据后回调到主线程操作（参考 onEnterRoom），这样确保不会导致 UI 跨线程操作
 /// </summary>
 
 namespace TRTCCSharpDemo
 {
     public partial class TRTCMainForm : Form, ITRTCCloudCallback, ITRTCLogCallback
     {
-        private int mainThreadId;
-
-        private string mUserId;
-        private uint mRoomId;
         private ITRTCCloud mTRTCCloud;
 
+        private string mUserId;          // 本地用户 Id
+        private uint mRoomId;            // 房间 Id
+
         // 记录大小界面显示的是摄像头还是屏幕
-        private IntPtr mCameraLocalVideo;
-        private IntPtr mScreenLocalVideo;
+        private IntPtr mCameraLocalVideoHwnd;
 
         private bool mIsEnterSuccess;    // 是否进房成功
         private bool mIsSetScreenSuccess;   // 是否设置屏幕参数成功
 
         private List<UserVideoMeta> mMixStreamVideoMeta;   //混流信息
-        private List<string> mRoomUsers;    // 当前房间里的远端用户（除了本地用户）
+        private List<RemoteUserInfo> mRemoteUsers;    // 当前房间里的远端用户（除了本地用户）
+        private List<PKUserInfo> mPKUsers;  // 当前房间里的连麦用户
 
+        // 当前正在使用的摄像头、麦克风和扬声器设备
         private string mCurCameraDevice;
         private string mCurMicDevice;
         private string mCurSpeakerDevice;
 
-        private int mLogLevel = 0;
-        private TRTCLoginForm mLoginForm;
+        // 日志等级：0 为 不显示仪表盘， 1 为 精简仪表盘， 2 为 完整仪表盘
+        private int mLogLevel = 0;   
+
+        // 窗口实例
+		private TRTCLoginForm mLoginForm;
         private TRTCSettingForm mSettingForm;
         private TRTCBeautyForm mBeautyForm;
         private TRTCDeviceTestForm mDeviceTestForm;
+        private TRTCCustomCaptureForm mCustomCaptureForm;
+        private TRTCConnectionForm mConnectionForm;
         private TRTCDeviceForm mDeviceForm;
+        private ToastForm mToastForm;
 
-        private delegate void SetNetEnvDelegate(int bTestEnv);
+        // 测试发现Timer轮询间隔不是很准确，具体如何使用准确的轮询机制可以自行查询
+        private System.Timers.Timer mAudioTimer;
+        private System.Timers.Timer mVideoTimer;
+
+        // 自定义渲染控件
+        private CustomVideoPanel customVideoPanel;
+
+        // 检查是否第一次退出房间
+        private bool mIsFirstExitRoom;
+
+        #region NetEnvironment
 
         [DllImport("liteav.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void setNetEnv(int bTestEnv);
 
+        #endregion
+
         public TRTCMainForm(TRTCLoginForm loginForm)
         {
+            // 初始化 Form
             InitializeComponent();
+            // 添加自定义渲染窗口控件
+            AddCustomVideoPanel();
 
             this.Disposed += new EventHandler(OnDisposed);
+            // 窗口退出事件监听
+            this.FormClosing += new FormClosingEventHandler(OnExitLabelClick);
 
-            mLoginForm = loginForm;
+            // 初始化数据。
+			mLoginForm = loginForm;
+            mTRTCCloud = DataManager.GetInstance().trtcCloud;
+            mMixStreamVideoMeta = new List<UserVideoMeta>();
+            mRemoteUsers = new List<RemoteUserInfo>();
+            mPKUsers = new List<PKUserInfo>();
 
-            mTRTCCloud = ITRTCCloud.getTRTCShareInstance();
+            // 初始化 SDK 配置并设置回调
             Log.I(String.Format(" SDKVersion : {0}", mTRTCCloud.getSDKVersion()));
             mTRTCCloud.addCallback(this);
             mTRTCCloud.setLogCallback(this);
             mTRTCCloud.setConsoleEnabled(true);
             mTRTCCloud.setLogLevel(TRTCLogLevel.TRTCLogLevelVerbose);
 
-            mMixStreamVideoMeta = new List<UserVideoMeta>();
-            mRoomUsers = new List<string>();
+            // 开始监听本地渲染回调数据，内部处理数据
+            this.customVideoPanel.RegEngine(mTRTCCloud);
 
+            // 监听单实例事件，当点击应用图标，会返回该事件
             ThreadPool.RegisterWaitForSingleObject(Program.ProgramStarted, OnProgramStarted, null, -1, false);
         }
 
-        // 这里需要回到 UI 线程进行操作
+        
         private void OnProgramStarted(object state, bool timeout)
         {
-            this.Invoke(new Action(() =>
+            // 这里需要回到 UI 线程进行操作，防止窗口句柄还未创建
+            if (this.IsHandleCreated)
             {
-                if (this.IsHandleCreated)
+                this.BeginInvoke(new Action(() =>
                 {
-                    this.Show();
-                    this.WindowState = FormWindowState.Normal; //注意：一定要在窗体显示后，再对属性进行设置
-                    this.Activate();
-                }
-            }));
+                    if (this.IsHandleCreated)
+                    {
+                        this.Show();
+                        this.WindowState = FormWindowState.Normal; //注意：一定要在窗体显示后，再对属性进行设置
+                        this.Activate();
+                    }
+                }));
+            }
+        }
+
+        /// <summary>
+        /// 添加自定义渲染控件并初始化
+        /// </summary>
+        private void AddCustomVideoPanel()
+        {
+            this.customVideoPanel = new CustomVideoPanel();
+            this.localVideoPanel.Controls.Add(this.customVideoPanel);
+            this.customVideoPanel.BackColor = System.Drawing.SystemColors.Control;
+            this.customVideoPanel.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.customVideoPanel.Location = new System.Drawing.Point(0, 0);
+            this.customVideoPanel.Name = "customVideoPanel";
+            this.customVideoPanel.Size = new System.Drawing.Size(319, 289);
+            this.customVideoPanel.Visible = false;
+            // 自定义渲染本地图像渲染模式
+            this.customVideoPanel.SetRenderMode(DataManager.GetInstance().videoFillMode);
         }
 
         private void OnDisposed(object sender, EventArgs e)
         {
             // 清理资源
             mTRTCCloud = null;
-            if (mCameraLocalVideo != IntPtr.Zero)
-            {
-                mCameraLocalVideo = IntPtr.Zero;
-            }
-            if (mScreenLocalVideo != IntPtr.Zero)
-            {
-                mScreenLocalVideo = IntPtr.Zero;
-            }
+            if (mCameraLocalVideoHwnd != IntPtr.Zero)
+                mCameraLocalVideoHwnd = IntPtr.Zero;
         }
 
         private void OnFormLoad(object sender, EventArgs e)
         {
-            mainThreadId = System.Threading.Thread.CurrentThread.ManagedThreadId;
+            // 获取本地画面的窗口句柄
+            mCameraLocalVideoHwnd = this.localVideoPanel.Handle;
 
-            mCameraLocalVideo = this.localVideoPanel.Handle;
-            mScreenLocalVideo = this.localVideoSmallPanel.Handle;
+            // 注意：系统混音功能暂时不支持64位系统
+            if (Util.IsSys64bit())
+                this.systemAudioCheckBox.Visible = false;
         }
 
-        #region Form Move
+        /// <summary>
+        /// 设置本地配置信息到 SDK
+        /// </summary>
+        private void InitLocalConfig()
+        {
+            // 判断是否开启本地和远程镜像，用户可以单独分开使用
+            if (DataManager.GetInstance().isLocalVideoMirror && DataManager.GetInstance().isRemoteVideoMirror)
+            {
+                this.mirrorCheckBox.Checked = true;
+                OnMirrorCheckBoxClick(null, null);
+            }
+            // 判断是否开启音量提示功能
+            if (DataManager.GetInstance().isShowVolume)
+            {
+                this.voiceCheckBox.Checked = true;
+                OnVoiceCheckBoxClick(null, null);
+            }
+            // 判断是否开启远端混流功能
+            if (DataManager.GetInstance().isMixTranscoding)
+            {
+                this.mixTransCodingCheckBox.Checked = true;
+                OnMixTransCodingCheckBoxClick(null, null);
+            }
+            // 判断是否开启美颜功能
+            if (DataManager.GetInstance().isOpenBeauty)
+                mTRTCCloud.setBeautyStyle(DataManager.GetInstance().beautyStyle, DataManager.GetInstance().beauty, 
+                    DataManager.GetInstance().white, DataManager.GetInstance().ruddiness);
+        }
+
+        #region Form Move Function
 
         private bool mIsMouseDown = false;
         private Point mFormLocation;     // Form的location
@@ -152,123 +227,170 @@ namespace TRTCCSharpDemo
 
         #endregion
 
-        public void SetTestEnv(int testEnv)
-        {
-            setNetEnv(testEnv);
-        }
-
+        /// <summary>
+        /// 显示 Message 的 Dialog
+        /// </summary>
         private void ShowMessage(string text, int delay = 0)
         {
-            this.BeginInvoke(new Action(() =>
+            // 判断是否此时该窗口句柄已创建，防止出现问题
+            if (this.IsHandleCreated)
             {
-                MessageForm msgBox = new MessageForm();
-                msgBox.setText(text, delay);
-                msgBox.setCancelBtn(false);
-                msgBox.ShowDialog();
-            }));
+                this.BeginInvoke(new Action(() =>
+                {
+                    MessageForm msgBox = new MessageForm();
+                    msgBox.setText(text, delay);
+                    msgBox.setCancelBtn(false);
+                    msgBox.ShowDialog();
+                }));
+            }
         }
-
-        private bool IsMainThread()
+        
+        /// <summary>
+        /// 用户进房前准备和进房后打开摄像头和麦克风
+        /// </summary>
+        /// <param name="params"></param>
+        public void EnterRoom()
         {
-            return System.Threading.Thread.CurrentThread.ManagedThreadId == mainThreadId;
-        }
+            // 设置进房所需的相关参数
+            TRTCParams trtcParams = new TRTCParams();
+            trtcParams.sdkAppId = GenerateTestUserSig.SDKAPPID;
+            trtcParams.roomId = DataManager.GetInstance().roomId;
+            trtcParams.userId = DataManager.GetInstance().userId;
+            trtcParams.userSig = GenerateTestUserSig.GetInstance().GenTestUserSig(DataManager.GetInstance().userId);
+            // 如果您有进房权限保护的需求，则参考文档{https://cloud.tencent.com/document/product/647/32240}完成该功能。
+            // 在有权限进房的用户中的下面字段中添加在服务器获取到的privateMapKey。
+            trtcParams.privateMapKey = "";
+            trtcParams.businessInfo = "";
+            trtcParams.role = DataManager.GetInstance().roleType;
+            // 若您的项目有纯音频的旁路直播需求，请配置参数。
+            // 配置该参数后，音频达到服务器，即开始自动旁路；
+            // 否则无此参数，旁路在收到第一个视频帧之前，会将收到的音频包丢弃。
+            if (DataManager.GetInstance().pureAudioStyle)
+                trtcParams.businessInfo = "{\"Str_uc_params\":{\"pure_audio_push_mod\": 1}}";
+            else
+                trtcParams.businessInfo = "";
 
-        public void EnterRoom(TRTCParams @params)
-        {
-            // 大画面的编码器参数设置
-            // 设置视频编码参数，包括分辨率、帧率、码率等等，这些编码参数来自于 TRTCSettingViewController 的设置
-            // 注意（1）：不要在码率很低的情况下设置很高的分辨率，会出现较大的马赛克
-            // 注意（2）：不要设置超过25FPS以上的帧率，因为电影才使用24FPS，我们一般推荐15FPS，这样能将更多的码率分配给画质
-            TRTCVideoEncParam encParams = PropertySaver.GetInstance().encParams;
-            TRTCNetworkQosParam qosParams = PropertySaver.GetInstance().qosParams;
+            // 设置连接环境
+            setNetEnv(DataManager.GetInstance().testEnv);
+
+            // 用户进房
+            mTRTCCloud.enterRoom(ref trtcParams, DataManager.GetInstance().appScene);
+
+            // 设置默认参数配置
+            TRTCVideoEncParam encParams = DataManager.GetInstance().videoEncParams;   // 视频编码参数设置
+            TRTCNetworkQosParam qosParams = DataManager.GetInstance().qosParams;      // 网络流控相关参数设置
             mTRTCCloud.setVideoEncoderParam(ref encParams);
             mTRTCCloud.setNetworkQosParam(ref qosParams);
+            mTRTCCloud.setLocalViewFillMode(DataManager.GetInstance().videoFillMode);
+            mTRTCCloud.setLocalViewMirror(DataManager.GetInstance().isLocalVideoMirror);
+            mTRTCCloud.setLocalViewRotation(DataManager.GetInstance().videoRotation);
+            mTRTCCloud.setVideoEncoderMirror(DataManager.GetInstance().isRemoteVideoMirror);
 
-            bool pushSmallVideo = PropertySaver.GetInstance().pushSmallVideo;
-            bool playSmallVideo = PropertySaver.GetInstance().playSmallVideo;
+            // 设置音量大小和音量提示
+            mTRTCCloud.setCurrentMicDeviceVolume(DataManager.GetInstance().micVolume);
+            mTRTCCloud.setCurrentSpeakerVolume(DataManager.GetInstance().speakerVolume);
 
-            if(pushSmallVideo)
+            // 设置美颜
+            if (DataManager.GetInstance().isOpenBeauty)
+                mTRTCCloud.setBeautyStyle(DataManager.GetInstance().beautyStyle, DataManager.GetInstance().beauty,
+                    DataManager.GetInstance().white, DataManager.GetInstance().ruddiness);
+
+            // 设置大小流
+            if(DataManager.GetInstance().pushSmallVideo)
             {
-                //小画面的编码器参数设置
-                //TRTC SDK 支持大小两路画面的同时编码和传输，这样网速不理想的用户可以选择观看小画面
-                //注意：iPhone & Android 不要开启大小双路画面，非常浪费流量，大小路画面适合 Windows 和 MAC 这样的有线网络环境
                 TRTCVideoEncParam param = new TRTCVideoEncParam
                 {
                     videoFps = 15,
                     videoBitrate = 100,
                     videoResolution = TRTCVideoResolution.TRTCVideoResolution_320_240
                 };
-                mTRTCCloud.enableSmallVideoStream(pushSmallVideo, ref param);
+                mTRTCCloud.enableSmallVideoStream(true, ref param);
             }
-            if(playSmallVideo)
+            if(DataManager.GetInstance().playSmallVideo)
             {
                 mTRTCCloud.setPriorRemoteVideoStreamType(TRTCVideoStreamType.TRTCVideoStreamTypeSmall);
             }
-            mTRTCCloud.enterRoom(ref @params, PropertySaver.GetInstance().appScene);
-            mUserId = @params.userId;
-            mRoomId = @params.roomId;
-            this.roomLabel.Text = "房间号：" + @params.roomId.ToString() + "   用户名：" + @params.userId;
+            // 房间信息
+            mUserId = trtcParams.userId;
+            mRoomId = trtcParams.roomId;
+            this.roomLabel.Text = "房间号：" + trtcParams.roomId.ToString() + "   用户名：" + trtcParams.userId;
             this.localUserLabel.Text = mUserId;
 
-            mTRTCCloud.setLocalViewFillMode(TRTCVideoFillMode.TRTCVideoFillMode_Fit);
-            mTRTCCloud.startLocalPreview(mCameraLocalVideo);
-            mTRTCCloud.startLocalAudio();
-            InitDevice();
+            // 处理是否纯音频模式
+            bool audioCallStyle = DataManager.GetInstance().pureAudioStyle;
+            if (audioCallStyle)
+            {
+                this.localInfoLabel.Visible = true;
+                this.localInfoLabel.Text = "纯音频模式";
+                this.muteVideoCheckBox.Checked = true;
+            }
+            else
+            {
+                this.localInfoLabel.Text = "视频已关闭";
+                this.localInfoLabel.Visible = false;
+                mTRTCCloud.startLocalPreview(mCameraLocalVideoHwnd);
+            }
+            // 如果不是观众角色进房，则打开本地摄像头采集和预览
+            if (trtcParams.role != TRTCRoleType.TRTCRoleAudience)
+                mTRTCCloud.startLocalAudio();
+
+            InitLocalDevice();
+            InitLocalConfig();
         }
 
+        /// <summary>
+        /// 进房后的回调结果
+        /// </summary>
+        /// <param name="result">小于0：进房失败，错误结果会在 onError 回调显示</param>
         public void onEnterRoom(int result)
         {
-            // 回调后的线程不一定在主线程，如果在回调后需要进行 UI 操作，则最好判断一下是否是主线程，其他回调皆是。
-            if (IsMainThread())
-                OnEnterRoom(result);
-            else
-                this.BeginInvoke(new Action(() => {
-                    OnEnterRoom(result);
+            // 回调后的线程不一定在主线程，所以需要统一在回调的地方回到主线程操作，确保不导致跨线程操作 UI。
+            if (this.IsHandleCreated)
+                this.Invoke(new Action(() => {
+                    if (result >= 0)
+                    {
+                        // 进房成功
+                        mIsEnterSuccess = true;
+                        // 确保 SDK 内部的音频和视频采集是开启的。
+                        mTRTCCloud.muteLocalVideo(false);
+                        mTRTCCloud.muteLocalAudio(false);
+                        // 更新混流信息
+                        UpdateMixTranCodeInfo();
+
+                    }
+                    else
+                    {
+                        // 进房失败
+                        mIsEnterSuccess = false;
+                        ShowMessage("进房失败，请重试");
+                    }
                 }));
-            
-        }
-        
-        private void OnEnterRoom(int result)
-        {
-            UpdateMixTranCodeInfo();
-            if (result >= 0)
-            {
-                mIsEnterSuccess = true;
-                Log.I(String.Format("network timeout = {0}", result));
-            }
-            else
-            {
-                mIsEnterSuccess = false;
-                ShowMessage("进房失败，请重试");
-                Log.E(String.Format("onEnterRoom : enterRoom failed."));
-            }
         }
 
-        private void InitDevice()
+        /// <summary>
+        /// 初始化本地设备使用
+        /// </summary>
+        private void InitLocalDevice()
         {
             ITRTCDeviceCollection cameraList = mTRTCCloud.getCameraDevicesList();
-            if (cameraList.getCount() <= 0)
-                ShowMessage("Error: 未检出到摄像头，请检查本地电脑设备。");
-            else
+            mCurCameraDevice = "";
+            if (cameraList.getCount() > 0)
             {
                 ITRTCDeviceInfo camera = mTRTCCloud.getCurrentCameraDevice();
                 mCurCameraDevice = camera.getDeviceName();
             }
             cameraList.release();
-            
             ITRTCDeviceCollection micList = mTRTCCloud.getMicDevicesList();
-            if (micList.getCount() <= 0)
-                ShowMessage("Error: 未检出到麦克风，请检查本地电脑设备。");
-            else
+            mCurMicDevice = "";
+            if (micList.getCount() > 0)
             {
                 ITRTCDeviceInfo mic = mTRTCCloud.getCurrentMicDevice();
                 mCurMicDevice = mic.getDeviceName();
             }
             micList.release();
             ITRTCDeviceCollection speakerList = mTRTCCloud.getSpeakerDevicesList();
-            if (speakerList.getCount() <= 0)
-                ShowMessage("Error: 未检出到扬声器，请检查本地电脑设备。");
-            else
+            mCurSpeakerDevice = "";
+            if (speakerList.getCount() > 0)
             {
                 ITRTCDeviceInfo speaker = mTRTCCloud.getCurrentSpeakerDevice();
                 mCurSpeakerDevice = speaker.getDeviceName();
@@ -276,6 +398,10 @@ namespace TRTCCSharpDemo
             speakerList.release();
         }
 
+        /// <summary>
+        /// 回调 SDK 中抛出的错误信息，一般抛出错误就不应该继续使用，而是排查错误。
+        /// 下面只列出了常见的几种错误信息提示，如需了解更多 SDK 错误信息，请参考 TXLiteAVError
+        /// </summary>
         public void onError(TXLiteAVError errCode, string errMsg, IntPtr arg)
         {
             Log.E(String.Format("errCode : {0}, errMsg : {1}, arg = {2}", errCode, errMsg, arg));
@@ -285,56 +411,113 @@ namespace TRTCCSharpDemo
             {
                 ShowMessage("Error: 屏幕分享发起失败，是否当前已经有人发起了共享！");
             }
+            else if (errCode == TXLiteAVError.ERR_MIC_START_FAIL)
+            {
+                ShowMessage("Error: 未检出到麦克风，请检查本地电脑设备。");
+            }
+            else if (errCode == TXLiteAVError.ERR_CAMERA_START_FAIL)
+            {
+                ShowMessage("Error: 未检出到摄像头，请检查本地电脑设备。");
+            }
             else
             {
                 ShowMessage(String.Format("SDK出错[err:{0},msg:{1}]", errCode, errMsg));
             }
         }
 
+        /// <summary>
+        /// 本地用户退出房间回调
+        /// </summary>
         public void onExitRoom(int reason)
         {
-            Log.I(String.Format("reason : {0}", reason));
             mIsEnterSuccess = false;
-            Uninit();
             this.Close();
         }
 
+        /// <summary>
+        /// 退房后执行的清理操作和关闭 SDK 内部功能。
+        /// </summary>
         private void Uninit()
         {
+            // 如果开启了自定义采集和渲染，则关闭功能，清理资源
+            if (this.customCaptureCheckBox.Checked)
+            {
+                mTRTCCloud.enableCustomVideoCapture(false);
+                mTRTCCloud.enableCustomAudioCapture(false);
+                StopAudioCaptureTimer();
+                StopVideoCaptureTimer();
+            }
+            mTRTCCloud.stopAllRemoteView();
+            mTRTCCloud.stopLocalPreview();
+            mTRTCCloud.stopLocalAudio();
+            mTRTCCloud.muteLocalAudio(true);
+            mTRTCCloud.muteLocalVideo(true);
+
+            // 清理混流信息和用户信息
             mMixStreamVideoMeta.Clear();
-            mRoomUsers.Clear();
+            mRemoteUsers.Clear();
+            mPKUsers.Clear();
             mTRTCCloud.removeCallback(this);
             mTRTCCloud.setLogCallback(null);
-            if (this.systemAudioCheckBox.Checked)
-                mTRTCCloud.stopSystemAudioLoopback();
+
+            // 注意：系统混音功能暂时不支持64位系统
+            if (!Util.IsSys64bit())
+            {
+                if (this.systemAudioCheckBox.Checked)
+                    mTRTCCloud.stopSystemAudioLoopback();
+            }
             if (this.screenShareCheckBox.Checked)
+            {
                 mTRTCCloud.stopScreenCapture();
-            if (this.systemAudioCheckBox.Checked)
-                mTRTCCloud.stopSystemAudioLoopback();
+                if (mToastForm != null)
+                    mToastForm.Close();
+            }
             if (this.mixTransCodingCheckBox.Checked)
                 mTRTCCloud.setMixTranscodingConfig(null);
         }
 
+        /// <summary>
+        /// 用户是否开启音频上行
+        /// </summary>
         public void onUserAudioAvailable(string userId, bool available)
         {
             Log.I(String.Format("onUserAudioAvailable : userId = {0}, available = {1}", userId, available));
-            if (available)
-            {
-                mTRTCCloud.muteRemoteAudio(userId, false);
-            }
-            else
-            {
-                mTRTCCloud.muteRemoteAudio(userId, true);
-            }
         }
 
-        // 不推荐在此回调中显示远端视频画面，推荐使用 onUserVideoAvailable 
+        /// <summary>
+        /// 远端用户进房回调
+        /// 注意：不推荐在此回调中显示远端视频画面，推荐使用 onUserVideoAvailable 
+        /// </summary>
         public void onUserEnter(string userId)
         {
-            Log.I(String.Format("onUserEnter : userId = {0}", userId));
-            mRoomUsers.Add(userId);
+            if (this.IsHandleCreated)
+                this.BeginInvoke(new Action(() => {
+                    // 添加远端进房用户信息
+                    mRemoteUsers.Add(new RemoteUserInfo() { userId = userId, position = -1 });
+                    OnPKUserEnter(userId);
+                }));
+            
         }
 
+        /// <summary>
+        /// 远端连麦用户进房通知
+        /// </summary>
+        private void OnPKUserEnter(string userId)
+        {
+            foreach (PKUserInfo info in mPKUsers)
+            {
+                if (info.userId.Equals(userId))
+                {
+                    info.isEnterRoom = true;
+                    Log.I(String.Format("连麦用户[{0}]进入房间", userId));
+                    break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 获取空闲的窗口句柄分发给进房用户或屏幕分享界面
+        /// </summary>
         private IntPtr GetHandleAndSetUserId(int pos, string userId, bool isOpenSubStream)
         {
             switch(pos)
@@ -359,7 +542,10 @@ namespace TRTCCSharpDemo
             }
         }
 
-        private int GetRemoteVIdeoPosition(String userId)
+        /// <summary>
+        /// 获取远端用户的的窗口位置
+        /// </summary>
+        private int GetRemoteVideoPosition(String userId)
         {
             if (this.remoteUserLabel1.Text.Equals(userId))
                 return 1;
@@ -374,6 +560,9 @@ namespace TRTCCSharpDemo
             return -1;
         }
         
+        /// <summary>
+        /// 获取空闲窗口的位置
+        /// </summary>
         private int GetIdleRemoteVideoPosition(String userId)
         {
             if (string.IsNullOrEmpty(this.remoteUserLabel1.Text) || this.remoteUserLabel1.Text.Equals(userId))
@@ -389,35 +578,58 @@ namespace TRTCCSharpDemo
             return -1;
         }
 
+        /// <summary>
+        /// 远端用户退出房间回调
+        /// </summary>
         public void onUserExit(string userId, int reason)
         {
-            Log.I(String.Format("onUserExit : userId = {0}, reason = {1}", userId, reason));
-            if (IsMainThread())
-                OnUserExit(userId, reason);
-            else
+            if (this.IsHandleCreated)
                 this.BeginInvoke(new Action(() => {
-                    OnUserExit(userId, reason);
+                    // 清理远端用户退房信息，回收窗口
+                    OnPKUserExit(userId);
+                    int pos = FindOccupyRemoteVideoPosition(userId, true);
+                    if (pos != -1)
+                    {
+                        foreach (RemoteUserInfo user in mRemoteUsers)
+                        {
+                            if (user.userId.Equals(userId))
+                            {
+                                mRemoteUsers.Remove(user);
+                                break;
+                            }
+                        }
+                        // 停止远端的主流和辅流画面
+                        mTRTCCloud.stopRemoteView(userId);
+                        mTRTCCloud.stopRemoteSubStreamView(userId);
+                        // 关闭远端音量提示
+                        if (this.voiceCheckBox.Checked)
+                            SetRemoteVoiceVisable(pos, false);
+                    }
                 }));
         }
 
-        private void OnUserExit(string userId, int reason)
+        /// <summary>
+        /// 连麦用户退出房间，清理用户信息
+        /// </summary>
+        /// <param name="userId"></param>
+        private void OnPKUserExit(string userId)
         {
-            foreach (string user in mRoomUsers)
+            foreach (PKUserInfo info in mPKUsers)
             {
-                if (user.Equals(userId))
+                if (info.userId.Equals(userId) && info.isEnterRoom)
                 {
-                    mRoomUsers.Remove(user);
+                    mPKUsers.Remove(info);
+                    Log.I(String.Format("连麦用户[{0}]离开房间", userId));
                     break;
                 }
             }
-            int pos = FindOccupyRemoteVideoPosition(userId, true);
-            if (pos != -1)
-            {
-                mTRTCCloud.stopRemoteView(userId);
-                mTRTCCloud.stopRemoteSubStreamView(userId);
-            }
+            if (mPKUsers.Count <= 0)
+                this.connectRoomCheckBox.Checked = false;
         }
 
+        /// <summary>
+        /// 根据用户是否退房找到用户画面当前窗口的位置
+        /// </summary>
         private int FindOccupyRemoteVideoPosition(string userId, bool isExitRoom)
         {
             int pos = -1;
@@ -456,87 +668,95 @@ namespace TRTCCSharpDemo
             return pos;
         }
 
+        /// <summary>
+        /// 用户是否开启辅流
+        /// </summary>
         public void onUserSubStreamAvailable(string userId, bool available)
         {
-            Log.I(String.Format("onUserSubStreamAvailable : userId = {0}, available = {1}", userId, available));
-            if (IsMainThread())
-                OnUserSubStreamAvailable(userId, available);
-            else
+            if (this.IsHandleCreated)
                 this.BeginInvoke(new Action(() => {
-                    OnUserSubStreamAvailable(userId, available);
+                    if (available)
+                    {
+                        // 显示远端辅流界面
+                        int pos = GetIdleRemoteVideoPosition(userId + "(屏幕分享)");
+                        if (pos != -1)
+                        {
+                            IntPtr ptr = GetHandleAndSetUserId(pos, userId, true);
+                            SetVisableInfoView(pos, false);
+                            mTRTCCloud.setRemoteSubStreamViewFillMode(userId, DataManager.GetInstance().videoFillMode);
+                            mTRTCCloud.startRemoteSubStreamView(userId, ptr);
+                        }
+                    }
+                    else
+                    {
+                        // 移除远端辅流界面
+                        int pos = FindOccupyRemoteVideoPosition(userId + "(屏幕分享)", true);
+                        if (pos != -1)
+                        {
+                            mTRTCCloud.stopRemoteSubStreamView(userId);
+                            RemoveVideoMeta(userId, TRTCVideoStreamType.TRTCVideoStreamTypeSub);
+                            UpdateMixTranCodeInfo();
+                        }
+                    }
                 }));
         }
 
-        private void OnUserSubStreamAvailable(string userId, bool available)
-        {
-            if (available)
-            {
-                // 显示远端辅流界面
-                int pos = GetIdleRemoteVideoPosition(userId + "(屏幕分享)");
-                if (pos != -1)
-                {
-                    IntPtr ptr = GetHandleAndSetUserId(pos, userId, true);
-                    SetVisableInfoView(pos, false);
-                    mTRTCCloud.setRemoteSubStreamViewFillMode(userId, TRTCVideoFillMode.TRTCVideoFillMode_Fit);
-                    mTRTCCloud.startRemoteSubStreamView(userId, ptr);
-                }
-            }
-            else
-            {
-                int pos = FindOccupyRemoteVideoPosition(userId + "(屏幕分享)", true);
-                if (pos != -1)
-                {
-                    mTRTCCloud.stopRemoteSubStreamView(userId);
-                    RemoveVideoMeta(userId, TRTCVideoStreamType.TRTCVideoStreamTypeSub);
-                    UpdateMixTranCodeInfo();
-                }
-            }
-        }
-
+        /// <summary>
+        /// 用户是否开启摄像头视频
+        /// </summary>
         public void onUserVideoAvailable(string userId, bool available)
         {
-            Log.I(String.Format("onUserVideoAvailable : userId = {0}, available = {1}", userId, available));
-            if (IsMainThread())
-                OnUserVideoAvailable(userId, available);
-            else
+            if (this.IsHandleCreated)
                 this.BeginInvoke(new Action(() =>
                 {
-                    OnUserVideoAvailable(userId, available);
+                    // 判断用户是否已经退出房间
+                    bool isExit = mRemoteUsers.Exists((user) =>
+                    {
+                        if (user.userId.Equals(userId)) return true;
+                        else return false;
+                    });
+                    if (!isExit) return;
+                    if (available)
+                    {
+                        // 显示远端用户主流画面
+                        int pos = GetIdleRemoteVideoPosition(userId);
+                        if (pos != -1)
+                        {
+                            IntPtr ptr = GetHandleAndSetUserId(pos, userId, false);
+                            SetVisableInfoView(pos, false);
+                            mTRTCCloud.setRemoteViewFillMode(userId, DataManager.GetInstance().videoFillMode);
+                            mTRTCCloud.startRemoteView(userId, ptr);
+
+                            foreach (RemoteUserInfo info in mRemoteUsers)
+                            {
+                                if (info.userId.Equals(userId))
+                                {
+                                    info.position = pos;
+                                    break;
+                                }
+                            }
+                            if (this.voiceCheckBox.Checked)
+                                SetRemoteVoiceVisable(pos, true);
+                        }
+                    }
+                    else
+                    {
+                        // 移除远端用户主流画面
+                        int pos = GetRemoteVideoPosition(userId);
+                        if (pos != -1)
+                        {
+                            SetVisableInfoView(pos, true);
+                            mTRTCCloud.stopRemoteView(userId);
+                            RemoveVideoMeta(userId, TRTCVideoStreamType.TRTCVideoStreamTypeBig);
+                            UpdateMixTranCodeInfo();
+                        }
+                    }
                 }));
         }
 
-        private void OnUserVideoAvailable(string userId, bool available)
-        {
-            bool isExit = mRoomUsers.Exists((user) =>
-            {
-                if (user.Equals(userId)) return true;
-                else return false;
-            });
-            if (!isExit) return;
-            if (available)
-            {
-                int pos = GetIdleRemoteVideoPosition(userId);
-                if (pos != -1)
-                {
-                    IntPtr ptr = GetHandleAndSetUserId(pos, userId, false);
-                    SetVisableInfoView(pos, false);
-                    mTRTCCloud.setRemoteViewFillMode(userId, TRTCVideoFillMode.TRTCVideoFillMode_Fit);
-                    mTRTCCloud.startRemoteView(userId, ptr);
-                }
-            }
-            else
-            {
-                int pos = GetRemoteVIdeoPosition(userId);
-                if (pos != -1)
-                {
-                    SetVisableInfoView(pos, true);
-                    mTRTCCloud.stopRemoteView(userId);
-                    RemoveVideoMeta(userId, TRTCVideoStreamType.TRTCVideoStreamTypeBig);
-                    UpdateMixTranCodeInfo();
-                }
-            }
-        }
-
+        /// <summary>
+        /// 是否显示提示远端用户是否打开视频的画面
+        /// </summary>
         private void SetVisableInfoView(int pos, bool visable)
         {
             switch(pos)
@@ -561,16 +781,24 @@ namespace TRTCCSharpDemo
 
         private void OnExitLabelClick(object sender, EventArgs e)
         {
+            // 退出房间
+            if (mIsFirstExitRoom) return;
             if (mBeautyForm != null)
                 mBeautyForm.Close();
             if (mDeviceTestForm != null)
                 mDeviceTestForm.Close();
             if (mSettingForm != null)
                 mSettingForm.Close();
+            if (mConnectionForm != null)
+                mConnectionForm.Close();
+            if (mCustomCaptureForm != null)
+                mCustomCaptureForm.Close();
+            if (mDeviceTestForm != null)
+                mDeviceTestForm.Close();
             if (mDeviceForm != null)
                 mDeviceForm.Close();
-            PreUninit();
-            // 两种情况：1. 进房成功后需要退房，所以把清理资源放入 onExitRoom中；2. 进房失败后退出直接清理资源并退出。
+            Uninit();
+            // 如果进房成功，需要正常退房在关闭窗口，防止资源未清理完毕
             if (mIsEnterSuccess)
             {
                 mTRTCCloud.exitRoom();
@@ -578,9 +806,9 @@ namespace TRTCCSharpDemo
             }
             else
             {
-                Uninit();
                 this.Close();
             }
+            mIsFirstExitRoom = true;
             if (mLoginForm == null)
             {
                 mLoginForm = new TRTCLoginForm();
@@ -588,24 +816,16 @@ namespace TRTCCSharpDemo
             mLoginForm.Show();
         }
 
-        private void PreUninit()
-        {
-            mTRTCCloud.stopAllRemoteView();
-            mTRTCCloud.stopLocalPreview();
-            mTRTCCloud.stopLocalAudio();
-            mTRTCCloud.muteLocalAudio(true);
-            mTRTCCloud.muteLocalVideo(true);
-        }
-
         private void OnSettingLabelClick(object sender, EventArgs e)
         {
             if(mSettingForm == null)
-            {
-                mSettingForm = new TRTCSettingForm(mTRTCCloud);
-            }
+                mSettingForm = new TRTCSettingForm();
             mSettingForm.ShowDialog();
         }
 
+        /// <summary>
+        /// 打开仪表盘信息（自定义渲染下由于不是使用真窗口渲染，所以暂时无法显示仪表盘信息）
+        /// </summary>
         private void OnLogLabelClick(object sender, EventArgs e)
         {
             mLogLevel++;
@@ -616,70 +836,63 @@ namespace TRTCCSharpDemo
             }
         }
 
-        private void OnLocalVideoSmallPanelClick(object sender, EventArgs e)
-        {
-            if(this.localVideoSmallPanel.Visible == true && mIsEnterSuccess)
-            {
-                // 切换主流与辅流的画面
-                IntPtr temp;
-                temp = mCameraLocalVideo;
-                mCameraLocalVideo = mScreenLocalVideo;
-                mScreenLocalVideo = temp;
-                // 这里切换窗口句柄时无需调用 stopScreenCapture 来进行切换，但需要调用 stopLocalPreview 
-                mTRTCCloud.stopLocalPreview();
-                mTRTCCloud.startScreenCapture(mScreenLocalVideo);
-                mTRTCCloud.startLocalPreview(mCameraLocalVideo);
-            }
-        }
-
         public void onLog(string log, TRTCLogLevel level, string module)
         {
+            // SDK 内部日志显示
             Log.I(String.Format("onLog : log = {0}, level = {1}, module = {2}", log, level, module));
         }
 
+        /// <summary>
+        /// 开始渲染本地或远程用户的首帧画面
+        /// </summary>
         public void onFirstVideoFrame(string userId, TRTCVideoStreamType streamType, int width, int height)
         {
-            Log.I(String.Format("onFirstVideoFrame : userId = {0}, TRTCVideoStreamType = {1}, width = {2}, height = {3}", userId, streamType, width, height));
-            if (!this.screenShareCheckBox.Checked)
-            {
-                if (string.IsNullOrEmpty(userId) && streamType == TRTCVideoStreamType.TRTCVideoStreamTypeSub)
-                    return;
-            }
-            if (!string.IsNullOrEmpty(userId))
-            {
-                // 暂时只支持最多6个人同时视频
-                if (streamType == TRTCVideoStreamType.TRTCVideoStreamTypeBig && FindOccupyRemoteVideoPosition(userId, false) == -1 )
-                    return;
-                if (streamType == TRTCVideoStreamType.TRTCVideoStreamTypeSub && FindOccupyRemoteVideoPosition(userId + "(屏幕分享)", false) == -1)
-                    return;
-            }
-            if (string.IsNullOrEmpty(userId)) userId = mUserId;
-            bool find = false;
-            foreach (UserVideoMeta info in mMixStreamVideoMeta)
-            {
-                if (info.userId.Equals(userId) && info.streamType == streamType)
+            if (this.IsHandleCreated)
+                this.BeginInvoke(new Action(() =>
                 {
-                    info.width = width;
-                    info.height = height;
-                    find = true;
-                    break;
-                }
-            }
-            if (!find && !(streamType == TRTCVideoStreamType.TRTCVideoStreamTypeBig && userId == mUserId))
-            {
-                UserVideoMeta info = new UserVideoMeta();
-                info.streamType = streamType;
-                info.userId = userId;
-                info.width = width;
-                info.height = height;
-                mMixStreamVideoMeta.Add(info);
-                UpdateMixTranCodeInfo();
-            }
-            else
-            {
-                if (userId != mUserId)
-                    UpdateMixTranCodeInfo();
-            }
+                    if (!this.screenShareCheckBox.Checked)
+                    {
+                        if (string.IsNullOrEmpty(userId) && streamType == TRTCVideoStreamType.TRTCVideoStreamTypeSub)
+                            return;
+                    }
+                    if (!string.IsNullOrEmpty(userId))
+                    {
+                        // 暂时只支持最多6个人同时视频
+                        if (streamType == TRTCVideoStreamType.TRTCVideoStreamTypeBig && FindOccupyRemoteVideoPosition(userId, false) == -1)
+                            return;
+                        if (streamType == TRTCVideoStreamType.TRTCVideoStreamTypeSub && FindOccupyRemoteVideoPosition(userId + "(屏幕分享)", false) == -1)
+                            return;
+                    }
+
+                    // 这里主要用于添加用户的混流信息（包括本地和远端用户），并实时更新混流信息
+                    if (string.IsNullOrEmpty(userId)) userId = mUserId;
+                    bool find = false;
+                    foreach (UserVideoMeta info in mMixStreamVideoMeta)
+                    {
+                        if (info.userId.Equals(userId) && info.streamType == streamType)
+                        {
+                            info.width = width;
+                            info.height = height;
+                            find = true;
+                            break;
+                        }
+                    }
+                    if (!find && !(streamType == TRTCVideoStreamType.TRTCVideoStreamTypeBig && userId == mUserId))
+                    {
+                        UserVideoMeta info = new UserVideoMeta();
+                        info.streamType = streamType;
+                        info.userId = userId;
+                        info.width = width;
+                        info.height = height;
+                        mMixStreamVideoMeta.Add(info);
+                        UpdateMixTranCodeInfo();
+                    }
+                    else
+                    {
+                        if (userId != mUserId)
+                            UpdateMixTranCodeInfo();
+                    }
+                }));
         }
 
         public void onFirstAudioFrame(string userId)
@@ -708,23 +921,16 @@ namespace TRTCCSharpDemo
             if (this.screenShareCheckBox.Checked)
             {
                 // 开启屏幕分享功能
-                TRTCScreenForm screenForm = new TRTCScreenForm(mTRTCCloud, this);
+                TRTCScreenForm screenForm = new TRTCScreenForm(this);
                 screenForm.ShowDialog();
             }
             else
             {
                 // 关闭屏幕分享功能
                 if (!mIsSetScreenSuccess) return;
-                this.localVideoSmallPanel.Visible = false;
                 mTRTCCloud.stopScreenCapture();
-                if(mScreenLocalVideo == this.localVideoPanel.Handle)
-                {
-                    mCameraLocalVideo = this.localVideoPanel.Handle;
-                    mScreenLocalVideo = this.localVideoSmallPanel.Handle;
-                }
-                // 视频出现白边，重新加载
-                mTRTCCloud.stopLocalPreview();
-                mTRTCCloud.startLocalPreview(mCameraLocalVideo);
+                if (mToastForm != null)
+                    mToastForm.Hide();
 
                 // 移除混流中的屏幕分享画面
                 RemoveVideoMeta(mUserId, TRTCVideoStreamType.TRTCVideoStreamTypeSub);
@@ -734,24 +940,23 @@ namespace TRTCCSharpDemo
 
         private void OnMixTransCodingCheckBoxClick(object sender, EventArgs e)
         {
-            if (!mIsEnterSuccess)
-            {
-                ShowMessage("进房失败，请重试");
-                this.mixTransCodingCheckBox.Checked = false;
-                return;
-            }
             if (this.mixTransCodingCheckBox.Checked)
             {
                 // 开启云端画面混合功能
+                DataManager.GetInstance().isMixTranscoding = true;
                 UpdateMixTranCodeInfo();
             }
             else
             {
-                // 关闭与那段画面混合功能
+                // 关闭云端画面混合功能
+                DataManager.GetInstance().isMixTranscoding = false;
                 mTRTCCloud.setMixTranscodingConfig(null);
             }
         }
 
+        /// <summary>
+        /// 移除混流画面的用户信息
+        /// </summary>
         private void RemoveVideoMeta(string userId, TRTCVideoStreamType streamType)
         {
             foreach (UserVideoMeta info in mMixStreamVideoMeta)
@@ -764,29 +969,55 @@ namespace TRTCCSharpDemo
             }
         }
 
+        /// <summary>
+        /// 更新云端混流界面信息（本地用户进房或远程用户进房或开启本地屏幕共享画面则需要更新）
+        /// </summary>
         private void UpdateMixTranCodeInfo()
         {
+            // 没有打开云端混流功能则退出
             if (!this.mixTransCodingCheckBox.Checked)
                 return;
 
+            // 云端混流的没有辅流界面，则退出（无需混流）
             if (mMixStreamVideoMeta.Count == 0)
             {
                 mTRTCCloud.setMixTranscodingConfig(null);
                 return;
             }
 
-            if (this.muteVideoCheckBox.Checked)
+            // 如果使用的是纯音频进房，则需要混流设置每一路为纯音频，云端会只混流音频数据
+            if (DataManager.GetInstance().pureAudioStyle)
             {
-                foreach (UserVideoMeta info in mMixStreamVideoMeta)
-                    info.pureAudio = true;
+                foreach (UserVideoMeta meta in mMixStreamVideoMeta)
+                    meta.pureAudio = true;
             }
 
+            // 没有主流，直接停止混流。
+            if (this.muteVideoCheckBox.Checked && this.muteAudioCheckBox.Checked)
+            {
+                mTRTCCloud.setMixTranscodingConfig(null);
+                return;
+            }
+
+            // 配置本地主流的混流信息
             UserVideoMeta localMainVideo = new UserVideoMeta()
             {
                 userId = mUserId
             };
-            // 连麦后的User可进行设置对应的roomId（暂时未完成连麦）
+            // 连麦后的User可进行设置对应的roomId
+            foreach (UserVideoMeta info in mMixStreamVideoMeta)
+            {
+                foreach (PKUserInfo pKUserInfo in mPKUsers)
+                {
+                    if (pKUserInfo.userId.Equals(info.userId))
+                    {
+                        info.roomId = pKUserInfo.roomId;
+                        break;
+                    }
+                }
+            }
 
+            // 这里的显示混流的方式只提供参考，如需使用其他方式显示请参考以下方式
             int canvasWidth = 960, canvasHeight = 720;
             int appId = GenerateTestUserSig.APPID;
             int bizId = GenerateTestUserSig.BIZID;
@@ -809,6 +1040,7 @@ namespace TRTCCSharpDemo
             config.audioBitrate = 64;
             config.audioChannels = 1;
             config.mixUsersArraySize = (uint)(1 + mMixStreamVideoMeta.Count);
+            // 设置每一路子画面的位置信息（仅供参考）
             TRTCMixUser[] mixUsersArray = new TRTCMixUser[config.mixUsersArraySize];
             for (int i = 0; i < config.mixUsersArraySize; i++)
                 mixUsersArray[i] = new TRTCMixUser();
@@ -828,11 +1060,6 @@ namespace TRTCCSharpDemo
             mixUsersArray[index].streamType = localMainVideo.streamType;
             mixUsersArray[index].zOrder = zOrder++;
             index++;
-            Log.I(string.Format("mMixStreamVideoMeta : length = {0}", mMixStreamVideoMeta.Count));
-            foreach (UserVideoMeta info in mMixStreamVideoMeta)
-            {
-                Log.I(String.Format("mMixStreamVideoMeta : userId = {0}, streamType = {1}", info.userId, info.streamType));
-            }
             foreach (UserVideoMeta info in mMixStreamVideoMeta)
             {
                 int left = 20, top = 40;
@@ -869,10 +1096,10 @@ namespace TRTCCSharpDemo
                 }
 
                 int right = 240 + left, bottom = 240 + top;
-                if (info.roomId.CompareTo("") == 0)
+                if (info.roomId <= 0)
                     mixUsersArray[index].roomId = null;
                 else
-                    mixUsersArray[index].roomId = info.roomId;
+                    mixUsersArray[index].roomId = info.roomId.ToString();
                 mixUsersArray[index].userId = info.userId;
                 mixUsersArray[index].pureAudio = info.pureAudio;
                 RECT rt = new RECT()
@@ -889,6 +1116,7 @@ namespace TRTCCSharpDemo
                 index++;
             }
             config.mixUsersArray = mixUsersArray;
+            // 设置云端混流配置信息
             mTRTCCloud.setMixTranscodingConfig(config);
         }
 
@@ -920,17 +1148,16 @@ namespace TRTCCSharpDemo
                 this.muteVideoCheckBox.Checked = false;
                 return;
             }
+            if (DataManager.GetInstance().pureAudioStyle)
+            {
+                ShowMessage("Error: 纯音频场景，无法打开视频，请退房重新选择模式");
+                this.muteVideoCheckBox.Checked = true;
+                return;
+            }
             if (!this.muteVideoCheckBox.Checked)
             {
                 // 开启本地视频画面
                 mTRTCCloud.muteLocalVideo(false);
-                // 视频出现白边，重新加载
-                mTRTCCloud.startLocalPreview(mCameraLocalVideo);
-                if (this.screenShareCheckBox.Checked)
-                {
-                    this.localVideoSmallPanel.Visible = true;
-                    mTRTCCloud.resumeScreenCapture();
-                }
                 this.localInfoLabel.Visible = false;
             }
             else
@@ -938,31 +1165,23 @@ namespace TRTCCSharpDemo
                 // 屏蔽本地视频画面
                 this.localInfoLabel.Visible = true;
                 mTRTCCloud.muteLocalVideo(true);
-                // 视频出现白边，重新加载
-                mTRTCCloud.stopLocalPreview();
-                if (this.screenShareCheckBox.Checked)
-                {
-                    this.localVideoSmallPanel.Visible = false;
-                    mTRTCCloud.pauseScreenCapture();
-                }
             }
         }
 
         private void OnMirrorCheckBoxClick(object sender, EventArgs e)
         {
-            if (!mIsEnterSuccess)
-            {
-                ShowMessage("进房失败，请重试");
-                this.mirrorCheckBox.Checked = false;
-                return;
-            }
+            // 这里同时同步本地和远端的镜像模式，用户可自行拆分功能
             if (this.mirrorCheckBox.Checked)
             {
+                DataManager.GetInstance().isLocalVideoMirror = true;
+                DataManager.GetInstance().isRemoteVideoMirror = true;
                 mTRTCCloud.setVideoEncoderMirror(true);
                 mTRTCCloud.setLocalViewMirror(true);
             }
             else
             {
+                DataManager.GetInstance().isLocalVideoMirror = false;
+                DataManager.GetInstance().isRemoteVideoMirror = false;
                 mTRTCCloud.setVideoEncoderMirror(false);
                 mTRTCCloud.setLocalViewMirror(false);
             }
@@ -971,12 +1190,13 @@ namespace TRTCCSharpDemo
         private void OnDeviceLabelClick(object sender, EventArgs e)
         {
             if (mDeviceForm == null)
-                mDeviceForm = new TRTCDeviceForm(mTRTCCloud, this);
+                mDeviceForm = new TRTCDeviceForm(this);
             mDeviceForm.ShowDialog();
         }
 
         private void OnShareUrlLabelClick(object sender, EventArgs e)
         {
+            // 获取旁路直播的 url
             if (!this.mixTransCodingCheckBox.Checked)
             {
                 ShowMessage("请勾选云端混流选项！");
@@ -995,7 +1215,7 @@ namespace TRTCCSharpDemo
         private void OnTestDeviceLabelClick(object sender, EventArgs e)
         {
             if (mDeviceTestForm == null)
-                mDeviceTestForm = new TRTCDeviceTestForm(mTRTCCloud);
+                mDeviceTestForm = new TRTCDeviceTestForm();
             mDeviceTestForm.ShowDialog();
         }
 
@@ -1007,12 +1227,14 @@ namespace TRTCCSharpDemo
                 return;
             }
             if (mBeautyForm == null)
-                mBeautyForm = new TRTCBeautyForm(mTRTCCloud);
+                mBeautyForm = new TRTCBeautyForm();
             mBeautyForm.ShowDialog();
         }
 
         private void OnSystemAudioCheckBoxClick(object sender, EventArgs e)
         {
+            // 注意：系统混音功能暂时不支持64位系统
+            if (Util.IsSys64bit()) return;
             if (!mIsEnterSuccess)
             {
                 ShowMessage("进房失败，请重试");
@@ -1030,9 +1252,111 @@ namespace TRTCCSharpDemo
             }
         }
 
+        private void OnCustomCaptureCheckBoxClick(object sender, EventArgs e)
+        {
+            if (!mIsEnterSuccess)
+            {
+                ShowMessage("进房失败，请重试");
+                this.customCaptureCheckBox.Checked = false;
+                return;
+            }
+            if (this.customCaptureCheckBox.Checked)
+            {
+                if (mCustomCaptureForm == null)
+                    mCustomCaptureForm = new TRTCCustomCaptureForm(this);
+                mCustomCaptureForm.ShowDialog();
+            }
+            else
+            {
+                if (mCustomCaptureForm != null)
+                {
+                    mCustomCaptureForm.Close();
+                    mCustomCaptureForm = null;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 用于提示音量大小的回调,包括每个 userId 的音量和远端总音量
+        /// </summary>
         public void onUserVoiceVolume(TRTCVolumeInfo[] userVolumes, uint userVolumesCount, uint totalVolume)
         {
-            Log.I(String.Format("onUserVoiceVolume : userVolumes = {0}, userVolumesCount = {1}, totalVolume = {2}", userVolumes, userVolumesCount, totalVolume));
+            if (this.IsHandleCreated)
+                this.BeginInvoke(new Action(() =>
+                {
+                    if (userVolumesCount <= 0) return;
+                    foreach (TRTCVolumeInfo info in userVolumes)
+                    {
+                        if (string.IsNullOrEmpty(info.userId) && this.localVoiceProgressBar.Visible)
+                            this.localVoiceProgressBar.Value = (int)info.volume;
+                        else
+                            SetRemoteVoiceVolume(info.userId, (int)info.volume);
+                    }
+                }));
+        }
+
+        /// <summary>
+        /// 根据位置设置远端用户的音量提示功能显示
+        /// </summary>
+        private void SetRemoteVoiceVisable(int pos, bool visable)
+        {
+            if (pos == 1)
+                this.remoteVoiceProgressBar1.Visible = visable;
+            if (pos == 2)
+                this.remoteVoiceProgressBar2.Visible = visable;
+            if (pos == 3)
+                this.remoteVoiceProgressBar3.Visible = visable;
+            if (pos == 4)
+                this.remoteVoiceProgressBar4.Visible = visable;
+            if (pos == 5)
+                this.remoteVoiceProgressBar5.Visible = visable;
+        }
+
+        /// <summary>
+        /// 设置远端主流的麦克风音量
+        /// </summary>
+        private void SetRemoteVoiceVolume(string userId, int volume)
+        {
+            if (this.remoteUserLabel1.Text.Equals(userId) && this.remoteVoiceProgressBar1.Visible)
+                this.remoteVoiceProgressBar1.Value = volume;
+            else if (this.remoteUserLabel2.Text.Equals(userId) && this.remoteVoiceProgressBar2.Visible)
+                this.remoteVoiceProgressBar2.Value = volume;
+            else if (this.remoteUserLabel3.Text.Equals(userId) && this.remoteVoiceProgressBar3.Visible)
+                this.remoteVoiceProgressBar3.Value = volume;
+            else if (this.remoteUserLabel4.Text.Equals(userId) && this.remoteVoiceProgressBar4.Visible)
+                this.remoteVoiceProgressBar4.Value = volume;
+            else if (this.remoteUserLabel5.Text.Equals(userId) && this.remoteVoiceProgressBar5.Visible)
+                this.remoteVoiceProgressBar5.Value = volume;
+        }
+
+        private void OnVoiceCheckBoxClick(object sender, EventArgs e)
+        {
+            if (this.voiceCheckBox.Checked)
+            {
+                // 开启音量提示
+                DataManager.GetInstance().isShowVolume = true;
+                if (mTRTCCloud != null)
+                    mTRTCCloud.enableAudioVolumeEvaluation(300);
+                this.localVoiceProgressBar.Visible = true;
+                foreach (RemoteUserInfo info in mRemoteUsers)
+                {
+                    if (info.position != -1)
+                        SetRemoteVoiceVisable(info.position, true);
+                }
+            }
+            else
+            {
+                // 关闭音量提示
+                DataManager.GetInstance().isShowVolume = false;
+                if (mTRTCCloud != null)
+                    mTRTCCloud.enableAudioVolumeEvaluation(0);
+                this.localVoiceProgressBar.Visible = false;
+                foreach (RemoteUserInfo info in mRemoteUsers)
+                {
+                    if (info.position != -1)
+                        SetRemoteVoiceVisable(info.position, false);
+                }
+            }
         }
 
         public void onWarning(TXLiteAVWarning warningCode, string warningMsg, IntPtr arg)
@@ -1043,7 +1367,15 @@ namespace TRTCCSharpDemo
         public void onCameraDidReady()
         {
             Log.I(String.Format("onCameraDidReady"));
+            // 实时获取当前使用的摄像头设备信息
             mCurCameraDevice = mTRTCCloud.getCurrentCameraDevice().getDeviceName();
+        }
+
+        public void onMicDidReady()
+        {
+            Log.I(String.Format("onMicDidReady"));
+            // 实时获取当前使用的麦克风设备信息
+            mCurMicDevice = mTRTCCloud.getCurrentMicDevice().getDeviceName();
         }
 
         public void onConnectionLost()
@@ -1064,9 +1396,12 @@ namespace TRTCCSharpDemo
             ShowMessage("网络恢复，重进房成功");
         }
 
-        public void onConnectOtherRoom(string userId, TXLiteAVError errCode, string errMsg)
+        public void OnConnectionFormClose()
         {
-            Log.I(String.Format("onConnectOtherRoom : userId = {0}, errCode = {1}, errMsg = {2}", userId, errCode, errMsg));
+            if (mPKUsers.Count > 0)
+                this.connectRoomCheckBox.Checked = true;
+            else
+                this.connectRoomCheckBox.Checked = false;
         }
 
         public void OnCameraDeviceChange(string deviceName)
@@ -1086,6 +1421,7 @@ namespace TRTCCSharpDemo
 
         public void onDeviceChange(string deviceId, TRTCDeviceType type, TRTCDeviceState state)
         {
+            // 实时监控本地设备的拔插
             Log.I(String.Format("onDeviceChange : deviceId = {0}, type = {1}, state = {2}", deviceId, type, state));
             if (type == TRTCDeviceType.TRTCDeviceTypeCamera)
             {
@@ -1093,7 +1429,6 @@ namespace TRTCCSharpDemo
                 {
                     RefreshVideoDevice(deviceId, state);
                 }));
-                
             }
             else if (type == TRTCDeviceType.TRTCDeviceTypeMic)
             {
@@ -1109,6 +1444,9 @@ namespace TRTCCSharpDemo
             }));
         }
 
+        /// <summary>
+        /// 实时更新本地设备摄像头的设备信息
+        /// </summary>
         private void RefreshVideoDevice(string deviceId, TRTCDeviceState state)
         {
             bool reSelectDevice = false;
@@ -1145,13 +1483,16 @@ namespace TRTCCSharpDemo
                 if (collection.getCount() > 0)
                 {
                     mTRTCCloud.setCurrentCameraDevice(collection.getDevicePID(0));
-                    mTRTCCloud.startLocalPreview(mCameraLocalVideo);
+                    mTRTCCloud.startLocalPreview(mCameraLocalVideoHwnd);
                     mCurCameraDevice = collection.getDeviceName(0);
                 }
                 collection.release();
             }
         }
 
+        /// <summary>
+        /// 实时更新本地设备麦克风的设备信息
+        /// </summary>
         private void RefreshAudioDevice(string deviceId, TRTCDeviceState state)
         {
             bool reSelectDevice = false;
@@ -1188,21 +1529,61 @@ namespace TRTCCSharpDemo
                 {
                     mTRTCCloud.setCurrentMicDevice(collection.getDevicePID(0));
                     mTRTCCloud.startLocalAudio();
+                    mTRTCCloud.muteLocalAudio(false);
                     mCurMicDevice = collection.getDeviceName(0);
                 }
             }
             collection.release();
         }
 
-        public void onDisconnectOtherRoom(TXLiteAVError errCode, string errMsg)
+        private void OnConnectRoomCheckBoxClick(object sender, EventArgs e)
         {
-            Log.I(String.Format("onDisconnectOtherRoom : errCode = {0}, errmsg = {1}", errCode, errMsg));
+            if (!mIsEnterSuccess)
+            {
+                ShowMessage("进房失败，请重试");
+                return;
+            }
+            if (mPKUsers.Count > 0)
+                this.connectRoomCheckBox.Checked = true;
+            else
+                this.connectRoomCheckBox.Checked = false;
+            if (mConnectionForm == null)
+                mConnectionForm = new TRTCConnectionForm(this);
+            mConnectionForm.SetDisconnectBtnEnabled(mPKUsers.Count > 0);
+            mConnectionForm.ShowDialog();
         }
 
-        public void onMicDidReady()
+        public void onConnectOtherRoom(string userId, TXLiteAVError errCode, string errMsg)
         {
-            Log.I(String.Format("onMicDidReady"));
-            mCurMicDevice = mTRTCCloud.getCurrentMicDevice().getDeviceName();
+            if (this.IsHandleCreated)
+                this.BeginInvoke(new Action(() =>
+                {
+                    // 连麦后事件回调，如果 errCode == ERR_NULL 则表示连麦成功。
+                    if (mConnectionForm != null)
+                        mConnectionForm.OnConnectOtherRoom(userId, errCode, errMsg);
+                }));
+        }
+
+        public void onDisconnectOtherRoom(TXLiteAVError errCode, string errMsg)
+        {
+            if (this.IsHandleCreated)
+                this.BeginInvoke(new Action(() =>
+                {
+                    // 取消连麦后事件回调，如果 errCode == ERR_NULL 则表示取消连麦成功。
+                    if (mConnectionForm != null)
+                        mConnectionForm.OnDisconnectOtherRoom(errCode, errMsg);
+                }));
+        }
+
+        public void AddPKUser(uint roomId, string userId)
+        {
+            mPKUsers.Add(new PKUserInfo() { roomId = roomId, userId = userId });
+        }
+
+        public void ClearPKUsers()
+        {
+            mPKUsers.Clear();
+            this.connectRoomCheckBox.Checked = false;
         }
 
         public void onMissCustomCmdMsg(string userId, int cmdId, int errCode, int missed)
@@ -1278,24 +1659,18 @@ namespace TRTCCSharpDemo
             Log.I(String.Format("onStartPublishCDNStream : errCode = {0}, errMsg = {1}", errCode, errMsg));
         }
 
+        /// <summary>
+        /// 网络质量：该回调每2秒触发一次，统计当前网络的上行和下行质量
+        /// </summary>
         public void onNetworkQuality(TRTCQualityInfo localQuality, TRTCQualityInfo[] remoteQuality, uint remoteQualityCount)
         {
-            Log.I(String.Format("上行网络质量： userId = {0} , Quality = {1}", mUserId, localQuality.quality));
-            foreach (TRTCQualityInfo info in remoteQuality)
-            {
-                Log.I(String.Format("下行网络质量： userId = {0}, Quality = {1}", info.userId, info.quality));
-            }
         }
 
         public void onStatistics(TRTCStatistics statis)
         {
-            Log.I(String.Format(@"onStatistics : upLoss = {0}, downLoss = {1}, appCpu = {2}, systemCpu = {3}, 
-                rtt = {4}, receivedBytes = {5}, sentBytes = {6}, localStatisticsArraySize = {7}, remoteStatisticsArraySize = {8}", 
-                statis.upLoss, statis.downLoss, statis.appCpu, statis.systemCpu, statis.rtt, statis.receivedBytes, 
-                statis.sentBytes, statis.localStatisticsArraySize, statis.remoteStatisticsArraySize));
             if (statis.localStatisticsArray != null && statis.localStatisticsArraySize > 0)
             {
-                // 从这里记录本地的屏幕分享信息
+                // 从这里记录本地的屏幕分享信息，实时更新混流
                 TRTCLocalStatistics[] localStatisticsArray = statis.localStatisticsArray;
                 for (int i = 0; i < statis.localStatisticsArraySize; i++)
                 {
@@ -1306,23 +1681,6 @@ namespace TRTCCSharpDemo
                         TRTCVideoStreamType streamType = localStatisticsArray[i].streamType;
                         onFirstVideoFrame(null, TRTCVideoStreamType.TRTCVideoStreamTypeSub, width, height);
                     }
-                    Log.I(String.Format(@"localStatisticsArray[{0}] : width = {1}, height = {2}, frameRate = {3}, 
-                    videoBitrate = {4}, audioSampleRate = {5}, audioBitrate = {6}, streamType = {7}", i + 1,
-                        localStatisticsArray[i].width, localStatisticsArray[i].height, localStatisticsArray[i].frameRate,
-                        localStatisticsArray[i].videoBitrate, localStatisticsArray[i].audioSampleRate, localStatisticsArray[i].audioBitrate,
-                        localStatisticsArray[i].streamType));
-                }
-            }
-            if (statis.remoteStatisticsArray != null && statis.remoteStatisticsArraySize > 0)
-            {
-                TRTCRemoteStatistics[] remoteStatisticsArray = statis.remoteStatisticsArray;
-                for (int i = 0; i < statis.remoteStatisticsArraySize; i++)
-                {
-                    Log.I(String.Format(@"remoteStatisticsArray[{0}] : userId = {1}, finalLoss = {2}, width = {3}, height = {4}, 
-                    frameRate = {5}, videoBitrate = {6}, audioSampleRate = {7}, audioBitrate = {8}, streamType = {9}", i + 1,
-                        remoteStatisticsArray[i].userId, remoteStatisticsArray[i].finalLoss, remoteStatisticsArray[i].width,
-                        remoteStatisticsArray[i].height, remoteStatisticsArray[i].frameRate, remoteStatisticsArray[i].videoBitrate,
-                        remoteStatisticsArray[i].audioSampleRate, remoteStatisticsArray[i].audioBitrate, remoteStatisticsArray[i].streamType));
                 }
             }
         }
@@ -1337,22 +1695,30 @@ namespace TRTCCSharpDemo
             Log.I(String.Format("onSwitchRole : errCode = {0}, errMsg = {1}", errCode, errMsg));
         }
 
+        /// <summary>
+        /// 测试麦克风设备的音量回调
+        /// </summary>
         public void onTestMicVolume(uint volume)
         {
-            Log.I(String.Format("onTestMicVolume : volume = {0}", volume));
-            if (mDeviceTestForm != null)
-            {
-                mDeviceTestForm.OnTestMicVolume(volume);
-            }
+            if (this.IsHandleCreated)
+                this.BeginInvoke(new Action(() =>
+                {
+                    if (mDeviceTestForm != null)
+                        mDeviceTestForm.OnTestMicVolume(volume);
+                }));
         }
 
+        /// <summary>
+        /// 测试扬声器设备的音量回调
+        /// </summary>
         public void onTestSpeakerVolume(uint volume)
         {
-            Log.I(String.Format("onTestSpeakerVolume : volume = {0}", volume));
-            if (mDeviceTestForm != null)
-            {
-                mDeviceTestForm.OnTestSpeakerVolume(volume);
-            }
+            if (this.IsHandleCreated)
+                this.BeginInvoke(new Action(() =>
+                {
+                    if (mDeviceTestForm != null)
+                        mDeviceTestForm.OnTestSpeakerVolume(volume);
+                }));
         }
 
         public void OnSetScreenParamsCallback(bool success)
@@ -1362,8 +1728,14 @@ namespace TRTCCSharpDemo
             {
                 if (mTRTCCloud != null)
                 {
-                    this.localVideoSmallPanel.Visible = true;
-                    mTRTCCloud.startScreenCapture(mScreenLocalVideo);
+                    mTRTCCloud.startScreenCapture(IntPtr.Zero);
+                    this.Invoke(new Action(() =>
+                    {
+                        if (mToastForm == null)
+                            mToastForm = new ToastForm();
+                        mToastForm.SetText(mUserId + " 正在屏幕共享");
+                        mToastForm.Show();
+                    }));
                 }
             }
             else
@@ -1372,30 +1744,121 @@ namespace TRTCCSharpDemo
             }
         }
 
-    }
-
-    class UserVideoMeta
-    {
-        public string userId { get; set; }
-        public string roomId { get; set; }
-        public TRTCVideoStreamType streamType { get; set; }
-        public int width { get; set; }
-        public int height { get; set; }
-        public uint fps { get; set; }
-        public bool pureAudio { get; set; }
-        public bool mainStream { get; set; }
-
-        public UserVideoMeta()
+        /// <summary>
+        /// 开启自定义音频采集的Timer
+        /// </summary>
+        public void StartAudioCaptureTimer()
         {
-            userId = "";
-            roomId = "";
-            streamType = TRTCVideoStreamType.TRTCVideoStreamTypeBig;
-            width = 0;
-            height = 0;
-            fps = 0;
-            pureAudio = false;
-            mainStream = false;
+            if (mAudioTimer == null)
+            {
+                mAudioTimer = new System.Timers.Timer(15);
+                mAudioTimer.Enabled = true;
+                mAudioTimer.AutoReset = true;
+                mAudioTimer.Elapsed += new System.Timers.ElapsedEventHandler(OnAudioTimerEvent);
+            }
+            mAudioTimer.Start();
+        }
+
+        /// <summary>
+        /// 关闭自定义音频采集的Timer
+        /// </summary>
+        public void StopAudioCaptureTimer()
+        {
+            if (mAudioTimer != null)
+            {
+                mAudioTimer.Stop();
+                mAudioTimer = null;
+            }
+        }
+
+        /// <summary>
+        /// 开始发送采集的音频数据
+        /// </summary>
+        private void OnAudioTimerEvent(object sender, ElapsedEventArgs e)
+        {
+            if (mCustomCaptureForm != null && mTRTCCloud != null)
+                mCustomCaptureForm.SendCustomAudioFrame();
+        }
+
+        /// <summary>
+        /// 开启自定义视频采集的Timer
+        /// </summary>
+        public void StartVideoCaptureTimer()
+        {
+            if (mVideoTimer == null)
+            {
+                mVideoTimer = new System.Timers.Timer(1000 / DataManager.GetInstance().videoEncParams.videoFps);
+                mVideoTimer.Enabled = true;
+                mVideoTimer.AutoReset = true;
+                mVideoTimer.Elapsed += new System.Timers.ElapsedEventHandler(OnVideoTimerEvent);
+            }
+            mVideoTimer.Start();
+        }
+
+        /// <summary>
+        /// 开始发送采集的视频数据
+        /// </summary>
+        public void OnVideoTimerEvent(object sender, ElapsedEventArgs e)
+        {
+            if (mCustomCaptureForm != null && mTRTCCloud != null)
+                mCustomCaptureForm.SendCustomVideoFrame();
+        }
+
+        /// <summary>
+        /// 关闭自定义视频采集的Timer
+        /// </summary>
+        public void StopVideoCaptureTimer()
+        {
+            if (mVideoTimer != null)
+            {
+                mVideoTimer.Stop();
+                mVideoTimer = null;
+            }
+        }
+
+        public void OnCustomCaptureAudioCallback(bool stop)
+        {
+            if (!stop)
+            {
+                // 开启自定义采集音频，停止本地采集音频
+                mTRTCCloud.stopLocalAudio();
+            }
+            else
+            {
+                // 关闭自定义采集音频，开启本地采集音频
+                mTRTCCloud.startLocalAudio();
+                if (this.muteAudioCheckBox.Checked)
+                    mTRTCCloud.muteLocalAudio(true);
+                else
+                    mTRTCCloud.muteLocalAudio(false);
+            }
+        }
+
+        public void OnCustomCaptureVideoCallback(bool stop)
+        {
+            if (!stop)
+            {
+                // 开启自定义采集视频，停止本地采集视频
+                mTRTCCloud.stopLocalPreview();
+                // 开启自定义渲染视频
+                this.customVideoPanel.StartCustomRender(true);
+            }
+            else
+            {
+                // 关闭自定义采集视频，开启本地采集视频
+                mTRTCCloud.startLocalPreview(mCameraLocalVideoHwnd);
+                // 关闭自定义渲染视频
+                this.customVideoPanel.StartCustomRender(false);
+                if (this.muteVideoCheckBox.Checked)
+                    mTRTCCloud.muteLocalVideo(true);
+                else
+                    mTRTCCloud.muteLocalVideo(false);
+            }
+        }
+
+        public void OnCustomCaptureEnabled(bool enabled)
+        {
+            this.customCaptureCheckBox.Checked = enabled;
         }
     }
-    
 }

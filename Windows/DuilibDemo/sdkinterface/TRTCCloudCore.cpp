@@ -60,7 +60,7 @@ void TRTCCloudCore::Init()
     //std::string logPath = Wide2UTF8(L"D:/中文/log/");
     //m_pCloud->setLogDirPath(logPath.c_str());
     
-    //m_pCloud->setAudioFrameCallback(this);
+    m_pCloud->setAudioFrameCallback(this);
 }
 
 void TRTCCloudCore::Uninit()
@@ -162,6 +162,19 @@ void TRTCCloudCore::onUserExit(const char* userId, int reason)
         {
             std::string * str = new std::string(userId);
             ::PostMessage(itr.second, WM_USER_CMD_MemberExit, (WPARAM)str, 0);
+        }
+    }
+}
+
+void TRTCCloudCore::onUserAudioAvailable(const char * userId, bool available)
+{
+    LINFO(L"onUserAudioAvailable userId[%s] available[%d]\n", UTF82Wide(userId).c_str(), available);
+    for (auto& itr : m_mapSDKMsgFilter)
+    {
+        if (itr.first == WM_USER_CMD_AuidoAvailable && itr.second != nullptr)
+        {
+            std::string * str = new std::string(userId);
+            ::PostMessage(itr.second, WM_USER_CMD_AuidoAvailable, (WPARAM)str, available);
         }
     }
 }
@@ -463,6 +476,39 @@ void TRTCCloudCore::onFirstVideoFrame(const char* userId, const TRTCVideoStreamT
     }
 }
 
+void TRTCCloudCore::onSendFirstLocalVideoFrame(const TRTCVideoStreamType streamType)
+{
+    LINFO(L"onSendFirstLocalVideoFrame streamType[%d]\n", streamType);
+
+    std::unique_lock<std::mutex> lck(m_mutexMsgFilter);
+    for (auto& itr : m_mapSDKMsgFilter)
+    {
+        if (itr.first == WM_USER_CMD_SendFirstLocalVideoFrame && itr.second != nullptr)
+        {
+            ::PostMessage(itr.second, WM_USER_CMD_SendFirstLocalVideoFrame, streamType, 0);
+        }
+    }
+}
+
+void TRTCCloudCore::onSendFirstLocalAudioFrame()
+{
+    LINFO(L"onSendFirstLocalAudioFrame\n");
+
+    std::unique_lock<std::mutex> lck(m_mutexMsgFilter);
+    for (auto& itr : m_mapSDKMsgFilter)
+    {
+        if (itr.first == WM_USER_CMD_SendFirstLocalAudioFrame && itr.second != nullptr)
+        {
+            ::PostMessage(itr.second, WM_USER_CMD_SendFirstLocalAudioFrame, 0, 0);
+        }
+    }
+}
+
+void TRTCCloudCore::onAudioEffectFinished(int effectId, int code)
+{
+
+}
+
 void TRTCCloudCore::onConnectionLost()
 {
     LINFO(L"onConnectionLost\n");
@@ -532,22 +578,19 @@ void TRTCCloudCore::removeSDKMsgObserver(uint32_t msg, HWND hwnd)
 void TRTCCloudCore::removeSDKMsgObserverByHwnd(HWND hwnd)
 {
     std::unique_lock<std::mutex> lck(m_mutexMsgFilter);
-    int size = m_mapSDKMsgFilter.size();
-    for (int i = 0; i < size; i++)
+
+    std::map<uint32_t, HWND>::iterator itr;
+    for (itr = m_mapSDKMsgFilter.begin(); itr != m_mapSDKMsgFilter.end(); )
     {
-        bool bFind = false;
-        std::map<uint32_t, HWND>::iterator itr = m_mapSDKMsgFilter.begin();
-        for (; itr != m_mapSDKMsgFilter.end(); itr++)
+
+        if (itr->second == hwnd)
         {
-            if (itr->second == hwnd)
-            {
-                m_mapSDKMsgFilter.erase(itr);
-                bFind = true;
-                break;;
-            }
+            m_mapSDKMsgFilter.erase(itr++);
         }
-        if (bFind == false)
-            break;
+        else
+        {
+            ++itr;
+        }
     }
 }
 

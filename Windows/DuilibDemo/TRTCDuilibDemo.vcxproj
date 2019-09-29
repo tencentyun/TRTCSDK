@@ -123,7 +123,7 @@ if exist %SourceFile% (
 ) else (
     echo sdk is not exist! you must down sdk first!
 	echo 1. download sdk url http://liteavsdk-1252463788.cosgz.myqcloud.com/TXLiteAVSDK_TRTC_Win_latest.zip
-	echo 2. copy sdk file to ./SDK/  Directory
+	echo 2. copy sdk file to ../SDK/  Directory
 )</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
@@ -188,7 +188,7 @@ if exist %SourceFile% (
 ) else (
     echo sdk is not exist! you must down sdk first!
 	echo 1. download sdk url http://liteavsdk-1252463788.cosgz.myqcloud.com/TXLiteAVSDK_TRTC_Win_latest.zip
-	echo 2. copy sdk file to ./SDK/  Directory
+	echo 2. copy sdk file to ../SDK/  Directory
 )</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>

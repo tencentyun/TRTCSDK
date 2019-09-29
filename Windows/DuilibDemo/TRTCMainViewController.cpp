@@ -170,6 +170,7 @@ void TRTCMainViewController::enterRoom()
     TRTCCloudCore::GetInstance()->regSDKMsgObserver(WM_USER_CMD_TryToReconnect, GetHWND());
     TRTCCloudCore::GetInstance()->regSDKMsgObserver(WM_USER_CMD_ConnectionRecovery, GetHWND());
 	TRTCCloudCore::GetInstance()->regSDKMsgObserver(WM_USER_CMD_SubVideoAvailable, GetHWND());
+    TRTCCloudCore::GetInstance()->regSDKMsgObserver(WM_USER_CMD_AuidoAvailable, GetHWND());
 	TRTCCloudCore::GetInstance()->regSDKMsgObserver(WM_USER_CMD_VideoAvailable, GetHWND());
 	TRTCCloudCore::GetInstance()->regSDKMsgObserver(WM_USER_CMD_ScreenStart, GetHWND());
 	TRTCCloudCore::GetInstance()->regSDKMsgObserver(WM_USER_CMD_ScreenEnd, GetHWND());
@@ -183,6 +184,8 @@ void TRTCMainViewController::enterRoom()
     TRTCCloudCore::GetInstance()->regSDKMsgObserver(WM_USER_CMD_CustomAudioCapture, GetHWND());
     TRTCCloudCore::GetInstance()->regSDKMsgObserver(WM_USER_CMD_FirstVideoFrame, GetHWND());
     TRTCCloudCore::GetInstance()->regSDKMsgObserver(WM_USER_CMD_RemoteScreenStop, GetHWND());
+    TRTCCloudCore::GetInstance()->regSDKMsgObserver(WM_USER_CMD_SendFirstLocalVideoFrame, GetHWND());
+    TRTCCloudCore::GetInstance()->regSDKMsgObserver(WM_USER_CMD_SendFirstLocalAudioFrame, GetHWND());
 
     //设置连接环境
     int nLinkTestServer = CDataCenter::GetInstance()->m_nLinkTestServer;
@@ -285,6 +288,16 @@ void TRTCMainViewController::enterRoom()
     }
     if (params.role != TRTCRoleAudience)
         TRTCCloudCore::GetInstance()->getTRTCCloud()->startLocalAudio();
+
+
+    std::string experimentalAPI = format("{\"api\":\"enableAudioAEC\",\"params\":{\"enable\":%d}}", CDataCenter::GetInstance()->m_bEnableAec);
+    TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(experimentalAPI.c_str());
+    
+    experimentalAPI = format("{\"api\":\"enableAudioANS\",\"params\":{\"enable\":%d}}", CDataCenter::GetInstance()->m_bEnableAns);
+    TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(experimentalAPI.c_str());
+
+    experimentalAPI = format("{\"api\":\"enableAudioAGC\",\"params\":{\"enable\":%d}}", CDataCenter::GetInstance()->m_bEnableAgc);
+    TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(experimentalAPI.c_str());
 
     CDuiString strFormat;
     strFormat.Format(L"%s正在进入[%d]房间", Log::_GetDateTimeString().c_str(), info._roomId);
@@ -505,6 +518,23 @@ LRESULT TRTCMainViewController::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM l
 		delete userId;
 		userId = nullptr;
 	}
+    else if (uMsg == WM_USER_CMD_AuidoAvailable)
+    {
+        std::string * userId = (std::string *)wParam;
+        bool available = (bool)lParam;
+        onAudioAvailable(*userId, available);
+        delete userId;
+        userId = nullptr;
+    }
+    else if (uMsg == WM_USER_CMD_SendFirstLocalVideoFrame)
+    {
+        int streamType = wParam;
+        onSendFirstLocalVideoFrame(streamType);
+    }
+    else if (uMsg == WM_USER_CMD_SendFirstLocalAudioFrame)
+    {
+        onSendFirstLocalAudioFrame();
+    }
     else if (uMsg == WM_USER_CMD_UserVoiceVolume)
     {
         std::string * userId = (std::string *)wParam;
@@ -569,7 +599,7 @@ LRESULT TRTCMainViewController::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM l
     {
         bool bStart = (bool)wParam;
         if (bStart)
-            ::SetTimer(GetHWND(), m_nCustomAudioTimerID, 15, NULL);
+            ::SetTimer(GetHWND(), m_nCustomAudioTimerID, 18, NULL);
         else
             ::KillTimer(GetHWND(), m_nCustomAudioTimerID);
     }
@@ -645,6 +675,7 @@ void TRTCMainViewController::onEnterRoom(int result)
         info._bEnterRoom = true;
 
         TRTCCloudCore::GetInstance()->updateMixTranCodeInfo();
+
     }
     else
     {
@@ -723,6 +754,11 @@ void TRTCMainViewController::onSubVideoAvailable(std::string userId, bool availa
         CDataCenter::GetInstance()->removeVideoMeta(userId, TRTCVideoStreamTypeSub);
         TRTCCloudCore::GetInstance()->updateMixTranCodeInfo();
 	}
+
+    CDataCenter::LocalUserInfo info = CDataCenter::GetInstance()->getLocalUserInfo();
+    CDuiString strFormat;
+    strFormat.Format(L"%s[%s]onSubVideoAvailable : %d", Log::_GetDateTimeString().c_str(), UTF82Wide(userId).c_str(), available);
+    TXLiveAvVideoView::appendEventLogText(info._userId, TRTCVideoStreamTypeBig, strFormat.GetData(), true);
 }
 
 void TRTCMainViewController::onVideoAvailable(std::string userId, bool available)
@@ -748,7 +784,36 @@ void TRTCMainViewController::onVideoAvailable(std::string userId, bool available
         CDataCenter::GetInstance()->removeVideoMeta(userId, TRTCVideoStreamTypeBig);
         TRTCCloudCore::GetInstance()->updateMixTranCodeInfo();
     }
+    CDataCenter::LocalUserInfo info = CDataCenter::GetInstance()->getLocalUserInfo();
+    CDuiString strFormat;
+    strFormat.Format(L"%s[%s]onVideoAvailable : %d", Log::_GetDateTimeString().c_str(), UTF82Wide(userId).c_str(), available);
+    TXLiveAvVideoView::appendEventLogText(info._userId, TRTCVideoStreamTypeBig, strFormat.GetData(), true);
 }
+
+void TRTCMainViewController::onAudioAvailable(std::string userId, bool available)
+{
+    CDataCenter::LocalUserInfo info = CDataCenter::GetInstance()->getLocalUserInfo();
+    CDuiString strFormat;
+    strFormat.Format(L"%s[%s]onAudioAvailable : %d", Log::_GetDateTimeString().c_str(), UTF82Wide(userId).c_str(), available);
+    TXLiveAvVideoView::appendEventLogText(info._userId, TRTCVideoStreamTypeBig, strFormat.GetData(), true);
+}
+
+void TRTCMainViewController::onSendFirstLocalVideoFrame(int streamType)
+{
+    CDataCenter::LocalUserInfo info = CDataCenter::GetInstance()->getLocalUserInfo();
+    CDuiString strFormat;
+    strFormat.Format(L"%s onSendFirstLocalVideoFrame : %d", Log::_GetDateTimeString().c_str(), streamType);
+    TXLiveAvVideoView::appendEventLogText(info._userId, TRTCVideoStreamTypeBig, strFormat.GetData(), true);
+}
+
+void TRTCMainViewController::onSendFirstLocalAudioFrame()
+{
+    CDataCenter::LocalUserInfo info = CDataCenter::GetInstance()->getLocalUserInfo();
+    CDuiString strFormat;
+    strFormat.Format(L"%s onSendFirstLocalAudioFrame", Log::_GetDateTimeString().c_str());
+    TXLiveAvVideoView::appendEventLogText(info._userId, TRTCVideoStreamTypeBig, strFormat.GetData(), true);
+}
+
 
 void TRTCMainViewController::onError(int errCode, std::string errMsg)
 {
@@ -993,6 +1058,9 @@ void TRTCMainViewController::exitRoom()
 
 void TRTCMainViewController::onFirstVideoFrame(TRTCVideoStreamType streamType, std::string userId, uint32_t width, uint32_t height)
 {
+    if (streamType == TRTCVideoStreamTypeSmall) //大小流为主流。
+        streamType = TRTCVideoStreamTypeBig;
+
     if (userId == "")
     {
         userId = CDataCenter::GetInstance()->getLocalUserID();

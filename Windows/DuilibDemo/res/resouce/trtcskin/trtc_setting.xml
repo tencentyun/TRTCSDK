@@ -19,6 +19,7 @@
 			<Option height="30" text="常规设置" name="normal_tab" font="1" hotbkcolor="#FFEEEEEE" selectedbkcolor="#FFD8D8D8" group="tab_setting" foreimage="dest='20,7,36,23' res='setting/normal_normal.png'"/>
 			<Option height="30" text="视频设置" name="video_tab" font="1" hotbkcolor="#FFEEEEEE" selectedbkcolor="#FFD8D8D8" group="tab_setting" foreimage="dest='20,7,36,23' res='setting/video_normal.png'"/>
 			<Option height="30" text="声音设置" name="audio_tab" font="1" hotbkcolor="#FFEEEEEE" selectedbkcolor="#FFD8D8D8" group="tab_setting" foreimage="dest='20,7,36,23' res='setting/audio_normal.png'"/>
+			<Option height="30" text="音效设置" name="audio_effect_tab" font="1" hotbkcolor="#FFEEEEEE" selectedbkcolor="#FFD8D8D8" group="tab_setting" foreimage="dest='20,7,36,23' res='setting/audio_normal.png'"/>
 			<Option height="30" text="其他设置" name="other_tab" font="1" hotbkcolor="#FFEEEEEE" selectedbkcolor="#FFD8D8D8" group="tab_setting" foreimage="dest='20,7,36,23' res='setting/other_set.png'"/>
 		</VerticalLayout>
 		<VerticalLayout width="2" bkcolor="#FF808080"/>
@@ -193,13 +194,81 @@
 				<GroupBox text="" padding="20,0,20,0" childpadding="20" bordercolor="#FF808080" bkcolor="#FFF0F0F0" bordersize="1" height="160">
 					<HorizontalLayout inset="0,6,0,0" childvalign="left" height="24">
 						<Label text="启动BGM测试" font="2" width="118" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,1"/>
-						<VerticalLayout width="200"/>
+						<VerticalLayout width="20"/>
 						<Option name="check_btn_testbgm" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
+						<VerticalLayout width="20"/>
+						<Label text="启动系统混音" font="2" width="118" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,1"/>
+						<VerticalLayout width="20"/>
+						<Option name="check_system_audio_mix" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
+					</HorizontalLayout>
+					<!--
+					<HorizontalLayout inset="0,6,0,0" childvalign="left" height="24" name="layout_system_audio_mix">
+						<Label text="静音扬声器(有音量)" font="2" width="118" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,1"/>
+						<VerticalLayout width="20"/>
+						<Option name="check_btn_muteremotes" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
+					</HorizontalLayout>
+					-->
+				</GroupBox>
+				<HorizontalLayout/>
+			</VerticalLayout>
+			<!--Audio setting page-->
+			<VerticalLayout name="Audio_effect_tab_layout" childpadding="10">
+				<HorizontalLayout height="10"/>
+				<GroupBox text="" padding="20,0,20,0" childpadding="20" bordercolor="#FF808080" bkcolor="#FFF0F0F0" bordersize="1" height="120">
+					<HorizontalLayout inset="0,6,0,0" childvalign="left" height="24" name="layout_system_audio_mix">
+						<Label text="启动回声消除" font="2" width="118" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,1"/>
+						<VerticalLayout width="20"/>
+						<Option name="check_btn_aec" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
+						<VerticalLayout width="20"/>
+						<Label text="启动采集降噪" font="2" width="118" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,1"/>
+						<VerticalLayout width="20"/>
+						<Option name="check_btn_ans" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
+					</HorizontalLayout>
+						<HorizontalLayout inset="0,6,0,0" childvalign="left" height="24" name="layout_system_audio_mix">
+						<Label text="启动自动增益" font="2" width="118" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,1"/>
+						<VerticalLayout width="20"/>
+						<Option name="check_btn_agc" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
+					</HorizontalLayout>
+				</GroupBox>
+				<GroupBox text="" padding="20,0,20,0" childpadding="20" bordercolor="#FF808080" bkcolor="#FFF0F0F0" bordersize="1" height="170">
+					<HorizontalLayout inset="0,6,0,0" childvalign="left" height="24" name="layout_system_audio_mix">
+						<Label text="音效1" font="2" width="80" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,1"/>
+						<VerticalLayout width="20"/>
+						<Option name="check_btn_effect1_start" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
+						<VerticalLayout width="20"/>
+						<Label text="循环" font="2" width="60" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,1"/>
+						<VerticalLayout width="20"/>
+						<Option name="check_btn_effect1_loop" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
+						<VerticalLayout width="20"/>
+						<Label text="推送远端" font="2" width="80" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,1"/>
+						<VerticalLayout width="20"/>
+						<Option name="check_btn_effect1_publish" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
 					</HorizontalLayout>
 					<HorizontalLayout inset="0,6,0,0" childvalign="left" height="24" name="layout_system_audio_mix">
-						<Label text="启动系统混音" font="2" width="118" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,1"/>
-						<VerticalLayout width="200"/>
-						<Option name="check_system_audio_mix" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
+						<Label text="音效2" font="2" width="80" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,1"/>
+						<VerticalLayout width="20"/>
+						<Option name="check_btn_effect2_start" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
+						<VerticalLayout width="20"/>
+						<Label text="循环" font="2" width="60" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,1"/>
+						<VerticalLayout width="20"/>
+						<Option name="check_btn_effect2_loop" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
+						<VerticalLayout width="20"/>
+						<Label text="推送远端" font="2" width="80" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,1"/>
+						<VerticalLayout width="20"/>
+						<Option name="check_btn_effect2_publish" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
+					</HorizontalLayout>
+					<HorizontalLayout inset="0,6,0,0" childvalign="left" height="24" name="layout_system_audio_mix">
+						<Label text="音效3" font="2" width="80" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,1"/>
+						<VerticalLayout width="20"/>
+						<Option name="check_btn_effect3_start" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
+						<VerticalLayout width="20"/>
+						<Label text="循环" font="2" width="60" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,1"/>
+						<VerticalLayout width="20"/>
+						<Option name="check_btn_effect3_loop" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
+						<VerticalLayout width="20"/>
+						<Label text="推送远端" font="2" width="80" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,1"/>
+						<VerticalLayout width="20"/>
+						<Option name="check_btn_effect3_publish" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
 					</HorizontalLayout>
 				</GroupBox>
 				<HorizontalLayout/>

@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Reflection;
-using System.Resources;
-using System.Text;
 using System.Windows.Forms;
 using ManageLiteAV;
 
+/// <summary>
+/// Module:   TRTCDeviceTestForm
+/// 
+/// Function: 用于本地设备（摄像头、扬声器、麦克风）测试的功能
+/// </summary>
 namespace TRTCCSharpDemo
 {
     public partial class TRTCDeviceTestForm : Form
@@ -18,13 +16,13 @@ namespace TRTCCSharpDemo
 
         private string mTestPath = System.Environment.CurrentDirectory + "\\Resources\\trtcres\\testspeak.mp3";
 
-        public TRTCDeviceTestForm(ITRTCCloud cloud)
+        public TRTCDeviceTestForm()
         {
             InitializeComponent();
 
             this.Disposed += new EventHandler(OnDisposed);
 
-            mTRTCCloud = cloud;
+            mTRTCCloud = DataManager.GetInstance().trtcCloud;
         }
 
         private void OnDisposed(object sender, EventArgs e)
@@ -141,7 +139,6 @@ namespace TRTCCSharpDemo
         private void OnConfirmBtnClick(object sender, EventArgs e)
         {
             this.Hide();
-
         }
 
         public void OnTestMicVolume(uint volume)
@@ -166,6 +163,11 @@ namespace TRTCCSharpDemo
             {
                 this.speakerProgressBar.Value = 0;
             }
+        }
+
+        private void OnExitPicBoxClick(object sender, EventArgs e)
+        {
+            this.Hide();
         }
     }
 }

@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using ManageLiteAV;
-using TRTCCSharpDemo.Common;
 
+/// <summary>
+/// Module:   TRTCDeviceForm
+/// 
+/// Function: 用于选择本地设备（摄像头、扬声器、麦克风）的功能
+/// </summary>
 namespace TRTCCSharpDemo
 {
     public partial class TRTCDeviceForm : Form
@@ -25,13 +24,13 @@ namespace TRTCCSharpDemo
         private int mMicVolume;
         private int mSpeakerVolume;
 
-        public TRTCDeviceForm(ITRTCCloud cloud, TRTCMainForm mainform)
+        public TRTCDeviceForm(TRTCMainForm mainform)
         {
             InitializeComponent();
 
             this.Disposed += new EventHandler(OnDisposed);
 
-            mTRTCCloud = cloud;
+            mTRTCCloud = DataManager.GetInstance().trtcCloud;
             mMainForm = mainform;
         }
 
@@ -107,15 +106,14 @@ namespace TRTCCSharpDemo
         {
             if (mTRTCCloud == null) return;
             this.cameraDeviceComboBox.Items.Clear();
-            mCameraDevice = mTRTCCloud.getCurrentCameraDevice();
-            Log.I(String.Format("CurrentCameraDevice: pid = {0}, name = {1}", mCameraDevice.getDevicePID(), mCameraDevice.getDeviceName()));
             mCameraDeviceList = mTRTCCloud.getCameraDevicesList();
+            if (mCameraDeviceList.getCount() <= 0) return;
+            mCameraDevice = mTRTCCloud.getCurrentCameraDevice();
             for (uint i = 0; i < mCameraDeviceList.getCount(); i++)
             {
                 this.cameraDeviceComboBox.Items.Add(mCameraDeviceList.getDeviceName(i));
                 if (mCameraDevice.getDeviceName().Equals(mCameraDeviceList.getDeviceName(i)))
                     this.cameraDeviceComboBox.SelectedIndex = (int)i;
-                Log.I(String.Format("CameraDevice{0} : name = {1}, pid = {2}", i + 1, mCameraDeviceList.getDeviceName(i), mCameraDeviceList.getDevicePID(i)));
             }
             if (string.IsNullOrEmpty(mCameraDevice.getDeviceName()) && mCameraDeviceList.getCount() > 0)
                 this.cameraDeviceComboBox.SelectedIndex = 0;
@@ -125,15 +123,14 @@ namespace TRTCCSharpDemo
         {
             if (mTRTCCloud == null) return;
             this.micDeviceComboBox.Items.Clear();
-            mMicDevice = mTRTCCloud.getCurrentMicDevice();
-            Log.I(String.Format("CurrentMicDevice: pid = {0}, name = {1}", mMicDevice.getDevicePID(), mMicDevice.getDeviceName()));
             mMicDeviceList = mTRTCCloud.getMicDevicesList();
+            if (mMicDeviceList.getCount() <= 0) return;
+            mMicDevice = mTRTCCloud.getCurrentMicDevice();
             for (uint i = 0; i < mMicDeviceList.getCount(); i++)
             {
                 this.micDeviceComboBox.Items.Add(mMicDeviceList.getDeviceName(i));
                 if (mMicDevice.getDeviceName().Equals(mMicDeviceList.getDeviceName(i)))
                     this.micDeviceComboBox.SelectedIndex = (int)i;
-                Log.I(String.Format("MicDevice{0} : name = {1}, pid = {2}", i + 1, mMicDeviceList.getDeviceName(i), mMicDeviceList.getDevicePID(i)));
             }
         }
 
@@ -141,16 +138,14 @@ namespace TRTCCSharpDemo
         {
             if (mTRTCCloud == null) return;
             this.speakerDeviceComboBox.Items.Clear();
-            mSpeakerDevice = mTRTCCloud.getCurrentSpeakerDevice();
-
-            Log.I(String.Format("CurrentSpeakerDevice: pid = {0}, name = {1}", mSpeakerDevice.getDevicePID(), mSpeakerDevice.getDeviceName()));
             mSpeakerDeviceList = mTRTCCloud.getSpeakerDevicesList();
+            if (mSpeakerDeviceList.getCount() <= 0) return;
+            mSpeakerDevice = mTRTCCloud.getCurrentSpeakerDevice();
             for (uint i = 0; i < mSpeakerDeviceList.getCount(); i++)
             {
                 this.speakerDeviceComboBox.Items.Add(mSpeakerDeviceList.getDeviceName(i));
                 if (mSpeakerDevice.getDeviceName().Equals(mSpeakerDeviceList.getDeviceName(i)))
                     this.speakerDeviceComboBox.SelectedIndex = (int)i;
-                Log.I(String.Format("SpeakerDevice{0} : name = {1}, pid = {2}", i + 1, mSpeakerDeviceList.getDeviceName(i), mSpeakerDeviceList.getDevicePID(i)));
             }
         }
 
@@ -223,6 +218,11 @@ namespace TRTCCSharpDemo
                     mMainForm.OnSpeakerDeviceChange(mSpeakerDeviceList.getDeviceName(i));
                 }
             }
+        }
+
+        private void OnExitPicBoxClick(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿namespace TRTCCSharpDemo
+﻿
+namespace TRTCCSharpDemo
 {
     partial class TRTCMainForm
     {
@@ -45,20 +46,28 @@
             this.remoteUserLabel3 = new System.Windows.Forms.Label();
             this.localVideoPanel = new System.Windows.Forms.Panel();
             this.localInfoLabel = new System.Windows.Forms.Label();
-            this.localVideoSmallPanel = new System.Windows.Forms.Panel();
+            this.localVoiceProgressBar = new System.Windows.Forms.ProgressBar();
             this.remoteVideoPanel1 = new System.Windows.Forms.Panel();
             this.remoteInfoLabel1 = new System.Windows.Forms.Label();
+            this.remoteVoiceProgressBar1 = new System.Windows.Forms.ProgressBar();
             this.remoteVideoPanel2 = new System.Windows.Forms.Panel();
             this.remoteInfoLabel2 = new System.Windows.Forms.Label();
+            this.remoteVoiceProgressBar2 = new System.Windows.Forms.ProgressBar();
             this.remoteVideoPanel3 = new System.Windows.Forms.Panel();
             this.remoteInfoLabel3 = new System.Windows.Forms.Label();
+            this.remoteVoiceProgressBar3 = new System.Windows.Forms.ProgressBar();
             this.remoteUserLabel4 = new System.Windows.Forms.Label();
             this.remoteVideoPanel4 = new System.Windows.Forms.Panel();
             this.remoteInfoLabel4 = new System.Windows.Forms.Label();
+            this.remoteVoiceProgressBar4 = new System.Windows.Forms.ProgressBar();
             this.remoteUserLabel5 = new System.Windows.Forms.Label();
             this.remoteVideoPanel5 = new System.Windows.Forms.Panel();
             this.remoteInfoLabel5 = new System.Windows.Forms.Label();
+            this.remoteVoiceProgressBar5 = new System.Windows.Forms.ProgressBar();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.voiceCheckBox = new System.Windows.Forms.CheckBox();
+            this.customCaptureCheckBox = new System.Windows.Forms.CheckBox();
+            this.connectRoomCheckBox = new System.Windows.Forms.CheckBox();
             this.systemAudioCheckBox = new System.Windows.Forms.CheckBox();
             this.shareUrlLabel = new System.Windows.Forms.Label();
             this.mixTransCodingCheckBox = new System.Windows.Forms.CheckBox();
@@ -263,7 +272,6 @@
             this.localVideoPanel.BackColor = System.Drawing.SystemColors.Control;
             this.localVideoPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.localVideoPanel.Controls.Add(this.localInfoLabel);
-            this.localVideoPanel.Controls.Add(this.localVideoSmallPanel);
             this.localVideoPanel.Location = new System.Drawing.Point(25, 87);
             this.localVideoPanel.Name = "localVideoPanel";
             this.localVideoPanel.Size = new System.Drawing.Size(319, 289);
@@ -281,15 +289,14 @@
             this.localInfoLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.localInfoLabel.Visible = false;
             // 
-            // localVideoSmallPanel
+            // localVoiceProgressBar
             // 
-            this.localVideoSmallPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.localVideoSmallPanel.Location = new System.Drawing.Point(206, 158);
-            this.localVideoSmallPanel.Name = "localVideoSmallPanel";
-            this.localVideoSmallPanel.Size = new System.Drawing.Size(108, 126);
-            this.localVideoSmallPanel.TabIndex = 14;
-            this.localVideoSmallPanel.Visible = false;
-            this.localVideoSmallPanel.MouseClick += new System.Windows.Forms.MouseEventHandler(this.OnLocalVideoSmallPanelClick);
+            this.localVoiceProgressBar.ForeColor = System.Drawing.Color.Green;
+            this.localVoiceProgressBar.Location = new System.Drawing.Point(25, 376);
+            this.localVoiceProgressBar.Name = "localVoiceProgressBar";
+            this.localVoiceProgressBar.Size = new System.Drawing.Size(319, 6);
+            this.localVoiceProgressBar.TabIndex = 15;
+            this.localVoiceProgressBar.Visible = false;
             // 
             // remoteVideoPanel1
             // 
@@ -313,6 +320,15 @@
             this.remoteInfoLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.remoteInfoLabel1.Visible = false;
             // 
+            // remoteVoiceProgressBar1
+            // 
+            this.remoteVoiceProgressBar1.ForeColor = System.Drawing.Color.Green;
+            this.remoteVoiceProgressBar1.Location = new System.Drawing.Point(405, 376);
+            this.remoteVoiceProgressBar1.Name = "remoteVoiceProgressBar1";
+            this.remoteVoiceProgressBar1.Size = new System.Drawing.Size(319, 6);
+            this.remoteVoiceProgressBar1.TabIndex = 16;
+            this.remoteVoiceProgressBar1.Visible = false;
+            // 
             // remoteVideoPanel2
             // 
             this.remoteVideoPanel2.BackColor = System.Drawing.SystemColors.Control;
@@ -335,6 +351,15 @@
             this.remoteInfoLabel2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.remoteInfoLabel2.Visible = false;
             // 
+            // remoteVoiceProgressBar2
+            // 
+            this.remoteVoiceProgressBar2.ForeColor = System.Drawing.Color.Green;
+            this.remoteVoiceProgressBar2.Location = new System.Drawing.Point(779, 376);
+            this.remoteVoiceProgressBar2.Name = "remoteVoiceProgressBar2";
+            this.remoteVoiceProgressBar2.Size = new System.Drawing.Size(319, 6);
+            this.remoteVoiceProgressBar2.TabIndex = 17;
+            this.remoteVoiceProgressBar2.Visible = false;
+            // 
             // remoteVideoPanel3
             // 
             this.remoteVideoPanel3.BackColor = System.Drawing.SystemColors.Control;
@@ -356,6 +381,15 @@
             this.remoteInfoLabel3.Text = "对方未开启视频";
             this.remoteInfoLabel3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.remoteInfoLabel3.Visible = false;
+            // 
+            // remoteVoiceProgressBar3
+            // 
+            this.remoteVoiceProgressBar3.ForeColor = System.Drawing.Color.Green;
+            this.remoteVoiceProgressBar3.Location = new System.Drawing.Point(25, 715);
+            this.remoteVoiceProgressBar3.Name = "remoteVoiceProgressBar3";
+            this.remoteVoiceProgressBar3.Size = new System.Drawing.Size(319, 6);
+            this.remoteVoiceProgressBar3.TabIndex = 18;
+            this.remoteVoiceProgressBar3.Visible = false;
             // 
             // remoteUserLabel4
             // 
@@ -388,6 +422,15 @@
             this.remoteInfoLabel4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.remoteInfoLabel4.Visible = false;
             // 
+            // remoteVoiceProgressBar4
+            // 
+            this.remoteVoiceProgressBar4.ForeColor = System.Drawing.Color.Green;
+            this.remoteVoiceProgressBar4.Location = new System.Drawing.Point(405, 715);
+            this.remoteVoiceProgressBar4.Name = "remoteVoiceProgressBar4";
+            this.remoteVoiceProgressBar4.Size = new System.Drawing.Size(319, 6);
+            this.remoteVoiceProgressBar4.TabIndex = 19;
+            this.remoteVoiceProgressBar4.Visible = false;
+            // 
             // remoteUserLabel5
             // 
             this.remoteUserLabel5.Font = new System.Drawing.Font("微软雅黑", 12F);
@@ -419,9 +462,21 @@
             this.remoteInfoLabel5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.remoteInfoLabel5.Visible = false;
             // 
+            // remoteVoiceProgressBar5
+            // 
+            this.remoteVoiceProgressBar5.ForeColor = System.Drawing.Color.Green;
+            this.remoteVoiceProgressBar5.Location = new System.Drawing.Point(779, 715);
+            this.remoteVoiceProgressBar5.Name = "remoteVoiceProgressBar5";
+            this.remoteVoiceProgressBar5.Size = new System.Drawing.Size(319, 6);
+            this.remoteVoiceProgressBar5.TabIndex = 20;
+            this.remoteVoiceProgressBar5.Visible = false;
+            // 
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(38)))), ((int)(((byte)(38)))));
+            this.panel2.Controls.Add(this.voiceCheckBox);
+            this.panel2.Controls.Add(this.customCaptureCheckBox);
+            this.panel2.Controls.Add(this.connectRoomCheckBox);
             this.panel2.Controls.Add(this.systemAudioCheckBox);
             this.panel2.Controls.Add(this.shareUrlLabel);
             this.panel2.Controls.Add(this.mixTransCodingCheckBox);
@@ -434,12 +489,51 @@
             this.panel2.Size = new System.Drawing.Size(1127, 45);
             this.panel2.TabIndex = 14;
             // 
+            // voiceCheckBox
+            // 
+            this.voiceCheckBox.AutoSize = true;
+            this.voiceCheckBox.Font = new System.Drawing.Font("微软雅黑", 11F);
+            this.voiceCheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(187)))), ((int)(((byte)(187)))));
+            this.voiceCheckBox.Location = new System.Drawing.Point(321, 11);
+            this.voiceCheckBox.Name = "voiceCheckBox";
+            this.voiceCheckBox.Size = new System.Drawing.Size(118, 24);
+            this.voiceCheckBox.TabIndex = 16;
+            this.voiceCheckBox.Text = "开启音量提示";
+            this.voiceCheckBox.UseVisualStyleBackColor = true;
+            this.voiceCheckBox.Click += new System.EventHandler(this.OnVoiceCheckBoxClick);
+            // 
+            // customCaptureCheckBox
+            // 
+            this.customCaptureCheckBox.AutoSize = true;
+            this.customCaptureCheckBox.Font = new System.Drawing.Font("微软雅黑", 11F);
+            this.customCaptureCheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(187)))), ((int)(((byte)(187)))));
+            this.customCaptureCheckBox.Location = new System.Drawing.Point(656, 11);
+            this.customCaptureCheckBox.Name = "customCaptureCheckBox";
+            this.customCaptureCheckBox.Size = new System.Drawing.Size(103, 24);
+            this.customCaptureCheckBox.TabIndex = 15;
+            this.customCaptureCheckBox.Text = "自定义采集";
+            this.customCaptureCheckBox.UseVisualStyleBackColor = true;
+            this.customCaptureCheckBox.Click += new System.EventHandler(this.OnCustomCaptureCheckBoxClick);
+            // 
+            // connectRoomCheckBox
+            // 
+            this.connectRoomCheckBox.AutoSize = true;
+            this.connectRoomCheckBox.Font = new System.Drawing.Font("微软雅黑", 11F);
+            this.connectRoomCheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(187)))), ((int)(((byte)(187)))));
+            this.connectRoomCheckBox.Location = new System.Drawing.Point(552, 11);
+            this.connectRoomCheckBox.Name = "connectRoomCheckBox";
+            this.connectRoomCheckBox.Size = new System.Drawing.Size(88, 24);
+            this.connectRoomCheckBox.TabIndex = 14;
+            this.connectRoomCheckBox.Text = "跨房通话";
+            this.connectRoomCheckBox.UseVisualStyleBackColor = true;
+            this.connectRoomCheckBox.Click += new System.EventHandler(this.OnConnectRoomCheckBoxClick);
+            // 
             // systemAudioCheckBox
             // 
             this.systemAudioCheckBox.AutoSize = true;
             this.systemAudioCheckBox.Font = new System.Drawing.Font("微软雅黑", 11F);
             this.systemAudioCheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(187)))), ((int)(((byte)(187)))));
-            this.systemAudioCheckBox.Location = new System.Drawing.Point(308, 11);
+            this.systemAudioCheckBox.Location = new System.Drawing.Point(775, 11);
             this.systemAudioCheckBox.Name = "systemAudioCheckBox";
             this.systemAudioCheckBox.Size = new System.Drawing.Size(88, 24);
             this.systemAudioCheckBox.TabIndex = 13;
@@ -454,7 +548,7 @@
             this.shareUrlLabel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.shareUrlLabel.Font = new System.Drawing.Font("微软雅黑", 11F, System.Drawing.FontStyle.Bold);
             this.shareUrlLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(187)))), ((int)(((byte)(187)))));
-            this.shareUrlLabel.Location = new System.Drawing.Point(1010, 10);
+            this.shareUrlLabel.Location = new System.Drawing.Point(1008, 10);
             this.shareUrlLabel.Name = "shareUrlLabel";
             this.shareUrlLabel.Size = new System.Drawing.Size(105, 25);
             this.shareUrlLabel.TabIndex = 8;
@@ -467,7 +561,7 @@
             this.mixTransCodingCheckBox.AutoSize = true;
             this.mixTransCodingCheckBox.Font = new System.Drawing.Font("微软雅黑", 11F);
             this.mixTransCodingCheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(187)))), ((int)(((byte)(187)))));
-            this.mixTransCodingCheckBox.Location = new System.Drawing.Point(886, 11);
+            this.mixTransCodingCheckBox.Location = new System.Drawing.Point(880, 11);
             this.mixTransCodingCheckBox.Name = "mixTransCodingCheckBox";
             this.mixTransCodingCheckBox.Size = new System.Drawing.Size(118, 24);
             this.mixTransCodingCheckBox.TabIndex = 12;
@@ -480,7 +574,7 @@
             this.mirrorCheckBox.AutoSize = true;
             this.mirrorCheckBox.Font = new System.Drawing.Font("微软雅黑", 11F);
             this.mirrorCheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(187)))), ((int)(((byte)(187)))));
-            this.mirrorCheckBox.Location = new System.Drawing.Point(214, 11);
+            this.mirrorCheckBox.Location = new System.Drawing.Point(219, 11);
             this.mirrorCheckBox.Name = "mirrorCheckBox";
             this.mirrorCheckBox.Size = new System.Drawing.Size(88, 24);
             this.mirrorCheckBox.TabIndex = 11;
@@ -493,7 +587,7 @@
             this.muteAudioCheckBox.AutoSize = true;
             this.muteAudioCheckBox.Font = new System.Drawing.Font("微软雅黑", 11F);
             this.muteAudioCheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(187)))), ((int)(((byte)(187)))));
-            this.muteAudioCheckBox.Location = new System.Drawing.Point(115, 11);
+            this.muteAudioCheckBox.Location = new System.Drawing.Point(119, 11);
             this.muteAudioCheckBox.Name = "muteAudioCheckBox";
             this.muteAudioCheckBox.Size = new System.Drawing.Size(88, 24);
             this.muteAudioCheckBox.TabIndex = 10;
@@ -519,7 +613,7 @@
             this.screenShareCheckBox.AutoSize = true;
             this.screenShareCheckBox.Font = new System.Drawing.Font("微软雅黑", 11F);
             this.screenShareCheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(187)))), ((int)(((byte)(187)))));
-            this.screenShareCheckBox.Location = new System.Drawing.Point(405, 11);
+            this.screenShareCheckBox.Location = new System.Drawing.Point(451, 11);
             this.screenShareCheckBox.Name = "screenShareCheckBox";
             this.screenShareCheckBox.Size = new System.Drawing.Size(88, 24);
             this.screenShareCheckBox.TabIndex = 8;
@@ -533,6 +627,12 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(1127, 776);
+            this.Controls.Add(this.remoteVoiceProgressBar5);
+            this.Controls.Add(this.remoteVoiceProgressBar4);
+            this.Controls.Add(this.remoteVoiceProgressBar3);
+            this.Controls.Add(this.remoteVoiceProgressBar2);
+            this.Controls.Add(this.remoteVoiceProgressBar1);
+            this.Controls.Add(this.localVoiceProgressBar);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.remoteUserLabel5);
             this.Controls.Add(this.remoteVideoPanel5);
@@ -548,13 +648,14 @@
             this.Controls.Add(this.remoteVideoPanel2);
             this.Controls.Add(this.remoteVideoPanel3);
             this.Cursor = System.Windows.Forms.Cursors.Default;
+            this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "TRTCMainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "TRTCDemo";
+            this.Text = "TRTCCSharpDemo";
             this.Load += new System.EventHandler(this.OnFormLoad);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.OnFormMouseDown);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.OnFormMouseMove);
@@ -596,7 +697,6 @@
         private System.Windows.Forms.Label remoteUserLabel5;
         private System.Windows.Forms.Panel remoteVideoPanel5;
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Panel localVideoSmallPanel;
         private System.Windows.Forms.CheckBox screenShareCheckBox;
         private System.Windows.Forms.Label remoteInfoLabel1;
         private System.Windows.Forms.Label remoteInfoLabel2;
@@ -613,5 +713,14 @@
         private System.Windows.Forms.Label testDeviceLabel;
         private System.Windows.Forms.Label beautyLabel;
         private System.Windows.Forms.CheckBox systemAudioCheckBox;
+        private System.Windows.Forms.CheckBox connectRoomCheckBox;
+        private System.Windows.Forms.CheckBox customCaptureCheckBox;
+        private System.Windows.Forms.ProgressBar localVoiceProgressBar;
+        private System.Windows.Forms.ProgressBar remoteVoiceProgressBar1;
+        private System.Windows.Forms.ProgressBar remoteVoiceProgressBar2;
+        private System.Windows.Forms.ProgressBar remoteVoiceProgressBar3;
+        private System.Windows.Forms.ProgressBar remoteVoiceProgressBar5;
+        private System.Windows.Forms.ProgressBar remoteVoiceProgressBar4;
+        private System.Windows.Forms.CheckBox voiceCheckBox;
     }
 }

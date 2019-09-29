@@ -46,7 +46,7 @@ public:
     virtual void onExitRoom(int reason);
     virtual void onUserEnter(const char* userId);
     virtual void onUserExit(const char* userId, int reason);
-    virtual void onUserAudioAvailable(const char* userId, bool available) {}
+    virtual void onUserAudioAvailable(const char* userId, bool available);
     virtual void onUserVoiceVolume(TRTCVolumeInfo* userVolumes, uint32_t userVolumesCount, uint32_t totalVolume);
 	virtual void onUserSubStreamAvailable(const char* userId, bool available);
 	virtual void onUserVideoAvailable(const char* userId, bool available);
@@ -69,6 +69,9 @@ public:
     virtual void onMixedPlayAudioFrame(TRTCAudioFrame *frame);
     virtual void onSetMixTranscodingConfig(int errCode, const char* errMsg);
     virtual void onFirstVideoFrame(const char* userId, const TRTCVideoStreamType streamType, const int width, const int height);
+    virtual void onSendFirstLocalVideoFrame(const TRTCVideoStreamType streamType);
+    virtual void onSendFirstLocalAudioFrame();
+    virtual void onAudioEffectFinished(int effectId, int code);
 public:
     void regSDKMsgObserver(uint32_t msg, HWND hwnd);
     void removeSDKMsgObserver(uint32_t msg, HWND hwnd);

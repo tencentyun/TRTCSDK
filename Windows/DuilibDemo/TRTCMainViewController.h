@@ -45,6 +45,7 @@ public:
     void onUserExit(std::string userId);    //远端用户退房响应
 	void onSubVideoAvailable(std::string userId, bool available);   //远端辅路视频状态切换通知。
 	void onVideoAvailable(std::string userId, bool available);      //远端主路视频状态切换通知。
+    void onAudioAvailable(std::string userId, bool available);      //远端音频主路状态切换通知。
     void onError(int errCode, std::string errMsg);                  //SDK错误码事件通知。
     void onDashBoardData(int streamType, std::string userId, std::string data); //仪表盘数据
     void onSDKEventData(int streamType, std::string userId, std::string data);  //SDK事件通知
@@ -52,6 +53,8 @@ public:
     void onNetworkQuality(std::string userId, int quality);                     //网络质量状态
     void onFirstVideoFrame(TRTCVideoStreamType streamType, std::string userId, uint32_t width, uint32_t height);//第一帧数据
     void onAnchorToAudience();                                                  //主播切观众时。
+    void onSendFirstLocalVideoFrame(int streamType);
+    void onSendFirstLocalAudioFrame();
 private:
     void CheckLocalUiStatus();
     void onViewBtnClickEvent(int id, std::wstring userId, int streamType);

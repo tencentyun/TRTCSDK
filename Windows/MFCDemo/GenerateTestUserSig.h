@@ -24,7 +24,7 @@
 *            正确的做法是将 UserSig 的计算代码和加密密钥放在您的业务服务器上，然后由 App 按需向您的服务器获取实时算出的 UserSig。
 *            由于破解服务器的成本要高于破解客户端 App，所以服务器计算的方案能够更好地保护您的加密密钥。
 *
-* Reference：https://cloud.tencent.com/document/product/269/32688#Server
+* Reference：https://cloud.tencent.com/document/product/647/17275#Server
 */
 class GenerateTestUserSig
 {
@@ -37,7 +37,7 @@ public:
     /**
     * 腾讯云 SDKAppId，需要替换为您自己账号下的 SDKAppId。
     *
-    * 进入腾讯云云通信[控制台](https://console.cloud.tencent.com/avc) 创建应用，即可看到 SDKAppId，
+    * 进入腾讯云实时音视频[控制台](https://console.cloud.tencent.com/rav ) 创建应用，即可看到 SDKAppId，
     * 它是腾讯云用于区分客户的唯一标识。
     */
     static const int SDKAPPID = 0;
@@ -53,12 +53,12 @@ public:
     /**
     * 计算签名用的加密密钥，获取步骤如下：
     *
-    * step1. 进入腾讯云实时音视频[控制台](https://console.cloud.tencent.com/rav) ，如果还没有应用就创建一个，
-    * step2. 单击“应用配置”进入基础配置页面，并进一步找到“帐号体系集成”部分。
+    * step1. 进入腾讯云实时音视频[控制台](https://console.cloud.tencent.com/rav )，如果还没有应用就创建一个，
+    * step2. 单击您的应用，并进一步找到“快速上手”部分。
     * step3. 点击“查看密钥”按钮，就可以看到计算 UserSig 使用的加密的密钥了，请将其拷贝并复制到如下的变量中
     *
     * 注意：该方案仅适用于调试Demo，正式上线前请将 UserSig 计算代码和密钥迁移到您的后台服务器上，以避免加密密钥泄露导致的流量盗用。
-    * 文档：https://cloud.tencent.com/document/product/647/17275#GetFromServer
+    * 文档：https://cloud.tencent.com/document/product/647/17275#Server
     */
     const std::string SECRETKEY = "";
 
@@ -76,7 +76,7 @@ public:
     * 正确的做法是将 UserSig 的计算代码和加密密钥放在您的业务服务器上，然后由 App 按需向您的服务器获取实时算出的 UserSig。
     * 由于破解服务器的成本要高于破解客户端 App，所以服务器计算的方案能够更好地保护您的加密密钥。
     *
-    * 文档：https://cloud.tencent.com/document/product/647/17275#GetFromServer
+    * 文档：https://cloud.tencent.com/document/product/647/17275#Server
     */
     std::string genTestUserSig(std::string userId) const;
 };

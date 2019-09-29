@@ -31,6 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TRTCBeautyForm));
             this.label1 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.exitPicBox = new System.Windows.Forms.PictureBox();
             this.confirmBtn = new System.Windows.Forms.Button();
             this.beautyTrackBar = new System.Windows.Forms.TrackBar();
             this.beautyLabel = new System.Windows.Forms.Label();
@@ -40,6 +41,7 @@
             this.natureRadioButton = new System.Windows.Forms.RadioButton();
             this.beautyCheckBox = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.exitPicBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.beautyTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.whiteTrackBar)).BeginInit();
             this.SuspendLayout();
@@ -52,13 +54,14 @@
             this.label1.ForeColor = System.Drawing.Color.White;
             this.label1.Location = new System.Drawing.Point(11, 9);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(101, 21);
+            this.label1.Size = new System.Drawing.Size(74, 21);
             this.label1.TabIndex = 0;
-            this.label1.Text = "TRTCBeauty";
+            this.label1.Text = "美颜设置";
             // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(38)))), ((int)(((byte)(38)))));
+            this.panel1.Controls.Add(this.exitPicBox);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
@@ -68,6 +71,19 @@
             this.panel1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.OnFormMouseDown);
             this.panel1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.OnFormMouseMove);
             this.panel1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.OnFormMouseUp);
+            // 
+            // exitPicBox
+            // 
+            this.exitPicBox.BackgroundImage = global::TRTCCSharpDemo.Properties.Resources.close_white;
+            this.exitPicBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.exitPicBox.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.exitPicBox.Location = new System.Drawing.Point(317, 7);
+            this.exitPicBox.Name = "exitPicBox";
+            this.exitPicBox.Size = new System.Drawing.Size(23, 23);
+            this.exitPicBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.exitPicBox.TabIndex = 25;
+            this.exitPicBox.TabStop = false;
+            this.exitPicBox.Click += new System.EventHandler(this.OnExitPicBoxClick);
             // 
             // confirmBtn
             // 
@@ -167,7 +183,7 @@
             this.beautyCheckBox.TabIndex = 24;
             this.beautyCheckBox.Text = "开启美颜";
             this.beautyCheckBox.UseVisualStyleBackColor = true;
-            this.beautyCheckBox.CheckedChanged += new System.EventHandler(this.OnBeautyCheckBoxCheckedChanged);
+            this.beautyCheckBox.Click += new System.EventHandler(this.OnBeautyCheckBoxClick);
             // 
             // TRTCBeautyForm
             // 
@@ -175,6 +191,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Gainsboro;
             this.ClientSize = new System.Drawing.Size(347, 245);
+            this.ShowInTaskbar = false;
             this.Controls.Add(this.beautyCheckBox);
             this.Controls.Add(this.natureRadioButton);
             this.Controls.Add(this.smoothRadioButton);
@@ -184,6 +201,7 @@
             this.Controls.Add(this.beautyLabel);
             this.Controls.Add(this.confirmBtn);
             this.Controls.Add(this.panel1);
+            this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -193,6 +211,7 @@
             this.Text = "TRTCBeautyForm";
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.exitPicBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.beautyTrackBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.whiteTrackBar)).EndInit();
             this.ResumeLayout(false);
@@ -212,5 +231,6 @@
         private System.Windows.Forms.RadioButton smoothRadioButton;
         private System.Windows.Forms.RadioButton natureRadioButton;
         private System.Windows.Forms.CheckBox beautyCheckBox;
+        private System.Windows.Forms.PictureBox exitPicBox;
     }
 }

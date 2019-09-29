@@ -100,6 +100,7 @@ namespace TRTCCSharpDemo
         /// </remarks>
         public string GenTestUserSig(string userId)
         {
+            if (SDKAPPID == 0 || string.IsNullOrEmpty(SECRETKEY)) return null;
             TLSSigAPIv2 api = new TLSSigAPIv2(SDKAPPID, SECRETKEY);
             // 统一转换为UTF8，SDK内部是用UTF8编码。
             return api.GenSig(Util.UTF16To8(userId));

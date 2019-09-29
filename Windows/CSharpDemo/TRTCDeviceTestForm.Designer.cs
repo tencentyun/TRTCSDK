@@ -31,6 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TRTCDeviceTestForm));
             this.label1 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.exitPicBox = new System.Windows.Forms.PictureBox();
             this.micTestBtn = new System.Windows.Forms.Button();
             this.speakerTestBtn = new System.Windows.Forms.Button();
             this.bgmTestBtn = new System.Windows.Forms.Button();
@@ -38,6 +39,7 @@
             this.micProgressBar = new System.Windows.Forms.ProgressBar();
             this.speakerProgressBar = new System.Windows.Forms.ProgressBar();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.exitPicBox)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -48,13 +50,14 @@
             this.label1.ForeColor = System.Drawing.Color.White;
             this.label1.Location = new System.Drawing.Point(11, 9);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(130, 21);
+            this.label1.Size = new System.Drawing.Size(74, 21);
             this.label1.TabIndex = 0;
-            this.label1.Text = "TRTCDeviceTest";
+            this.label1.Text = "设备测试";
             // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(38)))), ((int)(((byte)(38)))));
+            this.panel1.Controls.Add(this.exitPicBox);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
@@ -64,6 +67,19 @@
             this.panel1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.OnFormMouseDown);
             this.panel1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.OnFormMouseMove);
             this.panel1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.OnFormMouseUp);
+            // 
+            // exitPicBox
+            // 
+            this.exitPicBox.BackgroundImage = global::TRTCCSharpDemo.Properties.Resources.close_white;
+            this.exitPicBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.exitPicBox.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.exitPicBox.Location = new System.Drawing.Point(363, 8);
+            this.exitPicBox.Name = "exitPicBox";
+            this.exitPicBox.Size = new System.Drawing.Size(25, 25);
+            this.exitPicBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.exitPicBox.TabIndex = 31;
+            this.exitPicBox.TabStop = false;
+            this.exitPicBox.Click += new System.EventHandler(this.OnExitPicBoxClick);
             // 
             // micTestBtn
             // 
@@ -136,15 +152,18 @@
             this.Controls.Add(this.speakerTestBtn);
             this.Controls.Add(this.micTestBtn);
             this.Controls.Add(this.panel1);
+            this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "TRTCDeviceTestForm";
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "TRTCDeviceTestForm";
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.exitPicBox)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -159,5 +178,6 @@
         private System.Windows.Forms.Button confirmBtn;
         private System.Windows.Forms.ProgressBar micProgressBar;
         private System.Windows.Forms.ProgressBar speakerProgressBar;
+        private System.Windows.Forms.PictureBox exitPicBox;
     }
 }

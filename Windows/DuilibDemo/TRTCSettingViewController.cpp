@@ -36,6 +36,14 @@ TRTCSettingViewController::TRTCSettingViewController(SettingTagEnum tagType, HWN
     TRTCSettingViewController::addRef();
 
     TRTCCloudCore::GetInstance()->getTRTCCloud()->addCallback(this);
+
+    m_audioEffectParam1 = new TRTCAudioEffectParam(0, NULL);
+    m_audioEffectParam2 = new TRTCAudioEffectParam(0, NULL);
+    m_audioEffectParam3 = new TRTCAudioEffectParam(0, NULL);
+
+    m_audioEffectParam1->publish = false;
+    m_audioEffectParam2->publish = false;
+    m_audioEffectParam3->publish = false;
 }
 
 TRTCSettingViewController::~TRTCSettingViewController()
@@ -44,24 +52,21 @@ TRTCSettingViewController::~TRTCSettingViewController()
 
     TRTCCloudCore::GetInstance()->removeSDKMsgObserverByHwnd(GetHWND());
     TRTCSettingViewController::subRef();
+    if (m_audioEffectParam1)
+        delete m_audioEffectParam1;
+
+    if (m_audioEffectParam2)
+        delete m_audioEffectParam2;
+
+    if (m_audioEffectParam3)
+        delete m_audioEffectParam3;
 }
 
 void TRTCSettingViewController::preUnInit()
 {
     //退出所有功能测试
     m_pVideoView->RemoveEngine(TRTCCloudCore::GetInstance()->getTRTCCloud());
-    if (m_bStartLocalPreview)
-        TRTCCloudCore::GetInstance()->stopPreview();
-    if (m_bStartTestMic)
-        TRTCCloudCore::GetInstance()->getTRTCCloud()->stopMicDeviceTest();
-    if (m_bStartTestSpeaker)
-        TRTCCloudCore::GetInstance()->getTRTCCloud()->stopSpeakerDeviceTest();
-    if (m_bStartTestNetwork)
-        TRTCCloudCore::GetInstance()->getTRTCCloud()->stopSpeedTest();
-    if (m_bStartTestBGM)
-        TRTCCloudCore::GetInstance()->getTRTCCloud()->stopBGM();
-    if (m_bStartSystemVoice)
-        TRTCCloudCore::GetInstance()->getTRTCCloud()->stopSystemAudioLoopback();
+    stopAllTestSetting();
 
     TRTCCloudCore::GetInstance()->getTRTCCloud()->removeCallback(this);
 
@@ -118,6 +123,7 @@ int TRTCSettingViewController::getRef()
 void TRTCSettingViewController::Notify(TNotifyUI & msg)
 {
     NotifyOtherTab(msg);
+    NotifyAudioEffectTab(msg);
     CDuiString name = msg.pSender->GetName();
     if (msg.sType == _T("selectchanged")) 
     {
@@ -125,7 +131,8 @@ void TRTCSettingViewController::Notify(TNotifyUI & msg)
         if (name.CompareNoCase(_T("normal_tab")) == 0) pTabSwitch->SelectItem(0);
         if (name.CompareNoCase(_T("video_tab")) == 0) pTabSwitch->SelectItem(1);
         if (name.CompareNoCase(_T("audio_tab")) == 0) pTabSwitch->SelectItem(2);
-        if (name.CompareNoCase(_T("other_tab")) == 0) pTabSwitch->SelectItem(3);
+        if (name.CompareNoCase(_T("audio_effect_tab")) == 0) pTabSwitch->SelectItem(3);
+        if (name.CompareNoCase(_T("other_tab")) == 0) pTabSwitch->SelectItem(4);
         if (name.CompareNoCase(_T("qos_smooth")) == 0) {  
             CDataCenter::GetInstance()->m_qosParams.preference = TRTCVideoQosPreferenceSmooth;
 
@@ -443,6 +450,8 @@ void TRTCSettingViewController::Notify(TNotifyUI & msg)
         }
         if (msg.pSender->GetName() == _T("check_system_audio_mix"))
         {
+
+#ifndef _WIN64
             COptionUI* pTestSystemVoice = static_cast<COptionUI*>(msg.pSender);
             if (pTestSystemVoice->IsSelected() == false) //事件值是反的
             {
@@ -454,6 +463,34 @@ void TRTCSettingViewController::Notify(TNotifyUI & msg)
                 TRTCCloudCore::GetInstance()->getTRTCCloud()->stopSystemAudioLoopback();
                 m_bStartSystemVoice = false;
             }
+#endif
+        }
+        if (msg.pSender->GetName() == _T("check_btn_muteremotes"))
+        {
+
+            COptionUI* pTestMuteRemotes = static_cast<COptionUI*>(msg.pSender);
+            if (pTestMuteRemotes->IsSelected() == false) //事件值是反的
+            {
+
+                RemoteUserListMap& userMap = CDataCenter::GetInstance()->m_remoteUser;
+                for (auto it : userMap)
+                {
+                    std::string api = format("{\"api\":\"muteRemoteAudioInSpeaker\",\"params\":{\"userID\":\"%s\", \"enable\":%d}}", it.first.first.c_str(), true);
+                    TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
+                }
+                m_bMuteRemotesAudio = true;
+            }
+            else
+            {
+                RemoteUserListMap& userMap = CDataCenter::GetInstance()->m_remoteUser;
+                for (auto it : userMap)
+                {
+                    std::string api = format("{\"api\":\"muteRemoteAudioInSpeaker\",\"params\":{\"userID\":\"%s\", \"enable\":%d}}", it.first.first.c_str(), false);
+                    TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
+                }
+                m_bMuteRemotesAudio = false;
+            }
+
         }
         if (msg.pSender->GetName() == _T("btn_testnetwork"))
         {
@@ -643,6 +680,221 @@ void TRTCSettingViewController::Notify(TNotifyUI & msg)
     }
 }
 
+void TRTCSettingViewController::NotifyAudioEffectTab(TNotifyUI & msg)
+{
+    if (msg.sType == _T("click"))
+    {
+        if (msg.pSender->GetName() == _T("check_btn_effect1_start"))
+        {
+            TRTCAudioEffectParam& effect = (*m_audioEffectParam1);
+            COptionUI* pTestAudioEffect = static_cast<COptionUI*>(msg.pSender);
+            if (pTestAudioEffect->IsSelected() == false) //事件值是反的
+            {
+                std::wstring testFileMp = TrtcUtil::getAppDirectory() + L"trtcres/clap.aac"; //gift_sent on_mic
+                std::string testFileAcc = Wide2UTF8(testFileMp);
+                effect.volume = 100;
+                effect.effectId = 1;
+                effect.path = testFileAcc.c_str();
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->playAudioEffect(&effect);
+            }
+            else
+            {
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->stopAudioEffect(effect.effectId);
+                effect.effectId = 0;
+            }
+        }
+        else if (msg.pSender->GetName() == _T("check_btn_effect1_loop"))
+        {
+            TRTCAudioEffectParam& effect = (*m_audioEffectParam1);
+            COptionUI* pTestAudioEffect = static_cast<COptionUI*>(msg.pSender);
+            if (pTestAudioEffect->IsSelected() == false) //事件值是反的
+                effect.loopCount = 1000;
+            else
+                effect.loopCount = 1;
+            if (effect.effectId > 0)
+            {
+                std::wstring testFileMp = TrtcUtil::getAppDirectory() + L"trtcres/clap.aac"; //gift_sent on_mic
+                std::string testFileAcc = Wide2UTF8(testFileMp);
+                effect.path = testFileAcc.c_str();
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->playAudioEffect(&effect);
+            }
+        }
+        else if (msg.pSender->GetName() == _T("check_btn_effect1_publish"))
+        {
+            TRTCAudioEffectParam& effect = (*m_audioEffectParam1);
+            COptionUI* pTestAudioEffect = static_cast<COptionUI*>(msg.pSender);
+            if (pTestAudioEffect->IsSelected() == false) //事件值是反的
+                effect.publish = true;
+            else
+                effect.publish = false;
+            if (effect.effectId > 0)
+            {
+                std::wstring testFileMp = TrtcUtil::getAppDirectory() + L"trtcres/clap.aac"; //gift_sent on_mic
+                std::string testFileAcc = Wide2UTF8(testFileMp);
+                effect.path = testFileAcc.c_str();
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->playAudioEffect(&effect);
+            }
+        }
+
+        if (msg.pSender->GetName() == _T("check_btn_effect2_start"))
+        {
+            TRTCAudioEffectParam& effect = (*m_audioEffectParam2);
+            COptionUI* pTestAudioEffect = static_cast<COptionUI*>(msg.pSender);
+            if (pTestAudioEffect->IsSelected() == false) //事件值是反的
+            {
+                std::wstring testFileMp = TrtcUtil::getAppDirectory() + L"trtcres/gift_sent.aac"; //gift_sent on_mic
+                std::string testFileAcc = Wide2UTF8(testFileMp);
+                effect.path = testFileAcc.c_str();
+                effect.volume = 100;
+                effect.effectId = 2;
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->playAudioEffect(&effect);
+            }
+            else
+            {
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->stopAudioEffect(effect.effectId);
+                effect.effectId = 0;
+            }
+        }
+        else if (msg.pSender->GetName() == _T("check_btn_effect2_loop"))
+        {
+            TRTCAudioEffectParam& effect = (*m_audioEffectParam2);
+            COptionUI* pTestAudioEffect = static_cast<COptionUI*>(msg.pSender);
+            if (pTestAudioEffect->IsSelected() == false) //事件值是反的
+                effect.loopCount = 1000;
+            else
+                effect.loopCount = 1;
+            if (effect.effectId > 0)
+            {
+                std::wstring testFileMp = TrtcUtil::getAppDirectory() + L"trtcres/gift_sent.aac"; //gift_sent on_mic
+                std::string testFileAcc = Wide2UTF8(testFileMp);
+                effect.path = testFileAcc.c_str();
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->playAudioEffect(&effect);
+            }
+        }
+        else if (msg.pSender->GetName() == _T("check_btn_effect2_publish"))
+        {
+            TRTCAudioEffectParam& effect = (*m_audioEffectParam2);
+            COptionUI* pTestAudioEffect = static_cast<COptionUI*>(msg.pSender);
+            if (pTestAudioEffect->IsSelected() == false) //事件值是反的
+                effect.publish = true;
+            else
+                effect.publish = false;
+            if (effect.effectId > 0)
+            {
+                std::wstring testFileMp = TrtcUtil::getAppDirectory() + L"trtcres/gift_sent.aac"; //gift_sent on_mic
+                std::string testFileAcc = Wide2UTF8(testFileMp);
+                effect.path = testFileAcc.c_str();
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->playAudioEffect(&effect);
+            }
+        }
+
+        if (msg.pSender->GetName() == _T("check_btn_effect3_start"))
+        {
+            TRTCAudioEffectParam& effect = (*m_audioEffectParam3);
+            COptionUI* pTestAudioEffect = static_cast<COptionUI*>(msg.pSender);
+            if (pTestAudioEffect->IsSelected() == false) //事件值是反的
+            {
+                std::wstring testFileMp = TrtcUtil::getAppDirectory() + L"trtcres/on_mic.aac"; //gift_sent on_mic
+                std::string testFileAcc = Wide2UTF8(testFileMp);
+                effect.path = testFileAcc.c_str();
+                effect.volume = 100;
+                effect.effectId = 3;
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->playAudioEffect(&effect);
+            }
+            else
+            {
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->stopAudioEffect(effect.effectId);
+                effect.effectId = 0;
+            }
+        }
+        else if (msg.pSender->GetName() == _T("check_btn_effect3_loop"))
+        {
+            TRTCAudioEffectParam& effect = (*m_audioEffectParam3);
+            COptionUI* pTestAudioEffect = static_cast<COptionUI*>(msg.pSender);
+            if (pTestAudioEffect->IsSelected() == false) //事件值是反的
+                effect.loopCount = 1000;
+            else
+                effect.loopCount = 1;
+            if (effect.effectId > 0)
+            {
+                std::wstring testFileMp = TrtcUtil::getAppDirectory() + L"trtcres/on_mic.aac"; //gift_sent on_mic
+                std::string testFileAcc = Wide2UTF8(testFileMp);
+                effect.path = testFileAcc.c_str();
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->playAudioEffect(&effect);
+            }
+        }
+        else if (msg.pSender->GetName() == _T("check_btn_effect3_publish"))
+        {
+            TRTCAudioEffectParam& effect = (*m_audioEffectParam3);
+            COptionUI* pTestAudioEffect = static_cast<COptionUI*>(msg.pSender);
+            if (pTestAudioEffect->IsSelected() == false) //事件值是反的
+                effect.publish = true;
+            else
+                effect.publish = false;
+            if (effect.effectId > 0)
+            {
+                std::wstring testFileMp = TrtcUtil::getAppDirectory() + L"trtcres/on_mic.aac"; //gift_sent on_mic
+                std::string testFileAcc = Wide2UTF8(testFileMp);
+                effect.path = testFileAcc.c_str();
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->playAudioEffect(&effect);
+            }
+        }
+
+        if (msg.pSender->GetName() == _T("check_btn_aec"))
+        {
+            COptionUI* pOpenSender = static_cast<COptionUI*>(msg.pSender);
+            if (pOpenSender->IsSelected() == false) //事件值是反的
+            {
+                CDataCenter::GetInstance()->m_bEnableAec = true;
+                std::string api = format("{\"api\":\"enableAudioAEC\",\"params\":{\"enable\":%d}}", CDataCenter::GetInstance()->m_bEnableAec);
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
+
+            }
+            else
+            {
+                CDataCenter::GetInstance()->m_bEnableAec = false;
+                std::string api = format("{\"api\":\"enableAudioAEC\",\"params\":{\"enable\":%d}}", CDataCenter::GetInstance()->m_bEnableAec);
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
+            }
+        }
+        if (msg.pSender->GetName() == _T("check_btn_ans"))
+        {
+            COptionUI* pOpenSender = static_cast<COptionUI*>(msg.pSender);
+            if (pOpenSender->IsSelected() == false) //事件值是反的
+            {
+                CDataCenter::GetInstance()->m_bEnableAns = true;
+                std::string api = format("{\"api\":\"enableAudioANS\",\"params\":{\"enable\":%d}}", CDataCenter::GetInstance()->m_bEnableAns);
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
+
+            }
+            else
+            {
+                CDataCenter::GetInstance()->m_bEnableAns = false;
+                std::string api = format("{\"api\":\"enableAudioANS\",\"params\":{\"enable\":%d}}", CDataCenter::GetInstance()->m_bEnableAns);
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
+            }
+        }
+        if (msg.pSender->GetName() == _T("check_btn_agc"))
+        {
+            COptionUI* pOpenSender = static_cast<COptionUI*>(msg.pSender);
+            if (pOpenSender->IsSelected() == false) //事件值是反的
+            {
+                CDataCenter::GetInstance()->m_bEnableAgc = true;
+                std::string api = format("{\"api\":\"enableAudioAGC\",\"params\":{\"enable\":%d}}", CDataCenter::GetInstance()->m_bEnableAgc);
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
+
+            }
+            else
+            {
+                CDataCenter::GetInstance()->m_bEnableAgc = false;
+                std::string api = format("{\"api\":\"enableAudioAGC\",\"params\":{\"enable\":%d}}", CDataCenter::GetInstance()->m_bEnableAgc);
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
+            }
+        }
+
+    }
+}
+
 void TRTCSettingViewController::NotifyOtherTab(TNotifyUI & msg)
 {
     CDuiString name = msg.pSender->GetName();
@@ -827,6 +1079,7 @@ void TRTCSettingViewController::InitWindow()
 
     InitNormalTab();
     InitAudioTab();
+	InitAudioEffectTab();
     InitVideoTab();
     InitOtherTab();
 
@@ -1007,6 +1260,30 @@ void TRTCSettingViewController::InitAudioTab()
     m_pProgressTestNetwork = static_cast<CProgressUI*>(m_pmUI.FindControl(_T("progress_testnetwork")));;
 }
 
+void TRTCSettingViewController::InitAudioEffectTab()
+{
+    //音频 3A 开关
+    COptionUI* pCheckAec = static_cast<COptionUI*>(m_pmUI.FindControl(_T("check_btn_aec")));
+    COptionUI* pCheckAns = static_cast<COptionUI*>(m_pmUI.FindControl(_T("check_btn_ans")));
+    COptionUI* pCheckAgc = static_cast<COptionUI*>(m_pmUI.FindControl(_T("check_btn_agc")));
+
+    if (pCheckAec && pCheckAns && pCheckAgc)
+    {
+        if (CDataCenter::GetInstance()->m_bEnableAec)
+            pCheckAec->Selected(true);
+        else
+            pCheckAec->Selected(false);
+        if (CDataCenter::GetInstance()->m_bEnableAns)
+            pCheckAns->Selected(true);
+        else
+            pCheckAns->Selected(false);
+        if (CDataCenter::GetInstance()->m_bEnableAgc)
+            pCheckAgc->Selected(true);
+        else
+            pCheckAgc->Selected(false);
+    }
+}
+
 void TRTCSettingViewController::InitVideoTab()
 {
     //初始化设备
@@ -1182,10 +1459,10 @@ void TRTCSettingViewController::InitOtherTab()
     }
 
 #ifdef _WIN64
-    CHorizontalLayoutUI* pSystemAudioMix = static_cast<CHorizontalLayoutUI*>(m_pmUI.FindControl(_T("layout_system_audio_mix")));
+    COptionUI* pSystemAudioMix = static_cast<COptionUI*>(m_pmUI.FindControl(_T("check_system_audio_mix")));
     if (pSystemAudioMix)
     {
-        pSystemAudioMix->SetVisible(false);
+        pSystemAudioMix->SetEnabled(false);
     }
 #endif // ! _WIN64
 
@@ -1301,6 +1578,36 @@ void TRTCSettingViewController::ResetBeautyConfig()
     }
 }
 
+void TRTCSettingViewController::stopAllTestSetting()
+{
+    if (m_bStartLocalPreview)
+        TRTCCloudCore::GetInstance()->stopPreview();
+    if (m_bStartTestMic)
+        TRTCCloudCore::GetInstance()->getTRTCCloud()->stopMicDeviceTest();
+    if (m_bStartTestSpeaker)
+        TRTCCloudCore::GetInstance()->getTRTCCloud()->stopSpeakerDeviceTest();
+    if (m_bStartTestNetwork)
+        TRTCCloudCore::GetInstance()->getTRTCCloud()->stopSpeedTest();
+    if (m_bStartTestBGM)
+        TRTCCloudCore::GetInstance()->getTRTCCloud()->stopBGM();
+#ifndef _WIN64
+    if (m_bStartSystemVoice)
+        TRTCCloudCore::GetInstance()->getTRTCCloud()->stopSystemAudioLoopback();
+#endif
+    TRTCCloudCore::GetInstance()->getTRTCCloud()->stopAllAudioEffects();
+
+    if (m_bMuteRemotesAudio)
+    {
+        RemoteUserListMap& userMap = CDataCenter::GetInstance()->m_remoteUser;
+        for (auto it : userMap)
+        {
+            std::string api = format("{\"api\":\"muteRemoteAudioInSpeaker\",\"params\":{\"userID\":\"%s\", \"enable\":%d}}", it.first.first.c_str(), false);
+            TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
+        }
+        m_bMuteRemotesAudio = false;
+    }
+}
+
 void TRTCSettingViewController::updateVideoBitrateUi()
 {
     TRTCVideoEncParam& encParam = CDataCenter::GetInstance()->m_videoEncParams;
@@ -1338,7 +1645,7 @@ LRESULT TRTCSettingViewController::HandleMessage(UINT uMsg, WPARAM wParam, LPARA
         ASSERT(pRoot && "Failed to parse XML");
         m_pmUI.AttachDialog(pRoot);
         m_pmUI.AddNotifier(this);
-        InitWindow();
+        InitWindow(); 
         return 0;
     }
     /*
@@ -1351,18 +1658,8 @@ LRESULT TRTCSettingViewController::HandleMessage(UINT uMsg, WPARAM wParam, LPARA
     {
         //退出所有功能测试
         m_pVideoView->RemoveEngine(TRTCCloudCore::GetInstance()->getTRTCCloud());
-        if (m_bStartLocalPreview)
-            TRTCCloudCore::GetInstance()->stopPreview();
-        if (m_bStartTestMic)
-            TRTCCloudCore::GetInstance()->getTRTCCloud()->stopMicDeviceTest();
-        if (m_bStartTestSpeaker)
-            TRTCCloudCore::GetInstance()->getTRTCCloud()->stopSpeakerDeviceTest();
-        if (m_bStartTestNetwork)
-            TRTCCloudCore::GetInstance()->getTRTCCloud()->stopSpeedTest();
-        if (m_bStartTestBGM)
-            TRTCCloudCore::GetInstance()->getTRTCCloud()->stopBGM();
-        if (m_bStartSystemVoice)
-            TRTCCloudCore::GetInstance()->getTRTCCloud()->stopSystemAudioLoopback();
+        stopAllTestSetting();
+
     }
     else if (uMsg == WM_NCACTIVATE)
     {

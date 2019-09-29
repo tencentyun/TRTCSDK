@@ -1,13 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using ManageLiteAV;
 
+/// <summary>
+/// Module:   TRTCBeautyForm
+/// 
+/// Function: 用于打开美颜，选择美颜程度的功能
+/// </summary>
 namespace TRTCCSharpDemo
 {
     public partial class TRTCBeautyForm : Form
@@ -19,15 +19,24 @@ namespace TRTCCSharpDemo
         private uint mWhite = 0;
         private uint mRuddiness = 0;  // 红润级别暂未生效
 
-        public TRTCBeautyForm(ITRTCCloud cloud)
+        public TRTCBeautyForm()
         {
             InitializeComponent();
 
             this.Disposed += new EventHandler(OnDisposed);
 
-            mTRTCCloud = cloud;
+            mTRTCCloud = DataManager.GetInstance().trtcCloud;
 
             this.smoothRadioButton.Checked = true;
+            this.beautyCheckBox.Checked = DataManager.GetInstance().isOpenBeauty;
+            if (DataManager.GetInstance().beautyStyle == TRTCBeautyStyle.TRTCBeautyStyleNature)
+                this.natureRadioButton.Checked = true;
+            else
+                this.smoothRadioButton.Checked = true;
+            this.beautyTrackBar.Value = (int)DataManager.GetInstance().beauty;
+            mBeauty = (uint)this.beautyTrackBar.Value;
+            this.whiteTrackBar.Value = (int)DataManager.GetInstance().white;
+            mWhite = (uint)this.whiteTrackBar.Value;
             UpdateBeauty();
         }
 
@@ -75,12 +84,15 @@ namespace TRTCCSharpDemo
         private void OnBeautyTrackBarScroll(object sender, EventArgs e)
         {
             mBeauty = (uint)this.beautyTrackBar.Value;
+            DataManager.GetInstance().beauty = mBeauty;
+
             SetBeautyStyle(true);
         }
 
         private void OnWhiteTrackBarScroll(object sender, EventArgs e)
         {
             mWhite = (uint)this.whiteTrackBar.Value;
+            DataManager.GetInstance().white = mWhite;
             SetBeautyStyle(true);
         }
         private void OnSmoothRadioButtonCheckedChanged(object sender, EventArgs e)
@@ -88,6 +100,7 @@ namespace TRTCCSharpDemo
             if (this.smoothRadioButton.Checked)
             {
                 mBeautyStyle = TRTCBeautyStyle.TRTCBeautyStyleSmooth;
+                DataManager.GetInstance().beautyStyle = mBeautyStyle;
                 SetBeautyStyle(true);
             }
         }
@@ -97,6 +110,7 @@ namespace TRTCCSharpDemo
             if (this.natureRadioButton.Checked)
             {
                 mBeautyStyle = TRTCBeautyStyle.TRTCBeautyStyleNature;
+                DataManager.GetInstance().beautyStyle = mBeautyStyle;
                 SetBeautyStyle(true);
             }
         }
@@ -105,20 +119,18 @@ namespace TRTCCSharpDemo
         {
             if(mTRTCCloud != null)
             {
-                if (isOpen)
-                    mTRTCCloud.setBeautyStyle(mBeautyStyle, mBeauty, mWhite, mRuddiness);
-                else
-                    mTRTCCloud.setBeautyStyle(mBeautyStyle, 0, 0, 0);
+                mTRTCCloud.setBeautyStyle(mBeautyStyle, isOpen ? mBeauty : 0, isOpen ? mWhite : 0, isOpen ? mRuddiness : 0);
             }
         }
 
-        private void OnBeautyCheckBoxCheckedChanged(object sender, EventArgs e)
+        private void OnBeautyCheckBoxClick(object sender, EventArgs e)
         {
             UpdateBeauty();
         }
 
         private void UpdateBeauty()
         {
+            DataManager.GetInstance().isOpenBeauty = this.beautyCheckBox.Checked;
             if (this.beautyCheckBox.Checked)
             {
                 this.smoothRadioButton.Enabled = true;
@@ -142,5 +154,9 @@ namespace TRTCCSharpDemo
             this.Hide();
         }
 
+        private void OnExitPicBoxClick(object sender, EventArgs e)
+        {
+            this.Hide();
+        }
     }
 }

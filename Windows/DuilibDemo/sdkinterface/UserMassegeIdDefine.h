@@ -20,6 +20,7 @@
 #define WM_USER_CMD_ConnectionLost             WM_USER_CMD + 13     //网络异常
 #define WM_USER_CMD_TryToReconnect             WM_USER_CMD + 14     //尝试重进房
 #define WM_USER_CMD_ConnectionRecovery             WM_USER_CMD + 15     //网络恢复，重进房成功
+#define WM_USER_CMD_AuidoAvailable             WM_USER_CMD + 49     //摄像头数据事件
 #define WM_USER_CMD_SubVideoAvailable             WM_USER_CMD + 50     //辅流事件
 #define WM_USER_CMD_VideoAvailable             WM_USER_CMD + 51     //摄像头数据事件
 #define WM_USER_CMD_ScreenStart             WM_USER_CMD + 52     //屏幕分享开始
@@ -33,6 +34,8 @@
 #define WM_USER_CMD_NetworkQuality    WM_USER_CMD + 60     //用户声音音量值
 #define WM_USER_CMD_FirstVideoFrame    WM_USER_CMD + 61     //第一帧视频数据。
 #define WM_USER_CMD_RemoteScreenStop     WM_USER_CMD + 62     //远端屏幕分享结束
+#define WM_USER_CMD_SendFirstLocalVideoFrame    WM_USER_CMD + 63     //本地第一帧数据
+#define WM_USER_CMD_SendFirstLocalAudioFrame    WM_USER_CMD + 64     //本地第一帧数据
 
 //音视频数据消息
 #define WM_USER_MEDIA_DATA WM_USER + 200

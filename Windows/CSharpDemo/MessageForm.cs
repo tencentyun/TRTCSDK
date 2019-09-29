@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace TRTCCSharpDemo
@@ -101,7 +96,7 @@ namespace TRTCCSharpDemo
             //文字内容太小时，就居中显示，Form高度适中就可以
             if (this.labelTitle.Height < 50)
             {
-                labelTitle.Location = new Point((this.Width - labelTitle.Width) / 2, 20);
+                labelTitle.Location = new Point((this.Width - labelTitle.Width) / 2, 25);
                 labelTitle.TextAlign = ContentAlignment.MiddleCenter;
                 this.Height = 120;
             }

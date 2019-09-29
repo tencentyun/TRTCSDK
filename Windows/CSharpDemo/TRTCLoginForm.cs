@@ -1,14 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using System.IO;
-using System.Xml.Serialization;
-using TRTCCSharpDemo.Common;
 using ManageLiteAV;
 
 /// <summary>
@@ -27,12 +20,6 @@ namespace TRTCCSharpDemo
 {
     public partial class TRTCLoginForm : Form
     {
-        private const string FILEPATH = "./userinfo.xml";
-        private XmlSerializer mSerializer = new XmlSerializer(typeof(UserInfo));
-
-        private UserInfo mUserInfo;
-        private int mTestEnv = 0;
-
         public TRTCLoginForm()
         {
             InitializeComponent();
@@ -56,57 +43,39 @@ namespace TRTCCSharpDemo
         private void OnLoad(object sender, EventArgs e)
         {
             this.roomTextBox.Focus();
+            this.userTextBox.Text = DataManager.GetInstance().userId;
+            this.roomTextBox.Text = DataManager.GetInstance().roomId.ToString();
 
             if (IsTestEnv())
             {
                 this.formalEnvRadioBtn.Visible = true;
                 this.testEnvRadioBtn.Visible = true;
                 this.lifeEnvRadioBtn.Visible = true;
+                this.audioRadioBtn.Visible = true;
+                this.videoRadioBtn.Visible = true;
+
+                if (DataManager.GetInstance().testEnv == 0)
+                    this.formalEnvRadioBtn.Checked = true;
+                else if (DataManager.GetInstance().testEnv == 1)
+                    this.testEnvRadioBtn.Checked = true;
+                else if (DataManager.GetInstance().testEnv == 2)
+                    this.lifeEnvRadioBtn.Checked = true;
+                if (DataManager.GetInstance().pureAudioStyle)
+                    this.audioRadioBtn.Checked = true;
+                else
+                    this.videoRadioBtn.Checked = true;
             }
             else
             {
                 this.formalEnvRadioBtn.Visible = false;
                 this.testEnvRadioBtn.Visible = false;
                 this.lifeEnvRadioBtn.Visible = false;
-            }
+                this.audioRadioBtn.Visible = false;
+                this.videoRadioBtn.Visible = false;
 
-            try
-            {
-                if (File.Exists(FILEPATH))
-                {
-                    FileStream fs = new FileStream(FILEPATH, FileMode.Open);
-                    UserInfo info = (UserInfo)mSerializer.Deserialize(fs);
-                    mUserInfo = info;
-                    this.userTextBox.Text = info.userId;
-                    this.roomTextBox.Text = info.roomId.ToString();
-                    fs.Close();
-                }
-                else
-                {
-                    mUserInfo = new UserInfo
-                    {
-                        userId = this.userTextBox.Text,
-                        roomId = int.Parse(this.roomTextBox.Text)
-                    };
-                    FileStream fs = new FileStream(FILEPATH, FileMode.CreateNew);
-                    TextWriter tw = new StreamWriter(fs);
-                    mSerializer.Serialize(tw, mUserInfo);
-                    tw.Close();
-                    fs.Close();
-                }
-
+                DataManager.GetInstance().testEnv = 0;
+                DataManager.GetInstance().pureAudioStyle = false;
             }
-            catch (Exception ex)
-            {
-                Log.E(ex.Message);
-            }
-
-            if (mTestEnv == 0)
-                this.formalEnvRadioBtn.Checked = true;
-            else if (mTestEnv == 1)
-                this.testEnvRadioBtn.Checked = true;
-            else if (mTestEnv == 2)
-                this.lifeEnvRadioBtn.Checked = true;
         }
 
         #region Form Move
@@ -146,17 +115,37 @@ namespace TRTCCSharpDemo
 
         private void OnJoinRoomBtnClick(object sender, EventArgs e)
         {
+            if (GenerateTestUserSig.SDKAPPID == 0)
+            {
+                ShowMessage("Error: 请先在 GenerateTestUserSig 填写 sdkappid 信息");
+                return;
+            }
+
             SetTestEnv();
+            SetPureAudioStyle();
 
             string userId = this.userTextBox.Text;
             string roomId = this.roomTextBox.Text;
-            if(string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(roomId))
+            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(roomId))
             {
                 ShowMessage("房间号或用户号不能为空！");
                 return;
             }
-            int room = int.Parse(roomId);
+
+            uint room = 0;
+            if (!uint.TryParse(roomId, out room))
+            {
+                ShowMessage(String.Format("目前支持的最大房间号为{0}", uint.MaxValue));
+                return;
+            }
+
+            DataManager.GetInstance().userId = userId;
+            DataManager.GetInstance().roomId = room;
+
             // 从本地计算获取 userId 对应的 userSig
+            // 注意！本地计算是适合在本地环境下调试使用，正确的做法是将 UserSig 的计算代码和加密密钥放在您的业务服务器上，
+            // 然后由 App 按需向您的服务器获取实时算出的 UserSig。
+            // 由于破解服务器的成本要高于破解客户端 App，所以服务器计算的方案能够更好地保护您的加密密钥。
             string userSig = GenerateTestUserSig.GetInstance().GenTestUserSig(userId);
             if (string.IsNullOrEmpty(userSig))
             {
@@ -164,49 +153,34 @@ namespace TRTCCSharpDemo
                 return;
             }
 
-            TRTCParams trtcParams = new TRTCParams();
-            trtcParams.sdkAppId = GenerateTestUserSig.SDKAPPID;
-            trtcParams.roomId = (uint)room;
-            trtcParams.userId = userId;
-            trtcParams.userSig = userSig;
-            trtcParams.privateMapKey = "";
-            trtcParams.businessInfo = "";
-            trtcParams.role = TRTCRoleType.TRTCRoleAnchor;
-
             this.Hide();
             TRTCMainForm mainForm  = new TRTCMainForm(this);
             mainForm.Show();
-            SaveUserInfo();
-            mainForm.SetTestEnv(mTestEnv);
-            mainForm.EnterRoom(trtcParams);
+            mainForm.EnterRoom();
         }
 
+        /// <summary>
+        /// 设置连接环境，只适用于本地调试测试使用
+        /// </summary>
         private void SetTestEnv()
         {
             if (this.formalEnvRadioBtn.Checked)
-                mTestEnv = 0;
+                DataManager.GetInstance().testEnv = 0;
             else if (this.testEnvRadioBtn.Checked)
-                mTestEnv = 1;
+                DataManager.GetInstance().testEnv = 1;
             else if (this.lifeEnvRadioBtn.Checked)
-                mTestEnv = 2;
+                DataManager.GetInstance().testEnv = 2;
         }
 
-        private void SaveUserInfo()
+        /// <summary>
+        /// 设置是否使用纯音频环境进房
+        /// </summary>
+        private void SetPureAudioStyle()
         {
-            try
-            {
-                mUserInfo.userId = this.userTextBox.Text;
-                mUserInfo.roomId = int.Parse(this.roomTextBox.Text);
-                FileStream fs = new FileStream(FILEPATH, FileMode.Create);
-                TextWriter tw = new StreamWriter(fs);
-                mSerializer.Serialize(tw, mUserInfo);
-                tw.Close();
-                fs.Close();
-            }
-            catch (Exception e)
-            {
-                Log.E(e.Message);
-            }
+            if (this.audioRadioBtn.Checked)
+                DataManager.GetInstance().pureAudioStyle = true;
+            else if (this.videoRadioBtn.Checked)
+                DataManager.GetInstance().pureAudioStyle = false;
         }
 
         private void OnExitPicBoxClick(object sender, EventArgs e)
@@ -224,19 +198,13 @@ namespace TRTCCSharpDemo
             }
         }
 
+        /// <summary>
+        /// 主要用于本地调试环境时，存在该文件时启动测试功能
+        /// </summary>
         private bool IsTestEnv()
         {
             string path = Environment.CurrentDirectory + "\\ShowTestEnv.txt";
             return File.Exists(path);
         }
-    }
-
-    [Serializable]
-    public class UserInfo
-    {
-
-        public string userId { get; set; }
-
-        public int roomId { get; set; }
     }
 }
