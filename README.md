@@ -46,7 +46,7 @@
 >![](https://main.qcloudimg.com/raw/81662cce932b2500addac28baf6a83b3.jpg)
 
 ### Web 网页
-> [Chrome 打开体验](https://sxb.qcloud.com/miniApp/?from=qcloud.com)
+> [Chrome 打开体验](https://trtc-1252463788.file.myqcloud.com/web/demo/official-demo/index.html)
 ![](https://main.qcloudimg.com/raw/56e2bbc928a11bac85e5b78ac171b3bc.jpg)
 
 
