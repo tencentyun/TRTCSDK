@@ -1,75 +1,95 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
+
 <head>
-  <title>WEBRTC Demo</title>
+  <!-- Required meta tags -->
   <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1" name="viewport">
-  <link href='./css/bootstrap.css' rel="stylesheet">
-  <link href='./css/style.css' rel='stylesheet'>
-  <link rel="stylesheet" href="./css/pure-min.css">
-  <link rel="stylesheet" href="./css/baby-blue.css">
-  <style>
-      #remote-video-wrap div{max-width:400px;display: inline-block;padding:10px}
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Material Design for Bootstrap fonts and icons -->
+  <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons"> -->
+
+  <!-- Material Design for Bootstrap CSS -->
+  <link rel="stylesheet" href="./css/bootstrap-material-design.min.css">
+  <link rel="stylesheet" href="./css/common.css">
+
+  <title>TRTC Web SDK Samples - 基础音视频通话</title>
 </head>
+
 <body>
-
-  <!-- 登录  -->
-  <div id="input-container" class="container">
-    
-    <div class="login-box">
-      <div class="form-group">
-        <div class="hide">
-          <label for="sdkappid">SDKAPPID:&nbsp;</label>
-          <input class="form-control" id="sdkappid" type="text" value="1400037025" />
+  <nav class="navbar navbar-light fixed-top rtc-primary-bg">
+    <h5>基础音视频通话</h5>
+  </nav>
+  <form id="form">
+    <div class="custom-container container">
+      <div class="row">
+        <div class="custom-row-container">
+          <div class="row">
+            <div class="col-ms">
+              <div class="card custom-card">
+                <div class="form-group">
+                  <label for="userId" class="bmd-label-floating">userID:</label>
+                  <input type="text" class="form-control" name="userId" id="userId">
+                </div>
+                <div class="form-group bmd-form-group">
+                  <label for="roomId" class="bmd-label-floating">roomID:</label>
+                  <input type="text" class="form-control" name="roomId" id="roomId">
+                </div>
+                <div class="form-group bmd-form-group">
+                  <button id="join" type="button" class="btn btn-raised btn-primary rtc-primary-bg">JOIN</button>
+                  <button id="leave" type="button" class="btn btn-raised btn-primary rtc-primary-bg">LEAVE</button>
+                  <button id="publish" type="button" class="btn btn-raised btn-primary rtc-primary-bg">PUBLISH</button>
+                  <button id="unpublish" type="button"
+                    class="btn btn-raised btn-primary rtc-primary-bg">UNPUBLISH</button>
+                </div>
+              </div>
+              <div class="card">
+                <button class="btn btn-raised rtc-expand-btn" id="settings" data-toggle="collapse"
+                  data-target="#setting-collapse" aria-expanded="false" aria-controls="collapse">
+                  Settings
+                </button>
+                <div id="setting-collapse" class="collapse" aria-labelledby="setting-collapse">
+                  <div class="card-body">
+                    <div class="form-group">
+                      <label for="cameraId" class="bmd-label-floating">CAMERA</label>
+                      <select class="form-control" id="cameraId" name="cameraId">
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="microphoneId" class="bmd-label-floating">MICROPHONE</label>
+                      <select class="form-control" id="microphoneId" name="microphoneId">
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-          <label for="userId">用户名:</label>
-          <!-- <select class="form-control" id="userId"></select> -->
-          <input class="form-control" id="userId" type="text" value="" />
-          <label for="room-number">房间号:</label>
-          <input class="form-control" id="roomid" type="text" value="113355" placeholder="请输入数字(1~999999999)" maxlength="9" minlength="1" onkeyup="value=value.replace(/[^\d]/g,'')">
       </div>
-      <button class="btn btn-default" type="button" onclick="push()">我要视频通话</button>
-      <br />
-      <p>注意：如果房间已经存在，则加入房间</p>
+    </div>
+  </form>
+  <div class="video-grid" id="video_grid">
+    <div id="local_stream" class="video-placeholder">
+      <div id="local_video_info" class="video-info"></div>
     </div>
   </div>
-  <!-- 登录  -->
 
-  <!-- RTC  -->
-  <div id="video-section" style="display: none">
-    <p>当前房间号：<span id="c_roomid"></span>  当前用户： <span id="c_userid"></span></p>
-    <button class="btn btn-default" type="button" onclick="quitRTC()">退房</button>
-    <button class="btn btn-default" type="button" onclick="stopRTC()">停止推流</button>
-    <button class="btn btn-default" type="button" onclick="startRTC()">开始推流</button>
-        <div id="remote-video-wrap">
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <!-- Demo 相关第三方库-->
+  <script src="./js/jquery-3.2.1.min.js"></script>
+  <script src="./js/popper.js"></script>
+  <script src="./js/bootstrap-material-design.min.js"></script>
+  <script>$(document).ready(function () { $('body').bootstrapMaterialDesign(); });</script>
+  <!-- 引入 TRTC WEB SDK 脚本 -->
+  <script src="./js/trtc.js"></script>
+  <!-- Demo 相关脚本 -->
+  <script src="./js/lib-generate-test-usersig.min.js"></script>
+  <script src="./js/debug/GenerateTestUserSig.js"></script>
+  <script src="./js/utils.js"></script>
+  <script src="./js/rtc-client.js"></script>
+  <script src="./js/index.js"></script>
+</body>
 
-        </div>
-    </div>
-  </div>
-  <!-- RTC  -->
-
-  <!-- jquery Demo用到，WebRTCAPI不依赖 -->
-  <script src="./libs/jquery.min.js"></script>
-  <!-- demo 部分 -->
-  <script src="https://sqimg.qq.com/expert_qq/webrtc/3.0.6/WebRTCAPI.min.js"></script>
-  <script>
-    document.write('<script src="./js/config.js?v='+new Date()+'" type="text/javascript"></scr'+'ipt>')
-    document.write('<script src="./js/index.js?v='+new Date()+'" type="text/javascript"></scr'+'ipt>')
-    document.write('<script src="./libs/lib-generate-test-usersig.min.js?v='+new Date()+'" type="text/javascript"></scr'+'ipt>')
-    document.write('<script src="./js/debug/GenerateTestUserSig.js?v='+new Date()+'" type="text/javascript"></scr'+'ipt>')
-  </script>
-    <script>
-        var _mtac = {"senseHash":0};
-        (function() {
-            var mta = document.createElement("script");
-            mta.src = "//pingjs.qq.com/h5/stats.js";
-            mta.setAttribute("name", "MTAH5");
-            mta.setAttribute("sid", "500538821");
-            mta.setAttribute("cid", "500538834");
-            var s = document.getElementsByTagName("script")[0];
-            s.parentNode.insertBefore(mta, s);
-        })();
-    </script>
-<!-- Global site tag (gtag.js) - Google Analytics --> <script async src="https://www.googletagmanager.com/gtag/js?id=UA-121844058-1"></script> <script>   window.dataLayer = window.dataLayer || [];   function gtag(){dataLayer.push(arguments);}   gtag('js', new Date());    gtag('config', 'UA-121844058-1'); </script></body>
 </html>
