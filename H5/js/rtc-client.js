@@ -44,6 +44,14 @@ class RtcClient {
       this.isJoined_ = true;
     } catch (error) {
       console.error('failed to join room because: ' + error);
+      alert(
+        '进房失败原因：' +
+          error +
+          '\r\n\r\n请确保您的网络连接是正常的，您可以先体验一下我们的Demo以确保网络连接是正常的：' +
+          '\r\n https://trtc-1252463788.file.myqcloud.com/web/demo/official-demo/index.html ' +
+          '\r\n\r\n另外，请确保您的账号信息是正确的。' +
+          '\r\n请打开链接：https://cloud.tencent.com/document/product/647/34342 查询详细错误信息！'
+      );
       return;
     }
 
