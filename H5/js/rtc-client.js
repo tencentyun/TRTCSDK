@@ -41,6 +41,7 @@ class RtcClient {
       // join the room
       await this.client_.join({ roomId: this.roomId_ });
       console.log('join room success');
+      Toast.notify('进房成功！');
       this.isJoined_ = true;
     } catch (error) {
       console.error('failed to join room because: ' + error);
@@ -52,27 +53,28 @@ class RtcClient {
           '\r\n\r\n另外，请确保您的账号信息是正确的。' +
           '\r\n请打开链接：https://cloud.tencent.com/document/product/647/34342 查询详细错误信息！'
       );
+      Toast.error('进房错误！');
       return;
     }
 
-    // create a local stream with audio/video captured from microphone/camera
-    this.localStream_ = TRTC.createStream({
-      audio: true,
-      video: true,
-      userId: this.userId_,
-      cameraId: getCameraId(),
-      microphoneId: getMicrophoneId()
-    });
-    // 设置视频分辨率帧率和码率
-    this.localStream_.setVideoProfile('480p');
-
     try {
-      // initialize the local stream
-      await this.localStream_.initialize();
-      console.log('initialize local stream success');
+      // 采集摄像头和麦克风视频流
+      await this.createLocalStream({ audio: true, video: true });
+      Toast.info('摄像头及麦克风采集成功！');
+      console.log('createLocalStream with audio/video success');
     } catch (error) {
-      console.error('failed to initialize local stream because: ' + error);
-      return;
+      console.error('createLocalStream with audio/video failed: ' + error);
+      alert(
+        '请确认已连接摄像头和麦克风并授予其访问权限！\r\n\r\n 如果您没有连接摄像头或麦克风，您可以通过调整第60行代码来关闭未连接设备的采集请求！'
+      );
+      try {
+        // fallback to capture camera only
+        await this.createLocalStream({ audio: false, video: true });
+        Toast.info('采集摄像头成功！');
+      } catch (error) {
+        console.error('createLocalStream with video failed: ' + error);
+        return;
+      }
     }
 
     this.localStream_.on('player-state-changed', event => {
@@ -89,11 +91,13 @@ class RtcClient {
 
     // publish local stream by default after join the room
     await this.publish();
+    Toast.notify('发布本地流成功！');
   }
 
   async leave() {
     if (!this.isJoined_) {
       console.warn('leave() - leave without join()d observed');
+      Toast.error('请先加入房间！');
       return;
     }
 
@@ -105,6 +109,7 @@ class RtcClient {
     try {
       // leave the room
       await this.client_.leave();
+      Toast.notify('退房成功！');
       this.isJoined_ = false;
     } catch (error) {
       console.error('failed to leave the room because ' + error);
@@ -120,19 +125,23 @@ class RtcClient {
 
   async publish() {
     if (!this.isJoined_) {
+      Toast.error('请先加入房间再点击开始推流！');
       console.warn('publish() - please join() firstly');
       return;
     }
     if (this.isPublished_) {
       console.warn('duplicate RtcClient.publish() observed');
+      Toast.error('当前正在推流！');
       return;
     }
     try {
       // 发布本地流
       await this.client_.publish(this.localStream_);
+      Toast.info('发布本地流成功！');
       this.isPublished_ = true;
     } catch (error) {
       console.error('failed to publish local stream ' + error);
+      Toast.error('发布本地流失败！');
       this.isPublished_ = false;
     }
   }
@@ -140,10 +149,12 @@ class RtcClient {
   async unpublish(isLeaving) {
     if (!this.isJoined_) {
       console.warn('unpublish() - please join() firstly');
+      Toast.error('请先加入房间再停止推流！');
       return;
     }
     if (!this.isPublished_) {
       console.warn('RtcClient.unpublish() called but not published yet');
+      Toast.error('当前尚未发布本地流！');
       return;
     }
 
@@ -151,13 +162,30 @@ class RtcClient {
       // 停止发布本地流
       await this.client_.unpublish(this.localStream_);
       this.isPublished_ = false;
+      Toast.info('停止发布本地流成功！');
     } catch (error) {
       console.error('failed to unpublish local stream because ' + error);
+      Toast.error('停止发布本地流失败！');
       if (!isLeaving) {
         console.warn('leaving the room because unpublish failure observed');
+        Toast.error('停止发布本地流失败，退出房间！');
         this.leave();
       }
     }
+  }
+
+  async createLocalStream(options) {
+    this.localStream_ = TRTC.createStream({
+      audio: options.audio, // 采集麦克风
+      video: options.video, // 采集摄像头
+      userId: this.userId_
+      // cameraId: getCameraId(),
+      // microphoneId: getMicrophoneId()
+    });
+    // 设置视频分辨率帧率和码率
+    this.localStream_.setVideoProfile('480p');
+
+    await this.localStream_.initialize();
   }
 
   handleEvents() {
@@ -165,6 +193,7 @@ class RtcClient {
     this.client_.on('error', err => {
       console.error(err);
       alert(err);
+      Toast.error('客户端错误：' + err);
       // location.reload();
     });
 
@@ -172,6 +201,7 @@ class RtcClient {
     // 应用层请尽量使用不同用户ID进房
     this.client_.on('client-banned', err => {
       console.error('client has been banned for ' + err);
+      Toast.error('用户被踢出房间！');
       // location.reload();
     });
 
@@ -179,11 +209,13 @@ class RtcClient {
     this.client_.on('peer-join', evt => {
       const userId = evt.userId;
       console.log('peer-join ' + userId);
+      Toast.notify('远端用户进房 - ' + userId);
     });
     // 远端用户退房通知 - 仅限主动推流用户
     this.client_.on('peer-leave', evt => {
       const userId = evt.userId;
       console.log('peer-leave ' + userId);
+      Toast.notify('远端用户退房 - ' + userId);
     });
 
     // 处理远端流增加事件
@@ -192,6 +224,7 @@ class RtcClient {
       const id = remoteStream.getId();
       const userId = remoteStream.getUserId();
       console.log(`remote stream added: [${userId}] ID: ${id} type: ${remoteStream.getType()}`);
+      Toast.info('远端流增加 - ' + userId);
       console.log('subscribe to this remote stream');
       // 远端流默认已订阅所有音视频，此处可指定只订阅音频或者音视频，不能仅订阅视频。
       // 如果不想观看该路远端流，可调用 this.client_.unsubscribe(remoteStream) 取消订阅
@@ -207,6 +240,7 @@ class RtcClient {
       // 在指定的 div 容器上播放音视频
       remoteStream.play(id);
       console.log('stream-subscribed ID: ', id);
+      Toast.info('远端流订阅成功 - ' + remoteStream.getUserId());
     });
 
     // 处理远端流被删除事件
@@ -220,6 +254,7 @@ class RtcClient {
       });
       removeView(id);
       console.log(`stream-removed ID: ${id}  type: ${remoteStream.getType()}`);
+      Toast.info('远端流删除 - ' + remoteStream.getUserId());
     });
 
     // 处理远端流更新事件，在音视频通话过程中，远端流音频或视频可能会有更新
@@ -233,6 +268,7 @@ class RtcClient {
           ' hasVideo: ' +
           remoteStream.hasVideo()
       );
+      Toast.info('远端流更新！');
     });
 
     // 远端流音频或视频mute状态通知
