@@ -1,0 +1,95 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body,
+#app_box {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    margin: 5px;
+    font-family: "PingFang SC","Microsoft YaHei",微软雅黑,"MicrosoftJhengHei",华文细黑,STHeiti,MingLiu;
+}
+
+.video_view {
+    overflow: hidden;
+    width: 320px;
+    height: 240px;
+    background-color: grey;
+    margin-top: 4px;
+    margin-left: 4px;
+    margin-right: 4px;
+}
+
+.video_voice_progress {
+    width: 320px;
+    position: absolute;
+    padding-right: 0px;
+    margin-right: 0px;
+    z-index: 2;
+}
+
+.camera_test_video_view {
+    overflow: hidden;
+    width: 240px;
+    height: 160px;
+    background-color: grey;
+    margin-top: 4px;
+    margin-left: 4px;
+    margin-right: 4px;
+}
+
+#camera_device_video_wrap {
+    margin: 0 5px;
+    flex-wrap: wrap;
+    display: flex;
+}
+
+#video_wrap {
+    margin: 0 5px;
+    flex-wrap: wrap;
+    display: flex;
+}
+
+.el-main {
+    padding: 0 !important;
+    overflow: hidden !important;
+    height: 100%;
+}
+
+.el-container {
+    height: 100%;
+    overflow: hidden;
+    padding: 5px;
+}
+
+.el-card {
+    border-radius: 4px; 
+    margin: 3px;
+}
+
+.el-input {
+    width: 150px;
+}
+
+.el-slider {
+    width: 150px;
+}
+
+.el-progress-device {
+    width: 150px;
+    margin-top: 5px;
+}
+
+.el-input-number {
+    width: 150px;
+}
+
+.control {
+    margin-top: 10px;
+}

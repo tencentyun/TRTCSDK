@@ -1,0 +1,53 @@
+{
+  "name": "trtc_electron_demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "build": {
+    "appId": "com.tencent.trtc-electron-demo",
+    "electronVersion": "6.0.10",
+    "directories": {
+      "output": "build"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    },
+    "extraResources": {
+      "from": "./resources",
+      "to": "./"
+    },
+    "mac": {
+      "hardenedRuntime": false,
+      "gatekeeperAssess": false,
+      "target": [
+        "zip",
+        "dmg"
+      ]
+    },
+    "dmg": {
+      "sign": false
+    },
+    "win": {
+      "target": "nsis"
+    }
+  },
+  "scripts": {
+    "start": "electron .",
+    "win-package": "electron-builder --win --ia32",
+    "mac-package": "electron-builder --mac --arm64"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "trtc-electron-sdk": "^6.7.128"
+  },
+  "devDependencies": {
+    "electron": "^6.0.10",
+    "electron-builder": "^21.2.0"
+  }
+}
