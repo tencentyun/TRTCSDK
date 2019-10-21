@@ -168,6 +168,7 @@ let demoApp = new Vue({
           // 进房失败
           console.error('trtc_demo: onEnterRoom failed.');
           this.notify('加入房间失败，errCode:' + result, 'error', '错误');
+          this.inroom = false;
         }
       });
       rtcCloud.on('onExitRoom', (reason) => {
@@ -783,7 +784,7 @@ let demoApp = new Vue({
 
       let sdkInfo = genTestUserSig(this.userId);
       let userSig = sdkInfo.userSig;
-      if (userSig === undefined || userSig === null || userSig === "") {
+      if (sdkInfo.sdkappid === 0 || userSig === undefined || userSig === null || userSig === "") {
         this.notify('请填写SDKAPPID信息！', 'warning', '警告');
         return;
       }
