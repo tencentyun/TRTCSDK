@@ -1,5 +1,4 @@
 <h2 id="TRTC">精简版（TRTC）</h2>
-
 精简版体积最小，适合仅集成 TRTC 实时音视频功能的客户。
 
 <table>
@@ -67,6 +66,15 @@
       <td style="text-align:center">N/A</td>
    </tr>
    <tr>
+      <td style="text-align:center">Electron  </td>
+      <td style="text-align:center"><a href="http://liteavsdk-1252463788.cosgz.myqcloud.com/TXLiteAVSDK_TRTC_Electron_latest.zip">DOWNLOAD</a></td>
+      <td style="text-align:center"><a href="https://github.com/tencentyun/TRTCSDK">Github</a></td>
+      <td style="text-align:center"><a href="https://gitee.com/cloudtencent/TRTCSDK">Gitee</a></td>
+      <td style="text-align:center"><a href="https://cloud.tencent.com/document/product/647/38548">DOC</a></td>
+      <td style="text-align:center"><a href="https://cloud.tencent.com/document/product/647/38549">DOC</a></td>
+      <td style="text-align:center">N/A</td>
+   </tr>
+   <tr>
       <td style="text-align:center">微信小程序 </td>
       <td style="text-align:center"><a onclick=MtaH5.clickStat("trtc_sdk_download_wxmini_trtc") href="http://liteavsdk-1252463788.cosgz.myqcloud.com/TRTC_WXMini_latest.zip">DOWNLOAD</a></td>
       <td style="text-align:center"><a href="https://github.com/tencentyun/TRTCSDK">Github</a></td>
@@ -80,7 +88,6 @@
 >? 阅读文档 [如何缩减安装包体积](https://cloud.tencent.com/document/product/647/34400) 了解如何减少 SDK 带来的安装包体积增量。
 
 <h2 id="Professional">专业版（Professional）</h2>
-
 TRTC SDK 是隶属于腾讯视频云 LiteAV 框架下的一款终端产品，我们基于 LiteAV 框架还研发了 [超级播放器 SDK](https://cloud.tencent.com/product/player)、[移动直播 SDK](https://cloud.tencent.com/product/mlvb) 和 [短视频 SDK](https://cloud.tencent.com/product/ugsv) 等其他终端产品。
 
 由于 LiteAV 体系的 SDK 都使用了相同的基础模块，如果您的项目中同时集成了两款以上的 LiteAV 体系的 SDK，就会出现符号冲突（symbol duplicate）的问题。
@@ -118,7 +125,6 @@ TRTC SDK 是隶属于腾讯视频云 LiteAV 框架下的一款终端产品，我
 
 
 <h2 id="Enterprise">企业版（Enterprise）</h2>
-
 LiteAVSDK 的企业版，除了包含专业版的所有功能以外，还集成了一套 AI 特效组件，支持大眼、瘦脸、美容和动效贴纸挂件等能力，下载后需要解压密码和授权 license 才能运行，解码密码和授权 license 请联系腾讯云商务获取。
 
 <table>
