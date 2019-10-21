@@ -13,7 +13,7 @@
 
 ## 二、跑通Demo
 #### 1、下载地址
-https://gitee.com/vqcloud/Trtc_Electron_Demo.git
+https://github.com/tencentyun/TRTCSDK
 
 #### 2、找到Appid和密钥
 进入腾讯云实时音视频 [控制台](https://console.cloud.tencent.com/rav) 创建一个新的应用，获得 SDKAppID，SDKAppID 是腾讯云后台用来区分不同实时音视频应用的唯一标识，在第3步中会用到。
@@ -24,7 +24,7 @@ https://gitee.com/vqcloud/Trtc_Electron_Demo.git
 ![](https://main.qcloudimg.com/raw/6ae2ee8958c5147a591a81136320fe21.png)
 
 #### 3、粘贴密钥到Demo工程的指定文件中
- 
+
 我们在各个平台的 Demo 的源码工程中都提供了一个叫做 “GenerateTestUserSig” 的文件(目录:TRTC_Electron_Demo/js/GenerateTestUserSig.js)，它可以通过 HMAC-SHA256 算法本地计算出 UserSig，用于快速跑通 Demo。您只需要将第1步中获得的 SDKAppID 和第3步中获得的加密密钥拷贝到文件中的指定位置即可，如下所示：
 
 ![](https://main.qcloudimg.com/raw/9275a5f99bf00467eac6c34f6ddd3ca5.jpg)
@@ -37,9 +37,7 @@ npm start    //开始运行
 ```
 
 ## 三、参考文档
-```
-目录:TRTC_Electron_Demo/doc
-```
+https://trtc-1252463788.file.myqcloud.com/electron_sdk/docs/
 
 ## 四、TRTC_Electron 使用方法
 
@@ -47,11 +45,11 @@ npm start    //开始运行
 ```
 npm install trtc-electron-sdk -S 
 ```
-   
+
 #### 2、具体使用方法
 ```js
 //1、引入库
-const TRTCEngine = require('trtc-electron-sdk');
+const TRTCCloud = require('trtc-electron-sdk');
 const {
     TRTCVideoStreamType,
     TRTCAppScene,
@@ -60,31 +58,31 @@ const {
     TRTCParams
 } = require('trtc-electron-sdk/liteav/trtc_define');
 
-//2、构建 TRTCEngine
-this.rtcEngine = new TRTCEngine();
+//2、构建 TRTCCloud
+this.rtcCloud = new TRTCCloud();
 
 //3、注册回调
-subscribeEvents = (rtcEngine) => {
-    rtcEngine.on('onError', (errcode, errmsg) => {
+subscribeEvents = (rtcCloud) => {
+    rtcCloud.on('onError', (errcode, errmsg) => {
         console.info('trtc_demo: onError :' + errcode + " msg" + errmsg);
     }); 
 
-    rtcEngine.on('onEnterRoom', (elapsed) => {
+    rtcCloud.on('onEnterRoom', (elapsed) => {
         console.info('trtc_demo: onEnterRoom elapsed:' + elapsed);
     });
-    rtcEngine.on('onExitRoom', (reason) => {
+    rtcCloud.on('onExitRoom', (reason) => {
         console.info('onExitRoom: userenter reason:' + reason);
     });
 
     // 注册远程视频的可用状态
-    rtcEngine.on('onUserVideoAvailable', (uid, available) => {
+    rtcCloud.on('onUserVideoAvailable', (uid, available) => {
         console.info('trtc_demo: onUserVideoAvailable uid:' + uid + " available:" + available);
         if (available) {
             let view = this.findVideoView(uid, TRTCVideoStreamType.TRTCVideoStreamTypeBig);
-            this.rtcEngine.startRemoteView(uid, view);
+            this.rtcCloud.startRemoteView(uid, view);
         }
         else {
-            this.rtcEngine.stopRemoteView(uid);
+            this.rtcCloud.stopRemoteView(uid);
             this.destroyVideoView(uid, TRTCVideoStreamType.TRTCVideoStreamTypeBig);
         }
     });
@@ -92,7 +90,7 @@ subscribeEvents = (rtcEngine) => {
     //.....
     //.....
 };
-subscribeEvents(this.rtcEngine);
+subscribeEvents(this.rtcCloud);
 
 //4、进入房间
 enterroom () {
@@ -104,14 +102,14 @@ enterroom () {
     param.userId = this.userId;
     param.privateMapKey = '';
     param.businessInfo = '';
-    this.rtcEngine.enterRoom(param, TRTCAppScene.TRTCAppSceneVideoCall);
+    this.rtcCloud.enterRoom(param, TRTCAppScene.TRTCAppSceneVideoCall);
     //2. 编码参数
     let encparam = new TRTCVideoEncParam();
     encparam.videoResolution = TRTCVideoResolution.TRTCVideoResolution_640_360;
     encparam.resMode = TRTCVideoResolutionMode.TRTCVideoResolutionModeLandscape;
     encparam.videoFps = 15;
     encparam.videoBitrate = 550;
-    this.rtcEngine.setVideoEncoderParam(encparam);
+    this.rtcCloud.setVideoEncoderParam(encparam);
     //3. 打开采集和预览本地视频、采集音频
     enableVideoCapture(true);
     enableAudioCapture(true);
@@ -119,27 +117,27 @@ enterroom () {
 
 //5、退出房间
 exitroom() {
-    this.rtcEngine.exitRoom();
+    this.rtcCloud.exitRoom();
 },
 
 //6、开启视频
 enableVideoCapture(bEnable) {
     if (bEnable) {
         let view = this.findView("local", TRTCVideoStreamType.TRTCVideoStreamTypeBig);
-        this.rtcEngine.startLocalPreview(view);
+        this.rtcCloud.startLocalPreview(view);
     }
     else {
-        this.rtcEngine.stopLocalPreview();
+        this.rtcCloud.stopLocalPreview();
     }
 },
 
 //7、开启音频
 enableAudioCapture(bEnable) {
     if (bEnable) {
-        this.rtcEngine.startLocalAudio();
+        this.rtcCloud.startLocalAudio();
     }
     else {
-        this.rtcEngine.stopLocalAudio();
+        this.rtcCloud.stopLocalAudio();
     }
 },
 

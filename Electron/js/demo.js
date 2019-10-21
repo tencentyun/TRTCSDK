@@ -1,4 +1,4 @@
-const TRTCEngine = require('trtc-electron-sdk');
+const TRTCCloud = require('trtc-electron-sdk');
 const {
   TRTCVideoStreamType,
   TRTCVideoResolution,
@@ -9,6 +9,7 @@ const {
   TRTCVideoResolutionMode,
   TRTCBeautyStyle,
   TRTCDeviceType,
+  TRTCDeviceState,
   TRTCTranscodingConfigMode
 } = require('trtc-electron-sdk/liteav/trtc_define');
 const {
@@ -44,7 +45,7 @@ let demoApp = new Vue({
   data() {
     return {
       //engine
-      rtcEngine: null,
+      rtcCloud: null,
       version: '',
 
       //用户信息
@@ -105,8 +106,8 @@ let demoApp = new Vue({
       testBGM: false,
 
       // mac 打包后资源存放在“Contents/Resources”中， win 打包存放在“resources”中， demo 引用路径在“resources”中
-      testPath: process.resourcesPath + '/testspeak.mp3',
-      // testPath: __dirname + '/resources/testspeak.mp3',
+      // testPath: process.resourcesPath + '/testspeak.mp3',
+      testPath: __dirname + '/resources/testspeak.mp3',
 
       // 美颜信息
       openBeautyDialog: false,
@@ -135,10 +136,10 @@ let demoApp = new Vue({
   },
   mounted: function () {
     // 重要点, 创建TRTC 对象
-    this.rtcEngine = new TRTCEngine();
+    this.rtcCloud = new TRTCCloud();
 
-    console.log("TRTCEngine ...");
-    this.version = this.rtcEngine.getSDKVersion();
+    console.log("TRTCCloud ...");
+    this.version = this.rtcCloud.getSDKVersion();
 
     this.userId = getRandom(6).toString();
     this.roomId = getRandom(3);
@@ -146,17 +147,17 @@ let demoApp = new Vue({
     this.initSDKLocalData();
 
     let self = this;
-    subscribeEvents = (rtcEngine) => {
-      rtcEngine.on('onError', (errcode, errmsg) => {
+    subscribeEvents = (rtcCloud) => {
+      rtcCloud.on('onError', (errcode, errmsg) => {
         console.error('trtc_demo: onError:' + errcode + " msg:" + errmsg);
         this.notify('Error: ' + errcode + '<br/>Message: ' + errmsg, 'error', '错误');
       });
-      rtcEngine.on('onWarning', (warncode, warnmsg) => {
+      rtcCloud.on('onWarning', (warncode, warnmsg) => {
         console.warn('trtc_demo: onWarning:' + warncode + " msg:" + warnmsg);
         this.notify('Warn: ' + warncode + '<br/>Message: ' + warnmsg, 'warning', '警告');
       });
 
-      rtcEngine.on('onEnterRoom', (result) => {
+      rtcCloud.on('onEnterRoom', (result) => {
         console.info('trtc_demo: onEnterRoom elapsed:' + result);
         if (result > 0) {
           // 进房成功，添加本地用户
@@ -169,14 +170,14 @@ let demoApp = new Vue({
           this.notify('加入房间失败，errCode:' + result, 'error', '错误');
         }
       });
-      rtcEngine.on('onExitRoom', (reason) => {
+      rtcCloud.on('onExitRoom', (reason) => {
         console.info('trtc_demo: onExitRoom reason:' + reason);
         this.destroyAllVideoView();
         this.notify('退出房间成功');
         this.inroom = false;
       });
 
-      rtcEngine.on('onUserEnter', (uid) => {
+      rtcCloud.on('onUserEnter', (uid) => {
         console.info('trtc_demo: onUserEnter uid:' + uid);
         this.users.push(uid);
         let result = this.pkUsers.find((element) => { return element.userId === uid; });
@@ -186,7 +187,7 @@ let demoApp = new Vue({
           this.notify('用户[' + uid + ']进入房间');
         }
       });
-      rtcEngine.on('onUserExit', (uid, reason) => {
+      rtcCloud.on('onUserExit', (uid, reason) => {
         console.info('trtc_demo: onUserExit uid:' + uid + " reason:" + reason);
         this.users.remove(uid);
         let result = this.pkUsers.find((element) => { return element.userId === uid; });
@@ -202,19 +203,19 @@ let demoApp = new Vue({
       });
 
       // 远程视频用户状态监听，在此创建一个Dom结点，然后给trtc，由trtc负责绘制
-      rtcEngine.on('onUserVideoAvailable', (uid, available) => {
+      rtcCloud.on('onUserVideoAvailable', (uid, available) => {
         console.info('trtc_demo: onUserVideoAvailable uid:' + uid + "|available:" + available);
         // bugfix：注意 mac 平台下中文用户进房 userId 返回空，待解决
         if (available) {
           // 画面不区分大小流，只区分主流和辅流，这里统一使用主流当做 key
           let view = this.findVideoView(uid, TRTCVideoStreamType.TRTCVideoStreamTypeBig);
           this.setVisibleVoice(this.showVoice, uid, TRTCVideoStreamType.TRTCVideoStreamTypeBig);
-          this.rtcEngine.startRemoteView(uid, view);
+          this.rtcCloud.startRemoteView(uid, view);
           // 填充模式需要在设置 view 后才生效
-          this.rtcEngine.setRemoteViewFillMode(uid, this.videoFillMode);
+          this.rtcCloud.setRemoteViewFillMode(uid, this.videoFillMode);
         }
         else {
-          this.rtcEngine.stopRemoteView(uid);
+          this.rtcCloud.stopRemoteView(uid);
           this.destroyVideoView(uid, TRTCVideoStreamType.TRTCVideoStreamTypeBig);
           // 移除混流画面信息
           let index = this.mixStreamInfos.findIndex(function (item) {
@@ -228,16 +229,16 @@ let demoApp = new Vue({
       });
 
       // 远程视频用户辅流状态监听
-      rtcEngine.on('onUserSubStreamAvailable', (uid, available) => {
+      rtcCloud.on('onUserSubStreamAvailable', (uid, available) => {
         console.info('trtc_demo: onUserSubStreamAvailable uid:' + uid + "|available:" + available);
         if (available) {
           let view = this.findVideoView(uid, TRTCVideoStreamType.TRTCVideoStreamTypeSub);
-          this.rtcEngine.startRemoteSubStreamView(uid, view);
+          this.rtcCloud.startRemoteSubStreamView(uid, view);
           // 填充模式需要在设置 view 后才生效
-          this.rtcEngine.setRemoteSubStreamViewFillMode(uid, this.videoFillMode);
+          this.rtcCloud.setRemoteSubStreamViewFillMode(uid, this.videoFillMode);
         }
         else {
-          this.rtcEngine.stopRemoteSubStreamView(uid);
+          this.rtcCloud.stopRemoteSubStreamView(uid);
           this.destroyVideoView(uid, TRTCVideoStreamType.TRTCVideoStreamTypeSub);
           // 移除混流画面信息
           let index = this.mixStreamInfos.findIndex(function (item) {
@@ -251,7 +252,7 @@ let demoApp = new Vue({
       });
 
       // 音视频首帧接收回调监听
-      rtcEngine.on('onFirstVideoFrame', (userId, streamType, width, height) => {
+      rtcCloud.on('onFirstVideoFrame', (userId, streamType, width, height) => {
         console.info('trtc_demo: onFirstVideoFrame userId:' + userId + "|streamType:" + streamType + "|width:" + width + "|height:" + height);
         // 添加用户的混流信息（包括本地和远端用户），并实时更新混流信息
         if (userId === null || userId === "") {
@@ -290,20 +291,20 @@ let demoApp = new Vue({
           }
         }
       });
-      rtcEngine.on('onFirstAudioFrame', (userId) => {
+      rtcCloud.on('onFirstAudioFrame', (userId) => {
         console.info('trtc_demo: onFirstAudioFrame userId:' + userId);
       });
 
       // 音视频首帧发送回调监听
-      rtcEngine.on('onSendFirstLocalVideoFrame', (streamType) => {
+      rtcCloud.on('onSendFirstLocalVideoFrame', (streamType) => {
         console.info('trtc_demo: onSendFirstLocalVideoFrame streamType:' + streamType);
       });
-      rtcEngine.on('onSendFirstLocalAudioFrame', () => {
+      rtcCloud.on('onSendFirstLocalAudioFrame', () => {
         console.info('trtc_demo: onSendFirstLocalAudioFrame');
       });
 
       // 音量提示回调监听
-      rtcEngine.on('onUserVoiceVolume', (userVolumes, userVolumesCount, totalVolume) => {
+      rtcCloud.on('onUserVoiceVolume', (userVolumes, userVolumesCount, totalVolume) => {
         if (userVolumesCount <= 0) return;
         if (!this.showVoice) return;
         for (var i = 0; i < userVolumesCount; i++) {
@@ -324,7 +325,7 @@ let demoApp = new Vue({
       });
 
       // 跨房连麦回调监听
-      rtcEngine.on('onConnectOtherRoom', (userId, errCode, errMsg) => {
+      rtcCloud.on('onConnectOtherRoom', (userId, errCode, errMsg) => {
         console.info('trtc_demo: onConnectOtherRoom userId:' + userId + "|errCode:" + errCode + "|errMsg:" + errMsg);
         if (userId !== this.pkUserId) return;
         // 错误码为 ERR_NULL 时，连麦成功
@@ -338,7 +339,7 @@ let demoApp = new Vue({
         }
         this.connectLoading = false;
       });
-      rtcEngine.on('onDisconnectOtherRoom', (errCode, errMsg) => {
+      rtcCloud.on('onDisconnectOtherRoom', (errCode, errMsg) => {
         console.info('trtc_demo: onDisconnectOtherRoom errCode:' + errCode + "|errMsg:" + errMsg);
         // 错误码为 ERR_NULL 时，取消连麦成功
         if (errCode === 0) {
@@ -353,16 +354,16 @@ let demoApp = new Vue({
       });
 
       // 网络质量指标回调，每2秒回调1次，具体参数属性查看 TRTCQualityInfo
-      rtcEngine.on('onNetworkQuality', (localQuality, remoteQuality) => {
+      rtcCloud.on('onNetworkQuality', (localQuality, remoteQuality) => {
         // console.debug('trtc_demo: onNetworkQuality userId:' + localQuality.userId + "|quality:" + localQuality.quality);
         // for (var i = 0; i < remoteQuality.length; i++) {
         //   console.debug('trtc_demo: onNetworkQuality remote userId:' + remoteQuality[i].userId + "|quality:" + remoteQuality[i].quality);
         // }
       });
       // 技术指标统计回调，每2秒回调1次，具体参数属性查看 TRTCStatistics
-      rtcEngine.on('onStatistics', (statis) => {
+      rtcCloud.on('onStatistics', (statis) => {
         // console.debug('trtc_demo: onStatistics upLoss:' + statis.upLoss + "|downLoss:" + statis.downLoss + "|appCpu:" + statis.appCpu +
-        //   "|systemCpu:" + statis.ststemCpu + "|rtt:" + statis.rtt + "|localStatisticsArraySize:" + statis.localStatisticsArraySize +
+        //   "|systemCpu:" + statis.systemCpu + "|rtt:" + statis.rtt + "|localStatisticsArraySize:" + statis.localStatisticsArraySize +
         //   "|remoteStatisticsArraySize:" + statis.remoteStatisticsArraySize);
         // for (var i = 0; i < statis.localStatisticsArraySize; i++) {
         //   var localStatis = statis.localStatisticsArray[i];
@@ -379,46 +380,46 @@ let demoApp = new Vue({
       });
 
       // 屏幕共享回调监听
-      rtcEngine.on('onScreenCaptureCovered', () => {
+      rtcCloud.on('onScreenCaptureCovered', () => {
         console.info('trtc_demo: onScreenCaptureCovered');
       });
-      rtcEngine.on('onScreenCaptureStarted', () => {
+      rtcCloud.on('onScreenCaptureStarted', () => {
         console.info('trtc_demo: onScreenCaptureStarted');
       });
-      rtcEngine.on('onScreenCaptureStoped', (reason) => {
+      rtcCloud.on('onScreenCaptureStoped', (reason) => {
         console.info('trtc_demo: onScreenCaptureStoped reason:' + reason);
       });
 
       // 麦克风音量回调监听
-      rtcEngine.on('onTestMicVolume', (volume) => {
+      rtcCloud.on('onTestMicVolume', (volume) => {
         this.testMicVolume = volume;
       });
       // 扬声器音量回调监听
-      rtcEngine.on('onTestSpeakerVolume', (volume) => {
+      rtcCloud.on('onTestSpeakerVolume', (volume) => {
         this.testSpeakerVolume = volume;
       });
 
       // BGM 状态回调监听
-      rtcEngine.on('onPlayBGMBegin', (errCode) => {
+      rtcCloud.on('onPlayBGMBegin', (errCode) => {
         console.info('trtc_demo: onPlayBGMBegin errCode:' + errCode);
       });
-      rtcEngine.on('onPlayBGMProgress', (progressMS, durationMS) => {
+      rtcCloud.on('onPlayBGMProgress', (progressMS, durationMS) => {
         // console.info('trtc_demo: onPlayBGMProgress progress:' + progressMS + '|duration:' + durationMS);
       });
-      rtcEngine.on('onPlayBGMComplete', (errCode) => {
+      rtcCloud.on('onPlayBGMComplete', (errCode) => {
         console.info('trtc_demo: onPlayBGMComplete errCode:' + errCode);
       });
 
-      rtcEngine.on('onSetMixTranscodingConfig', (errcode, errmsg) => {
+      rtcCloud.on('onSetMixTranscodingConfig', (errcode, errmsg) => {
         console.info('trtc_demo: onSetMixTranscodingConfig errCode:' + errcode + '|errmsg:' + errmsg);
       });
 
       // 设备状态监控回调
-      rtcEngine.on('onDeviceChange', (deviceId, type, state) => {
+      rtcCloud.on('onDeviceChange', (deviceId, type, state) => {
         // 实时监控本地设备的拔插
         console.info('trtc_demo: onDeviceChange deviceId:' + deviceId + '|type:' + type + '|state:' + state);
         if (type === TRTCDeviceType.TRTCDeviceTypeCamera) {
-          this.cameraList = this.rtcEngine.getCameraDevicesList();
+          this.cameraList = this.rtcCloud.getCameraDevicesList();
           let select = false;
           if (state === TRTCDeviceState.TRTCDeviceStateRemove) {
             // 选择设备被移除了，尝试选择其他设备
@@ -434,17 +435,17 @@ let demoApp = new Vue({
           }
           if (select) {
             if (this.cameraList.length > 0) {
-              this.rtcEngine.setCurrentCameraDevice(this.cameraList[0].deviceName);
+              this.rtcCloud.setCurrentCameraDevice(this.cameraList[0].deviceName);
               this.cameraDeviceName = this.cameraList[0].deviceName;
               // 重新选择设备后需要重新打开采集摄像头
               let view = this.findVideoView("local_video", TRTCVideoStreamType.TRTCVideoStreamTypeBig);
-              this.rtcEngine.startLocalPreview(view);
+              this.rtcCloud.startLocalPreview(view);
             } else {
               this.cameraDeviceName = '';
             }
           }
         } else if (type === TRTCDeviceType.TRTCDeviceTypeMic) {
-          this.micList = this.rtcEngine.getMicDevicesList();
+          this.micList = this.rtcCloud.getMicDevicesList();
           let select = false;
           if (state === TRTCDeviceState.TRTCDeviceStateRemove) {
             // 选择设备被移除了，尝试选择其他设备
@@ -459,7 +460,7 @@ let demoApp = new Vue({
           }
           if (select) {
             if (this.micList.length > 0) {
-              this.rtcEngine.setCurrentMicDevice(this.micList[0].deviceName);
+              this.rtcCloud.setCurrentMicDevice(this.micList[0].deviceName);
               this.micDeviceName = this.micList[0].deviceName;
             } else {
               this.micDeviceName = '';
@@ -469,42 +470,42 @@ let demoApp = new Vue({
       });
     };
 
-    subscribeEvents(this.rtcEngine);
+    subscribeEvents(this.rtcCloud);
   },
   methods: {
     // 填充模式
     onVideoFillMode() {
       for (var i = 0; i < this.users.length; i++) {
         if (this.users[i] === this.userId) {
-          this.rtcEngine.setLocalViewFillMode(this.videoFillMode);
+          this.rtcCloud.setLocalViewFillMode(this.videoFillMode);
         } else {
-          this.rtcEngine.setRemoteViewFillMode(this.users[i], this.videoFillMode);
+          this.rtcCloud.setRemoteViewFillMode(this.users[i], this.videoFillMode);
         }
       }
     },
     // 屏蔽视频
     onMuteLocalVideo() {
       this.setVisibleView(!this.muteLocalVideo, "local_video", TRTCVideoStreamType.TRTCVideoStreamTypeBig)
-      this.rtcEngine.muteLocalVideo(this.muteLocalVideo);
+      this.rtcCloud.muteLocalVideo(this.muteLocalVideo);
     },
     // 屏蔽音频
     onMuteLocalAudio() {
-      this.rtcEngine.muteLocalAudio(this.muteLocalAudio);
+      this.rtcCloud.muteLocalAudio(this.muteLocalAudio);
     },
     // 本地镜像
     onOpenLocalMirror() {
-      this.rtcEngine.setLocalViewMirror(this.localMirror);
+      this.rtcCloud.setLocalViewMirror(this.localMirror);
     },
     // 远程镜像
     onOpenEncoderMirror() {
-      this.rtcEngine.setVideoEncoderMirror(this.encoderMirror);
+      this.rtcCloud.setVideoEncoderMirror(this.encoderMirror);
     },
     // 音量提示
     onShowVoiceVolume() {
       if (this.showVoice) {
-        this.rtcEngine.enableAudioVolumeEvaluation(200);
+        this.rtcCloud.enableAudioVolumeEvaluation(200);
       } else {
-        this.rtcEngine.enableAudioVolumeEvaluation(0);
+        this.rtcCloud.enableAudioVolumeEvaluation(0);
       }
       for (var i = 0; i < this.users.length; i++) {
         this.setVisibleVoice(this.showVoice, this.users[i], TRTCVideoStreamType.TRTCVideoStreamTypeBig);
@@ -517,14 +518,14 @@ let demoApp = new Vue({
       param.resMode = this.videoResolutionMode;
       param.videoFps = this.videoFps;
       param.videoBitrate = this.videoBitrate;
-      this.rtcEngine.setVideoEncoderParam(param);
+      this.rtcCloud.setVideoEncoderParam(param);
     },
     // 更新视频网络配置
     onVideoQosChanged() {
       let param = new TRTCNetworkQosParam();
       param.preference = this.qosPreference;
       param.controlMode = this.qosControlMode;
-      this.rtcEngine.setNetworkQosParam(param);
+      this.rtcCloud.setNetworkQosParam(param);
     },
     // 双路编码
     onPushSmallVideo() {
@@ -533,7 +534,7 @@ let demoApp = new Vue({
       param.videoBitrate = 100;
       param.videoResolution = TRTCVideoResolution.TRTCVideoResolution_320_240;
       param.resMode = this.videoResolutionMode;
-      this.rtcEngine.enableSmallVideoStream(this.pushSmallVideo, param);
+      this.rtcCloud.enableSmallVideoStream(this.pushSmallVideo, param);
     },
     // 观看低清
     onPlaySmallVideo() {
@@ -542,19 +543,19 @@ let demoApp = new Vue({
       } else {
         this.playStreamType = TRTCVideoStreamType.TRTCVideoStreamTypeBig;
       }
-      this.rtcEngine.setPriorRemoteVideoStreamType(this.playStreamType);
+      this.rtcCloud.setPriorRemoteVideoStreamType(this.playStreamType);
     },
     // 美颜
     onOpenBeauty() {
       if (this.openBeauty) {
-        this.rtcEngine.setBeautyStyle(this.beautyStyle, this.beauty, this.white, this.ruddiness);
+        this.rtcCloud.setBeautyStyle(this.beautyStyle, this.beauty, this.white, this.ruddiness);
       } else {
-        this.rtcEngine.setBeautyStyle(this.beautyStyle, 0, 0, 0);
+        this.rtcCloud.setBeautyStyle(this.beautyStyle, 0, 0, 0);
       }
     },
     // 摄像头选择
     onCameraDeviceSelect() {
-      this.rtcEngine.setCurrentCameraDevice(this.cameraDeviceName);
+      this.rtcCloud.setCurrentCameraDevice(this.cameraDeviceName);
     },
     // 摄像头测试
     onTestCameraChanged() {
@@ -567,7 +568,7 @@ let demoApp = new Vue({
           cameraTestVideoEl.classList.add('camera_test_video_view');
           document.querySelector("#camera_device_video_wrap").appendChild(cameraTestVideoEl);
         }
-        this.rtcEngine.startCameraDeviceTest(cameraTestVideoEl);
+        this.rtcCloud.startCameraDeviceTest(cameraTestVideoEl);
       } else {
         // 暂时不需要主动调用 stopCameraDeviceTest 这样会导致 Renderer 失效
         let cameraTestVideoEl = document.getElementById(key);
@@ -578,44 +579,44 @@ let demoApp = new Vue({
     },
     // 麦克风选择
     onMicDeviceSelect() {
-      this.rtcEngine.setCurrentMicDevice(this.micDeviceName);
+      this.rtcCloud.setCurrentMicDevice(this.micDeviceName);
     },
     // 麦克风测试
     onTestMicChanged() {
       if (this.testMic) {
-        this.rtcEngine.startMicDeviceTest(300);
+        this.rtcCloud.startMicDeviceTest(300);
       } else {
-        this.rtcEngine.stopMicDeviceTest();
+        this.rtcCloud.stopMicDeviceTest();
         this.testMicVolume = 0;
       }
     },
     // 麦克风音量
     onMicVolumeChanged() {
-      this.rtcEngine.setCurrentMicDeviceVolume(this.micVolume);
+      this.rtcCloud.setCurrentMicDeviceVolume(this.micVolume);
     },
     // 扬声器选择
     onSpeakerDeviceSelect() {
-      this.rtcEngine.setCurrentSpeakerDevice(this.speakerDeviceName);
+      this.rtcCloud.setCurrentSpeakerDevice(this.speakerDeviceName);
     },
     // 扬声器测试
     onTestSpeakerChanged() {
       if (this.testSpeaker) {
-        this.rtcEngine.startSpeakerDeviceTest(this.testPath);
+        this.rtcCloud.startSpeakerDeviceTest(this.testPath);
       } else {
-        this.rtcEngine.stopSpeakerDeviceTest();
+        this.rtcCloud.stopSpeakerDeviceTest();
         this.testSpeakerVolume = 0;
       }
     },
     // 扬声器音量变化
     onSpeakerVolumeChanged() {
-      this.rtcEngine.setCurrentSpeakerVolume(this.speakerVolume);
+      this.rtcCloud.setCurrentSpeakerVolume(this.speakerVolume);
     },
     // BGM 测试
     onTestBGMChanged() {
       if (this.testBGM) {
-        this.rtcEngine.playBGM(this.testPath);
+        this.rtcCloud.playBGM(this.testPath);
       } else {
-        this.rtcEngine.stopBGM();
+        this.rtcCloud.stopBGM();
       }
     },
 
@@ -624,7 +625,7 @@ let demoApp = new Vue({
       if (this.mixTranscoding) {
         this.updateMixTranscodeInfo();
       } else {
-        this.rtcEngine.setMixTranscodingConfig(null);
+        this.rtcCloud.setMixTranscodingConfig(null);
       }
     },
     // 更新云端混流界面信息（本地用户进房或远程用户进房或开启本地屏幕共享画面则更新，可根据需求设置混哪一路画面）
@@ -633,7 +634,7 @@ let demoApp = new Vue({
       if (!this.mixTranscoding) return;
       // 云端混流的没有辅流界面，则退出（无需混流）
       if (this.mixStreamInfos.length == 0) {
-        this.rtcEngine.setMixTranscodingConfig(null);
+        this.rtcCloud.setMixTranscodingConfig(null);
         return;
       }
       // 如果使用的是纯音频进房，则需要混流设置每一路为纯音频，云端会只混流音频数据
@@ -644,7 +645,7 @@ let demoApp = new Vue({
       }
       // 没有主流，直接停止混流
       if (this.muteLocalVideo && this.muteLocalAudio) {
-        this.rtcEngine.setMixTranscodingConfig(null);
+        this.rtcCloud.setMixTranscodingConfig(null);
         return;
       }
       // 连麦后的 User 可进行设置对应的 roomId
@@ -719,24 +720,24 @@ let demoApp = new Vue({
         mixUser.streamType = item.streamType;
         config.mixUsersArray.push(mixUser);
       });
-      this.rtcEngine.setMixTranscodingConfig(config);
+      this.rtcCloud.setMixTranscodingConfig(config);
     },
 
     // 屏幕分享
     onStartScreenCapture() {
       // 打开屏幕分享
       if (this.screenCapture) {
-        this.screenList = this.rtcEngine.getScreenCaptureSources(120, 70, 20, 20);
+        this.screenList = this.rtcCloud.getScreenCaptureSources(120, 70, 20, 20);
         let encparam = new TRTCVideoEncParam();
         encparam.videoResolution = TRTCVideoResolution.TRTCVideoResolution_640_480;
         encparam.resMode = TRTCVideoResolutionMode.TRTCVideoResolutionModeLandscape;
         encparam.videoFps = 15;
         encparam.videoBitrate = 600;
-        this.rtcEngine.setSubStreamEncoderParam(encparam);
+        this.rtcCloud.setSubStreamEncoderParam(encparam);
       }
       else {
         this.screenName = "";
-        this.rtcEngine.stopScreenCapture();
+        this.rtcCloud.stopScreenCapture();
         this.destroyVideoView("local_video", TRTCVideoStreamType.TRTCVideoStreamTypeSub);
 
         // 移除混流画面信息
@@ -766,10 +767,10 @@ let demoApp = new Vue({
         let rect = new Rect(0, 0, 0, 0);
         let mouse = true, highlight = true;
 
-        this.rtcEngine.selectScreenCaptureTarget(source.type, source.sourceId, source.sourceName, rect, mouse, highlight);
+        this.rtcCloud.selectScreenCaptureTarget(source.type, source.sourceId, source.sourceName, rect, mouse, highlight);
         // windows 平台支持本地屏幕共享预览画面， mac 平台暂时不支持。
         // let view = this.findVideoView("local_video", TRTCVideoStreamType.TRTCVideoStreamTypeSub);
-        this.rtcEngine.startScreenCapture();
+        this.rtcCloud.startScreenCapture();
       }
     },
 
@@ -795,7 +796,7 @@ let demoApp = new Vue({
       param.userSig = userSig;
       param.privateMapKey = '';
       param.businessInfo = '';
-      this.rtcEngine.enterRoom(param, this.appScene);
+      this.rtcCloud.enterRoom(param, this.appScene);
 
       // 2.编码参数
       let encParam = new TRTCVideoEncParam();
@@ -803,10 +804,10 @@ let demoApp = new Vue({
       encParam.resMode = this.videoResolutionMode;
       encParam.videoFps = this.videoFps;
       encParam.videoBitrate = this.videoBitrate;
-      this.rtcEngine.setVideoEncoderParam(encParam);
+      this.rtcCloud.setVideoEncoderParam(encParam);
 
-      this.rtcEngine.setLocalViewMirror(this.localMirror);
-      this.rtcEngine.setVideoEncoderMirror(this.encoderMirror);
+      this.rtcCloud.setLocalViewMirror(this.localMirror);
+      this.rtcCloud.setVideoEncoderMirror(this.encoderMirror);
 
       if (this.pushSmallVideo) {
         let param = new TRTCVideoEncParam();
@@ -814,19 +815,19 @@ let demoApp = new Vue({
         param.videoBitrate = 100;
         param.videoResolution = TRTCVideoResolution.TRTCVideoResolution_320_240;
         param.resMode = this.videoResolutionMode;
-        this.rtcEngine.enableSmallVideoStream(this.pushSmallVideo, param);
+        this.rtcCloud.enableSmallVideoStream(this.pushSmallVideo, param);
       }
       if (this.playSmallVideo) {
-        this.rtcEngine.setPriorRemoteVideoStreamType(this.playStreamType);
+        this.rtcCloud.setPriorRemoteVideoStreamType(this.playStreamType);
       }
 
       //3. 打开采集和预览本地视频、采集音频
       let view = this.findVideoView("local_video", TRTCVideoStreamType.TRTCVideoStreamTypeBig);
-      this.rtcEngine.startLocalPreview(view);
+      this.rtcCloud.startLocalPreview(view);
       // 填充模式需要在设置 view 后才生效
-      this.rtcEngine.setLocalViewFillMode(this.videoFillMode);
-      this.rtcEngine.startLocalAudio();
-      this.rtcEngine.muteLocalAudio(false);
+      this.rtcCloud.setLocalViewFillMode(this.videoFillMode);
+      this.rtcCloud.startLocalAudio();
+      this.rtcCloud.muteLocalAudio(false);
     },
 
     // 退房
@@ -835,8 +836,8 @@ let demoApp = new Vue({
       // 退房重新进房前需要清理所有资源，所以这里先还在房间内，等 onExitRoom 回调到来才退房成功
       this.inroom = true;
       // 关闭采集音视频
-      this.rtcEngine.stopLocalPreview();
-      this.rtcEngine.stopLocalAudio();
+      this.rtcCloud.stopLocalPreview();
+      this.rtcCloud.stopLocalAudio();
 
       // 清除状态
       this.muteLocalVideo = false;
@@ -851,21 +852,21 @@ let demoApp = new Vue({
       this.users.splice(0, this.users.length);
       this.pkUsers.splice(0, this.pkUsers.length);
       if (this.openBeauty) {
-        this.rtcEngine.setBeautyStyle(this.beautyStyle, 0, 0, 0);
+        this.rtcCloud.setBeautyStyle(this.beautyStyle, 0, 0, 0);
         this.openBeauty = false;
       }
       if (this.mixTranscoding) {
-        this.rtcEngine.setMixTranscodingConfig(null);
+        this.rtcCloud.setMixTranscodingConfig(null);
       }
       this.mixTranscoding = false;
       this.mixStreamInfos.splice(0, this.mixStreamInfos.length);
 
       // 释放资源
       if (this.screenCapture) {
-        this.rtcEngine.stopScreenCapture();
+        this.rtcCloud.stopScreenCapture();
       }
       this.destroyAllVideoView();
-      this.rtcEngine.exitRoom();
+      this.rtcCloud.exitRoom();
     },
 
     // 跨房连麦
@@ -878,7 +879,7 @@ let demoApp = new Vue({
         userId: this.pkUserId,
         roomId: parseInt(this.pkRoomId)
       });
-      this.rtcEngine.connectOtherRoom(json);
+      this.rtcCloud.connectOtherRoom(json);
       this.connectLoadingText = '连接房间[' + this.pkRoomId + ']中';
       this.connectLoading = true;
     },
@@ -887,7 +888,7 @@ let demoApp = new Vue({
     disconnectRoom() {
       if (this.connected) {
         // 如果此时是多人连麦，则是取消所有连麦的用户
-        this.rtcEngine.disconnectOtherRoom();
+        this.rtcCloud.disconnectOtherRoom();
         this.connectLoadingText = '取消连麦中';
         this.connectLoading = true;
       }
@@ -1020,20 +1021,20 @@ let demoApp = new Vue({
         { type: TRTCVideoResolutionMode.TRTCVideoResolutionModePortrait, name: "竖屏模式" }
       ];
       // 初始化设备信息
-      this.cameraList = this.rtcEngine.getCameraDevicesList();
+      this.cameraList = this.rtcCloud.getCameraDevicesList();
       if (this.cameraList.length > 0) {
         this.cameraDeviceName = this.cameraList[0].deviceName;
       }
-      this.micList = this.rtcEngine.getMicDevicesList();
+      this.micList = this.rtcCloud.getMicDevicesList();
       if (this.micList.length > 0) {
         this.micDeviceName = this.micList[0].deviceName;
       }
-      this.speakerList = this.rtcEngine.getSpeakerDevicesList();
+      this.speakerList = this.rtcCloud.getSpeakerDevicesList();
       if (this.speakerList.length > 0) {
         this.speakerDeviceName = this.speakerList[0].deviceName;
       }
-      this.micVolume = this.rtcEngine.getCurrentMicDeviceVolume();
-      this.speakerVolume = this.rtcEngine.getCurrentSpeakerVolume();
+      this.micVolume = this.rtcCloud.getCurrentMicDeviceVolume();
+      this.speakerVolume = this.rtcCloud.getCurrentSpeakerVolume();
 
       this.testBGMText = '启动 BGM 测试';
     },
@@ -1053,6 +1054,6 @@ let demoApp = new Vue({
     if (this.inroom) {
       this.exitRoom();
     }
-    this.rtcEngine.destroy();
+    this.rtcCloud.destroy();
   },
 });

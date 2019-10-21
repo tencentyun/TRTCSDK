@@ -44,7 +44,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "trtc-electron-sdk": "^6.7.128"
+    "trtc-electron-sdk": "^6.7.130"
   },
   "devDependencies": {
     "electron": "^6.0.10",
