@@ -1,8 +1,30 @@
-# Change Log
+# TRTC Web SDK 版本发布日志
+
+- 版本号规则：[major.minor.patch]
+  - major：主版本号，如有重大版本重构则该字段递增，通常各主版本间接口不兼容。
+  - minor：次版本号，各次版本号间接口保持兼容，如有接口新增或优化则该字段递增。
+  - patch：补丁号，如有功能改善或缺陷修复则该字段递增。
+- 我们建议您及时更新到最新版本以便获得更好的产品稳定性及在线支持！
+
+## [4.2.0](2019-11-04)
+
+**Feature**
+
+- 增加 Client.off() 接口取消客户端事件绑定。
+
+**Improvement**
+
+- 通话状态统计优化。
+- Client.publish() 增加权限检查。
+- Stream.play()/resume() 增加自动播放错误提示。
+
+**Bug Fixes**
+
+- LocalStream.switchDevice() 切换摄像头黑屏问题修复。
 
 ## [4.1.1](2019-10-24)
 
-**BugFixes**
+**Bug Fixes**
 
 - 修复日志丢失问题。
 - 修复断网重连远端用户丢失问题。
@@ -14,7 +36,7 @@
 - Stream.play() 接口支持传入 HTMLDivElement 对象。
 - 增加音频码率调控设置，开发者可通过 LocalStream.setAudioProfile() 设置音频属性，目前支持两种 Profile：standard 和 high。
 
-**BugFixes**
+**Bug Fixes**
 
 - 修复旧版本 Chrome 上的 WebAudio Context 数量受限问题。
 - 修复 replaceTrack() 未重启本地音视频播放器问题。
