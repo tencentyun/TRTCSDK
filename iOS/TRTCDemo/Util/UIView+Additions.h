@@ -29,7 +29,7 @@ CG_INLINE CGRect CGRectMake_Auto(CGFloat x, CGFloat y, CGFloat width, CGFloat he
 -(void)removeAllSubViews;
 - (void)setBackgroundImage:(UIImage*)image;
 - (UIImage*)toImage;
-
+- (UIViewController *)tx_viewController;
 
 
 // Position of the top-left corner in superview's coordinates

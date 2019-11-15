@@ -8,7 +8,6 @@
 
 #import "TestSendCustomVideoData.h"
 #import "TXLiteAVSDK.h"
-#import "TRTCSettingViewController.h"
 
 @interface TestSendCustomVideoData ()
 @property (nonatomic, retain) TRTCCloud* trtcCloud;

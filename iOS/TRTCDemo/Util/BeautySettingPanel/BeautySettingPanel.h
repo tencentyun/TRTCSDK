@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BeautySettingsSetter.h"
 
 /**
  * 美颜类型
@@ -25,8 +26,10 @@ typedef NS_ENUM(NSUInteger, PanelMenuIndex) {
     PanelMenuIndexBeauty,
     PanelMenuIndexFilter,
     PanelMenuIndexMotion,
+    PanelMenuIndexCosmetic,
+    PanelMenuIndexGesture,
     PanelMenuIndexKoubei,
-    PanelMenuIndexGreen
+    PanelMenuIndexGreen,
 };
 
 typedef NS_ENUM(NSInteger, FilterType) {
@@ -50,23 +53,16 @@ typedef NS_ENUM(NSInteger, FilterType) {
     FilterType_rixi         ,   //日系滤镜
 };
 
-@protocol BeautySettingPanelDelegate <NSObject>
+@protocol BeautySettingPanelDelegate <BeautySettingsSetter>
 - (void)onSetBeautyStyle:(NSUInteger)beautyStyle beautyLevel:(float)beautyLevel whitenessLevel:(float)whitenessLevel ruddinessLevel:(float)ruddinessLevel;
 - (void)onSetMixLevel:(float)mixLevel;
-- (void)onSetEyeScaleLevel:(float)eyeScaleLevel;
-- (void)onSetFaceScaleLevel:(float)faceScaleLevel;
-- (void)onSetFaceBeautyLevel:(float)beautyLevel;
-- (void)onSetFaceVLevel:(float)vLevel;
-- (void)onSetChinLevel:(float)chinLevel;
-- (void)onSetFaceShortLevel:(float)shortLevel;
-- (void)onSetNoseSlimLevel:(float)slimLevel;
 - (void)onSetFilter:(UIImage*)filterImage;
 - (void)onSetGreenScreenFile:(NSURL *)file;
 - (void)onSelectMotionTmpl:(NSString *)tmplName inDir:(NSString *)tmplDir;
 
 @end
 
-@protocol BeautyLoadPituDelegate <NSObject>
+@protocol BeautyLoadPituDelegate
 @optional
 - (void)onLoadPituStart;
 - (void)onLoadPituProgress:(CGFloat)progress;

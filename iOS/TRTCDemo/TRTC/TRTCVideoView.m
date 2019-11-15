@@ -8,11 +8,11 @@
 
 #import "TRTCVideoView.h"
 #import "UIView+Additions.h"
-
+#import "Masonry.h"
 
 @interface TRTCVideoView ()
 @property (nonatomic, retain) UIProgressView* audioVolumeIndicator;
-@property (nonatomic, retain) UIButton* networkIndicator;
+@property (nonatomic, retain) UIImageView* networkIndicator;
 @property (nonatomic, copy) NSString* userId;
 @property (nonatomic, assign) VideoViewType type;
 
@@ -63,13 +63,12 @@
 
 - (void)setNetworkIndicatorImage:(UIImage *)image
 {
-    [_networkIndicator setImage:image forState:UIControlStateNormal];
+    [_networkIndicator setImage:image];
 }
 
 - (void)setAudioVolumeRadio:(float)volumeRadio
 {
-    if (!_muteAudio)
-        _audioVolumeIndicator.progress = volumeRadio;
+    _audioVolumeIndicator.progress = volumeRadio;
 }
 
 - (void)showVideoCloseTip:(BOOL)show
@@ -151,8 +150,6 @@
     _btnMuteVideo.center = CGPointMake(startSpace + ICON_SIZE / 2, iconY);
     _btnMuteAudio.center = CGPointMake(_btnMuteVideo.center.x + ICON_SIZE + centerInterVal, iconY);
     _btnScaleMode.center = CGPointMake(_btnMuteAudio.center.x + ICON_SIZE + centerInterVal, iconY);
-    _networkIndicator.bounds = CGRectMake(0, 0, 28, 21);
-    _networkIndicator.center = CGPointMake(size.width - _networkIndicator.width / 2 - 6, _networkIndicator.height / 2 + 8);
     _audioVolumeIndicator.frame = CGRectMake(0, size.height - 2, size.width, 2);
     
     if (_tipBgView) {
@@ -191,11 +188,22 @@
     _audioVolumeIndicator.progressTintColor = UIColor.yellowColor;
     _audioVolumeIndicator.progress = 0.0;
     
-    _networkIndicator = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_networkIndicator setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
+    _networkIndicator = [[UIImageView alloc] init];
+    _networkIndicator.contentMode = UIViewContentModeScaleAspectFit;
+    [self addSubview:_networkIndicator];
+    [_networkIndicator mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.greaterThanOrEqualTo(self.mas_top).offset(0);
+        if (@available(iOS 11.0, *)) {
+            make.bottom.equalTo(self.mas_safeAreaLayoutGuideTop).priorityLow();
+        } else {
+            make.top.equalTo(self.mas_top).offset(20);
+        }
+        make.trailing.equalTo(self.mas_trailing).offset(-10);
+        make.height.mas_equalTo(44);
+        make.width.mas_equalTo(20);
+    }];
 
     [self addSubview:_audioVolumeIndicator];
-    [self addSubview:_networkIndicator];
 }
 
 - (UIButton*)createBottomBtnIcon:(NSString*)icon Action:(SEL)action Size:(int)size

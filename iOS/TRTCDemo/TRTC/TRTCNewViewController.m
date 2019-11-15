@@ -37,11 +37,38 @@
 @property (nonatomic, retain) UISwitch* talkModeSwitch;
 @property (nonatomic, retain) UISegmentedControl* customVideoCaptureSeg;
 @property (nonatomic, retain) UISegmentedControl* roleSeg;
-@property (nonatomic, retain) AVAsset*  customSourceAsset;
+@property (nonatomic, retain) UISegmentedControl* audioReceiveModeSeg; // 音视频接收模式
+@property (nonatomic, retain) UISegmentedControl* videoReceiveModeSeg; // 音视频接收模式
+@property (nonatomic, retain) AVAsset* customSourceAsset;
 
 @end
 
 @implementation TRTCNewViewController
+
+- (UISegmentedControl *)addOptionsWithLabel:(NSString *)label options:(NSArray<NSString *> *)options topLeft:(CGPoint *)topLeft {
+    UISegmentedControl *segmentControl = [[UISegmentedControl alloc] initWithItems:options];
+    UIFont *font = [UIFont boldSystemFontOfSize:14.0f];
+    NSDictionary *attributes = [NSDictionary dictionaryWithObject:font
+                                                           forKey:NSFontAttributeName];
+    [segmentControl setTitleTextAttributes:attributes
+                               forState:UIControlStateNormal];
+    segmentControl.bounds = CGRectMake(0, 0, self.view.width * 0.4, 35);
+    segmentControl.center = CGPointMake(self.view.width - segmentControl.width / 2 - 10, topLeft->y + 25);
+    segmentControl.tintColor = UIColorFromRGB(0x05a764);
+    segmentControl.selectedSegmentIndex = 0;
+    [segmentControl setTitleTextAttributes:@{NSForegroundColorAttributeName:UIColor.whiteColor} forState:UIControlStateSelected];
+    [segmentControl setTitleTextAttributes:@{NSForegroundColorAttributeName:UIColorFromRGB(0x939393)} forState:UIControlStateNormal];
+
+    [self.view addSubview:segmentControl];
+    UILabel *customVideoCaptureLabel = [[UILabel alloc] init];
+    customVideoCaptureLabel.textColor = UIColorFromRGB(0x999999);
+    customVideoCaptureLabel.text = label;
+    [customVideoCaptureLabel sizeToFit];
+    customVideoCaptureLabel.center = CGPointMake(topLeft->x + customVideoCaptureLabel.width / 2, segmentControl.center.y);
+    [self.view addSubview:customVideoCaptureLabel];
+    topLeft->y = segmentControl.bottom;
+    return segmentControl;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -92,29 +119,6 @@
     _userIdTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
     [self.view addSubview:_userIdTextField];
     
-
-    _customVideoCaptureSeg = [[UISegmentedControl alloc] initWithItems:@[@"前摄像头", @"视频文件"]];
-    UIFont *font = [UIFont boldSystemFontOfSize:14.0f];
-    NSDictionary *attributes = [NSDictionary dictionaryWithObject:font
-                                                           forKey:NSFontAttributeName];
-    [_customVideoCaptureSeg setTitleTextAttributes:attributes
-                               forState:UIControlStateNormal];
-    _customVideoCaptureSeg.bounds = CGRectMake(0, 0, self.view.width * 0.4, 35);
-    _customVideoCaptureSeg.center = CGPointMake(self.view.width - _customVideoCaptureSeg.width / 2 - 10, _userIdTextField.bottom + 45);
-    _customVideoCaptureSeg.tintColor = UIColorFromRGB(0x05a764);
-    _customVideoCaptureSeg.selectedSegmentIndex = 0;
-    [_customVideoCaptureSeg setTitleTextAttributes:@{NSForegroundColorAttributeName:UIColor.whiteColor} forState:UIControlStateSelected];
-    [_customVideoCaptureSeg setTitleTextAttributes:@{NSForegroundColorAttributeName:UIColorFromRGB(0x939393)} forState:UIControlStateNormal];
-
-    [self.view addSubview:_customVideoCaptureSeg];
-    UILabel *customVideoCaptureLabel = [[UILabel alloc] init];
-    customVideoCaptureLabel.textColor = userTipLabel.textColor;
-    customVideoCaptureLabel.text = @"视频输入";
-    [customVideoCaptureLabel sizeToFit];
-    customVideoCaptureLabel.center = CGPointMake(userTipLabel.x + customVideoCaptureLabel.width / 2, _customVideoCaptureSeg.center.y);
-    [self.view addSubview:customVideoCaptureLabel];
-    
-    
     _joinBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     _joinBtn.frame = CGRectMake(40, self.view.height - 70, self.view.width - 80, 50);
     _joinBtn.layer.cornerRadius = 8;
@@ -126,30 +130,15 @@
     [_joinBtn setTitle:@"创建并自动加入该房间" forState:UIControlStateNormal];
     [_joinBtn addTarget:self action:@selector(onJoinBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_joinBtn];
-    
-    _roleSeg = [[UISegmentedControl alloc] initWithItems:@[@"上麦主播", @"普通观众"]];
-    _roleSeg.frame = CGRectMake(_userIdTextField.width - _customVideoCaptureSeg.width - 10, _customVideoCaptureSeg.bottom + 10, _customVideoCaptureSeg.width, _customVideoCaptureSeg.height);
-    _roleSeg.tintColor = UIColorFromRGB(0x05a764);
-    _roleSeg.selectedSegmentIndex = 0;
-    [_roleSeg setTitleTextAttributes:@{NSForegroundColorAttributeName:UIColor.whiteColor} forState:UIControlStateSelected];
-    [_roleSeg setTitleTextAttributes:@{NSForegroundColorAttributeName:UIColorFromRGB(0x939393)} forState:UIControlStateNormal];
-    [self.view addSubview:_roleSeg];
-    
-    UILabel* roleLabel = [[UILabel alloc] init];
-    roleLabel.textColor = userTipLabel.textColor;
-    roleLabel.text = @"角色选择";
-    [roleLabel sizeToFit];
-    roleLabel.center = CGPointMake(customVideoCaptureLabel.x + roleLabel.width / 2, _roleSeg.center.y);
-    [self.view addSubview:roleLabel];
-    
-    // 如果不是在线直播场景，需要隐藏角色选择按钮
-    if (self.appScene != TRTCAppSceneLIVE) {
-        _roleSeg.hidden = YES;
-        _roleSeg.frame = _customVideoCaptureSeg.frame;
-        
-        roleLabel.hidden = YES;
+
+    CGPoint topLeft = CGPointMake(userTipLabel.x, _userIdTextField.bottom);
+    _customVideoCaptureSeg = [self addOptionsWithLabel:@"视频输入" options:@[@"前摄像头", @"视频文件"] topLeft:&topLeft];
+
+    if (self.appScene == TRTCAppSceneLIVE) {
+        // 在线直播场景，才有角色选择按钮
+        _roleSeg = [self addOptionsWithLabel:@"角色选择" options:@[@"上麦主播", @"普通观众"] topLeft:&topLeft];
     }
-    
+
 #ifndef APPSTORE
 //    _talkModeSwitch = [[UISwitch alloc] init];
 //    _talkModeSwitch.frame = CGRectMake(_userIdTextField.width - _talkModeSwitch.width - 10, _userIdTextField.bottom + 10, _talkModeSwitch.width, _talkModeSwitch.height);
@@ -269,7 +258,7 @@
         int user = ((uint64_t)(tt * 1000.0)) % 100000000;
         userId = [NSString stringWithFormat:@"%d", user];
     }
-#pragma warning - "此处传入自己的代码"
+    
     // 将当前userId保存，下次进来时会默认这个账号
     [[NSUserDefaults standardUserDefaults] setObject:userId forKey:KEY_CURRENT_USERID];
     [[NSUserDefaults standardUserDefaults] synchronize];
@@ -281,14 +270,27 @@
     param.roomId = (UInt32)roomId.integerValue;
     param.userSig = [GenerateTestUserSig genTestUserSig:userId];
     param.privateMapKey = @"";
-//    param.bussInfo = @"{\"Str_uc_params\":{\"pure_audio_push_mod\":1}}"; //纯音频推流参数设置示例
     param.role = _role;
+
+    BOOL autoRecvAudio = _audioReceiveModeSeg.selectedSegmentIndex == 0;
+    BOOL autoRecvVideo = _videoReceiveModeSeg.selectedSegmentIndex == 0;
+    [[TRTCCloud sharedInstance] setDefaultStreamRecvMode:autoRecvAudio video:autoRecvVideo];
+
+
+    // 若您的项目有纯音频的旁路直播需求，请配置参数。
+    // 配置该参数后，音频达到服务器，即开始自动旁路；
+    // 否则无此参数，旁路在收到第一个视频帧之前，会将收到的音频包丢弃。
+    //param.bussInfo = @"{\"Str_uc_params\":{\"pure_audio_push_mod\":1}}"; //纯音频推流参数设置示例
     
-    TRTCMainViewController *vc = [[TRTCMainViewController alloc] init];
+    // 若您的项目有纯音频的旁路直播需求，请配置参数。
+    // 配置该参数后，音频达到服务器，即开始自动旁路；
+    // 否则无此参数，旁路在收到第一个视频帧之前，会将收到的音频包丢弃。
+    //param.bussInfo = @"{\"Str_uc_params\":{\"pure_audio_push_mod\":1}}"; //纯音频推流参数设置示例
+    
+    TRTCMainViewController *vc = [[UIStoryboard storyboardWithName:@"TRTC" bundle:nil] instantiateViewControllerWithIdentifier:@"TRTCMainViewController"];
     // vc.pureAudioMode = _talkModeSwitch.isOn;
     vc.param = param;
-    vc.enableCustomVideoCapture = _customVideoCaptureSeg.selectedSegmentIndex == 1;
-    vc.customMediaAsset = _customSourceAsset;
+    vc.customMediaAsset = _customVideoCaptureSeg.selectedSegmentIndex == 1 ? _customSourceAsset : nil;
     vc.appScene = self.appScene;
     
     [self.navigationController pushViewController:vc animated:YES];
