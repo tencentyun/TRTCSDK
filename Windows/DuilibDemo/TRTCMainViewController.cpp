@@ -24,6 +24,7 @@
 #include "TXLiveAvVideoView.h"
 #include "GenerateTestUserSig.h"
 #include "utils/TrtcUtil.h"
+#include "ITXLiteAVNetworkProxy.h"
 
 
 //////////////////////////////////////////////////////////////////////////TXLiveAvVideoView
@@ -149,6 +150,15 @@ void TRTCMainViewController::Notify(TNotifyUI & msg)
 
 void TRTCMainViewController::enterRoom()
 {
+    std::string socks5_host = CDataCenter::GetInstance()->m_strSocks5ProxyIp;
+    int socks5_port = CDataCenter::GetInstance()->m_strSocks5ProxyPort;
+    if (socks5_host.empty() == false && socks5_port > 0)
+    {
+        ITXNetworkProxy* proxy = createTXNetworkProxy();
+        proxy->setSocks5Proxy(socks5_host.c_str(), socks5_port);
+        destroyTXNetworkProxy(&proxy);
+    }
+
     SetIcon(IDR_MAINFRAME);
     //初始化视频渲染窗口分配器
     if (m_pBaseLayoutUI)
@@ -180,12 +190,13 @@ void TRTCMainViewController::enterRoom()
     TRTCCloudCore::GetInstance()->regSDKMsgObserver(WM_USER_CMD_PKConnectStatus, GetHWND());
     TRTCCloudCore::GetInstance()->regSDKMsgObserver(WM_USER_CMD_PKDisConnectStatus, GetHWND());
     TRTCCloudCore::GetInstance()->regSDKMsgObserver(WM_USER_CMD_NetworkQuality, GetHWND());
-    TRTCCloudCore::GetInstance()->regSDKMsgObserver(WM_USER_CMD_CustomVideoCapture, GetHWND());
-    TRTCCloudCore::GetInstance()->regSDKMsgObserver(WM_USER_CMD_CustomAudioCapture, GetHWND());
     TRTCCloudCore::GetInstance()->regSDKMsgObserver(WM_USER_CMD_FirstVideoFrame, GetHWND());
     TRTCCloudCore::GetInstance()->regSDKMsgObserver(WM_USER_CMD_RemoteScreenStop, GetHWND());
     TRTCCloudCore::GetInstance()->regSDKMsgObserver(WM_USER_CMD_SendFirstLocalVideoFrame, GetHWND());
     TRTCCloudCore::GetInstance()->regSDKMsgObserver(WM_USER_CMD_SendFirstLocalAudioFrame, GetHWND());
+
+    //设置代理环境
+    //TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI("{\"api\": \"setProxy\",\"params\" :{\"socks5_host\" : \"120.27.153.72\",\"socks5_port\" : 35726,\"socks5_auth\" : \"\", \"http_host\": \"45.125.32.182\",\"http_port\" : 3128,\"http_auth\" : \"\"}}");
 
     //设置连接环境
     int nLinkTestServer = CDataCenter::GetInstance()->m_nLinkTestServer;
@@ -198,6 +209,8 @@ void TRTCMainViewController::enterRoom()
             pfn_setNetEnv(nLinkTestServer);
         }
     }
+    TRTCCloudCore::GetInstance()->getTRTCCloud()->setDefaultStreamRecvMode(\
+        CDataCenter::GetInstance()->m_bAutoRecvAudio, CDataCenter::GetInstance()->m_bAutoRecvVideo);
 
     //进入房间
     CDataCenter::LocalUserInfo info = CDataCenter::GetInstance()->getLocalUserInfo();
@@ -221,6 +234,8 @@ void TRTCMainViewController::enterRoom()
 	params.businessInfo = businessInfo.c_str();
 
     TRTCCloudCore::GetInstance()->getTRTCCloud()->enterRoom(params, CDataCenter::GetInstance()->m_sceneParams);
+
+
     //TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI("{\"api\":\"enableAdvancedScreenCapture\",\"params\":{\"licence\":\"KSO+hOFs1q5SkEnx8bvp6wN/RY+n5xl/ZuBUH2B2utYNV2lYW1D0imxtc3d4xB/NH2UghGf3Z0dPvJLXI3rZRJ2bagAXIgoy2LsYLvnYZNUJl/zK8Yuf7Ig+MOciaBl07E5nclq5QY4vq2dz3tJHEDW/ewZwT3L0eh3xH/eXey6PCf5jGteh5u7J6al55Hc4JaDKoLFPuwx4K925afoeYJIYj0fVNh+gb4Y7PtDY3i0ep8m5HLIiMlCwiSUt9pNs5M/cK2hSh+pP4vNuFW5b+XOmrnBn0UzoE/uNNFp18OQdrai2BmAQd/t9qj2D/J4qTWV5RER+2EeJx8fZH0QRMU82phazOTlzcqF9rhKrqUFdUVZY3aHMRwcbIs9Rq3eYVntWacPUklyFWIzv9Y26ZRxsGC7mLOzYSComR+Ni9L8RBEq6VMQJUdCGYzSQh+xUdTNMfiRM2h3sKP2xJONzaAV5yHcuPBLQY+GfqtkQZ+Z99K3H/fU8lCVFEGBh/eDbNKOy55pjrCe3KyE4h7yBi9TGPAM9fMSgjdBUUvmivuEF9K3H/fU8lCVFEGBh/eDbNBJXYGSTy7v8zr7etIpuuxmCYJmqSOfAxv1Yvhh+vNuHNson6baSq8up766EEZLgoQtjiqm6e49m27sfXJopxkffPZf/SaEP+LRSByJPpjGAWL5BP28jo83wUHKNfnjnnnPvWcpDG1QUh7ESrcu3lm7uh8FUrfa0LfyvVEmovOiULR7fM17vA0m3Cg/3hUlGzom1PX0VwoV10sePJK/z/Hj1D52Syz6DuReg0ea9brKdEOxQ70VnSFdkRqmEzAOjA7TcFxXeEtwH/iDioxx6UiWu18ptfpQzHsqo8FnEO/OE\"}}");
 
     //此处为了sdk本地视频回调时，userid = "",做的特殊处理
@@ -233,7 +248,7 @@ void TRTCMainViewController::enterRoom()
     TRTCCloudCore::GetInstance()->getTRTCCloud()->setVideoEncoderMirror(CDataCenter::GetInstance()->m_bLocalVideoMirror);
 
     TRTCCloudCore::GetInstance()->getTRTCCloud()->setCurrentMicDeviceVolume(CDataCenter::GetInstance()->m_micVolume);
-    TRTCCloudCore::GetInstance()->getTRTCCloud()->setCurrentSpeakerVolume(CDataCenter::GetInstance()->m_speakerVolume);
+    //TRTCCloudCore::GetInstance()->getTRTCCloud()->setCurrentSpeakerVolume(CDataCenter::GetInstance()->m_speakerVolume);
     if (CDataCenter::GetInstance()->m_bShowAudioVolume)
         TRTCCloudCore::GetInstance()->getTRTCCloud()->enableAudioVolumeEvaluation(200);
 
@@ -579,44 +594,6 @@ LRESULT TRTCMainViewController::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM l
         onNetworkQuality(*userId, quality);
         delete userId;
         userId = nullptr;
-    }
-    else if (uMsg == WM_USER_CMD_CustomVideoCapture)
-    {
-        bool bStart = (bool)wParam;
-        if (bStart)
-        {
-            UINT ticket = 100;
-            if (CDataCenter::GetInstance()->m_videoEncParams.videoFps > 0)
-            {
-                ticket= 1000 / CDataCenter::GetInstance()->m_videoEncParams.videoFps;
-            }
-            ::SetTimer(GetHWND(), m_nCustomVideoTimerID, ticket, NULL);
-        }
-        else
-            ::KillTimer(GetHWND(), m_nCustomVideoTimerID);
-    }
-    else if (uMsg == WM_USER_CMD_CustomAudioCapture)
-    {
-        bool bStart = (bool)wParam;
-        if (bStart)
-            ::SetTimer(GetHWND(), m_nCustomAudioTimerID, 18, NULL);
-        else
-            ::KillTimer(GetHWND(), m_nCustomAudioTimerID);
-    }
-    else if (uMsg == WM_TIMER)
-    {
-        UINT timeid = (UINT)wParam;
-        if (timeid == m_nCustomVideoTimerID)
-        {
-            TRTCCloudCore::GetInstance()->sendCustomVideoFrame();
-            return true;
-        }
-        else if (timeid == m_nCustomAudioTimerID)
-        {
-            TRTCCloudCore::GetInstance()->sendCustomAudioFrame();
-            return true;
-        }
-
     }
     else if (uMsg == WM_USER_CMD_FirstVideoFrame)
     {
@@ -984,10 +961,7 @@ void TRTCMainViewController::onRemoteVideoSubscribeChange(std::wstring userId, i
             {
                 itr.second._bSubscribeVideo = !itr.second._bSubscribeVideo;
                 m_pVideoViewLayout->muteVideo(userId, (TRTCVideoStreamType)streamType, !itr.second._bSubscribeVideo);
-                if (itr.second._bSubscribeVideo)
-                    TRTCCloudCore::GetInstance()->getTRTCCloud()->startRemoteView(Wide2UTF8(userId).c_str(), nullptr);
-                else
-                    TRTCCloudCore::GetInstance()->getTRTCCloud()->stopRemoteView(Wide2UTF8(userId).c_str());
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->muteRemoteVideoStream(Wide2UTF8(userId).c_str(), !itr.second._bSubscribeVideo);
             }
             else if (streamType == TRTCVideoStreamTypeSub)
             {
@@ -1041,8 +1015,6 @@ void TRTCMainViewController::exitRoom()
     if (bExit)
     {
         m_pVideoViewLayout->deleteVideoView(UTF82Wide(info._userId), TRTCVideoStreamType::TRTCVideoStreamTypeBig);
-        ::KillTimer(GetHWND(), m_nCustomAudioTimerID);
-        ::KillTimer(GetHWND(), m_nCustomVideoTimerID);
         TRTCCloudCore::GetInstance()->PreUninit();
         m_pMainViewBottomBar->UnInitBottomUI();
         m_pVideoViewLayout->unInitRenderUI();

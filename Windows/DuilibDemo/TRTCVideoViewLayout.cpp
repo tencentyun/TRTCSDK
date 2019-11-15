@@ -711,14 +711,17 @@ int TRTCVideoViewLayout::dispatchVideoView(std::wstring userId, TRTCVideoStreamT
         minInfo._streamType = mainInfo._streamType;
         minInfo._viewLayout->cleanViewStatus();
         minInfo._viewLayout->copyCanvasAttribute(mainInfo._viewLayout);
+
+        //先清除旧窗口的注册回调
+        mainInfo._viewLayout->cleanViewStatus();
+        mainInfo._viewLayout->resetViewUIStatus(L""); //先清除旧记录
+
         minInfo._viewLayout->resetViewUIStatus(mainInfo._userId.c_str(), mainInfo._streamType);
         minInfo._viewLayout->SetVisible(true);
 
         //分配主窗口视图。
         mainInfo._userId = userId;
         mainInfo._streamType = type;
-        mainInfo._viewLayout->cleanViewStatus();
-        mainInfo._viewLayout->resetViewUIStatus(L""); //先清除旧记录
         if (bPKUser) mainInfo._viewLayout->showPKIcon(true, roomId);
         mainInfo._viewLayout->resetViewUIStatus(userId.c_str(), type);
         mainInfo._viewLayout->SetVisible(true);

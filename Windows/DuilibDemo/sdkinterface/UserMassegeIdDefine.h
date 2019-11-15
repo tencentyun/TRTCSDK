@@ -49,6 +49,4 @@
 #define ID_DELAY_SHOW_MSGBOX                WM_USER_UI_MSG_ID + 1                  //滞后弹提示窗口
 #define WM_USER_SET_SHOW_VOICEVOLUME        WM_USER_UI_MSG_ID + 2    //是否显示音量值
 #define WM_USER_VIEW_BTN_CLICK              WM_USER_UI_MSG_ID + 3    //View的按钮被点击了。
-#define WM_USER_CMD_CustomVideoCapture      WM_USER_UI_MSG_ID + 4     //
-#define WM_USER_CMD_CustomAudioCapture      WM_USER_UI_MSG_ID + 5
 #define WM_USER_CMD_RoleChange              WM_USER_UI_MSG_ID + 6     //用户角色变化了

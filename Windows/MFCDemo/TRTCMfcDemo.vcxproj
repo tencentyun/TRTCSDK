@@ -123,8 +123,7 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <PostBuildEvent>
-      <Command>copy /Y "$(ProjectDir)..\SDK\CPlusPlus\Win32\lib\*.dll" "$(OutDir)"
-copy /Y "$(ProjectDir)config.json" "$(OutDir)"</Command>
+      <Command>copy /Y "$(ProjectDir)..\SDK\CPlusPlus\Win32\lib\*.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>@echo off
@@ -201,8 +200,7 @@ if exist %SourceFile% (
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <PostBuildEvent>
-      <Command>copy /Y "$(ProjectDir)..\SDK\CPlusPlus\Win32\lib\*.dll" "$(OutDir)"
-copy /Y "$(ProjectDir)config.json" "$(OutDir)"</Command>
+      <Command>copy /Y "$(ProjectDir)..\SDK\CPlusPlus\Win32\lib\*.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>@echo off

@@ -73,7 +73,4 @@ private:
     CPaintManagerUI m_pmUI;
     bool m_bQuit = true;
 
-    UINT m_nCustomVideoTimerID = 10001;
-    UINT m_nCustomAudioTimerID = 10002;
-
 };

@@ -121,6 +121,9 @@ public: //trtc
 
     bool m_bPureAudioStyle = false; //是否纯音频模式。
 
+    bool m_bAutoRecvAudio = true;
+    bool m_bAutoRecvVideo = true;
+
     bool m_bLocalVideoMirror = false;      //本地镜像
     bool m_bRemoteVideoMirror = false;     //暂不支持
     bool m_bShowAudioVolume =   true;      //开启音量提示
@@ -135,11 +138,14 @@ public: //trtc
     bool m_bEnableAns = true;
     bool m_bEnableAgc = true;
 
+    std::string m_strSocks5ProxyIp;
+    int         m_strSocks5ProxyPort = 0;
+
     std::map<int, VideoResBitrateTable> m_videoConfigMap;
 
 
     uint32_t m_micVolume = 100;
-    uint32_t m_speakerVolume = 50;
+    uint32_t m_speakerVolume = 100;
 public:  //混流信息
     std::vector<UserVideoMeta> mixStreamVideoMeta;
     void removeVideoMeta(std::string userId, int streamType);

@@ -52,6 +52,7 @@ namespace TRTCCSharpDemo.Common
 
         public static Bitmap Rotate(Bitmap b, int angle)
         {
+            if (angle == 0) return b;
             angle = angle % 360;
             //弧度转换
             double radian = angle * Math.PI / 180.0;
@@ -80,6 +81,7 @@ namespace TRTCCSharpDemo.Common
             //重至绘图的所有变换
             g.ResetTransform();
             g.Save();
+            b.Dispose();
             g.Dispose();
             return dsImage;
         }

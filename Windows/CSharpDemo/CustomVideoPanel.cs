@@ -91,7 +91,7 @@ namespace TRTCCSharpDemo.CustomControl
                         mArgbRenderFrame.height = (int)height;
                         mArgbRenderFrame.data = new byte[length];
                     }
-                    Array.Copy(data, mArgbRenderFrame.data, length);
+                    Buffer.BlockCopy(data, 0, mArgbRenderFrame.data, 0, (int)length);
                     mArgbRenderFrame.newFrame = true;
                     mArgbRenderFrame.rotation = rotation;
                 }
@@ -127,13 +127,13 @@ namespace TRTCCSharpDemo.CustomControl
             {
                 if (mArgbRenderFrame.data == null) return;
                 if (mRenderMode == TRTCVideoFillMode.TRTCVideoFillMode_Fit)
-                    RenderFitMode(pe, mArgbRenderFrame.data, mArgbRenderFrame.width, mArgbRenderFrame.height);
+                    RenderFitMode(pe, mArgbRenderFrame.data, mArgbRenderFrame.width, mArgbRenderFrame.height, (int)mArgbRenderFrame.rotation * 90);
                 else if (mRenderMode == TRTCVideoFillMode.TRTCVideoFillMode_Fill)
-                    RenderFillMode(pe, mArgbRenderFrame.data, mArgbRenderFrame.width, mArgbRenderFrame.height);
+                    RenderFillMode(pe, mArgbRenderFrame.data, mArgbRenderFrame.width, mArgbRenderFrame.height, (int)mArgbRenderFrame.rotation * 90);
             }
         }
 
-        private void RenderFillMode(PaintEventArgs pe, byte[] data, int width, int height)
+        private void RenderFillMode(PaintEventArgs pe, byte[] data, int width, int height, int rotation)
         {
             Graphics graphics = pe.Graphics;
             // 设置背景为全黑
@@ -147,24 +147,11 @@ namespace TRTCCSharpDemo.CustomControl
             IntPtr iptr = bmpData.Scan0;      // 获取bmpData的内存起始位置  
             int scanBytes = stride * height;  // 用stride宽度，表示这是内存区域的大小  
 
-            // 下面把原始的显示大小字节数组转换为内存中实际存放的字节数组  
-            int posScan = 0, posReal = 0;  // 分别设置两个位置指针，指向源数组和目标数组  
-            byte[] pixelValues = new byte[scanBytes];  //为目标数组分配内存
-
-            // 下面的循环节是模拟行扫描  
-            for (int i = 0; i < mArgbRenderFrame.data.Length; i++)
-                pixelValues[posScan++] = mArgbRenderFrame.data[posReal++];
-
             // 用Marshal的Copy方法，将刚才得到的内存字节数组复制到BitmapData中
-            Marshal.Copy(pixelValues, 0, iptr, scanBytes);
+            Marshal.Copy(data, 0, iptr, scanBytes);
             bmp.UnlockBits(bmpData);
 
-            if (mArgbRenderFrame.rotation == TRTCVideoRotation.TRTCVideoRotation90)
-                bmp = Util.Rotate(bmp, 90);
-            else if (mArgbRenderFrame.rotation == TRTCVideoRotation.TRTCVideoRotation180)
-                bmp = Util.Rotate(bmp, 180);
-            else if (mArgbRenderFrame.rotation == TRTCVideoRotation.TRTCVideoRotation270)
-                bmp = Util.Rotate(bmp, 270);
+            bmp = Util.Rotate(bmp, rotation);
 
             // 填充整个画面
             int viewWidth = this.ClientSize.Width;
@@ -191,7 +178,7 @@ namespace TRTCCSharpDemo.CustomControl
             bmp.Dispose();
         }
 
-        private void RenderFitMode(PaintEventArgs pe, byte[] data, int width, int height)
+        private void RenderFitMode(PaintEventArgs pe, byte[] data, int width, int height, int rotation)
         {
             Graphics graphics = pe.Graphics;
             // 设置背景为全黑
@@ -205,24 +192,11 @@ namespace TRTCCSharpDemo.CustomControl
             IntPtr iptr = bmpData.Scan0;      // 获取bmpData的内存起始位置  
             int scanBytes = stride * height;  // 用stride宽度，表示这是内存区域的大小  
 
-            // 下面把原始的显示大小字节数组转换为内存中实际存放的字节数组  
-            int posScan = 0, posReal = 0;  // 分别设置两个位置指针，指向源数组和目标数组  
-            byte[] pixelValues = new byte[scanBytes];  //为目标数组分配内存
-
-            // 下面的循环节是模拟行扫描  
-            for (int i = 0; i < mArgbRenderFrame.data.Length; i++)
-                pixelValues[posScan++] = mArgbRenderFrame.data[posReal++];
-
             // 用Marshal的Copy方法，将刚才得到的内存字节数组复制到BitmapData中
-            Marshal.Copy(pixelValues, 0, iptr, scanBytes);
+            Marshal.Copy(data, 0, iptr, scanBytes);
             bmp.UnlockBits(bmpData);
 
-            if (mArgbRenderFrame.rotation == TRTCVideoRotation.TRTCVideoRotation90)
-                bmp = Util.Rotate(bmp, 90);
-            else if (mArgbRenderFrame.rotation == TRTCVideoRotation.TRTCVideoRotation180)
-                bmp = Util.Rotate(bmp, 180);
-            else if (mArgbRenderFrame.rotation == TRTCVideoRotation.TRTCVideoRotation270)
-                bmp = Util.Rotate(bmp, 270);
+            bmp = Util.Rotate(bmp, rotation);
 
             // 获取缩放后的矩形大小
             int viewWidth = this.ClientSize.Width;

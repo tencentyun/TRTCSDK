@@ -142,5 +142,8 @@ private:
     int _video_width = 0, _video_height = 0;
 
     bool m_bPreUninit = false;
+
+    std::thread* custom_audio_thread_ = nullptr;
+    std::thread* custom_video_thread_ = nullptr;
 };
 

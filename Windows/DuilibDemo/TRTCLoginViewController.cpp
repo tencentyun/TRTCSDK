@@ -82,6 +82,17 @@ void TRTCLoginViewController::InitLoginView()
     if (pEditName != nullptr)
         pEditName->SetText(UTF82Wide(user_id).c_str());
 
+    if (loginData._roomId > 0)
+    {
+        int roomId = loginData._roomId;
+        char string_num[32];
+        itoa(roomId, string_num, 10);
+        std::string strRoomId = string_num;
+        CEditUI* pEditRoomId = static_cast<CEditUI*>(m_pmUI.FindControl(_T("edit_roomid")));
+        if (pEditRoomId != nullptr)
+            pEditRoomId->SetText(UTF82Wide(strRoomId).c_str());
+    }
+
     m_pLoginStatus = static_cast<CLabelUI*>(m_pmUI.FindControl(_T("label_loginstatus")));
     m_pmUI.SetFocus(nullptr);
 
@@ -117,6 +128,9 @@ void TRTCLoginViewController::InitLoginView()
         CHorizontalLayoutUI* pTestCallContainer = static_cast<CHorizontalLayoutUI*>(m_pmUI.FindControl(_T("test_call_container")));
         if (pTestCallContainer)
             pTestCallContainer->SetVisible(true);
+        CHorizontalLayoutUI* pTestModeContainer = static_cast<CHorizontalLayoutUI*>(m_pmUI.FindControl(_T("test_mode_container")));
+        if (pTestModeContainer)
+            pTestModeContainer->SetVisible(true);
 
         bool bAudioCallStyle = CDataCenter::GetInstance()->m_bPureAudioStyle;
         COptionUI* pAudioCall = static_cast<COptionUI*>(m_pmUI.FindControl(_T("audio_call")));

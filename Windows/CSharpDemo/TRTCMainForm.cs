@@ -485,10 +485,16 @@ namespace TRTCCSharpDemo
         }
 
         /// <summary>
-        /// 远端用户进房回调
-        /// 注意：不推荐在此回调中显示远端视频画面，推荐使用 onUserVideoAvailable 
+        /// 注意：该接口已被废弃，不推荐使用（保持空实现），请使用 onRemoteUserEnterRoom 替代。
         /// </summary>
-        public void onUserEnter(string userId)
+        public void onUserEnter(string userId) {}
+
+        /// <summary>
+        /// 注意：该接口已被废弃，不推荐使用（保持空实现），请使用 onRemoteUserLeaveRoom 替代。
+        /// </summary>
+        public void onUserExit(string userId, int reason) {}
+
+        public void onRemoteUserEnterRoom(string userId)
         {
             if (this.IsHandleCreated)
                 this.BeginInvoke(new Action(() => {
@@ -496,7 +502,27 @@ namespace TRTCCSharpDemo
                     mRemoteUsers.Add(new RemoteUserInfo() { userId = userId, position = -1 });
                     OnPKUserEnter(userId);
                 }));
-            
+        }
+
+        public void onRemoteUserLeaveRoom(string userId, int reason)
+        {
+            if (this.IsHandleCreated)
+                this.BeginInvoke(new Action(() => {
+                    // 清理远端用户退房信息，回收窗口
+                    OnPKUserExit(userId);
+                    int pos = FindOccupyRemoteVideoPosition(userId, true);
+                    if (pos != -1)
+                    {
+                        foreach (RemoteUserInfo user in mRemoteUsers)
+                        {
+                            if (user.userId.Equals(userId))
+                            {
+                                mRemoteUsers.Remove(user);
+                                break;
+                            }
+                        }
+                    }
+                }));
         }
 
         /// <summary>
@@ -576,36 +602,6 @@ namespace TRTCCSharpDemo
             else if (string.IsNullOrEmpty(this.remoteUserLabel5.Text) || this.remoteUserLabel5.Text.Equals(userId))
                 return 5;
             return -1;
-        }
-
-        /// <summary>
-        /// 远端用户退出房间回调
-        /// </summary>
-        public void onUserExit(string userId, int reason)
-        {
-            if (this.IsHandleCreated)
-                this.BeginInvoke(new Action(() => {
-                    // 清理远端用户退房信息，回收窗口
-                    OnPKUserExit(userId);
-                    int pos = FindOccupyRemoteVideoPosition(userId, true);
-                    if (pos != -1)
-                    {
-                        foreach (RemoteUserInfo user in mRemoteUsers)
-                        {
-                            if (user.userId.Equals(userId))
-                            {
-                                mRemoteUsers.Remove(user);
-                                break;
-                            }
-                        }
-                        // 停止远端的主流和辅流画面
-                        mTRTCCloud.stopRemoteView(userId);
-                        mTRTCCloud.stopRemoteSubStreamView(userId);
-                        // 关闭远端音量提示
-                        if (this.voiceCheckBox.Checked)
-                            SetRemoteVoiceVisable(pos, false);
-                    }
-                }));
         }
 
         /// <summary>
@@ -747,6 +743,9 @@ namespace TRTCCSharpDemo
                         {
                             SetVisableInfoView(pos, true);
                             mTRTCCloud.stopRemoteView(userId);
+                            // 关闭远端音量提示
+                            if (this.voiceCheckBox.Checked)
+                                SetRemoteVoiceVisable(pos, false);
                             RemoveVideoMeta(userId, TRTCVideoStreamType.TRTCVideoStreamTypeBig);
                             UpdateMixTranCodeInfo();
                         }
@@ -876,6 +875,12 @@ namespace TRTCCSharpDemo
                             find = true;
                             break;
                         }
+                        else if (info.userId.Equals(userId) && streamType != TRTCVideoStreamType.TRTCVideoStreamTypeSub)
+                        {
+                            info.streamType = streamType;
+                            find = true;
+                            break;
+                        }
                     }
                     if (!find && !(streamType == TRTCVideoStreamType.TRTCVideoStreamTypeBig && userId == mUserId))
                     {
@@ -961,7 +966,8 @@ namespace TRTCCSharpDemo
         {
             foreach (UserVideoMeta info in mMixStreamVideoMeta)
             {
-                if (info.userId == userId && info.streamType == streamType)
+                if (info.userId == userId && (info.streamType == streamType || 
+                    info.streamType != TRTCVideoStreamType.TRTCVideoStreamTypeSub))
                 {
                     mMixStreamVideoMeta.Remove(info);
                     break;
@@ -1639,11 +1645,23 @@ namespace TRTCCSharpDemo
         public void onScreenCaptureStoped(int reason)
         {
             Log.I(String.Format("onScreenCaptureStoped : reason = {0}", reason));
+            if (this.IsHandleCreated)
+                this.BeginInvoke(new Action(() =>
+                {
+                    this.screenShareCheckBox.Checked = false;
+                    if (mToastForm != null && mToastForm.Visible)
+                        mToastForm.Hide();
+                }));
         }
 
         public void onSetMixTranscodingConfig(int errCode, string errMsg)
         {
             Log.I(String.Format("onSetMixTranscodingConfig : errCode = {0}, errMsg = {1}", errCode, errMsg));
+        }
+
+        public void onAudioEffectFinished(int effectId, int code)
+        {
+            Log.I(String.Format("onAudioEffectFinished : effectId = {0}, code = {1}", effectId, code));
         }
 
         public void onSpeedTest(TRTCSpeedTestResult currentResult, uint finishedCount, uint totalCount)

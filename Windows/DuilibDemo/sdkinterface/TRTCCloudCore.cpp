@@ -1109,12 +1109,16 @@ void TRTCCloudCore::startCustomCaptureAudio(std::wstring filePat, int samplerate
     if (m_pCloud)
         m_pCloud->enableCustomAudioCapture(true);
 
-    for (auto& itr : m_mapSDKMsgFilter)
+    if (custom_audio_thread_ == nullptr)
     {
-        if (itr.first == WM_USER_CMD_CustomAudioCapture && itr.second != nullptr)
-        {
-            ::PostMessage(itr.second, WM_USER_CMD_CustomAudioCapture, 1, 0);
-        }
+        auto task2 = [=]() {
+            while (m_bStartCustomCaptureAudio)
+            {
+                sendCustomAudioFrame();
+                Sleep(20);
+            }
+        };
+        custom_audio_thread_ = new std::thread(task2);
     }
 }
 
@@ -1128,20 +1132,21 @@ void TRTCCloudCore::stopCustomCaptureAudio()
         delete _audio_buffer;
         _audio_buffer = nullptr;
     }
+
+
+    if (custom_audio_thread_)
+    {
+        custom_audio_thread_->join();
+        delete custom_audio_thread_;
+        custom_audio_thread_ = nullptr;
+    }
+
     if (m_pCloud)
         m_pCloud->enableCustomAudioCapture(false);
 
     CDataCenter::LocalUserInfo& _loginInfo = CDataCenter::GetInstance()->m_loginInfo;
     if (_loginInfo._bMuteAudio == false && m_bPreUninit == false)
         m_pCloud->startLocalAudio();
-
-    for (auto& itr : m_mapSDKMsgFilter)
-    {
-        if (itr.first == WM_USER_CMD_CustomAudioCapture && itr.second != nullptr)
-        {
-            ::PostMessage(itr.second, WM_USER_CMD_CustomAudioCapture, 0, 0);
-        }
-    }
 }
 
 void TRTCCloudCore::startCustomCaptureVideo(std::wstring filePat, int width, int height)
@@ -1163,12 +1168,17 @@ void TRTCCloudCore::startCustomCaptureVideo(std::wstring filePat, int width, int
 
     if (m_pCloud)
         m_pCloud->enableCustomVideoCapture(true);
-    for (auto& itr : m_mapSDKMsgFilter)
+
+    if (custom_video_thread_ == nullptr)
     {
-        if (itr.first == WM_USER_CMD_CustomVideoCapture && itr.second != nullptr)
-        {
-            ::PostMessage(itr.second, WM_USER_CMD_CustomVideoCapture, 1, 0);
-        }
+        auto task2 = [=]() {
+            while (m_bStartCustomCaptureVideo)
+            {
+                sendCustomVideoFrame();
+                Sleep(66);
+            }
+        };
+        custom_video_thread_ = new std::thread(task2);
     }
 }
 
@@ -1187,12 +1197,11 @@ void TRTCCloudCore::stopCustomCaptureVideo()
     if (m_mRefLocalPreview && m_bPreUninit == false)
         m_pCloud->startLocalPreview(NULL);
 
-    for (auto& itr : m_mapSDKMsgFilter)
+    if (custom_video_thread_)
     {
-        if (itr.first == WM_USER_CMD_CustomVideoCapture && itr.second != nullptr)
-        {
-            ::PostMessage(itr.second, WM_USER_CMD_CustomVideoCapture, 0, 0);
-        }
+        custom_video_thread_->join();
+        delete custom_video_thread_;
+        custom_video_thread_ = nullptr;
     }
 }
 

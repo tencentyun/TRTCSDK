@@ -28,7 +28,7 @@
 			<!--normal setting page-->
 			<VerticalLayout name="normal_tab_layout" childpadding="10">
 				<HorizontalLayout height="10"/>
-					<GroupBox name="normal_groupbox" text="场景设置" padding="20,0,20,0" childpadding="15" bordercolor="#FF808080" bkcolor="#FFF8F8F8" bordersize="1" height="250">
+					<GroupBox name="normal_groupbox" text="场景设置" padding="20,0,20,0" childpadding="15" bordercolor="#FF808080" bkcolor="#FFF8F8F8" bordersize="1" height="280">
 						<HorizontalLayout childvalign="left" height="24">
 							<HorizontalLayout childvalign="left" inset="8,8,0,0" childpadding="10">
 							  <Label text="应用场景: " font="2" width="100" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,0"/>
@@ -74,6 +74,14 @@
 							<Label text="默认观看低清" font="2" width="118" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,1"/>
 							<VerticalLayout width="170"/>
 							<Option name="check_play_smallvideo" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
+						</HorizontalLayout>
+						<HorizontalLayout name="test_mode_container" inset="8,6,0,0" childvalign="left" height="24">
+						  <Label text="音视频接收模式" font="2" width="118" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,1"/>
+						  <VerticalLayout width="20"/>
+						  <Option name="auto_mode" group="modestyle" text="自动" style="radio_style" width="0" autocalcwidth="true"/>
+						  <Option name="audio_mode" group="modestyle" text="音频" style="radio_style" width="0" autocalcwidth="true"/>
+						  <Option name="video_mode" group="modestyle" text="视频" style="radio_style" width="0" autocalcwidth="true"/>
+						  <Option name="manual_mode" group="modestyle" text="手动" style="radio_style" width="0" autocalcwidth="true"/>
 						</HorizontalLayout>
 					</GroupBox>
 					<GroupBox text="美颜设置" padding="20,0,20,0" childpadding="15" bordercolor="#FF808080" bkcolor="#FFF8F8F8" bordersize="1" height="145">
@@ -311,6 +319,18 @@
 					<Combo name="combo_video_yuvfile" width="130" height="24" style="devicecombo" dropbox="bordercolor=&quot;#FF1E90FF&quot; bordersize=&quot;1&quot; bkcolor=&quot;#FFFFFFFF&quot;">
 						<ListLabelElement text="320×240_video.yuv"/>
 					</Combo>  
+				</HorizontalLayout>
+				<HorizontalLayout inset="28,0,0,0" childvalign="left" height="24">
+					<Label text="Socks5代理IP" font="2" width="118" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,3,0,1"/>
+					<VerticalLayout width="80"/>
+					<Edit name="edit_ip" text="" height="24" font="2" align="center" textpadding="20,0,20,0" tipvalue="输入代理IP" tipvaluecolor="#FF808080" tipvaluealign="center" normalimage="res='login/edit_normal.png' corner='6,6,6,6'" focusedimage="res='login/edit_focus.png' corner='6,6,6,6'"/>
+					<VerticalLayout width="72"/>
+				</HorizontalLayout>
+				<HorizontalLayout inset="28,0,0,0" childvalign="left" height="24">
+					<Label text="Socks5代理Port" font="2" width="118" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,3,0,1"/>
+					<VerticalLayout width="80"/>
+					<Edit name="edit_port" text="" height="24" font="2" align="center" numberonly="true" textpadding="20,0,20,0" tipvalue="输入代理PORT" tipvaluecolor="#FF808080" tipvaluealign="center" normalimage="res='login/edit_normal.png' corner='6,6,6,6'" focusedimage="res='login/edit_focus.png' corner='6,6,6,6'"/>
+					<VerticalLayout width="72"/>
 				</HorizontalLayout>
 			</VerticalLayout>
 		</TabLayout>

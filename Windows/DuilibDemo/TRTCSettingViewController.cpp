@@ -44,6 +44,8 @@ TRTCSettingViewController::TRTCSettingViewController(SettingTagEnum tagType, HWN
     m_audioEffectParam1->publish = false;
     m_audioEffectParam2->publish = false;
     m_audioEffectParam3->publish = false;
+
+    CDataCenter::GetInstance()->m_speakerVolume = TRTCCloudCore::GetInstance()->getTRTCCloud()->getCurrentSpeakerVolume();
 }
 
 TRTCSettingViewController::~TRTCSettingViewController()
@@ -125,7 +127,7 @@ void TRTCSettingViewController::Notify(TNotifyUI & msg)
     NotifyOtherTab(msg);
     NotifyAudioEffectTab(msg);
     CDuiString name = msg.pSender->GetName();
-    if (msg.sType == _T("selectchanged")) 
+    if (msg.sType == _T("selectchanged"))  
     {
         CTabLayoutUI* pTabSwitch = static_cast<CTabLayoutUI*>(m_pmUI.FindControl(_T("tab_switch")));
         if (name.CompareNoCase(_T("normal_tab")) == 0) pTabSwitch->SelectItem(0);
@@ -167,7 +169,7 @@ void TRTCSettingViewController::Notify(TNotifyUI & msg)
         if (name.CompareNoCase(_T("scene_live")) == 0) {
             CGroupBoxUI* normalContainer = static_cast<CGroupBoxUI*>(m_pmUI.FindControl(_T("normal_groupbox")));
             if (normalContainer)
-                normalContainer->SetFixedHeight(270);
+                normalContainer->SetFixedHeight(302);
             CHorizontalLayoutUI* roleContainer = static_cast<CHorizontalLayoutUI*>(m_pmUI.FindControl(_T("choose_role")));
             if (roleContainer)
                 roleContainer->SetVisible(true);
@@ -178,7 +180,7 @@ void TRTCSettingViewController::Notify(TNotifyUI & msg)
         if (name.CompareNoCase(_T("scene_call")) == 0) {
             CGroupBoxUI* normalContainer = static_cast<CGroupBoxUI*>(m_pmUI.FindControl(_T("normal_groupbox")));
             if (normalContainer)
-                normalContainer->SetFixedHeight(230);
+                normalContainer->SetFixedHeight(262);
             CHorizontalLayoutUI* roleContainer = static_cast<CHorizontalLayoutUI*>(m_pmUI.FindControl(_T("choose_role")));
             if (roleContainer)
                 roleContainer->SetVisible(false);
@@ -208,6 +210,24 @@ void TRTCSettingViewController::Notify(TNotifyUI & msg)
                 ::PostMessage(m_parentHwnd, WM_USER_CMD_RoleChange, (WPARAM)CDataCenter::GetInstance()->m_roleType, 0);
             }
         }
+
+        if (name.CompareNoCase(_T("auto_mode")) == 0) {
+            CDataCenter::GetInstance()->m_bAutoRecvAudio = true;
+            CDataCenter::GetInstance()->m_bAutoRecvVideo = true;
+        }
+        if (name.CompareNoCase(_T("audio_mode")) == 0) {
+            CDataCenter::GetInstance()->m_bAutoRecvAudio = true;
+            CDataCenter::GetInstance()->m_bAutoRecvVideo = false;
+        }
+        if (name.CompareNoCase(_T("video_mode")) == 0) {
+            CDataCenter::GetInstance()->m_bAutoRecvAudio = false;
+            CDataCenter::GetInstance()->m_bAutoRecvVideo = true;
+        }
+        if (name.CompareNoCase(_T("manual_mode")) == 0) {
+            CDataCenter::GetInstance()->m_bAutoRecvAudio = false;
+            CDataCenter::GetInstance()->m_bAutoRecvVideo = false;
+        }
+
         if (name.CompareNoCase(_T("smooth_beauty")) == 0) {
             CDataCenter::GetInstance()->m_beautyConfig._beautyStyle = TRTCBeautyStyleSmooth;
             ResetBeautyConfig();
@@ -1178,6 +1198,19 @@ void TRTCSettingViewController::InitNormalTab()
             pPlaySmallVideo->Selected(true);
     }
 
+    //处理音视频接收模式
+    COptionUI* pAutoMode = static_cast<COptionUI*>(m_pmUI.FindControl(_T("auto_mode")));
+    COptionUI* pAudioMode = static_cast<COptionUI*>(m_pmUI.FindControl(_T("audio_mode")));
+    COptionUI* pVideoMode = static_cast<COptionUI*>(m_pmUI.FindControl(_T("video_mode")));
+    COptionUI* pManualMode = static_cast<COptionUI*>(m_pmUI.FindControl(_T("manual_mode")));
+    if (pAutoMode && pAudioMode && pVideoMode && pManualMode)
+    {
+        pAutoMode->Selected(true);
+        pAudioMode->Selected(false);
+        pVideoMode->Selected(false);
+        pManualMode->Selected(false);
+    }
+
     //处理美颜设置 
     {
         CDataCenter::BeautyConfig& beautyConfig = CDataCenter::GetInstance()->GetBeautyConfig();
@@ -1466,7 +1499,16 @@ void TRTCSettingViewController::InitOtherTab()
     }
 #endif // ! _WIN64
 
+    CEditUI* pEditIp = static_cast<CEditUI*>(m_pmUI.FindControl(_T("edit_ip")));
+    if (pEditIp != nullptr)
+        pEditIp->SetText(UTF82Wide(CDataCenter::GetInstance()->m_strSocks5ProxyIp).c_str());
 
+    char string_num[32];
+    itoa(CDataCenter::GetInstance()->m_strSocks5ProxyPort, string_num, 10);
+    std::string strPort = string_num;
+    CEditUI* pEditPort = static_cast<CEditUI*>(m_pmUI.FindControl(_T("edit_port")));
+    if (pEditPort != nullptr)
+        pEditPort->SetText(UTF82Wide(strPort).c_str());
 }
 
 void TRTCSettingViewController::UpdateCameraDevice()
@@ -1606,6 +1648,27 @@ void TRTCSettingViewController::stopAllTestSetting()
         }
         m_bMuteRemotesAudio = false;
     }
+
+    CEditUI* pEditIp = static_cast<CEditUI*>(m_pmUI.FindControl(_T("edit_ip")));
+    if (pEditIp != nullptr)
+    {
+        std::wstring strIp = pEditIp->GetText();
+        if (!(strIp.compare(L"") == 0))
+        {
+            CDataCenter::GetInstance()->m_strSocks5ProxyIp = Wide2UTF8(strIp);
+        }
+    }
+
+    CEditUI* pEditPort = static_cast<CEditUI*>(m_pmUI.FindControl(_T("edit_port")));
+    if (pEditPort != nullptr)
+    {
+        std::wstring strPort = pEditPort->GetText();
+        if (!(strPort.compare(L"") == 0))
+        {
+            CDataCenter::GetInstance()->m_strSocks5ProxyPort = _wtoi(strPort.c_str());
+        }
+    }
+
 }
 
 void TRTCSettingViewController::updateVideoBitrateUi()

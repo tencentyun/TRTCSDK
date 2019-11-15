@@ -244,6 +244,7 @@ void CDataCenter::Init()
     else
         m_bCDNMixTranscoding = false;
 
+    /*
     bRet = m_pConfigMgr->GetValue(INI_ROOT_KEY, INI_KEY_MIC_VOLUME, strParam);
     if (bRet)
         m_micVolume = _wtoi(strParam.c_str());
@@ -273,6 +274,19 @@ void CDataCenter::Init()
         m_bEnableAgc = _wtoi(strParam.c_str());
     else
         m_bEnableAgc = 0;
+    */
+
+    std::wstring ip;
+    bRet = m_pConfigMgr->GetValue(INI_ROOT_KEY, INI_KEY_SOCKS5_PROXY_IP, ip);
+    if (ip.compare(L"") != 0 && bRet)
+        m_strSocks5ProxyIp = Wide2UTF8(ip);
+
+    bRet = m_pConfigMgr->GetValue(INI_ROOT_KEY, INI_KEY_SOCKS5_PROXY_PORT, strParam);
+    if (bRet)
+        m_strSocks5ProxyPort = _wtoi(strParam.c_str());
+    else
+        m_strSocks5ProxyPort = 0;
+
 }
 
 void CDataCenter::WriteEngineConfig()
@@ -328,6 +342,7 @@ void CDataCenter::WriteEngineConfig()
     strFormat.Format(L"%d", m_bCDNMixTranscoding);
     m_pConfigMgr->SetValue(INI_ROOT_KEY, INI_KEY_CLOUD_MIX_TRANSCODING, strFormat.GetData());
 
+    /*
     strFormat.Format(L"%d", m_micVolume);
     m_pConfigMgr->SetValue(INI_ROOT_KEY, INI_KEY_MIC_VOLUME, strFormat.GetData());
     strFormat.Format(L"%d", m_speakerVolume);
@@ -339,6 +354,13 @@ void CDataCenter::WriteEngineConfig()
     m_pConfigMgr->SetValue(INI_ROOT_KEY, INI_KEY_ENABLE_ANS, strFormat.GetData());
     strFormat.Format(L"%d", m_bEnableAgc);
     m_pConfigMgr->SetValue(INI_ROOT_KEY, INI_KEY_ENABLE_AGC, strFormat.GetData());
+    */
+
+    m_pConfigMgr->SetValue(INI_ROOT_KEY, INI_KEY_SOCKS5_PROXY_IP, UTF82Wide(m_strSocks5ProxyIp));
+    strFormat.Format(L"%d", m_strSocks5ProxyPort);
+    m_pConfigMgr->SetValue(INI_ROOT_KEY, INI_KEY_SOCKS5_PROXY_PORT, strFormat.GetData());
+
+
 }
 
 CDataCenter::BeautyConfig & CDataCenter::GetBeautyConfig()

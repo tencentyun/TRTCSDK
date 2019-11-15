@@ -41,6 +41,10 @@ namespace TRTCCSharpDemo
             {
                 mTRTCCloud.stopBGM();
             }
+            if (this.audioEffectTestBtn.Text.Equals("停止音效测试"))
+            {
+                mTRTCCloud.stopAllAudioEffects();
+            }
             mTRTCCloud = null;
         }
 
@@ -134,6 +138,27 @@ namespace TRTCCSharpDemo
                 if (mTRTCCloud != null)
                     mTRTCCloud.stopBGM();
             }
+        }
+
+        private void OnAudioTestBtnClick(object sender, EventArgs e)
+        {
+            if (this.audioEffectTestBtn.Text.Equals("启动音效测试"))
+            {
+                // 开启音效测试
+                this.audioEffectTestBtn.Text = "停止音效测试";
+                TRTCAudioEffectParam param = new TRTCAudioEffectParam(1, mTestPath);
+                param.loopCount = 0;
+                param.publish = true;
+                param.volume = 50;
+                mTRTCCloud.playAudioEffect(param);
+            }
+            else
+            {
+                // 关闭音效测试
+                this.audioEffectTestBtn.Text = "启动音效测试";
+                mTRTCCloud.stopAllAudioEffects();
+            }
+            
         }
 
         private void OnConfirmBtnClick(object sender, EventArgs e)
