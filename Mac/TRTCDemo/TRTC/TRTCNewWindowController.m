@@ -14,6 +14,7 @@
 #import "TRTCNewWindowController.h"
 #import "SDKHeader.h"
 #import "GenerateTestUserSig.h"
+#import "TRTCSettingWindowController.h"
 
 
 @interface TRTCNewWindowController()
@@ -27,10 +28,7 @@
 
 - (void)windowDidLoad {
     [super windowDidLoad];
-    
-    [TRTCCloud setLogCompressEnabled:NO];
-    [TRTCCloud setConsoleEnabled:YES];
-    
+
     NSMutableString *alertMessage = [[NSMutableString alloc] init];
     if (_SDKAppID == 0) {
         [alertMessage appendString:@"请在 GenerateTestUserSig.h 中填写 _SDKAppID。"];
@@ -42,9 +40,10 @@
         NSAlert *alert = [[NSAlert alloc] init];
         alert.messageText = alertMessage;
         [alert runModal];
-        return;
     }
 
+    [TRTCCloud setLogCompressEnabled:NO];
+    [TRTCCloud setConsoleEnabled:YES];
 }
 
 - (void)alert:(NSString *)message {
@@ -91,7 +90,6 @@
  *  参考文档：https://cloud.tencent.com/document/product/647/17275
  */
 - (IBAction)enter:(id)sender {
-   
     if (self.roomidField.stringValue.length == 0) {
         [self alert: @"请输入正确的房间号"];
         return;
@@ -121,7 +119,7 @@
     param.userId = userID;
     param.userSig = [GenerateTestUserSig genTestUserSig:userID];
     param.roomId = (UInt32)roomID.integerValue;
-
+    param.role = TRTCSettingWindowController.isAudience ? TRTCRoleAudience : TRTCRoleAnchor;
     [self enterRoomWithParam:param];
 }
 

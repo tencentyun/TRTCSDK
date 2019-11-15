@@ -63,7 +63,7 @@ DECL_DEFAULT_KEY(BOOL, ShowVolume, showVolume)
 // 是否开启云端画面混合
 DECL_DEFAULT_KEY(BOOL, CloudMixEnabled, cloudMixEnabled)
 // 是否观众角色
-DECL_DEFAULT_KEY(BOOL, isAudience, isAudience)
+DECL_DEFAULT_KEY(BOOL, IsAudience, isAudience)
 // 分辨率模式
 DECL_DEFAULT_KEY(TRTCVideoResolutionMode, ResolutionMode, resolutionMode);
 // 大小流
@@ -89,6 +89,7 @@ DECL_DEFAULT_KEY(BOOL, PlaySmallStream, playSmallStream)
                                  DefaultKeyScene: @(TRTCAppSceneVideoCall),
                                  DefaultKeyShowVolume: @(YES),
 
+                                 DefaultKeyIsAudience: @(NO),
                                  DefaultKeyResolutionMode: @(TRTCVideoResolutionModeLandscape),
                                  DefaultKeyCloudMixEnabled: @(NO),
                                  
@@ -179,13 +180,13 @@ DECL_DEFAULT_KEY(BOOL, PlaySmallStream, playSmallStream)
 {
     NSString *key = NSStringFromSelector(@selector(isAudience));
     [self.class willChangeValueForKey:key];
-    s_isAudience = isAudience;
+    self.class.isAudience = isAudience;
     [self.class didChangeValueForKey:key];
 }
 
 - (BOOL)isAudience
 {
-    return s_isAudience;
+    return self.class.isAudience;
 }
 
 #pragma mark - Defaults Writer
@@ -195,6 +196,9 @@ DECL_DEFAULT_KEY(BOOL, PlaySmallStream, playSmallStream)
     if (self.shouldSaveToDefaults) {
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         for (NSString *key in defaultKeys) {
+            if ([key isEqualToString:DefaultKeyShouldSaveToDefaults]) {
+                continue;
+            }
             NSMutableString *propKey = [[key stringByReplacingOccurrencesOfString:@"TRTC_" withString:@""] mutableCopy];
             char first = tolower([propKey characterAtIndex:0]);
             [propKey replaceCharactersInRange:NSMakeRange(0, 1) withString:[NSString stringWithFormat:@"%c", first]];
@@ -229,8 +233,8 @@ DECL_DEFAULT_KEY(BOOL, PlaySmallStream, playSmallStream)
     } else {
         self.liveSceneButton.state = NSOnState;
         self.roleBox.hidden = NO;
-        self.radioAnchor.state = NSOnState;
-        self.radioAudience.state = NSOffState;
+        self.radioAnchor.state = TRTCSettingWindowController.isAudience ? NSOffState : NSOnState;
+        self.radioAudience.state = TRTCSettingWindowController.isAudience ? NSOnState : NSOffState;
     }
     self.callSceneButton.tag = TRTCAppSceneVideoCall;
     self.liveSceneButton.tag = TRTCAppSceneLIVE;
