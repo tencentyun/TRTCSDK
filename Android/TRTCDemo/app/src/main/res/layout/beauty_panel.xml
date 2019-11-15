@@ -67,7 +67,6 @@
                 android:weightSum="2">
 
                 <LinearLayout
-                    android:id="@+id/filter_ll"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"

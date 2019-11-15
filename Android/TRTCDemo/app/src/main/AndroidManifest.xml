@@ -36,14 +36,16 @@
         </activity>
 
         <activity
-            android:name=".trtc.TRTCNewActivity"
-            android:theme="@style/NewActivityTheme"
-            android:screenOrientation="portrait" />
-
+            android:name=".trtc.TRTCNewRoomActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NewActivityTheme" />
         <activity
-            android:name=".trtc.TRTCMainActivity"
+
+            android:name=".trtc.TRTCVideoRoomActivity"
             android:launchMode="singleTask"
-            android:windowSoftInputMode="adjustPan"
+            android:screenOrientation="portrait"
+            android:theme="@style/NewActivityTheme"
+            android:windowSoftInputMode="adjustPan" />n"
             android:screenOrientation="portrait" />
 </application>
 </manifest>

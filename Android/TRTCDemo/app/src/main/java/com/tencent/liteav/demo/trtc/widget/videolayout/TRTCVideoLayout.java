@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.tencent.liteav.demo.R;
 import com.tencent.rtmp.ui.TXCloudVideoView;
@@ -25,35 +26,46 @@ import java.util.HashMap;
 
 /**
  * Module: TRTCVideoLayout
- *
+ * <p>
  * Function:
- *
+ * <p>
  * 此 TRTCVideoLayout 封装了{@link TXCloudVideoView} 以及业务逻辑 UI 控件
  * 作用：
  * 1. 实现了手势监听，配合 {@link TRTCVideoLayoutManager} 能够实现自由拖动 View。
- *    详情可见：{@link TRTCVideoLayout#initGestureListener()}
- *    实现原理：利用 RelativeLayout 的 margin 实现了能够在父容器自由定位的特性；需要注意，{@link TRTCVideoLayout} 不能增加约束规则，如 alignParentRight 等，否则无法自由定位。
- *
+ * 详情可见：{@link TRTCVideoLayout#initGestureListener()}
+ * 实现原理：利用 RelativeLayout 的 margin 实现了能够在父容器自由定位的特性；需要注意，{@link TRTCVideoLayout} 不能增加约束规则，如 alignParentRight 等，否则无法自由定位。
+ * <p>
  * 2. 对{@link TXCloudVideoView} 与逻辑 UI 进行组合，在 muteLocal、音量回调等情况，能够进行 UI 相关的变化。若您的项目中，也相关的业务逻辑，可以参照 Demo 的相关实现。
  */
 class TRTCVideoLayout extends RelativeLayout implements View.OnClickListener {
+    public  WeakReference<IVideoLayoutListener> mWefListener;
     private TXCloudVideoView mVideoView;
-    private OnClickListener mClickListener;
-    private GestureDetector mSimpleOnGestureListener;
-    private ProgressBar mPbAudioVolume;
-    private LinearLayout mLlController;
-    private Button mBtnMuteVideo, mBtnMuteAudio, mBtnFill;
-    private FrameLayout mLlNoVideo;
-    private TextView mTvContent;
-    private ImageView mIvNoS;
-    private ViewGroup mVgFuc;
-    private HashMap<Integer, Integer> mNoSMap = null;
-    private boolean mMoveable;
-    public WeakReference<IVideoLayoutListener> mWefListener;
-    private boolean mEnableFill = false;
-    private boolean mEnableAudio = true;
-    private boolean mEnableVideo = true;
+    private OnClickListener  mClickListener;
+    private GestureDetector  mSimpleOnGestureListener;
+    private ProgressBar      mPbAudioVolume;
+    private LinearLayout     mLlController;
+    private Button           mBtnMuteVideo, mBtnMuteAudio, mBtnFill;
+    private FrameLayout                         mLlNoVideo;
+    private TextView                            mTvContent;
+    private ImageView                           mIvNoS;
+    private ViewGroup                           mVgFuc;
+    private HashMap<Integer, Integer>           mNoSMap      = null;
+    private boolean                             mMoveable;
+    private boolean                             mEnableFill  = false;
+    private boolean                             mEnableAudio = true;
+    private boolean                             mEnableVideo = true;
 
+
+    public TRTCVideoLayout(Context context) {
+        this(context, null);
+    }
+
+    public TRTCVideoLayout(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        initFuncLayout();
+        initGestureListener();
+        initNoS();
+    }
 
     public TXCloudVideoView getVideoView() {
         return mVideoView;
@@ -98,25 +110,14 @@ class TRTCVideoLayout extends RelativeLayout implements View.OnClickListener {
         }
     }
 
-    public TRTCVideoLayout(Context context) {
-        this(context, null);
-    }
-
-    public TRTCVideoLayout(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        initFuncLayout();
-        initGestureListener();
-        initNoS();
-    }
-
     private void initNoS() {
         mNoSMap = new HashMap<>();
-        mNoSMap.put(Integer.valueOf(TRTCCloudDef.TRTC_QUALITY_Down), Integer.valueOf(R.mipmap.signal1));
-        mNoSMap.put(Integer.valueOf(TRTCCloudDef.TRTC_QUALITY_Vbad), Integer.valueOf(R.mipmap.signal2));
-        mNoSMap.put(Integer.valueOf(TRTCCloudDef.TRTC_QUALITY_Bad), Integer.valueOf(R.mipmap.signal3));
-        mNoSMap.put(Integer.valueOf(TRTCCloudDef.TRTC_QUALITY_Poor), Integer.valueOf(R.mipmap.signal4));
-        mNoSMap.put(Integer.valueOf(TRTCCloudDef.TRTC_QUALITY_Good), Integer.valueOf(R.mipmap.signal5));
-        mNoSMap.put(Integer.valueOf(TRTCCloudDef.TRTC_QUALITY_Excellent), Integer.valueOf(R.mipmap.signal6));
+        mNoSMap.put(Integer.valueOf(TRTCCloudDef.TRTC_QUALITY_Down), Integer.valueOf(R.drawable.signal1));
+        mNoSMap.put(Integer.valueOf(TRTCCloudDef.TRTC_QUALITY_Vbad), Integer.valueOf(R.drawable.signal2));
+        mNoSMap.put(Integer.valueOf(TRTCCloudDef.TRTC_QUALITY_Bad), Integer.valueOf(R.drawable.signal3));
+        mNoSMap.put(Integer.valueOf(TRTCCloudDef.TRTC_QUALITY_Poor), Integer.valueOf(R.drawable.signal4));
+        mNoSMap.put(Integer.valueOf(TRTCCloudDef.TRTC_QUALITY_Good), Integer.valueOf(R.drawable.signal5));
+        mNoSMap.put(Integer.valueOf(TRTCCloudDef.TRTC_QUALITY_Excellent), Integer.valueOf(R.drawable.signal6));
     }
 
 
@@ -134,6 +135,8 @@ class TRTCVideoLayout extends RelativeLayout implements View.OnClickListener {
         mLlNoVideo = (FrameLayout) mVgFuc.findViewById(R.id.trtc_fl_no_video);
         mTvContent = (TextView) mVgFuc.findViewById(R.id.trtc_tv_content);
         mIvNoS = (ImageView) mVgFuc.findViewById(R.id.trtc_iv_nos);
+        ToggleButton muteBtn = (ToggleButton) mVgFuc.findViewById(R.id.mute_in_speaker);
+        muteBtn.setOnClickListener(this);
     }
 
 
@@ -159,8 +162,8 @@ class TRTCVideoLayout extends RelativeLayout implements View.OnClickListener {
                 // 当 TRTCVideoView 的父容器是 RelativeLayout 的时候，可以实现拖动
                 if (params instanceof LayoutParams) {
                     LayoutParams layoutParams = (LayoutParams) TRTCVideoLayout.this.getLayoutParams();
-                    int newX = (int) (layoutParams.leftMargin + (e2.getX() - e1.getX()));
-                    int newY = (int) (layoutParams.topMargin + (e2.getY() - e1.getY()));
+                    int          newX         = (int) (layoutParams.leftMargin + (e2.getX() - e1.getX()));
+                    int          newY         = (int) (layoutParams.topMargin + (e2.getY() - e1.getY()));
 
                     layoutParams.leftMargin = newX;
                     layoutParams.topMargin = newY;
@@ -192,34 +195,33 @@ class TRTCVideoLayout extends RelativeLayout implements View.OnClickListener {
     public void onClick(View v) {
         IVideoLayoutListener listener = mWefListener != null ? mWefListener.get() : null;
         if (listener == null) return;
-        switch (v.getId()) {
-            case R.id.trtc_btn_fill:
-                mEnableFill = !mEnableFill;
-                if (mEnableFill) {
-                    v.setBackgroundResource(R.mipmap.fill_scale);
-                } else {
-                    v.setBackgroundResource(R.mipmap.fill_adjust);
-                }
-                listener.onClickFill(this, mEnableFill);
-                break;
-            case R.id.trtc_btn_mute_audio:
-                mEnableAudio = !mEnableAudio;
-                if (mEnableAudio) {
-                    v.setBackgroundResource(R.mipmap.remote_audio_enable);
-                } else {
-                    v.setBackgroundResource(R.mipmap.remote_audio_disable);
-                }
-                listener.onClickMuteAudio(this, !mEnableAudio);
-                break;
-            case R.id.trtc_btn_mute_video:
-                mEnableVideo = !mEnableVideo;
-                if (mEnableVideo) {
-                    v.setBackgroundResource(R.mipmap.remote_video_enable);
-                } else {
-                    v.setBackgroundResource(R.mipmap.remote_video_disable);
-                }
-                listener.onClickMuteVideo(this, !mEnableVideo);
-                break;
+        int id = v.getId();
+        if (id == R.id.trtc_btn_fill) {
+            mEnableFill = !mEnableFill;
+            if (mEnableFill) {
+                v.setBackgroundResource(R.drawable.fill_scale);
+            } else {
+                v.setBackgroundResource(R.drawable.fill_adjust);
+            }
+            listener.onClickFill(this, mEnableFill);
+        } else if (id == R.id.trtc_btn_mute_audio) {
+            mEnableAudio = !mEnableAudio;
+            if (mEnableAudio) {
+                v.setBackgroundResource(R.drawable.remote_audio_enable);
+            } else {
+                v.setBackgroundResource(R.drawable.remote_audio_disable);
+            }
+            listener.onClickMuteAudio(this, !mEnableAudio);
+        } else if (id == R.id.trtc_btn_mute_video) {
+            mEnableVideo = !mEnableVideo;
+            if (mEnableVideo) {
+                v.setBackgroundResource(R.drawable.remote_video_enable);
+            } else {
+                v.setBackgroundResource(R.drawable.remote_video_disable);
+            }
+            listener.onClickMuteVideo(this, !mEnableVideo);
+        } else if (id == R.id.mute_in_speaker) {
+            listener.onClickMuteInSpeakerAudio(this, ((ToggleButton) v).isChecked());
         }
     }
 
@@ -237,5 +239,7 @@ class TRTCVideoLayout extends RelativeLayout implements View.OnClickListener {
         void onClickMuteAudio(TRTCVideoLayout view, boolean isMute);
 
         void onClickMuteVideo(TRTCVideoLayout view, boolean isMute);
+
+        void onClickMuteInSpeakerAudio(TRTCVideoLayout view, boolean isMute);
     }
 }

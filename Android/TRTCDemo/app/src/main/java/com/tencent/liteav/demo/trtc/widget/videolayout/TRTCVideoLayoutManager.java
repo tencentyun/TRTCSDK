@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.tencent.rtmp.ui.TXCloudVideoView;
+import com.tencent.trtc.TRTCCloudDef;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -35,27 +36,18 @@ import java.util.ArrayList;
  * 7.堆叠布局与宫格布局参数，见{@link Utils} 工具类
  */
 public class TRTCVideoLayoutManager extends RelativeLayout implements TRTCVideoLayout.IVideoLayoutListener {
-    private final static String TAG = TRTCVideoLayoutManager.class.getSimpleName();
-    public static final int MODE_FLOAT = 1;  // 前后堆叠模式
-    public static final int MODE_GRID = 2;  // 九宫格模式
-    public static final int MAX_USER = 7;
-    private ArrayList<TRTCLayoutEntity> mLayoutEntityList;
-    private ArrayList<RelativeLayout.LayoutParams> mFloatParamList;
-    private ArrayList<LayoutParams> mGrid4ParamList;
-    private ArrayList<LayoutParams> mGrid9ParamList;
-    private int mCount = 0;
-    private int mMode;
-    private String mSelfUserId;
-
-    private static class TRTCLayoutEntity {
-        public TRTCVideoLayout layout;
-        public int index = -1;
-        public String userId = "";
-        public int streamType = -1;
-    }
-
+    public static final  int                                    MODE_FLOAT = 1;  // 前后堆叠模式
+    public static final  int                                    MODE_GRID  = 2;  // 九宫格模式
+    public static final  int                                    MAX_USER   = 7;
+    private final static String                                 TAG        = TRTCVideoLayoutManager.class.getSimpleName();
     public WeakReference<TRTCVideoLayoutManager.IVideoLayoutListener> mWefListener;
-
+    private              ArrayList<TRTCLayoutEntity>            mLayoutEntityList;
+    private              ArrayList<RelativeLayout.LayoutParams> mFloatParamList;
+    private              ArrayList<LayoutParams>                mGrid4ParamList;
+    private              ArrayList<LayoutParams>                mGrid9ParamList;
+    private              int                                    mCount     = 0;
+    private              int                                    mMode;
+    private              String                                 mSelfUserId;
 
     /**
      * ===============================View相关===============================
@@ -71,11 +63,11 @@ public class TRTCVideoLayoutManager extends RelativeLayout implements TRTCVideoL
         initView(context);
     }
 
+
     public TRTCVideoLayoutManager(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initView(context);
     }
-
 
     private void initView(Context context) {
         Log.i(TAG, "initView: ");
@@ -88,7 +80,8 @@ public class TRTCVideoLayoutManager extends RelativeLayout implements TRTCVideoL
             videoLayout.setBackgroundColor(Color.BLACK);
             videoLayout.setMoveable(false);
             videoLayout.setIVideoLayoutListener(this);
-
+            // 这里不展示其底部的控制菜单
+            videoLayout.setBottomControllerVisibility(View.GONE);
             TRTCLayoutEntity entity = new TRTCLayoutEntity();
             entity.layout = videoLayout;
             entity.index = i;
@@ -103,7 +96,6 @@ public class TRTCVideoLayoutManager extends RelativeLayout implements TRTCVideoL
             }
         });
     }
-
 
     /**
      * ===============================九宫格布局下点击按钮的事件回调===============================
@@ -136,6 +128,15 @@ public class TRTCVideoLayoutManager extends RelativeLayout implements TRTCVideoL
         }
     }
 
+    @Override
+    public void onClickMuteInSpeakerAudio(TRTCVideoLayout view, boolean isMute) {
+        TRTCVideoLayoutManager.IVideoLayoutListener listener = mWefListener != null ? mWefListener.get() : null;
+        if (listener != null) {
+            TRTCLayoutEntity entity = findEntity(view);
+            listener.onClickItemMuteInSpeakerAudio(entity.userId, isMute);
+        }
+    }
+
     /**
      * ===============================Manager对外相关方法===============================
      */
@@ -146,7 +147,6 @@ public class TRTCVideoLayoutManager extends RelativeLayout implements TRTCVideoL
             mWefListener = new WeakReference<>(listener);
         }
     }
-
 
     public void setMySelfUserId(String userId) {
         mSelfUserId = userId;
@@ -167,7 +167,6 @@ public class TRTCVideoLayoutManager extends RelativeLayout implements TRTCVideoL
         }
         return mMode;
     }
-
 
     /**
      * 根据 userId 和视频类型，找到已经分配的 View
@@ -206,6 +205,7 @@ public class TRTCVideoLayoutManager extends RelativeLayout implements TRTCVideoL
                         makeGirdLayout(true);
                     }
                 }
+                layoutEntity.layout.updateNoVideoLayout("", View.GONE);
                 return layoutEntity.layout.getVideoView();
             }
         }
@@ -246,7 +246,6 @@ public class TRTCVideoLayoutManager extends RelativeLayout implements TRTCVideoL
             }
         }
     }
-
 
     /**
      * 隐藏所有音量的进度条
@@ -310,7 +309,7 @@ public class TRTCVideoLayoutManager extends RelativeLayout implements TRTCVideoL
         if (userId == null) return;
         for (TRTCLayoutEntity entity : mLayoutEntityList) {
             if (entity.layout.getVisibility() == VISIBLE) {
-                if (userId.equals(entity.userId)) {
+                if (userId.equals(entity.userId) && entity.streamType == TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG) {
                     String content = userId;
                     if (userId.equals(mSelfUserId)) {
                         content += "(您自己)";
@@ -321,7 +320,6 @@ public class TRTCVideoLayoutManager extends RelativeLayout implements TRTCVideoL
             }
         }
     }
-
 
     private TRTCLayoutEntity findEntity(TRTCVideoLayout layout) {
         for (TRTCLayoutEntity entity : mLayoutEntityList) {
@@ -337,10 +335,6 @@ public class TRTCVideoLayoutManager extends RelativeLayout implements TRTCVideoL
         return null;
     }
 
-
-    /**
-     * ===============================九宫格布局相关===============================
-     */
     /**
      * 切换到九宫格布局
      *
@@ -366,22 +360,23 @@ public class TRTCVideoLayoutManager extends RelativeLayout implements TRTCVideoL
                 // 我自己要放在布局的左上角
                 if (entity.userId.equals(mSelfUserId)) {
                     entity.layout.setLayoutParams(paramList.get(0));
-                    entity.layout.setBottomControllerVisibility(View.GONE);
                 } else if (layoutIndex < paramList.size()) {
                     entity.layout.setLayoutParams(paramList.get(layoutIndex++));
-                    entity.layout.setBottomControllerVisibility(View.VISIBLE);
                 }
             }
         }
     }
 
+
     /**
-     * ===============================堆叠布局相关===============================
+     * ===============================九宫格布局相关===============================
      */
+
     /**
      * 切换到堆叠布局：
      * 1. 如果堆叠布局参数未初始化先进行初始化：大画面+左右各三个画面
      * 2. 修改布局参数
+     *
      * @param needAddView
      */
     private void makeFloatLayout(boolean needAddView) {
@@ -392,7 +387,7 @@ public class TRTCVideoLayoutManager extends RelativeLayout implements TRTCVideoL
 
         // 根据堆叠布局参数，将每个view放到适当的位置
         for (int i = 0; i < mLayoutEntityList.size(); i++) {
-            TRTCLayoutEntity entity = mLayoutEntityList.get(i);
+            TRTCLayoutEntity            entity       = mLayoutEntityList.get(i);
             RelativeLayout.LayoutParams layoutParams = mFloatParamList.get(i);
             entity.layout.setLayoutParams(layoutParams);
             if (i == 0) {
@@ -409,6 +404,9 @@ public class TRTCVideoLayoutManager extends RelativeLayout implements TRTCVideoL
         }
     }
 
+    /**
+     * ===============================堆叠布局相关===============================
+     */
 
     /**
      * 对堆叠布局情况下的 View 添加监听器
@@ -439,10 +437,10 @@ public class TRTCVideoLayoutManager extends RelativeLayout implements TRTCVideoL
     private void makeFullVideoView(int index) {// 1 -> 0
         if (index <= 0 || mLayoutEntityList.size() <= index) return;
         Log.i(TAG, "makeFullVideoView: from = " + index);
-        TRTCLayoutEntity indexEntity = mLayoutEntityList.get(index);
+        TRTCLayoutEntity       indexEntity = mLayoutEntityList.get(index);
         ViewGroup.LayoutParams indexParams = indexEntity.layout.getLayoutParams();
 
-        TRTCLayoutEntity fullEntity = mLayoutEntityList.get(0);
+        TRTCLayoutEntity       fullEntity      = mLayoutEntityList.get(0);
         ViewGroup.LayoutParams fullVideoParams = fullEntity.layout.getLayoutParams();
 
         indexEntity.layout.setLayoutParams(fullVideoParams);
@@ -467,12 +465,20 @@ public class TRTCVideoLayoutManager extends RelativeLayout implements TRTCVideoL
         }
     }
 
-
     public interface IVideoLayoutListener {
         void onClickItemFill(String userId, int streamType, boolean enableFill);
 
         void onClickItemMuteAudio(String userId, boolean isMute);
 
         void onClickItemMuteVideo(String userId, int streamType, boolean isMute);
+
+        void onClickItemMuteInSpeakerAudio(String userId, boolean isMute);
+    }
+
+    private static class TRTCLayoutEntity {
+        public TRTCVideoLayout layout;
+        public int             index      = -1;
+        public String          userId     = "";
+        public int             streamType = -1;
     }
 }

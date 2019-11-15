@@ -14,8 +14,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.tencent.liteav.demo.expandableadapter.*;
-import com.tencent.liteav.demo.trtc.TRTCNewActivity;
 
+import com.tencent.liteav.demo.trtc.TRTCNewRoomActivity;
 import com.tencent.rtmp.TXLiveBase;
 
 import java.io.File;
@@ -104,8 +104,8 @@ public class MainActivity extends Activity {
 
         // 视频通话
         List<ChildBean> videoConnectChildList = new ArrayList<>();
-        videoConnectChildList.add(new ChildBean("腾讯云视频通话", R.drawable.room_multi, TRTCNewActivity.class));
-        videoConnectChildList.add(new ChildBean("万人低延时直播间", R.drawable.room_multi, TRTCNewActivity.class));
+        videoConnectChildList.add(new ChildBean("腾讯云视频通话", R.drawable.room_multi, TRTCNewRoomActivity.class));
+        videoConnectChildList.add(new ChildBean("万人低延时直播间", R.drawable.room_multi, TRTCNewRoomActivity.class));
         if (videoConnectChildList.size() != 0) {
             GroupBean videoConnectGroupBean = new GroupBean("实时音视频 TRTC", R.drawable.room_multi, videoConnectChildList);
             groupList.add(videoConnectGroupBean);

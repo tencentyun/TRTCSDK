@@ -17,6 +17,7 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+import com.tencent.liteav.TXLiteAVCode;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -28,8 +29,105 @@ import java.util.Map;
  */
 public class Utils {
 
+
+    /**
+     * 判断错误码是否为进房错误码
+     *
+     * @param errorCode
+     * @return
+     */
+    public static boolean isEnterRoomError(int errorCode) {
+        switch (errorCode) {
+            case TXLiteAVCode.ERR_ROOM_ENTER_FAIL:
+            case TXLiteAVCode.ERR_ROOM_REQUEST_IP_FAIL:
+            case TXLiteAVCode.ERR_ROOM_CONNECT_FAIL:
+            case TXLiteAVCode.ERR_ROOM_REQUEST_TOKEN_HTTPS_TIMEOUT:
+            case TXLiteAVCode.ERR_ROOM_REQUEST_IP_TIMEOUT:
+            case TXLiteAVCode.ERR_ROOM_REQUEST_ENTER_ROOM_TIMEOUT:
+            case TXLiteAVCode.ERR_ROOM_REQUEST_TOKEN_INVALID_PARAMETER:
+            case TXLiteAVCode.ERR_ENTER_ROOM_PARAM_NULL:
+            case TXLiteAVCode.ERR_SDK_APPID_INVALID:
+            case TXLiteAVCode.ERR_ROOM_ID_INVALID:
+            case TXLiteAVCode.ERR_USER_ID_INVALID:
+            case TXLiteAVCode.ERR_USER_SIG_INVALID:
+            case TXLiteAVCode.ERR_ROOM_REQUEST_AES_TOKEN_RETURN_ERROR:
+            case TXLiteAVCode.ERR_ACCIP_LIST_EMPTY:
+            case TXLiteAVCode.ERR_SERVER_INFO_UNPACKING_ERROR:
+            case TXLiteAVCode.ERR_SERVER_INFO_TOKEN_ERROR:
+            case TXLiteAVCode.ERR_SERVER_INFO_ALLOCATE_ACCESS_FAILED:
+            case TXLiteAVCode.ERR_SERVER_INFO_GENERATE_SIGN_FAILED:
+            case TXLiteAVCode.ERR_SERVER_INFO_TOKEN_TIMEOUT:
+            case TXLiteAVCode.ERR_SERVER_INFO_INVALID_COMMAND:
+            case TXLiteAVCode.ERR_SERVER_INFO_PRIVILEGE_FLAG_ERROR:
+            case TXLiteAVCode.ERR_SERVER_INFO_GENERATE_KEN_ERROR:
+            case TXLiteAVCode.ERR_SERVER_INFO_GENERATE_TOKEN_ERROR:
+            case TXLiteAVCode.ERR_SERVER_INFO_DATABASE:
+            case TXLiteAVCode.ERR_SERVER_INFO_BAD_ROOMID:
+            case TXLiteAVCode.ERR_SERVER_INFO_BAD_SCENE_OR_ROLE:
+            case TXLiteAVCode.ERR_SERVER_INFO_ROOMID_EXCHANGE_FAILED:
+            case TXLiteAVCode.ERR_SERVER_INFO_SERVICE_SUSPENDED:
+            case TXLiteAVCode.ERR_SERVER_INFO_STRGROUP_HAS_INVALID_CHARS:
+            case TXLiteAVCode.ERR_SERVER_INFO_LACK_SDKAPPID:
+            case TXLiteAVCode.ERR_SERVER_INFO_INVALID:
+            case TXLiteAVCode.ERR_SERVER_INFO_ECDH_GET_KEY:
+            case TXLiteAVCode.ERR_SERVER_INFO_ECDH_GET_TINYID:
+            case TXLiteAVCode.ERR_SERVER_ACC_TOKEN_TIMEOUT:
+            case TXLiteAVCode.ERR_SERVER_ACC_SIGN_ERROR:
+            case TXLiteAVCode.ERR_SERVER_ACC_SIGN_TIMEOUT:
+            case TXLiteAVCode.ERR_SERVER_ACC_ROOM_NOT_EXIST:
+            case TXLiteAVCode.ERR_SERVER_ACC_ROOMID:
+            case TXLiteAVCode.ERR_SERVER_ACC_LOCATIONID:
+            case TXLiteAVCode.ERR_SERVER_CENTER_SYSTEM_ERROR:
+            case TXLiteAVCode.ERR_SERVER_CENTER_INVALID_ROOMID:
+            case TXLiteAVCode.ERR_SERVER_CENTER_CREATE_ROOM_FAILED:
+            case TXLiteAVCode.ERR_SERVER_CENTER_SIGN_ERROR:
+            case TXLiteAVCode.ERR_SERVER_CENTER_SIGN_TIMEOUT:
+            case TXLiteAVCode.ERR_SERVER_CENTER_ROOM_NOT_EXIST:
+            case TXLiteAVCode.ERR_SERVER_CENTER_ADD_USER_FAILED:
+            case TXLiteAVCode.ERR_SERVER_CENTER_FIND_USER_FAILED:
+            case TXLiteAVCode.ERR_SERVER_CENTER_SWITCH_TERMINATION_FREQUENTLY:
+            case TXLiteAVCode.ERR_SERVER_CENTER_LOCATION_NOT_EXIST:
+            case TXLiteAVCode.ERR_SERVER_CENTER_NO_PRIVILEDGE_CREATE_ROOM:
+            case TXLiteAVCode.ERR_SERVER_CENTER_NO_PRIVILEDGE_ENTER_ROOM:
+            case TXLiteAVCode.ERR_SERVER_CENTER_INVALID_PARAMETER:
+            case TXLiteAVCode.ERR_SERVER_CENTER_INVALID_ROOM_ID:
+            case TXLiteAVCode.ERR_SERVER_CENTER_ROOM_ID_TOO_LONG:
+            case TXLiteAVCode.ERR_SERVER_CENTER_ROOM_FULL:
+            case TXLiteAVCode.ERR_SERVER_CENTER_DECODE_JSON_FAIL:
+            case TXLiteAVCode.ERR_SERVER_CENTER_REACH_PROXY_MAX:
+            case TXLiteAVCode.ERR_SERVER_CENTER_RECORDID_STORE:
+            case TXLiteAVCode.ERR_SERVER_CENTER_PB_SERIALIZE:
+            case TXLiteAVCode.ERR_SERVER_SSO_SIG_EXPIRED:
+            case TXLiteAVCode.ERR_SERVER_SSO_SIG_VERIFICATION_FAILED_1:
+            case TXLiteAVCode.ERR_SERVER_SSO_SIG_VERIFICATION_FAILED_2:
+            case TXLiteAVCode.ERR_SERVER_SSO_SIG_VERIFICATION_FAILED_3:
+            case TXLiteAVCode.ERR_SERVER_SSO_SIG_VERIFICATION_FAILED_4:
+            case TXLiteAVCode.ERR_SERVER_SSO_SIG_VERIFICATION_FAILED_5:
+            case TXLiteAVCode.ERR_SERVER_SSO_SIG_VERIFICATION_FAILED_6:
+            case TXLiteAVCode.ERR_SERVER_SSO_SIG_VERIFICATION_FAILED_7:
+            case TXLiteAVCode.ERR_SERVER_SSO_SIG_VERIFICATION_FAILED_8:
+            case TXLiteAVCode.ERR_SERVER_SSO_SIG_VERIFICATION_ID_NOT_MATCH:
+            case TXLiteAVCode.ERR_SERVER_SSO_APPID_NOT_MATCH:
+            case TXLiteAVCode.ERR_SERVER_SSO_VERIFICATION_EXPIRED:
+            case TXLiteAVCode.ERR_SERVER_SSO_VERIFICATION_FAILED:
+            case TXLiteAVCode.ERR_SERVER_SSO_APPID_NOT_FOUND:
+            case TXLiteAVCode.ERR_SERVER_SSO_ACCOUNT_IN_BLACKLIST:
+            case TXLiteAVCode.ERR_SERVER_SSO_SIG_INVALID:
+            case TXLiteAVCode.ERR_SERVER_SSO_LIMITED_BY_SECURITY:
+            case TXLiteAVCode.ERR_SERVER_SSO_INVALID_LOGIN_STATUS:
+            case TXLiteAVCode.ERR_SERVER_SSO_APPID_ERROR:
+            case TXLiteAVCode.ERR_SERVER_SSO_TICKET_VERIFICATION_FAILED:
+            case TXLiteAVCode.ERR_SERVER_SSO_TICKET_EXPIRED:
+            case TXLiteAVCode.ERR_SERVER_SSO_ACCOUNT_EXCEED_PURCHASES:
+            case TXLiteAVCode.ERR_SERVER_SSO_INTERNAL_ERROR:
+                return true;
+        }
+        return false;
+    }
+
     /**
      * 计算 MD5
+     *
      * @param string
      * @return
      */
@@ -59,6 +157,7 @@ public class Utils {
 
     /**
      * 根据 Uri 转换到真实的路径
+     *
      * @param context
      * @param contentUri
      * @return
@@ -137,7 +236,7 @@ public class Utils {
     }
 
     private static String getDataColumn(Context context, Uri uri, String selection,
-                                String[] selectionArgs) {
+                                        String[] selectionArgs) {
 
         Cursor cursor = null;
         final String column = "_data";
@@ -182,7 +281,6 @@ public class Utils {
     }
 
 
-
     /**
      * 利用 QRCode 生成 Bitmap的工具函数
      *
@@ -225,4 +323,6 @@ public class Utils {
         }
         return null;
     }
+
+
 }

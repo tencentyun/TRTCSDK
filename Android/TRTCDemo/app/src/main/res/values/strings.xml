@@ -1,10 +1,8 @@
 <resources>
     <string name="app_name">腾讯视频通话</string>
-
     <string name="str_room_id_tips">输入房间号</string>
     <string name="str_user_id_tips">输入用户名</string>
-    <string name="str_enter_room_btn">进入房间</string>
-
-    <string name="str_tag_pos">POS</string>
-    <string name="msg_title">消息</string>
+    <string name="confirm">确定</string>
+    <string name="share">分享</string>
+    <string name="str_cdn_switch">切换cdn播放</string>
 </resources>

@@ -27,8 +27,10 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation 'com.tencent.liteav:LiteAVSDK_TRTC:latest.release'
-    implementation 'com.android.support:appcompat-v7:25.+'
-    implementation 'com.android.support:recyclerview-v7:25.+'
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.8.1'
     implementation 'com.android.support:multidex:1.0.0'
+    implementation 'com.blankj:utilcode:1.25.9'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    implementation "com.android.support:design:25.+"
+    implementation "com.android.support:appcompat-v7:25.+"
+    implementation "com.android.support:recyclerview-v7:25.+"
 }

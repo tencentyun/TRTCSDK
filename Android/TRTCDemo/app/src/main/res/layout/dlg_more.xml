@@ -207,6 +207,32 @@
                 android:layout_gravity="center"/>
         </FrameLayout>
     </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="2dp">
+        <TextView
+            android:text="开启耳返"
+            android:textSize="16sp"
+            android:layout_gravity="center"
+            android:textColor="@color/line_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            />
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+            <CheckBox
+                android:id="@+id/enable_audio_ear_monitoring"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"/>
+        </FrameLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:orientation="horizontal"

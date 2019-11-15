@@ -16,10 +16,4 @@
         <item>20</item>
     </string-array>
 
-    <string-array name="audio_sample_rate">
-        <item>16000</item>
-        <item>32000</item>
-        <item>44100</item>
-        <item>48000</item>
-    </string-array>
 </resources>
