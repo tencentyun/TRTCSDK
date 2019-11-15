@@ -84,7 +84,6 @@ public class TRTCNewRoomActivity extends Activity {
         final EditText etRoomId = (EditText) findViewById(R.id.et_room_name);
         final EditText etUserId = (EditText) findViewById(R.id.et_user_name);
         loadUserInfo(etRoomId, etUserId);
-        findViewById(R.id.NetEnv).setVisibility(View.VISIBLE);
         mSettingItemList = new ArrayList<>();
         BaseSettingItem.ItemText itemText =
                 new BaseSettingItem.ItemText("视频输入", "前摄像头", "视频文件");
@@ -185,15 +184,6 @@ public class TRTCNewRoomActivity extends Activity {
         if (TextUtils.isEmpty(userId)) {
             Toast.makeText(this, "请输入有效的用户名", Toast.LENGTH_SHORT).show();
             return;
-        }
-        RadioButton rbDev        = (RadioButton) findViewById(R.id.rb_dev);
-        RadioButton rbExperience = (RadioButton) findViewById(R.id.rb_experience);
-        if (rbDev.isChecked()) {
-            TRTCCloud.setNetEnv(1);
-        } else if (rbExperience.isChecked()) {
-            TRTCCloud.setNetEnv(2);
-        } else {
-            TRTCCloud.setNetEnv(0);
         }
 
         startJoinRoomInternal(roomId, userId);
