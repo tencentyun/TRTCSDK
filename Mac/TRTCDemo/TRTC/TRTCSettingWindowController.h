@@ -26,6 +26,7 @@ typedef NS_ENUM(NSUInteger, TXAVSettingTabIndex) {
 @property (class, readonly) TRTCVideoResolutionMode resolutionMode;
 @property (class, readonly) TRTCVideoQosPreference qosPreference;
 @property (class, readonly) TRTCQosControlMode qosControlMode;
+@property (class, readonly) BOOL isAudience;
 
 @property (class, readonly) BOOL pushDoubleStream;
 @property (class, readonly) BOOL playSmallStream;

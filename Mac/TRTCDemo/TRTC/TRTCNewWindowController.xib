@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15505" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15505"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -26,7 +26,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="x4i-Wq-ShC">
-                        <rect key="frame" x="91" y="188" width="298" height="35"/>
+                        <rect key="frame" x="91" y="189" width="298" height="35"/>
                         <constraints>
                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="35" id="Bju-ce-BIb"/>
                             <constraint firstAttribute="height" constant="35" id="Fmx-4k-C6c"/>
@@ -71,7 +71,7 @@
                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="icon" id="Yw2-2M-eqB"/>
                     </imageView>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="EsP-0c-S1G">
-                        <rect key="frame" x="218" y="243" width="44" height="17"/>
+                        <rect key="frame" x="218" y="244" width="44" height="16"/>
                         <textFieldCell key="cell" lineBreakMode="clipping" title="腾讯云" id="Ct4-Gk-led">
                             <font key="font" usesAppearanceFont="YES"/>
                             <color key="textColor" name="entranceTintColor"/>
@@ -79,7 +79,7 @@
                         </textFieldCell>
                     </textField>
                     <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="gvQ-jw-adu">
-                        <rect key="frame" x="91" y="127" width="298" height="35"/>
+                        <rect key="frame" x="91" y="128" width="298" height="35"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="35" id="9zr-wM-HHY"/>
                             <constraint firstAttribute="width" constant="298" id="xnG-kR-Lbd"/>
@@ -101,7 +101,7 @@
                         </connections>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="JOT-UP-1bD">
-                        <rect key="frame" x="36" y="136" width="45" height="17"/>
+                        <rect key="frame" x="37" y="138" width="44" height="16"/>
                         <textFieldCell key="cell" lineBreakMode="clipping" title="用户ID" id="YnV-0K-M3S">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -109,7 +109,7 @@
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="le9-4n-vSu">
-                        <rect key="frame" x="37" y="197" width="44" height="17"/>
+                        <rect key="frame" x="37" y="199" width="44" height="16"/>
                         <textFieldCell key="cell" lineBreakMode="clipping" title="房间号" id="vwo-ca-Pnb">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -129,13 +129,11 @@
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="bottom" secondItem="rec-2n-9wR" secondAttribute="bottom" constant="32" id="1kH-6f-ww1"/>
-                    <constraint firstItem="tjR-ya-ddi" firstAttribute="leading" secondItem="x4i-Wq-ShC" secondAttribute="leading" id="2po-Yd-wHV"/>
                     <constraint firstItem="gvQ-jw-adu" firstAttribute="top" secondItem="x4i-Wq-ShC" secondAttribute="bottom" constant="26" id="3G1-tW-L5P"/>
                     <constraint firstItem="JOT-UP-1bD" firstAttribute="centerY" secondItem="gvQ-jw-adu" secondAttribute="centerY" id="9hJ-zk-qUh"/>
                     <constraint firstItem="DKF-2d-TZ5" firstAttribute="centerX" secondItem="vf1-hy-L5J" secondAttribute="centerX" id="CA3-7c-eha"/>
                     <constraint firstItem="EsP-0c-S1G" firstAttribute="centerX" secondItem="DKF-2d-TZ5" secondAttribute="centerX" id="CgI-P5-z0q"/>
                     <constraint firstItem="x4i-Wq-ShC" firstAttribute="centerX" secondItem="vf1-hy-L5J" secondAttribute="centerX" id="D5U-KX-fbW"/>
-                    <constraint firstItem="tjR-ya-ddi" firstAttribute="top" secondItem="gvQ-jw-adu" secondAttribute="bottom" constant="24" id="IPD-jX-en8"/>
                     <constraint firstItem="DKF-2d-TZ5" firstAttribute="top" secondItem="vf1-hy-L5J" secondAttribute="top" constant="18" id="Zpt-61-GGv"/>
                     <constraint firstItem="EsP-0c-S1G" firstAttribute="top" secondItem="DKF-2d-TZ5" secondAttribute="bottom" id="ddN-Ki-Hyq"/>
                     <constraint firstItem="le9-4n-vSu" firstAttribute="centerY" secondItem="x4i-Wq-ShC" secondAttribute="centerY" id="gbk-7s-n5y"/>

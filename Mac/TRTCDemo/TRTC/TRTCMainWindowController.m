@@ -690,6 +690,11 @@ typedef NS_ENUM(NSUInteger, LayoutStyle) {
 }
 
 - (void)onUserExit:(NSString *)userId reason:(NSInteger)reason {
+    NSLog(@"onUserExit:%@", userId);
+}
+
+- (void)onRemoteUserLeaveRoom:(NSString *)userId reason:(NSInteger)reason {
+    NSLog(@"onRemoteUserLeaveRoom:%@", userId);
     [self onUserSubStreamAvailable:userId available:NO];
     [self removeRenderViewForUser:userId];
     [self updateCloudMixtureParams];
@@ -730,32 +735,45 @@ typedef NS_ENUM(NSUInteger, LayoutStyle) {
 }
 
 - (void)onUserEnter:(NSString *)userId {
-    [self addRenderViewForUser:userId];
-    [self.trtcEngine setRemoteViewFillMode:userId mode:TRTCVideoFillMode_Fit];
+    NSLog(@"onUserEnter:%@", userId);
+}
 
-    if (TRTCSettingWindowController.playSmallStream) {
-        self.bigSmallStreamState[userId] = @(TRTCVideoStreamTypeSmall);
-        [self.trtcEngine setRemoteVideoStreamType:userId type:TRTCVideoStreamTypeSmall];
-    }
-
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self updateLayoutVideoFrame];
-    });
-    [self updateCloudMixtureParams];
+- (void)onRemoteUserEnterRoom:(NSString *)userId {
+    NSLog(@"onRemoteUserEnterRoom:%@", userId);
 }
 
 - (void)onUserVideoAvailable:(NSString *)userId available:(BOOL)available
 {
+    NSLog(@"onUserVideoAvailable:%@ available:%d", userId, available);
     //远程画面
     if (userId != nil) {
-        TXRenderView* videoView = [self renderViewForUser:userId];
         if (available) {
+            TXRenderView* videoView = [self renderViewForUser:userId];
+            if(videoView == nil) {
+                [self addRenderViewForUser:userId];
+                videoView = [self renderViewForUser:userId];
+                [self.trtcEngine setRemoteViewFillMode:userId mode:TRTCVideoFillMode_Fit];
+
+                if (TRTCSettingWindowController.playSmallStream) {
+                    self.bigSmallStreamState[userId] = @(TRTCVideoStreamTypeSmall);
+                    [self.trtcEngine setRemoteVideoStreamType:userId type:TRTCVideoStreamTypeSmall];
+                }
+
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [self updateLayoutVideoFrame];
+                });
+                [self updateCloudMixtureParams];
+            }
             [self.trtcEngine startRemoteView:userId view:videoView.contentView];
         }
         else {
             [self.trtcEngine stopRemoteView:userId];
         }
     }
+}
+
+- (void)onUserAudioAvailable:(NSString *)userId available:(BOOL)available {
+    NSLog(@"onUserAudioAvailable:%@ available:%d", userId, available);
 }
 
 - (void)onDevice:(NSString *)deviceId type:(TRTCMediaDeviceType)deviceType stateChanged:(NSInteger)state
