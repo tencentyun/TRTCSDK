@@ -6,13 +6,13 @@
 
 使用 TRTC SDK 自定义渲染功能实现的自定义 View，可供客户直接拷贝使用，或根据实际业务情况对该类进行修改和扩展。
 
-**主要实现代码：[TXLiteAVVideoView.cs](https://github.com/tencentyun/TRTCSDK/tree/master/Windows/TRTCWPFDemo/TXLiteAVVideoView.cs)**
+**主要实现代码：[TXLiteAVVideoView.cs](https://github.com/tencentyun/TRTCSDK/tree/master/Windows/WPFDemo/TXLiteAVVideoView.cs)**
 
 > 注意：目前内部只实现了 BGRA32 的数据类型回调并渲染，如需其他类型数据（如 I420）实现，请自行扩展。
 
 ## 如何使用
 
-主要示例代码：[MainWindow.xaml.cs](https://github.com/tencentyun/TRTCSDK/tree/master/Windows/TRTCWPFDemo/MainWindow.xaml.cs)
+主要示例代码：[MainWindow.xaml.cs](https://github.com/tencentyun/TRTCSDK/tree/master/Windows/WPFDemo/MainWindow.xaml.cs)
 
 ### 本地画面渲染
 
