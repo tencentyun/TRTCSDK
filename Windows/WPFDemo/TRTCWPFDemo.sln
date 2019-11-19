@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.645
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TRTCWPFDemo", "TRTCWPFDemo.csproj", "{885116BC-C906-4FCE-9819-7867600CC3C0}"
+EndProject
+Global
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{885116BC-C906-4FCE-9819-7867600CC3C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{885116BC-C906-4FCE-9819-7867600CC3C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{885116BC-C906-4FCE-9819-7867600CC3C0}.Debug|x64.ActiveCfg = Debug|x64
+		{885116BC-C906-4FCE-9819-7867600CC3C0}.Debug|x64.Build.0 = Debug|x64
+		{885116BC-C906-4FCE-9819-7867600CC3C0}.Debug|x86.ActiveCfg = Debug|x86
+		{885116BC-C906-4FCE-9819-7867600CC3C0}.Debug|x86.Build.0 = Debug|x86
+		{885116BC-C906-4FCE-9819-7867600CC3C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{885116BC-C906-4FCE-9819-7867600CC3C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{885116BC-C906-4FCE-9819-7867600CC3C0}.Release|x64.ActiveCfg = Release|x64
+		{885116BC-C906-4FCE-9819-7867600CC3C0}.Release|x64.Build.0 = Release|x64
+		{885116BC-C906-4FCE-9819-7867600CC3C0}.Release|x86.ActiveCfg = Release|x86
+		{885116BC-C906-4FCE-9819-7867600CC3C0}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {29741198-BB4E-4B2D-A836-898059D59F80}
+	EndGlobalSection
+EndGlobal
