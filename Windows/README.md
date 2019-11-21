@@ -5,6 +5,7 @@ warning 由于仓库容量限制，需要进Windows\SDK目录进行手动下载S
 - DuilibDemo : 基于MFC GUI实现的复杂使用 C++ SDK Demo。
 - MFCDemo : 基于Duilib GUI实现的简单使用 C++ SDK Demo。
 - CSharpDemo :  基于.Net Framework Winform 实现的复杂使用 C# SDK Demo。
+- WPFDemo : 基于.Net Framework WPF 实现的自定义渲染方案 C# SDK Demo。
 
 本文主要介绍如何快速地将腾讯云 TRTC Demo 运行起来，您只需参考如下步骤依次执行即可。
 
@@ -52,7 +53,7 @@ warning 由于仓库容量限制，需要进Windows\SDK目录进行手动下载S
 使用 Visual Stuido（建议 VS2015）打开源码目录下的 MFCDemo\TRTCMfcDemo.vcxproj 工程文件，编译并运行 Demo 工程即可。
 
 - **C# 版**
-使用 Visual Stuido（建议 VS2015）打开源码目录下的 CSharpDemo\TRTCCSharpDemo.csproj 工程文件，编译并运行 Demo 工程即可。
+使用 Visual Stuido（建议 VS2017）打开源码目录下的 CSharpDemo\TRTCCSharpDemo.csproj 工程文件，编译并运行 Demo 工程即可。
 
 ## 常见问题
 
@@ -60,14 +61,13 @@ warning 由于仓库容量限制，需要进Windows\SDK目录进行手动下载S
 
 ##### C++ 版
 
-* 操作系统： Microsoft Windows 7+
-* 开发环境：Microsoft Visual Studio 2015 +
+* Microsoft Visual Studio 2015及以上版本，推荐使用 Microsoft Visual Studio 2015
+* Windows SDK 8.0及以上版本，推荐使用 Windows SDK 8.1
 
 ##### C# 版
 
-* 操作系统： Microsoft Windows 7+
-* 开发环境：Microsoft Visual Studio 2015 +
-* 开发框架：.Net Framework 4.0+
+* Microsoft Visual Studio 2015及以上版本，推荐使用 Microsoft Visual Studio 2017
+* .Net Framework 4.0及以上版本，推荐使用 .Net Framework 4.0
 
 ### 2. 两台手机同时运行 Demo，为什么看不到彼此的画面？
 请确保两台手机在运行 Demo 时使用的是不同的 UserID，TRTC 不支持同一个 UserID （除非 SDKAppID 不同）在两个终端同时使用。

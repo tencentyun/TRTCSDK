@@ -14,16 +14,22 @@
 | Electron | [下载](http://liteavsdk-1252463788.cosgz.myqcloud.com/TXLiteAVSDK_TRTC_Electron_latest.zip) | [DOC](https://cloud.tencent.com/document/product/647/38548) | [DOC](https://cloud.tencent.com/document/product/647/38549) |[API](https://cloud.tencent.com/document/product/647/38551) |
 | 微信小程序 | [下载](http://liteavsdk-1252463788.cosgz.myqcloud.com/TRTC_WXMini_latest.zip) | [DOC](https://cloud.tencent.com/document/product/647/32399) | [DOC](https://cloud.tencent.com/document/product/647/32183) |[API](https://cloud.tencent.com/document/product/647/17018) |
 
-## 最新版本 6.7 @ 2019.09.30
+## 最新版本 6.8 @ 2019.11.15
 
-1. 【iOS】新增耳返支持。
-2. 【Android】AAR 打包新增权限获取配置。
-3. 【Android】增加 Android 8.0以上系统 CPU 占用评估。
-4. 【windows】新增音效接口支持。
-5. 【windows】新增64位 C# API 支持。
-6. 【MAC】优化进房和出帧速度。
-7. 【全平台】转推耗时优化。
-8. 【全平台】支持单个用户播放音量独立调节能力。
+1. 全平台：新增 进房可指定不自动拉流。
+2. 全平台：新增 回调onRemoteUserEnterRoom / onRemoteUserLeaveRoom，支持未上麦的主播进退房通知。
+3. 全平台：pts生成机制优化。
+4. 全平台：优化网络切换后，自动选择较优的接入点。
+5. 全平台：修复已知crash等稳定性问题。
+6. 全平台：startRemoteView 支持提前调用。
+7. Android 增加耳返能力。
+8. Windows 录屏支持抗遮挡。
+9. windows 支持 socks5 代理。
+10. Windows C# 修复移除某个用户的渲染回调后，导致其他用户也无法接收数据。
+11. Windows C# 性能优化。
+12. 解决Mac10.15兼容性问题。
+13. iOS & Android：企业版增加 P 图新功能，包括美肤、亮眼、白牙、祛皱、祛眼袋等新特性。
+14. iOS & Android：增加接口 getBeautyManager，聚合美颜、P图动效接口
 
 ## Demo 体验地址
 
