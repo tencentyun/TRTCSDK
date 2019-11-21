@@ -32,7 +32,7 @@ public interface TRTCCloudManagerListener {
      *
      * @param userId 用户标识
      */
-    void onUserEnter(String userId);
+    void onRemoteUserEnterRoom(String userId);
 
     /**
      * 主播{@link TRTCCloudDef#TRTCRoleAnchor}离开了当前视频房间
@@ -43,7 +43,7 @@ public interface TRTCCloudManagerListener {
      * @param userId 用户标识
      * @param reason 离开原因代码，区分用户是正常离开，还是由于网络断线等原因离开。
      */
-    void onUserExit(String userId, int reason);
+    void onRemoteUserLeaveRoom(String userId, int reason);
 
     /**
      * 若当对应 userId 的主播有上行的视频流的时候，该方法会被回调，available 为 true；

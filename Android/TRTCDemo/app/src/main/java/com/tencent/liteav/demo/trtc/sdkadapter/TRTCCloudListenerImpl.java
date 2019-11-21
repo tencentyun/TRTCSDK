@@ -43,16 +43,16 @@ public class TRTCCloudListenerImpl extends TRTCCloudListener {
     }
 
     @Override
-    public void onUserEnter(String userId) {
+    public void onRemoteUserEnterRoom(String userId) {
         Log.i(TAG, "onRemoteUserEnterRoom: userId = " + userId);
     }
 
     @Override
-    public void onUserExit(String userId, int reason) {
+    public void onRemoteUserLeaveRoom(String userId, int reason) {
         Log.i(TAG, "onRemoteUserLeaveRoom: userId = " + userId + " reason = " + reason);
         TRTCCloudManagerListener listener = mWefListener.get();
         if (listener != null) {
-            listener.onUserExit(userId, reason);
+            listener.onRemoteUserLeaveRoom(userId, reason);
         }
     }
 
