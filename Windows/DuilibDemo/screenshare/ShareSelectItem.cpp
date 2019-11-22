@@ -40,6 +40,11 @@ void ShareSelectItem::setWndInfo(const TRTCScreenCaptureSourceInfo& info)
     {
         pLabel->SetText(sourceName.c_str());
     }
+    if (m_info.sourceName != nullptr)
+    {
+        m_sourceName.assign(m_info.sourceName);
+    }
+    m_info.sourceName = m_sourceName.c_str();
 
     CImageCanvas* pWndView = static_cast<CImageCanvas*>(m_pRootControl->GetItemAt(0));
 	CControlUI* pControl = static_cast<CControlUI*>(m_pRootControl->GetItemAt(1));

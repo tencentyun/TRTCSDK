@@ -232,7 +232,7 @@ void TXLiveAvVideoView::RemoveEngine(ITRTCCloud * engine)
         
         if (!m_bLocalView)
         {
-            engine->setRemoteVideoRenderCallback(m_userId.c_str(), TRTCVideoPixelFormat_Unknown, TRTCVideoBufferType_Unknown, nullptr);
+            //engine->setRemoteVideoRenderCallback(m_userId.c_str(), TRTCVideoPixelFormat_Unknown, TRTCVideoBufferType_Unknown, nullptr);
         }
     }
     {

@@ -689,6 +689,8 @@ void TRTCMainViewController::onUserEnter(std::string userId)
 
 void TRTCMainViewController::onUserExit(std::string userId)
 {
+    TRTCCloudCore::GetInstance()->getTRTCCloud()->setRemoteVideoRenderCallback(userId.c_str(), TRTCVideoPixelFormat_Unknown, TRTCVideoBufferType_Unknown, nullptr);
+
     m_pMainViewBottomBar->onPKUserLeaveRoom(userId);
     if (TRTCCloudCore::GetInstance()->getTRTCCloud())
         TRTCCloudCore::GetInstance()->getTRTCCloud()->stopRemoteView(userId.c_str());

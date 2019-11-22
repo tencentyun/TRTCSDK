@@ -22,5 +22,6 @@ private:
 private:
 	CVerticalLayoutUI*	m_pRootControl = NULL;
 	TRTCScreenCaptureSourceInfo m_info;
+    std::string m_sourceName;
 };
 
