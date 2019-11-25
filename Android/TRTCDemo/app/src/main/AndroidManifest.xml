@@ -45,7 +45,6 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/NewActivityTheme"
-            android:windowSoftInputMode="adjustPan" />n"
-            android:screenOrientation="portrait" />
-</application>
+            android:windowSoftInputMode="adjustPan" />
+    </application>
 </manifest>
