@@ -14,3 +14,4 @@
 *.iobj
 *.exp
 *.log
+*.mmap

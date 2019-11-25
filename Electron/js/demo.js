@@ -6,27 +6,27 @@ const {
   TRTCVideoQosPreference,
   TRTCQosControlMode,
   TRTCAppScene,
+  TRTCRoleType,
   TRTCVideoResolutionMode,
   TRTCBeautyStyle,
   TRTCDeviceType,
   TRTCDeviceState,
-  TRTCTranscodingConfigMode
+  TRTCTranscodingConfigMode,
+  TRTCVideoPixelFormat,
+  TRTCVideoBufferType
 } = require('trtc-electron-sdk/liteav/trtc_define');
 const {
   TRTCParams,
   TRTCVideoEncParam,
   TRTCNetworkQosParam,
-  TRTCTranscodingConfig,
+  TRTCTranscodingConfig, 
   TRTCMixUser,
-  Rect
+  Rect,
+  TRTCVideoFrame
 } = require('trtc-electron-sdk/liteav/trtc_define');
-
-Array.prototype.indexOf = function (val) {
-  for (var i = 0; i < this.length; i++) {
-    if (this[i] == val) return i;
-  }
-  return -1;
-};
+const ipc = require('electron').ipcRenderer;
+const Store = require('electron-store');
+const store = new Store();
 
 // 移除数组中的某个元素
 Array.prototype.remove = function (val) {
@@ -44,7 +44,6 @@ let demoApp = new Vue({
   el: '#demo_app',
   data() {
     return {
-      //engine
       rtcCloud: null,
       version: '',
 
@@ -83,7 +82,6 @@ let demoApp = new Vue({
       videoResolutionMode: TRTCVideoResolutionMode.TRTCVideoResolutionModeLandscape,
       videoResolutionModeList: [],
       playSmallVideo: false, // 观看低清
-      playStreamType: TRTCVideoStreamType.TRTCVideoStreamTypeBig,
       pushSmallVideo: false, // 双路编码
       // 是否为纯音频进房
       pureAudioStyle: false,
@@ -106,7 +104,7 @@ let demoApp = new Vue({
       testBGM: false,
 
       // mac 打包后资源存放在“Contents/Resources”中， win 打包存放在“resources”中， demo 引用路径在“resources”中
-      // testPath: process.resourcesPath + '/testspeak.mp3',
+      //testPath: process.resourcesPath + '/testspeak.mp3',
       testPath: __dirname + '/resources/testspeak.mp3',
 
       // 美颜信息
@@ -135,8 +133,20 @@ let demoApp = new Vue({
     }
   },
   mounted: function () {
-    // 重要点, 创建TRTC 对象
+    // 重要点, 创建 TRTC 对象
     this.rtcCloud = new TRTCCloud();
+
+    let self = this;
+    ipc.on('app-close', () => {
+      if (self.inroom) {
+        self.exitRoom();
+      }
+      self.rtcCloud.destroy();
+      this.setLocalStore();
+      if (process.platform !== 'darwin') {
+        ipc.send('closed');
+      }
+    });
 
     console.log("TRTCCloud ...");
     this.version = this.rtcCloud.getSDKVersion();
@@ -145,8 +155,8 @@ let demoApp = new Vue({
     this.roomId = getRandom(3);
 
     this.initSDKLocalData();
+    this.getLocalStore();
 
-    let self = this;
     subscribeEvents = (rtcCloud) => {
       rtcCloud.on('onError', (errcode, errmsg) => {
         console.error('trtc_demo: onError:' + errcode + " msg:" + errmsg);
@@ -178,8 +188,8 @@ let demoApp = new Vue({
         this.inroom = false;
       });
 
-      rtcCloud.on('onUserEnter', (uid) => {
-        console.info('trtc_demo: onUserEnter uid:' + uid);
+      rtcCloud.on('onRemoteUserEnterRoom', (uid) => {
+        console.info('trtc_demo: onRemoteUserEnterRoom uid:' + uid);
         this.users.push(uid);
         let result = this.pkUsers.find((element) => { return element.userId === uid; });
         if (result !== undefined) {
@@ -188,8 +198,8 @@ let demoApp = new Vue({
           this.notify('用户[' + uid + ']进入房间');
         }
       });
-      rtcCloud.on('onUserExit', (uid, reason) => {
-        console.info('trtc_demo: onUserExit uid:' + uid + " reason:" + reason);
+      rtcCloud.on('onRemoteUserLeaveRoom', (uid, reason) => {
+        console.info('trtc_demo: onRemoteUserLeaveRoom uid:' + uid + " reason:" + reason);
         this.users.remove(uid);
         let result = this.pkUsers.find((element) => { return element.userId === uid; });
         if (result !== undefined) {
@@ -214,6 +224,22 @@ let demoApp = new Vue({
           this.rtcCloud.startRemoteView(uid, view);
           // 填充模式需要在设置 view 后才生效
           this.rtcCloud.setRemoteViewFillMode(uid, this.videoFillMode);
+
+
+          this.rtcCloud.setRemoteVideoRenderCallback(
+            uid,
+            TRTCVideoPixelFormat.TRTCVideoPixelFormat_BGRA32, 
+            TRTCVideoBufferType.TRTCVideoBufferType_Buffer, 
+            /**
+             * 
+             * @param userId     用户标识
+             * @param streamType	流类型：即摄像头还是屏幕分享
+             * @param videoframe      视频帧数据
+             */
+            (userId, streamType, videoframe) => {
+              //console.info("onRenderVideoFrame, remote " + userId + "|" + streamType + "|" + videoframe.length);
+          });
+
         }
         else {
           this.rtcCloud.stopRemoteView(uid);
@@ -470,7 +496,6 @@ let demoApp = new Vue({
         }
       });
     };
-
     subscribeEvents(this.rtcCloud);
   },
   methods: {
@@ -540,11 +565,10 @@ let demoApp = new Vue({
     // 观看低清
     onPlaySmallVideo() {
       if (this.playSmallVideo) {
-        this.playStreamType = TRTCVideoStreamType.TRTCVideoStreamTypeSmall;
+        this.rtcCloud.setPriorRemoteVideoStreamType(TRTCVideoStreamType.TRTCVideoStreamTypeSmall);
       } else {
-        this.playStreamType = TRTCVideoStreamType.TRTCVideoStreamTypeBig;
+        this.rtcCloud.setPriorRemoteVideoStreamType(TRTCVideoStreamType.TRTCVideoStreamTypeBig);
       }
-      this.rtcCloud.setPriorRemoteVideoStreamType(this.playStreamType);
     },
     // 美颜
     onOpenBeauty() {
@@ -797,7 +821,22 @@ let demoApp = new Vue({
       param.userSig = userSig;
       param.privateMapKey = '';
       param.businessInfo = '';
+      //param.role = TRTCRoleType.TRTCRoleAudience;
+      //this.appScene = TRTCAppScene.TRTCAppSceneLIVE;
       this.rtcCloud.enterRoom(param, this.appScene);
+      
+      this.rtcCloud.setLocalVideoRenderCallback(
+        TRTCVideoPixelFormat.TRTCVideoPixelFormat_BGRA32, 
+        TRTCVideoBufferType.TRTCVideoBufferType_Buffer, 
+        /**
+         * 
+         * @param userId     用户标识
+         * @param streamType	流类型：即摄像头还是屏幕分享
+         * @param videoframe      视频帧数据
+         */
+        (userId, streamType, videoframe) => {
+          //console.info("onRenderVideoFrame, Local " + userId + "|" + streamType + "|" + videoframe.length);
+      });
 
       // 2.编码参数
       let encParam = new TRTCVideoEncParam();
@@ -809,6 +848,9 @@ let demoApp = new Vue({
 
       this.rtcCloud.setLocalViewMirror(this.localMirror);
       this.rtcCloud.setVideoEncoderMirror(this.encoderMirror);
+      if (this.openBeauty) {
+        this.rtcCloud.setBeautyStyle(this.beautyStyle, this.beauty, this.white, this.ruddiness);
+      }
 
       if (this.pushSmallVideo) {
         let param = new TRTCVideoEncParam();
@@ -819,7 +861,7 @@ let demoApp = new Vue({
         this.rtcCloud.enableSmallVideoStream(this.pushSmallVideo, param);
       }
       if (this.playSmallVideo) {
-        this.rtcCloud.setPriorRemoteVideoStreamType(this.playStreamType);
+        this.rtcCloud.setPriorRemoteVideoStreamType(TRTCVideoStreamType.TRTCVideoStreamTypeSmall);
       }
 
       //3. 打开采集和预览本地视频、采集音频
@@ -843,28 +885,21 @@ let demoApp = new Vue({
       // 清除状态
       this.muteLocalVideo = false;
       this.muteLocalAudio = false;
-      this.localMirror = false;
-      this.encoderMirror = false;
       this.screenCapture = false;
-      this.showVoice = false;
       this.screenName = "";
       this.connectLoading = false;
       this.connected = false;
       this.users.splice(0, this.users.length);
       this.pkUsers.splice(0, this.pkUsers.length);
-      if (this.openBeauty) {
-        this.rtcCloud.setBeautyStyle(this.beautyStyle, 0, 0, 0);
-        this.openBeauty = false;
-      }
-      if (this.mixTranscoding) {
-        this.rtcCloud.setMixTranscodingConfig(null);
-      }
       this.mixTranscoding = false;
       this.mixStreamInfos.splice(0, this.mixStreamInfos.length);
 
       // 释放资源
       if (this.screenCapture) {
         this.rtcCloud.stopScreenCapture();
+      }
+      if (this.mixTranscoding) {
+        this.rtcCloud.setMixTranscodingConfig(null);
       }
       this.destroyAllVideoView();
       this.rtcCloud.exitRoom();
@@ -1040,6 +1075,60 @@ let demoApp = new Vue({
       this.testBGMText = '启动 BGM 测试';
     },
 
+    getLocalStore() {
+      // 第一次打开该应用，初始化本地 SDK 配置
+      if (store.get('userId') === undefined) {
+        this.setLocalStore();
+      } else {
+        this.userId = store.get('userId');
+        this.roomId = store.get('roomId');
+        this.localMirror = store.get('localMirror');
+        this.encoderMirror = store.get('encoderMirror');
+        this.showVoice = store.get('showVoice');
+        this.videoResolution = store.get('videoResolution');
+        this.videoFillMode = store.get('videoFillMode');
+        this.videoFps = store.get('videoFps');
+        this.videoBitrate = store.get('videoBitrate');
+        this.qosPreference = store.get('qosPreference');
+        this.qosControlMode = store.get('qosControlMode');
+        this.appScene = store.get('appScene');
+        this.videoResolutionMode = store.get('videoResolutionMode');
+        this.playSmallVideo = store.get('playSmallVideo');
+        this.pushSmallVideo = store.get('pushSmallVideo');
+        this.pureAudioStyle = store.get('pureAudioStyle');
+        this.openBeauty = store.get('openBeauty');
+        this.beautyStyle = store.get('beautyStyle');
+        this.beauty = store.get('beauty');
+        this.white = store.get('white');
+        this.ruddiness = store.get('ruddiness');
+      }
+    },
+
+    // 初始化本地 SDK 配置信息
+    setLocalStore() {
+      store.set('userId', this.userId);
+      store.set('roomId', parseInt(this.roomId));
+      store.set('localMirror', this.localMirror);
+      store.set('encoderMirror', this.encoderMirror);
+      store.set('showVoice', this.showVoice);
+      store.set('videoResolution', this.videoResolution);
+      store.set('videoFillMode', this.videoFillMode);
+      store.set('videoFps', this.videoFps);
+      store.set('videoBitrate', this.videoBitrate);
+      store.set('qosPreference', this.qosPreference);
+      store.set('qosControlMode', this.qosControlMode);
+      store.set('appScene', this.appScene);
+      store.set('videoResolutionMode', this.videoResolutionMode);
+      store.set('playSmallVideo', this.playSmallVideo);
+      store.set('pushSmallVideo', this.pushSmallVideo);
+      store.set('pureAudioStyle', this.pureAudioStyle);
+      store.set('openBeauty', this.openBeauty);
+      store.set('beautyStyle', this.beautyStyle);
+      store.set('beauty', this.beauty);
+      store.set('white', this.white);
+      store.set('ruddiness', this.ruddiness);
+    },
+
     notify(msg, type = '', title = '提示') {
       this.$notify({
         title: title,
@@ -1049,12 +1138,5 @@ let demoApp = new Vue({
         duration: 2000
       });
     }
-
-  },
-  beforeDestroy: function () {
-    if (this.inroom) {
-      this.exitRoom();
-    }
-    this.rtcCloud.destroy();
-  },
+  }
 });

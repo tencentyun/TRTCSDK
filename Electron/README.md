@@ -71,7 +71,7 @@ subscribeEvents = (rtcCloud) => {
         console.info('trtc_demo: onEnterRoom elapsed:' + elapsed);
     });
     rtcCloud.on('onExitRoom', (reason) => {
-        console.info('onExitRoom: userenter reason:' + reason);
+        console.info('trtc_demo: onExitRoom reason:' + reason);
     });
 
     // 注册远程视频的可用状态

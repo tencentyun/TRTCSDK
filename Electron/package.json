@@ -5,7 +5,6 @@
   "main": "index.js",
   "build": {
     "appId": "com.tencent.trtc-electron-demo",
-    "electronVersion": "6.0.10",
     "directories": {
       "output": "build"
     },
@@ -28,15 +27,13 @@
         "dmg"
       ]
     },
-    "dmg": {
-      "sign": false
-    },
     "win": {
       "target": "nsis"
     }
   },
   "scripts": {
     "start": "electron .",
+    "prod": "webpack --config webpack.config.js",
     "win-package": "electron-builder --win --ia32",
     "mac-package": "electron-builder --mac --arm64"
   },
@@ -44,10 +41,17 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "trtc-electron-sdk": "^6.7.131"
+    "electron-store": "^5.0.0",
+    "trtc-electron-sdk": "^6.8.135"
   },
   "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
     "electron": "^6.0.10",
-    "electron-builder": "^21.2.0"
+    "electron-builder": "^21.2.0",
+    "node-loader": "^0.6.0",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10",
+    "webpack-target-electron-renderer": "^0.4.0"
   }
 }
