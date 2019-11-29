@@ -111,6 +111,7 @@
 		1287EA9B237EA0A300FCF8FB /* AFSecurityPolicy.m in Sources */ = {isa = PBXBuildFile; fileRef = 1287EA31237EA0A200FCF8FB /* AFSecurityPolicy.m */; };
 		1287EA9C237EA0A300FCF8FB /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 1287EA34237EA0A200FCF8FB /* MBProgressHUD.m */; };
 		1287EA9E237EA13100FCF8FB /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 1287EA9D237EA13100FCF8FB /* libresolv.tbd */; };
+		12ED3E7D2390BFF0006FD539 /* bgm_demo.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 12ED3E7C2390BFF0006FD539 /* bgm_demo.mp3 */; };
 		A072A5A22314D5120048C126 /* TXLiteAVSDK_TRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A072A5A12314D5120048C126 /* TXLiteAVSDK_TRTC.framework */; };
 		A072A5A42314D5200048C126 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A072A5A32314D5200048C126 /* libc++.tbd */; };
 		D622D0EE227051D800E4D569 /* goodluck.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = D622D0EB227051D800E4D569 /* goodluck.mp4 */; };
@@ -340,6 +341,7 @@
 		1287EA34237EA0A200FCF8FB /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		1287EA35237EA0A200FCF8FB /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		1287EA9D237EA13100FCF8FB /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
+		12ED3E7C2390BFF0006FD539 /* bgm_demo.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bgm_demo.mp3; sourceTree = "<group>"; };
 		A072A5A12314D5120048C126 /* TXLiteAVSDK_TRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TXLiteAVSDK_TRTC.framework; path = SDK/TXLiteAVSDK_TRTC.framework; sourceTree = "<group>"; };
 		A072A5A32314D5200048C126 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		D622D0EB227051D800E4D569 /* goodluck.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = goodluck.mp4; sourceTree = "<group>"; };
@@ -829,6 +831,7 @@
 		D622D0E9227051D800E4D569 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				12ED3E7C2390BFF0006FD539 /* bgm_demo.mp3 */,
 				D622D0EA227051D800E4D569 /* Filter */,
 			);
 			path = Resources;
@@ -965,6 +968,7 @@
 			files = (
 				1287EA6D237EA0A300FCF8FB /* on_mic.aac in Resources */,
 				1287EA44237EA0A300FCF8FB /* TRTCSettings.storyboard in Resources */,
+				12ED3E7D2390BFF0006FD539 /* bgm_demo.mp3 in Resources */,
 				1287EA86237EA0A300FCF8FB /* QBImagePicker.storyboard in Resources */,
 				D6940FF621CC8A1100469982 /* LaunchScreen.storyboard in Resources */,
 				D622D0EE227051D800E4D569 /* goodluck.mp4 in Resources */,

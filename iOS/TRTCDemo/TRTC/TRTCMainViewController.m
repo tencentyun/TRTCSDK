@@ -39,8 +39,8 @@
 
 // TRTC的bizid的appid用于转推直播流，https://console.cloud.tencent.com/rav 点击【应用】【帐号信息】
 // 在【直播信息】中可以看到bizid和appid，分别填到下面这两个符号
-#define TX_BIZID 3891
-#define TX_APPID 1252463788
+#define TX_BIZID 0
+#define TX_APPID 0
 
 @interface TRTCMainViewController() <
     TRTCCloudDelegate,
@@ -832,7 +832,7 @@
 // 基础美颜
 - (void)onSetBeautyStyle:(int)beautyStyle beautyLevel:(float)beautyLevel whitenessLevel:(float)whitenessLevel ruddinessLevel:(float)ruddinessLevel
 {
-    TXBeautyManager *manager = _trtc.beautyManager;
+    TXBeautyManager *manager = [_trtc getBeautyManager];
     [manager setBeautyStyle:(TXBeautyStyle)beautyStyle];
     [manager setBeautyLevel:beautyLevel];
     [manager setWhitenessLevel:whitenessLevel];
@@ -842,90 +842,90 @@
 
 #pragma mark P图美颜
 - (void)setEyeLightenLevel:(float)level {
-    [_trtc.beautyManager setEyeLightenLevel:level];
+    [[_trtc getBeautyManager] setEyeLightenLevel:level];
 }
 
 - (void)setToothWhitenLevel:(float)level {
-    [_trtc.beautyManager setToothWhitenLevel:level];
+    [[_trtc getBeautyManager] setToothWhitenLevel:level];
 }
 
 - (void)setWrinkleRemoveLevel:(float)level {
-    [_trtc.beautyManager setWrinkleRemoveLevel:level];
+    [[_trtc getBeautyManager] setWrinkleRemoveLevel:level];
 }
 
 - (void)setPounchRemoveLevel:(float)level {
-    [_trtc.beautyManager setPounchRemoveLevel:level];
+    [[_trtc getBeautyManager] setPounchRemoveLevel:level];
 }
 
 - (void)setSmileLinesRemoveLevel:(float)level {
-    [_trtc.beautyManager setSmileLinesRemoveLevel:level];
+    [[_trtc getBeautyManager] setSmileLinesRemoveLevel:level];
 }
 
 - (void)setForeheadLevel:(float)level {
-    [_trtc.beautyManager setForeheadLevel:level];
+    [[_trtc getBeautyManager] setForeheadLevel:level];
 }
 
 - (void)setEyeDistanceLevel:(float)level {
-    [_trtc.beautyManager setEyeDistanceLevel:level];
+    [[_trtc getBeautyManager] setEyeDistanceLevel:level];
 }
 
 - (void)setEyeAngleLevel:(float)level {
-    [_trtc.beautyManager setEyeAngleLevel:level];
+    [[_trtc getBeautyManager] setEyeAngleLevel:level];
 }
 
 - (void)setMouthShapeLevel:(float)level {
-    [_trtc.beautyManager setMouthShapeLevel:level];
+    [[_trtc getBeautyManager] setMouthShapeLevel:level];
 }
 
 - (void)setNoseWingLevel:(float)level {
-    [_trtc.beautyManager setNoseWingLevel:level];
+    [[_trtc getBeautyManager] setNoseWingLevel:level];
 }
 
 - (void)setNosePositionLevel:(float)level {
-    [_trtc.beautyManager setNosePositionLevel:level];
+    [[_trtc getBeautyManager] setNosePositionLevel:level];
 }
 
 - (void)setLipsThicknessLevel:(float)level {
-    [_trtc.beautyManager setLipsThicknessLevel:level];
+    [[_trtc getBeautyManager] setLipsThicknessLevel:level];
 }
 
 - (void)setFaceBeautyLevel:(float)level {
-    [_trtc.beautyManager setFaceBeautyLevel:level];
+    [[_trtc getBeautyManager] setFaceBeautyLevel:level];
 }
 
 - (void)setEyeScaleLevel:(float)eyeScaleLevel
 {
-    [_trtc.beautyManager setEyeScaleLevel:eyeScaleLevel];
+    [[_trtc getBeautyManager] setEyeScaleLevel:eyeScaleLevel];
 }
 
 - (void)setFaceSlimLevel:(float)level
 {
-    [_trtc.beautyManager setFaceSlimLevel:level];
+    [[_trtc getBeautyManager] setFaceSlimLevel:level];
 }
 
 - (void)setFaceVLevel:(float)vLevel
 {
-    [_trtc.beautyManager setFaceVLevel:vLevel];
+    [[_trtc getBeautyManager] setFaceVLevel:vLevel];
 }
 
 - (void)setFaceShortLevel:(float)shortLevel
 {
-    [_trtc.beautyManager setFaceShortLevel:shortLevel];
+    [[_trtc getBeautyManager] setFaceShortLevel:shortLevel];
 }
 
 - (void)setNoseSlimLevel:(float)slimLevel
 {
-    [_trtc.beautyManager setNoseSlimLevel:slimLevel];
+    [[_trtc getBeautyManager] setNoseSlimLevel:slimLevel];
 }
 
 - (void)setChinLevel:(float)chinLevel
 {
-    [_trtc.beautyManager setChinLevel:chinLevel];
+    [[_trtc getBeautyManager] setChinLevel:chinLevel];
 }
 
 - (void)onSelectMotionTmpl:(NSString *)tmplName inDir:(NSString *)tmplDir
 {
-    [_trtc.beautyManager setMotionTmpl:tmplName inDir:tmplDir];
+    [[_trtc getBeautyManager] setMotionTmpl:tmplName inDir:tmplDir];
 }
 
 #pragma mark - TXLivePlayListener
