@@ -237,6 +237,10 @@ namespace TRTCWPFDemo
             this.Dispatcher.Invoke(new Action(() => {
                 if (result >= 0)
                 {
+                    // 开启本地音视频流
+                    mTRTCCloud.muteLocalAudio(false);
+                    mTRTCCloud.muteLocalVideo(false);
+                    
                     // 进房成功
                     mIsEnterSuccess = true;
                 }
