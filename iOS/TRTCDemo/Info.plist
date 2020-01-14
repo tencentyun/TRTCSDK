@@ -31,6 +31,8 @@
 	<string>视频云工具包需要访问你的相机权限，开启后录制的视频才会有画面</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>视频云工具包需要访问你的麦克风权限，开启后录制的视频才会有声音</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>视频云工具包需要访问你的相册权限，开启后才能保存编辑的文件</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>视频云工具包需要访问你的相册权限，开启后才能读取视频文件</string>
 	<key>UIBackgroundModes</key>

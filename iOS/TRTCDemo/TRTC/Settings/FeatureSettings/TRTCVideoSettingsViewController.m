@@ -74,6 +74,11 @@
                                                action:^(BOOL isOn) {
             [wSelf onEnableVideo:isOn];
         }],
+        [[TRTCSettingsSwitchItem alloc] initWithTitle:@"开启推送视频"
+                                                 isOn:!config.isMuted
+                                               action:^(BOOL isOn) {
+            [wSelf onMuteVideo:!isOn];
+        }],
         [[TRTCSettingsSegmentItem alloc] initWithTitle:@"开启预览镜像"
                                                  items:TRTCVideoConfig.localMirrorTypeNames
                                          selectedIndex:config.localMirrorType
@@ -87,6 +92,9 @@
         }],
         [[TRTCSettingsSwitchItem alloc] initWithTitle:@"开启视频水印" isOn:NO action:^(BOOL isOn) {
             [wSelf onEnableWatermark:isOn];
+        }],
+        [[TRTCSettingsButtonItem alloc] initWithTitle:@"截图分享" buttonTitle:@"分享" action:^{
+            [wSelf snapshotLocalVideo];
         }],
     ];
     
@@ -128,6 +136,10 @@
     [self.settingsManager setVideoEnabled:isOn];
 }
 
+- (void)onMuteVideo:(BOOL)isMuted {
+    [self.settingsManager setVideoMuted:isMuted];
+}
+
 - (void)onSelectLocalMirror:(NSInteger)index {
     [self.settingsManager setLocalMirrorType:index];
 }
@@ -145,6 +157,17 @@
     }
 }
 
+- (void)snapshotLocalVideo {
+    __weak __typeof(self) wSelf = self;
+    [self.settingsManager.trtc snapshotVideo:nil
+                                        type:TRTCVideoStreamTypeBig
+                             completionBlock:^(TXImage *image) {
+        if (image) {
+            [wSelf shareImage:image];
+        }
+    }];
+}
+
 - (void)updateBitrateItemWithResolution:(TRTCVideoResolution)resolution {
     TRTCBitrateRange *range = [TRTCVideoConfig bitrateRangeOf:resolution
                                                         scene:self.settingsManager.scene];
@@ -155,6 +178,13 @@
     
     [self.settingsManager setVideoBitrate:(int)range.defaultBitrate];
     [self.tableView reloadData];
+}
+
+- (void)shareImage:(UIImage *)image {
+    UIActivityViewController *vc = [[UIActivityViewController alloc]
+                                    initWithActivityItems:@[image]
+                                    applicationActivities:nil];
+    [self presentViewController:vc animated:YES completion:nil];
 }
 
 @end

@@ -28,14 +28,14 @@
 
 - (void)setupSegment {
     self.segment = [UISegmentedControl trtc_segment];
-    [self.segment setTitleTextAttributes:@{
-        NSForegroundColorAttributeName : UIColorFromRGB(0x939393),
-        NSFontAttributeName : [UIFont systemFontOfSize:16 weight:UIFontWeightMedium]
-    } forState:UIControlStateNormal];
-    [self.segment setTitleTextAttributes:@{
-        NSForegroundColorAttributeName : UIColor.whiteColor,
-        NSFontAttributeName : [UIFont systemFontOfSize:16 weight:UIFontWeightMedium]
-    } forState:UIControlStateSelected];
+    
+    NSMutableDictionary *normalTextAttr = [[self.segment titleTextAttributesForState:UIControlStateNormal] mutableCopy];
+    normalTextAttr[NSFontAttributeName] = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
+    [self.segment setTitleTextAttributes:normalTextAttr forState:UIControlStateNormal];
+    
+    normalTextAttr = [[self.segment titleTextAttributesForState:UIControlStateSelected] mutableCopy];
+    normalTextAttr[NSFontAttributeName] = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
+    [self.segment setTitleTextAttributes:normalTextAttr forState:UIControlStateSelected];
 
     [self.segment addTarget:self action:@selector(onSegmentChange:) forControlEvents:UIControlEventValueChanged];
     [self.segment mas_makeConstraints:^(MASConstraintMaker *make) {

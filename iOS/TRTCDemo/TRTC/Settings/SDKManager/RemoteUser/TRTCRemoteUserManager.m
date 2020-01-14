@@ -16,6 +16,7 @@
 
 @property (strong, nonatomic) TRTCCloud *trtc;
 @property (strong, nonatomic) NSMutableDictionary<NSString *, TRTCRemoteUserConfig *> *users;
+@property (nonatomic) BOOL autoReceivesAudio;
 
 @end
 
@@ -38,11 +39,20 @@
     if (self.users[userId]) {
         return;
     }
-    self.users[userId] = [[TRTCRemoteUserConfig alloc] initWithRoomId:roomId];
+    TRTCRemoteUserConfig *config = [[TRTCRemoteUserConfig alloc] initWithRoomId:roomId];
+    config.isAudioMuted = !self.autoReceivesAudio;
+    self.users[userId] = config;
 }
 
 - (void)removeUser:(NSString *)userId {
     [self.users removeObjectForKey:userId];
+}
+
+- (void)enableAutoReceiveAudio:(BOOL)autoReceiveAudio
+              autoReceiveVideo:(BOOL)autoReceiveVideo {
+    self.autoReceivesAudio = autoReceiveAudio;
+    [self.trtc setDefaultStreamRecvMode:autoReceiveAudio
+                                  video:autoReceiveVideo];
 }
 
 - (void)updateUser:(NSString *)userId isVideoEnabled:(BOOL)isEnabled {

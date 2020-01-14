@@ -13,8 +13,9 @@
  */
 
 #import <UIKit/UIKit.h>
+#import "TRTCSettingsBaseViewController.h"
 
-@interface TRTCNewViewController : UIViewController
+@interface TRTCNewViewController : TRTCSettingsBaseViewController
 
 @property (nonatomic, assign) NSInteger appScene;  // 应用场景：视频通话、在线直播
 @property (nonatomic, strong) NSString *menuTitle; // 标题

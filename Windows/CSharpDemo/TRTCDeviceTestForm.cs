@@ -45,6 +45,10 @@ namespace TRTCCSharpDemo
             {
                 mTRTCCloud.stopAllAudioEffects();
             }
+            if (this.audioRecordBtn.Text.Equals("停止录音"))
+            {
+                mTRTCCloud.stopAudioRecording();
+            }
             mTRTCCloud = null;
         }
 
@@ -159,6 +163,24 @@ namespace TRTCCSharpDemo
                 mTRTCCloud.stopAllAudioEffects();
             }
             
+        }
+
+        private void OnAudioRecordBtnClick(object sender, EventArgs e)
+        {
+            if (this.audioRecordBtn.Text.Equals("开启录音"))
+            {
+                // 开启音效测试
+                this.audioRecordBtn.Text = "停止录音";
+                TRTCAudioRecordingParams param = new TRTCAudioRecordingParams();
+                param.filePath = Environment.CurrentDirectory + "\\Test\\audio.wav";
+                mTRTCCloud.startAudioRecording(ref param);
+            }
+            else
+            {
+                // 关闭音效测试
+                this.audioRecordBtn.Text = "开启录音";
+                mTRTCCloud.stopAudioRecording();
+            }
         }
 
         private void OnConfirmBtnClick(object sender, EventArgs e)

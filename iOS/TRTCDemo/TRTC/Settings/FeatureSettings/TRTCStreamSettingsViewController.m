@@ -16,8 +16,9 @@
 
 @interface TRTCStreamSettingsViewController ()
 
-@property (strong, nonatomic) IBOutlet UISwitch *switcher;
 @property (strong, nonatomic) IBOutlet UIImageView *qrCodeView;
+@property (strong, nonatomic) IBOutlet UILabel *qrCodeTitle;
+@property (strong, nonatomic) TRTCSettingsSwitchItem *mixItem;
 
 @end
 
@@ -25,24 +26,37 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self setupQRCode];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    self.switcher.on = self.settingsManager.videoConfig.isMixingInCloud;
-}
-
-- (void)setupQRCode {
+    
+    TRTCStreamConfig *config = self.settingsManager.streamConfig;
+    
+    __weak __typeof(self) wSelf = self;
+    self.mixItem = [[TRTCSettingsSwitchItem alloc] initWithTitle:@"开启云端画面混合"
+                                             isOn:config.isMixingInCloud
+                                           action:^(BOOL isOn) {
+        [wSelf onEnableMixingInCloud:isOn];
+    }];
+    
+    self.items = @[
+        self.mixItem,
+    ];
+    
+    [self setupSubviews];
     [self.qrCodeView layoutIfNeeded];
-    NSString *shareUrl = [self.settingsManager getCdnUrlOfUser:self.settingsManager.params.userId];
-    self.qrCodeView.image = [QRCode qrCodeWithString:shareUrl size:self.qrCodeView.frame.size];
+    [self updateStreamInfo];
+}
+
+- (void)setupSubviews {
+    [self.tableView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.top.leading.trailing.equalTo(self.view);
+        make.bottom.equalTo(self.qrCodeTitle.mas_top).offset(-20);
+    }];
 }
 
 #pragma mark - Actions
 
-- (IBAction)onToggleSwitch:(id)sender {
-    [self.settingsManager setMixingInCloud:self.switcher.isOn];
+- (void)onEnableMixingInCloud:(BOOL)isEnabled {
+    [self.settingsManager setMixingInCloud:isEnabled];
+    [self updateStreamInfo];
 }
 
 - (IBAction)onClickShareButton:(UIButton *)button{
@@ -51,6 +65,14 @@
                                               initWithActivityItems:@[shareUrl]
                                               applicationActivities:nil];
     [self presentViewController:activityView animated:YES completion:nil];
+}
+
+- (void)updateStreamInfo {
+    self.mixItem.isOn = self.settingsManager.streamConfig.isMixingInCloud;
+    [self.tableView reloadData];
+    
+    NSString *shareUrl = [self.settingsManager getCdnUrlOfUser:self.settingsManager.params.userId];
+    self.qrCodeView.image = [QRCode qrCodeWithString:shareUrl size:self.qrCodeView.frame.size];
 }
 
 @end

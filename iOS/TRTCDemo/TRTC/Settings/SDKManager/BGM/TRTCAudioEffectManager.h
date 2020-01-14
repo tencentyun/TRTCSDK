@@ -15,10 +15,12 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class TRTCAudioEffectConfig;
+
 @interface TRTCAudioEffectManager : NSObject
 
 /// 音效列表
-@property (strong, nonatomic, readonly) NSArray<TRTCAudioEffectParam *> *effects;
+@property (strong, nonatomic, readonly) NSArray<TRTCAudioEffectConfig *> *effects;
 
 /// 全局音量
 @property (nonatomic) NSInteger globalVolume;
@@ -56,8 +58,32 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param effectId 音效ID
 - (void)stopEffect:(NSInteger)effectId;
 
+/// 暂停音效
+/// @param effectId 音效ID
+- (void)pauseEffect:(NSInteger)effectId;
+
+/// 继续音效
+/// @param effectId 音效ID
+- (void)resumeEffect:(NSInteger)effectId;
+
 /// 停止全部音效
 - (void)stopAllEffects;
+
+@end
+
+#pragma mark - TRTCAudioEffectConfig
+
+typedef NS_ENUM(NSUInteger, TRTCPlayState) {
+    TRTCPlayStateIdle,
+    TRTCPlayStatePlaying,
+    TRTCPlayStateOnPause,
+};
+
+@interface TRTCAudioEffectConfig : NSObject
+
+@property (nonatomic) TRTCPlayState playState;
+@property (nonatomic) float progress;
+@property (strong, nonatomic) TRTCAudioEffectParam *params;
 
 @end
 

@@ -79,11 +79,14 @@ void CDataCenter::CleanRoomInfo()
 {
     m_remoteUser.clear();
     m_vecPKUserList.clear();
-    m_loginInfo._bEnterRoom = false;
-    m_loginInfo._bMuteAudio = false;
-    m_loginInfo._bMuteVideo = false;
+    m_localInfo._bEnterRoom = false;
+    m_localInfo.publish_audio = false;
+    m_localInfo.publish_main_video = false;
+    m_localInfo.publish_sub_video = false;
     m_bCustomAudioCapture = false;
     m_bCustomVideoCapture = false;
+    m_strCustomStreamId = "";
+    m_strMixStreamId = "";
 }
 
 void CDataCenter::UnInit()
@@ -91,9 +94,9 @@ void CDataCenter::UnInit()
     WriteEngineConfig();
 }
 
-CDataCenter::LocalUserInfo & CDataCenter::getLocalUserInfo()
+LocalUserInfo & CDataCenter::getLocalUserInfo()
 {
-    return m_loginInfo;
+    return m_localInfo;
 }
 
 CDataCenter::VideoResBitrateTable CDataCenter::getVideoConfigInfo(int resolution)
@@ -111,15 +114,15 @@ void CDataCenter::Init()
 {
     if (m_pConfigMgr->GetSize() == 0)
     {
-        m_loginInfo._userId = TrtcUtil::genRandomNumString(8);
+        m_localInfo._userId = TrtcUtil::genRandomNumString(8);
         return;
     }
     std::wstring id;
     bool bIdRet = m_pConfigMgr->GetValue(INI_ROOT_KEY, INI_KEY_USER_ID, id);
     if (id.compare(L"") == 0 || !bIdRet)
-        m_loginInfo._userId = TrtcUtil::genRandomNumString(8);
+        m_localInfo._userId = TrtcUtil::genRandomNumString(8);
     else
-        m_loginInfo._userId = Wide2UTF8(id);
+        m_localInfo._userId = Wide2UTF8(id);
 
     //音视频参数配置
     std::wstring strParam;
@@ -214,12 +217,6 @@ void CDataCenter::Init()
     else
         m_nLinkTestServer = 0;
 
-    bRet = m_pConfigMgr->GetValue(INI_ROOT_KEY, INI_KEY_ROOMCALL_STYLE, strParam);
-    if (bRet)
-        m_bPureAudioStyle = _wtoi(strParam.c_str());
-    else
-        m_bPureAudioStyle = false;
-
     bRet = m_pConfigMgr->GetValue(INI_ROOT_KEY, INI_KEY_VIDEO_RES_MODE, strParam);
     if (bRet)
         m_videoEncParams.resMode = (TRTCVideoResolutionMode)_wtoi(strParam.c_str());
@@ -292,7 +289,7 @@ void CDataCenter::Init()
 void CDataCenter::WriteEngineConfig()
 {
     //User Info
-    m_pConfigMgr->SetValue(INI_ROOT_KEY, INI_KEY_USER_ID, UTF82Wide(m_loginInfo._userId));
+    m_pConfigMgr->SetValue(INI_ROOT_KEY, INI_KEY_USER_ID, UTF82Wide(m_localInfo._userId));
     //m_pConfigMgr->SetValue(INI_ROOT_KEY, INI_KEY_USER_ID, UTF82Wide(""));
     //设备选项
 
@@ -330,8 +327,6 @@ void CDataCenter::WriteEngineConfig()
     m_pConfigMgr->SetValue(INI_ROOT_KEY, INI_KEY_SET_PLAY_SMALLVIDEO, strFormat.GetData());
     strFormat.Format(L"%d", m_nLinkTestServer);
     m_pConfigMgr->SetValue(INI_ROOT_KEY, INI_KEY_SET_NETENV_STYLE, strFormat.GetData());
-    strFormat.Format(L"%d", m_bPureAudioStyle);
-    m_pConfigMgr->SetValue(INI_ROOT_KEY, INI_KEY_ROOMCALL_STYLE, strFormat.GetData());
 
     strFormat.Format(L"%d", m_bLocalVideoMirror);
     m_pConfigMgr->SetValue(INI_ROOT_KEY, INI_KEY_LOCAL_VIDEO_MIRROR, strFormat.GetData());
@@ -369,48 +364,41 @@ CDataCenter::BeautyConfig & CDataCenter::GetBeautyConfig()
     return m_beautyConfig;
 }
 
-void CDataCenter::removeVideoMeta(std::string userId, int streamType)
+RemoteUserInfo & CDataCenter::FindRemoteUser(std::string userId)
 {
-    std::vector<UserVideoMeta>::iterator iter_vec;
-    for (iter_vec = mixStreamVideoMeta.begin(); iter_vec != mixStreamVideoMeta.end();)
+    std::map<std::string, RemoteUserInfo>::iterator iter;
+    iter = m_remoteUser.find(userId);
+    if(iter != m_remoteUser.end())
     {
-        if (iter_vec->userId == userId && iter_vec->streamType == streamType)
-        {
-            iter_vec = mixStreamVideoMeta.erase(iter_vec);
-            break;
-        }
-        else
-            iter_vec++;
+        return iter->second;
     }
+    RemoteUserInfo info;
+    return info;
 }
 
-void CDataCenter::removeRemoteUser(std::string userId, int streamType)
+void CDataCenter::addRemoteUser(std::string userId, bool bClear)
 {
-    if (streamType == -1)
+    std::map<std::string,RemoteUserInfo>::iterator iter;
+    iter = m_remoteUser.find(userId);
+    if(iter != m_remoteUser.end())
     {
-        RemoteUserListMap& _remoteList = m_remoteUser;
-        RemoteUserListMap::iterator iter;//定义一个迭代指针iter
-        for (iter = _remoteList.begin(); iter != _remoteList.end();)
-        {
-            if (iter->first.first.compare(userId) == 0)
-            {
-                iter = _remoteList.erase(iter);
-            }
-            else
-                iter++;
-        }
-        return;
-    }
-    RemoteUserListMap& _remoteList = m_remoteUser;
-    RemoteUserListMap::iterator iter;//定义一个迭代指针iter
-    for (iter = _remoteList.begin(); iter != _remoteList.end();)
-    {
-        if (iter->first == std::make_pair(userId, (TRTCVideoStreamType)streamType))
-        {
-            iter = _remoteList.erase(iter);
-            break;
-        }
+        if(bClear)
+            m_remoteUser.erase(iter);
         else
-            iter++;
+            return;
+    }
+
+    RemoteUserInfo info;
+    info.user_id = userId;
+    m_remoteUser.insert(std::pair<std::string,RemoteUserInfo>(userId, info));
+}
+
+void CDataCenter::removeRemoteUser(std::string userId)
+{
+    std::map<std::string, RemoteUserInfo>::iterator iter;//定义一个迭代指针iter
+    iter = m_remoteUser.find(userId);
+    if(iter != m_remoteUser.end())
+    {
+         m_remoteUser.erase(iter);
     }
 }

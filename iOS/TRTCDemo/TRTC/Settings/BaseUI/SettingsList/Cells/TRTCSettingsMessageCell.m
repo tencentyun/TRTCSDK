@@ -46,7 +46,10 @@
 
 - (void)onClickSendButton:(id)sender {
     TRTCSettingsMessageItem *item = (TRTCSettingsMessageItem *)self.item;
-    item.action(self.messageText.text ?: @"");
+    if (item.action) {
+        item.action(self.messageText.text ?: @"");
+    }
+    [self.messageText resignFirstResponder];
 }
 
 - (void)onTextChange {
@@ -56,6 +59,7 @@
 
 - (void)didUpdateItem:(TRTCSettingsBaseItem *)item {
     TRTCSettingsMessageItem *messageItem = (TRTCSettingsMessageItem *)item;
+    [self.sendButton setTitle:messageItem.actionTitle forState:UIControlStateNormal];
     self.messageText.text = messageItem.content;
     self.messageText.attributedPlaceholder = [UITextField trtc_textFieldPlaceHolderFor:messageItem.placeHolder];
 }
@@ -74,10 +78,20 @@
 
 - (instancetype)initWithTitle:(NSString *)title
                   placeHolder:(NSString *)placeHolder
-                       action:(void (^)(NSString *))action {
+                       action:(void (^)(NSString * _Nullable content))action {
+    return [self initWithTitle:title placeHolder:placeHolder content:nil actionTitle:@"发送" action:action];
+}
+
+- (instancetype)initWithTitle:(NSString *)title
+                  placeHolder:(NSString *)placeHolder
+                      content:(NSString * _Nullable)content
+                  actionTitle:(nonnull NSString *)actionTitle
+                       action:(void (^)(NSString * _Nullable content))action {
     if (self = [super init]) {
         self.title = title;
         _placeHolder = placeHolder;
+        _content = content;
+        _actionTitle = actionTitle;
         _action = action;
     }
     return self;

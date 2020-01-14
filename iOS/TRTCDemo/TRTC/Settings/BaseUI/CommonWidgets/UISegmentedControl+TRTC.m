@@ -19,10 +19,14 @@
 //        segment.tintColor = UIColorFromRGB(0x05a764);
 //    }
     
-    segment.tintColor = UIColorFromRGB(0x05a764);
-
-    [segment setTitleTextAttributes:@{ NSForegroundColorAttributeName : UIColor.whiteColor }
-                           forState:UIControlStateSelected];
+    if (@available(iOS 13.0, *)) {
+        [segment setTitleTextAttributes:@{ NSForegroundColorAttributeName : UIColorFromRGB(0x05a764) }
+                               forState:UIControlStateSelected];
+    } else {
+        segment.tintColor = UIColorFromRGB(0x05a764);
+        [segment setTitleTextAttributes:@{ NSForegroundColorAttributeName : UIColor.whiteColor }
+                               forState:UIControlStateSelected];
+    }
     [segment setTitleTextAttributes:@{ NSForegroundColorAttributeName : UIColorFromRGB(0x939393) }
                            forState:UIControlStateNormal];
     

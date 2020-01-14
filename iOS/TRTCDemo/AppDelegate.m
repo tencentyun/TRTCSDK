@@ -19,7 +19,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-    MainViewController *entrance = [[MainViewController alloc] init];
+    MainViewController *entrance = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateInitialViewController];
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:entrance];
     nav.navigationBar.translucent = YES;
     UIGraphicsBeginImageContextWithOptions(CGSizeMake(1, 1), NO, 1);

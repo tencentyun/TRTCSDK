@@ -3,7 +3,7 @@
 *
 * Function: 音效Cell, 包含音效的上传开关，音量调整，播放和停止操作。
 *
-*    1. TRTCSettingsEffectItem保存设置给Cell的音效数据TRTCAudioEffectParam，
+*    1. TRTCSettingsEffectItem保存设置给Cell的音效数据TRTCAudioEffectConfig，
 *       以及音效管理对象TRTCAudioEffectManager
 *
 */
@@ -40,6 +40,7 @@
     [self.contentView addSubview:self.slider];
     
     self.playButton = [UIButton trtc_iconButtonWithImage:[UIImage imageNamed:@"audio_play"]];
+    [self.playButton setImage:[UIImage imageNamed:@"audio_pause"] forState:UIControlStateSelected];
     [self.playButton addTarget:self action:@selector(onClickPlayButton:) forControlEvents:UIControlEventTouchUpInside];
     [self.contentView addSubview:self.playButton];
 
@@ -68,12 +69,22 @@
     }];
 }
 
+- (void)prepareForReuse {
+    [super prepareForReuse];
+    [self removeObservers];
+}
+
+- (void)dealloc {
+    [self removeObservers];
+}
+
 - (void)didUpdateItem:(TRTCSettingsBaseItem *)item {
     if ([item isKindOfClass:[TRTCSettingsEffectItem class]]) {
         TRTCSettingsEffectItem *effectItem = (TRTCSettingsEffectItem *)item;
-        self.titleLabel.text = [NSString stringWithFormat:@"音效%@", @(effectItem.effect.effectId + 1)];
-        self.switcher.on = effectItem.effect.publish;
-        self.slider.value = effectItem.effect.volume;
+        self.titleLabel.text = [NSString stringWithFormat:@"音效%@", @(effectItem.effect.params.effectId + 1)];
+        self.switcher.on = effectItem.effect.params.publish;
+        self.slider.value = effectItem.effect.params.volume;
+        [self observeEffectItem];
     }
 }
 
@@ -82,35 +93,72 @@
     return effectItem.manager;
 }
 
-- (TRTCAudioEffectParam *)effect {
+- (TRTCAudioEffectConfig *)effect {
     TRTCSettingsEffectItem *effectItem = (TRTCSettingsEffectItem *)self.item;
     return effectItem.effect;
+}
+
+#pragma mark - Observation
+
+- (void)observeEffectItem {
+    [self.effect addObserver:self
+                        forKeyPath:@"playState"
+                           options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
+                           context:nil];
+    [self.effect.params addObserver:self
+                         forKeyPath:@"volume"
+                            options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
+                            context:nil];
+}
+
+- (void)removeObservers {
+    [self.effect removeObserver:self forKeyPath:@"playState"];
+    [self.effect.params removeObserver:self forKeyPath:@"volume"];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
+    if ([keyPath isEqualToString:@"playState"]) {
+        self.playButton.selected = self.effect.playState == TRTCPlayStatePlaying;
+    } else if ([keyPath isEqualToString:@"volume"]) {
+        self.slider.value = self.effect.params.volume;
+    }
 }
 
 #pragma mark - Events
 
 - (void)onClickSwitch:(id)sender {
-    [self.manager toggleEffectPublish:self.effect.effectId];
+    [self.manager toggleEffectPublish:self.effect.params.effectId];
 }
 
 - (void)onSliderValueChange:(UISlider *)slider {
-    [self.manager updateEffect:self.effect.effectId volume:slider.value];
+    [self.manager updateEffect:self.effect.params.effectId volume:slider.value];
 }
 
 - (void)onClickPlayButton:(UIButton *)button {
-    [self.manager playEffect:self.effect.effectId];
+    switch (self.effect.playState) {
+        case TRTCPlayStateIdle:
+            [self.manager playEffect:self.effect.params.effectId];
+            break;
+        case TRTCPlayStatePlaying:
+            [self.manager pauseEffect:self.effect.params.effectId];
+            break;
+        case TRTCPlayStateOnPause:
+            [self.manager resumeEffect:self.effect.params.effectId];
+            break;
+    }
 }
 
 - (void)onClickStopButton:(id)sender {
-    [self.manager stopEffect:self.effect.effectId];
+    [self.manager stopEffect:self.effect.params.effectId];
 }
 
 @end
 
+#pragma mark - TRTCSettingsEffectItem
 
 @implementation TRTCSettingsEffectItem
 
-- (instancetype)initWithEffect:(TRTCAudioEffectParam *)effect
+- (instancetype)initWithEffect:(TRTCAudioEffectConfig *)effect
                        manager:(TRTCAudioEffectManager *)manager {
     if (self = [super init]) {
         _effect = effect;

@@ -21,11 +21,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface TRTCSettingsEffectItem : TRTCSettingsBaseItem
 
-@property (strong, nonatomic, readonly) TRTCAudioEffectParam *effect;
+@property (strong, nonatomic, readonly) TRTCAudioEffectConfig *effect;
 @property (strong, nonatomic, readonly) TRTCAudioEffectManager *manager;
 @property (nonatomic) BOOL isPlaying;
 
-- (instancetype)initWithEffect:(TRTCAudioEffectParam *)effect
+- (instancetype)initWithEffect:(TRTCAudioEffectConfig *)effect
                        manager:(TRTCAudioEffectManager *)manager NS_DESIGNATED_INITIALIZER;
 - (instancetype)init NS_UNAVAILABLE;
 

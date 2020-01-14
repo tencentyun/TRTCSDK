@@ -41,7 +41,9 @@
 - (void)onClickSwitch:(id)sender {
     TRTCSettingsSwitchItem *switchItem = (TRTCSettingsSwitchItem *)self.item;
     switchItem.isOn = self.switcher.isOn;
-    switchItem.action(self.switcher.isOn);
+    if (switchItem.action) {
+        switchItem.action(self.switcher.isOn);
+    }
 }
 
 @end
@@ -49,7 +51,7 @@
 
 @implementation TRTCSettingsSwitchItem
 
-- (instancetype)initWithTitle:(NSString *)title isOn:(BOOL)isOn action:(void (^)(BOOL))action {
+- (instancetype)initWithTitle:(NSString *)title isOn:(BOOL)isOn action:(void (^ _Nullable)(BOOL))action {
     if (self = [super init]) {
         self.title = title;
         _isOn = isOn;

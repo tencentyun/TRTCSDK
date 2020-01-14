@@ -36,6 +36,11 @@
 #define WM_USER_CMD_RemoteScreenStop     WM_USER_CMD + 62     //远端屏幕分享结束
 #define WM_USER_CMD_SendFirstLocalVideoFrame    WM_USER_CMD + 63     //本地第一帧数据
 #define WM_USER_CMD_SendFirstLocalAudioFrame    WM_USER_CMD + 64     //本地第一帧数据
+#define WM_USER_CMD_OnRecordError   WM_USER_CMD + 65    //录制结果回调
+#define WM_USER_CMD_OnRecordComplete   WM_USER_CMD + 66    //录制结果回调
+#define WM_USER_CMD_OnRecordProgress   WM_USER_CMD + 67    //录制进度回调
+#define WM_USER_CMD_OnStartPublishinge   WM_USER_CMD + 68    //更新StreamId回调
+#define WM_USER_CMD_OnStopPublishing   WM_USER_CMD + 69    //更新StreamId回调
 
 //音视频数据消息
 #define WM_USER_MEDIA_DATA WM_USER + 200

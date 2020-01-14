@@ -45,6 +45,7 @@ public: //cb
     virtual void Notify(TNotifyUI& msg);
     virtual void NotifyAudioEffectTab(TNotifyUI& msg);
     virtual void NotifyOtherTab(TNotifyUI& msg);
+    virtual void NotifyMixTab(TNotifyUI& msg);
     virtual CControlUI* CreateControl(LPCTSTR pstrClass);
 
     //ITRTCCloudCallback
@@ -67,6 +68,7 @@ private:
     void InitAudioEffectTab();
     void InitVideoTab();
     void InitOtherTab();
+    void InitMixTab();
     void UpdateCameraDevice();
     void UpdateMicDevice();
     void UpdateSpeakerDevice();
@@ -75,6 +77,7 @@ private:
     void stopAllTestSetting();
 private:
     void updateVideoBitrateUi();
+    bool isCustomUploaderStreamIdValid(const std::string &streamId);
 public:
     SettingTagEnum m_eTagType = SettingTag_Video;
     CPaintManagerUI m_pmUI;
@@ -87,7 +90,6 @@ public:
     bool m_bStartLocalPreview = false;
     bool m_bStartTestMic = false;
     bool m_bStartTestSpeaker = false;
-    bool m_bStartTestBGM = false;
     bool m_bStartTestNetwork = false;
     bool m_bStartSystemVoice = false;
 
@@ -95,6 +97,10 @@ public:
     TRTCAudioEffectParam* m_audioEffectParam1;
     TRTCAudioEffectParam* m_audioEffectParam2;
     TRTCAudioEffectParam* m_audioEffectParam3;
+
+    bool m_bStartTestBGM = false;
+    int m_nBGMPublishVolume = 100;
+    int m_nBGMPlayoutVolume = 100;
 
     static int m_ref;
     static std::vector<TRTCSettingViewControllerNotify*> vecNotifyList;

@@ -34,6 +34,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// 开启视频采集
 @property (nonatomic) BOOL isEnabled;
 
+/// 视频静画
+@property (nonatomic) BOOL isMuted;
+
 /// 主视频编码
 @property (strong, nonatomic) TRTCVideoEncParam* videoEncConfig;
 
@@ -60,9 +63,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// 本地视频填充模式，默认为TRTCVideoFillMode_Fill
 @property (nonatomic) TRTCVideoFillMode fillMode;
-
-/// 开启云端混流，默认为YES
-@property (nonatomic) BOOL isMixingInCloud;
 
 /// 开启双路编码，默认值为NO
 @property (nonatomic) BOOL isSmallVideoEnabled;

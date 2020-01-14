@@ -44,14 +44,35 @@
     }];
 }
 
+- (void)prepareForReuse {
+    [super prepareForReuse];
+    [self.item removeObserver:self forKeyPath:@"sliderValue"];
+}
+
+- (void)dealloc {
+    [self.item removeObserver:self forKeyPath:@"sliderValue"];
+}
+
 - (void)didUpdateItem:(TRTCSettingsBaseItem *)item {
     if ([item isKindOfClass:[TRTCSettingsSliderItem class]]) {
         TRTCSettingsSliderItem *sliderItem = (TRTCSettingsSliderItem *)item;
+        if (0 == sliderItem.step) sliderItem.step = 1.f;
         self.slider.minimumValue = sliderItem.minValue / sliderItem.step;
         self.slider.maximumValue = sliderItem.maxValue / sliderItem.step;
         self.slider.value = sliderItem.sliderValue / sliderItem.step;
         self.slider.continuous = sliderItem.continuous;
         self.valueLabel.text = [NSString stringWithFormat:@"%@", @((int) sliderItem.sliderValue)];
+    }
+    
+    [item addObserver:self forKeyPath:@"sliderValue" options:NSKeyValueObservingOptionNew context:nil];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
+    if ([keyPath isEqualToString:@"sliderValue"]) {
+        TRTCSettingsSliderItem *item = (TRTCSettingsSliderItem *) self.item;
+        if (0 == item.step) item.step = 1.f;
+        self.slider.value = item.sliderValue / item.step;
+        self.valueLabel.text = [NSString stringWithFormat:@"%@", @((int) item.sliderValue)];
     }
 }
 

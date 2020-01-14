@@ -24,13 +24,11 @@ CG_INLINE CGRect CGRectMake_Auto(CGFloat x, CGFloat y, CGFloat width, CGFloat he
 
 @interface UIView (Additions)
 
-- (id) initWithParent:(UIView *)parent;
-+ (id) viewWithParent:(UIView *)parent;
--(void)removeAllSubViews;
+- (void)removeAllSubViews;
 - (void)setBackgroundImage:(UIImage*)image;
 - (UIImage*)toImage;
 - (UIViewController *)tx_viewController;
-
+- (void)tx_observeKeyboardOnChange:(void(^)(CGFloat keyboardTop, CGFloat height))changeHandler;
 
 // Position of the top-left corner in superview's coordinates
 @property CGPoint position;

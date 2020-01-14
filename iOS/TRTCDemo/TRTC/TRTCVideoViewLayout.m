@@ -99,8 +99,7 @@ const static float MARGIN = 10.f;
             atRect.origin.x = W-MARGIN-atRect.size.width;
         }
         return atRect;
-    }
-    if (total <= 4) {
+    } else if (total <= 4) {
         atRect.size.width = (W - HSPACE - 2 * MARGIN) / 2;
         FitH(atRect);
         if (at / 2 == 0) {
@@ -115,8 +114,7 @@ const static float MARGIN = 10.f;
             atRect.origin.x = W-MARGIN-atRect.size.width;
         }
         return atRect;
-    }
-    if (total <= 6) {
+    } else if (total <= 6) {
         atRect.size.width = (W - 2 * HSPACE - 2 * MARGIN) / 3;
         FitH(atRect);
         if (at / 3 == 0) {
@@ -133,8 +131,11 @@ const static float MARGIN = 10.f;
             atRect.origin.x = W - atRect.size.width - MARGIN;
         }
         return atRect;
-    }
-    if (total <= 9) {
+    } else {
+        if (at >= 9) {
+            return CGRectZero;
+        }
+        
         atRect.size.width = (W - 2 * HSPACE - 2 * MARGIN) / 3;
         FitH(atRect);
         if (at / 3 == 0) {

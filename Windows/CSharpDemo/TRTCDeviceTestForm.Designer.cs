@@ -39,6 +39,7 @@
             this.micProgressBar = new System.Windows.Forms.ProgressBar();
             this.speakerProgressBar = new System.Windows.Forms.ProgressBar();
             this.audioEffectTestBtn = new System.Windows.Forms.Button();
+            this.audioRecordBtn = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.exitPicBox)).BeginInit();
             this.SuspendLayout();
@@ -119,7 +120,7 @@
             // 
             this.confirmBtn.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.confirmBtn.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.confirmBtn.Location = new System.Drawing.Point(142, 266);
+            this.confirmBtn.Location = new System.Drawing.Point(142, 308);
             this.confirmBtn.Name = "confirmBtn";
             this.confirmBtn.Size = new System.Drawing.Size(104, 36);
             this.confirmBtn.TabIndex = 17;
@@ -152,12 +153,24 @@
             this.audioEffectTestBtn.UseVisualStyleBackColor = true;
             this.audioEffectTestBtn.Click += new System.EventHandler(this.OnAudioTestBtnClick);
             // 
+            // audioRecordBtn
+            // 
+            this.audioRecordBtn.Font = new System.Drawing.Font("微软雅黑", 11F);
+            this.audioRecordBtn.Location = new System.Drawing.Point(33, 262);
+            this.audioRecordBtn.Name = "audioRecordBtn";
+            this.audioRecordBtn.Size = new System.Drawing.Size(331, 32);
+            this.audioRecordBtn.TabIndex = 21;
+            this.audioRecordBtn.Text = "开启录音";
+            this.audioRecordBtn.UseVisualStyleBackColor = true;
+            this.audioRecordBtn.Click += new System.EventHandler(this.OnAudioRecordBtnClick);
+            // 
             // TRTCDeviceTestForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Gainsboro;
-            this.ClientSize = new System.Drawing.Size(397, 320);
+            this.ClientSize = new System.Drawing.Size(397, 362);
+            this.Controls.Add(this.audioRecordBtn);
             this.Controls.Add(this.audioEffectTestBtn);
             this.Controls.Add(this.speakerProgressBar);
             this.Controls.Add(this.micProgressBar);
@@ -194,5 +207,6 @@
         private System.Windows.Forms.ProgressBar speakerProgressBar;
         private System.Windows.Forms.PictureBox exitPicBox;
         private System.Windows.Forms.Button audioEffectTestBtn;
+        private System.Windows.Forms.Button audioRecordBtn;
     }
 }

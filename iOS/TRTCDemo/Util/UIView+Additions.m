@@ -8,21 +8,6 @@
 
 @implementation UIView (Additions)
 
-- (id)initWithParent:(UIView *)parent {
-	self = [self initWithFrame:CGRectZero];
-	
-	if (!self)
-		return nil;
-	
-	[parent addSubview:self];
-	
-	return self;
-}
-
-+ (id) viewWithParent:(UIView *)parent {
-	return [[self alloc] initWithParent:parent];
-}
-
 - (void)setBackgroundImage:(UIImage *)image
 {
     UIGraphicsBeginImageContext(self.frame.size);
@@ -56,6 +41,18 @@
         view = view.superview;
       }
     return nil;
+}
+
+- (void)tx_observeKeyboardOnChange:(void(^)(CGFloat keyboardTop, CGFloat height))changeHandler {
+    __weak __typeof(self) wSelf = self;
+    [[NSNotificationCenter defaultCenter] addObserverForName:UIKeyboardWillChangeFrameNotification object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        CGRect endFrame = [note.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
+        double animDuration = [note.userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+        changeHandler(endFrame.origin.y, endFrame.size.height);
+        [UIView animateWithDuration:animDuration animations:^{
+            [wSelf layoutIfNeeded];
+        }];
+    }];
 }
 
 - (CGPoint)position {

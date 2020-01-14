@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, retain) NSMutableDictionary* remoteViewDic;   //远端画面
 
 /// 点击小窗返回的controller
-@property UIViewController *backController;
+@property (nonatomic, retain, nullable) UIViewController *backController;
 
 + (instancetype)sharedInstance;
 
