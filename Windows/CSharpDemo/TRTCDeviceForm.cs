@@ -37,12 +37,18 @@ namespace TRTCCSharpDemo
         private void OnDisposed(object sender, EventArgs e)
         {
             //清理资源
-            mCameraDevice.release();
-            mMicDevice.release();
-            mSpeakerDevice.release();
-            mCameraDeviceList.release();
-            mMicDeviceList.release();
-            mSpeakerDeviceList.release();
+            if (mCameraDevice != null)
+                mCameraDevice.release();
+            if (mCameraDevice != null)
+                mMicDevice.release();
+            if (mSpeakerDevice != null)
+                mSpeakerDevice.release();
+            if (mCameraDeviceList != null)
+                mCameraDeviceList.release();
+            if (mMicDeviceList != null)
+                mMicDeviceList.release();
+            if (mSpeakerDevice != null)
+                mSpeakerDeviceList.release();
             mCameraDevice = null;
             mMicDevice = null;
             mSpeakerDevice = null;

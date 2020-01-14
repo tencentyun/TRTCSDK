@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Window size="410,350" sizebox="0,0,0,0">
+<Window size="410,360" sizebox="0,0,0,0">
 	<Font id="0" name="微软雅黑" size="15" default="true"/>
 	<Font id="1" name="微软雅黑" size="13" />
 	<Style name="radio_style" shared="true" value="align=&quot;left&quot; valign=&quot;vcenter&quot; height=&quot;17&quot; textcolor=&quot;#FF000000&quot; hottextcolor=&quot;#FF000000&quot; textpadding=&quot;20,0,6,0&quot; stateimage=&quot;res='setting/radio_normal.png' dest='0,0,17,17'&quot; statecount=&quot;2&quot; selectedstateimage=&quot;res='setting/radio_selected.png' dest='0,0,17,17'&quot; selectedstatecount=&quot;2&quot;" />
@@ -10,20 +10,15 @@
 		<VerticalLayout height="52" width="52" bkimage="login/logo.png"/>
 		<VerticalLayout height="20"/>
 		<Edit name="edit_roomid" text="" height="44" font="0" align="center" numberonly="true" textpadding="20,0,20,0" tipvalue="输入房间ID" tipvaluecolor="#FF808080" tipvaluealign="center" normalimage="res='login/edit_normal.png' corner='6,6,6,6'" focusedimage="res='login/edit_focus.png' corner='6,6,6,6'"/>
-		<VerticalLayout height="20"/>
-		<Edit name="edit_nameid" height="44" font="0" align="center" textpadding="20,0,20,0" tipvalue="输入用户ID" tipvaluecolor="#FF808080" tipvaluealign="center" normalimage="res='login/edit_normal.png' corner='6,6,6,6'" focusedimage="res='login/edit_focus.png' corner='6,6,6,6'"/>
 		<VerticalLayout height="25"/>
+		<Edit name="edit_nameid" height="44" font="0" align="center" textpadding="20,0,20,0" tipvalue="输入用户ID" tipvaluecolor="#FF808080" tipvaluealign="center" normalimage="res='login/edit_normal.png' corner='6,6,6,6'" focusedimage="res='login/edit_focus.png' corner='6,6,6,6'"/>
+		<VerticalLayout height="10"/>
 		<HorizontalLayout name="test_netenv_container" childalign="center" visible="false"  height="26" childpadding="10" inset="40,0,0,0">
 		    <Option name="test_netenv" group="netenvstyle" text="测试环境" style="radio_style" width="0" autocalcwidth="true"/>
 			<Option name="pretest_netenv" group="netenvstyle" text="体验环境" style="radio_style" width="0" autocalcwidth="true"/>
 		    <Option name="product_netenv" group="netenvstyle" text="正式环境" style="radio_style" width="0" autocalcwidth="true"/>
 		</HorizontalLayout>
-		<HorizontalLayout name="test_call_container" childalign="center" visible="false"  height="26" childpadding="10" inset="90,0,0,0">
-		    <Option name="audio_call" group="callstyle" text="语音通话" style="radio_style" width="0" autocalcwidth="true"/>
-		    <Option name="video_call" group="callstyle" text="视频通话" style="radio_style" width="0" autocalcwidth="true"/>
-		</HorizontalLayout>
 
-		
 		<VerticalLayout height="30" inset="20,0,20,0" childalign="center">
 			<Label name="label_loginstatus" text="" font="0" align="center" valign="center" textcolor="#FFFF7256" showhtml="true"/>
 		</VerticalLayout>

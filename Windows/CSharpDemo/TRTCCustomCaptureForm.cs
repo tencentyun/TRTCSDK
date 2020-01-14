@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Windows.Forms;
 using ManageLiteAV;
 using TRTCCSharpDemo.Common;
@@ -20,8 +21,8 @@ namespace TRTCCSharpDemo
 
         private string mTestPath = System.Environment.CurrentDirectory + "\\Resources\\trtcres\\";
 
-        private bool mStartCustomCaptureAudio;
-        private bool mStartCustomCaptureVideo;
+        private volatile bool mStartCustomCaptureAudio;
+        private volatile bool mStartCustomCaptureVideo;
 
         private string mAudioFilePath;
         private uint mAudioFileLength;
@@ -36,6 +37,9 @@ namespace TRTCCSharpDemo
         private byte[] mVideoBuffer;
         private uint mOffsetAudioRead = 0;
         private uint mOffsetVideoRead = 0;
+
+        private Thread mAudioCustomThread;
+        private Thread mVideoCustomThread;
 
         public TRTCCustomCaptureForm(TRTCMainForm mainForm)
         {
@@ -60,6 +64,20 @@ namespace TRTCCSharpDemo
                 mTRTCCloud.enableCustomVideoCapture(false);
                 mMainForm.OnCustomCaptureAudioCallback(true);
                 mMainForm.OnCustomCaptureVideoCallback(true);
+                mStartCustomCaptureAudio = false;
+                mStartCustomCaptureVideo = false;
+                if (mAudioCustomThread != null)
+                {
+                    mAudioCustomThread.Join();
+                    mAudioCustomThread.DisableComObjectEagerCleanup();
+                    mAudioCustomThread = null;
+                }
+                if (mVideoCustomThread != null)
+                {
+                    mVideoCustomThread.Join();
+                    mVideoCustomThread.DisableComObjectEagerCleanup();
+                    mVideoCustomThread = null;
+                }
             }
             mMainForm = null;
             mTRTCCloud = null;
@@ -134,7 +152,21 @@ namespace TRTCCSharpDemo
             mStartCustomCaptureAudio = true;
             mMainForm.OnCustomCaptureAudioCallback(false);
             mTRTCCloud.enableCustomAudioCapture(true);
-            mMainForm.StartAudioCaptureTimer();
+
+            if (mAudioCustomThread == null)
+            {
+                mAudioCustomThread = new Thread(() =>
+                {
+                    while (mStartCustomCaptureAudio)
+                    {
+                        SendCustomAudioFrame();
+                        Thread.Sleep(20);
+                    }
+                })
+                { IsBackground = true };
+                mAudioCustomThread.Start();
+            }
+
         }
 
         public void SendCustomAudioFrame()
@@ -178,7 +210,13 @@ namespace TRTCCSharpDemo
             mStartCustomCaptureAudio = false;
             mTRTCCloud.enableCustomAudioCapture(false);
             mMainForm.OnCustomCaptureAudioCallback(true);
-            mMainForm.StopAudioCaptureTimer();
+
+            if (mAudioCustomThread != null)
+            {
+                mAudioCustomThread.Join();
+                mAudioCustomThread.DisableComObjectEagerCleanup();
+                mAudioCustomThread = null;
+            }
         }
 
         private void OnCustomVideoCheckBoxClick(object sender, EventArgs e)
@@ -217,7 +255,20 @@ namespace TRTCCSharpDemo
             mStartCustomCaptureVideo = true;
             mMainForm.OnCustomCaptureVideoCallback(false);
             mTRTCCloud.enableCustomVideoCapture(true);
-            mMainForm.StartVideoCaptureTimer();
+
+            if (mVideoCustomThread == null)
+            {
+                mVideoCustomThread = new Thread(() =>
+                {
+                    while (mStartCustomCaptureVideo)
+                    {
+                        SendCustomVideoFrame();
+                        Thread.Sleep(66);
+                    }
+                })
+                { IsBackground = true };
+                mVideoCustomThread.Start();
+            }
         }
 
         public void SendCustomVideoFrame()
@@ -263,7 +314,13 @@ namespace TRTCCSharpDemo
             mStartCustomCaptureVideo = false;
             mTRTCCloud.enableCustomVideoCapture(false);
             mMainForm.OnCustomCaptureVideoCallback(true);
-            mMainForm.StopVideoCaptureTimer();
+
+            if (mVideoCustomThread != null)
+            {
+                mVideoCustomThread.Join();
+                mVideoCustomThread.DisableComObjectEagerCleanup();
+                mVideoCustomThread = null;
+            }
         }
 
         private void OnConfirmBtnClick(object sender, EventArgs e)

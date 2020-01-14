@@ -209,12 +209,12 @@ namespace TRTCCSharpDemo
             // 音频参数配置
             param = storage.GetValue(INI_ROOT_KEY, INI_KEY_AUDIO_MIC_VOLUME);
             if (string.IsNullOrEmpty(param))
-                this.micVolume = 100;
+                this.micVolume = 25;
             else
                 this.micVolume = uint.Parse(param);
             param = storage.GetValue(INI_ROOT_KEY, INI_KEY_AUDIO_SPEAKER_VOLUME);
             if (string.IsNullOrEmpty(param))
-                this.speakerVolume = 100;
+                this.speakerVolume = 25;
             else
                 this.speakerVolume = uint.Parse(param);
             param = storage.GetValue(INI_ROOT_KEY, INI_KEY_SHOW_AUDIO_VOLUME);

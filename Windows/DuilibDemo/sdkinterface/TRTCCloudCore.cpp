@@ -52,7 +52,7 @@ TRTCCloudCore::~TRTCCloudCore()
 void TRTCCloudCore::Init()
 {
     //检查默认选择设备
-    m_localUserId = CDataCenter::GetInstance()->getLocalUserID();
+    m_localUserId = CDataCenter::GetInstance()->getLocalUserID(); 
 
     m_pCloud->addCallback(this);
     m_pCloud->setLogCallback(this);
@@ -65,7 +65,8 @@ void TRTCCloudCore::Init()
 
 void TRTCCloudCore::Uninit()
 {
-    m_mRefLocalPreview = 0;
+    m_bStartLocalPreview = false;
+    m_bStartCameraTest = false;
 
     removeAllSDKMsgObserver();
     m_pCloud->removeCallback(this);
@@ -139,7 +140,7 @@ void TRTCCloudCore::onExitRoom(int reason)
     }
 }
 
-void TRTCCloudCore::onUserEnter(const char * userId)
+void TRTCCloudCore::onRemoteUserEnterRoom(const char * userId)
 {
     LINFO(L"onMemberEnter userId[%s]\n", UTF82Wide(userId).c_str());
     std::unique_lock<std::mutex> lck(m_mutexMsgFilter);
@@ -153,7 +154,7 @@ void TRTCCloudCore::onUserEnter(const char * userId)
     }
 }
 
-void TRTCCloudCore::onUserExit(const char* userId, int reason)
+void TRTCCloudCore::onRemoteUserLeaveRoom(const char* userId, int reason)
 {
     LINFO(L"onMemberExit userId[%s]\n", UTF82Wide(userId).c_str());
     for (auto& itr : m_mapSDKMsgFilter)
@@ -509,6 +510,47 @@ void TRTCCloudCore::onAudioEffectFinished(int effectId, int code)
 
 }
 
+void TRTCCloudCore::onStartPublishing(int err,const char *errMsg)
+{
+    LINFO(L"onStartPublishing err[%d], errMsg[%s]\n", err, UTF82Wide(errMsg).c_str());
+    /*
+    if(err == 0)
+    {
+
+        std::unique_lock<std::mutex> lck(m_mutexMsgFilter);
+        for(auto& itr : m_mapSDKMsgFilter)
+        {
+            if(itr.first == WM_USER_CMD_OnStartPublishinge && itr.second != nullptr)
+            {
+                ::PostMessage(itr.second,WM_USER_CMD_OnStartPublishinge,0,0);
+            }
+        }
+    } else
+    {
+        CDataCenter::GetInstance()->m_strCustomStreamId = "";
+    }
+    */
+}
+
+void TRTCCloudCore::onStopPublishing(int err,const char * errMsg)
+{
+    LINFO(L"onStartPublishing err[%d], errMsg[%s]\n", err, UTF82Wide(errMsg).c_str());
+    if(err == 0)
+    {
+        /*
+         CDataCenter::GetInstance()->m_strCustomStreamId = "";
+        std::unique_lock<std::mutex> lck(m_mutexMsgFilter);
+        for(auto& itr : m_mapSDKMsgFilter)
+        {
+            if(itr.first == WM_USER_CMD_OnStopPublishing && itr.second != nullptr)
+            {
+                ::PostMessage(itr.second,WM_USER_CMD_OnStopPublishing,0,0);
+            }
+        }
+        */
+    }
+}
+
 void TRTCCloudCore::onConnectionLost()
 {
     LINFO(L"onConnectionLost\n");
@@ -847,30 +889,52 @@ void TRTCCloudCore::startPreview(bool bSetting)
 {
     if (m_pCloud == nullptr)
         return;
-    //if (nCntLocalPreview == 0)
-    if (bSetting && m_mRefLocalPreview >0)
-    {
-        m_mRefLocalPreview++;
-        LINFO(L"startPreview m_mRefLocalPreview[%d], bSetting[1]\n", m_mRefLocalPreview);
+
+    //防重入
+    if (m_bStartCameraTest && bSetting)
+        return; 
+    if (m_bStartLocalPreview && !bSetting)
         return;
+
+    //判断是否还需要打开设备
+
+
+    if (bSetting)
+    {
+        if (!m_bStartLocalPreview)
+            m_pCloud->startCameraDeviceTest(NULL);
+        m_bStartCameraTest = true;
     }
-    m_pCloud->startLocalPreview(NULL);
-    m_mRefLocalPreview++;
-    LINFO(L"startPreview m_mRefLocalPreview[%d]\n", m_mRefLocalPreview);
+    else
+    {
+        m_pCloud->startLocalPreview(NULL);
+        m_bStartLocalPreview = true;
+    }
 }
 
-void TRTCCloudCore::stopPreview()
+void TRTCCloudCore::stopPreview(bool bSetting)
 {
-    m_mRefLocalPreview--;
-    if (m_mRefLocalPreview < 0)
-        m_mRefLocalPreview = 0;
-    if (m_mRefLocalPreview == 0)
+    if (bSetting)
     {
-        CDataCenter::GetInstance()->removeVideoMeta(m_localUserId, TRTCVideoStreamTypeBig);
-        m_pCloud->stopLocalPreview();
+        if (!m_bStartLocalPreview)
+            m_pCloud->stopCameraDeviceTest();
+        m_bStartCameraTest = false;
     }
-    LINFO(L"stopPreview m_mRefLocalPreview[%d]\n", m_mRefLocalPreview);
-  
+    else
+    {
+        if (m_bStartCameraTest)
+        {
+            //设置中心还在打开预览
+            m_pCloud->stopLocalPreview();
+            m_pCloud->startCameraDeviceTest(NULL);
+        }
+        else
+        {
+             m_pCloud->stopLocalPreview();
+        }
+        m_bStartLocalPreview = false;
+    }
+
 }
 
 void TRTCCloudCore::startScreen(HWND rendHwnd)
@@ -880,7 +944,6 @@ void TRTCCloudCore::startScreen(HWND rendHwnd)
 
 void TRTCCloudCore::stopScreen()
 {
-    CDataCenter::GetInstance()->removeVideoMeta(m_localUserId, TRTCVideoStreamTypeSub);
 	m_pCloud->stopScreenCapture();
 }
 
@@ -943,151 +1006,299 @@ void TRTCCloudCore::updateMixTranCodeInfo()
     if (m_bStartCloudMixStream == false)
         return;
 
-    std::vector<UserVideoMeta>& videoMeta = CDataCenter::GetInstance()->mixStreamVideoMeta;
-
-    if (videoMeta.size() == 0)
-    {
-        m_pCloud->setMixTranscodingConfig(NULL);
-        return;
-    }
-
-    if (CDataCenter::GetInstance()->m_bPureAudioStyle) 
-    {
-        for (auto& it : videoMeta)
-            it.bPureAudio = true;
-    }
-
-    UserVideoMeta localMainVideo;
-    for (auto& it : videoMeta)
-    {
-        if (it.userId == m_localUserId && it.streamType == TRTCVideoStreamTypeBig)
-        {
-            localMainVideo = it;
-        }
-    }
-
-    //没有主流，直接停止混流。
-    if (localMainVideo.userId == "")
-    {
-        m_pCloud->setMixTranscodingConfig(NULL);
-        return;
-    }
-
-    for (auto& it : videoMeta)
-    {
-        std::vector<PKUserInfo>& pkList = CDataCenter::GetInstance()->m_vecPKUserList;
-        std::vector<PKUserInfo>::iterator result;
-        for (result = pkList.begin(); result != pkList.end(); result++)
-        {
-            if (result->_userId.compare(it.userId.c_str()) == 0)
-            {
-                it.roomId = std::to_string(result->_roomId);
-                break;
-            }
-        }
-    }
-
-
-    int canvasWidth = 960, canvasHeight = 720;
-
     int appId = GenerateTestUserSig::APPID;
     int bizId = GenerateTestUserSig::BIZID;
 
-    if (appId == 0 || bizId == 0)
+    if(appId == 0 || bizId == 0)
     {
         LERROR(L"混流功能不可使用，请在TRTCGetUserIDAndUserSig.h->TXCloudAccountInfo填写混流的账号信息\n");
         return;
     }
 
-    // 更新混流信息
+    RemoteUserInfoList& remoteMetaInfo = CDataCenter::GetInstance()->m_remoteUser;
+    LocalUserInfo& localMetaInfo = CDataCenter::GetInstance()->getLocalUserInfo();
+
+    bool bAudioSenceStyle = false;
+    if(CDataCenter::GetInstance()->m_sceneParams ==  TRTCAppSceneAudioCall || CDataCenter::GetInstance()->m_sceneParams == TRTCAppSceneVoiceChatRoom)
+        bAudioSenceStyle = true;
+
+    //没有主流，直接停止混流。
+    if(!localMetaInfo.publish_audio && !localMetaInfo.publish_main_video)
+    {
+        m_pCloud->setMixTranscodingConfig(NULL);
+        return;
+    }
+
     TRTCTranscodingConfig config;
     config.mode = TRTCTranscodingConfigMode_Manual;
-    config.appId = 1252463788;
-    config.bizId = 3891;
-    config.videoWidth = canvasWidth;
-    config.videoHeight = canvasHeight;
+    config.appId = appId;
+    config.bizId = bizId;
     config.videoBitrate = 800;
     config.videoFramerate = 15;
     config.videoGOP = 1;
     config.audioSampleRate = 48000;
     config.audioBitrate = 64;
     config.audioChannels = 1;
-    config.mixUsersArraySize = videoMeta.size();
 
-    TRTCMixUser* mixUsersArray = new TRTCMixUser[config.mixUsersArraySize];
-    config.mixUsersArray = mixUsersArray;
-
-    int zOrder = 1, index = 0;
-    mixUsersArray[index].roomId = nullptr;
-    mixUsersArray[index].userId = localMainVideo.userId.c_str();
-    mixUsersArray[index].pureAudio = localMainVideo.bPureAudio;
-    mixUsersArray[index].rect.left = 0;
-    mixUsersArray[index].rect.top = 0;
-    mixUsersArray[index].rect.right = canvasWidth;
-    mixUsersArray[index].rect.bottom = canvasHeight;
-    mixUsersArray[index].streamType = (TRTCVideoStreamType)localMainVideo.streamType;
-    mixUsersArray[index].zOrder = zOrder++;
-
-    index++;
-
-    for (auto& it : videoMeta)
+    //没有远端流 A+画布->C / A+画布->A  / A->A  / A->C 的场景。
+    if(remoteMetaInfo.size() == 0 && !localMetaInfo.publish_sub_video)
     {
-        if (it.userId == m_localUserId && it.streamType == TRTCVideoStreamTypeBig)
-            continue;
+        //A->A  / A->C 的场景
+        int canvasWidth = 0,canvasHeight = 0;
 
-        int left = 20, top = 40;
-
-        if (zOrder == 2)
+        //A+画布->C / A+画布->A 
+        if (CDataCenter::GetInstance()->m_bOpenAudioAndCanvasMix)
         {
-            left = 240 / 4 * 3 + 240 * 2;
-            top = 240 / 3 * 1;
+            canvasWidth = 32;
+            canvasHeight = 32;
         }
-        if (zOrder == 3)
+        //如果是音视频，一定要添加背景画布
+        if(bAudioSenceStyle == false)
         {
-            left = 240 / 4 * 3 + 240 * 2;
-            top = 240 / 3 * 2 + 240 * 1;
-        }
-        if (zOrder == 4)
-        {
-            left = 240 / 4 * 2 + 240 * 1;
-            top = 240 / 3 * 1;
-        }
-        if (zOrder == 5)
-        {
-            left = 240 / 4 * 2 + 240 * 1;
-            top = 240 / 3 * 2 + 240 * 1;
-        }
-        if (zOrder == 6)
-        {
-            left = 240 / 4 * 1;
-            top = 240 / 3 * 1;
-        }
-        if (zOrder == 7)
-        {
-            left = 240 / 4 * 1;
-            top = 240 / 3 * 2 + 240 * 1;
+            canvasWidth = 960;
+            canvasHeight = 720;
         }
 
-        int right = 240 + left, bottom = 240 + top;
-        if (it.roomId.compare("") == 0)
-            mixUsersArray[index].roomId = nullptr;
+        int mixUsersArraySize = 1;
+
+        // 更新混流信息
+        config.videoWidth = canvasWidth;
+        config.videoHeight = canvasHeight;
+        config.mixUsersArraySize = mixUsersArraySize;
+        TRTCMixUser* mixUsersArray = new TRTCMixUser[config.mixUsersArraySize];
+        config.mixUsersArray = mixUsersArray;
+
+        //本地主路信息
+        int zOrder = 1,index = 0;
+        mixUsersArray[index].roomId = nullptr;
+        mixUsersArray[index].userId = localMetaInfo._userId.c_str();
+        if(bAudioSenceStyle)
+        {
+            mixUsersArray[index].pureAudio = true;
+        } 
         else
-            mixUsersArray[index].roomId = it.roomId.c_str();
-        mixUsersArray[index].userId = it.userId.c_str();
-        mixUsersArray[index].pureAudio = it.bPureAudio;
-        mixUsersArray[index].rect.left = left;
-        mixUsersArray[index].rect.top = top;
-        mixUsersArray[index].rect.right = right;
-        mixUsersArray[index].rect.bottom = bottom;
-        mixUsersArray[index].streamType = (TRTCVideoStreamType)it.streamType;
-        mixUsersArray[index].zOrder = zOrder;
-        zOrder++;
+        {
+            mixUsersArray[index].rect.left = 0;
+            mixUsersArray[index].rect.top = 0;
+            mixUsersArray[index].rect.right = canvasWidth;
+            mixUsersArray[index].rect.bottom = canvasHeight;
+        }
+        mixUsersArray[index].streamType = TRTCVideoStreamTypeBig;
+        mixUsersArray[index].zOrder = zOrder++;
         index++;
     }
+    else  
+    {
+        //其他的A+B...的场景。
+        for(auto& it : remoteMetaInfo)
+        {
+            std::vector<PKUserInfo>& pkList = CDataCenter::GetInstance()->m_vecPKUserList;
+            std::vector<PKUserInfo>::iterator result;
+            for(result = pkList.begin(); result != pkList.end(); result++)
+            {
+                if(result->_userId.compare(it.second.user_id.c_str()) == 0)
+                {
+                    it.second.room_id = result->_roomId;//std::to_string(result->_roomId);
+                    break;
+                }
+            }
+        }
+
+        bool pureAudioRemoteUser = true; //如果远端有音视频，则混流是音视频的。
+        for(auto& it : remoteMetaInfo)
+        {
+            if(it.second.subscribe_main_video || it.second.subscribe_sub_vidoe)
+                pureAudioRemoteUser = false;
+        }
+        int canvasWidth = 960,canvasHeight = 720;
+        if(bAudioSenceStyle && pureAudioRemoteUser && !localMetaInfo.publish_sub_video)
+        {
+            canvasWidth = 0;
+            canvasHeight = 0;
+            if(CDataCenter::GetInstance()->m_bOpenAudioAndCanvasMix)
+            {
+                //纯音频+画布模式。
+                canvasWidth = 32;
+                canvasHeight = 32;
+            }
+        }
+
+        int mixUsersArraySize = 1;
+        if(localMetaInfo.publish_sub_video)
+            mixUsersArraySize++;
+
+        for(auto& it : remoteMetaInfo)
+        {
+            if(it.second.subscribe_audio || it.second.subscribe_main_video)
+                mixUsersArraySize++;
+            if(it.second.subscribe_sub_vidoe)
+                mixUsersArraySize++;
+        }
+        if(mixUsersArraySize > 16)
+            mixUsersArraySize = 16;
+
+        // 更新混流信息
+        config.videoWidth = canvasWidth;
+        config.videoHeight = canvasHeight;
+        config.mixUsersArraySize = mixUsersArraySize;
+
+        TRTCMixUser* mixUsersArray = new TRTCMixUser[config.mixUsersArraySize];
+        config.mixUsersArray = mixUsersArray;
+
+        //本地主路信息
+        int zOrder = 1,index = 0;
+        mixUsersArray[index].roomId = nullptr;
+        mixUsersArray[index].userId = localMetaInfo._userId.c_str();
+        if(bAudioSenceStyle)
+        {
+            mixUsersArray[index].pureAudio = true;
+        } else
+        {
+            mixUsersArray[index].rect.left = 0;
+            mixUsersArray[index].rect.top = 0;
+            mixUsersArray[index].rect.right = canvasWidth;
+            mixUsersArray[index].rect.bottom = canvasHeight;
+        }
+        mixUsersArray[index].streamType = TRTCVideoStreamTypeBig;
+        mixUsersArray[index].zOrder = zOrder++;
+        index++;
+
+        //本地辅路信息
+        if(localMetaInfo.publish_sub_video)
+        {
+            int left = 20,top = 40;
+            int right = 240 + left,bottom = 240 + top;
+            getMixVideoPos(1,left,top,right,bottom);
+
+            mixUsersArray[index].roomId = nullptr;
+            mixUsersArray[index].userId = localMetaInfo._userId.c_str();
+            if (bAudioSenceStyle)
+            {
+                mixUsersArray[index].rect.left = 0;
+                mixUsersArray[index].rect.top = 0;
+                mixUsersArray[index].rect.right = canvasWidth;
+                mixUsersArray[index].rect.bottom = canvasHeight;
+            }
+            else
+            {
+                mixUsersArray[index].rect.left = left;
+                mixUsersArray[index].rect.top = top;
+                mixUsersArray[index].rect.right = right;
+                mixUsersArray[index].rect.bottom = bottom;
+            }
+            mixUsersArray[index].streamType = TRTCVideoStreamTypeSub;
+            mixUsersArray[index].zOrder = zOrder++;
+            index++;
+        }
+
+        int pos = index >= 2 ? 2 : 1; //第一个格子是辅路的信息。
+        for(auto& it : remoteMetaInfo)
+        {
+            if(it.second.user_id == m_localUserId)
+                continue;
+            int left = 20,top = 40;
+            int right = 240 + left,bottom = 240 + top;
+
+            if(it.second.subscribe_main_video || it.second.subscribe_audio)
+            {
+                getMixVideoPos(pos,left,top,right,bottom);
+                mixUsersArray[index].userId = it.second.user_id.c_str();
+                if(it.second.room_id == 0)
+                    mixUsersArray[index].roomId = nullptr;
+                else
+                {
+                    it.second.str_room_id = std::to_string(it.second.room_id);
+                    mixUsersArray[index].roomId = it.second.str_room_id.c_str();
+                }
+                mixUsersArray[index].streamType = TRTCVideoStreamTypeBig;
+                mixUsersArray[index].zOrder = zOrder;
+                if(it.second.subscribe_main_video == false)
+                {
+                    mixUsersArray[index].pureAudio = true;
+                } else
+                {
+                    mixUsersArray[index].rect.left = left;
+                    mixUsersArray[index].rect.top = top;
+                    mixUsersArray[index].rect.right = right;
+                    mixUsersArray[index].rect.bottom = bottom;
+                    pos++;
+                }
+                zOrder++;
+                index++;
+            }
+
+            if(it.second.subscribe_sub_vidoe)
+            {
+                getMixVideoPos(pos,left,top,right,bottom);
+                mixUsersArray[index].userId = it.second.user_id.c_str();
+                if(it.second.room_id == 0)
+                    mixUsersArray[index].roomId = nullptr;
+                else
+                {
+                    it.second.str_room_id = std::to_string(it.second.room_id);
+                    mixUsersArray[index].roomId = it.second.str_room_id.c_str();
+                }
+                mixUsersArray[index].streamType = TRTCVideoStreamTypeSub;
+                mixUsersArray[index].zOrder = zOrder;
+                mixUsersArray[index].rect.left = left;
+                mixUsersArray[index].rect.top = top;
+                mixUsersArray[index].rect.right = right;
+                mixUsersArray[index].rect.bottom = bottom;
+                pos++;
+                zOrder++;
+                index++;
+            }
+        }
+    }
+    config.backgroundColor = 0x696969;
+    /*
+    if (CDataCenter::GetInstance()->m_strMixStreamId.empty() == false)
+    {
+        config.streamId = CDataCenter::GetInstance()->m_strMixStreamId.c_str();
+    }
+    */
+
     if (m_pCloud)
     {
         m_pCloud->setMixTranscodingConfig(&config);
     }
+}
+
+void TRTCCloudCore::getMixVideoPos(int index, int& left, int& top, int& right, int& bottom)
+{
+    left = 20,top = 40;
+    if(index == 1)
+    {
+        left = 240 / 4 * 3 + 240 * 2;
+        top = 240 / 3 * 1;
+    }
+    if(index == 2)
+    {
+        left = 240 / 4 * 3 + 240 * 2;
+        top = 240 / 3 * 2 + 240 * 1;
+    }
+    if(index == 3)
+    {
+        left = 240 / 4 * 2 + 240 * 1;
+        top = 240 / 3 * 1;
+    }
+    if(index == 4)
+    {
+        left = 240 / 4 * 2 + 240 * 1;
+        top = 240 / 3 * 2 + 240 * 1;
+    }
+    if(index == 5)
+    {
+        left = 240 / 4 * 1;
+        top = 240 / 3 * 1;
+    }
+    if(index == 6)
+    {
+        left = 240 / 4 * 1;
+        top = 240 / 3 * 2 + 240 * 1;
+    }
+    right = 240 + left;
+    bottom = 240 + top;
 }
 
 void TRTCCloudCore::startCustomCaptureAudio(std::wstring filePat, int samplerate, int channel)
@@ -1144,8 +1355,8 @@ void TRTCCloudCore::stopCustomCaptureAudio()
     if (m_pCloud)
         m_pCloud->enableCustomAudioCapture(false);
 
-    CDataCenter::LocalUserInfo& _loginInfo = CDataCenter::GetInstance()->m_loginInfo;
-    if (_loginInfo._bMuteAudio == false && m_bPreUninit == false)
+    LocalUserInfo& _loginInfo = CDataCenter::GetInstance()->m_localInfo;
+    if (_loginInfo.publish_audio && m_bPreUninit == false)
         m_pCloud->startLocalAudio();
 }
 
@@ -1194,7 +1405,7 @@ void TRTCCloudCore::stopCustomCaptureVideo()
     }
     if (m_pCloud)
         m_pCloud->enableCustomVideoCapture(false);
-    if (m_mRefLocalPreview && m_bPreUninit == false)
+    if (m_bStartLocalPreview && m_bPreUninit == false)
         m_pCloud->startLocalPreview(NULL);
 
     if (custom_video_thread_)

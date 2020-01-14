@@ -8,12 +8,31 @@
 class CConfigMgr;
 
 
-typedef struct _tagRemoteUserInfo
+typedef struct RemoteUserInfo
 {
-    bool _bSubscribeAudio = false;
-    bool _bSubscribeVideo = false;
-    bool bEnterRoom = false;
+    std::string user_id = "";
+    uint32_t room_id = 0;
+    std::string str_room_id = "";
+    bool available_main_video = false;
+    bool available_sub_video = false;
+    bool available_audio = false;
+    bool subscribe_audio = false;
+    bool subscribe_main_video = false;
+    bool subscribe_sub_vidoe = false;
 }RemoteUserInfo;
+
+typedef struct _tagLocalUserInfo {
+public:
+    _tagLocalUserInfo() {};
+    std::string _userId = "test_trtc_01";
+    std::string _pwd = "12345678";
+    int _roomId = 1222222;
+    std::string _userSig;
+    bool _bEnterRoom = false;
+    bool publish_audio = false;
+    bool publish_main_video = false;
+    bool publish_sub_video = false;
+}LocalUserInfo;
 
 typedef struct _tagPKUserInfo
 {
@@ -22,36 +41,11 @@ typedef struct _tagPKUserInfo
     bool bEnterRoom = false;
 }PKUserInfo;
 
-struct UserVideoMeta
-{
-    std::string userId = "";
-    std::string roomId = "";
-
-    int streamType = 0;
-    uint32_t width = 0;
-    uint32_t height = 0;
-    uint32_t fps = 0;
-    bool bPureAudio = false;
-    bool bMainStream = false;
-};
-
-typedef std::multimap<std::pair<std::string, TRTCVideoStreamType>, RemoteUserInfo> RemoteUserListMap;
+typedef std::map<std::string, RemoteUserInfo> RemoteUserInfoList;
 
 class CDataCenter
 {
 public:
-   typedef struct _tagLocalUserInfo {
-    public:
-        _tagLocalUserInfo() {};
-        std::string _userId = "test_trtc_01";
-        std::string _pwd = "12345678";
-        int _roomId = 1222222;
-        std::string _userSig;
-        bool _bEnterRoom = false;
-        bool _bMuteAudio = false;
-        bool _bMuteVideo = false;
-    }LocalUserInfo;
-
     typedef struct _tagBeautyConfig {
         bool _bOpenBeauty = false;
         TRTCBeautyStyle _beautyStyle = TRTCBeautyStyleSmooth;
@@ -89,7 +83,7 @@ public:
     void Init();    //初始化SDK的local配置信息
 public:
     LocalUserInfo& getLocalUserInfo();
-    std::string getLocalUserID() { return m_loginInfo._userId; };
+    std::string getLocalUserID() { return m_localInfo._userId; };
     VideoResBitrateTable getVideoConfigInfo(int resolution);
 public:
     void WriteEngineConfig();
@@ -118,8 +112,7 @@ public: //trtc
     };
     */
     int m_nLinkTestServer = 0; //是否连接测试环境。
-
-    bool m_bPureAudioStyle = false; //是否纯音频模式。
+    bool m_bOpenDemoTestConfig = false; //是否打开demo的测试环境开关。。
 
     bool m_bAutoRecvAudio = true;
     bool m_bAutoRecvVideo = true;
@@ -127,12 +120,9 @@ public: //trtc
     bool m_bLocalVideoMirror = false;      //本地镜像
     bool m_bRemoteVideoMirror = false;     //暂不支持
     bool m_bShowAudioVolume =   true;      //开启音量提示
-    bool m_bCDNMixTranscoding = false;     //混流设置
 
     bool m_bCustomAudioCapture = false;    //自定义采集音频
     bool m_bCustomVideoCapture = false;    //自定义采集视频
-
-    bool m_bStartScreenShare = false;
 
     bool m_bEnableAec = true;
     bool m_bEnableAns = true;
@@ -141,25 +131,37 @@ public: //trtc
     std::string m_strSocks5ProxyIp;
     int         m_strSocks5ProxyPort = 0;
 
+    bool m_bOpenAudioAndCanvasMix = false; //开启纯音频+画布混流模式。
+    bool m_bCDNMixTranscoding = false;     //混流设置
+    std::string m_strMixStreamId;
+    std::string m_strCustomStreamId;
+
     std::map<int, VideoResBitrateTable> m_videoConfigMap;
-
-
     uint32_t m_micVolume = 100;
     uint32_t m_speakerVolume = 100;
-public:  //混流信息
-    std::vector<UserVideoMeta> mixStreamVideoMeta;
-    void removeVideoMeta(std::string userId, int streamType);
+    uint32_t m_audioCaptureVolume = 100; // 软件采集音量
+    uint32_t m_audioPlayoutVolume = 100; // 软件播放音量（人声）
 
-public:  //视频窗口信息
-    RemoteUserListMap m_remoteUser;
-    void removeRemoteUser(std::string userId, int streamType = -1);
+
+    //录制参数
+    bool m_bStartLocalRecord = false;
+    bool m_bWaitStartRecordNotify = false;
+    bool m_bPauseLocalRecord = false;
+    LiteAVScreenCaptureSourceInfo m_recordCaptureSourceInfo;
+    std::wstring m_recordCaptureSourceInfoName;
+    RECT m_recordCaptureRect = {0};
+    std::wstring m_wstrRecordFile;
+public: 
+    //远端用户信息
+    RemoteUserInfoList m_remoteUser;
+    void addRemoteUser(std::string userId, bool bClear = true);
+    void removeRemoteUser(std::string userId);
+    RemoteUserInfo &FindRemoteUser(std::string userId);
 public:
     CConfigMgr* m_pConfigMgr;
 
-    LocalUserInfo m_loginInfo;
+    LocalUserInfo m_localInfo;
 
     std::vector<PKUserInfo> m_vecPKUserList;
-
-
 };
 

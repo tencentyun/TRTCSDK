@@ -72,7 +72,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.userLabel.AutoSize = true;
             this.userLabel.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.userLabel.Location = new System.Drawing.Point(43, 102);
+            this.userLabel.Location = new System.Drawing.Point(43, 165);
             this.userLabel.Name = "userLabel";
             this.userLabel.Size = new System.Drawing.Size(58, 21);
             this.userLabel.TabIndex = 1;
@@ -84,7 +84,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.roomLabel.AutoSize = true;
             this.roomLabel.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.roomLabel.Location = new System.Drawing.Point(43, 166);
+            this.roomLabel.Location = new System.Drawing.Point(43, 106);
             this.roomLabel.Name = "roomLabel";
             this.roomLabel.Size = new System.Drawing.Size(58, 21);
             this.roomLabel.TabIndex = 2;
@@ -109,7 +109,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.userPanel.BackColor = System.Drawing.Color.White;
             this.userPanel.Controls.Add(this.userTextBox);
-            this.userPanel.Location = new System.Drawing.Point(107, 93);
+            this.userPanel.Location = new System.Drawing.Point(107, 156);
             this.userPanel.Name = "userPanel";
             this.userPanel.Padding = new System.Windows.Forms.Padding(15, 0, 0, 0);
             this.userPanel.Size = new System.Drawing.Size(265, 40);
@@ -135,7 +135,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.roomPanel.BackColor = System.Drawing.Color.White;
             this.roomPanel.Controls.Add(this.roomTextBox);
-            this.roomPanel.Location = new System.Drawing.Point(107, 156);
+            this.roomPanel.Location = new System.Drawing.Point(107, 96);
             this.roomPanel.Name = "roomPanel";
             this.roomPanel.Size = new System.Drawing.Size(265, 40);
             this.roomPanel.TabIndex = 4;

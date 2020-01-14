@@ -44,8 +44,8 @@ public:
     virtual void onWarning(TXLiteAVWarning warningCode, const char* warningMsg, void* arg);
     virtual void onEnterRoom(int result);
     virtual void onExitRoom(int reason);
-    virtual void onUserEnter(const char* userId);
-    virtual void onUserExit(const char* userId, int reason);
+    virtual void onRemoteUserEnterRoom(const char* userId);
+    virtual void onRemoteUserLeaveRoom(const char* userId, int reason);
     virtual void onUserAudioAvailable(const char* userId, bool available);
     virtual void onUserVoiceVolume(TRTCVolumeInfo* userVolumes, uint32_t userVolumesCount, uint32_t totalVolume);
 	virtual void onUserSubStreamAvailable(const char* userId, bool available);
@@ -72,6 +72,9 @@ public:
     virtual void onSendFirstLocalVideoFrame(const TRTCVideoStreamType streamType);
     virtual void onSendFirstLocalAudioFrame();
     virtual void onAudioEffectFinished(int effectId, int code);
+    virtual void onStartPublishing(int err, const char *errMsg);
+    virtual void onStopPublishing(int err, const char *errMsg);
+    
 public:
     void regSDKMsgObserver(uint32_t msg, HWND hwnd);
     void removeSDKMsgObserver(uint32_t msg, HWND hwnd);
@@ -87,7 +90,7 @@ public:
     void selectCameraDevice(std::wstring text);
     //此处要添加引用计数，支持多处渲染
     void startPreview(bool bSetting = false);
-    void stopPreview();
+    void stopPreview(bool bSetting = false);
 	void startScreen(HWND rendHwnd);
 	void stopScreen();
     void startMedia(const char *mediaFile, HWND rendHwnd);
@@ -102,6 +105,7 @@ public:
     void startCloudMixStream();
     void stopCloudMixStream();
     void updateMixTranCodeInfo();
+    void getMixVideoPos(int index, int& left, int& top, int& right, int& bottom);
 
     void startCustomCaptureAudio(std::wstring filePath, int samplerate, int channel);
     void stopCustomCaptureAudio();
@@ -122,13 +126,14 @@ private:
     std::mutex m_mutexMsgFilter;
     ITRTCCloud* m_pCloud = nullptr;
     ITXVodPlayer* m_pVodPlayer = nullptr;
-    int m_mRefLocalPreview = 0;
+    bool m_bStartLocalPreview = false;
+    bool m_bStartCameraTest = false;
     bool m_bFirstUpdateDevice = false;
 
     //云端混流功能
 
     bool m_bStartCloudMixStream = false;
-    std::map<std::string, UserVideoMeta> m_mapMixTranCodeInfo;
+
 
     //自定义采集功能:
     std::wstring m_videoFilePath, m_audioFilePath;

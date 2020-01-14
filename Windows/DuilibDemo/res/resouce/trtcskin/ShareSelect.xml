@@ -15,7 +15,7 @@
 
     <HorizontalLayout height="50" childalign="center" inset="0,10,0,0">
 		<VerticalLayout width="185"/>
-      <Button name="btnConfirm" text="开始共享" textcolor="#FF000000" textpadding="6,0,6,0" style="btn_style" width="110" height="28"/>
+      <Button name="btnConfirm" text="选择窗口" textcolor="#FF000000" textpadding="6,0,6,0" style="btn_style" width="110" height="28"/>
     </HorizontalLayout>
   </VerticalLayout>
 </Window>

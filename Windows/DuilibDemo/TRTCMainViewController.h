@@ -41,8 +41,8 @@ public:
     //消息响应函数：
     void onEnterRoom(int result);     //进房成功响应
     void onExitRoom(int reason);            //退出成功响应
-    void onUserEnter(std::string userId);   //远端用户进房响应
-    void onUserExit(std::string userId);    //远端用户退房响应
+    void onRemoteUserEnterRoom(std::string userId);   //远端用户进房响应
+    void onRemoteUserLeaveRoom(std::string userId);    //远端用户退房响应
 	void onSubVideoAvailable(std::string userId, bool available);   //远端辅路视频状态切换通知。
 	void onVideoAvailable(std::string userId, bool available);      //远端主路视频状态切换通知。
     void onAudioAvailable(std::string userId, bool available);      //远端音频主路状态切换通知。

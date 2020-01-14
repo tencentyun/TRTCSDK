@@ -62,8 +62,8 @@ namespace TRTCCSharpDemo
             this.remoteVoiceProgressBar4 = new System.Windows.Forms.ProgressBar();
             this.remoteUserLabel5 = new System.Windows.Forms.Label();
             this.remoteVideoPanel5 = new System.Windows.Forms.Panel();
-            this.remoteInfoLabel5 = new System.Windows.Forms.Label();
             this.remoteVoiceProgressBar5 = new System.Windows.Forms.ProgressBar();
+            this.remoteInfoLabel5 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.voiceCheckBox = new System.Windows.Forms.CheckBox();
             this.customCaptureCheckBox = new System.Windows.Forms.CheckBox();
@@ -274,7 +274,7 @@ namespace TRTCCSharpDemo
             this.localVideoPanel.Controls.Add(this.localInfoLabel);
             this.localVideoPanel.Location = new System.Drawing.Point(25, 87);
             this.localVideoPanel.Name = "localVideoPanel";
-            this.localVideoPanel.Size = new System.Drawing.Size(319, 289);
+            this.localVideoPanel.Size = new System.Drawing.Size(320, 290);
             this.localVideoPanel.TabIndex = 8;
             // 
             // localInfoLabel
@@ -282,8 +282,9 @@ namespace TRTCCSharpDemo
             this.localInfoLabel.BackColor = System.Drawing.Color.Gainsboro;
             this.localInfoLabel.Font = new System.Drawing.Font("微软雅黑", 12F);
             this.localInfoLabel.Location = new System.Drawing.Point(0, 0);
+            this.localInfoLabel.Margin = new System.Windows.Forms.Padding(0);
             this.localInfoLabel.Name = "localInfoLabel";
-            this.localInfoLabel.Size = new System.Drawing.Size(319, 289);
+            this.localInfoLabel.Size = new System.Drawing.Size(320, 290);
             this.localInfoLabel.TabIndex = 1;
             this.localInfoLabel.Text = "视频已关闭";
             this.localInfoLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -292,9 +293,10 @@ namespace TRTCCSharpDemo
             // localVoiceProgressBar
             // 
             this.localVoiceProgressBar.ForeColor = System.Drawing.Color.Green;
-            this.localVoiceProgressBar.Location = new System.Drawing.Point(25, 376);
+            this.localVoiceProgressBar.Location = new System.Drawing.Point(25, 377);
+            this.localVoiceProgressBar.Margin = new System.Windows.Forms.Padding(0);
             this.localVoiceProgressBar.Name = "localVoiceProgressBar";
-            this.localVoiceProgressBar.Size = new System.Drawing.Size(319, 6);
+            this.localVoiceProgressBar.Size = new System.Drawing.Size(320, 6);
             this.localVoiceProgressBar.TabIndex = 15;
             this.localVoiceProgressBar.Visible = false;
             // 
@@ -305,7 +307,7 @@ namespace TRTCCSharpDemo
             this.remoteVideoPanel1.Controls.Add(this.remoteInfoLabel1);
             this.remoteVideoPanel1.Location = new System.Drawing.Point(405, 87);
             this.remoteVideoPanel1.Name = "remoteVideoPanel1";
-            this.remoteVideoPanel1.Size = new System.Drawing.Size(319, 289);
+            this.remoteVideoPanel1.Size = new System.Drawing.Size(320, 290);
             this.remoteVideoPanel1.TabIndex = 9;
             // 
             // remoteInfoLabel1
@@ -313,8 +315,9 @@ namespace TRTCCSharpDemo
             this.remoteInfoLabel1.BackColor = System.Drawing.Color.Gainsboro;
             this.remoteInfoLabel1.Font = new System.Drawing.Font("微软雅黑", 12F);
             this.remoteInfoLabel1.Location = new System.Drawing.Point(0, 0);
+            this.remoteInfoLabel1.Margin = new System.Windows.Forms.Padding(0);
             this.remoteInfoLabel1.Name = "remoteInfoLabel1";
-            this.remoteInfoLabel1.Size = new System.Drawing.Size(319, 289);
+            this.remoteInfoLabel1.Size = new System.Drawing.Size(320, 290);
             this.remoteInfoLabel1.TabIndex = 0;
             this.remoteInfoLabel1.Text = "对方未开启视频";
             this.remoteInfoLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -323,9 +326,10 @@ namespace TRTCCSharpDemo
             // remoteVoiceProgressBar1
             // 
             this.remoteVoiceProgressBar1.ForeColor = System.Drawing.Color.Green;
-            this.remoteVoiceProgressBar1.Location = new System.Drawing.Point(405, 376);
+            this.remoteVoiceProgressBar1.Location = new System.Drawing.Point(405, 377);
+            this.remoteVoiceProgressBar1.Margin = new System.Windows.Forms.Padding(0);
             this.remoteVoiceProgressBar1.Name = "remoteVoiceProgressBar1";
-            this.remoteVoiceProgressBar1.Size = new System.Drawing.Size(319, 6);
+            this.remoteVoiceProgressBar1.Size = new System.Drawing.Size(320, 6);
             this.remoteVoiceProgressBar1.TabIndex = 16;
             this.remoteVoiceProgressBar1.Visible = false;
             // 
@@ -336,7 +340,7 @@ namespace TRTCCSharpDemo
             this.remoteVideoPanel2.Controls.Add(this.remoteInfoLabel2);
             this.remoteVideoPanel2.Location = new System.Drawing.Point(779, 87);
             this.remoteVideoPanel2.Name = "remoteVideoPanel2";
-            this.remoteVideoPanel2.Size = new System.Drawing.Size(319, 289);
+            this.remoteVideoPanel2.Size = new System.Drawing.Size(320, 290);
             this.remoteVideoPanel2.TabIndex = 10;
             // 
             // remoteInfoLabel2
@@ -344,8 +348,9 @@ namespace TRTCCSharpDemo
             this.remoteInfoLabel2.BackColor = System.Drawing.Color.Gainsboro;
             this.remoteInfoLabel2.Font = new System.Drawing.Font("微软雅黑", 12F);
             this.remoteInfoLabel2.Location = new System.Drawing.Point(0, 0);
+            this.remoteInfoLabel2.Margin = new System.Windows.Forms.Padding(0);
             this.remoteInfoLabel2.Name = "remoteInfoLabel2";
-            this.remoteInfoLabel2.Size = new System.Drawing.Size(319, 289);
+            this.remoteInfoLabel2.Size = new System.Drawing.Size(320, 290);
             this.remoteInfoLabel2.TabIndex = 1;
             this.remoteInfoLabel2.Text = "对方未开启视频";
             this.remoteInfoLabel2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -354,9 +359,10 @@ namespace TRTCCSharpDemo
             // remoteVoiceProgressBar2
             // 
             this.remoteVoiceProgressBar2.ForeColor = System.Drawing.Color.Green;
-            this.remoteVoiceProgressBar2.Location = new System.Drawing.Point(779, 376);
+            this.remoteVoiceProgressBar2.Location = new System.Drawing.Point(779, 377);
+            this.remoteVoiceProgressBar2.Margin = new System.Windows.Forms.Padding(0);
             this.remoteVoiceProgressBar2.Name = "remoteVoiceProgressBar2";
-            this.remoteVoiceProgressBar2.Size = new System.Drawing.Size(319, 6);
+            this.remoteVoiceProgressBar2.Size = new System.Drawing.Size(320, 6);
             this.remoteVoiceProgressBar2.TabIndex = 17;
             this.remoteVoiceProgressBar2.Visible = false;
             // 
@@ -367,7 +373,7 @@ namespace TRTCCSharpDemo
             this.remoteVideoPanel3.Controls.Add(this.remoteInfoLabel3);
             this.remoteVideoPanel3.Location = new System.Drawing.Point(25, 426);
             this.remoteVideoPanel3.Name = "remoteVideoPanel3";
-            this.remoteVideoPanel3.Size = new System.Drawing.Size(319, 289);
+            this.remoteVideoPanel3.Size = new System.Drawing.Size(320, 290);
             this.remoteVideoPanel3.TabIndex = 9;
             // 
             // remoteInfoLabel3
@@ -375,8 +381,9 @@ namespace TRTCCSharpDemo
             this.remoteInfoLabel3.BackColor = System.Drawing.Color.Gainsboro;
             this.remoteInfoLabel3.Font = new System.Drawing.Font("微软雅黑", 12F);
             this.remoteInfoLabel3.Location = new System.Drawing.Point(0, 0);
+            this.remoteInfoLabel3.Margin = new System.Windows.Forms.Padding(0);
             this.remoteInfoLabel3.Name = "remoteInfoLabel3";
-            this.remoteInfoLabel3.Size = new System.Drawing.Size(319, 289);
+            this.remoteInfoLabel3.Size = new System.Drawing.Size(320, 290);
             this.remoteInfoLabel3.TabIndex = 2;
             this.remoteInfoLabel3.Text = "对方未开启视频";
             this.remoteInfoLabel3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -385,9 +392,10 @@ namespace TRTCCSharpDemo
             // remoteVoiceProgressBar3
             // 
             this.remoteVoiceProgressBar3.ForeColor = System.Drawing.Color.Green;
-            this.remoteVoiceProgressBar3.Location = new System.Drawing.Point(25, 715);
+            this.remoteVoiceProgressBar3.Location = new System.Drawing.Point(25, 716);
+            this.remoteVoiceProgressBar3.Margin = new System.Windows.Forms.Padding(0);
             this.remoteVoiceProgressBar3.Name = "remoteVoiceProgressBar3";
-            this.remoteVoiceProgressBar3.Size = new System.Drawing.Size(319, 6);
+            this.remoteVoiceProgressBar3.Size = new System.Drawing.Size(320, 6);
             this.remoteVoiceProgressBar3.TabIndex = 18;
             this.remoteVoiceProgressBar3.Visible = false;
             // 
@@ -407,7 +415,7 @@ namespace TRTCCSharpDemo
             this.remoteVideoPanel4.Controls.Add(this.remoteInfoLabel4);
             this.remoteVideoPanel4.Location = new System.Drawing.Point(405, 426);
             this.remoteVideoPanel4.Name = "remoteVideoPanel4";
-            this.remoteVideoPanel4.Size = new System.Drawing.Size(319, 289);
+            this.remoteVideoPanel4.Size = new System.Drawing.Size(320, 290);
             this.remoteVideoPanel4.TabIndex = 11;
             // 
             // remoteInfoLabel4
@@ -415,8 +423,9 @@ namespace TRTCCSharpDemo
             this.remoteInfoLabel4.BackColor = System.Drawing.Color.Gainsboro;
             this.remoteInfoLabel4.Font = new System.Drawing.Font("微软雅黑", 12F);
             this.remoteInfoLabel4.Location = new System.Drawing.Point(0, 0);
+            this.remoteInfoLabel4.Margin = new System.Windows.Forms.Padding(0);
             this.remoteInfoLabel4.Name = "remoteInfoLabel4";
-            this.remoteInfoLabel4.Size = new System.Drawing.Size(319, 289);
+            this.remoteInfoLabel4.Size = new System.Drawing.Size(320, 290);
             this.remoteInfoLabel4.TabIndex = 1;
             this.remoteInfoLabel4.Text = "对方未开启视频";
             this.remoteInfoLabel4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -425,9 +434,10 @@ namespace TRTCCSharpDemo
             // remoteVoiceProgressBar4
             // 
             this.remoteVoiceProgressBar4.ForeColor = System.Drawing.Color.Green;
-            this.remoteVoiceProgressBar4.Location = new System.Drawing.Point(405, 715);
+            this.remoteVoiceProgressBar4.Location = new System.Drawing.Point(405, 716);
+            this.remoteVoiceProgressBar4.Margin = new System.Windows.Forms.Padding(0);
             this.remoteVoiceProgressBar4.Name = "remoteVoiceProgressBar4";
-            this.remoteVoiceProgressBar4.Size = new System.Drawing.Size(319, 6);
+            this.remoteVoiceProgressBar4.Size = new System.Drawing.Size(320, 6);
             this.remoteVoiceProgressBar4.TabIndex = 19;
             this.remoteVoiceProgressBar4.Visible = false;
             // 
@@ -450,26 +460,28 @@ namespace TRTCCSharpDemo
             this.remoteVideoPanel5.Size = new System.Drawing.Size(319, 289);
             this.remoteVideoPanel5.TabIndex = 13;
             // 
+            // remoteVoiceProgressBar5
+            // 
+            this.remoteVoiceProgressBar5.ForeColor = System.Drawing.Color.Green;
+            this.remoteVoiceProgressBar5.Location = new System.Drawing.Point(779, 716);
+            this.remoteVoiceProgressBar5.Margin = new System.Windows.Forms.Padding(0);
+            this.remoteVoiceProgressBar5.Name = "remoteVoiceProgressBar5";
+            this.remoteVoiceProgressBar5.Size = new System.Drawing.Size(320, 6);
+            this.remoteVoiceProgressBar5.TabIndex = 20;
+            this.remoteVoiceProgressBar5.Visible = false;
+            // 
             // remoteInfoLabel5
             // 
             this.remoteInfoLabel5.BackColor = System.Drawing.Color.Gainsboro;
             this.remoteInfoLabel5.Font = new System.Drawing.Font("微软雅黑", 12F);
             this.remoteInfoLabel5.Location = new System.Drawing.Point(0, 0);
+            this.remoteInfoLabel5.Margin = new System.Windows.Forms.Padding(0);
             this.remoteInfoLabel5.Name = "remoteInfoLabel5";
-            this.remoteInfoLabel5.Size = new System.Drawing.Size(319, 289);
+            this.remoteInfoLabel5.Size = new System.Drawing.Size(320, 290);
             this.remoteInfoLabel5.TabIndex = 2;
             this.remoteInfoLabel5.Text = "对方未开启视频";
             this.remoteInfoLabel5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.remoteInfoLabel5.Visible = false;
-            // 
-            // remoteVoiceProgressBar5
-            // 
-            this.remoteVoiceProgressBar5.ForeColor = System.Drawing.Color.Green;
-            this.remoteVoiceProgressBar5.Location = new System.Drawing.Point(779, 715);
-            this.remoteVoiceProgressBar5.Name = "remoteVoiceProgressBar5";
-            this.remoteVoiceProgressBar5.Size = new System.Drawing.Size(319, 6);
-            this.remoteVoiceProgressBar5.TabIndex = 20;
-            this.remoteVoiceProgressBar5.Visible = false;
             // 
             // panel2
             // 
@@ -628,11 +640,11 @@ namespace TRTCCSharpDemo
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(1127, 776);
             this.Controls.Add(this.remoteVoiceProgressBar5);
+            this.Controls.Add(this.localVoiceProgressBar);
             this.Controls.Add(this.remoteVoiceProgressBar4);
             this.Controls.Add(this.remoteVoiceProgressBar3);
             this.Controls.Add(this.remoteVoiceProgressBar2);
             this.Controls.Add(this.remoteVoiceProgressBar1);
-            this.Controls.Add(this.localVoiceProgressBar);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.remoteUserLabel5);
             this.Controls.Add(this.remoteVideoPanel5);

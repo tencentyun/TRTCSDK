@@ -235,7 +235,7 @@ void MainViewBottomBar::Notify(TNotifyUI& msg)
             pMenu->ResizeMenu();
         }
 		else if (msg.pSender->GetName() == _T("btn_open_screen")) {
-			if (CDataCenter::GetInstance()->m_bStartScreenShare) {
+			if (CDataCenter::GetInstance()->m_localInfo.publish_sub_video) {
 				CButtonUI* pBtn = static_cast<CButtonUI*>(msg.pSender);
 				if (pBtn){
                     TRTCScreenCaptureSourceInfo info{};
@@ -386,19 +386,20 @@ LRESULT MainViewBottomBar::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lPara
     }
 	else if (uMsg == WM_USER_CMD_ScreenStart)
 	{
-        LINFO(L"WM_USER_CMD_ScreenStart m_bStartScreenShare: %d", CDataCenter::GetInstance()->m_bStartScreenShare);
+        LINFO(L"WM_USER_CMD_ScreenStart m_bStartScreenShare: %d", CDataCenter::GetInstance()->m_localInfo.publish_sub_video);
 		CButtonUI* pBtn = static_cast<CButtonUI*>(m_pMainWnd->getPaintManagerUI().FindControl(_T("btn_open_screen")));
 		if (pBtn) {
 			pBtn->SetForeImage(L"dest='24,4,50,30' source='0,0,26,26' res='bottom/screen_share_start.png'");
 			pBtn->SetText(L"关闭分享");
 		}
-        CDataCenter::GetInstance()->m_bStartScreenShare = true;
+        CDataCenter::GetInstance()->m_localInfo.publish_sub_video = true;
         TRTCShareScreenToolMgr::GetInstance()->createToolWnd(CDataCenter::GetInstance()->getLocalUserID());
         //TRTCShareScreenToolMgr::GetInstance()->showScreenVideoView(true);
+        TRTCCloudCore::GetInstance()->updateMixTranCodeInfo();
 	}
 	else if (uMsg == WM_USER_CMD_ScreenEnd)
 	{
-        LINFO(L"WM_USER_CMD_ScreenEnd m_bStartScreenShare: %d", CDataCenter::GetInstance()->m_bStartScreenShare);
+        LINFO(L"WM_USER_CMD_ScreenEnd m_bStartScreenShare: %d", CDataCenter::GetInstance()->m_localInfo.publish_sub_video);
 		CButtonUI* pBtn = static_cast<CButtonUI*>(m_pMainWnd->getPaintManagerUI().FindControl(_T("btn_open_screen")));
 		if (pBtn) {
             pBtn->SetForeImage(L"dest='24,4,50,30' source='0,0,26,26' res='bottom/screen_share_normal.png'");
@@ -407,8 +408,7 @@ LRESULT MainViewBottomBar::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lPara
         TRTCCloudCore::GetInstance()->stopScreen();
         TRTCShareScreenToolMgr::GetInstance()->destroyToolWnd();
 
-        CDataCenter::GetInstance()->m_bStartScreenShare = false;
-        CDataCenter::GetInstance()->removeVideoMeta(CDataCenter::GetInstance()->getLocalUserID(), TRTCVideoStreamTypeSub);
+        CDataCenter::GetInstance()->m_localInfo.publish_sub_video = false;
         TRTCCloudCore::GetInstance()->updateMixTranCodeInfo();
 	}
 	else if (uMsg == WM_USER_CMD_VodStart)
@@ -419,7 +419,7 @@ LRESULT MainViewBottomBar::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lPara
 			//pBtn->SetForeImage(L"dest='22,3,52,33' source='0,0,30,30' res='bottom/camera_open.png'");
 			pBtn->SetText(L"关闭播片");
 		}
-        CDataCenter::LocalUserInfo info = CDataCenter::GetInstance()->getLocalUserInfo();
+        LocalUserInfo info = CDataCenter::GetInstance()->getLocalUserInfo();
 		m_pMainWnd->getTRTCVideoViewLayout()->dispatchVideoView(UTF82Wide(info._userId), TRTCVideoStreamType::TRTCVideoStreamTypeSub);
 
 	}
@@ -431,7 +431,7 @@ LRESULT MainViewBottomBar::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lPara
 			pBtn->SetText(L"启动播片");
 		}		
 		m_bPlay = false;
-        CDataCenter::LocalUserInfo info = CDataCenter::GetInstance()->getLocalUserInfo();
+        LocalUserInfo info = CDataCenter::GetInstance()->getLocalUserInfo();
 		m_pMainWnd->getTRTCVideoViewLayout()->deleteVideoView(UTF82Wide(info._userId), TRTCVideoStreamType::TRTCVideoStreamTypeSub);
 	}
     return 0;
@@ -440,7 +440,7 @@ LRESULT MainViewBottomBar::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lPara
 void MainViewBottomBar::RefreshVideoDevice()
 {
     std::wstring selectOldDevice = CDataCenter::GetInstance()->m_selectCamera;
-    bool _bMuteVideo = CDataCenter::GetInstance()->m_loginInfo._bMuteVideo;
+    bool publish_main_video = CDataCenter::GetInstance()->m_localInfo.publish_main_video;
     std::vector<TRTCCloudCore::MediaDeviceInfo> vecDevice = TRTCCloudCore::GetInstance()->getCameraDevice();
     std::wstring selectNewDevice = L"Unknow";
     for (auto info : vecDevice){
@@ -451,7 +451,7 @@ void MainViewBottomBar::RefreshVideoDevice()
 
     bool bReSelectDevice = false;
     //没有设备变成有设备
-    if (selectOldDevice.compare(L"") == 0 && _bMuteVideo)
+    if (selectOldDevice.compare(L"") == 0 && !publish_main_video)
     {
         onClickMuteVideoBtn();
         bReSelectDevice = true;
@@ -462,7 +462,7 @@ void MainViewBottomBar::RefreshVideoDevice()
         bReSelectDevice = true;
 
     //有设备变成没设备
-    if (!_bMuteVideo && vecDevice.size() <= 0)
+    if (publish_main_video && vecDevice.size() <= 0)
     {
         onClickMuteVideoBtn();
         bReSelectDevice = true;
@@ -481,7 +481,7 @@ void MainViewBottomBar::RefreshVideoDevice()
 void MainViewBottomBar::RefreshAudioDevice()
 {
     std::wstring selectOldDevice = CDataCenter::GetInstance()->m_selectMic;
-    bool _bMuteAudio = CDataCenter::GetInstance()->m_loginInfo._bMuteAudio;
+    bool publish_audio = CDataCenter::GetInstance()->m_localInfo.publish_audio;
     std::vector<TRTCCloudCore::MediaDeviceInfo> vecDevice = TRTCCloudCore::GetInstance()->getMicDevice();
     std::wstring selectNewDevice = L"Unknow";
     for (auto info : vecDevice) {
@@ -492,7 +492,7 @@ void MainViewBottomBar::RefreshAudioDevice()
 
     bool bReSelectDevice = false;
     //没有设备变成有设备
-    if (selectOldDevice.compare(L"") == 0 && _bMuteAudio)
+    if (selectOldDevice.compare(L"") == 0 && !publish_audio)
     {
         onClickMuteAudioBtn();
         bReSelectDevice = true;
@@ -503,7 +503,7 @@ void MainViewBottomBar::RefreshAudioDevice()
         bReSelectDevice = true;
 
     //有设备变成没设备
-    if (!_bMuteAudio && vecDevice.size() <= 0)
+    if (publish_audio && vecDevice.size() <= 0)
     {
         onClickMuteAudioBtn();
         bReSelectDevice = true;
@@ -682,11 +682,12 @@ void MainViewBottomBar::onClickMuteAudioBtn()
 
 void MainViewBottomBar::OpenScreenBtnEvent(const TRTCScreenCaptureSourceInfo &source)
 {
-    LINFO(L"OpenScreenBtnEvent, m_bStartScreenShare:%d", CDataCenter::GetInstance()->m_bStartScreenShare);
-	if (CDataCenter::GetInstance()->m_bStartScreenShare)
+    LINFO(L"OpenScreenBtnEvent, m_bStartScreenShare:%d", CDataCenter::GetInstance()->m_localInfo.publish_sub_video);
+	if (CDataCenter::GetInstance()->m_localInfo.publish_sub_video)
 	{		
 		TRTCCloudCore::GetInstance()->stopScreen();
-        CDataCenter::GetInstance()->m_bStartScreenShare = false;
+        CDataCenter::GetInstance()->m_localInfo.publish_sub_video = false;
+        TRTCCloudCore::GetInstance()->updateMixTranCodeInfo();
 	}
 	else
 	{

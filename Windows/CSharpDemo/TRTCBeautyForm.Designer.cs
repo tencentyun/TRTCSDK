@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TRTCBeautyForm));
             this.label1 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();

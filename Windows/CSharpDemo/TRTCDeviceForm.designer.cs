@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TRTCDeviceForm));
             this.panel1 = new System.Windows.Forms.Panel();
             this.exitPicBox = new System.Windows.Forms.PictureBox();

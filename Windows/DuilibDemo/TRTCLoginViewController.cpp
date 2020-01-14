@@ -58,12 +58,6 @@ void TRTCLoginViewController::Notify(TNotifyUI & msg)
         else if (name.CompareNoCase(_T("product_netenv")) == 0) {
             CDataCenter::GetInstance()->m_nLinkTestServer = 0;
         }
-        else if (name.CompareNoCase(_T("audio_call")) == 0) {
-            CDataCenter::GetInstance()->m_bPureAudioStyle = true;
-        }
-        else if (name.CompareNoCase(_T("video_call")) == 0) {
-            CDataCenter::GetInstance()->m_bPureAudioStyle = false; 
-        }
     }
 }
 
@@ -75,7 +69,7 @@ DuiLib::CControlUI* TRTCLoginViewController::CreateControl(LPCTSTR pstrClass)
 void TRTCLoginViewController::InitLoginView()
 {
     SetIcon(IDR_MAINFRAME);
-    CDataCenter::LocalUserInfo loginData = CDataCenter::GetInstance()->getLocalUserInfo();
+    LocalUserInfo loginData = CDataCenter::GetInstance()->getLocalUserInfo();
     std::string user_id = loginData._userId;
 
     CEditUI* pEditName = static_cast<CEditUI*>(m_pmUI.FindControl(_T("edit_nameid")));
@@ -93,11 +87,13 @@ void TRTCLoginViewController::InitLoginView()
             pEditRoomId->SetText(UTF82Wide(strRoomId).c_str());
     }
 
+    CDataCenter::GetInstance()->m_bOpenDemoTestConfig = isTestEnv();
+
     m_pLoginStatus = static_cast<CLabelUI*>(m_pmUI.FindControl(_T("label_loginstatus")));
     m_pmUI.SetFocus(nullptr);
 
     //初始化房间基础配置信息
-    if (isTestEnv())
+    if(CDataCenter::GetInstance()->m_bOpenDemoTestConfig)
     {
         int nLinkTestServer = CDataCenter::GetInstance()->m_nLinkTestServer;
         COptionUI* pTestNetEnv = static_cast<COptionUI*>(m_pmUI.FindControl(_T("test_netenv")));
@@ -117,7 +113,7 @@ void TRTCLoginViewController::InitLoginView()
         RECT rc = { 0 };
         if (::GetClientRect(m_hWnd, &rc))
         {
-            rc.bottom += 50;
+            rc.bottom += 36;
             if (!::AdjustWindowRectEx(&rc, GetWindowStyle(m_hWnd), (!(GetWindowStyle(m_hWnd) & WS_CHILD) && (::GetMenu(m_hWnd) != NULL)), GetWindowExStyle(m_hWnd))) return;
             ::SetWindowPos(m_hWnd, NULL, rc.left, rc.right, rc.right - rc.left, rc.bottom - rc.top, SWP_NOZORDER | SWP_NOMOVE | SWP_NOACTIVATE);
         }
@@ -131,18 +127,6 @@ void TRTCLoginViewController::InitLoginView()
         CHorizontalLayoutUI* pTestModeContainer = static_cast<CHorizontalLayoutUI*>(m_pmUI.FindControl(_T("test_mode_container")));
         if (pTestModeContainer)
             pTestModeContainer->SetVisible(true);
-
-        bool bAudioCallStyle = CDataCenter::GetInstance()->m_bPureAudioStyle;
-        COptionUI* pAudioCall = static_cast<COptionUI*>(m_pmUI.FindControl(_T("audio_call")));
-        COptionUI* pVideoCall = static_cast<COptionUI*>(m_pmUI.FindControl(_T("video_call")));
-        if (pAudioCall && pVideoCall) {
-            pAudioCall->Selected(false);
-            pVideoCall->Selected(false);
-            if (bAudioCallStyle)
-                pAudioCall->Selected(true);
-            else
-                pVideoCall->Selected(true);
-        }
     }
 }
 
@@ -176,7 +160,7 @@ void TRTCLoginViewController::onBtnEnterRoom()
     }
 
     CEditUI* pEditRoomID = static_cast<CEditUI*>(m_pmUI.FindControl(_T("edit_roomid")));
-    CDataCenter::LocalUserInfo& info = CDataCenter::GetInstance()->getLocalUserInfo();
+    LocalUserInfo& info = CDataCenter::GetInstance()->getLocalUserInfo();
     if (pEditRoomID != nullptr)
     {
         std::wstring strRoomId = pEditRoomID->GetText();
@@ -286,6 +270,11 @@ LRESULT TRTCLoginViewController::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM 
         else
         {
             LINFO(L"CTRTCLoginWnd:: App quit begin");
+            if(m_pSettingWnd) {
+                if(TRTCSettingViewController::getRef() > 0)
+                    m_pSettingWnd->Close(ID_CLOSE_WINDOW_NO_QUIT_MSGLOOP);
+                m_pSettingWnd = nullptr;
+            }
             m_bQuit = true;
         }
     }
