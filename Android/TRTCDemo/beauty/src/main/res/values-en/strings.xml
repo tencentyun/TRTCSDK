@@ -1,0 +1,97 @@
+<resources>
+
+    <string name="beauty_setting_pannel_style">Style</string>
+    <string name="beauty_setting_pannel_beauty">Beauty</string>
+    <string name="beauty_setting_pannel_filter">Filter</string>
+    <string name="beauty_setting_pannel_dynamic_effect">Dynamic effect</string>
+    <string name="beauty_setting_pannel_key">Blend Pic</string>
+    <string name="beauty_setting_pannel_green_screen">Green screen</string>
+    <string name="beauty_setting_pannel_facebeauty">Face beauty</string>
+    <string name="beauty_setting_pannel_gesture">Gesture</string>
+
+    <string name="beauty_pannel_style_smooth">Beauty(Smooth)</string>
+    <string name="beauty_pannel_style_natural">Beauty(Natural)</string>
+    <string name="beauty_pannel_style_pitu">Beauty(PS)</string>
+
+    <string name="beauty_setting_pannel_beauty_beauty">Beauty</string>
+    <string name="beauty_pannel_white">White</string>
+    <string name="beauty_pannel_ruddy">Ruddy</string>
+    <string name="beauty_pannel_bigeye">Big eyes</string>
+    <string name="beauty_pannel_faceslim">Thin-face</string>
+    <string name="beauty_pannel_facev">V-face</string>
+    <string name="beauty_pannel_chin">Chin</string>
+    <string name="beauty_pannel_faceshort">Short-face</string>
+    <string name="beauty_pannel_noseslim">Thin-nose</string>
+    <string name="beauty_pannel_eyelighten">Eye-lighten</string>
+    <string name="beauty_pannel_toothwhite">Tooth-white</string>
+    <string name="beauty_pannel_pounchremove">Pounch-remove</string>
+    <string name="beauty_pannel_smilelinesremove">Smilelines-remove</string>
+    <string name="beauty_pannel_wrinkleremove">Wrinkle-remove</string>
+    <string name="beauty_pannel_forehead">Forehead</string>
+    <string name="beauty_pannel_eyedistance">Eye-distance</string>
+    <string name="beauty_pannel_eyeangle">Eye-angle</string>
+    <string name="beauty_pannel_mouthshape">Mouth-shape</string>
+    <string name="beauty_pannel_nosewing">Nose-wing</string>
+    <string name="beauty_pannel_noseposition">Nose-position</string>
+    <string name="beauty_pannel_mousewidth">Mouse-width</string>
+    <string name="beauty_pannel_faceshape">Face-shape</string>
+
+    <string name="beauty_setting_pannel_filter_none">None</string>
+    <string name="beauty_setting_pannel_filter_standard">Standard</string>
+    <string name="beauty_setting_pannel_filter_cheery">Cheery</string>
+    <string name="beauty_setting_pannel_filter_cloud">Cloud</string>
+    <string name="beauty_setting_pannel_filter_pure">Pure</string>
+    <string name="beauty_setting_pannel_filter_orchid">Orchid</string>
+    <string name="beauty_setting_pannel_filter_vitality">Vitality</string>
+    <string name="beauty_setting_pannel_filter_super">Super</string>
+    <string name="beauty_setting_pannel_filter_fragrance">Fragrance</string>
+    <string name="beauty_setting_pannel_filter_white">White</string>
+    <string name="beauty_setting_pannel_filter_romantic">Romantic</string>
+    <string name="beauty_setting_pannel_filter_fresh">Fresh</string>
+    <string name="beauty_setting_pannel_filter_beautiful">Aesthetic</string>
+    <string name="beauty_setting_pannel_filter_pink">Rosy</string>
+    <string name="beauty_setting_pannel_filter_reminiscence">Nostalgic</string>
+    <string name="beauty_setting_pannel_filter_blues">Blues</string>
+    <string name="beauty_setting_pannel_filter_cool">Cool</string>
+    <string name="beauty_setting_pannel_filter_Japanese">Sweet</string>
+
+    <string name="beauty_setting_pannel_dynamic_effect_none">None</string>
+    <string name="beauty_setting_pannel_dynamic_effect_boom">Boom</string>
+    <string name="beauty_setting_pannel_dynamic_effect_neon_mouse">Rainbow Mouse</string>
+    <string name="beauty_setting_pannel_dynamic_effect_star_ear">Star ear</string>
+    <string name="beauty_setting_pannel_dynamic_effect_crazy_cheer_up">Glow stick</string>
+    <string name="beauty_setting_pannel_dynamic_effect_Q_cancelonstellation">Q constellation</string>
+    <string name="beauty_setting_pannel_dynamic_effect_colored_ribbon">Color Ribbon</string>
+    <string name="beauty_setting_pannel_dynamic_effect_bands_hairband">Bang Ribbon</string>
+    <string name="beauty_setting_pannel_dynamic_effect_change_face">Change face</string>
+    <string name="beauty_setting_pannel_dynamic_effect_purple_kitten">Violet Cat</string>
+    <string name="beauty_setting_pannel_dynamic_effect_flower_faerie">Floral Fairy</string>
+    <string name="beauty_setting_pannel_dynamic_effect_little_Princess">Little princess</string>
+
+    <string name="beauty_setting_pannel_key_none">None</string>
+    <string name="beauty_setting_pannel_key_AI_key">AI Scratch</string>
+
+    <string name="beauty_setting_pannel_green_screen_none">None</string>
+    <string name="beauty_setting_pannel_green_screen_good_luck">Good luck</string>
+
+    <string name="beauty_setting_pannel_pikaqiu">PikaQiu</string>
+    <string name="beauty_setting_pannel_liuxingyu">Meteor Shower</string>
+    <string name="beauty_setting_pannel_kongxue">Snow Control</string>
+    <string name="beauty_setting_pannel_dianshizhixing">TV Star</string>
+    <string name="beauty_setting_pannel_bottle">Bottle</string>
+
+    <string name="beauty_setting_pannel_yuansufugu">Fu Gu</string>
+    <string name="beauty_setting_pannel_cherries">Cherries</string>
+    <string name="beauty_setting_pannel_haiyang">Ocean</string>
+    <string name="beauty_setting_pannel_fenfenxia">FenfenXia</string>
+    <string name="beauty_setting_pannel_guajiezhuang">Widow Makeup</string>
+    <string name="beauty_setting_pannel_qixichun">Qixichun</string>
+    <string name="beauty_setting_pannel_gufengzhuang">Gufeng</string>
+    <string name="beauty_setting_pannel_xiaochounv">Ugly Girl</string>
+    <string name="beauty_setting_pannel_hunhezhuang">Mixed Makeup</string>
+
+    <string name="video_material_download_progress_material_unzip_failed">Unable to decompress materials</string>
+    <string name="video_material_download_progress_download_failed">Unable to download</string>
+    <string name="video_material_download_progress_no_enough_storage_space">Insufficient storage</string>
+
+</resources>

@@ -1,34 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/item_ll"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_cl"
     android:layout_width="match_parent"
-    android:layout_height="55dp"
+    android:layout_height="wrap_content"
     android:layout_marginLeft="15dp"
-    android:layout_marginRight="15dp"
     android:layout_marginTop="10dp"
+    android:layout_marginRight="15dp"
     android:background="#2A2A2A"
     android:gravity="center_vertical"
     android:orientation="horizontal">
 
-
+    <ImageView
+        android:id="@+id/img_item"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@mipmap/ic_launcher" />
 
     <TextView
-        android:id="@+id/name_tv"
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:textColor="#afafaf"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/img_item"
+        app:layout_constraintTop_toTopOf="@+id/img_item"
+        tools:text="视频通话" />
+
+    <TextView
+        android:id="@+id/tv_content"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="25dp"
-        android:layout_weight="1"
-        android:clickable="false"
-        android:text="测试"
-        android:textColor="#ffffff"
-        android:textSize="18dp" />
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:textColor="#afafaf"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/img_item"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title"
+        tools:text="48khz高音质通话" />
 
-
-    <ImageView
-        android:id="@+id/icon_iv"
-        android:layout_width="32dp"
-        android:layout_height="24dp"
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp"
-        android:src="@drawable/push" />
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,96 @@
+<resources>
+
+    <string name="beauty_setting_pannel_style">風格</string>
+    <string name="beauty_setting_pannel_beauty">美顏</string>
+    <string name="beauty_setting_pannel_filter">濾鏡</string>
+    <string name="beauty_setting_pannel_dynamic_effect">動效</string>
+    <string name="beauty_setting_pannel_key">摳背</string>
+    <string name="beauty_setting_pannel_green_screen">綠幕</string>
+    <string name="beauty_setting_pannel_facebeauty">美妆</string>
+    <string name="beauty_setting_pannel_gesture">手势</string>
+
+    <string name="beauty_pannel_style_smooth">美顏(光滑)</string>
+    <string name="beauty_pannel_style_natural">美顏(自然)</string>
+    <string name="beauty_pannel_style_pitu">美顏(天天P图)</string>
+
+    <string name="beauty_setting_pannel_beauty_beauty">美顏</string>
+    <string name="beauty_pannel_white">美白</string>
+    <string name="beauty_pannel_ruddy">紅潤</string>
+    <string name="beauty_pannel_bigeye">大眼</string>
+    <string name="beauty_pannel_faceslim">瘦臉</string>
+    <string name="beauty_pannel_facev">V臉</string>
+    <string name="beauty_pannel_chin">下巴</string>
+    <string name="beauty_pannel_faceshort">短臉</string>
+    <string name="beauty_pannel_noseslim">瘦鼻</string>
+    <string name="beauty_pannel_eyelighten">亮眼</string>
+    <string name="beauty_pannel_toothwhite">白牙</string>
+    <string name="beauty_pannel_pounchremove">祛眼袋</string>
+    <string name="beauty_pannel_smilelinesremove">祛法令纹</string>
+    <string name="beauty_pannel_wrinkleremove">祛皱</string>
+    <string name="beauty_pannel_forehead">发际线</string>
+    <string name="beauty_pannel_eyedistance">眼距</string>
+    <string name="beauty_pannel_eyeangle">眼角</string>
+    <string name="beauty_pannel_mouthshape">嘴形</string>
+    <string name="beauty_pannel_nosewing">鼻翼</string>
+    <string name="beauty_pannel_noseposition">鼻子位置</string>
+    <string name="beauty_pannel_mousewidth">嘴唇厚度</string>
+    <string name="beauty_pannel_faceshape">脸型</string>
+
+    <string name="beauty_setting_pannel_filter_none">無</string>
+    <string name="beauty_setting_pannel_filter_standard">標準</string>
+    <string name="beauty_setting_pannel_filter_cheery">櫻紅</string>
+    <string name="beauty_setting_pannel_filter_cloud">雲裳</string>
+    <string name="beauty_setting_pannel_filter_pure">純真</string>
+    <string name="beauty_setting_pannel_filter_orchid">白蘭</string>
+    <string name="beauty_setting_pannel_filter_vitality">元氣</string>
+    <string name="beauty_setting_pannel_filter_super">超脫</string>
+    <string name="beauty_setting_pannel_filter_fragrance">香氛</string>
+    <string name="beauty_setting_pannel_filter_white">美白</string>
+    <string name="beauty_setting_pannel_filter_romantic">浪漫</string>
+    <string name="beauty_setting_pannel_filter_fresh">清新</string>
+    <string name="beauty_setting_pannel_filter_beautiful">唯美</string>
+    <string name="beauty_setting_pannel_filter_pink">粉嫩</string>
+    <string name="beauty_setting_pannel_filter_reminiscence">懷舊</string>
+    <string name="beauty_setting_pannel_filter_blues">藍調</string>
+    <string name="beauty_setting_pannel_filter_cool">清涼</string>
+    <string name="beauty_setting_pannel_filter_Japanese">日系</string>
+
+    <string name="beauty_setting_pannel_dynamic_effect_none">無動效</string>
+    <string name="beauty_setting_pannel_dynamic_effect_boom">Boom</string>
+    <string name="beauty_setting_pannel_dynamic_effect_neon_mouse">霓虹鼠</string>
+    <string name="beauty_setting_pannel_dynamic_effect_star_ear">星耳</string>
+    <string name="beauty_setting_pannel_dynamic_effect_crazy_cheer_up">瘋狂打call</string>
+    <string name="beauty_setting_pannel_dynamic_effect_Q_cancelonstellation">Q星座</string>
+    <string name="beauty_setting_pannel_dynamic_effect_colored_ribbon">彩色絲帶</string>
+    <string name="beauty_setting_pannel_dynamic_effect_bands_hairband">劉海髮帶</string>
+    <string name="beauty_setting_pannel_dynamic_effect_change_face">變臉</string>
+    <string name="beauty_setting_pannel_dynamic_effect_purple_kitten">紫色小貓</string>
+    <string name="beauty_setting_pannel_dynamic_effect_flower_faerie">花仙子</string>
+    <string name="beauty_setting_pannel_dynamic_effect_little_Princess">小公舉</string>
+
+    <string name="beauty_setting_pannel_key_none">無</string>
+    <string name="beauty_setting_pannel_key_AI_key">AI摳背</string>
+
+    <string name="beauty_setting_pannel_green_screen_none">無</string>
+    <string name="beauty_setting_pannel_green_screen_good_luck">Good luck</string>
+
+    <string name="beauty_setting_pannel_pikaqiu">皮卡丘</string>
+    <string name="beauty_setting_pannel_liuxingyu">流星雨</string>
+    <string name="beauty_setting_pannel_kongxue">控雪</string>
+    <string name="beauty_setting_pannel_dianshizhixing">电视之星</string>
+    <string name="beauty_setting_pannel_bottle">瓶盖挑战</string>
+
+    <string name="beauty_setting_pannel_yuansufugu">原宿復古</string>
+    <string name="beauty_setting_pannel_cherries">櫻桃</string>
+    <string name="beauty_setting_pannel_haiyang">海洋</string>
+    <string name="beauty_setting_pannel_fenfenxia">粉粉霞</string>
+    <string name="beauty_setting_pannel_guajiezhuang">寡姐妝</string>
+    <string name="beauty_setting_pannel_qixichun">七夕唇印</string>
+    <string name="beauty_setting_pannel_gufengzhuang">古风妝</string>
+    <string name="beauty_setting_pannel_xiaochounv">小丑女</string>
+    <string name="beauty_setting_pannel_hunhezhuang">混合妝</string>
+
+    <string name="video_material_download_progress_material_unzip_failed">素材解壓失敗</string>
+    <string name="video_material_download_progress_download_failed">下載失敗</string>
+    <string name="video_material_download_progress_no_enough_storage_space">存儲空間不足</string>
+</resources>

@@ -1,0 +1,17 @@
+<resources>
+    <string name="chat_room_title">房间号: %d</string>
+    <string name="chat_room_online_number">在线主播: &lt;font color=\"green\"&gt;%1$d&lt;/font&gt;</string>
+    <string name="voiceroom_bgm_title">背景音乐设置</string>
+    <string name="voiceroom_bgm_local_tag">播放本地音乐</string>
+    <string name="voiceroom_bgm_online_tag">播放网络歌曲</string>
+    <string name="voiceroom_bgm_vol_tag">BGM音量</string>
+    <string name="voiceroom_confirm">确认</string>
+    <string name="voiceroom_bgm_type">BGM:  &lt;font color=\"green\"&gt;%1$s&lt;/font&gt;</string>
+    <string name="voiceroom_voice_changer">变声特效:  &lt;font color=\"green\"&gt;%1$s&lt;/font&gt;</string>
+    <string name="voiceroom_reverb">混响:  &lt;font color=\"green\"&gt;%1$s&lt;/font&gt;</string>
+    <string name="voiceroom_effect_title">播放音效</string>
+    <string name="voiceroom_voice_changer_title">变声设置</string>
+    <string name="voiceroom_more_title">更多设置</string>
+    <string name="voiceroom_mic_vol_tag">MIC音量</string>
+    <string name="voiceroom_reverb_vol_tag">混响设置</string>
+</resources>

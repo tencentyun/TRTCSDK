@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- 短视频录制主题UI配置-->
+    <style name="BeautyPanelStyle">
+        <!-- 美颜面板 -->
+        <item name="beautyPanelColorPrimary">@color/colorRed</item>
+        <item name="beautyPanelSmoothIcon">@drawable/ic_beauty_smooth</item>
+        <item name="beautyPanelNaturalIcon">@drawable/ic_beauty_natural</item>
+        <item name="beautyPanelPituIcon">@drawable/ic_beauty_pitu</item>
+        <item name="beautyPanelWhiteIcon">@drawable/ic_beauty_white</item>
+        <item name="beautyPanelRuddyIcon">@drawable/ic_beauty_ruddy</item>
+        <item name="beautyPanelBigeyeIcon">@drawable/ic_beauty_bigeye</item>
+        <item name="beautyPanelFaceslimIcon">@drawable/ic_beauty_faceslim</item>
+        <item name="beautyPanelFacevIcon">@drawable/ic_beauty_facev</item>
+        <item name="beautyPanelChinIcon">@drawable/ic_beauty_chin</item>
+        <item name="beautyPanelFaceshortIcon">@drawable/ic_beauty_faceshort</item>
+        <item name="beautyPanelNoseslimIcon">@drawable/ic_beauty_noseslim</item>
+        <item name="beautyPanelEyeLightenIcon">@drawable/ic_eye_bright</item>
+        <item name="beautyPanelToothWhiteIcon">@drawable/ic_tooth_white</item>
+        <item name="beautyPanelPounchRemoveIcon">@drawable/ic_pounch_remove</item>
+        <item name="beautyPanelSmileLinesRemoveIcon">@drawable/ic_smilelines</item>
+        <item name="beautyPanelWrinkleIcon">@drawable/ic_wrinkles</item>
+        <item name="beautyPanelForeheadIcon">@drawable/ic_forehead</item>
+        <item name="beautyPanelEyeDistanceIcon">@drawable/ic_eye_distance</item>
+        <item name="beautyPanelEyeAngleIcon">@drawable/ic_eye_angle</item>
+        <item name="beautyPanelMouthShapeIcon">@drawable/ic_mouseshape</item>
+        <item name="beautyPanelNoseWingIcon">@drawable/ic_nose_wing</item>
+        <item name="beautyPanelNosePositionIcon">@drawable/ic_nose_position</item>
+        <item name="beautyPanelMouseWidthIcon">@drawable/ic_mouse_width</item>
+        <item name="beautyPanelFaceShapeIcon">@drawable/ic_faceshape</item>
+    </style>
+
+</resources>

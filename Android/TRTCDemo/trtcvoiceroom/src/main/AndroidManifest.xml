@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.tencent.liteav.demo.trtcvoiceroom">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application>
+        <activity android:name="com.tencent.liteav.demo.trtcvoiceroom.VoiceRoomMainActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:theme="@style/ChatTheme"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"/>
+        <activity
+            android:name="com.tencent.liteav.demo.trtcvoiceroom.CreateVoiceRoomActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:theme="@style/ChatTheme"
+            android:screenOrientation="portrait" />
+    </application>
+
+</manifest>

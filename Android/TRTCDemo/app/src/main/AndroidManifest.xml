@@ -17,6 +17,7 @@
 
     <application
         android:name=".TRTCApplication"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
@@ -35,16 +36,5 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".trtc.TRTCNewRoomActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/NewActivityTheme" />
-        <activity
-
-            android:name=".trtc.TRTCVideoRoomActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:theme="@style/NewActivityTheme"
-            android:windowSoftInputMode="adjustPan" />
-    </application>
+</application>
 </manifest>

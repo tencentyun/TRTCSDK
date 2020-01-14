@@ -39,18 +39,4 @@
         <item name="android:windowNoTitle">false</item>
         <item name="android:windowCloseOnTouchOutside">true</item>
     </style>
-
-    <style name="BaseFragmentDialogTheme" parent="@android:style/Theme.Holo.Dialog">
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:backgroundDimAmount">0.7</item>
-        <item name="android:windowIsFloating">true</item>
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowBackground">@color/hlfTransparent</item>
-    </style>
-
-    <style name="SoundEffectFragmentTitle">
-        <item name="android:textSize">15sp</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-    </style>
 </resources>

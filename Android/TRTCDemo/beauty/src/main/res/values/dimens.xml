@@ -1,0 +1,205 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <!-- umeng -->
+    <dimen name="titlebar">54dp</dimen>
+
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="title">18sp</dimen>
+    <dimen name="subtitle">17sp</dimen>
+    <dimen name="main_content">16sp</dimen>
+    <dimen name="sub_content">14sp</dimen>
+    <dimen name="trivial_content">12sp</dimen>
+
+    <dimen name="text_size">16sp</dimen>
+
+    <dimen name="t1">36sp</dimen>
+    <dimen name="t2">34sp</dimen>
+    <dimen name="t3">32sp</dimen>
+    <dimen name="t4">28sp</dimen>
+    <dimen name="t5">24sp</dimen>
+    <!--大小-->
+    <!--h1-->
+    <dimen name="h1">9sp</dimen>
+    <!--h2-->
+    <dimen name="h2">10sp</dimen>
+    <!--h3-->
+    <dimen name="h3">11sp</dimen>
+    <!--h4-->
+    <dimen name="h4">12sp</dimen>
+    <!--h5-->
+    <dimen name="h5">13sp</dimen>
+    <!--h6-->
+    <dimen name="h6">14sp</dimen>
+    <!--h7-->
+    <dimen name="h7">15sp</dimen>
+    <!--h8-->
+    <dimen name="h8">16sp</dimen>
+    <!--h9-->
+    <dimen name="h9">17sp</dimen>
+    <!--h10-->
+    <dimen name="h10">18sp</dimen>
+    <!--h11-->
+    <dimen name="h11">19sp</dimen>
+
+    <dimen name="h12">20sp</dimen>
+
+    <dimen name="toolbar_margin">15dp</dimen>
+
+    <dimen name="small_area_margin_bottom">110dp</dimen>
+    <dimen name="small_area_margin_top">130dp</dimen>
+    <dimen name="small_area_height">110dp</dimen>
+    <dimen name="small_area_width">60dp</dimen>
+    <dimen name="small_area_marginright">10dp</dimen>
+    <dimen name="small_area_marginbetween">10dp</dimen>
+
+    <dimen name="live_btn_size">35dp</dimen>
+
+    <!-- AVSDK *******************************************************************************************************************************-->
+    <dimen name="qav_title_margin_top">3dp</dimen>
+    <dimen name="qav_title_bar_height">50dp</dimen>
+    <dimen name="video_small_view_width">120dp</dimen>
+    <dimen name="video_small_view_height">160dp</dimen>
+    <dimen name="video_small_view_offsetX">10dp</dimen>
+    <dimen name="video_small_view_offsetY">10dp</dimen>
+    <dimen name="video_small_video_margin">1.5dp</dimen>
+    <dimen name="video_small_mute_margin">5dp</dimen>
+    <dimen name="video_msgbox_offsetX">23dp</dimen>
+    <dimen name="video_msgbox_offsetY">3dp</dimen>
+    <dimen name="video_msgbox_offset">3dp</dimen>
+    <dimen name="video_title_default_width">200dp</dimen>
+
+    <dimen name="video_top_toolbar_margin">45dp</dimen>
+    <dimen name="video_bottom_toolbar_margin">10dp</dimen>
+
+    <!-- 视频聊天中小窗口移动时的阈值 -->
+    <dimen name="video_smallview_move_thresholdX">30dp</dimen>
+    <dimen name="video_smallview_move_thresholdY">40dp</dimen>
+
+    <dimen name="multi_audio_item_faceW">42dp</dimen>
+    <dimen name="multi_audio_item_faceH">42dp</dimen>
+    <dimen name="multi_video_item_faceW">56dp</dimen>
+    <dimen name="multi_video_item_faceH">56dp</dimen>
+    <dimen name="audio_friend_imgW">60dp</dimen>
+    <dimen name="audio_friend_imgH">60dp</dimen>
+    <dimen name="audio_friend_img_border">66.5dp</dimen>
+    <dimen name="audio_friend_border_margin_top">3.25dp</dimen>
+    <dimen name="audio_friend_infoH">191dp</dimen>
+
+    <dimen name="audio_icon_top">25dp</dimen>
+    <dimen name="audio_actionsheet_height">51dp</dimen>
+    <dimen name="video_lock_margin">-15dp</dimen>
+    <dimen name="audio_tip_margin">83dp</dimen>
+
+    <dimen name="qav_bubbble_icon_ratio">16dp</dimen>
+    <dimen name="qav_bubbble_icon_ratio_ex">8dp</dimen>
+
+    <dimen name="qav_multi_video_friend_item_width">60dp</dimen>
+    <dimen name="qav_grid_view_item_width_audio">75dp</dimen>
+    <dimen name="qav_grid_view_item_width_video">64dp</dimen>
+    <dimen name="qav_gaudio_grid_icon_width">50dp</dimen>
+    <dimen name="qav_gaudio_grid_item_width">88dp</dimen>
+    <dimen name="qav_gaudio_speaking_icon_width">10dp</dimen>
+    <dimen name="qav_gaudio_speaking_icon_margin_left">6dp</dimen>
+    <dimen name="qav_gaudio_member_name_margin_top">4dp</dimen>
+    <dimen name="qav_gaudio_speaking_icon_margin_top">5dp</dimen>
+    <dimen name="qav_gaudio_member_name_width">50dp</dimen>
+    <dimen name="qav_gaudio_msg_text_width">95dp</dimen>
+    <dimen name="qav_gaudio_grid_margin_top_nor">60dp</dimen>
+    <dimen name="qav_gaudio_members_holder_margin_top_large">80dp</dimen>
+    <dimen name="qav_gaudio_members_holder_margin_top_small">24dp</dimen>
+    <dimen name="qav_gaudio_grid_net_tip_margin_top_two_line">300dp</dimen>
+    <dimen name="qav_gaudio_grid_net_tip_margin_top_one_line">210dp</dimen>
+    <dimen name="qav_gaudio_members_container_two_line">180dp</dimen>
+    <dimen name="qav_gaudio_members_container_one_line">90dp</dimen>
+    <dimen name="qav_gaudio_members_holder_height_two_line">250dp</dimen>
+    <dimen name="qav_gaudio_members_holder_height_one_line">110dp</dimen>
+    <dimen name="qav_gaudio_grid_margin_top_waiting">40dp</dimen>
+    <dimen name="qav_gaudio_grid_margin_members_top">110dp</dimen>
+    <dimen name="qav_gaudio_grid_margin_top_sig">157dp</dimen>
+    <dimen name="qav_gaudio_grid_height">300dp</dimen>
+    <dimen name="qav_gaudio_indicate_margin_top_two_line">190dp</dimen>
+    <dimen name="qav_gaudio_indicate_margin_top_one_line">100dp</dimen>
+    <dimen name="gaudio_grid_margin">3dp</dimen>
+    <dimen name="gaudio_speaking_width">56dp</dimen>
+    <dimen name="gaudio_speaking_margin">1dp</dimen>
+    <dimen name="gaudio_spacing">15dp</dimen>
+    <dimen name="gaudio_spacing_320">10dp</dimen>
+    <dimen name="gaudio_padding">5dp</dimen>
+    <dimen name="gaudio_dialog_width">270dp</dimen>
+    <dimen name="gaudio_dialog_height_gprs">182dp</dimen>
+    <dimen name="gaudio_dialog_btn_margin_top">47dp</dimen>
+    <dimen name="gaudio_dialog_height">160dp</dimen>
+    <dimen name="gaudio_dialog_textsize">4sp</dimen>
+    <dimen name="gaudio_lock_textsize">5sp</dimen>
+    <dimen name="gaudio_request_video_text_size">15dp</dimen>
+    <dimen name="gaudio_lock_maxwidth">280dp</dimen>
+    <dimen name="multi_video_name_max_width">95dp</dimen>
+    <dimen name="gaudio_name_maxwidth">162dp</dimen>
+    <dimen name="gaudio_tips_name_maxwidth">46dp</dimen>
+    <dimen name="gaudio_list_name_maxwidth">120dp</dimen>
+    <dimen name="gaudio_bigname_maxwidth">156dp</dimen>
+    <dimen name="gaudio_name_maxwidth_dialog">130dp</dimen>
+    <dimen name="gaudio_name_maxwidth_inviter">70dp</dimen>
+    <dimen name="gaudio_name_maxwidth_title">60dp</dimen>
+    <dimen name="qav_double_friend_imgW">95dp</dimen>
+    <dimen name="qav_double_video_friend_imgW">50dp</dimen>
+    <dimen name="qav_notification_icon">64dp</dimen>
+    <dimen name="qav_gaudio_indicator_top">250dp</dimen>
+    <dimen name="qav_bottombar_spacing">7dp</dimen>
+    <dimen name="qav_invite_btn_right_margin">60dp</dimen>
+    <dimen name="qav_bottombar_icon_spacing">1dp</dimen>
+    <dimen name="qav_bottombar_btn_width">60dp</dimen>
+    <dimen name="qav_bottombar_btn_height">46dp</dimen>
+    <dimen name="qav_bottombar_margin">32dp</dimen>
+    <dimen name="qav_bottombar_margin_for_ivr">18dp</dimen>
+    <dimen name="qav_bottomlayer_margin">20dp</dimen>
+    <dimen name="qav_bottombar_normal_margin">16dp</dimen>
+    <dimen name="qav_bottombar_height">170dp</dimen>
+    <dimen name="qav_bottombar_bg_height">255dp</dimen>
+    <dimen name="qav_titlebar_height">25dp</dimen>
+    <dimen name="qav_info_margintop">160dp</dimen>
+    <dimen name="qav_info_margintop_video">60dp</dimen>
+    <dimen name="qav_info_name_margintop">5dp</dimen>
+    <dimen name="qav_ring_margintop">130dp</dimen>
+    <dimen name="qav_tips_margintop">300dp</dimen>
+    <dimen name="qav_info_margintop_ldpi">70dp</dimen>
+    <dimen name="qav_tips_margintop_ldpi">240dp</dimen>
+    <dimen name="qav_accept_video_margin_top">240dp</dimen>
+    <dimen name="qav_waiting_tip_margin_top_two_line">113dp</dimen>
+    <dimen name="qav_waiting_tip_margin_top_one_line">54dp</dimen>
+    <dimen name="qav_waiting_tip_margin_top">40dp</dimen>
+    <dimen name="qav_waiting_tip_margin_top_small">50dp</dimen>
+    <dimen name="qav_net_tip_margin_top">350dp</dimen>
+    <dimen name="qav_net_tip_margin_top_small">210dp</dimen>
+    <dimen name="qav_lock_margin">47dp</dimen>
+    <dimen name="qav_lock_bg_w">266dp</dimen>
+    <dimen name="qav_lock_right_edge">260dp</dimen>
+    <dimen name="qav_lock_left_margin">6dp</dimen>
+    <dimen name="qav_invite_btn_trans">40dp</dimen>
+    <dimen name="qav_bottombar_left_trans">23dp</dimen>
+    <dimen name="qav_bottombar_mid_trans">68dp</dimen>
+    <dimen name="qav_bottombar_right_trans">5dp</dimen>
+    <dimen name="qav_msg_name_max_width">100dp</dimen>
+    <dimen name="qav_msg_text_max_width">226dp</dimen>
+    <dimen name="qav_waiting_text_max_width">128dp</dimen>
+    <dimen name="qav_smartbar_height">48dp</dimen>
+    <dimen name="qav_setting_table_row_height">50dp</dimen>
+    <dimen name="ugc_item_thumb_height">60dp</dimen>
+    <dimen name="ugc_cut_margin">10dp</dimen>
+    <!-- AVSDK *******************************************************************************************************************************-->
+
+    <!-- UGC*******************************************************************************************************************************-->
+    <dimen name="ugc_aspect_width">50dp</dimen>
+    <dimen name="ugc_aspect_divider">18dp</dimen>
+    <dimen name="ugc_progress_cursor">2dp</dimen>
+    <dimen name="ugc_progress_min_pos">2dp</dimen>
+    <dimen name="ugc_progress_divider">1dp</dimen>
+
+    <!-- 视频进度条 -->
+    <dimen name="video_progress_height">50dp</dimen>
+    <dimen name="video_thumbnail_width">50dp</dimen>
+    <dimen name="repeat_slider_width">26dp</dimen>
+    <!-- UGC*******************************************************************************************************************************-->
+</resources>

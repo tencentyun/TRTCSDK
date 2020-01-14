@@ -33,4 +33,8 @@ dependencies {
     implementation "com.android.support:design:25.+"
     implementation "com.android.support:appcompat-v7:25.+"
     implementation "com.android.support:recyclerview-v7:25.+"
+
+    implementation project(':trtc')
+    implementation project(':trtcvoiceroom')
+    implementation project(':trtcaudiocalldemo')
 }

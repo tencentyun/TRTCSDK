@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="VoiceCallTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:colorControlActivated">@color/colorChatRoomAccent</item>
+        <item name="android:textColor">@color/white</item>
+        <!--应用的背景色，popMenu的背景默认使用该颜色-->
+    </style>
+</resources>

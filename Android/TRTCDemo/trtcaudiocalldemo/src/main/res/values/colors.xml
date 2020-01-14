@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="white">#ffffff</color>
+    <color name="colorChatRoomAccent">#00A66B</color>
+    <color name="colorChatRoomPrimary">#333333</color>
+    <color name="textSecond">#737373</color>
+    <color name="colorUserTalk">#00A66B</color>
+    <color name="colorUserMute">#555555</color>
+    <color name="colorWait">#555555</color>
+    <color name="colorWaitText">#afafaf</color>
+    <color name="colorBtnSelected">#00A66B</color>
+    <color name="colorBtnUnSelected">#afafaf</color>
+    <color name="colorBtnDisable">#737373</color>
+    <color name="colorDialogBackground">#cc000000</color>
+    <color name="colorDialogTextColor">#afafaf</color>
+
+</resources>

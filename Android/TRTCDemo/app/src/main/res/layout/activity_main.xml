@@ -12,7 +12,7 @@
         android:layout_marginBottom="10dp"
         android:layout_marginTop="20dp"
         android:gravity="center"
-        android:text="腾讯视频通话"
+        android:text="腾讯云 TRTC"
         android:textColor="#ffffff"
         android:textSize="26dp" />
 
@@ -40,7 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         android:gravity="center"
-        android:text="本APP用于展示腾讯视频云终端产品的各类功能"
+        android:text="本APP用于展示腾讯视频云TRTC服务的各类功能"
         android:textColor="#666666"
         android:textSize="12sp" />
 </LinearLayout>
