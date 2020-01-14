@@ -48,6 +48,18 @@
                                                 action:^(NSInteger index) {
             [wSelf onSelectVolumeTypeIndex:index];
         }],
+        [[TRTCSettingsSliderItem alloc] initWithTitle:@"采集音量"
+                                                value:self.settingsManager.captureVolume min:0 max:100 step:1
+                                           continuous:YES
+                                               action:^(float volume) {
+            [wSelf onUpdateCaptureVolume:(NSInteger)volume];
+        }],
+        [[TRTCSettingsSliderItem alloc] initWithTitle:@"播放音量"
+                                                value:self.settingsManager.playoutVolume min:0 max:100 step:1
+                                           continuous:YES
+                                               action:^(float volume) {
+            [wSelf onUpdatePlayoutVolume:(NSInteger)volume];
+        }],
         [[TRTCSettingsSwitchItem alloc] initWithTitle:@"自动增益"
                                                  isOn:config.isAgcEnabled
                                                action:^(BOOL isOn) {
@@ -92,6 +104,14 @@
 - (void)onSelectVolumeTypeIndex:(NSInteger)index {
     TRTCSystemVolumeType type = index == 0 ? TRTCSystemVolumeTypeAuto : TRTCSystemVolumeTypeMedia;
     [self.settingsManager setVolumeType:type];
+}
+
+- (void)onUpdateCaptureVolume:(NSInteger)volume {
+    [self.settingsManager setCaptureVolume:volume];
+}
+
+- (void)onUpdatePlayoutVolume:(NSInteger)volume {
+    [self.settingsManager setPlayoutVolume:volume];
 }
 
 - (void)onEnableAgc:(BOOL)isOn {

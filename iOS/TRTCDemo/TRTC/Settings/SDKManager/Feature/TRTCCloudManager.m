@@ -17,13 +17,12 @@
 #import "TestSendCustomVideoData.h"
 #import "TestRenderVideoFrame.h"
 
-#define TX_BIZID 3891
-#define TX_APPID 1252463788
-
 @interface TRTCCloudManager()<CustomAudioFileReaderDelegate>
 
 @property (strong, nonatomic) TRTCCloud *trtc;
 @property (nonatomic) BOOL isCrossingRoom;
+@property (nonatomic) NSInteger appId;
+@property (nonatomic) NSInteger bizId;
 
 // 视频文件播放
 @property (strong, nonatomic) TestSendCustomVideoData *videoCaptureTester;
@@ -33,13 +32,20 @@
 
 @implementation TRTCCloudManager
 
-- (instancetype)initWithTrtc:(TRTCCloud *)trtc params:(TRTCParams *)params scene:(TRTCAppScene)scene {
+- (instancetype)initWithTrtc:(TRTCCloud *)trtc
+                      params:(TRTCParams *)params
+                       scene:(TRTCAppScene)scene
+                       appId:(NSInteger)appId
+                       bizId:(NSInteger)bizId {
     if (self = [super init]) {
         _trtc = trtc;
         _params = params;
         _scene = scene;
+        _appId = appId;
+        _bizId = bizId;
         _videoConfig = [[TRTCVideoConfig alloc] initWithScene:scene];
         _audioConfig = [[TRTCAudioConfig alloc] init];
+        _streamConfig = [[TRTCStreamConfig alloc] init];
         _renderTester = [[TestRenderVideoFrame alloc] init];
         [self setupTorchObservation];
     }
@@ -156,6 +162,11 @@
     }
 }
 
+- (void)setVideoMuted:(BOOL)isMuted {
+    self.videoConfig.isMuted = isMuted;
+    [self.trtc muteLocalVideo:isMuted];
+}
+
 - (void)setLocalMirrorType:(TRTCLocalVideoMirrorType)type {
     self.videoConfig.localMirrorType = type;
     [self.trtc setLocalViewMirror:type];
@@ -174,15 +185,6 @@
 - (void)setGSensorEnabled:(BOOL)isEnable {
     self.videoConfig.isGSensorEnabled = isEnable;
     [self.trtc setGSensorMode:isEnable ? TRTCGSensorMode_UIAutoLayout : TRTCGSensorMode_Disable];
-}
-
-- (void)setMixingInCloud:(BOOL)isMixingInCloud {
-    self.videoConfig.isMixingInCloud = isMixingInCloud;
-    if (self.videoConfig.isMixingInCloud) {
-        [self updateCloudMixtureParams];
-    } else {
-        [self.trtc setMixTranscodingConfig:nil];
-    }
 }
 
 - (void)setQosControlMode:(TRTCQosControlMode)mode {
@@ -235,6 +237,22 @@
     }
 }
 
+- (void)setCaptureVolume:(NSInteger)volume {
+    [self.trtc setAudioCaptureVolume:volume];
+}
+
+- (NSInteger)captureVolume {
+    return [self.trtc getAudioCaptureVolume];
+}
+
+- (void)setPlayoutVolume:(NSInteger)volume {
+    [self.trtc setAudioPlayoutVolume:volume];
+}
+
+- (NSInteger)playoutVolume {
+    return [self.trtc getAudioPlayoutVolume];
+}
+
 - (void)setAudioRoute:(TRTCAudioRoute)route {
     self.audioConfig.route = route;
     [self.trtc setAudioRoute:route];
@@ -268,6 +286,180 @@
 - (void)setVolumeEvaluationEnabled:(BOOL)isEnabled {
     self.audioConfig.isVolumeEvaluationEnabled = isEnabled;
     [self.trtc enableAudioVolumeEvaluation:isEnabled ? 300 : 0];
+}
+
+#pragma mark - Stream
+
+- (void)setMixingInCloud:(BOOL)isMixingInCloud {
+    self.streamConfig.isMixingInCloud = isMixingInCloud;
+    if (isMixingInCloud) {
+        [self updateCloudMixtureParams];
+    } else {
+        [self.trtc setMixTranscodingConfig:nil];
+    }
+}
+
+- (void)updateCloudMixtureParams {
+    if (!self.streamConfig.isMixingInCloud) {
+        return;
+    }
+    int videoWidth  = 720;
+    int videoHeight = 1280;
+    
+    // 小画面宽高
+    int subWidth  = 180;
+    int subHeight = 320;
+    
+    int offsetX = 5;
+    int offsetY = 50;
+    
+    int bitrate = 200;
+    
+    switch (self.videoConfig.videoEncConfig.videoResolution) {
+            
+        case TRTCVideoResolution_160_160:
+        {
+            videoWidth  = 160;
+            videoHeight = 160;
+            subWidth    = 32;
+            subHeight   = 48;
+            offsetY     = 10;
+            bitrate     = 200;
+            break;
+        }
+        case TRTCVideoResolution_320_180:
+        {
+            videoWidth  = 192;
+            videoHeight = 336;
+            subWidth    = 54;
+            subHeight   = 96;
+            offsetY     = 30;
+            bitrate     = 400;
+            break;
+        }
+        case TRTCVideoResolution_320_240:
+        {
+            videoWidth  = 240;
+            videoHeight = 320;
+            subWidth    = 54;
+            subHeight   = 96;
+            offsetY     = 30;
+            bitrate     = 400;
+            break;
+        }
+        case TRTCVideoResolution_480_480:
+        {
+            videoWidth  = 480;
+            videoHeight = 480;
+            subWidth    = 72;
+            subHeight   = 128;
+            bitrate     = 600;
+            break;
+        }
+        case TRTCVideoResolution_640_360:
+        {
+            videoWidth  = 368;
+            videoHeight = 640;
+            subWidth    = 90;
+            subHeight   = 160;
+            bitrate     = 800;
+            break;
+        }
+        case TRTCVideoResolution_640_480:
+        {
+            videoWidth  = 480;
+            videoHeight = 640;
+            subWidth    = 90;
+            subHeight   = 160;
+            bitrate     = 800;
+            break;
+        }
+        case TRTCVideoResolution_960_540:
+        {
+            videoWidth  = 544;
+            videoHeight = 960;
+            subWidth    = 160;
+            subHeight   = 288;
+            bitrate     = 1000;
+            break;
+        }
+        case TRTCVideoResolution_1280_720:
+        {
+            videoWidth  = 720;
+            videoHeight = 1280;
+            subWidth    = 192;
+            subHeight   = 336;
+            bitrate     = 1500;
+            break;
+        }
+        case TRTCVideoResolution_1920_1080:
+        {
+            videoWidth  = 1088;
+            videoHeight = 1920;
+            subWidth    = 272;
+            subHeight   = 480;
+            bitrate     = 1900;
+            break;
+        }
+        default:
+            assert(false);
+            break;
+    }
+    
+    TRTCTranscodingConfig* config = [TRTCTranscodingConfig new];
+    config.appId = (int) self.appId;
+    config.bizId = (int) self.bizId;
+    config.videoWidth = videoWidth;
+    config.videoHeight = videoHeight;
+    config.videoGOP = 1;
+    config.videoFramerate = 15;
+    config.videoBitrate = bitrate;
+    config.audioSampleRate = 48000;
+    config.audioBitrate = 64;
+    config.audioChannels = 1;
+    
+    // 设置混流后主播的画面位置
+    TRTCMixUser* broadCaster = [TRTCMixUser new];
+    broadCaster.userId = self.params.userId; // 以主播uid为broadcaster为例
+    broadCaster.zOrder = 0;
+    broadCaster.rect = CGRectMake(0, 0, videoWidth, videoHeight);
+    broadCaster.roomID = nil;
+    
+    NSMutableArray* mixUsers = [NSMutableArray new];
+    [mixUsers addObject:broadCaster];
+    
+    // 设置混流后各个小画面的位置
+    __block int index = 0;
+    [self.remoteUserManager.remoteUsers enumerateKeysAndObjectsUsingBlock:^(NSString *userId, TRTCRemoteUserConfig *settings, BOOL *stop) {
+        TRTCMixUser* audience = [TRTCMixUser new];
+        audience.userId = userId;
+        audience.zOrder = 1 + index;
+        audience.roomID = settings.roomId;
+        //辅流判断：辅流的Id为原userId + "-sub"
+        if ([userId hasSuffix:@"-sub"]) {
+            NSArray* spritStrs = [userId componentsSeparatedByString:@"-"];
+            if (spritStrs.count < 2) {
+                return;
+            }
+            NSString* realUserId = spritStrs[0];
+            audience.userId = realUserId;
+            audience.streamType = TRTCVideoStreamTypeSub;
+        }
+        if (index < 3) {
+            // 前三个小画面靠右从下往上铺
+            audience.rect = CGRectMake(videoWidth - offsetX - subWidth, videoHeight - offsetY - index * subHeight - subHeight, subWidth, subHeight);
+        } else if (index < 6) {
+            // 后三个小画面靠左从下往上铺
+            audience.rect = CGRectMake(offsetX, videoHeight - offsetY - (index - 3) * subHeight - subHeight, subWidth, subHeight);
+        } else {
+            // 最多只叠加六个小画面
+        }
+        
+        [mixUsers addObject:audience];
+        ++index;
+    }];
+    config.mixUsers = mixUsers;
+    [_trtc setMixTranscodingConfig:config];
 }
 
 #pragma mark - Message
@@ -332,7 +524,18 @@
         [[CustomAudioFileReader sharedInstance] start:48000 channels:1 framLenInSample:960];
         [self.trtc enableCustomAudioCapture:YES];
     } else {
-        [self.trtc startLocalAudio];
+        //TODO
+        if ([AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeAudio] == AVAuthorizationStatusNotDetermined) {
+            [AVCaptureDevice requestAccessForMediaType:AVMediaTypeAudio completionHandler:^(BOOL granted) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.trtc switchRole:TRTCRoleAnchor];
+                    [self.trtc startLocalAudio];
+                });
+            }];
+        } else {
+//            [self.trtc switchRole:TRTCRoleAnchor];
+            [self.trtc startLocalAudio];
+        }
     }
 }
 
@@ -399,164 +602,12 @@
     return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
 }
 
-- (void)updateCloudMixtureParams {
-    if (!self.videoConfig.isMixingInCloud) {
-        return;
-    }
-    int videoWidth  = 720;
-    int videoHeight = 1280;
-    
-    // 小画面宽高
-    int subWidth  = 180;
-    int subHeight = 320;
-    
-    int offsetX = 5;
-    int offsetY = 50;
-    
-    int bitrate = 200;
-    
-    switch (self.videoConfig.videoEncConfig.videoResolution) {
-            
-        case TRTCVideoResolution_160_160:
-        {
-            videoWidth  = 160;
-            videoHeight = 160;
-            subWidth    = 27;
-            subHeight   = 48;
-            offsetY     = 20;
-            bitrate     = 200;
-            break;
-        }
-        case TRTCVideoResolution_320_180:
-        {
-            videoWidth  = 192;
-            videoHeight = 336;
-            subWidth    = 54;
-            subHeight   = 96;
-            offsetY     = 30;
-            bitrate     = 400;
-            break;
-        }
-        case TRTCVideoResolution_320_240:
-        {
-            videoWidth  = 240;
-            videoHeight = 320;
-            subWidth    = 54;
-            subHeight   = 96;
-            bitrate     = 400;
-            break;
-        }
-        case TRTCVideoResolution_480_480:
-        {
-            videoWidth  = 480;
-            videoHeight = 480;
-            subWidth    = 72;
-            subHeight   = 128;
-            bitrate     = 600;
-            break;
-        }
-        case TRTCVideoResolution_640_360:
-        {
-            videoWidth  = 368;
-            videoHeight = 640;
-            subWidth    = 90;
-            subHeight   = 160;
-            bitrate     = 800;
-            break;
-        }
-        case TRTCVideoResolution_640_480:
-        {
-            videoWidth  = 480;
-            videoHeight = 640;
-            subWidth    = 90;
-            subHeight   = 160;
-            bitrate     = 800;
-            break;
-        }
-        case TRTCVideoResolution_960_540:
-        {
-            videoWidth  = 544;
-            videoHeight = 960;
-            subWidth    = 171;
-            subHeight   = 304;
-            bitrate     = 1000;
-            break;
-        }
-        case TRTCVideoResolution_1280_720:
-        {
-            videoWidth  = 720;
-            videoHeight = 1280;
-            subWidth    = 180;
-            subHeight   = 320;
-            bitrate     = 1500;
-            break;
-        }
-        default:
-            assert(false);
-            break;
-    }
-    
-    TRTCTranscodingConfig* config = [TRTCTranscodingConfig new];
-    config.appId = TX_APPID;
-    config.bizId = TX_BIZID;
-    config.videoWidth = videoWidth;
-    config.videoHeight = videoHeight;
-    config.videoGOP = 1;
-    config.videoFramerate = 15;
-    config.videoBitrate = bitrate;
-    config.audioSampleRate = 48000;
-    config.audioBitrate = 64;
-    config.audioChannels = 1;
-    
-    // 设置混流后主播的画面位置
-    TRTCMixUser* broadCaster = [TRTCMixUser new];
-    broadCaster.userId = self.params.userId; // 以主播uid为broadcaster为例
-    broadCaster.zOrder = 0;
-    broadCaster.rect = CGRectMake(0, 0, videoWidth, videoHeight);
-    broadCaster.roomID = nil;
-    
-    NSMutableArray* mixUsers = [NSMutableArray new];
-    [mixUsers addObject:broadCaster];
-    
-    // 设置混流后各个小画面的位置
-    __block int index = 0;
-    [self.remoteUserManager.remoteUsers enumerateKeysAndObjectsUsingBlock:^(NSString *userId, TRTCRemoteUserConfig *settings, BOOL *stop) {
-        TRTCMixUser* audience = [TRTCMixUser new];
-        audience.userId = userId;
-        audience.zOrder = 1 + index;
-        audience.roomID = settings.roomId;
-        //辅流判断：辅流的Id为原userId + "-sub"
-        if ([userId hasSuffix:@"-sub"]) {
-            NSArray* spritStrs = [userId componentsSeparatedByString:@"-"];
-            if (spritStrs.count < 2) {
-                return;
-            }
-            NSString* realUserId = spritStrs[0];
-            audience.userId = realUserId;
-            audience.streamType = TRTCVideoStreamTypeSub;
-        }
-        if (index < 3) {
-            // 前三个小画面靠右从下往上铺
-            audience.rect = CGRectMake(videoWidth - offsetX - subWidth, videoHeight - offsetY - index * subHeight - subHeight, subWidth, subHeight);
-        } else if (index < 6) {
-            // 后三个小画面靠左从下往上铺
-            audience.rect = CGRectMake(offsetX, videoHeight - offsetY - (index - 3) * subHeight - subHeight, subWidth, subHeight);
-        } else {
-            // 最多只叠加六个小画面
-        }
-        
-        [mixUsers addObject:audience];
-        ++index;
-    }];
-    config.mixUsers = mixUsers;
-    [_trtc setMixTranscodingConfig:config];
-}
-
 #pragma mark - Live Player
 
 - (NSString *)getCdnUrlOfUser:(NSString *)userId {
-    NSString* md5streamId = [[NSString stringWithFormat:@"%@_%@_main", @(self.params.roomId), userId] md5];
-    return [NSString stringWithFormat:@"http://3891.liveplay.myqcloud.com/live/3891_%@.flv", md5streamId];
+    NSString *filePath = [NSString stringWithFormat:@"%@_%@_%@_main", @(self.params.sdkAppId), @(self.params.roomId), userId];
+    
+    return [NSString stringWithFormat:@"http://%@.liveplay.myqcloud.com/live/%@.flv", @(self.bizId), filePath];
 }
 
 #pragma mark - Torch Observe

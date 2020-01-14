@@ -50,6 +50,10 @@
            forCellReuseIdentifier:TRTCSettingsSliderItem.bindedCellId];
     [self.tableView registerClass:TRTCSettingsSelectorItem.bindedCellClass
            forCellReuseIdentifier:TRTCSettingsSelectorItem.bindedCellId];
+    [self.tableView registerClass:TRTCSettingsLargeInputItem.bindedCellClass
+           forCellReuseIdentifier:TRTCSettingsLargeInputItem.bindedCellId];
+    [self.tableView registerClass:TRTCSettingsInputItem.bindedCellClass
+           forCellReuseIdentifier:TRTCSettingsInputItem.bindedCellId];
 
     [self makeCustomRegistrition];
     

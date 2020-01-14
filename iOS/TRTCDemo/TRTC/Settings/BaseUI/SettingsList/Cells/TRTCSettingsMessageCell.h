@@ -17,12 +17,20 @@ NS_ASSUME_NONNULL_BEGIN
 @interface TRTCSettingsMessageItem : TRTCSettingsBaseItem
 
 @property (copy, nonatomic) NSString *placeHolder;
-@property (copy, nonatomic) NSString *content;
-@property (copy, nonatomic, readonly) void (^action)(NSString *);
+@property (copy, nonatomic, nullable) NSString *content;
+@property (copy, nonatomic, nullable) NSString *actionTitle;
+@property (copy, nonatomic, readonly, nullable) void (^action)(NSString * _Nullable content);
 
 - (instancetype)initWithTitle:(NSString *)title
                   placeHolder:(NSString *)placeHolder
-                       action:(void (^)(NSString *))action NS_DESIGNATED_INITIALIZER;
+                      content:(NSString * _Nullable)content
+                  actionTitle:(NSString *)actionTitle
+                       action:(void (^)(NSString * _Nullable content))action NS_DESIGNATED_INITIALIZER;
+
+- (instancetype)initWithTitle:(NSString *)title
+                  placeHolder:(NSString *)placeHolder
+                       action:(void (^)(NSString * _Nullable content))action;
+
 - (instancetype)init NS_UNAVAILABLE;
 
 @end

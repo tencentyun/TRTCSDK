@@ -313,6 +313,7 @@ static inline CGFloat RadiansToDegrees(CGFloat radians) {
         while(sample != nil && CMSampleBufferIsValid(sample)) {
             if (!strongSelf.videoCanRead){
                 CFRelease(sample);
+                sample = nil;
                 [reader cancelReading];
                 return;
             }
@@ -321,11 +322,13 @@ static inline CGFloat RadiansToDegrees(CGFloat radians) {
             if (pts >= startTime && pts <= endTime){
                 readOneFrame(sample);
                 CFRelease(sample);
+                sample = nil;
                 if (strongSelf->_fps > 0) {
                     usleep(1000 / fps * 1000);
                 }
             }else{
                 CFRelease(sample);
+                sample = nil;
             }
             if (strongSelf.resetVideoReader) {
                 [strongSelf cutVideoFromTime:(int)pts toTime:endTime];
@@ -338,6 +341,11 @@ static inline CGFloat RadiansToDegrees(CGFloat radians) {
             }
             sample = [trackOutput copyNextSampleBuffer];
         }
+        
+        if (sample != nil) {
+            CFRelease(sample);
+        }
+        
         [reader cancelReading];
         
         if(strongSelf.videoCanRead) readFinished();

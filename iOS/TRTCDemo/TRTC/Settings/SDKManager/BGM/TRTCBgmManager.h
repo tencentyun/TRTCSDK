@@ -22,6 +22,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) float progress;
 
 @property (nonatomic, readonly) NSInteger bgmVolume;
+@property (nonatomic, readonly) NSInteger bgmPlayoutVolume;
+@property (nonatomic, readonly) NSInteger bgmPublishVolume;
+
 @property (nonatomic, readonly) NSInteger micVolume;
 @property (nonatomic, readonly) TRTCReverbType reverb;
 @property (nonatomic, readonly) TRTCVoiceChangerType voiceChanger;
@@ -33,7 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// 开始播放BGM
 /// @param path Bgm文件位置，可以是本地文件地址，也可以是网络地址
 /// @param progressNotify 播放进度回调，取值范围为0.0 - 1.0
-- (void)playBgm:(NSString *)path onProgress:(void (^)(float))progressNotify;
+- (void)playBgm:(NSString *)path onProgress:(void (^)(float))progressNotify onCompleted:(void (^)(void))completeNotify;
 
 /// 停止播放
 - (void)stopBgm;
@@ -44,9 +47,18 @@ NS_ASSUME_NONNULL_BEGIN
 /// 暂停播放
 - (void)pauseBgm;
 
-/// 设置混音时Bgm音量大小
+/// 设置Bgm音量大小
+/// @note 会将PlayoutVolume和PublishVolume统一设置为volume
 /// @param volume Bgm音量，取值范围为0 - 100
 - (void)setBgmVolume:(NSInteger)volume;
+
+/// 设置Bgm本地播放的音量
+/// @param volume Bgm本地播放音量，取值范围为0 - 100
+- (void)setBgmPlayoutVolume:(NSInteger)volume;
+
+/// 设置Bgm远端播放的音量
+/// @param volume Bgm远端播放音量，取值范围为0 - 100
+- (void)setBgmPublishVolume:(NSInteger)volume;
 
 /// 设置混音时麦克风音量大小
 /// @param volume 麦克风音量，取值范围为0 - 100

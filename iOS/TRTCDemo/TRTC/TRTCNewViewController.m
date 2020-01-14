@@ -1,9 +1,9 @@
 /*
  * Module:   TRTCNewViewController
- * 
+ *
  * Function: 该界面可以让用户输入一个【房间号】和一个【用户名】
- * 
- * Notice:   
+ *
+ * Notice:
  *
  *  （1）房间号为数字类型，用户名为字符串类型
  *
@@ -15,30 +15,34 @@
 #import "TRTCMainViewController.h"
 #import "UIView+Additions.h"
 #import "ColorMacro.h"
-#define KEY_ALL_USER_ID         @"__all_userid__"
-#define KEY_CURRENT_USERID      @"__current_userid__"
 
 #import "GenerateTestUserSig.h"
-#import "MBProgressHUD.h"
 #import "QBImagePickerController.h"
 #import "TRTCFloatWindow.h"
+#import "TRTCCloudManager.h"
+#import "TRTCRemoteUserManager.h"
 
+#import "UIButton+TRTC.h"
+#import "Masonry.h"
 #import "AppDelegate.h"
 
-@interface TRTCNewViewController () <UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource, QBImagePickerControllerDelegate> {
-    UILabel           *_tipLabel;
-    UITextField       *_roomIdTextField;
-    UITextField       *_userIdTextField;
-    UIButton          *_joinBtn;
-    
-    NSString          *_selfPwd;
-}
-@property (nonatomic, assign) TRTCRoleType role;
-@property (nonatomic, retain) UISwitch* talkModeSwitch;
-@property (nonatomic, retain) UISegmentedControl* customVideoCaptureSeg;
-@property (nonatomic, retain) UISegmentedControl* roleSeg;
-@property (nonatomic, retain) UISegmentedControl* audioReceiveModeSeg; // 音视频接收模式
-@property (nonatomic, retain) UISegmentedControl* videoReceiveModeSeg; // 音视频接收模式
+#define kLastTRTCRoomId @"kLastTRTCRoomId"
+
+// TRTC的bizid的appid用于转推直播流，https://console.cloud.tencent.com/rav 点击【应用】【帐号信息】
+// 在【直播信息】中可以看到bizid和appid，分别填到下面这两个符号
+#define TX_BIZID 0
+#define TX_APPID 0
+
+@interface TRTCNewViewController () <UIPickerViewDelegate, UIPickerViewDataSource, QBImagePickerControllerDelegate>
+
+@property (strong, nonatomic) TRTCSettingsLargeInputItem *roomItem;
+@property (strong, nonatomic) TRTCSettingsLargeInputItem *nameItem;
+@property (strong, nonatomic) TRTCSettingsSegmentItem *videoInputItem;
+@property (strong, nonatomic) TRTCSettingsSegmentItem *audioRecvModeItem;
+@property (strong, nonatomic) TRTCSettingsSegmentItem *videoRecvModeItem;
+@property (strong, nonatomic) TRTCSettingsSegmentItem *roleItem;
+
+@property (strong, nonatomic) UIButton *joinButton;
 @property (nonatomic, retain) AVAsset* customSourceAsset;
 
 @end
@@ -70,90 +74,80 @@
     return segmentControl;
 }
 
+- (void)dealloc {
+    [[TRTCFloatWindow sharedInstance] close];
+    if (self.appScene == TRTCAppSceneVideoCall) {
+        [TRTCCloud destroySharedIntance];
+    }
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    self.view.backgroundColor = UIColorFromRGB(0x333333);
     self.title = self.menuTitle;
+    [self observeKeyboard];
     
+    self.roomItem = [[TRTCSettingsLargeInputItem alloc] initWithTitle:@"请输入房间号："
+                                                          placeHolder:[self defaultRoomId]];
+    self.nameItem = [[TRTCSettingsLargeInputItem alloc] initWithTitle:@"请输入用户名："
+                                                          placeHolder:[self randomId]];
+    self.videoInputItem = [[TRTCSettingsSegmentItem alloc] initWithTitle:@"视频输入"
+                                                                   items:@[@"前摄像头", @"视频文件"]
+                                                           selectedIndex:0
+                                                                  action:nil];
+    self.audioRecvModeItem = [[TRTCSettingsSegmentItem alloc] initWithTitle:@"音频接收"
+                                             items:@[@"自动", @"手动"]
+                                     selectedIndex:0
+                                            action:nil];
+    self.videoRecvModeItem = [[TRTCSettingsSegmentItem alloc] initWithTitle:@"视频接收"
+                                             items:@[@"自动", @"手动"]
+                                     selectedIndex:0
+                                            action:nil];
+    self.roleItem = [[TRTCSettingsSegmentItem alloc] initWithTitle:@"角色选择"
+                                                             items:@[@"上麦主播", @"普通观众"]
+                                                     selectedIndex:0
+                                                            action:nil];
+    
+    NSMutableArray *items = [@[self.roomItem,
+                               self.nameItem,
+                               self.videoInputItem,
+                               self.audioRecvModeItem,
+                               self.videoRecvModeItem]
+                             mutableCopy];
 
-    _role = TRTCRoleAnchor;
-    
-    [self.view setBackgroundColor:UIColorFromRGB(0x333333)];
-    
-    _tipLabel = [[UILabel alloc] initWithFrame:CGRectMake(18, 100, 200, 30)];
-    _tipLabel.textColor = UIColorFromRGB(0x999999);
-    _tipLabel.text = @"请输入房间号：";
-    _tipLabel.textAlignment = NSTextAlignmentLeft;
-    _tipLabel.font = [UIFont systemFontOfSize:16];
-    [self.view addSubview:_tipLabel];
-    
-    UIView *paddingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 18, 40)];
-    _roomIdTextField = [[UITextField alloc] initWithFrame:CGRectMake(0, 136, self.view.width, 40)];
-    _roomIdTextField.delegate = self;
-    _roomIdTextField.leftView = paddingView;
-    _roomIdTextField.leftViewMode = UITextFieldViewModeAlways;
-    _roomIdTextField.placeholder = [NSString stringWithFormat:@"%d", (rand() % 10000) + 1 ];
-    _roomIdTextField.backgroundColor = UIColorFromRGB(0x4a4a4a);
-    _roomIdTextField.textColor = UIColorFromRGB(0x939393);
-    _roomIdTextField.keyboardType = UIKeyboardTypeNumberPad;
-    _roomIdTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
-    [self.view addSubview:_roomIdTextField];
-    
-    UILabel* userTipLabel = [[UILabel alloc] initWithFrame:CGRectMake(18, 182, 200, 30)];
-    userTipLabel.textColor = UIColorFromRGB(0x999999);
-    userTipLabel.text = @"请输入用户名：";
-    userTipLabel.textAlignment = NSTextAlignmentLeft;
-    userTipLabel.font = [UIFont systemFontOfSize:16];
-    [self.view addSubview:userTipLabel];
-    
-    NSString* userId = [self getUserId];
-    UIView *paddingView1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 18, 40)];
-    _userIdTextField = [[UITextField alloc] initWithFrame:CGRectMake(0, 220, self.view.width, 40)];
-    _userIdTextField.delegate = self;
-    _userIdTextField.leftView = paddingView1;
-    _userIdTextField.leftViewMode = UITextFieldViewModeAlways;
-    _userIdTextField.text = userId;
-    _userIdTextField.placeholder = @"12345";
-    _userIdTextField.backgroundColor = UIColorFromRGB(0x4a4a4a);
-    _userIdTextField.textColor = UIColorFromRGB(0x939393);
-    _userIdTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
-    [self.view addSubview:_userIdTextField];
-    
-    _joinBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    _joinBtn.frame = CGRectMake(40, self.view.height - 70, self.view.width - 80, 50);
-    _joinBtn.layer.cornerRadius = 8;
-    _joinBtn.layer.masksToBounds = YES;
-    _joinBtn.layer.shadowOffset = CGSizeMake(1, 1);
-    _joinBtn.layer.shadowColor = UIColorFromRGB(0x019b5c).CGColor;
-    _joinBtn.layer.shadowOpacity = 0.8;
-    _joinBtn.backgroundColor = UIColorFromRGB(0x05a764);
-    [_joinBtn setTitle:@"创建并自动加入该房间" forState:UIControlStateNormal];
-    [_joinBtn addTarget:self action:@selector(onJoinBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:_joinBtn];
-
-    CGPoint topLeft = CGPointMake(userTipLabel.x, _userIdTextField.bottom);
-    _customVideoCaptureSeg = [self addOptionsWithLabel:@"视频输入" options:@[@"前摄像头", @"视频文件"] topLeft:&topLeft];
-
+    // 在线直播场景，才有角色选择按钮
     if (self.appScene == TRTCAppSceneLIVE) {
-        // 在线直播场景，才有角色选择按钮
-        _roleSeg = [self addOptionsWithLabel:@"角色选择" options:@[@"上麦主播", @"普通观众"] topLeft:&topLeft];
+        [items insertObject:self.roleItem atIndex:2];
     }
+    self.items = items;
+    
+    self.joinButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.joinButton.layer.cornerRadius = 8;
+    self.joinButton.layer.masksToBounds = YES;
+    self.joinButton.layer.shadowOffset = CGSizeMake(1, 1);
+    self.joinButton.layer.shadowColor = UIColorFromRGB(0x019b5c).CGColor;
+    self.joinButton.layer.shadowOpacity = 0.8;
+    self.joinButton.backgroundColor = UIColorFromRGB(0x05a764);
+    [self.joinButton setTitle:@"创建并自动加入该房间" forState:UIControlStateNormal];
+    [self.joinButton addTarget:self action:@selector(onJoinBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.view addSubview:self.joinButton];
+    [self.joinButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self.mas_bottomLayoutGuide).offset(-20);
+        make.leading.equalTo(self.view).offset(20);
+        make.trailing.equalTo(self.view).offset(-20);
+        make.height.mas_equalTo(50);
+    }];
+    
+    [self.tableView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.top.leading.trailing.equalTo(self.view);
+        make.bottom.equalTo(self.joinButton.mas_top).offset(-20);
+    }];
 
-#ifndef APPSTORE
-//    _talkModeSwitch = [[UISwitch alloc] init];
-//    _talkModeSwitch.frame = CGRectMake(_userIdTextField.width - _talkModeSwitch.width - 10, _userIdTextField.bottom + 10, _talkModeSwitch.width, _talkModeSwitch.height);
-//    [self.view addSubview:self.talkModeSwitch];
-//    UILabel* talkModeLabel = [[UILabel alloc] init];
-//    talkModeLabel.textColor = userTipLabel.textColor;
-//    talkModeLabel.text = @"纯音频模式";
-//    [talkModeLabel sizeToFit];
-//    talkModeLabel.center = CGPointMake(userTipLabel.x + talkModeLabel.width / 2, _talkModeSwitch.center.y);
-//    [self.view addSubview:talkModeLabel];
-#endif
     
     // 如果没有填 sdkappid 或者 secretkey，就结束流程。
     if (_SDKAppID == 0 || [_SECRETKEY isEqualToString:@""]) {
-        _joinBtn.enabled = NO;
+        self.joinButton.enabled = NO;
         
         NSString *msg = @"";
         if (_SDKAppID == 0) {
@@ -163,11 +157,12 @@
             msg = [NSString stringWithFormat:@"%@ 没有填写SECRETKEY", msg];
         }
         
-        UIAlertController *ac = [UIAlertController alertControllerWithTitle:@"提示" message:msg preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"好" style:UIAlertActionStyleDefault handler:nil ];
+        UIAlertController *ac = [UIAlertController alertControllerWithTitle:@"提示"
+                                                                    message:msg
+                                                             preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"好" style:UIAlertActionStyleDefault handler:nil];
         [ac addAction:ok];
         [self.navigationController presentViewController:ac animated:YES completion:nil];
-        return;
     }
 }
 
@@ -181,10 +176,20 @@
     self.navigationController.navigationBar.hidden = YES;
 }
 
-#pragma mark - UIControl event handle
+- (void)observeKeyboard {
+    __weak TRTCNewViewController *wSelf = self;
+    [self.view tx_observeKeyboardOnChange:^(CGFloat keyboardTop, CGFloat height) {
+        __strong TRTCNewViewController *self = wSelf;
+        UIEdgeInsets insets = self.tableView.contentInset;
+        insets.bottom = self.tableView.frame.size.height - keyboardTop;
+        self.tableView.scrollIndicatorInsets = insets;
+        self.tableView.contentInset = insets;
+    }];
+}
 
-- (void)showMeidaPicker
-{
+#pragma mark - Events
+
+- (void)showMeidaPicker {
     QBImagePickerController* imagePicker = [[QBImagePickerController alloc] init];
     imagePicker.delegate = self;
     imagePicker.allowsMultipleSelection = YES;
@@ -219,12 +224,8 @@
     }];
 }
 
-- (void)qb_imagePickerControllerDidCancel:(QBImagePickerController *)imagePickerController
-{
-    NSLog(@"imagePicker Canceled.");
-    _customVideoCaptureSeg.selectedSegmentIndex = 0;
+- (void)qb_imagePickerControllerDidCancel:(QBImagePickerController *)imagePickerController {
     [self.navigationController popViewControllerAnimated:YES];
-    
 }
 
 /**
@@ -243,26 +244,12 @@
  *  参考文档：https://cloud.tencent.com/document/product/647/17275
  */
 
-- (void)joinRoom
-{
+- (void)joinRoom {
     // 房间号，注意这里是32位无符号整型
-    NSString *roomId = _roomIdTextField.text;
-    if (roomId.length == 0) {
-        roomId = _roomIdTextField.placeholder;
-    }
+    NSString *roomId = self.roomItem.content.length == 0 ? self.roomItem.placeHolder : self.roomItem.content;
+    NSString *userId = self.nameItem.content.length == 0 ? self.nameItem.placeHolder : self.nameItem.content;
+    [[NSUserDefaults standardUserDefaults] setObject:roomId forKey:kLastTRTCRoomId];
     
-    // 如果账号没填，为了简单起见，这里随机产生一个
-    NSString* userId = _userIdTextField.text;
-    if(userId.length == 0) {
-        double tt = [[NSDate date] timeIntervalSince1970];
-        int user = ((uint64_t)(tt * 1000.0)) % 100000000;
-        userId = [NSString stringWithFormat:@"%d", user];
-    }
-    
-    // 将当前userId保存，下次进来时会默认这个账号
-    [[NSUserDefaults standardUserDefaults] setObject:userId forKey:KEY_CURRENT_USERID];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-
     // TRTC相关参数设置
     TRTCParams *param = [[TRTCParams alloc] init];
     param.sdkAppId = _SDKAppID;
@@ -270,27 +257,27 @@
     param.roomId = (UInt32)roomId.integerValue;
     param.userSig = [GenerateTestUserSig genTestUserSig:userId];
     param.privateMapKey = @"";
-    param.role = _role;
+    param.role = self.roleItem.selectedIndex == 1 ? TRTCRoleAudience : TRTCRoleAnchor;
 
-    BOOL autoRecvAudio = _audioReceiveModeSeg.selectedSegmentIndex == 0;
-    BOOL autoRecvVideo = _videoReceiveModeSeg.selectedSegmentIndex == 0;
-    [[TRTCCloud sharedInstance] setDefaultStreamRecvMode:autoRecvAudio video:autoRecvVideo];
-
-
-    // 若您的项目有纯音频的旁路直播需求，请配置参数。
-    // 配置该参数后，音频达到服务器，即开始自动旁路；
-    // 否则无此参数，旁路在收到第一个视频帧之前，会将收到的音频包丢弃。
-    //param.bussInfo = @"{\"Str_uc_params\":{\"pure_audio_push_mod\":1}}"; //纯音频推流参数设置示例
+    TRTCRemoteUserManager *remoteManager = [[TRTCRemoteUserManager alloc] initWithTrtc:[TRTCCloud sharedInstance]];
+    [remoteManager enableAutoReceiveAudio:self.audioRecvModeItem.selectedIndex == 0
+                         autoReceiveVideo:self.videoRecvModeItem.selectedIndex == 0];
     
-    // 若您的项目有纯音频的旁路直播需求，请配置参数。
-    // 配置该参数后，音频达到服务器，即开始自动旁路；
-    // 否则无此参数，旁路在收到第一个视频帧之前，会将收到的音频包丢弃。
-    //param.bussInfo = @"{\"Str_uc_params\":{\"pure_audio_push_mod\":1}}"; //纯音频推流参数设置示例
+    TRTCCloudManager *manager = [[TRTCCloudManager alloc] initWithTrtc:[TRTCCloud sharedInstance]
+                                                                params:param
+                                                                 scene:self.appScene
+                                                                 appId:TX_APPID
+                                                                 bizId:TX_BIZID];
+    
+
+    if (self.videoInputItem.selectedIndex == 1) {
+        [manager setCustomVideo:_customSourceAsset];
+    }
     
     TRTCMainViewController *vc = [[UIStoryboard storyboardWithName:@"TRTC" bundle:nil] instantiateViewControllerWithIdentifier:@"TRTCMainViewController"];
-    // vc.pureAudioMode = _talkModeSwitch.isOn;
+    vc.settingsManager = manager;
+    vc.remoteUserManager = remoteManager;
     vc.param = param;
-    vc.customMediaAsset = _customVideoCaptureSeg.selectedSegmentIndex == 1 ? _customSourceAsset : nil;
     vc.appScene = self.appScene;
     
     [self.navigationController pushViewController:vc animated:YES];
@@ -300,63 +287,25 @@
     if ([TRTCFloatWindow sharedInstance].localView) {
         [[TRTCFloatWindow sharedInstance] close];
     }
-    
-    if (_roleSeg != nil) {
-        _role = _roleSeg.selectedSegmentIndex == 1 ? TRTCRoleAudience : TRTCRoleAnchor;
-    }
-    
-    if (_customVideoCaptureSeg.selectedSegmentIndex == 1) {
+
+    if (self.videoInputItem.selectedIndex == 1) {
         [self showMeidaPicker];
-    }
-    else {
+    } else {
         [self joinRoom];
     }
-   
 }
 
-- (NSString *)getUserId {
-    NSString* userId = @"";
-    NSObject *d = [[NSUserDefaults standardUserDefaults] objectForKey:KEY_CURRENT_USERID];
-    if (d) {
-        userId = [NSString stringWithFormat:@"%@", d];
-    } else {
-        double tt = [[NSDate date] timeIntervalSince1970];
-        int user = ((uint64_t)(tt * 1000.0)) % 100000000;
-        userId = [NSString stringWithFormat:@"%d", user];
-        [[NSUserDefaults standardUserDefaults] setObject:userId forKey:KEY_CURRENT_USERID];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-    }
-    return userId;
+- (NSString *)defaultRoomId {
+    return [[NSUserDefaults standardUserDefaults] stringForKey:kLastTRTCRoomId] ?: [self randomId];
 }
 
-
-#pragma mark - UITextFieldDelegate
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    [textField resignFirstResponder];
-    return YES;
-}
-
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
-{
-    if (textField == _roomIdTextField) {
-        NSCharacterSet *numbersOnly = [NSCharacterSet characterSetWithCharactersInString:@"9876543210"];
-        NSCharacterSet *characterSetFromTextField = [NSCharacterSet characterSetWithCharactersInString:string];
-        
-        BOOL stringIsValid = [numbersOnly isSupersetOfSet:characterSetFromTextField];
-        return stringIsValid;
-    }
-    return YES;
+- (NSString *)randomId {
+    return [NSString stringWithFormat:@"%@", @(arc4random() % 100000)];
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     [self.view endEditing:NO];
 }
 
-
-- (void)dealloc
-{
-    [[TRTCFloatWindow sharedInstance] close];
-}
 
 @end

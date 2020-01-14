@@ -45,7 +45,9 @@
 - (void)onSegmentChange:(id)sender {
     TRTCSettingsSegmentItem *segmentItem = (TRTCSettingsSegmentItem *)self.item;
     segmentItem.selectedIndex = self.segment.selectedSegmentIndex;
-    segmentItem.action(self.segment.selectedSegmentIndex);
+    if (segmentItem.action) {
+        segmentItem.action(self.segment.selectedSegmentIndex);
+    }
 }
 
 @end

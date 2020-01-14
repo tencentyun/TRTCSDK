@@ -50,6 +50,12 @@
                                            continuous:YES
                                                action:^(float volume) {
             [wSelf onChangeVolume:volume];
+        }],
+        [[TRTCSettingsButtonItem alloc] initWithTitle:@"截图分享" buttonTitle:@"分享" action:^{
+            [wSelf snapshotMainVideo];
+        }],
+        [[TRTCSettingsButtonItem alloc] initWithTitle:@"辅流截图分享" buttonTitle:@"分享" action:^{
+            [wSelf snapshotSubVideo];
         }]
     ];
 }
@@ -76,4 +82,34 @@
 - (void)onChangeVolume:(NSInteger)volume {
     [self.userManager setUser:self.userId volume:volume];
 }
+
+- (void)snapshotMainVideo {
+    __weak __typeof(self) wSelf = self;
+    [self.userManager.trtc snapshotVideo:self.userId
+                                    type:TRTCVideoStreamTypeBig
+                         completionBlock:^(TXImage *image) {
+        if (image) {
+            [wSelf shareImage:image];
+        }
+    }];
+}
+
+- (void)snapshotSubVideo {
+    __weak __typeof(self) wSelf = self;
+    [self.userManager.trtc snapshotVideo:self.userId
+                                    type:TRTCVideoStreamTypeSub
+                         completionBlock:^(TXImage *image) {
+        if (image) {
+            [wSelf shareImage:image];
+        }
+    }];
+}
+
+- (void)shareImage:(UIImage *)image {
+    UIActivityViewController *vc = [[UIActivityViewController alloc]
+                                    initWithActivityItems:@[image]
+                                    applicationActivities:nil];
+    [self presentViewController:vc animated:YES completion:nil];
+}
+
 @end

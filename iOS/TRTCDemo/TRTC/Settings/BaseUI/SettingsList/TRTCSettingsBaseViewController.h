@@ -18,6 +18,8 @@
 #import "TRTCSettingsButtonCell.h"
 #import "TRTCSettingsSliderCell.h"
 #import "TRTCSettingsSelectorCell.h"
+#import "TRTCSettingsInputCell.h"
+#import "TRTCSettingsLargeInputCell.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

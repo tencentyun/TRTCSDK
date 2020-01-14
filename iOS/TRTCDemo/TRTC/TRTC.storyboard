@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment version="2304" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -34,23 +34,23 @@
                                 </constraints>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="s3o-Qx-K8W">
-                                <rect key="frame" x="0.0" y="544" width="414" height="44"/>
+                                <rect key="frame" x="0.0" y="722" width="414" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" placeholder="YES" id="DeU-jc-6Tm"/>
                                 </constraints>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="TEq-Vr-Mxu" userLabel="Function Stack View">
-                                <rect key="frame" x="0.0" y="598" width="414" height="264"/>
+                                <rect key="frame" x="0.0" y="776" width="414" height="86"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="h7E-vf-2Yj" customClass="BeautySettingPanel">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="172"/>
+                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="h7E-vf-2Yj" customClass="TCBeautyPanel">
+                                        <rect key="frame" x="0.0" y="-172" width="414" height="172"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="172" id="1GM-Oy-QSf"/>
                                         </constraints>
                                     </view>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XFH-9V-99L">
-                                        <rect key="frame" x="0.0" y="178" width="139" height="36"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="139" height="36"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="36" id="zfn-y7-EAh"/>
                                         </constraints>
@@ -65,7 +65,7 @@
                                         </connections>
                                     </button>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="0Fi-C6-49W">
-                                        <rect key="frame" x="0.0" y="220" width="414" height="44"/>
+                                        <rect key="frame" x="0.0" y="42" width="414" height="44"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fmd-lA-YKU" customClass="TRTCIconButton">
                                                 <rect key="frame" x="0.0" y="0.0" width="37.5" height="44"/>

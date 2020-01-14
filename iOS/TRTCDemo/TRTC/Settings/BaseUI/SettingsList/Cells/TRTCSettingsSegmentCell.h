@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (strong, nonatomic) NSArray<NSString *> *items;
 @property (nonatomic) NSInteger selectedIndex;
-@property (copy, nonatomic, readonly) void (^action)(NSInteger);
+@property (copy, nonatomic, readonly, nullable) void (^action)(NSInteger);
 
 - (instancetype)initWithTitle:(NSString *)title
                         items:(NSArray<NSString *> *)items

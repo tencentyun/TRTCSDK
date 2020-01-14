@@ -20,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface TRTCRemoteUserManager : NSObject
 
 @property (strong, nonatomic, readonly) NSDictionary<NSString *, TRTCRemoteUserConfig *> *remoteUsers;
+@property (strong, nonatomic, readonly) TRTCCloud *trtc;
 
 - (instancetype)initWithTrtc:(TRTCCloud *)trtc NS_DESIGNATED_INITIALIZER;
 
@@ -28,6 +29,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)addUser:(NSString *)userId roomId:(NSString *)roomId;
 
 - (void)removeUser:(NSString *)userId;
+
+/// 设置是否自动接收远端音视频
+/// @param autoReceiveAudio 自动接收音频
+/// @param autoReceiveVideo 自动接收视频
+- (void)enableAutoReceiveAudio:(BOOL)autoReceiveAudio
+              autoReceiveVideo:(BOOL)autoReceiveVideo;
 
 /// 更新远端用户视频开启状态
 /// @param userId 用户ID

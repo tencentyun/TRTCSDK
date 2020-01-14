@@ -15,6 +15,7 @@
 
 #import "TRTCVideoConfig.h"
 #import "TRTCAudioConfig.h"
+#import "TRTCStreamConfig.h"
 #import "TRTCRemoteUserManager.h"
 
 #import "TRTCCloud.h"
@@ -37,12 +38,19 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) id<TRTCCloudManagerDelegate> delegate;
 @property (nonatomic) TRTCAppScene scene;
 @property (strong, nonatomic) TRTCParams *params;
+@property (strong, nonatomic, readonly) TRTCCloud *trtc;
+
 @property (strong, nonatomic, readonly) TRTCVideoConfig *videoConfig;
 @property (strong, nonatomic, readonly) TRTCAudioConfig *audioConfig;
+@property (strong, nonatomic, readonly) TRTCStreamConfig *streamConfig;
 @property (strong, nonatomic) TRTCRemoteUserManager *remoteUserManager;
 @property (strong, nonatomic, nullable) UIImageView *videoView;
 
-- (instancetype)initWithTrtc:(TRTCCloud *)trtc params:(TRTCParams *)params scene:(TRTCAppScene)scene NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithTrtc:(TRTCCloud *)trtc
+                      params:(TRTCParams *)params
+                       scene:(TRTCAppScene)scene
+                       appId:(NSInteger)appId
+                       bizId:(NSInteger)bizId NS_DESIGNATED_INITIALIZER;
 
 - (instancetype)init NS_UNAVAILABLE;
 
@@ -66,6 +74,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// 设置视频采集
 /// @param isEnabled 开启视频采集
 - (void)setVideoEnabled:(BOOL)isEnabled;
+
+/// 设置视频推送
+/// @param isMuted 推送关闭
+- (void)setVideoMuted:(BOOL)isMuted;
 
 /// 设置分辨率
 /// @param resolution 分辨率
@@ -133,18 +145,18 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param prefersLowQuality 默认观看低清
 - (void)setPrefersLowQuality:(BOOL)prefersLowQuality;
 
-/// 设置云端混流
-/// @param isMixingInCloud 开启云端混流
-- (void)setMixingInCloud:(BOOL)isMixingInCloud;
-
-/// 设置云端混流参数
-- (void)updateCloudMixtureParams;
-
 #pragma mark - Audio Settings
 
 /// 设置音频采集
 /// @param isEnabled 开启音频采集
 - (void)setAudioEnabled:(BOOL)isEnabled;
+
+/// 采集音量
+@property (nonatomic) NSInteger captureVolume;
+
+/// 播放音量
+@property (nonatomic) NSInteger playoutVolume;
+
 
 /// 设置音频通道
 /// @param route 音频通道
@@ -175,6 +187,15 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param isEnabled 开启音量提示
 /// @note 在音频启动前设置
 - (void)setVolumeEvaluationEnabled:(BOOL)isEnabled;
+
+#pragma mark - Stream
+
+/// 设置云端混流
+/// @param isMixingInCloud 开启云端混流
+- (void)setMixingInCloud:(BOOL)isMixingInCloud;
+
+/// 设置云端混流参数
+- (void)updateCloudMixtureParams;
 
 #pragma mark - Message
 

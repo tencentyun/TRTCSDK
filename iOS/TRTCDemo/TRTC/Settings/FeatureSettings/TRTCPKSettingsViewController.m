@@ -62,6 +62,7 @@
     }
     [self.manager startCrossRoom:self.roomIdTextField.text
                           userId:self.userIdTextField.text];
+    [self.view endEditing:YES];
 }
 
 - (void)stopPK {

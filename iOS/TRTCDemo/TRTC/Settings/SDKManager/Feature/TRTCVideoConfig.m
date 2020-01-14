@@ -26,7 +26,9 @@
         self.videoEncConfig = [[TRTCVideoEncParam alloc] init];
         self.videoEncConfig.videoResolution = TRTCVideoResolution_640_360;
         self.videoEncConfig.videoBitrate = scene == TRTCAppSceneLIVE ? 750 : 500;
-        
+        if (scene == TRTCAppSceneVideoCall) {
+            self.videoEncConfig.enableAdjustRes = YES;
+        }
         self.smallVideoEncConfig = [[TRTCVideoEncParam alloc] init];
         self.smallVideoEncConfig.videoResolution = TRTCVideoResolution_160_90;
         self.smallVideoEncConfig.videoBitrate = 100;
@@ -40,7 +42,6 @@
         self.localMirrorType = TRTCLocalVideoMirrorType_Auto;
         self.fillMode = TRTCVideoFillMode_Fill;
         self.prefersLowQuality = YES;
-        self.isMixingInCloud = YES;
         [self loadFromLocal];
     }
     return self;
@@ -66,7 +67,6 @@
     self.isRemoteMirrorEnabled = [dict[@"isRemoteMirrorEnabled"] boolValue];
     self.localMirrorType = [dict[@"localMirrorType"] integerValue];
     self.fillMode = [dict[@"fillMode"] integerValue];
-    self.isMixingInCloud = [dict[@"isMixingInCloud"] boolValue];
     self.isSmallVideoEnabled = [dict[@"isSmallVideoEnabled"] boolValue];
     self.prefersLowQuality = [dict[@"prefersLowQuality"] boolValue];
     self.isGSensorEnabled = [dict[@"isGSensorEnabled"] boolValue];
@@ -83,7 +83,6 @@
         @"isRemoteMirrorEnabled" : @(self.isRemoteMirrorEnabled),
         @"localMirrorType" : @(self.localMirrorType),
         @"fillMode" : @(self.fillMode),
-        @"isMixingInCloud" : @(self.isMixingInCloud),
         @"isSmallVideoEnabled" : @(self.isSmallVideoEnabled),
         @"prefersLowQuality" : @(self.prefersLowQuality),
         @"isGSensorEnabled" : @(self.isGSensorEnabled),
@@ -101,6 +100,7 @@
         @(TRTCVideoResolution_640_480),
         @(TRTCVideoResolution_960_540),
         @(TRTCVideoResolution_1280_720),
+        @(TRTCVideoResolution_1920_1080),
     ];
 }
 + (NSArray<NSString *> *)resolutionNames {
@@ -113,6 +113,7 @@
         @"480x640",
         @"540x960",
         @"720x1280",
+        @"1080X1920",
     ];
 }
 
@@ -159,6 +160,10 @@
             return isLive
             ? [[TRTCBitrateRange alloc] initWithMin:500 max:2000 defaultBitrate:1750 step:10]
             : [[TRTCBitrateRange alloc] initWithMin:500 max:2000 defaultBitrate:1150 step:10];
+        case TRTCVideoResolution_1920_1080:
+            return isLive
+            ? [[TRTCBitrateRange alloc] initWithMin:800 max:3000 defaultBitrate:1900 step:50]
+            : [[TRTCBitrateRange alloc] initWithMin:800 max:3000 defaultBitrate:1900 step:50];
         default:
             assert(false);
             return [[TRTCBitrateRange alloc] init];

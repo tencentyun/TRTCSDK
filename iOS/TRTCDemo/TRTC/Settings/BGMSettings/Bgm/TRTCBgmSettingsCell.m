@@ -81,6 +81,9 @@
         __weak __typeof(self) wSelf = self;
         [self.manager playBgm:path onProgress:^(float progress) {
             wSelf.progressView.progress = progress;
+        } onCompleted:^{
+            wSelf.playButton.selected = NO;
+            wSelf.progressView.progress = 0;
         }];
     }
     button.selected = self.manager.isPlaying && !self.manager.isOnPause;

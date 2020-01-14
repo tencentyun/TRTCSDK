@@ -12,14 +12,17 @@
 
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
+#import "TRTCCloudManager.h"
 #import "TRTCCloud.h"
+#import "TRTCRemoteUserManager.h"
 
 
 @interface TRTCMainViewController : UIViewController 
 
 @property (nonatomic) TRTCParams *param;    /// TRTC SDK 视频通话房间进入所必须的参数
-@property (nonatomic, retain) AVAsset* customMediaAsset;
-@property (nonatomic, assign) TRTCAppScene appScene;
+@property (strong, nonatomic) TRTCCloudManager *settingsManager;
+@property (strong, nonatomic) TRTCRemoteUserManager *remoteUserManager;
+@property (nonatomic) TRTCAppScene appScene;
 
 - (void)setLocalView:(UIView*)localView remoteViewDic:(NSMutableDictionary*)remoteViewDic;
 

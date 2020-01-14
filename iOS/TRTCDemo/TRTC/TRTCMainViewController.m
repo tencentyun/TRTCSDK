@@ -23,7 +23,7 @@
 #import "TRTCVideoView.h"
 #import "TXLivePlayer.h"
 #import "TRTCCloudDef.h"
-#import "BeautySettingPanel.h"
+#import "ThemeConfigurator.h"
 #import "TRTCFloatWindow.h"
 #import "TRTCBgmContainerViewController.h"
 #import "TRTCFeatureContainerViewController.h"
@@ -31,21 +31,14 @@
 #import "TRTCRemoteUserListViewController.h"
 #import "TRTCBgmManager.h"
 #import "TRTCAudioEffectManager.h"
-#import "TRTCRemoteUserManager.h"
 #import "TRTCAudioRecordManager.h"
 #import "TRTCCdnPlayerManager.h"
 #import "UIButton+TRTC.h"
 #import "Masonry.h"
 
-// TRTC的bizid的appid用于转推直播流，https://console.cloud.tencent.com/rav 点击【应用】【帐号信息】
-// 在【直播信息】中可以看到bizid和appid，分别填到下面这两个符号
-#define TX_BIZID 0
-#define TX_APPID 0
-
 @interface TRTCMainViewController() <
     TRTCCloudDelegate,
     TRTCVideoViewDelegate,
-    BeautySettingPanelDelegate,
     BeautyLoadPituDelegate,
     TRTCCloudManagerDelegate,
     TXLivePlayListener> {
@@ -66,7 +59,7 @@
 @property (weak, nonatomic) IBOutlet UIView *settingsContainerView;
 
 @property (weak, nonatomic) IBOutlet UIButton *cdnPlayButton; //旁路播放切换
-@property (weak, nonatomic) IBOutlet BeautySettingPanel *beautyPanel;
+@property (weak, nonatomic) IBOutlet TCBeautyPanel *beautyPanel;
 
 @property (weak, nonatomic) IBOutlet UIStackView *toastStackView;
 @property (weak, nonatomic) IBOutlet UIButton *linkMicButton;
@@ -92,10 +85,8 @@
 @property (strong, nonatomic, nullable) TRTCRemoteUserListViewController *remoteUserListVC;
 
 @property (strong, nonatomic) TRTCCloud *trtc;
-@property (strong, nonatomic) TRTCCloudManager *settingsManager;
 @property (strong, nonatomic) TRTCBgmManager *bgmManager;
 @property (strong, nonatomic) TRTCAudioEffectManager *effectManager;
-@property (strong, nonatomic) TRTCRemoteUserManager *remoteUserManager;
 @property (strong, nonatomic) TRTCAudioRecordManager *recordManager;
 
 @property (nonatomic) BOOL isLivePlayingViaCdn;
@@ -111,15 +102,12 @@
     _dashboardTopMargin = 0.15;
     _trtc = [TRTCCloud sharedInstance];
     [_trtc setDelegate:self];
-    
-    self.settingsManager = [[TRTCCloudManager alloc] initWithTrtc:self.trtc
-                                                           params:self.param
-                                                            scene:self.appScene];
-    [self.settingsManager setCustomVideo:self.customMediaAsset];
-    
+
+    self.beautyPanel.actionPerformer = [TCBeautyPanelActionProxy proxyWithSDKObject:_trtc];
+    [ThemeConfigurator configBeautyPanelTheme:self.beautyPanel];
+
     self.bgmManager = [[TRTCBgmManager alloc] initWithTrtc:self.trtc];
     self.effectManager = [[TRTCAudioEffectManager alloc] initWithTrtc:self.trtc];
-    self.remoteUserManager = [[TRTCRemoteUserManager alloc] initWithTrtc:self.trtc];
     self.settingsManager.remoteUserManager = self.remoteUserManager;
     self.recordManager = [[TRTCAudioRecordManager alloc] initWithTrtc:self.trtc];
 
@@ -144,21 +132,6 @@
     [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
     _dashboardTopMargin = [UIApplication sharedApplication].statusBarFrame.size.height + self.navigationController.navigationBar.frame.size.height;
     [self relayout];
-#if !TARGET_IPHONE_SIMULATOR
-    //是否有摄像头权限
-    AVAuthorizationStatus statusVideo = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
-    if (statusVideo == AVAuthorizationStatusDenied) {
-        [self toastTip:@"获取摄像头权限失败，请前往隐私-相机设置里面打开应用权限"];
-        return;
-    }
-    
-    //是否有麦克风权限
-    AVAuthorizationStatus statusAudio = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeAudio];
-    if (statusAudio == AVAuthorizationStatusDenied) {
-        [self toastTip:@"获取麦克风权限失败，请前往隐私-麦克风设置里面打开应用权限"];
-        return;
-    }
-#endif
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -187,28 +160,20 @@
 - (void)dealloc {
     [self.settingsManager exitRoom];
     [[TRTCFloatWindow sharedInstance] close];
-    [TRTCCloud destroySharedIntance];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)observeKeyboard {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardFrameDidChange:) name:UIKeyboardWillChangeFrameNotification object:nil];
-}
-
-- (void)keyboardFrameDidChange:(NSNotification *)notice {
-    CGRect endFrame = [notice.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    double animDuration = [notice.userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-
-    CGFloat keyboardHeight = self.view.size.height - endFrame.origin.y;
-    [self.settingsContainerView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(self.view);
-        make.centerY.equalTo(self.view).offset(-keyboardHeight / 2);
-        make.width.equalTo(self.view).multipliedBy(0.95);
-        make.height.mas_equalTo(endFrame.origin.y * 0.7);
-    }];
-
-    [UIView animateWithDuration:animDuration animations:^{
-        [self.view layoutIfNeeded];
+    __weak TRTCMainViewController *wSelf = self;
+    [self.view tx_observeKeyboardOnChange:^(CGFloat keyboardTop, CGFloat height) {
+        __strong TRTCMainViewController *sSelf = wSelf;
+        CGFloat keyboardHeight = sSelf.view.size.height - keyboardTop;
+        [sSelf.settingsContainerView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.centerX.equalTo(sSelf.view);
+            make.centerY.equalTo(sSelf.view).offset(-keyboardHeight / 2);
+            make.width.equalTo(sSelf.view).multipliedBy(0.95);
+            make.height.mas_equalTo(keyboardTop * 0.88);
+        }];
     }];
 }
 
@@ -220,17 +185,13 @@
 
     // 本地预览view
     _localView = [TRTCVideoView newVideoViewWithType:VideoViewType_Local userId:self.param.userId];
-
     _localView.delegate = self;
     [_localView setBackgroundColor:UIColorFromRGB(0x262626)];
-
-
+    
     _layoutEngine = [[TRTCVideoViewLayout alloc] init];
     _layoutEngine.view = self.holderView;
     [self relayout];
 
-    _beautyPanel.hidden = YES;
-    _beautyPanel.delegate = self;
     _beautyPanel.pituDelegate = self;
 }
 
@@ -319,8 +280,8 @@
 - (void)enterRoom {
     [self toastTip:@"开始进房"];
     [self.settingsManager enterRoom];
-    [_beautyPanel resetValues];
-    [_beautyPanel trigglerValues];
+    [_beautyPanel resetAndApplyValues];
+//    [_beautyPanel trigglerValues];
 }
 
 - (void)exitRoom {
@@ -483,7 +444,8 @@
 
     if (self.isLivePlayingViaCdn) {
         [self exitRoom];
-        [self.cdnPlayer startPlay:[self.settingsManager getCdnUrlOfUser:_mainViewUserId]];
+        NSString *anchorId = _mainViewUserId.length > 0 ? _mainViewUserId : self.remoteUserManager.remoteUsers.allKeys.firstObject;
+        [self.cdnPlayer startPlay:[self.settingsManager getCdnUrlOfUser:anchorId]];
     } else {
         [self.cdnPlayer stopPlay];
         [self enterRoom];
@@ -541,12 +503,26 @@
 }
 
 /**
- * WARNING 大多是不可恢复的错误，需要通过 UI 提示用户
+ * 大多是不可恢复的错误，需要通过 UI 提示用户
  */
 - (void)onError:(TXLiteAVError)errCode errMsg:(NSString *)errMsg extInfo:(nullable NSDictionary *)extInfo {
-    NSString *msg = [NSString stringWithFormat:@"didOccurError: %@[%d]", errMsg, errCode];
-    [self toastTip:msg];
-    [self exitRoom];
+    // 有些手机在后台时无法启动音频，这种情况下，TRTC会在恢复到前台后尝试重启音频，不应调用exitRoom。
+    BOOL isStartingRecordInBackgroundError =
+        errCode == ERR_MIC_START_FAIL &&
+        [UIApplication sharedApplication].applicationState != UIApplicationStateActive;
+    
+    if (!isStartingRecordInBackgroundError) {
+        NSString *msg = [NSString stringWithFormat:@"发生错误: %@ [%d]", errMsg, errCode];
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"已退房"
+                                                                                 message:msg
+                                                                          preferredStyle:UIAlertControllerStyleAlert];
+        [alertController addAction:[UIAlertAction actionWithTitle:@"确定"
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * _Nonnull action) {
+            [self exitRoom];
+        }]];
+        [self presentViewController:alertController animated:YES completion:nil];
+    }
 }
 
 - (void)onEnterRoom:(NSInteger)result {
@@ -615,7 +591,7 @@
 }
 
 - (void)onUserAudioAvailable:(NSString *)userId available:(BOOL)available {
-    NSLog(@"onUserAudioAvailable:userId:%@ alailable:%u", userId, available);
+    NSLog(@"onUserAudioAvailable:userId:%@ available:%u", userId, available);
     [self.remoteUserManager updateUser:userId isAudioEnabled:available];
 
     TRTCVideoView *playerView = [_remoteViewDic objectForKey:userId];
@@ -625,7 +601,7 @@
 }
 
 - (void)onUserVideoAvailable:(NSString *)userId available:(BOOL)available {
-    NSLog(@"onUserVideoAvailable:userId:%@ alailable:%u", userId, available);
+    NSLog(@"onUserVideoAvailable:userId:%@ available:%u", userId, available);
     [self.remoteUserManager updateUser:userId isVideoEnabled:available];
 
     if (userId != nil) {
@@ -661,7 +637,7 @@
 }
 
 - (void)onUserSubStreamAvailable:(NSString *)userId available:(BOOL)available {
-    NSLog(@"onUserSubStreamAvailable:userId:%@ alailable:%u", userId, available);
+    NSLog(@"onUserSubStreamAvailable:userId:%@ available:%u", userId, available);
     NSString* viewId = [NSString stringWithFormat:@"%@-sub", userId];
     if (available) {
         TRTCVideoView *remoteView = [TRTCVideoView newVideoViewWithType:VideoViewType_Remote userId:userId];
@@ -741,7 +717,7 @@
 }
 
 - (void)onAudioEffectFinished:(int)effectId code:(int)code {
-
+    [self.effectManager stopEffect:effectId];
 }
 
 - (UIImage*)imageForNetworkQuality:(TRTCQuality)quality
@@ -810,122 +786,6 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         [self toastTip:@"资源加载失败"];
     });
-}
-
-#pragma mark - BeautySettingPanelDelegate
-// 滤镜
-- (void)onSetMixLevel:(float)mixLevel
-{
-    [_trtc setFilterConcentration:mixLevel / 10.0];
-}
-
-- (void)onSetFilter:(UIImage *)filterImage
-{
-    [_trtc setFilter:filterImage];
-}
-
-- (void)onSetGreenScreenFile:(NSURL *)file
-{
-    [_trtc setGreenScreenFile:file];
-}
-
-// 基础美颜
-- (void)onSetBeautyStyle:(int)beautyStyle beautyLevel:(float)beautyLevel whitenessLevel:(float)whitenessLevel ruddinessLevel:(float)ruddinessLevel
-{
-    TXBeautyManager *manager = [_trtc getBeautyManager];
-    [manager setBeautyStyle:(TXBeautyStyle)beautyStyle];
-    [manager setBeautyLevel:beautyLevel];
-    [manager setWhitenessLevel:whitenessLevel];
-    [manager setRuddyLevel:ruddinessLevel];
-}
-
-
-#pragma mark P图美颜
-- (void)setEyeLightenLevel:(float)level {
-    [[_trtc getBeautyManager] setEyeLightenLevel:level];
-}
-
-- (void)setToothWhitenLevel:(float)level {
-    [[_trtc getBeautyManager] setToothWhitenLevel:level];
-}
-
-- (void)setWrinkleRemoveLevel:(float)level {
-    [[_trtc getBeautyManager] setWrinkleRemoveLevel:level];
-}
-
-- (void)setPounchRemoveLevel:(float)level {
-    [[_trtc getBeautyManager] setPounchRemoveLevel:level];
-}
-
-- (void)setSmileLinesRemoveLevel:(float)level {
-    [[_trtc getBeautyManager] setSmileLinesRemoveLevel:level];
-}
-
-- (void)setForeheadLevel:(float)level {
-    [[_trtc getBeautyManager] setForeheadLevel:level];
-}
-
-- (void)setEyeDistanceLevel:(float)level {
-    [[_trtc getBeautyManager] setEyeDistanceLevel:level];
-}
-
-- (void)setEyeAngleLevel:(float)level {
-    [[_trtc getBeautyManager] setEyeAngleLevel:level];
-}
-
-- (void)setMouthShapeLevel:(float)level {
-    [[_trtc getBeautyManager] setMouthShapeLevel:level];
-}
-
-- (void)setNoseWingLevel:(float)level {
-    [[_trtc getBeautyManager] setNoseWingLevel:level];
-}
-
-- (void)setNosePositionLevel:(float)level {
-    [[_trtc getBeautyManager] setNosePositionLevel:level];
-}
-
-- (void)setLipsThicknessLevel:(float)level {
-    [[_trtc getBeautyManager] setLipsThicknessLevel:level];
-}
-
-- (void)setFaceBeautyLevel:(float)level {
-    [[_trtc getBeautyManager] setFaceBeautyLevel:level];
-}
-
-- (void)setEyeScaleLevel:(float)eyeScaleLevel
-{
-    [[_trtc getBeautyManager] setEyeScaleLevel:eyeScaleLevel];
-}
-
-- (void)setFaceSlimLevel:(float)level
-{
-    [[_trtc getBeautyManager] setFaceSlimLevel:level];
-}
-
-- (void)setFaceVLevel:(float)vLevel
-{
-    [[_trtc getBeautyManager] setFaceVLevel:vLevel];
-}
-
-- (void)setFaceShortLevel:(float)shortLevel
-{
-    [[_trtc getBeautyManager] setFaceShortLevel:shortLevel];
-}
-
-- (void)setNoseSlimLevel:(float)slimLevel
-{
-    [[_trtc getBeautyManager] setNoseSlimLevel:slimLevel];
-}
-
-- (void)setChinLevel:(float)chinLevel
-{
-    [[_trtc getBeautyManager] setChinLevel:chinLevel];
-}
-
-- (void)onSelectMotionTmpl:(NSString *)tmplName inDir:(NSString *)tmplDir
-{
-    [[_trtc getBeautyManager] setMotionTmpl:tmplName inDir:tmplDir];
 }
 
 #pragma mark - TXLivePlayListener

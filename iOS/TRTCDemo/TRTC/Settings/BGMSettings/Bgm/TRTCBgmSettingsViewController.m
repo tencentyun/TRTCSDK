@@ -12,6 +12,14 @@
 #import "TRTCBgmSettingsViewController.h"
 #import "TRTCBgmSettingsCell.h"
 
+@interface TRTCBgmSettingsViewController()
+
+@property (nonatomic, strong) TRTCSettingsSliderItem *bgmPlayoutVolumeItem;
+
+@property (nonatomic, strong) TRTCSettingsSliderItem *bgmPublishVolumeItem;
+
+@end
+
 @implementation TRTCBgmSettingsViewController
 
 - (NSString *)title {
@@ -57,6 +65,27 @@
     [super viewDidLoad];
     
     __weak __typeof(self) wSelf = self;
+    
+    self.bgmPlayoutVolumeItem = [[TRTCSettingsSliderItem alloc] initWithTitle:@"本地音量"
+                                            value:self.manager.bgmPlayoutVolume
+                                              min:0
+                                              max:100
+                                             step:1
+                                       continuous:YES
+                                           action:^(float value) {
+        [wSelf onChangeBgmPlayoutVolume:(NSInteger) value];
+    }];
+    
+    self.bgmPublishVolumeItem = [[TRTCSettingsSliderItem alloc] initWithTitle:@"远程音量"
+                                            value:self.manager.bgmPublishVolume
+                                              min:0
+                                              max:100
+                                             step:1
+                                       continuous:YES
+                                           action:^(float value) {
+        [wSelf onChangeBgmPublishVolume:(NSInteger) value];
+    }];
+    
     self.items = @[
         [[TRTCBgmSettingsItem alloc] initWithTitle:@"BGM" bgmManager:self.manager],
         [[TRTCSettingsSliderItem alloc] initWithTitle:@"BGM音量"
@@ -68,6 +97,8 @@
                                                action:^(float value) {
             [wSelf onChangeBgmVolume:(NSInteger) value];
         }],
+        self.bgmPlayoutVolumeItem,
+        self.bgmPublishVolumeItem,
         [[TRTCSettingsSliderItem alloc] initWithTitle:@"MIC音量"
                                                 value:self.manager.micVolume
                                                   min:0
@@ -96,6 +127,16 @@
 
 - (void)onChangeBgmVolume:(NSInteger)volume {
     [self.manager setBgmVolume:volume];
+    self.bgmPlayoutVolumeItem.sliderValue = volume;
+    self.bgmPublishVolumeItem.sliderValue = volume;
+}
+
+- (void)onChangeBgmPlayoutVolume:(NSInteger)volume {
+    [self.manager setBgmPlayoutVolume:volume];
+}
+
+- (void)onChangeBgmPublishVolume:(NSInteger)volume {
+    [self.manager setBgmPublishVolume:volume];
 }
 
 - (void)onChangeMicVolume:(NSInteger)volume {
