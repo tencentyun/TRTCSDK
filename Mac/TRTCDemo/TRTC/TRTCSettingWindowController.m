@@ -9,6 +9,7 @@
 // 用于对视频通话的分辨率、帧率和流畅模式进行调整，并支持记录下这些设置项
 
 #import "TRTCSettingWindowController.h"
+#import "GenerateTestUserSig.h"
 #import <objc/message.h>
 #import <CommonCrypto/CommonCrypto.h>
 
@@ -521,6 +522,43 @@ DECL_DEFAULT_KEY(BOOL, PlaySmallStream, playSmallStream)
     }
 }
 
+- (IBAction)onPlayBGM:(id)sender {
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"bgm_demo" ofType:@"mp3"];
+
+    [self.trtcEngine setBGMVolume:(self.BGMVolumeSlider.floatValue * 100)];
+    [self.trtcEngine setBGMPublishVolume:(self.BGMPublishVolumeSlider.floatValue * 100)];
+    [self.trtcEngine setBGMPlayoutVolume:(self.BGMPlayoutVolumeSlider.floatValue * 100)];
+    
+    [self.trtcEngine playBGM:path withBeginNotify:^(NSInteger errCode) {
+        
+    } withProgressNotify:^(NSInteger progressMS, NSInteger durationMS) {
+        
+    } andCompleteNotify:^(NSInteger errCode) {
+        
+    }];
+}
+
+- (IBAction)onStopBGM:(id)sender {
+    [self.trtcEngine stopBGM];
+}
+
+- (IBAction)onSetBGMVolume:(id)sender {
+    NSSlider *slider = sender;
+    [self.trtcEngine setBGMVolume:(slider.floatValue * 100)];
+    self.BGMPublishVolumeSlider.floatValue = slider.floatValue;
+    self.BGMPlayoutVolumeSlider.floatValue = slider.floatValue;
+}
+
+- (IBAction)onSetBGMPublishVolume:(id)sender {
+    NSSlider *slider = sender;
+    [self.trtcEngine setBGMPublishVolume:(slider.floatValue * 100)];
+}
+
+- (IBAction)onSetBGMPlayoutVolume:(id)sender {
+    NSSlider *slider = sender;
+    [self.trtcEngine setBGMPlayoutVolume:(slider.floatValue * 100)];
+}
+
 // 更改流控模式，流畅还是清晰
 - (IBAction)onClickQOSPreference:(NSButton *)sender {
     TRTCVideoQosPreference preference = sender.tag == 0 ? TRTCVideoQosPreferenceSmooth : TRTCVideoQosPreferenceClear;
@@ -544,26 +582,17 @@ DECL_DEFAULT_KEY(BOOL, PlaySmallStream, playSmallStream)
         return;
     }
     
-    NSString* streamId = [NSString stringWithFormat:@"%@_%@_main", self.roomID, self.userID] ;
-    const char *cStr = [streamId UTF8String];
-    unsigned char result[CC_MD5_DIGEST_LENGTH];
-    CC_MD5(cStr, (uint32_t)strlen(cStr), result);
-    NSString *md5StreamId = [NSString stringWithFormat:
-                             @"%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
-                             result[0], result[1], result[2], result[3], result[4], result[5], result[6], result[7],
-                             result[8], result[9], result[10], result[11], result[12], result[13], result[14], result[15]
-                             ];
-    
-    
-    NSString* playUrl = [NSString stringWithFormat:@"http://3891.liveplay.myqcloud.com/live/3891_%@.flv", md5StreamId];
+    NSString* streamId = [NSString stringWithFormat:@"%@_%@_%@_main", @(_SDKAppID), self.roomID, self.userID];
+    NSString* playUrl = [NSString stringWithFormat:@"http://3891.liveplay.myqcloud.com/live/%@.flv", streamId];
     
     NSSharingServicePicker *picker = [[NSSharingServicePicker alloc] initWithItems:@[playUrl]];
     picker.delegate = self;
     [picker showRelativeToRect:sender.bounds ofView:sender preferredEdge:NSRectEdgeMaxX];
-/*    NSAlert *alert = [[NSAlert alloc] init];
+    
+    NSAlert *alert = [[NSAlert alloc] init];
     alert.messageText = @"混流地址";
     alert.informativeText = playUrl;
-    [alert runModal];*/
+    [alert runModal];
 }
 #pragma mark - NSSharingServicePickerDelegate
 - (NSArray<NSSharingService *> *)sharingServicePicker:(NSSharingServicePicker *)sharingServicePicker sharingServicesForItems:(NSArray *)items proposedSharingServices:(NSArray<NSSharingService *> *)proposedServices

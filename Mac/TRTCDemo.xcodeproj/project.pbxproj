@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		129FE2EC23CEB3940028480C /* bgm_demo.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 129FE2EB23CEB3940028480C /* bgm_demo.mp3 */; };
 		453167F221E45560007A91CB /* TRTCNewWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 453167EF21E4555F007A91CB /* TRTCNewWindowController.m */; };
 		453167F321E45560007A91CB /* TRTCNewWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 453167F021E4555F007A91CB /* TRTCNewWindowController.xib */; };
 		457A707B2200814E00DD193B /* CaptureSourceCollectionItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = 457A70702200814D00DD193B /* CaptureSourceCollectionItem.xib */; };
@@ -34,6 +35,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		129FE2EB23CEB3940028480C /* bgm_demo.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bgm_demo.mp3; sourceTree = "<group>"; };
 		453167EF21E4555F007A91CB /* TRTCNewWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCNewWindowController.m; sourceTree = "<group>"; };
 		453167F021E4555F007A91CB /* TRTCNewWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TRTCNewWindowController.xib; sourceTree = "<group>"; };
 		453167F121E4555F007A91CB /* TRTCNewWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCNewWindowController.h; sourceTree = "<group>"; };
@@ -153,6 +155,7 @@
 		D689A95221CC9AE400C7C618 /* TRTC */ = {
 			isa = PBXGroup;
 			children = (
+				129FE2EB23CEB3940028480C /* bgm_demo.mp3 */,
 				D697C3BF22F3164100E80A2A /* GenerateTestUserSig.h */,
 				D697C3C022F3164100E80A2A /* GenerateTestUserSig.m */,
 				45F96FC8223296E600E861EC /* TRTCApp.h */,
@@ -255,6 +258,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				129FE2EC23CEB3940028480C /* bgm_demo.mp3 in Resources */,
 				D689A93621CC97F400C7C618 /* Assets.xcassets in Resources */,
 				457A707E2200814E00DD193B /* TXCaptureSourceWindowController.xib in Resources */,
 				45AD957B21D656C2007B2EAF /* TRTCMainWindowController.xib in Resources */,

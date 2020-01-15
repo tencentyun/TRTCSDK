@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15505" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15702" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15702"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -117,7 +117,7 @@
                         </textFieldCell>
                     </textField>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="tjR-ya-ddi">
-                        <rect key="frame" x="89" y="87" width="62" height="18"/>
+                        <rect key="frame" x="209" y="88" width="62" height="18"/>
                         <buttonCell key="cell" type="check" title="仅语音" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="joh-kt-Bu2">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
@@ -134,6 +134,8 @@
                     <constraint firstItem="DKF-2d-TZ5" firstAttribute="centerX" secondItem="vf1-hy-L5J" secondAttribute="centerX" id="CA3-7c-eha"/>
                     <constraint firstItem="EsP-0c-S1G" firstAttribute="centerX" secondItem="DKF-2d-TZ5" secondAttribute="centerX" id="CgI-P5-z0q"/>
                     <constraint firstItem="x4i-Wq-ShC" firstAttribute="centerX" secondItem="vf1-hy-L5J" secondAttribute="centerX" id="D5U-KX-fbW"/>
+                    <constraint firstItem="tjR-ya-ddi" firstAttribute="centerX" secondItem="rec-2n-9wR" secondAttribute="centerX" id="G2r-aR-pes"/>
+                    <constraint firstItem="tjR-ya-ddi" firstAttribute="top" secondItem="gvQ-jw-adu" secondAttribute="bottom" constant="24" id="IPD-jX-en8"/>
                     <constraint firstItem="DKF-2d-TZ5" firstAttribute="top" secondItem="vf1-hy-L5J" secondAttribute="top" constant="18" id="Zpt-61-GGv"/>
                     <constraint firstItem="EsP-0c-S1G" firstAttribute="top" secondItem="DKF-2d-TZ5" secondAttribute="bottom" id="ddN-Ki-Hyq"/>
                     <constraint firstItem="le9-4n-vSu" firstAttribute="centerY" secondItem="x4i-Wq-ShC" secondAttribute="centerY" id="gbk-7s-n5y"/>

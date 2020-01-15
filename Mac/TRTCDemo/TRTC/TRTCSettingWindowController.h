@@ -97,6 +97,12 @@ typedef NS_ENUM(NSUInteger, TXAVSettingTabIndex) {
 @property (weak) IBOutlet NSLevelIndicator *speakerVolumeMeter;
 // 分享按钮
 @property (weak) IBOutlet NSButton *shareButton;
+// 设置BGM播放音量
+@property (strong) IBOutlet NSSlider *BGMVolumeSlider;
+// 设置BGM远端播放音量
+@property (strong) IBOutlet NSSlider *BGMPublishVolumeSlider;
+// 设备BGM本地播放音量
+@property (strong) IBOutlet NSSlider *BGMPlayoutVolumeSlider;
 
 // For Cocoa Bindings
 // 推流设置
