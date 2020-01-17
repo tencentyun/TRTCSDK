@@ -81,8 +81,6 @@ namespace TRTCCSharpDemo
             InitializeComponent();
 
             this.Disposed += new EventHandler(OnDisposed);
-            // 窗口退出事件监听
-            this.FormClosing += new FormClosingEventHandler(OnExitLabelClick);
 
             // 初始化数据。
             mLoginForm = loginForm;
@@ -150,23 +148,17 @@ namespace TRTCCSharpDemo
             if (mVideoViews.TryGetValue(key, out videoView))
             {
                 videoView.RemoveEngine(mTRTCCloud);
-                parent.Controls.Remove(videoView);
                 mVideoViews.Remove(key);
+                parent.Controls.Remove(videoView);
             }
         }
 
         private void OnDisposed(object sender, EventArgs e)
         {
             // 清理资源
+            mTRTCCloud.removeCallback(this);
+            mTRTCCloud.setLogCallback(null);
             mTRTCCloud = null;
-            if (mCustomCaptureForm != null)
-                mCustomCaptureForm.Dispose();
-            if (mDeviceForm != null)
-                mDeviceForm.Dispose();
-            if (mDeviceTestForm != null)
-                mDeviceTestForm.Dispose();
-            if (mSettingForm != null)
-                mSettingForm.Dispose();
         }
 
         private void OnFormLoad(object sender, EventArgs e)
@@ -473,7 +465,14 @@ namespace TRTCCSharpDemo
         public void onExitRoom(int reason)
         {
             mIsEnterSuccess = false;
+            // 如果进房成功，需要正常退房再关闭窗口，防止资源未清理和释放完毕
+            Uninit();
             this.Close();
+            if (mLoginForm == null)
+            {
+                mLoginForm = new TRTCLoginForm();
+            }
+            mLoginForm.Show();
         }
 
         /// <summary>
@@ -513,8 +512,6 @@ namespace TRTCCSharpDemo
             mMixStreamVideoMeta.Clear();
             mRemoteUsers.Clear();
             mPKUsers.Clear();
-            mTRTCCloud.removeCallback(this);
-            mTRTCCloud.setLogCallback(null);
             // 注意：系统混音功能暂时不支持64位系统
             if (!Util.IsSys64bit())
             {
@@ -529,6 +526,7 @@ namespace TRTCCSharpDemo
             }
             if (this.mixTransCodingCheckBox.Checked)
                 mTRTCCloud.setMixTranscodingConfig(null);
+            
         }
 
         /// <summary>
@@ -900,8 +898,6 @@ namespace TRTCCSharpDemo
         private void OnExitLabelClick(object sender, EventArgs e)
         {
             // 退出房间
-            if (mIsFirstExitRoom) return;
-            mIsFirstExitRoom = true;
             if (mBeautyForm != null)
                 mBeautyForm.Close();
             if (mDeviceTestForm != null)
@@ -916,22 +912,14 @@ namespace TRTCCSharpDemo
                 mDeviceTestForm.Close();
             if (mDeviceForm != null)
                 mDeviceForm.Close();
-            Uninit();
-            // 如果进房成功，需要正常退房再关闭窗口，防止资源未清理和释放完毕
             if (mIsEnterSuccess)
             {
                 mTRTCCloud.exitRoom();
-                this.Hide();
             }
             else
             {
-                this.Close();
+                onExitRoom(0);
             }
-            if (mLoginForm == null)
-            {
-                mLoginForm = new TRTCLoginForm();
-            }
-            mLoginForm.Show();
         }
 
         private void OnSettingLabelClick(object sender, EventArgs e)
@@ -1327,11 +1315,11 @@ namespace TRTCCSharpDemo
                 ShowMessage("请勾选云端混流选项！");
                 return;
             }
-            // 计算 CDN 地址(格式： http://[bizid].liveplay.myqcloud.com/live/[bizid]_[streamid].flv )
+            // 计算 CDN 地址(格式： http://[bizid].liveplay.myqcloud.com/live/sdkappid_roomId_userId_main.flv )
             int bizId = GenerateTestUserSig.BIZID;
-            // streamid = MD5 (房间号_用户名_流类型)
-            string streamId = Util.MD5(String.Format("{0}_{1}_{2}", mRoomId, Util.UTF16To8(mUserId), "main"));
-            string shareUrl = String.Format("http://{0}.liveplay.myqcloud.com/live/{0}_{1}.flv", bizId, streamId);
+            // streamid = SDKAPPID_房间号_用户名_流类型
+            string streamId = String.Format("{0}_{1}_{2}_{3}", GenerateTestUserSig.SDKAPPID, mRoomId, Util.UTF16To8(mUserId), "main");
+            string shareUrl = String.Format("http://{0}.liveplay.myqcloud.com/live/{1}.flv", bizId, streamId);
             Log.I("播放地址： " + shareUrl);
             Clipboard.SetDataObject(shareUrl);
             ShowMessage("播放地址：（已复制到剪切板）\n" + shareUrl);
@@ -1763,6 +1751,12 @@ namespace TRTCCSharpDemo
         public void onPlayBGMComplete(TXLiteAVError errCode)
         {
             Log.I(String.Format("onPlayBGMComplete : errCode = {0}", errCode));
+            if (this.IsHandleCreated)
+                this.BeginInvoke(new Action(() =>
+                {
+                    if (mDeviceTestForm != null)
+                        mDeviceTestForm.OnPlayBGMComplete(errCode);
+                }));
         }
 
         public void onPlayBGMProgress(uint progressMS, uint durationMS)
@@ -1820,6 +1814,12 @@ namespace TRTCCSharpDemo
         public void onAudioEffectFinished(int effectId, int code)
         {
             Log.I(String.Format("onAudioEffectFinished : effectId = {0}, code = {1}", effectId, code));
+            if (this.IsHandleCreated)
+                this.BeginInvoke(new Action(() =>
+                {
+                    if (mDeviceTestForm != null)
+                        mDeviceTestForm.onAudioEffectFinished(effectId, code);
+                }));
         }
 
         public void onSpeedTest(TRTCSpeedTestResult currentResult, uint finishedCount, uint totalCount)

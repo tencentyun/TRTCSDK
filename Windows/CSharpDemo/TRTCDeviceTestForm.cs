@@ -212,6 +212,16 @@ namespace TRTCCSharpDemo
             }
         }
 
+        public void OnPlayBGMComplete(TXLiteAVError errCode)
+        {
+            this.bgmTestBtn.Text = "启动BGM测试";
+        }
+
+        public void onAudioEffectFinished(int effectId, int code)
+        {
+            this.audioEffectTestBtn.Text = "启动音效测试";
+        }
+
         private void OnExitPicBoxClick(object sender, EventArgs e)
         {
             this.Hide();

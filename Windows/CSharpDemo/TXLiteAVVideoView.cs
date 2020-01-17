@@ -227,15 +227,35 @@ namespace TRTCCSharpDemo
             }
 
             // 回到主线程刷新当前画面
-            if (this.IsHandleCreated)
+            this.InvokeOnUiThreadIfRequired(new Action(() =>
             {
-                this.Invoke(new Action(() =>
+                this.Refresh();
+            }));
+            return true;
+        }
+
+        private void InvokeOnUiThreadIfRequired(Action action)
+        {
+            try
+            {
+                if (!this.IsDisposed)
                 {
-                    this.Refresh();
-                }));
-                return true;
+                    if (this.InvokeRequired)
+                    {
+                        this.Invoke(action);
+                    }
+                    else
+                    {
+                        action.Invoke();
+                    }
+                }
+                else
+                    System.Threading.Thread.CurrentThread.Abort();
             }
-            return false;
+            catch (Exception ex)
+            {
+                Log.E(ex.Message);
+            }
         }
 
         protected override void OnPaint(PaintEventArgs pe)
@@ -546,8 +566,11 @@ namespace TRTCCSharpDemo
                     }
                 }
             }
+
             if (view != null)
+            {
                 view.AppendVideoFrame(frame.data, (int)frame.width, (int)frame.height, frame.videoFormat, frame.rotation);
+            }
         }
     }
 
