@@ -14,7 +14,6 @@ Page({
     },
     showTipToast: false,
   },
-  // enterRoom: function({ userID, roomID, template, debugMode, cloudenv, frontCamera, localVideo, localAudio, enableEarMonitor, enableAutoFocus, localMirror, enableAgc, enableAns, encsmall, videoHeight, videoWidth, scene, maxBitrate, minBitrate }) {
   enterRoom: function(params) {
     params.template = params.template || '1v1'
     params.roomID = params.roomID || 2333
@@ -63,7 +62,7 @@ Page({
     this.setData({
       rtcConfig: this.data.rtcConfig,
     }, () => {
-      // 进房前决定是否推送视频或音频 部分机型会出现画面卡死，原因不明，必须放到进房成功事件后设置
+      // 进房前决定是否推送视频或音频 部分机型会出现画面卡死，暂不支持进房前设置，必须放到进房成功事件后设置
       // console.log('rtcConfig', this.data.rtcConfig)
       // if (params.localVideo === true || params.template === '1v1') {
       //   this.trtcComponent.publishLocalVideo()
