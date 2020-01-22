@@ -1,0 +1,32 @@
+<!--index.wxml-->
+<view class="container">
+  <view class='title' style='padding-top:{{(headerHeight + statusBarHeight)/2 - 12}}px'>
+    <text>腾讯实时音视频</text>
+  </view>
+  <view class="wrapper">
+    <radio-group class="choice-content" bindchange="selectTemplate">
+      <view class="single-wrapper">
+        <label class="label radio-label">
+          <radio color="#006eff" value="1v1" checked="{{template==='1v1'?'true':''}}" id="1v1"/>
+          <text>双人通话</text>
+        </label>
+        <label for="1v1" class="preview-item {{template==='1v1'?'selected':''}}">
+          <image src="/images/1v1.png"/>
+        </label>
+      </view>
+      <view class="single-wrapper">
+        <label class="label radio-label">
+          <radio color="#006eff" value="grid" checked="{{template==='grid'?'true':''}}" id="grid"/>
+          <text>多人会议</text>
+        </label>
+        <label for="grid" class="preview-item {{template==='grid'?'selected':''}}">
+          <image src="/images/grid.png"/>
+        </label>
+      </view>
+    </radio-group>
+  </view>
+</view>
+
+<view class='bottom-btn'>
+  <button type="primary" bindtap="enterRoom" hover-class="none">进入模板</button>
+</view>

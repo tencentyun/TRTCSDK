@@ -1,0 +1,68 @@
+/**index.wxss**/
+
+.trtc-demo-container {
+  background-image: url(https://mc.qcloudimg.com/static/img/7da57e0050d308e2e1b1e31afbc42929/bg.png);
+  background-color: #333;
+  background-repeat:no-repeat;
+  background-size: cover;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+}
+.trtc-demo-container .title{
+  color: #FFFFFF;
+  padding-top: 65rpx;
+  line-height: 60rpx;
+}
+.trtc-demo-container .input-box {
+  background-color: transparent;
+  color: #ffffff;
+  padding: 2vw 5vw 1vw;
+  border-bottom: 1px solid #577785;
+  margin: 100rpx 0 40rpx 0;
+  text-align: center;
+  box-sizing: border-box;
+  width: 80vw;
+}
+.trtc-demo-container .input-box input{
+  font-size: 20px;
+}
+.choice-content {
+  margin-top: 20rpx;
+  width: 80vw;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  font-size: 14px;
+  color: #ffffff;
+}
+
+.choice-content switch {
+  color: #006eff;
+  transform:scale(0.8);
+}
+
+
+.bottom-btn {
+  position: fixed;
+  width: 100vw;
+  text-align: center;
+  bottom: 5vh;
+}
+.bottom-btn button{
+  width: 80%;
+  background-color: #006eff;
+  border-radius: 50px;
+}
+
+.close {
+  position:absolute;
+  padding-left:5vw;
+  padding-right:5vw;
+  width:50rpx;
+  height:60rpx;
+}

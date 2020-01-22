@@ -1,0 +1,174 @@
+/* 9人 会议模版 */
+.template-grid{
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.template-grid .view-container {
+  position: relative;
+}
+
+.stream-0 .view-container{
+   width: 100%;
+   height: 100%;
+}
+
+.stream-1 .view-container{
+   width: 100vw;
+   height: 50vh;
+}
+
+.stream-2 .view-container{
+   width: 50vw;
+   height: 50vh;
+}
+
+.stream-2 .view-container:nth-child(1){
+   width: 100vw;
+   height: 50vh;
+}
+
+.stream-3 .view-container{
+   width: 50vw;
+   height: 50vh;
+}
+
+.stream-4 .view-container{
+   width: 50vw;
+   height: 33.3vh;
+}
+
+.stream-4 .view-container:nth-child(1){
+   width: 100vw;
+   height: 33.3vh;
+}
+
+.stream-5 .view-container {
+   width: 50vw;
+   height: 33.3vh;
+}
+
+.template-grid .operation-bar {
+  position: absolute;
+  bottom: 5%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.template-grid .volume-progress {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+}
+
+.template-grid .btn-normal {
+  width: 64rpx;
+  height: 64rpx;
+  margin: 0 16rpx;
+  box-sizing: border-box;
+  display: flex;
+  background: white;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+}
+
+.template-grid .btn-normal image{
+  width: 36rpx;
+  height: 36rpx;
+}
+
+.template-grid .btn-hangup {
+  background: #f75c45;
+}
+
+.template-grid .panel{
+  position: absolute;
+  background: rgba(0, 0, 0, 0.8);
+  width: 80vw;
+  height: auto;
+  z-index: 999;
+  top: 50vh;
+  left: 50vw;
+  transform: translate(-50%, -50%);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 20rpx 0;
+  border-radius: 10rpx;
+  box-sizing: border-box;
+}
+.panel .close-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 5px 10px;
+}
+.panel .panel-header{
+  text-align: center;
+  padding-bottom: 20rpx;
+}
+.panel .panel-tips {
+  color: #999;
+  text-align: center;
+}
+.panel .panel-body{
+  flex: 1;
+  height: 40vh;
+}
+.panel .panel-body .scroll-container{
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.memberlist-panel .member-item {
+  display: flex;
+  /* border-bottom: 1px solid #999; */
+  margin: 16rpx 16rpx 16rpx 32rpx;
+}
+
+.memberlist-panel .member-id {
+  width: 30%;
+  font-size: 12px;
+  line-height: 64rpx;
+}
+
+.memberlist-panel .member-btns{
+  width: 70%;
+  display: flex;
+  justify-content: flex-end;
+}
+.member-btns .btn-normal{
+  margin-left: 0;
+}
+.member-btns button.btn{
+  margin-right: 0;
+}
+.setting-panel .setting-option{
+  display: flex;
+  justify-content: space-between;
+  margin: 16rpx 16rpx 16rpx 32rpx;
+  /* box-sizing: border-box;
+  padding: 12rpx 16rpx 12rpx 32rpx; */
+}
+.setting-panel .setting-option .label{
+  line-height: 64rpx;
+}
+/* .setting-panel .setting-option .btn-normal{
+  margin-right: 0;
+} */
+.setting-panel switch {
+  transform:scale(0.8);
+}
+.template-grid .masker{
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+}

@@ -1,0 +1,108 @@
+/* 1v1 视频电话模式 */
+.template-1v1{
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+}
+.template-1v1 .pusher-container{
+  width: 240rpx;
+  height: 320rpx;
+  position: absolute;
+  right: 20rpx;
+  top: 160rpx;
+  z-index: 2;
+}
+
+.template-1v1 .pusher-container.fullscreen{
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  right: 0;
+}
+
+.template-1v1 .loading {
+  position: absolute;
+  top: 40vh;
+  left: 50vw;
+  transform: translate(-50%, 0);
+  width: 300rpx;
+  height: 250rpx;
+  border-radius: 12rpx;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  padding: 40rpx;
+  display: flex;
+  flex-direction: column;
+}
+.template-1v1 .loading-img {
+  height: 200rpx;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  animation: rotate 2s linear infinite;
+}
+.template-1v1 .rotate-img {
+  width:160rpx;
+  height: 160rpx;
+}
+.template-1v1 .loading-text {
+  width: 100%;
+  padding-top: 40rpx;
+  text-align: center;
+}
+@keyframes rotate {
+  0%{ transform: rotate(0deg);}
+  50%{ transform: rotate(180deg);}
+  100%{ transform: rotate(360deg);}
+}
+.template-1v1 .player-container:nth-child(1){
+  width: 100vw;
+  height: 100vh;
+}
+
+.template-1v1 .handle-btns {
+  position: absolute;
+  z-index: 3;
+  bottom: 15vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.template-1v1 .bottom-btns {
+  position: absolute;
+  z-index: 3;
+  bottom: 3vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.template-1v1 image {
+  width: 4vh;
+  height: 4vh;
+}
+
+.template-1v1 .btn-normal {
+  width: 8vh;
+  height: 8vh;
+  box-sizing: border-box;
+  display: flex;
+  background: white;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+}
+
+.template-1v1 .btn-hangup  {
+  width: 8vh;
+  height: 8vh;
+  background: #f75c45;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+}

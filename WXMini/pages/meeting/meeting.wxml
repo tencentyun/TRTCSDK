@@ -1,0 +1,107 @@
+<view class="trtc-demo-container">
+  <view class='title'  style='padding-top:{{(headerHeight + statusBarHeight)/2 - 12}}px'>
+    <view>多人会议</view>
+	</view>
+	<view class="input-box">
+    <input type="number" value="{{roomID}}" maxlength="10" bindinput='enterRoomID' placeholder="请输入房间号" placeholder-style="color:#ffffff;opacity: 0.55;"/>
+	</view>
+	<view class="input-box">
+    <input type="text" value="{{userID}}" maxlength="10" bindinput='enterUserID' placeholder="请输入用户名(英文+数字)" placeholder-style="color:#ffffff;opacity: 0.55;"/>
+    <button class="btn btn-random" hover-class="btn-hover" bindtap="randomUserID">随机</button>
+	</view>
+	<view class="choice-content">
+		<text>场景选择</text>
+    <radio-group class="radio-group-choice" bindchange="selectScene">
+      <label>
+          <radio color='#006eff' value="rtc" checked='true' id="open" />
+          通话
+      </label>
+      <label>
+          <radio color='#006eff' value="live" id="close" />
+          直播
+      </label>
+    </radio-group>
+  </view>
+  <view class="choice-content">
+    <text>本地镜像</text>
+    <radio-group class="radio-group-no-box" bindchange="selectLocalMirror">
+      <label wx:for="{{localMirrorArray}}" wx:key="index" class="radio-item {{ localMirror == item.value ? 'selected': ''}}">
+        <radio value="{{item.value}}" checked="{{item.checked}}" /> {{item.title}}
+      </label>
+    </radio-group>
+  </view>
+  <view class="choice-content">
+    <label class="label" for="switchEarMonitor">
+      <text>开启耳返</text>
+      <switch id="switchEarMonitor" color="#006eff" checked="{{enableEarMonitor}}" bindchange="switchEarMonitor"/>
+    </label>
+    <label class="label" for="switchAgc">
+      <text>自动增益</text>
+      <view class="switch-right">
+        <switch id="switchAgc" color="#006eff" checked="{{enableAgc}}" bindchange="switchAgc"/>
+      </view>
+    </label>
+  </view>
+  <view class="choice-content">
+    <label class="label" for="switchAutoFocus">
+      <text>自动对焦</text>
+      <switch id="switchAutoFocus" color="#006eff" checked="{{enableAutoFocus}}" bindchange="switchAutoFocus"/>
+    </label>
+    <label class="label" for="switchAns">
+      <text>噪声消除</text>
+      <view class="switch-right">
+        <switch id="switchAns" color="#006eff" checked="{{enableAns}}" bindchange="switchAns"/>
+      </view>
+    </label>
+  </view>
+  <view class="choice-content">
+    <label class="label" for="switchLocalVideo">
+      <text>本地视频</text>
+      <switch id="switchLocalVideo" color="#006eff" checked="{{localVideo}}" bindchange="switchLocalVideo"/>
+    </label>
+    <label class="label" for="switchLocalAudio">
+      <text>本地音频</text>
+      <view class="switch-right">
+        <switch id="switchLocalAudio" color="#006eff" checked="{{localAudio}}" bindchange="switchLocalAudio"/>
+      </view>
+    </label>
+  </view>
+  <view class="choice-content">
+		<label class="label" for="switchDebugMode">
+      <text>调试模式</text>
+      <switch id="switchDebugMode" color="#006eff" checked="{{debugMode}}" bindchange="switchDebugMode"/>
+    </label>
+    <label class="label" for="switchSmallScreen">
+      <text>启用小画面</text>
+      <view class="switch-right">
+        <switch id="switchSmallScreen" color="#006eff" checked="{{encsmall}}" bindchange="switchSmallScreen"/>
+      </view>
+    </label>
+  </view>
+  <view class="choice-content">
+      <text class="device-position">摄像头选择</text>
+      <radio-group class="radio-group-choice" bindchange="selectDevicePosition">
+				<label>
+					<radio color='#006eff' value="front" checked='true' id="open" />
+					前置
+				</label>
+				<label>
+					<radio color='#006eff' value="back" id="close" />
+					后置
+				</label>
+      </radio-group>
+	</view>
+  <view class="choice-content">
+    <text>视频分辨率</text>
+    <radio-group class="radio-group-no-box" bindchange="selectResolution">
+      <label wx:for="{{resolutionArray}}" wx:key="index" class="radio-item {{ resolution == item.value ? 'selected': ''}}">
+        <radio value="{{item.value}}" checked="{{item.checked}}" /> {{item.title}}
+      </label>
+    </radio-group>
+  </view>
+</view>
+
+<view class='bottom-btn'>
+  <button type="primary" bindtap="enterRoom" hover-class="none">进入房间</button>
+</view>
+<cover-image class='close' style="top:{{(headerHeight + statusBarHeight) - 34}}rpx" src="../../images/back.png" bindtap="onBack"></cover-image>

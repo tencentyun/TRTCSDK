@@ -1,0 +1,9 @@
+<!--miniprogram/pages/room/room.wxml-->
+<!-- 在模版上放置标签 -->
+<view class="page-room">
+  <trtc-room id="trtc-component" config="{{rtcConfig}}"> </trtc-room>
+  <view class="tip-toast" wx:if="{{showTipToast}}">
+    <view>当前房间为1v1双人通话房间</view>
+    <view>不希望其他人打扰</view>
+  </view>
+</view>

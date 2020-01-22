@@ -1,0 +1,83 @@
+
+@import "./template/1v1/1v1.wxss";
+@import "./template/grid/grid.wxss";
+@import "./template/custom/custom.wxss";
+
+.pusher {
+  width: 100%;
+  height: 100%;
+}
+
+.player {
+  width: 100%;
+  height: 100%;
+}
+
+.debug-info{
+  position: absolute;
+  z-index: 9999;
+  background-color: rgba(0, 0, 0, .5);
+  color: #fff;
+  bottom: 0;
+  left: 0;
+  padding: 10rpx;
+  font-size: 12px;
+}
+.debug-info-btn button,
+.debug-info button{
+  padding: 0 8px;
+  min-height: 18px;
+  width: auto;
+  font-size: 12px;
+  line-height: 18px;
+  display: inline-block;
+  color: #06ae56;
+  background-color: #f2f2f2;
+}
+.debug-info button.false{
+  color: rgb(114, 114, 114);
+}
+.debug-info-btn button,
+.debug-info .button-hover {
+  background-color: rgb(219, 219, 219);
+}
+.debug-info .close-btn{
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 5px 10px;
+}
+.debug-info-btn{
+  position: absolute;
+  z-index: 9998;
+  bottom: 10rpx;
+  left: 0;
+}
+
+button.btn {
+  display: inline-block;
+  width: auto;
+  height: 60rpx;
+  min-height: 60rpx;
+  line-height: 60rpx;
+  font-size: 12px;
+  font-weight: normal;
+  padding: 0 10rpx;
+  color: #006eff;
+  background-color: #f2f2f2;
+  margin: 0 16rpx;
+}
+button.btn.active{
+  color: #f2f2f2;
+  background-color: #006eff;
+}
+button.btn-hover{
+  background-color: #d1d1d1;
+}
+
+.none,
+.view-container.none,
+.template-grid .view-container.none,
+.template-1v1 .view-container.none{
+  display: none !important;
+}

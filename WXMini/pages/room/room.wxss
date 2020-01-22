@@ -1,0 +1,25 @@
+/* miniprogram/pages/room/room.wxss */
+.page-room{
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+.tip-toast {
+  position: absolute;
+  top: 40vh;
+  width: 70vw;
+  left: 15vw;
+  border-radius: 12rpx;
+  height: 20vh;
+  background: rgba(0,0,0,0.8);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+}
+.tip-toast view {
+  padding: 20rpx 0;
+  font-size: 32rpx;
+}

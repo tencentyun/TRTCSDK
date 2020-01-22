@@ -1,14 +1,17 @@
 {
   "pages": [
-    "pages/webrtc-room/index/index",
-    "pages/webrtc-room/room/room"
+    "pages/index/index",
+    "pages/room/room",
+    "pages/meeting/meeting",
+    "pages/videocall/videocall"
   ],
   "window": {
-    "backgroundColor": "#888",
-    "backgroundTextStyle": "dark",
-    "navigationBarBackgroundColor": "#000",
-    "navigationBarTitleText": "腾讯视频云",
-    "navigationBarTextStyle": "white",
-    "renderingMode": "seperated"
-  }
+    "backgroundColor": "#F6F6F6",
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#F6F6F6",
+    "navigationBarTitleText": "腾讯云实时音视频",
+    "navigationBarTextStyle": "black"
+  },
+  "sitemapLocation": "sitemap.json",
+  "style": "v2"
 }

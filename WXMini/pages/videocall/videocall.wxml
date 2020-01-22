@@ -1,0 +1,20 @@
+<!--index.wxml-->
+<view class="trtc-demo-container">
+  <view class='title'  style='padding-top:{{(headerHeight + statusBarHeight)/2 - 12}}px'>
+    <view>双人通话</view>
+  </view>
+  <view class="input-box">
+    <input type="number" value="{{roomID}}" maxlength="10" bindinput='enterRoomID' placeholder="请输入房间号" placeholder-style="color:#ffffff;opacity: 0.55;"/>
+  </view>
+  <view class="choice-content">
+    <label class="label" for="switchDebugMode">
+      <text>调试模式</text>
+      <switch id="switchDebugMode" color="#006eff" checked="{{debugMode}}" bindchange="switchDebugMode"/>
+    </label>
+  </view>
+</view>
+
+<view class='bottom-btn'>
+  <button type="primary" bindtap="enterRoom" hover-class="none">进入房间</button>
+</view>
+<cover-image class='close' style="top:{{(headerHeight + statusBarHeight) - 34}}rpx"src="../../images/back.png" bindtap="onBack"></cover-image>
