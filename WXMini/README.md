@@ -1,6 +1,12 @@
 # 快速跑通Demo
 
- 本文主要介绍如何快速跑通腾讯云小程序版本的 TRTC DEMO。
+ 本文主要介绍如何快速跑通微信小程序版本的 TRTC DEMO，您可以从 [Github](https://github.com/tencentyun/TRTCSDK) 上的 WXMini 目录下获取相关代码。DEMO 中前三个功能项演示了三个不同的应用场景：
+ 
+ - 语音聊天室：纯语音交互，支持多人互动语音聊天，以及混音、混响等声音特效功能。适合在线狼人杀、在线语音直播等社交类场景。
+ - 双人通话：1v1 视频通话，配合 [Web IM SDK](https://cloud.tencent.com/document/product/269/37411) 可以实现在线问诊，在线客服等需要面对面交流的沟通场景。
+ - 多人会议：支持多路视频通话、大小画面和屏幕分享等围绕视频会议相关的高级功能，适用于远程培训、在线教育等场景。
+ 
+ ![](https://main.qcloudimg.com/raw/6517a8a927130474927628457cdc27be.jpg)
 
 ## 环境要求
 
@@ -11,83 +17,57 @@
 
 ## 操作步骤
 
-<span id="step1">
+打开实时音视频控制台，点击进入[快速跑通 Demo](https://console.cloud.tencent.com/trtc/quickstart)，就会看到完整的 Demo 运行指引，接下来我们按照提示的步骤逐步实践一下：
 
-### 步骤1：创建新的应用
+### step1. 创建新的应用
+点击“立即开始”，然后给自己的应用取个名字，比如就叫 “TestTRTC”，点击创建应用，即可进入下一步。
 
-1. 登录 [实时音视频控制台](https://console.cloud.tencent.com/rav) ，单击【创建应用】。 如果您已有应用，请记录其 SDKAppID 然后直接 [下载 SDK 和 Demo 源码](https://github.com/tencentyun/qcloud-documents/blob/master/product/视频服务/实时音视频/快速入门/一分钟跑通DEMO/跑通Demo(小程序).md#step2)。否则，继续执行下一步。
-2. 填写新建应用的应用名称等信息，单击【确定】。 应用创建完成后，自动生成一个应用标识 SDKAppID，请记录 SDKAppID 信息。 [![img](https://main.qcloudimg.com/raw/1acc030cfc47e32bc36873c9a494b88a.png)](https://main.qcloudimg.com/raw/1acc030cfc47e32bc36873c9a494b88a.png)
 
-<span id="step2">
+### step2. 下载 SDK 和 Demo 源码
+选择小程序源码点击下载，我们提供了 [Github](https://github.com/tencentyun/TRTCSDK/tree/master) 和 [Zip压缩包](http://liteavsdk-1252463788.cosgz.myqcloud.com/TRTC_WXMini_latest.zip) 两种获取方式。
 
-### 步骤2：下载 SDK 和 Demo 源码
+### step3. 将 SDKAppID 和密钥粘贴到指定位置
+可以在下图中看到 SDKAppID 和 SecretKey 两个关键信息，这是要运行 Demo 所必须的，然后将他们按照页面上的指引粘贴到源代码中自带的 `GenerateTestUserSig.js` 文件中。
+- 解压 step 2 中下载的源码包。
+- 找到并打开 `./debug/GenerateTestUserSig.js` 文件。
+- 设置`GenerateTestUserSig.js`文件中的相关参数：
 
-1. 单击应用卡片，进入【快速上手】页面。
-2. 单击【第一步 下载SDK+配套demo源码】区域的【小程序】跳转至 [Github](https://github.com/tencentyun/TRTCSDK)，下载相关 SDK 和 Demo 源码。 [![img](https://main.qcloudimg.com/raw/486d7696aeb29e457bd654b5936a56e2.png)](https://main.qcloudimg.com/raw/486d7696aeb29e457bd654b5936a56e2.png)
+![](https://main.qcloudimg.com/raw/74b82ded221f8e2e91e4f918da6b5932.png)
 
-<span id="step3">
+> !
+> 本文提到的生成 UserSig 的方案是在客户端代码中配置 SECRETKEY，该方法中 SECRETKEY 很容易被反编译逆向破解，一旦您的密钥泄露，攻击者就可以盗用您的腾讯云流量，因此**该方法仅适合本地跑通 Demo 和功能调试**。
+> 
+> 正确的 UserSig 签发方式是将 UserSig 的计算代码集成到您的服务端，并提供面向 App 的接口，在需要 UserSig 时由您的 App 向业务服务器发起请求获取动态 UserSig。更多详情请参见 [服务端生成 UserSig](https://cloud.tencent.com/document/product/647/17275#Server)。
 
-### 步骤3：查看并拷贝加密密钥
+### step4. 开通小程序类目与推拉流标签权限
 
-1. 单击【第二步 获取签发UserSig的密钥】区域的【查看密钥】，即可获取用于计算 UserSig 的加密密钥。
-2. 单击【复制密钥】，将密钥拷贝到剪贴板中。 [![img](https://main.qcloudimg.com/raw/d0b780f7b28833533e12807d1b11d8be.png)](https://main.qcloudimg.com/raw/d0b780f7b28833533e12807d1b11d8be.png)
-
-### 步骤4：配置 Demo 工程文件
-
-Demo 源码工程中的`GenerateTestUserSig.js`文件可以通过 HMAC-SHA256 算法在本地计算 UserSig，用于快速跑通 Demo。
-
-1. 解压 [步骤2](#step2) 中下载的源码包。
-2. 找到并打开 `./debug/GenerateTestUserSig.js`文件。
-3. 设置`GenerateTestUserSig.js`文件中的相关参数：
-
-- SDKAPPID：请设置为 [步骤1](#step1) 中获取的实际 SDKAppID。
-- SECRETKEY：请设置为 [步骤3](#step3) 中获取的实际密钥信息。 [![img](https://main.qcloudimg.com/raw/c523de56afa69a7309872cbcfd75445f.png)](https://main.qcloudimg.com/raw/c523de56afa69a7309872cbcfd75445f.png)
-
-> !本文提到的生成 UserSig 的方案是在客户端代码中配置 SECRETKEY，该方法中 SECRETKEY 很容易被反编译逆向破解，一旦您的密钥泄露，攻击者就可以盗用您的腾讯云流量，因此**该方法仅适合本地跑通 Demo 和功能调试**。 正确的 UserSig 签发方式是将 UserSig 的计算代码集成到您的服务端，并提供面向 App 的接口，在需要 UserSig 时由您的 App 向业务服务器发起请求获取动态 UserSig。更多详情请参见 [服务端生成 UserSig](https://cloud.tencent.com/document/product/647/17275#Server)。
-
-### 步骤5：开通小程序类目与推拉流标签权限
-
-出于政策和合规的考虑，微信暂未放开所有小程序对实时音视频功能（即 <live-pusher> 和 <live-player> 标签）的支持：
+出于政策和合规的考虑，微信暂未放开所有小程序对实时音视频功能（即  &lt;live-pusher&gt; 和  &lt;live-player&gt; 标签）的支持：
 
 - 小程序推拉流标签不支持个人小程序，只支持企业类小程序。
 - 小程序推拉流标签使用权限暂时只开放给有限 [类目](https://developers.weixin.qq.com/miniprogram/dev/component/live-pusher.html)。
-- 符合类目要求的小程序，需要在【[微信公众平台](https://mp.weixin.qq.com/)】>【开发】>【接口设置】中自助开通该组件权限，如下图所示： [![img](https://main.qcloudimg.com/raw/a5a9c121cd2dda0f879f97ba01922e15.png)](https://main.qcloudimg.com/raw/a5a9c121cd2dda0f879f97ba01922e15.png)
+- 符合类目要求的小程序，需要在【[微信公众平台](https://mp.weixin.qq.com/)】>【开发】>【接口设置】中自助开通该组件权限，如下图所示：
 
-### 步骤6：编译运行
+![](https://main.qcloudimg.com/raw/ad87091aaae2db6ad412136297886c15.png)
 
-1. 打开微信开发者工具，选择【小程序】，单击新建图标，选择【导入项目】。
-2. 填写您微信小程序的 AppID，单击【导入】。
+### step5. 编译运行
 
-> !此处应输入您微信小程序的 AppID，而非 SDKAppID。
+- 打开微信开发者工具，选择【小程序】，单击新建图标，选择【导入项目】。
+- 填写您微信小程序的 AppID，单击【导入】。
+![](https://main.qcloudimg.com/raw/b4eefa2896672e132f827fea79a2608b.jpg)     
 
-[![img](https://main.qcloudimg.com/raw/b4eefa2896672e132f827fea79a2608b.jpg)](https://main.qcloudimg.com/raw/b4eefa2896672e132f827fea79a2608b.jpg)     
-
-3. 单击【预览】，生成二维码，通过手机微信扫码二维码即可进入小程序。
+- 单击【预览】，生成二维码，通过手机微信扫码二维码即可进入小程序。
 
 > !
-> - 由于微信开发者工具不支持原生组件（即 &lt;live-pusher&gt; 和 &lt;live-player&gt; 标签），需要在真机上进行运行体验。
-> - 您需要在手机微信上开启调试功能：手机微信扫码二维码后，单击右上角【...】>【开发调试】。 [![img](https://main.qcloudimg.com/raw/b4528a9beb5eb04df1fb15c79412704b.jpg)](https://main.qcloudimg.com/raw/b4528a9beb5eb04df1fb15c79412704b.jpg)
-
-### 步骤7：发布上线
-
-1. 打开微信小程序控制台，选择【开发】>【开发设置】>【服务器域名】中配置“request 合法域名”，否则将无法使用腾讯云服务。需要配置的域名如下表所示：
-
-| 域名                                                         | 说明                      |
-| ------------------------------------------------------------ | ------------------------- |
-| [https://official.opensso.tencent-cloud.com](https://official.opensso.tencent-cloud.com/) | WebRTC 音视频鉴权服务域名 |
-| [https://yun.tim.qq.com](https://yun.tim.qq.com/)            | WebRTC 音视频鉴权服务域名 |
-| [https://cloud.tencent.com](https://cloud.tencent.com/)      | 推流域名                  |
-| [https://webim.tim.qq.com](https://webim.tim.qq.com/)        | IM 域名                   |
-
-![img](https://main.qcloudimg.com/raw/693004574c9c17e86c36be2edf4db9a6.png)发布微信小程序，具体发布流程请参见 [小程序发布上线](https://developers.weixin.qq.com/miniprogram/dev/framework/quickstart/release.html#发布上线)。
-
+> 1. 此处应输入您微信小程序的 AppID，而非 SDKAppID。
+> 2. 由于微信开发者工具不支持原生组件（即 &lt;live-pusher&gt; 和 &lt;live-player&gt; 标签），需要在真机上进行运行体验。您需要在手机微信上开启调试功能：手机微信扫码二维码后，单击右上角【...】>【开发调试】。 
+> ![](https://main.qcloudimg.com/raw/9ae12892a437c25c2317fb62f7f851ba.png)
 
 
 ## 常见问题
 
-### 1. 查看密钥时只能获取公钥和私钥信息，要如何获取密钥？
+### 1. 为什么“我”在查看密钥时只能获取公钥和私钥信息，要如何获取密钥？
 
-TRTC SDK 6.6 版本（2019年08月）开始启用新的签名算法 HMAC-SHA256。在此之前已创建的应用，需要先单击【第二步 获取签发UserSig的密钥】区域的【点此升级】升级签名算法才能获取新的加密密钥。如不升级，您也可以继续使用 [老版本算法](https://cloud.tencent.com/document/product/647/17275#.E8.80.81.E7.89.88.E6.9C.AC.E7.AE.97.E6.B3.95) ECDSA-SHA256。
+TRTC SDK 6.6 版本（2019年08月）开始启用新的签名算法 HMAC-SHA256，这是一种对称加密方案。如果您看到了“公钥”和“私钥”这样的文案，说明您的 SDKAppID 应该是在 2019.08 之前创建的，需要先单击【step2. 获取签发UserSig的密钥】区域的【点此升级】升级签名算法才能获取新的加密密钥。如不升级，您也可以继续使用老版本 [ECDSA-SHA256](https://cloud.tencent.com/document/product/647/17275#.E8.80.81.E7.89.88.E6.9C.AC.E7.AE.97.E6.B3.95) 算法。
 
 ### 2. 防火墙有什么限制？
 
@@ -101,7 +81,8 @@ TRTC SDK 6.6 版本（2019年08月）开始启用新的签名算法 HMAC-SHA256�
 
 您可以检查我们小程序 demo 左下方的控制面板。打开 debug 选项，可以在界面上看到详细的推拉流信息，如果没有推拉流的信息则是未进房成功或是 live-pusher，live-player 创建失败。以下是我们控制面板的介绍
 
-![image]( https://main.qcloudimg.com/raw/4907ed595376e40aa6bed4f950903abc.png )
+![](https://main.qcloudimg.com/raw/b370373d41217c2c0efca37ab87cc94a.jpg)
+
 
 | 参数          | 含义                                                         |
 | ------------- | ------------------------------------------------------------ |
