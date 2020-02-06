@@ -12,7 +12,7 @@
 
 #import "TRTCAudioCallCloudManager.h"
 #import "TRTCCloudDef.h"
-#import "TRTCAudioCallTestUserSig.h"
+#import "GenerateTestUserSig.h"
 #import "TRTCAudioCallCustomAudioFileReader.h"
 
 @interface TRTCAudioCallCloudManager()<TRTCAudioCallCustomAudioFileReaderDelegate>
@@ -218,7 +218,7 @@
 #pragma mark - Live Player
 
 - (NSString *)getCdnUrl{
-    NSString *playUrl = [NSString stringWithFormat:@"http://%d.liveplay.myqcloud.com/live/mix_%d_%u.flv",_BIZID,_SDKAppID,(unsigned int)self.params.roomId];
+    NSString *playUrl = [NSString stringWithFormat:@"http://%d.liveplay.myqcloud.com/live/mix_%d_%u.flv",TX_BIZID,_SDKAppID,(unsigned int)self.params.roomId];
     
 //    NSString *playUrl = @"http://5815.liveplay.myqcloud.com/live/5815_89aad37e06ff11e892905cb9018cf0d4_900.flv";        //测试用
     

@@ -8,7 +8,7 @@
 
 #import "CreateTRTCVoiceRoomViewController.h"
 #import "TRTCVoiceRoomViewController.h"
-#import "TRTCVoiceRoomTestUserSig.h"
+#import "GenerateTestUserSig.h"
 #import <TRTCCloud.h>
 #import <TRTCCloudDef.h>
 #import "TRTCVoiceRoomCloudManager.h"
@@ -177,7 +177,7 @@
     param.sdkAppId = _SDKAppID;
     param.userId = userId;
     param.roomId = (UInt32)roomId.integerValue;
-    param.userSig = [TRTCVoiceRoomTestUserSig genTestUserSig:userId];
+    param.userSig = [GenerateTestUserSig genTestUserSig:userId];
     param.privateMapKey = @"";
     param.role = _role;
     

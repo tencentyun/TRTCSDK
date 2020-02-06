@@ -8,7 +8,7 @@
 
 #import "CreateTRTCAudioCallViewController.h"
 #import "TRTCAudioCallViewController.h"
-#import "TRTCAudioCallTestUserSig.h"
+#import "GenerateTestUserSig.h"
 #import <TRTCCloud.h>
 #import <TRTCCloudDef.h>
 #import "TRTCAudioCallCloudManager.h"
@@ -174,7 +174,7 @@
     param.sdkAppId = _SDKAppID;
     param.userId = userId;
     param.roomId = (UInt32)roomId.integerValue;
-    param.userSig = [TRTCAudioCallTestUserSig genTestUserSig:userId];
+    param.userSig = [GenerateTestUserSig genTestUserSig:userId];
     param.privateMapKey = @"";
     param.role = TRTCRoleAnchor;            //默认主播
     

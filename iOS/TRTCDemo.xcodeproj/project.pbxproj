@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		06E2FB0E23EC20F400C7CF0D /* GenerateTestUserSig.m in Sources */ = {isa = PBXBuildFile; fileRef = 06E2FB0C23EC20F400C7CF0D /* GenerateTestUserSig.m */; };
 		1287EA9E237EA13100FCF8FB /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 1287EA9D237EA13100FCF8FB /* libresolv.tbd */; };
 		129FE1E323CE06560028480C /* TRTCCdnPlayerSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FE06A23CE06540028480C /* TRTCCdnPlayerSettingsViewController.m */; };
 		129FE1E423CE06560028480C /* TRTCRemoteUserSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FE06C23CE06540028480C /* TRTCRemoteUserSettingsViewController.m */; };
@@ -52,7 +53,6 @@
 		129FE20C23CE06560028480C /* TRTCEffectSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FE0C623CE06550028480C /* TRTCEffectSettingsViewController.m */; };
 		129FE20D23CE06560028480C /* TRTCBgmSettingsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FE0CB23CE06550028480C /* TRTCBgmSettingsCell.m */; };
 		129FE20E23CE06560028480C /* TRTCBgmSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FE0CC23CE06550028480C /* TRTCBgmSettingsViewController.m */; };
-		129FE20F23CE06560028480C /* GenerateTestUserSig.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FE0D023CE06550028480C /* GenerateTestUserSig.m */; };
 		129FE21023CE06570028480C /* TRTCMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FE0D123CE06550028480C /* TRTCMainViewController.m */; };
 		129FE21123CE06570028480C /* giftSent.aac in Resources */ = {isa = PBXBuildFile; fileRef = 129FE0D423CE06550028480C /* giftSent.aac */; };
 		129FE21223CE06570028480C /* vchat_cheers.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 129FE0D523CE06550028480C /* vchat_cheers.m4a */; };
@@ -114,7 +114,6 @@
 		129FE24E23CE06570028480C /* TRTCVoiceRoomAudioConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FE16923CE06550028480C /* TRTCVoiceRoomAudioConfig.m */; };
 		129FE24F23CE06570028480C /* TRTCVoiceRoomCustomAudioFileReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FE16C23CE06550028480C /* TRTCVoiceRoomCustomAudioFileReader.m */; };
 		129FE25023CE06570028480C /* TRTCVoiceRoom.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 129FE16D23CE06550028480C /* TRTCVoiceRoom.storyboard */; };
-		129FE25123CE06570028480C /* TRTCVoiceRoomTestUserSig.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FE16E23CE06550028480C /* TRTCVoiceRoomTestUserSig.m */; };
 		129FE25223CE06570028480C /* NSLayoutConstraint+MASDebugAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FE17423CE06550028480C /* NSLayoutConstraint+MASDebugAdditions.m */; };
 		129FE25323CE06570028480C /* ViewController+MASAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FE17D23CE06560028480C /* ViewController+MASAdditions.m */; };
 		129FE25423CE06570028480C /* MASCompositeConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FE18123CE06560028480C /* MASCompositeConstraint.m */; };
@@ -152,7 +151,6 @@
 		129FE27423CE06570028480C /* AFNetworkReachabilityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FE1C923CE06560028480C /* AFNetworkReachabilityManager.m */; };
 		129FE27523CE06570028480C /* AFSecurityPolicy.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FE1CA23CE06560028480C /* AFSecurityPolicy.m */; };
 		129FE27623CE06570028480C /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FE1CD23CE06560028480C /* MBProgressHUD.m */; };
-		129FE27723CE06570028480C /* TRTCAudioCallTestUserSig.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FE1D023CE06560028480C /* TRTCAudioCallTestUserSig.m */; };
 		129FE27823CE06570028480C /* TRTCAudioCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FE1D123CE06560028480C /* TRTCAudioCallViewController.m */; };
 		129FE27923CE06570028480C /* TRTCAudioCallUserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FE1D523CE06560028480C /* TRTCAudioCallUserModel.m */; };
 		129FE27A23CE06570028480C /* TRTCAudioCall.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 129FE1D823CE06560028480C /* TRTCAudioCall.storyboard */; };
@@ -207,6 +205,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		06E2FB0C23EC20F400C7CF0D /* GenerateTestUserSig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenerateTestUserSig.m; sourceTree = "<group>"; };
+		06E2FB0D23EC20F400C7CF0D /* GenerateTestUserSig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GenerateTestUserSig.h; sourceTree = "<group>"; };
 		1287EA9D237EA13100FCF8FB /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
 		129FE06623CE06540028480C /* TRTCVideoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCVideoView.h; sourceTree = "<group>"; };
 		129FE06923CE06540028480C /* TRTCCdnPlayerSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCCdnPlayerSettingsViewController.h; sourceTree = "<group>"; };
@@ -297,7 +297,6 @@
 		129FE0CD23CE06550028480C /* TRTCBgmSettingsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCBgmSettingsCell.h; sourceTree = "<group>"; };
 		129FE0CE23CE06550028480C /* TRTCBgmSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCBgmSettingsViewController.h; sourceTree = "<group>"; };
 		129FE0CF23CE06550028480C /* TRTCFloatWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCFloatWindow.h; sourceTree = "<group>"; };
-		129FE0D023CE06550028480C /* GenerateTestUserSig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenerateTestUserSig.m; sourceTree = "<group>"; };
 		129FE0D123CE06550028480C /* TRTCMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCMainViewController.m; sourceTree = "<group>"; };
 		129FE0D223CE06550028480C /* TRTCVideoViewLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCVideoViewLayout.h; sourceTree = "<group>"; };
 		129FE0D423CE06550028480C /* giftSent.aac */ = {isa = PBXFileReference; lastKnownFileType = file; path = giftSent.aac; sourceTree = "<group>"; };
@@ -315,7 +314,6 @@
 		129FE0E123CE06550028480C /* CustomAudioFileReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomAudioFileReader.h; sourceTree = "<group>"; };
 		129FE0E223CE06550028480C /* TRTCNewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCNewViewController.m; sourceTree = "<group>"; };
 		129FE0E323CE06550028480C /* TRTCMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCMainViewController.h; sourceTree = "<group>"; };
-		129FE0E423CE06550028480C /* GenerateTestUserSig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GenerateTestUserSig.h; sourceTree = "<group>"; };
 		129FE0E523CE06550028480C /* TRTCFloatWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCFloatWindow.m; sourceTree = "<group>"; };
 		129FE0E623CE06550028480C /* TRTCVideoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCVideoView.m; sourceTree = "<group>"; };
 		129FE0E723CE06550028480C /* TRTCVideoViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCVideoViewLayout.m; sourceTree = "<group>"; };
@@ -397,7 +395,6 @@
 		129FE14D23CE06550028480C /* TRTCVoiceRoomChangeVoiceView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TRTCVoiceRoomChangeVoiceView.xib; sourceTree = "<group>"; };
 		129FE14E23CE06550028480C /* TRTCVoiceRoomChangeVoiceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCVoiceRoomChangeVoiceView.h; sourceTree = "<group>"; };
 		129FE14F23CE06550028480C /* CreateTRTCVoiceRoomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateTRTCVoiceRoomViewController.m; sourceTree = "<group>"; };
-		129FE15023CE06550028480C /* TRTCVoiceRoomTestUserSig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCVoiceRoomTestUserSig.h; sourceTree = "<group>"; };
 		129FE15223CE06550028480C /* TRTCVoiceRoomAudioEffectView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TRTCVoiceRoomAudioEffectView.xib; sourceTree = "<group>"; };
 		129FE15323CE06550028480C /* TRTCVoiceRoomAudioEffectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCVoiceRoomAudioEffectView.m; sourceTree = "<group>"; };
 		129FE15423CE06550028480C /* TRTCVoiceRoomAudioEffectView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCVoiceRoomAudioEffectView.h; sourceTree = "<group>"; };
@@ -420,7 +417,6 @@
 		129FE16B23CE06550028480C /* TRTCVoiceRoomCustomAudioFileReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCVoiceRoomCustomAudioFileReader.h; sourceTree = "<group>"; };
 		129FE16C23CE06550028480C /* TRTCVoiceRoomCustomAudioFileReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCVoiceRoomCustomAudioFileReader.m; sourceTree = "<group>"; };
 		129FE16D23CE06550028480C /* TRTCVoiceRoom.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = TRTCVoiceRoom.storyboard; sourceTree = "<group>"; };
-		129FE16E23CE06550028480C /* TRTCVoiceRoomTestUserSig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCVoiceRoomTestUserSig.m; sourceTree = "<group>"; };
 		129FE16F23CE06550028480C /* CreateTRTCVoiceRoomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateTRTCVoiceRoomViewController.h; sourceTree = "<group>"; };
 		129FE17323CE06550028480C /* MASCompositeConstraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASCompositeConstraint.h; sourceTree = "<group>"; };
 		129FE17423CE06550028480C /* NSLayoutConstraint+MASDebugAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSLayoutConstraint+MASDebugAdditions.m"; sourceTree = "<group>"; };
@@ -508,10 +504,8 @@
 		129FE1CB23CE06560028480C /* AFHTTPSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPSessionManager.h; sourceTree = "<group>"; };
 		129FE1CD23CE06560028480C /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		129FE1CE23CE06560028480C /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
-		129FE1D023CE06560028480C /* TRTCAudioCallTestUserSig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCAudioCallTestUserSig.m; sourceTree = "<group>"; };
 		129FE1D123CE06560028480C /* TRTCAudioCallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCAudioCallViewController.m; sourceTree = "<group>"; };
 		129FE1D223CE06560028480C /* CreateTRTCAudioCallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateTRTCAudioCallViewController.h; sourceTree = "<group>"; };
-		129FE1D323CE06560028480C /* TRTCAudioCallTestUserSig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCAudioCallTestUserSig.h; sourceTree = "<group>"; };
 		129FE1D523CE06560028480C /* TRTCAudioCallUserModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCAudioCallUserModel.m; sourceTree = "<group>"; };
 		129FE1D623CE06560028480C /* TRTCAudioCallUserModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCAudioCallUserModel.h; sourceTree = "<group>"; };
 		129FE1D723CE06560028480C /* TRTCAudioCallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCAudioCallViewController.h; sourceTree = "<group>"; };
@@ -559,8 +553,8 @@
 		129FE06523CE06540028480C /* TRTC */ = {
 			isa = PBXGroup;
 			children = (
-				129FE0E423CE06550028480C /* GenerateTestUserSig.h */,
-				129FE0D023CE06550028480C /* GenerateTestUserSig.m */,
+				06E2FB0C23EC20F400C7CF0D /* GenerateTestUserSig.m */,
+				06E2FB0D23EC20F400C7CF0D /* GenerateTestUserSig.h */,
 				129FE0D323CE06550028480C /* Resources */,
 				129FE06723CE06540028480C /* Settings */,
 				129FE0D923CE06550028480C /* testCustomVideo */,
@@ -1030,8 +1024,6 @@
 				129FE16D23CE06550028480C /* TRTCVoiceRoom.storyboard */,
 				129FE16F23CE06550028480C /* CreateTRTCVoiceRoomViewController.h */,
 				129FE14F23CE06550028480C /* CreateTRTCVoiceRoomViewController.m */,
-				129FE15023CE06550028480C /* TRTCVoiceRoomTestUserSig.h */,
-				129FE16E23CE06550028480C /* TRTCVoiceRoomTestUserSig.m */,
 				129FE14A23CE06550028480C /* TRTCVoiceRoomViewController.h */,
 				129FE15923CE06550028480C /* TRTCVoiceRoomViewController.m */,
 				129FE15123CE06550028480C /* AudioEffectView */,
@@ -1286,8 +1278,6 @@
 				129FE1D823CE06560028480C /* TRTCAudioCall.storyboard */,
 				129FE1D223CE06560028480C /* CreateTRTCAudioCallViewController.h */,
 				129FE1E223CE06560028480C /* CreateTRTCAudioCallViewController.m */,
-				129FE1D323CE06560028480C /* TRTCAudioCallTestUserSig.h */,
-				129FE1D023CE06560028480C /* TRTCAudioCallTestUserSig.m */,
 				129FE1D723CE06560028480C /* TRTCAudioCallViewController.h */,
 				129FE1D123CE06560028480C /* TRTCAudioCallViewController.m */,
 				129FE1D423CE06560028480C /* Model */,
@@ -1552,7 +1542,6 @@
 				129FE20223CE06560028480C /* TRTCSettingsBaseViewController.m in Sources */,
 				129FE1E523CE06560028480C /* TRTCRemoteUserListViewController.m in Sources */,
 				129FE23823CE06570028480C /* TCBeautyPanelActionProxy.m in Sources */,
-				129FE27723CE06570028480C /* TRTCAudioCallTestUserSig.m in Sources */,
 				129FE1FA23CE06560028480C /* TRTCSettingsInputCell.m in Sources */,
 				129FE1E423CE06560028480C /* TRTCRemoteUserSettingsViewController.m in Sources */,
 				129FE1F823CE06560028480C /* UISegmentedControl+TRTC.m in Sources */,
@@ -1566,7 +1555,6 @@
 				129FE1F323CE06560028480C /* TRTCSettingsContainerViewController.m in Sources */,
 				129FE24F23CE06570028480C /* TRTCVoiceRoomCustomAudioFileReader.m in Sources */,
 				129FE20723CE06560028480C /* TRTCPKSettingsViewController.m in Sources */,
-				129FE25123CE06570028480C /* TRTCVoiceRoomTestUserSig.m in Sources */,
 				129FE25923CE06570028480C /* MASConstraint.m in Sources */,
 				129FE27423CE06570028480C /* AFNetworkReachabilityManager.m in Sources */,
 				129FE24B23CE06570028480C /* TRTCVoiceRoomAudioEffectManager.m in Sources */,
@@ -1626,7 +1614,6 @@
 				129FE24C23CE06570028480C /* TRTCVoiceRoomBgmManager.m in Sources */,
 				129FE25723CE06570028480C /* NSArray+MASAdditions.m in Sources */,
 				129FE27123CE06570028480C /* AFHTTPSessionManager.m in Sources */,
-				129FE20F23CE06560028480C /* GenerateTestUserSig.m in Sources */,
 				129FE23C23CE06570028480C /* TCMenuView.m in Sources */,
 				129FE24E23CE06570028480C /* TRTCVoiceRoomAudioConfig.m in Sources */,
 				129FE22323CE06570028480C /* NSObject+MJProperty.m in Sources */,
@@ -1658,6 +1645,7 @@
 				129FE24523CE06570028480C /* TRTCVoiceRoomAudioEffectView.m in Sources */,
 				129FE26C23CE06570028480C /* UIActivityIndicatorView+AFNetworking.m in Sources */,
 				129FE26423CE06570028480C /* QBCheckmarkView.m in Sources */,
+				06E2FB0E23EC20F400C7CF0D /* GenerateTestUserSig.m in Sources */,
 				129FE26B23CE06570028480C /* UIButton+AFNetworking.m in Sources */,
 				129FE27E23CE06570028480C /* CreateTRTCAudioCallViewController.m in Sources */,
 				129FE27223CE06570028480C /* AFURLSessionManager.m in Sources */,
