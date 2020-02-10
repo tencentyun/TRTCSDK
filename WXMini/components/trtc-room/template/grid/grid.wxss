@@ -51,6 +51,36 @@
    height: 33.3vh;
 }
 
+.stream-6 .view-container{
+   width: 33.3vw;
+   height: 33.3vh;
+}
+
+.stream-6 .view-container:nth-child(1){
+   width: 100vw;
+   height: 33.3vh;
+}
+
+.stream-7 .view-container{
+   width: 33.3vw;
+   height: 33.3vh;
+}
+
+.stream-7 .view-container:nth-child(1){
+   width: 50vw;
+   height: 33.3vh;
+}
+
+.stream-7 .view-container:nth-child(2){
+   width: 50vw;
+   height: 33.3vh;
+}
+
+.stream-8 .view-container{
+   width: 33.3vw;
+   height: 33.3vh;
+}
+
 .template-grid .operation-bar {
   position: absolute;
   bottom: 5%;
@@ -69,7 +99,7 @@
 .template-grid .btn-normal {
   width: 64rpx;
   height: 64rpx;
-  margin: 0 16rpx;
+  margin: 0 6rpx;
   box-sizing: border-box;
   display: flex;
   background: white;

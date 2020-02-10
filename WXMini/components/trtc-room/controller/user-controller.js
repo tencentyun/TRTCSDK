@@ -144,7 +144,7 @@ class UserController {
    * @param {Object} data pusher 下发的数据 {userlist}
    */
   updateUserVideo(data) {
-    // console.log(TAG_NAME, 'updateUserVideo', data)
+    console.log(TAG_NAME, 'updateUserVideo', data)
     const incomingUserList = data.userlist
     if (Array.isArray(incomingUserList) && incomingUserList.length > 0) {
       incomingUserList.forEach((item) => {
@@ -157,7 +157,7 @@ class UserController {
         // 如果找到该用户，则更新用户的信息和相关的stream 信息
         if (user) {
           let stream = user.streams[streamType]
-          // console.log(TAG_NAME, 'updateUserVideo', user, streamType, stream)
+          console.log(TAG_NAME, 'updateUserVideo', user, streamType, stream)
           // 更新指定的stream
           if (!stream) {
             user.streams[streamType] = stream = new Stream({ streamType: streamType })
@@ -166,6 +166,7 @@ class UserController {
           }
           if (hasVideo && streamType === 'aux') {
             stream.objectFit = 'contain'
+            this.streamList.push(stream)
           }
           if (!hasVideo && streamType === 'aux') {
             // TODO 如果是辅流可能要移除该 stream

@@ -1,0 +1,145 @@
+/* miniprogram/pages/room/room.wxss */
+.page-room{
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-image: url(https://mc.qcloudimg.com/static/img/7da57e0050d308e2e1b1e31afbc42929/bg.png);
+  background-color: #333;
+  background-repeat:no-repeat;
+  background-size: cover;
+}
+.title{
+  color: #FFFFFF;
+  padding-top: 65rpx;
+  line-height: 60rpx;
+  text-align: center;
+}
+.page-room .avatar {
+  height: 100rpx;
+  width: 100rpx;
+  border-radius: 50%;
+  background: #999;
+  overflow: hidden;
+}
+.user-container {
+  box-sizing: border-box;
+  padding: 80rpx 60rpx 0 60rpx;
+  height: 900rpx;
+  overflow: hidden;
+  color: white;
+}
+.own {
+  height: 180rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.avatar-image {
+  width: 100%;
+  height: 100%;
+}
+.users {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding-top: 40rpx;
+}
+.user {
+  height: 200rpx;
+  width: 33.3%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 24rpx;
+}
+.userID {
+  padding-top: 20rpx;
+}
+.avatar-fake {
+  height: 100rpx;
+  width: 100rpx;
+  border-radius: 50%;
+  background: #999;
+}
+.bg {
+  width: 100vw;
+  height: 100vh;
+}
+.close {
+  position:absolute;
+  padding-left:5vw;
+  padding-right:5vw;
+  width:50rpx;
+  height:60rpx;
+}
+.back {
+  font-size: 32rpx;
+  line-height: 32rpx;
+  padding-left: 5vw;
+  padding-right: 5vw;
+  width: 50rpx;
+}
+.title {
+  color: white;
+  font-size: 32rpx;
+  font-weight: 500;
+}
+.role-choose {
+  position: absolute;
+  width: 90vw;
+  background: white;
+  border: 1px solid #bfbfbf;
+  border-radius: 12rpx;
+  top: 40vh;
+  left: 5vw;
+  padding: 40rpx;
+  box-sizing: border-box;
+}
+.role-panel-text {
+  font-size: 32rpx;
+  font-weight: 500;
+}
+.handle-btn {
+  display: flex;
+  flex-direction: row-reverse;
+  margin-top: 20rpx;
+}
+.role-btn {
+  margin-left: 20rpx;
+  padding: 10rpx 20rpx;
+  border-radius: 12rpx;
+}
+.confirm {
+  background: #006eff;
+  color: white;
+}
+.setting {
+  height: 100%;
+  padding: 100rpx 60rpx;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+.btn-normal {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  background: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-normal image {
+  width: 50rpx;
+  height: 50rpx;
+}
+.close {
+  position:absolute;
+  padding-left:5vw;
+  padding-right:5vw;
+  width:50rpx;
+  height:60rpx;
+}

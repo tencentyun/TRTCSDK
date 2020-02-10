@@ -1,0 +1,29 @@
+<view class='container-box'>
+  <view class='title' style='padding-top:{{(headerHeight + statusBarHeight)/2 - 12}}px'>
+    <view>语音聊天室</view>
+  </view>
+  <view class="input-box">
+    <input type="number" value="{{roomID}}" maxlength="20" bindinput='bindRoomID' placeholder="请输入房间号" placeholder-style="color:#ffffff;opacity: 0.55;"/>
+  </view>
+  <view class="input-box">
+    <input value="{{userID}}" maxlength="20" bindinput='bindUserID' placeholder="请输入用户名" placeholder-style="color:#ffffff;opacity: 0.55;"/>
+  </view>
+  <radio-group class="radio-group" bindchange="roleChange">
+    <label class="radio">
+       <radio color='#006eff' value="presenter" checked='true' id="presenter"/>主播（可发言）
+    </label>
+    <label class="radio">
+      <radio color='#006eff' value="audience"  id="audience"/>观众（仅收听）
+    </label>
+  </radio-group>
+  <view class="choice-content">
+    <label class="label" for="switchDebugMode">
+      <text>调试模式</text>
+      <switch id="switchDebugMode" color="#006eff" checked="{{debugMode}}" bindchange="switchDebugMode"/>
+    </label>
+  </view>
+</view>
+<view class='bottom-btn'>
+  <button type="primary" bindtap="joinRoom" hover-class="none">进入房间</button>
+</view>
+<cover-image class='close' style="top:{{(headerHeight + statusBarHeight) - 34}}rpx"src="../../../images/back.png" bindtap="onBack"></cover-image>

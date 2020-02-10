@@ -1,0 +1,52 @@
+<!--miniprogram/pages/room/room.wxml-->
+<!-- 在模版上放置标签 -->
+<view class="page-room">
+  <view class="bg">
+    <view class='title' style='padding-top:{{(headerHeight + statusBarHeight)/2 - 12}}px'>
+      <text>房间号：{{roomID}}</text>
+    </view>
+    <view class="user-container">
+      <view class="own" wx:if="{{role === 'presenter'}}" bindtap="handleRoleChange">
+        <view class="avatar">
+          <image src="../../../images/avatar0_100.png" class="avatar-image"></image>
+        </view>
+        <view class="userID">{{userID}}（自己）</view>
+      </view>
+      <view class="own" wx:if="{{role === 'audience'}}">
+        <view class="avatar" bindtap="handleRoleChange">
+        </view>
+        <view class="userID">虚位以待</view>
+      </view>
+      <view class="users">
+        <view class="user"  wx:for="{{userList}}"  wx:key="userID" wx:if="{{item.hasMainAudio}}">
+          <view wx:if="role === 'presenter'" class="avatar" style="border: 4px solid rgba(0, 110, 255, {{item.volume / 100}})">
+            <image src="{{'../../../images/avatar' + (index + 1) + '_100.png'}}" class="avatar-image"></image>
+          </view>
+          <view class="userID">{{item.userID}}</view>
+        </view>
+        <view class="user" wx:for="{{[1,2,3,4,5,6]}}"  wx:key="index" wx:if="{{index < 6 - userList.length}}">
+          <view class="avatar-fake"></view>
+          <view class="userID">虚位以待</view>
+        </view>
+      </view>
+    </view>
+    <view class="role-choose" wx:if="{{showRolePanel}}">
+      <view class="role-panel-text" wx:if="{{role === 'presenter'}}">确定下麦吗？</view>
+      <view class="role-panel-text" wx:if="{{role === 'audience'}}">确定上麦吗？</view>
+      <view class="handle-btn">
+        <view class="role-btn confirm" bindtap="confirmRoleChange">确认</view>
+        <view class="role-btn" bindtap="handleRoleChange">取消</view>
+      </view>
+    </view>
+    <view class="setting">
+      <view class="btn-normal" bindtap="handlePublishAudio" wx:if="{{role === 'presenter'}}">
+        <image src="{{presenterConfig.enableMic? '../../../images/audio-true.png': '../../../images/audio-false.png'}}"></image>
+      </view>
+      <view class="btn-normal" bindtap="handleMuteAllAudio">
+        <image src="{{!presenterConfig.muteAllAudio? '../../../images/voice.png': '../../../images/voice-false.png'}}"></image>
+      </view>
+    </view>
+  </view>
+  <trtc-room id="trtc-component" config="{{rtcConfig}}"></trtc-room>
+</view>
+<cover-image class='close' style="top:{{(headerHeight + statusBarHeight) - 34}}rpx" src="../../../images/back.png" bindtap="onBack"></cover-image>

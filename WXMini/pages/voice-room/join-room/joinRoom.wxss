@@ -1,0 +1,85 @@
+
+.container-box {
+  background-image: url(https://mc.qcloudimg.com/static/img/7da57e0050d308e2e1b1e31afbc42929/bg.png);
+  background-color: #333;
+  background-repeat:no-repeat;
+  background-size: cover;
+  height: 100vh;
+  padding: 0 10vw;
+  box-sizing: border-box;
+}
+.choice-content {
+  margin-top: 60rpx;
+  width: 100%;
+  font-size: 14px;
+  color: white;
+}
+.choice-content switch {
+  transform: scale(0.8);
+}
+
+.title{
+  color: #FFFFFF;
+  padding-top: 65rpx;
+  line-height: 60rpx;
+  text-align: center;
+}
+.input-box {
+  background-color: transparent;
+  color: #ffffff;
+  padding: 3vw 5vw;
+  border-color: #577785;
+  border-style: solid;
+  border-top-width: 0px;
+  border-right-width: 0px;
+  border-bottom-width: 1px;
+  border-left-width: 0px;
+  padding-top: 20%;
+  text-align: center;
+}
+.bottom-btn {
+  position: fixed;
+  width: 100vw;
+  bottom: 5vh;
+}
+.bottom-btn button {
+  width: 80%;
+  background-color: #006eff;
+  border-radius: 50px;
+}
+
+.radio-group {
+  margin-top: 8vh;
+  display: flex;
+  justify-content: space-between;
+}
+.radio-group .radio {
+  font-size: 14px;
+  color: #ffffff;
+}
+.PrevImgBox {
+  width:80%;
+  height:auto;
+  margin:15% 10%;
+  align-content:center;
+  text-align:center;
+}
+.PrevImgBox .PrevCell {
+  margin:10% 6%;
+  width:96%;
+  height:auto;
+  display:inline;
+}
+.PrevImgBox .PrevCell>label>image{
+  border:2px solid rgba(0,0,0,0);
+}
+.PrevImgBox .PrevCell>label>image.selected{
+  border:2px solid rgba(150,150,250,0.5);
+}
+.close {
+  position:absolute;
+  padding-left:5vw;
+  padding-right:5vw;
+  width:50rpx;
+  height:60rpx;
+}

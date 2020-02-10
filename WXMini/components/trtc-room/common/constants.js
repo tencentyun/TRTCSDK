@@ -18,6 +18,11 @@ export const EVENT = {
   BGM_PLAY_PROGRESS: 'BGM_PLAY_PROGRESS', // bgm 播放时间戳变更
   BGM_PLAY_COMPLETE: 'BGM_PLAY_COMPLETE', // bgm 播放结束 或者 调用 LivePusherContext.stopBGM() ?
   ERROR: 'ERROR', // pusher 出现错误
+  IM_READY: 'IM_READY', // IM SDK 可用
+  IM_MESSAGE_RECEIVED: 'IM_MESSAGE_RECEIVED', // 收到IM 消息
+  IM_NOT_READY: 'IM_NOT_READY', // IM SDK 不可用
+  IM_KICKED_OUT: 'IM_KICKED_OUT', // IM SDK 下线
+  IM_ERROR: 'IM_ERROR', // IM SDK 下线
 }
 
 export const DEFAULT_PUSHER_CONFIG = {
@@ -31,8 +36,8 @@ export const DEFAULT_PUSHER_CONFIG = {
   enableEarMonitor: false, // 是否开启耳返（目前只在iOS平台有效）
   enableAutoFocus: true, // 是否自动对焦
   enableZoom: false, // 是否支持调整焦距
-  minBitrate: 200, // 最小码率
-  maxBitrate: 1000, // 最大码率
+  minBitrate: 600, // 最小码率
+  maxBitrate: 900, // 最大码率
   videoWidth: 360, // 视频宽（若设置了视频宽高就会忽略aspect）
   videoHeight: 640, // 视频高（若设置了视频宽高就会忽略aspect）
   beautyLevel: 0, // 美颜，取值范围 0-9 ，0 表示关闭

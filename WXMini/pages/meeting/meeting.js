@@ -20,14 +20,19 @@ Page({
     enableAns: true,
     encsmall: false,
     frontCamera: 'front',
-    resolution: 'FHD',
+    resolution: 'SD',
     debugMode: false,
 
-    // 用于自定义输入视频分辨率
-    videoHeight: 720,
-    videoWidth: 1280,
-    minBitrate: 1500,
-    maxBitrate: 2000,
+    // 用于自定义输入视频分辨率和默认值
+    // videoHeight: 720,
+    // videoWidth: 1280,
+    // minBitrate: 1500,
+    // maxBitrate: 2000,
+
+    videoWidth: 360,
+    videoHeight: 640,
+    minBitrate: 600,
+    maxBitrate: 900,
 
     localMirrorArray: [
       { value: 'auto', title: '自动' },
@@ -222,7 +227,7 @@ Page({
   randomUserID: function() {
     this.setData({
       // roomID: parseInt(10000 * Math.random()),
-      userID: new Date().getTime().toString(16),
+      userID: new Date().getTime().toString(16).split('').reverse().join(''),
     })
   },
   /**

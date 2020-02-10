@@ -3,8 +3,10 @@ import Pusher from 'model/pusher.js'
 import { EVENT } from 'common/constants.js'
 import Event from 'utils/event.js'
 import * as ENV from 'utils/environment.js'
+import TIM from 'libs/tim-wx.js'
 
 const TAG_NAME = 'TRTC-ROOM'
+const IM_GROUP_TYPE = TIM.TYPES.GRP_CHATROOM // TIM.TYPES.GRP_CHATROOM 体验版IM无数量限制，成员20个， TIM.TYPES.GRP_AVCHATROOM IM体验版最多10个，升级后无限制
 
 Component({
   /**
@@ -19,7 +21,8 @@ Component({
         userID: '',
         userSig: '',
         template: '',
-        debugMode: '',
+        debugMode: '', // 是否开启调试模式
+        enableIM: '', // 是否开启 IM
       },
       observer: function(newVal, oldVal) {
         this._propertyObserver({
@@ -34,16 +37,22 @@ Component({
    */
   data: {
     pusher: null,
-    // debugMode: false, // 是否开启调试模式
     debugPanel: true, // 是否打开组件调试面板
     debug: false, // 是否打开player pusher 的调试信息
     streamList: [], // 用于渲染player列表,存储stram
     userList: [], // 扁平化的数据用来返回给用户
     template: '', // 不能设置默认值，当默认值和传入组件的值不一致时，iOS渲染失败
-    cameraPosition: '',
+    cameraPosition: '', // 摄像头位置，用于debug
     panelName: '', // 控制面板名称，包括 setting-panel  memberlist-panel
     localVolume: 0,
     remoteVolumeList: [],
+    enableIM: false,
+    showIMPanel: false,
+    exitIMThrottle: false,
+    messageContent: '',
+    messageList: [], // 仅保留10条消息
+    maxMessageListLength: 10,
+    messageListScrollTop: 0,
     appVersion: ENV.APP_VERSION,
     libVersion: ENV.LIB_VERSION,
   },
@@ -105,7 +114,7 @@ Component({
     /**
      * 初始化各项参数和用户控制模块，在组件实例触发 attached 时调用，此时不建议对View进行变更渲染（调用setData方法）
      */
-    _init: function() {
+    _init() {
       console.log(TAG_NAME, '_init')
       this.userController = new UserController(this)
       this._emitter = new Event()
@@ -120,7 +129,7 @@ Component({
      * @param {Object} params 必传 roomID 取值范围 1 ~ 4294967295
      * @returns {Promise}
      */
-    enterRoom: function(params) {
+    enterRoom(params) {
       return new Promise((resolve, reject) => {
         console.log(TAG_NAME, 'enterRoom')
         console.log(TAG_NAME, 'params', params)
@@ -152,15 +161,20 @@ Component({
           console.error(TAG_NAME, 'enterRoom fail', res)
           reject(res)
         })
+        // 初始化 IM SDK
+        // this._initIM(this.data.config)
+        // 登录IM
+        this._loginIM({ ...this.data.config, roomID: params.roomID })
       })
     },
     /**
      * 退房，停止推流和拉流，并重置数据
      * @returns {Promise}
      */
-    exitRoom: function() {
+    exitRoom() {
       return new Promise((resolve, reject) => {
         console.log(TAG_NAME, 'exitRoom')
+        this._exitIM()
         this.data.pusher.reset()
         this.status.isPush = false
         const result = this.userController.reset()
@@ -179,7 +193,7 @@ Component({
      * 开启摄像头
      * @returns {Promise}
      */
-    publishLocalVideo: function() {
+    publishLocalVideo() {
       // 设置 pusher enableCamera
       console.log(TAG_NAME, 'publishLocalVideo 开启摄像头')
       return this._setPusherConfig({ enableCamera: true })
@@ -188,7 +202,7 @@ Component({
      * 关闭摄像头
      * @returns {Promise}
      */
-    unpublishLocalVideo: function() {
+    unpublishLocalVideo() {
       // 设置 pusher enableCamera
       console.log(TAG_NAME, 'unpublshLocalVideo 关闭摄像头')
       return this._setPusherConfig({ enableCamera: false })
@@ -197,7 +211,7 @@ Component({
      * 开启麦克风
      * @returns {Promise}
      */
-    publishLocalAudio: function() {
+    publishLocalAudio() {
       // 设置 pusher enableCamera
       console.log(TAG_NAME, 'publishLocalAudio 开启麦克风')
       return this._setPusherConfig({ enableMic: true })
@@ -206,7 +220,7 @@ Component({
      * 关闭麦克风
      * @returns {Promise}
      */
-    unpublishLocalAudio: function() {
+    unpublishLocalAudio() {
       // 设置 pusher enableCamera
       console.log(TAG_NAME, 'unpublshLocalAudio 关闭麦克风')
       return this._setPusherConfig({ enableMic: false })
@@ -293,19 +307,19 @@ Component({
         },
       })
     },
-    on: function(eventCode, handler, context) {
+    on(eventCode, handler, context) {
       this._emitter.on(eventCode, handler, context)
     },
-    off: function(eventCode, handler) {
+    off(eventCode, handler) {
       this._emitter.off(eventCode, handler)
     },
-    getRemoteUserList: function() {
+    getRemoteUserList() {
       return this.data.userList
     },
     /**
      * 切换前后摄像头
      */
-    switchCamera: function() {
+    switchCamera() {
       if (!this.data.cameraPosition) {
         // this.data.pusher.cameraPosition 是初始值，不支持动态设置
         this.data.cameraPosition = this.data.pusher.frontCamera
@@ -317,7 +331,7 @@ Component({
       }, () => {
         console.log(TAG_NAME, 'switchCamera success', this.data.cameraPosition)
       })
-      // wx 7.0.9 不支持动态设置 pusher.devicePosition ，需要调用api设置，这里修改cameraPosition是为了记录状态
+      // wx 7.0.9 不支持动态设置 pusher.frontCamera ，只支持调用 API switchCamer() 设置，这里修改 cameraPosition 是为了记录状态
       this.data.pusher.getPusherContext().switchCamera()
     },
     /**
@@ -331,7 +345,7 @@ Component({
      * height: number
      * @returns {Promise}
      */
-    setViewRect: function(params) {
+    setViewRect(params) {
       console.log(TAG_NAME, 'setViewRect', params)
       if (this.data.pusher.template !== 'custom') {
         console.warn(`如需使用setViewRect方法，请设置template:"custom", 当前 template:"${this.data.pusher.template}"`)
@@ -363,7 +377,7 @@ Component({
      * isVisible：boolean
      * @returns {Promise}
      */
-    setViewVisible: function(params) {
+    setViewVisible(params) {
       console.log(TAG_NAME, 'setViewVisible', params)
       // if (this.data.pusher.template !== 'custom') {
       //   console.warn(`如需使用setViewVisible方法，请设置template:"custom", 当前 template:"${this.data.pusher.template}"`)
@@ -389,7 +403,7 @@ Component({
      * zindex: number
      * @returns {Promise}
      */
-    setViewZIndex: function(params) {
+    setViewZIndex(params) {
       console.log(TAG_NAME, 'setViewZIndex', params)
       if (this.data.pusher.template !== 'custom') {
         console.warn(`如需使用setViewZIndex方法，请设置template:"custom", 当前 template:"${this.data.pusher.template}"`)
@@ -412,7 +426,7 @@ Component({
      * @param {Object} params url
      * @returns {Promise}
      */
-    playBGM: function(params) {
+    playBGM(params) {
       return new Promise((resolve, reject) => {
         this.data.pusher.getPusherContext().playBGM({
           url: params.url,
@@ -434,27 +448,27 @@ Component({
         })
       })
     },
-    stopBGM: function() {
+    stopBGM() {
       this.data.pusher.getPusherContext().stopBGM()
     },
-    pauseBGM: function() {
+    pauseBGM() {
       this.data.pusher.getPusherContext().pauseBGM()
     },
-    resumeBGM: function() {
+    resumeBGM() {
       this.data.pusher.getPusherContext().resumeBGM()
     },
     /**
      * 设置背景音音量
      * @param {Object} params volume
      */
-    setBGMVolume: function(params) {
+    setBGMVolume(params) {
       this.data.pusher.getPusherContext().setBGMVolume({ volume: params.volume })
     },
     /**
      * 设置麦克风音量
      * @param {Object} params volume
      */
-    setMICVolume: function(params) {
+    setMICVolume(params) {
       this.data.pusher.getPusherContext().setMICVolume({ volume: params.volume })
     },
     /**
@@ -462,7 +476,7 @@ Component({
      * @param {Object} params message
      * @returns {Promise}
      */
-    sendSEI: function(params) {
+    sendSEI(params) {
       return new Promise((resolve, reject) => {
         this.data.pusher.getPusherContext().sendMessage({
           msg: params.message,
@@ -477,7 +491,7 @@ Component({
      * @param {Object} params userID streamType
      * @returns {Promise}
      */
-    snapshot: function(params) {
+    snapshot(params) {
       console.log(TAG_NAME, 'snapshot', params)
       return new Promise((resolve, reject) => {
         this.captureSnapshot(params).then((result)=>{
@@ -509,7 +523,7 @@ Component({
      * @param {Object} params userID streamType
      * @returns {Promise}
      */
-    captureSnapshot: function(params) {
+    captureSnapshot(params) {
       return new Promise((resolve, reject) => {
         if (params.userID === this.data.pusher.userID) {
         // pusher
@@ -547,7 +561,7 @@ Component({
      * @param {Object} params userID streamType direction
      * @returns {Promise}
      */
-    enterFullscreen: function(params) {
+    enterFullscreen(params) {
       console.log(TAG_NAME, 'enterFullscreen', params)
       return new Promise((resolve, reject) => {
         this.userController.getStream(params).playerContext.requestFullScreen({
@@ -568,7 +582,7 @@ Component({
      * @param {Object} params userID streamType
      * @returns {Promise}
      */
-    exitFullscreen: function(params) {
+    exitFullscreen(params) {
       console.log(TAG_NAME, 'exitFullscreen', params)
       return new Promise((resolve, reject) => {
         this.userController.getStream(params).playerContext.exitFullScreen({
@@ -588,7 +602,7 @@ Component({
      * @param {Object} params userID streamType orientation: vertical, horizontal
      * @returns {Promise}
      */
-    setRemoteOrientation: function(params) {
+    setRemoteOrientation(params) {
       return this._setPlayerConfig({
         userID: params.userID,
         streamType: params.streamType,
@@ -598,7 +612,7 @@ Component({
       })
     },
     // 改为：
-    setViewOrientation: function(params) {
+    setViewOrientation(params) {
       return this._setPlayerConfig({
         userID: params.userID,
         streamType: params.streamType,
@@ -612,7 +626,7 @@ Component({
      * @param {Object} params userID streamType fillMode: contain，fillCrop
      * @returns {Promise}
      */
-    setRemoteFillMode: function(params) {
+    setRemoteFillMode(params) {
       return this._setPlayerConfig({
         userID: params.userID,
         streamType: params.streamType,
@@ -622,7 +636,7 @@ Component({
       })
     },
     // 改为：
-    setViewFillMode: function(params) {
+    setViewFillMode(params) {
       return this._setPlayerConfig({
         userID: params.userID,
         streamType: params.streamType,
@@ -632,11 +646,123 @@ Component({
       })
     },
     /**
-     * 切换 player 大小画面
+     * 发送C2C文本消息
+     * @param {*} params userID,message
+     * @returns {Promise}
+     */
+    sendC2CTextMessage(params) {
+      if (!this.tim) {
+        console.warn(TAG_NAME, '未开启IM功能，该方法无法使用', params)
+        return
+      }
+      console.log(TAG_NAME, 'sendC2CTextMessage', params)
+      const message = this.tim.createTextMessage({
+        to: params.userID + '',
+        conversationType: TIM.TYPES.CONV_C2C,
+        payload: {
+          text: params.message,
+        },
+      })
+      const promise = this.tim.sendMessage(message)
+      promise.then(function(imResponse) {
+        // 发送成功
+        console.log(TAG_NAME, 'sendC2CTextMessage success', imResponse)
+      }).catch(function(imError) {
+        // 发送失败
+        console.warn(TAG_NAME, 'sendC2CTextMessage error:', imError)
+      })
+      return promise
+    },
+    /**
+     * 发送C2C自定义消息
+     * @param {*} params: userID payload
+     * @returns {Promise}
+     *
+     */
+    sendC2CCustomMessage(params) {
+      if (!this.tim) {
+        console.warn(TAG_NAME, '未开启IM功能，该方法无法使用', params)
+        return
+      }
+      console.log(TAG_NAME, 'sendC2CCustomMessage', params)
+      const message = this.tim.createCustomMessage({
+        to: params.userID + '',
+        conversationType: TIM.TYPES.CONV_C2C,
+        payload: params.payload,
+      })
+      const promise = this.tim.sendMessage(message)
+      promise.then(function(imResponse) {
+        // 发送成功
+        console.log(TAG_NAME, 'sendMessage success', imResponse)
+      }).catch(function(imError) {
+        // 发送失败
+        console.warn(TAG_NAME, 'sendMessage error:', imError)
+      })
+      return promise
+    },
+    /**
+     * 发送群组文本消息
+     * @param {*} params roomID message
+     * @returns {Promise}
+     *
+     */
+    sendGroupTextMessage(params) {
+      if (!this.tim) {
+        console.warn(TAG_NAME, '未开启IM功能，该方法无法使用', params)
+        return
+      }
+      console.log(TAG_NAME, 'sendGroupTextMessage', params)
+      const message = this.tim.createTextMessage({
+        to: params.roomID + '',
+        conversationType: TIM.TYPES.CONV_GROUP,
+        payload: {
+          text: params.message,
+        },
+      })
+      const promise = this.tim.sendMessage(message)
+      promise.then(function(imResponse) {
+        // 发送成功
+        console.log(TAG_NAME, 'sendGroupTextMessage success', imResponse)
+      }).catch(function(imError) {
+        // 发送失败
+        console.warn(TAG_NAME, 'sendGroupTextMessage error:', imError)
+      })
+      return promise
+    },
+    /**
+     * 发送群组自定义消息
+     * @param {*} params roomID payload
+     * @returns {Promise}
+     *
+     */
+    sendGroupCustomMessage(params) {
+      if (!this.tim) {
+        console.warn(TAG_NAME, '未开启IM功能，该方法无法使用', params)
+        return
+      }
+      console.log(TAG_NAME, 'sendGroupCustomMessage', params)
+      const message = this.tim.createCustomMessage({
+        to: params.roomID + '',
+        conversationType: TIM.TYPES.CONV_GROUP,
+        payload: params.payload,
+      })
+      const promise = this.tim.sendMessage(message)
+      promise.then(function(imResponse) {
+        // 发送成功
+        console.log(TAG_NAME, 'sendMessage success', imResponse)
+      }).catch(function(imError) {
+        // 发送失败
+        console.warn(TAG_NAME, 'sendMessage error:', imError)
+      })
+      return promise
+    },
+    // internal functions
+    /**
+     * 切换 player 大小画面 for template
      * @param {Object} params userID streamType definition: HD SD
      * @returns {Promise}
      */
-    _setRemoteDefinition: function(params) {
+    _setRemoteDefinition(params) {
       params.streamType = 'main'
       return new Promise((resolve, reject) => {
         const stream = this.userController.getStream({
@@ -670,6 +796,8 @@ Component({
       this._beforeLastTapTime = 0
       this._isFullscreen = false
     },
+
+
     /**
      * 设置推流参数并触发页面渲染更新
      * @param {Object} config live-pusher 的配置
@@ -725,7 +853,7 @@ Component({
      * @param {Object} rtcConfig rtc参数
      * @returns {Boolean}
      */
-    _checkParam: function(rtcConfig) {
+    _checkParam(rtcConfig) {
       console.log(TAG_NAME, 'checkParam config:', rtcConfig)
       if (!rtcConfig.sdkAppID) {
         console.error('未设置 sdkAppID')
@@ -753,7 +881,7 @@ Component({
       }
       return true
     },
-    _getPushUrl: function(rtcConfig) {
+    _getPushUrl(rtcConfig) {
       // 拼接 puhser url rtmp 方案
       console.log(TAG_NAME, 'getPushUrl', rtcConfig)
       if (ENV.IS_TRTC) {
@@ -787,7 +915,7 @@ Component({
      * @param {Object} rtcConfig 进房参数配置
      * @returns {Promise}
      */
-    _requestSigServer: function(rtcConfig) {
+    _requestSigServer(rtcConfig) {
       console.log('requestSigServer:', rtcConfig)
       const sdkAppID = rtcConfig.sdkAppID
       const userID = rtcConfig.userID
@@ -863,7 +991,7 @@ Component({
         })
       })
     },
-    _doubleTabToggleFullscreen: function(event) {
+    _doubleTabToggleFullscreen(event) {
       const curTime = event.timeStamp
       const lastTime = this._lastTapTime
       // 已知问题：上次全屏操作后，必须等待1.5s后才能再次进行全屏操作，否则引发SDK全屏异常，因此增加节流逻辑
@@ -897,7 +1025,7 @@ Component({
     /**
      * TRTC-room 远端用户和音视频状态处理
      */
-    _bindEvent: function() {
+    _bindEvent() {
       // 远端用户进房
       this.userController.on(EVENT.REMOTE_USER_JOIN, (event)=>{
         console.log(TAG_NAME, '远端用户进房', event, event.data.userID)
@@ -990,7 +1118,7 @@ Component({
      * pusher event handler
      * @param {*} event 事件实例
      */
-    _pusherStateChangeHandler: function(event) {
+    _pusherStateChangeHandler(event) {
       const code = event.detail.code
       const message = event.detail.message
       console.log(TAG_NAME, 'pusherStateChange：', code, event)
@@ -1100,13 +1228,13 @@ Component({
           console.log(message, code)
       }
 
-      this._emitter.emit(EVENT.LOCAL_STATE_UPDATE, { data: event })
+      this._emitter.emit(EVENT.LOCAL_STATE_UPDATE, event)
     },
-    _pusherNetStatusHandler: function(event) {
+    _pusherNetStatusHandler(event) {
       // 触发 LOCAL_NET_STATE_UPDATE
       this._emitter.emit(EVENT.LOCAL_NET_STATE_UPDATE, event)
     },
-    _pusherErrorHandler: function(event) {
+    _pusherErrorHandler(event) {
       // 触发 ERROR
       console.warn(TAG_NAME, 'pusher error', event)
       try {
@@ -1117,29 +1245,29 @@ Component({
         console.error(TAG_NAME, 'pusher error data parser exception', event, exception)
       }
     },
-    _pusherBGMStartHandler: function(event) {
+    _pusherBGMStartHandler(event) {
       // 触发 BGM_START 已经在playBGM方法中进行处理
       // this._emitter.emit(EVENT.BGM_PLAY_START, { data: event })
     },
-    _pusherBGMProgressHandler: function(event) {
+    _pusherBGMProgressHandler(event) {
       // BGM_PROGRESS
       this._emitter.emit(EVENT.BGM_PLAY_PROGRESS, event)
     },
-    _pusherBGMCompleteHandler: function(event) {
+    _pusherBGMCompleteHandler(event) {
       // BGM_COMPLETE
       this._emitter.emit(EVENT.BGM_PLAY_COMPLETE, event)
     },
     // player event handler
     // 获取 player ID 再进行触发
-    _playerStateChange: function(event) {
+    _playerStateChange(event) {
       // console.log(TAG_NAME, '_playerStateChange', event)
       this._emitter.emit(EVENT.REMOTE_STATE_UPDATE, event)
     },
-    _playerFullscreenChange: function(event) {
+    _playerFullscreenChange(event) {
       // console.log(TAG_NAME, '_playerFullscreenChange', event)
       this._emitter.emit(EVENT.REMOTE_NET_STATE_UPDATE, event)
     },
-    _playerNetStatus: function(event) {
+    _playerNetStatus(event) {
       // console.log(TAG_NAME, '_playerNetStatus', event)
       // 获取player 视频的宽高
       const stream = this.userController.getStream({
@@ -1153,7 +1281,7 @@ Component({
       }
       this._emitter.emit(EVENT.REMOTE_FULLSCREEN_UPDATE, event)
     },
-    _playerAudioVolumeNotify: function(event) {
+    _playerAudioVolumeNotify(event) {
       // console.log(TAG_NAME, '_playerAudioVolumeNotify', event)
       this._emitter.emit(EVENT.REMOTE_AUDIO_VOLUME_UPDATE, event)
     },
@@ -1161,7 +1289,7 @@ Component({
      * 监听组件属性变更，外部变更组件属性时触发该监听，用于检查属性设置是否正常
      * @param {Object} data 变更数据
      */
-    _propertyObserver: function(data) {
+    _propertyObserver(data) {
       console.log(TAG_NAME, '_propertyObserver', data, this.data.config)
       if (data.name === 'config') {
         // const config = Object.assign(DEFAULT_PUSHER_CONFIG, data.newVal)
@@ -1170,8 +1298,17 @@ Component({
         if (typeof config.debugMode === 'string') {
           config.debugMode === 'true' ? true : false
         }
+        // 设置默认值
+        if (config.enableIM === undefined || config.enableIM === '') {
+          config.enableIM = false
+        }
+        // 初始化IM
+        if (config.enableIM && config.sdkAppID) {
+          this._initIM(config)
+        }
         // 独立设置与pusher无关的配置
         this.setData({
+          enableIM: config.enableIM,
           template: config.template,
           debugMode: config.debugMode || false,
           debug: config.debugMode || false,
@@ -1179,6 +1316,274 @@ Component({
         this._setPusherConfig(config)
       }
     },
+    // IM 相关函数
+    /**
+     * 初始化 IM SDK
+     * @param {Object} config sdkAppID
+     */
+    _initIM(config) {
+      if (!config.enableIM || !config.sdkAppID || this.tim) {
+        return
+      }
+      console.log(TAG_NAME, '_initIM', config)
+      // 初始化 sdk 实例
+      const tim = TIM.create({
+        SDKAppID: config.sdkAppID,
+      })
+      // 0 普通级别，日志量较多，接入时建议使用
+      // 1 release级别，SDK 输出关键信息，生产环境时建议使用
+      // 2 告警级别，SDK 只输出告警和错误级别的日志
+      // 3 错误级别，SDK 只输出错误级别的日志
+      // 4 无日志级别，SDK 将不打印任何日志
+      tim.setLogLevel(1)
+
+      // 取消监听
+      tim.off(TIM.EVENT.SDK_READY, this._onIMReady)
+      tim.off(TIM.EVENT.MESSAGE_RECEIVED, this._onIMMessageReceived)
+      tim.off(TIM.EVENT.SDK_NOT_READY, this._onIMNotReady)
+      tim.off(TIM.EVENT.KICKED_OUT, this._onIMKickedOut)
+      tim.off(TIM.EVENT.ERROR, this._onIMError)
+      // 监听事件
+      tim.on(TIM.EVENT.SDK_READY, this._onIMReady, this)
+      tim.on(TIM.EVENT.MESSAGE_RECEIVED, this._onIMMessageReceived, this)
+      tim.on(TIM.EVENT.SDK_NOT_READY, this._onIMNotReady, this)
+      tim.on(TIM.EVENT.KICKED_OUT, this._onIMKickedOut, this)
+      tim.on(TIM.EVENT.ERROR, this._onIMError, this)
+      this.tim = tim
+      wx.tim = tim
+    },
+    _loginIM(params) {
+      if (!this.tim) {
+        return
+      }
+      console.log(TAG_NAME, '_loginIM', params)
+      return this.tim.login({
+        userID: params.userID,
+        userSig: params.userSig,
+      })
+    },
+    _logoutIM() {
+      if (!this.tim) {
+        return
+      }
+      console.log(TAG_NAME, '_logoutIM')
+      return this.tim.logout()
+    },
+    _exitIM() {
+      // 方法需要调用限制，否则重复解散群 退群会有warn
+      if (this.data.exitIMThrottle || !this.tim) {
+        return
+      }
+      this.data.exitIMThrottle = true
+      const userList = this.getRemoteUserList()
+      const roomID = this.data.config.roomID
+      const userID = this.data.config.userID
+      this._searchGroup({ roomID }).then((imResponse) => {
+        // 查询群资料，判断是否为群主
+        if (imResponse.data.group.ownerID === userID && userList.length === 0) {
+          // 如果 userList 为 0 群主可以解散群，并登出IM
+          this._dismissGroup({ roomID }).then(()=>{
+            this.data.exitIMThrottle = false
+            this._logoutIM()
+          }).catch((imError) => {
+            this.data.exitIMThrottle = false
+            this._logoutIM()
+          })
+        } else if (imResponse.data.group.ownerID === userID) {
+          this.data.exitIMThrottle = false
+          // 群主不能退群只能登出
+          this._logoutIM()
+        } else {
+          // 普通成员退群并登出IM
+          this._quitGroup({ roomID }).then(()=>{
+            this.data.exitIMThrottle = false
+            this._logoutIM()
+          }).catch((imError) => {
+            this.data.exitIMThrottle = false
+            this._logoutIM()
+          })
+        }
+      }).catch((imError) => {
+        this.data.exitIMThrottle = false
+        // 查询异常直接登出
+        this._logoutIM()
+      })
+    },
+    _searchGroup(params) {
+      if (!this.tim) {
+        return
+      }
+      console.log(TAG_NAME, '_searchGroup', params)
+      const tim = this.tim
+      const promise = tim.searchGroupByID(params.roomID + '')
+      promise.then(function(imResponse) {
+        // const group = imResponse.data.group // 群组信息
+        console.log(TAG_NAME, '_searchGroup success', imResponse) // 搜素群组失败的相关信息
+      }).catch(function(imError) {
+        console.warn(TAG_NAME, '_searchGroup error', imError) // 搜素群组失败的相关信息
+      })
+      return promise
+    },
+    /**
+     * 创建 AVchatroom
+     * @param {*} params roomID
+     * @returns {Promise}
+     */
+    _createGroup(params) {
+      if (!this.tim) {
+        return
+      }
+      console.log(TAG_NAME, '_createGroup', params)
+      const promise = this.tim.createGroup({
+        groupID: params.roomID + '',
+        name: params.roomID + '',
+        type: IM_GROUP_TYPE,
+      })
+      promise.then((imResponse) => { // 创建成功
+        console.log(TAG_NAME, '_createGroup success', imResponse.data.group) // 创建的群的资料
+      }).catch((imError) => {
+        console.warn(TAG_NAME, '_createGroup error', imError) // 创建群组失败的相关信息
+      })
+      return promise
+    },
+    /**
+     * 进入 AVchatroom
+     * @param {*} params roomID
+     * @returns {Promise}
+     */
+    _joinGroup(params) {
+      if (!this.tim) {
+        return
+      }
+      console.log(TAG_NAME, '_joinGroup', params)
+      const promise = this.tim.joinGroup({ groupID: params.roomID + '', type: IM_GROUP_TYPE })
+      promise.then((imResponse) => {
+        switch (imResponse.data.status) {
+          case TIM.TYPES.JOIN_STATUS_WAIT_APPROVAL: // 等待管理员同意
+            break
+          case TIM.TYPES.JOIN_STATUS_SUCCESS: // 加群成功
+          case TIM.TYPES.JOIN_STATUS_ALREADY_IN_GROUP: // 已经在群中
+            // console.log(imResponse.data.group) // 加入的群组资料
+            // wx.showToast({
+            //   title: '进群成功',
+            // })
+            console.log(TAG_NAME, '_joinGroup success', imResponse)
+            break
+          default:
+            break
+        }
+      }).catch((imError) => {
+        console.warn(TAG_NAME, 'joinGroup error', imError) // 申请加群失败的相关信息
+      })
+      return promise
+    },
+    _quitGroup(params) {
+      if (!this.tim) {
+        return
+      }
+      console.log(TAG_NAME, '_quitGroup', params)
+      const promise = this.tim.quitGroup(params.roomID + '')
+      promise.then((imResponse) => {
+        console.log(TAG_NAME, '_quitGroup success', imResponse)
+      }).catch((imError) => {
+        console.warn(TAG_NAME, 'quitGroup error', imError)
+      })
+      return promise
+    },
+    _dismissGroup(params) {
+      if (!this.tim) {
+        return
+      }
+      console.log(TAG_NAME, '_dismissGroup', params)
+      const promise = this.tim.dismissGroup(params.roomID + '')
+      promise.then((imResponse) => {
+        console.log(TAG_NAME, '_dismissGroup success', imResponse)
+      }).catch((imError) => {
+        console.warn(TAG_NAME, '_dismissGroup error', imError)
+      })
+      return promise
+    },
+    _onIMReady(event) {
+      console.log(TAG_NAME, 'IM.SDK_READY', event)
+      this._emitter.emit(EVENT.IM_SDK_READY, event)
+      const roomID = this.data.config.roomID
+      // 查询群组是否存在
+      this._searchGroup({ roomID }).then((res) => {
+        // console.log(TAG_NAME, 'searchGroup', res)
+        // 存在直接进群
+        this._joinGroup({ roomID })
+      }).catch(() => {
+        // 不存在则创建，如果是avchatroom 创建后进群
+        this._createGroup({ roomID }).then((res) => {
+          // 进群
+          this._joinGroup({ roomID })
+        }).catch((imError)=> {
+          if (imError.code === 10021) {
+            console.log(TAG_NAME, '群已存在，直接进群', event)
+            this._joinGroup({ roomID })
+          }
+        })
+      })
+      // 收到离线消息和会话列表同步完毕通知，接入侧可以调用 sendMessage 等需要鉴权的接口
+      // event.name - TIM.EVENT.SDK_READY
+    },
+    _onIMMessageReceived(event) {
+      // 收到推送的单聊、群聊、群提示、群系统通知的新消息，可通过遍历 event.data 获取消息列表数据并渲染到页面
+      console.log(TAG_NAME, 'IM.MESSAGE_RECEIVED', event)
+      // messageList 仅保留10条消息
+      const messageData = event.data
+      const roomID = this.data.config.roomID + ''
+      const userID = this.data.config.userID + ''
+      for (let i = 0; i < messageData.length; i++) {
+        const message = messageData[i]
+        // console.log(TAG_NAME, 'IM.MESSAGE_RECEIVED', message, this.data.config, TIM.TYPES.MSG_TEXT)
+        if (message.to === roomID + '' || message.to === userID) {
+          // 遍历messageData 获取当前room 或者当前user的消息
+          console.log(TAG_NAME, 'IM.MESSAGE_RECEIVED', message, message.type, TIM.TYPES.MSG_TEXT)
+          if (message.type === TIM.TYPES.MSG_TEXT) {
+            this._pushMessageList({
+              name: message.from,
+              message: message.payload.text,
+            })
+          } else {
+            if (message.type === TIM.TYPES.MSG_GRP_SYS_NOTICE && message.payload.operationType === 2) {
+              // 群系统通知
+              this._pushMessageList({
+                name: '系统通知',
+                message: `欢迎 ${userID}`,
+              })
+            }
+            // 其他消息暂不处理
+          }
+        }
+      }
+      this._emitter.emit(EVENT.IM_MESSAGE_RECEIVED, event)
+    },
+    _onIMNotReady(event) {
+      console.log(TAG_NAME, 'IM.SDK_NOT_READY', event)
+      this._emitter.emit(EVENT.IM_SDK_NOT_READY, event)
+      // 收到 SDK 进入 not ready 状态通知，此时 SDK 无法正常工作
+      // event.name - TIM.EVENT.SDK_NOT_READY
+    },
+    _onIMKickedOut(event) {
+      console.log(TAG_NAME, 'IM.KICKED_OUT', event)
+      this._emitter.emit(EVENT.IM_KICKED_OUT, event)
+      // 收到被踢下线通知
+      // event.name - TIM.EVENT.KICKED_OUT
+      // event.data.type - 被踢下线的原因，例如 :
+      //    - TIM.TYPES.KICKED_OUT_MULT_ACCOUNT 多实例登录被踢
+      //    - TIM.TYPES.KICKED_OUT_MULT_DEVICE 多终端登录被踢
+      //    - TIM.TYPES.KICKED_OUT_USERSIG_EXPIRED 签名过期被踢。使用前需要将SDK版本升级至v2.4.0或以上。
+    },
+    _onIMError(event) {
+      console.log(TAG_NAME, 'IM.ERROR', event)
+      this._emitter.emit(EVENT.IM_ERROR, event)
+      // 收到 SDK 发生错误通知，可以获取错误码和错误信息
+      // event.name - TIM.EVENT.ERROR
+      // event.data.code - 错误码
+      // event.data.message - 错误信息
+    },
+    // 以下为debug & template 相关函数
     _toggleVideo() {
       if (this.data.pusher.enableCamera) {
         this.unpublishLocalVideo()
@@ -1246,6 +1651,47 @@ Component({
         debugPanel: !this.data.debugPanel,
       })
     },
+    _debugSendRandomMessage() {
+      const userList = this.getRemoteUserList()
+      if (userList.length === 0 || !this.tim) {
+        return false
+      }
+      const roomID = this.data.config.roomID
+      const message = `Hello! ${userList[0].userID} ${9999 * Math.random()}`
+      const userID = userList[0].userID
+
+      this.sendC2CTextMessage({
+        userID: userID,
+        message: message,
+      })
+      const promise = this.sendGroupTextMessage({
+        roomID: roomID,
+        message: message,
+      })
+      // 消息上屏
+      this._pushMessageList({
+        name: userID,
+        message: message,
+      })
+
+      promise.then(function(imResponse) {
+        // 发送成功
+        console.log(TAG_NAME, '_debugSendRandomMessage success', imResponse)
+        wx.showToast({
+          title: '发送成功',
+          icon: 'success',
+          duration: 1000,
+        })
+      }).catch(function(imError) {
+        // 发送失败
+        console.warn(TAG_NAME, '_debugSendRandomMessage error', imError)
+        wx.showToast({
+          title: '发送失败',
+          icon: 'none',
+          duration: 1000,
+        })
+      })
+    },
     _toggleAudioVolumeType() {
       if (this.data.pusher.audioVolumeType === 'voicecall') {
         this._setPusherConfig({
@@ -1283,7 +1729,7 @@ Component({
     /**
      * 退出通话
      */
-    _hangUp: function() {
+    _hangUp() {
       this.exitRoom()
       wx.navigateBack({
         delta: 1,
@@ -1292,7 +1738,7 @@ Component({
     /**
      * 切换订阅音频状态
      */
-    handleSubscribeAudio: function() {
+    handleSubscribeAudio() {
       if (this.data.pusher.enableMic) {
         this.unpublishLocalAudio()
       } else {
@@ -1303,7 +1749,7 @@ Component({
      * 切换订阅远端视频状态
      * @param event
      */
-    _handleSubscribeRemoteVideo: function(event) {
+    _handleSubscribeRemoteVideo(event) {
       const userID = event.currentTarget.dataset.userID
       const streamType = event.currentTarget.dataset.streamType
       const stream = this.data.streamList.find((item)=>{
@@ -1319,7 +1765,7 @@ Component({
      * 将远端视频取消全屏
      * @param event
      */
-    _handleSubscribeRemoteAudio: function(event) {
+    _handleSubscribeRemoteAudio(event) {
       const userID = event.currentTarget.dataset.userID
       const streamType = event.currentTarget.dataset.streamType
       const stream = this.data.streamList.find((item)=>{
@@ -1354,18 +1800,25 @@ Component({
     },
 
     _setPuserProperty(event) {
-      // console.log(TAG_NAME, '_setPuserProperty', event)
+      console.log(TAG_NAME, '_setPuserProperty', event)
       const key = event.currentTarget.dataset.key
+      const valueType = event.currentTarget.dataset.valueType
       let value = event.currentTarget.dataset.value
       const config = {}
-      if (value === 'true') {
-        value = true
-      } else if (value === 'false') {
-        value = false
-      }
-      if (typeof value === 'boolean') {
+      if (valueType === 'boolean') {
+        value = value === 'true' ? true : false
         config[key] = !this.data.pusher[key]
-      } else if (typeof value === 'string' && value.indexOf('|') > 0) {
+      }
+      if (valueType === 'number' && value.indexOf('|') > 0) {
+        value = value.split('|')
+        console.log(this.data.pusher, this.data.pusher[key], key, value)
+        if ( this.data.pusher[key] === Number(value[0])) {
+          config[key] = Number(value[1])
+        } else {
+          config[key] = Number(value[0])
+        }
+      }
+      if (valueType === 'string' && value.indexOf('|') > 0) {
         value = value.split('|')
         if ( this.data.pusher[key] === value[0]) {
           config[key] = value[1]
@@ -1373,6 +1826,23 @@ Component({
           config[key] = value[0]
         }
       }
+      // if (value === 'true') {
+      //   value = true
+      // } else if (value === 'false') {
+      //   value = false
+      // }
+      // if (typeof value === 'boolean') {
+      //   config[key] = !this.data.pusher[key]
+      // } else if (typeof value === 'string' && value.indexOf('|') > 0) {
+      //   value = value.split('|')
+      //   console.log(this.data.pusher, this.data.pusher[key], key, value)
+      //   if ( this.data.pusher[key] === value[0]) {
+      //     config[key] = value[1]
+      //   } else {
+      //     config[key] = value[0]
+      //   }
+      // }
+
       // console.log(TAG_NAME, '_setPuserProperty', config)
       this._setPusherConfig(config)
     },
@@ -1479,6 +1949,46 @@ Component({
         }).catch(() => {
         })
       }
+    },
+    _toggleIMPanel() {
+      this.setData({
+        showIMPanel: !this.data.showIMPanel,
+      })
+    },
+    _sendIMMessage(event) {
+      console.log(TAG_NAME, '_sendIMMessage', event)
+      if (!this.data.messageContent) {
+        return
+      }
+      const roomID = this.data.config.roomID
+      const message = this.data.messageContent
+      const userID = this.data.config.userID
+      this.sendGroupTextMessage({ roomID, message })
+      // 消息上屏
+      this._pushMessageList({
+        name: userID,
+        message: message,
+      })
+      this.setData({
+        messageContent: '',
+      })
+    },
+    _inputIMMessage(event) {
+      console.log(TAG_NAME, '_inputIMMessage', event)
+      this.setData({
+        messageContent: event.detail.value,
+      })
+    },
+    _pushMessageList(params) {
+      if (this.data.messageList.length === this.data.maxMessageListLength) {
+        this.data.messageList.shift()
+      }
+      this.data.messageList.push(params)
+      this.setData({
+        messageList: this.data.messageList,
+        messageListScrollTop: this.data.messageList.length * 100,
+      }, () => {
+      })
     },
   },
 })

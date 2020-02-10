@@ -18,7 +18,7 @@
   z-index: 9999;
   background-color: rgba(0, 0, 0, .5);
   color: #fff;
-  bottom: 0;
+  bottom: 20rpx;
   left: 0;
   padding: 10rpx;
   font-size: 12px;
@@ -50,7 +50,7 @@
 .debug-info-btn{
   position: absolute;
   z-index: 9998;
-  bottom: 10rpx;
+  bottom: 20rpx;
   left: 0;
 }
 
@@ -73,6 +73,112 @@ button.btn.active{
 }
 button.btn-hover{
   background-color: #d1d1d1;
+}
+
+.im-panel{
+  position: absolute;
+  z-index: 9;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 90vw;
+  height: 320rpx;
+  top: 50vh;
+  left: 50vw;
+  transform: translate(-50%, -50%);
+  padding: 20rpx 0;
+  border-radius: 10rpx;
+  font-size: 12px;
+  /* bottom: 25vh; */
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+.im-panel .close-btn {
+  position: absolute;
+  top: 0;
+  right: -3px;
+  padding: 5px 10px;
+  z-index: 99;
+}
+.message-panel-body{
+  width: 100%;
+  height: 80%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+.message-scroll-container{
+  height: 100%;
+  /* box-sizing: border-box;
+  padding: 0 20rpx; */
+}
+.message-list{
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 20rpx;
+  /* display: flex;
+  flex-direction: column; */
+}
+.message-item{
+  width: 100%;
+  /* height: 36rpx; */
+  /* padding: 0 20rpx; */
+  padding-bottom: 10rpx;
+  display: flex;
+  flex-direction: row;
+}
+.message-item .user-name{
+  width: 20%;
+  color: #2483ff;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.user-name.mine{
+  color: #ff7424;
+}
+.message-item .separate{
+  padding:0 5px;
+  color: #fff;
+}
+.message-item .message-content{
+  word-wrap:break-word; 
+  word-break:break-all;
+  padding-left: 20rpx;
+  position: relative;
+  max-width: 80%; 
+  box-sizing: border-box;
+}
+.message-content::after{
+  content: ':';
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.message-panel-bottom{
+  width: 100%;
+  height: 50rpx;
+  box-sizing: border-box;
+  padding: 0 20rpx 0;
+  margin-top: 20rpx;
+  display: flex;
+  flex-direction: row;
+}
+.message-input {
+  flex-grow: 1;
+}
+.message-input input{
+  font-size: 12px;
+  padding-left: 20rpx;
+  border-radius: 10rpx;
+  height: 100%;
+  background-color: rgba(0,0,0,0.1);
+}
+.message-send-btn .btn{
+  margin-right: 0;
+  height: 50rpx;
+  min-height: 50rpx;
+  line-height: 50rpx;
 }
 
 .none,

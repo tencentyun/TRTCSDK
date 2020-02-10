@@ -12,6 +12,55 @@
   <block wx:if="{{template === 'custom'}}">
     <template is='custom' data="{{pusher, streamList, debug}}"></template>
   </block>
+
+  <view class="im-panel" wx:if="{{enableIM && showIMPanel}}">
+    <view class="message-panel-body">
+      <scroll-view scroll-y="true" class="message-scroll-container" scroll-into-view="message{{messageList.length-1}}" scroll-with-animation="{{true}}">
+        <view class="message-list">
+          <view class="message-item" wx:for="{{messageList}}" wx:key="index" id="message{{index}}">
+            <span class="user-name {{item.name == config.userID?'mine':''}}">{{item.name}}</span>
+            <span class="message-content">{{item.message}}</span>
+          </view>
+          <view id="message-bottom"></view>
+          <!-- <view class="message-item">
+            <span class="user-name mine">user 1121212121211</span>
+            <span class="message-content">hellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhell</span>
+          </view>
+          <view class="message-item">
+            <span class="user-name">user 12</span>
+            <span class="message-content">hell!</span>
+          </view>
+          <view class="message-item">
+            <span class="user-name">user 1121212121211</span>
+            <span class="message-content">hellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhell</span>
+          </view>
+          <view class="message-item">
+            <span class="user-name mine">user 1121212121211</span>
+            <span class="message-content">hellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhell</span>
+          </view>
+          <view class="message-item">
+            <span class="user-name">user 12</span>
+            <span class="message-content">hell!</span>
+          </view>
+          <view class="message-item">
+            <span class="user-name">user 1121212121211</span>
+            <span class="message-content">hellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhell</span>
+          </view> -->
+        </view>
+      </scroll-view>
+        
+    </view>
+    <view class="message-panel-bottom">
+      <view class="message-input">
+        <input type="text" value="{{messageContent}}" bindinput='_inputIMMessage' bindconfirm='_sendIMMessage' confirm-type="send" placeholder="请输入消息" maxlength="200" placeholder-style="color:#ffffff;opacity: 0.55;"/>
+      </view>
+      <view class="message-send-btn">
+        <button class="btn" bindtap="_sendIMMessage" hover-class="btn-hover">发送</button>
+      </view>
+    </view>
+    <view bindtap="_toggleIMPanel" class='close-btn'>X</view>
+  </view>
+  
   <view class="debug-info-btn {{debugMode && !debugPanel?'':'none'}}">
     <button bindtap="_debugTogglePanel" hover-class="button-hover">Debug</button>
   </view>
@@ -31,6 +80,7 @@
       <button bindtap="_debugExitRoom" hover-class="button-hover">Exit</button>
       <button bindtap="_debugGoBack" hover-class="button-hover">Go back</button>
     </view>
+    <view>IM: <button bindtap="_debugSendRandomMessage" hover-class="button-hover">send</button></view>
     <view>user count: {{userList.length}}</view>
     <view wx:for="{{userList}}" wx:key="userID">{{item.userID}}|mainV:{{item.hasMainVideo||false}}|mainA:{{item.hasMainAudio||false}}|auxV:{{item.hasAuxVideo||false}}</view>
     <view>stream count: {{streamList.length}}</view>

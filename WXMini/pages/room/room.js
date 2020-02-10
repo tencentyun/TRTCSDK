@@ -16,8 +16,8 @@ Page({
   },
   enterRoom: function(params) {
     params.template = params.template || '1v1'
-    params.roomID = params.roomID || 2333
-    params.userID = params.userID || new Date().getTime().toString(16)
+    params.roomID = params.roomID || this.randomRoomID()
+    params.userID = params.userID || this.randomUserID()
     console.log('* room enterRoom', params)
 
     const Signature = genTestUserSig(params.userID)
@@ -32,7 +32,6 @@ Page({
         userSig: params.userSig,
         template: params.template, // 1v1 grid custom
         debugMode: params.debugMode, // 非必要参数，打开组件的调试模式，开发调试时建议设置为 true
-        // cloudenv: params.cloudenv, // 非必要参数
         frontCamera: params.frontCamera,
         enableEarMonitor: params.enableEarMonitor,
         enableAutoFocus: params.enableAutoFocus,
@@ -46,6 +45,7 @@ Page({
         maxBitrate: params.maxBitrate,
         minBitrate: params.minBitrate,
         beautyLevel: 9, // 默认开启美颜
+        enableIM: true, // 可选，仅支持初始化设置，不支持动态修改
       }
     } else {
       this.data.rtcConfig = {
@@ -55,14 +55,14 @@ Page({
         template: params.template, // 1v1 grid custom
         debugMode: params.debugMode, // 非必要参数，打开组件的调试模式，开发调试时建议设置为 true
         beautyLevel: 9, // 默认开启美颜
-        // cloudenv: params.cloudenv, // 非必要参数
+        enableIM: true, // 可选，仅支持初始化设置，不支持动态修改
       }
     }
 
     this.setData({
       rtcConfig: this.data.rtcConfig,
     }, () => {
-      // 进房前决定是否推送视频或音频 部分机型会出现画面卡死，暂不支持进房前设置，必须放到进房成功事件后设置
+      // 进房前决定是否推送视频或音频 部分机型会出现画面卡死，原因不明，必须放到进房成功事件后设置
       // console.log('rtcConfig', this.data.rtcConfig)
       // if (params.localVideo === true || params.template === '1v1') {
       //   this.trtcComponent.publishLocalVideo()
@@ -201,6 +201,15 @@ Page({
     this.trtcComponent.on(TRTC_EVENT.REMOTE_AUDIO_REMOVE, (event)=>{
       console.log('* room REMOTE_AUDIO_REMOVE', event, this.trtcComponent.getRemoteUserList())
     })
+    this.trtcComponent.on(TRTC_EVENT.IM_MESSAGE_RECEIVED, (event)=>{
+      console.log('* room IM_MESSAGE_RECEIVED', event)
+    })
+  },
+  randomUserID: function() {
+    return new Date().getTime().toString(16).split('').reverse().join('')
+  },
+  randomRoomID: function() {
+    return parseInt(Math.random() * 9999)
   },
   /**
    * 生命周期函数--监听页面加载
@@ -254,6 +263,9 @@ Page({
    */
   onReady: function() {
     console.log('room ready')
+    wx.setKeepScreenOn({
+      keepScreenOn: true,
+    })
   },
 
   /**
@@ -261,6 +273,9 @@ Page({
    */
   onShow: function() {
     console.log('room show')
+    wx.setKeepScreenOn({
+      keepScreenOn: true,
+    })
   },
 
   /**
@@ -275,6 +290,9 @@ Page({
    */
   onUnload: function() {
     console.log('room unload')
+    wx.setKeepScreenOn({
+      keepScreenOn: false,
+    })
   },
 
   /**

@@ -1,6 +1,6 @@
 <!-- template grid -->
 <template name='grid'>
-  <view class="template-grid {{streamList.length < 6 ? 'stream-' + streamList.length : 'stream-5'}}">
+  <view class="template-grid {{streamList.length < 9 ? 'stream-' + streamList.length : 'stream-8'}}">
     <view wx:for="{{streamList}}" wx:key="streamID" wx:if="{{item.src && (item.hasVideo || item.hasAudio)}}"
     class="view-container player-container {{item.isVisible?'':'none'}}" data-userid="{{item.userID}}" data-streamtype="{{item.streamType}}" bindtap="_doubleTabToggleFullscreen">
       <live-player
@@ -89,6 +89,9 @@
         <view class="btn-normal btn-hangup" bindtap="_hangUp">
           <image src="./static/hangup.png"></image>
         </view>
+        <view class="btn-normal" bindtap="_toggleIMPanel">
+        <image src="./static/im.png"></image>
+      </view>
       </view>
     </view>
     <view class="panel memberlist-panel {{panelName === 'memberlist-panel' ? '' : 'none'}}" >
@@ -132,21 +135,21 @@
             <image src="./static/switch.png"></image>
           </view>
         </view>
-        <view class='setting-option' >
+        <view class='setting-option'>
           <view class="label">开启美颜</view>
-          <switch color="#006eff" checked="{{pusher.beautyLevel == 9 ? true: false}}" data-key="beautyLevel" data-value="9|0" bindchange="_setPuserProperty"/>
+          <switch color="#006eff" checked="{{pusher.beautyLevel == 9 ? true: false}}" data-key="beautyLevel" data-value="9|0" data-value-type="number" bindchange="_setPuserProperty"/>
         </view>
         <view class='setting-option'>
           <view class="label">开启AGC</view>
-          <switch color="#006eff" checked="{{pusher.enableAgc}}" data-key="enableAgc" data-value="true" bindchange="_setPuserProperty"/>
+          <switch color="#006eff" checked="{{pusher.enableAgc}}" data-key="enableAgc" data-value="true" data-value-type="boolean" bindchange="_setPuserProperty"/>
         </view>
-        <view class='setting-option' >
+        <view class='setting-option'>
           <view class="label">开启ANS</view>
-          <switch color="#006eff" checked="{{pusher.enableAns}}" data-key="enableAns" data-value="true" bindchange="_setPuserProperty"/>
+          <switch color="#006eff" checked="{{pusher.enableAns}}" data-key="enableAns" data-value="true" data-value-type="boolean" bindchange="_setPuserProperty"/>
         </view>
-        <view class='setting-option' >
+        <view class='setting-option'>
           <view class="label">开启横屏推流</view>
-          <switch color="#006eff" checked="{{pusher.videoOrientation === 'vertical' ? false: true}}" data-key="videoOrientation"  data-value="horizontal|vertical" bindchange="_setPuserProperty"/>
+          <switch color="#006eff" checked="{{pusher.videoOrientation === 'vertical' ? false: true}}" data-key="videoOrientation"  data-value="horizontal|vertical" data-value-type="string" bindchange="_setPuserProperty"/>
         </view>
         </scroll-view>
       </view>
