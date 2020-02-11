@@ -66,6 +66,7 @@ Component({
       console.log(TAG_NAME, 'created', ENV)
       MTA.App.init({
         appID: '500710685',
+        eventID: '500710697', // 高级功能-自定义事件统计ID，配置开通后在初始化处填写
         autoReport: true,
         statParam: true,
       })
@@ -1312,6 +1313,9 @@ Component({
         // 初始化IM
         if (config.enableIM && config.sdkAppID) {
           this._initIM(config)
+        }
+        if (config.sdkAppID && this.data.pusher.sdkAppID !== config.sdkAppID && MTA) {
+          MTA.Event.stat('sdkAppID', { 'value': config.sdkAppID })
         }
         // 独立设置与pusher无关的配置
         this.setData({
