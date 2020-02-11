@@ -45,11 +45,7 @@ Page({
         this.trtcComponent.publishLocalAudio()
       }
       // roomID 取值范围 1 ~ 4294967295
-      this.trtcComponent.enterRoom({ roomID: roomID }).then(()=>{
-        console.log('* room joinRoom 进房成功:')
-      }).catch((res)=>{
-        console.error('* room joinRoom 进房失败:', res)
-      })
+      this.trtcComponent.enterRoom({ roomID: roomID })
     })
   },
   getSignature: function(userID) {

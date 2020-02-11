@@ -4,6 +4,7 @@ import { EVENT } from 'common/constants.js'
 import Event from 'utils/event.js'
 import * as ENV from 'utils/environment.js'
 import TIM from 'libs/tim-wx.js'
+import MTA from 'libs/mta_analysis.js'
 
 const TAG_NAME = 'TRTC-ROOM'
 const IM_GROUP_TYPE = TIM.TYPES.GRP_CHATROOM // TIM.TYPES.GRP_CHATROOM 体验版IM无数量限制，成员20个， TIM.TYPES.GRP_AVCHATROOM IM体验版最多10个，升级后无限制
@@ -63,11 +64,17 @@ Component({
     created: function() {
       // 在组件实例刚刚被创建时执行
       console.log(TAG_NAME, 'created', ENV)
+      MTA.App.init({
+        appID: '500710685',
+        autoReport: true,
+        statParam: true,
+      })
     },
     attached: function() {
       // 在组件实例进入页面节点树时执行
       console.log(TAG_NAME, 'attached')
       this._init()
+      MTA.Page.stat()
     },
     ready: function() {
       // 在组件在视图层布局完成后执行
@@ -1811,7 +1818,7 @@ Component({
       }
       if (valueType === 'number' && value.indexOf('|') > 0) {
         value = value.split('|')
-        console.log(this.data.pusher, this.data.pusher[key], key, value)
+        // console.log(this.data.pusher, this.data.pusher[key], key, value)
         if ( this.data.pusher[key] === Number(value[0])) {
           config[key] = Number(value[1])
         } else {
@@ -1826,24 +1833,6 @@ Component({
           config[key] = value[0]
         }
       }
-      // if (value === 'true') {
-      //   value = true
-      // } else if (value === 'false') {
-      //   value = false
-      // }
-      // if (typeof value === 'boolean') {
-      //   config[key] = !this.data.pusher[key]
-      // } else if (typeof value === 'string' && value.indexOf('|') > 0) {
-      //   value = value.split('|')
-      //   console.log(this.data.pusher, this.data.pusher[key], key, value)
-      //   if ( this.data.pusher[key] === value[0]) {
-      //     config[key] = value[1]
-      //   } else {
-      //     config[key] = value[0]
-      //   }
-      // }
-
-      // console.log(TAG_NAME, '_setPuserProperty', config)
       this._setPusherConfig(config)
     },
     _setPlayerProperty(event) {
