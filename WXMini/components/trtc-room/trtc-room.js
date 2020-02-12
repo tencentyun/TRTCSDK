@@ -1273,7 +1273,8 @@ Component({
     },
     _playerFullscreenChange(event) {
       // console.log(TAG_NAME, '_playerFullscreenChange', event)
-      this._emitter.emit(EVENT.REMOTE_NET_STATE_UPDATE, event)
+      this._emitter.emit(EVENT.REMOTE_FULLSCREEN_UPDATE, event)
+      this._emitter.emit(EVENT.VIDEO_FULLSCREEN_UPDATE, event)
     },
     _playerNetStatus(event) {
       // console.log(TAG_NAME, '_playerNetStatus', event)
@@ -1287,7 +1288,7 @@ Component({
         stream.videoWidth = event.detail.info.videoWidth
         stream.videoHeight = event.detail.info.videoHeight
       }
-      this._emitter.emit(EVENT.REMOTE_FULLSCREEN_UPDATE, event)
+      this._emitter.emit(EVENT.REMOTE_NET_STATE_UPDATE, event)
     },
     _playerAudioVolumeNotify(event) {
       // console.log(TAG_NAME, '_playerAudioVolumeNotify', event)
