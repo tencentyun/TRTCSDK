@@ -13,7 +13,7 @@ class UserController {
     this.userMap = new Map()
     // userList 用于存储简化的用户数据 Object，包括 {userID hasMainAudio hasMainVideo hasAuxAudio hasAuxVideo}
     this.userList = []
-    // streamList 存储steam 对象列表，用于trtc-room 渲染 player
+    // streamList 存储steam 对象列表，用于 trtc-room 渲染 player
     this.streamList = []
     this._emitter = new Event()
     this.componentContext = componentContext
@@ -148,34 +148,37 @@ class UserController {
     const incomingUserList = data.userlist
     if (Array.isArray(incomingUserList) && incomingUserList.length > 0) {
       incomingUserList.forEach((item) => {
-        // 修改现有用户属性
         const userID = item.userid
         const streamType = item.streamtype
+        const streamID = userID + '_' + streamType
         const hasVideo = item.hasvideo
         const src = item.playurl
         const user = this.getUser(userID)
-        // 如果找到该用户，则更新用户的信息和相关的stream 信息
+        // 更新指定用户的属性
         if (user) {
+          // 查找对应的 stream
           let stream = user.streams[streamType]
-          console.log(TAG_NAME, 'updateUserVideo', user, streamType, stream)
-          // 更新指定的stream
+          console.log(TAG_NAME, 'updateUserVideo start', user, streamType, stream)
+          // 常规逻辑
+          // 新来的stream，新增到 user.steams 和 streamList，streamList 包含所有用户的 stream
           if (!stream) {
-            user.streams[streamType] = stream = new Stream({ streamType: streamType })
-            // 更新streamList
-            this.streamList.push(stream)
-          }
-          if (hasVideo && streamType === 'aux') {
-            stream.objectFit = 'contain'
-            this.streamList.push(stream)
-          }
-          if (!hasVideo && streamType === 'aux') {
-            // TODO 如果是辅流可能要移除该 stream
-            this._removeStream(stream)
+            // 不在 user streams 里，需要新建
+            user.streams[streamType] = stream = new Stream({ userID, streamID, hasVideo, src, streamType })
+            this._addStream(stream)
           } else {
-            stream.userID = userID
-            stream.streamID = userID + '_' + streamType
-            stream.hasVideo = hasVideo
-            stream.src = src
+            // 更新 stream 属性
+            stream.setProperty({ hasVideo })
+          }
+          // 特殊逻辑
+          if (streamType === 'aux') {
+            if (hasVideo) {
+              // 辅流需要修改填充模式
+              stream.objectFit = 'contain'
+              this._addStream(stream)
+            } else {
+              // 如果是辅流要移除该 stream，否则需要移除 player
+              this._removeStream(stream)
+            }
           }
           // 更新所属user 的 hasXxx 值
           this.userList.find((item)=>{
@@ -184,6 +187,7 @@ class UserController {
               return true
             }
           })
+          console.log(TAG_NAME, 'updateUserVideo end', user, streamType, stream)
           const eventName = hasVideo ? EVENT.REMOTE_VIDEO_ADD : EVENT.REMOTE_VIDEO_REMOVE
           this._emitter.emit(eventName, { stream: stream, streamList: this.streamList, userList: this.userList })
           // console.log(TAG_NAME, 'updateUserVideo', user, stream, this.userMap)
@@ -210,8 +214,7 @@ class UserController {
           let stream = user.streams[streamType]
           if (!stream) {
             user.streams[streamType] = stream = new Stream({ streamType: streamType })
-            // 更新streamList
-            this.streamList.push(stream)
+            this._addStream(stream)
           }
           stream.userID = userID
           stream.streamID = userID + '_' + streamType
@@ -286,6 +289,11 @@ class UserController {
       return item.userID !== userID
     })
   }
+  _addStream(stream) {
+    if (!this.streamList.includes(stream)) {
+      this.streamList.push(stream)
+    }
+  }
   _removeStream(stream) {
     this.streamList = this.streamList.filter((item)=>{
       if (item.userID === stream.userID && item.streamType === stream.streamType) {
@@ -293,6 +301,8 @@ class UserController {
       }
       return true
     })
+    const user = this.getUser(stream.userID)
+    user.streams[stream.streamType] = undefined
   }
 }
 

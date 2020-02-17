@@ -22,8 +22,8 @@ Component({
         userID: '',
         userSig: '',
         template: '',
-        debugMode: '', // 是否开启调试模式
-        enableIM: '', // 是否开启 IM
+        debugMode: false, // 是否开启调试模式
+        enableIM: false, // 是否开启 IM
       },
       observer: function(newVal, oldVal) {
         this._propertyObserver({
@@ -47,7 +47,7 @@ Component({
     panelName: '', // 控制面板名称，包括 setting-panel  memberlist-panel
     localVolume: 0,
     remoteVolumeList: [],
-    enableIM: false,
+    enableIM: false, // 用于组件内渲染
     showIMPanel: false,
     exitIMThrottle: false,
     messageContent: '',
@@ -132,6 +132,59 @@ Component({
       this._bindEventGrid()
       console.log(TAG_NAME, '_init success component:', this)
     },
+    _initStatus() {
+      this.status = {
+        isPush: false, // 推流状态
+        isPending: false, // 挂起状态，触发5000事件标记为true，onShow后标记为false
+      }
+      this._lastTapTime = 0 // 点击时间戳 用于判断双击事件
+      this._beforeLastTapTime = 0 // 点击时间戳 用于判断双击事件
+      this._isFullscreen = false // 是否进入全屏状态
+    },
+    /**
+     * 监听组件属性变更，外部变更组件属性时触发该监听
+     * @param {Object} data newVal，oldVal
+     */
+    _propertyObserver(data) {
+      console.log(TAG_NAME, '_propertyObserver', data, this.data.config)
+      if (data.name === 'config') {
+        const config = data.newVal
+        // 由于 querystring 只支持 String 类型，做一个类型防御
+        if (typeof config.debugMode === 'string') {
+          config.debugMode === 'true' ? true : false
+        }
+        // 设置 enableIM 默认值
+        // if (config.enableIM === undefined || config.enableIM === '') {
+        //   config.enableIM = false
+        // }
+        // 初始化IM
+        if (config.enableIM && config.sdkAppID) {
+          this._initIM(config)
+        }
+        if (config.sdkAppID && this.data.pusher.sdkAppID !== config.sdkAppID && MTA) {
+          MTA.Event.stat('sdkAppID', { 'value': config.sdkAppID })
+        }
+        // 独立设置与pusher无关的配置
+        this.setData({
+          enableIM: config.enableIM,
+          template: config.template,
+          debugMode: config.debugMode || false,
+          debug: config.debugMode || false,
+        })
+        this._setPusherConfig(config)
+      }
+    },
+
+    //  _______             __        __  __
+    //  |       \           |  \      |  \|  \
+    //  | $$$$$$$\ __    __ | $$____  | $$ \$$  _______
+    //  | $$__/ $$|  \  |  \| $$    \ | $$|  \ /       \
+    //  | $$    $$| $$  | $$| $$$$$$$\| $$| $$|  $$$$$$$
+    //  | $$$$$$$ | $$  | $$| $$  | $$| $$| $$| $$
+    //  | $$      | $$__/ $$| $$__/ $$| $$| $$| $$_____
+    //  | $$       \$$    $$| $$    $$| $$| $$ \$$     \
+    //   \$$        \$$$$$$  \$$$$$$$  \$$ \$$  \$$$$$$$
+
     /**
      * 进房
      * @param {Object} params 必传 roomID 取值范围 1 ~ 4294967295
@@ -158,15 +211,16 @@ Component({
           this.setData({
             pusher: this.data.pusher,
           }, () => {
-            console.log(TAG_NAME, 'enterRoom success', this.data.pusher)
+            // 真正进房成功需要通过 1018 事件通知
+            console.log(TAG_NAME, 'enterRoom', this.data.pusher)
             // view 渲染成功回调后，开始推流
             this.data.pusher.getPusherContext().start()
             this.status.isPush = true
             resolve()
           })
         }).catch((res)=> {
-          // 获取 room sig 失败, 进房失败需要通过 pusher state 事件通知
-          console.error(TAG_NAME, 'enterRoom fail', res)
+          // 进房失败需要通过 pusher state 事件通知，目前还没有准确的事件通知
+          console.error(TAG_NAME, 'enterRoom error', res)
           reject(res)
         })
         // 初始化 IM SDK
@@ -235,7 +289,7 @@ Component({
     },
     /**
      * 订阅远端视频 主流 小画面 辅流
-     * @param {Object} params {userID,streamType} streamType 传入 small 时修改对应的主流url的 streamtype 参数为small
+     * @param {Object} params {userID,streamType} streamType 传入 small 时修改对应的主流 url 的 _definitionType 参数为 small, stream.streamType 仍为 main
      * @returns {Promise}
      */
     subscribeRemoteVideo(params) {
@@ -244,7 +298,7 @@ Component({
       const config = {
         muteVideo: false,
       }
-      // 本地数据结构里的 streamType 只支持 main 和 aux ，订阅small 也是对main进行处理
+      // 本地数据结构里的 streamType 只支持 main 和 aux ，订阅 small 也是对 main 进行处理
       const streamType = params.streamType === 'small' ? 'main' : params.streamType
       if (params.streamType === 'small' || params.streamType === 'main') {
         const stream = this.userController.getStream({
@@ -408,7 +462,7 @@ Component({
      * @param {Object} params
      * userID: string
      * streamType: string
-     * zindex: number
+     * zIndex: number
      * @returns {Promise}
      */
     setViewZIndex(params) {
@@ -418,14 +472,14 @@ Component({
       }
       if (this.data.pusher.userID === params.userID) {
         return this._setPusherConfig({
-          zindex: params.zindex,
+          zIndex: params.zindex || params.zIndex,
         })
       }
       return this._setPlayerConfig({
         userID: params.userID,
         streamType: params.streamType,
         config: {
-          zindex: params.zindex,
+          zIndex: params.zindex || params.zIndex,
         },
       })
     },
@@ -764,48 +818,16 @@ Component({
       })
       return promise
     },
-    // internal functions
-    /**
-     * 切换 player 大小画面 for template
-     * @param {Object} params userID streamType definition: HD SD
-     * @returns {Promise}
-     */
-    _setRemoteDefinition(params) {
-      params.streamType = 'main'
-      return new Promise((resolve, reject) => {
-        const stream = this.userController.getStream({
-          userID: params.userID,
-          streamType: params.streamType,
-        })
-        if (stream && stream.streamType === 'main') {
-          console.log(TAG_NAME, '_switchStreamType', stream.src)
-          // stream.volume = volume
-          if (stream.src.indexOf('main') > -1) {
-            stream.src = stream.src.replace('main', 'small')
-            stream._streamType = 'small' // 用于设置面板的渲染
-          } else if (stream.src.indexOf('small') > -1) {
-            stream.src = stream.src.replace('small', 'main')
-            stream._streamType = 'main'
-          }
-          console.log(TAG_NAME, '_switchStreamType', stream.src)
-          this.setData({
-            streamList: this.data.streamList,
-          }, () => {
-          })
-        }
-      })
-    },
-    _initStatus() {
-      this.status = {
-        isPush: false, // 推流状态
-        isPending: false, // 挂起状态，触发5000事件标记为true，onShow后标记为false
-      }
-      this._lastTapTime = 0
-      this._beforeLastTapTime = 0
-      this._isFullscreen = false
-    },
 
-
+    // ______             __                                              __
+    // |      \           |  \                                            |  \
+    //  \$$$$$$ _______  _| $$_     ______    ______   _______    ______  | $$
+    //   | $$  |       \|   $$ \   /      \  /      \ |       \  |      \ | $$
+    //   | $$  | $$$$$$$\\$$$$$$  |  $$$$$$\|  $$$$$$\| $$$$$$$\  \$$$$$$\| $$
+    //   | $$  | $$  | $$ | $$ __ | $$    $$| $$   \$$| $$  | $$ /      $$| $$
+    //  _| $$_ | $$  | $$ | $$|  \| $$$$$$$$| $$      | $$  | $$|  $$$$$$$| $$
+    // |   $$ \| $$  | $$  \$$  $$ \$$     \| $$      | $$  | $$ \$$    $$| $$
+    //  \$$$$$$ \$$   \$$   \$$$$   \$$$$$$$ \$$       \$$   \$$  \$$$$$$$ \$$
     /**
      * 设置推流参数并触发页面渲染更新
      * @param {Object} config live-pusher 的配置
@@ -828,7 +850,7 @@ Component({
       })
     },
     /**
-     *
+     * 设置指定 player 属性并触发页面渲染
      * @param {Object} params include userID,streamType,config
      * @returns {Promise}
      */
@@ -891,7 +913,7 @@ Component({
     },
     _getPushUrl(rtcConfig) {
       // 拼接 puhser url rtmp 方案
-      console.log(TAG_NAME, 'getPushUrl', rtcConfig)
+      console.log(TAG_NAME, '_getPushUrl', rtcConfig)
       if (ENV.IS_TRTC) {
         // 版本高于7.0.8，基础库版本高于2.10.0 使用新的 url
         return new Promise((resolve, reject) => {
@@ -911,6 +933,7 @@ Component({
                             '&appscene=' + rtcConfig.scene +
                             '&encsmall=' + rtcConfig.encsmall +
                             '&cloudenv=' + rtcConfig.cloudenv
+
             console.log(TAG_NAME, 'getPushUrl result:', pushUrl)
             resolve(pushUrl)
           }, 0)
@@ -924,7 +947,7 @@ Component({
      * @returns {Promise}
      */
     _requestSigServer(rtcConfig) {
-      console.log('requestSigServer:', rtcConfig)
+      console.log(TAG_NAME, '_requestSigServer:', rtcConfig)
       const sdkAppID = rtcConfig.sdkAppID
       const userID = rtcConfig.userID
       const userSig = rtcConfig.userSig
@@ -947,7 +970,7 @@ Component({
         'FromType': 3,
         'SdkVersion': 26280566,
       }
-      console.log('requestSigServer:', url, reqHead, reqBody)
+      console.log(TAG_NAME, '_requestSigServer:', url, reqHead, reqBody)
       return new Promise((resolve, reject) => {
         wx.request({
           url: url,
@@ -957,7 +980,7 @@ Component({
           },
           method: 'POST',
           success: (res) => {
-            console.log('requestSigServer success:', res)
+            console.log('_requestSigServer success:', res)
             if (res.data['ErrorCode'] || res.data['RspHead']['ErrorCode'] !== 0) {
               // console.error(res.data['ErrorInfo'] || res.data['RspHead']['ErrorInfo'])
               console.error('获取roomsig失败')
@@ -966,7 +989,7 @@ Component({
 
             const roomSig = JSON.stringify(res.data['RspBody'])
             let pushUrl = 'room://cloud.tencent.com?sdkappid=' + sdkAppID + '&roomid=' + roomID + '&userid=' + userID + '&roomsig=' + encodeURIComponent(roomSig)
-            // TODO 需要重新整理的逻辑
+            // TODO 需要重新整理的逻辑 TRTC尚未支持 20200213
             // 如果有配置纯音频推流或者recordId参数
             if (rtcConfig.pureAudioPushMod || rtcConfig.recordId) {
               const bizbuf = {
@@ -993,7 +1016,7 @@ Component({
             resolve(pushUrl)
           },
           fail: (res) => {
-            console.log('requestSigServer fail:', res)
+            console.log(TAG_NAME, 'requestSigServer fail:', res)
             reject(res)
           },
         })
@@ -1294,41 +1317,17 @@ Component({
       // console.log(TAG_NAME, '_playerAudioVolumeNotify', event)
       this._emitter.emit(EVENT.REMOTE_AUDIO_VOLUME_UPDATE, event)
     },
-    /**
-     * 监听组件属性变更，外部变更组件属性时触发该监听，用于检查属性设置是否正常
-     * @param {Object} data 变更数据
-     */
-    _propertyObserver(data) {
-      console.log(TAG_NAME, '_propertyObserver', data, this.data.config)
-      if (data.name === 'config') {
-        // const config = Object.assign(DEFAULT_PUSHER_CONFIG, data.newVal)
-        const config = data.newVal
-        // querystring 只支持String类型，做一个类型防御
-        if (typeof config.debugMode === 'string') {
-          config.debugMode === 'true' ? true : false
-        }
-        // 设置默认值
-        if (config.enableIM === undefined || config.enableIM === '') {
-          config.enableIM = false
-        }
-        // 初始化IM
-        if (config.enableIM && config.sdkAppID) {
-          this._initIM(config)
-        }
-        if (config.sdkAppID && this.data.pusher.sdkAppID !== config.sdkAppID && MTA) {
-          MTA.Event.stat('sdkAppID', { 'value': config.sdkAppID })
-        }
-        // 独立设置与pusher无关的配置
-        this.setData({
-          enableIM: config.enableIM,
-          template: config.template,
-          debugMode: config.debugMode || false,
-          debug: config.debugMode || false,
-        })
-        this._setPusherConfig(config)
-      }
-    },
-    // IM 相关函数
+
+    //  ______  __       __        ______             __                                              __
+    //  |      \|  \     /  \      |      \           |  \                                            |  \
+    //   \$$$$$$| $$\   /  $$       \$$$$$$ _______  _| $$_     ______    ______   _______    ______  | $$
+    //    | $$  | $$$\ /  $$$        | $$  |       \|   $$ \   /      \  /      \ |       \  |      \ | $$
+    //    | $$  | $$$$\  $$$$        | $$  | $$$$$$$\\$$$$$$  |  $$$$$$\|  $$$$$$\| $$$$$$$\  \$$$$$$\| $$
+    //    | $$  | $$\$$ $$ $$        | $$  | $$  | $$ | $$ __ | $$    $$| $$   \$$| $$  | $$ /      $$| $$
+    //   _| $$_ | $$ \$$$| $$       _| $$_ | $$  | $$ | $$|  \| $$$$$$$$| $$      | $$  | $$|  $$$$$$$| $$
+    //  |   $$ \| $$  \$ | $$      |   $$ \| $$  | $$  \$$  $$ \$$     \| $$      | $$  | $$ \$$    $$| $$
+    //   \$$$$$$ \$$      \$$       \$$$$$$ \$$   \$$   \$$$$   \$$$$$$$ \$$       \$$   \$$  \$$$$$$$ \$$
+
     /**
      * 初始化 IM SDK
      * @param {Object} config sdkAppID
@@ -1347,8 +1346,11 @@ Component({
       // 2 告警级别，SDK 只输出告警和错误级别的日志
       // 3 错误级别，SDK 只输出错误级别的日志
       // 4 无日志级别，SDK 将不打印任何日志
-      tim.setLogLevel(1)
-
+      if (config.debugMode) {
+        tim.setLogLevel(1)
+      } else {
+        tim.setLogLevel(4)
+      }
       // 取消监听
       tim.off(TIM.EVENT.SDK_READY, this._onIMReady)
       tim.off(TIM.EVENT.MESSAGE_RECEIVED, this._onIMMessageReceived)
@@ -1595,7 +1597,21 @@ Component({
       // event.data.code - 错误码
       // event.data.message - 错误信息
     },
-    // 以下为debug & template 相关函数
+
+    //  ________                                  __             __
+    //  |        \                                |  \           |  \
+    //   \$$$$$$$$______   ______ ____    ______  | $$  ______  _| $$_     ______
+    //     | $$  /      \ |      \    \  /      \ | $$ |      \|   $$ \   /      \
+    //     | $$ |  $$$$$$\| $$$$$$\$$$$\|  $$$$$$\| $$  \$$$$$$\\$$$$$$  |  $$$$$$\
+    //     | $$ | $$    $$| $$ | $$ | $$| $$  | $$| $$ /      $$ | $$ __ | $$    $$
+    //     | $$ | $$$$$$$$| $$ | $$ | $$| $$__/ $$| $$|  $$$$$$$ | $$|  \| $$$$$$$$
+    //     | $$  \$$     \| $$ | $$ | $$| $$    $$| $$ \$$    $$  \$$  $$ \$$     \
+    //      \$$   \$$$$$$$ \$$  \$$  \$$| $$$$$$$  \$$  \$$$$$$$   \$$$$   \$$$$$$$
+    //                                  | $$
+    //                                  | $$
+    //                                   \$$
+    // 以下为 debug & template 相关函数
+
     _toggleVideo() {
       if (this.data.pusher.enableCamera) {
         this.unpublishLocalVideo()
@@ -1759,7 +1775,7 @@ Component({
     },
     /**
      * 切换订阅远端视频状态
-     * @param event
+     * @param {Object} event native 事件对象
      */
     _handleSubscribeRemoteVideo(event) {
       const userID = event.currentTarget.dataset.userID
@@ -1775,7 +1791,7 @@ Component({
     },
     /**
      * 将远端视频取消全屏
-     * @param event
+     * @param {Object} event native 事件对象
      */
     _handleSubscribeRemoteAudio(event) {
       const userID = event.currentTarget.dataset.userID
@@ -1798,7 +1814,7 @@ Component({
       })
     },
     /**
-     * grid布局, 唤起setting-panel
+     * grid布局, 唤起 setting-panel
      */
     _switchSettingPanel() {
       this.setData({
@@ -1901,6 +1917,9 @@ Component({
      * grid布局, 绑定事件
      */
     _bindEventGrid() {
+      if (this.data.config.template !== 'grid') {
+        return
+      }
       // 远端音量变更
       this.on(EVENT.REMOTE_AUDIO_VOLUME_UPDATE, (event) => {
         const data = event.data
@@ -1968,7 +1987,7 @@ Component({
       })
     },
     _inputIMMessage(event) {
-      console.log(TAG_NAME, '_inputIMMessage', event)
+      // console.log(TAG_NAME, '_inputIMMessage', event)
       this.setData({
         messageContent: event.detail.value,
       })
