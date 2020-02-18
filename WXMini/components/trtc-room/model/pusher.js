@@ -4,7 +4,7 @@ class Pusher {
   constructor(options) {
     Object.assign(this, DEFAULT_PUSHER_CONFIG, {
       isVisible: true, // 手Q初始化时不能隐藏 puser和player 否则黑屏
-    },options)
+    }, options)
   }
   /**
    * 通过wx.createLivePusherContext 获取<live-pusher> context

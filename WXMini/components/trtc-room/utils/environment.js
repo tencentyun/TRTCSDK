@@ -1,11 +1,12 @@
 import compareVersion from './compare-version.js'
+const TAG_NAME = 'TRTC-ROOM'
 
 const env = wx ? wx : qq
 if (!env) {
-  console.error('不支持当前小程序环境')
+  console.error(TAG_NAME, '不支持当前小程序环境')
 }
 const systemInfo = env.getSystemInfoSync()
-console.log('SystemInfo', systemInfo)
+console.log(TAG_NAME, 'SystemInfo', systemInfo)
 let isNewVersion
 if (typeof qq !== 'undefined') {
   isNewVersion = true
@@ -30,4 +31,4 @@ export const LIB_VERSION = (function() {
   return systemInfo.SDKVersion
 })()
 
-console.log('APP_VERSION:', APP_VERSION, ' LIB_VERSION:', LIB_VERSION, ' is new version:', IS_TRTC)
+console.log(TAG_NAME, 'APP_VERSION:', APP_VERSION, ' LIB_VERSION:', LIB_VERSION, ' is new version:', IS_TRTC)

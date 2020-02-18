@@ -23,8 +23,8 @@
   padding: 10rpx;
   font-size: 12px;
 }
-.debug-info-btn button,
-.debug-info button{
+.debug-info-btn .debug-btn,
+.debug-info .debug-btn{
   padding: 0 8px;
   min-height: 18px;
   width: auto;
@@ -34,10 +34,10 @@
   color: #06ae56;
   background-color: #f2f2f2;
 }
-.debug-info button.false{
+.debug-info .debug-btn.false{
   color: rgb(114, 114, 114);
 }
-.debug-info-btn button,
+.debug-info-btn .debug-btn,
 .debug-info .button-hover {
   background-color: rgb(219, 219, 219);
 }
@@ -54,7 +54,7 @@
   left: 0;
 }
 
-button.btn {
+.trtc-room-container .btn {
   display: inline-block;
   width: auto;
   height: 60rpx;
@@ -67,11 +67,11 @@ button.btn {
   background-color: #f2f2f2;
   margin: 0 16rpx;
 }
-button.btn.active{
+.trtc-room-container .btn.active{
   color: #f2f2f2;
   background-color: #006eff;
 }
-button.btn-hover{
+.trtc-room-container .btn-hover{
   background-color: #d1d1d1;
 }
 
@@ -164,10 +164,10 @@ button.btn-hover{
   display: flex;
   flex-direction: row;
 }
-.message-input {
+.message-input-container {
   flex-grow: 1;
 }
-.message-input input{
+.message-input-container .message-input {
   font-size: 12px;
   padding-left: 20rpx;
   border-radius: 10rpx;

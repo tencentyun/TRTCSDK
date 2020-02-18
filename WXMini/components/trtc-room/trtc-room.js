@@ -1,6 +1,6 @@
 import UserController from 'controller/user-controller.js'
 import Pusher from 'model/pusher.js'
-import { EVENT } from 'common/constants.js'
+import { EVENT, DEFAULT_COMPONENT_CONFIG } from 'common/constants.js'
 import Event from 'utils/event.js'
 import * as ENV from 'utils/environment.js'
 import TIM from 'libs/tim-wx.js'
@@ -148,15 +148,12 @@ Component({
     _propertyObserver(data) {
       console.log(TAG_NAME, '_propertyObserver', data, this.data.config)
       if (data.name === 'config') {
-        const config = data.newVal
+        const config = Object.assign(DEFAULT_COMPONENT_CONFIG, data.newVal)
+        console.log(TAG_NAME, '_propertyObserver config:', config)
         // 由于 querystring 只支持 String 类型，做一个类型防御
         if (typeof config.debugMode === 'string') {
           config.debugMode === 'true' ? true : false
         }
-        // 设置 enableIM 默认值
-        // if (config.enableIM === undefined || config.enableIM === '') {
-        //   config.enableIM = false
-        // }
         // 初始化IM
         if (config.enableIM && config.sdkAppID) {
           this._initIM(config)

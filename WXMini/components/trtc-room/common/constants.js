@@ -25,6 +25,15 @@ export const EVENT = {
   IM_ERROR: 'IM_ERROR', // IM SDK 下线
 }
 
+export const DEFAULT_COMPONENT_CONFIG = {
+  sdkAppID: '',
+  userID: '',
+  userSig: '',
+  template: '',
+  debugMode: false, // 是否开启调试模式
+  enableIM: false, // 是否开启 IM
+}
+
 export const DEFAULT_PUSHER_CONFIG = {
   url: '',
   mode: 'RTC', // RTC：实时通话（trtc sdk） live：直播模式（liteav sdk）
@@ -51,7 +60,7 @@ export const DEFAULT_PUSHER_CONFIG = {
   audioQuality: 'high', // 高音质(48KHz)或低音质(16KHz)，可选值：high，low
   audioVolumeType: 'voicecall', // 声音类型 可选值： media: 媒体音量，voicecall: 通话音量
   audioReverbType: 0, // 音频混响类型 0: 关闭 1: KTV 2: 小房间 3:大会堂 4:低沉 5:洪亮 6:金属声 7:磁性
-  waitingImage: '', // 当微信切到后台时的垫片图片 trtc暂不支持
+  waitingImage: 'https://web-player-1252463788.cos.ap-shanghai.myqcloud.com/demo/1px.png', // 当微信切到后台时的垫片图片 trtc暂不支持
   waitingImageHash: '',
 }
 
@@ -59,8 +68,8 @@ export const DEFAULT_PLAYER_CONFIG = {
   src: '',
   mode: 'RTC',
   autoplay: true, // 7.0.9 必须设置为true，否则 Android 有概率调用play()失败
-  muteAudio: true, // 默认不拉取音频，需要手动订阅
-  muteVideo: true, // 默认不拉取视频，需要手动订阅
+  muteAudio: false, // 默认不拉取音频，需要手动订阅，20200216：频繁设置会有概率出现死锁的情况，需要改为false
+  muteVideo: false, // 默认不拉取视频，需要手动订阅，20200216：频繁设置会有概率出现死锁的情况，需要改为false
   orientation: 'vertical', // 画面方向 vertical horizontal
   objectFit: 'fillCrop', // 填充模式，可选值有 contain，fillCrop
   enableBackgroundMute: false, // 进入后台时是否静音（已废弃，默认退台静音）

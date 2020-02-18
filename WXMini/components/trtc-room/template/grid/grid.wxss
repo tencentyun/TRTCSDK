@@ -108,7 +108,7 @@
   border-radius: 50%;
 }
 
-.template-grid .btn-normal image{
+.template-grid .btn-normal .btn-image{
   width: 36rpx;
   height: 36rpx;
 }
@@ -174,10 +174,10 @@
   display: flex;
   justify-content: flex-end;
 }
-.member-btns .btn-normal{
+.memberlist-panel .member-btns .btn-normal{
   margin-left: 0;
 }
-.member-btns button.btn{
+.memberlist-panel .member-btns .btn{
   margin-right: 0;
 }
 .setting-panel .setting-option{
@@ -193,8 +193,9 @@
 /* .setting-panel .setting-option .btn-normal{
   margin-right: 0;
 } */
-.setting-panel switch {
+.setting-panel .setting-switch {
   transform:scale(0.8);
+  margin-right: -12rpx;
 }
 .template-grid .masker{
   position: absolute;

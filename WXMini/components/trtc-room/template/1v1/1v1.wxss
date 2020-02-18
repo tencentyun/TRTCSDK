@@ -80,10 +80,10 @@
   justify-content: space-around;
 }
 
-.template-1v1 image {
+/* .template-1v1 image {
   width: 4vh;
   height: 4vh;
-}
+} */
 
 .template-1v1 .btn-normal {
   width: 8vh;
@@ -95,7 +95,11 @@
   align-items: center;
   border-radius: 50%;
 }
-
+.template-1v1 .btn-hangup .btn-image,
+.template-1v1 .btn-normal .btn-image{
+  width: 4vh;
+  height: 4vh;
+}
 .template-1v1 .btn-hangup  {
   width: 8vh;
   height: 8vh;

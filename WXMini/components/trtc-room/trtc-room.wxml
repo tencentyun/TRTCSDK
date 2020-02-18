@@ -51,8 +51,8 @@
         
     </view>
     <view class="message-panel-bottom">
-      <view class="message-input">
-        <input type="text" value="{{messageContent}}" bindinput='_inputIMMessage' bindconfirm='_sendIMMessage' confirm-type="send" placeholder="请输入消息" maxlength="200" placeholder-style="color:#ffffff;opacity: 0.55;"/>
+      <view class="message-input-container">
+        <input class="message-input" type="text" value="{{messageContent}}" bindinput='_inputIMMessage' bindconfirm='_sendIMMessage' confirm-type="send" placeholder="请输入消息" maxlength="200" placeholder-style="color:#ffffff;opacity: 0.55;"/>
       </view>
       <view class="message-send-btn">
         <button class="btn" bindtap="_sendIMMessage" hover-class="btn-hover">发送</button>
@@ -62,30 +62,30 @@
   </view>
   
   <view class="debug-info-btn {{debugMode && !debugPanel?'':'none'}}">
-    <button bindtap="_debugTogglePanel" hover-class="button-hover">Debug</button>
+    <button class="debug-btn" bindtap="_debugTogglePanel" hover-class="button-hover">Debug</button>
   </view>
   <view class="debug-info {{debugMode && debugPanel?'':'none'}}">
     <view bindtap="_debugTogglePanel" class='close-btn'>X</view>
     <view>appVersion: {{appVersion}}</view>
     <view>libVersion: {{libVersion}}</view>
     <view>template: {{template}}</view>
-    <view>debug: <button class="{{debug?'':'false'}}" bindtap="_debugToggleVideoDebug" hover-class="button-hover">{{debug}}</button></view>
+    <view>debug: <button class="{{debug?'':'false'}} debug-btn" bindtap="_debugToggleVideoDebug" hover-class="button-hover">{{debug}}</button></view>
     <view>userID: {{pusher.userID}}</view>
     <view>roomID: {{pusher.roomID}}</view>
-    <view>camera: <button class="{{pusher.enableCamera?'':'false'}}" bindtap="_toggleVideo" hover-class="button-hover">{{pusher.enableCamera}}</button></view>
-    <view>mic: <button class="{{pusher.enableMic?'':'false'}}" bindtap="_toggleAudio" hover-class="button-hover">{{pusher.enableMic}}</button></view>
-    <view>switch camera: <button bindtap="switchCamera" hover-class="button-hover">{{cameraPosition||pusher.frontCamera}}</button></view>
+    <view>camera: <button class="{{pusher.enableCamera?'':'false'}} debug-btn" bindtap="_toggleVideo" hover-class="button-hover">{{pusher.enableCamera}}</button></view>
+    <view>mic: <button class="{{pusher.enableMic?'':'false'}} debug-btn" bindtap="_toggleAudio" hover-class="button-hover">{{pusher.enableMic}}</button></view>
+    <view>switch camera: <button class="debug-btn" bindtap="switchCamera" hover-class="button-hover">{{cameraPosition||pusher.frontCamera}}</button></view>
     <view>Room:
-      <button bindtap="_debugEnterRoom" hover-class="button-hover">Enter</button>
-      <button bindtap="_debugExitRoom" hover-class="button-hover">Exit</button>
-      <button bindtap="_debugGoBack" hover-class="button-hover">Go back</button>
+      <button class="debug-btn" bindtap="_debugEnterRoom" hover-class="button-hover">Enter</button>
+      <button class="debug-btn" bindtap="_debugExitRoom" hover-class="button-hover">Exit</button>
+      <button class="debug-btn" bindtap="_debugGoBack" hover-class="button-hover">Go back</button>
     </view>
-    <view>IM: <button bindtap="_debugSendRandomMessage" hover-class="button-hover">send</button></view>
+    <view>IM: <button class="debug-btn" bindtap="_debugSendRandomMessage" hover-class="button-hover">send</button></view>
     <view>user count: {{userList.length}}</view>
     <view wx:for="{{userList}}" wx:key="userID">{{item.userID}}|mainV:{{item.hasMainVideo||false}}|mainA:{{item.hasMainAudio||false}}|auxV:{{item.hasAuxVideo||false}}</view>
     <view>stream count: {{streamList.length}}</view>
     <view wx:for="{{streamList}}" wx:key="streamID">{{item.userID}}|{{item.streamType}}|
-      SubV:<button class="{{!item.muteVideo?'':'false'}}" bindtap="_debugToggleRemoteVideo" hover-class="button-hover" data-user-i-d="{{item.userID}}" data-stream-type="{{item.streamType}}">{{!item.muteVideo}}</button>|
-      SubA:<button class="{{!item.muteAudio?'':'false'}}" bindtap="_debugToggleRemoteAudio" hover-class="button-hover" data-user-i-d="{{item.userID}}" data-stream-type="{{item.streamType}}">{{!item.muteAudio}}</button></view>
+      SubV:<button class="{{!item.muteVideo?'':'false'}} debug-btn" bindtap="_debugToggleRemoteVideo" hover-class="button-hover" data-user-i-d="{{item.userID}}" data-stream-type="{{item.streamType}}">{{!item.muteVideo}}</button>|
+      SubA:<button class="{{!item.muteAudio?'':'false'}} debug-btn" bindtap="_debugToggleRemoteAudio" hover-class="button-hover" data-user-i-d="{{item.userID}}" data-stream-type="{{item.streamType}}">{{!item.muteAudio}}</button></view>
   </view>
 </view>
