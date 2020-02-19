@@ -7,7 +7,7 @@
     <template is='1v1' data="{{pusher, streamList, debug}}"></template>
   </block>
   <block wx:if="{{template === 'grid'}}">
-    <template is='grid' data="{{pusher, streamList, debug, panelName}}"></template>
+    <template is='grid' data="{{pusher, streamList, visibleStreamList, debug, panelName}}"></template>
   </block>
   <block wx:if="{{template === 'custom'}}">
     <template is='custom' data="{{pusher, streamList, debug}}"></template>

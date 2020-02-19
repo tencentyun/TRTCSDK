@@ -1,7 +1,7 @@
 <!-- template grid -->
 <template name='grid'>
-  <view class="template-grid {{streamList.length < 9 ? 'stream-' + streamList.length : 'stream-8'}}">
-    <view wx:for="{{streamList}}" wx:key="streamID" wx:if="{{item.src && (item.hasVideo || item.hasAudio)}}"
+  <view class="template-grid {{visibleStreamList.length < 9 ? 'stream-' + visibleStreamList.length : 'stream-8'}}">
+    <view wx:for="{{visibleStreamList}}" wx:key="streamID"
     class="view-container player-container {{item.isVisible?'':'none'}}" data-userid="{{item.userID}}" data-streamtype="{{item.streamType}}" bindtap="_doubleTabToggleFullscreen">
       <live-player
         class="player"
@@ -27,7 +27,7 @@
         bindstatechange="_playerStateChange"
         bindfullscreenchange="_playerFullscreenChange"
         bindnetstatus="_playerNetStatus"
-        bindaudiovolumenotify  ="_playerAudioVolumeNotify"
+        bindaudiovolumenotify="_playerAudioVolumeNotify"
       />
       <view class="operation-bar">
         <view class="btn-normal" bindtap="_handleSubscribeRemoteAudio" data-user-i-d="{{item.userID}}" data-stream-type="{{item.streamType}}">

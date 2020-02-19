@@ -160,7 +160,7 @@ class UserController {
           let stream = user.streams[streamType]
           console.log(TAG_NAME, 'updateUserVideo start', user, streamType, stream)
           // 常规逻辑
-          // 新来的stream，新增到 user.steams 和 streamList，streamList 包含所有用户的 stream
+          // 新来的stream，新增到 user.steams 和 streamList，streamList 包含所有用户(有音频或视频)的 stream
           if (!stream) {
             // 不在 user streams 里，需要新建
             user.streams[streamType] = stream = new Stream({ userID, streamID, hasVideo, src, streamType })
@@ -168,6 +168,13 @@ class UserController {
           } else {
             // 更新 stream 属性
             stream.setProperty({ hasVideo })
+            // or
+            // if (hasVideo) {
+            //   stream.setProperty({ hasVideo })
+            // } else if (!stream.hasAudio) {
+            // hasVideo == false && hasAudio == false
+            //   this._removeStream(stream)
+            // }
           }
           // 特殊逻辑
           if (streamType === 'aux') {
@@ -207,19 +214,39 @@ class UserController {
         const userID = item.userid
         // 音频只跟着 stream main ，这里只修改 main
         const streamType = 'main'
+        const streamID = userID + '_' + streamType
         const hasAudio = item.hasaudio
         const src = item.playurl
         const user = this.getUser(userID)
         if (user) {
           let stream = user.streams[streamType]
+          // if (!stream) {
+          //   user.streams[streamType] = stream = new Stream({ streamType: streamType })
+          //   this._addStream(stream)
+          // }
+
+          // 常规逻辑
+          // 新来的stream，新增到 user.steams 和 streamList，streamList 包含所有用户的 stream
           if (!stream) {
-            user.streams[streamType] = stream = new Stream({ streamType: streamType })
+            // 不在 user streams 里，需要新建
+            user.streams[streamType] = stream = new Stream({ userID, streamID, hasAudio, src, streamType })
             this._addStream(stream)
+          } else {
+            // 更新 stream 属性
+            stream.setProperty({ hasAudio })
+            // or
+            // if (hasAudio) {
+            //   stream.setProperty({ hasAudio })
+            // } else if (!stream.hasVideo) {
+            // hasVideo == false && hasAudio == false
+            //   this._removeStream(stream)
+            // }
           }
-          stream.userID = userID
-          stream.streamID = userID + '_' + streamType
-          stream.hasAudio = hasAudio
-          stream.src = src
+
+          // stream.userID = userID
+          // stream.streamID = userID + '_' + streamType
+          // stream.hasAudio = hasAudio
+          // stream.src = src
           // 更新所属 user 的 hasXxx 值
           this.userList.find((item)=>{
             if (item.userID === userID) {

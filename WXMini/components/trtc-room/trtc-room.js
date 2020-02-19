@@ -41,6 +41,7 @@ Component({
     debugPanel: true, // 是否打开组件调试面板
     debug: false, // 是否打开player pusher 的调试信息
     streamList: [], // 用于渲染player列表,存储stram
+    visibleStreamList: [], // 有音频或者视频的StreamList
     userList: [], // 扁平化的数据用来返回给用户
     template: '', // 不能设置默认值，当默认值和传入组件的值不一致时，iOS渲染失败
     cameraPosition: '', // 摄像头位置，用于debug
@@ -66,7 +67,7 @@ Component({
       console.log(TAG_NAME, 'created', ENV)
       MTA.App.init({
         appID: '500710685',
-        eventID: '500710697', // 高级功能-自定义事件统计ID，配置开通后在初始化处填写
+        eventID: '500710697',
         autoReport: true,
         statParam: true,
       })
@@ -241,6 +242,7 @@ Component({
           pusher: this.data.pusher,
           userList: result.userList,
           streamList: result.streamList,
+          visibleStreamList: this._filterVisibleStream(event.data.streamList),
         }, () => {
           // 在销毁页面时调用，不会走到这里
           resolve({ userList: this.data.userList, streamList: this.data.streamList })
@@ -864,6 +866,7 @@ Component({
           // user.streams引用的对象和 streamList 里的是同一个
           this.setData({
             streamList: this.data.streamList,
+            visibleStreamList: this._filterVisibleStream(this.data.streamList),
           }, () => {
             // console.log(TAG_NAME, '_setPlayerConfig complete', params, 'streamList:', this.data.streamList)
             resolve(params)
@@ -1071,6 +1074,7 @@ Component({
           this.setData({
             userList: event.data.userList,
             streamList: event.data.streamList,
+            visibleStreamList: this._filterVisibleStream(event.data.streamList),
           }, () => {
             this._emitter.emit(EVENT.REMOTE_USER_LEAVE, { userID: event.data.userID })
           })
@@ -1084,6 +1088,7 @@ Component({
         this.setData({
           userList: event.data.userList,
           streamList: event.data.streamList,
+          visibleStreamList: this._filterVisibleStream(event.data.streamList),
         }, () => {
           // 完善 的stream 的 playerContext
           stream.playerContext = wx.createLivePlayerContext(stream.streamID, this)
@@ -1102,6 +1107,7 @@ Component({
         this.setData({
           userList: event.data.userList,
           streamList: event.data.streamList,
+          visibleStreamList: this._filterVisibleStream(event.data.streamList),
         }, () => {
           // 有可能先触发了退房事件，用户名下的所有stream都已清除
           if (stream.userID && stream.streamType) {
@@ -1117,6 +1123,7 @@ Component({
         this.setData({
           userList: event.data.userList,
           streamList: event.data.streamList,
+          visibleStreamList: this._filterVisibleStream(event.data.streamList),
         }, () => {
           stream.playerContext = wx.createLivePlayerContext(stream.streamID, this)
           // 新增的需要触发一次play 默认属性才能生效
@@ -1133,6 +1140,7 @@ Component({
         this.setData({
           userList: event.data.userList,
           streamList: event.data.streamList,
+          visibleStreamList: this._filterVisibleStream(event.data.streamList),
         }, () => {
           // 有可能先触发了退房事件，用户名下的所有stream都已清除
           if (stream.userID && stream.streamType) {
@@ -1313,6 +1321,13 @@ Component({
     _playerAudioVolumeNotify(event) {
       // console.log(TAG_NAME, '_playerAudioVolumeNotify', event)
       this._emitter.emit(EVENT.REMOTE_AUDIO_VOLUME_UPDATE, event)
+    },
+    _filterVisibleStream(streamList) {
+      const list = streamList.filter((item) => {
+        return (item.hasVideo || item.hasAudio)
+      })
+      console.log(TAG_NAME, '_filterVisibleStream list:', list)
+      return list
     },
 
     //  ______  __       __        ______             __                                              __
@@ -1632,10 +1647,10 @@ Component({
       })
       if (stream.muteVideo) {
         this.subscribeRemoteVideo({ userID, streamType })
-        this.setViewVisible({ userID, streamType, isVisible: true })
+        // this.setViewVisible({ userID, streamType, isVisible: true })
       } else {
         this.unsubscribeRemoteVideo({ userID, streamType })
-        this.setViewVisible({ userID, streamType, isVisible: false })
+        // this.setViewVisible({ userID, streamType, isVisible: false })
       }
     },
     _debugToggleRemoteAudio(event) {
@@ -1914,9 +1929,6 @@ Component({
      * grid布局, 绑定事件
      */
     _bindEventGrid() {
-      if (this.data.config.template !== 'grid') {
-        return
-      }
       // 远端音量变更
       this.on(EVENT.REMOTE_AUDIO_VOLUME_UPDATE, (event) => {
         const data = event.data
@@ -1933,6 +1945,7 @@ Component({
         }
         this.setData({
           streamList: this.data.streamList,
+          visibleStreamList: this._filterVisibleStream(this.data.streamList),
         }, () => {
         })
       })
