@@ -149,7 +149,7 @@ Component({
     _propertyObserver(data) {
       console.log(TAG_NAME, '_propertyObserver', data, this.data.config)
       if (data.name === 'config') {
-        const config = Object.assign(DEFAULT_COMPONENT_CONFIG, data.newVal)
+        const config = Object.assign({}, DEFAULT_COMPONENT_CONFIG, data.newVal)
         console.log(TAG_NAME, '_propertyObserver config:', config)
         // 由于 querystring 只支持 String 类型，做一个类型防御
         if (typeof config.debugMode === 'string') {
@@ -159,7 +159,7 @@ Component({
         if (config.enableIM && config.sdkAppID) {
           this._initIM(config)
         }
-        if (config.sdkAppID && this.data.pusher.sdkAppID !== config.sdkAppID && MTA) {
+        if (config.sdkAppID && data.oldVal.sdkAppID !== config.sdkAppID && MTA) {
           MTA.Event.stat('sdkAppID', { 'value': config.sdkAppID })
         }
         // 独立设置与pusher无关的配置
@@ -862,7 +862,7 @@ Component({
         // 获取指定的userID streamType 的 stream
         const user = this.userController.getUser(userID)
         if (user && user.streams[streamType]) {
-          user.streams[streamType] = Object.assign(user.streams[streamType], config)
+          Object.assign(user.streams[streamType], config)
           // user.streams引用的对象和 streamList 里的是同一个
           this.setData({
             streamList: this.data.streamList,
