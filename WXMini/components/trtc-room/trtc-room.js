@@ -242,7 +242,7 @@ Component({
           pusher: this.data.pusher,
           userList: result.userList,
           streamList: result.streamList,
-          visibleStreamList: this._filterVisibleStream(event.data.streamList),
+          visibleStreamList: this._filterVisibleStream(result.streamList),
         }, () => {
           // 在销毁页面时调用，不会走到这里
           resolve({ userList: this.data.userList, streamList: this.data.streamList })
@@ -1326,7 +1326,7 @@ Component({
       const list = streamList.filter((item) => {
         return (item.hasVideo || item.hasAudio)
       })
-      console.log(TAG_NAME, '_filterVisibleStream list:', list)
+      // console.log(TAG_NAME, '_filterVisibleStream list:', list)
       return list
     },
 
@@ -1802,7 +1802,7 @@ Component({
       }
     },
     /**
-     * 将远端视频取消全屏
+     *
      * @param {Object} event native 事件对象
      */
     _handleSubscribeRemoteAudio(event) {
