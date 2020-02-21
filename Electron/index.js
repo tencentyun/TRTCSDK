@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, dialog } = require('electron');
 const ipc = require('electron').ipcMain;
 let status = 0;
 
@@ -28,9 +28,6 @@ function createWindow() {
   win.on('close', function (e) {
     if (status == 0) {
       if (win) {
-        if (process.platform !== 'darwin') {
-          e.preventDefault();
-        }
         win.webContents.send('app-close');
       }
     }
@@ -44,6 +41,42 @@ function createWindow() {
     status = 1;
     win = null;
   })
+
+  win.webContents.on('crashed', () => {
+    const options = {
+      type: 'error',
+      title: '进程崩溃了',
+      message: '这个进程已经崩溃.',
+      buttons: ['重载', '退出'],
+    };
+    recordCrash().then(() => {
+      dialog.showMessageBox(options, (index) => {
+        if (index === 0) reloadWindow(win);
+        else app.quit();
+      });
+    }).catch((e) => {
+      console.log('err', e);
+    });
+  })
+
+  function recordCrash() {
+    return new Promise(resolve => {
+      // 崩溃日志请求成功.... 
+      resolve();
+    })
+  }
+
+  function reloadWindow(mainWin) {
+    if (mainWin.isDestroyed()) {
+      app.relaunch();
+      app.exit(0);
+    } else {
+      BrowserWindow.getAllWindows().forEach((w) => {
+        if (w.id !== mainWin.id) w.destroy();
+      });
+      mainWin.reload();
+    }
+  }
 }
 
 ipc.on('closed', () => {

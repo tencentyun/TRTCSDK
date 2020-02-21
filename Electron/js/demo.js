@@ -13,20 +13,24 @@ const {
   TRTCDeviceState,
   TRTCTranscodingConfigMode,
   TRTCVideoPixelFormat,
-  TRTCVideoBufferType
+  TRTCVideoBufferType,
+  TRTCWaterMarkSrcType
 } = require('trtc-electron-sdk/liteav/trtc_define');
 const {
   TRTCParams,
   TRTCVideoEncParam,
   TRTCNetworkQosParam,
-  TRTCTranscodingConfig, 
+  TRTCTranscodingConfig,
   TRTCMixUser,
   Rect,
-  TRTCVideoFrame
+  TRTCAudioEffectParam
 } = require('trtc-electron-sdk/liteav/trtc_define');
 const ipc = require('electron').ipcRenderer;
 const Store = require('electron-store');
 const store = new Store();
+
+// 未打包前为：__dirname + "/resources"，打包后请改为：process.resourcesPath
+const testBasePath = __dirname + "/resources";
 
 // 移除数组中的某个元素
 Array.prototype.remove = function (val) {
@@ -86,14 +90,21 @@ let demoApp = new Vue({
       // 是否为纯音频进房
       pureAudioStyle: false,
 
+      // 音视频接受模式
+      audioRecvMode: true,
+      videoRecvMode: true,
+
       // 设备信息
       openDeviceDialog: false,
       cameraDeviceName: '',
+      cameraDeviceId: '',
       cameraList: [],
       micDeviceName: '',
+      micDeviceId: '',
       micVolume: 0,
       micList: [],
       speakerDeviceName: '',
+      speakerDeviceId: '',
       speakerVolume: 0,
       speakerList: [],
       testCamera: false,
@@ -102,10 +113,56 @@ let demoApp = new Vue({
       testSpeaker: false,
       testSpeakerVolume: 0,
       testBGM: false,
+      // 注意：软件采集和播放音量暂时不支持 Mac 端设置，设置会无效。
+      captureVolume: 0,
+      playoutVolume: 0,
+
+      // BGM 设置
+      openBGMDialog: false,
+      bgmTestPath: testBasePath + '/testbgm.mp3',
+      // BGM 状态：0为 IDLE，1为 Playing，2为 Pause
+      bgmStatus: 0,
+      bgmProgress: 0,
+      bgmProgressMS: 0,
+      bgmVolume: 100,
+      bgmPlayoutVolume: 100,
+      bgmPublishVolume: 100,
+
+      // 系统混音设置（目前只支持 Windows 32位 ，Mac 下设置无效）
+      openSystemAudioLoopbackDialog: false,
+      systemAudioLoopback: false,
+      systemAudioVolume: 100,
+
+      // 音效设置
+      openEffectDialog: false,
+      // 音效测试用例
+      effectTestCase: [
+        {
+          effectId: 1,
+          effectName: '鼓掌',
+          effectPath: testBasePath + '/clap.aac',
+          effectPublish: false,
+          effectLoopCount: 0,
+          effectVolume: 50,
+          // 音效当前状态：0为 IDLE，1为 Playing，2为 Pause
+          effectStatus: 0
+        },
+        {
+          effectId: 2,
+          effectName: '礼物',
+          effectPath: testBasePath + '/gift_sent.aac',
+          effectPublish: false,
+          effectLoopCount: 0,
+          effectVolume: 50,
+          // 音效当前状态：0为 IDLE，1为 Playing，2为 Pause
+          effectStatus: 0
+        }
+      ],
+      allEffectVolume: 50,
 
       // mac 打包后资源存放在“Contents/Resources”中， win 打包存放在“resources”中， demo 引用路径在“resources”中
       //testPath: process.resourcesPath + '/testspeak.mp3',
-      testPath: __dirname + '/resources/testspeak.mp3',
+      testPath: testBasePath + '/testspeak.mp3',
 
       // 美颜信息
       openBeautyDialog: false,
@@ -125,28 +182,33 @@ let demoApp = new Vue({
       pkRoomId: '',
 
       // 混流设置
+      openMixTranscodingDialog: false,
       mixTranscoding: false,
       mixStreamInfos: [],    // 每一路需要混流的信息（不包括当前用户主流）
+      streamId: '',   // 直播CDN流ID，支持进房前设置和进房后设置
+
+      //其他设置
+      openOtherSetting: false,
+      // 自定义消息
+      cmdId: 1,    // 自定义消息 ID，
+      customMsg: '',
+      seiMsg: '',
+      // 水印设置（本地渲染不显示，远端用户可看见）
+      showWaterMark: false,
+      waterMarkTestPath: testBasePath + '/watermark.png',
 
       // 在房间中的用户（包括本地用户）
       users: [],
     }
   },
   mounted: function () {
-    // 重要点, 创建 TRTC 对象
+    // 创建 TRTC 对象
     this.rtcCloud = new TRTCCloud();
 
-    let self = this;
-    ipc.on('app-close', () => {
-      if (self.inroom) {
-        self.exitRoom();
-      }
-      self.rtcCloud.destroy();
-      this.setLocalStore();
-      if (process.platform !== 'darwin') {
-        ipc.send('closed');
-      }
-    });
+    // 设置 Log 日志回调
+    // this.rtcCloud.setLogCallback(function (log, level, module) {
+    //   console.info('trtc_demo: onLog level:' + level + "|log:" + log);
+    // });
 
     console.log("TRTCCloud ...");
     this.version = this.rtcCloud.getSDKVersion();
@@ -156,6 +218,13 @@ let demoApp = new Vue({
 
     this.initSDKLocalData();
     this.getLocalStore();
+
+    this.rtcCloud.setDefaultStreamRecvMode(this.audioRecvMode, this.videoRecvMode);
+
+    // Mac 平台暂时不支持系统混音，把此功能隐蔽。
+    if (process.platform == "darwin") {
+      document.getElementById('system_audio_loopback').style.display = 'none';
+    }
 
     subscribeEvents = (rtcCloud) => {
       rtcCloud.on('onError', (errcode, errmsg) => {
@@ -179,6 +248,7 @@ let demoApp = new Vue({
           console.error('trtc_demo: onEnterRoom failed.');
           this.notify('加入房间失败，errCode:' + result, 'error', '错误');
           this.inroom = false;
+          this.release();
         }
       });
       rtcCloud.on('onExitRoom', (reason) => {
@@ -216,7 +286,7 @@ let demoApp = new Vue({
       // 远程视频用户状态监听，在此创建一个Dom结点，然后给trtc，由trtc负责绘制
       rtcCloud.on('onUserVideoAvailable', (uid, available) => {
         console.info('trtc_demo: onUserVideoAvailable uid:' + uid + "|available:" + available);
-        // bugfix：注意 mac 平台下中文用户进房 userId 返回空，待解决
+        // 注意 mac 平台下中文用户进房 userId 返回空，Mac 端不支持中文用户名进房！
         if (available) {
           // 画面不区分大小流，只区分主流和辅流，这里统一使用主流当做 key
           let view = this.findVideoView(uid, TRTCVideoStreamType.TRTCVideoStreamTypeBig);
@@ -225,20 +295,21 @@ let demoApp = new Vue({
           // 填充模式需要在设置 view 后才生效
           this.rtcCloud.setRemoteViewFillMode(uid, this.videoFillMode);
 
-
-          this.rtcCloud.setRemoteVideoRenderCallback(
-            uid,
-            TRTCVideoPixelFormat.TRTCVideoPixelFormat_BGRA32, 
-            TRTCVideoBufferType.TRTCVideoBufferType_Buffer, 
-            /**
-             * 
-             * @param userId     用户标识
-             * @param streamType	流类型：即摄像头还是屏幕分享
-             * @param videoframe      视频帧数据
-             */
-            (userId, streamType, videoframe) => {
-              //console.info("onRenderVideoFrame, remote " + userId + "|" + streamType + "|" + videoframe.length);
-          });
+          // 设置远端用户渲染数据回调
+          // this.rtcCloud.setRemoteVideoRenderCallback(
+          //   uid,
+          //   TRTCVideoPixelFormat.TRTCVideoPixelFormat_BGRA32,
+          //   TRTCVideoBufferType.TRTCVideoBufferType_Buffer,
+          //   /**
+          //    * 
+          //    * @param userId     用户标识
+          //    * @param streamType	流类型：即摄像头还是屏幕分享
+          //    * @param videoframe      视频帧数据
+          //    */
+          //   (userId, streamType, videoframe) => {
+          //     //console.info("onRenderVideoFrame, remote " + userId + "|" + streamType + "|" + videoframe.length);
+          //   }
+          // );
 
         }
         else {
@@ -428,13 +499,27 @@ let demoApp = new Vue({
 
       // BGM 状态回调监听
       rtcCloud.on('onPlayBGMBegin', (errCode) => {
+        this.bgmStatus = 1;
         console.info('trtc_demo: onPlayBGMBegin errCode:' + errCode);
       });
       rtcCloud.on('onPlayBGMProgress', (progressMS, durationMS) => {
         // console.info('trtc_demo: onPlayBGMProgress progress:' + progressMS + '|duration:' + durationMS);
+        this.bgmProgressMS = progressMS;
+        this.bgmProgress = parseInt(progressMS / durationMS * 100);
       });
       rtcCloud.on('onPlayBGMComplete', (errCode) => {
         console.info('trtc_demo: onPlayBGMComplete errCode:' + errCode);
+        this.bgmStatus = 0;
+      });
+
+      // 音效状态回调
+      rtcCloud.on('onAudioEffectFinished', (effectId, code) => {
+        this.effectTestCase.forEach(function (item) {
+          if (item.effectId === effectId) {
+            item.effectStatus = 0;
+          }
+        })
+        console.info('trtc_demo: onAudioEffectFinished effectId:' + effectId + "|code:" + code);
       });
 
       rtcCloud.on('onSetMixTranscodingConfig', (errcode, errmsg) => {
@@ -450,25 +535,27 @@ let demoApp = new Vue({
           let select = false;
           if (state === TRTCDeviceState.TRTCDeviceStateRemove) {
             // 选择设备被移除了，尝试选择其他设备
-            if (this.cameraDeviceName === deviceId) {
+            if (this.cameraDeviceName === deviceId || this.cameraDeviceId === deviceId) {
               select = true;
               this.destroyVideoView("local_video", TRTCVideoStreamType.TRTCVideoStreamTypeBig)
             }
           } else if (state === TRTCDeviceState.TRTCDeviceStateAdd) {
             // 如果之前没有设备，此时添加了设备，则重新选择
-            if (this.cameraDeviceName === '') {
+            if (this.cameraDeviceName === '' || this.cameraDeviceId === '') {
               select = true;
             }
           }
           if (select) {
             if (this.cameraList.length > 0) {
-              this.rtcCloud.setCurrentCameraDevice(this.cameraList[0].deviceName);
+              this.rtcCloud.setCurrentCameraDevice(this.cameraList[0].deviceId);
+              this.cameraDeviceId = this.cameraList[0].deviceId;
               this.cameraDeviceName = this.cameraList[0].deviceName;
               // 重新选择设备后需要重新打开采集摄像头
               let view = this.findVideoView("local_video", TRTCVideoStreamType.TRTCVideoStreamTypeBig);
               this.rtcCloud.startLocalPreview(view);
             } else {
-              this.cameraDeviceName = '';
+              this.cameraDeviceId = "";
+              this.cameraDeviceName = "";
             }
           }
         } else if (type === TRTCDeviceType.TRTCDeviceTypeMic) {
@@ -476,26 +563,74 @@ let demoApp = new Vue({
           let select = false;
           if (state === TRTCDeviceState.TRTCDeviceStateRemove) {
             // 选择设备被移除了，尝试选择其他设备
-            if (this.micDeviceName === deviceId) {
+            if (this.micDeviceId === deviceId || this.micDeviceName === deviceId) {
               select = true;
             }
           } else if (state === TRTCDeviceState.TRTCDeviceStateAdd) {
             // 如果之前没有设备，此时添加了设备，则重新选择
-            if (this.micDeviceName === '') {
+            if (this.micDeviceId === "" || this.micDeviceName === "") {
               select = true;
             }
           }
           if (select) {
             if (this.micList.length > 0) {
-              this.rtcCloud.setCurrentMicDevice(this.micList[0].deviceName);
+              this.rtcCloud.setCurrentMicDevice(this.micList[0].deviceId);
               this.micDeviceName = this.micList[0].deviceName;
+              this.micDeviceId = this.micList[0].deviceId;
             } else {
-              this.micDeviceName = '';
+              this.micDeviceName = "";
+              this.micDeviceId = "";
+            }
+          }
+        } else if (type === TRTCDeviceType.TRTCDeviceTypeSpeaker) {
+          this.speakerList = this.rtcCloud.getSpeakerDevicesList();
+          let select = false;
+          if (state === TRTCDeviceState.TRTCDeviceStateRemove) {
+            // 选择设备被移除了，尝试选择其他设备
+            if (this.speakerDeviceId === deviceId || this.speakerDeviceName === deviceId) {
+              select = true;
+            }
+          } else if (state === TRTCDeviceState.TRTCDeviceStateAdd) {
+            // 如果之前没有设备，此时添加了设备，则重新选择
+            if (this.speakerDeviceId === "" || this.speakerDeviceName === "") {
+              select = true;
+            }
+          }
+          if (select) {
+            if (this.micList.length > 0) {
+              this.rtcCloud.setCurrentSpeakerDevice(this.speakerList[0].deviceId);
+              this.speakerDeviceName = this.micList[0].deviceName;
+              this.speakerDeviceId = this.micList[0].deviceId;
+            } else {
+              this.speakerDeviceName = "";
+              this.speakerDeviceId = "";
             }
           }
         }
       });
+
+      // 自定义消息的接收回调
+      rtcCloud.on('onRecvCustomCmdMsg', (userId, cmdId, seq, msg) => {
+        console.info('trtc_demo: onRecvCustomCmdMsg userId:' + userId + '|cmdId:' + cmdId + '|seq:' + seq + '|msg:' + msg);
+        this.notify('收到了用户['+ userId +']的自定义消息：' + msg);
+      });
+      rtcCloud.on('onMissCustomCmdMsg', (userId, cmdId, errCode, missed) => {
+        console.info('trtc_demo: onMissCustomCmdMsg userId:' + userId + '|cmdId:' + cmdId + '|errCode:' + errCode + '|missed:' + missed);
+      });
+      rtcCloud.on('onRecvSEIMsg', (userId, msg) => {
+        console.info('trtc_demo: onRecvSEIMsg userId:' + userId + '|message:' + msg);
+        this.notify('收到了用户['+ userId +']的 SEI 消息：' + msg);
+      });
+
+      // 直播CDN流ID状态回调
+      rtcCloud.on('onStartPublishing', (errCode, msg) => {
+        console.info('trtc_demo: onStartPublishing errCode:' + errCode + '|message:' + msg);
+      });
+      rtcCloud.on('onStopPublishing', (errCode, msg) => {
+        console.info('trtc_demo: onStopPublishing errCode:' + errCode + '|message:' + msg);
+      });
     };
+
     subscribeEvents(this.rtcCloud);
   },
   methods: {
@@ -579,8 +714,14 @@ let demoApp = new Vue({
       }
     },
     // 摄像头选择
-    onCameraDeviceSelect() {
-      this.rtcCloud.setCurrentCameraDevice(this.cameraDeviceName);
+    onCameraDeviceSelect(deviceName) {
+      let device = this.cameraList.find((item) => {
+        return deviceName == item.deviceName;
+      })
+      if (device !== null) {
+        this.cameraDeviceId = device.deviceId;
+        this.rtcCloud.setCurrentCameraDevice(device.deviceId);
+      }
     },
     // 摄像头测试
     onTestCameraChanged() {
@@ -603,8 +744,14 @@ let demoApp = new Vue({
       }
     },
     // 麦克风选择
-    onMicDeviceSelect() {
-      this.rtcCloud.setCurrentMicDevice(this.micDeviceName);
+    onMicDeviceSelect(deviceName) {
+      let device = this.micList.find((item) => {
+        return deviceName == item.deviceName;
+      })
+      if (device !== null) {
+        this.micDeviceId = device.deviceId;
+        this.rtcCloud.setCurrentMicDevice(device.deviceId);
+      }
     },
     // 麦克风测试
     onTestMicChanged() {
@@ -615,13 +762,19 @@ let demoApp = new Vue({
         this.testMicVolume = 0;
       }
     },
-    // 麦克风音量
+    // 麦克风音量变化
     onMicVolumeChanged() {
       this.rtcCloud.setCurrentMicDeviceVolume(this.micVolume);
     },
     // 扬声器选择
-    onSpeakerDeviceSelect() {
-      this.rtcCloud.setCurrentSpeakerDevice(this.speakerDeviceName);
+    onSpeakerDeviceSelect(deviceName) {
+      let device = this.speakerList.find((item) => {
+        return deviceName == item.deviceName;
+      })
+      if (device !== null) {
+        this.speakerDeviceId = device.deviceId;
+        this.rtcCloud.setCurrentSpeakerDevice(device.deviceId);
+      }
     },
     // 扬声器测试
     onTestSpeakerChanged() {
@@ -636,13 +789,124 @@ let demoApp = new Vue({
     onSpeakerVolumeChanged() {
       this.rtcCloud.setCurrentSpeakerVolume(this.speakerVolume);
     },
+    // 软件采集音量变化，暂时不支持 Mac 端设置
+    onCaptureVolumeChanged() {
+      this.rtcCloud.setAudioCaptureVolume(this.captureVolume);
+    },
+    // 软件播放音量变化，暂时不支持 Mac 端设置
+    onPlayoutVolumeChanged() {
+      this.rtcCloud.setAudioPlayoutVolume(this.playoutVolume);
+    },
+
     // BGM 测试
-    onTestBGMChanged() {
-      if (this.testBGM) {
-        this.rtcCloud.playBGM(this.testPath);
-      } else {
-        this.rtcCloud.stopBGM();
+    onBGMPlay() {
+      if (this.bgmStatus === 0) {
+        this.rtcCloud.playBGM(this.bgmTestPath);
       }
+    },
+    onBGMStop() {
+      if (this.bgmStatus !== 0) {
+        this.rtcCloud.stopBGM();
+        this.bgmStatus = 0;
+        this.bgmProgress = 0;
+        this.bgmProgressMS = 0;
+      }
+    },
+    onBGMResume() {
+      if (this.bgmStatus === 2) {
+        this.rtcCloud.resumeBGM();
+        this.bgmStatus = 1;
+      }
+    },
+    onBGMPause() {
+      if (this.bgmStatus === 1) {
+        this.rtcCloud.pauseBGM();
+        this.bgmStatus = 2;
+      }
+    },
+    onBGMBackoff() {
+      if (this.bgmStatus !== 1) {
+        this.notify('BGM 未开始播放！');
+        return;
+      }
+      this.bgmProgressMS -= 3000;
+      if (this.bgmProgressMS <= 0) this.bgmProgressMS = 0;
+      this.rtcCloud.setBGMPosition(this.bgmProgressMS);
+    },
+    onBGMForward() {
+      if (this.bgmStatus !== 1) {
+        this.notify('BGM 未开始播放！');
+        return;
+      }
+      let durationMS = this.rtcCloud.getBGMDuration(this.bgmTestPath);
+      this.bgmProgressMS += 3000;
+      if (this.bgmProgressMS >= durationMS) this.bgmProgressMS = durationMS;
+      this.rtcCloud.setBGMPosition(this.bgmProgressMS);
+    },
+    onBGMVolumeChanged() {
+      this.rtcCloud.setBGMVolume(this.bgmVolume);
+    },
+    onBGMPlayoutVolumeChanged() {
+      this.rtcCloud.setBGMPlayoutVolume(this.bgmPlayoutVolume);
+    },
+    onBGMPublishVolumeChanged() {
+      this.rtcCloud.setBGMPublishVolume(this.bgmPublishVolume);
+    },
+
+    // 系统混音测试（目前只支持 Windows 32位 ，Mac 下设置无效）
+    onSystemAudioLoopback() {
+      if (this.systemAudioLoopback) {
+        this.rtcCloud.startSystemAudioLoopback();
+      } else {
+        this.rtcCloud.stopSystemAudioLoopback();
+      }
+    },
+    onSystemAudioVolumeChanged() {
+      this.rtcCloud.setSystemAudioLoopbackVolume(this.systemAudioVolume);
+    },
+
+    // 音效相关测试
+    onEffectPlay(index, effectId, effectPath, effectPublish, effectLoopCount, effectVolume) {
+      if (this.effectTestCase[index].effectStatus === 0) {
+        let param = new TRTCAudioEffectParam();
+        param.effectId = effectId;
+        param.path = effectPath;
+        param.publish = effectPublish;
+        param.loopCount = effectLoopCount;
+        param.volume = effectVolume;
+        this.rtcCloud.playAudioEffect(param);
+        this.effectTestCase[index].effectStatus = 1;
+      }
+    },
+    onEffectVolumeChanged(effectId, volume) {
+      this.rtcCloud.setAudioEffectVolume(effectId, volume);
+    },
+    onEffectStop(index, effectId) {
+      if (this.effectTestCase[index].effectStatus === 1) {
+        this.rtcCloud.stopAudioEffect(effectId);
+        this.effectTestCase[index].effectStatus = 0;
+      }
+    },
+    onEffectPause(index, effectId) {
+      if (this.effectTestCase[index].effectStatus === 1) {
+        this.rtcCloud.pauseAudioEffect(effectId);
+        this.effectTestCase[index].effectStatus = 2;
+      }
+    },
+    onEffectResume(index, effectId) {
+      if (this.effectTestCase[index].effectStatus === 2) {
+        this.rtcCloud.resumeAudioEffect(effectId);
+        this.effectTestCase[index].effectStatus = 1;
+      }
+    },
+    onAllEffectVolumeChanged() {
+      this.rtcCloud.setAllAudioEffectsVolume(this.allEffectVolume);
+    },
+    onStopAllEffect() {
+      this.rtcCloud.stopAllAudioEffects();
+      this.effectTestCase.forEach((item) => {
+        item.effectStatus = 0;
+      });
     },
 
     // 云端画面混合
@@ -747,6 +1011,12 @@ let demoApp = new Vue({
       });
       this.rtcCloud.setMixTranscodingConfig(config);
     },
+    updateCDNStreamId() {
+      this.rtcCloud.startPublishing(this.streamId, TRTCVideoStreamType.TRTCVideoStreamTypeBig);
+    },
+    cancelCDNStreamId() {
+      this.rtcCloud.stopPublishing();
+    },
 
     // 屏幕分享
     onStartScreenCapture() {
@@ -821,22 +1091,24 @@ let demoApp = new Vue({
       param.userSig = userSig;
       param.privateMapKey = '';
       param.businessInfo = '';
-      //param.role = TRTCRoleType.TRTCRoleAudience;
-      //this.appScene = TRTCAppScene.TRTCAppSceneLIVE;
+      param.role = TRTCRoleType.TRTCRoleAnchor;
+      param.streamId = this.streamId;
       this.rtcCloud.enterRoom(param, this.appScene);
-      
-      this.rtcCloud.setLocalVideoRenderCallback(
-        TRTCVideoPixelFormat.TRTCVideoPixelFormat_BGRA32, 
-        TRTCVideoBufferType.TRTCVideoBufferType_Buffer, 
-        /**
-         * 
-         * @param userId     用户标识
-         * @param streamType	流类型：即摄像头还是屏幕分享
-         * @param videoframe      视频帧数据
-         */
-        (userId, streamType, videoframe) => {
-          //console.info("onRenderVideoFrame, Local " + userId + "|" + streamType + "|" + videoframe.length);
-      });
+
+      // 设置本地渲染数据回调
+      // this.rtcCloud.setLocalVideoRenderCallback(
+      //   TRTCVideoPixelFormat.TRTCVideoPixelFormat_BGRA32,
+      //   TRTCVideoBufferType.TRTCVideoBufferType_Buffer,
+      //   /**
+      //    * 
+      //    * @param userId     用户标识
+      //    * @param streamType	流类型：即摄像头还是屏幕分享
+      //    * @param videoframe      视频帧数据
+      //    */
+      //   (userId, streamType, videoframe) => {
+      //     console.info("onRenderVideoFrame, Local " + userId + "|" + streamType + "|" + videoframe.length);
+      //   }
+      // );
 
       // 2.编码参数
       let encParam = new TRTCVideoEncParam();
@@ -844,12 +1116,18 @@ let demoApp = new Vue({
       encParam.resMode = this.videoResolutionMode;
       encParam.videoFps = this.videoFps;
       encParam.videoBitrate = this.videoBitrate;
+      if (this.appScene == TRTCAppScene.TRTCAppSceneVideoCall) {
+        encParam.enableAdjustRes = true;
+      }
       this.rtcCloud.setVideoEncoderParam(encParam);
 
       this.rtcCloud.setLocalViewMirror(this.localMirror);
       this.rtcCloud.setVideoEncoderMirror(this.encoderMirror);
       if (this.openBeauty) {
         this.rtcCloud.setBeautyStyle(this.beautyStyle, this.beauty, this.white, this.ruddiness);
+      }
+      if (this.showVoice) {
+        this.rtcCloud.enableAudioVolumeEvaluation(200);
       }
 
       if (this.pushSmallVideo) {
@@ -873,14 +1151,28 @@ let demoApp = new Vue({
       this.rtcCloud.muteLocalAudio(false);
     },
 
-    // 退房
-    exitRoom() {
-      if (!this.inroom) return;
-      // 退房重新进房前需要清理所有资源，所以这里先还在房间内，等 onExitRoom 回调到来才退房成功
-      this.inroom = true;
+    // 清除资源
+    release() {
       // 关闭采集音视频
       this.rtcCloud.stopLocalPreview();
       this.rtcCloud.stopLocalAudio();
+
+      // 释放资源
+      if (this.screenCapture) {
+        this.rtcCloud.stopScreenCapture();
+      }
+      if (this.mixTranscoding) {
+        this.rtcCloud.setMixTranscodingConfig(null);
+      }
+      if (this.bgmStatus === 1) {
+        this.rtcCloud.stopBGM();
+      }
+      if (this.systemAudioLoopback) {
+        this.rtcCloud.stopSystemAudioLoopback();
+      }
+      this.rtcCloud.stopAllAudioEffects();
+      this.rtcCloud.stopBGM();
+      this.destroyAllVideoView();
 
       // 清除状态
       this.muteLocalVideo = false;
@@ -893,15 +1185,21 @@ let demoApp = new Vue({
       this.pkUsers.splice(0, this.pkUsers.length);
       this.mixTranscoding = false;
       this.mixStreamInfos.splice(0, this.mixStreamInfos.length);
+      this.effectTestCase.forEach((item) => {
+        item.effectStatus = 0;
+      });
+      this.bgmStatus = 0;
+      this.bgmProgress = 0;
+      this.bgmProgressMS = 0;
+      this.systemAudioLoopback = false;
+    },
 
-      // 释放资源
-      if (this.screenCapture) {
-        this.rtcCloud.stopScreenCapture();
-      }
-      if (this.mixTranscoding) {
-        this.rtcCloud.setMixTranscodingConfig(null);
-      }
-      this.destroyAllVideoView();
+    // 退房
+    exitRoom() {
+      if (!this.inroom) return;
+      // 退房重新进房前需要清理所有资源，所以这里先还在房间内，等 onExitRoom 回调到来才退房成功
+      this.inroom = true;
+      this.release();
       this.rtcCloud.exitRoom();
     },
 
@@ -932,17 +1230,38 @@ let demoApp = new Vue({
 
     // 分享播放地址（获取旁路直播的 url ）
     sharePlayUrl() {
-      // 计算 CDN 地址(格式： http://[bizid].liveplay.myqcloud.com/live/[bizid]_[streamid].flv )
+      // 计算 CDN 地址(格式： http://[bizid].liveplay.myqcloud.com/live/[streamid].flv )
       let sdkInfo = genTestUserSig(this.userId);
-      // streamid = MD5 (房间号_用户名_流类型)
-      let crypto = require('crypto');
-      let strHash = crypto.createHash('md5');
-      strHash.update(this.roomId + '_' + this.userId + '_main');
-      let streamId = strHash.digest('hex');
-      let shareUrl = 'http://' + sdkInfo.bizId + '.liveplay.myqcloud.com/live/' + sdkInfo.bizId + '_' + streamId + '.flv';
+      // streamid = SDKAPPID_房间号_用户名_流类型
+      let streamId = sdkInfo.sdkappid + '_' + this.roomId + '_' + this.userId + '_main';
+      let shareUrl = 'http://' + sdkInfo.bizId + '.liveplay.myqcloud.com/live/' + streamId + '.flv';
       let clipboard = require('electron').clipboard;
       clipboard.writeText(shareUrl);
       this.$message('播放地址：（已复制到剪切板）' + shareUrl);
+    },
+
+    // 发送自定义消息
+    sendCustomMessage() {
+      if (this.customMsg.length === 0) {
+        this.notify('发送内容不允许为空！');
+        return;
+      }
+      let ret = this.rtcCloud.sendCustomCmdMsg(this.cmdId, this.customMsg, true, true);
+      this.cmdId = (this.cmdId % 10) + 1;
+      if (ret) {
+        this.notify('发送自定义消息成功') ;
+      }
+    },
+    // 发送 SEI 消息
+    sendSEIMessage() {
+      if (this.seiMsg.length === 0) {
+        this.notify('发送内容不允许为空！');
+        return;
+      }
+      let ret = this.rtcCloud.sendSEIMsg(this.seiMsg, 1);
+      if (ret) {
+        this.notify('发送自定义消息成功');
+      }
     },
 
     // 在创建一个 Dom 节点，用来显示视频。key 值是用于给 view 的标记，以免重复创建
@@ -1059,18 +1378,23 @@ let demoApp = new Vue({
       // 初始化设备信息
       this.cameraList = this.rtcCloud.getCameraDevicesList();
       if (this.cameraList.length > 0) {
+        this.cameraDeviceId = this.cameraList[0].deviceId;
         this.cameraDeviceName = this.cameraList[0].deviceName;
       }
       this.micList = this.rtcCloud.getMicDevicesList();
       if (this.micList.length > 0) {
+        this.micDeviceId = this.micList[0].deviceId;
         this.micDeviceName = this.micList[0].deviceName;
       }
       this.speakerList = this.rtcCloud.getSpeakerDevicesList();
       if (this.speakerList.length > 0) {
+        this.speakerDeviceId = this.speakerList[0].deviceId;
         this.speakerDeviceName = this.speakerList[0].deviceName;
       }
       this.micVolume = this.rtcCloud.getCurrentMicDeviceVolume();
       this.speakerVolume = this.rtcCloud.getCurrentSpeakerVolume();
+      this.captureVolume = this.rtcCloud.getAudioCaptureVolume();
+      this.playoutVolume = this.rtcCloud.getAudioPlayoutVolume();
 
       this.testBGMText = '启动 BGM 测试';
     },
@@ -1138,5 +1462,19 @@ let demoApp = new Vue({
         duration: 2000
       });
     }
+  }
+});
+
+ipc.on('app-close', () => {
+  if (demoApp !== null) {
+    if (demoApp.inroom) {
+      demoApp.exitRoom();
+    }
+    demoApp.rtcCloud.setLogCallback(null);
+    demoApp.rtcCloud.destroy();
+    demoApp.setLocalStore();
+  }
+  if (process.platform !== 'darwin') {
+    ipc.send('closed');
   }
 });

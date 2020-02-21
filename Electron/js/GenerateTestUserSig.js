@@ -22,7 +22,7 @@ function genTestUserSig(userID) {
    * 进入腾讯云实时音视频[控制台](https://console.cloud.tencent.com/rav ) 创建应用，即可看到 SDKAppId，
    * 它是腾讯云用于区分客户的唯一标识。
    */
-  var SDKAPPID = 0;  
+  var SDKAPPID = 0;
 
 
   /**

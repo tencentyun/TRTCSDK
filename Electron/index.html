@@ -15,20 +15,26 @@
       <el-aside>
         <el-card shadow="never">
           <el-form ref="form" size="mini" label-width="70px">
-            <el-form-item label="用户名">
-              <el-input id="userId" v-model="userId" placeholder="请输入用户名" :disabled="inroom" clearable autofocus>
-              </el-input>
+            <el-form-item label="房间号">
+              <el-input v-model="roomId" placeholder="请输入数字" :disabled="inroom" maxlength="9" minlength="1"
+                onkeyup="value=value.replace(/[^\d]/g,'')" clearable autofocus></el-input>
             </el-form-item>
 
-            <el-form-item label="房间号">
-              <el-input id="roomId" v-model="roomId" placeholder="请输入数字" :disabled="inroom" maxlength="9" minlength="1"
-                onkeyup="value=value.replace(/[^\d]/g,'')" clearable autofocus></el-input>
+            <el-form-item label="用户名">
+              <el-input v-model="userId" placeholder="请输入用户名" :disabled="inroom" clearable autofocus>
+              </el-input>
             </el-form-item>
           </el-form>
           <el-form ref="form" size="mini" label-width="30px">
             <el-form-item>
               <el-button @click="enterRoom" v-text="'进入房间'" :disabled="inroom"></el-button>
               <el-button @click="exitRoom" v-text="'退出房间'" :disabled="!inroom"></el-button>
+            </el-form-item>
+          </el-form>
+          <el-form ref="form" size="mini">
+            <el-form-item label="CDN流ID" label-width="80px">
+              <el-input v-model="streamId" placeholder="请输入流ID" :disabled="inroom" maxlength="64" minlength="0"
+                onkeyup="value=value.replace(/[^\da-zA-Z_]/g,'')" clearable size="mini"></el-input>
             </el-form-item>
           </el-form>
           <el-button type="text" @click="openSettingDialog = true" v-text="'设置'"></el-button>
@@ -85,15 +91,20 @@
             <el-form-item>
               <el-button @click="openBeautyDialog = true" v-text="'美颜设置'" :disabled="!inroom"></el-button>
             </el-form-item>
-          </el-form>
-          <el-form :inline="true" ref="form" size="mini">
             <el-form-item>
-              <el-checkbox @change="onMixTransCoding" v-model.boolean="mixTranscoding" :disabled="!inroom">云端画面混合
-              </el-checkbox>
+              <el-button @click="openEffectDialog = true" v-text="'音效设置'" :disabled="!inroom"></el-button>
             </el-form-item>
             <el-form-item>
-              <el-button size="small" type="text" @click="sharePlayUrl" v-text="'分享播放地址'" :disabled="!inroom">
-              </el-button>
+              <el-button @click="openBGMDialog = true" v-text="'BGM设置'" :disabled="!inroom"></el-button>
+            </el-form-item>
+            <el-form-item id="system_audio_loopback">
+              <el-button @click="openSystemAudioLoopbackDialog = true" v-text="'混音设置'" :disabled="!inroom"></el-button>
+            </el-form-item>
+            <el-form-item id="system_audio_loopback">
+              <el-button @click="openMixTranscodingDialog = true" v-text="'混流设置'" :disabled="!inroom"></el-button>
+            </el-form-item>
+            <el-form-item>
+              <el-button @click="openOtherSetting = true" v-text="'其他设置'" :disabled="!inroom"></el-button>
             </el-form-item>
           </el-form>
         </el-card>
@@ -159,7 +170,8 @@
           <el-form ref="form" size="mini" label-width="80px">
             <el-form-item label="麦克风">
               <el-select @change="onMicDeviceSelect" v-model="micDeviceName" placeholder="请选择" size="mini">
-                <el-option v-for="item in micList" :key="item.deviceId" :label="item.deviceName" :value="item.deviceId">
+                <el-option v-for="item in micList" :key="item.deviceId" :label="item.deviceName"
+                  :value="item.deviceName">
                 </el-option>
               </el-select>
               <el-switch @change="onTestMicChanged" v-model="testMic" active-text="测试">
@@ -174,7 +186,7 @@
             <el-form-item label="扬声器">
               <el-select @change="onSpeakerDeviceSelect" v-model="speakerDeviceName" placeholder="请选择" size="mini">
                 <el-option v-for="item in speakerList" :key="item.deviceId" :label="item.deviceName"
-                  :value="item.deviceId">
+                  :value="item.deviceName">
                 </el-option>
               </el-select>
               <el-switch @change="onTestSpeakerChanged" v-model="testSpeaker" active-text="测试">
@@ -185,18 +197,21 @@
               <el-slider @change="onSpeakerVolumeChanged" v-model="speakerVolume" :max="100" :min="0" input-size="mini">
               </el-slider>
             </el-form-item>
-          </el-form>
-          <el-form ref="form" size="mini" label-width="80px">
-            <el-form-item label="BGM 测试">
-              <el-switch @change="onTestBGMChanged" v-model="testBGM" active-text="启动" inactive-text="停止">
-              </el-switch>
+
+            <el-form-item label="软件采集音量">
+              <el-slider @change="onCaptureVolumeChanged" v-model="captureVolume" :max="100" :min="0" input-size="mini">
+              </el-slider>
+            </el-form-item>
+            <el-form-item label="软件播放音量">
+              <el-slider @change="onPlayoutVolumeChanged" v-model="playoutVolume" :max="100" :min="0" input-size="mini">
+              </el-slider>
             </el-form-item>
           </el-form>
           <el-form ref="form" size="mini" label-width="80px">
             <el-form-item label="摄像头">
               <el-select @change="onCameraDeviceSelect" v-model="cameraDeviceName" placeholder="请选择" size="mini">
                 <el-option v-for="item in cameraList" :key="item.deviceId" :label="item.deviceName"
-                  :value="item.deviceId">
+                  :value="item.deviceName">
                 </el-option>
               </el-select>
               <el-switch @change="onTestCameraChanged" v-model="testCamera" active-text="测试">
@@ -210,7 +225,7 @@
           </el-form>
         </el-dialog>
 
-        <el-dialog title="美颜" :visible.sync="openBeautyDialog" width="300px">
+        <el-dialog title="美颜设置" :visible.sync="openBeautyDialog" width="300px">
           <el-form ref="form" size="mini">
             <el-form-item>
               <el-checkbox @change="onOpenBeauty" v-model.boolean="openBeauty">开启美颜</el-checkbox>
@@ -252,6 +267,148 @@
               </el-form-item>
             </el-form>
           </div>
+        </el-dialog>
+        <el-dialog title="混音设置" :visible.sync="openSystemAudioLoopbackDialog" width="300px">
+          <el-form ref="form">
+            <el-form-item>
+              <el-checkbox @change="onSystemAudioLoopback" v-model.boolean="systemAudioLoopback">系统混音
+              </el-checkbox>
+            </el-form-item>
+            <el-form-item label="音量" label-width="50px">
+              <el-slider @change="onSystemAudioVolumeChanged" v-model="systemAudioVolume" :max="100" :min="0"
+                input-size="mini" :disabled="!systemAudioLoopback">
+              </el-slider>
+            </el-form-item>
+          </el-form>
+        </el-dialog>
+
+        <el-dialog title="BGM 设置" :visible.sync="openBGMDialog">
+          <el-form ref="form">
+            <el-form-item label="BGM 控制" label-width="100px">
+              <div style="display: flex;align-items: center;">
+                <el-progress style="width: 150px; stroke-width: 6" :percentage="bgmProgress" :show-text="false">
+                </el-progress>
+                <el-button-group style="margin-left: 10px">
+                  <el-button icon="el-icon-arrow-left" @click="onBGMBackoff" size="mini"></el-button>
+                  <el-button icon="el-icon-arrow-right" @click="onBGMForward" size="mini"></el-button>
+                </el-button-group>
+              </div>
+              <el-button-group>
+                <el-button v-text="'play'" @click="onBGMPlay" size="mini">
+                </el-button>
+                <el-button v-text="'stop'" @click="onBGMStop" size="mini">
+                </el-button>
+                <el-button v-text="'pause'" @click="onBGMPause" size="mini">
+                </el-button>
+                <el-button v-text="'resume'" @click="onBGMResume" size="mini">
+                </el-button>
+              </el-button-group>
+            </el-form-item>
+            <el-form-item label="BGM 音量" label-width="100px">
+              <el-slider @change="onBGMVolumeChanged" v-model="bgmVolume" :max="200" :min="0" input-size="mini">
+              </el-slider>
+            </el-form-item>
+            <el-form-item label="本地播放音量" label-width="100px">
+              <el-slider @change="onBGMPlayoutVolumeChanged" v-model="bgmPlayoutVolume" :max="100" :min="0"
+                input-size="mini">
+              </el-slider>
+            </el-form-item>
+            <el-form-item label="远端播放音量" label-width="100px">
+              <el-slider @change="onBGMPublishVolumeChanged" v-model="bgmPublishVolume" :max="100" :min="0"
+                input-size="mini">
+              </el-slider>
+            </el-form-item>
+          </el-form>
+        </el-dialog>
+
+        <el-dialog title="音效设置" :visible.sync="openEffectDialog">
+          <el-table style="width: 100%" :data="effectTestCase">
+            <el-table-column label="音效" width="60">
+              <template slot-scope="scope">
+                <span>{{ scope.row.effectName }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="上行" width="60">
+              <template slot-scope="scope">
+                <el-checkbox v-model.boolean="scope.row.effectPublish" size="medium"></el-checkbox>
+              </template>
+            </el-table-column>
+            <el-table-column label="循环次数" width="175">
+              <template slot-scope="scope">
+                <el-input-number v-model="scope.row.effectLoopCount" :min="0" :max="10" size="mini">
+                </el-input-number>
+              </template>
+            </el-table-column>
+            <el-table-column label="音量" width="150">
+              <template slot-scope="scope">
+                <el-slider style="width: 100px;"
+                  @change="onEffectVolumeChanged(scope.row.effectId, scope.row.effectVolume)"
+                  v-model="scope.row.effectVolume" :max="100" :min="0" input-size="mini">
+                </el-slider>
+              </template>
+            </el-table-column>
+            <el-table-column label="操作" width="300">
+              <template slot-scope="scope">
+                <el-button-group style="display: flex">
+                  <el-button
+                    @click="onEffectPlay(scope.$index, scope.row.effectId, scope.row.effectPath, scope.row.effectPublish, scope.row.effectLoopCount, scope.row.effectVolume)"
+                    size="mini">play</el-button>
+                  <el-button @click="onEffectStop(scope.$index, scope.row.effectId)" size="mini">stop
+                  </el-button>
+                  <el-button @click="onEffectPause(scope.$index, scope.row.effectId)" size="mini">pause
+                  </el-button>
+                  <el-button @click="onEffectResume(scope.$index, scope.row.effectId)" size="mini">resume
+                  </el-button>
+                </el-button-group>
+              </template>
+            </el-table-column>
+          </el-table>
+          <el-form :inline="true" style="margin-top: 10px" ref="form">
+            <el-form-item label="音效全局音量">
+              <el-slider @change="onAllEffectVolumeChanged" v-model="allEffectVolume" :max="100" :min="0">
+              </el-slider>
+            </el-form-item>
+          </el-form>
+          <el-button @click="onStopAllEffect" v-text="'停止所有音效'"></el-button>
+        </el-dialog>
+
+        <el-dialog title="混流设置" :visible.sync="openMixTranscodingDialog" width="300px">
+          <el-form :inline="true" ref="form" size="mini">
+            <el-form-item>
+              <el-checkbox @change="onMixTransCoding" v-model.boolean="mixTranscoding" :disabled="!inroom">云端画面混合
+              </el-checkbox>
+            </el-form-item>
+            <el-form-item>
+              <el-button size="small" type="text" @click="sharePlayUrl" v-text="'分享播放地址'" :disabled="!inroom">
+              </el-button>
+            </el-form-item>
+          </el-form>
+          <el-form ref="form" size="mini">
+            <el-form-item label="直播CDN流ID">
+              <el-input v-model="streamId" placeholder="请输入流ID" maxlength="64" minlength="0" clearable
+                onkeyup="value=value.replace(/[^\da-zA-Z_]/g,'')"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button @click="updateCDNStreamId" v-text="'更新'" size="mini"></el-button>
+            </el-form-item>
+          </el-form>
+        </el-dialog>
+
+        <el-dialog title="其他设置" :visible.sync="openOtherSetting" width="400px">
+          <el-form ref="form">
+            <el-form-item label="自定义消息" label-width="100px">
+              <el-input style="width: 175px;" v-model="customMsg" placeholder="请输入自定义消息" clearable autofocus
+                maxlength="30" size="mini">
+              </el-input>
+              <el-button @click="sendCustomMessage" v-text="'发送'" size="mini"></el-button>
+            </el-form-item>
+            <el-form-item label="SEI 消息" label-width="100px">
+              <el-input style="width: 175px;" v-model="seiMsg" placeholder="请输入SEI消息" clearable autofocus maxlength="30"
+                size="mini">
+              </el-input>
+              <el-button @click="sendSEIMessage" v-text="'发送'" size="mini"></el-button>
+            </el-form-item>
+          </el-form>
         </el-dialog>
       </el-aside>
       <el-main>
