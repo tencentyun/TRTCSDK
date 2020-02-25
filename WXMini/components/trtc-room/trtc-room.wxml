@@ -22,30 +22,6 @@
             <span class="message-content">{{item.message}}</span>
           </view>
           <view id="message-bottom"></view>
-          <!-- <view class="message-item">
-            <span class="user-name mine">user 1121212121211</span>
-            <span class="message-content">hellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhell</span>
-          </view>
-          <view class="message-item">
-            <span class="user-name">user 12</span>
-            <span class="message-content">hell!</span>
-          </view>
-          <view class="message-item">
-            <span class="user-name">user 1121212121211</span>
-            <span class="message-content">hellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhell</span>
-          </view>
-          <view class="message-item">
-            <span class="user-name mine">user 1121212121211</span>
-            <span class="message-content">hellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhell</span>
-          </view>
-          <view class="message-item">
-            <span class="user-name">user 12</span>
-            <span class="message-content">hell!</span>
-          </view>
-          <view class="message-item">
-            <span class="user-name">user 1121212121211</span>
-            <span class="message-content">hellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhell</span>
-          </view> -->
         </view>
       </scroll-view>
         
