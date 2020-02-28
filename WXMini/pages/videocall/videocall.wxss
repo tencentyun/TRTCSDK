@@ -53,10 +53,11 @@
   text-align: center;
   bottom: 5vh;
 }
-.bottom-btn button{
+.bottom-btn .btn{
   width: 80%;
   background-color: #006eff;
   border-radius: 50px;
+  color: #ffffff;
 }
 
 .close {

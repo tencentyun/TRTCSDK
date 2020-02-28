@@ -21,7 +21,7 @@ Page({
 
   },
   enterRoomID: function(event) {
-    console.log('index enterRoomID', event)
+    // console.log('index enterRoomID', event)
     this.setData({
       roomID: event.detail.value,
     })
@@ -66,7 +66,7 @@ Page({
       })
       return
     }
-    if (roomID > 4294967295 || roomID < 0) {
+    if (roomID > 4294967295 || roomID < 1) {
       wx.showToast({
         title: '房间号取值范围为 1~4294967295',
         icon: 'none',

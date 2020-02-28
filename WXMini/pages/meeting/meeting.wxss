@@ -60,6 +60,7 @@ button.btn-hover{
 }
 .input-box .btn-random{
 	margin: 0;
+	width: auto;
 }
 .choice-content {
 	margin-top: 20rpx;
@@ -151,10 +152,11 @@ button.btn-hover{
 	text-align: center;
 	bottom: 5vh;
 }
-.bottom-btn button{
+.bottom-btn .btn-enter{
 	width: 80%;
 	background-color: #006eff;
 	border-radius: 50px;
+  color: #ffffff;
 }
 .close {
   position:absolute;

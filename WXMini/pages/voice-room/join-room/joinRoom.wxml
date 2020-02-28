@@ -24,6 +24,6 @@
   </view>
 </view>
 <view class='bottom-btn'>
-  <button type="primary" bindtap="joinRoom" hover-class="none">进入房间</button>
+  <button class="btn" bindtap="joinRoom" hover-class="none">进入房间</button>
 </view>
 <cover-image class='close' style="top:{{(headerHeight + statusBarHeight) - 34}}rpx"src="../../../images/back.png" bindtap="onBack"></cover-image>

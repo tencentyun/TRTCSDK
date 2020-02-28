@@ -60,7 +60,7 @@ export const DEFAULT_PUSHER_CONFIG = {
   audioQuality: 'high', // 高音质(48KHz)或低音质(16KHz)，可选值：high，low
   audioVolumeType: 'voicecall', // 声音类型 可选值： media: 媒体音量，voicecall: 通话音量
   audioReverbType: 0, // 音频混响类型 0: 关闭 1: KTV 2: 小房间 3:大会堂 4:低沉 5:洪亮 6:金属声 7:磁性
-  waitingImage: 'https://web-player-1252463788.cos.ap-shanghai.myqcloud.com/demo/1px.png', // 当微信切到后台时的垫片图片 trtc暂不支持
+  waitingImage: 'https://mc.qcloudimg.com/static/img/daeed8616ac5df256c0591c22a65c4d3/pause_publish.jpg', // 当微信切到后台时的垫片图片 trtc暂不支持
   waitingImageHash: '',
 }
 
