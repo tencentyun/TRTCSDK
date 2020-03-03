@@ -33,7 +33,6 @@ static NSString * const ConfigFile = @"config";
     self = [super init];
     if (self) {
         _engine = [TRTCCloud sharedInstance];
-
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onWindowWillClose:) name:NSWindowWillCloseNotification object:nil];
         self.settingsWindowController = [[TRTCSettingWindowController alloc] initWithWindowNibName:NSStringFromClass(TRTCSettingWindowController.class) engine:_engine];
     }
@@ -64,7 +63,9 @@ static NSString * const ConfigFile = @"config";
     [_mainWindowController close];
     [_loginWindowController close];
     [_settingsWindowController close];
-    self.onQuit();
+    if (self.onQuit) {
+        self.onQuit();
+    }
 }
 
 - (void)awake {

@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface TRTCMainWindowController : NSWindowController
 
 /// 录屏预览窗口
-@property (strong) IBOutlet NSWindow *capturePreviewWindow;
+@property (strong) IBOutlet NSWindow *screenShareWindow;
 
 /// 跨房通话窗口
 @property (strong) IBOutlet NSWindow *connectRoomWindow;

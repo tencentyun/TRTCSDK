@@ -17,8 +17,8 @@
 
 // TRTC的bizid的appid用于转推直播流，https://console.cloud.tencent.com/rav 点击【应用】【帐号信息】
 // 在【直播信息】中可以看到bizid和appid，分别填到下面这两个符号
-#define TX_BIZID 0 //填入自己账号的<#BIZID#>
-#define TX_APPID 0 //填入自己账号的<#APPID#>
+#define TX_BIZID 0
+#define TX_APPID 0
 
 static NSString * const AudioIcon[2] = {@"main_tool_audio_on", @"main_tool_audio_off"};
 static NSString * const VideoIcon[2] = {@"main_tool_video_on", @"main_tool_video_off"};
@@ -59,7 +59,6 @@ typedef NS_ENUM(NSUInteger, LayoutStyle) {
 @property(nonatomic,strong) NSMutableArray *allUids;
 // 1. 画廊模式, 2. 演讲者模式
 @property(nonatomic,assign) LayoutStyle layoutStyle;
-
 // 屏幕捕捉
 @property(nonatomic,strong) TXCaptureSourceWindowController *captureSourceWindowController;
 @property(nonatomic,copy) NSString * presentingScreenCaptureUid;
@@ -73,6 +72,9 @@ typedef NS_ENUM(NSUInteger, LayoutStyle) {
 
 // 正在进行的屏幕分享源
 @property(nonatomic, strong) TRTCScreenCaptureSourceInfo *screenCaptureInfo;
+
+// 显示屏幕分享按钮
+@property (nonatomic, strong) NSTitlebarAccessoryViewController *titleBarAccessoryViewController;
 
 @end
 
@@ -94,6 +96,14 @@ typedef NS_ENUM(NSUInteger, LayoutStyle) {
         _pkInfos = [NSMutableDictionary new];
         [TRTCSettingWindowController addObserver:self forKeyPath:NSStringFromSelector(@selector(cloudMixEnabled)) options:NSKeyValueObservingOptionNew context:NULL];
         [TRTCSettingWindowController addObserver:self forKeyPath:NSStringFromSelector(@selector(isAudience)) options:NSKeyValueObservingOptionNew context:NULL];
+        
+        _titleBarAccessoryViewController = [[NSTitlebarAccessoryViewController alloc] initWithNibName:@"TRTCMainWindowAccessory" bundle:nil];
+        _titleBarAccessoryViewController.layoutAttribute = NSLayoutAttributeRight;
+        NSButton *button = _titleBarAccessoryViewController.view.subviews.firstObject;
+        if ([button isKindOfClass:[NSButton class]]) {
+            button.target = self;
+            button.action = @selector(onClickPlayScreenShare:);
+        }
     }
     return self;
 }
@@ -222,7 +232,9 @@ typedef NS_ENUM(NSUInteger, LayoutStyle) {
 #pragma mark - 窗口标题
 - (void)updateWindowTitle {
     NSString *title = [NSString stringWithFormat:@"房间%u",self.roomID];
-    if (self.screenCaptureInfo) {
+    if (self.presentingScreenCaptureUid) {
+        title = [title stringByAppendingFormat:@" %@ 正在分享屏幕",self.presentingScreenCaptureUid];
+    } else if (self.screenCaptureInfo) {
         NSString *name = nil;
         if (self.screenCaptureInfo.type == TRTCScreenCaptureSourceTypeWindow) {
             NSDictionary *extInfo = self.screenCaptureInfo.extInfo;
@@ -315,7 +327,7 @@ typedef NS_ENUM(NSUInteger, LayoutStyle) {
     [self.trtcEngine exitRoom];
     [self.trtcEngine stopLocalPreview];
     [self.beautyPanel close];
-    [self.capturePreviewWindow close];
+    [self.screenShareWindow close];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"Logout" object:self];
 }
 
@@ -520,6 +532,10 @@ typedef NS_ENUM(NSUInteger, LayoutStyle) {
     [self.window addChildWindow:self.beautyPanel ordered:NSWindowAbove];
 }
 
+- (IBAction)onClickPlayScreenShare:(id)sender {
+    [self.screenShareWindow orderFront:nil];
+}
+
 #pragma makr - 跨房通话
 - (IBAction)onConnectAnotherRoom:(id)sender {
     [self.window beginSheet:self.connectRoomWindow completionHandler:^(NSModalResponse returnCode) {
@@ -600,10 +616,10 @@ typedef NS_ENUM(NSUInteger, LayoutStyle) {
 #pragma mark - 播放录屏
 - (void)_playScreenCaptureForUser:(NSString *)userId {
     if (![self.presentingScreenCaptureUid isEqualToString:userId]) {
-        [self.trtcEngine startRemoteSubStreamView:userId view:self.capturePreviewWindow.contentView];
+        [self.trtcEngine startRemoteSubStreamView:userId view:self.screenShareWindow.contentView];
     }
-    [self.capturePreviewWindow orderFront:self];
-    self.capturePreviewWindow.title = [NSString stringWithFormat:@"%@的屏幕分享", userId];
+    [self.screenShareWindow orderFront:self];
+    self.screenShareWindow.title = [NSString stringWithFormat:@"%@的屏幕分享", userId];
     self.presentingScreenCaptureUid = userId;
 }
 
@@ -613,6 +629,8 @@ typedef NS_ENUM(NSUInteger, LayoutStyle) {
 
     if (errCode == ERR_SERVER_CENTER_ANOTHER_USER_PUSH_SUB_VIDEO) {
         dispatch_async(dispatch_get_main_queue(), ^{
+            self.screenCaptureInfo = nil;
+            [self updateWindowTitle];
             NSAlert *alert = [[NSAlert alloc] init];
             alert.messageText = @"屏幕分享发起失败";
             alert.informativeText = @"房间内已经有人发起了屏幕分享";
@@ -702,7 +720,7 @@ typedef NS_ENUM(NSUInteger, LayoutStyle) {
 
 - (void)onFirstVideoFrame:(NSString *)userId streamType:(TRTCVideoStreamType)streamType width:(int)width height:(int)height {
     if (streamType == TRTCVideoStreamTypeSub && [userId isEqualToString:self.presentingScreenCaptureUid]) {
-        NSSize maxSize = self.capturePreviewWindow.screen.visibleFrame.size;
+        NSSize maxSize = self.screenShareWindow.screen.visibleFrame.size;
         maxSize.width /= 2;
         maxSize.height /= 2;
         if (width > maxSize.width) {
@@ -711,27 +729,27 @@ typedef NS_ENUM(NSUInteger, LayoutStyle) {
         if (height > maxSize.height) {
             height = maxSize.height;
         }
-        [self.capturePreviewWindow setContentSize:NSMakeSize(width, height)];
-        [self.capturePreviewWindow orderFront:nil];
+        [self.screenShareWindow setContentSize:NSMakeSize(width, height)];
+        [self.screenShareWindow orderFront:nil];
     }
 }
 
 - (void)onUserSubStreamAvailable:(NSString *)userId available:(BOOL)available {
     if (available) {
-        if (![self.capturePreviewWindow isVisible]) {
+        if (![self.screenShareWindow isVisible]) {
             [self _playScreenCaptureForUser:userId];
         }
-        [self.capturePreviewWindow orderOut:nil];
-        TXRenderView *renderView = [self renderViewForUser: userId];
-        [renderView addTextToolbarItem:@"屏" target:self action:@selector(onRenderViewToolbarScreenShareClicked:) context:userId];
+        [self.window addTitlebarAccessoryViewController:self.titleBarAccessoryViewController];
     } else {
         if ([userId isEqualToString:self.presentingScreenCaptureUid]){
-            [self.capturePreviewWindow close];
+            [self.screenShareWindow close];
             self.presentingScreenCaptureUid = nil;
+            if (self.window.titlebarAccessoryViewControllers.count > 0) {
+                [self.window removeTitlebarAccessoryViewControllerAtIndex:0];
+            }
         }
-        TXRenderView *renderView = [self renderViewForUser: userId];
-        [renderView removeToolbarWithTitle:@"屏"];
     }
+    [self updateWindowTitle];
 }
 
 - (void)onUserEnter:(NSString *)userId {

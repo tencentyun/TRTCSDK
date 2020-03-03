@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		066D98C324003BCB00912A89 /* test.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 066D98C224003BCB00912A89 /* test.mp3 */; };
+		066D98C524003BD500912A89 /* TRTCMainWindowAccessory.xib in Resources */ = {isa = PBXBuildFile; fileRef = 066D98C424003BD500912A89 /* TRTCMainWindowAccessory.xib */; };
 		129FE2EC23CEB3940028480C /* bgm_demo.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 129FE2EB23CEB3940028480C /* bgm_demo.mp3 */; };
 		453167F221E45560007A91CB /* TRTCNewWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 453167EF21E4555F007A91CB /* TRTCNewWindowController.m */; };
 		453167F321E45560007A91CB /* TRTCNewWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 453167F021E4555F007A91CB /* TRTCNewWindowController.xib */; };
@@ -35,6 +37,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		066D98C224003BCB00912A89 /* test.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = test.mp3; sourceTree = "<group>"; };
+		066D98C424003BD500912A89 /* TRTCMainWindowAccessory.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TRTCMainWindowAccessory.xib; sourceTree = "<group>"; };
 		129FE2EB23CEB3940028480C /* bgm_demo.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bgm_demo.mp3; sourceTree = "<group>"; };
 		453167EF21E4555F007A91CB /* TRTCNewWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCNewWindowController.m; sourceTree = "<group>"; };
 		453167F021E4555F007A91CB /* TRTCNewWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TRTCNewWindowController.xib; sourceTree = "<group>"; };
@@ -147,6 +151,8 @@
 				D689A93721CC97F400C7C618 /* Main.storyboard */,
 				D689A93A21CC97F400C7C618 /* Info.plist */,
 				D689A93B21CC97F400C7C618 /* main.m */,
+				066D98C224003BCB00912A89 /* test.mp3 */,
+				129FE2EB23CEB3940028480C /* bgm_demo.mp3 */,
 				D689A93D21CC97F400C7C618 /* TRTCDemo.entitlements */,
 			);
 			path = TRTCDemo;
@@ -155,7 +161,6 @@
 		D689A95221CC9AE400C7C618 /* TRTC */ = {
 			isa = PBXGroup;
 			children = (
-				129FE2EB23CEB3940028480C /* bgm_demo.mp3 */,
 				D697C3BF22F3164100E80A2A /* GenerateTestUserSig.h */,
 				D697C3C022F3164100E80A2A /* GenerateTestUserSig.m */,
 				45F96FC8223296E600E861EC /* TRTCApp.h */,
@@ -172,6 +177,7 @@
 				45AD956C21D6532B007B2EAF /* TRTCSettingWindowController.h */,
 				45AD956E21D6532C007B2EAF /* TRTCSettingWindowController.m */,
 				45AD956821D6532B007B2EAF /* TRTCSettingWindowController.xib */,
+				066D98C424003BD500912A89 /* TRTCMainWindowAccessory.xib */,
 			);
 			path = TRTC;
 			sourceTree = "<group>";
@@ -263,10 +269,12 @@
 				457A707E2200814E00DD193B /* TXCaptureSourceWindowController.xib in Resources */,
 				45AD957B21D656C2007B2EAF /* TRTCMainWindowController.xib in Resources */,
 				453167F321E45560007A91CB /* TRTCNewWindowController.xib in Resources */,
+				066D98C324003BCB00912A89 /* test.mp3 in Resources */,
 				45AD957121D6532C007B2EAF /* TRTCSettingWindowController.xib in Resources */,
 				D689A93921CC97F400C7C618 /* Main.storyboard in Resources */,
 				457A70812200814E00DD193B /* TXCaptureSourceCollectionHeaderView.xib in Resources */,
 				457A707B2200814E00DD193B /* CaptureSourceCollectionItem.xib in Resources */,
+				066D98C524003BD500912A89 /* TRTCMainWindowAccessory.xib in Resources */,
 				457A70802200814E00DD193B /* TXCaptureSourceViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
