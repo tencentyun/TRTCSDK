@@ -100,6 +100,12 @@ Component({
       if (this.status.isPending) {
         // 经历了 5000 挂起事件
         this.status.isPending = false
+        // 修复iOS 最小化触发5000事件后，音频推流失败的问题
+        if (ENV.IS_IOS && this.data.pusher.enableMic) {
+          this.unpublishLocalAudio().then(()=>{
+            this.publishLocalAudio()
+          })
+        }
       }
       if (this.status.isPush) {
         // 小程序hide - show 有一定概率本地黑屏或静止，远端正常，或者远端和本地同时黑屏或静止，需要手动启动预览，非必现
@@ -131,6 +137,7 @@ Component({
       this._initStatus()
       this._bindEvent()
       this._bindEventGrid()
+      this._keepScreenOn()
       console.log(TAG_NAME, '_init success component:', this)
     },
     _initStatus() {
@@ -1329,7 +1336,13 @@ Component({
       // console.log(TAG_NAME, '_filterVisibleStream list:', list)
       return list
     },
-
+    _keepScreenOn() {
+      setInterval(() => {
+        wx.setKeepScreenOn({
+          keepScreenOn: true,
+        })
+      }, 20000)
+    },
     //  ______  __       __        ______             __                                              __
     //  |      \|  \     /  \      |      \           |  \                                            |  \
     //   \$$$$$$| $$\   /  $$       \$$$$$$ _______  _| $$_     ______    ______   _______    ______  | $$

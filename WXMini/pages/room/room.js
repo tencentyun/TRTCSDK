@@ -201,6 +201,9 @@ Page({
     this.trtcComponent.on(TRTC_EVENT.REMOTE_AUDIO_REMOVE, (event)=>{
       console.log('* room REMOTE_AUDIO_REMOVE', event, this.trtcComponent.getRemoteUserList())
     })
+    this.trtcComponent.on(TRTC_EVENT.IM_SDK_READY, (event)=>{
+      console.log('* room IM_SDK_READY', event)
+    })
     this.trtcComponent.on(TRTC_EVENT.IM_MESSAGE_RECEIVED, (event)=>{
       console.log('* room IM_MESSAGE_RECEIVED', event)
     })
