@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="AppBaseTheme" parent="android:Theme.Black.NoTitleBar">
-    </style>
-    <style name="AppTheme" parent="AppBaseTheme">
-    </style>
+
+    <style name="AppBaseTheme" parent="android:Theme.Black.NoTitleBar"></style>
+
+    <style name="AppTheme" parent="AppBaseTheme"></style>
     <!--/rtmp room-->
     <style name="NewActivityTheme" parent="Theme.AppCompat.NoActionBar"></style>
 
@@ -35,8 +35,7 @@
         <item name="android:maxHeight">3dp</item>
     </style>
 
-    <style name="common_dlg" parent="@android:style/Theme.Holo.Light.Dialog">
-        <item name="android:windowNoTitle">false</item>
-        <item name="android:windowCloseOnTouchOutside">true</item>
+    <style name="common_alert_dialog" parent="@android:style/Theme.Holo.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 </resources>

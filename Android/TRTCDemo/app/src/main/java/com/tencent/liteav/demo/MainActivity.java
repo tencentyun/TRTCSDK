@@ -1,19 +1,28 @@
 package com.tencent.liteav.demo;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.blankj.utilcode.constant.PermissionConstants;
+import com.blankj.utilcode.util.PermissionUtils;
 import com.tencent.liteav.demo.trtc.TRTCNewRoomActivity;
 import com.tencent.liteav.demo.trtcvoiceroom.CreateVoiceRoomActivity;
-import com.tencent.liteav.trtcaudiocalldemo.demo.CreateAudioCallActivity;
+import com.tencent.liteav.login.LoginActivity;
+import com.tencent.liteav.login.ProfileManager;
+import com.tencent.liteav.trtcaudiocalldemo.ui.TRTCAudioCallHistoryActivity;
+import com.tencent.liteav.trtcvideocalldemo.ui.TRTCVideoCallHistoryActivity;
 import com.tencent.rtmp.TXLiveBase;
 
 import java.io.File;
@@ -34,6 +43,9 @@ public class MainActivity extends Activity {
     private List<TRTCItemEntity>    mTRTCItemEntityList;
     private RecyclerView            mRvList;
     private TRTCRecyclerViewAdapter mTRTCRecyclerViewAdapter;
+    private ImageView               mLogoutImg;
+    private AlertDialog             mAlertDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +90,7 @@ public class MainActivity extends Activity {
             @Override
             public void onItemClick(int position) {
                 TRTCItemEntity entity = mTRTCItemEntityList.get(position);
-                Intent intent = new Intent(MainActivity.this, entity.mTargetClass);
+                Intent         intent = new Intent(MainActivity.this, entity.mTargetClass);
                 intent.putExtra("TITLE", entity.mTitle);
                 intent.putExtra("TYPE", entity.mType);
 
@@ -87,13 +99,75 @@ public class MainActivity extends Activity {
         });
         mRvList.setLayoutManager(new LinearLayoutManager(this));
         mRvList.setAdapter(mTRTCRecyclerViewAdapter);
+
+        mLogoutImg = (ImageView) findViewById(R.id.img_logout);
+        mLogoutImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showLogoutDialog();
+            }
+        });
+
+        initPermission();
+    }
+
+    private void stopService() {
+        Intent intent = new Intent(this, CallService.class);
+        stopService(intent);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    private void showLogoutDialog() {
+        if (mAlertDialog == null) {
+            mAlertDialog = new AlertDialog.Builder(this, R.style.common_alert_dialog)
+                    .setMessage("确定要退出登录吗？")
+                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // 执行退出登录操作
+                            ProfileManager.getInstance().logout(new ProfileManager.ActionCallback() {
+                                @Override
+                                public void onSuccess() {
+                                    stopService();
+                                    // 退出登录
+                                    startLoginActivity();
+                                }
+
+                                @Override
+                                public void onFailed(int code, String msg) {
+
+                                }
+                            });
+                        }
+                    })
+                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .create();
+        }
+        if (!mAlertDialog.isShowing()) {
+            mAlertDialog.show();
+        }
+    }
+
+    private void startLoginActivity() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private List<TRTCItemEntity> createTRTCItems() {
         List<TRTCItemEntity> list = new ArrayList<>();
-        list.add(new TRTCItemEntity("视频通话", "支持720P/1080P高清画质，50%丢包率可正常视频通话，自带美颜、挂件、抠图等AI特效。", R.drawable.video_call, TRTCNewRoomActivity.TRTC_VOICECALL, TRTCNewRoomActivity.class));
+        list.add(new TRTCItemEntity("视频通话", "支持720P/1080P高清画质，50%丢包率可正常视频通话，自带美颜、挂件、抠图等AI特效。", R.drawable.video_call, 0, TRTCVideoCallHistoryActivity.class));
         list.add(new TRTCItemEntity("视频互动直播", "低延时、十万人高并发的大型互动直播解决方案，观众时延低至800ms，上下麦切换免等待。", R.drawable.live_stream, TRTCNewRoomActivity.TRTC_LIVE, TRTCNewRoomActivity.class));
-        list.add(new TRTCItemEntity("语音通话", "48kHz高音质，60%丢包可正常语音通话，领先行业的3A处理，杜绝回声和啸叫。", R.drawable.voice_call, 0, CreateAudioCallActivity.class));
+        list.add(new TRTCItemEntity("语音通话", "48kHz高音质，60%丢包可正常语音通话，领先行业的3A处理，杜绝回声和啸叫。", R.drawable.voice_call, 0, TRTCAudioCallHistoryActivity.class));
         list.add(new TRTCItemEntity("语音聊天室", "内含变声、音效、混响、背景音乐等声音玩法，适用于闲聊房、K歌房、开黑房等语聊场景。", R.drawable.voice_chatroom, 0, CreateVoiceRoomActivity.class));
         return list;
     }
@@ -114,9 +188,15 @@ public class MainActivity extends Activity {
             }
         }
 
-
         String zipPath = path + "/liteavLog.zip";
         return zip(logs, zipPath);
+    }
+
+    private void initPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            PermissionUtils.permission(PermissionConstants.STORAGE, PermissionConstants.MICROPHONE, PermissionConstants.CAMERA)
+                    .request();
+        }
     }
 
     private File zip(List<String> files, String zipFileName) {

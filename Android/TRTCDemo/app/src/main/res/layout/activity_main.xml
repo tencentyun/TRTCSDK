@@ -5,16 +5,30 @@
     android:background="#0D0D0D"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/main_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+    <RelativeLayout
         android:layout_marginBottom="10dp"
         android:layout_marginTop="20dp"
-        android:gravity="center"
-        android:text="腾讯云 TRTC"
-        android:textColor="#ffffff"
-        android:textSize="26dp" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_centerHorizontal="true"
+            android:id="@+id/main_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="腾讯云 TRTC"
+            android:textColor="#ffffff"
+            android:textSize="26sp" />
+        <ImageView
+            android:id="@+id/img_logout"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_logout"/>
+    </RelativeLayout>
 
 
     <android.support.v7.widget.RecyclerView
@@ -40,7 +54,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         android:gravity="center"
-        android:text="本APP用于展示腾讯视频云TRTC服务的各类功能"
+        android:text="本APP用于展示腾讯视频云实时音视频服务的各类功能"
         android:textColor="#666666"
         android:textSize="12sp" />
 </LinearLayout>

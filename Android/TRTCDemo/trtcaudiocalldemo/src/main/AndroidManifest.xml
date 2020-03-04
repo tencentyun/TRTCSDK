@@ -2,19 +2,22 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.tencent.liteav.trtcaudiocalldemo">
 
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
     <application>
-        <activity android:name="com.tencent.liteav.trtcaudiocalldemo.demo.CreateAudioCallActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:theme="@style/VoiceCallTheme"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTask"/>
         <activity
-            android:name="com.tencent.liteav.trtcaudiocalldemo.demo.AudioCallMainActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:theme="@style/VoiceCallTheme"
-            android:screenOrientation="portrait" />
+            android:name=".ui.SelectContactActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name=".ui.TRTCAudioCallHistoryActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name=".ui.TRTCAudioCallActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
     </application>
 
 </manifest>

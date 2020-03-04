@@ -1,0 +1,18 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.tencent.liteav.login">
+
+
+    <application>
+        <activity
+            android:name=".LoginActivity"
+            android:theme="@style/Theme.AppCompat"
+            android:screenOrientation="portrait">
+            <intent-filter>
+<!--                <action android:name="android.intent.action.MAIN" />-->
+                <action android:name="com.tencent.liteav.action.startLogin" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

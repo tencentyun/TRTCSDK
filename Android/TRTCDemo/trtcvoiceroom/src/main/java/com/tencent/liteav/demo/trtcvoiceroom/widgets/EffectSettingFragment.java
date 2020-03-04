@@ -204,9 +204,6 @@ public class EffectSettingFragment extends BaseSettingFragmentDialog {
         final String localPath   = sdcardDir.getAbsolutePath() + "/trtc_test_effect";
         final String assetsPath  = "effect";
         File         musicFolder = new File(localPath);
-        if (musicFolder.exists()) {
-            return;
-        }
         if (!musicFolder.exists()) {
             musicFolder.mkdirs();
         }

@@ -24,16 +24,19 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.tencent.liteav:LiteAVSDK_TRTC:latest.release'
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+//    compile project(':liteav_sdk')
 
+    compile project(':debug')
+    compile "$rootProject.ext.liteavSdk"
     //依赖一个utils类
-    implementation 'com.blankj:utilcode:1.25.9'
+    compile 'com.blankj:utilcode:1.25.9'
+    compile 'com.google.code.gson:gson:2.8.6'
     //快速集成圆形image view
-    implementation 'de.hdodenhof:circleimageview:3.0.1'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-    implementation "com.android.support:design:$rootProject.ext.supportSdkVersion"
-    implementation "com.android.support:appcompat-v7:$rootProject.ext.supportSdkVersion"
-    implementation "com.android.support:recyclerview-v7:$rootProject.ext.supportSdkVersion"
+    compile 'de.hdodenhof:circleimageview:3.0.1'
+    compile 'com.android.support.constraint:constraint-layout:1.1.3'
+    compile "com.android.support:design:$rootProject.ext.supportSdkVersion"
+    compile "com.android.support:appcompat-v7:$rootProject.ext.supportSdkVersion"
+    compile "com.android.support:recyclerview-v7:$rootProject.ext.supportSdkVersion"
 
 }

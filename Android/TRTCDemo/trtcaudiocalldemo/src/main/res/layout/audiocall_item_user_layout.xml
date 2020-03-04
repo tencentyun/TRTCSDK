@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     tools:parentTag="android.widget.RelativeLayout">
+
 
     <ImageView
         android:id="@+id/img_head"
@@ -13,6 +15,23 @@
         android:layout_gravity="center_horizontal"
         android:scaleType="centerCrop"
         android:src="@drawable/wait_background" />
+
+    <FrameLayout
+        android:id="@+id/fl_shade"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#70000000"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <com.wang.avi.AVLoadingIndicatorView
+            android:id="@+id/loading_view"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/AVLoadingIndicatorView.Large"
+            app:indicatorName="BallPulseIndicator" />
+    </FrameLayout>
 
     <TextView
         android:id="@+id/tv_name"
@@ -26,7 +45,7 @@
         android:layout_marginBottom="3dp"
         android:background="@drawable/username_border"
         android:gravity="center"
-        android:textColor="@color/white"
+        android:textColor="@color/colorWhite"
         android:textSize="14sp"
         tools:text="123123" />
 
@@ -43,4 +62,5 @@
         android:max="100"
         android:minHeight="3dp"
         android:progress="0" />
+
 </merge>

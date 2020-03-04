@@ -17,9 +17,8 @@ import android.widget.Toast;
 import com.blankj.utilcode.constant.PermissionConstants;
 import com.blankj.utilcode.util.PermissionUtils;
 import com.blankj.utilcode.util.SPUtils;
-import com.tencent.liteav.demo.trtcvoiceroom.debug.GenerateTestUserSig;
+import com.tencent.liteav.debug.GenerateTestUserSig;
 import com.tencent.liteav.demo.trtcvoiceroom.model.VoiceRoomConfig;
-import com.tencent.trtc.TRTCCloud;
 import com.tencent.trtc.TRTCCloudDef;
 
 
@@ -27,7 +26,6 @@ public class CreateVoiceRoomActivity extends AppCompatActivity {
     private static final String ROOM_ID = "voiceroom_id";
     private static final String USER_ID = "voiceroom_user_id";
 
-    private LinearLayout mNetEnv;
     private TextView     mEnterTv;
     private RadioButton  mAnchorRb;
     private RadioButton  mAudienceRb;
@@ -52,7 +50,6 @@ public class CreateVoiceRoomActivity extends AppCompatActivity {
     }
 
     private void initData() {
-        mNetEnv.setVisibility(View.VISIBLE);
         //获取存取的用户名和房间号
         String         roomId   = SPUtils.getInstance().getString(ROOM_ID);
         String         userId   = SPUtils.getInstance().getString(USER_ID);
@@ -67,11 +64,9 @@ public class CreateVoiceRoomActivity extends AppCompatActivity {
         etRoomId.setText(roomId);
         etUserId.setText(userId);
 
-        findViewById(R.id.NetEnv).setVisibility(View.VISIBLE);
     }
 
     private void initView() {
-        mNetEnv = (LinearLayout) findViewById(R.id.NetEnv);
         mEnterTv = (TextView) findViewById(R.id.tv_enter);
         mEnterTv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,6 +140,13 @@ public class CreateVoiceRoomActivity extends AppCompatActivity {
         // 保存roomId和userId
         SPUtils.getInstance().put(ROOM_ID, String.valueOf(roomId));
         SPUtils.getInstance().put(USER_ID, userId);
+
+        RadioButton rbDev        = (RadioButton) findViewById(R.id.rb_dev);
+        RadioButton rbExperience = (RadioButton) findViewById(R.id.rb_experience);
+//        if (rbDev.isChecked()) {
+//        } else if (rbExperience.isChecked()) {
+//        } else {
+//        }
 
         startJoinRoomInternal(roomId, userId);
     }
