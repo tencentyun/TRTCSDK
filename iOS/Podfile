@@ -1,10 +1,20 @@
-source 'https://github.com/CocoaPods/Specs.git'
+# Uncomment the next line to define a global platform for your project
+platform :ios, '9.0'
 
-platform :ios, '8.0'
+def common_pods
+  pod 'SnapKit'
+  pod 'SDWebImage'
+  pod 'Alamofire'
+  pod 'RxSwift'
+  pod 'RxCocoa'
+  pod 'TXIMSDK_iOS'
+  pod 'Material'
+  pod 'NVActivityIndicatorView'
+  pod 'Toast-Swift'
+  pod 'MJExtension'
+  pod 'Masonry'
+end
 
-target 'TRTCDemo' do
-
-#pod 'TXLiteAVSDK_TRTC'
-pod 'TXLiteAVSDK_TRTC', :podspec => 'http://pod-1252463788.cosgz.myqcloud.com/liteavsdkspec/TXLiteAVSDK_TRTC.podspec'
-
+target 'trtcScenesDemo' do
+  common_pods
 end

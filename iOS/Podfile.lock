@@ -1,0 +1,74 @@
+PODS:
+  - Alamofire (4.9.1)
+  - Masonry (1.1.0)
+  - Material (3.1.8):
+    - Material/Core (= 3.1.8)
+  - Material/Core (3.1.8):
+    - Motion (~> 3.1.1)
+  - MJExtension (3.2.1)
+  - Motion (3.1.3):
+    - Motion/Core (= 3.1.3)
+  - Motion/Core (3.1.3)
+  - NVActivityIndicatorView (4.8.0):
+    - NVActivityIndicatorView/Presenter (= 4.8.0)
+  - NVActivityIndicatorView/Presenter (4.8.0)
+  - RxCocoa (5.1.0):
+    - RxRelay (~> 5)
+    - RxSwift (~> 5)
+  - RxRelay (5.1.0):
+    - RxSwift (~> 5)
+  - RxSwift (5.1.0)
+  - SDWebImage (5.4.2):
+    - SDWebImage/Core (= 5.4.2)
+  - SDWebImage/Core (5.4.2)
+  - SnapKit (4.2.0)
+  - Toast-Swift (5.0.1)
+  - TXIMSDK_iOS (4.6.58)
+
+DEPENDENCIES:
+  - Alamofire
+  - Masonry
+  - Material
+  - MJExtension
+  - NVActivityIndicatorView
+  - RxCocoa
+  - RxSwift
+  - SDWebImage
+  - SnapKit
+  - Toast-Swift
+  - TXIMSDK_iOS
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Alamofire
+    - Masonry
+    - Material
+    - MJExtension
+    - Motion
+    - NVActivityIndicatorView
+    - RxCocoa
+    - RxRelay
+    - RxSwift
+    - SDWebImage
+    - SnapKit
+    - Toast-Swift
+    - TXIMSDK_iOS
+
+SPEC CHECKSUMS:
+  Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
+  Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
+  Material: a2a3f400a3b549d53ef89e56c58c4535b29db387
+  MJExtension: 635f2c663dcb1bf76fa4b715b2570a5710aec545
+  Motion: cf1e060e489f6661126374d5c60dbd2ed991605c
+  NVActivityIndicatorView: d24b7ebcf80af5dcd994adb650e2b6c93379270f
+  RxCocoa: 13d2a4d7546a34b8ececae8c281e4ea1dbb94f2b
+  RxRelay: a168bd6caf712d00c676ac344e9295afc93b418e
+  RxSwift: ad5874f24bb0dbffd1e9bb8443604e3578796c7a
+  SDWebImage: 4ca2dc4eefae4224bea8f504251cda485a363745
+  SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
+  Toast-Swift: 9b6a70f28b3bf0b96c40d46c0c4b9d6639846711
+  TXIMSDK_iOS: d4231ccd8a045f54ca04d008dba46fdbf25687fb
+
+PODFILE CHECKSUM: e22212ddcc8a063d1f82eac37dea7b6cadb4d884
+
+COCOAPODS: 1.7.5
