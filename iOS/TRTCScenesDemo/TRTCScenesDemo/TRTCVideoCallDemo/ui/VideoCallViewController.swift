@@ -183,7 +183,9 @@ class VideoCallViewController: UIViewController {
     
     func disMiss() {
         if self.curState != .calling {
-            self.codeTimer.resume()
+            if !codeTimer.isCancelled {
+                self.codeTimer.resume()
+            }
         }
         self.codeTimer.cancel()
         dismiss(animated: false) {

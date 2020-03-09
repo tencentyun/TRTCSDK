@@ -135,7 +135,7 @@ public class TRTCVideoCall: NSObject,
                             failed: @escaping ((_ code: Int, _ message: String) -> Void)) {
         
         let config = TIMSdkConfig.init()
-        config.sdkAppId = Int32(timSdkAppID)
+        config.sdkAppId = Int32(sdkAppID)
         config.dbPath = NSHomeDirectory() + "/Documents/com_tencent_imsdk_data/"
         TIMManager.sharedInstance()?.initSdk(config)
         TIMManager.sharedInstance()?.add(self)

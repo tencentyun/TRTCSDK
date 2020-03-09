@@ -12,7 +12,7 @@ extension TRTCAudioCall: TRTCCloudDelegate {
     
     func enterRoom() {
         let param = TRTCParams()
-        param.sdkAppId = UInt32(timSdkAppID)
+        param.sdkAppId = UInt32(sdkAppID)
         param.userId = AudioCallUtils.shared.curUserId()
         param.roomId = curRoomID
         param.userSig = GenerateTestUserSig.genTestUserSig(param.userId)
