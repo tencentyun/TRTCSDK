@@ -62,7 +62,7 @@ DECL_DEFAULT_KEY(TRTCAppScene, Scene, scene)
 // 是否显示音量
 DECL_DEFAULT_KEY(BOOL, ShowVolume, showVolume)
 // 是否开启云端画面混合
-DECL_DEFAULT_KEY(BOOL, CloudMixEnabled, cloudMixEnabled)
+DECL_DEFAULT_KEY(TRTCTranscodingConfigMode, MixMode, mixMode)
 // 是否观众角色
 DECL_DEFAULT_KEY(BOOL, IsAudience, isAudience)
 // 分辨率模式
@@ -92,7 +92,7 @@ DECL_DEFAULT_KEY(BOOL, PlaySmallStream, playSmallStream)
 
                                  DefaultKeyIsAudience: @(NO),
                                  DefaultKeyResolutionMode: @(TRTCVideoResolutionModeLandscape),
-                                 DefaultKeyCloudMixEnabled: @(NO),
+                                 DefaultKeyMixMode: @(0),
                                  
                                  DefaultKeyFps : @(15),
                                  DefaultKeyResolution: @(TRTCVideoResolution_640_480),
@@ -143,6 +143,7 @@ DECL_DEFAULT_KEY(BOOL, PlaySmallStream, playSmallStream)
 
 - (void)setPlaySmallStream:(BOOL)playSmallStream {
     self.class.playSmallStream = playSmallStream;
+    [self _updateVideoConfig];
 }
 
 - (BOOL)playSmallStream {
@@ -151,6 +152,7 @@ DECL_DEFAULT_KEY(BOOL, PlaySmallStream, playSmallStream)
 
 - (void)setPushDoubleStream:(BOOL)pushDoubleStream {
     self.class.pushDoubleStream = pushDoubleStream;
+    [self _updateVideoConfig];
 }
 
 - (BOOL)pushDoubleStream {
@@ -165,16 +167,15 @@ DECL_DEFAULT_KEY(BOOL, PlaySmallStream, playSmallStream)
     return self.class.showVolume;
 }
 
-- (void)setCloudMixEnabled:(BOOL)cloudMixEnabled {
-    NSString *key = NSStringFromSelector(@selector(cloudMixEnabled));
+- (void)setMixMode:(TRTCTranscodingConfigMode)mixMode {
+    NSString *key = NSStringFromSelector(@selector(mixMode));
     [self.class willChangeValueForKey:key];
-    self.class.cloudMixEnabled = cloudMixEnabled;
+    self.class.mixMode = mixMode;
     [self.class didChangeValueForKey:key];
 }
 
-- (BOOL)cloudMixEnabled {
-    return self.class.cloudMixEnabled;
-    //TODO
+- (TRTCTranscodingConfigMode)mixMode {
+    return self.class.mixMode;
 }
 
 - (void)setIsAudience:(BOOL)isAudience
@@ -594,6 +595,11 @@ DECL_DEFAULT_KEY(BOOL, PlaySmallStream, playSmallStream)
     alert.informativeText = playUrl;
     [alert runModal];
 }
+
+- (IBAction)onClickMixModeButton:(NSPopUpButton *)button {
+    self.mixMode = button.indexOfSelectedItem;
+}
+
 #pragma mark - NSSharingServicePickerDelegate
 - (NSArray<NSSharingService *> *)sharingServicePicker:(NSSharingServicePicker *)sharingServicePicker sharingServicesForItems:(NSArray *)items proposedSharingServices:(NSArray<NSSharingService *> *)proposedServices
 {
@@ -670,8 +676,13 @@ DECL_DEFAULT_KEY(BOOL, PlaySmallStream, playSmallStream)
         smallVideoConfig.resMode = TRTCSettingWindowController.resolutionMode;
         [self.trtcEngine enableEncSmallVideoStream:TRTCSettingWindowController.pushDoubleStream
                                        withQuality:smallVideoConfig];
+    } else {
+        [self.trtcEngine enableEncSmallVideoStream:NO withQuality:nil];
     }
     
+    [self.trtcEngine setPriorRemoteVideoStreamType:TRTCSettingWindowController.playSmallStream
+        ? TRTCVideoStreamTypeSmall
+        : TRTCVideoStreamTypeBig];
 }
 - (void)_updateQOSParam {
     TRTCNetworkQosParam *param = [[TRTCNetworkQosParam alloc] init];

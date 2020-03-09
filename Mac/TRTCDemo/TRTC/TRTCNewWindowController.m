@@ -16,7 +16,6 @@
 #import "GenerateTestUserSig.h"
 #import "TRTCSettingWindowController.h"
 
-
 @interface TRTCNewWindowController()
 {
     NSArray *_users;

@@ -27,46 +27,14 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic, readonly) BOOL canConnectRoom;
 @property (assign, nonatomic) BOOL connectingRoom;
 
-/// 视频开关
-@property (strong) IBOutlet NSButton *videoBtn;
-
-/// 静音按钮
-@property (strong) IBOutlet NSButton *micBtn;
-
-/// 底部工具栏
-@property (strong) IBOutlet NSView *controlBar;
-
 /// 音频设备选则列表
 @property (strong) IBOutlet NSTableView *audioSelectView;
 
 /// 视频设备选则列表
 @property (strong) IBOutlet NSTableView *videoSelectView;
 
-/// 弹出视频设备选则列表按钮
-@property (strong) IBOutlet NSButton *videoSelectBtn;
-
-/// 弹出音频设备选则列表按钮
-@property (strong) IBOutlet NSButton *audioSelectBtn;
-
-/// 退房按钮
-@property (strong) IBOutlet NSButton *closeBtn;
-
-/// 屏幕分享
-@property (strong) IBOutlet NSButton *screenShareBtn;
-
-@property (strong) IBOutlet NSButton *connectRoomBtn;
-
-/// 布局切换按钮（九宫格 OR 前后叠加）
-@property (strong) IBOutlet NSButton *videoLayoutStyleBtn;
-
-/// 日志按钮
-@property (strong) IBOutlet NSButton *logBtn;
-
 /// 美颜窗口
 @property (strong) IBOutlet NSPanel *beautyPanel;
-
-/// 美颜按钮
-@property (strong) IBOutlet NSButton *beautyBtn;
 
 ///是否开启美颜（磨皮）
 @property BOOL beautyEnabled;

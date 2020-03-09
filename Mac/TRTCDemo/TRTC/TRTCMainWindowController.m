@@ -13,30 +13,43 @@
 #import "TRTCSettingWindowController.h"
 #import "TXRenderView.h"
 #import "HoverView.h"
+#import "TRTCVideoListView.h"
+#import "TRTCMemberListView.h"
+#import "TRTCUserManager.h"
 #import <CommonCrypto/CommonCrypto.h>
 
 // TRTC的bizid的appid用于转推直播流，https://console.cloud.tencent.com/rav 点击【应用】【帐号信息】
 // 在【直播信息】中可以看到bizid和appid，分别填到下面这两个符号
 #define TX_BIZID 0
 #define TX_APPID 0
+#define PLACE_HOLDER_LOCAL_MAIN   @"$PLACE_HOLDER_LOCAL_MAIN$"
+#define PLACE_HOLDER_LOCAL_SUB   @"$PLACE_HOLDER_LOCAL_SUB$"
+#define PLACE_HOLDER_REMOTE     @"$PLACE_HOLDER_REMOTE$"
+
+#define kButtonTitleAttr @{ NSForegroundColorAttributeName : [NSColor whiteColor] }
 
 static NSString * const AudioIcon[2] = {@"main_tool_audio_on", @"main_tool_audio_off"};
 static NSString * const VideoIcon[2] = {@"main_tool_video_on", @"main_tool_video_off"};
 
 typedef NS_ENUM(NSUInteger, LayoutStyle) {
-    LayoutStyleGalleryView        = 1,
-    LayoutStylePresenterView      = 2,
-    LayoutStyleGalleryDefault = LayoutStyleGalleryView,
+    LayoutStyleGalleryView        = 0,
+    LayoutStylePresenterView      = 1,
 };
 
-@interface TRTCMainWindowController () <NSWindowDelegate,NSTableViewDelegate,NSTableViewDataSource, TRTCCloudDelegate, TRTCLogDelegate>
+@interface TRTCMainWindowController () <
+    NSWindowDelegate,
+    NSTableViewDelegate,
+    NSTableViewDataSource,
+    NSSplitViewDelegate,
+    TRTCCloudDelegate,
+    TRTCLogDelegate,
+    TRTCVideoListViewDelegate>
 {
     NSMutableDictionary *_mixTransCodeInfo;
-    dispatch_source_t _hidePanelTimer;
-    BOOL _shouldHideControlBar;
 }
 /// TRTC SDK 实例对象
 @property(nonatomic,strong) TRTCCloud *trtcEngine;
+@property (nonatomic, strong) TRTCUserManager *userManager;
 
 // 进房参数
 @property(nonatomic,readonly,strong) TRTCParams *currentUserParam;
@@ -47,26 +60,36 @@ typedef NS_ENUM(NSUInteger, LayoutStyle) {
 @property(nonatomic,strong) NSTrackingArea *trackingArea;
 
 // 视频容器
-@property(nonatomic,strong) NSView *videoLayoutView;
+@property (weak) IBOutlet NSSplitView *splitView;
+@property (weak) IBOutlet NSView *videoLayoutView;
+@property (weak) IBOutlet TRTCMemberListView *memberListView;
+
+// Function bar
+@property (weak) IBOutlet NSView *anchorFunctionBar;
+@property (weak) IBOutlet NSButton *muteAudioButton;
+@property (weak) IBOutlet NSButton *micDeviceButton;
+@property (weak) IBOutlet NSButton *muteVideoButton;
+@property (weak) IBOutlet NSButton *outputDeviceButton;
+@property (weak) IBOutlet NSButton *screenShareButton;
+@property (weak) IBOutlet NSButton *roomPKButton;
+@property (weak) IBOutlet NSButton *beautyButton;
+
+@property (weak) IBOutlet NSView *functionBar;
+@property (weak) IBOutlet NSButton *memberButton;
+@property (weak) IBOutlet NSButton *layoutButton;
+@property (weak) IBOutlet NSButton *logButton;
+@property (weak) IBOutlet NSButton *closeButton;
 
 @property(nonatomic,strong) NSMutableArray *micArr;
 @property(nonatomic,strong) NSMutableArray *speakerArr;
 @property(nonatomic,strong) NSMutableArray *cameraArr;
 
-// key为uid, value为对应的渲染view
-@property(nonatomic,strong) NSMutableDictionary *renderViewMap;
-// 排序的uid
-@property(nonatomic,strong) NSMutableArray *allUids;
 // 1. 画廊模式, 2. 演讲者模式
 @property(nonatomic,assign) LayoutStyle layoutStyle;
 // 屏幕捕捉
 @property(nonatomic,strong) TXCaptureSourceWindowController *captureSourceWindowController;
 @property(nonatomic,copy) NSString * presentingScreenCaptureUid;
 
-// 各路视频的旋转方向, key为uid
-@property(nonatomic,strong) NSMutableDictionary<NSString *, NSNumber *> *rotationState;
-// 各路视频的大小流设置, key为uid
-@property(nonatomic,strong) NSMutableDictionary<NSString *, NSNumber *> *bigSmallStreamState;
 // 混流信息，key为uid value为roomId
 @property(nonatomic, strong) NSMutableDictionary* pkInfos;
 
@@ -75,6 +98,12 @@ typedef NS_ENUM(NSUInteger, LayoutStyle) {
 
 // 显示屏幕分享按钮
 @property (nonatomic, strong) NSTitlebarAccessoryViewController *titleBarAccessoryViewController;
+
+// 演讲者模式
+@property (weak) IBOutlet TRTCVideoListView *videoListView;
+@property (weak) IBOutlet NSLayoutConstraint *videoListTrailing;
+@property (weak) IBOutlet NSLayoutConstraint *videoListHeight;
+@property (weak) IBOutlet NSButton *videoListToggleButton;
 
 @end
 
@@ -85,16 +114,12 @@ typedef NS_ENUM(NSUInteger, LayoutStyle) {
         _currentUserParam = params;
         _scene = scene;
         _audioOnly = audioOnly;
-        self.layoutStyle = LayoutStyleGalleryDefault;
         self.trtcEngine = engine;
         self.trtcEngine.delegate = self;
-        self.renderViewMap = [NSMutableDictionary dictionary];
-        self.rotationState = [NSMutableDictionary dictionary];
-        self.bigSmallStreamState = [NSMutableDictionary dictionary];
-        self.allUids = [NSMutableArray array];
+        self.userManager = [[TRTCUserManager alloc] initWithUserId:_currentUserParam.userId];
         _mixTransCodeInfo = [NSMutableDictionary dictionary];
         _pkInfos = [NSMutableDictionary new];
-        [TRTCSettingWindowController addObserver:self forKeyPath:NSStringFromSelector(@selector(cloudMixEnabled)) options:NSKeyValueObservingOptionNew context:NULL];
+        [TRTCSettingWindowController addObserver:self forKeyPath:NSStringFromSelector(@selector(mixMode)) options:NSKeyValueObservingOptionNew context:NULL];
         [TRTCSettingWindowController addObserver:self forKeyPath:NSStringFromSelector(@selector(isAudience)) options:NSKeyValueObservingOptionNew context:NULL];
         
         _titleBarAccessoryViewController = [[NSTitlebarAccessoryViewController alloc] initWithNibName:@"TRTCMainWindowAccessory" bundle:nil];
@@ -108,30 +133,11 @@ typedef NS_ENUM(NSUInteger, LayoutStyle) {
     return self;
 }
 
-- (void)awakeFromNib {
-    [super awakeFromNib];
-}
-
 - (void)dealloc {
-    [TRTCSettingWindowController removeObserver:self forKeyPath:NSStringFromSelector(@selector(cloudMixEnabled))];
+    [TRTCSettingWindowController removeObserver:self forKeyPath:NSStringFromSelector(@selector(mixMode))];
     [TRTCSettingWindowController removeObserver:self forKeyPath:NSStringFromSelector(@selector(isAudience))];
-
-    [self _cancelHidePanelTimer];
-}
-
-- (void)_configButton:(NSButton *)button title:(NSString *)title color:(NSColor *)color {
-    button.title = title;
-    NSMutableParagraphStyle *style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
-    [style setAlignment:NSCenterTextAlignment];
-    button.attributedTitle = [[NSMutableAttributedString alloc] initWithString:title attributes:@{NSForegroundColorAttributeName:color,
-                                                                                                  NSParagraphStyleAttributeName: style}];
-    button.imagePosition = NSImageAbove;
-    button.imageScaling = NSImageScaleProportionallyDown;
-    button.alignment = NSTextAlignmentCenter;
-}
-
-- (void)_configButton:(NSButton *)button title:(NSString *)title {
-    [self _configButton:button title:title color:[NSColor whiteColor]];
+    [self.userManager removeObserver:self forKeyPath:@"userConfigs"];
+    [self.videoListView removeObserver:self forKeyPath:@"tableHeight"];
 }
 
 - (void)_configPopUpMenu:(NSTableView *)tableView  {
@@ -152,7 +158,7 @@ typedef NS_ENUM(NSUInteger, LayoutStyle) {
     frame.origin.x = NSMinX(self.window.frame) - NSWidth(frame);
     frame.origin.y = NSMaxY(self.window.frame) - NSHeight(frame);
     [self.beautyPanel setFrameOrigin:frame.origin];
-    self.beautyEnabled = NO;
+    self.beautyEnabled = YES;
     self.beautyLevel = self.rednessLevel = self.whitenessLevel = 5;
 
     // 配置窗口信息
@@ -160,14 +166,34 @@ typedef NS_ENUM(NSUInteger, LayoutStyle) {
     self.window.title = [NSString stringWithFormat:@"房间%u",self.roomID];
     self.window.backgroundColor = [NSColor whiteColor];
     
-    // 添加本地视频预览 View
-    [self.window.contentView addSubview:self.videoLayoutView positioned:NSWindowBelow relativeTo:nil];
+    // 本地视频预览 View
+    self.videoLayoutView.wantsLayer = YES;
+    self.videoLayoutView.layer.backgroundColor = [NSColor colorWithRed:0.18 green:0.18 blue:0.18 alpha:1.0].CGColor;
     
     // 底部工具栏
-    self.controlBar.wantsLayer = true;
-    self.controlBar.layer.backgroundColor = [NSColor colorWithRed:0.18 green:0.18 blue:0.18 alpha:1.0].CGColor;
-    self.controlBar.hidden = YES;
-    
+    self.anchorFunctionBar.wantsLayer = true;
+    self.anchorFunctionBar.layer.backgroundColor = [NSColor colorWithRed:0.18 green:0.18 blue:0.18 alpha:1.0].CGColor;
+    self.functionBar.wantsLayer = true;
+    self.functionBar.layer.backgroundColor = [NSColor colorWithRed:0.18 green:0.18 blue:0.18 alpha:1.0].CGColor;
+    NSArray *buttons = @[
+        self.muteAudioButton,
+        self.micDeviceButton,
+        self.muteVideoButton,
+        self.outputDeviceButton,
+        self.screenShareButton,
+        self.roomPKButton,
+        self.beautyButton,
+        self.memberButton,
+        self.layoutButton,
+        self.logButton,
+        self.closeButton
+    ];
+    for (NSButton *button in buttons) {
+        [button setHover];
+        button.attributedTitle = [[NSAttributedString alloc] initWithString:button.title
+                                                                 attributes:kButtonTitleAttr];
+    }
+
     // 配置底部工具栏自动隐藏
     [self setupTrackingArea];
 
@@ -178,20 +204,18 @@ typedef NS_ENUM(NSUInteger, LayoutStyle) {
     [self _configPopUpMenu:self.videoSelectView];
     self.videoSelectView.frame = CGRectMake(self.videoSelectView.frame.origin.x, self.videoSelectView.frame.origin.y, self.videoSelectView.frame.size.width, (self.micArr.count+1)*26);
     
-    // 配置工具栏按钮样式
-    self.videoLayoutStyleBtn.layer.backgroundColor = [NSColor colorWithRed:0.18 green:0.18 blue:0.18 alpha:1.0].CGColor;
-    self.videoLayoutStyleBtn.hidden = YES;
-
-    // 设置按钮在鼠标悬浮时高亮
-    [self.controlBar.subviews enumerateObjectsUsingBlock:^(__kindof NSButton * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        if ([obj isKindOfClass:[NSButton class]] && obj.title.length > 0) {
-            [self _configButton:obj title:obj.title];
-        }
-        [obj setHover];
-
-    }];
-    [self _configButton:self.videoLayoutStyleBtn title:self.videoLayoutStyleBtn.title];
-
+    // 侧边视频列表
+    self.videoListView.delegate = self;
+    [self.videoListView observeUserManager:self.userManager];
+    [self.videoListView addObserver:self forKeyPath:@"tableHeight" options:NSKeyValueObservingOptionNew context:nil];
+    
+    // 成员列表
+    [self.memberListView observeUserManager:self.userManager];
+    self.memberListView.hidden = YES;
+    
+    // 监听成员变化
+    [self.userManager addObserver:self forKeyPath:@"userConfigs" options:NSKeyValueObservingOptionNew context:nil];
+    
     // 进房
     [self enterRoom];
 }
@@ -208,25 +232,10 @@ typedef NS_ENUM(NSUInteger, LayoutStyle) {
     [self.window.contentView addTrackingArea:self.trackingArea];
 }
 
-// 窗口改变时重新布局
-- (NSSize)windowWillResize:(NSWindow *)sender toSize:(NSSize)frameSize
-{
-    if (frameSize.width < sender.minSize.width) {
-        frameSize.width = sender.minSize.width;
-    }
-    if (frameSize.height < sender.minSize.height) {
-        frameSize.height = sender.minSize.height;
-    }
-    NSSize size = frameSize;
-    size.height = [NSWindow contentRectForFrameRect:(NSRect){NSZeroPoint, frameSize} styleMask:sender.styleMask].size.height;
-    [NSAnimationContext runAnimationGroup:^(NSAnimationContext * _Nonnull context) {
-        [self _layoutInBounds:(NSRect){NSZeroPoint, size}];
-    } completionHandler:nil];
-    return frameSize;
-}
-
 - (void)windowDidResize:(NSNotification *)notification {
     [self setupTrackingArea];
+    [self updateLayoutVideoFrame];
+    [self updateVideoListHeight];
 }
 
 #pragma mark - 窗口标题
@@ -247,78 +256,9 @@ typedef NS_ENUM(NSUInteger, LayoutStyle) {
     self.window.title = title;
 }
 
-#pragma mark - 底部工具栏控制
-// 鼠标跟踪移动检测
-- (void)mouseEntered:(NSEvent *)event {
-    [self setControlBarHidden:NO];
-    [self _cancelHidePanelTimer];
-}
-
-- (void)mouseExited:(NSEvent *)event {
-    [self setControlBarHidden:YES];
-}
-
-- (void)mouseDown:(NSEvent *)event
-{
+- (void)mouseDown:(NSEvent *)event {
     [self.videoSelectView enclosingScrollView].hidden = YES;
     [self.audioSelectView enclosingScrollView].hidden = YES;
-}
-
-- (void)_createHidePanelTimerWithBlock:(void(^)(TRTCMainWindowController*))action {
-    __weak __typeof(self) wself = self;
-    dispatch_source_t timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue());
-    dispatch_source_set_timer(timer, dispatch_time(DISPATCH_TIME_NOW, 0.5 * NSEC_PER_SEC), DISPATCH_TIME_FOREVER, 0.1 * NSEC_PER_SEC);
-    dispatch_source_set_event_handler(timer, ^{
-        TRTCMainWindowController *self = wself;
-        if (self && self->_hidePanelTimer) {
-            action(self);
-        }
-    });
-    dispatch_resume(timer);
-    _hidePanelTimer = timer;
-}
-
-- (void)_cancelHidePanelTimer {
-    if (_hidePanelTimer) {
-        dispatch_source_cancel(_hidePanelTimer);
-        _hidePanelTimer = nil;
-    }
-}
-
-- (void)setControlBarHidden:(BOOL)hidden {
-    BOOL shouldHide = hidden;
-    if ([self.audioSelectView enclosingScrollView].hidden == NO || [self.videoSelectView enclosingScrollView].hidden == NO) {
-        shouldHide = NO;
-    }
-    _shouldHideControlBar = shouldHide;
-    if (self.controlBar.hidden == shouldHide) {
-        return;
-    }
-    
-    void (^animationBlock)(TRTCMainWindowController *self) = ^(TRTCMainWindowController *self){
-        if (nil == self) return;
-        [NSAnimationContext runAnimationGroup:^(NSAnimationContext * _Nonnull context) {
-            context.allowsImplicitAnimation = YES;
-            self.controlBar.alphaValue = shouldHide ? 0.0 : 1.0;
-        } completionHandler:^{
-            self.controlBar.hidden = self->_shouldHideControlBar;
-            self.controlBar.alphaValue = 1.0;
-            [self _cancelHidePanelTimer];
-        }];
-    };
-    
-    if (hidden) {
-        if (_hidePanelTimer) {
-            return;
-        }
-        [self _createHidePanelTimerWithBlock:animationBlock];
-    } else {
-        if (_hidePanelTimer) {
-            dispatch_cancel(_hidePanelTimer);
-            _hidePanelTimer = nil;
-        }
-        animationBlock(self);
-    }
 }
 
 #pragma mark - Notification Observer
@@ -328,21 +268,20 @@ typedef NS_ENUM(NSUInteger, LayoutStyle) {
     [self.trtcEngine stopLocalPreview];
     [self.beautyPanel close];
     [self.screenShareWindow close];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"Logout" object:self];
 }
 
 #pragma mark - Setting Observer
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context
-{
-    if (object != TRTCSettingWindowController.class) {
-        return;
-    }
-    if ([keyPath isEqualToString:@"cloudMixEnabled"])
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
+    if ([keyPath isEqualToString:@"mixMode"]) {
         [self updateCloudMixtureParams];
-    
-    if ([keyPath isEqualToString:@"isAudience"]) {
+    } else if ([keyPath isEqualToString:@"isAudience"]) {
         BOOL isAudience = ((NSNumber*)change[@"new"]).boolValue;
         [self roleChanged:isAudience];
+    } else if ([keyPath isEqualToString:@"userConfigs"]) {
+        [self updateLayoutVideoFrame];
+        [self checkToStopRenderHiddenUser];
+    } else if ([keyPath isEqualToString:@"tableHeight"]) {
+        [self updateVideoListHeight];
     }
 }
 
@@ -353,15 +292,6 @@ typedef NS_ENUM(NSUInteger, LayoutStyle) {
 
 - (NSString *)userId {
     return _currentUserParam.userId;
-}
-
-// 本地预览视图
-- (TXRenderView *)localVideoRenderView {
-    return _renderViewMap[self.userId];
-}
-
-- (TXRenderView *)renderViewForUser:(NSString *)userId {
-    return _renderViewMap[userId];
 }
 
 #pragma mark - 美颜参数更新
@@ -388,49 +318,18 @@ typedef NS_ENUM(NSUInteger, LayoutStyle) {
 }
 
 #pragma mark - 控制栏按钮操作
-- (IBAction)onClickAudioMute:(id)sender {
-    NSButton *shareBtn = (NSButton *)sender;
-    if (shareBtn.state == 1) {
-        [self.micBtn setImage:[NSImage imageNamed:AudioIcon[1]]];
-        self.micBtn.title = @"解除静音";
-        NSMutableAttributedString *attTitle = [[NSMutableAttributedString alloc]initWithAttributedString:self.micBtn.attributedTitle];
-        NSDictionary *dicAtt =@{NSForegroundColorAttributeName:[NSColor whiteColor]};
-        [attTitle addAttributes:dicAtt range:NSMakeRange(0,4)];
-        self.micBtn.attributedTitle = attTitle;
-        [self.trtcEngine muteLocalAudio:YES];
-    }
-    else{
-        [self.micBtn setImage:[NSImage imageNamed:AudioIcon[0]]];
-        self.micBtn.title = @"静音";
-        NSMutableAttributedString *attTitle = [[NSMutableAttributedString alloc]initWithAttributedString:self.micBtn.attributedTitle];
-        NSDictionary *dicAtt =@{NSForegroundColorAttributeName:[NSColor whiteColor]};
-        [attTitle addAttributes:dicAtt range:NSMakeRange(0,2)];
-        self.micBtn.attributedTitle = attTitle;
-        [self.trtcEngine muteLocalAudio:NO];
-    }
+- (IBAction)onClickAudioMute:(NSButton *)button {
+    button.image = [NSImage imageNamed:AudioIcon[button.state]];
+    button.attributedTitle = [[NSAttributedString alloc] initWithString:@[@"静音", @"解除静音"][button.state]
+                                                             attributes:kButtonTitleAttr];
+    [self.userManager setUser:self.userId audioAvailable:button.state != NSControlStateValueOn];
 }
 
-- (IBAction)onClickVideoMute:(id)sender {
-    NSButton *shareBtn = (NSButton *)sender;
-    if (shareBtn.state == 1) {
-        [self.videoBtn setImage:[NSImage imageNamed:VideoIcon[1]]];
-        self.videoBtn.title = @"开启视频";
-        NSMutableAttributedString *attTitle = [[NSMutableAttributedString alloc]initWithAttributedString:self.videoBtn.attributedTitle];
-        NSDictionary *dicAtt =@{NSForegroundColorAttributeName:[NSColor whiteColor]};
-        [attTitle addAttributes:dicAtt range:NSMakeRange(0,4)];
-        self.videoBtn.attributedTitle = attTitle;
-//        [self.trtcEngine stopVideoCapture];
-        [self.trtcEngine stopLocalPreview];
-    }
-    else{
-        [self.videoBtn setImage:[NSImage imageNamed:VideoIcon[0]]];
-        self.videoBtn.title = @"停止视频";
-        NSMutableAttributedString *attTitle = [[NSMutableAttributedString alloc]initWithAttributedString:self.videoBtn.attributedTitle];
-        NSDictionary *dicAtt =@{NSForegroundColorAttributeName:[NSColor whiteColor]};
-        [attTitle addAttributes:dicAtt range:NSMakeRange(0,4)];
-        self.videoBtn.attributedTitle = attTitle;
-        [self.trtcEngine startLocalPreview:[self renderViewForUser:self.userId].contentView];
-    }
+- (IBAction)onClickVideoMute:(NSButton *)button {
+    button.image = [NSImage imageNamed:VideoIcon[button.state]];
+    button.attributedTitle = [[NSAttributedString alloc] initWithString:@[@"停止视频", @"开启视频"][button.state]
+                                                             attributes:kButtonTitleAttr];
+    [self.userManager setUser:self.userId videoAvailable:button.state != NSControlStateValueOn];
 }
 
 - (IBAction)onClickAudioSource:(id)sender {
@@ -491,34 +390,30 @@ typedef NS_ENUM(NSUInteger, LayoutStyle) {
     _trtcEngine = nil;
 }
 
-- (IBAction)onClickLog:(id)sender {
-    NSButton *shareBtn = (NSButton *)sender;
-    if (shareBtn.state == 1) {
+- (IBAction)onClickLog:(NSButton *)button {
+    if (button.state == NSControlStateValueOn) {
         [self.trtcEngine showDebugView:2];
     } else {
         [self.trtcEngine showDebugView:0];
     }
 }
 
-- (IBAction)onClickLayout:(id)sender {
-    if (self.layoutStyle == LayoutStyleGalleryView) {
-        self.layoutStyle = LayoutStylePresenterView;
-        self.videoLayoutStyleBtn.title = @"演讲者视图";
-        self.videoLayoutStyleBtn.image = [NSImage imageNamed:@"speakerMode"];
-        NSMutableAttributedString *attTitle = [[NSMutableAttributedString alloc]initWithAttributedString:self.videoLayoutStyleBtn.attributedTitle];
-        NSDictionary *dicAtt =@{NSForegroundColorAttributeName:[NSColor whiteColor]};
-        [attTitle addAttributes:dicAtt range:NSMakeRange(0,5)];
-        self.videoLayoutStyleBtn.attributedTitle = attTitle;
-    } else if (self.layoutStyle == LayoutStylePresenterView){
-        self.layoutStyle = LayoutStyleGalleryView;
-        self.videoLayoutStyleBtn.title = @"画廊视图";
-        self.videoLayoutStyleBtn.image = [NSImage imageNamed:@"main_layout_gallery"];
-        NSMutableAttributedString *attTitle = [[NSMutableAttributedString alloc]initWithAttributedString:self.videoLayoutStyleBtn.attributedTitle];
-        NSDictionary *dicAtt =@{NSForegroundColorAttributeName:[NSColor whiteColor]};
-        [attTitle addAttributes:dicAtt range:NSMakeRange(0,4)];
-        self.videoLayoutStyleBtn.attributedTitle = attTitle;
-    }
+- (IBAction)onClickLayoutButton:(NSButton *)button {
+    self.layoutStyle = (self.layoutStyle + 1) % 2;
+    
+    button.image = [NSImage imageNamed:@[@"main_layout_gallery", @"main_layout_presenter"][self.layoutStyle]];
+    button.attributedTitle = [[NSAttributedString alloc] initWithString:@[@"画廊视图", @"演讲视图"][self.layoutStyle]
+                                                             attributes:kButtonTitleAttr];
+
+    [self toggleVideoList:self.layoutStyle == LayoutStylePresenterView];
+
     [self updateLayoutVideoFrame];
+    [self checkToStopRenderHiddenUser];
+}
+
+- (IBAction)onClickVideoListToggleButton:(NSButton *)button {
+    [self toggleVideoList:button.state == NSControlStateValueOn];
+    [self checkToStopRenderHiddenUser];
 }
 
 - (IBAction)onChangeBeautyStyle:(NSButton *)button {
@@ -532,8 +427,27 @@ typedef NS_ENUM(NSUInteger, LayoutStyle) {
     [self.window addChildWindow:self.beautyPanel ordered:NSWindowAbove];
 }
 
+- (IBAction)onClickMemberButton:(NSButton *)button {
+    self.memberListView.hidden = button.state == NSControlStateValueOff;
+    CGRect frame = self.window.frame;
+    frame.size.width += self.memberListView.hidden ? -self.memberListView.frame.size.width : self.memberListView.frame.size.width;
+    [self.window setFrame:frame display:YES animate:NO];
+}
+
 - (IBAction)onClickPlayScreenShare:(id)sender {
     [self.screenShareWindow orderFront:nil];
+}
+
+- (IBAction)onClickMuteAllVideoButton:(NSButton *)button {
+    BOOL mutesVideo = button.state == NSControlStateValueOn;
+    button.title = mutesVideo ? @"取消禁画" : @"全部禁画";
+    [self.userManager muteAllRemoteVideo:mutesVideo];
+}
+
+- (IBAction)onClickMuteAllAudioButton:(NSButton *)button {
+    BOOL mutesAudio = button.state == NSControlStateValueOn;
+    button.title = button.state == NSControlStateValueOn ? @"取消静音" : @"全部静音";
+    [self.userManager muteAllRemoteAudio:mutesAudio];
 }
 
 #pragma makr - 跨房通话
@@ -564,6 +478,12 @@ typedef NS_ENUM(NSUInteger, LayoutStyle) {
     [self.trtcEngine disconnectOtherRoom];
     [self.pkInfos removeAllObjects];
     self.connectingRoom = NO;
+}
+
+- (void)toggleVideoList:(BOOL)displays {
+    self.videoListTrailing.constant = displays ? 0 : -self.videoListView.frame.size.width;
+    self.videoListToggleButton.state = displays ? NSControlStateValueOn : NSControlStateValueOff;
+    self.videoListToggleButton.image = [NSImage imageNamed:displays ? @"NSGoRightTemplate" : @"NSGoLeftTemplate"];
 }
 
 #pragma mark - KVC
@@ -625,8 +545,6 @@ typedef NS_ENUM(NSUInteger, LayoutStyle) {
 
 #pragma mark - 错误与警告
 - (void)onError:(TXLiteAVError)errCode errMsg:(NSString *)errMsg extInfo:(NSDictionary *)extInfo {
-    
-
     if (errCode == ERR_SERVER_CENTER_ANOTHER_USER_PUSH_SUB_VIDEO) {
         dispatch_async(dispatch_get_main_queue(), ^{
             self.screenCaptureInfo = nil;
@@ -655,9 +573,7 @@ typedef NS_ENUM(NSUInteger, LayoutStyle) {
     qualityConfig.videoBitrate = TRTCSettingWindowController.bitrate;
     qualityConfig.resMode = TRTCSettingWindowController.resolutionMode;
     [self.trtcEngine setVideoEncoderParam:qualityConfig];
-    [self.trtcEngine setLocalViewFillMode:TRTCVideoFillMode_Fit];
     
-    //        [self.trtcEngine setPriorRemoteVideoStreamType:TRTCVideoStreamTypeSmall];
     if (TRTCSettingWindowController.pushDoubleStream) {
         TRTCVideoEncParam *smallVideoConfig = [[TRTCVideoEncParam alloc] init];
         smallVideoConfig.videoResolution = TRTCVideoResolution_160_120;
@@ -666,32 +582,30 @@ typedef NS_ENUM(NSUInteger, LayoutStyle) {
         smallVideoConfig.resMode = TRTCSettingWindowController.resolutionMode;
         [self.trtcEngine enableEncSmallVideoStream:TRTCSettingWindowController.pushDoubleStream
                                        withQuality:smallVideoConfig];
+    } else {
+        [self.trtcEngine enableEncSmallVideoStream:NO withQuality:nil];
     }
-    //        config.renderMode = ETRTCVideoRenderModeFit; // 默认带黑边的渲染模式
     
-    // 开启视频采集预览
-    TXRenderView *videoView = [self addRenderViewForUser:self.userId];
-    [self.trtcEngine setLocalViewFillMode:TRTCVideoFillMode_Fit];
-    if (!self.audioOnly) {
-        [self.trtcEngine startLocalPreview:videoView.contentView];
+    [self.trtcEngine setPriorRemoteVideoStreamType:TRTCSettingWindowController.playSmallStream
+        ? TRTCVideoStreamTypeSmall
+        : TRTCVideoStreamTypeBig];
 
+    [self.userManager addUser:self.userId];
+
+    // 开启视频采集预览
+    if (!self.audioOnly) {
+        [self.userManager setUser:self.userId videoAvailable:YES];
     } else {
         param.bussInfo = @"{\"Str_uc_params\":{\"pure_audio_push_mod\":1}}";
     }
-    [self.trtcEngine startLocalAudio];
-    [self.trtcEngine muteLocalAudio:NO];
-    // 进房
+    
+    [self.userManager setUser:self.userId audioAvailable:YES];
     [self.trtcEngine enterRoom:param appScene:_scene];
 }
 
-- (void)onEnterRoom:(NSInteger)result{
+- (void)onEnterRoom:(NSInteger)result {
     if (result >= 0) {
         [self.trtcEngine enableAudioVolumeEvaluation:300];
-        if (self.audioOnly) {
-            [self.trtcEngine muteLocalVideo:YES];
-        }
-        self.controlBar.hidden = NO;
-        [self updateLayoutVideoFrame];
         
         [self.trtcEngine startSpeedTest:self.currentUserParam.sdkAppId
                                  userId:self.currentUserParam.userId
@@ -699,23 +613,11 @@ typedef NS_ENUM(NSUInteger, LayoutStyle) {
                              completion:^(TRTCSpeedTestResult *result, NSInteger finishedCount, NSInteger totalCount) {
                                  NSLog(@"SpeedTest progress: %d/%d, result: %@", (int)finishedCount, (int)totalCount, result);
         }];
-    }
-    else {
+    } else {
         NSString *msg = [NSString stringWithFormat:@"进房失败: [%ld]", (long)result];
         NSLog(@"%@", msg);
         [self exitRoom];
     }
-}
-
-- (void)onUserExit:(NSString *)userId reason:(NSInteger)reason {
-    NSLog(@"onUserExit:%@", userId);
-}
-
-- (void)onRemoteUserLeaveRoom:(NSString *)userId reason:(NSInteger)reason {
-    NSLog(@"onRemoteUserLeaveRoom:%@", userId);
-    [self onUserSubStreamAvailable:userId available:NO];
-    [self removeRenderViewForUser:userId];
-    [self updateCloudMixtureParams];
 }
 
 - (void)onFirstVideoFrame:(NSString *)userId streamType:(TRTCVideoStreamType)streamType width:(int)width height:(int)height {
@@ -752,46 +654,32 @@ typedef NS_ENUM(NSUInteger, LayoutStyle) {
     [self updateWindowTitle];
 }
 
-- (void)onUserEnter:(NSString *)userId {
-    NSLog(@"onUserEnter:%@", userId);
+- (void)onScreenCaptureStarted {
+    NSLog(@"onScreenCaptureStarted");
+}
+
+- (void)onScreenCaptureStoped:(int)reason {
+    NSLog(@"onScreenCaptureStoped: %@", @(reason));
 }
 
 - (void)onRemoteUserEnterRoom:(NSString *)userId {
-    NSLog(@"onRemoteUserEnterRoom:%@", userId);
+    [self.userManager addUser:userId];
 }
 
-- (void)onUserVideoAvailable:(NSString *)userId available:(BOOL)available
-{
-    NSLog(@"onUserVideoAvailable:%@ available:%d", userId, available);
-    //远程画面
-    if (userId != nil) {
-        if (available) {
-            TXRenderView* videoView = [self renderViewForUser:userId];
-            if(videoView == nil) {
-                [self addRenderViewForUser:userId];
-                videoView = [self renderViewForUser:userId];
-                [self.trtcEngine setRemoteViewFillMode:userId mode:TRTCVideoFillMode_Fit];
+- (void)onRemoteUserLeaveRoom:(NSString *)userId reason:(NSInteger)reason {
+    [self onUserSubStreamAvailable:userId available:NO];
+    [self.userManager removeUser:userId];
+}
 
-                if (TRTCSettingWindowController.playSmallStream) {
-                    self.bigSmallStreamState[userId] = @(TRTCVideoStreamTypeSmall);
-                    [self.trtcEngine setRemoteVideoStreamType:userId type:TRTCVideoStreamTypeSmall];
-                }
+- (void)onUserVideoAvailable:(NSString *)userId available:(BOOL)available {
+    if (!userId) { return; }
 
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                    [self updateLayoutVideoFrame];
-                });
-                [self updateCloudMixtureParams];
-            }
-            [self.trtcEngine startRemoteView:userId view:videoView.contentView];
-        }
-        else {
-            [self.trtcEngine stopRemoteView:userId];
-        }
-    }
+    [self.userManager setUser:userId videoAvailable:available];
+    [self updateCloudMixtureParams];
 }
 
 - (void)onUserAudioAvailable:(NSString *)userId available:(BOOL)available {
-    NSLog(@"onUserAudioAvailable:%@ available:%d", userId, available);
+    [self.userManager setUser:userId audioAvailable:available];
 }
 
 - (void)onDevice:(NSString *)deviceId type:(TRTCMediaDeviceType)deviceType stateChanged:(NSInteger)state
@@ -804,41 +692,19 @@ typedef NS_ENUM(NSUInteger, LayoutStyle) {
     NSLog(@"myLOG:[%@] %@ %ld", module, log, (long)level);
 }
 
-- (void)onNetworkQuality:(TRTCQualityInfo *)localQuality remoteQuality:(NSArray<TRTCQualityInfo *> *)remoteQuality
-{
-    [[self localVideoRenderView] setSignal:localQuality.quality];
-    
-    for (TRTCQualityInfo* qualityInfo in remoteQuality) {
-        [[self renderViewForUser:qualityInfo.userId] setSignal:qualityInfo.quality];
-    }
+- (void)onNetworkQuality:(TRTCQualityInfo *)localQuality remoteQuality:(NSArray<TRTCQualityInfo *> *)remoteQuality {
+    [self.userManager setLocalNetQuality:localQuality];
+    [self.userManager setRemoteNetQuality:remoteQuality];
 }
 
-- (void)onUserVoiceVolume:(NSArray<TRTCVolumeInfo *> *)userVolumes totalVolume:(NSInteger)totalVolume
-{
-    [_renderViewMap enumerateKeysAndObjectsUsingBlock:^(NSString *  _Nonnull key, TXRenderView * _Nonnull obj, BOOL * _Nonnull stop) {
-        [obj setVolume:0.f];
-    }];
-    [userVolumes enumerateObjectsUsingBlock:^(TRTCVolumeInfo * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        NSString *uid = obj.userId;
-        if (uid == nil) {
-            [self.localVideoRenderView setVolume:obj.volume / 100.f];
-        } else {
-            TXRenderView *view = [self renderViewForUser:obj.userId];
-            [view setVolume:obj.volume/100.f];
-        }
-    }];
+- (void)onUserVoiceVolume:(NSArray<TRTCVolumeInfo *> *)userVolumes totalVolume:(NSInteger)totalVolume {
+    [self.userManager setVolumes:userVolumes];
 }
-/*
-- (void)onStatistics:(TRTCStatistics *)statistics {
-    
-}
- */
 
-- (void)exitRoom
-{
+- (void)exitRoom {
     [self.trtcEngine exitRoom];
-    [self.trtcEngine stopLocalPreview];
 }
+
 #pragma mark - 混流
 - (void)stopCloudMixTranscoding {
     _mixTransCodeInfo = [NSMutableDictionary dictionary];
@@ -847,9 +713,16 @@ typedef NS_ENUM(NSUInteger, LayoutStyle) {
 
 - (void)updateCloudMixtureParams
 {
-    BOOL enable = [TRTCSettingWindowController cloudMixEnabled];
-    if (!enable) {
+    TRTCTranscodingConfigMode mixMode = [TRTCSettingWindowController mixMode];
+    if (mixMode == TRTCTranscodingConfigMode_Unknown) {
         [self stopCloudMixTranscoding];
+        return;
+        } else if (mixMode == TRTCTranscodingConfigMode_Template_PureAudio ||
+                   mixMode == TRTCTranscodingConfigMode_Template_ScreenSharing) {
+        TRTCTranscodingConfig* config = [TRTCTranscodingConfig new];
+        config.appId = TX_APPID;//
+        config.mode = mixMode;
+        [_trtcEngine setMixTranscodingConfig:config];
         return;
     }
     int videoWidth  = 720;
@@ -944,7 +817,6 @@ typedef NS_ENUM(NSUInteger, LayoutStyle) {
     
     TRTCTranscodingConfig* config = [TRTCTranscodingConfig new];
     config.appId = TX_APPID;//
-    config.bizId = TX_BIZID;
     config.videoWidth = videoWidth;
     config.videoHeight = videoHeight;
     config.videoGOP = 1;
@@ -956,7 +828,7 @@ typedef NS_ENUM(NSUInteger, LayoutStyle) {
     
     // 设置混流后主播的画面位置
     TRTCMixUser* broadCaster = [TRTCMixUser new];
-    broadCaster.userId = self.currentUserParam.userId; // 以主播uid为broadcaster为例
+    broadCaster.userId = mixMode == TRTCTranscodingConfigMode_Template_PresetLayout ? PLACE_HOLDER_LOCAL_MAIN : self.currentUserParam.userId; // 以主播uid为broadcaster为例
     broadCaster.zOrder = 0;
     broadCaster.rect = CGRectMake(0, 0, videoWidth, videoHeight);
     broadCaster.roomID = nil;
@@ -965,14 +837,13 @@ typedef NS_ENUM(NSUInteger, LayoutStyle) {
     [mixUsers addObject:broadCaster];
     
     // 设置混流后各个小画面的位置
-    int index = 0;
     NSDictionary* pkUsers = self.pkInfos;
     int i = 0;
     
     int mixWidth = subWidth;// videoWidth / 3.0;
     int mixHeight = subHeight;// videoHeight / 3.0;
     
-    NSMutableArray* userIdArray = _renderViewMap.allKeys.mutableCopy;
+    NSMutableArray* userIdArray = self.userManager.userList.allKeys.mutableCopy;
     if (self.presentingScreenCaptureUid) {
         [userIdArray addObject:self.presentingScreenCaptureUid];
     }
@@ -981,104 +852,50 @@ typedef NS_ENUM(NSUInteger, LayoutStyle) {
         if ([userId isEqualToString:self.currentUserParam.userId]) {
             continue;
         }
-        ++i;
         TRTCMixUser* audience = [TRTCMixUser new];
-        audience.userId = userId;
-        audience.zOrder = 1 + index;
+        audience.userId = mixMode == TRTCTranscodingConfigMode_Template_PresetLayout ? PLACE_HOLDER_REMOTE : userId;
+        audience.zOrder = i + 1;
         audience.roomID = [pkUsers objectForKey:userId];
-        
-        CGRect container;
-        container = CGRectMake(config.videoWidth - (i % 5) * (mixWidth + 5), videoHeight - (i / 5 + 1) * (mixHeight + 1), mixWidth, mixHeight);
-
-        audience.rect = container;
+        audience.rect = CGRectMake(config.videoWidth - (mixWidth + 5) - (i % 5) * (mixWidth + 5),
+                                   videoHeight - (i / 5 + 1) * (mixHeight + 1), mixWidth, mixHeight);
         
         [mixUsers addObject:audience];
-        ++index;
+        ++i;
     }
     config.mixUsers = mixUsers;
+    config.mode = mixMode;
     [_trtcEngine setMixTranscodingConfig:config];
 }
 
 #pragma makr - 角色变化
-- (void)roleChanged:(BOOL)isAudience
-{
-    if (!isAudience) {
-        [self.trtcEngine startLocalPreview:[self renderViewForUser:self.userId].contentView];
-        [self.trtcEngine startLocalAudio];
-        [self.trtcEngine switchRole:TRTCRoleAnchor];
-    }
-    else {
-        [self.trtcEngine stopLocalAudio];
-        [self.trtcEngine stopLocalPreview];
-        [self.trtcEngine switchRole:TRTCRoleAudience];
-    }
+- (void)roleChanged:(BOOL)isAudience {
+    [self.userManager setUser:self.userId videoAvailable:!isAudience];
+    [self.userManager setUser:self.userId audioAvailable:!isAudience];
+    [self.trtcEngine switchRole:isAudience ? TRTCRoleAudience : TRTCRoleAnchor];
+    
 }
 
 #pragma mark - 画面布局渲染
-- (NSView *)videoLayoutView{
-    if (!_videoLayoutView) {
-        _videoLayoutView = [[NSView alloc] initWithFrame:self.window.contentView.bounds];
-        _videoLayoutView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
-        _videoLayoutView.wantsLayer = YES;
-        _videoLayoutView.layer.backgroundColor = [NSColor colorWithRed:0.18 green:0.18 blue:0.18 alpha:1.0].CGColor;
-        [_videoLayoutView setNeedsDisplay:YES];
+
+- (void)updateLayoutVideoFrame {
+    if (self.layoutStyle == LayoutStyleGalleryView) {
+        [self layoutWithGridStyle];
+    } else {
+        [self layoutWithPresenterStyle];
     }
-    return _videoLayoutView;
+    self.videoListToggleButton.hidden = self.layoutStyle != LayoutStylePresenterView;
 }
 
-- (TXRenderView *)addRenderViewForUser:(NSString *)videoId {
-    TXRenderView *videoView = _renderViewMap[videoId];
-    if (!videoView) {
-        videoView = [[TXRenderView alloc] init];
-        videoView.volumeHidden = ![TRTCSettingWindowController showVolume];
-        [videoView addImageToolbarItem:[NSImage imageNamed:@"stream_rotate"] target:self action:@selector(onRenderViewToolbarRotateClicked:) context:videoId];
-
-        if (![videoId isEqualToString:self.userId]) {
-            [videoView addTextToolbarItem:@"流" target:self action:@selector(onRenderViewToolbarStreamClicked:) context:videoId];
-            [videoView addToggleImageToolbarItem:@[[NSImage imageNamed:@"main_tool_video_on"], [NSImage imageNamed:@"main_tool_video_off"]] target:self action:@selector(onRenderViewToolbarVideoClicked:index:) context:videoId];
-            [videoView addToggleImageToolbarItem:@[[NSImage imageNamed:@"main_tool_audio_on"], [NSImage imageNamed:@"main_tool_audio_off"]] target:self action:@selector(onRenderViewToolbarAudioClicked:index:) context:videoId];
-        }
-        [videoView addToggleImageToolbarItem:@[[NSImage imageNamed:@"stream_fill_mode"], [NSImage imageNamed:@"stream_fill_mode"]] target:self action:@selector(onRenderViewToolbarFillModeChanged:index:) context:videoId];
-
-        if (![videoId isEqualToString:self.userId] && [_allUids.firstObject isEqualToString:self.userId]) {
-            [_allUids removeObject:self.userId];
-            [_allUids insertObject:self.userId atIndex:0];
-        }
-        [_allUids addObject:videoId];
-        [_renderViewMap setObject:videoView forKey:videoId];
-        [self.videoLayoutView addSubview:videoView];
-        videoView.wantsLayer = true;
-        videoView.layer.backgroundColor = [NSColor blackColor].CGColor;
-        videoView.layer.borderWidth = 1;
-        videoView.layer.borderColor = [NSColor whiteColor].CGColor;
-        
-        NSTextField *identifierText = videoView.textLabel;
-        identifierText.backgroundColor = [[NSColor blackColor] colorWithAlphaComponent:0.2];
-        identifierText.bordered = NO;
-        identifierText.stringValue = videoId;
-        identifierText.editable = NO;
-        identifierText.textColor = [NSColor whiteColor];
-        identifierText.font = [NSFont systemFontOfSize:12];
-        [self.trtcEngine setDebugViewMargin:videoId margin:NSEdgeInsetsMake(0.1, 0, 0, 0)];
-    }
-    [self updateLayoutVideoFrame];
-    return videoView;
+- (void)updateVideoListHeight {
+    CGFloat height = MIN(self.videoListView.tableHeight, self.videoLayoutView.frame.size.height);
+    self.videoListHeight.constant = height;
 }
 
-- (void)removeRenderViewForUser:(NSString *)userId{
-    NSView *videoView = _renderViewMap[userId];
-    [videoView removeFromSuperview];
-    [_renderViewMap removeObjectForKey:userId];
-    [_allUids removeObject:userId];
-    [self.rotationState removeObjectForKey:userId];
-    [self updateLayoutVideoFrame];
-}
-
-/// 画廊视图布局，每个人的视图大小相同
-- (void)layoutWithGridStyle:(NSRect)bounds {
-    NSUInteger count = _renderViewMap.count;
+- (void)layoutWithGridStyle {
+    NSUInteger count = self.userManager.userConfigs.count;
     if (count == 0) return;
     
+    NSRect bounds = self.videoLayoutView.bounds;
     NSUInteger col = ceil(sqrt(count));
     NSUInteger row = ceil(count / (float)col);
     
@@ -1086,8 +903,8 @@ typedef NS_ENUM(NSUInteger, LayoutStyle) {
     
     NSRect frame = NSMakeRect(0, NSHeight(bounds) - size.height, size.width, size.height);
     for (NSInteger i = 0; i < count; ++ i) {
-        NSString *uid = _allUids[i];
-        TXRenderView *view = [self renderViewForUser:uid];
+        TXRenderView *view = self.userManager.userConfigs[i].renderView;
+        [self.videoLayoutView addSubview:view];
         view.frame = frame;
         if ((i+1) % col == 0) {
             frame.origin.x = 0;
@@ -1095,72 +912,15 @@ typedef NS_ENUM(NSUInteger, LayoutStyle) {
         } else {
             frame.origin.x += size.width;
         }
-        if (i == 0 && count > 1)  {
-            CGRect layoutButtonFrame = [view convertRect:_videoLayoutStyleBtn.frame fromView:_videoLayoutStyleBtn.superview];
-            CGFloat topMargin = NSHeight(view.bounds) - NSMinY(layoutButtonFrame);
-            view.topIndicatorMargin = topMargin + 5;
-        } else {
-            view.topIndicatorMargin = 0;
-        }
     }
 }
 
-/// 演讲者视图布局，上面小图，下面大图
-- (void)layoutWithSplitStyle:(NSRect)bounds {
-    const CGFloat TopHeight = 160; // 顶部视频区域显示高度
-    const CGFloat Spacing   = 12;  // 顶部视频区域每个视频的间隔
-    // 主画面
-    TXRenderView *mainView = [self renderViewForUser:self.allUids.firstObject];
+- (void)layoutWithPresenterStyle {
+    TRTCUserConfig *presenter = self.videoListView.mainUser;
+    [self.videoLayoutView addSubview:presenter.renderView];
+    presenter.renderView.frame = self.videoLayoutView.bounds;
     
-    if (_allUids.count == 1) {
-        mainView.frame = bounds;
-    } else if (_allUids.count > 1) {
-        // 第0个是自己，第一个开始是对方
-        mainView = [self renderViewForUser:self.allUids[1]];
-        NSMutableArray *uids = [_allUids mutableCopy];
-        [uids removeObjectAtIndex:1];
-        
-        const NSInteger topCount = uids.count;
-        NSRect frame = bounds;
-        frame.size.height -= TopHeight;
-        mainView.frame = frame;
-        
-        CGFloat height = TopHeight - Spacing * 2;
-        CGFloat width = round(height * 1.33);
-        CGSize size = NSMakeSize(width, height);
-        CGFloat totalWidth = (width + Spacing) * (topCount - 1) + width;
-        CGFloat left = (NSWidth(bounds) - totalWidth) / 2;
-        if (left < Spacing) {
-            left = Spacing;
-        }
-        NSPoint point = NSMakePoint(left, NSHeight(bounds) - TopHeight + Spacing);
-        for (NSInteger i = 0; i < uids.count; ++i) {
-            TXRenderView *view = [self renderViewForUser:uids[i]];
-            view.topIndicatorMargin = 0;
-            view.frame = (NSRect){point, size};
-            point.x += (width + Spacing);
-        }
-    }
-    mainView.topIndicatorMargin = 0;
-}
-
-- (void)_layoutInBounds:(NSRect)bounds {
-    if (self.layoutStyle == LayoutStyleGalleryView) {
-        [self layoutWithGridStyle:bounds];
-    } else {
-        [self layoutWithSplitStyle:bounds];
-    }
-}
-
-- (void)updateLayoutVideoFrame{
-    [self _layoutInBounds:self.videoLayoutView.bounds];
-    
-    if (_renderViewMap.count > 1) {
-        self.videoLayoutStyleBtn.hidden = NO;
-    }
-    else{
-        self.videoLayoutStyleBtn.hidden = YES;
-    }
+    [self.videoListView reloadData];
 }
 
 #pragma mark - 连麦回调
@@ -1362,53 +1122,29 @@ typedef NS_ENUM(NSUInteger, LayoutStyle) {
     [self.videoSelectView enclosingScrollView].hidden = YES;
 }
 
-#pragma mark - 渲染视图中的工具按钮事件
-- (void)onRenderViewToolbarRotateClicked:(NSString *)userId {
-    NSNumber *box = self.rotationState[userId];
-    TRTCVideoRotation r = box ? box.integerValue : TRTCVideoRotation_0;
-    r = (box.intValue + 1) % 4;
-    self.rotationState[userId] = @(r);
+#pragma mark - NSSplitViewDelegate
 
-    if ([userId isEqualToString:self.userId]) {
-        [self.trtcEngine setLocalViewRotation:r];
+- (BOOL)splitView:(NSSplitView *)splitView shouldHideDividerAtIndex:(NSInteger)dividerIndex {
+    return self.memberButton.state == NSControlStateValueOff;
+}
+
+#pragma mark - TRTCVideoListViewDelegate
+
+- (void)videoListView:(TRTCVideoListView *)videoListView onSelectUser:(nonnull TRTCUserConfig *)user {
+    [self layoutWithPresenterStyle];
+    [self checkToStopRenderHiddenUser];
+}
+
+- (void)checkToStopRenderHiddenUser {
+    if (self.layoutStyle == LayoutStyleGalleryView) {
+        [self.userManager recoverAllRenderViews];
     } else {
-        [self.trtcEngine setRemoteViewRotation:userId rotation:r];
+        if (self.videoListTrailing.constant == 0) {
+            [self.userManager recoverAllRenderViews];
+        } else {
+            [self.userManager hideRenderViewExceptUser:self.videoListView.mainUser.userId];
+        }
     }
 }
 
-- (void)onRenderViewToolbarStreamClicked:(NSString *)userId {
-    NSNumber *box = self.bigSmallStreamState[userId];
-    TRTCVideoStreamType typeList[] = {TRTCVideoStreamTypeBig, TRTCVideoStreamTypeSmall};
-    NSInteger index = (box.integerValue + 1) % 2;
-    TRTCVideoStreamType type = typeList[index];
-    self.bigSmallStreamState[userId] = @(type);
-    [self.trtcEngine setRemoteVideoStreamType:userId type:type];
-}
-
-- (void)onRenderViewToolbarVideoClicked:(NSString *)userId index:(NSNumber *)index {
-    if (index.intValue == 1) {
-        [self.trtcEngine stopRemoteView:userId];
-    } else {
-        [self.trtcEngine startRemoteView:userId view:[self renderViewForUser:userId].contentView];
-    }
-
-}
-
-- (void)onRenderViewToolbarAudioClicked:(NSString *)userId index:(NSNumber *)index {
-    [self.trtcEngine muteRemoteAudio:userId mute:index.intValue == 1];
-}
-
-- (void)onRenderViewToolbarScreenShareClicked:(NSString *)userId {
-    [self _playScreenCaptureForUser:userId];
-}
-
-- (void)onRenderViewToolbarFillModeChanged:(NSString *)userId index:(NSNumber *)index {
-    TRTCVideoFillMode mode = index.intValue == 1 ? TRTCVideoFillMode_Fill : TRTCVideoFillMode_Fit;
-    if ([userId isEqualToString:self.currentUserParam.userId]) {
-        [self.trtcEngine setLocalViewFillMode:mode];
-    } else {
-        [self.trtcEngine setRemoteViewFillMode:userId mode:mode];
-    }
-}
 @end
-

@@ -32,7 +32,7 @@ typedef NS_ENUM(NSUInteger, TXAVSettingTabIndex) {
 @property (class, readonly) BOOL playSmallStream;
 @property (class, readonly) TRTCAppScene scene;
 @property (class, readonly) BOOL showVolume;
-@property (class, readonly) BOOL cloudMixEnabled;
+@property (class, readonly) TRTCTranscodingConfigMode mixMode;
 
 
 @property (nonatomic, strong, nullable) NSString *userID;
@@ -110,7 +110,7 @@ typedef NS_ENUM(NSUInteger, TXAVSettingTabIndex) {
 @property (assign, nonatomic) BOOL playSmallStream;
 @property (assign, nonatomic) BOOL showVolume;
 // 开启云端混流
-@property (assign, nonatomic) BOOL cloudMixEnabled;
+@property (assign, nonatomic) TRTCTranscodingConfigMode mixMode;
 @property (assign, nonatomic) BOOL isAudience;
 
 - (instancetype)initWithWindowNibName:(NSNibName)windowNibName engine:(TRTCCloud *)engine;

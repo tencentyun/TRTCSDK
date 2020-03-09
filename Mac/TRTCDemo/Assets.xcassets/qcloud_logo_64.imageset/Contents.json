@@ -5,8 +5,8 @@
       "scale" : "1x"
     },
     {
-      "filename" : "qcloud_logo_128@2x.png",
       "idiom" : "universal",
+      "filename" : "qcloud_logo_128@2x.png",
       "scale" : "2x"
     },
     {
@@ -15,7 +15,7 @@
     }
   ],
   "info" : {
-    "author" : "xcode",
-    "version" : 1
+    "version" : 1,
+    "author" : "xcode"
   }
 }

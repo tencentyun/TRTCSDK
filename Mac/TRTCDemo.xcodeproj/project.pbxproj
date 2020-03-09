@@ -7,9 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		066D98C324003BCB00912A89 /* test.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 066D98C224003BCB00912A89 /* test.mp3 */; };
 		066D98C524003BD500912A89 /* TRTCMainWindowAccessory.xib in Resources */ = {isa = PBXBuildFile; fileRef = 066D98C424003BD500912A89 /* TRTCMainWindowAccessory.xib */; };
-		129FE2EC23CEB3940028480C /* bgm_demo.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 129FE2EB23CEB3940028480C /* bgm_demo.mp3 */; };
+		06D5A6AA24160A4A00296793 /* TXRenderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 06D5A69B24160A4A00296793 /* TXRenderView.m */; };
+		06D5A6AB24160A4A00296793 /* TXRenderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 06D5A69C24160A4A00296793 /* TXRenderView.xib */; };
+		06D5A6AC24160A4A00296793 /* TRTCMemberListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 06D5A69E24160A4A00296793 /* TRTCMemberListView.m */; };
+		06D5A6AD24160A4A00296793 /* TRTCMemberListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 06D5A69F24160A4A00296793 /* TRTCMemberListCell.m */; };
+		06D5A6AE24160A4A00296793 /* TRTCVideoListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 06D5A6A424160A4A00296793 /* TRTCVideoListView.m */; };
+		06D5A6AF24160A4A00296793 /* TRTCVideoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 06D5A6A524160A4A00296793 /* TRTCVideoCell.m */; };
+		06D5A6B024160A4A00296793 /* TRTCUserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 06D5A6A924160A4A00296793 /* TRTCUserManager.m */; };
+		06D5A6B424160A6500296793 /* test.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 06D5A6B224160A6500296793 /* test.mp3 */; };
+		06D5A6B524160A6500296793 /* bgm_demo.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 06D5A6B324160A6500296793 /* bgm_demo.mp3 */; };
 		453167F221E45560007A91CB /* TRTCNewWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 453167EF21E4555F007A91CB /* TRTCNewWindowController.m */; };
 		453167F321E45560007A91CB /* TRTCNewWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 453167F021E4555F007A91CB /* TRTCNewWindowController.xib */; };
 		457A707B2200814E00DD193B /* CaptureSourceCollectionItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = 457A70702200814D00DD193B /* CaptureSourceCollectionItem.xib */; };
@@ -32,14 +39,26 @@
 		D689A93621CC97F400C7C618 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D689A93521CC97F400C7C618 /* Assets.xcassets */; };
 		D689A93921CC97F400C7C618 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D689A93721CC97F400C7C618 /* Main.storyboard */; };
 		D689A93C21CC97F400C7C618 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D689A93B21CC97F400C7C618 /* main.m */; };
-		D689A98121CCC41200C7C618 /* TXRenderView.m in Sources */ = {isa = PBXBuildFile; fileRef = D689A97921CCC41100C7C618 /* TXRenderView.m */; };
 		D697C3C122F3164100E80A2A /* GenerateTestUserSig.m in Sources */ = {isa = PBXBuildFile; fileRef = D697C3C022F3164100E80A2A /* GenerateTestUserSig.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		066D98C224003BCB00912A89 /* test.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = test.mp3; sourceTree = "<group>"; };
 		066D98C424003BD500912A89 /* TRTCMainWindowAccessory.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TRTCMainWindowAccessory.xib; sourceTree = "<group>"; };
-		129FE2EB23CEB3940028480C /* bgm_demo.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bgm_demo.mp3; sourceTree = "<group>"; };
+		06D5A69A24160A4A00296793 /* TXRenderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXRenderView.h; sourceTree = "<group>"; };
+		06D5A69B24160A4A00296793 /* TXRenderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TXRenderView.m; sourceTree = "<group>"; };
+		06D5A69C24160A4A00296793 /* TXRenderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TXRenderView.xib; sourceTree = "<group>"; };
+		06D5A69E24160A4A00296793 /* TRTCMemberListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCMemberListView.m; sourceTree = "<group>"; };
+		06D5A69F24160A4A00296793 /* TRTCMemberListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCMemberListCell.m; sourceTree = "<group>"; };
+		06D5A6A024160A4A00296793 /* TRTCMemberListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCMemberListView.h; sourceTree = "<group>"; };
+		06D5A6A124160A4A00296793 /* TRTCMemberListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCMemberListCell.h; sourceTree = "<group>"; };
+		06D5A6A324160A4A00296793 /* TRTCVideoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCVideoCell.h; sourceTree = "<group>"; };
+		06D5A6A424160A4A00296793 /* TRTCVideoListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCVideoListView.m; sourceTree = "<group>"; };
+		06D5A6A524160A4A00296793 /* TRTCVideoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCVideoCell.m; sourceTree = "<group>"; };
+		06D5A6A624160A4A00296793 /* TRTCVideoListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCVideoListView.h; sourceTree = "<group>"; };
+		06D5A6A824160A4A00296793 /* TRTCUserManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCUserManager.h; sourceTree = "<group>"; };
+		06D5A6A924160A4A00296793 /* TRTCUserManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCUserManager.m; sourceTree = "<group>"; };
+		06D5A6B224160A6500296793 /* test.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = test.mp3; sourceTree = "<group>"; };
+		06D5A6B324160A6500296793 /* bgm_demo.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bgm_demo.mp3; sourceTree = "<group>"; };
 		453167EF21E4555F007A91CB /* TRTCNewWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCNewWindowController.m; sourceTree = "<group>"; };
 		453167F021E4555F007A91CB /* TRTCNewWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TRTCNewWindowController.xib; sourceTree = "<group>"; };
 		453167F121E4555F007A91CB /* TRTCNewWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCNewWindowController.h; sourceTree = "<group>"; };
@@ -76,8 +95,6 @@
 		D689A93A21CC97F400C7C618 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D689A93B21CC97F400C7C618 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		D689A93D21CC97F400C7C618 /* TRTCDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TRTCDemo.entitlements; sourceTree = "<group>"; };
-		D689A97821CCC41100C7C618 /* TXRenderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXRenderView.h; sourceTree = "<group>"; };
-		D689A97921CCC41100C7C618 /* TXRenderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TXRenderView.m; sourceTree = "<group>"; };
 		D697C3BF22F3164100E80A2A /* GenerateTestUserSig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GenerateTestUserSig.h; sourceTree = "<group>"; };
 		D697C3C022F3164100E80A2A /* GenerateTestUserSig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenerateTestUserSig.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -96,6 +113,56 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		06D5A69924160A4A00296793 /* RenderView */ = {
+			isa = PBXGroup;
+			children = (
+				06D5A69A24160A4A00296793 /* TXRenderView.h */,
+				06D5A69B24160A4A00296793 /* TXRenderView.m */,
+				06D5A69C24160A4A00296793 /* TXRenderView.xib */,
+			);
+			path = RenderView;
+			sourceTree = "<group>";
+		};
+		06D5A69D24160A4A00296793 /* MemberList */ = {
+			isa = PBXGroup;
+			children = (
+				06D5A69E24160A4A00296793 /* TRTCMemberListView.m */,
+				06D5A69F24160A4A00296793 /* TRTCMemberListCell.m */,
+				06D5A6A024160A4A00296793 /* TRTCMemberListView.h */,
+				06D5A6A124160A4A00296793 /* TRTCMemberListCell.h */,
+			);
+			path = MemberList;
+			sourceTree = "<group>";
+		};
+		06D5A6A224160A4A00296793 /* VideoList */ = {
+			isa = PBXGroup;
+			children = (
+				06D5A6A324160A4A00296793 /* TRTCVideoCell.h */,
+				06D5A6A424160A4A00296793 /* TRTCVideoListView.m */,
+				06D5A6A524160A4A00296793 /* TRTCVideoCell.m */,
+				06D5A6A624160A4A00296793 /* TRTCVideoListView.h */,
+			);
+			path = VideoList;
+			sourceTree = "<group>";
+		};
+		06D5A6A724160A4A00296793 /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				06D5A6A824160A4A00296793 /* TRTCUserManager.h */,
+				06D5A6A924160A4A00296793 /* TRTCUserManager.m */,
+			);
+			path = Manager;
+			sourceTree = "<group>";
+		};
+		06D5A6B124160A6500296793 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				06D5A6B224160A6500296793 /* test.mp3 */,
+				06D5A6B324160A6500296793 /* bgm_demo.mp3 */,
+			);
+			path = Assets;
+			sourceTree = "<group>";
+		};
 		457A706F2200814D00DD193B /* CaptureSource */ = {
 			isa = PBXGroup;
 			children = (
@@ -151,8 +218,6 @@
 				D689A93721CC97F400C7C618 /* Main.storyboard */,
 				D689A93A21CC97F400C7C618 /* Info.plist */,
 				D689A93B21CC97F400C7C618 /* main.m */,
-				066D98C224003BCB00912A89 /* test.mp3 */,
-				129FE2EB23CEB3940028480C /* bgm_demo.mp3 */,
 				D689A93D21CC97F400C7C618 /* TRTCDemo.entitlements */,
 			);
 			path = TRTCDemo;
@@ -161,13 +226,17 @@
 		D689A95221CC9AE400C7C618 /* TRTC */ = {
 			isa = PBXGroup;
 			children = (
+				06D5A6B124160A6500296793 /* Assets */,
+				06D5A6A724160A4A00296793 /* Manager */,
 				D697C3BF22F3164100E80A2A /* GenerateTestUserSig.h */,
 				D697C3C022F3164100E80A2A /* GenerateTestUserSig.m */,
 				45F96FC8223296E600E861EC /* TRTCApp.h */,
 				45F96FC7223296E600E861EC /* TRTCApp.m */,
 				457A706F2200814D00DD193B /* CaptureSource */,
-				D689A97721CCC41100C7C618 /* RenderView */,
 				45AD956921D6532B007B2EAF /* HoverView */,
+				06D5A69D24160A4A00296793 /* MemberList */,
+				06D5A69924160A4A00296793 /* RenderView */,
+				06D5A6A224160A4A00296793 /* VideoList */,
 				453167F121E4555F007A91CB /* TRTCNewWindowController.h */,
 				453167EF21E4555F007A91CB /* TRTCNewWindowController.m */,
 				453167F021E4555F007A91CB /* TRTCNewWindowController.xib */,
@@ -190,15 +259,6 @@
 				A0933EB72321116400565F64 /* TXLiteAVSDK_TRTC_Mac.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		D689A97721CCC41100C7C618 /* RenderView */ = {
-			isa = PBXGroup;
-			children = (
-				D689A97821CCC41100C7C618 /* TXRenderView.h */,
-				D689A97921CCC41100C7C618 /* TXRenderView.m */,
-			);
-			path = RenderView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -264,17 +324,18 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				129FE2EC23CEB3940028480C /* bgm_demo.mp3 in Resources */,
 				D689A93621CC97F400C7C618 /* Assets.xcassets in Resources */,
+				06D5A6AB24160A4A00296793 /* TXRenderView.xib in Resources */,
 				457A707E2200814E00DD193B /* TXCaptureSourceWindowController.xib in Resources */,
 				45AD957B21D656C2007B2EAF /* TRTCMainWindowController.xib in Resources */,
+				06D5A6B524160A6500296793 /* bgm_demo.mp3 in Resources */,
 				453167F321E45560007A91CB /* TRTCNewWindowController.xib in Resources */,
-				066D98C324003BCB00912A89 /* test.mp3 in Resources */,
 				45AD957121D6532C007B2EAF /* TRTCSettingWindowController.xib in Resources */,
 				D689A93921CC97F400C7C618 /* Main.storyboard in Resources */,
 				457A70812200814E00DD193B /* TXCaptureSourceCollectionHeaderView.xib in Resources */,
 				457A707B2200814E00DD193B /* CaptureSourceCollectionItem.xib in Resources */,
 				066D98C524003BD500912A89 /* TRTCMainWindowAccessory.xib in Resources */,
+				06D5A6B424160A6500296793 /* test.mp3 in Resources */,
 				457A70802200814E00DD193B /* TXCaptureSourceViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -309,15 +370,20 @@
 			files = (
 				D689A93C21CC97F400C7C618 /* main.m in Sources */,
 				45AD957221D6532C007B2EAF /* HoverView.m in Sources */,
+				06D5A6B024160A4A00296793 /* TRTCUserManager.m in Sources */,
+				06D5A6AD24160A4A00296793 /* TRTCMemberListCell.m in Sources */,
 				45AD957321D6532C007B2EAF /* TRTCSettingWindowController.m in Sources */,
+				06D5A6AE24160A4A00296793 /* TRTCVideoListView.m in Sources */,
 				457A707C2200814E00DD193B /* TXCaptureSourceWindowController.m in Sources */,
+				06D5A6AA24160A4A00296793 /* TXRenderView.m in Sources */,
 				457A707D2200814E00DD193B /* TXCaptureSourceCollectionHeaderView.m in Sources */,
 				D697C3C122F3164100E80A2A /* GenerateTestUserSig.m in Sources */,
+				06D5A6AC24160A4A00296793 /* TRTCMemberListView.m in Sources */,
 				45AD95BF21D72C0F007B2EAF /* TRTCMainWindowController.m in Sources */,
-				D689A98121CCC41200C7C618 /* TXRenderView.m in Sources */,
 				45F96FC9223296E600E861EC /* TRTCApp.m in Sources */,
 				D689A93121CC97F300C7C618 /* AppDelegate.m in Sources */,
 				457A707F2200814E00DD193B /* CaptureSourceCollectionItem.m in Sources */,
+				06D5A6AF24160A4A00296793 /* TRTCVideoCell.m in Sources */,
 				453167F221E45560007A91CB /* TRTCNewWindowController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -50,7 +50,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="240" width="654" height="532"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
             <view key="contentView" wantsLayer="YES" id="se5-gp-TjO">
                 <rect key="frame" x="0.0" y="0.0" width="654" height="532"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -60,7 +60,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <clipView key="contentView" ambiguous="YES" id="aTp-YK-r7x">
                             <rect key="frame" x="1" y="1" width="131" height="532"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <autoresizingMask key="autoresizingMask"/>
                             <subviews>
                                 <tableView verticalHuggingPriority="750" ambiguous="YES" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" emptySelection="NO" autosaveColumns="NO" rowHeight="26" viewBased="YES" id="tLh-dj-L1w">
                                     <rect key="frame" x="0.0" y="0.0" width="131" height="532"/>
@@ -71,7 +71,7 @@
                                     <tableColumns>
                                         <tableColumn width="128" minWidth="40" maxWidth="1000" id="X2b-NF-Jnp">
                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border">
-                                                <font key="font" metaFont="message" size="11"/>
+                                                <font key="font" metaFont="smallSystem"/>
                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                             </tableHeaderCell>
@@ -331,7 +331,7 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="kva-ig-CxH" id="F7q-JA-acv">
                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="system"/>
+                        <font key="font" metaFont="menu"/>
                         <menu key="menu" id="nAc-D6-EGa">
                             <items>
                                 <menuItem title="Item 1" state="on" id="kva-ig-CxH"/>
@@ -349,7 +349,7 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="MCI-SW-xy0" id="2q3-uz-eFI">
                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="system"/>
+                        <font key="font" metaFont="menu"/>
                         <menu key="menu" id="rcr-Qw-Dli">
                             <items>
                                 <menuItem title="Item 1" state="on" id="MCI-SW-xy0"/>
@@ -423,7 +423,7 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="a5r-KL-4eJ" id="8VI-fL-Qlz">
                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="system"/>
+                        <font key="font" metaFont="menu"/>
                         <menu key="menu" id="klh-vr-7YI">
                             <items>
                                 <menuItem title="Item 1" state="on" id="a5r-KL-4eJ"/>
@@ -450,7 +450,7 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="89W-BL-3LI" id="r6u-9t-nRK">
                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="system"/>
+                        <font key="font" metaFont="menu"/>
                         <menu key="menu" id="lPZ-cX-gbe">
                             <items>
                                 <menuItem title="Item 1" state="on" id="89W-BL-3LI"/>
@@ -468,7 +468,7 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="zxj-dp-uBa" id="R4q-RQ-oay">
                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="system"/>
+                        <font key="font" metaFont="menu"/>
                         <menu key="menu" id="y5t-iJ-3c9">
                             <items>
                                 <menuItem title="Item 1" state="on" id="zxj-dp-uBa"/>
@@ -570,19 +570,8 @@
                                     <binding destination="-2" name="value" keyPath="showVolume" id="K2t-EG-snI"/>
                                 </connections>
                             </button>
-                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Bsr-8G-qwA">
-                                <rect key="frame" x="156" y="19" width="22" height="18"/>
-                                <buttonCell key="cell" type="check" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="G41-se-ulg">
-                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <binding destination="-2" name="value" keyPath="cloudMixEnabled" id="onL-QP-8VG"/>
-                                </connections>
-                            </button>
-                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xoh-kk-Cvh">
-                                <rect key="frame" x="182" y="9" width="120" height="32"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="xoh-kk-Cvh">
+                                <rect key="frame" x="306" y="11" width="120" height="32"/>
                                 <buttonCell key="cell" type="push" title="分享播放地址" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="f4E-1L-049">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" usesAppearanceFont="YES"/>
@@ -591,17 +580,38 @@
                                     <action selector="onClickShowCloudMixURL:" target="-2" id="7p0-yB-tIj"/>
                                 </connections>
                             </button>
+                            <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="bqW-hW-Wwb">
+                                <rect key="frame" x="156" y="15" width="118" height="25"/>
+                                <popUpButtonCell key="cell" type="push" title="关闭" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="6xm-Mv-cE1" id="RZA-2Q-fOk">
+                                    <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                    <menu key="menu" id="cxu-IA-UvZ">
+                                        <items>
+                                            <menuItem title="关闭" state="on" id="6xm-Mv-cE1"/>
+                                            <menuItem title="手动" id="VcH-xe-vR5"/>
+                                            <menuItem title="纯音频" id="cc7-Zy-kwN"/>
+                                            <menuItem title="预设固定排布" id="Zvm-iK-Pgk"/>
+                                            <menuItem title="演示场景" id="ZRS-5N-Imv"/>
+                                        </items>
+                                    </menu>
+                                </popUpButtonCell>
+                                <connections>
+                                    <action selector="onClickMixModeButton:" target="-2" id="2p8-1O-00E"/>
+                                </connections>
+                            </popUpButton>
                         </subviews>
                         <constraints>
+                            <constraint firstItem="xoh-kk-Cvh" firstAttribute="centerY" secondItem="bqW-hW-Wwb" secondAttribute="centerY" id="7wZ-OR-jiY"/>
+                            <constraint firstItem="bqW-hW-Wwb" firstAttribute="centerY" secondItem="ykT-Xr-yyn" secondAttribute="centerY" id="9ph-4Q-9E6"/>
                             <constraint firstItem="3z5-3H-cBz" firstAttribute="leading" secondItem="1Vs-wM-yql" secondAttribute="leading" constant="20" id="BUh-o0-hah"/>
-                            <constraint firstItem="Bsr-8G-qwA" firstAttribute="leading" secondItem="CCr-vX-2Wy" secondAttribute="leading" id="IDL-xj-oCt"/>
                             <constraint firstAttribute="bottom" secondItem="ykT-Xr-yyn" secondAttribute="bottom" constant="20" id="Nvw-Sz-fl1"/>
                             <constraint firstItem="3z5-3H-cBz" firstAttribute="top" secondItem="1Vs-wM-yql" secondAttribute="top" constant="20" id="Q6O-oZ-TDd"/>
                             <constraint firstItem="CCr-vX-2Wy" firstAttribute="leading" secondItem="3z5-3H-cBz" secondAttribute="trailing" constant="58" id="Tsj-bk-lmS"/>
-                            <constraint firstItem="Bsr-8G-qwA" firstAttribute="centerY" secondItem="ykT-Xr-yyn" secondAttribute="centerY" id="Zlc-Ax-F58"/>
                             <constraint firstItem="ykT-Xr-yyn" firstAttribute="leading" secondItem="3z5-3H-cBz" secondAttribute="leading" id="aHg-Hc-6nh"/>
                             <constraint firstItem="CCr-vX-2Wy" firstAttribute="centerY" secondItem="3z5-3H-cBz" secondAttribute="centerY" id="foo-zg-aQ0"/>
                             <constraint firstItem="ykT-Xr-yyn" firstAttribute="top" secondItem="3z5-3H-cBz" secondAttribute="bottom" constant="8" id="g8e-os-8V1"/>
+                            <constraint firstItem="xoh-kk-Cvh" firstAttribute="leading" secondItem="bqW-hW-Wwb" secondAttribute="trailing" constant="41" id="pDP-zw-QhS"/>
+                            <constraint firstItem="bqW-hW-Wwb" firstAttribute="leading" secondItem="CCr-vX-2Wy" secondAttribute="leading" id="u98-iF-Q4S"/>
                         </constraints>
                     </view>
                 </box>

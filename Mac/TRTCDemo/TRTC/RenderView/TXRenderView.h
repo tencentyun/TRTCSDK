@@ -11,21 +11,27 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class TRTCUserManager;
+
 @interface TXRenderView : NSView
-@property (readonly, nonatomic) NSView *contentView;
-@property (nonatomic, assign) BOOL volumeHidden;
-@property (nonatomic, strong) NSTextField *textLabel;
-// 顶部信号、textLabel、音量栏上边距
-@property (nonatomic, assign) CGFloat topIndicatorMargin;
 
-- (void)addTextToolbarItem:(NSString *)title target:(id)target action:(SEL)action context:(id)context;
-- (void)addImageToolbarItem:(NSImage *)image target:(id)target action:(SEL)action context:(id)context;
-- (void)addToggleImageToolbarItem:(NSArray<NSImage *> *)images target:(id)target action:(SEL)action context:(id)context;
+@property (nonatomic, copy) NSString *userId;
+@property (nonatomic) BOOL isMe;
+@property (nonatomic, weak) TRTCUserManager *userManager;
 
-- (void)removeToolbarWithTitle:(NSString *)title;
+@property (nonatomic, weak, readonly) NSView *contentView;
 
-- (void)setVolume:(float)volume;
++ (instancetype)renderViewWithUserId:(NSString *)userId isMe:(BOOL)isMe;
+
+- (void)setVolumeHidden:(BOOL)volumeHidden;
+- (void)setVolume:(double)volume;
 - (void)setSignal:(TRTCQuality)quality;
+- (void)setPlaysSmallStream:(BOOL)playsSmallStream;
+
+- (void)setVideoOn:(BOOL)isVideoOn;
+- (void)setAudioOn:(BOOL)isAudioOn;
+- (void)setVideoMuted:(BOOL)isMuted;
+- (void)setAudioMuted:(BOOL)isMuted;
 
 @end
 
