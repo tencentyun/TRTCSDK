@@ -1,0 +1,20 @@
+# Uncomment the next line to define a global platform for your project
+platform :ios, '9.0'
+
+def common_pods
+  pod 'SnapKit'
+  pod 'SDWebImage'
+  pod 'Alamofire'
+  pod 'RxSwift'
+  pod 'RxCocoa'
+  pod 'TXIMSDK_iOS'
+  pod 'Material'
+  pod 'NVActivityIndicatorView'
+  pod 'Toast-Swift'
+  pod 'MJExtension'
+  pod 'Masonry'
+end
+
+target 'TRTCScenesDemo' do
+  common_pods
+end
