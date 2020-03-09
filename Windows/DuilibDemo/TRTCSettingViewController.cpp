@@ -240,7 +240,20 @@ void TRTCSettingViewController::Notify(TNotifyUI & msg)
                 ::PostMessage(m_parentHwnd, WM_USER_CMD_RoleChange, (WPARAM)CDataCenter::GetInstance()->m_roleType, 0);
             }
         }
-
+        
+        if (name.CompareNoCase(_T("mix_temp_manual")) == 0) {
+            CDataCenter::GetInstance()->m_mixTemplateID = TRTCTranscodingConfigMode_Manual;
+        }
+        if (name.CompareNoCase(_T("mix_temp_pure_audio")) == 0) {
+            CDataCenter::GetInstance()->m_mixTemplateID = TRTCTranscodingConfigMode_Template_PureAudio;
+        }
+        if (name.CompareNoCase(_T("mix_temp_screen_share")) == 0) {
+            CDataCenter::GetInstance()->m_mixTemplateID = TRTCTranscodingConfigMode_Template_ScreenSharing;
+        }
+        if (name.CompareNoCase(_T("mix_temp_preset")) == 0) {
+            CDataCenter::GetInstance()->m_mixTemplateID = TRTCTranscodingConfigMode_Template_PresetLayout;
+        }
+        
         if (name.CompareNoCase(_T("auto_mode")) == 0) {
             CDataCenter::GetInstance()->m_bAutoRecvAudio = true;
             CDataCenter::GetInstance()->m_bAutoRecvVideo = true;
@@ -1445,6 +1458,28 @@ void TRTCSettingViewController::InitNormalTab()
             pRuddinessSlider->SetEnabled(false);
             pWhiteSlider->SetEnabled(false);
         }
+    }
+    
+    //处理混流的设置配置
+    {
+        COptionUI* pMixTempSel = static_cast<COptionUI*>(m_pmUI.FindControl(_T("mix_temp_manual")));;
+
+        int mixTempID = CDataCenter::GetInstance()->m_mixTemplateID;
+        switch (mixTempID) {
+            case TRTCTranscodingConfigMode_Template_PureAudio:
+                pMixTempSel = static_cast<COptionUI*>(m_pmUI.FindControl(_T("mix_temp_pure_audio")));
+                break;
+            case TRTCTranscodingConfigMode_Template_ScreenSharing:
+                pMixTempSel = static_cast<COptionUI*>(m_pmUI.FindControl(_T("mix_temp_screen_share")));
+                break;
+            case TRTCTranscodingConfigMode_Template_PresetLayout:
+                pMixTempSel = static_cast<COptionUI*>(m_pmUI.FindControl(_T("mix_temp_preset")));
+                break;
+            case 0:
+            default:
+                break;
+        }
+        if(pMixTempSel) pMixTempSel->Selected(true);
     }
 }
 

@@ -39,7 +39,7 @@ namespace TRTCCSharpDemo
             //清理资源
             if (mCameraDevice != null)
                 mCameraDevice.release();
-            if (mCameraDevice != null)
+            if (mMicDevice != null)
                 mMicDevice.release();
             if (mSpeakerDevice != null)
                 mSpeakerDevice.release();
@@ -47,7 +47,7 @@ namespace TRTCCSharpDemo
                 mCameraDeviceList.release();
             if (mMicDeviceList != null)
                 mMicDeviceList.release();
-            if (mSpeakerDevice != null)
+            if (mSpeakerDeviceList != null)
                 mSpeakerDeviceList.release();
             mCameraDevice = null;
             mMicDevice = null;
@@ -113,7 +113,12 @@ namespace TRTCCSharpDemo
             if (mTRTCCloud == null) return;
             this.cameraDeviceComboBox.Items.Clear();
             mCameraDeviceList = mTRTCCloud.getCameraDevicesList();
-            if (mCameraDeviceList.getCount() <= 0) return;
+            if (mCameraDeviceList.getCount() <= 0)
+            {
+                this.cameraDeviceComboBox.Items.Add("");
+                this.cameraDeviceComboBox.SelectionStart = this.cameraDeviceComboBox.Text.Length;
+                return;
+            }
             mCameraDevice = mTRTCCloud.getCurrentCameraDevice();
             for (uint i = 0; i < mCameraDeviceList.getCount(); i++)
             {
@@ -130,7 +135,12 @@ namespace TRTCCSharpDemo
             if (mTRTCCloud == null) return;
             this.micDeviceComboBox.Items.Clear();
             mMicDeviceList = mTRTCCloud.getMicDevicesList();
-            if (mMicDeviceList.getCount() <= 0) return;
+            if (mMicDeviceList.getCount() <= 0)
+            {
+                this.micDeviceComboBox.Items.Add("");
+                this.micDeviceComboBox.SelectionStart = this.micDeviceComboBox.Text.Length;
+                return;
+            }
             mMicDevice = mTRTCCloud.getCurrentMicDevice();
             for (uint i = 0; i < mMicDeviceList.getCount(); i++)
             {
@@ -145,7 +155,12 @@ namespace TRTCCSharpDemo
             if (mTRTCCloud == null) return;
             this.speakerDeviceComboBox.Items.Clear();
             mSpeakerDeviceList = mTRTCCloud.getSpeakerDevicesList();
-            if (mSpeakerDeviceList.getCount() <= 0) return;
+            if (mSpeakerDeviceList.getCount() <= 0)
+            {
+                this.speakerDeviceComboBox.Items.Add("");
+                this.speakerDeviceComboBox.SelectionStart = this.speakerDeviceComboBox.Text.Length;
+                return;
+            }
             mSpeakerDevice = mTRTCCloud.getCurrentSpeakerDevice();
             for (uint i = 0; i < mSpeakerDeviceList.getCount(); i++)
             {
@@ -192,6 +207,7 @@ namespace TRTCCSharpDemo
 
         private void OnCameraDeviceComboBoxSelectedIndexChanged(object sender, EventArgs e)
         {
+            if (String.IsNullOrEmpty(this.cameraDeviceComboBox.Text)) return;
             for (uint i = 0; i < mCameraDeviceList.getCount(); i++)
             {
                 if (mCameraDeviceList.getDeviceName(i).Equals(this.cameraDeviceComboBox.Text))
@@ -204,6 +220,7 @@ namespace TRTCCSharpDemo
 
         private void OnMicDeviceComboBoxSelectedIndexChanged(object sender, EventArgs e)
         {
+            if (String.IsNullOrEmpty(this.micDeviceComboBox.Text)) return;
             for (uint i = 0; i < mMicDeviceList.getCount(); i++)
             {
                 if (mMicDeviceList.getDeviceName(i).Equals(this.micDeviceComboBox.Text))
@@ -216,6 +233,7 @@ namespace TRTCCSharpDemo
 
         private void OnSpeakerDeviceComboBoxSelectedIndexChanged(object sender, EventArgs e)
         {
+            if (String.IsNullOrEmpty(this.speakerDeviceComboBox.Text)) return;
             for (uint i = 0; i < mSpeakerDeviceList.getCount(); i++)
             {
                 if (mSpeakerDeviceList.getDeviceName(i).Equals(this.speakerDeviceComboBox.Text))

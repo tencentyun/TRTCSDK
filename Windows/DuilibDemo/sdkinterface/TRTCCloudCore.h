@@ -114,6 +114,9 @@ public:
 
     void sendCustomAudioFrame();
     void sendCustomVideoFrame();
+
+protected:
+    void setPresetLayoutConfig(TRTCTranscodingConfig & config);
 private:
     static TRTCCloudCore* m_instance;
     std::string m_localUserId;

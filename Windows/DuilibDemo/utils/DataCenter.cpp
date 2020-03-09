@@ -241,6 +241,12 @@ void CDataCenter::Init()
     else
         m_bCDNMixTranscoding = false;
 
+    bRet = m_pConfigMgr->GetValue(INI_ROOT_KEY, INI_KEY_MIX_TEMP_ID, strParam);
+    if (bRet)
+        m_mixTemplateID = (TRTCAppScene)_wtoi(strParam.c_str());
+    else
+        m_mixTemplateID = TRTCTranscodingConfigMode_Manual;
+
     /*
     bRet = m_pConfigMgr->GetValue(INI_ROOT_KEY, INI_KEY_MIC_VOLUME, strParam);
     if (bRet)
@@ -336,6 +342,8 @@ void CDataCenter::WriteEngineConfig()
     m_pConfigMgr->SetValue(INI_ROOT_KEY, INI_KEY_SHOW_AUDIO_VOLUME, strFormat.GetData());
     strFormat.Format(L"%d", m_bCDNMixTranscoding);
     m_pConfigMgr->SetValue(INI_ROOT_KEY, INI_KEY_CLOUD_MIX_TRANSCODING, strFormat.GetData());
+    strFormat.Format(L"%d", m_mixTemplateID);
+    m_pConfigMgr->SetValue(INI_ROOT_KEY, INI_KEY_MIX_TEMP_ID, strFormat.GetData());
 
     /*
     strFormat.Format(L"%d", m_micVolume);

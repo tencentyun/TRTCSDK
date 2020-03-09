@@ -133,6 +133,7 @@ public: //trtc
 
     bool m_bOpenAudioAndCanvasMix = false; //开启纯音频+画布混流模式。
     bool m_bCDNMixTranscoding = false;     //混流设置
+    int m_mixTemplateID = 0;
     std::string m_strMixStreamId;
     std::string m_strCustomStreamId;
 

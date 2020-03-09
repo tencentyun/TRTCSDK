@@ -81,6 +81,8 @@ namespace TRTCCSharpDemo
             InitializeComponent();
 
             this.Disposed += new EventHandler(OnDisposed);
+            // 窗口退出事件监听
+            this.FormClosing += new FormClosingEventHandler(OnExitLabelClick);
 
             // 初始化数据。
             mLoginForm = loginForm;
@@ -465,14 +467,7 @@ namespace TRTCCSharpDemo
         public void onExitRoom(int reason)
         {
             mIsEnterSuccess = false;
-            // 如果进房成功，需要正常退房再关闭窗口，防止资源未清理和释放完毕
-            Uninit();
             this.Close();
-            if (mLoginForm == null)
-            {
-                mLoginForm = new TRTCLoginForm();
-            }
-            mLoginForm.Show();
         }
 
         /// <summary>
@@ -898,6 +893,8 @@ namespace TRTCCSharpDemo
         private void OnExitLabelClick(object sender, EventArgs e)
         {
             // 退出房间
+            if (mIsFirstExitRoom) return;
+            mIsFirstExitRoom = true;
             if (mBeautyForm != null)
                 mBeautyForm.Close();
             if (mDeviceTestForm != null)
@@ -912,14 +909,15 @@ namespace TRTCCSharpDemo
                 mDeviceTestForm.Close();
             if (mDeviceForm != null)
                 mDeviceForm.Close();
+            Uninit();
+            // 如果进房成功，需要正常退房再关闭窗口，防止资源未清理和释放完毕
             if (mIsEnterSuccess)
-            {
                 mTRTCCloud.exitRoom();
-            }
             else
-            {
                 onExitRoom(0);
-            }
+            if (mLoginForm == null)
+                mLoginForm = new TRTCLoginForm();
+            mLoginForm.Show();
         }
 
         private void OnSettingLabelClick(object sender, EventArgs e)

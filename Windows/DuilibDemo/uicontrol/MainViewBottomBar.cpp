@@ -395,7 +395,7 @@ LRESULT MainViewBottomBar::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lPara
         CDataCenter::GetInstance()->m_localInfo.publish_sub_video = true;
         TRTCShareScreenToolMgr::GetInstance()->createToolWnd(CDataCenter::GetInstance()->getLocalUserID());
         //TRTCShareScreenToolMgr::GetInstance()->showScreenVideoView(true);
-        TRTCCloudCore::GetInstance()->updateMixTranCodeInfo();
+        if(CDataCenter::GetInstance()->m_mixTemplateID <= TRTCTranscodingConfigMode_Manual) TRTCCloudCore::GetInstance()->updateMixTranCodeInfo();
 	}
 	else if (uMsg == WM_USER_CMD_ScreenEnd)
 	{
@@ -409,7 +409,7 @@ LRESULT MainViewBottomBar::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lPara
         TRTCShareScreenToolMgr::GetInstance()->destroyToolWnd();
 
         CDataCenter::GetInstance()->m_localInfo.publish_sub_video = false;
-        TRTCCloudCore::GetInstance()->updateMixTranCodeInfo();
+        if (CDataCenter::GetInstance()->m_mixTemplateID <= TRTCTranscodingConfigMode_Manual) TRTCCloudCore::GetInstance()->updateMixTranCodeInfo();
 	}
 	else if (uMsg == WM_USER_CMD_VodStart)
 	{
@@ -687,7 +687,7 @@ void MainViewBottomBar::OpenScreenBtnEvent(const TRTCScreenCaptureSourceInfo &so
 	{		
 		TRTCCloudCore::GetInstance()->stopScreen();
         CDataCenter::GetInstance()->m_localInfo.publish_sub_video = false;
-        TRTCCloudCore::GetInstance()->updateMixTranCodeInfo();
+        if (CDataCenter::GetInstance()->m_mixTemplateID <= TRTCTranscodingConfigMode_Manual) TRTCCloudCore::GetInstance()->updateMixTranCodeInfo();
 	}
 	else
 	{

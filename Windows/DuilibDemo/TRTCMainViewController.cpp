@@ -646,11 +646,11 @@ LRESULT TRTCMainViewController::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM l
     }
     else if(uMsg == WM_USER_CMD_OnStartPublishinge)
     {
-        TRTCCloudCore::GetInstance()->updateMixTranCodeInfo();
+        if (CDataCenter::GetInstance()->m_mixTemplateID <= TRTCTranscodingConfigMode_Manual) TRTCCloudCore::GetInstance()->updateMixTranCodeInfo();
     }
     else if(uMsg == WM_USER_CMD_OnStopPublishing)
     {
-        TRTCCloudCore::GetInstance()->updateMixTranCodeInfo();
+        if (CDataCenter::GetInstance()->m_mixTemplateID <= TRTCTranscodingConfigMode_Manual) TRTCCloudCore::GetInstance()->updateMixTranCodeInfo();
     }
     LRESULT lRes = 0;
     if (m_pmUI.MessageHandler(uMsg, wParam, lParam, lRes))
@@ -782,7 +782,7 @@ void TRTCMainViewController::onSubVideoAvailable(std::string userId, bool availa
         }
 	}
    
-    TRTCCloudCore::GetInstance()->updateMixTranCodeInfo();
+    if (CDataCenter::GetInstance()->m_mixTemplateID <= TRTCTranscodingConfigMode_Manual) TRTCCloudCore::GetInstance()->updateMixTranCodeInfo();
 
     LocalUserInfo info = CDataCenter::GetInstance()->getLocalUserInfo();
     CDuiString strFormat;
@@ -817,7 +817,7 @@ void TRTCMainViewController::onVideoAvailable(std::string userId, bool available
         }
     }
 
-    TRTCCloudCore::GetInstance()->updateMixTranCodeInfo();
+    if (CDataCenter::GetInstance()->m_mixTemplateID <= TRTCTranscodingConfigMode_Manual) TRTCCloudCore::GetInstance()->updateMixTranCodeInfo();
 
     LocalUserInfo info = CDataCenter::GetInstance()->getLocalUserInfo();
     CDuiString strFormat;
@@ -839,7 +839,7 @@ void TRTCMainViewController::onAudioAvailable(std::string userId, bool available
         remoteInfo.subscribe_audio = available;
     }
 
-    TRTCCloudCore::GetInstance()->updateMixTranCodeInfo();
+    if (CDataCenter::GetInstance()->m_mixTemplateID <= TRTCTranscodingConfigMode_Manual) TRTCCloudCore::GetInstance()->updateMixTranCodeInfo();
 }
 
 void TRTCMainViewController::onSendFirstLocalVideoFrame(int streamType)
@@ -1040,7 +1040,7 @@ void TRTCMainViewController::onRemoteVideoSubscribeChange(std::wstring userId, i
             else
                 TRTCCloudCore::GetInstance()->getTRTCCloud()->stopRemoteSubStreamView(Wide2UTF8(userId).c_str());
         }
-        TRTCCloudCore::GetInstance()->updateMixTranCodeInfo();
+        if (CDataCenter::GetInstance()->m_mixTemplateID <= TRTCTranscodingConfigMode_Manual) TRTCCloudCore::GetInstance()->updateMixTranCodeInfo();
     }
 }
 
@@ -1054,7 +1054,7 @@ void TRTCMainViewController::onRemoteAudioSubscribeChange(std::wstring userId, i
             remoteInfo.subscribe_audio = !remoteInfo.subscribe_audio;
             m_pVideoViewLayout->muteAudio(userId,(TRTCVideoStreamType)streamType,!remoteInfo.subscribe_audio);
             TRTCCloudCore::GetInstance()->getTRTCCloud()->muteRemoteAudio(Wide2UTF8(userId).c_str(),!remoteInfo.subscribe_audio);
-            TRTCCloudCore::GetInstance()->updateMixTranCodeInfo();
+            if (CDataCenter::GetInstance()->m_mixTemplateID <= TRTCTranscodingConfigMode_Manual) TRTCCloudCore::GetInstance()->updateMixTranCodeInfo();
         }
     }
 }

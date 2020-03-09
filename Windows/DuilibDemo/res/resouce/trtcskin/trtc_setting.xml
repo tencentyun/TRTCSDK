@@ -318,6 +318,15 @@
 					<VerticalLayout width="20"/>
 					<Button name="btn_copyplayerurl" text="分享播放地址" textcolor="#FF000000" textpadding="6,0,6,0" style="btn_style" width="130" height="30" />
 				</HorizontalLayout>
+				<HorizontalLayout name="choose_mix_temp" childvalign="left" height="24">
+					<HorizontalLayout childvalign="left" inset="8,8,0,0" childpadding="10">
+						<Label text="混流模版: " font="2" width="100" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,0"/>
+						<Option name="mix_temp_manual" group="rolestyle" text="手动" style="radio_style" width="0" autocalcwidth="true"/>
+						<Option name="mix_temp_pure_audio" group="rolestyle" text="纯音频" style="radio_style" width="0" autocalcwidth="true"/>
+                        <Option name="mix_temp_preset" group="rolestyle" text="预设" style="radio_style" width="0" autocalcwidth="true"/>
+						<Option name="mix_temp_screen_share" group="rolestyle" text="录屏演示" style="radio_style" width="0" autocalcwidth="true"/>
+					</HorizontalLayout>
+				</HorizontalLayout>
 				<HorizontalLayout inset="28,6,0,0" childvalign="left" height="24">
 					<Label text="本地画面镜像" font="2" width="118" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,1"/>
 					<VerticalLayout width="80"/>
@@ -347,13 +356,13 @@
 						<ListLabelElement text="320×240_video.yuv"/>
 					</Combo>  
 				</HorizontalLayout>
-				<HorizontalLayout inset="28,0,0,0" childvalign="left" height="24">
+				<HorizontalLayout inset="28,0,0,0" childvalign="left" height="24" visible="false">
 					<Label text="Socks5代理IP" font="2" width="118" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,3,0,1"/>
 					<VerticalLayout width="80"/>
 					<Edit name="edit_ip" text="" height="24" font="2" align="center" textpadding="20,0,20,0" tipvalue="输入代理IP" tipvaluecolor="#FF808080" tipvaluealign="center" normalimage="res='login/edit_normal.png' corner='6,6,6,6'" focusedimage="res='login/edit_focus.png' corner='6,6,6,6'"/>
 					<VerticalLayout width="72"/>
 				</HorizontalLayout>
-				<HorizontalLayout inset="28,0,0,0" childvalign="left" height="24">
+				<HorizontalLayout inset="28,0,0,0" childvalign="left" height="24" visible="false">
 					<Label text="Socks5代理Port" font="2" width="118" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,3,0,1"/>
 					<VerticalLayout width="80"/>
 					<Edit name="edit_port" text="" height="24" font="2" align="center" numberonly="true" textpadding="20,0,20,0" tipvalue="输入代理PORT" tipvaluecolor="#FF808080" tipvaluealign="center" normalimage="res='login/edit_normal.png' corner='6,6,6,6'" focusedimage="res='login/edit_focus.png' corner='6,6,6,6'"/>

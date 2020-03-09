@@ -1030,9 +1030,24 @@ void TRTCCloudCore::updateMixTranCodeInfo()
     }
 
     TRTCTranscodingConfig config;
-    config.mode = TRTCTranscodingConfigMode_Manual;
+    config.mode = (TRTCTranscodingConfigMode)CDataCenter::GetInstance()->m_mixTemplateID;
     config.appId = appId;
     config.bizId = bizId;
+
+    if (config.mode > TRTCTranscodingConfigMode_Manual) {
+        if (config.mode == TRTCTranscodingConfigMode_Template_PresetLayout) {
+            setPresetLayoutConfig(config);
+        }
+
+        m_pCloud->setMixTranscodingConfig(&config);
+        if (config.mixUsersArray) {
+            delete[] config.mixUsersArray;
+            config.mixUsersArray = nullptr;
+        }
+        return;
+    }
+
+
     config.videoBitrate = 800;
     config.videoFramerate = 15;
     config.videoGOP = 1;
@@ -1262,6 +1277,11 @@ void TRTCCloudCore::updateMixTranCodeInfo()
     {
         m_pCloud->setMixTranscodingConfig(&config);
     }
+
+    if (config.mixUsersArray) {
+        delete[] config.mixUsersArray;
+        config.mixUsersArray = nullptr;
+    }
 }
 
 void TRTCCloudCore::getMixVideoPos(int index, int& left, int& top, int& right, int& bottom)
@@ -1475,6 +1495,96 @@ void TRTCCloudCore::sendCustomVideoFrame()
         frame.width = _video_width;
         frame.height = _video_height;
         m_pCloud->sendCustomVideoData(&frame);
+    }
+}
+
+void TRTCCloudCore::setPresetLayoutConfig(TRTCTranscodingConfig & config) {
+
+    int canvasWidth = 1280;
+    int canvasHeight = 720;
+    if (CDataCenter::GetInstance()->m_videoEncParams.resMode == TRTCVideoResolutionModePortrait) {
+        canvasHeight = 1280;
+        canvasWidth = 720;
+    }
+
+    config.videoWidth = canvasWidth;
+    config.videoHeight = canvasHeight;
+    config.videoBitrate = 1500;
+    config.videoFramerate = 15;
+    config.videoGOP = 1;
+    config.audioSampleRate = 48000;
+    config.audioBitrate = 64;
+    config.audioChannels = 1;
+
+    config.mixUsersArraySize = 8;
+
+    TRTCMixUser* mixUsersArray = new TRTCMixUser[config.mixUsersArraySize];
+    config.mixUsersArray = mixUsersArray;
+    int zOrder = 1, index = 0;
+    auto setMixUser = [&](const char * _userid, int _index, int _zOrder,
+        int left, int top, int width, int height) {
+        mixUsersArray[_index].roomId = nullptr;
+        mixUsersArray[_index].userId = _userid;
+        mixUsersArray[_index].zOrder = _zOrder;
+        {
+            mixUsersArray[_index].rect.left = left;
+            mixUsersArray[_index].rect.top = top;
+            mixUsersArray[_index].rect.right = left + width;
+            mixUsersArray[_index].rect.bottom = top + height;
+        }
+    };
+    //本地主路信息
+    setMixUser("$PLACE_HOLDER_LOCAL_MAIN$", index, zOrder, 0, 0, canvasWidth, canvasHeight);
+    index++; zOrder++;
+
+    setMixUser("$PLACE_HOLDER_LOCAL_SUB$", index, zOrder, 0, 0, canvasWidth, canvasHeight);
+    index++; zOrder++;
+
+    if (canvasWidth < canvasHeight) {
+        //竖屏排布
+        int subWidth = canvasWidth / 5 / 2 * 2;
+        int subHeight = canvasHeight / 5 / 2 * 2;
+        int xOffSet = (canvasWidth - (3 * subWidth)) / 4;
+        int yOffSet = (canvasHeight - (4 * subHeight)) / 5;
+        for (int u = 0; u < 6; ++u, index++, zOrder++) {
+
+            if (u < 3) {
+                // 前三个小画面靠左往右
+                setMixUser("$PLACE_HOLDER_REMOTE$", index, zOrder,
+                    xOffSet * (1 + u) + subWidth * u, canvasHeight - yOffSet - subHeight, subWidth, subHeight);
+            }
+            else if (u < 6) {
+                // 后三个小画面靠左从下往上铺
+                setMixUser("$PLACE_HOLDER_REMOTE$", index, zOrder,
+                    canvasWidth - xOffSet - subWidth, canvasHeight - (u-1) * yOffSet - (u - 1) * subHeight, subWidth, subHeight);
+            }
+            else {
+                // 最多只叠加六个小画面
+            }
+        }
+    }
+    else {
+        //横屏排布
+        int subWidth = canvasWidth / 5 / 2 * 2;
+        int subHeight = canvasHeight / 5 / 2 * 2;
+        int xOffSet = 10;
+        int yOffSet = (canvasHeight - (3 * subHeight)) / 4;
+
+        for (int u = 0; u < 6; ++u, index++, zOrder++) {
+            if (u < 3) {
+                // 前三个小画面靠右从下往上铺
+                setMixUser("$PLACE_HOLDER_REMOTE$", index, zOrder,
+                    canvasWidth - xOffSet - subWidth, canvasHeight - (u + 1) * yOffSet - (u + 1) * subHeight, subWidth, subHeight);
+            }
+            else if (u < 6) {
+                // 后三个小画面靠左从下往上铺
+                setMixUser("$PLACE_HOLDER_REMOTE$", index, zOrder,
+                    xOffSet, canvasHeight - (u - 2) * yOffSet - (u - 2) * subHeight, subWidth, subHeight);
+            }
+            else {
+                // 最多只叠加六个小画面
+            }
+        }
     }
 }
 
