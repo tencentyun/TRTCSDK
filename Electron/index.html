@@ -76,12 +76,28 @@
               </el-checkbox>
             </el-form-item>
             <el-form-item>
-              <el-select style="width: 130px" @change="onSelectScreenCapture" v-model="screenName" placeholder="请选择"
+
+              <!-- <el-select style="width: 130px" @change="onSelectScreenCapture" v-model="screenName" placeholder="请选择"
                 size="mini" :disabled="!screenCapture">
                 <el-option v-for="item in screenList" :key="item.sourceId" :label="item.sourceName"
                   :value="item.sourceId">
                 </el-option>
-              </el-select>
+              </el-select> -->
+              <el-button @click="showScreenListDialog" :disabled="!screenCapture">{{screenCaptureSelectedName || '请选择'}}</el-button>
+              <el-dialog   title="请选择一个窗口进行共享"  :visible.sync="screenListDialogVisible">
+                <el-card class="box-card" 
+                :style="{display:'inline-block', width: screenCaptureWidth+'px', height:screenCaptureHeight+60+'px', padding:'0,0,5px,0'}" 
+                :body-style="{padding: 0, overflow:'hidden'}" shadow="hover" v-for="item in screenList" :key="item.sourceId" :label="item.sourceName"
+                :data="item.sourceId"
+                >
+                    <p><canvas :id="['screen_'+item.sourceId]"></canvas></p>
+                    <span :show-overflow-tooltip="true">{{item.sourceName.length <= 20 ? item.sourceName : item.sourceName.slice(0,17)+'...'}}</span>
+                    <el-button  @click="onSelectScreenCapture(item.sourceId)" type="text">选择</el-button>
+                </el-card>
+                
+              </el-dialog>
+              
+
             </el-form-item>
           </el-form>
           <el-form :inline="true" ref="form" size="small">
@@ -250,14 +266,13 @@
         <el-dialog title="跨房通话" :visible.sync="openConnectDialog" width="300px">
           <div v-loading="connectLoading" :element-loading-text="connectLoadingText">
             <el-form ref="form" size="small" label-width="80px">
-              <el-form-item label="目标用户">
-                <el-input id="pkUserId" v-model="pkUserId" placeholder="请输入用户名" clearable autofocus>
-                </el-input>
-              </el-form-item>
-
               <el-form-item label="目标房间">
                 <el-input id="pkRoomId" v-model="pkRoomId" placeholder="请输入数字" maxlength="9" minlength="1"
                   onkeyup="value=value.replace(/[^\d]/g,'')" clearable autofocus></el-input>
+              </el-form-item>
+              <el-form-item label="目标用户">
+                <el-input id="pkUserId" v-model="pkUserId" placeholder="请输入用户名" clearable autofocus>
+                </el-input>
               </el-form-item>
             </el-form>
             <el-form ref="form" size="small" label-width="30px">
@@ -372,11 +387,18 @@
           <el-button @click="onStopAllEffect" v-text="'停止所有音效'"></el-button>
         </el-dialog>
 
-        <el-dialog title="混流设置" :visible.sync="openMixTranscodingDialog" width="300px">
+        <el-dialog title="混流设置" :visible.sync="openMixTranscodingDialog" width="400px">
           <el-form :inline="true" ref="form" size="mini">
             <el-form-item>
-              <el-checkbox @change="onMixTransCoding" v-model.boolean="mixTranscoding" :disabled="!inroom">云端画面混合
-              </el-checkbox>
+              <el-checkbox @change="onMixTransCoding" v-model.boolean="mixTranscoding" :disabled="!inroom">云端画面混合</el-checkbox>
+            </el-form-item>
+            <el-form-item>
+              <el-radio-group v-model="mixTranscodingMode">
+                <el-radio-button label="1">全手动</el-radio-button>
+                <el-radio-button label="2">纯音频</el-radio-button>
+                <el-radio-button label="3">预排版</el-radio-button>
+                <el-radio-button label="4">屏幕分享</el-radio-button>
+              </el-radio-group>
             </el-form-item>
             <el-form-item>
               <el-button size="small" type="text" @click="sharePlayUrl" v-text="'分享播放地址'" :disabled="!inroom">
@@ -414,6 +436,19 @@
       <el-main>
         <div class="control" id="video_wrap"></div>
       </el-main>
+      <div v-if="appLoadingVisible != false" 
+      style="width: 100vw;
+      height: 100vh;
+      background-color: rgb(255, 255, 255);
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 999;
+      padding-top: 300px;
+      text-align: center;"
+    >
+      <img src="./loading.gif" alt="loading...">
+    </div>
     </el-container>
   </div>
   <script src="libs/vue.js"></script>

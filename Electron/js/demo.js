@@ -62,6 +62,11 @@ let demoApp = new Vue({
       encoderMirror: false,
       screenCapture: false,
       showVoice: false,
+      screenListDialogVisible: false, // 是否显示屏幕分享的窗口列表
+      screenCaptureWidth: 200,
+      screenCaptureHeight: 120,
+      screenCaptureSelectedName: '',
+      appLoadingVisible: false, // 是否显示应用加载动画
 
       inroom: false,
 
@@ -113,7 +118,6 @@ let demoApp = new Vue({
       testSpeaker: false,
       testSpeakerVolume: 0,
       testBGM: false,
-      // 注意：软件采集和播放音量暂时不支持 Mac 端设置，设置会无效。
       captureVolume: 0,
       playoutVolume: 0,
 
@@ -186,6 +190,7 @@ let demoApp = new Vue({
       mixTranscoding: false,
       mixStreamInfos: [],    // 每一路需要混流的信息（不包括当前用户主流）
       streamId: '',   // 直播CDN流ID，支持进房前设置和进房后设置
+      mixTranscodingMode: TRTCTranscodingConfigMode.TRTCTranscodingConfigMode_Manual,
 
       //其他设置
       openOtherSetting: false,
@@ -288,7 +293,7 @@ let demoApp = new Vue({
         console.info('trtc_demo: onUserVideoAvailable uid:' + uid + "|available:" + available);
         // 注意 mac 平台下中文用户进房 userId 返回空，Mac 端不支持中文用户名进房！
         if (available) {
-          // 画面不区分大小流，只区分主流和辅流，这里统一使用主流当做 key
+          // 画面不区分大小流，只区分主流和辅流（屏幕分享），这里统一使用主流当做 key
           let view = this.findVideoView(uid, TRTCVideoStreamType.TRTCVideoStreamTypeBig);
           this.setVisibleVoice(this.showVoice, uid, TRTCVideoStreamType.TRTCVideoStreamTypeBig);
           this.rtcCloud.startRemoteView(uid, view);
@@ -326,7 +331,7 @@ let demoApp = new Vue({
         }
       });
 
-      // 远程视频用户辅流状态监听
+      // 远程视频用户辅流（屏幕分享）状态监听
       rtcCloud.on('onUserSubStreamAvailable', (uid, available) => {
         console.info('trtc_demo: onUserSubStreamAvailable uid:' + uid + "|available:" + available);
         if (available) {
@@ -484,8 +489,8 @@ let demoApp = new Vue({
       rtcCloud.on('onScreenCaptureStarted', () => {
         console.info('trtc_demo: onScreenCaptureStarted');
       });
-      rtcCloud.on('onScreenCaptureStoped', (reason) => {
-        console.info('trtc_demo: onScreenCaptureStoped reason:' + reason);
+      rtcCloud.on('onScreenCaptureStopped', (reason) => {
+        console.info('trtc_demo: onScreenCaptureStopped reason:' + reason);
       });
 
       // 麦克风音量回调监听
@@ -789,11 +794,11 @@ let demoApp = new Vue({
     onSpeakerVolumeChanged() {
       this.rtcCloud.setCurrentSpeakerVolume(this.speakerVolume);
     },
-    // 软件采集音量变化，暂时不支持 Mac 端设置
+    // 软件采集音量变化
     onCaptureVolumeChanged() {
       this.rtcCloud.setAudioCaptureVolume(this.captureVolume);
     },
-    // 软件播放音量变化，暂时不支持 Mac 端设置
+    // 软件播放音量变化
     onPlayoutVolumeChanged() {
       this.rtcCloud.setAudioPlayoutVolume(this.playoutVolume);
     },
@@ -921,11 +926,7 @@ let demoApp = new Vue({
     updateMixTranscodeInfo() {
       // 没有打开云端混流功能则退出
       if (!this.mixTranscoding) return;
-      // 云端混流的没有辅流界面，则退出（无需混流）
-      if (this.mixStreamInfos.length == 0) {
-        this.rtcCloud.setMixTranscodingConfig(null);
-        return;
-      }
+      
       // 如果使用的是纯音频进房，则需要混流设置每一路为纯音频，云端会只混流音频数据
       if (this.pureAudioStyle) {
         this.mixStreamInfos.forEach(function (item) {
@@ -947,6 +948,14 @@ let demoApp = new Vue({
           self.mixStreamInfos[index].roomId = users.roomId.toString();
         }
       });
+
+      // 这里的显示混流的方式只提供参考，如需其他需求请参考以下方式实现
+      let sdkInfo = genTestUserSig(this.userId);
+      if (sdkInfo.appId == 0 || sdkInfo.bizId == 0) {
+        this.notify('混流功能不可使用，请在 GenerateTestUserSig.js 填写混流的账号信息');
+        return;
+      }
+
       // 配置本地主流的混流信息（可根据自己的需求设置参数，下面仅供参考）
       let localMainStream = {
         userId: this.userId,
@@ -957,14 +966,46 @@ let demoApp = new Vue({
         fps: 15,
         pureAudio: this.pureAudioStyle,
       };
-      // 这里的显示混流的方式只提供参考，如需其他需求请参考以下方式实现
-      let sdkInfo = genTestUserSig(this.userId);
-      if (sdkInfo.appId == 0 || sdkInfo.bizId == 0) {
-        this.notify('混流功能不可使用，请在 GenerateTestUserSig.js 填写混流的账号信息');
+      
+      let config = this.genMixTranscodingConfigFromTpl();
+      console.log('confTpl:', config);
+      this.rtcCloud.setMixTranscodingConfig(config);
+    },
+
+    genMixTranscodingConfigFromTpl(){
+      // 配置本地主流的混流信息（可根据自己的需求设置参数，下面仅供参考）
+      let localMainStream = {
+        userId: this.userId,
+        roomId: '',
+        streamType: TRTCVideoStreamType.TRTCVideoStreamTypeBig,
+        width: 960,
+        height: 720,
+        fps: 15,
+        pureAudio: this.pureAudioStyle,
+      };
+      switch(this.mixTranscodingMode) {
+        case '1':
+          return this.cnfTPLtranscodingConfigModeManual(localMainStream);
+        case '2':
+          return this.cnfTPLtranscodingConfigModeTemplatePureAudio(localMainStream);
+        case '3':
+          return this.cnfTPLTranscodingConfigModeTemplatePresetLayout(localMainStream);
+        case '4':
+          return this.cnfTPLTranscodingConfigModeTemplateScreenSharing(localMainStream);
+      }
+    },
+
+    // 全手动模式
+    cnfTPLtranscodingConfigModeManual(localMainStream){
+      // 云端混流的没有辅流（屏幕分享）界面，则退出（无需混流）
+      if (this.mixStreamInfos.length == 0) {
+        this.rtcCloud.setMixTranscodingConfig(null);
         return;
       }
+      
+      let sdkInfo = genTestUserSig(this.userId);
       let config = new TRTCTranscodingConfig();
-      config.mode = TRTCTranscodingConfigMode.TRTCTranscodingConfigMode_Manual;
+      config.mode = TRTCTranscodingConfigMode.TRTC_TranscodingConfigMode_Manual;
       config.appId = sdkInfo.appId;
       config.bizId = sdkInfo.bizId;
       config.videoWidth = localMainStream.width;
@@ -1009,7 +1050,130 @@ let demoApp = new Vue({
         mixUser.streamType = item.streamType;
         config.mixUsersArray.push(mixUser);
       });
-      this.rtcCloud.setMixTranscodingConfig(config);
+      return config;
+    },
+
+    // 纯音频模式
+    cnfTPLtranscodingConfigModeTemplatePureAudio(localMainStream){
+      let sdkInfo = genTestUserSig(this.userId);
+      let config = new TRTCTranscodingConfig();
+      config.mode = TRTCTranscodingConfigMode.TRTC_TranscodingConfigMode_Template_PureAudio;
+      config.appId = sdkInfo.appId;
+      config.bizId = sdkInfo.bizId;
+      config.videoWidth = 0;
+      config.videoHeight = 0;
+      config.videoBitrate = 0;
+      config.videoFramerate = 0;
+      config.videoGOP = 8;
+      config.audioSampleRate = 48000;
+      config.audioBitrate = 64;
+      config.audioChannels = 1;
+      config.mixUsersArraySize = 0;
+      config.mixUsersArray = [];
+      return config;
+    },
+
+    // 预排版模式
+    cnfTPLTranscodingConfigModeTemplatePresetLayout(localMainStream){
+      let sdkInfo = genTestUserSig(this.userId);
+      let config = new TRTCTranscodingConfig();
+      config.mode = TRTCTranscodingConfigMode.TRTC_TranscodingConfigMode_Template_PresetLayout;
+      config.appId = sdkInfo.appId;
+      config.bizId = sdkInfo.bizId;
+      config.videoWidth = localMainStream.width;
+      config.videoHeight = localMainStream.height;
+      config.videoBitrate = 800;
+      config.videoFramerate = 15;
+      config.videoGOP = 1;
+      config.audioSampleRate = 48000;
+      config.audioBitrate = 64;
+      config.audioChannels = 1;
+      config.mixUsersArraySize = 8;
+      config.mixUsersArray = [];
+
+      // 设置每一路子画面的位置信息（仅供参考）
+      let zOrder = 1, index = 0;
+       //本地主路信息
+      config.mixUsersArray.push(this.setMixUser("$PLACE_HOLDER_LOCAL_MAIN$", index, zOrder, 0, 0, localMainStream.width, localMainStream.height));
+      index++; zOrder++;
+
+      config.mixUsersArray.push(this.setMixUser("$PLACE_HOLDER_LOCAL_SUB$", index, zOrder, 0, 0, localMainStream.width, localMainStream.height));
+      index++; zOrder++;
+
+      if (localMainStream.width < localMainStream.height) {
+          //竖屏排布
+          let subWidth = localMainStream.width / 5 / 2 * 2;
+          let subHeight = localMainStream.height / 5 / 2 * 2;
+          let xOffSet = (localMainStream.width - (3 * subWidth)) / 4;
+          let yOffSet = (localMainStream.height - (4 * subHeight)) / 5;
+
+          for (let u = 0; u < 6; ++u, index++, zOrder++) {
+            if (u < 3) {
+                // 前三个小画面靠左往右
+                config.mixUsersArray.push(this.setMixUser("$PLACE_HOLDER_REMOTE$", index, zOrder,
+                    xOffSet * (1 + u) + subWidth * u, localMainStream.height - yOffSet - subHeight, subWidth, subHeight));
+            } else if (u < 6) {
+                // 后三个小画面靠左从下往上铺
+                config.mixUsersArray.push(this.setMixUser("$PLACE_HOLDER_REMOTE$", index, zOrder,
+                localMainStream.width - xOffSet - subWidth, localMainStream.height - (u-1) * yOffSet - (u - 1) * subHeight, subWidth, subHeight));
+            } else {
+                // 最多只叠加六个小画面
+            }
+        }
+      } else {
+         //横屏排布
+         let subWidth = localMainStream.width / 5 / 2 * 2;
+         let subHeight = localMainStream.height / 5 / 2 * 2;
+         let xOffSet = 10;
+         let yOffSet = (localMainStream.height - (3 * subHeight)) / 4;
+ 
+         for (let u = 0; u < 6; ++u, index++, zOrder++) {
+             if (u < 3) {
+                 // 前三个小画面靠右从下往上铺
+                 config.mixUsersArray.push(this.setMixUser("$PLACE_HOLDER_REMOTE$", index, zOrder,
+                 localMainStream.width - xOffSet - subWidth, localMainStream.height - (u + 1) * yOffSet - (u + 1) * subHeight, subWidth, subHeight));
+             } else if (u < 6) {
+                 // 后三个小画面靠左从下往上铺
+                 config.mixUsersArray.push(this.setMixUser("$PLACE_HOLDER_REMOTE$", index, zOrder,
+                     xOffSet, localMainStream.height - (u - 2) * yOffSet - (u - 2) * subHeight, subWidth, subHeight));
+             } else {
+                 // 最多只叠加六个小画面
+             }
+         }
+      }
+      return config;
+    },
+
+    // 屏幕分享模式
+    cnfTPLTranscodingConfigModeTemplateScreenSharing(localMainStream){
+      let sdkInfo = genTestUserSig(this.userId);
+      let config = new TRTCTranscodingConfig();
+      config.mode = TRTCTranscodingConfigMode.TRTC_TranscodingConfigMode_Template_ScreenSharing;
+      config.appId = sdkInfo.appId;
+      config.bizId = sdkInfo.bizId;
+      config.videoWidth = 0;
+      config.videoHeight = 0;
+      config.videoBitrate = 0;
+      config.videoFramerate = 15;
+      config.videoGOP = 1;
+      config.audioSampleRate = 48000;
+      config.audioBitrate = 64;
+      config.audioChannels = 1;
+      config.mixUsersArraySize = 0;
+      config.mixUsersArray = [];
+      return config;
+    },
+    setMixUser(userid, index, zOrder, left, top, width, height) {
+      let mixUser = new TRTCMixUser();
+      mixUser.userId = userid;
+      mixUser.roomId = "";
+      mixUser.zOrder = zOrder;
+      mixUser.rect = new Rect();
+      mixUser.rect.left = left;
+      mixUser.rect.top = top;
+      mixUser.rect.right = width + left;
+      mixUser.rect.bottom = height + top;
+      return mixUser;
     },
     updateCDNStreamId() {
       this.rtcCloud.startPublishing(this.streamId, TRTCVideoStreamType.TRTCVideoStreamTypeBig);
@@ -1022,7 +1186,7 @@ let demoApp = new Vue({
     onStartScreenCapture() {
       // 打开屏幕分享
       if (this.screenCapture) {
-        this.screenList = this.rtcCloud.getScreenCaptureSources(120, 70, 20, 20);
+        this.screenList = this.rtcCloud.getScreenCaptureSources(this.screenCaptureWidth, this.screenCaptureHeight, 20, 20);
         let encparam = new TRTCVideoEncParam();
         encparam.videoResolution = TRTCVideoResolution.TRTCVideoResolution_640_480;
         encparam.resMode = TRTCVideoResolutionMode.TRTCVideoResolutionModeLandscape;
@@ -1047,6 +1211,40 @@ let demoApp = new Vue({
       }
     },
 
+    showScreenListDialog() {
+      this.screenListDialogVisible = true;
+      setTimeout(()=>{
+        this.randerScrrenCapture();
+      }, 500);
+    },
+
+    hideScreenListDialog() {
+      this.screenListDialogVisible = false;
+
+    },
+
+    randerScrrenCapture() {
+      if (this.screenList === null) {
+        return;
+      }
+      let {screenList} = this;
+      let srcInfos = null;
+      let elId = '';
+      let cnvs = null;
+      let imgData = null;
+      
+      for (let i = 0; i < screenList.length; i++) {
+        srcInfos = screenList[i];
+        if (srcInfos.thumbBGRA.length===0) continue;
+        elId = `screen_${srcInfos.sourceId}`;
+        cnvs = document.getElementById(elId);
+        cnvs.width = srcInfos.thumbBGRA.width;
+        cnvs.height = srcInfos.thumbBGRA.height;
+        imgData =  new ImageData(new Uint8ClampedArray(srcInfos.thumbBGRA.buffer), srcInfos.thumbBGRA.width,  srcInfos.thumbBGRA.height );
+        cnvs.getContext("2d").putImageData(imgData, 0, 0);
+      }
+    },
+
     onSelectScreenCapture(sourceId) {
       // 选择屏幕分享
       if (this.screenCapture) {
@@ -1054,6 +1252,7 @@ let demoApp = new Vue({
         for (var i = 0; i < this.screenList.length; i++) {
           if (this.screenList[i].sourceId == sourceId) {
             source = this.screenList[i];
+            this.screenCaptureSelectedName = source.sourceName;
             break;
           }
         }
@@ -1063,9 +1262,9 @@ let demoApp = new Vue({
         let mouse = true, highlight = true;
 
         this.rtcCloud.selectScreenCaptureTarget(source.type, source.sourceId, source.sourceName, rect, mouse, highlight);
-        // windows 平台支持本地屏幕共享预览画面， mac 平台暂时不支持。
         // let view = this.findVideoView("local_video", TRTCVideoStreamType.TRTCVideoStreamTypeSub);
         this.rtcCloud.startScreenCapture();
+        this.hideScreenListDialog();
       }
     },
 
@@ -1148,6 +1347,7 @@ let demoApp = new Vue({
       // 填充模式需要在设置 view 后才生效
       this.rtcCloud.setLocalViewFillMode(this.videoFillMode);
       this.rtcCloud.startLocalAudio();
+      this.rtcCloud.muteLocalVideo(false);
       this.rtcCloud.muteLocalAudio(false);
     },
 
@@ -1232,9 +1432,14 @@ let demoApp = new Vue({
     sharePlayUrl() {
       // 计算 CDN 地址(格式： http://[bizid].liveplay.myqcloud.com/live/[streamid].flv )
       let sdkInfo = genTestUserSig(this.userId);
+
       // streamid = SDKAPPID_房间号_用户名_流类型
-      let streamId = sdkInfo.sdkappid + '_' + this.roomId + '_' + this.userId + '_main';
-      let shareUrl = 'http://' + sdkInfo.bizId + '.liveplay.myqcloud.com/live/' + streamId + '.flv';
+
+      let id = sdkInfo.sdkappid + '_' + this.roomId + '_' + this.userId + '_main';
+      if (this.streamId) {
+        id = this.streamId;
+      }
+      let shareUrl = 'http://' + sdkInfo.bizId + '.liveplay.myqcloud.com/live/' + id + '.flv';
       let clipboard = require('electron').clipboard;
       clipboard.writeText(shareUrl);
       this.$message('播放地址：（已复制到剪切板）' + shareUrl);
@@ -1260,7 +1465,7 @@ let demoApp = new Vue({
       }
       let ret = this.rtcCloud.sendSEIMsg(this.seiMsg, 1);
       if (ret) {
-        this.notify('发送自定义消息成功');
+        this.notify('发送SEI消息成功');
       }
     },
 

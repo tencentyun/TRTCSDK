@@ -93,3 +93,7 @@ body {
 .control {
     margin-top: 10px;
 }
+
+.el-dialog {
+    width: fit-content;
+}

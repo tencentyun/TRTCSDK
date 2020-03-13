@@ -34,7 +34,8 @@
   "scripts": {
     "start": "electron .",
     "prod": "webpack --config webpack.config.js",
-    "win-package": "electron-builder --win --ia32",
+    "win32-package": "electron-builder --win --ia32",
+    "win64-package": "electron-builder --win --x64",
     "mac-package": "electron-builder --mac --arm64"
   },
   "keywords": [],
@@ -42,7 +43,7 @@
   "license": "ISC",
   "dependencies": {
     "electron-store": "^5.0.0",
-    "trtc-electron-sdk": "^6.9.138"
+    "trtc-electron-sdk": "^7.0.144"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
