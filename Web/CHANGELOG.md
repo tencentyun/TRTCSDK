@@ -6,6 +6,19 @@
   - patch：补丁号，如有功能改善或缺陷修复则该字段递增。
 - 我们建议您及时更新到最新版本以便获得更好的产品稳定性及在线支持！
 
+## 4.3.9 (2020-3-13)
+
+**Improvement**
+
+- 增加部署环境自动检测
+- 优化日志
+
+## 4.3.8 (2020-2-24)
+
+**Improvement**
+
+- createClient 增加 streamId userdefinerecordid 字段
+
 ## 4.3.7 (2020-2-21)
 
 **Improvement**
