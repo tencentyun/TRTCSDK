@@ -1,0 +1,484 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 52;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		812E148E241257D200642B19 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 812E1481241257D200642B19 /* Assets.xcassets */; };
+		812E148F241257D200642B19 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 812E1482241257D200642B19 /* LaunchScreen.storyboard */; };
+		812E1490241257D200642B19 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812E1484241257D200642B19 /* AppDelegate.swift */; };
+		812E1495241257D200642B19 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 812E148B241257D200642B19 /* Main.storyboard */; };
+		812E14972412585600642B19 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812E14962412585600642B19 /* MainViewController.swift */; };
+		812E14992412589100642B19 /* RTCViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812E14982412589100642B19 /* RTCViewController.swift */; };
+		812E149B241258AA00642B19 /* RTC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 812E149A241258AA00642B19 /* RTC.storyboard */; };
+		812E14A02412597E00642B19 /* GenerateTestUserSig.m in Sources */ = {isa = PBXBuildFile; fileRef = 812E149E2412597E00642B19 /* GenerateTestUserSig.m */; };
+		812E14A424125B6000642B19 /* LiveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812E14A324125B6000642B19 /* LiveViewController.swift */; };
+		812E14A62412601E00642B19 /* Live.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 812E14A52412601E00642B19 /* Live.storyboard */; };
+		817262A82416C68400265751 /* LivePushViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817262A72416C68400265751 /* LivePushViewController.swift */; };
+		81E3C986241820EA00366606 /* LiveSubVideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E3C985241820EA00366606 /* LiveSubVideoView.swift */; };
+		FD28D3F124162E2B0080B8A0 /* RTCEntranceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD28D3F024162E2B0080B8A0 /* RTCEntranceViewController.swift */; };
+		FDB94D0C2417BC6000C2AC28 /* LivePlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDB94D0B2417BC6000C2AC28 /* LivePlayViewController.swift */; };
+		FDCEFF4B241BBDD6000BFA0B /* TXLiteAVSDK_TRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDCEFF4A241BBDD6000BFA0B /* TXLiteAVSDK_TRTC.framework */; };
+		FDCEFF4D241BBDEB000BFA0B /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = FDCEFF4C241BBDEB000BFA0B /* libc++.tbd */; };
+		FDCEFF4F241BBDF1000BFA0B /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = FDCEFF4E241BBDF1000BFA0B /* libiconv.tbd */; };
+		FDCEFFCA241BC28B000BFA0B /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = FDCEFFC9241BC28B000BFA0B /* Alamofire */; };
+		FDF543BF241A0A2700F21B2A /* LiveRoomManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDF543BE241A0A2700F21B2A /* LiveRoomManager.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		812E142E2412403400642B19 /* SimpleDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		812E1481241257D200642B19 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		812E1483241257D200642B19 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		812E1484241257D200642B19 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		812E1485241257D200642B19 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		812E1487241257D200642B19 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		812E148B241257D200642B19 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		812E14962412585600642B19 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		812E14982412589100642B19 /* RTCViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTCViewController.swift; sourceTree = "<group>"; };
+		812E149A241258AA00642B19 /* RTC.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = RTC.storyboard; sourceTree = "<group>"; };
+		812E149C241258D800642B19 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		812E149E2412597E00642B19 /* GenerateTestUserSig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenerateTestUserSig.m; sourceTree = "<group>"; };
+		812E149F2412597E00642B19 /* GenerateTestUserSig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GenerateTestUserSig.h; sourceTree = "<group>"; };
+		812E14A1241259DE00642B19 /* TRTCSimpleDemo-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TRTCSimpleDemo-Bridging-Header.h"; sourceTree = "<group>"; };
+		812E14A224125B0C00642B19 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		812E14A324125B6000642B19 /* LiveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveViewController.swift; sourceTree = "<group>"; };
+		812E14A52412601E00642B19 /* Live.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Live.storyboard; sourceTree = "<group>"; };
+		817262A72416C68400265751 /* LivePushViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LivePushViewController.swift; sourceTree = "<group>"; };
+		81E3C985241820EA00366606 /* LiveSubVideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveSubVideoView.swift; sourceTree = "<group>"; };
+		FD28D3F024162E2B0080B8A0 /* RTCEntranceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTCEntranceViewController.swift; sourceTree = "<group>"; };
+		FDB94D0B2417BC6000C2AC28 /* LivePlayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LivePlayViewController.swift; sourceTree = "<group>"; };
+		FDCEFF4A241BBDD6000BFA0B /* TXLiteAVSDK_TRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TXLiteAVSDK_TRTC.framework; path = ../SDK/TXLiteAVSDK_TRTC.framework; sourceTree = "<group>"; };
+		FDCEFF4C241BBDEB000BFA0B /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		FDCEFF4E241BBDF1000BFA0B /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
+		FDF543BE241A0A2700F21B2A /* LiveRoomManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveRoomManager.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		812E142B2412403400642B19 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FDCEFF4F241BBDF1000BFA0B /* libiconv.tbd in Frameworks */,
+				FDCEFFCA241BC28B000BFA0B /* Alamofire in Frameworks */,
+				FDCEFF4D241BBDEB000BFA0B /* libc++.tbd in Frameworks */,
+				FDCEFF4B241BBDD6000BFA0B /* TXLiteAVSDK_TRTC.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		812E14252412403400642B19 = {
+			isa = PBXGroup;
+			children = (
+				812E1487241257D200642B19 /* README.md */,
+				812E148D241257D200642B19 /* RTC */,
+				812E1486241257D200642B19 /* Live */,
+				812E1488241257D200642B19 /* Main */,
+				812E1480241257D200642B19 /* TRTCSimpleDemo */,
+				812E142F2412403400642B19 /* Products */,
+				C2D3A67E7F4AD77B3A644C16 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		812E142F2412403400642B19 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				812E142E2412403400642B19 /* SimpleDemo.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		812E1480241257D200642B19 /* TRTCSimpleDemo */ = {
+			isa = PBXGroup;
+			children = (
+				812E1484241257D200642B19 /* AppDelegate.swift */,
+				812E1485241257D200642B19 /* Info.plist */,
+				812E1481241257D200642B19 /* Assets.xcassets */,
+				812E1482241257D200642B19 /* LaunchScreen.storyboard */,
+				812E14A1241259DE00642B19 /* TRTCSimpleDemo-Bridging-Header.h */,
+			);
+			path = TRTCSimpleDemo;
+			sourceTree = "<group>";
+		};
+		812E1486241257D200642B19 /* Live */ = {
+			isa = PBXGroup;
+			children = (
+				817262A72416C68400265751 /* LivePushViewController.swift */,
+				FDB94D0B2417BC6000C2AC28 /* LivePlayViewController.swift */,
+				812E14A324125B6000642B19 /* LiveViewController.swift */,
+				81E3C985241820EA00366606 /* LiveSubVideoView.swift */,
+				FDF543BE241A0A2700F21B2A /* LiveRoomManager.swift */,
+				812E14A52412601E00642B19 /* Live.storyboard */,
+				812E14A224125B0C00642B19 /* README.md */,
+			);
+			path = Live;
+			sourceTree = "<group>";
+		};
+		812E1488241257D200642B19 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				812E149F2412597E00642B19 /* GenerateTestUserSig.h */,
+				812E149E2412597E00642B19 /* GenerateTestUserSig.m */,
+				812E148B241257D200642B19 /* Main.storyboard */,
+				812E14962412585600642B19 /* MainViewController.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		812E148D241257D200642B19 /* RTC */ = {
+			isa = PBXGroup;
+			children = (
+				FD28D3F024162E2B0080B8A0 /* RTCEntranceViewController.swift */,
+				812E14982412589100642B19 /* RTCViewController.swift */,
+				812E149A241258AA00642B19 /* RTC.storyboard */,
+				812E149C241258D800642B19 /* README.md */,
+			);
+			path = RTC;
+			sourceTree = "<group>";
+		};
+		C2D3A67E7F4AD77B3A644C16 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				FDCEFF4E241BBDF1000BFA0B /* libiconv.tbd */,
+				FDCEFF4C241BBDEB000BFA0B /* libc++.tbd */,
+				FDCEFF4A241BBDD6000BFA0B /* TXLiteAVSDK_TRTC.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		812E142D2412403400642B19 /* TRTCSimpleDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 812E14422412403600642B19 /* Build configuration list for PBXNativeTarget "TRTCSimpleDemo" */;
+			buildPhases = (
+				FDCEFFCC241BC32A000BFA0B /* Download TRTC SDK */,
+				812E142A2412403400642B19 /* Sources */,
+				812E142B2412403400642B19 /* Frameworks */,
+				812E142C2412403400642B19 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TRTCSimpleDemo;
+			packageProductDependencies = (
+				FDCEFFC9241BC28B000BFA0B /* Alamofire */,
+			);
+			productName = TRTCSimpleDemo;
+			productReference = 812E142E2412403400642B19 /* SimpleDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		812E14262412403400642B19 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1130;
+				LastUpgradeCheck = 1130;
+				ORGANIZATIONNAME = Tencent;
+				TargetAttributes = {
+					812E142D2412403400642B19 = {
+						CreatedOnToolsVersion = 11.3.1;
+						LastSwiftMigration = 1130;
+					};
+				};
+			};
+			buildConfigurationList = 812E14292412403400642B19 /* Build configuration list for PBXProject "TRTCSimpleDemo" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 812E14252412403400642B19;
+			packageReferences = (
+				FDCEFFC8241BC28B000BFA0B /* XCRemoteSwiftPackageReference "Alamofire" */,
+			);
+			productRefGroup = 812E142F2412403400642B19 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				812E142D2412403400642B19 /* TRTCSimpleDemo */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		812E142C2412403400642B19 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				812E148E241257D200642B19 /* Assets.xcassets in Resources */,
+				812E1495241257D200642B19 /* Main.storyboard in Resources */,
+				812E14A62412601E00642B19 /* Live.storyboard in Resources */,
+				812E149B241258AA00642B19 /* RTC.storyboard in Resources */,
+				812E148F241257D200642B19 /* LaunchScreen.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		FDCEFFCC241BC32A000BFA0B /* Download TRTC SDK */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Download TRTC SDK";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ ! -e \"../SDK/TXLiteAVSDK_TRTC.framework\" ]; then\nURL=\"$(cat ../SDK/README.md | grep -o 'http.*zip')\"\necho \"Downloading SDK from $URL\"\ncurl \"$URL\" --output ../SDK/TXLiteAVSDK_TRTC_iOS.zip\ncd ../SDK\nunzip TXLiteAVSDK_TRTC_iOS.zip\nrm -rf __MACOSX\nmv TXLiteAVSDK_TRTC_*/SDK/*.framework .\nrm -rf TXLiteAVSDK_TRTC_*\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		812E142A2412403400642B19 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FD28D3F124162E2B0080B8A0 /* RTCEntranceViewController.swift in Sources */,
+				812E1490241257D200642B19 /* AppDelegate.swift in Sources */,
+				812E14992412589100642B19 /* RTCViewController.swift in Sources */,
+				812E14A02412597E00642B19 /* GenerateTestUserSig.m in Sources */,
+				812E14972412585600642B19 /* MainViewController.swift in Sources */,
+				812E14A424125B6000642B19 /* LiveViewController.swift in Sources */,
+				817262A82416C68400265751 /* LivePushViewController.swift in Sources */,
+				FDB94D0C2417BC6000C2AC28 /* LivePlayViewController.swift in Sources */,
+				FDF543BF241A0A2700F21B2A /* LiveRoomManager.swift in Sources */,
+				81E3C986241820EA00366606 /* LiveSubVideoView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		812E1482241257D200642B19 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				812E1483241257D200642B19 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		812E14402412403600642B19 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		812E14412412403600642B19 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		812E14432412403600642B19 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = M7HPYN94Z3;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../SDK/";
+				INFOPLIST_FILE = TRTCSimpleDemo/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.tencent.TRTCSimpleDemo;
+				PRODUCT_NAME = SimpleDemo;
+				SWIFT_OBJC_BRIDGING_HEADER = "TRTCSimpleDemo/TRTCSimpleDemo-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		812E14442412403600642B19 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = M7HPYN94Z3;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../SDK/";
+				INFOPLIST_FILE = TRTCSimpleDemo/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.tencent.TRTCSimpleDemo;
+				PRODUCT_NAME = SimpleDemo;
+				SWIFT_OBJC_BRIDGING_HEADER = "TRTCSimpleDemo/TRTCSimpleDemo-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		812E14292412403400642B19 /* Build configuration list for PBXProject "TRTCSimpleDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				812E14402412403600642B19 /* Debug */,
+				812E14412412403600642B19 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		812E14422412403600642B19 /* Build configuration list for PBXNativeTarget "TRTCSimpleDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				812E14432412403600642B19 /* Debug */,
+				812E14442412403600642B19 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		FDCEFFC8241BC28B000BFA0B /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = exactVersion;
+				version = 4.9.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		FDCEFFC9241BC28B000BFA0B /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FDCEFFC8241BC28B000BFA0B /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 812E14262412403400642B19 /* Project object */;
+}
