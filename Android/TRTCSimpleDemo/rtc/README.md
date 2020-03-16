@@ -18,6 +18,7 @@ TRTC 云服务由两种不同类型的服务器节点组成，分别是“接口
 
 ## 示例代码
 访问 [Github](https://github.com/tencentyun/TRTCSDK/tree/master/Android/TRTCSimpleDemo) 即可获取本文档相关的实例代码。
+![](https://main.qcloudimg.com/raw/6b22e023d733cd16976b00c22dd53b61.png)
 
 ## 使用步骤
 <span id="step1"> </span>
