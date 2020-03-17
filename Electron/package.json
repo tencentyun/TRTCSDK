@@ -43,7 +43,7 @@
   "license": "ISC",
   "dependencies": {
     "electron-store": "^5.0.0",
-    "trtc-electron-sdk": "^7.0.145"
+    "trtc-electron-sdk": "latest"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
