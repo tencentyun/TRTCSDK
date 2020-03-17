@@ -80,7 +80,7 @@ https://trtc-1252463788.file.myqcloud.com/electron_sdk/docs/
 
 #### step1. 通过npm下载trtc库(确认联网状态)
 ```
-npm install trtc-electron-sdk -S 
+npm install trtc-electron-sdk@latest --save-dev
 ```
 
 #### step2. 对接基本功能函数
