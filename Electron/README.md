@@ -1,6 +1,5 @@
 # TRTC on Electron
-
-![](https://demovideo-1252463788.cos.ap-shanghai.myqcloud.com/electron/electron.gif)
+![](https://main.qcloudimg.com/raw/02bde06f116d6b406324e5ec431f0254.jpg)
 
 ## 跑通 DEMO
 <span id="step1"></span>
@@ -210,6 +209,7 @@ TRTC SDK 6.6 版本（2019年08月）开始启用新的签名算法 HMAC-SHA256�
 
 ### 2. 两台手机同时运行 Demo，为什么看不到彼此的画面？
 请确保两台手机在运行 Demo 时使用的是不同的 UserID，TRTC 不支持同一个 UserID （除非 SDKAppID 不同）在两个终端同时使用。
+
 ![](https://main.qcloudimg.com/raw/efa72d87654000eac615b0d9f2cfb6e5.png)
 
 ### 3. 防火墙有什么限制？
