@@ -126,7 +126,7 @@ mTRTCCloud.startLocalPreview(mIsFrontCamera, localView);
 TRTCCloudDef.TRTCVideoEncParam encParam = new TRTCCloudDef.TRTCVideoEncParam();
 encParam.videoResolution = TRTCCloudDef.TRTC_VIDEO_RESOLUTION_960_540;
 encParam.videoFps = 15;
-encParam.videoBitrate = 850;
+encParam.videoBitrate = 1200;
 encParam.videoResolutionMode = TRTCCloudDef.TRTC_VIDEO_RESOLUTION_MODE_PORTRAIT;
 mTRTCCloud.setVideoEncoderParam(encParam);
 mTRTCCloud.startLocalAudio();

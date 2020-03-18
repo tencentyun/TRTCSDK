@@ -93,7 +93,7 @@ trtcCloud.startLocalPreview(frontCamera, view: localView)
 //设置本地视频编码参数
 let encParams = TRTCVideoEncParam.init()
 encParams.videoResolution = TRTCVideoResolution._960_540
-encParams.videoBitrate    = 850
+encParams.videoBitrate    = 1200
 encParams.videoFps        = 15
 trtcCloud.setVideoEncoderParam(encParams)
 trtcCloud.startLocalAudio()
