@@ -2,11 +2,28 @@
 .template-grid{
   width: 100vw;
   height: 100vh;
+  overflow: hidden;
+  /* display: flex;
+  flex-direction: row;
+  flex-wrap: wrap; */
+}
+.template-grid .grid-container {
+  width: 100vw;
+  height: 100vh;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
 }
-
+.template-grid .grid-scroll-container{
+  width: 100vw;
+  height: 100vh;
+  /* box-sizing: border-box; */
+  /* overflow-y: scroll; */
+  background-color: #000;
+}
+.grid-containe.overflow {
+  height: auto;
+}
 .template-grid .view-container {
   position: relative;
 }
@@ -81,6 +98,20 @@
    height: 33.3vh;
 }
 
+.stream-even .view-container{
+  width: 50vw;
+  height: 50vh;
+}
+
+.stream-odd .view-container{
+  width: 50vw;
+  height: 50vh;
+}
+.stream-odd .view-container:last-child{
+  width: 100vw;
+  height: 50vh;
+}
+
 .template-grid .operation-bar {
   position: absolute;
   bottom: 5%;
@@ -102,7 +133,7 @@
   margin: 0 6rpx;
   box-sizing: border-box;
   display: flex;
-  background: white;
+  background: rgba(255, 255, 255, 1);
   justify-content: center;
   align-items: center;
   border-radius: 50%;
@@ -199,7 +230,116 @@
 }
 .template-grid .masker{
   position: absolute;
+  top: 0;
   width: 100vw;
   height: 100vh;
   background: rgba(0, 0, 0, 0.4);
+}
+
+.template-grid .no-stream,
+.template-grid .no-video{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  color:#fff;
+  background-color: rgba(0, 0, 0, 0.4);
+  font-size: 12px;
+}
+.template-grid .audio-volume,
+.template-grid .no-audio{
+  position: absolute;
+  top: 20rpx;
+  left: 20rpx;
+  width: 36rpx;
+  height: 36rpx;
+}
+
+.no-stream .image,
+.no-video .image{
+  width: 60rpx;
+  height: 60rpx;
+}
+
+.audio-volume .image,
+.no-audio .image{
+  width: 36rpx;
+  height: 36rpx;
+  position: absolute; /*android 的bug ，image absolute后会向上漂移几个像素，如果要对其必须都设置absolute*/
+}
+
+.audio-active {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 0;
+  overflow: hidden;
+}
+.audio-active .image{
+  bottom: 0;
+}
+
+.slide-up-tips {
+  position: absolute;
+  bottom: -100rpx;
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: 200rpx;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  font-size: 12px;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.4);
+  box-sizing: border-box;
+  padding: 20rpx;
+  border-radius: 10rpx;
+  opacity: 0;
+}
+.slide-up-tips .image {
+  width: 100rpx;
+  height: 100rpx;
+}
+.player-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.player-placeholder .image {
+  width: 100rpx;
+  height: 100rpx;
+}
+
+.pages-container {
+  width: auto;
+  left: 50%;
+  transform: translate(-50%, 0);
+  height: 20rpx;
+  position: absolute;
+  bottom: 12%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.pages-container .page-item {
+  width: 20rpx;
+  height: 20rpx;
+  border-radius: 50%;
+  margin: 0 8rpx;
+  background-color: rgb(99, 99, 99, .5);
+}
+.pages-container .page-item.current {
+  background-color: #fff;
 }

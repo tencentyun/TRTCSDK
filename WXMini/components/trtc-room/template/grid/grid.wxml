@@ -1,98 +1,152 @@
 <!-- template grid -->
 <template name='grid'>
-  <view class="template-grid {{visibleStreamList.length < 9 ? 'stream-' + visibleStreamList.length : 'stream-8'}}">
-    <view wx:for="{{visibleStreamList}}" wx:key="streamID"
-    class="view-container player-container {{item.isVisible?'':'none'}}" data-userid="{{item.userID}}" data-streamtype="{{item.streamType}}" bindtap="_doubleTabToggleFullscreen">
-      <live-player
-        class="player"
-        id="{{item.streamID}}"
-        data-userid="{{item.userID}}"
-        data-streamid="{{item.streamID}}"
-        data-streamtype="{{item.streamType}}"
-        src= "{{item.src}}"
-        mode= "RTC"
-        autoplay= "{{item.autoplay}}"
-        mute-audio= "{{item.muteAudio}}"
-        mute-video= "{{item.muteVideo}}"
-        orientation= "{{item.orientation}}"
-        object-fit= "{{item.objectFit}}"
-        background-mute= "{{item.enableBackgroundMute}}"
-        min-cache= "{{item.minCache}}"
-        max-cache= "{{item.maxCache}}"
-        sound-mode= "{{item.soundMode}}"
-        enable-recv-message= "{{item.enableRecvMessage}}"
-        auto-pause-if-navigate= "{{item.autoPauseIfNavigate}}"
-        auto-pause-if-open-native= "{{item.autoPauseIfOpenNative}}"
-        debug="{{debug}}"
-        bindstatechange="_playerStateChange"
-        bindfullscreenchange="_playerFullscreenChange"
-        bindnetstatus="_playerNetStatus"
-        bindaudiovolumenotify="_playerAudioVolumeNotify"
-      />
-      <view class="operation-bar">
-        <view class="btn-normal" bindtap="_handleSubscribeRemoteAudio" data-user-i-d="{{item.userID}}" data-stream-type="{{item.streamType}}">
-          <image class="btn-image" src="{{item.muteAudio? './static/speaker-false.png': './static/speaker-true.png'}}"></image>
+  <view class="template-grid">
+    <view class="grid-scroll-container" bindtouchstart="_handleGridTouchStart" bindtouchend="_handleGridTouchEnd">
+      <!-- <view id="grid-container-id" class="grid-container {{visibleStreamList.length < 4 ? 'stream-' + visibleStreamList.length : visibleStreamList.length%2 == 0? 'stream-odd':'stream-even'}}"> -->
+      <view id="grid-container-id" class="grid-container {{visibleStreamList.length < 4 ? 'stream-' + visibleStreamList.length : 'stream-3'}}">
+        
+        <view class="view-container pusher-container {{pusher.isVisible && ((gridCurrentPage === 1 && gridPlayerPerPage > 3) || gridPlayerPerPage < 4)?'':'none'}}">
+          <live-pusher
+            class="pusher"
+            url="{{pusher.url}}"
+            mode="{{pusher.mode}}"
+            autopush="{{pusher.autopush}}"
+            enable-camera="{{pusher.enableCamera}}"
+            enable-mic="{{pusher.enableMic}}"
+            enable-agc="{{pusher.enableAgc}}"
+            enable-ans="{{pusher.enableAns}}"
+            enable-ear-monitor="{{pusher.enableEarMonitor}}"
+            auto-focus="{{pusher.enableAutoFocus}}"
+            zoom="{{pusher.enableZoom}}"
+            min-bitrate="{{pusher.minBitrate}}"
+            max-bitrate="{{pusher.maxBitrate}}"
+            video-width="{{pusher.videoWidth}}"
+            video-height="{{pusher.videoHeight}}"
+            beauty="{{pusher.beautyLevel}}"
+            whiteness="{{pusher.whitenessLevel}}"
+            orientation="{{pusher.videoOrientation}}"
+            aspect="{{pusher.videoAspect}}"
+            device-position="{{pusher.frontCamera}}"
+            remote-mirror="{{pusher.enableRemoteMirror}}"
+            local-mirror="{{pusher.localMirror}}"
+            background-mute="{{pusher.enableBackgroundMute}}"
+            audio-quality="{{pusher.audioQuality}}"
+            audio-volume-type="{{pusher.audioVolumeType}}"
+            audio-reverb-type="{{pusher.audioReverbType}}"
+            waiting-image="{{pusher.waitingImage}}"
+            debug="{{debug}}"
+            bindstatechange="_pusherStateChangeHandler"
+            bindnetstatus="_pusherNetStatusHandler"
+            binderror="_pusherErrorHandler"
+            bindbgmstart="_pusherBGMStartHandler"
+            bindbgmprogress="_pusherBGMProgressHandler"
+            bindbgmcomplete="_pusherBGMCompleteHandler"
+          />
+          <view class="no-video" wx:if="{{!pusher.enableCamera}}">
+            <image class="image" src="./static/mute-camera-white.png"></image>
+          </view>
+          <view class="no-audio" wx:if="{{!pusher.enableMic}}">
+            <image class="image" src="./static/mute-mic-white.png"></image>
+          </view>
+          <view class="operation-bar">
+            <view class="btn-normal" bindtap="_switchMemberListPanel">
+              <image class="btn-image" src="./static/list.png"></image>
+            </view>
+            <view class="btn-normal" bindtap="_switchSettingPanel">
+              <image class="btn-image" src="./static/setting.png"></image>
+            </view>
+            <view class="btn-normal btn-hangup" bindtap="_hangUp">
+              <image class="btn-image" src="./static/hangup.png"></image>
+            </view>
+            <view class="btn-normal" bindtap="_toggleIMPanel">
+              <image class="btn-image" src="{{enableIM? './static/im.png': './static/im-disable.png'}}"></image>
+            </view>
+          </view>
         </view>
-        <view class="btn-normal" bindtap="_handleSubscribeRemoteVideo" data-user-i-d="{{item.userID}}" data-stream-type="{{item.streamType}}">
-          <image class="btn-image" src="{{item.muteVideo? './static/camera-false.png': './static/camera-true.png'}}"></image>
+
+        <view wx:for="{{visibleStreamList}}" 
+          wx:key="streamID"
+          class="view-container player-container {{item.isVisible?'':'none'}}" 
+          id="{{'player-'+item.streamID}}"
+          data-userid="{{item.userID}}" 
+          data-streamtype="{{item.streamType}}" 
+          bindtap="_doubleTabToggleFullscreen">
+          <live-player
+            class="player"
+            id="{{item.streamID}}"
+            data-userid="{{item.userID}}"
+            data-streamid="{{item.streamID}}"
+            data-streamtype="{{item.streamType}}"
+            src= "{{item.src}}"
+            mode= "RTC"
+            autoplay= "{{item.autoplay}}"
+            mute-audio= "{{item.muteAudio}}"
+            mute-video= "{{item.muteVideo}}"
+            orientation= "{{item.orientation}}"
+            object-fit= "{{item.objectFit}}"
+            background-mute= "{{item.enableBackgroundMute}}"
+            min-cache= "{{item.minCache}}"
+            max-cache= "{{item.maxCache}}"
+            sound-mode= "{{item.soundMode}}"
+            enable-recv-message= "{{item.enableRecvMessage}}"
+            auto-pause-if-navigate= "{{item.autoPauseIfNavigate}}"
+            auto-pause-if-open-native= "{{item.autoPauseIfOpenNative}}"
+            debug="{{debug}}"
+            bindstatechange="_playerStateChange"
+            bindfullscreenchange="_playerFullscreenChange"
+            bindnetstatus="_playerNetStatus"
+            bindaudiovolumenotify="_playerAudioVolumeNotify"
+          />
+          <view class="no-video" wx:if="{{item.muteVideo}}">
+            <image class="image" src="./static/display-pause-white.png"></image>
+            <view class="text">
+              <p>{{item.userID}}</p>
+            </view>
+          </view>
+          <view class="no-video" wx:if="{{!item.hasVideo && !item.muteVideo}}">
+            <image class="image" src="./static/mute-camera-white.png"></image>
+            <view class="text">
+              <p>{{item.userID}}</p>
+            </view>
+            <view class="text">
+              <p>对方摄像头未打开</p>
+            </view>
+          </view>
+          <view class="no-audio" wx:if="{{!item.hasAudio}}">
+            <image class="image" src="./static/mute-mic-white.png"></image>
+          </view>
+          <view class="audio-volume" wx:if="{{item.hasAudio}}">
+            <image class="image" src="./static/micro-open.png"></image>
+            <view class="audio-active" style="height:{{item.volume}}%">
+              <image class="image" src="./static/audio-active.png"></image>
+            </view>
+          </view>
+          <view class="operation-bar">
+            <view class="btn-normal" catchtap="_handleSubscribeRemoteAudio" data-user-i-d="{{item.userID}}" data-stream-type="{{item.streamType}}">
+              <image class="btn-image" src="{{item.muteAudio? './static/speaker-false.png': './static/speaker-true.png'}}"></image>
+            </view>
+            <view class="btn-normal" catchtap="_handleSubscribeRemoteVideo" data-user-i-d="{{item.userID}}" data-stream-type="{{item.streamType}}">
+              <image class="btn-image" src="{{item.muteVideo? './static/display-pause-false.png': './static/display-play-true.png'}}"></image>
+            </view>
+            <view class="btn-normal" bindtap="_toggleFullscreen" data-user-i-d="{{item.userID}}" data-stream-type="{{item.streamType}}">
+              <image class="btn-image" src="./static/fullscreen.png"></image>
+            </view>
+          </view>
+          <!-- <progress class="volume-progress" percent="{{item.volume}}" stroke-width="4"/> -->
         </view>
-        <view class="btn-normal" bindtap="_toggleFullscreen" data-user-i-d="{{item.userID}}" data-stream-type="{{item.streamType}}">
-          <image class="btn-image" src="./static/fullscreen.png"></image>
+        <view wx:for="{{gridPagePlaceholderStreamList}}" wx:key="id" class="view-container player-container player-placeholder">
+          <image class="image" src="./static/mute-camera-white.png"></image>
         </view>
       </view>
-      <progress class="volume-progress" percent="{{item.volume}}" stroke-width="4"/>
     </view>
-    <view class="view-container pusher-container {{pusher.isVisible?'':'none'}}">
-      <live-pusher
-        class="pusher"
-        url="{{pusher.url}}"
-        mode="{{pusher.mode}}"
-        autopush="{{pusher.autopush}}"
-        enable-camera="{{pusher.enableCamera}}"
-        enable-mic="{{pusher.enableMic}}"
-        enable-agc="{{pusher.enableAgc}}"
-        enable-ans="{{pusher.enableAns}}"
-        enable-ear-monitor="{{pusher.enableEarMonitor}}"
-        auto-focus="{{pusher.enableAutoFocus}}"
-        zoom="{{pusher.enableZoom}}"
-        min-bitrate="{{pusher.minBitrate}}"
-        max-bitrate="{{pusher.maxBitrate}}"
-        video-width="{{pusher.videoWidth}}"
-        video-height="{{pusher.videoHeight}}"
-        beauty="{{pusher.beautyLevel}}"
-        whiteness="{{pusher.whitenessLevel}}"
-        orientation="{{pusher.videoOrientation}}"
-        aspect="{{pusher.videoAspect}}"
-        device-position="{{pusher.frontCamera}}"
-        remote-mirror="{{pusher.enableRemoteMirror}}"
-        local-mirror="{{pusher.localMirror}}"
-        background-mute="{{pusher.enableBackgroundMute}}"
-        audio-quality="{{pusher.audioQuality}}"
-        audio-volume-type="{{pusher.audioVolumeType}}"
-        audio-reverb-type="{{pusher.audioReverbType}}"
-        waiting-image="{{pusher.waitingImage}}"
-        debug="{{debug}}"
-        bindstatechange="_pusherStateChangeHandler"
-        bindnetstatus="_pusherNetStatusHandler"
-        binderror="_pusherErrorHandler"
-        bindbgmstart="_pusherBGMStartHandler"
-        bindbgmprogress="_pusherBGMProgressHandler"
-        bindbgmcomplete="_pusherBGMCompleteHandler"
-      />
-      <view class="operation-bar">
-        <view class="btn-normal" bindtap="_switchMemberListPanel">
-          <image class="btn-image" src="./static/list.png"></image>
-        </view>
-        <view class="btn-normal" bindtap="_switchSettingPanel">
-          <image class="btn-image" src="./static/setting.png"></image>
-        </view>
-        <view class="btn-normal btn-hangup" bindtap="_hangUp">
-          <image class="btn-image" src="./static/hangup.png"></image>
-        </view>
-        <view class="btn-normal" bindtap="_toggleIMPanel">
-        <image class="btn-image" src="./static/im.png"></image>
+    <!-- <view class="slide-up-tips">
+      <image class="image" src="./static/slide-up.png"></image>
+      <view class="text">
+        <p>上滑查看更多</p>
       </view>
-      </view>
+    </view> -->
+    <view class="pages-container" wx:if="{{gridPageCount > 1}}">
+      <view wx:for="{{gridPageCount}}" wx:key="this" class="page-item {{index+1 === gridCurrentPage? 'current':''}}" ></view>
     </view>
     <view class="panel memberlist-panel {{panelName === 'memberlist-panel' ? '' : 'none'}}" >
       <view bindtap="_handleMaskerClick" class='close-btn'>X</view>

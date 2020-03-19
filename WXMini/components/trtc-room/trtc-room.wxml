@@ -4,10 +4,10 @@
 
 <view class="trtc-room-container">
   <block wx:if="{{template === '1v1'}}">
-    <template is='1v1' data="{{pusher, streamList, debug}}"></template>
+    <template is='1v1' data="{{pusher, streamList, debug, enableIM}}"></template>
   </block>
   <block wx:if="{{template === 'grid'}}">
-    <template is='grid' data="{{pusher, streamList, visibleStreamList, debug, panelName}}"></template>
+    <template is='grid' data="{{pusher, streamList, visibleStreamList, debug, enableIM, panelName, gridPagePlaceholderStreamList, gridPageCount, gridCurrentPage, gridPlayerPerPage}}"></template>
   </block>
   <block wx:if="{{template === 'custom'}}">
     <template is='custom' data="{{pusher, streamList, debug}}"></template>
@@ -22,30 +22,6 @@
             <span class="message-content">{{item.message}}</span>
           </view>
           <view id="message-bottom"></view>
-          <!-- <view class="message-item">
-            <span class="user-name mine">user 1121212121211</span>
-            <span class="message-content">hellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhell</span>
-          </view>
-          <view class="message-item">
-            <span class="user-name">user 12</span>
-            <span class="message-content">hell!</span>
-          </view>
-          <view class="message-item">
-            <span class="user-name">user 1121212121211</span>
-            <span class="message-content">hellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhell</span>
-          </view>
-          <view class="message-item">
-            <span class="user-name mine">user 1121212121211</span>
-            <span class="message-content">hellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhell</span>
-          </view>
-          <view class="message-item">
-            <span class="user-name">user 12</span>
-            <span class="message-content">hell!</span>
-          </view>
-          <view class="message-item">
-            <span class="user-name">user 1121212121211</span>
-            <span class="message-content">hellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhellhell</span>
-          </view> -->
         </view>
       </scroll-view>
         
@@ -82,7 +58,10 @@
     </view>
     <view>IM: <button class="debug-btn" bindtap="_debugSendRandomMessage" hover-class="button-hover">send</button></view>
     <view>user count: {{userList.length}}</view>
-    <view wx:for="{{userList}}" wx:key="userID">{{item.userID}}|mainV:{{item.hasMainVideo||false}}|mainA:{{item.hasMainAudio||false}}|auxV:{{item.hasAuxVideo||false}}</view>
+    <view wx:for="{{userList}}" wx:key="userID">{{item.userID}}|
+      mainV:<span class="text {{item.hasMainVideo? 'true' : 'false' }}">{{item.hasMainVideo||false}}</span>|
+      mainA:<span class="text {{item.hasMainAudio? 'true' : 'false' }}">{{item.hasMainAudio||false}}</span>|
+      auxV:<span class="text {{item.hasAuxVideo? 'true' : 'false' }}">{{item.hasAuxVideo||false}}</span></view>
     <view>stream count: {{streamList.length}}</view>
     <view wx:for="{{streamList}}" wx:key="streamID">{{item.userID}}|{{item.streamType}}|
       SubV:<button class="{{!item.muteVideo?'':'false'}} debug-btn" bindtap="_debugToggleRemoteVideo" hover-class="button-hover" data-user-i-d="{{item.userID}}" data-stream-type="{{item.streamType}}">{{!item.muteVideo}}</button>|

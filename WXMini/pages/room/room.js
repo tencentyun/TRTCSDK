@@ -45,7 +45,7 @@ Page({
         maxBitrate: params.maxBitrate,
         minBitrate: params.minBitrate,
         beautyLevel: 9, // 开启美颜等级 0～9级美颜
-        enableIM: true, // 可选，仅支持初始化设置（进房前设置），不支持动态修改
+        enableIM: false, // 可选，仅支持初始化设置（进房前设置），不支持动态修改，需要开通云通信功能
       }
     } else {
       this.data.rtcConfig = {
@@ -55,7 +55,7 @@ Page({
         template: params.template, // 1v1 grid custom
         debugMode: params.debugMode, // 非必要参数，打开组件的调试模式，开发调试时建议设置为 true
         beautyLevel: 9, // 默认开启美颜
-        enableIM: true, // 可选，仅支持初始化设置（进房前设置），不支持动态修改
+        enableIM: false, // 可选，仅支持初始化设置（进房前设置），不支持动态修改，需要开通云通信功能
       }
     }
 

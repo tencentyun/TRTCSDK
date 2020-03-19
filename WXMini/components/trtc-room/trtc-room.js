@@ -9,6 +9,9 @@ import MTA from 'libs/mta_analysis.js'
 const TAG_NAME = 'TRTC-ROOM'
 const IM_GROUP_TYPE = TIM.TYPES.GRP_CHATROOM // TIM.TYPES.GRP_CHATROOM 体验版IM无数量限制，成员20个， TIM.TYPES.GRP_AVCHATROOM IM体验版最多10个，升级后无限制
 
+let touchX = 0
+let touchY = 0
+
 Component({
   /**
    * 组件的属性列表
@@ -57,6 +60,11 @@ Component({
     messageListScrollTop: 0,
     appVersion: ENV.APP_VERSION,
     libVersion: ENV.LIB_VERSION,
+    hasGridPageTipsShow: false,
+    gridPageCount: 0, // grid 布局 player 分页的总页数
+    gridCurrentPage: 1, // grid 布局 当前页码
+    gridPlayerPerPage: 4, // grid 布局每页 player的数量, 如果大于3，在逻辑里第一页需要减1。等于3 pusher 在每一页都出现。可选值: 3,4
+    gridPagePlaceholderStreamList: [], // 占位数量
   },
   /**
    * 生命周期方法
@@ -136,7 +144,7 @@ Component({
       this.EVENT = EVENT
       this._initStatus()
       this._bindEvent()
-      this._bindEventGrid()
+      this._gridBindEvent()
       this._keepScreenOn()
       console.log(TAG_NAME, '_init success component:', this)
     },
@@ -147,6 +155,7 @@ Component({
       }
       this._lastTapTime = 0 // 点击时间戳 用于判断双击事件
       this._beforeLastTapTime = 0 // 点击时间戳 用于判断双击事件
+      this._lastTapCoordinate = { x: 0, y: 0 }, // 点击时的坐标
       this._isFullscreen = false // 是否进入全屏状态
     },
     /**
@@ -306,11 +315,13 @@ Component({
       }
       // 本地数据结构里的 streamType 只支持 main 和 aux ，订阅 small 也是对 main 进行处理
       const streamType = params.streamType === 'small' ? 'main' : params.streamType
+      const stream = this.userController.getStream({
+        userID: params.userID,
+        streamType: streamType,
+      })
+      stream.muteVideoPrev = false // 用于分页切换时保留player当前的订阅状态
+
       if (params.streamType === 'small' || params.streamType === 'main') {
-        const stream = this.userController.getStream({
-          userID: params.userID,
-          streamType: streamType,
-        })
         if (stream && stream.streamType === 'main') {
           console.log(TAG_NAME, 'subscribeRemoteVideo switch small', stream.src)
           if (params.streamType === 'small') {
@@ -336,6 +347,11 @@ Component({
      */
     unsubscribeRemoteVideo(params) {
       console.log(TAG_NAME, 'unsubscribeRemoteVideo', params)
+      const stream = this.userController.getStream({
+        userID: params.userID,
+        streamType: params.streamType,
+      })
+      stream.muteVideoPrev = true // 用于分页切换时保留player当前的订阅状态
       // 设置指定 user streamType 的 muteVideo 为 true
       return this._setPlayerConfig({
         userID: params.userID,
@@ -415,8 +431,8 @@ Component({
      */
     setViewRect(params) {
       console.log(TAG_NAME, 'setViewRect', params)
-      if (this.data.pusher.template !== 'custom') {
-        console.warn(`如需使用setViewRect方法，请设置template:"custom", 当前 template:"${this.data.pusher.template}"`)
+      if (this.data.template !== 'custom') {
+        console.warn(`如需使用setViewRect方法，请初始化时设置template:"custom", 当前 template:"${this.data.template}"`)
       }
       if (this.data.pusher.userID === params.userID) {
         return this._setPusherConfig({
@@ -447,9 +463,9 @@ Component({
      */
     setViewVisible(params) {
       console.log(TAG_NAME, 'setViewVisible', params)
-      // if (this.data.pusher.template !== 'custom') {
-      //   console.warn(`如需使用setViewVisible方法，请设置template:"custom", 当前 template:"${this.data.pusher.template}"`)
-      // }
+      if (this.data.template !== 'custom') {
+        console.warn(`如需使用setViewVisible方法，请初始化时设置template:"custom", 当前 template:"${this.data.template}"`)
+      }
       if (this.data.pusher.userID === params.userID) {
         return this._setPusherConfig({
           isVisible: params.isVisible,
@@ -473,8 +489,8 @@ Component({
      */
     setViewZIndex(params) {
       console.log(TAG_NAME, 'setViewZIndex', params)
-      if (this.data.pusher.template !== 'custom') {
-        console.warn(`如需使用setViewZIndex方法，请设置template:"custom", 当前 template:"${this.data.pusher.template}"`)
+      if (this.data.template !== 'custom') {
+        console.warn(`如需使用setViewZIndex方法，请初始化时设置template:"custom", 当前 template:"${this.data.template}"`)
       }
       if (this.data.pusher.userID === params.userID) {
         return this._setPusherConfig({
@@ -873,7 +889,7 @@ Component({
           // user.streams引用的对象和 streamList 里的是同一个
           this.setData({
             streamList: this.data.streamList,
-            visibleStreamList: this._filterVisibleStream(this.data.streamList),
+            visibleStreamList: this._filterVisibleStream(this.data.streamList, true),
           }, () => {
             // console.log(TAG_NAME, '_setPlayerConfig complete', params, 'streamList:', this.data.streamList)
             resolve(params)
@@ -883,6 +899,33 @@ Component({
           console.warn(TAG_NAME, '指定 userID 或者 streamType 不存在')
           // reject(new Error('指定 userID 或者 streamType 不存在'))
         }
+      })
+    },
+    /**
+     * 设置列表数据，并触发页面渲染
+     * @param {Object} params include userList, stramList
+     * @returns {Promise}
+     */
+    _setList(params) {
+      console.log(TAG_NAME, '_setList', params, this.data.template)
+      const { userList, streamList } = params
+      return new Promise((resolve, reject) => {
+        let visibleStreamList = []
+        const data = {
+          userList: userList || this.data.userList,
+          streamList: streamList || this.data.streamList,
+        }
+        if (this.data.template === 'grid') {
+          visibleStreamList = this._filterVisibleStream(streamList)
+          data.visibleStreamList = visibleStreamList || this.data.visibleStreamList
+          data.gridPagePlaceholderStreamList = this.data.gridPagePlaceholderStreamList
+
+          data.gridCurrentPage = this.data.gridCurrentPage
+          data.gridPageCount = this.data.gridPageCount
+        }
+        this.setData(data, () => {
+          resolve(params)
+        })
       })
     },
     /**
@@ -1032,10 +1075,16 @@ Component({
     _doubleTabToggleFullscreen(event) {
       const curTime = event.timeStamp
       const lastTime = this._lastTapTime
+      const lastTapCoordinate = this._lastTapCoordinate
+      const currentTapCoordinate = event.detail
+      // 计算两次点击的距离
+      const distence = Math.sqrt(Math.pow(Math.abs(currentTapCoordinate.x - lastTapCoordinate.x), 2) + Math.pow(Math.abs(currentTapCoordinate.y - lastTapCoordinate.y), 2))
+      this._lastTapCoordinate = currentTapCoordinate
       // 已知问题：上次全屏操作后，必须等待1.5s后才能再次进行全屏操作，否则引发SDK全屏异常，因此增加节流逻辑
       const beforeLastTime = this._beforeLastTapTime
-      console.log(TAG_NAME, '_doubleTabToggleFullscreen', event, lastTime, beforeLastTime)
-      if (curTime - lastTime > 0 && curTime - lastTime < 300 && lastTime - beforeLastTime > 1500 ) {
+      console.log(TAG_NAME, '_doubleTabToggleFullscreen', event, lastTime, beforeLastTime, distence)
+
+      if (curTime - lastTime > 0 && curTime - lastTime < 300 && lastTime - beforeLastTime > 1500 && distence < 20) {
         const userID = event.currentTarget.dataset.userid
         const streamType = event.currentTarget.dataset.streamtype
         if (this._isFullscreen) {
@@ -1078,11 +1127,10 @@ Component({
       this.userController.on(EVENT.REMOTE_USER_LEAVE, (event)=>{
         console.log(TAG_NAME, '远端用户离开', event, event.data.userID)
         if (event.data.userID) {
-          this.setData({
+          this._setList({
             userList: event.data.userList,
             streamList: event.data.streamList,
-            visibleStreamList: this._filterVisibleStream(event.data.streamList),
-          }, () => {
+          }).then(() => {
             this._emitter.emit(EVENT.REMOTE_USER_LEAVE, { userID: event.data.userID })
           })
         }
@@ -1092,17 +1140,15 @@ Component({
       this.userController.on(EVENT.REMOTE_VIDEO_ADD, (event)=>{
         console.log(TAG_NAME, '远端视频可用', event, event.data.stream.userID)
         const stream = event.data.stream
-        this.setData({
+        this._setList({
           userList: event.data.userList,
           streamList: event.data.streamList,
-          visibleStreamList: this._filterVisibleStream(event.data.streamList),
-        }, () => {
+        }).then(() => {
           // 完善 的stream 的 playerContext
           stream.playerContext = wx.createLivePlayerContext(stream.streamID, this)
           // 新增的需要触发一次play 默认属性才能生效
           // stream.playerContext.play()
           // console.log(TAG_NAME, 'REMOTE_VIDEO_ADD playerContext.play()', stream)
-          // TODO 视频通话模版默认订阅且显示
           this._emitter.emit(EVENT.REMOTE_VIDEO_ADD, { userID: stream.userID, streamType: stream.streamType })
         })
         console.log(TAG_NAME, 'REMOTE_VIDEO_ADD', 'streamList:', this.data.streamList, 'userList:', this.data.userList)
@@ -1111,11 +1157,10 @@ Component({
       this.userController.on(EVENT.REMOTE_VIDEO_REMOVE, (event)=>{
         console.log(TAG_NAME, '远端视频移除', event, event.data.stream.userID)
         const stream = event.data.stream
-        this.setData({
+        this._setList({
           userList: event.data.userList,
           streamList: event.data.streamList,
-          visibleStreamList: this._filterVisibleStream(event.data.streamList),
-        }, () => {
+        }).then(() => {
           // 有可能先触发了退房事件，用户名下的所有stream都已清除
           if (stream.userID && stream.streamType) {
             this._emitter.emit(EVENT.REMOTE_VIDEO_REMOVE, { userID: stream.userID, streamType: stream.streamType })
@@ -1127,11 +1172,10 @@ Component({
       this.userController.on(EVENT.REMOTE_AUDIO_ADD, (event)=>{
         console.log(TAG_NAME, '远端音频可用', event)
         const stream = event.data.stream
-        this.setData({
+        this._setList({
           userList: event.data.userList,
           streamList: event.data.streamList,
-          visibleStreamList: this._filterVisibleStream(event.data.streamList),
-        }, () => {
+        }).then(() => {
           stream.playerContext = wx.createLivePlayerContext(stream.streamID, this)
           // 新增的需要触发一次play 默认属性才能生效
           // stream.playerContext.play()
@@ -1144,11 +1188,10 @@ Component({
       this.userController.on(EVENT.REMOTE_AUDIO_REMOVE, (event)=>{
         console.log(TAG_NAME, '远端音频移除', event, event.data.stream.userID)
         const stream = event.data.stream
-        this.setData({
+        this._setList({
           userList: event.data.userList,
           streamList: event.data.streamList,
-          visibleStreamList: this._filterVisibleStream(event.data.streamList),
-        }, () => {
+        }).then(() => {
           // 有可能先触发了退房事件，用户名下的所有stream都已清除
           if (stream.userID && stream.streamType) {
             this._emitter.emit(EVENT.REMOTE_AUDIO_REMOVE, { userID: stream.userID, streamType: stream.streamType })
@@ -1329,13 +1372,82 @@ Component({
       // console.log(TAG_NAME, '_playerAudioVolumeNotify', event)
       this._emitter.emit(EVENT.REMOTE_AUDIO_VOLUME_UPDATE, event)
     },
-    _filterVisibleStream(streamList) {
+    _filterVisibleStream(streamList, skipPagination) {
       const list = streamList.filter((item) => {
+        // 全部显示
+        // return true
+        // 只显示有视频或者有音频的 stream
         return (item.hasVideo || item.hasAudio)
       })
-      // console.log(TAG_NAME, '_filterVisibleStream list:', list)
+      // 按 userID 进行排序
+      list.sort((item1, item2)=>{
+        const id1 = item1.userID.toUpperCase()
+        const id2 = item2.userID.toUpperCase()
+        if (id1 < id2) {
+          return -1
+        }
+        if (id1 > id2) {
+          return 1
+        }
+        return 0
+      })
+      if (this.data.template === 'grid' && !skipPagination) {
+        this._filterGridPageVisibleStream(list)
+        console.log(TAG_NAME, '_filterVisibleStream gridPagePlaceholderStreamList:', this.data.gridPagePlaceholderStreamList)
+        if (// list.length > this.data.gridPlayerPerPage - 2 &&
+          this.data.gridCurrentPage > 1 &&
+          this.data.gridPagePlaceholderStreamList.length === this.data.gridPlayerPerPage) {
+          // 如果stream 数量大于每页可显示数量，当前页面已经没有可显示的stream(占位数量==3) 回到上一个页面。
+          this._gridPageToPrev(list)
+        }
+      }
+      console.log(TAG_NAME, '_filterVisibleStream list:', list)
       return list
     },
+    _filterGridPageVisibleStream(list) {
+      // 最多只显示 gridPlayerPerPage 个stream
+      const length = list.length
+      // +1 pusher
+      this.data.gridPageCount = Math.ceil((length + 1) / this.data.gridPlayerPerPage)
+      this.data.gridPagePlaceholderStreamList = []
+      let visibleCount = 0
+      // 需要显示的player区间
+      let interval
+      if (this.data.gridPlayerPerPage > 3) {
+        if (this.data.gridCurrentPage === 1) {
+          interval = [-1, this.data.gridPlayerPerPage - 1]
+        } else {
+          // 每页显示4个时，第一页显示3个，pusher只在第一页
+          // -1 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14
+          //    1     2       3        4
+          // -1 3
+          // 2 7
+          // 6 11
+          interval = [this.data.gridCurrentPage * this.data.gridPlayerPerPage - (this.data.gridPlayerPerPage + 2), this.data.gridCurrentPage * this.data.gridPlayerPerPage - 1]
+        }
+      } else {
+        // 每页显示3个，每页都有pusher
+        interval = [this.data.gridCurrentPage * this.data.gridPlayerPerPage - (this.data.gridPlayerPerPage + 1), this.data.gridCurrentPage * this.data.gridPlayerPerPage]
+      }
+
+      for (let i = 0; i < length; i++) {
+        if ( i > interval[0] && i < interval[1]) {
+          list[i].isVisible = true
+          list[i].muteVideo = list[i].muteVideoPrev || false
+          visibleCount++
+        } else {
+          list[i].isVisible = false
+          list[i].muteVideo = true
+        }
+      }
+      for (let i = 0; i < this.data.gridPlayerPerPage - visibleCount; i++) {
+        this.data.gridPagePlaceholderStreamList.push({ id: 'holder-' + i })
+      }
+      return list
+    },
+    /**
+     * 保持屏幕常亮
+     */
     _keepScreenOn() {
       setInterval(() => {
         wx.setKeepScreenOn({
@@ -1457,9 +1569,9 @@ Component({
       const promise = tim.searchGroupByID(params.roomID + '')
       promise.then(function(imResponse) {
         // const group = imResponse.data.group // 群组信息
-        console.log(TAG_NAME, '_searchGroup success', imResponse) // 搜素群组失败的相关信息
+        console.log(TAG_NAME, '_searchGroup success', imResponse)
       }).catch(function(imError) {
-        console.warn(TAG_NAME, '_searchGroup error', imError) // 搜素群组失败的相关信息
+        console.warn(TAG_NAME, '_searchGroup fail，TIM 报错信息不影响后续逻辑，可以忽略', imError) // 搜素群组失败的相关信息
       })
       return promise
     },
@@ -1688,9 +1800,11 @@ Component({
       this.exitRoom()
     },
     _debugEnterRoom() {
-      this.publishLocalVideo()
-      this.publishLocalAudio()
       this.enterRoom({ roomID: this.data.config.roomID }).then(()=>{
+        setTimeout(()=>{
+          this.publishLocalVideo()
+          this.publishLocalAudio()
+        }, 2000)
         // 进房后开始推送视频或音频
       })
     },
@@ -1941,27 +2055,101 @@ Component({
     /**
      * grid布局, 绑定事件
      */
-    _bindEventGrid() {
+    _gridBindEvent() {
       // 远端音量变更
       this.on(EVENT.REMOTE_AUDIO_VOLUME_UPDATE, (event) => {
         const data = event.data
         const userID = data.currentTarget.dataset.userid
         const streamType = data.currentTarget.dataset.streamtype
         const volume = data.detail.volume
-        // console.log(TAG_NAME, '远端音量变更', userID, streamType, volume)
+        // console.log(TAG_NAME, '远端音量变更', userID, streamType, volume, event)
         const stream = this.userController.getStream({
           userID: userID,
-          streamType: streamType,
+          streamType: streamType === 'aux' ? 'main' : streamType, // 远端推辅流后，音量回调会从辅流的 player 返回，而不是主流player 返回。需要等 native SDK修复。
         })
         if (stream) {
           stream.volume = volume
         }
         this.setData({
           streamList: this.data.streamList,
-          visibleStreamList: this._filterVisibleStream(this.data.streamList),
+          visibleStreamList: this._filterVisibleStream(this.data.streamList, true),
         }, () => {
         })
       })
+    },
+    _handleGridTouchStart(event) {
+      touchX = event.changedTouches[0].clientX
+      touchY = event.changedTouches[0].clientY
+    },
+    _handleGridTouchEnd(event) {
+      const x = event.changedTouches[0].clientX
+      const y = event.changedTouches[0].clientY
+
+      if (x - touchX > 50 && Math.abs(y - touchY) < 50) {
+        // console.log(TAG_NAME, '向右滑 当前页面', this.data.gridCurrentPage, this.data.gridPageCount)
+        this._gridPagePrev()
+      } else if (x - touchX < -50 && Math.abs(y - touchY) < 50) {
+        // console.log(TAG_NAME, '向左滑 当前页面', this.data.gridCurrentPage, this.data.gridPageCount)
+        this._gridPageNext()
+      }
+    },
+    _gridPageToPrev(streamList) {
+      const visibleStreamList = this._filterGridPageVisibleStream(streamList)
+      if (this.data.gridPagePlaceholderStreamList.length === this.data.gridPlayerPerPage) {
+        this.data.gridCurrentPage--
+        this._gridPageToPrev(streamList)
+      } else {
+        return visibleStreamList
+      }
+    },
+    _gridPageNext() {
+      this.data.gridCurrentPage++
+      if (this.data.gridCurrentPage > this.data.gridPageCount) {
+        this.data.gridCurrentPage = 1
+      }
+      this._gridPageSetData()
+    },
+    _gridPagePrev() {
+      this.data.gridCurrentPage--
+      if (this.data.gridCurrentPage < 1) {
+        this.data.gridCurrentPage = this.data.gridPageCount
+      }
+      this._gridPageSetData()
+    },
+    _gridPageSetData() {
+      this._gridShowPageTips()
+      const visibleStreamList = this._filterVisibleStream(this.data.streamList)
+      this.setData({
+        gridCurrentPage: this.data.gridCurrentPage,
+        gridPageCount: this.data.gridPageCount,
+        visibleStreamList: visibleStreamList,
+        streamList: this.data.streamList,
+        gridPagePlaceholderStreamList: this.data.gridPagePlaceholderStreamList,
+      }, () => {
+
+      })
+    },
+    _gridShowPageTips(event) {
+      if (this.data.gridPageCount < 2) {
+        return
+      }
+      console.log(TAG_NAME, '_gridShowPageTips', this.data)
+      if (this.data.hasGridPageTipsShow) {
+        clearTimeout(this.data.hasGridPageTipsShow)
+      }
+      this.animate('.pages-container', [
+        { opacity: 1 },
+      ], 100, ()=>{
+
+      })
+      this.data.hasGridPageTipsShow = setTimeout(()=>{
+        this.animate('.pages-container', [
+          { opacity: 1 },
+          { opacity: 0.3 },
+        ], 600, ()=>{
+
+        })
+      }, 3000)
     },
     _toggleFullscreen(event) {
       console.log(TAG_NAME, '_toggleFullscreen', event)
@@ -1987,6 +2175,12 @@ Component({
       }
     },
     _toggleIMPanel() {
+      if (!this.data.enableIM) {
+        wx.showToast({
+          icon: 'none',
+          title: '当前没有开启IM功能，请设置 enableIM:true',
+        })
+      }
       this.setData({
         showIMPanel: !this.data.showIMPanel,
       })

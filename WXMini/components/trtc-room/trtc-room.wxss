@@ -14,6 +14,10 @@
 }
 
 .debug-info{
+  max-width: 100vw;
+  max-height: 90vh;
+  box-sizing: border-box;
+  overflow-y: scroll;
   position: absolute;
   z-index: 9999;
   background-color: rgba(0, 0, 0, .5);
@@ -46,6 +50,12 @@
   top: 0;
   right: 0;
   padding: 5px 10px;
+}
+.debug-info .text.true{
+  color: #1fff8b;
+}
+.debug-info .text.false{
+  color: #ff2e2e;
 }
 .debug-info-btn{
   position: absolute;

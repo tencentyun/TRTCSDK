@@ -168,11 +168,14 @@ class UserController {
           } else {
             // 更新 stream 属性
             stream.setProperty({ hasVideo })
+            if (!hasVideo && !stream.hasAudio) {
+              this._removeStream(stream)
+            }
             // or
             // if (hasVideo) {
             //   stream.setProperty({ hasVideo })
             // } else if (!stream.hasAudio) {
-            // hasVideo == false && hasAudio == false
+            //   // hasVideo == false && hasAudio == false
             //   this._removeStream(stream)
             // }
           }
@@ -234,11 +237,14 @@ class UserController {
           } else {
             // 更新 stream 属性
             stream.setProperty({ hasAudio })
+            if (!hasAudio && !stream.hasVideo) {
+              this._removeStream(stream)
+            }
             // or
             // if (hasAudio) {
             //   stream.setProperty({ hasAudio })
             // } else if (!stream.hasVideo) {
-            // hasVideo == false && hasAudio == false
+            // // hasVideo == false && hasAudio == false
             //   this._removeStream(stream)
             // }
           }
