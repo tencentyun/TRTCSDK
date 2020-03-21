@@ -36,6 +36,7 @@ class RTCEntranceViewController: UIViewController {
         guard let segueId = segue.identifier else {
             return
         }
+        /// 设置 roomId 和 userId，切换到视频通话主界面 RTCViewController
         if "enterRTCRoom" == segueId {
             let rtcVC = segue.destination as? RTCViewController
             rtcVC?.roomId = UInt32(roomIdTextField.text ?? "1256732")
@@ -43,6 +44,7 @@ class RTCEntranceViewController: UIViewController {
         }
     }
     
+    /// 隐藏键盘
     @objc func onTapGestureAction(_ sender: UITapGestureRecognizer) {
         view.endEditing(true)
     }

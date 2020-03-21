@@ -31,7 +31,7 @@ class LivePushViewController: UIViewController {
     
     @IBOutlet var remoteVideoViews: [LiveSubVideoView]!
     @IBOutlet var videoMutedTipsView: UIImageView!
-    @IBOutlet var resolutionButton: UIButton!
+    @IBOutlet var localVideoView: UIView!
     @IBOutlet var roomIdLabel: UILabel!
     
     var roomId: UInt32 = 0
@@ -40,9 +40,9 @@ class LivePushViewController: UIViewController {
     /// 直播画质配置参数（标清、高清、超清画质下的码率和分辨率）
     private lazy var videoConfigs: [LiveVideoConfig] = {
         return [
-            LiveVideoConfig(bitrate: 550, resolutionName: "标", resolutionDesc: "标清：360*640", resolution: TRTCVideoResolution._640_360),
-            LiveVideoConfig(bitrate: 850, resolutionName: "高", resolutionDesc: "高清：540*960", resolution: TRTCVideoResolution._960_540),
-            LiveVideoConfig(bitrate: 1200, resolutionName: "超", resolutionDesc: "超清：720*1280", resolution: TRTCVideoResolution._1280_720)
+            LiveVideoConfig(bitrate: 900, resolutionName: "标", resolutionDesc: "标清：360*640", resolution: TRTCVideoResolution._640_360),
+            LiveVideoConfig(bitrate: 1200, resolutionName: "高", resolutionDesc: "高清：540*960", resolution: TRTCVideoResolution._960_540),
+            LiveVideoConfig(bitrate: 1500, resolutionName: "超", resolutionDesc: "超清：720*1280", resolution: TRTCVideoResolution._1280_720)
         ]
     }()
     private lazy var remoteUids = NSMutableOrderedSet.init(capacity: MAX_REMOTE_USER_NUM)
@@ -67,7 +67,7 @@ class LivePushViewController: UIViewController {
          * param.role 指定以TRTCRoleType.anchor（主播角色）进入房间
          */
         let param = TRTCParams.init()
-        param.sdkAppId = UInt32(_SDKAppID)
+        param.sdkAppId = UInt32(SDKAppID)
         param.roomId   = roomId
         param.userId   = userId
         param.role     = TRTCRoleType.anchor
@@ -77,9 +77,10 @@ class LivePushViewController: UIViewController {
         trtcCloud.enterRoom(param, appScene: TRTCAppScene.LIVE)
         roomManager.createLiveRoom(roomId: "\(roomId)")
         
-        /// 默认设置高清的直播画质（码率850, 分辨率 540*960）
+        /// 默认设置高清的直播画质（帧率 15fps, 码率 1200, 分辨率 540*960）
         videoEncParam.videoResolution = TRTCVideoResolution._960_540
-        videoEncParam.videoBitrate = 850
+        videoEncParam.videoBitrate = 1200
+        videoEncParam.videoFps = 15
         trtcCloud.setVideoEncoderParam(videoEncParam)
         
         /**
@@ -90,6 +91,9 @@ class LivePushViewController: UIViewController {
         beautyManager?.setBeautyStyle(TXBeautyStyle.smooth)
         beautyManager?.setBeautyLevel(5)
         beautyManager?.setWhitenessLevel(1)
+        
+        /// 调整仪表盘显示位置
+        trtcCloud.setDebugViewMargin(userId, margin: TXEdgeInsets.init(top: 80, left: 0, bottom: 0, right: 0))
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -99,7 +103,7 @@ class LivePushViewController: UIViewController {
         /// 开启麦克风采集
         trtcCloud.startLocalAudio()
         /// 开启摄像头采集
-        trtcCloud.startLocalPreview(isFrontCamera, view: view)
+        trtcCloud.startLocalPreview(isFrontCamera, view: localVideoView)
     }
     
     deinit {
@@ -115,7 +119,7 @@ class LivePushViewController: UIViewController {
     
     @IBAction func onVideoCaptureClicked(_ sender: UIButton) {
         if sender.isSelected { /// 开启摄像头采集
-            trtcCloud.startLocalPreview(isFrontCamera, view: view)
+            trtcCloud.startLocalPreview(isFrontCamera, view: localVideoView)
         } else { /// 关闭摄像头采集
             trtcCloud.stopLocalPreview()
         }
@@ -164,7 +168,7 @@ class LivePushViewController: UIViewController {
         for config in videoConfigs {
             alert.addAction(UIAlertAction.init(title: config.resolutionDesc, style: UIAlertAction.Style.default, handler: { [weak self] (action) in
                 guard let self = self else { return }
-                self.resolutionButton.setTitle(config.resolutionName, for: UIControl.State.normal)
+                sender.setTitle(config.resolutionName, for: UIControl.State.normal)
                 /// 切换视频直播的画质（标清、高清、超清）
                 self.videoEncParam.videoResolution = config.resolution
                 self.videoEncParam.videoBitrate = config.bitrate
@@ -173,6 +177,16 @@ class LivePushViewController: UIViewController {
         }
         alert.addAction(UIAlertAction.init(title: "取消", style: UIAlertAction.Style.cancel, handler: nil))
         self.present(alert, animated: true, completion: nil)
+    }
+    
+    @IBAction func onDashboardClicked(_ sender: UIButton) {
+        /// 显示调试信息
+        sender.tag += 1
+        if sender.tag > 2 {
+            sender.tag = 0
+        }
+        trtcCloud.showDebugView(sender.tag)
+        sender.isSelected = sender.tag > 0
     }
 }
 

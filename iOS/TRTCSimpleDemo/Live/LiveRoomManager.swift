@@ -20,7 +20,7 @@ class LiveRoomItem: NSObject, Codable {
     var createTime: String = ""
     var id: Int = 0
     var roomId: String = ""
-    var appId: String  = "\(_SDKAppID)"
+    var appId: String  = "\(SDKAppID)"
 }
 
 class RoomListRespObject: NSObject, Codable {
@@ -94,7 +94,7 @@ class LiveRoomManager: NSObject {
      */
     func queryLiveRoomList(success: @escaping (_ roomList: [LiveRoomItem])->Void) {
         let params = ["method" : "getRoomList",
-                      "appId"  : "\(_SDKAppID)",
+                      "appId"  : "\(SDKAppID)",
                       "type"   : TRTC_LIVE_ROOM_TYPE]
         Alamofire.request(TRTC_LIVE_ROOM_HOST, method: .post, parameters: params).responseJSON { [] (data) in
             if let respData = data.data, respData.count > 0 {
@@ -120,7 +120,7 @@ class LiveRoomManager: NSObject {
             return
         }
         let params = ["method" : "createRoom",
-                      "appId"  : "\(_SDKAppID)",
+                      "appId"  : "\(SDKAppID)",
                       "roomId" : roomId!,
                       "type"   : TRTC_LIVE_ROOM_TYPE]
         Alamofire.request(TRTC_LIVE_ROOM_HOST, method: .post, parameters: params).responseJSON { [] (data) in
@@ -147,7 +147,7 @@ class LiveRoomManager: NSObject {
             return
         }
         let params = ["method" : "destroyRoom",
-                      "appId"  : "\(_SDKAppID)",
+                      "appId"  : "\(SDKAppID)",
                       "roomId" : roomId!,
                       "type"   : TRTC_LIVE_ROOM_TYPE]
         Alamofire.request(TRTC_LIVE_ROOM_HOST, method: .post, parameters: params).responseJSON { [] (data) in

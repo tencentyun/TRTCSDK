@@ -24,6 +24,7 @@ class LivePlayViewController: UIViewController {
     @IBOutlet var remoteVideoViews: [LiveSubVideoView]!
     @IBOutlet var localVideoView: LiveSubVideoView!
     @IBOutlet var switchCameraButton: UIButton!
+    @IBOutlet var roomOwnerVideoView: UIView!
     @IBOutlet var videoMutedTipsView: UIView!
     @IBOutlet var roomIdLabel: UILabel!
     
@@ -55,7 +56,7 @@ class LivePlayViewController: UIViewController {
          * param.role 指定以TRTCRoleType.audience（观众角色）进入房间
          */
         let param = TRTCParams.init()
-        param.sdkAppId = UInt32(_SDKAppID)
+        param.sdkAppId = UInt32(SDKAppID)
         param.roomId   = roomId
         param.userId   = userId
         param.role     = TRTCRoleType.audience
@@ -63,6 +64,13 @@ class LivePlayViewController: UIViewController {
         param.userSig  = GenerateTestUserSig.genTestUserSig(param.userId)
         /// 指定以“在线直播场景”（TRTCAppScene.LIVE）进入房间
         trtcCloud.enterRoom(param, appScene: TRTCAppScene.LIVE)
+        
+        /// 设置直播房间的画质（帧率 15fps，码率400, 分辨率 270*480）
+        let videoEncParam = TRTCVideoEncParam.init()
+        videoEncParam.videoResolution = TRTCVideoResolution._480_270
+        videoEncParam.videoBitrate = 400
+        videoEncParam.videoFps = 15
+        trtcCloud.setVideoEncoderParam(videoEncParam)
         
         /**
          * 设置默认美颜效果（美颜效果：光滑，美颜级别：5, 美白级别：1）
@@ -72,6 +80,9 @@ class LivePlayViewController: UIViewController {
         beautyManager?.setBeautyStyle(TXBeautyStyle.smooth)
         beautyManager?.setBeautyLevel(5)
         beautyManager?.setWhitenessLevel(1)
+        
+        /// 调整仪表盘显示位置
+        trtcCloud.setDebugViewMargin(roomOwner, margin: TXEdgeInsets.init(top: 80, left: 0, bottom: 0, right: 0))
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -168,6 +179,16 @@ class LivePlayViewController: UIViewController {
             }
         }
     }
+    
+    @IBAction func onDashboardClicked(_ sender: UIButton) {
+        /// 显示调试信息
+        sender.tag += 1
+        if sender.tag > 2 {
+            sender.tag = 0
+        }
+        trtcCloud.showDebugView(sender.tag)
+        sender.isSelected = sender.tag > 0
+    }
 }
 
 extension LivePlayViewController: TRTCCloudDelegate {
@@ -213,7 +234,7 @@ extension LivePlayViewController: TRTCCloudDelegate {
     /// 打开/关闭房主的视频画面
     func refreshRoomOwnerVideoView(available: Bool) {
         if available {
-            trtcCloud.startRemoteView(roomOwner, view: view)
+            trtcCloud.startRemoteView(roomOwner, view: roomOwnerVideoView)
         } else {
             trtcCloud.stopRemoteView(roomOwner)
         }

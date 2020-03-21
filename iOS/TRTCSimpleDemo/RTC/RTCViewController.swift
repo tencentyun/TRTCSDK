@@ -23,6 +23,7 @@ let MAX_REMOTE_USER_NUM = 6
 class RTCViewController: UIViewController {
     
     @IBOutlet var remoteVideoViews: [UIView]!
+    @IBOutlet var localVideoView: UIView!
     @IBOutlet var roomIdLabel: UILabel!
     
     var roomId: UInt32?
@@ -48,7 +49,7 @@ class RTCViewController: UIViewController {
          * param.role 指定以什么角色进入房间（anchor主播，audience观众）
          */
         let param = TRTCParams.init()
-        param.sdkAppId = UInt32(_SDKAppID)
+        param.sdkAppId = UInt32(SDKAppID)
         param.roomId   = roomId!
         param.userId   = userId!
         param.role     = TRTCRoleType.anchor
@@ -56,6 +57,13 @@ class RTCViewController: UIViewController {
         param.userSig  = GenerateTestUserSig.genTestUserSig(param.userId)
         /// 指定以“视频通话场景”（TRTCAppScene.videoCall）进入房间
         trtcCloud.enterRoom(param, appScene: TRTCAppScene.videoCall)
+        
+        /// 设置视频通话的画质（帧率 15fps，码率550, 分辨率 360*640）
+        let videoEncParam = TRTCVideoEncParam.init()
+        videoEncParam.videoResolution = TRTCVideoResolution._640_360
+        videoEncParam.videoBitrate = 550
+        videoEncParam.videoFps = 15
+        trtcCloud.setVideoEncoderParam(videoEncParam)
         
         /**
          * 设置默认美颜效果（美颜效果：自然，美颜级别：5, 美白级别：1）
@@ -65,6 +73,9 @@ class RTCViewController: UIViewController {
         beautyManager?.setBeautyStyle(TXBeautyStyle.nature)
         beautyManager?.setBeautyLevel(5)
         beautyManager?.setWhitenessLevel(1)
+        
+        /// 调整仪表盘显示位置
+        trtcCloud.setDebugViewMargin(userId, margin: TXEdgeInsets.init(top: 80, left: 0, bottom: 0, right: 0))
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -74,7 +85,7 @@ class RTCViewController: UIViewController {
         /// 开启麦克风采集
         trtcCloud.startLocalAudio()
         /// 开启摄像头采集
-        trtcCloud.startLocalPreview(isFrontCamera, view: view)
+        trtcCloud.startLocalPreview(isFrontCamera, view: localVideoView)
     }
     
     deinit {
@@ -89,7 +100,7 @@ class RTCViewController: UIViewController {
     
     @IBAction func onVideoCaptureClicked(_ sender: UIButton) {
         if sender.isSelected { /// 开启摄像头采集
-            trtcCloud.startLocalPreview(isFrontCamera, view: view)
+            trtcCloud.startLocalPreview(isFrontCamera, view: localVideoView)
         } else { /// 关闭摄像头采集
             trtcCloud.stopLocalPreview()
         }
@@ -110,6 +121,15 @@ class RTCViewController: UIViewController {
         trtcCloud.switchCamera()
         isFrontCamera = sender.isSelected
         sender.isSelected = !sender.isSelected
+    }
+    
+    @IBAction func onDashboardClicked(_ sender: UIButton) {
+        /// 显示调试信息
+        sender.tag += 1
+        if sender.tag > 2 {
+            sender.tag = 0
+        }
+        trtcCloud.showDebugView(sender.tag)
     }
 }
 
