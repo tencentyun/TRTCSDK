@@ -55,6 +55,7 @@ public class RTCActivity extends AppCompatActivity implements View.OnClickListen
     private Button                          mMuteVideo;                 //【控件】是否停止推送本地的视频数据
     private Button                          mMuteAudio;                 //【控件】开启、关闭本地声音采集并上行
     private Button                          mSwitchCamera;              //【控件】切换摄像头
+    private Button                          mLogInfo;                   //【控件】开启、关闭日志显示
     private LinearLayout                    mVideoMutedTipsView;        //【控件】关闭视频时，显示默认头像
 
     private TRTCCloud                       mTRTCCloud;                 // SDK 核心类
@@ -63,6 +64,7 @@ public class RTCActivity extends AppCompatActivity implements View.OnClickListen
     private List<TXCloudVideoView>          mRemoteViewList;            // 远端画面列表
     private int                             mGrantedCount = 0;          // 权限个数计数，获取Android系统权限
     private int                             mUserCount = 0;             // 房间通话人数个数
+    private int                             mLogLevel = 0;              // 日志等级
     private String                          mRoomId;                    // 房间Id
     private String                          mUserId;                    // 用户Id
 
@@ -98,6 +100,7 @@ public class RTCActivity extends AppCompatActivity implements View.OnClickListen
         mMuteVideo          = findViewById(R.id.trtc_btn_mute_video);
         mMuteAudio          = findViewById(R.id.trtc_btn_mute_audio);
         mSwitchCamera       = findViewById(R.id.trtc_btn_switch_camera);
+        mLogInfo            = findViewById(R.id.trtc_btn_log_info);
         mVideoMutedTipsView = findViewById(R.id.ll_trtc_mute_video_default);
 
         if (!TextUtils.isEmpty(mRoomId)) {
@@ -107,6 +110,7 @@ public class RTCActivity extends AppCompatActivity implements View.OnClickListen
         mMuteVideo.setOnClickListener(this);
         mMuteAudio.setOnClickListener(this);
         mSwitchCamera.setOnClickListener(this);
+        mLogInfo.setOnClickListener(this);
 
         mRemoteUidList = new ArrayList<>();
         mRemoteViewList = new ArrayList<>();
@@ -232,6 +236,8 @@ public class RTCActivity extends AppCompatActivity implements View.OnClickListen
             muteAudio();
         } else if (id == R.id.trtc_btn_switch_camera) {
             switchCamera();
+        } else if (id == R.id.trtc_btn_log_info) {
+            showDebugView();
         }
     }
 
@@ -266,6 +272,11 @@ public class RTCActivity extends AppCompatActivity implements View.OnClickListen
         boolean isSelected = mSwitchCamera.isSelected();
         mIsFrontCamera = !isSelected;
         mSwitchCamera.setSelected(!isSelected);
+    }
+
+    private void showDebugView() {
+        mLogLevel = (mLogLevel + 1) % 3;
+        mTRTCCloud.showDebugView(mLogLevel);
     }
 
     private class TRTCCloudImplListener extends TRTCCloudListener {

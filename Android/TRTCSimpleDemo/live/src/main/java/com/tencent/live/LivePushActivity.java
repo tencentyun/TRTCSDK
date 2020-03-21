@@ -46,7 +46,6 @@ public class LivePushActivity extends LiveBaseActivity implements View.OnClickLi
         for (int index = 0 ; index < mRemoteViewList.size(); index++) {
             mRemoteViewList.get(index).setLiveSubViewListener(new LiveSubViewListenerImpl(index));
         }
-        mBackButton.setOnClickListener(this);
         mMuteVideoButton.setOnClickListener(this);
         mMuteAudioButton.setOnClickListener(this);
         mSwitchCameraButton.setOnClickListener(this);
@@ -96,10 +95,9 @@ public class LivePushActivity extends LiveBaseActivity implements View.OnClickLi
 
     @Override
     public void onClick(View view) {
+        super.onClick(view);
         int id = view.getId();
-        if (id == R.id.ic_back) {
-            finish();
-        } else if (id == R.id.live_btn_mute_video) {
+        if (id == R.id.live_btn_mute_video) {
             muteVideo();
         } else if (id == R.id.live_btn_mute_audio) {
             muteAudio();

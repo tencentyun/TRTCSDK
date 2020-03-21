@@ -31,7 +31,7 @@ import java.util.List;
 /**
  * 基类，主要是公用的控件和 Android 系统权限动态申请
  */
-public abstract class LiveBaseActivity extends AppCompatActivity {
+public abstract class LiveBaseActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "LiveBaseActivity";
     protected static final int REQ_PERMISSION_CODE  = 0x1000;
@@ -45,6 +45,7 @@ public abstract class LiveBaseActivity extends AppCompatActivity {
     protected ImageView                       mBackButton;                // 页面顶部返回按钮
     protected TextView                        mTitleText;                 // 页面顶部标题
     protected LinearLayout                    mBigPreviewMuteVideoDefault;// 主画面关闭画面后默认图
+    protected Button                          mLogInfoButton;             // 关闭/打开日志信息
 
     protected TRTCCloud                       mTRTCCloud;                 // SDK 核心类
     protected TRTCCloudDef.TRTCParams         mTRTCParams;                // SDK 参数
@@ -52,6 +53,7 @@ public abstract class LiveBaseActivity extends AppCompatActivity {
 
     protected int                             mGrantedCount = 0;          // 权限个数计数，获取Android系统权限
     protected int                             mRoleType;                  // 房间角色类型
+    protected int                             mLogLevel = 0;              // 日志等级
     protected String                          mRoomId;                    // 房间Id
     protected String                          mUserId;                    // 用户Id
     protected String                          mMainRoleAnchorId;          // 大主播Id（Demo中为演示和roomId相同）
@@ -79,6 +81,7 @@ public abstract class LiveBaseActivity extends AppCompatActivity {
         mMuteAudioButton            = findViewById(R.id.live_btn_mute_audio);
         mSwitchCameraButton         = findViewById(R.id.live_btn_switch_camera);
         mAnchorPreviewView          = findViewById(R.id.live_cloud_view_main);
+        mLogInfoButton              = findViewById(R.id.live_btn_log_info);
         mBigPreviewMuteVideoDefault = findViewById(R.id.ll_big_preview_default);
         mLinkMicSelfPreviewView     = findViewById(R.id.live_cloud_view_1); // 位置1画面View
 
@@ -95,6 +98,9 @@ public abstract class LiveBaseActivity extends AppCompatActivity {
         mRemoteViewList.add((LiveSubVideoView)findViewById(R.id.live_cloud_view_4));
         mRemoteViewList.add((LiveSubVideoView)findViewById(R.id.live_cloud_view_5));
         mRemoteViewList.add((LiveSubVideoView)findViewById(R.id.live_cloud_view_6));
+
+        mBackButton.setOnClickListener(this);
+        mLogInfoButton.setOnClickListener(this);
     }
 
     private void handleIntent() {
@@ -292,4 +298,20 @@ public abstract class LiveBaseActivity extends AppCompatActivity {
     }
 
     protected abstract void enterRoom();
+
+    @Override
+    public void onClick(View view) {
+        int id = view.getId();
+        if (id == R.id.ic_back) {
+            finish();
+        } else if (id == R.id.live_btn_log_info) {
+            showDebugView();
+        }
+    }
+
+    private void showDebugView() {
+        mLogLevel = (mLogLevel + 1) % 3;
+        mLogInfoButton.setBackgroundResource((0 == mLogLevel) ? R.mipmap.live_log_close : R.mipmap.live_log_open);
+        mTRTCCloud.showDebugView(mLogLevel);
+    }
 }

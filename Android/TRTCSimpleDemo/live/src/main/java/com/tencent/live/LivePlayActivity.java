@@ -44,7 +44,6 @@ public class LivePlayActivity extends LiveBaseActivity implements View.OnClickLi
         mLinkMicButton = findViewById(R.id.live_iv_link_mic);
         mLicMicLayout = findViewById(R.id.live_ll_switch_role);
 
-        mBackButton.setOnClickListener(this);
         mMuteVideoButton.setOnClickListener(this);
         mMuteAudioButton.setOnClickListener(this);
         mSwitchCameraButton.setOnClickListener(this);
@@ -120,10 +119,9 @@ public class LivePlayActivity extends LiveBaseActivity implements View.OnClickLi
 
     @Override
     public void onClick(View view) {
+        super.onClick(view);
         int id = view.getId();
-        if (id == R.id.ic_back) {
-            finish();
-        } else if (id == R.id.live_iv_link_mic) {
+        if (id == R.id.live_iv_link_mic) {
             linkMic();
         } else if (id == R.id.live_btn_mute_video) {
             muteVideo();

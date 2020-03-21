@@ -171,6 +171,20 @@
                     android:background="@drawable/rtc_mute_video" />
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/trtc_btn_log_info"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@mipmap/rtc_log_button" />
+            </LinearLayout>
+
 
         </LinearLayout>
 
