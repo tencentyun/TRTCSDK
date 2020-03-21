@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="BiW-3Z-6Sm">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15702"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Window Controller-->
+        <scene sceneID="sKt-nN-Ed0">
+            <objects>
+                <windowController id="BiW-3Z-6Sm" sceneMemberID="viewController">
+                    <window key="window" title="视频通话" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="JCt-dk-CyO">
+                        <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
+                        <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+                        <rect key="contentRect" x="425" y="461" width="400" height="600"/>
+                        <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
+                        <connections>
+                            <outlet property="delegate" destination="BiW-3Z-6Sm" id="eMU-uf-laj"/>
+                        </connections>
+                    </window>
+                    <connections>
+                        <segue destination="oJY-JL-O29" kind="relationship" relationship="window.shadowedContentViewController" id="HSk-Bc-Lwc"/>
+                    </connections>
+                </windowController>
+                <customObject id="3Lc-At-R2Y" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1352" y="648"/>
+        </scene>
+        <!--Entrance View Controller-->
+        <scene sceneID="4rc-tB-koM">
+            <objects>
+                <viewController id="oJY-JL-O29" customClass="RTCEntranceViewController" customModule="TRTCSimpleDemo" customModuleProvider="target" sceneMemberID="viewController">
+                    <box key="view" boxType="custom" borderWidth="0.0" title="Box" id="BA5-Va-Uaf">
+                        <rect key="frame" x="0.0" y="0.0" width="400" height="600"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <view key="contentView" id="AZV-Bg-Uiu">
+                            <rect key="frame" x="0.0" y="0.0" width="400" height="600"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <subviews>
+                                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bbQ-Dl-fEk">
+                                    <rect key="frame" x="30" y="435" width="340" height="35"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" id="RHR-3p-T5M">
+                                        <font key="font" metaFont="system" size="17"/>
+                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                    <connections>
+                                        <outlet property="delegate" destination="oJY-JL-O29" id="oub-W6-eEf"/>
+                                        <outlet property="nextKeyView" destination="F3q-zj-mKs" id="Omq-04-6pu"/>
+                                    </connections>
+                                </textField>
+                                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="F3q-zj-mKs">
+                                    <rect key="frame" x="30" y="337" width="340" height="35"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" id="h90-PQ-E0b">
+                                        <font key="font" metaFont="system" size="17"/>
+                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                    <connections>
+                                        <outlet property="delegate" destination="oJY-JL-O29" id="QwN-kY-Mp2"/>
+                                    </connections>
+                                </textField>
+                                <box boxType="custom" borderWidth="0.0" cornerRadius="6" title="Box" translatesAutoresizingMaskIntoConstraints="NO" id="cav-U2-MWK">
+                                    <rect key="frame" x="30" y="90" width="340" height="35"/>
+                                    <view key="contentView" id="PHt-ij-aNU">
+                                        <rect key="frame" x="0.0" y="0.0" width="340" height="35"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        <subviews>
+                                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="T86-Qg-VXz">
+                                                <rect key="frame" x="0.0" y="0.0" width="340" height="35"/>
+                                                <buttonCell key="cell" type="bevel" title="进入房间" bezelStyle="regularSquare" alignment="center" imageScaling="proportionallyDown" inset="2" id="3QB-YW-VXc">
+                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                    <font key="font" metaFont="system" size="22"/>
+                                                </buttonCell>
+                                                <color key="contentTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <connections>
+                                                    <segue destination="BDv-yq-gpP" kind="show" identifier="enterRTCRoom" id="1gT-i8-hNu"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="T86-Qg-VXz" firstAttribute="leading" secondItem="PHt-ij-aNU" secondAttribute="leading" id="Sd3-cr-3zJ"/>
+                                            <constraint firstAttribute="trailing" secondItem="T86-Qg-VXz" secondAttribute="trailing" id="Vay-Dy-dCX"/>
+                                            <constraint firstItem="T86-Qg-VXz" firstAttribute="top" secondItem="PHt-ij-aNU" secondAttribute="top" id="dbF-CS-MAR"/>
+                                            <constraint firstAttribute="bottom" secondItem="T86-Qg-VXz" secondAttribute="bottom" id="jbe-wX-ONW"/>
+                                        </constraints>
+                                    </view>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="35" id="DzF-X2-mO0"/>
+                                    </constraints>
+                                    <color key="fillColor" red="0.0" green="0.65098039220000004" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </box>
+                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Vyr-lQ-582">
+                                    <rect key="frame" x="30" y="480" width="340" height="23"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <textFieldCell key="cell" lineBreakMode="clipping" title="请输入房间号：" drawsBackground="YES" id="erP-2W-P8w">
+                                        <font key="font" metaFont="system" size="18"/>
+                                        <color key="textColor" red="0.0" green="0.65098039220000004" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </textFieldCell>
+                                </textField>
+                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Hew-Oy-MkQ">
+                                    <rect key="frame" x="30" y="382" width="340" height="23"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <textFieldCell key="cell" lineBreakMode="clipping" title="请输入用户名：" drawsBackground="YES" id="KZP-EA-Fwa">
+                                        <font key="font" metaFont="system" size="18"/>
+                                        <color key="textColor" red="0.0" green="0.65098039220000004" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </textFieldCell>
+                                </textField>
+                            </subviews>
+                            <constraints>
+                                <constraint firstItem="cav-U2-MWK" firstAttribute="leading" secondItem="AZV-Bg-Uiu" secondAttribute="leading" constant="30" id="FLT-gN-7BK"/>
+                                <constraint firstAttribute="bottom" secondItem="cav-U2-MWK" secondAttribute="bottom" constant="90" id="jzp-xG-hKM"/>
+                                <constraint firstAttribute="trailing" secondItem="cav-U2-MWK" secondAttribute="trailing" constant="30" id="yo0-cx-Z6r"/>
+                            </constraints>
+                        </view>
+                        <color key="fillColor" red="0.14117647058823529" green="0.14117647058823529" blue="0.14117647058823529" alpha="1" colorSpace="calibratedRGB"/>
+                    </box>
+                    <connections>
+                        <outlet property="roomIdTextField" destination="bbQ-Dl-fEk" id="Orq-vM-GiM"/>
+                        <outlet property="userIdTextField" destination="F3q-zj-mKs" id="dAj-w0-sUN"/>
+                    </connections>
+                </viewController>
+                <customObject id="MK4-Rt-k4v" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-717" y="648"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="8aA-xG-hKw">
+            <objects>
+                <viewController id="TvC-eR-KdK" customClass="RTCViewController" customModule="TRTCSimpleDemo" customModuleProvider="target" sceneMemberID="viewController">
+                    <box key="view" boxType="custom" borderWidth="0.0" title="Box" id="yCA-DV-WPD">
+                        <rect key="frame" x="0.0" y="0.0" width="1280" height="720"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <view key="contentView" id="9o4-Dr-4u2">
+                            <rect key="frame" x="0.0" y="0.0" width="1280" height="720"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <subviews>
+                                <customView translatesAutoresizingMaskIntoConstraints="NO" id="QgO-kZ-qYI">
+                                    <rect key="frame" x="0.0" y="60" width="1280" height="660"/>
+                                </customView>
+                                <customView translatesAutoresizingMaskIntoConstraints="NO" id="H3b-DU-iuG">
+                                    <rect key="frame" x="0.0" y="100" width="1280" height="620"/>
+                                    <subviews>
+                                        <customView hidden="YES" translatesAutoresizingMaskIntoConstraints="NO" id="A0x-oA-Boy">
+                                            <rect key="frame" x="1020" y="0.0" width="240" height="180"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="180" id="6Bu-IT-Q7e"/>
+                                                <constraint firstAttribute="width" constant="240" id="ZKb-eS-7Xe"/>
+                                            </constraints>
+                                        </customView>
+                                        <customView hidden="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GxN-8j-bxL">
+                                            <rect key="frame" x="1020" y="200" width="240" height="180"/>
+                                        </customView>
+                                        <customView hidden="YES" translatesAutoresizingMaskIntoConstraints="NO" id="T4N-bb-yPG">
+                                            <rect key="frame" x="1020" y="400" width="240" height="180"/>
+                                        </customView>
+                                        <customView hidden="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xfy-7l-4zR">
+                                            <rect key="frame" x="20" y="0.0" width="240" height="180"/>
+                                        </customView>
+                                        <customView hidden="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mxR-Lh-SDx">
+                                            <rect key="frame" x="20" y="200" width="240" height="180"/>
+                                        </customView>
+                                        <customView hidden="YES" translatesAutoresizingMaskIntoConstraints="NO" id="scQ-xe-gCL">
+                                            <rect key="frame" x="20" y="400" width="240" height="180"/>
+                                        </customView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="mxR-Lh-SDx" firstAttribute="width" secondItem="scQ-xe-gCL" secondAttribute="width" id="0vD-h8-jZA"/>
+                                        <constraint firstItem="xfy-7l-4zR" firstAttribute="centerX" secondItem="mxR-Lh-SDx" secondAttribute="centerX" id="10p-WG-oh2"/>
+                                        <constraint firstItem="A0x-oA-Boy" firstAttribute="height" secondItem="xfy-7l-4zR" secondAttribute="height" id="30U-Kw-3V0"/>
+                                        <constraint firstItem="A0x-oA-Boy" firstAttribute="width" secondItem="GxN-8j-bxL" secondAttribute="width" id="4YS-Yb-INe"/>
+                                        <constraint firstItem="GxN-8j-bxL" firstAttribute="top" secondItem="T4N-bb-yPG" secondAttribute="bottom" constant="20" id="6mU-Uy-o6B"/>
+                                        <constraint firstAttribute="bottom" secondItem="xfy-7l-4zR" secondAttribute="bottom" id="LSc-oY-lAv"/>
+                                        <constraint firstItem="xfy-7l-4zR" firstAttribute="height" secondItem="mxR-Lh-SDx" secondAttribute="height" id="LuL-p1-Vjh"/>
+                                        <constraint firstItem="A0x-oA-Boy" firstAttribute="top" secondItem="GxN-8j-bxL" secondAttribute="bottom" constant="20" id="NRb-ce-yNm"/>
+                                        <constraint firstItem="mxR-Lh-SDx" firstAttribute="top" secondItem="scQ-xe-gCL" secondAttribute="bottom" constant="20" id="OOV-39-Rvq"/>
+                                        <constraint firstItem="mxR-Lh-SDx" firstAttribute="centerX" secondItem="scQ-xe-gCL" secondAttribute="centerX" id="Pn2-7c-Jhd"/>
+                                        <constraint firstItem="xfy-7l-4zR" firstAttribute="top" secondItem="mxR-Lh-SDx" secondAttribute="bottom" constant="20" id="SH8-3k-AZW"/>
+                                        <constraint firstItem="xfy-7l-4zR" firstAttribute="width" secondItem="mxR-Lh-SDx" secondAttribute="width" id="Ut8-pf-GG8"/>
+                                        <constraint firstItem="A0x-oA-Boy" firstAttribute="centerX" secondItem="GxN-8j-bxL" secondAttribute="centerX" id="Z9a-5C-bbJ"/>
+                                        <constraint firstItem="GxN-8j-bxL" firstAttribute="centerX" secondItem="T4N-bb-yPG" secondAttribute="centerX" id="cK9-HL-yLi"/>
+                                        <constraint firstItem="xfy-7l-4zR" firstAttribute="leading" secondItem="H3b-DU-iuG" secondAttribute="leading" constant="20" id="cdi-ha-2e8"/>
+                                        <constraint firstAttribute="trailing" secondItem="A0x-oA-Boy" secondAttribute="trailing" constant="20" id="fo9-vt-PtX"/>
+                                        <constraint firstItem="GxN-8j-bxL" firstAttribute="width" secondItem="T4N-bb-yPG" secondAttribute="width" id="iYO-cS-XK8"/>
+                                        <constraint firstAttribute="bottom" secondItem="A0x-oA-Boy" secondAttribute="bottom" id="kyb-Qw-HCm"/>
+                                        <constraint firstItem="A0x-oA-Boy" firstAttribute="width" secondItem="xfy-7l-4zR" secondAttribute="width" id="lFv-Jj-dXK"/>
+                                        <constraint firstItem="A0x-oA-Boy" firstAttribute="height" secondItem="GxN-8j-bxL" secondAttribute="height" id="mzR-85-9uB"/>
+                                        <constraint firstItem="mxR-Lh-SDx" firstAttribute="height" secondItem="scQ-xe-gCL" secondAttribute="height" id="oIg-fK-8H8"/>
+                                        <constraint firstItem="GxN-8j-bxL" firstAttribute="height" secondItem="T4N-bb-yPG" secondAttribute="height" id="zsP-Bm-2nv"/>
+                                    </constraints>
+                                </customView>
+                                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2gM-od-fgM">
+                                    <rect key="frame" x="310" y="0.0" width="60" height="60"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="rtc_mic_on" imagePosition="overlaps" alignment="center" imageScaling="proportionallyDown" inset="2" id="sIK-UN-vYu">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="onMicCaptureClicked:" target="TvC-eR-KdK" id="Xbc-Gg-Rq3"/>
+                                    </connections>
+                                </button>
+                                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6rV-aR-D5D">
+                                    <rect key="frame" x="460" y="0.0" width="60" height="60"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="rtc_camera_on" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="Dai-Bs-lzE">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="onVideoCaptureClicked:" target="TvC-eR-KdK" id="GFR-fz-a53"/>
+                                    </connections>
+                                </button>
+                                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="m74-fQ-ZpM">
+                                    <rect key="frame" x="610" y="0.0" width="60" height="60"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="screen_share_off" imagePosition="overlaps" alignment="center" imageScaling="proportionallyDown" inset="2" id="L23-bi-eZx">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="onShareScreenClicked:" target="TvC-eR-KdK" id="xce-yK-Lqr"/>
+                                    </connections>
+                                </button>
+                                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6cv-Kv-N8s">
+                                    <rect key="frame" x="910" y="0.0" width="60" height="60"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="exit_room" imagePosition="overlaps" alignment="center" imageScaling="proportionallyDown" inset="2" id="RRI-dE-tlJ">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="onExitRoomClicked:" target="TvC-eR-KdK" id="heg-Jp-Ghd"/>
+                                    </connections>
+                                </button>
+                                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ItR-Ae-tir">
+                                    <rect key="frame" x="760" y="0.0" width="60" height="60"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="dashboard" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="r5S-D0-Fhb">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="onDashboardClicked:" target="TvC-eR-KdK" id="Len-Zr-zvo"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <constraints>
+                                <constraint firstAttribute="bottom" secondItem="H3b-DU-iuG" secondAttribute="bottom" constant="100" id="7PC-qF-lHc"/>
+                                <constraint firstItem="QgO-kZ-qYI" firstAttribute="leading" secondItem="9o4-Dr-4u2" secondAttribute="leading" id="A5T-RW-0kP"/>
+                                <constraint firstItem="QgO-kZ-qYI" firstAttribute="top" secondItem="9o4-Dr-4u2" secondAttribute="top" id="Dna-X0-e6T"/>
+                                <constraint firstAttribute="bottom" secondItem="QgO-kZ-qYI" secondAttribute="bottom" constant="60" id="LkX-S3-m5e"/>
+                                <constraint firstItem="H3b-DU-iuG" firstAttribute="leading" secondItem="9o4-Dr-4u2" secondAttribute="leading" id="QbH-Iu-IjU"/>
+                                <constraint firstAttribute="trailing" secondItem="H3b-DU-iuG" secondAttribute="trailing" id="gOn-wq-5Uv"/>
+                                <constraint firstItem="H3b-DU-iuG" firstAttribute="top" secondItem="9o4-Dr-4u2" secondAttribute="top" id="gxK-kG-HVz"/>
+                                <constraint firstAttribute="trailing" secondItem="QgO-kZ-qYI" secondAttribute="trailing" id="wxe-R1-JDE"/>
+                            </constraints>
+                        </view>
+                        <color key="fillColor" red="0.14117647059999999" green="0.14117647059999999" blue="0.14117647059999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                    </box>
+                    <connections>
+                        <outlet property="localVideoView" destination="QgO-kZ-qYI" id="Luy-jG-ox1"/>
+                        <outlet property="remoteVideoView" destination="H3b-DU-iuG" id="T9t-sX-c7Q"/>
+                    </connections>
+                </viewController>
+                <customObject id="60n-Id-kQd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <arrayController objectClassName="NSView" id="53u-vc-0wX">
+                    <declaredKeys>
+                        <string>Key</string>
+                        <string>Key</string>
+                        <string>Key</string>
+                        <string>Key</string>
+                        <string>Key</string>
+                        <string>Key</string>
+                    </declaredKeys>
+                </arrayController>
+            </objects>
+            <point key="canvasLocation" x="-87" y="1529"/>
+        </scene>
+        <!--Window Controller-->
+        <scene sceneID="wwi-3j-zrC">
+            <objects>
+                <windowController id="BDv-yq-gpP" sceneMemberID="viewController">
+                    <window key="window" title="视频通话" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="mJd-cO-Yz0">
+                        <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
+                        <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+                        <rect key="contentRect" x="425" y="461" width="1280" height="720"/>
+                        <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
+                        <connections>
+                            <outlet property="delegate" destination="BDv-yq-gpP" id="NZj-eC-hnd"/>
+                        </connections>
+                    </window>
+                    <connections>
+                        <segue destination="TvC-eR-KdK" kind="relationship" relationship="window.shadowedContentViewController" id="wts-BD-PWe"/>
+                    </connections>
+                </windowController>
+                <customObject id="ZZz-k5-RWj" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1489" y="1529"/>
+        </scene>
+        <!--Window Controller-->
+        <scene sceneID="tFT-iz-hyx">
+            <objects>
+                <windowController storyboardIdentifier="ShareScreenWindowControllerId" id="8qA-md-9GW" sceneMemberID="viewController">
+                    <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="BQl-uu-OJ9">
+                        <windowStyleMask key="styleMask" titled="YES" miniaturizable="YES" resizable="YES"/>
+                        <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+                        <rect key="contentRect" x="425" y="461" width="600" height="600"/>
+                        <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
+                        <connections>
+                            <outlet property="delegate" destination="8qA-md-9GW" id="ZSc-zV-Q7A"/>
+                        </connections>
+                    </window>
+                    <connections>
+                        <segue destination="IaR-Mu-HMi" kind="relationship" relationship="window.shadowedContentViewController" id="6Aj-gb-DSL"/>
+                    </connections>
+                </windowController>
+                <customObject id="GX2-Mm-Aot" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2266" y="2409"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="sCT-GS-rBt">
+            <objects>
+                <customObject id="vkZ-Xv-xtg" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <viewController id="IaR-Mu-HMi" sceneMemberID="viewController">
+                    <view key="view" id="J2H-vc-K8R">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </view>
+                </viewController>
+            </objects>
+            <point key="canvasLocation" x="-1429" y="2394"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="dashboard" width="30" height="30"/>
+        <image name="exit_room" width="30" height="30"/>
+        <image name="rtc_camera_on" width="30" height="30"/>
+        <image name="rtc_mic_on" width="30" height="30"/>
+        <image name="screen_share_off" width="30" height="30"/>
+    </resources>
+</document>

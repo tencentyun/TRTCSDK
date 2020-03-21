@@ -1,0 +1,1252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="40K-4T-5t1">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15702"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Live Push View Controller-->
+        <scene sceneID="TCC-bG-NuR">
+            <objects>
+                <viewController id="jdb-Eq-QEq" customClass="LivePushViewController" customModule="TRTCSimpleDemo" customModuleProvider="target" sceneMemberID="viewController">
+                    <box key="view" boxType="custom" borderWidth="0.0" title="Box" id="VaU-6R-5b5">
+                        <rect key="frame" x="0.0" y="0.0" width="1280" height="720"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <view key="contentView" id="cb6-Kj-CIS">
+                            <rect key="frame" x="0.0" y="0.0" width="1280" height="720"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <subviews>
+                                <customView translatesAutoresizingMaskIntoConstraints="NO" id="UTF-TV-1mu">
+                                    <rect key="frame" x="0.0" y="60" width="1280" height="660"/>
+                                </customView>
+                                <customView translatesAutoresizingMaskIntoConstraints="NO" id="uQG-lb-zWP">
+                                    <rect key="frame" x="0.0" y="100" width="1280" height="620"/>
+                                    <subviews>
+                                        <customView hidden="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oKy-Kt-Uqf" customClass="LiveSubVideoView" customModule="TRTCSimpleDemo" customModuleProvider="target">
+                                            <rect key="frame" x="1020" y="0.0" width="240" height="180"/>
+                                            <subviews>
+                                                <customView translatesAutoresizingMaskIntoConstraints="NO" id="Ywt-hq-Tnk">
+                                                    <rect key="frame" x="0.0" y="0.0" width="240" height="180"/>
+                                                </customView>
+                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="I4v-qb-k8Y">
+                                                    <rect key="frame" x="190" y="155" width="20" height="20"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="20" id="itG-Xs-Ers"/>
+                                                        <constraint firstAttribute="height" constant="20" id="l5T-Om-u97"/>
+                                                    </constraints>
+                                                    <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="rtc_camera_on" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="ahR-pf-jOK">
+                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                    </buttonCell>
+                                                    <connections>
+                                                        <action selector="onMuteRemoteVideoClicked:" target="jdb-Eq-QEq" id="gCj-T3-af9"/>
+                                                    </connections>
+                                                </button>
+                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="W21-Em-ytG">
+                                                    <rect key="frame" x="215" y="155" width="20" height="20"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="20" id="cFN-Aj-RIR"/>
+                                                        <constraint firstAttribute="width" constant="20" id="wUV-Rw-i0f"/>
+                                                    </constraints>
+                                                    <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="rtc_mic_on" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="8r0-Z1-Knt">
+                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                    </buttonCell>
+                                                    <connections>
+                                                        <action selector="onMuteRemoteAudioClicked:" target="jdb-Eq-QEq" id="uUq-Y7-0HU"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="I4v-qb-k8Y" firstAttribute="top" secondItem="oKy-Kt-Uqf" secondAttribute="top" constant="5" id="09Z-74-2k9"/>
+                                                <constraint firstItem="Ywt-hq-Tnk" firstAttribute="leading" secondItem="oKy-Kt-Uqf" secondAttribute="leading" id="KUW-Bf-gxQ"/>
+                                                <constraint firstItem="W21-Em-ytG" firstAttribute="leading" secondItem="I4v-qb-k8Y" secondAttribute="trailing" constant="5" id="WVC-q2-ywO"/>
+                                                <constraint firstAttribute="bottom" secondItem="Ywt-hq-Tnk" secondAttribute="bottom" id="dF7-VX-DFe"/>
+                                                <constraint firstAttribute="height" constant="180" id="kt3-IY-N7B"/>
+                                                <constraint firstItem="Ywt-hq-Tnk" firstAttribute="top" secondItem="oKy-Kt-Uqf" secondAttribute="top" id="ozS-DQ-rSy"/>
+                                                <constraint firstItem="W21-Em-ytG" firstAttribute="top" secondItem="oKy-Kt-Uqf" secondAttribute="top" constant="5" id="pzy-Bv-sAV"/>
+                                                <constraint firstAttribute="trailing" secondItem="W21-Em-ytG" secondAttribute="trailing" constant="5" id="qDL-Z4-WaI"/>
+                                                <constraint firstAttribute="trailing" secondItem="Ywt-hq-Tnk" secondAttribute="trailing" id="qgM-IV-YmR"/>
+                                                <constraint firstAttribute="width" constant="240" id="und-XY-vkQ"/>
+                                            </constraints>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="viewTag">
+                                                    <integer key="value" value="0"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                            <connections>
+                                                <outlet property="muteAudioButton" destination="W21-Em-ytG" id="Qxu-lk-eni"/>
+                                                <outlet property="muteVideoButton" destination="I4v-qb-k8Y" id="qy5-Ra-PBD"/>
+                                                <outlet property="videoView" destination="Ywt-hq-Tnk" id="nB6-O3-bEW"/>
+                                            </connections>
+                                        </customView>
+                                        <customView hidden="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PJ9-Mt-6He" customClass="LiveSubVideoView" customModule="TRTCSimpleDemo" customModuleProvider="target">
+                                            <rect key="frame" x="1020" y="200" width="240" height="180"/>
+                                            <subviews>
+                                                <customView translatesAutoresizingMaskIntoConstraints="NO" id="vw9-6p-WoM">
+                                                    <rect key="frame" x="0.0" y="0.0" width="240" height="180"/>
+                                                </customView>
+                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="wsK-jC-aGn">
+                                                    <rect key="frame" x="190" y="155" width="20" height="20"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="20" id="9l9-HU-sfM"/>
+                                                        <constraint firstAttribute="width" constant="20" id="n9U-6y-AVA"/>
+                                                    </constraints>
+                                                    <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="rtc_camera_on" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="xja-pC-iWN">
+                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                    </buttonCell>
+                                                    <connections>
+                                                        <action selector="onMuteRemoteVideoClicked:" target="jdb-Eq-QEq" id="ZLi-7t-fxN"/>
+                                                    </connections>
+                                                </button>
+                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="TCG-bW-axk">
+                                                    <rect key="frame" x="215" y="155" width="20" height="20"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="20" id="98T-o3-mdr"/>
+                                                        <constraint firstAttribute="height" constant="20" id="aZb-sH-wmH"/>
+                                                    </constraints>
+                                                    <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="rtc_mic_on" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="St8-8w-zyS">
+                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                    </buttonCell>
+                                                    <connections>
+                                                        <action selector="onMuteRemoteAudioClicked:" target="jdb-Eq-QEq" id="pdp-Ky-ZK7"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="vw9-6p-WoM" firstAttribute="leading" secondItem="PJ9-Mt-6He" secondAttribute="leading" id="GUA-oG-xUT"/>
+                                                <constraint firstItem="vw9-6p-WoM" firstAttribute="top" secondItem="PJ9-Mt-6He" secondAttribute="top" id="Q4d-7r-vnA"/>
+                                                <constraint firstItem="wsK-jC-aGn" firstAttribute="top" secondItem="PJ9-Mt-6He" secondAttribute="top" constant="5" id="Ykp-N7-WcT"/>
+                                                <constraint firstAttribute="bottom" secondItem="vw9-6p-WoM" secondAttribute="bottom" id="bh8-GZ-4RO"/>
+                                                <constraint firstItem="TCG-bW-axk" firstAttribute="top" secondItem="PJ9-Mt-6He" secondAttribute="top" constant="5" id="fhD-r4-qeC"/>
+                                                <constraint firstAttribute="trailing" secondItem="vw9-6p-WoM" secondAttribute="trailing" id="gZQ-t4-6FK"/>
+                                                <constraint firstItem="TCG-bW-axk" firstAttribute="leading" secondItem="wsK-jC-aGn" secondAttribute="trailing" constant="5" id="igr-m9-uIF"/>
+                                                <constraint firstAttribute="trailing" secondItem="TCG-bW-axk" secondAttribute="trailing" constant="5" id="kko-eo-nOr"/>
+                                            </constraints>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="viewTag">
+                                                    <integer key="value" value="1"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                            <connections>
+                                                <outlet property="muteAudioButton" destination="TCG-bW-axk" id="Ioz-Up-9cN"/>
+                                                <outlet property="muteVideoButton" destination="wsK-jC-aGn" id="tJR-E2-HZE"/>
+                                                <outlet property="videoView" destination="vw9-6p-WoM" id="wxY-MZ-lR7"/>
+                                            </connections>
+                                        </customView>
+                                        <customView hidden="YES" translatesAutoresizingMaskIntoConstraints="NO" id="upS-jh-gMy" customClass="LiveSubVideoView" customModule="TRTCSimpleDemo" customModuleProvider="target">
+                                            <rect key="frame" x="1020" y="400" width="240" height="180"/>
+                                            <subviews>
+                                                <customView translatesAutoresizingMaskIntoConstraints="NO" id="non-N4-JZu">
+                                                    <rect key="frame" x="0.0" y="0.0" width="240" height="180"/>
+                                                </customView>
+                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Bg7-5m-Aui">
+                                                    <rect key="frame" x="190" y="155" width="20" height="20"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="20" id="pn3-yS-xQx"/>
+                                                        <constraint firstAttribute="height" constant="20" id="v0I-ob-4iE"/>
+                                                    </constraints>
+                                                    <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="rtc_camera_on" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="iqn-ld-WCs">
+                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                    </buttonCell>
+                                                    <connections>
+                                                        <action selector="onMuteRemoteVideoClicked:" target="jdb-Eq-QEq" id="51D-eD-ybg"/>
+                                                    </connections>
+                                                </button>
+                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="62k-Uv-4QV">
+                                                    <rect key="frame" x="215" y="155" width="20" height="20"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="20" id="DDt-oB-PYk"/>
+                                                        <constraint firstAttribute="height" constant="20" id="EeJ-Nt-mn9"/>
+                                                    </constraints>
+                                                    <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="rtc_mic_on" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="Vat-2K-cmk">
+                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                    </buttonCell>
+                                                    <connections>
+                                                        <action selector="onMuteRemoteAudioClicked:" target="jdb-Eq-QEq" id="Ez6-2e-Opd"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="non-N4-JZu" secondAttribute="trailing" id="3hc-gq-A4n"/>
+                                                <constraint firstAttribute="bottom" secondItem="non-N4-JZu" secondAttribute="bottom" id="Axg-Zt-115"/>
+                                                <constraint firstItem="62k-Uv-4QV" firstAttribute="top" secondItem="upS-jh-gMy" secondAttribute="top" constant="5" id="F4a-Kc-WfN"/>
+                                                <constraint firstAttribute="trailing" secondItem="62k-Uv-4QV" secondAttribute="trailing" constant="5" id="FVx-vy-ZQx"/>
+                                                <constraint firstItem="non-N4-JZu" firstAttribute="leading" secondItem="upS-jh-gMy" secondAttribute="leading" id="Mt3-3Y-EzB"/>
+                                                <constraint firstItem="Bg7-5m-Aui" firstAttribute="top" secondItem="upS-jh-gMy" secondAttribute="top" constant="5" id="P8B-8g-jV4"/>
+                                                <constraint firstItem="non-N4-JZu" firstAttribute="top" secondItem="upS-jh-gMy" secondAttribute="top" id="cGg-if-QNN"/>
+                                                <constraint firstItem="62k-Uv-4QV" firstAttribute="leading" secondItem="Bg7-5m-Aui" secondAttribute="trailing" constant="5" id="hes-1x-PDi"/>
+                                            </constraints>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="viewTag">
+                                                    <integer key="value" value="2"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                            <connections>
+                                                <outlet property="muteAudioButton" destination="62k-Uv-4QV" id="kdJ-ME-i8V"/>
+                                                <outlet property="muteVideoButton" destination="Bg7-5m-Aui" id="N2n-Nh-Mex"/>
+                                                <outlet property="videoView" destination="non-N4-JZu" id="yyF-sJ-rPz"/>
+                                            </connections>
+                                        </customView>
+                                        <customView hidden="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qVY-gz-IWz" customClass="LiveSubVideoView" customModule="TRTCSimpleDemo" customModuleProvider="target">
+                                            <rect key="frame" x="20" y="0.0" width="240" height="180"/>
+                                            <subviews>
+                                                <customView translatesAutoresizingMaskIntoConstraints="NO" id="d6k-YC-sYu">
+                                                    <rect key="frame" x="0.0" y="0.0" width="240" height="180"/>
+                                                </customView>
+                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4CZ-Va-EtI">
+                                                    <rect key="frame" x="30" y="155" width="20" height="20"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="20" id="WI9-bf-gMo"/>
+                                                        <constraint firstAttribute="height" constant="20" id="w9A-Kp-Pfw"/>
+                                                    </constraints>
+                                                    <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="rtc_camera_on" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="4Km-lu-0t2">
+                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                    </buttonCell>
+                                                    <connections>
+                                                        <action selector="onMuteRemoteVideoClicked:" target="jdb-Eq-QEq" id="agg-q3-iGf"/>
+                                                    </connections>
+                                                </button>
+                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="E9k-nk-PN5">
+                                                    <rect key="frame" x="5" y="155" width="20" height="20"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="20" id="Ztw-CU-9X5"/>
+                                                        <constraint firstAttribute="width" constant="20" id="w1E-Z2-8aB"/>
+                                                    </constraints>
+                                                    <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="rtc_mic_on" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="9fs-ch-hR9">
+                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                    </buttonCell>
+                                                    <connections>
+                                                        <action selector="onMuteRemoteAudioClicked:" target="jdb-Eq-QEq" id="0JL-Kd-RBN"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="4CZ-Va-EtI" firstAttribute="leading" secondItem="E9k-nk-PN5" secondAttribute="trailing" constant="5" id="8md-YL-ZHl"/>
+                                                <constraint firstAttribute="trailing" secondItem="d6k-YC-sYu" secondAttribute="trailing" id="D41-wR-oRK"/>
+                                                <constraint firstItem="E9k-nk-PN5" firstAttribute="top" secondItem="qVY-gz-IWz" secondAttribute="top" constant="5" id="F8M-dS-gy2"/>
+                                                <constraint firstItem="d6k-YC-sYu" firstAttribute="top" secondItem="qVY-gz-IWz" secondAttribute="top" id="Uda-ba-BEF"/>
+                                                <constraint firstItem="4CZ-Va-EtI" firstAttribute="top" secondItem="qVY-gz-IWz" secondAttribute="top" constant="5" id="Whc-Z6-wZJ"/>
+                                                <constraint firstAttribute="bottom" secondItem="d6k-YC-sYu" secondAttribute="bottom" id="a52-Bb-uRW"/>
+                                                <constraint firstItem="E9k-nk-PN5" firstAttribute="leading" secondItem="qVY-gz-IWz" secondAttribute="leading" constant="5" id="bdc-PN-U5D"/>
+                                                <constraint firstItem="d6k-YC-sYu" firstAttribute="leading" secondItem="qVY-gz-IWz" secondAttribute="leading" id="thO-xs-A33"/>
+                                            </constraints>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="viewTag">
+                                                    <integer key="value" value="3"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                            <connections>
+                                                <outlet property="muteAudioButton" destination="E9k-nk-PN5" id="z3Q-Bi-jng"/>
+                                                <outlet property="muteVideoButton" destination="4CZ-Va-EtI" id="RBP-mo-toR"/>
+                                                <outlet property="videoView" destination="d6k-YC-sYu" id="WsE-T0-p0Y"/>
+                                            </connections>
+                                        </customView>
+                                        <customView hidden="YES" translatesAutoresizingMaskIntoConstraints="NO" id="led-K4-8vf" customClass="LiveSubVideoView" customModule="TRTCSimpleDemo" customModuleProvider="target">
+                                            <rect key="frame" x="20" y="200" width="240" height="180"/>
+                                            <subviews>
+                                                <customView translatesAutoresizingMaskIntoConstraints="NO" id="H1G-w0-1Gn">
+                                                    <rect key="frame" x="0.0" y="0.0" width="240" height="180"/>
+                                                </customView>
+                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="5Gc-ag-WkW">
+                                                    <rect key="frame" x="30" y="155" width="20" height="20"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="20" id="7yw-7f-agg"/>
+                                                        <constraint firstAttribute="width" constant="20" id="Pha-g6-hxW"/>
+                                                    </constraints>
+                                                    <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="rtc_camera_on" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="ocK-b8-JFH">
+                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                    </buttonCell>
+                                                    <connections>
+                                                        <action selector="onMuteRemoteVideoClicked:" target="jdb-Eq-QEq" id="Bmq-Ej-gQU"/>
+                                                    </connections>
+                                                </button>
+                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="LaP-QZ-26l">
+                                                    <rect key="frame" x="5" y="155" width="20" height="20"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="20" id="Quk-Ge-aFu"/>
+                                                        <constraint firstAttribute="width" constant="20" id="qrT-LH-bZi"/>
+                                                    </constraints>
+                                                    <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="rtc_mic_on" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="v3w-Fq-WXt">
+                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                    </buttonCell>
+                                                    <connections>
+                                                        <action selector="onMuteRemoteAudioClicked:" target="jdb-Eq-QEq" id="UaO-2c-Cw1"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="H1G-w0-1Gn" firstAttribute="top" secondItem="led-K4-8vf" secondAttribute="top" id="3NJ-Nx-Qrb"/>
+                                                <constraint firstItem="LaP-QZ-26l" firstAttribute="top" secondItem="led-K4-8vf" secondAttribute="top" constant="5" id="ABV-Ro-OCJ"/>
+                                                <constraint firstItem="H1G-w0-1Gn" firstAttribute="leading" secondItem="led-K4-8vf" secondAttribute="leading" id="DIa-55-sEa"/>
+                                                <constraint firstItem="5Gc-ag-WkW" firstAttribute="top" secondItem="led-K4-8vf" secondAttribute="top" constant="5" id="Li2-Ck-LhP"/>
+                                                <constraint firstAttribute="trailing" secondItem="H1G-w0-1Gn" secondAttribute="trailing" id="M0L-Bw-kV9"/>
+                                                <constraint firstItem="LaP-QZ-26l" firstAttribute="leading" secondItem="led-K4-8vf" secondAttribute="leading" constant="5" id="XDb-m1-lf6"/>
+                                                <constraint firstItem="5Gc-ag-WkW" firstAttribute="leading" secondItem="LaP-QZ-26l" secondAttribute="trailing" constant="5" id="ghl-qI-Vs0"/>
+                                                <constraint firstAttribute="bottom" secondItem="H1G-w0-1Gn" secondAttribute="bottom" id="pPx-KI-TLh"/>
+                                            </constraints>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="viewTag">
+                                                    <integer key="value" value="4"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                            <connections>
+                                                <outlet property="muteAudioButton" destination="LaP-QZ-26l" id="fiX-Wv-DN2"/>
+                                                <outlet property="muteVideoButton" destination="5Gc-ag-WkW" id="cYq-G5-lpf"/>
+                                                <outlet property="videoView" destination="H1G-w0-1Gn" id="hsj-OX-sME"/>
+                                            </connections>
+                                        </customView>
+                                        <customView hidden="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0e5-jX-5fH" customClass="LiveSubVideoView" customModule="TRTCSimpleDemo" customModuleProvider="target">
+                                            <rect key="frame" x="20" y="400" width="240" height="180"/>
+                                            <subviews>
+                                                <customView translatesAutoresizingMaskIntoConstraints="NO" id="hnt-YN-EwC">
+                                                    <rect key="frame" x="0.0" y="0.0" width="240" height="180"/>
+                                                </customView>
+                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="0yo-oq-fY5">
+                                                    <rect key="frame" x="30" y="155" width="20" height="20"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="20" id="IgU-AQ-3Jd"/>
+                                                        <constraint firstAttribute="height" constant="20" id="OTW-eF-kTc"/>
+                                                    </constraints>
+                                                    <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="rtc_camera_on" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="WxC-cl-0aD">
+                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                    </buttonCell>
+                                                    <connections>
+                                                        <action selector="onMuteRemoteVideoClicked:" target="jdb-Eq-QEq" id="ag3-ji-jed"/>
+                                                    </connections>
+                                                </button>
+                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="dKW-jS-W6d">
+                                                    <rect key="frame" x="5" y="155" width="20" height="20"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="20" id="AOd-7y-tgc"/>
+                                                        <constraint firstAttribute="width" constant="20" id="l2v-JK-cXi"/>
+                                                    </constraints>
+                                                    <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="rtc_mic_on" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="U69-cr-xXV">
+                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                    </buttonCell>
+                                                    <connections>
+                                                        <action selector="onMuteRemoteAudioClicked:" target="jdb-Eq-QEq" id="ypA-cg-m0j"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="0yo-oq-fY5" firstAttribute="leading" secondItem="dKW-jS-W6d" secondAttribute="trailing" constant="5" id="4AQ-gm-DyT"/>
+                                                <constraint firstAttribute="trailing" secondItem="hnt-YN-EwC" secondAttribute="trailing" id="6Qt-gG-sZg"/>
+                                                <constraint firstItem="0yo-oq-fY5" firstAttribute="top" secondItem="0e5-jX-5fH" secondAttribute="top" constant="5" id="HIC-QA-BRx"/>
+                                                <constraint firstItem="dKW-jS-W6d" firstAttribute="top" secondItem="0e5-jX-5fH" secondAttribute="top" constant="5" id="NKl-yc-8iU"/>
+                                                <constraint firstItem="hnt-YN-EwC" firstAttribute="top" secondItem="0e5-jX-5fH" secondAttribute="top" id="Nq1-rH-tHn"/>
+                                                <constraint firstItem="hnt-YN-EwC" firstAttribute="leading" secondItem="0e5-jX-5fH" secondAttribute="leading" id="cFc-Rd-QXo"/>
+                                                <constraint firstItem="dKW-jS-W6d" firstAttribute="leading" secondItem="0e5-jX-5fH" secondAttribute="leading" constant="5" id="dtQ-QP-Y0U"/>
+                                                <constraint firstAttribute="bottom" secondItem="hnt-YN-EwC" secondAttribute="bottom" id="imv-VI-rLJ"/>
+                                            </constraints>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="viewTag">
+                                                    <integer key="value" value="5"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                            <connections>
+                                                <outlet property="muteAudioButton" destination="dKW-jS-W6d" id="qUx-zs-ls1"/>
+                                                <outlet property="muteVideoButton" destination="0yo-oq-fY5" id="ccO-04-TL9"/>
+                                                <outlet property="videoView" destination="hnt-YN-EwC" id="Pge-ht-7PG"/>
+                                            </connections>
+                                        </customView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="qVY-gz-IWz" firstAttribute="leading" secondItem="uQG-lb-zWP" secondAttribute="leading" constant="20" id="40H-1I-NvI"/>
+                                        <constraint firstItem="qVY-gz-IWz" firstAttribute="top" secondItem="led-K4-8vf" secondAttribute="bottom" constant="20" id="ERb-8d-iQN"/>
+                                        <constraint firstItem="oKy-Kt-Uqf" firstAttribute="centerX" secondItem="PJ9-Mt-6He" secondAttribute="centerX" id="EWS-1t-SzI"/>
+                                        <constraint firstItem="PJ9-Mt-6He" firstAttribute="centerX" secondItem="upS-jh-gMy" secondAttribute="centerX" id="FXj-yI-wDq"/>
+                                        <constraint firstItem="led-K4-8vf" firstAttribute="centerX" secondItem="0e5-jX-5fH" secondAttribute="centerX" id="JF5-hc-DTt"/>
+                                        <constraint firstItem="oKy-Kt-Uqf" firstAttribute="width" secondItem="PJ9-Mt-6He" secondAttribute="width" id="SH2-js-MJh"/>
+                                        <constraint firstItem="oKy-Kt-Uqf" firstAttribute="width" secondItem="qVY-gz-IWz" secondAttribute="width" id="UuF-HF-3DA"/>
+                                        <constraint firstItem="PJ9-Mt-6He" firstAttribute="width" secondItem="upS-jh-gMy" secondAttribute="width" id="VF1-jD-GGw"/>
+                                        <constraint firstItem="PJ9-Mt-6He" firstAttribute="top" secondItem="upS-jh-gMy" secondAttribute="bottom" constant="20" id="WbF-YQ-hRO"/>
+                                        <constraint firstItem="oKy-Kt-Uqf" firstAttribute="height" secondItem="PJ9-Mt-6He" secondAttribute="height" id="YX1-Q8-lHy"/>
+                                        <constraint firstAttribute="bottom" secondItem="oKy-Kt-Uqf" secondAttribute="bottom" id="ZQU-wf-SvX"/>
+                                        <constraint firstItem="led-K4-8vf" firstAttribute="height" secondItem="0e5-jX-5fH" secondAttribute="height" id="brg-q1-B6e"/>
+                                        <constraint firstItem="qVY-gz-IWz" firstAttribute="centerX" secondItem="led-K4-8vf" secondAttribute="centerX" id="dpw-oc-FQS"/>
+                                        <constraint firstItem="led-K4-8vf" firstAttribute="top" secondItem="0e5-jX-5fH" secondAttribute="bottom" constant="20" id="fAV-gf-dqE"/>
+                                        <constraint firstAttribute="trailing" secondItem="oKy-Kt-Uqf" secondAttribute="trailing" constant="20" id="hva-f5-VXN"/>
+                                        <constraint firstAttribute="bottom" secondItem="qVY-gz-IWz" secondAttribute="bottom" id="ltA-Y6-1gl"/>
+                                        <constraint firstItem="PJ9-Mt-6He" firstAttribute="height" secondItem="upS-jh-gMy" secondAttribute="height" id="pBc-6K-dmP"/>
+                                        <constraint firstItem="led-K4-8vf" firstAttribute="width" secondItem="0e5-jX-5fH" secondAttribute="width" id="vdn-fs-FwG"/>
+                                        <constraint firstItem="oKy-Kt-Uqf" firstAttribute="height" secondItem="qVY-gz-IWz" secondAttribute="height" id="wlm-G1-yZA"/>
+                                        <constraint firstItem="oKy-Kt-Uqf" firstAttribute="top" secondItem="PJ9-Mt-6He" secondAttribute="bottom" constant="20" id="ybH-DA-PXb"/>
+                                        <constraint firstItem="qVY-gz-IWz" firstAttribute="width" secondItem="led-K4-8vf" secondAttribute="width" id="ynU-lb-l56"/>
+                                        <constraint firstItem="qVY-gz-IWz" firstAttribute="height" secondItem="led-K4-8vf" secondAttribute="height" id="yzE-XZ-WDu"/>
+                                    </constraints>
+                                </customView>
+                                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AkP-ek-OaR">
+                                    <rect key="frame" x="385" y="0.0" width="60" height="60"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="rtc_mic_on" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="g61-8Y-23k">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="onMicCaptureClicked:" target="jdb-Eq-QEq" id="YPA-Bc-bLU"/>
+                                    </connections>
+                                </button>
+                                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GGa-CN-Gva">
+                                    <rect key="frame" x="535" y="0.0" width="60" height="60"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="rtc_camera_on" imagePosition="overlaps" alignment="center" imageScaling="proportionallyDown" inset="2" id="CxS-fc-zZT">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="onVideoCaptureClicked:" target="jdb-Eq-QEq" id="mNx-dC-txl"/>
+                                    </connections>
+                                </button>
+                                <button verticalHuggingPriority="750" fixedFrame="YES" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oSh-Ns-gma">
+                                    <rect key="frame" x="675" y="0.0" width="80" height="60"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <buttonCell key="cell" type="bevel" title="高清 " bezelStyle="rounded" image="ico_arrow" imagePosition="right" alignment="center" imageScaling="proportionallyDown" inset="2" id="ncv-XA-8pE">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="systemBold" size="15"/>
+                                    </buttonCell>
+                                    <color key="contentTintColor" red="0.0" green="0.65098039220000004" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <connections>
+                                        <action selector="onResolutionClicked:" target="jdb-Eq-QEq" id="nb3-Hh-18t"/>
+                                    </connections>
+                                </button>
+                                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Uq5-fZ-HA6">
+                                    <rect key="frame" x="985" y="0.0" width="60" height="60"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="exit_room" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="V9u-Zs-bjV">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="onExitRoomClicked:" target="jdb-Eq-QEq" id="wo8-JI-tW8"/>
+                                    </connections>
+                                </button>
+                                <scrollView hidden="YES" fixedFrame="YES" autohidesScrollers="YES" horizontalLineScroll="37" horizontalPageScroll="10" verticalLineScroll="37" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mo2-76-dQI">
+                                    <rect key="frame" x="615" y="60" width="200" height="135"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <clipView key="contentView" ambiguous="YES" drawsBackground="NO" id="S9i-1H-HoN">
+                                        <rect key="frame" x="1" y="0.0" width="198" height="134"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        <subviews>
+                                            <tableView verticalHuggingPriority="750" ambiguous="YES" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" rowHeight="24" rowSizeStyle="systemDefault" headerView="YVc-5T-6wq" viewBased="YES" id="ecc-m2-dpM">
+                                                <rect key="frame" x="0.0" y="0.0" width="198" height="109"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                <size key="intercellSpacing" width="0.0" height="13"/>
+                                                <color key="backgroundColor" red="0.14117647059999999" green="0.14117647059999999" blue="0.14117647059999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                <color key="gridColor" red="0.14117647059999999" green="0.14117647059999999" blue="0.14117647059999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                <tableColumns>
+                                                    <tableColumn width="198" minWidth="10" maxWidth="3.4028234663852886e+38" id="aoH-Wq-pky">
+                                                        <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="center" title="分辨率">
+                                                            <font key="font" metaFont="smallSystem"/>
+                                                            <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        </tableHeaderCell>
+                                                        <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" alignment="left" title="Text Cell" id="064-Qg-yb3">
+                                                            <font key="font" metaFont="system"/>
+                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                        <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                                        <prototypeCellViews>
+                                                            <tableCellView identifier="ResolutionCellId" id="7OY-ox-UAW">
+                                                                <rect key="frame" x="0.0" y="6" width="198" height="17"/>
+                                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                                <subviews>
+                                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Zew-oe-3Jl">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="198" height="17"/>
+                                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="center" title="Table View Cell" id="93F-nI-rr4">
+                                                                            <font key="font" metaFont="system"/>
+                                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                        </textFieldCell>
+                                                                    </textField>
+                                                                </subviews>
+                                                                <connections>
+                                                                    <outlet property="textField" destination="Zew-oe-3Jl" id="5QJ-Hb-JLq"/>
+                                                                </connections>
+                                                            </tableCellView>
+                                                        </prototypeCellViews>
+                                                    </tableColumn>
+                                                </tableColumns>
+                                                <connections>
+                                                    <outlet property="dataSource" destination="jdb-Eq-QEq" id="WDI-2b-Rj4"/>
+                                                    <outlet property="delegate" destination="jdb-Eq-QEq" id="5C2-Rx-tD8"/>
+                                                </connections>
+                                            </tableView>
+                                        </subviews>
+                                        <color key="backgroundColor" red="0.14117647059999999" green="0.14117647059999999" blue="0.14117647059999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    </clipView>
+                                    <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="ehp-e5-BAb">
+                                        <rect key="frame" x="1" y="118" width="198" height="16"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                    </scroller>
+                                    <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="f5S-7s-Ygm">
+                                        <rect key="frame" x="224" y="17" width="15" height="102"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                    </scroller>
+                                    <tableHeaderView key="headerView" id="YVc-5T-6wq">
+                                        <rect key="frame" x="0.0" y="0.0" width="198" height="25"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                    </tableHeaderView>
+                                </scrollView>
+                                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1iC-Be-d6Z">
+                                    <rect key="frame" x="235" y="0.0" width="60" height="60"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="screen_share_off" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="LLe-ki-f0T">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="onShareScreenClicked:" target="jdb-Eq-QEq" id="DsI-Ze-UOE"/>
+                                    </connections>
+                                </button>
+                                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="z1v-16-bWS">
+                                    <rect key="frame" x="835" y="0.0" width="60" height="60"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="dashboard" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="cWN-qu-Ou9">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="onDashboardClicked:" target="jdb-Eq-QEq" id="eN7-dA-lpc"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <constraints>
+                                <constraint firstItem="UTF-TV-1mu" firstAttribute="leading" secondItem="cb6-Kj-CIS" secondAttribute="leading" id="8g0-kv-ZPM"/>
+                                <constraint firstAttribute="trailing" secondItem="UTF-TV-1mu" secondAttribute="trailing" id="BSz-Ef-lM8"/>
+                                <constraint firstAttribute="bottom" secondItem="uQG-lb-zWP" secondAttribute="bottom" constant="100" id="JKr-eO-M20"/>
+                                <constraint firstItem="uQG-lb-zWP" firstAttribute="top" secondItem="cb6-Kj-CIS" secondAttribute="top" id="ShA-nf-UvB"/>
+                                <constraint firstItem="UTF-TV-1mu" firstAttribute="top" secondItem="cb6-Kj-CIS" secondAttribute="top" id="TvF-u5-zbh"/>
+                                <constraint firstAttribute="trailing" secondItem="uQG-lb-zWP" secondAttribute="trailing" id="c7B-TQ-0zN"/>
+                                <constraint firstAttribute="bottom" secondItem="UTF-TV-1mu" secondAttribute="bottom" constant="60" id="pjg-2L-kBE"/>
+                                <constraint firstItem="uQG-lb-zWP" firstAttribute="leading" secondItem="cb6-Kj-CIS" secondAttribute="leading" id="vnl-zY-iJy"/>
+                            </constraints>
+                        </view>
+                        <color key="fillColor" red="0.14117647059999999" green="0.14117647059999999" blue="0.14117647059999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                    </box>
+                    <connections>
+                        <outlet property="localVideoView" destination="UTF-TV-1mu" id="Pap-19-5Vf"/>
+                        <outlet property="remoteVideoViews" destination="uQG-lb-zWP" id="tAh-LH-Rt9"/>
+                        <outlet property="resolutionButton" destination="oSh-Ns-gma" id="17r-gn-6Hc"/>
+                        <outlet property="resolutionListView" destination="Mo2-76-dQI" id="8Qb-4i-aHX"/>
+                    </connections>
+                </viewController>
+                <customObject id="xig-Vm-xWT" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1309" y="1169"/>
+        </scene>
+        <!--Window Controller-->
+        <scene sceneID="Ok7-2d-YP8">
+            <objects>
+                <windowController id="40K-4T-5t1" sceneMemberID="viewController">
+                    <window key="window" title="视频互动直播" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="sOJ-bH-uVy">
+                        <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
+                        <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+                        <rect key="contentRect" x="425" y="461" width="400" height="600"/>
+                        <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
+                        <connections>
+                            <outlet property="delegate" destination="40K-4T-5t1" id="tGH-0A-iee"/>
+                        </connections>
+                    </window>
+                    <connections>
+                        <segue destination="9ZH-0A-aRu" kind="relationship" relationship="window.shadowedContentViewController" id="qco-zU-ZUw"/>
+                    </connections>
+                </windowController>
+                <customObject id="sMP-1A-ZIu" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-647" y="311"/>
+        </scene>
+        <!--Window Controller-->
+        <scene sceneID="rfm-8U-2gr">
+            <objects>
+                <windowController id="HwO-pb-NZ0" sceneMemberID="viewController">
+                    <window key="window" title="视频互动直播" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="Nm1-uG-dgZ">
+                        <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
+                        <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+                        <rect key="contentRect" x="425" y="461" width="1280" height="720"/>
+                        <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
+                        <connections>
+                            <outlet property="delegate" destination="HwO-pb-NZ0" id="yLM-ls-omW"/>
+                        </connections>
+                    </window>
+                    <connections>
+                        <segue destination="jdb-Eq-QEq" kind="relationship" relationship="window.shadowedContentViewController" id="RPd-yx-36W"/>
+                    </connections>
+                </windowController>
+                <customObject id="j5d-iW-m0O" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-89" y="1176"/>
+        </scene>
+        <!--Live View Controller-->
+        <scene sceneID="gBW-lo-nRY">
+            <objects>
+                <viewController id="9ZH-0A-aRu" customClass="LiveViewController" customModule="TRTCSimpleDemo" customModuleProvider="target" sceneMemberID="viewController">
+                    <box key="view" boxType="custom" borderWidth="0.0" title="Box" id="Jru-Nw-qgd">
+                        <rect key="frame" x="0.0" y="0.0" width="400" height="600"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <view key="contentView" id="EaO-ye-Lvy">
+                            <rect key="frame" x="0.0" y="0.0" width="400" height="600"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <subviews>
+                                <scrollView fixedFrame="YES" autohidesScrollers="YES" horizontalLineScroll="30" horizontalPageScroll="10" verticalLineScroll="30" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GZJ-iq-wcB">
+                                    <rect key="frame" x="30" y="205" width="340" height="315"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <clipView key="contentView" ambiguous="YES" id="T4F-FX-1qi">
+                                        <rect key="frame" x="1" y="1" width="338" height="313"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        <subviews>
+                                            <tableView verticalHuggingPriority="750" ambiguous="YES" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="gqi-91-VTy">
+                                                <rect key="frame" x="0.0" y="0.0" width="338" height="313"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                <size key="intercellSpacing" width="10" height="13"/>
+                                                <color key="backgroundColor" red="0.14117647059999999" green="0.14117647059999999" blue="0.14117647059999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
+                                                <tableColumns>
+                                                    <tableColumn width="318" minWidth="40" maxWidth="1000" id="IiA-cQ-d0j">
+                                                        <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border">
+                                                            <font key="font" metaFont="smallSystem"/>
+                                                            <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                                                        </tableHeaderCell>
+                                                        <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" title="Text Cell" id="owv-vI-erA">
+                                                            <font key="font" metaFont="system"/>
+                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                        <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                                        <prototypeCellViews>
+                                                            <tableCellView identifier="LiveRoomCellId" id="VKw-4g-MIZ">
+                                                                <rect key="frame" x="5" y="6" width="318" height="17"/>
+                                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                                <subviews>
+                                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6pI-6n-2ct">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="318" height="17"/>
+                                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="7hB-0F-qUD">
+                                                                            <font key="font" metaFont="system"/>
+                                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                        </textFieldCell>
+                                                                    </textField>
+                                                                </subviews>
+                                                                <connections>
+                                                                    <outlet property="textField" destination="6pI-6n-2ct" id="ZLN-Yo-wKh"/>
+                                                                </connections>
+                                                            </tableCellView>
+                                                        </prototypeCellViews>
+                                                    </tableColumn>
+                                                </tableColumns>
+                                                <connections>
+                                                    <outlet property="dataSource" destination="9ZH-0A-aRu" id="T3Z-9w-mB9"/>
+                                                    <outlet property="delegate" destination="9ZH-0A-aRu" id="JsO-GB-YEr"/>
+                                                </connections>
+                                            </tableView>
+                                        </subviews>
+                                    </clipView>
+                                    <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="6DB-wF-EYK">
+                                        <rect key="frame" x="1" y="298" width="338" height="16"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                    </scroller>
+                                    <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="CC5-SD-8bq">
+                                        <rect key="frame" x="224" y="17" width="15" height="102"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                    </scroller>
+                                </scrollView>
+                                <box boxType="custom" borderWidth="0.0" cornerRadius="7" title="Box" translatesAutoresizingMaskIntoConstraints="NO" id="6Mx-Kr-DYD">
+                                    <rect key="frame" x="30" y="90" width="340" height="35"/>
+                                    <view key="contentView" id="usG-3J-Bpj">
+                                        <rect key="frame" x="0.0" y="0.0" width="340" height="35"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        <subviews>
+                                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="YNc-ho-Kru">
+                                                <rect key="frame" x="0.0" y="0.0" width="340" height="35"/>
+                                                <buttonCell key="cell" type="bevel" title="开始直播" bezelStyle="regularSquare" alignment="center" imageScaling="proportionallyDown" inset="2" id="Jy7-lC-D75">
+                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                    <font key="font" metaFont="system" size="22"/>
+                                                </buttonCell>
+                                                <color key="contentTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <connections>
+                                                    <segue destination="HwO-pb-NZ0" kind="show" identifier="beginLivePush" id="FVm-mb-O9s"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="YNc-ho-Kru" firstAttribute="leading" secondItem="usG-3J-Bpj" secondAttribute="leading" id="CZx-El-neD"/>
+                                            <constraint firstItem="YNc-ho-Kru" firstAttribute="top" secondItem="usG-3J-Bpj" secondAttribute="top" id="fBz-I1-1l1"/>
+                                            <constraint firstAttribute="trailing" secondItem="YNc-ho-Kru" secondAttribute="trailing" id="mqI-Y1-8mE"/>
+                                            <constraint firstAttribute="bottom" secondItem="YNc-ho-Kru" secondAttribute="bottom" id="vRy-Er-Kty"/>
+                                        </constraints>
+                                    </view>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="35" id="45x-af-2kc"/>
+                                    </constraints>
+                                    <color key="fillColor" red="0.0" green="0.65098039220000004" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </box>
+                            </subviews>
+                            <constraints>
+                                <constraint firstAttribute="trailing" secondItem="6Mx-Kr-DYD" secondAttribute="trailing" constant="30" id="Ffb-aF-6jc"/>
+                                <constraint firstAttribute="bottom" secondItem="6Mx-Kr-DYD" secondAttribute="bottom" constant="90" id="UP0-UG-fNx"/>
+                                <constraint firstItem="6Mx-Kr-DYD" firstAttribute="leading" secondItem="EaO-ye-Lvy" secondAttribute="leading" constant="30" id="j3m-db-mLv"/>
+                            </constraints>
+                        </view>
+                        <color key="fillColor" red="0.14117647059999999" green="0.14117647059999999" blue="0.14117647059999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                    </box>
+                    <connections>
+                        <outlet property="liveRoomTableView" destination="gqi-91-VTy" id="Nft-4o-wbY"/>
+                    </connections>
+                </viewController>
+                <customObject id="J2e-xY-Z71" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-89" y="311"/>
+        </scene>
+        <!--Live Play View Controller-->
+        <scene sceneID="b5V-KA-s7P">
+            <objects>
+                <viewController id="hsS-e5-16G" customClass="LivePlayViewController" customModule="TRTCSimpleDemo" customModuleProvider="target" sceneMemberID="viewController">
+                    <box key="view" boxType="custom" borderWidth="0.0" title="Box" id="aad-Ft-8Jb">
+                        <rect key="frame" x="0.0" y="0.0" width="1280" height="720"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <view key="contentView" id="N5u-gN-4Cd">
+                            <rect key="frame" x="0.0" y="0.0" width="1280" height="720"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <subviews>
+                                <customView translatesAutoresizingMaskIntoConstraints="NO" id="Xeq-ID-23A">
+                                    <rect key="frame" x="0.0" y="60" width="1280" height="660"/>
+                                </customView>
+                                <customView translatesAutoresizingMaskIntoConstraints="NO" id="ohQ-L8-zKM">
+                                    <rect key="frame" x="0.0" y="100" width="1280" height="620"/>
+                                    <subviews>
+                                        <customView hidden="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UT0-hn-g9a" customClass="LiveSubVideoView" customModule="TRTCSimpleDemo" customModuleProvider="target">
+                                            <rect key="frame" x="1020" y="200" width="240" height="180"/>
+                                            <subviews>
+                                                <customView translatesAutoresizingMaskIntoConstraints="NO" id="u49-82-eey">
+                                                    <rect key="frame" x="0.0" y="0.0" width="240" height="180"/>
+                                                </customView>
+                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fCr-8f-dd2">
+                                                    <rect key="frame" x="190" y="155" width="20" height="20"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="20" id="chG-bX-IPo"/>
+                                                        <constraint firstAttribute="width" constant="20" id="fah-W7-toK"/>
+                                                    </constraints>
+                                                    <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="rtc_camera_on" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="Wn0-Bb-gCt">
+                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                    </buttonCell>
+                                                    <connections>
+                                                        <action selector="onMuteRemoteVideoClicked:" target="hsS-e5-16G" id="Jdv-Q8-jyI"/>
+                                                    </connections>
+                                                </button>
+                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="JY7-hC-ekF">
+                                                    <rect key="frame" x="215" y="155" width="20" height="20"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="20" id="ehn-eW-cMH"/>
+                                                        <constraint firstAttribute="height" constant="20" id="hsL-Zp-AGl"/>
+                                                    </constraints>
+                                                    <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="rtc_mic_on" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="J9e-4C-eAO">
+                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                    </buttonCell>
+                                                    <connections>
+                                                        <action selector="onMuteRemoteAudioClicked:" target="hsS-e5-16G" id="Cpd-9u-aus"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="u49-82-eey" secondAttribute="trailing" id="4nI-Xa-2Rl"/>
+                                                <constraint firstAttribute="height" constant="180" id="6R8-1T-U0g"/>
+                                                <constraint firstAttribute="bottom" secondItem="u49-82-eey" secondAttribute="bottom" id="802-v4-bcv"/>
+                                                <constraint firstItem="u49-82-eey" firstAttribute="top" secondItem="UT0-hn-g9a" secondAttribute="top" id="9c7-cz-dLS"/>
+                                                <constraint firstItem="fCr-8f-dd2" firstAttribute="top" secondItem="UT0-hn-g9a" secondAttribute="top" constant="5" id="ADY-3v-rZR"/>
+                                                <constraint firstAttribute="trailing" secondItem="JY7-hC-ekF" secondAttribute="trailing" constant="5" id="KvE-5l-O8w"/>
+                                                <constraint firstItem="JY7-hC-ekF" firstAttribute="leading" secondItem="fCr-8f-dd2" secondAttribute="trailing" constant="5" id="Q9a-YN-B2k"/>
+                                                <constraint firstItem="u49-82-eey" firstAttribute="leading" secondItem="UT0-hn-g9a" secondAttribute="leading" id="RNZ-o8-Ymv"/>
+                                                <constraint firstItem="JY7-hC-ekF" firstAttribute="top" secondItem="UT0-hn-g9a" secondAttribute="top" constant="5" id="Tmx-v5-XGI"/>
+                                                <constraint firstAttribute="width" constant="240" id="WaR-eg-1ZH"/>
+                                            </constraints>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="viewTag">
+                                                    <integer key="value" value="0"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                            <connections>
+                                                <outlet property="muteAudioButton" destination="JY7-hC-ekF" id="2ZS-tT-67O"/>
+                                                <outlet property="muteVideoButton" destination="fCr-8f-dd2" id="Q74-Ne-XKg"/>
+                                                <outlet property="videoView" destination="u49-82-eey" id="eRa-jU-c69"/>
+                                            </connections>
+                                        </customView>
+                                        <customView hidden="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Tdn-42-68l" customClass="LiveSubVideoView" customModule="TRTCSimpleDemo" customModuleProvider="target">
+                                            <rect key="frame" x="1020" y="400" width="240" height="180"/>
+                                            <subviews>
+                                                <customView translatesAutoresizingMaskIntoConstraints="NO" id="eVt-0l-g0o">
+                                                    <rect key="frame" x="0.0" y="0.0" width="240" height="180"/>
+                                                </customView>
+                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="XE6-wB-CJK">
+                                                    <rect key="frame" x="190" y="155" width="20" height="20"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="20" id="A97-B3-Ic2"/>
+                                                        <constraint firstAttribute="width" constant="20" id="hTB-Px-Vlf"/>
+                                                    </constraints>
+                                                    <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="rtc_camera_on" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="PxU-fI-JoG">
+                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                    </buttonCell>
+                                                    <connections>
+                                                        <action selector="onMuteRemoteVideoClicked:" target="hsS-e5-16G" id="kHq-1o-n7T"/>
+                                                    </connections>
+                                                </button>
+                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="hwe-Kq-zyL">
+                                                    <rect key="frame" x="215" y="155" width="20" height="20"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="20" id="d3S-le-sJk"/>
+                                                        <constraint firstAttribute="width" constant="20" id="zLv-kF-qci"/>
+                                                    </constraints>
+                                                    <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="rtc_mic_on" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="Y0w-Kj-mrX">
+                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                    </buttonCell>
+                                                    <connections>
+                                                        <action selector="onMuteRemoteAudioClicked:" target="hsS-e5-16G" id="gp2-ts-4m4"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="hwe-Kq-zyL" secondAttribute="trailing" constant="5" id="BhP-Ly-Z8t"/>
+                                                <constraint firstItem="XE6-wB-CJK" firstAttribute="top" secondItem="Tdn-42-68l" secondAttribute="top" constant="5" id="Oih-Dl-H5T"/>
+                                                <constraint firstItem="eVt-0l-g0o" firstAttribute="top" secondItem="Tdn-42-68l" secondAttribute="top" id="Vqj-vF-Q5N"/>
+                                                <constraint firstAttribute="bottom" secondItem="eVt-0l-g0o" secondAttribute="bottom" id="Vvp-9P-ApL"/>
+                                                <constraint firstItem="eVt-0l-g0o" firstAttribute="leading" secondItem="Tdn-42-68l" secondAttribute="leading" id="dj3-0h-ZfJ"/>
+                                                <constraint firstItem="hwe-Kq-zyL" firstAttribute="leading" secondItem="XE6-wB-CJK" secondAttribute="trailing" constant="5" id="fBX-Eg-6iY"/>
+                                                <constraint firstItem="hwe-Kq-zyL" firstAttribute="top" secondItem="Tdn-42-68l" secondAttribute="top" constant="5" id="hRY-ZL-cLT"/>
+                                                <constraint firstAttribute="trailing" secondItem="eVt-0l-g0o" secondAttribute="trailing" id="sXk-6p-3f6"/>
+                                            </constraints>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="viewTag">
+                                                    <integer key="value" value="1"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                            <connections>
+                                                <outlet property="muteAudioButton" destination="hwe-Kq-zyL" id="ikP-1V-Kmw"/>
+                                                <outlet property="muteVideoButton" destination="XE6-wB-CJK" id="Ioy-u5-gZO"/>
+                                                <outlet property="videoView" destination="eVt-0l-g0o" id="xaO-UL-rAg"/>
+                                            </connections>
+                                        </customView>
+                                        <customView hidden="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Pin-ge-sbe" customClass="LiveSubVideoView" customModule="TRTCSimpleDemo" customModuleProvider="target">
+                                            <rect key="frame" x="20" y="0.0" width="240" height="180"/>
+                                            <subviews>
+                                                <customView translatesAutoresizingMaskIntoConstraints="NO" id="id3-iV-DNY">
+                                                    <rect key="frame" x="0.0" y="0.0" width="240" height="180"/>
+                                                </customView>
+                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="xF6-XZ-0yB">
+                                                    <rect key="frame" x="30" y="155" width="20" height="20"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="20" id="1bX-nm-TKI"/>
+                                                        <constraint firstAttribute="width" constant="20" id="uiJ-ti-K7H"/>
+                                                    </constraints>
+                                                    <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="rtc_camera_on" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="vr8-qg-4YY">
+                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                    </buttonCell>
+                                                    <connections>
+                                                        <action selector="onMuteRemoteVideoClicked:" target="hsS-e5-16G" id="CFD-9K-dfm"/>
+                                                    </connections>
+                                                </button>
+                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="lef-t5-xBA">
+                                                    <rect key="frame" x="5" y="155" width="20" height="20"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="20" id="S7G-b4-fbY"/>
+                                                        <constraint firstAttribute="width" constant="20" id="hSC-MF-lCL"/>
+                                                    </constraints>
+                                                    <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="rtc_mic_on" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="tDu-n3-6Yq">
+                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                    </buttonCell>
+                                                    <connections>
+                                                        <action selector="onMuteRemoteAudioClicked:" target="hsS-e5-16G" id="gnk-dS-RR6"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="id3-iV-DNY" secondAttribute="bottom" id="5Ap-nX-uYe"/>
+                                                <constraint firstItem="lef-t5-xBA" firstAttribute="leading" secondItem="Pin-ge-sbe" secondAttribute="leading" constant="5" id="B3g-ZR-Y1d"/>
+                                                <constraint firstItem="xF6-XZ-0yB" firstAttribute="top" secondItem="Pin-ge-sbe" secondAttribute="top" constant="5" id="LRY-Mf-N4u"/>
+                                                <constraint firstAttribute="height" constant="180" id="MLP-VM-GtC"/>
+                                                <constraint firstItem="id3-iV-DNY" firstAttribute="top" secondItem="Pin-ge-sbe" secondAttribute="top" id="P63-HL-flW"/>
+                                                <constraint firstItem="id3-iV-DNY" firstAttribute="leading" secondItem="Pin-ge-sbe" secondAttribute="leading" id="XXE-Gc-NNE"/>
+                                                <constraint firstItem="lef-t5-xBA" firstAttribute="top" secondItem="Pin-ge-sbe" secondAttribute="top" constant="5" id="gD0-X4-E6d"/>
+                                                <constraint firstItem="xF6-XZ-0yB" firstAttribute="leading" secondItem="lef-t5-xBA" secondAttribute="trailing" constant="5" id="hgB-zY-4Gj"/>
+                                                <constraint firstAttribute="trailing" secondItem="id3-iV-DNY" secondAttribute="trailing" id="oXD-l9-0Nn"/>
+                                                <constraint firstAttribute="width" constant="240" id="zFP-fR-TW8"/>
+                                            </constraints>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="viewTag">
+                                                    <integer key="value" value="2"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                            <connections>
+                                                <outlet property="muteAudioButton" destination="lef-t5-xBA" id="hCp-hf-vqQ"/>
+                                                <outlet property="muteVideoButton" destination="xF6-XZ-0yB" id="2rz-OA-mtm"/>
+                                                <outlet property="videoView" destination="id3-iV-DNY" id="02o-Lg-ZWO"/>
+                                            </connections>
+                                        </customView>
+                                        <customView hidden="YES" translatesAutoresizingMaskIntoConstraints="NO" id="S9g-Dt-gIs" customClass="LiveSubVideoView" customModule="TRTCSimpleDemo" customModuleProvider="target">
+                                            <rect key="frame" x="20" y="200" width="240" height="180"/>
+                                            <subviews>
+                                                <customView translatesAutoresizingMaskIntoConstraints="NO" id="K1X-7W-s2C">
+                                                    <rect key="frame" x="0.0" y="0.0" width="240" height="180"/>
+                                                </customView>
+                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="gCl-Vv-z9g">
+                                                    <rect key="frame" x="30" y="155" width="20" height="20"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="20" id="KXc-5H-acT"/>
+                                                        <constraint firstAttribute="width" constant="20" id="iEN-2U-RgW"/>
+                                                    </constraints>
+                                                    <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="rtc_camera_on" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="8E3-gc-vNO">
+                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                    </buttonCell>
+                                                    <connections>
+                                                        <action selector="onMuteRemoteVideoClicked:" target="hsS-e5-16G" id="72D-an-ErZ"/>
+                                                    </connections>
+                                                </button>
+                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="yhi-dh-U8j">
+                                                    <rect key="frame" x="5" y="155" width="20" height="20"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="20" id="TKo-h6-oUi"/>
+                                                        <constraint firstAttribute="width" constant="20" id="uU8-Rb-4ES"/>
+                                                    </constraints>
+                                                    <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="rtc_mic_on" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="SY9-5F-tTs">
+                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                    </buttonCell>
+                                                    <connections>
+                                                        <action selector="onMuteRemoteAudioClicked:" target="hsS-e5-16G" id="za0-YU-1kU"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="gCl-Vv-z9g" firstAttribute="leading" secondItem="yhi-dh-U8j" secondAttribute="trailing" constant="5" id="8iF-SO-7BT"/>
+                                                <constraint firstItem="K1X-7W-s2C" firstAttribute="top" secondItem="S9g-Dt-gIs" secondAttribute="top" id="K3b-FG-Iqv"/>
+                                                <constraint firstItem="yhi-dh-U8j" firstAttribute="top" secondItem="S9g-Dt-gIs" secondAttribute="top" constant="5" id="M9F-hP-3fj"/>
+                                                <constraint firstItem="K1X-7W-s2C" firstAttribute="leading" secondItem="S9g-Dt-gIs" secondAttribute="leading" id="MLR-3I-Vob"/>
+                                                <constraint firstAttribute="bottom" secondItem="K1X-7W-s2C" secondAttribute="bottom" id="ORG-94-9Es"/>
+                                                <constraint firstItem="yhi-dh-U8j" firstAttribute="leading" secondItem="S9g-Dt-gIs" secondAttribute="leading" constant="5" id="P8p-vJ-iFg"/>
+                                                <constraint firstItem="gCl-Vv-z9g" firstAttribute="top" secondItem="S9g-Dt-gIs" secondAttribute="top" constant="5" id="kdp-oJ-8MS"/>
+                                                <constraint firstAttribute="trailing" secondItem="K1X-7W-s2C" secondAttribute="trailing" id="z1I-Qr-pMD"/>
+                                            </constraints>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="viewTag">
+                                                    <integer key="value" value="3"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                            <connections>
+                                                <outlet property="muteAudioButton" destination="yhi-dh-U8j" id="Lc9-ad-vbS"/>
+                                                <outlet property="muteVideoButton" destination="gCl-Vv-z9g" id="WJ4-gv-VyP"/>
+                                                <outlet property="videoView" destination="K1X-7W-s2C" id="4lQ-oJ-HBD"/>
+                                            </connections>
+                                        </customView>
+                                        <customView hidden="YES" translatesAutoresizingMaskIntoConstraints="NO" id="r51-ER-G6t" customClass="LiveSubVideoView" customModule="TRTCSimpleDemo" customModuleProvider="target">
+                                            <rect key="frame" x="20" y="400" width="240" height="180"/>
+                                            <subviews>
+                                                <customView translatesAutoresizingMaskIntoConstraints="NO" id="wD3-fw-JLZ">
+                                                    <rect key="frame" x="0.0" y="0.0" width="240" height="180"/>
+                                                </customView>
+                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="m6W-y2-5AZ">
+                                                    <rect key="frame" x="30" y="155" width="20" height="20"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="20" id="nQw-nD-zEW"/>
+                                                        <constraint firstAttribute="height" constant="20" id="uiC-0G-ZTe"/>
+                                                    </constraints>
+                                                    <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="rtc_camera_on" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="9Ix-JF-aND">
+                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                    </buttonCell>
+                                                    <connections>
+                                                        <action selector="onMuteRemoteVideoClicked:" target="hsS-e5-16G" id="gg2-XX-Xzv"/>
+                                                    </connections>
+                                                </button>
+                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Wbd-NF-nv3">
+                                                    <rect key="frame" x="5" y="155" width="20" height="20"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="20" id="UC8-GV-obK"/>
+                                                        <constraint firstAttribute="height" constant="20" id="ejR-ch-qNi"/>
+                                                    </constraints>
+                                                    <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="rtc_mic_on" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="k7I-TT-9hm">
+                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                    </buttonCell>
+                                                    <connections>
+                                                        <action selector="onMuteRemoteAudioClicked:" target="hsS-e5-16G" id="5bZ-IP-u5q"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="wD3-fw-JLZ" secondAttribute="trailing" id="Bxt-nM-9pW"/>
+                                                <constraint firstItem="wD3-fw-JLZ" firstAttribute="top" secondItem="r51-ER-G6t" secondAttribute="top" id="GJq-q8-pFg"/>
+                                                <constraint firstItem="Wbd-NF-nv3" firstAttribute="top" secondItem="r51-ER-G6t" secondAttribute="top" constant="5" id="VBk-LA-BuF"/>
+                                                <constraint firstItem="wD3-fw-JLZ" firstAttribute="leading" secondItem="r51-ER-G6t" secondAttribute="leading" id="nYb-eY-yp1"/>
+                                                <constraint firstItem="m6W-y2-5AZ" firstAttribute="leading" secondItem="Wbd-NF-nv3" secondAttribute="trailing" constant="5" id="nh6-Lg-8jt"/>
+                                                <constraint firstAttribute="bottom" secondItem="wD3-fw-JLZ" secondAttribute="bottom" id="rbM-nn-7EO"/>
+                                                <constraint firstItem="m6W-y2-5AZ" firstAttribute="top" secondItem="r51-ER-G6t" secondAttribute="top" constant="5" id="tan-4V-i67"/>
+                                                <constraint firstItem="Wbd-NF-nv3" firstAttribute="leading" secondItem="r51-ER-G6t" secondAttribute="leading" constant="5" id="yMp-D7-ncc"/>
+                                            </constraints>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="viewTag">
+                                                    <integer key="value" value="4"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                            <connections>
+                                                <outlet property="muteAudioButton" destination="Wbd-NF-nv3" id="wLC-HF-pl2"/>
+                                                <outlet property="muteVideoButton" destination="m6W-y2-5AZ" id="C3c-4N-vhu"/>
+                                                <outlet property="videoView" destination="wD3-fw-JLZ" id="TRs-bs-zVX"/>
+                                            </connections>
+                                        </customView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="S9g-Dt-gIs" firstAttribute="width" secondItem="r51-ER-G6t" secondAttribute="width" id="34W-ei-Rrx"/>
+                                        <constraint firstItem="Pin-ge-sbe" firstAttribute="centerX" secondItem="S9g-Dt-gIs" secondAttribute="centerX" id="80o-zv-tse"/>
+                                        <constraint firstAttribute="bottom" secondItem="Pin-ge-sbe" secondAttribute="bottom" id="A1t-9F-dbk"/>
+                                        <constraint firstItem="S9g-Dt-gIs" firstAttribute="centerX" secondItem="r51-ER-G6t" secondAttribute="centerX" id="AWe-3B-WLu"/>
+                                        <constraint firstItem="Pin-ge-sbe" firstAttribute="leading" secondItem="ohQ-L8-zKM" secondAttribute="leading" constant="20" id="Gdr-Kw-Lih"/>
+                                        <constraint firstItem="S9g-Dt-gIs" firstAttribute="top" secondItem="r51-ER-G6t" secondAttribute="bottom" constant="20" id="Lq7-wt-LYs"/>
+                                        <constraint firstAttribute="trailing" secondItem="UT0-hn-g9a" secondAttribute="trailing" constant="20" id="MgW-gI-Dye"/>
+                                        <constraint firstItem="UT0-hn-g9a" firstAttribute="width" secondItem="Tdn-42-68l" secondAttribute="width" id="ZaJ-bP-hLm"/>
+                                        <constraint firstItem="Pin-ge-sbe" firstAttribute="top" secondItem="S9g-Dt-gIs" secondAttribute="bottom" constant="20" id="cXq-3H-HNg"/>
+                                        <constraint firstItem="Pin-ge-sbe" firstAttribute="width" secondItem="S9g-Dt-gIs" secondAttribute="width" id="d3R-wZ-4II"/>
+                                        <constraint firstItem="S9g-Dt-gIs" firstAttribute="height" secondItem="r51-ER-G6t" secondAttribute="height" id="euj-Ds-UiJ"/>
+                                        <constraint firstItem="Pin-ge-sbe" firstAttribute="height" secondItem="S9g-Dt-gIs" secondAttribute="height" id="ez6-DX-bDU"/>
+                                        <constraint firstAttribute="bottom" secondItem="UT0-hn-g9a" secondAttribute="bottom" constant="200" id="fhr-uj-Jy8"/>
+                                        <constraint firstItem="UT0-hn-g9a" firstAttribute="height" secondItem="Tdn-42-68l" secondAttribute="height" id="jhy-eT-Xym"/>
+                                        <constraint firstItem="UT0-hn-g9a" firstAttribute="centerX" secondItem="Tdn-42-68l" secondAttribute="centerX" id="rix-Li-GTX"/>
+                                        <constraint firstItem="UT0-hn-g9a" firstAttribute="top" secondItem="Tdn-42-68l" secondAttribute="bottom" constant="20" id="tpT-Ba-18c"/>
+                                    </constraints>
+                                </customView>
+                                <customView hidden="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iAl-iK-OdX" customClass="LiveSubVideoView" customModule="TRTCSimpleDemo" customModuleProvider="target">
+                                    <rect key="frame" x="1020" y="100" width="240" height="180"/>
+                                    <subviews>
+                                        <customView translatesAutoresizingMaskIntoConstraints="NO" id="klQ-zi-vOU">
+                                            <rect key="frame" x="0.0" y="0.0" width="240" height="180"/>
+                                        </customView>
+                                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="SaM-KY-p6B">
+                                            <rect key="frame" x="190" y="155" width="20" height="20"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="20" id="vXI-e1-666"/>
+                                                <constraint firstAttribute="width" constant="20" id="xI1-mn-GP2"/>
+                                            </constraints>
+                                            <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="rtc_camera_on" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="xCy-y1-s6f">
+                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <action selector="onMuteRemoteVideoClicked:" target="hsS-e5-16G" id="PUM-2X-zAY"/>
+                                            </connections>
+                                        </button>
+                                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="S8Q-dd-0Ce">
+                                            <rect key="frame" x="215" y="155" width="20" height="20"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="20" id="YFm-6l-VEZ"/>
+                                                <constraint firstAttribute="width" constant="20" id="yJI-rg-O1B"/>
+                                            </constraints>
+                                            <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="rtc_mic_on" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="Sa0-fS-KbM">
+                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <action selector="onMuteRemoteAudioClicked:" target="hsS-e5-16G" id="w8N-ma-5da"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="S8Q-dd-0Ce" secondAttribute="trailing" constant="5" id="0hf-1p-Cns"/>
+                                        <constraint firstItem="klQ-zi-vOU" firstAttribute="top" secondItem="iAl-iK-OdX" secondAttribute="top" id="80c-mL-5Nt"/>
+                                        <constraint firstAttribute="trailing" secondItem="klQ-zi-vOU" secondAttribute="trailing" id="EEv-E4-qeF"/>
+                                        <constraint firstItem="klQ-zi-vOU" firstAttribute="leading" secondItem="iAl-iK-OdX" secondAttribute="leading" id="ET5-1A-XET"/>
+                                        <constraint firstItem="S8Q-dd-0Ce" firstAttribute="leading" secondItem="SaM-KY-p6B" secondAttribute="trailing" constant="5" id="GAQ-wt-bfZ"/>
+                                        <constraint firstItem="S8Q-dd-0Ce" firstAttribute="top" secondItem="iAl-iK-OdX" secondAttribute="top" constant="5" id="RIv-ae-b1U"/>
+                                        <constraint firstItem="SaM-KY-p6B" firstAttribute="top" secondItem="iAl-iK-OdX" secondAttribute="top" constant="5" id="ekU-ZL-svB"/>
+                                        <constraint firstAttribute="bottom" secondItem="klQ-zi-vOU" secondAttribute="bottom" id="fik-gG-AeR"/>
+                                        <constraint firstAttribute="height" constant="180" id="i1h-Q4-5Go"/>
+                                        <constraint firstAttribute="width" constant="240" id="o8O-ST-0Ze"/>
+                                    </constraints>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="viewTag">
+                                            <integer key="value" value="0"/>
+                                        </userDefinedRuntimeAttribute>
+                                    </userDefinedRuntimeAttributes>
+                                    <connections>
+                                        <outlet property="muteAudioButton" destination="S8Q-dd-0Ce" id="nOq-51-NkU"/>
+                                        <outlet property="muteVideoButton" destination="SaM-KY-p6B" id="bQp-ei-bFV"/>
+                                        <outlet property="videoView" destination="klQ-zi-vOU" id="pac-YJ-Ivz"/>
+                                    </connections>
+                                </customView>
+                                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="60V-4c-yId">
+                                    <rect key="frame" x="385" y="0.0" width="60" height="60"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="link_mic_off" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="ldG-N0-wXf">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="onLinkMicClicked:" target="hsS-e5-16G" id="pRz-7b-jk2"/>
+                                    </connections>
+                                </button>
+                                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ccO-tc-zV0">
+                                    <rect key="frame" x="535" y="0.0" width="60" height="60"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="rtc_mic_on" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="yua-ky-LF5">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="onMuteRoomOwnerAudioClicked:" target="hsS-e5-16G" id="drX-3d-RMQ"/>
+                                    </connections>
+                                </button>
+                                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7O1-Ew-cfr">
+                                    <rect key="frame" x="685" y="0.0" width="60" height="60"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="rtc_camera_on" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="VJu-Yh-ZQj">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="onMuteRoomOwnerVideoClicked:" target="hsS-e5-16G" id="MCU-wW-ZUw"/>
+                                    </connections>
+                                </button>
+                                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NoH-Lc-bHo">
+                                    <rect key="frame" x="835" y="0.0" width="60" height="60"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="dashboard" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="gCP-0P-XmK">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="onDashboardClicked:" target="hsS-e5-16G" id="wjM-2X-zTr"/>
+                                    </connections>
+                                </button>
+                                <button hidden="YES" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="G2l-jb-03h">
+                                    <rect key="frame" x="235" y="0.0" width="60" height="60"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="screen_share_off" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="wVH-2O-dY5">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="onShareScreenClicked:" target="hsS-e5-16G" id="kZz-dG-KzA"/>
+                                    </connections>
+                                </button>
+                                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OMV-H6-RkK">
+                                    <rect key="frame" x="985" y="0.0" width="60" height="60"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="exit_room" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="jBX-o2-eBb">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="onExitRoomClicked:" target="hsS-e5-16G" id="Rzw-rC-o9p"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <constraints>
+                                <constraint firstAttribute="bottom" secondItem="ohQ-L8-zKM" secondAttribute="bottom" constant="100" id="0vi-Kb-pDq"/>
+                                <constraint firstItem="ohQ-L8-zKM" firstAttribute="top" secondItem="N5u-gN-4Cd" secondAttribute="top" id="1Ng-cn-eFE"/>
+                                <constraint firstItem="iAl-iK-OdX" firstAttribute="bottom" secondItem="ohQ-L8-zKM" secondAttribute="bottom" id="6p5-Dw-mz1"/>
+                                <constraint firstAttribute="trailing" secondItem="Xeq-ID-23A" secondAttribute="trailing" id="7AZ-0p-Obg"/>
+                                <constraint firstAttribute="trailing" secondItem="ohQ-L8-zKM" secondAttribute="trailing" id="9IH-hU-pU0"/>
+                                <constraint firstItem="Xeq-ID-23A" firstAttribute="top" secondItem="N5u-gN-4Cd" secondAttribute="top" id="B0a-bu-Ubi"/>
+                                <constraint firstAttribute="bottom" secondItem="Xeq-ID-23A" secondAttribute="bottom" constant="60" id="Rzj-dO-Sd4"/>
+                                <constraint firstItem="iAl-iK-OdX" firstAttribute="trailing" secondItem="ohQ-L8-zKM" secondAttribute="trailing" constant="-20" id="VOb-La-oIp"/>
+                                <constraint firstItem="Xeq-ID-23A" firstAttribute="leading" secondItem="N5u-gN-4Cd" secondAttribute="leading" id="dcD-TF-Iky"/>
+                                <constraint firstItem="ohQ-L8-zKM" firstAttribute="leading" secondItem="N5u-gN-4Cd" secondAttribute="leading" id="wfx-Mt-QwA"/>
+                            </constraints>
+                        </view>
+                        <color key="fillColor" red="0.14117647059999999" green="0.14117647059999999" blue="0.14117647059999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                    </box>
+                    <connections>
+                        <outlet property="localVideoView" destination="iAl-iK-OdX" id="23o-rm-64s"/>
+                        <outlet property="remoteVideoViews" destination="ohQ-L8-zKM" id="Ied-hr-nEX"/>
+                        <outlet property="roomOwnerVideoView" destination="Xeq-ID-23A" id="Twc-ck-4yg"/>
+                        <outlet property="shareScreenButton" destination="G2l-jb-03h" id="Dfd-La-EFm"/>
+                    </connections>
+                </viewController>
+                <customObject id="agH-hn-jWe" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="74" y="2030"/>
+        </scene>
+        <!--Window Controller-->
+        <scene sceneID="oW8-ml-OaR">
+            <objects>
+                <windowController storyboardIdentifier="LivePlayWindowControllerId" id="tb1-0W-TeO" sceneMemberID="viewController">
+                    <window key="window" title="视频互动直播" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="1Uq-1R-vKj">
+                        <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
+                        <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+                        <rect key="contentRect" x="425" y="461" width="1280" height="720"/>
+                        <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
+                        <connections>
+                            <outlet property="delegate" destination="tb1-0W-TeO" id="QOi-te-vFa"/>
+                        </connections>
+                    </window>
+                    <connections>
+                        <segue destination="hsS-e5-16G" kind="relationship" relationship="window.shadowedContentViewController" id="1Vt-XO-6Jl"/>
+                    </connections>
+                </windowController>
+                <customObject id="Ukj-Ez-hDE" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1333" y="2062"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="AaU-3g-YLd">
+            <objects>
+                <customObject id="4px-2D-YaO" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <viewController id="cX3-Vr-0RL" sceneMemberID="viewController">
+                    <view key="view" id="jjp-iI-y1j">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </view>
+                </viewController>
+            </objects>
+            <point key="canvasLocation" x="-1143" y="2986"/>
+        </scene>
+        <!--Window Controller-->
+        <scene sceneID="qzv-s7-YJK">
+            <objects>
+                <windowController storyboardIdentifier="ShareScreenWindowControllerId" id="hyX-Yx-ZLS" sceneMemberID="viewController">
+                    <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="WAB-dS-qy0">
+                        <windowStyleMask key="styleMask" titled="YES" miniaturizable="YES" resizable="YES"/>
+                        <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+                        <rect key="contentRect" x="425" y="461" width="600" height="600"/>
+                        <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
+                        <connections>
+                            <outlet property="delegate" destination="hyX-Yx-ZLS" id="tBq-yl-8HK"/>
+                        </connections>
+                    </window>
+                    <connections>
+                        <segue destination="cX3-Vr-0RL" kind="relationship" relationship="window.shadowedContentViewController" id="17Z-bb-nfO"/>
+                    </connections>
+                </windowController>
+                <customObject id="TXc-YF-7Tv" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1967" y="2986"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="dashboard" width="30" height="30"/>
+        <image name="exit_room" width="30" height="30"/>
+        <image name="ico_arrow" width="14" height="14"/>
+        <image name="link_mic_off" width="30" height="30"/>
+        <image name="rtc_camera_on" width="30" height="30"/>
+        <image name="rtc_mic_on" width="30" height="30"/>
+        <image name="screen_share_off" width="30" height="30"/>
+    </resources>
+</document>
