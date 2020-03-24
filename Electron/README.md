@@ -1,5 +1,5 @@
 # TRTC on Electron
-![](https://demovideo-1252463788.cos.ap-shanghai.myqcloud.com/electron/electron.gif)
+![](https://main.qcloudimg.com/raw/02bde06f116d6b406324e5ec431f0254.jpg)
 
 ## 跑通 DEMO
 <span id="step1"></span>
