@@ -57,8 +57,8 @@ pod update
 - Xcode 9.0+
 - 请确保您的项目已设置有效的开发者签名。
 
-### 2. 两台手机运行 Demo，为什么看不到彼此的画面？
-请确保两台手机在运行 Demo 时使用的是不同的 UserID，TRTC 不支持同一个 UserID （除非 SDKAppID 不同）在两个终端同时使用。
+### 2. 两台设备运行 Demo，为什么看不到彼此的画面？
+请确保两台手机在运行 Demo 时使用的是不同的 UserID，TRTC 不支持同一个 UserID （除非 SDKAppID 不同）在两个设备同时使用。
 ![](https://main.qcloudimg.com/raw/c7b1589e1a637cf502c6728f3c3c4f99.png)
 
 ### 3. 防火墙有什么限制？
