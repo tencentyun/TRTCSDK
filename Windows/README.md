@@ -69,8 +69,8 @@ warning 由于仓库容量限制，需要进Windows\SDK目录进行手动下载S
 * Microsoft Visual Studio 2015及以上版本，推荐使用 Microsoft Visual Studio 2017
 * .Net Framework 4.0及以上版本，推荐使用 .Net Framework 4.0
 
-### 2. 两台手机同时运行 Demo，为什么看不到彼此的画面？
-请确保两台手机在运行 Demo 时使用的是不同的 UserID，TRTC 不支持同一个 UserID （除非 SDKAppID 不同）在两个终端同时使用。
+### 2. 两台设备同时运行 Demo，为什么看不到彼此的画面？
+请确保两台设备在运行 Demo 时使用的是不同的 UserID，TRTC 不支持同一个 UserID （除非 SDKAppID 不同）在两个设备同时使用。
 ![](https://main.qcloudimg.com/raw/c7b1589e1a637cf502c6728f3c3c4f99.png)
 
 ### 3. 防火墙有什么限制？
