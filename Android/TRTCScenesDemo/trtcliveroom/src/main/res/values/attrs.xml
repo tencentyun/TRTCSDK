@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 标题模板自定义属性 -->
+    <declare-styleable name="CustomTitle">
+        <!-- 标题文案 -->
+        <attr name="titleText" format="string"/>
+        <!-- 是否有back按钮 -->
+        <attr name="canBack" format="boolean"/>
+        <!-- back按钮文案 -->
+        <attr name="backText" format="string"/>
+        <!-- 右侧更多功能按钮文字 -->
+        <attr name="moreText" format="string"/>
+    </declare-styleable>
+
+    <!-- 条形控制控件自定义属性 -->
+<!--    <declare-styleable name="TCLineView">-->
+<!--        &lt;!&ndash; 名称 &ndash;&gt;-->
+<!--        <attr name="name" format="string"/>-->
+<!--        &lt;!&ndash; 内容或当前状态 &ndash;&gt;-->
+<!--        <attr name="content" format="string"/>-->
+<!--        &lt;!&ndash; 是否是列表中最后一个 &ndash;&gt;-->
+<!--        <attr name="isBottom" format="boolean"/>-->
+<!--        &lt;!&ndash; 是否可以跳转 &ndash;&gt;-->
+<!--        <attr name="canNav" format="boolean"/>-->
+<!--        &lt;!&ndash; 是否是开关 &ndash;&gt;-->
+<!--        <attr name="isSwitch" format="boolean"/>-->
+<!--    </declare-styleable>-->
+
+    <!-- 飘星自定义属性 -->
+    <declare-styleable name="HeartLayout">
+        <attr name="initX" format="dimension" />
+        <attr name="initY" format="dimension" />
+        <attr name="xRand" format="dimension" />
+        <attr name="animLengthRand" format="dimension" />
+        <attr name="xPointFactor" format="dimension" />
+        <attr name="animLength" format="dimension" />
+        <attr name="heart_width" format="dimension" />
+        <attr name="heart_height" format="dimension" />
+        <attr name="bezierFactor" format="integer" />
+        <attr name="anim_duration" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="RoundImageView">
+        <attr name="shape">
+            <enum name="circle" value="0" />
+            <enum name="fillet" value="1" />
+        </attr>
+        <attr name="radius" format="dimension" />
+        <attr name="cover_color" format="color" />
+    </declare-styleable>
+</resources>

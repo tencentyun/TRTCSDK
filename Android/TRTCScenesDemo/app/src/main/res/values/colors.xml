@@ -1,16 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorComBg">#0B1829</color>
     <color name="colorWhite">#FFFFFF</color>
-    <color name="colorBtn">#016EFF</color>
     <color name="transparent">#00000000</color>
     <color name="white">#FFFFFF</color>
     <color name="hlfTransparent">#30000000</color>
-    <color name="line_btn">#BBBBBB</color>
-    <color name="colorPrimaryDark">#21a3f5</color>
-    <color name="colorAccent">#0accac</color>
     <!--MainActivity item被选中的颜色-->
-    <color name="main_item_selected_color">#555555</color>
-    <color name="main_item_unselected_color">#2A2A2A</color>
-    <color name="main_item_divide_color">#0d0d0d</color>
 </resources>

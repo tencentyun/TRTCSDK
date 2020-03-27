@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="dialog_input_text_hint">开启弹幕互动吧</string>
+
+    <string name="live_end_tips">直播结束啦!</string>
+    <string name="live_time_tips">直播时长</string>
+    <string name="live_members_tips">观看人数</string>
+    <string name="live_admires_tips">获赞数量</string>
+    <string name="btn_return">返回</string>
+
+
+    <item type="id" name="tag_first"></item>
+    <item type="id" name="tag_second"></item>
+</resources>

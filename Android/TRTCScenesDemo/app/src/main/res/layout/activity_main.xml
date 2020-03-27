@@ -6,28 +6,29 @@
     android:orientation="vertical">
 
     <RelativeLayout
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp">
 
         <TextView
-            android:layout_centerHorizontal="true"
             android:id="@+id/main_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
             android:text="腾讯云 TRTC"
             android:textColor="#ffffff"
             android:textSize="26sp" />
+
         <ImageView
             android:id="@+id/img_logout"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp"
             android:layout_centerVertical="true"
-            android:src="@drawable/ic_logout"/>
+            android:layout_marginRight="10dp"
+            android:src="@drawable/ic_logout" />
     </RelativeLayout>
 
 
@@ -52,9 +53,19 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="10dp"
         android:gravity="center"
         android:text="本APP用于展示腾讯视频云实时音视频服务的各类功能"
         android:textColor="#666666"
         android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/tv_privacy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:text="@string/main_privacy_text"
+        android:textColor="#666666"
+        android:textSize="13sp" />
 </LinearLayout>

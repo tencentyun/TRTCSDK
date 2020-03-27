@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 激活状态下为白色 -->
+    <item
+        android:state_activated="true"
+        android:color="#ff0accac" />
+    <!-- 默认为黑色 -->
+    <item
+        android:color="#000" />
+
+</selector>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:text="创建房间"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:padding="8dp"
+        android:textAlignment="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:layout_marginBottom="16dp"
+        android:id="@+id/rtmproom_dialog_create_room_edittext"
+        android:textColor="#333333"
+        android:textColorHint="#666666"
+        android:layout_width="240dp"
+        android:layout_gravity="center"
+        android:layout_height="48sp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:textAlignment="center"
+        android:maxLength="20"
+        android:lines="1"
+        android:singleLine="true"
+        android:hint="输入房间名字"/>
+
+</LinearLayout>

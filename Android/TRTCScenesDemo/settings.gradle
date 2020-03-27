@@ -5,5 +5,5 @@ include ':beauty'
 //project(':beauty').projectDir = new File(settingsDir, '../../../../project/android/demo/liteav/beauty')
 include ':trtcaudiocalldemo'
 include ':trtcvideocalldemo'
-include ':trtcvideoroom'
+include ':trtcliveroom'
 include ':trtcvoiceroom'

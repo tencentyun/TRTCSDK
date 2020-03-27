@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.SPUtils;
+import com.tencent.liteav.debug.GenerateTestUserSig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,6 +94,7 @@ public class ProfileManager {
         userModel.userName = userId;
         userModel.phone = userId;
         userModel.userId = userId;
+        userModel.userSig = GenerateTestUserSig.genTestUserSig(userModel.userId);
         setUserModel(userModel);
         callback.onSuccess();
     }
@@ -105,6 +107,7 @@ public class ProfileManager {
         userModel.userName = userId;
         userModel.phone = userId;
         userModel.userId = userId;
+        userModel.userSig = GenerateTestUserSig.genTestUserSig(userModel.userId);
         setUserModel(userModel);
         callback.onSuccess();
     }

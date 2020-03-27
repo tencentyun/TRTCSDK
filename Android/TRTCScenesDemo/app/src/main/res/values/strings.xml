@@ -1,5 +1,4 @@
 <resources>
     <string name="app_name">腾讯云 TRTC</string>
-    <string name="str_room_id_tips">输入房间号</string>
-    <string name="str_user_id_tips">输入用户名</string>
+    <string name="main_privacy_text">点击查看<a href="http://privacy.qq.com/">隐私政策</a></string>
 </resources>

@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cl_audience"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusableInTouchMode="true">
+
+    <android.support.constraint.Guideline
+        android:id="@+id/gl_v"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/gl_h"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <com.tencent.rtmp.ui.TXCloudVideoView
+        android:id="@+id/anchor_video_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/audience_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_anchor_leave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="主播暂时不在线..."
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/text_size_large"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
+
+    <RelativeLayout
+        android:id="@+id/pk_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/gl_h"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/gl_v"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!--连麦：播放小窗口定义 开始-->
+    <!--连麦：第一个播放小窗口-->
+    <com.tencent.liteav.liveroom.ui.widget.video.TCVideoView
+        android:id="@+id/tcvideoview_1"
+        style="@style/link_mic_style"
+        app:layout_constraintBottom_toTopOf="@+id/tool_bar_view"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!--连麦：第二个播放小窗口-->
+    <com.tencent.liteav.liveroom.ui.widget.video.TCVideoView
+        android:id="@+id/tcvideoview_2"
+        style="@style/link_mic_style"
+        app:layout_constraintBottom_toTopOf="@+id/tcvideoview_1"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!--连麦：第三个播放小窗口-->
+    <com.tencent.liteav.liveroom.ui.widget.video.TCVideoView
+        android:id="@+id/tcvideoview_3"
+        style="@style/link_mic_style"
+        app:layout_constraintBottom_toTopOf="@+id/tcvideoview_2"
+        app:layout_constraintEnd_toEndOf="parent" />
+    <!--连麦：播放小窗口定义 结束-->
+
+    <include
+        android:id="@+id/layout_live_pusher_info"
+        layout="@layout/liveroom_include_live_pusher_info"
+        android:layout_width="110dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/anchor_rv_avatar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="15dp"
+        app:layout_constraintStart_toEndOf="@id/layout_live_pusher_info"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <ImageButton
+        android:id="@+id/btn_message_input"
+        android:layout_width="@dimen/liveroom__btn_size"
+        android:layout_height="@dimen/liveroom__btn_size"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/icon_message"
+        android:onClick="onClick"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/audience_btn_switch_cam"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageButton
+        android:id="@+id/audience_btn_switch_cam"
+        android:layout_width="@dimen/liveroom__btn_size"
+        android:layout_height="@dimen/liveroom__btn_size"
+        android:background="@drawable/icon_switch_camera_on"
+        android:onClick="onClick"
+        android:scaleType="centerCrop"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toStartOf="@+id/audience_btn_linkmic"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btn_message_input"
+        app:layout_constraintTop_toTopOf="@+id/btn_message_input" />
+
+    <ImageButton
+        android:id="@+id/audience_btn_linkmic"
+        android:layout_width="@dimen/liveroom__btn_size"
+        android:layout_height="@dimen/liveroom__btn_size"
+        android:background="@drawable/linkmic_on"
+        android:onClick="onClick"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toStartOf="@+id/btn_like"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/audience_btn_switch_cam"
+        app:layout_constraintTop_toTopOf="@+id/audience_btn_switch_cam" />
+
+    <!--    <Button-->
+    <!--        android:id="@+id/btn_log"-->
+    <!--        android:layout_width="@dimen/liveroom__btn_size"-->
+    <!--        android:layout_height="@dimen/liveroom__btn_size"-->
+    <!--        android:background="@drawable/icon_log_off"-->
+    <!--        android:onClick="onClick"-->
+    <!--        app:layout_constraintEnd_toStartOf="@+id/btn_like"-->
+    <!--        app:layout_constraintHorizontal_bias="0.5"-->
+    <!--        app:layout_constraintStart_toEndOf="@+id/audience_btn_linkmic"-->
+    <!--        app:layout_constraintTop_toTopOf="@+id/audience_btn_linkmic" />-->
+
+    <ImageButton
+        android:id="@+id/btn_like"
+        android:layout_width="@dimen/liveroom__btn_size"
+        android:layout_height="@dimen/liveroom__btn_size"
+        android:background="@drawable/icon_like"
+        android:onClick="onClick"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toStartOf="@+id/btn_close"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/audience_btn_linkmic"
+        app:layout_constraintTop_toTopOf="@+id/audience_btn_linkmic" />
+
+    <ImageButton
+        android:id="@+id/btn_close"
+        android:layout_width="@dimen/liveroom__btn_size"
+        android:layout_height="@dimen/liveroom__btn_size"
+        android:background="@drawable/btn_close"
+        android:onClick="onClick"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btn_like"
+        app:layout_constraintTop_toTopOf="@+id/btn_like" />
+
+    <View
+        android:id="@+id/tool_bar_view"
+        android:layout_width="wrap_content"
+        android:layout_height="1px"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_close"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <ListView
+        android:id="@+id/im_msg_listview"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginLeft="15dp"
+        android:cacheColorHint="#00000000"
+        android:divider="#3c421b1b"
+        android:scrollbarStyle="outsideOverlay"
+        android:scrollbars="none"
+        android:stackFromBottom="true"
+        app:layout_constraintBottom_toBottomOf="@+id/tool_bar_view"
+        app:layout_constraintEnd_toEndOf="@+id/gl_v"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/gl_h"
+        tools:visibility="visible" />
+
+    <!--    <com.tencent.liteav.liveroom.ui.anchor.music.TCAudioControl-->
+    <!--        android:id="@+id/anchor_audio_control"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:background="@color/dialogBg"-->
+    <!--        android:clickable="true"-->
+    <!--        android:orientation="vertical"-->
+    <!--        android:padding="0dp"-->
+    <!--        android:visibility="gone"-->
+    <!--        app:layout_constraintBottom_toBottomOf="@id/tool_bar_view"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        tools:visibility="gone" />-->
+
+    <com.tencent.liteav.demo.beauty.BeautyPanel
+        android:id="@+id/beauty_panel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/tool_bar_view"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:visibility="gone" />
+
+    <!--点赞动画-->
+    <com.tencent.liteav.liveroom.ui.widget.like.TCHeartLayout
+        android:id="@+id/heart_layout"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        app:layout_constraintBottom_toBottomOf="@id/tool_bar_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:visibility="gone" />
+
+
+    <master.flame.danmaku.ui.widget.DanmakuView
+        android:id="@+id/anchor_danmaku_view"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+</android.support.constraint.ConstraintLayout>

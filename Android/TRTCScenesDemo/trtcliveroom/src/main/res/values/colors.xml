@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="transparent">#00000000</color>
+    <color name="colorRed">#FF3333</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="hlfTransparent">#30000000</color>
+    <color name="dialogBg">#7e000000</color>
+    <color name="colorLiveRoomAccent">#00A66b</color>
+    <!--输入框颜色-->
+    <color name="color_input_dialog_background">#b4ffffff</color>
+    <color name="colorTransparentBlack">#44777777</color>
+
+    <color name="colorSendName">#9966cc</color>
+    <color name="colorSendName1">#F12B5B</color>
+    <color name="colorSendName2">#2B7DE2</color>
+    <color name="colorSendName3">#006599</color>
+    <color name="colorSendName4">#FF7906</color>
+    <color name="colorSendName5">#1FBCB6</color>
+    <color name="colorSendName6">#FFAE1F</color>
+    <color name="colorSendName7">#FF437D</color>
+</resources>

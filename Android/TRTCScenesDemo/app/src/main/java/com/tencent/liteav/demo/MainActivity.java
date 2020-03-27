@@ -2,6 +2,7 @@ package com.tencent.liteav.demo;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -10,6 +11,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.URLSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -17,8 +23,8 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.constant.PermissionConstants;
 import com.blankj.utilcode.util.PermissionUtils;
-import com.tencent.liteav.demo.trtc.TRTCNewRoomActivity;
 import com.tencent.liteav.demo.trtcvoiceroom.CreateVoiceRoomActivity;
+import com.tencent.liteav.liveroom.ui.liveroomlist.LiveRoomListActivity;
 import com.tencent.liteav.login.LoginActivity;
 import com.tencent.liteav.login.ProfileManager;
 import com.tencent.liteav.trtcaudiocalldemo.ui.TRTCAudioCallHistoryActivity;
@@ -108,6 +114,8 @@ public class MainActivity extends Activity {
             }
         });
 
+        interceptHyperLink((TextView) findViewById(R.id.tv_privacy));
+
         initPermission();
     }
 
@@ -139,7 +147,6 @@ public class MainActivity extends Activity {
 
                                 @Override
                                 public void onFailed(int code, String msg) {
-
                                 }
                             });
                         }
@@ -166,7 +173,7 @@ public class MainActivity extends Activity {
     private List<TRTCItemEntity> createTRTCItems() {
         List<TRTCItemEntity> list = new ArrayList<>();
         list.add(new TRTCItemEntity("视频通话", "支持720P/1080P高清画质，50%丢包率可正常视频通话，自带美颜、挂件、抠图等AI特效。", R.drawable.video_call, 0, TRTCVideoCallHistoryActivity.class));
-        list.add(new TRTCItemEntity("视频互动直播", "低延时、十万人高并发的大型互动直播解决方案，观众时延低至800ms，上下麦切换免等待。", R.drawable.live_stream, TRTCNewRoomActivity.TRTC_LIVE, TRTCNewRoomActivity.class));
+        list.add(new TRTCItemEntity("视频互动直播", "低延时、十万人高并发的大型互动直播解决方案，观众时延低至800ms，上下麦切换免等待。", R.drawable.live_stream, 0, LiveRoomListActivity.class));
         list.add(new TRTCItemEntity("语音通话", "48kHz高音质，60%丢包可正常语音通话，领先行业的3A处理，杜绝回声和啸叫。", R.drawable.voice_call, 0, TRTCAudioCallHistoryActivity.class));
         list.add(new TRTCItemEntity("语音聊天室", "内含变声、音效、混响、背景音乐等声音玩法，适用于闲聊房、K歌房、开黑房等语聊场景。", R.drawable.voice_chatroom, 0, CreateVoiceRoomActivity.class));
         return list;
@@ -241,5 +248,53 @@ public class MainActivity extends Activity {
             }
         }
         return zipFile;
+    }
+
+    /**
+     * 用于跳转隐私协议
+     *
+     * @param tv
+     */
+    private void interceptHyperLink(TextView tv) {
+        tv.setMovementMethod(LinkMovementMethod.getInstance());
+        CharSequence text = tv.getText();
+        if (text instanceof Spannable) {
+            int       end       = text.length();
+            Spannable spannable = (Spannable) tv.getText();
+            URLSpan[] urlSpans  = spannable.getSpans(0, end, URLSpan.class);
+            if (urlSpans.length == 0) {
+                return;
+            }
+            SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(text);
+            // 循环遍历并拦截 所有http://开头的链接
+            for (URLSpan uri : urlSpans) {
+                String url = uri.getURL();
+                if (url.indexOf("https://") == 0 || url.indexOf("http://") == 0) {
+                    CustomUrlSpan customUrlSpan = new CustomUrlSpan(this, url);
+                    spannableStringBuilder.setSpan(customUrlSpan, spannable.getSpanStart(uri),
+                            spannable.getSpanEnd(uri), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                }
+            }
+            tv.setText(spannableStringBuilder);
+        }
+    }
+
+    public class CustomUrlSpan extends ClickableSpan {
+
+        private Context context;
+        private String  url;
+
+        public CustomUrlSpan(Context context, String url) {
+            this.context = context;
+            this.url = url;
+        }
+
+        @Override
+        public void onClick(View widget) {
+            // 在这里可以做任何自己想要的处理
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse(url));
+            context.startActivity(intent);
+        }
     }
 }

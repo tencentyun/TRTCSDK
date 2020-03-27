@@ -25,7 +25,6 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 //    compile project(':liteav_sdk')
 
-    compile "$rootProject.ext.liteavSdk"
     compile project(':login')
     compile project(':debug')
 
@@ -40,6 +39,7 @@ dependencies {
     compile "com.android.support:design:$rootProject.ext.supportSdkVersion"
     compile "com.android.support:appcompat-v7:$rootProject.ext.supportSdkVersion"
     compile "com.android.support:recyclerview-v7:$rootProject.ext.supportSdkVersion"
-    compile(name: 'imsdk', ext: 'aar')
+    compile rootProject.ext.liteavSdk
+    compile rootProject.ext.imSdk
 
 }

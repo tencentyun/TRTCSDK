@@ -8,8 +8,8 @@ android {
         applicationId "com.tencent.trtc"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "2.0"
         multiDexEnabled true
         ndk {
             abiFilters "armeabi-v7a"
@@ -33,7 +33,7 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
-    compile project(':trtcvideoroom')
+    compile project(':trtcliveroom')
     compile project(':trtcvoiceroom')
     compile project(':trtcaudiocalldemo')
     compile project(':trtcvideocalldemo')
