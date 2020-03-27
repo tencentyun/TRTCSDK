@@ -59,21 +59,34 @@ class RtcClient {
 
     try {
       // 采集摄像头和麦克风视频流
-      await this.createLocalStream({ audio: true, video: true });
+      await this.createLocalStream({ audio: true /*采集麦克风*/, video: true /*采集摄像头*/ });
       Toast.info('摄像头及麦克风采集成功！');
       console.log('createLocalStream with audio/video success');
     } catch (error) {
       console.error('createLocalStream with audio/video failed: ' + error);
-      alert(
-        '请确认已连接摄像头和麦克风并授予其访问权限！\r\n\r\n 如果您没有连接摄像头或麦克风，您可以通过调整第60行代码来关闭未连接设备的采集请求！'
-      );
-      try {
-        // fallback to capture camera only
-        await this.createLocalStream({ audio: false, video: true });
-        Toast.info('采集摄像头成功！');
-      } catch (error) {
-        console.error('createLocalStream with video failed: ' + error);
-        return;
+      // **注意：**
+      // 请务必处理外设访问错误，根据您的业务逻辑来选择正确的错误处理逻辑。
+      switch (error.name) {
+        case 'NotReadableError':
+          // 当系统或浏览器异常的时候，可能会出现此错误，您可能需要引导用户重启电脑/浏览器来尝试恢复。
+          alert('暂时无法访问摄像头/麦克风，请确保当前没有其他应用请求访问摄像头/麦克风，并重试');
+          return;
+        case 'NotAllowedError':
+          // 用户拒绝授权访问摄像头或麦克风 | 屏幕分享，您需要引导客户来授权访问
+          alert('用户已拒绝授权访问摄像头或麦克风 | 屏幕分享');
+          return;
+        case 'NotFoundError':
+          // 找不到摄像头或麦克风设备
+          alert('找不到摄像头或麦克风设备');
+          return;
+        case 'OverConstrainedError':
+          alert(
+            '采集属性设置错误，如果您指定了 cameraId/microphoneId，请确保它们是一个有效的非空字符串'
+          );
+          return;
+        default:
+          alert('未知错误');
+          return;
       }
     }
 
@@ -179,6 +192,9 @@ class RtcClient {
       audio: options.audio, // 采集麦克风
       video: options.video, // 采集摄像头
       userId: this.userId_
+      // 由于浏览器的安全限制，某些特殊场景下获取的 cameraId/microphoneId 可能是无效的空字符串，此时会导致
+      // localStream.initialize() 返回 OverConstrainedError 错误。所以，如果要指定 cameraId/microphoneId
+      // 请先确保它们的值是有效的非空字符串。
       // cameraId: getCameraId(),
       // microphoneId: getMicrophoneId()
     });
@@ -189,7 +205,8 @@ class RtcClient {
   }
 
   handleEvents() {
-    // 处理 client 错误事件，错误均为不可恢复错误，建议提示用户后刷新页面
+    // 处理 client 错误事件，错误均为不可恢复错误
+    // 建议提示用户后刷新页面或者调用 client.leave() 后再调用 client.join() 重新进房
     this.client_.on('error', err => {
       console.error(err);
       alert(err);
