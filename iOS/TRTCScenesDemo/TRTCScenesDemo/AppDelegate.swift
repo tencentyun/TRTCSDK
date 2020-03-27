@@ -8,10 +8,6 @@
 
 import UIKit
 
-/// 腾讯云 SDKAppId，需要替换为您自己账号下的 SDKAppId，
-/// 同 GenerateTestUserSig.h 中的 SDKAPPID
-let sdkAppID: Int32 = <#appid#>
-
 //推送证书 ID
 #if DEBUG
     let timSdkBusiId: UInt32 = <#busiId#>

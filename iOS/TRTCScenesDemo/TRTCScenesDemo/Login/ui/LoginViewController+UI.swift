@@ -45,7 +45,7 @@ extension LoginViewController {
         
         //UserID
         let (phoneNumber, numberSignal) = getTextObservable(placeholder: "请输入UserID")
-        phoneNumber.keyboardType = .phonePad
+        phoneNumber.keyboardType = .numberPad
         phoneNumber.delegate = self
         view.addSubview(phoneNumber)
         phoneNumber.snp.makeConstraints { (make) in
@@ -54,7 +54,7 @@ extension LoginViewController {
             make.trailing.equalTo(-32)
             make.height.equalTo(34)
         }
-                
+        
         numberSignal.subscribe(onNext: { (text) in
             print("phoneNumber:\(String(describing: text))")
         }, onError: nil, onCompleted: nil, onDisposed: nil).disposed(by: disposeBag)
@@ -172,10 +172,7 @@ extension LoginViewController {
 
 extension LoginViewController: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        var maxCount = 11
-        if textField.keyboardType == .numberPad {
-            maxCount = 6
-        }
+        let maxCount = 11
         guard let textFieldText = textField.text,
             let rangeOfTextToReplace = Range(range, in: textFieldText) else {
                 return false

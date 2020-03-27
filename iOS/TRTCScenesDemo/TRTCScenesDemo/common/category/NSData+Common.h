@@ -5,7 +5,6 @@
 //  Created by Alexi on 13-11-6.
 //  Copyright (c) 2013年 ywchen. All rights reserved.
 //
-#if kSupportNSDataCommon
 #import <Foundation/Foundation.h>
 
 
@@ -25,4 +24,3 @@ char *NewBase64Encode(const void *inputBuffer, size_t length, bool separateLines
 - (NSString *)sha1Hash;
 
 @end
-#endif

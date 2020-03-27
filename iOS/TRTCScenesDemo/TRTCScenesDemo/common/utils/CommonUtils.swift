@@ -28,16 +28,16 @@ extension UIStackView {
 
 extension UIColor {
     
-    static var appTint: UIColor {
+    @objc static var appTint: UIColor {
         return UIColor(hex: "#00A66B") ?? UIColor(red: 54.0 / 255.0, green: 134.0 / 255.0, blue: 246.0 / 255.0, alpha: 1.0)
     }
     
-    static var appBackGround: UIColor {
+    @objc static var appBackGround: UIColor {
         return UIColor(hex: "#242424") ?? .black
     }
 
     // MARK: - Initialization
-    convenience init?(hex: String) {
+    @objc convenience init?(hex: String) {
         var hexSanitized = hex.trimmingCharacters(in: .whitespacesAndNewlines)
         hexSanitized = hexSanitized.replacingOccurrences(of: "#", with: "")
         var rgb: UInt64 = 0
@@ -62,5 +62,27 @@ extension UIColor {
             return nil
         }
         self.init(red: r, green: g, blue: b, alpha: a)
+    }
+}
+
+extension Dictionary {
+    func toJsonString() -> String {
+        if let json = try? JSONSerialization.data(withJSONObject: self, options: []),
+            let jsonStr = String(data: json, encoding: .utf8)
+        {
+            return jsonStr
+        }
+        fatalError()
+    }
+}
+
+extension String {
+    func toJson() -> [String: Any]? {
+        if let infoData = data(using: .utf8),
+            let dict = try? JSONSerialization.jsonObject(with: infoData, options: []) as? [String: Any]
+        {
+            return dict
+        }
+        return nil
     }
 }

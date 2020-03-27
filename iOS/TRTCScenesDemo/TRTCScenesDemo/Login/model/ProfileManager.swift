@@ -21,11 +21,11 @@ let loginBaseUrl = "https://xxx.com/release/"
 }
 
 @objc class loginResultModel: NSObject, Codable {
-    var token: String
-    var phone: String
-    var name: String
-    var avatar: String
-    var userId: String
+    @objc var token: String
+    @objc var phone: String
+    @objc var name: String
+    @objc var avatar: String
+    @objc var userId: String
     
     public init(userID: String) {
         userId = userID
@@ -50,10 +50,10 @@ let loginBaseUrl = "https://xxx.com/release/"
 }
 
 @objc public class userModel: NSObject, Codable {
-    var phone: String?
-    var name: String
-    var avatar: String
-    var userId: String
+    @objc var phone: String?
+    @objc var name: String
+    @objc var avatar: String
+    @objc var userId: String
     
     public init(userID: String) {
         userId = userID
@@ -112,7 +112,7 @@ let loginBaseUrl = "https://xxx.com/release/"
     var phone = BehaviorRelay<String>(value: "")
     var code = BehaviorRelay<String>(value: "")
     var sessionId: String = ""
-    var curUserModel: loginResultModel? = nil
+    @objc var curUserModel: loginResultModel? = nil
     
     /// 自动登录
     /// - Parameters:
@@ -286,17 +286,21 @@ let loginBaseUrl = "https://xxx.com/release/"
         }
     }
     
-    /// IM 的登录
+    /// IM 登录当前用户
     /// - Parameters:
     ///   - success: 成功
     ///   - failed: 失败
-    @objc func IMLogin(success: @escaping ()->Void, failed: @escaping (_ error: String)->Void) {
+    @objc func IMLogin(userSig: String, success: @escaping ()->Void, failed: @escaping (_ error: String)->Void) {
+        let config = TIMSdkConfig.init()
+        config.sdkAppId = Int32(SDKAPPID)
+        config.dbPath = NSHomeDirectory() + "/Documents/com_tencent_imsdk_data/"
+        TIMManager.sharedInstance()?.initSdk(config)
+        
         guard let userID = curUserModel?.userId else {
             failed("userID 错误")
             return
         }
         let user = String(userID)
-        let userSig = GenerateTestUserSig.genTestUserSig(user)
         let loginParam = TIMLoginParam.init()
         loginParam.identifier = user
         loginParam.userSig = userSig

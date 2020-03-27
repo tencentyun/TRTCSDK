@@ -18,7 +18,7 @@ extension TRTCVideoCall: TRTCCloudDelegate {
         beauty?.setBeautyLevel(6)
         
         let param = TRTCParams()
-        param.sdkAppId = UInt32(sdkAppID)
+        param.sdkAppId = UInt32(SDKAPPID)
         param.userId = VideoCallUtils.shared.curUserId()
         param.roomId = curRoomID
         param.userSig = GenerateTestUserSig.genTestUserSig(param.userId)

@@ -4,7 +4,6 @@
 
 #import "ColorMacro.h"
 #import "MainMenuCell.h"
-#import "TRTCNewViewController.h"
 #import "trtcScenesDemo-Swift.h"
 
 #if DEBUG
@@ -20,6 +19,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *table;
 @property (nonatomic, strong) VideoCallMainViewController *videoCallVC;
 @property (nonatomic, strong) AudioCallMainViewController *audioCallVC;
+@property (nonatomic, strong) TRTCLiveRoomImpl *liveRoom;
 @end
 
 @implementation PortalViewController
@@ -35,6 +35,8 @@
     
     [[TRTCAudioCall shared] setup];
     [TRTCAudioCall shared].delegate = _audioCallVC;
+    
+    _liveRoom = [[TRTCLiveRoomImpl alloc] init];
     
     __weak __typeof(self) wSelf = self;
     self.mainMenuItems = @[
@@ -78,13 +80,35 @@
     NSString *userSig = [GenerateTestUserSig genTestUserSig:userID];
     
     if (![[[TIMManager sharedInstance] getLoginUser] isEqual:userID]) {
-        [[TRTCAudioCall shared] loginWithSdkAppID:SDKAPPID user:userID userSig:userSig success:^{
-        } failed:^(NSInteger code, NSString *error) {
+        [[ProfileManager shared] IMLoginWithUserSig:userSig success:^{
+            [[TRTCAudioCall shared] loginWithSdkAppID:SDKAPPID user:userID userSig:userSig success:^{
+            } failed:^(NSInteger code, NSString *error) {
+                
+            }];
             
-        }];
-        
-        [[TRTCVideoCall shared] loginWithSdkAppID:SDKAPPID user:userID userSig:userSig success:^{
-        } failed:^(NSInteger code, NSString *error) {
+            [[TRTCVideoCall shared] loginWithSdkAppID:SDKAPPID user:userID userSig:userSig success:^{
+            } failed:^(NSInteger code, NSString *error) {
+                
+            }];
+            TRTCLiveRoomConfig *config = [[TRTCLiveRoomConfig alloc] init];
+            
+            if ([[NSUserDefaults standardUserDefaults] objectForKey:@"liveRoomConfig_useCDNFirst"] != nil) {
+                config.useCDNFirst = [[[NSUserDefaults standardUserDefaults] objectForKey:@"liveRoomConfig_useCDNFirst"] boolValue];
+            }
+            
+            if (config.useCDNFirst && [[NSUserDefaults standardUserDefaults] objectForKey:@"liveRoomConfig_streamUrlDomain"] != nil) {
+                config.streamUrlDomain = [[NSUserDefaults standardUserDefaults] objectForKey:@"liveRoomConfig_streamUrlDomain"];
+            }
+            
+            [self.liveRoom loginWithSdkAppID:SDKAPPID userID:userID userSig:userSig config:config callback:^(NSInteger code, NSString * error) {
+                
+            }];
+            
+            loginResultModel *curUser = [[ProfileManager shared] curUserModel];
+            [self.liveRoom setSelfProfileWithName:curUser.name avatarURL:curUser.avatar callback:^(NSInteger code, NSString * error) {
+                
+            }];
+        } failed:^(NSString * error) {
             
         }];
     }
@@ -95,9 +119,7 @@
 }
 
 - (void)gotoLiveView {
-    TRTCNewViewController *vc = [[TRTCNewViewController alloc] init];
-    [vc setAppScene:TRTCAppSceneLIVE];
-    [vc setMenuTitle:@"视频互动直播"];
+    LiveRoomMainViewController *vc = [[LiveRoomMainViewController alloc] initWithLiveRoom:_liveRoom];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

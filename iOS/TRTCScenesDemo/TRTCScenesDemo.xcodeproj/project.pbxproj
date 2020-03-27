@@ -23,6 +23,38 @@
 		1A54B72923BDF77B000ED29E /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A54B72823BDF77B000ED29E /* ProfileViewController.swift */; };
 		1A54B72B23BE033E000ED29E /* ProfileViewController+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A54B72A23BE033E000ED29E /* ProfileViewController+UI.swift */; };
 		1A54B72D23BF3CF8000ED29E /* AudioCallMainViewController+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A54B72C23BF3CF8000ED29E /* AudioCallMainViewController+UI.swift */; };
+		1A582E062417B5FB007F7DF2 /* HUDHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A582E032417B5FB007F7DF2 /* HUDHelper.m */; };
+		1A582E072417B5FB007F7DF2 /* UIView+CustomAutoLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A582E042417B5FB007F7DF2 /* UIView+CustomAutoLayout.m */; };
+		1A582E0C2417B61B007F7DF2 /* TCLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A582E082417B61B007F7DF2 /* TCLog.m */; };
+		1A582E0D2417B61B007F7DF2 /* TCUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A582E0A2417B61B007F7DF2 /* TCUtil.m */; };
+		1A582E432417B64F007F7DF2 /* LiveRoomMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A582E0F2417B64F007F7DF2 /* LiveRoomMainViewController.swift */; };
+		1A582E442417B64F007F7DF2 /* TCStatusInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A582E112417B64F007F7DF2 /* TCStatusInfoView.m */; };
+		1A582E452417B64F007F7DF2 /* TCPlaceHolderTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A582E152417B64F007F7DF2 /* TCPlaceHolderTextView.m */; };
+		1A582E462417B64F007F7DF2 /* V8HorizontalPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A582E182417B64F007F7DF2 /* V8HorizontalPickerView.m */; };
+		1A582E472417B64F007F7DF2 /* TCMsgListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A582E1C2417B64F007F7DF2 /* TCMsgListCell.m */; };
+		1A582E482417B64F007F7DF2 /* TCMsgBarrageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A582E212417B64F007F7DF2 /* TCMsgBarrageView.m */; };
+		1A582E492417B64F007F7DF2 /* TCMsgModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A582E222417B64F007F7DF2 /* TCMsgModel.m */; };
+		1A582E4A2417B64F007F7DF2 /* TCMsgListTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A582E232417B64F007F7DF2 /* TCMsgListTableView.m */; };
+		1A582E4B2417B64F007F7DF2 /* LiveRoomMainViewController+CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A582E242417B64F007F7DF2 /* LiveRoomMainViewController+CollectionView.swift */; };
+		1A582E4C2417B64F007F7DF2 /* TCAnchorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A582E272417B64F007F7DF2 /* TCAnchorViewController.m */; };
+		1A582E4D2417B64F007F7DF2 /* TCAnchorToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A582E292417B64F007F7DF2 /* TCAnchorToolbarView.m */; };
+		1A582E4E2417B64F007F7DF2 /* TCAnchorViewController+LiveDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A582E2A2417B64F007F7DF2 /* TCAnchorViewController+LiveDelegate.swift */; };
+		1A582E4F2417B64F007F7DF2 /* TCAudienceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A582E2D2417B64F007F7DF2 /* TCAudienceViewController.m */; };
+		1A582E502417B64F007F7DF2 /* TCAudienceViewController+LiveDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A582E2E2417B64F007F7DF2 /* TCAudienceViewController+LiveDelegate.swift */; };
+		1A582E512417B64F007F7DF2 /* TCAudienceToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A582E2F2417B64F007F7DF2 /* TCAudienceToolbarView.m */; };
+		1A582E522417B64F007F7DF2 /* LiveRoomMainViewController+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A582E312417B64F007F7DF2 /* LiveRoomMainViewController+UI.swift */; };
+		1A582E532417B64F007F7DF2 /* TRTCLiveRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A582E332417B64F007F7DF2 /* TRTCLiveRoom.swift */; };
+		1A582E542417B64F007F7DF2 /* TRTCLiveRoomImpl+RecvMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A582E352417B64F007F7DF2 /* TRTCLiveRoomImpl+RecvMessage.swift */; };
+		1A582E552417B64F007F7DF2 /* TRTCLiveRoomImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A582E362417B64F007F7DF2 /* TRTCLiveRoomImpl.swift */; };
+		1A582E562417B64F007F7DF2 /* TRTCCloudAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A582E372417B64F007F7DF2 /* TRTCCloudAction.swift */; };
+		1A582E572417B64F007F7DF2 /* TRTCLiveRoomMemberManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A582E392417B64F007F7DF2 /* TRTCLiveRoomMemberManager.swift */; };
+		1A582E582417B64F007F7DF2 /* TRTCLiveRoomMemberProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A582E3A2417B64F007F7DF2 /* TRTCLiveRoomMemberProtocol.swift */; };
+		1A582E592417B64F007F7DF2 /* RoomManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A582E3B2417B64F007F7DF2 /* RoomManager.swift */; };
+		1A582E5A2417B64F007F7DF2 /* TRTCLiveRoomIMAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A582E3D2417B64F007F7DF2 /* TRTCLiveRoomIMAction.swift */; };
+		1A582E5B2417B64F007F7DF2 /* TRTCLiveRoomIMActionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A582E3E2417B64F007F7DF2 /* TRTCLiveRoomIMActionType.swift */; };
+		1A582E5D2417B64F007F7DF2 /* TRTCLiveRoomDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A582E412417B64F007F7DF2 /* TRTCLiveRoomDelegate.swift */; };
+		1A582E5E2417B64F007F7DF2 /* TRTCLiveRoomDef.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A582E422417B64F007F7DF2 /* TRTCLiveRoomDef.swift */; };
+		1A582E622417B90A007F7DF2 /* UIColor+MLPFlatColors.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A582E602417B90A007F7DF2 /* UIColor+MLPFlatColors.m */; };
 		1A6459CC23ABCB11006C0A7A /* CommonUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6459CB23ABCB11006C0A7A /* CommonUtils.swift */; };
 		1A7F960E23A7706B007DF584 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7F960D23A7706B007DF584 /* AppDelegate.swift */; };
 		1A7F961223A7706B007DF584 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7F961123A7706B007DF584 /* ViewController.swift */; };
@@ -38,6 +70,9 @@
 		1A87082223C43DB6009EACAB /* GenerateTestUserSig.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A87081A23C43DB6009EACAB /* GenerateTestUserSig.m */; };
 		1A87082323C43DB6009EACAB /* AudioCallUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A87081B23C43DB6009EACAB /* AudioCallUtils.swift */; };
 		1AA7EF0C23CC8A94001177CF /* AudioCallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA7EF0B23CC8A94001177CF /* AudioCallViewController.swift */; };
+		1ACD64732423235000098C29 /* BeautyPerformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ACD64722423235000098C29 /* BeautyPerformer.swift */; };
+		1ACD64862423463700098C29 /* TRTCBgmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ACD64852423463700098C29 /* TRTCBgmManager.swift */; };
+		1ACD64882423481000098C29 /* TRTCBgmManagerImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ACD64872423481000098C29 /* TRTCBgmManagerImpl.swift */; };
 		1ADB05FE23D157940075235B /* TRTCVideoCall+model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ADB05F823D157940075235B /* TRTCVideoCall+model.swift */; };
 		1ADB05FF23D157940075235B /* TRTCVideoCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ADB05F923D157940075235B /* TRTCVideoCall.swift */; };
 		1ADB060023D157940075235B /* TRTCVideoCall+OnNewMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ADB05FA23D157940075235B /* TRTCVideoCall+OnNewMessage.swift */; };
@@ -53,60 +88,7 @@
 		1AE73AA223C57346003723DF /* AudioSelectContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE73AA123C57346003723DF /* AudioSelectContactViewController.swift */; };
 		1AE73AA423C57586003723DF /* AudioSelectContactViewController+file.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE73AA323C57586003723DF /* AudioSelectContactViewController+file.swift */; };
 		1AE73AA623C5C635003723DF /* AudioSelectContactViewController+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE73AA523C5C635003723DF /* AudioSelectContactViewController+UI.swift */; };
-		860C14312404CB490023A19E /* TRTCCdnPlayerSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 860C13B42404CB490023A19E /* TRTCCdnPlayerSettingsViewController.m */; };
-		860C14322404CB490023A19E /* TRTCRemoteUserSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 860C13B62404CB490023A19E /* TRTCRemoteUserSettingsViewController.m */; };
-		860C14332404CB490023A19E /* TRTCRemoteUserListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 860C13B72404CB490023A19E /* TRTCRemoteUserListViewController.m */; };
-		860C14342404CB490023A19E /* TRTCRemoteUserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 860C13B82404CB490023A19E /* TRTCRemoteUserCell.m */; };
-		860C14352404CB490023A19E /* TRTCSettings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 860C13BC2404CB490023A19E /* TRTCSettings.storyboard */; };
-		860C14362404CB490023A19E /* TRTCCdnPlayerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 860C13BF2404CB490023A19E /* TRTCCdnPlayerManager.m */; };
-		860C14372404CB490023A19E /* TRTCCdnPlayerConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 860C13C22404CB490023A19E /* TRTCCdnPlayerConfig.m */; };
-		860C14382404CB490023A19E /* TRTCRemoteUserConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 860C13C42404CB490023A19E /* TRTCRemoteUserConfig.m */; };
-		860C14392404CB490023A19E /* TRTCRemoteUserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 860C13C52404CB490023A19E /* TRTCRemoteUserManager.m */; };
-		860C143A2404CB490023A19E /* TRTCAudioEffectManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 860C13C92404CB490023A19E /* TRTCAudioEffectManager.m */; };
-		860C143B2404CB490023A19E /* TRTCBgmManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 860C13CA2404CB490023A19E /* TRTCBgmManager.m */; };
-		860C143C2404CB490023A19E /* TRTCAudioRecordManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 860C13CE2404CB490023A19E /* TRTCAudioRecordManager.m */; };
-		860C143D2404CB490023A19E /* TRTCStreamConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 860C13CF2404CB490023A19E /* TRTCStreamConfig.m */; };
-		860C143E2404CB490023A19E /* TRTCAudioConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 860C13D02404CB490023A19E /* TRTCAudioConfig.m */; };
-		860C143F2404CB490023A19E /* TRTCCloudManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 860C13D52404CB490023A19E /* TRTCCloudManager.m */; };
-		860C14402404CB490023A19E /* TRTCVideoConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 860C13D62404CB490023A19E /* TRTCVideoConfig.m */; };
-		860C14412404CB490023A19E /* TRTCSettingsContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 860C13DB2404CB490023A19E /* TRTCSettingsContainerViewController.m */; };
-		860C14422404CB490023A19E /* UIButton+TRTC.m in Sources */ = {isa = PBXBuildFile; fileRef = 860C13DD2404CB490023A19E /* UIButton+TRTC.m */; };
-		860C14432404CB490023A19E /* UILabel+TRTC.m in Sources */ = {isa = PBXBuildFile; fileRef = 860C13DE2404CB490023A19E /* UILabel+TRTC.m */; };
-		860C14442404CB490023A19E /* UITextField+TRTC.m in Sources */ = {isa = PBXBuildFile; fileRef = 860C13E02404CB490023A19E /* UITextField+TRTC.m */; };
-		860C14452404CB4A0023A19E /* UISlider+TRTC.m in Sources */ = {isa = PBXBuildFile; fileRef = 860C13E42404CB490023A19E /* UISlider+TRTC.m */; };
-		860C14462404CB4A0023A19E /* UISegmentedControl+TRTC.m in Sources */ = {isa = PBXBuildFile; fileRef = 860C13E52404CB490023A19E /* UISegmentedControl+TRTC.m */; };
-		860C14472404CB4A0023A19E /* TRTCSettingsMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 860C13E92404CB490023A19E /* TRTCSettingsMessageCell.m */; };
-		860C14482404CB4A0023A19E /* TRTCSettingsInputCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 860C13EB2404CB490023A19E /* TRTCSettingsInputCell.m */; };
-		860C14492404CB4A0023A19E /* TRTCSettingsSegmentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 860C13ED2404CB490023A19E /* TRTCSettingsSegmentCell.m */; };
-		860C144A2404CB4A0023A19E /* TRTCSettingsLargeInputCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 860C13EF2404CB490023A19E /* TRTCSettingsLargeInputCell.m */; };
-		860C144B2404CB4A0023A19E /* TRTCSettingsBaseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 860C13F42404CB490023A19E /* TRTCSettingsBaseCell.m */; };
-		860C144C2404CB4A0023A19E /* TRTCSettingsButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 860C13F62404CB490023A19E /* TRTCSettingsButtonCell.m */; };
-		860C144D2404CB4A0023A19E /* TRTCSettingsSwitchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 860C13F72404CB490023A19E /* TRTCSettingsSwitchCell.m */; };
-		860C144E2404CB4A0023A19E /* TRTCSettingsSliderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 860C13F92404CB490023A19E /* TRTCSettingsSliderCell.m */; };
-		860C144F2404CB4A0023A19E /* TRTCSettingsSelectorCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 860C13FA2404CB490023A19E /* TRTCSettingsSelectorCell.m */; };
-		860C14502404CB4A0023A19E /* TRTCSettingsBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 860C13FC2404CB490023A19E /* TRTCSettingsBaseViewController.m */; };
-		860C14512404CB4A0023A19E /* TRTCMoreSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 860C13FE2404CB490023A19E /* TRTCMoreSettingsViewController.m */; };
-		860C14522404CB4A0023A19E /* TRTCAudioSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 860C13FF2404CB490023A19E /* TRTCAudioSettingsViewController.m */; };
-		860C14532404CB4A0023A19E /* TRTCVideoSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 860C14012404CB490023A19E /* TRTCVideoSettingsViewController.m */; };
-		860C14542404CB4A0023A19E /* TRTCStreamSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 860C14022404CB490023A19E /* TRTCStreamSettingsViewController.m */; };
-		860C14552404CB4A0023A19E /* TRTCPKSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 860C14032404CB490023A19E /* TRTCPKSettingsViewController.m */; };
-		860C14562404CB4A0023A19E /* TRTCFeatureContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 860C14092404CB490023A19E /* TRTCFeatureContainerViewController.m */; };
-		860C14572404CB4A0023A19E /* TRTCBgmContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 860C140B2404CB490023A19E /* TRTCBgmContainerViewController.m */; };
-		860C14582404CB4A0023A19E /* TRTCSettingsEffectCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 860C140D2404CB490023A19E /* TRTCSettingsEffectCell.m */; };
-		860C14592404CB4A0023A19E /* TRTCSettingsEffectLoopCountCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 860C140F2404CB490023A19E /* TRTCSettingsEffectLoopCountCell.m */; };
-		860C145A2404CB4A0023A19E /* TRTCEffectSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 860C14102404CB490023A19E /* TRTCEffectSettingsViewController.m */; };
-		860C145B2404CB4A0023A19E /* TRTCBgmSettingsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 860C14152404CB490023A19E /* TRTCBgmSettingsCell.m */; };
-		860C145C2404CB4A0023A19E /* TRTCBgmSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 860C14162404CB490023A19E /* TRTCBgmSettingsViewController.m */; };
-		860C145E2404CB4A0023A19E /* TRTCMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 860C141B2404CB490023A19E /* TRTCMainViewController.m */; };
-		860C14622404CB4A0023A19E /* record_test_background.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 860C14212404CB490023A19E /* record_test_background.mp3 */; };
-		860C14632404CB4A0023A19E /* TRTC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 860C14222404CB490023A19E /* TRTC.storyboard */; };
-		860C14642404CB4A0023A19E /* TCMediaFileReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 860C14242404CB490023A19E /* TCMediaFileReader.m */; };
-		860C14652404CB4A0023A19E /* TestRenderVideoFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 860C14252404CB490023A19E /* TestRenderVideoFrame.m */; };
-		860C14662404CB4A0023A19E /* TestSendCustomVideoData.m in Sources */ = {isa = PBXBuildFile; fileRef = 860C14282404CB490023A19E /* TestSendCustomVideoData.m */; };
-		860C14672404CB4A0023A19E /* TRTCNewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 860C142A2404CB490023A19E /* TRTCNewViewController.m */; };
-		860C14682404CB4A0023A19E /* TRTCFloatWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 860C142D2404CB490023A19E /* TRTCFloatWindow.m */; };
-		860C14692404CB4A0023A19E /* TRTCVideoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 860C142E2404CB490023A19E /* TRTCVideoView.m */; };
-		860C146A2404CB4A0023A19E /* TRTCVideoViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 860C142F2404CB490023A19E /* TRTCVideoViewLayout.m */; };
+		1AFBFC48241B776100EA53B3 /* AnchorPKPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFBFC47241B776100EA53B3 /* AnchorPKPanel.swift */; };
 		860C146E2404CCC80023A19E /* UIView+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 860C146D2404CCC80023A19E /* UIView+Additions.m */; };
 		860C14712404CCE90023A19E /* UIImage+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 860C14702404CCE90023A19E /* UIImage+Additions.m */; };
 		860C14742404CD650023A19E /* NSString+Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 860C14722404CD640023A19E /* NSString+Common.m */; };
@@ -237,6 +219,55 @@
 		1A54B72823BDF77B000ED29E /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		1A54B72A23BE033E000ED29E /* ProfileViewController+UI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProfileViewController+UI.swift"; sourceTree = "<group>"; };
 		1A54B72C23BF3CF8000ED29E /* AudioCallMainViewController+UI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AudioCallMainViewController+UI.swift"; sourceTree = "<group>"; };
+		1A582E022417B5FB007F7DF2 /* HUDHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUDHelper.h; sourceTree = "<group>"; };
+		1A582E032417B5FB007F7DF2 /* HUDHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUDHelper.m; sourceTree = "<group>"; };
+		1A582E042417B5FB007F7DF2 /* UIView+CustomAutoLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+CustomAutoLayout.m"; sourceTree = "<group>"; };
+		1A582E052417B5FB007F7DF2 /* UIView+CustomAutoLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+CustomAutoLayout.h"; sourceTree = "<group>"; };
+		1A582E082417B61B007F7DF2 /* TCLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCLog.m; sourceTree = "<group>"; };
+		1A582E092417B61B007F7DF2 /* TCLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCLog.h; sourceTree = "<group>"; };
+		1A582E0A2417B61B007F7DF2 /* TCUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCUtil.m; sourceTree = "<group>"; };
+		1A582E0B2417B61B007F7DF2 /* TCUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCUtil.h; sourceTree = "<group>"; };
+		1A582E0F2417B64F007F7DF2 /* LiveRoomMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveRoomMainViewController.swift; sourceTree = "<group>"; };
+		1A582E112417B64F007F7DF2 /* TCStatusInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCStatusInfoView.m; sourceTree = "<group>"; };
+		1A582E122417B64F007F7DF2 /* TCStatusInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCStatusInfoView.h; sourceTree = "<group>"; };
+		1A582E152417B64F007F7DF2 /* TCPlaceHolderTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCPlaceHolderTextView.m; sourceTree = "<group>"; };
+		1A582E162417B64F007F7DF2 /* TCPlaceHolderTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCPlaceHolderTextView.h; sourceTree = "<group>"; };
+		1A582E182417B64F007F7DF2 /* V8HorizontalPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = V8HorizontalPickerView.m; sourceTree = "<group>"; };
+		1A582E192417B64F007F7DF2 /* V8HorizontalPickerViewProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = V8HorizontalPickerViewProtocol.h; sourceTree = "<group>"; };
+		1A582E1A2417B64F007F7DF2 /* V8HorizontalPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = V8HorizontalPickerView.h; sourceTree = "<group>"; };
+		1A582E1C2417B64F007F7DF2 /* TCMsgListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCMsgListCell.m; sourceTree = "<group>"; };
+		1A582E1D2417B64F007F7DF2 /* TCMsgBarrageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCMsgBarrageView.h; sourceTree = "<group>"; };
+		1A582E1E2417B64F007F7DF2 /* TCMsgListTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCMsgListTableView.h; sourceTree = "<group>"; };
+		1A582E1F2417B64F007F7DF2 /* TCMsgModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCMsgModel.h; sourceTree = "<group>"; };
+		1A582E202417B64F007F7DF2 /* TCMsgListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCMsgListCell.h; sourceTree = "<group>"; };
+		1A582E212417B64F007F7DF2 /* TCMsgBarrageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCMsgBarrageView.m; sourceTree = "<group>"; };
+		1A582E222417B64F007F7DF2 /* TCMsgModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCMsgModel.m; sourceTree = "<group>"; };
+		1A582E232417B64F007F7DF2 /* TCMsgListTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCMsgListTableView.m; sourceTree = "<group>"; };
+		1A582E242417B64F007F7DF2 /* LiveRoomMainViewController+CollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LiveRoomMainViewController+CollectionView.swift"; sourceTree = "<group>"; };
+		1A582E262417B64F007F7DF2 /* TCAnchorToolbarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCAnchorToolbarView.h; sourceTree = "<group>"; };
+		1A582E272417B64F007F7DF2 /* TCAnchorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCAnchorViewController.m; sourceTree = "<group>"; };
+		1A582E282417B64F007F7DF2 /* TCAnchorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCAnchorViewController.h; sourceTree = "<group>"; };
+		1A582E292417B64F007F7DF2 /* TCAnchorToolbarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCAnchorToolbarView.m; sourceTree = "<group>"; };
+		1A582E2A2417B64F007F7DF2 /* TCAnchorViewController+LiveDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TCAnchorViewController+LiveDelegate.swift"; sourceTree = "<group>"; };
+		1A582E2C2417B64F007F7DF2 /* TCAudienceToolbarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCAudienceToolbarView.h; sourceTree = "<group>"; };
+		1A582E2D2417B64F007F7DF2 /* TCAudienceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCAudienceViewController.m; sourceTree = "<group>"; };
+		1A582E2E2417B64F007F7DF2 /* TCAudienceViewController+LiveDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TCAudienceViewController+LiveDelegate.swift"; sourceTree = "<group>"; };
+		1A582E2F2417B64F007F7DF2 /* TCAudienceToolbarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCAudienceToolbarView.m; sourceTree = "<group>"; };
+		1A582E302417B64F007F7DF2 /* TCAudienceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCAudienceViewController.h; sourceTree = "<group>"; };
+		1A582E312417B64F007F7DF2 /* LiveRoomMainViewController+UI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LiveRoomMainViewController+UI.swift"; sourceTree = "<group>"; };
+		1A582E332417B64F007F7DF2 /* TRTCLiveRoom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCLiveRoom.swift; sourceTree = "<group>"; };
+		1A582E352417B64F007F7DF2 /* TRTCLiveRoomImpl+RecvMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TRTCLiveRoomImpl+RecvMessage.swift"; sourceTree = "<group>"; };
+		1A582E362417B64F007F7DF2 /* TRTCLiveRoomImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCLiveRoomImpl.swift; sourceTree = "<group>"; };
+		1A582E372417B64F007F7DF2 /* TRTCCloudAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCCloudAction.swift; sourceTree = "<group>"; };
+		1A582E392417B64F007F7DF2 /* TRTCLiveRoomMemberManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCLiveRoomMemberManager.swift; sourceTree = "<group>"; };
+		1A582E3A2417B64F007F7DF2 /* TRTCLiveRoomMemberProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCLiveRoomMemberProtocol.swift; sourceTree = "<group>"; };
+		1A582E3B2417B64F007F7DF2 /* RoomManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomManager.swift; sourceTree = "<group>"; };
+		1A582E3D2417B64F007F7DF2 /* TRTCLiveRoomIMAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCLiveRoomIMAction.swift; sourceTree = "<group>"; };
+		1A582E3E2417B64F007F7DF2 /* TRTCLiveRoomIMActionType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCLiveRoomIMActionType.swift; sourceTree = "<group>"; };
+		1A582E412417B64F007F7DF2 /* TRTCLiveRoomDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCLiveRoomDelegate.swift; sourceTree = "<group>"; };
+		1A582E422417B64F007F7DF2 /* TRTCLiveRoomDef.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCLiveRoomDef.swift; sourceTree = "<group>"; };
+		1A582E602417B90A007F7DF2 /* UIColor+MLPFlatColors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+MLPFlatColors.m"; sourceTree = "<group>"; };
+		1A582E612417B90A007F7DF2 /* UIColor+MLPFlatColors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+MLPFlatColors.h"; sourceTree = "<group>"; };
 		1A6459CB23ABCB11006C0A7A /* CommonUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonUtils.swift; sourceTree = "<group>"; };
 		1A7F960A23A7706B007DF584 /* TRTCScenesDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TRTCScenesDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A7F960D23A7706B007DF584 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -258,6 +289,9 @@
 		1A87081B23C43DB6009EACAB /* AudioCallUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioCallUtils.swift; sourceTree = "<group>"; };
 		1A87081C23C43DB6009EACAB /* GenerateTestUserSig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GenerateTestUserSig.h; sourceTree = "<group>"; };
 		1AA7EF0B23CC8A94001177CF /* AudioCallViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioCallViewController.swift; sourceTree = "<group>"; };
+		1ACD64722423235000098C29 /* BeautyPerformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeautyPerformer.swift; sourceTree = "<group>"; };
+		1ACD64852423463700098C29 /* TRTCBgmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TRTCBgmManager.swift; sourceTree = "<group>"; };
+		1ACD64872423481000098C29 /* TRTCBgmManagerImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TRTCBgmManagerImpl.swift; sourceTree = "<group>"; };
 		1ADB05F823D157940075235B /* TRTCVideoCall+model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TRTCVideoCall+model.swift"; sourceTree = "<group>"; };
 		1ADB05F923D157940075235B /* TRTCVideoCall.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCVideoCall.swift; sourceTree = "<group>"; };
 		1ADB05FA23D157940075235B /* TRTCVideoCall+OnNewMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TRTCVideoCall+OnNewMessage.swift"; sourceTree = "<group>"; };
@@ -273,111 +307,7 @@
 		1AE73AA123C57346003723DF /* AudioSelectContactViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioSelectContactViewController.swift; sourceTree = "<group>"; };
 		1AE73AA323C57586003723DF /* AudioSelectContactViewController+file.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AudioSelectContactViewController+file.swift"; sourceTree = "<group>"; };
 		1AE73AA523C5C635003723DF /* AudioSelectContactViewController+UI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AudioSelectContactViewController+UI.swift"; sourceTree = "<group>"; };
-		860C13B02404CB490023A19E /* TRTCVideoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCVideoView.h; sourceTree = "<group>"; };
-		860C13B32404CB490023A19E /* TRTCCdnPlayerSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCCdnPlayerSettingsViewController.h; sourceTree = "<group>"; };
-		860C13B42404CB490023A19E /* TRTCCdnPlayerSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCCdnPlayerSettingsViewController.m; sourceTree = "<group>"; };
-		860C13B62404CB490023A19E /* TRTCRemoteUserSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCRemoteUserSettingsViewController.m; sourceTree = "<group>"; };
-		860C13B72404CB490023A19E /* TRTCRemoteUserListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCRemoteUserListViewController.m; sourceTree = "<group>"; };
-		860C13B82404CB490023A19E /* TRTCRemoteUserCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCRemoteUserCell.m; sourceTree = "<group>"; };
-		860C13B92404CB490023A19E /* TRTCRemoteUserSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCRemoteUserSettingsViewController.h; sourceTree = "<group>"; };
-		860C13BA2404CB490023A19E /* TRTCRemoteUserListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCRemoteUserListViewController.h; sourceTree = "<group>"; };
-		860C13BB2404CB490023A19E /* TRTCRemoteUserCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCRemoteUserCell.h; sourceTree = "<group>"; };
-		860C13BC2404CB490023A19E /* TRTCSettings.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = TRTCSettings.storyboard; sourceTree = "<group>"; };
-		860C13BF2404CB490023A19E /* TRTCCdnPlayerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCCdnPlayerManager.m; sourceTree = "<group>"; };
-		860C13C02404CB490023A19E /* TRTCCdnPlayerConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCCdnPlayerConfig.h; sourceTree = "<group>"; };
-		860C13C12404CB490023A19E /* TRTCCdnPlayerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCCdnPlayerManager.h; sourceTree = "<group>"; };
-		860C13C22404CB490023A19E /* TRTCCdnPlayerConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCCdnPlayerConfig.m; sourceTree = "<group>"; };
-		860C13C42404CB490023A19E /* TRTCRemoteUserConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCRemoteUserConfig.m; sourceTree = "<group>"; };
-		860C13C52404CB490023A19E /* TRTCRemoteUserManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCRemoteUserManager.m; sourceTree = "<group>"; };
-		860C13C62404CB490023A19E /* TRTCRemoteUserConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCRemoteUserConfig.h; sourceTree = "<group>"; };
-		860C13C72404CB490023A19E /* TRTCRemoteUserManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCRemoteUserManager.h; sourceTree = "<group>"; };
-		860C13C92404CB490023A19E /* TRTCAudioEffectManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCAudioEffectManager.m; sourceTree = "<group>"; };
-		860C13CA2404CB490023A19E /* TRTCBgmManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCBgmManager.m; sourceTree = "<group>"; };
-		860C13CB2404CB490023A19E /* TRTCAudioEffectManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCAudioEffectManager.h; sourceTree = "<group>"; };
-		860C13CC2404CB490023A19E /* TRTCBgmManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCBgmManager.h; sourceTree = "<group>"; };
-		860C13CE2404CB490023A19E /* TRTCAudioRecordManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCAudioRecordManager.m; sourceTree = "<group>"; };
-		860C13CF2404CB490023A19E /* TRTCStreamConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCStreamConfig.m; sourceTree = "<group>"; };
-		860C13D02404CB490023A19E /* TRTCAudioConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCAudioConfig.m; sourceTree = "<group>"; };
-		860C13D12404CB490023A19E /* TRTCVideoConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCVideoConfig.h; sourceTree = "<group>"; };
-		860C13D22404CB490023A19E /* TRTCCloudManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCCloudManager.h; sourceTree = "<group>"; };
-		860C13D32404CB490023A19E /* TRTCStreamConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCStreamConfig.h; sourceTree = "<group>"; };
-		860C13D42404CB490023A19E /* TRTCAudioRecordManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCAudioRecordManager.h; sourceTree = "<group>"; };
-		860C13D52404CB490023A19E /* TRTCCloudManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCCloudManager.m; sourceTree = "<group>"; };
-		860C13D62404CB490023A19E /* TRTCVideoConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCVideoConfig.m; sourceTree = "<group>"; };
-		860C13D72404CB490023A19E /* TRTCAudioConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCAudioConfig.h; sourceTree = "<group>"; };
-		860C13DA2404CB490023A19E /* TRTCSettingsContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCSettingsContainerViewController.h; sourceTree = "<group>"; };
-		860C13DB2404CB490023A19E /* TRTCSettingsContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCSettingsContainerViewController.m; sourceTree = "<group>"; };
-		860C13DD2404CB490023A19E /* UIButton+TRTC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+TRTC.m"; sourceTree = "<group>"; };
-		860C13DE2404CB490023A19E /* UILabel+TRTC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+TRTC.m"; sourceTree = "<group>"; };
-		860C13DF2404CB490023A19E /* UISlider+TRTC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UISlider+TRTC.h"; sourceTree = "<group>"; };
-		860C13E02404CB490023A19E /* UITextField+TRTC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextField+TRTC.m"; sourceTree = "<group>"; };
-		860C13E12404CB490023A19E /* UISegmentedControl+TRTC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UISegmentedControl+TRTC.h"; sourceTree = "<group>"; };
-		860C13E22404CB490023A19E /* UILabel+TRTC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+TRTC.h"; sourceTree = "<group>"; };
-		860C13E32404CB490023A19E /* UIButton+TRTC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+TRTC.h"; sourceTree = "<group>"; };
-		860C13E42404CB490023A19E /* UISlider+TRTC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UISlider+TRTC.m"; sourceTree = "<group>"; };
-		860C13E52404CB490023A19E /* UISegmentedControl+TRTC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UISegmentedControl+TRTC.m"; sourceTree = "<group>"; };
-		860C13E62404CB490023A19E /* UITextField+TRTC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextField+TRTC.h"; sourceTree = "<group>"; };
-		860C13E92404CB490023A19E /* TRTCSettingsMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCSettingsMessageCell.m; sourceTree = "<group>"; };
-		860C13EA2404CB490023A19E /* TRTCSettingsButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCSettingsButtonCell.h; sourceTree = "<group>"; };
-		860C13EB2404CB490023A19E /* TRTCSettingsInputCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCSettingsInputCell.m; sourceTree = "<group>"; };
-		860C13EC2404CB490023A19E /* TRTCSettingsBaseCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCSettingsBaseCell.h; sourceTree = "<group>"; };
-		860C13ED2404CB490023A19E /* TRTCSettingsSegmentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCSettingsSegmentCell.m; sourceTree = "<group>"; };
-		860C13EE2404CB490023A19E /* TRTCSettingsSwitchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCSettingsSwitchCell.h; sourceTree = "<group>"; };
-		860C13EF2404CB490023A19E /* TRTCSettingsLargeInputCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCSettingsLargeInputCell.m; sourceTree = "<group>"; };
-		860C13F02404CB490023A19E /* TRTCSettingsSelectorCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCSettingsSelectorCell.h; sourceTree = "<group>"; };
-		860C13F12404CB490023A19E /* TRTCSettingsSliderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCSettingsSliderCell.h; sourceTree = "<group>"; };
-		860C13F22404CB490023A19E /* TRTCSettingsMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCSettingsMessageCell.h; sourceTree = "<group>"; };
-		860C13F32404CB490023A19E /* TRTCSettingsSegmentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCSettingsSegmentCell.h; sourceTree = "<group>"; };
-		860C13F42404CB490023A19E /* TRTCSettingsBaseCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCSettingsBaseCell.m; sourceTree = "<group>"; };
-		860C13F52404CB490023A19E /* TRTCSettingsInputCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCSettingsInputCell.h; sourceTree = "<group>"; };
-		860C13F62404CB490023A19E /* TRTCSettingsButtonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCSettingsButtonCell.m; sourceTree = "<group>"; };
-		860C13F72404CB490023A19E /* TRTCSettingsSwitchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCSettingsSwitchCell.m; sourceTree = "<group>"; };
-		860C13F82404CB490023A19E /* TRTCSettingsLargeInputCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCSettingsLargeInputCell.h; sourceTree = "<group>"; };
-		860C13F92404CB490023A19E /* TRTCSettingsSliderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCSettingsSliderCell.m; sourceTree = "<group>"; };
-		860C13FA2404CB490023A19E /* TRTCSettingsSelectorCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCSettingsSelectorCell.m; sourceTree = "<group>"; };
-		860C13FB2404CB490023A19E /* TRTCSettingsBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCSettingsBaseViewController.h; sourceTree = "<group>"; };
-		860C13FC2404CB490023A19E /* TRTCSettingsBaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCSettingsBaseViewController.m; sourceTree = "<group>"; };
-		860C13FE2404CB490023A19E /* TRTCMoreSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCMoreSettingsViewController.m; sourceTree = "<group>"; };
-		860C13FF2404CB490023A19E /* TRTCAudioSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCAudioSettingsViewController.m; sourceTree = "<group>"; };
-		860C14002404CB490023A19E /* TRTCFeatureContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCFeatureContainerViewController.h; sourceTree = "<group>"; };
-		860C14012404CB490023A19E /* TRTCVideoSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCVideoSettingsViewController.m; sourceTree = "<group>"; };
-		860C14022404CB490023A19E /* TRTCStreamSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCStreamSettingsViewController.m; sourceTree = "<group>"; };
-		860C14032404CB490023A19E /* TRTCPKSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCPKSettingsViewController.m; sourceTree = "<group>"; };
-		860C14042404CB490023A19E /* TRTCMoreSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCMoreSettingsViewController.h; sourceTree = "<group>"; };
-		860C14052404CB490023A19E /* TRTCAudioSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCAudioSettingsViewController.h; sourceTree = "<group>"; };
-		860C14062404CB490023A19E /* TRTCPKSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCPKSettingsViewController.h; sourceTree = "<group>"; };
-		860C14072404CB490023A19E /* TRTCStreamSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCStreamSettingsViewController.h; sourceTree = "<group>"; };
-		860C14082404CB490023A19E /* TRTCVideoSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCVideoSettingsViewController.h; sourceTree = "<group>"; };
-		860C14092404CB490023A19E /* TRTCFeatureContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCFeatureContainerViewController.m; sourceTree = "<group>"; };
-		860C140B2404CB490023A19E /* TRTCBgmContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCBgmContainerViewController.m; sourceTree = "<group>"; };
-		860C140D2404CB490023A19E /* TRTCSettingsEffectCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCSettingsEffectCell.m; sourceTree = "<group>"; };
-		860C140E2404CB490023A19E /* TRTCEffectSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCEffectSettingsViewController.h; sourceTree = "<group>"; };
-		860C140F2404CB490023A19E /* TRTCSettingsEffectLoopCountCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCSettingsEffectLoopCountCell.m; sourceTree = "<group>"; };
-		860C14102404CB490023A19E /* TRTCEffectSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCEffectSettingsViewController.m; sourceTree = "<group>"; };
-		860C14112404CB490023A19E /* TRTCSettingsEffectCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCSettingsEffectCell.h; sourceTree = "<group>"; };
-		860C14122404CB490023A19E /* TRTCSettingsEffectLoopCountCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCSettingsEffectLoopCountCell.h; sourceTree = "<group>"; };
-		860C14132404CB490023A19E /* TRTCBgmContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCBgmContainerViewController.h; sourceTree = "<group>"; };
-		860C14152404CB490023A19E /* TRTCBgmSettingsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCBgmSettingsCell.m; sourceTree = "<group>"; };
-		860C14162404CB490023A19E /* TRTCBgmSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCBgmSettingsViewController.m; sourceTree = "<group>"; };
-		860C14172404CB490023A19E /* TRTCBgmSettingsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCBgmSettingsCell.h; sourceTree = "<group>"; };
-		860C14182404CB490023A19E /* TRTCBgmSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCBgmSettingsViewController.h; sourceTree = "<group>"; };
-		860C14192404CB490023A19E /* TRTCFloatWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCFloatWindow.h; sourceTree = "<group>"; };
-		860C141B2404CB490023A19E /* TRTCMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCMainViewController.m; sourceTree = "<group>"; };
-		860C141C2404CB490023A19E /* TRTCVideoViewLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCVideoViewLayout.h; sourceTree = "<group>"; };
-		860C14212404CB490023A19E /* record_test_background.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = record_test_background.mp3; sourceTree = "<group>"; };
-		860C14222404CB490023A19E /* TRTC.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = TRTC.storyboard; sourceTree = "<group>"; };
-		860C14242404CB490023A19E /* TCMediaFileReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCMediaFileReader.m; sourceTree = "<group>"; };
-		860C14252404CB490023A19E /* TestRenderVideoFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestRenderVideoFrame.m; sourceTree = "<group>"; };
-		860C14262404CB490023A19E /* TestSendCustomVideoData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestSendCustomVideoData.h; sourceTree = "<group>"; };
-		860C14272404CB490023A19E /* TCMediaFileReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCMediaFileReader.h; sourceTree = "<group>"; };
-		860C14282404CB490023A19E /* TestSendCustomVideoData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestSendCustomVideoData.m; sourceTree = "<group>"; };
-		860C14292404CB490023A19E /* TestRenderVideoFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestRenderVideoFrame.h; sourceTree = "<group>"; };
-		860C142A2404CB490023A19E /* TRTCNewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCNewViewController.m; sourceTree = "<group>"; };
-		860C142B2404CB490023A19E /* TRTCMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCMainViewController.h; sourceTree = "<group>"; };
-		860C142D2404CB490023A19E /* TRTCFloatWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCFloatWindow.m; sourceTree = "<group>"; };
-		860C142E2404CB490023A19E /* TRTCVideoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCVideoView.m; sourceTree = "<group>"; };
-		860C142F2404CB490023A19E /* TRTCVideoViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCVideoViewLayout.m; sourceTree = "<group>"; };
-		860C14302404CB490023A19E /* TRTCNewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCNewViewController.h; sourceTree = "<group>"; };
+		1AFBFC47241B776100EA53B3 /* AnchorPKPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnchorPKPanel.swift; sourceTree = "<group>"; };
 		860C146C2404CCC70023A19E /* UIView+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Additions.h"; sourceTree = "<group>"; };
 		860C146D2404CCC80023A19E /* UIView+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Additions.m"; sourceTree = "<group>"; };
 		860C146F2404CCE90023A19E /* UIImage+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Additions.h"; sourceTree = "<group>"; };
@@ -534,8 +464,149 @@
 			children = (
 				1A14035623B1B1C7008BDE83 /* appUtils.swift */,
 				1A6459CB23ABCB11006C0A7A /* CommonUtils.swift */,
+				1A582E092417B61B007F7DF2 /* TCLog.h */,
+				1A582E082417B61B007F7DF2 /* TCLog.m */,
+				1A582E0B2417B61B007F7DF2 /* TCUtil.h */,
+				1A582E0A2417B61B007F7DF2 /* TCUtil.m */,
 			);
 			path = utils;
+			sourceTree = "<group>";
+		};
+		1A582E0E2417B64F007F7DF2 /* ui */ = {
+			isa = PBXGroup;
+			children = (
+				1A582E102417B64F007F7DF2 /* StatusView */,
+				1A582E132417B64F007F7DF2 /* Common */,
+				1A582E1B2417B64F007F7DF2 /* ChatRoom */,
+				1A582E252417B64F007F7DF2 /* Anchor */,
+				1A582E2B2417B64F007F7DF2 /* Audience */,
+				1A582E0F2417B64F007F7DF2 /* LiveRoomMainViewController.swift */,
+				1A582E312417B64F007F7DF2 /* LiveRoomMainViewController+UI.swift */,
+				1A582E242417B64F007F7DF2 /* LiveRoomMainViewController+CollectionView.swift */,
+			);
+			path = ui;
+			sourceTree = "<group>";
+		};
+		1A582E102417B64F007F7DF2 /* StatusView */ = {
+			isa = PBXGroup;
+			children = (
+				1A582E122417B64F007F7DF2 /* TCStatusInfoView.h */,
+				1A582E112417B64F007F7DF2 /* TCStatusInfoView.m */,
+			);
+			path = StatusView;
+			sourceTree = "<group>";
+		};
+		1A582E132417B64F007F7DF2 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				1A582E142417B64F007F7DF2 /* TextView */,
+				1A582E172417B64F007F7DF2 /* V8HorizontalPickerView */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		1A582E142417B64F007F7DF2 /* TextView */ = {
+			isa = PBXGroup;
+			children = (
+				1A582E162417B64F007F7DF2 /* TCPlaceHolderTextView.h */,
+				1A582E152417B64F007F7DF2 /* TCPlaceHolderTextView.m */,
+			);
+			path = TextView;
+			sourceTree = "<group>";
+		};
+		1A582E172417B64F007F7DF2 /* V8HorizontalPickerView */ = {
+			isa = PBXGroup;
+			children = (
+				1A582E192417B64F007F7DF2 /* V8HorizontalPickerViewProtocol.h */,
+				1A582E1A2417B64F007F7DF2 /* V8HorizontalPickerView.h */,
+				1A582E182417B64F007F7DF2 /* V8HorizontalPickerView.m */,
+			);
+			path = V8HorizontalPickerView;
+			sourceTree = "<group>";
+		};
+		1A582E1B2417B64F007F7DF2 /* ChatRoom */ = {
+			isa = PBXGroup;
+			children = (
+				1A582E202417B64F007F7DF2 /* TCMsgListCell.h */,
+				1A582E1C2417B64F007F7DF2 /* TCMsgListCell.m */,
+				1A582E1D2417B64F007F7DF2 /* TCMsgBarrageView.h */,
+				1A582E212417B64F007F7DF2 /* TCMsgBarrageView.m */,
+				1A582E1E2417B64F007F7DF2 /* TCMsgListTableView.h */,
+				1A582E232417B64F007F7DF2 /* TCMsgListTableView.m */,
+				1A582E1F2417B64F007F7DF2 /* TCMsgModel.h */,
+				1A582E222417B64F007F7DF2 /* TCMsgModel.m */,
+			);
+			path = ChatRoom;
+			sourceTree = "<group>";
+		};
+		1A582E252417B64F007F7DF2 /* Anchor */ = {
+			isa = PBXGroup;
+			children = (
+				1ACD64722423235000098C29 /* BeautyPerformer.swift */,
+				1AFBFC47241B776100EA53B3 /* AnchorPKPanel.swift */,
+				1A582E262417B64F007F7DF2 /* TCAnchorToolbarView.h */,
+				1A582E292417B64F007F7DF2 /* TCAnchorToolbarView.m */,
+				1A582E282417B64F007F7DF2 /* TCAnchorViewController.h */,
+				1A582E272417B64F007F7DF2 /* TCAnchorViewController.m */,
+				1A582E2A2417B64F007F7DF2 /* TCAnchorViewController+LiveDelegate.swift */,
+			);
+			path = Anchor;
+			sourceTree = "<group>";
+		};
+		1A582E2B2417B64F007F7DF2 /* Audience */ = {
+			isa = PBXGroup;
+			children = (
+				1A582E2C2417B64F007F7DF2 /* TCAudienceToolbarView.h */,
+				1A582E2F2417B64F007F7DF2 /* TCAudienceToolbarView.m */,
+				1A582E302417B64F007F7DF2 /* TCAudienceViewController.h */,
+				1A582E2D2417B64F007F7DF2 /* TCAudienceViewController.m */,
+				1A582E2E2417B64F007F7DF2 /* TCAudienceViewController+LiveDelegate.swift */,
+			);
+			path = Audience;
+			sourceTree = "<group>";
+		};
+		1A582E322417B64F007F7DF2 /* model */ = {
+			isa = PBXGroup;
+			children = (
+				1A582E332417B64F007F7DF2 /* TRTCLiveRoom.swift */,
+				1A582E412417B64F007F7DF2 /* TRTCLiveRoomDelegate.swift */,
+				1A582E422417B64F007F7DF2 /* TRTCLiveRoomDef.swift */,
+				1ACD64852423463700098C29 /* TRTCBgmManager.swift */,
+				1A582E342417B64F007F7DF2 /* impl */,
+			);
+			path = model;
+			sourceTree = "<group>";
+		};
+		1A582E342417B64F007F7DF2 /* impl */ = {
+			isa = PBXGroup;
+			children = (
+				1A582E362417B64F007F7DF2 /* TRTCLiveRoomImpl.swift */,
+				1A582E352417B64F007F7DF2 /* TRTCLiveRoomImpl+RecvMessage.swift */,
+				1A582E372417B64F007F7DF2 /* TRTCCloudAction.swift */,
+				1ACD64872423481000098C29 /* TRTCBgmManagerImpl.swift */,
+				1A582E3B2417B64F007F7DF2 /* RoomManager.swift */,
+				1A582E382417B64F007F7DF2 /* MemberManager */,
+				1A582E3C2417B64F007F7DF2 /* IM */,
+			);
+			path = impl;
+			sourceTree = "<group>";
+		};
+		1A582E382417B64F007F7DF2 /* MemberManager */ = {
+			isa = PBXGroup;
+			children = (
+				1A582E392417B64F007F7DF2 /* TRTCLiveRoomMemberManager.swift */,
+				1A582E3A2417B64F007F7DF2 /* TRTCLiveRoomMemberProtocol.swift */,
+			);
+			path = MemberManager;
+			sourceTree = "<group>";
+		};
+		1A582E3C2417B64F007F7DF2 /* IM */ = {
+			isa = PBXGroup;
+			children = (
+				1A582E3D2417B64F007F7DF2 /* TRTCLiveRoomIMAction.swift */,
+				1A582E3E2417B64F007F7DF2 /* TRTCLiveRoomIMActionType.swift */,
+			);
+			path = IM;
 			sourceTree = "<group>";
 		};
 		1A7F960123A7706B007DF584 = {
@@ -745,270 +816,21 @@
 		860C13AF2404CB490023A19E /* TRTCLiveRoomDemo */ = {
 			isa = PBXGroup;
 			children = (
-				860C13B02404CB490023A19E /* TRTCVideoView.h */,
-				860C13B12404CB490023A19E /* Settings */,
-				860C14192404CB490023A19E /* TRTCFloatWindow.h */,
-				860C141B2404CB490023A19E /* TRTCMainViewController.m */,
-				860C141C2404CB490023A19E /* TRTCVideoViewLayout.h */,
-				860C141D2404CB490023A19E /* Resources */,
-				860C14222404CB490023A19E /* TRTC.storyboard */,
-				860C14232404CB490023A19E /* testCustomVideo */,
-				860C142A2404CB490023A19E /* TRTCNewViewController.m */,
-				860C142B2404CB490023A19E /* TRTCMainViewController.h */,
-				860C142D2404CB490023A19E /* TRTCFloatWindow.m */,
-				860C142E2404CB490023A19E /* TRTCVideoView.m */,
-				860C142F2404CB490023A19E /* TRTCVideoViewLayout.m */,
-				860C14302404CB490023A19E /* TRTCNewViewController.h */,
+				1A582E0E2417B64F007F7DF2 /* ui */,
+				1A582E322417B64F007F7DF2 /* model */,
 			);
 			path = TRTCLiveRoomDemo;
-			sourceTree = "<group>";
-		};
-		860C13B12404CB490023A19E /* Settings */ = {
-			isa = PBXGroup;
-			children = (
-				860C13B22404CB490023A19E /* CdnPlayerSettings */,
-				860C13B52404CB490023A19E /* RemoteUser */,
-				860C13BC2404CB490023A19E /* TRTCSettings.storyboard */,
-				860C13BD2404CB490023A19E /* SDKManager */,
-				860C13D82404CB490023A19E /* BaseUI */,
-				860C13FD2404CB490023A19E /* FeatureSettings */,
-				860C140A2404CB490023A19E /* BGMSettings */,
-			);
-			path = Settings;
-			sourceTree = "<group>";
-		};
-		860C13B22404CB490023A19E /* CdnPlayerSettings */ = {
-			isa = PBXGroup;
-			children = (
-				860C13B32404CB490023A19E /* TRTCCdnPlayerSettingsViewController.h */,
-				860C13B42404CB490023A19E /* TRTCCdnPlayerSettingsViewController.m */,
-			);
-			path = CdnPlayerSettings;
-			sourceTree = "<group>";
-		};
-		860C13B52404CB490023A19E /* RemoteUser */ = {
-			isa = PBXGroup;
-			children = (
-				860C13B62404CB490023A19E /* TRTCRemoteUserSettingsViewController.m */,
-				860C13B72404CB490023A19E /* TRTCRemoteUserListViewController.m */,
-				860C13B82404CB490023A19E /* TRTCRemoteUserCell.m */,
-				860C13B92404CB490023A19E /* TRTCRemoteUserSettingsViewController.h */,
-				860C13BA2404CB490023A19E /* TRTCRemoteUserListViewController.h */,
-				860C13BB2404CB490023A19E /* TRTCRemoteUserCell.h */,
-			);
-			path = RemoteUser;
-			sourceTree = "<group>";
-		};
-		860C13BD2404CB490023A19E /* SDKManager */ = {
-			isa = PBXGroup;
-			children = (
-				860C13BE2404CB490023A19E /* CdnPlayer */,
-				860C13C32404CB490023A19E /* RemoteUser */,
-				860C13C82404CB490023A19E /* BGM */,
-				860C13CD2404CB490023A19E /* Feature */,
-			);
-			path = SDKManager;
-			sourceTree = "<group>";
-		};
-		860C13BE2404CB490023A19E /* CdnPlayer */ = {
-			isa = PBXGroup;
-			children = (
-				860C13BF2404CB490023A19E /* TRTCCdnPlayerManager.m */,
-				860C13C02404CB490023A19E /* TRTCCdnPlayerConfig.h */,
-				860C13C12404CB490023A19E /* TRTCCdnPlayerManager.h */,
-				860C13C22404CB490023A19E /* TRTCCdnPlayerConfig.m */,
-			);
-			path = CdnPlayer;
-			sourceTree = "<group>";
-		};
-		860C13C32404CB490023A19E /* RemoteUser */ = {
-			isa = PBXGroup;
-			children = (
-				860C13C42404CB490023A19E /* TRTCRemoteUserConfig.m */,
-				860C13C52404CB490023A19E /* TRTCRemoteUserManager.m */,
-				860C13C62404CB490023A19E /* TRTCRemoteUserConfig.h */,
-				860C13C72404CB490023A19E /* TRTCRemoteUserManager.h */,
-			);
-			path = RemoteUser;
-			sourceTree = "<group>";
-		};
-		860C13C82404CB490023A19E /* BGM */ = {
-			isa = PBXGroup;
-			children = (
-				860C13C92404CB490023A19E /* TRTCAudioEffectManager.m */,
-				860C13CA2404CB490023A19E /* TRTCBgmManager.m */,
-				860C13CB2404CB490023A19E /* TRTCAudioEffectManager.h */,
-				860C13CC2404CB490023A19E /* TRTCBgmManager.h */,
-			);
-			path = BGM;
-			sourceTree = "<group>";
-		};
-		860C13CD2404CB490023A19E /* Feature */ = {
-			isa = PBXGroup;
-			children = (
-				860C13CE2404CB490023A19E /* TRTCAudioRecordManager.m */,
-				860C13CF2404CB490023A19E /* TRTCStreamConfig.m */,
-				860C13D02404CB490023A19E /* TRTCAudioConfig.m */,
-				860C13D12404CB490023A19E /* TRTCVideoConfig.h */,
-				860C13D22404CB490023A19E /* TRTCCloudManager.h */,
-				860C13D32404CB490023A19E /* TRTCStreamConfig.h */,
-				860C13D42404CB490023A19E /* TRTCAudioRecordManager.h */,
-				860C13D52404CB490023A19E /* TRTCCloudManager.m */,
-				860C13D62404CB490023A19E /* TRTCVideoConfig.m */,
-				860C13D72404CB490023A19E /* TRTCAudioConfig.h */,
-			);
-			path = Feature;
-			sourceTree = "<group>";
-		};
-		860C13D82404CB490023A19E /* BaseUI */ = {
-			isa = PBXGroup;
-			children = (
-				860C13D92404CB490023A19E /* Container */,
-				860C13DC2404CB490023A19E /* CommonWidgets */,
-				860C13E72404CB490023A19E /* SettingsList */,
-			);
-			path = BaseUI;
-			sourceTree = "<group>";
-		};
-		860C13D92404CB490023A19E /* Container */ = {
-			isa = PBXGroup;
-			children = (
-				860C13DA2404CB490023A19E /* TRTCSettingsContainerViewController.h */,
-				860C13DB2404CB490023A19E /* TRTCSettingsContainerViewController.m */,
-			);
-			path = Container;
-			sourceTree = "<group>";
-		};
-		860C13DC2404CB490023A19E /* CommonWidgets */ = {
-			isa = PBXGroup;
-			children = (
-				860C13DD2404CB490023A19E /* UIButton+TRTC.m */,
-				860C13DE2404CB490023A19E /* UILabel+TRTC.m */,
-				860C13DF2404CB490023A19E /* UISlider+TRTC.h */,
-				860C13E02404CB490023A19E /* UITextField+TRTC.m */,
-				860C13E12404CB490023A19E /* UISegmentedControl+TRTC.h */,
-				860C13E22404CB490023A19E /* UILabel+TRTC.h */,
-				860C13E32404CB490023A19E /* UIButton+TRTC.h */,
-				860C13E42404CB490023A19E /* UISlider+TRTC.m */,
-				860C13E52404CB490023A19E /* UISegmentedControl+TRTC.m */,
-				860C13E62404CB490023A19E /* UITextField+TRTC.h */,
-			);
-			path = CommonWidgets;
-			sourceTree = "<group>";
-		};
-		860C13E72404CB490023A19E /* SettingsList */ = {
-			isa = PBXGroup;
-			children = (
-				860C13E82404CB490023A19E /* Cells */,
-				860C13FB2404CB490023A19E /* TRTCSettingsBaseViewController.h */,
-				860C13FC2404CB490023A19E /* TRTCSettingsBaseViewController.m */,
-			);
-			path = SettingsList;
-			sourceTree = "<group>";
-		};
-		860C13E82404CB490023A19E /* Cells */ = {
-			isa = PBXGroup;
-			children = (
-				860C13E92404CB490023A19E /* TRTCSettingsMessageCell.m */,
-				860C13EA2404CB490023A19E /* TRTCSettingsButtonCell.h */,
-				860C13EB2404CB490023A19E /* TRTCSettingsInputCell.m */,
-				860C13EC2404CB490023A19E /* TRTCSettingsBaseCell.h */,
-				860C13ED2404CB490023A19E /* TRTCSettingsSegmentCell.m */,
-				860C13EE2404CB490023A19E /* TRTCSettingsSwitchCell.h */,
-				860C13EF2404CB490023A19E /* TRTCSettingsLargeInputCell.m */,
-				860C13F02404CB490023A19E /* TRTCSettingsSelectorCell.h */,
-				860C13F12404CB490023A19E /* TRTCSettingsSliderCell.h */,
-				860C13F22404CB490023A19E /* TRTCSettingsMessageCell.h */,
-				860C13F32404CB490023A19E /* TRTCSettingsSegmentCell.h */,
-				860C13F42404CB490023A19E /* TRTCSettingsBaseCell.m */,
-				860C13F52404CB490023A19E /* TRTCSettingsInputCell.h */,
-				860C13F62404CB490023A19E /* TRTCSettingsButtonCell.m */,
-				860C13F72404CB490023A19E /* TRTCSettingsSwitchCell.m */,
-				860C13F82404CB490023A19E /* TRTCSettingsLargeInputCell.h */,
-				860C13F92404CB490023A19E /* TRTCSettingsSliderCell.m */,
-				860C13FA2404CB490023A19E /* TRTCSettingsSelectorCell.m */,
-			);
-			path = Cells;
-			sourceTree = "<group>";
-		};
-		860C13FD2404CB490023A19E /* FeatureSettings */ = {
-			isa = PBXGroup;
-			children = (
-				860C13FE2404CB490023A19E /* TRTCMoreSettingsViewController.m */,
-				860C13FF2404CB490023A19E /* TRTCAudioSettingsViewController.m */,
-				860C14002404CB490023A19E /* TRTCFeatureContainerViewController.h */,
-				860C14012404CB490023A19E /* TRTCVideoSettingsViewController.m */,
-				860C14022404CB490023A19E /* TRTCStreamSettingsViewController.m */,
-				860C14032404CB490023A19E /* TRTCPKSettingsViewController.m */,
-				860C14042404CB490023A19E /* TRTCMoreSettingsViewController.h */,
-				860C14052404CB490023A19E /* TRTCAudioSettingsViewController.h */,
-				860C14062404CB490023A19E /* TRTCPKSettingsViewController.h */,
-				860C14072404CB490023A19E /* TRTCStreamSettingsViewController.h */,
-				860C14082404CB490023A19E /* TRTCVideoSettingsViewController.h */,
-				860C14092404CB490023A19E /* TRTCFeatureContainerViewController.m */,
-			);
-			path = FeatureSettings;
-			sourceTree = "<group>";
-		};
-		860C140A2404CB490023A19E /* BGMSettings */ = {
-			isa = PBXGroup;
-			children = (
-				860C140B2404CB490023A19E /* TRTCBgmContainerViewController.m */,
-				860C140C2404CB490023A19E /* Effect */,
-				860C14132404CB490023A19E /* TRTCBgmContainerViewController.h */,
-				860C14142404CB490023A19E /* Bgm */,
-			);
-			path = BGMSettings;
-			sourceTree = "<group>";
-		};
-		860C140C2404CB490023A19E /* Effect */ = {
-			isa = PBXGroup;
-			children = (
-				860C140D2404CB490023A19E /* TRTCSettingsEffectCell.m */,
-				860C140E2404CB490023A19E /* TRTCEffectSettingsViewController.h */,
-				860C140F2404CB490023A19E /* TRTCSettingsEffectLoopCountCell.m */,
-				860C14102404CB490023A19E /* TRTCEffectSettingsViewController.m */,
-				860C14112404CB490023A19E /* TRTCSettingsEffectCell.h */,
-				860C14122404CB490023A19E /* TRTCSettingsEffectLoopCountCell.h */,
-			);
-			path = Effect;
-			sourceTree = "<group>";
-		};
-		860C14142404CB490023A19E /* Bgm */ = {
-			isa = PBXGroup;
-			children = (
-				860C14152404CB490023A19E /* TRTCBgmSettingsCell.m */,
-				860C14162404CB490023A19E /* TRTCBgmSettingsViewController.m */,
-				860C14172404CB490023A19E /* TRTCBgmSettingsCell.h */,
-				860C14182404CB490023A19E /* TRTCBgmSettingsViewController.h */,
-			);
-			path = Bgm;
-			sourceTree = "<group>";
-		};
-		860C141D2404CB490023A19E /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				860C14212404CB490023A19E /* record_test_background.mp3 */,
-			);
-			path = Resources;
-			sourceTree = "<group>";
-		};
-		860C14232404CB490023A19E /* testCustomVideo */ = {
-			isa = PBXGroup;
-			children = (
-				860C14242404CB490023A19E /* TCMediaFileReader.m */,
-				860C14252404CB490023A19E /* TestRenderVideoFrame.m */,
-				860C14262404CB490023A19E /* TestSendCustomVideoData.h */,
-				860C14272404CB490023A19E /* TCMediaFileReader.h */,
-				860C14282404CB490023A19E /* TestSendCustomVideoData.m */,
-				860C14292404CB490023A19E /* TestRenderVideoFrame.h */,
-			);
-			path = testCustomVideo;
 			sourceTree = "<group>";
 		};
 		860C146B2404CC4C0023A19E /* category */ = {
 			isa = PBXGroup;
 			children = (
+				1A582E612417B90A007F7DF2 /* UIColor+MLPFlatColors.h */,
+				1A582E602417B90A007F7DF2 /* UIColor+MLPFlatColors.m */,
+				1A582E022417B5FB007F7DF2 /* HUDHelper.h */,
+				1A582E032417B5FB007F7DF2 /* HUDHelper.m */,
+				1A582E052417B5FB007F7DF2 /* UIView+CustomAutoLayout.h */,
+				1A582E042417B5FB007F7DF2 /* UIView+CustomAutoLayout.m */,
 				860C14BE2404DB010023A19E /* NSData+Common.h */,
 				860C14BD2404DB010023A19E /* NSData+Common.m */,
 				860C14752404CDA20023A19E /* NSString+UISize.h */,
@@ -1105,18 +927,18 @@
 			children = (
 				86A2AE6823FD119B00EEA4AB /* Resource */,
 				864ECCE223FBE47700263DC8 /* MoreView */,
-				864ECCE623FBE47700263DC8 /* TRTCVoiceRoomViewController.h */,
 				864ECCE723FBE47700263DC8 /* ChangeVoiceView */,
-				864ECCEB23FBE47700263DC8 /* CreateTRTCVoiceRoomViewController.m */,
-				864ECCEC23FBE47700263DC8 /* TRTCVoiceRoomTestUserSig.h */,
 				864ECCED23FBE47700263DC8 /* AudioEffectView */,
 				864ECCF123FBE47700263DC8 /* BgmView */,
-				864ECCF523FBE47700263DC8 /* TRTCVoiceRoomViewController.m */,
 				864ECCF623FBE47700263DC8 /* Model */,
 				864ECCFB23FBE47700263DC8 /* SDKManager */,
 				864ECD0923FBE47700263DC8 /* TRTCVoiceRoom.storyboard */,
-				864ECD0A23FBE47700263DC8 /* TRTCVoiceRoomTestUserSig.m */,
 				864ECD0B23FBE47700263DC8 /* CreateTRTCVoiceRoomViewController.h */,
+				864ECCEB23FBE47700263DC8 /* CreateTRTCVoiceRoomViewController.m */,
+				864ECCE623FBE47700263DC8 /* TRTCVoiceRoomViewController.h */,
+				864ECCF523FBE47700263DC8 /* TRTCVoiceRoomViewController.m */,
+				864ECCEC23FBE47700263DC8 /* TRTCVoiceRoomTestUserSig.h */,
+				864ECD0A23FBE47700263DC8 /* TRTCVoiceRoomTestUserSig.m */,
 			);
 			path = TRTCVoiceRoom;
 			sourceTree = "<group>";
@@ -1124,9 +946,9 @@
 		864ECCE223FBE47700263DC8 /* MoreView */ = {
 			isa = PBXGroup;
 			children = (
+				864ECCE523FBE47700263DC8 /* TRTCVoiceRoomMoreView.h */,
 				864ECCE323FBE47700263DC8 /* TRTCVoiceRoomMoreView.m */,
 				864ECCE423FBE47700263DC8 /* TRTCVoiceRoomMoreView.xib */,
-				864ECCE523FBE47700263DC8 /* TRTCVoiceRoomMoreView.h */,
 			);
 			path = MoreView;
 			sourceTree = "<group>";
@@ -1134,9 +956,9 @@
 		864ECCE723FBE47700263DC8 /* ChangeVoiceView */ = {
 			isa = PBXGroup;
 			children = (
+				864ECCEA23FBE47700263DC8 /* TRTCVoiceRoomChangeVoiceView.h */,
 				864ECCE823FBE47700263DC8 /* TRTCVoiceRoomChangeVoiceView.m */,
 				864ECCE923FBE47700263DC8 /* TRTCVoiceRoomChangeVoiceView.xib */,
-				864ECCEA23FBE47700263DC8 /* TRTCVoiceRoomChangeVoiceView.h */,
 			);
 			path = ChangeVoiceView;
 			sourceTree = "<group>";
@@ -1144,9 +966,9 @@
 		864ECCED23FBE47700263DC8 /* AudioEffectView */ = {
 			isa = PBXGroup;
 			children = (
-				864ECCEE23FBE47700263DC8 /* TRTCVoiceRoomAudioEffectView.xib */,
-				864ECCEF23FBE47700263DC8 /* TRTCVoiceRoomAudioEffectView.m */,
 				864ECCF023FBE47700263DC8 /* TRTCVoiceRoomAudioEffectView.h */,
+				864ECCEF23FBE47700263DC8 /* TRTCVoiceRoomAudioEffectView.m */,
+				864ECCEE23FBE47700263DC8 /* TRTCVoiceRoomAudioEffectView.xib */,
 			);
 			path = AudioEffectView;
 			sourceTree = "<group>";
@@ -1154,9 +976,9 @@
 		864ECCF123FBE47700263DC8 /* BgmView */ = {
 			isa = PBXGroup;
 			children = (
-				864ECCF223FBE47700263DC8 /* TRTCVoiceRoomBgmView.xib */,
 				864ECCF323FBE47700263DC8 /* TRTCVoiceRoomBgmView.h */,
 				864ECCF423FBE47700263DC8 /* TRTCVoiceRoomBgmView.m */,
+				864ECCF223FBE47700263DC8 /* TRTCVoiceRoomBgmView.xib */,
 			);
 			path = BgmView;
 			sourceTree = "<group>";
@@ -1185,10 +1007,10 @@
 		864ECCFC23FBE47700263DC8 /* BGM */ = {
 			isa = PBXGroup;
 			children = (
-				864ECCFD23FBE47700263DC8 /* TRTCVoiceRoomAudioEffectManager.m */,
 				864ECCFE23FBE47700263DC8 /* TRTCVoiceRoomBgmManager.h */,
-				864ECCFF23FBE47700263DC8 /* TRTCVoiceRoomAudioEffectManager.h */,
 				864ECD0023FBE47700263DC8 /* TRTCVoiceRoomBgmManager.m */,
+				864ECCFF23FBE47700263DC8 /* TRTCVoiceRoomAudioEffectManager.h */,
+				864ECCFD23FBE47700263DC8 /* TRTCVoiceRoomAudioEffectManager.m */,
 			);
 			path = BGM;
 			sourceTree = "<group>";
@@ -1197,9 +1019,9 @@
 			isa = PBXGroup;
 			children = (
 				864ECD0223FBE47700263DC8 /* TRTCVoiceRoomAudioConfig.h */,
+				864ECD0523FBE47700263DC8 /* TRTCVoiceRoomAudioConfig.m */,
 				864ECD0323FBE47700263DC8 /* TRTCVoiceRoomCloudManager.h */,
 				864ECD0423FBE47700263DC8 /* TRTCVoiceRoomCloudManager.m */,
-				864ECD0523FBE47700263DC8 /* TRTCVoiceRoomAudioConfig.m */,
 			);
 			path = Feature;
 			sourceTree = "<group>";
@@ -1364,12 +1186,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				F8713C472411F8740024ECFD /* TCBeautyPanelResources.bundle in Resources */,
-				860C14352404CB490023A19E /* TRTCSettings.storyboard in Resources */,
 				860C14BC2404D10B0023A19E /* CustomAudio48000_1.pcm in Resources */,
 				1A7F961A23A7706E007DF584 /* LaunchScreen.storyboard in Resources */,
-				860C14632404CB4A0023A19E /* TRTC.storyboard in Resources */,
 				86A2AE6D23FD11C500EEA4AB /* vchat_cheers.m4a in Resources */,
-				860C14622404CB4A0023A19E /* record_test_background.mp3 in Resources */,
 				1A7F961723A7706E007DF584 /* Assets.xcassets in Resources */,
 				864ECD1323FBE47700263DC8 /* TRTCVoiceRoomBgmView.xib in Resources */,
 				864ECD1D23FBE47700263DC8 /* TRTCVoiceRoom.storyboard in Resources */,
@@ -1489,139 +1308,124 @@
 				1ADB05FE23D157940075235B /* TRTCVideoCall+model.swift in Sources */,
 				864ECD1023FBE47700263DC8 /* CreateTRTCVoiceRoomViewController.m in Sources */,
 				1A1A567C23CF441400F2333B /* AudioSelectContactViewController+Table.swift in Sources */,
-				860C14392404CB490023A19E /* TRTCRemoteUserManager.m in Sources */,
-				860C14442404CB490023A19E /* UITextField+TRTC.m in Sources */,
+				1A582E0C2417B61B007F7DF2 /* TCLog.m in Sources */,
+				1A582E062417B5FB007F7DF2 /* HUDHelper.m in Sources */,
+				1A582E5E2417B64F007F7DF2 /* TRTCLiveRoomDef.swift in Sources */,
+				1A582E4C2417B64F007F7DF2 /* TCAnchorViewController.m in Sources */,
 				1AE73AA223C57346003723DF /* AudioSelectContactViewController.swift in Sources */,
 				864ECD1E23FBE47700263DC8 /* TRTCVoiceRoomTestUserSig.m in Sources */,
-				860C14572404CB4A0023A19E /* TRTCBgmContainerViewController.m in Sources */,
-				860C14462404CB4A0023A19E /* UISegmentedControl+TRTC.m in Sources */,
-				860C14692404CB4A0023A19E /* TRTCVideoView.m in Sources */,
 				860C149B2404CF6B0023A19E /* QBVideoIndicatorView.m in Sources */,
-				860C14502404CB4A0023A19E /* TRTCSettingsBaseViewController.m in Sources */,
 				1AA7EF0C23CC8A94001177CF /* AudioCallViewController.swift in Sources */,
 				1ADB05FF23D157940075235B /* TRTCVideoCall.swift in Sources */,
-				860C143D2404CB490023A19E /* TRTCStreamConfig.m in Sources */,
 				860C149A2404CF6B0023A19E /* QBVideoIconView.m in Sources */,
 				1ADB060B23D160A30075235B /* VideoCallViewController.swift in Sources */,
 				86BEC02223F2FA7E00FB2671 /* VideoSelectContactViewController+UI.swift in Sources */,
-				860C14412404CB490023A19E /* TRTCSettingsContainerViewController.m in Sources */,
-				860C143A2404CB490023A19E /* TRTCAudioEffectManager.m in Sources */,
-				860C14532404CB4A0023A19E /* TRTCVideoSettingsViewController.m in Sources */,
 				1ADB060D23D160B10075235B /* VideoCallViewController+UI.swift in Sources */,
+				1A582E4F2417B64F007F7DF2 /* TCAudienceViewController.m in Sources */,
 				1A7F961223A7706B007DF584 /* ViewController.swift in Sources */,
+				1A582E552417B64F007F7DF2 /* TRTCLiveRoomImpl.swift in Sources */,
 				1A7F965523A77EB3007DF584 /* AppDelegate+Swift.swift in Sources */,
 				1A87081D23C43DB6009EACAB /* TRTCAudioCall+internal.swift in Sources */,
 				1A14035723B1B1C7008BDE83 /* appUtils.swift in Sources */,
-				860C14492404CB4A0023A19E /* TRTCSettingsSegmentCell.m in Sources */,
-				860C143E2404CB490023A19E /* TRTCAudioConfig.m in Sources */,
 				864ECD1B23FBE47700263DC8 /* TRTCVoiceRoomAudioConfig.m in Sources */,
-				860C14312404CB490023A19E /* TRTCCdnPlayerSettingsViewController.m in Sources */,
-				860C145B2404CB4A0023A19E /* TRTCBgmSettingsCell.m in Sources */,
 				1A0518EF23CD6A0A0072F094 /* AudioCallUserCell.swift in Sources */,
 				86BEC01E23F2FA7E00FB2671 /* VideoSelectContactViewController+Table.swift in Sources */,
-				860C14372404CB490023A19E /* TRTCCdnPlayerConfig.m in Sources */,
 				1ADB060123D157940075235B /* TRTCVideoCall+Room.swift in Sources */,
+				1A582E492417B64F007F7DF2 /* TCMsgModel.m in Sources */,
+				1A582E4D2417B64F007F7DF2 /* TCAnchorToolbarView.m in Sources */,
 				864ECD1C23FBE47700263DC8 /* TRTCVoiceRoomCustomAudioFileReader.m in Sources */,
+				1ACD64862423463700098C29 /* TRTCBgmManager.swift in Sources */,
 				1A14035423B0F1A2008BDE83 /* AudioCallMainViewController.swift in Sources */,
-				860C144D2404CB4A0023A19E /* TRTCSettingsSwitchCell.m in Sources */,
-				860C145E2404CB4A0023A19E /* TRTCMainViewController.m in Sources */,
+				1A582E522417B64F007F7DF2 /* LiveRoomMainViewController+UI.swift in Sources */,
+				1ACD64732423235000098C29 /* BeautyPerformer.swift in Sources */,
 				860C14742404CD650023A19E /* NSString+Common.m in Sources */,
-				860C14652404CB4A0023A19E /* TestRenderVideoFrame.m in Sources */,
+				1A582E572417B64F007F7DF2 /* TRTCLiveRoomMemberManager.swift in Sources */,
 				860C14BF2404DB010023A19E /* NSData+Common.m in Sources */,
+				1A582E532417B64F007F7DF2 /* TRTCLiveRoom.swift in Sources */,
 				1A7F960E23A7706B007DF584 /* AppDelegate.swift in Sources */,
 				860C14A72404CFAB0023A19E /* ThemeConfigurator.m in Sources */,
+				1A582E592417B64F007F7DF2 /* RoomManager.swift in Sources */,
 				860C14772404CDA20023A19E /* NSString+UISize.m in Sources */,
 				86D4C4E323F28B800002CA29 /* TRTCAudioCallDelegate.swift in Sources */,
 				1A54B72D23BF3CF8000ED29E /* AudioCallMainViewController+UI.swift in Sources */,
 				864ECD1823FBE47700263DC8 /* TRTCVoiceRoomAudioEffectManager.m in Sources */,
-				860C143F2404CB490023A19E /* TRTCCloudManager.m in Sources */,
-				860C144E2404CB4A0023A19E /* TRTCSettingsSliderCell.m in Sources */,
 				1A1A567523CEEC2B00F2333B /* PortalViewController.m in Sources */,
 				1A1A567623CEEC2B00F2333B /* MainMenuCell.m in Sources */,
 				1ADB060223D157940075235B /* VideoCallUtils.swift in Sources */,
+				1A582E622417B90A007F7DF2 /* UIColor+MLPFlatColors.m in Sources */,
 				1A87082123C43DB6009EACAB /* TRTCAudioCall+Room.swift in Sources */,
+				1A582E442417B64F007F7DF2 /* TCStatusInfoView.m in Sources */,
 				1A87082223C43DB6009EACAB /* GenerateTestUserSig.m in Sources */,
-				860C14432404CB490023A19E /* UILabel+TRTC.m in Sources */,
 				1A6459CC23ABCB11006C0A7A /* CommonUtils.swift in Sources */,
+				1A582E5A2417B64F007F7DF2 /* TRTCLiveRoomIMAction.swift in Sources */,
 				860C149E2404CF6B0023A19E /* QBAlbumsViewController.m in Sources */,
-				860C14512404CB4A0023A19E /* TRTCMoreSettingsViewController.m in Sources */,
 				864ECD1623FBE47700263DC8 /* UserModel.m in Sources */,
 				86BEC02C23F5521500FB2671 /* LoginViewController.swift in Sources */,
 				860C14A02404CF6B0023A19E /* QBImagePickerController.m in Sources */,
 				1ADB060923D160160075235B /* VideoCallUserCell.swift in Sources */,
-				860C14562404CB4A0023A19E /* TRTCFeatureContainerViewController.m in Sources */,
-				860C14582404CB4A0023A19E /* TRTCSettingsEffectCell.m in Sources */,
-				860C14552404CB4A0023A19E /* TRTCPKSettingsViewController.m in Sources */,
+				1A582E462417B64F007F7DF2 /* V8HorizontalPickerView.m in Sources */,
+				1A582E5B2417B64F007F7DF2 /* TRTCLiveRoomIMActionType.swift in Sources */,
 				864ECD1423FBE47700263DC8 /* TRTCVoiceRoomBgmView.m in Sources */,
+				1A582E432417B64F007F7DF2 /* LiveRoomMainViewController.swift in Sources */,
 				86BEC02E23F5522800FB2671 /* ProfileManager.swift in Sources */,
-				860C14382404CB490023A19E /* TRTCRemoteUserConfig.m in Sources */,
 				864ECD0C23FBE47700263DC8 /* TRTCVoiceRoomMoreView.m in Sources */,
-				860C145C2404CB4A0023A19E /* TRTCBgmSettingsViewController.m in Sources */,
 				1A87081F23C43DB6009EACAB /* TRTCAudioCall+OnNewMessage.swift in Sources */,
 				864ECD1523FBE47700263DC8 /* TRTCVoiceRoomViewController.m in Sources */,
-				860C14402404CB490023A19E /* TRTCVideoConfig.m in Sources */,
-				860C144F2404CB4A0023A19E /* TRTCSettingsSelectorCell.m in Sources */,
 				861B633523F2696E000CECAC /* ITRTCAudioCallInterface.swift in Sources */,
 				860C146E2404CCC80023A19E /* UIView+Additions.m in Sources */,
 				860C14A32404CF6B0023A19E /* QBAssetCell.m in Sources */,
-				860C14642404CB4A0023A19E /* TCMediaFileReader.m in Sources */,
 				864ECD1223FBE47700263DC8 /* TRTCVoiceRoomAudioEffectView.m in Sources */,
+				1A582E4A2417B64F007F7DF2 /* TCMsgListTableView.m in Sources */,
 				1A87081E23C43DB6009EACAB /* TRTCAudioCall.swift in Sources */,
 				86BEC01F23F2FA7E00FB2671 /* VideoSelectContactViewController+file.swift in Sources */,
 				860C14712404CCE90023A19E /* UIImage+Additions.m in Sources */,
+				1A582E472417B64F007F7DF2 /* TCMsgListCell.m in Sources */,
 				860C147B2404CEEF0023A19E /* QRCode.m in Sources */,
-				860C14422404CB490023A19E /* UIButton+TRTC.m in Sources */,
-				860C14472404CB4A0023A19E /* TRTCSettingsMessageCell.m in Sources */,
 				860C14A12404CF6B0023A19E /* QBCheckmarkView.m in Sources */,
+				1A582E5D2417B64F007F7DF2 /* TRTCLiveRoomDelegate.swift in Sources */,
 				86BEC02023F2FA7E00FB2671 /* VideoSelectContactViewController+CollectionView.swift in Sources */,
 				864ECD1723FBE47700263DC8 /* SEIMessageModel.m in Sources */,
 				1ADB060F23D160BB0075235B /* VideoCallViewController+Data.swift in Sources */,
 				860C149C2404CF6B0023A19E /* QBAlbumCell.m in Sources */,
-				860C14682404CB4A0023A19E /* TRTCFloatWindow.m in Sources */,
-				860C143C2404CB490023A19E /* TRTCAudioRecordManager.m in Sources */,
+				1A582E4E2417B64F007F7DF2 /* TCAnchorViewController+LiveDelegate.swift in Sources */,
 				1ADB060323D157940075235B /* TRTCVideoCall+internal.swift in Sources */,
 				1A54B72B23BE033E000ED29E /* ProfileViewController+UI.swift in Sources */,
 				1ADB060023D157940075235B /* TRTCVideoCall+OnNewMessage.swift in Sources */,
+				1AFBFC48241B776100EA53B3 /* AnchorPKPanel.swift in Sources */,
 				860C14A22404CF6B0023A19E /* QBSlomoIconView.m in Sources */,
+				1A582E502417B64F007F7DF2 /* TCAudienceViewController+LiveDelegate.swift in Sources */,
 				86BEC02B23F5521500FB2671 /* LoginViewController+UI.swift in Sources */,
+				1A582E072417B5FB007F7DF2 /* UIView+CustomAutoLayout.m in Sources */,
 				1A1A567A23CF3D7300F2333B /* AudioSelectContactViewController+CollectionView.swift in Sources */,
 				864ECD1923FBE47700263DC8 /* TRTCVoiceRoomBgmManager.m in Sources */,
-				860C14522404CB4A0023A19E /* TRTCAudioSettingsViewController.m in Sources */,
 				1A87082323C43DB6009EACAB /* AudioCallUtils.swift in Sources */,
+				1A582E452417B64F007F7DF2 /* TCPlaceHolderTextView.m in Sources */,
 				86D4C4E523F295AC0002CA29 /* ITRTCVideoCallInterface.swift in Sources */,
+				1ACD64882423481000098C29 /* TRTCBgmManagerImpl.swift in Sources */,
+				1A582E0D2417B61B007F7DF2 /* TCUtil.m in Sources */,
 				86BEC01D23F2FA7E00FB2671 /* VideoSelectContactViewController.swift in Sources */,
-				860C14322404CB490023A19E /* TRTCRemoteUserSettingsViewController.m in Sources */,
-				860C145A2404CB4A0023A19E /* TRTCEffectSettingsViewController.m in Sources */,
-				860C144B2404CB4A0023A19E /* TRTCSettingsBaseCell.m in Sources */,
 				1A0518F123CD72D00072F094 /* AudioCallViewController+UI.swift in Sources */,
 				86D4C4E723F295C20002CA29 /* TRTCVideoCallDelegate.swift in Sources */,
 				1A301E8023CC64C9005CA7D3 /* AudioSelectContactViewController+search.swift in Sources */,
-				860C14482404CB4A0023A19E /* TRTCSettingsInputCell.m in Sources */,
-				860C143B2404CB490023A19E /* TRTCBgmManager.m in Sources */,
-				860C14672404CB4A0023A19E /* TRTCNewViewController.m in Sources */,
 				1A0518F323CD95140072F094 /* AudioCallViewController+Data.swift in Sources */,
+				1A582E542417B64F007F7DF2 /* TRTCLiveRoomImpl+RecvMessage.swift in Sources */,
 				1AE73AA423C57586003723DF /* AudioSelectContactViewController+file.swift in Sources */,
 				864ECD1A23FBE47700263DC8 /* TRTCVoiceRoomCloudManager.m in Sources */,
 				1A54B72923BDF77B000ED29E /* ProfileViewController.swift in Sources */,
+				1A582E4B2417B64F007F7DF2 /* LiveRoomMainViewController+CollectionView.swift in Sources */,
+				1A582E582417B64F007F7DF2 /* TRTCLiveRoomMemberProtocol.swift in Sources */,
+				1A582E512417B64F007F7DF2 /* TCAudienceToolbarView.m in Sources */,
+				1A582E562417B64F007F7DF2 /* TRTCCloudAction.swift in Sources */,
 				86BEC02123F2FA7E00FB2671 /* VideoSelectContactViewController+search.swift in Sources */,
-				860C14662404CB4A0023A19E /* TestSendCustomVideoData.m in Sources */,
 				860C14BA2404D10B0023A19E /* CustomAudioFileReader.m in Sources */,
-				860C144C2404CB4A0023A19E /* TRTCSettingsButtonCell.m in Sources */,
-				860C14332404CB490023A19E /* TRTCRemoteUserListViewController.m in Sources */,
 				1ADB060723D15D700075235B /* VideoCallMainViewController+UI.swift in Sources */,
-				860C144A2404CB4A0023A19E /* TRTCSettingsLargeInputCell.m in Sources */,
 				1AE73AA623C5C635003723DF /* AudioSelectContactViewController+UI.swift in Sources */,
-				860C14362404CB490023A19E /* TRTCCdnPlayerManager.m in Sources */,
-				860C14542404CB4A0023A19E /* TRTCStreamSettingsViewController.m in Sources */,
 				860C14B92404D10B0023A19E /* CustomAudioCapturor.m in Sources */,
 				860C149F2404CF6B0023A19E /* QBAssetsViewController.m in Sources */,
 				1A87082023C43DB6009EACAB /* TRTCAudioCall+model.swift in Sources */,
-				860C14452404CB4A0023A19E /* UISlider+TRTC.m in Sources */,
-				860C14342404CB490023A19E /* TRTCRemoteUserCell.m in Sources */,
 				1ADB060523D157CB0075235B /* VideoCallMainViewController.swift in Sources */,
-				860C146A2404CB4A0023A19E /* TRTCVideoViewLayout.m in Sources */,
 				864ECD0E23FBE47700263DC8 /* TRTCVoiceRoomChangeVoiceView.m in Sources */,
-				860C14592404CB4A0023A19E /* TRTCSettingsEffectLoopCountCell.m in Sources */,
+				1A582E482417B64F007F7DF2 /* TCMsgBarrageView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

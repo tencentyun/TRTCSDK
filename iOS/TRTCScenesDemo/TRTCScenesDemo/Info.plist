@@ -17,11 +17,18 @@
 	<key>CFBundlePackageType</key>
 	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>CFBundleShortVersionString</key>
-	<string>6.12.2</string>
+	<string>6.13.1</string>
 	<key>CFBundleVersion</key>
-	<string>8201</string>
+	<string>8206</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>申请访问音乐资源库播放背景音乐</string>
 	<key>NSCameraUsageDescription</key>
 	<string>申请视频聊天</string>
 	<key>NSMicrophoneUsageDescription</key>
