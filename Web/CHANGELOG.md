@@ -12,6 +12,10 @@
 
 - 增加手机 QQ 浏览器检测，手机 QQ 浏览器暂时无法支持 WebRTC
 
+**Bug Fixes**
+
+- 修复 Boolean 返回值类型 
+
 ## 4.3.10 (2020-3-17)
 
 **Improvement**
