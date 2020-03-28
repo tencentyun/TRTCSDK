@@ -107,7 +107,6 @@
 - (void)dealloc {
     [self stopRtmp];
     _logicView.delegate = nil;
-    _liveRoom.delegate = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
     NSLog(@"dealloc anchorVC");
@@ -287,8 +286,12 @@
                          [statusInfoView.btnKickout setHidden:isPKMode];
                          [statusInfoView stopLoading];
                     } else {
-                        if (!isPKMode)
+                        if (!isPKMode) {
+                            [weakSelf.liveRoom kickoutJoinAnchorWithUserID:userID callback:^(NSInteger code, NSString * error) {
+                                
+                            }];
                             [weakSelf onAnchorExit:userID];
+                        }
                     }
                 }];
             }
@@ -601,13 +604,17 @@
             } else {
                 [TCUtil toastTip:@"出现错误，请稍候尝试" parentView:self.view];
             }
-            self.curPkRoom = nil;
+            if (self.roomType != TRTCLiveRoomLiveTypeRoomPK) {
+                self.curPkRoom = nil;
+            }
         } else {
             
         }
     }];
     
-    self.curPkRoom = room;
+    if (_roomType != TRTCLiveRoomLiveTypeRoomPK) {
+        self.curPkRoom = room;
+    }
 }
 
 - (void)clickLog {

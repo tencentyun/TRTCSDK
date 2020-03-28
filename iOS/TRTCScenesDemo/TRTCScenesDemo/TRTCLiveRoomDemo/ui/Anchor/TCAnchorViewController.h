@@ -23,6 +23,7 @@
 @property (nonatomic, assign)  BOOL log_switch;
 @property (nonatomic, strong)  NSMutableSet*  setLinkMemeber;
 @property (nonatomic, strong)  TRTCLiveRoomInfo *curPkRoom;
+@property (nonatomic, assign) NSInteger  roomType;
 - (void)onAnchorEnter:(NSString *)userID;
 - (void)onAnchorExit:(NSString *)userID;
 - (void)onRequestJoinAnchor:(TRTCLiveUserInfo *)user reason:(NSString *)reason timeout: (double)timeout;

@@ -75,6 +75,7 @@ extension TCAnchorViewController: TRTCLiveRoomDelegate {
     }
     
     public func trtcLiveRoom(_ trtcLiveRoom: TRTCLiveRoomImpl, onRoomInfoChange info: TRTCLiveRoomInfo) {
+        self.roomType = info.type.rawValue
         if info.type == .single || info.type == .linkMic {
             UIView.animate(withDuration: 0.1) {
                 self.videoParentView.frame = self.view.frame
