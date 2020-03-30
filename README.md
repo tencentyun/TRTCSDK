@@ -14,16 +14,26 @@
 | Electron | [下载](http://liteavsdk-1252463788.cosgz.myqcloud.com/TXLiteAVSDK_TRTC_Electron_latest.zip) | [DOC](https://cloud.tencent.com/document/product/647/38548) | [DOC](https://cloud.tencent.com/document/product/647/38549) |[API](https://cloud.tencent.com/document/product/647/38551) |
 | 微信小程序 | [下载](http://liteavsdk-1252463788.cosgz.myqcloud.com/TRTC_WXMini_latest.zip) | [DOC](https://cloud.tencent.com/document/product/647/32399) | [DOC](https://cloud.tencent.com/document/product/647/32183) |[API](https://cloud.tencent.com/document/product/647/17018) |
 
-## 最新版本 7.0 @ 2020.03.09
-1. 全平台 提升 mcu 混流易用性。
-2. 全平台 优化弱网抗抖动能力，弱网下，音频更流畅。
-3. 全平台 解决多次交替进退房导致的内存泄露问题。
-4. iOS&Android 优化 3A 开启策略。
-5. iOS 增加全通话音量。
-6. Mac 辅路颜色丢失问题。
-7. Windows startPublishing 辅路不生效 bug。
-8. Windows 解决辅路帧率过低问题。
-9. Windows 解决停止推流超过30分钟再恢复推流出现音画不同步问题。
+## 最新版本 7.1 @ 2020.03.27
+1. 全平台：支持更新privateMapKey。
+1. 全平台：优化混流预设模版易用性。
+1. 全平台：修复进房自动旁路的问题。
+1. 全平台：混流优化，提升成功率。
+1. Android：修复进房频繁开关AGC的时候，处理声音变成全零的问题。
+1. Android：C++ STL基础库全静态编译。
+1. Android：通话音量默认开启ANS、AGC，提高通话模式下的音质。
+1. Android：修复测速导致其他API调用响应较慢的问题。
+1. Android：修复被系统电话打断后上行音量翻倍及声音有噪音问题。
+1. iOS：修复进房前先 startLocalPreview 再进房会预览黑一下的问题。
+1. iOS：修复iOS9及更低版本下，无法切换扬声器模式的问题。
+1. iOS：解决部分机型iOS13.3系统回声严重的问题。
+1. iOS：修复偶现内存占用异常问题。
+1. iOS：BGM播放支持不带后缀的音频文件。
+1. Mac：修复硬编码率波动较大的问题，解决开关摄像头引起的码率波动问题。
+1. windows：修复关闭AERO时全屏分享看不到透明窗口的问题。
+1. windows：修复win10缩略图捕获失效。
+1. windows：修复win8.0及更低版本屏幕采集概率失效问题。
+1. windows：修复偶现日志模块死锁问题。
 
 ## Demo 体验地址
 
