@@ -15,7 +15,6 @@
 | 微信小程序 | [下载](http://liteavsdk-1252463788.cosgz.myqcloud.com/TRTC_WXMini_latest.zip) | [DOC](https://cloud.tencent.com/document/product/647/32399) | [DOC](https://cloud.tencent.com/document/product/647/32183) |[API](https://cloud.tencent.com/document/product/647/17018) |
 
 ## 最新版本 7.1 @ 2020.03.27
-1. 全平台：支持更新privateMapKey。
 1. 全平台：优化混流预设模版易用性。
 1. 全平台：修复进房自动旁路的问题。
 1. 全平台：混流优化，提升成功率。
