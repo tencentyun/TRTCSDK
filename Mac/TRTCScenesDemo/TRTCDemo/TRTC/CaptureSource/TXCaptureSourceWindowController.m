@@ -18,6 +18,7 @@
     NSArray<NSArray*>* sections;
 }
 @property (weak) IBOutlet NSCollectionView *collectionView;
+@property (weak) IBOutlet NSButton *streamTypeButton;
 
 @end
 
@@ -60,6 +61,10 @@
     if (self.onSelectSource) {
         self.onSelectSource(nil);
     }
+}
+
+- (BOOL)usesBigStream {
+    return self.streamTypeButton.state == NSControlStateValueOn;
 }
 
 #pragma mark - NSCollectionViewDataSource

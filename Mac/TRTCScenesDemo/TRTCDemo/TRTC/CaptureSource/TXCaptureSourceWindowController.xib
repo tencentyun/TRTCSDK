@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15705" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14313.18"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15705"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="TXCaptureSourceWindowController">
             <connections>
                 <outlet property="collectionView" destination="qag-xx-n95" id="9zL-Xk-cJv"/>
+                <outlet property="streamTypeButton" destination="E38-Fn-R2w" id="OfL-67-lzg"/>
                 <outlet property="window" destination="Tjf-3m-zhm" id="S8V-Yy-jH7"/>
             </connections>
         </customObject>
@@ -66,14 +67,23 @@
                             <action selector="endScreenShare:" target="-2" id="MuW-Fu-yvt"/>
                         </connections>
                     </button>
+                    <button hidden="YES" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="E38-Fn-R2w">
+                        <rect key="frame" x="518" y="11" width="115" height="18"/>
+                        <buttonCell key="cell" type="check" title="屏幕分享到主路" bezelStyle="regularSquare" imagePosition="left" inset="2" id="ora-R4-kZb">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                    </button>
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="bottom" secondItem="SXN-27-AMK" secondAttribute="bottom" constant="39" id="9G6-0p-ReV"/>
                     <constraint firstItem="SXN-27-AMK" firstAttribute="leading" secondItem="WKx-td-Zy0" secondAttribute="leading" id="GGb-1h-oQO"/>
                     <constraint firstAttribute="bottom" secondItem="HgH-VX-XqH" secondAttribute="bottom" constant="9" id="Hgc-3e-2BP"/>
+                    <constraint firstAttribute="trailing" secondItem="E38-Fn-R2w" secondAttribute="trailing" constant="21" id="Oai-k1-AWj"/>
                     <constraint firstAttribute="trailing" secondItem="SXN-27-AMK" secondAttribute="trailing" id="UR5-kC-Amz"/>
                     <constraint firstItem="SXN-27-AMK" firstAttribute="top" secondItem="WKx-td-Zy0" secondAttribute="top" id="eBa-dU-ip0"/>
                     <constraint firstItem="HgH-VX-XqH" firstAttribute="leading" secondItem="WKx-td-Zy0" secondAttribute="leading" constant="21" id="nRb-rs-UES"/>
+                    <constraint firstItem="E38-Fn-R2w" firstAttribute="centerY" secondItem="dn9-Hy-9kE" secondAttribute="centerY" id="uwL-CG-dnQ"/>
                     <constraint firstItem="dn9-Hy-9kE" firstAttribute="leading" secondItem="HgH-VX-XqH" secondAttribute="trailing" constant="12" id="x8e-ho-Frb"/>
                     <constraint firstAttribute="bottom" secondItem="dn9-Hy-9kE" secondAttribute="bottom" constant="9" id="zZB-Ys-ocH"/>
                 </constraints>

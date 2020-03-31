@@ -11,9 +11,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 @interface TXCaptureSourceWindowController : NSWindowController
+
 @property (weak, nonatomic) TRTCCloud *engine;
 @property (copy, nonatomic) void(^onSelectSource)(TRTCScreenCaptureSourceInfo * _Nullable);
+@property (nonatomic, readonly) BOOL usesBigStream;
+
 - (instancetype)initWithTRTCCloud:(TRTCCloud *)engine;
+
 @end
 
 NS_ASSUME_NONNULL_END

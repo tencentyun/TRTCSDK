@@ -362,16 +362,21 @@ typedef NS_ENUM(NSUInteger, LayoutStyle) {
     __weak TRTCMainWindowController *wself = self;
     self.captureSourceWindowController.onSelectSource = ^(TRTCScreenCaptureSourceInfo * _Nonnull source) {
         __strong TRTCMainWindowController *self = wself;
-        if (self == nil) return;
-        if (source == nil) {
-            [self.trtcEngine stopScreenCapture];
-        } else if (source.type != TRTCScreenCaptureSourceTypeUnknown) {
+        if (!self) return;
+        
+        [self.trtcEngine stopScreenCapture];
+
+        if (source && source.type != TRTCScreenCaptureSourceTypeUnknown) {
             if (source.type == TRTCScreenCaptureSourceTypeWindow) {
                 [self.trtcEngine selectScreenCaptureTarget:source rect:CGRectZero capturesCursor:NO highlight:YES];
             } else if (source.type == TRTCScreenCaptureSourceTypeScreen) {
                 [self.trtcEngine selectScreenCaptureTarget:source rect:CGRectZero capturesCursor:YES highlight:NO];
             }
-            [self.trtcEngine startScreenCapture:nil];
+            if (self.captureSourceWindowController.usesBigStream) {
+                [self.trtcEngine startScreenCapture:nil streamType:TRTCVideoStreamTypeBig encParam:nil];
+            } else {
+                [self.trtcEngine startScreenCapture:nil];
+            }
         }
         self.screenCaptureInfo = source;
         [self updateWindowTitle];
