@@ -2,7 +2,7 @@
 <template name='custom'>
   <view class="template-custom">
     <view class="players-container">
-      <view wx:for="{{streamList}}" wx:key="streamID" wx:if="{{item.src && (item.hasVideo || item.hasAudio)}}" class="view-container player-container {{item.isVisible?'':'none'}}" style="left:{{item.xAxis}};top:{{item.yAxis}};width:{{item.width}};height:{{item.height}};zindex:{{item.zindex}};">
+      <view wx:for="{{streamList}}" wx:key="streamID" wx:if="{{item.src && (item.hasVideo || item.hasAudio)}}" class="view-container player-container {{item.isVisible?'':'none'}}" style="left:{{item.xAxis}};top:{{item.yAxis}};width:{{item.width}};height:{{item.height}};z-index:{{item.zIndex}};">
         <live-player
           class="player" 
           id="{{item.streamID}}" 

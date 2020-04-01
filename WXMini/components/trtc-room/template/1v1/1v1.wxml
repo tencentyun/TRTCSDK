@@ -95,7 +95,7 @@
         <image class="btn-image" src="./static/hangup.png"></image>
       </view>
       <view class="btn-normal" bindtap="_toggleIMPanel">
-        <image class="btn-image" src="{{enableIM? './static/im.png': './static/im-disable.png'}}"></image>
+        <image class="btn-image" src="./static/im.png"></image>
       </view>
     </view>
   </view>

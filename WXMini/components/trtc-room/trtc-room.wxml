@@ -4,10 +4,10 @@
 
 <view class="trtc-room-container">
   <block wx:if="{{template === '1v1'}}">
-    <template is='1v1' data="{{pusher, streamList, debug, enableIM}}"></template>
+    <template is='1v1' data="{{pusher, streamList, debug}}"></template>
   </block>
   <block wx:if="{{template === 'grid'}}">
-    <template is='grid' data="{{pusher, streamList, visibleStreamList, debug, enableIM, panelName, gridPagePlaceholderStreamList, gridPageCount, gridCurrentPage, gridPlayerPerPage}}"></template>
+    <template is='grid' data="{{pusher, streamList, visibleStreamList, debug, panelName, gridPagePlaceholderStreamList, gridPageCount, gridCurrentPage, gridPlayerPerPage}}"></template>
   </block>
   <block wx:if="{{template === 'custom'}}">
     <template is='custom' data="{{pusher, streamList, debug}}"></template>
