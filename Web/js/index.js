@@ -1,60 +1,48 @@
-/* eslint-disable require-jsdoc */
+const presetting = new Presetting();
+presetting.init();
 
-// initialize userId/roomId
-$('#userId').val('user_' + parseInt(Math.random() * 100000000));
-$('#roomId').val('889988');
+// check if browser is compatible with TRTC
+TRTC.checkSystemRequirements().then(result => {
+  if (!result) {
+    alert('您的浏览器不兼容此应用！\n建议下载最新版Chrome浏览器');
+    window.location.href = 'http://www.google.cn/chrome/';
+  }
+});
 
-let rtc = null;
+// setup logging stuffs
+TRTC.Logger.setLogLevel(TRTC.Logger.LogLevel.DEBUG);
+TRTC.Logger.enableUploadLog();
 
-$('#join').on('click', function(e) {
-  e.preventDefault();
-  console.log('join');
-  if (rtc) return;
-  const userId = $('#userId').val();
-  const roomId = $('#roomId').val();
-  const config = genTestUserSig(userId);
-  rtc = new RtcClient({
-    userId,
-    roomId,
-    sdkAppId: config.sdkAppId,
-    userSig: config.userSig
+TRTC.getDevices()
+  .then(devices => {
+    devices.forEach(item => {
+      console.log('device: ' + item.kind + ' ' + item.label + ' ' + item.deviceId);
+    });
+  })
+  .catch(error => console.error('getDevices error observed ' + error));
+
+// populate camera options
+TRTC.getCameras().then(devices => {
+  devices.forEach(device => {
+    if (!cameraId) {
+      cameraId = device.deviceId;
+    }
+    let div = $('<div></div>');
+    div.attr('id', device.deviceId);
+    div.html(device.label);
+    div.appendTo('#camera-option');
   });
-  rtc.join();
 });
 
-$('#publish').on('click', function(e) {
-  e.preventDefault();
-  console.log('publish');
-  if (!rtc) {
-    Toast.error('请先加入房间！');
-    return;
-  }
-  rtc.publish();
-});
-
-$('#unpublish').on('click', function(e) {
-  e.preventDefault();
-  console.log('unpublish');
-  if (!rtc) {
-    Toast.error('请先加入房间！');
-    return;
-  }
-  rtc.unpublish();
-});
-
-$('#leave').on('click', function(e) {
-  e.preventDefault();
-  console.log('leave');
-  if (!rtc) {
-    Toast.error('请先加入房间！');
-    return;
-  }
-  rtc.leave();
-  rtc = null;
-});
-
-$('#settings').on('click', function(e) {
-  e.preventDefault();
-  $('#settings').toggleClass('btn-raised');
-  $('#setting-collapse').collapse();
+// populate microphone options
+TRTC.getMicrophones().then(devices => {
+  devices.forEach(device => {
+    if (!micId) {
+      micId = device.deviceId;
+    }
+    let div = $('<div></div>');
+    div.attr('id', device.deviceId);
+    div.html(device.label);
+    div.appendTo('#mic-option');
+  });
 });

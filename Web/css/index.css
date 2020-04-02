@@ -1,0 +1,77 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
+    font-family: PingFangSC-Regular !important;
+}
+html{
+    width: 100%;
+    height: 100%;
+}
+button{
+    margin: 0 !important;
+    color: #fff !important;
+    background-color: #006EFF !important
+}
+div{
+    display: flex;
+    align-items: center;
+}
+.row-div{
+    flex-direction: row;
+}
+.col-div{
+    flex-direction: column;
+}
+#root{
+    width: 100%;
+    height: 100%;
+    background-color: rgb(250, 250, 250);
+    position: absolute;
+    display: block;
+}
+#login-root{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#login-card{
+    width: 450px;
+    height: 470px;
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+    background-color: white;
+}
+.login-card{
+    width: 360px;
+    height: 450px;
+    background-color: white;
+    margin: 0 auto;
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+}
+.popover{
+    min-width: 300px;
+    max-width: 1000px;
+    border: 0;
+    white-space: nowrap;
+    /* overflow: hidden; */
+}
+.popover-body{
+    flex-direction: column;
+    padding: 0;
+}
+.popover-body>div{
+    width: 100%;
+    height: 35px;
+    justify-content: center;
+    cursor: default;
+}
+.popover-body>div:hover{
+    background-color: #F7F7F7;
+}
