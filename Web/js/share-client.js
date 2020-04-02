@@ -13,12 +13,7 @@ class ShareClient {
       mode: 'rtc',
       sdkAppId: this.sdkAppId_,
       userId: this.userId_,
-      userSig: this.userSig_,
-      /**
-       * disable receivers to avoid receiving remote streams as we only want to
-       * publish the screen stream
-       */
-      disableReceiver: true
+      userSig: this.userSig_
     });
 
     this.client_.setDefaultMuteRemoteStreams(true);
