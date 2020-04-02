@@ -97,3 +97,45 @@ body {
 .el-dialog {
     width: fit-content;
 }
+.loading-modal {
+    width: 100vw;
+    height: 100vh;
+    background-color: rgb(255, 255, 255);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    padding-top: 300px;
+    text-align: center;
+}
+.loading-modal > .img-logo {
+    position: absolute;
+    z-index: 9;
+    left: 50%;
+    top: 25%;
+    margin-left: -100px;
+}
+.loading-modal > .img-loading {
+    position: absolute;
+    left: 50%;
+    top: 30%;
+    margin-left: -200px;
+}
+.screen-list {
+    display: inline-block;
+    margin: 0.5vw;
+}
+.screen-list .screen-show {
+    margin: 0px;
+}
+.screen-list .screen-button {
+    text-align: center;
+    width: 100%;
+    background: #EBEEF5;
+}
+.screen-list .screen-button>.el-button>span {
+    text-overflow: ellipsis;
+}
+.box-card>.el-card__body>p>canvas {
+    margin: 0 auto;
+}

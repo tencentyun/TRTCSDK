@@ -44,6 +44,9 @@ function getRandom(num) {
   return Math.floor((Math.random() + Math.floor(Math.random() * 9 + 1)) * Math.pow(10, num - 1));
 };
 
+const testCameraViewKey = "camera_device_video_view";
+let defaultScreenSharingView = null; // 指向辅流屏幕分享（默认）的本地预览画面所在的 dom 节点
+
 let demoApp = new Vue({
   el: '#demo_app',
   data() {
@@ -61,6 +64,7 @@ let demoApp = new Vue({
       localMirror: false,
       encoderMirror: false,
       screenCapture: false,
+      screenSharingStreamTypeBig: false,
       showVoice: false,
       screenListDialogVisible: false, // 是否显示屏幕分享的窗口列表
       screenCaptureWidth: 200,
@@ -208,7 +212,8 @@ let demoApp = new Vue({
   },
   mounted: function () {
     // 创建 TRTC 对象
-    this.rtcCloud = new TRTCCloud();
+    // this.rtcCloud = new TRTCCloud();
+    this.rtcCloud = TRTCCloud.getTRTCShareInstance();
 
     // 设置 Log 日志回调
     // this.rtcCloud.setLogCallback(function (log, level, module) {
@@ -491,6 +496,22 @@ let demoApp = new Vue({
       });
       rtcCloud.on('onScreenCaptureStopped', (reason) => {
         console.info('trtc_demo: onScreenCaptureStopped reason:' + reason);
+        if (reason === 1) {
+          // 从可选择窗口列表中剔除被关闭的窗口，避免重复选择
+          for (var i = 0; i < this.screenList.length; i++) {
+            if (this.screenList[i].sourceName === this.screenName) {
+              console.info('trtc_demo: onScreenCaptureStopped removed target:' + this.screenName);
+              this.screenList.splice(i, 1);
+              break;
+            }
+          }
+          alert('您关闭了当前的屏幕分享窗口，请选择其它窗口进行分享！');
+        }
+        
+        // 移除 dom 节点
+        if (defaultScreenSharingView) {
+          defaultScreenSharingView.parent && defaultScreenSharingView.parent.removeChild(defaultScreenSharingView);
+        }
       });
 
       // 麦克风音量回调监听
@@ -730,19 +751,18 @@ let demoApp = new Vue({
     },
     // 摄像头测试
     onTestCameraChanged() {
-      let key = "camera_device_video_view";
       if (this.testCamera) {
-        let cameraTestVideoEl = document.getElementById(key);
+        let cameraTestVideoEl = document.getElementById(testCameraViewKey);
         if (!cameraTestVideoEl) {
           cameraTestVideoEl = document.createElement('div');
-          cameraTestVideoEl.id = key;
+          cameraTestVideoEl.id = testCameraViewKey;
           cameraTestVideoEl.classList.add('camera_test_video_view');
           document.querySelector("#camera_device_video_wrap").appendChild(cameraTestVideoEl);
         }
         this.rtcCloud.startCameraDeviceTest(cameraTestVideoEl);
       } else {
         // 暂时不需要主动调用 stopCameraDeviceTest 这样会导致 Renderer 失效
-        let cameraTestVideoEl = document.getElementById(key);
+        let cameraTestVideoEl = document.getElementById(testCameraViewKey);
         if (cameraTestVideoEl) {
           document.querySelector("#camera_device_video_wrap").removeChild(cameraTestVideoEl);
         }
@@ -1187,14 +1207,7 @@ let demoApp = new Vue({
       // 打开屏幕分享
       if (this.screenCapture) {
         this.screenList = this.rtcCloud.getScreenCaptureSources(this.screenCaptureWidth, this.screenCaptureHeight, 20, 20);
-        let encparam = new TRTCVideoEncParam();
-        encparam.videoResolution = TRTCVideoResolution.TRTCVideoResolution_640_480;
-        encparam.resMode = TRTCVideoResolutionMode.TRTCVideoResolutionModeLandscape;
-        encparam.videoFps = 15;
-        encparam.videoBitrate = 600;
-        this.rtcCloud.setSubStreamEncoderParam(encparam);
-      }
-      else {
+      } else {
         this.screenName = "";
         this.rtcCloud.stopScreenCapture();
         this.destroyVideoView("local_video", TRTCVideoStreamType.TRTCVideoStreamTypeSub);
@@ -1208,6 +1221,28 @@ let demoApp = new Vue({
           this.mixStreamInfos.splice(index, 1);
         }
         this.updateMixTranscodeInfo();
+
+        if (this.screenSharingStreamTypeBig) {
+          // startLocalPreview 前重新设置编码参数
+          let encParam = new TRTCVideoEncParam();
+          encParam.videoResolution = this.videoResolution;
+          encParam.resMode = this.videoResolutionMode;
+          encParam.videoFps = this.videoFps;
+          encParam.videoBitrate = this.videoBitrate;
+          if (this.appScene == TRTCAppScene.TRTCAppSceneVideoCall) {
+            encParam.enableAdjustRes = true;
+          }
+          this.rtcCloud.setVideoEncoderParam(encParam);
+
+          // 打开采集和预览本地视频、采集音频
+          let view = this.findVideoView("local_video", TRTCVideoStreamType.TRTCVideoStreamTypeBig);
+          this.rtcCloud.startLocalPreview(view);
+          // 填充模式需要在设置 view 后才生效
+          this.rtcCloud.setLocalViewFillMode(this.videoFillMode);
+          this.rtcCloud.startLocalAudio();
+          this.rtcCloud.muteLocalVideo(false);
+          this.rtcCloud.muteLocalAudio(false);
+        }
       }
     },
 
@@ -1246,6 +1281,8 @@ let demoApp = new Vue({
     },
 
     onSelectScreenCapture(sourceId) {
+      this.rtcCloud.stopScreenCapture();
+
       // 选择屏幕分享
       if (this.screenCapture) {
         let source;
@@ -1262,8 +1299,27 @@ let demoApp = new Vue({
         let mouse = true, highlight = true;
 
         this.rtcCloud.selectScreenCaptureTarget(source.type, source.sourceId, source.sourceName, rect, mouse, highlight);
+        // windows 平台支持本地屏幕共享预览画面， mac 平台暂时不支持。
         // let view = this.findVideoView("local_video", TRTCVideoStreamType.TRTCVideoStreamTypeSub);
-        this.rtcCloud.startScreenCapture();
+        if (this.screenSharingStreamTypeBig) {
+          // 主路分享，提前停止摄像头采集（stopLocalPreview）避免相互冲突
+          this.rtcCloud.stopLocalPreview();
+          // 当屏幕分享从辅路切到主路，把本地的辅路预览隐藏掉
+          this.setVisibleView(false, "local_video", TRTCVideoStreamType.TRTCVideoStreamTypeSub);
+          // 显示走主路的屏幕分享的本地预览画面
+          let viewBig = this.findVideoView("local_video", TRTCVideoStreamType.TRTCVideoStreamTypeBig);
+          this.rtcCloud.startScreenCapture(viewBig, TRTCVideoStreamType.TRTCVideoStreamTypeBig);
+          defaultScreenSharingView = null;
+        } else {
+          // 走辅路分享，默认
+          // 显示主流本地预览画面
+          let viewBig = this.findVideoView("local_video", TRTCVideoStreamType.TRTCVideoStreamTypeBig);
+          this.rtcCloud.startLocalPreview(viewBig);
+          // 显示辅流本地预览画面
+          let viewSub = this.findVideoView("local_video", TRTCVideoStreamType.TRTCVideoStreamTypeSub);
+          this.rtcCloud.startScreenCapture(viewSub, TRTCVideoStreamType.TRTCVideoStreamTypeSub);
+          defaultScreenSharingView = viewSub;
+        }
         this.hideScreenListDialog();
       }
     },
@@ -1378,6 +1434,7 @@ let demoApp = new Vue({
       this.muteLocalVideo = false;
       this.muteLocalAudio = false;
       this.screenCapture = false;
+      this.screenSharingStreamTypeBig = false;
       this.screenName = "";
       this.connectLoading = false;
       this.connected = false;
@@ -1392,6 +1449,27 @@ let demoApp = new Vue({
       this.bgmProgress = 0;
       this.bgmProgressMS = 0;
       this.systemAudioLoopback = false;
+
+      // 重置设备测试项
+      if (this.testMic) {
+        this.rtcCloud.stopMicDeviceTest();
+        this.testMicVolume = 0;
+        this.testMic = false;
+      }
+      if (this.testSpeaker) {
+        this.rtcCloud.stopSpeakerDeviceTest();
+        this.testSpeakerVolume = 0;
+        this.testSpeaker = false;
+      }
+      if (this.testCamera) {
+        // 暂时不需要主动调用 stopCameraDeviceTest 这样会导致 Renderer 失效
+        let cameraTestVideoEl = document.getElementById(testCameraViewKey);
+        if (cameraTestVideoEl) {
+          document.querySelector("#camera_device_video_wrap").removeChild(cameraTestVideoEl);
+        }
+        this.testCamera = false;
+      }
+      defaultScreenSharingView = null;
     },
 
     // 退房
@@ -1582,19 +1660,23 @@ let demoApp = new Vue({
       ];
       // 初始化设备信息
       this.cameraList = this.rtcCloud.getCameraDevicesList();
+      // getCurrentCameraDevice 目前不支持获取默认的摄像头设备，后续会支持，所以先取摄像头设备列表的第一个作为默认
+      // const currentCameraDevice = this.rtcCloud.getCurrentCameraDevice();
       if (this.cameraList.length > 0) {
         this.cameraDeviceId = this.cameraList[0].deviceId;
         this.cameraDeviceName = this.cameraList[0].deviceName;
       }
       this.micList = this.rtcCloud.getMicDevicesList();
-      if (this.micList.length > 0) {
-        this.micDeviceId = this.micList[0].deviceId;
-        this.micDeviceName = this.micList[0].deviceName;
+      const currentMicDevice = this.rtcCloud.getCurrentMicDevice();
+      if (this.micList.length > 0 && currentMicDevice) {
+        this.micDeviceId = currentMicDevice.deviceId;
+        this.micDeviceName = currentMicDevice.deviceName;
       }
       this.speakerList = this.rtcCloud.getSpeakerDevicesList();
-      if (this.speakerList.length > 0) {
-        this.speakerDeviceId = this.speakerList[0].deviceId;
-        this.speakerDeviceName = this.speakerList[0].deviceName;
+      const currentSpeakerDevice = this.rtcCloud.getCurrentSpeakerDevice();
+      if (this.speakerList.length > 0 && currentSpeakerDevice) {
+        this.speakerDeviceId = currentSpeakerDevice.deviceId;
+        this.speakerDeviceName = currentSpeakerDevice.deviceName;
       }
       this.micVolume = this.rtcCloud.getCurrentMicDeviceVolume();
       this.speakerVolume = this.rtcCloud.getCurrentSpeakerVolume();
