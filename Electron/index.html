@@ -72,6 +72,8 @@
           </el-form>
           <el-form :inline="true" ref="form" size="mini">
             <el-form-item>
+              <el-checkbox @change="" v-model.boolean="screenSharingStreamTypeBig" :disabled="!inroom">选择主路进行屏幕分享
+              </el-checkbox>
               <el-checkbox @change="onStartScreenCapture" v-model.boolean="screenCapture" :disabled="!inroom">屏幕分享
               </el-checkbox>
             </el-form-item>
@@ -85,14 +87,15 @@
               </el-select> -->
               <el-button @click="showScreenListDialog" :disabled="!screenCapture">{{screenCaptureSelectedName || '请选择'}}</el-button>
               <el-dialog   title="请选择一个窗口进行共享"  :visible.sync="screenListDialogVisible">
-                <el-card class="box-card" 
-                :style="{display:'inline-block', width: screenCaptureWidth+'px', height:screenCaptureHeight+60+'px', padding:'0,0,5px,0'}" 
+                <el-card class="box-card screen-list" 
+                :style="{width: screenCaptureWidth+'px', height:screenCaptureHeight+60+'px'}" 
                 :body-style="{padding: 0, overflow:'hidden'}" shadow="hover" v-for="item in screenList" :key="item.sourceId" :label="item.sourceName"
                 :data="item.sourceId"
                 >
-                    <p><canvas :id="['screen_'+item.sourceId]"></canvas></p>
-                    <span :show-overflow-tooltip="true">{{item.sourceName.length <= 20 ? item.sourceName : item.sourceName.slice(0,17)+'...'}}</span>
-                    <el-button  @click="onSelectScreenCapture(item.sourceId)" type="text">选择</el-button>
+                    <p :title="item.sourceName" class="screen-show"><canvas :id="['screen_'+item.sourceId]"></canvas></p>
+                    <p class="screen-button">
+                      <el-button  @click="onSelectScreenCapture(item.sourceId)" type="text"> {{item.sourceName}} </el-button>
+                    </p>
                 </el-card>
                 
               </el-dialog>
