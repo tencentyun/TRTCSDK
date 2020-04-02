@@ -253,6 +253,14 @@ namespace TRTCWPFDemo
             }));
         }
 
+        public void onStartPublishing(int errCode, string errMsg)
+        {
+           Log.I(String.Format("errCode : {0}, errorMsg : {1}", errCode, errMsg));
+        }
+        public void onStopPublishing(int errCode, string errMsg)
+        {
+            Log.I(String.Format("errCode : {0}, errorMsg : {1}", errCode, errMsg));
+        }
         public void onExitRoom(int reason)
         {
             mIsEnterSuccess = false;
