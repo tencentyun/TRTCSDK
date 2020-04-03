@@ -71,8 +71,8 @@
 		1A87082323C43DB6009EACAB /* AudioCallUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A87081B23C43DB6009EACAB /* AudioCallUtils.swift */; };
 		1AA7EF0C23CC8A94001177CF /* AudioCallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA7EF0B23CC8A94001177CF /* AudioCallViewController.swift */; };
 		1ACD64732423235000098C29 /* BeautyPerformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ACD64722423235000098C29 /* BeautyPerformer.swift */; };
-		1ACD64862423463700098C29 /* TRTCBgmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ACD64852423463700098C29 /* TRTCBgmManager.swift */; };
-		1ACD64882423481000098C29 /* TRTCBgmManagerImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ACD64872423481000098C29 /* TRTCBgmManagerImpl.swift */; };
+		1ACD64862423463700098C29 /* TRTCAudioEffectManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ACD64852423463700098C29 /* TRTCAudioEffectManager.swift */; };
+		1ACD64882423481000098C29 /* TRTCAudioEffectManagerImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ACD64872423481000098C29 /* TRTCAudioEffectManagerImpl.swift */; };
 		1ADB05FE23D157940075235B /* TRTCVideoCall+model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ADB05F823D157940075235B /* TRTCVideoCall+model.swift */; };
 		1ADB05FF23D157940075235B /* TRTCVideoCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ADB05F923D157940075235B /* TRTCVideoCall.swift */; };
 		1ADB060023D157940075235B /* TRTCVideoCall+OnNewMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ADB05FA23D157940075235B /* TRTCVideoCall+OnNewMessage.swift */; };
@@ -152,6 +152,7 @@
 		F8713C362411D7E70024ECFD /* TXLiteAVSDK_TRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8713C352411D7E70024ECFD /* TXLiteAVSDK_TRTC.framework */; };
 		F8713C472411F8740024ECFD /* TCBeautyPanelResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 860C14B02404CFE50023A19E /* TCBeautyPanelResources.bundle */; };
 		F8713C5E2411FD300024ECFD /* FilterResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = F8713C5D2411FD300024ECFD /* FilterResource.bundle */; };
+		F8A3CCE42431D431003465AF /* TCAnchorViewController+Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A3CCE32431D430003465AF /* TCAnchorViewController+Room.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -290,8 +291,8 @@
 		1A87081C23C43DB6009EACAB /* GenerateTestUserSig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GenerateTestUserSig.h; sourceTree = "<group>"; };
 		1AA7EF0B23CC8A94001177CF /* AudioCallViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioCallViewController.swift; sourceTree = "<group>"; };
 		1ACD64722423235000098C29 /* BeautyPerformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeautyPerformer.swift; sourceTree = "<group>"; };
-		1ACD64852423463700098C29 /* TRTCBgmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TRTCBgmManager.swift; sourceTree = "<group>"; };
-		1ACD64872423481000098C29 /* TRTCBgmManagerImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TRTCBgmManagerImpl.swift; sourceTree = "<group>"; };
+		1ACD64852423463700098C29 /* TRTCAudioEffectManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TRTCAudioEffectManager.swift; sourceTree = "<group>"; };
+		1ACD64872423481000098C29 /* TRTCAudioEffectManagerImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TRTCAudioEffectManagerImpl.swift; sourceTree = "<group>"; };
 		1ADB05F823D157940075235B /* TRTCVideoCall+model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TRTCVideoCall+model.swift"; sourceTree = "<group>"; };
 		1ADB05F923D157940075235B /* TRTCVideoCall.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCVideoCall.swift; sourceTree = "<group>"; };
 		1ADB05FA23D157940075235B /* TRTCVideoCall+OnNewMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TRTCVideoCall+OnNewMessage.swift"; sourceTree = "<group>"; };
@@ -414,6 +415,7 @@
 		F0063A12EB70BB29A75838F4 /* Pods-TRTCScenesDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TRTCScenesDemo.debug.xcconfig"; path = "Target Support Files/Pods-TRTCScenesDemo/Pods-TRTCScenesDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		F8713C352411D7E70024ECFD /* TXLiteAVSDK_TRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TXLiteAVSDK_TRTC.framework; path = ../SDK/TXLiteAVSDK_TRTC.framework; sourceTree = "<group>"; };
 		F8713C5D2411FD300024ECFD /* FilterResource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FilterResource.bundle; sourceTree = "<group>"; };
+		F8A3CCE32431D430003465AF /* TCAnchorViewController+Room.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TCAnchorViewController+Room.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -548,6 +550,7 @@
 				1A582E292417B64F007F7DF2 /* TCAnchorToolbarView.m */,
 				1A582E282417B64F007F7DF2 /* TCAnchorViewController.h */,
 				1A582E272417B64F007F7DF2 /* TCAnchorViewController.m */,
+				F8A3CCE32431D430003465AF /* TCAnchorViewController+Room.swift */,
 				1A582E2A2417B64F007F7DF2 /* TCAnchorViewController+LiveDelegate.swift */,
 			);
 			path = Anchor;
@@ -571,7 +574,7 @@
 				1A582E332417B64F007F7DF2 /* TRTCLiveRoom.swift */,
 				1A582E412417B64F007F7DF2 /* TRTCLiveRoomDelegate.swift */,
 				1A582E422417B64F007F7DF2 /* TRTCLiveRoomDef.swift */,
-				1ACD64852423463700098C29 /* TRTCBgmManager.swift */,
+				1ACD64852423463700098C29 /* TRTCAudioEffectManager.swift */,
 				1A582E342417B64F007F7DF2 /* impl */,
 			);
 			path = model;
@@ -583,7 +586,7 @@
 				1A582E362417B64F007F7DF2 /* TRTCLiveRoomImpl.swift */,
 				1A582E352417B64F007F7DF2 /* TRTCLiveRoomImpl+RecvMessage.swift */,
 				1A582E372417B64F007F7DF2 /* TRTCCloudAction.swift */,
-				1ACD64872423481000098C29 /* TRTCBgmManagerImpl.swift */,
+				1ACD64872423481000098C29 /* TRTCAudioEffectManagerImpl.swift */,
 				1A582E3B2417B64F007F7DF2 /* RoomManager.swift */,
 				1A582E382417B64F007F7DF2 /* MemberManager */,
 				1A582E3C2417B64F007F7DF2 /* IM */,
@@ -1334,7 +1337,7 @@
 				1A582E492417B64F007F7DF2 /* TCMsgModel.m in Sources */,
 				1A582E4D2417B64F007F7DF2 /* TCAnchorToolbarView.m in Sources */,
 				864ECD1C23FBE47700263DC8 /* TRTCVoiceRoomCustomAudioFileReader.m in Sources */,
-				1ACD64862423463700098C29 /* TRTCBgmManager.swift in Sources */,
+				1ACD64862423463700098C29 /* TRTCAudioEffectManager.swift in Sources */,
 				1A14035423B0F1A2008BDE83 /* AudioCallMainViewController.swift in Sources */,
 				1A582E522417B64F007F7DF2 /* LiveRoomMainViewController+UI.swift in Sources */,
 				1ACD64732423235000098C29 /* BeautyPerformer.swift in Sources */,
@@ -1374,6 +1377,7 @@
 				861B633523F2696E000CECAC /* ITRTCAudioCallInterface.swift in Sources */,
 				860C146E2404CCC80023A19E /* UIView+Additions.m in Sources */,
 				860C14A32404CF6B0023A19E /* QBAssetCell.m in Sources */,
+				F8A3CCE42431D431003465AF /* TCAnchorViewController+Room.swift in Sources */,
 				864ECD1223FBE47700263DC8 /* TRTCVoiceRoomAudioEffectView.m in Sources */,
 				1A582E4A2417B64F007F7DF2 /* TCMsgListTableView.m in Sources */,
 				1A87081E23C43DB6009EACAB /* TRTCAudioCall.swift in Sources */,
@@ -1401,7 +1405,7 @@
 				1A87082323C43DB6009EACAB /* AudioCallUtils.swift in Sources */,
 				1A582E452417B64F007F7DF2 /* TCPlaceHolderTextView.m in Sources */,
 				86D4C4E523F295AC0002CA29 /* ITRTCVideoCallInterface.swift in Sources */,
-				1ACD64882423481000098C29 /* TRTCBgmManagerImpl.swift in Sources */,
+				1ACD64882423481000098C29 /* TRTCAudioEffectManagerImpl.swift in Sources */,
 				1A582E0D2417B61B007F7DF2 /* TCUtil.m in Sources */,
 				86BEC01D23F2FA7E00FB2671 /* VideoSelectContactViewController.swift in Sources */,
 				1A0518F123CD72D00072F094 /* AudioCallViewController+UI.swift in Sources */,
@@ -1668,7 +1672,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = TRTCScenesDemoRelease.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = FN2V63AD2J;
 				ENABLE_BITCODE = NO;

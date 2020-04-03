@@ -13,17 +13,16 @@
 @class TRTCLiveRoomImpl;
 @class TRTCLiveRoomInfo;
 
-@interface TCAnchorViewController : UIViewController
-
-- (instancetype)initWithPublishInfo:(TRTCLiveRoomInfo *)publishInfo;
-
-@property (nonatomic, strong) UIView               *videoParentView;
-@property (nonatomic, strong)  TCAnchorToolbarView *logicView;
-@property (nonatomic, strong)  TRTCLiveRoomImpl*   liveRoom;
+@interface TCAnchorViewController : UIViewController<UITextFieldDelegate>
+- (instancetype) init;
+@property (nonatomic, strong) UIView                *videoParentView;
+@property (nonatomic, strong)  TCAnchorToolbarView  *logicView;
+@property (nonatomic, strong)  TRTCLiveRoomImpl     *liveRoom;
+@property (nonatomic, strong)  TRTCLiveRoomInfo     *liveInfo;
 @property (nonatomic, assign)  BOOL log_switch;
-@property (nonatomic, strong)  NSMutableSet*  setLinkMemeber;
-@property (nonatomic, strong)  TRTCLiveRoomInfo *curPkRoom;
-@property (nonatomic, assign) NSInteger  roomType;
+@property (nonatomic, strong)  NSMutableSet         *setLinkMemeber;
+@property (nonatomic, strong)  TRTCLiveRoomInfo     *curPkRoom;
+@property (nonatomic, assign) NSInteger  roomStatus;
 - (void)onAnchorEnter:(NSString *)userID;
 - (void)onAnchorExit:(NSString *)userID;
 - (void)onRequestJoinAnchor:(TRTCLiveUserInfo *)user reason:(NSString *)reason timeout: (double)timeout;

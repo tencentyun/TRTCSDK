@@ -63,9 +63,13 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
     - Alamofire
+    - BlocksKit
+    - CWStatusBarNotification
     - Masonry
     - Material
+    - MBProgressHUD
     - MJExtension
+    - MJRefresh
     - Motion
     - NVActivityIndicatorView
     - RxCocoa
@@ -75,11 +79,6 @@ SPEC REPOS:
     - SnapKit
     - Toast-Swift
     - TXIMSDK_iOS
-  trunk:
-    - BlocksKit
-    - CWStatusBarNotification
-    - MBProgressHUD
-    - MJRefresh
 
 SPEC CHECKSUMS:
   Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
@@ -102,4 +101,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: ba2356aa6b08a8c47ec0cd74a23f51893e7aeecb
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.9.1

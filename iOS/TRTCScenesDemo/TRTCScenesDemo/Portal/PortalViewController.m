@@ -96,8 +96,8 @@
                 config.useCDNFirst = [[[NSUserDefaults standardUserDefaults] objectForKey:@"liveRoomConfig_useCDNFirst"] boolValue];
             }
             
-            if (config.useCDNFirst && [[NSUserDefaults standardUserDefaults] objectForKey:@"liveRoomConfig_streamUrlDomain"] != nil) {
-                config.streamUrlDomain = [[NSUserDefaults standardUserDefaults] objectForKey:@"liveRoomConfig_streamUrlDomain"];
+            if (config.useCDNFirst && [[NSUserDefaults standardUserDefaults] objectForKey:@"liveRoomConfig_cndPlayDomain"] != nil) {
+                config.cdnPlayDomain = [[NSUserDefaults standardUserDefaults] objectForKey:@"liveRoomConfig_cndPlayDomain"];
             }
             
             [self.liveRoom loginWithSdkAppID:SDKAPPID userID:userID userSig:userSig config:config callback:^(NSInteger code, NSString * error) {
@@ -139,9 +139,13 @@
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
         
     }];
+    __weak __typeof(self) wSelf = self;
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         [[ProfileManager shared] removeLoginCache];
         [[appUtils shared] showLoginController];
+        [wSelf.liveRoom logout:^(NSInteger code, NSString * error) {
+            
+        }];
     }];
     [alert addAction:cancelAction];
     [alert addAction:okAction];

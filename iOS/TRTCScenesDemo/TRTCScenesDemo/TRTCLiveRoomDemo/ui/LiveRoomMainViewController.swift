@@ -124,10 +124,10 @@ class LiveRoomMainViewController: UIViewController {
             let okAction = UIAlertAction(title: "确定", style: .default) { (ok) in
                 if isCdnMode { //cdn 切 trtc
                     UserDefaults.standard.set(false, forKey: "liveRoomConfig_useCDNFirst")
-                    UserDefaults.standard.set(nil, forKey: "liveRoomConfig_streamUrlDomain")
+                    UserDefaults.standard.set(nil, forKey: "liveRoomConfig_cndPlayDomain")
                 } else { //trtc 切 cdn
                     UserDefaults.standard.set(true, forKey: "liveRoomConfig_useCDNFirst")
-                    UserDefaults.standard.set(<#推流地址#>, forKey: "liveRoomConfig_streamUrlDomain")
+                    UserDefaults.standard.set(<#推流地址#>, forKey: "liveRoomConfig_cndPlayDomain")
                 }
                 self.view.makeToast("重启app后\(newMode)模式生效")
             }

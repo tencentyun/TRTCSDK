@@ -94,7 +94,7 @@ TRTCLiveRoomDelegate>
         _isWaitingResponse = false;
         self.liveRoom.delegate = self;
         
-        _roomType = TRTCLiveRoomLiveTypeNone;
+        _roomStatus = TRTCLiveRoomLiveStatusNone;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onAppWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onAppDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
     }
@@ -582,7 +582,7 @@ TRTCLiveRoomDelegate>
         }
     }
     
-    if(noAnchor && self.roomType == TRTCLiveRoomLiveTypeRoomPK) {
+    if(noAnchor && self.roomStatus == TRTCLiveRoomLiveStatusRoomPK) {
         [self switchPKMode];
     }
         

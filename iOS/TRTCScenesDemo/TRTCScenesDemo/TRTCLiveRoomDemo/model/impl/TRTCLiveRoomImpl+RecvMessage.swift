@@ -131,7 +131,7 @@ extension TRTCLiveRoomImpl: TIMMessageListener {
                 if agreed {
                     startRoomPK(with: liveUser, streamId: streamId)
                     DispatchQueue.main.asyncAfter(deadline: .now() + trtcLiveCheckStatusTimeOut) { [id = pkAnchorInfo.uuid] in //检查 PK 主播是否进房
-                        if self.type != .roomPK && id == self.pkAnchorInfo.uuid {
+                        if self.status != .roomPK && id == self.pkAnchorInfo.uuid {
                             self.quitRoomPK(callback: nil)
                             self.clearPKState()
                         }
@@ -144,7 +144,7 @@ extension TRTCLiveRoomImpl: TIMMessageListener {
             }
             
         case .quitRoomPK:
-            type = .single
+            status = .single
             if let pkAnchor = memberManager.pkAnchor {
                 memberManager.removeAnchor(pkAnchor.userId)
             }
@@ -167,9 +167,9 @@ extension TRTCLiveRoomImpl: TIMMessageListener {
             
         case .updateGroupInfo:
             memberManager.updateAnchorsWithGroupInfo(json)
-            if let roomType = json["type"] as? Int,
-                let theType = TRTCLiveRoomLiveType(rawValue: roomType) {
-                type = theType
+            if let roomStatus = json["type"] as? Int,
+                let theStatus = TRTCLiveRoomLiveStatus(rawValue: roomStatus) {
+                status = theStatus
             }
             
         case .unknown:
@@ -193,10 +193,10 @@ extension TRTCLiveRoomImpl: TIMGroupEventListener {
         } else if elem.type == .INFO_CHANGE { //type change
             if let info = elem.groupChangeList.first,
                 let customInfo = info.value.toJson(),
-                let roomType = customInfo["type"] as? Int,
-                let theType = TRTCLiveRoomLiveType(rawValue: roomType)
+                let roomStatus = customInfo["type"] as? Int,
+                let theStatus = TRTCLiveRoomLiveStatus(rawValue: roomStatus)
             {
-                type = theType
+                status = theStatus
             }
         }
     }

@@ -27,109 +27,107 @@ import Foundation
     }
     
     func setGreenScreenFile(_ file: URL?) {
-        if let url = file {
-            liveRoom.setGreenScreenFile(file: url)
-        }
+        liveRoom.setGreenScreenFile(file: file)
     }
     
     func setBeautyStyle(_ beautyStyle: Int) {
-        liveRoom.beautyManager.setBeautyStyle(TXBeautyStyle(rawValue: beautyStyle) ?? .nature)
+        liveRoom.getBeautyManager().setBeautyStyle(TXBeautyStyle(rawValue: beautyStyle) ?? .nature)
     }
     
     func setBeautyLevel(_ level: Float) {
-        liveRoom.beautyManager.setBeautyLevel(level)
+        liveRoom.getBeautyManager().setBeautyLevel(level)
     }
     
     func setWhitenessLevel(_ level: Float) {
-        liveRoom.beautyManager.setWhitenessLevel(level)
+        liveRoom.getBeautyManager().setWhitenessLevel(level)
     }
     
     func setRuddyLevel(_ level: Float) {
-        liveRoom.beautyManager.setRuddyLevel(level)
+        liveRoom.getBeautyManager().setRuddyLevel(level)
     }
     
     func setEyeScaleLevel(_ level: Float) {
-        liveRoom.beautyManager.setEyeScaleLevel(level)
+        liveRoom.getBeautyManager().setEyeScaleLevel(level)
     }
     
     func setFaceSlimLevel(_ level: Float) {
-        liveRoom.beautyManager.setFaceSlimLevel(level)
+        liveRoom.getBeautyManager().setFaceSlimLevel(level)
     }
     
     func setFaceVLevel(_ level: Float) {
-        liveRoom.beautyManager.setFaceVLevel(level)
+        liveRoom.getBeautyManager().setFaceVLevel(level)
     }
     
     func setChinLevel(_ level: Float) {
-        liveRoom.beautyManager.setChinLevel(level)
+        liveRoom.getBeautyManager().setChinLevel(level)
     }
     
     func setFaceShortLevel(_ level: Float) {
-        liveRoom.beautyManager.setFaceShortLevel(level)
+        liveRoom.getBeautyManager().setFaceShortLevel(level)
     }
     
     func setNoseSlimLevel(_ level: Float) {
-        liveRoom.beautyManager.setNoseSlimLevel(level)
+        liveRoom.getBeautyManager().setNoseSlimLevel(level)
     }
     
     func setEyeLightenLevel(_ level: Float) {
-        liveRoom.beautyManager.setEyeLightenLevel(level)
+        liveRoom.getBeautyManager().setEyeLightenLevel(level)
     }
     
     func setToothWhitenLevel(_ level: Float) {
-        liveRoom.beautyManager.setToothWhitenLevel(level)
+        liveRoom.getBeautyManager().setToothWhitenLevel(level)
     }
     
     func setWrinkleRemoveLevel(_ level: Float) {
-        liveRoom.beautyManager.setWrinkleRemoveLevel(level)
+        liveRoom.getBeautyManager().setWrinkleRemoveLevel(level)
     }
     
     func setPounchRemoveLevel(_ level: Float) {
-        liveRoom.beautyManager.setPounchRemoveLevel(level)
+        liveRoom.getBeautyManager().setPounchRemoveLevel(level)
     }
     
     func setSmileLinesRemoveLevel(_ level: Float) {
-        liveRoom.beautyManager.setSmileLinesRemoveLevel(level)
+        liveRoom.getBeautyManager().setSmileLinesRemoveLevel(level)
     }
     
     func setForeheadLevel(_ level: Float) {
-        liveRoom.beautyManager.setForeheadLevel(level)
+        liveRoom.getBeautyManager().setForeheadLevel(level)
     }
     
     func setEyeDistanceLevel(_ level: Float) {
-        liveRoom.beautyManager.setEyeDistanceLevel(level)
+        liveRoom.getBeautyManager().setEyeDistanceLevel(level)
     }
     
     func setEyeAngleLevel(_ level: Float) {
-        liveRoom.beautyManager.setEyeAngleLevel(level)
+        liveRoom.getBeautyManager().setEyeAngleLevel(level)
     }
     
     func setMouthShapeLevel(_ level: Float) {
-        liveRoom.beautyManager.setMouthShapeLevel(level)
+        liveRoom.getBeautyManager().setMouthShapeLevel(level)
     }
     
     func setNoseWingLevel(_ level: Float) {
-        liveRoom.beautyManager.setNoseWingLevel(level)
+        liveRoom.getBeautyManager().setNoseWingLevel(level)
     }
     
     func setNosePositionLevel(_ level: Float) {
-        liveRoom.beautyManager.setNosePositionLevel(level)
+        liveRoom.getBeautyManager().setNosePositionLevel(level)
     }
     
     func setLipsThicknessLevel(_ level: Float) {
-        liveRoom.beautyManager.setLipsThicknessLevel(level)
+        liveRoom.getBeautyManager().setLipsThicknessLevel(level)
     }
     
     func setFaceBeautyLevel(_ level: Float) {
-        liveRoom.beautyManager.setFaceBeautyLevel(level)
+        liveRoom.getBeautyManager().setFaceBeautyLevel(level)
     }
     
     func setMotionTmpl(_ tmplName: String?, inDir tmplDir: String?) {
-        liveRoom.beautyManager.setMotionTmpl(tmplName, inDir: tmplDir)
+        liveRoom.getBeautyManager().setMotionTmpl(tmplName, inDir: tmplDir)
     }
     
     func setMotionMute(_ motionMute: Bool) {
-        liveRoom.beautyManager.setMotionMute(motionMute)
+        liveRoom.getBeautyManager().setMotionMute(motionMute)
     }
     
 }

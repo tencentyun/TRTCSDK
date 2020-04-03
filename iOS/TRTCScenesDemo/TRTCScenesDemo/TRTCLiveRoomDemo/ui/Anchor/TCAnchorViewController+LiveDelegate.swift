@@ -37,7 +37,7 @@ extension TCAnchorViewController: TRTCLiveRoomDelegate {
          onAnchorEnter(userID)
     }
     
-    public func trtcLiveRoom(_ trtcLiveRoom: TRTCLiveRoomImpl, onAnchorLeave userID: String) {
+    public func trtcLiveRoom(_ trtcLiveRoom: TRTCLiveRoomImpl, onAnchorExit userID: String) {
         onAnchorExit(userID)
     }
     
@@ -60,7 +60,7 @@ extension TCAnchorViewController: TRTCLiveRoomDelegate {
         logicView.handleIMMessage(info, msgText: "")
     }
     
-    public func trtcLiveRoom(_ trtcLiveRoom: TRTCLiveRoomImpl, onAudienceLeave user: TRTCLiveUserInfo) {
+    public func trtcLiveRoom(_ trtcLiveRoom: TRTCLiveRoomImpl, onAudienceExit user: TRTCLiveUserInfo) {
         let info = IMUserAble()
         info.imUserId = user.userId
         info.imUserName = user.userName
@@ -75,13 +75,13 @@ extension TCAnchorViewController: TRTCLiveRoomDelegate {
     }
     
     public func trtcLiveRoom(_ trtcLiveRoom: TRTCLiveRoomImpl, onRoomInfoChange info: TRTCLiveRoomInfo) {
-        self.roomType = info.type.rawValue
-        if info.type == .single || info.type == .linkMic {
+        self.roomStatus = info.roomStatus.rawValue
+        if info.roomStatus == .single || info.roomStatus == .linkMic {
             UIView.animate(withDuration: 0.1) {
                 self.videoParentView.frame = self.view.frame
                 self.linkFrameRestore()
             }
-        } else if info.type == .roomPK {
+        } else if info.roomStatus == .roomPK {
              UIView.animate(withDuration: 0.1) {
                 self.videoParentView.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width / 2, height: self.view.frame.size.height / 2)
                 self.switchPKMode()

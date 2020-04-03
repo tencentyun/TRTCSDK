@@ -23,7 +23,7 @@
 @property (nonatomic, retain) TRTCLiveRoomImpl* liveRoom;
 @property (nonatomic, assign) BOOL  log_switch;
 @property (nonatomic, strong) UIView  *videoParentView;
-@property (nonatomic, assign) NSInteger  roomType;
+@property (nonatomic, assign) NSInteger  roomStatus;
 @property (nonatomic, assign)  BOOL isOwnerEnter;
 
 - (id)initWithPlayInfo:(TRTCLiveRoomInfo *)info videoIsReady:(videoIsReadyBlock)videoIsReady;

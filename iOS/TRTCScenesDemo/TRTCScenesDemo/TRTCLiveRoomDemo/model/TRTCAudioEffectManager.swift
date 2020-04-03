@@ -7,7 +7,7 @@
 //
 
 import Foundation
-@objc public protocol TRTCBgmManager: class {
+@objc public protocol TRTCAudioEffectManager: class {
     typealias Callback = (_ code: Int, _ message: String?) -> Void
     /// 播放Bgm
     /// - Parameters:
@@ -39,7 +39,7 @@ import Foundation
     
     /// 设置麦克风采集音量
     /// - Parameter volume: 音量大小，取值0 - 100，默认值为100
-    @objc func setAudioCaptureVolume(volume: Int)
+    @objc func setMicVolume(volume: Int)
     
     /// 设置混响效果
     /// - Parameter reverbType: 混响类型，详情请参见 TXReverbType
@@ -52,8 +52,13 @@ import Foundation
     /// 每个音效都需要您指定具体的 ID，您可以通过该 ID 对音效的开始、停止、音量等进行设置。
     /// 支持的文件格式：aac, mp3, m4a。
     /// - 若您想同时播放多个音效，请分配不同的 ID 进行播放。因为使用同一个 ID 播放不同音效，SDK 会先停止播放旧的音效，再播放新的音效。
-    /// - Parameter effect: 音效
-    @objc func playAudioEffect(effect: TRTCAudioEffectParam)
+    /// - Parameters:
+    ///   - effectId: 音效 ID
+    ///   - path: 音效路径
+    ///   - count: 循环次数
+    ///   - publish: 是否推送 / true 推送给观众, false 本地预览
+    ///   - volume: 音量大小,取值范围为0 - 100；默认值：100
+    @objc func playAudioEffect(effectId: Int32, path: String, count: Int32, publish: Bool, volume: Int32)
 
     /// 设置音效音量
     /// - 该操作会覆盖通过 setAllAudioEffectsVolume 指定的整体音效音量。

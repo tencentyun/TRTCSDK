@@ -87,6 +87,19 @@ class TRTCCloudAction: NSObject {
         TRTCCloud.sharedInstance()?.setVideoEncoderParam(videoParam)
     }
     
+    /// 本地预览
+    /// - Parameters:
+    ///   - frontCamera: 前置摄像头/后置摄像头
+    ///   - view: 渲染 view
+    func startLocalPreview(frontCamera: Bool, view: UIView) {
+        TRTCCloud.sharedInstance()?.startLocalPreview(frontCamera, view: view)
+    }
+    
+    /// 停止本地预览
+    func stopLocalPreview() {
+        TRTCCloud.sharedInstance()?.stopLocalPreview()
+    }
+    
     /// 推流
     /// - Parameter streamID: 推流id
     func startPublish(streamID: String?) {
@@ -211,12 +224,11 @@ class TRTCCloudAction: NSObject {
         
         let config = TRTCTranscodingConfig()
         config.appId = sdkAppId
-        config.bizId = 3891
-        config.videoWidth = 368
-        config.videoHeight = 640
+        config.videoWidth = 544
+        config.videoHeight = 960
         config.videoGOP = 1
         config.videoFramerate = 15
-        config.videoBitrate = 800
+        config.videoBitrate = 1000
         config.audioSampleRate = 48000
         config.audioBitrate = 64
         config.audioChannels = 1
@@ -227,7 +239,7 @@ class TRTCCloudAction: NSObject {
         let me = TRTCMixUser()
         me.userId = userId
         me.zOrder = Int32(index)
-        me.rect = CGRect(x: 0, y: 0, width: 368, height: 640)
+        me.rect = CGRect(x: 0, y: 0, width: 544, height: 960)
         
         users.append(me)
         users.append(contentsOf: userPlayInfo.map { (userId, info) -> TRTCMixUser in
@@ -235,7 +247,7 @@ class TRTCCloudAction: NSObject {
             let user = TRTCMixUser()
             user.userId = userId
             user.zOrder = Int32(index)
-            user.rect = rect(with: index, width: 368, height: 640, padding: 10)
+            user.rect = rect(with: index, width: 160, height: 288, padding: 10)
             user.roomID = info.roomId
             return user
         })
@@ -310,11 +322,7 @@ extension TRTCCloudAction {
         TRTCCloud.sharedInstance()?.setFilterConcentration(concentration)
     }
     
-    @objc public func setWatermark(image: UIImage, streamType: TRTCVideoStreamType, rect: CGRect) {
-        TRTCCloud.sharedInstance()?.setWatermark(image, streamType: streamType, rect: rect)
-    }
-    
-    @objc public func setGreenScreenFile(file: URL) {
+    @objc public func setGreenScreenFile(file: URL?) {
         TRTCCloud.sharedInstance()?.setGreenScreenFile(file)
     }
 }

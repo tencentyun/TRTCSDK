@@ -142,7 +142,7 @@ class TRTCLiveRoomIMAction: NSObject {
                                                             ownerName: (owner["name"] as? String) ?? "",
                                                             streamUrl: owner["streamId"] as? String,
                                                             memberCount: 0,
-                                                            type: TRTCLiveRoomLiveType(rawValue: type) ?? .single)
+                                                            roomStatus: TRTCLiveRoomLiveStatus(rawValue: type) ?? .single)
                     }
                     TRTCLiveRoomIMAction.getRoomInfo(roomIds: [String(roomID)], success: { [roomInfo] (rooms) in //更新信息
                         roomInfo?.roomName = rooms.first?.roomName ?? ""
@@ -190,7 +190,7 @@ class TRTCLiveRoomIMAction: NSObject {
                                             ownerName: (owner["name"] as? String) ?? "",
                                             streamUrl: owner["streamId"] as? String,
                                             memberCount: Int(info.memberNum),
-                                            type: TRTCLiveRoomLiveType(rawValue: type) ?? .single)
+                                            roomStatus: TRTCLiveRoomLiveStatus(rawValue: type) ?? .single)
                 }
                 return nil
             })

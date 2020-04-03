@@ -7,7 +7,7 @@
 //
 
 import Foundation
-@objc public class TRTCBgmManagerImpl: NSObject, TRTCBgmManager {
+@objc public class TRTCAudioEffectManagerImpl: NSObject, TRTCAudioEffectManager {
     // MARK: - BGM
     
     @objc public func playBgm(_ url: String,
@@ -42,7 +42,7 @@ import Foundation
         return Int(TRTCCloud.sharedInstance()?.setBGMPosition(pos) ?? -1)
     }
     
-    @objc public func setAudioCaptureVolume(volume: Int) {
+    @objc public func setMicVolume(volume: Int) {
         TRTCCloud.sharedInstance()?.setAudioCaptureVolume(volume)
     }
     
@@ -56,7 +56,11 @@ import Foundation
         TRTCCloud.sharedInstance()?.setVoiceChangerType(voiceChangerType)
     }
     
-    @objc public func playAudioEffect(effect: TRTCAudioEffectParam) {
+    @objc public func playAudioEffect(effectId: Int32, path: String, count: Int32, publish: Bool, volume: Int32) {
+        let effect = TRTCAudioEffectParam(effectId, path: path)
+        effect.loopCount = count
+        effect.publish = publish
+        effect.volume = volume
         TRTCCloud.sharedInstance()?.playAudioEffect(effect)
     }
     

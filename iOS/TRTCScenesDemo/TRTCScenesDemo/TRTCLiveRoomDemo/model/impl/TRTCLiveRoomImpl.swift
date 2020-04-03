@@ -42,21 +42,29 @@ public class TRTCLiveRoomImpl: NSObject, TRTCLiveRoom {
     var curRoomInfo: TRTCLiveRoomInfo?
     
     /// 美颜管理实例
-    @objc public var beautyManager: TXBeautyManager {
+    @objc private var beautyManager: TXBeautyManager {
         get {
             return trtcAction.beautyManager
         }
     }
     
-    /// BGM管理实例
-    @objc public var bgmManager = TRTCBgmManagerImpl()
+    @objc public func getBeautyManager() -> TXBeautyManager {
+        return beautyManager
+    }
     
-    /// 当前房间类型，详情见 TRTCLiveRoomLiveType
-    var type: TRTCLiveRoomLiveType = .none {
+    /// BGM管理实例
+    @objc private var aeManager = TRTCAudioEffectManagerImpl()
+    
+    public func getAudioEffectManager() -> TRTCAudioEffectManagerImpl {
+        return aeManager
+    }
+    
+    /// 当前房间状态，详情见 TRTCLiveRoomLiveStatus
+    var status: TRTCLiveRoomLiveStatus = .none {
         didSet {
-            if type != oldValue {
+            if status != oldValue {
                 if let roomInfo = self.curRoomInfo {
-                    self.curRoomInfo?.type = type
+                    self.curRoomInfo?.roomStatus = status
                     delegate?.trtcLiveRoom?(self, onRoomInfoChange: roomInfo)
                 } else {
                     let roomInfo = TRTCLiveRoomInfo(roomId: roomID ?? "",
@@ -66,7 +74,7 @@ public class TRTCLiveRoomImpl: NSObject, TRTCLiveRoom {
                                                 ownerName: me?.userName ?? "",
                                                 streamUrl: "\(me?.userId ?? "")_stream",
                                                 memberCount: memberManager.audience.count,
-                                                type: type)
+                                                roomStatus: status)
                     delegate?.trtcLiveRoom?(self, onRoomInfoChange: roomInfo)
                 }
             }
@@ -124,7 +132,7 @@ public class TRTCLiveRoomImpl: NSObject, TRTCLiveRoom {
                 self.me = user
                 self.config = config
                 self.trtcAction.setup(userId: userID,
-                                      urlDomain: config.streamUrlDomain,
+                                      urlDomain: config.cdnPlayDomain,
                                       sdkAppId: sdkAppID,
                                       userSig: userSig)
             }
@@ -172,11 +180,11 @@ public class TRTCLiveRoomImpl: NSObject, TRTCLiveRoom {
                                        ownerName: me.userName,
                                        streamUrl: "\(me.userId)_stream",
                                        memberCount: 0,
-                                       type: .single)
+                                       roomStatus: .single)
         
         TRTCLiveRoomIMAction.createRoom(roomID: String(roomID), roomParam: roomParam, success: { [weak self] (members, groupInfo, _) in
             guard let self = self else { return }
-            self.type = .single
+            self.status = .single
             self.trtcAction.roomId = String(roomID)
             self.memberManager.setMembers(members, groupInfo: groupInfo)
             self.memberManager.setOwner(me)
@@ -206,7 +214,7 @@ public class TRTCLiveRoomImpl: NSObject, TRTCLiveRoom {
                 guard let self = self else { return }
                 self.memberManager.setMembers(members, groupInfo: customInfo)
                 self.curRoomInfo = roomInfo
-                self.type = roomInfo?.type ?? .single
+                self.status = roomInfo?.roomStatus ?? .single
                 callback?(0, "")
                 if self.shouldPlayCdn {
                     self.notifyAvailableStreams()
@@ -220,8 +228,8 @@ public class TRTCLiveRoomImpl: NSObject, TRTCLiveRoom {
             trtcAction.roomId = String(roomID)
             enterRoomCallback = callback
             trtcAction.enterRoom(roomID: String(roomID), userId: me.userId, role: .audience)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 10) { //enter room 10s 超时
-                if let enterRoomCallback = self.enterRoomCallback {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 10) { [id = trtcAction.curRoomUUID] in //enter room 10s 超时
+                if id == self.trtcAction.curRoomUUID, let enterRoomCallback = self.enterRoomCallback {
                     enterRoomCallback(-1, "enterRoom请求超时")
                     self.enterRoomCallback = nil
                 }
@@ -257,9 +265,12 @@ public class TRTCLiveRoomImpl: NSObject, TRTCLiveRoom {
         TRTCLiveRoomIMAction.exitRoom(roomID: roomID, callback: callback)
     }
     
-    public func getRoomInfos(roomIDs: [String], callback: RoomInfoCallback?) {
+    public func getRoomInfos(roomIDs: [UInt32], callback: RoomInfoCallback?) {
         logApi("getRoomInfo", data: roomIDs)
-        TRTCLiveRoomIMAction.getRoomInfo(roomIds: roomIDs, success: { info in
+        let strRoomIds = roomIDs.map {
+            "\($0)"
+        }
+        TRTCLiveRoomIMAction.getRoomInfo(roomIds: strRoomIds, success: { info in
             callback?(0, "", info)
         }) { (code, message) in
             callback?(code, message, [])
@@ -297,15 +308,13 @@ public class TRTCLiveRoomImpl: NSObject, TRTCLiveRoom {
     public func startCameraPreview(frontCamera: Bool, view: UIView, callback: TRTCLiveRoomImpl.Callback?) {
         logApi("startCameraPreview", data: frontCamera, view)
         guard let _ = checkUserLogined(callback) else { return }
-        guard let _ = checkRoomJoined(callback) else { return }
-        
-        TRTCCloud.sharedInstance()?.startLocalPreview(frontCamera, view: view)
+        trtcAction.startLocalPreview(frontCamera: frontCamera, view: view)
         callback?(0, "")
     }
     
     public func stopCameraPreview() {
         logApi("stopCameraPreview")
-        TRTCCloud.sharedInstance()?.stopLocalPreview()
+        trtcAction.stopLocalPreview()
     }
     
     public func startPublish(streamID: String?, callback: TRTCLiveRoomImpl.Callback?) {
@@ -379,7 +388,7 @@ public class TRTCLiveRoomImpl: NSObject, TRTCLiveRoom {
             callback?(-1, "当前已经是连麦状态")
             return
         }
-        if type == .roomPK || pkAnchorInfo.userId != nil {
+        if status == .roomPK || pkAnchorInfo.userId != nil {
             callback?(-1, "当前主播正在PK")
             return
         }
@@ -387,7 +396,7 @@ public class TRTCLiveRoomImpl: NSObject, TRTCLiveRoom {
             callback?(-1, "当前用户正在等待连麦回复")
             return
         }
-        if type == .none {
+        if status == .none {
             callback?(-1, "出错请稍候尝试")
             return
         }
@@ -413,17 +422,16 @@ public class TRTCLiveRoomImpl: NSObject, TRTCLiveRoom {
         }
     }
     
-    public func responseJoinAnchor(user: TRTCLiveUserInfo, agree: Bool, reason: String?, callback: TRTCLiveRoomImpl.Callback?) {
-        let userID = user.userId
+    public func responseJoinAnchor(userID: String, agree: Bool, reason: String?) {
         logApi("responseJoinAnchor", data: userID, agree, reason)
-        guard let _ = checkUserLogined(callback), isOwner else { return }
-        guard let _ = checkRoomJoined(callback) else { return }
-        if joinAnchorInfo.userId == user.userId {
+        guard let _ = checkUserLogined(nil), isOwner else { return }
+        guard let _ = checkRoomJoined(nil) else { return }
+        if joinAnchorInfo.userId == userID {
             joinAnchorInfo.isResponsed = true
             if agree {
                 DispatchQueue.main.asyncAfter(deadline: .now() + trtcLiveCheckStatusTimeOut) { [id = joinAnchorInfo.uuid] in //检查 连麦 主播是否进房
-                    if self.memberManager.anchors[user.userId] == nil && id == self.joinAnchorInfo.uuid { //连麦未进房
-                        self.kickoutJoinAnchor(userID: user.userId, callback: nil)
+                    if self.memberManager.anchors[userID] == nil && id == self.joinAnchorInfo.uuid { //连麦未进房
+                        self.kickoutJoinAnchor(userID: userID, callback: nil)
                         self.clearJoinState()
                     } else {
                         self.clearJoinState(shouldRemove: false)
@@ -433,7 +441,7 @@ public class TRTCLiveRoomImpl: NSObject, TRTCLiveRoom {
                 clearJoinState()
             }
         }
-        TRTCLiveRoomIMAction.respondJoinAnchor(userID: userID, agreed: agree, reason: reason, callback: callback)
+        TRTCLiveRoomIMAction.respondJoinAnchor(userID: userID, agreed: agree, reason: reason, callback: nil)
     }
     
     public func kickoutJoinAnchor(userID: String, callback: TRTCLiveRoomImpl.Callback?) {
@@ -460,11 +468,11 @@ public class TRTCLiveRoomImpl: NSObject, TRTCLiveRoom {
         guard let myRoomId = checkRoomJoined(callback) else { return }
         guard checkIsOwner(callback) else { return }
         guard let streamId = checkIsPublishing(callback) else { return }
-        if type == .linkMic || joinAnchorInfo.userId != nil {
+        if status == .linkMic || joinAnchorInfo.userId != nil {
             callback?(-1, "当前正在连麦中，无法开启PK")
             return
         }
-        if type == .roomPK {
+        if status == .roomPK {
             callback?(-1, "当前主播正在PK")
             return
         }
@@ -472,7 +480,7 @@ public class TRTCLiveRoomImpl: NSObject, TRTCLiveRoom {
             callback?(-1, "当前主播正在等待PK回复")
             return
         }
-        if type == .none {
+        if status == .none {
             callback?(-1, "出错请稍候尝试")
             return
         }
@@ -497,13 +505,12 @@ public class TRTCLiveRoomImpl: NSObject, TRTCLiveRoom {
         }
     }
     
-    public func responseRoomPK(user: TRTCLiveUserInfo, agree: Bool, reason: String?, callback: TRTCLiveRoomImpl.Callback?) {
-        let userID = user.userId
+    public func responseRoomPK(userID: String, agree: Bool, reason: String?) {
         logApi("responseRoomPK", data: userID, agree, reason)
-        guard let _ = checkUserLogined(callback) else { return }
-        guard let _ = checkRoomJoined(callback) else { return }
-        guard checkIsOwner(callback) else { return }
-        guard let streamId = checkIsPublishing(callback) else { return }
+        guard let _ = checkUserLogined(nil) else { return }
+        guard let _ = checkRoomJoined(nil) else { return }
+        guard checkIsOwner(nil) else { return }
+        guard let streamId = checkIsPublishing(nil) else { return }
         
         if pkAnchorInfo.userId == userID {
             pkAnchorInfo.isResponsed = true
@@ -511,7 +518,7 @@ public class TRTCLiveRoomImpl: NSObject, TRTCLiveRoom {
                 clearPKState()
             } else {
                 DispatchQueue.main.asyncAfter(deadline: .now() + trtcLiveCheckStatusTimeOut) { [id = pkAnchorInfo.uuid] in //检查 PK 主播是否进房
-                    if self.type != .roomPK && id == self.pkAnchorInfo.uuid {
+                    if self.status != .roomPK && id == self.pkAnchorInfo.uuid {
                         self.quitRoomPK(callback: nil)
                         self.clearPKState()
                     }
@@ -519,19 +526,19 @@ public class TRTCLiveRoomImpl: NSObject, TRTCLiveRoom {
             }
         }
         
-        TRTCLiveRoomIMAction.responseRoomPK(userID: userID, agreed: agree, reason: reason, streamId: streamId, callback: callback)
+        TRTCLiveRoomIMAction.responseRoomPK(userID: userID, agreed: agree, reason: reason, streamId: streamId, callback: nil)
     }
     
     public func quitRoomPK(callback: TRTCLiveRoomImpl.Callback?) {
         logApi("quitRoomPK")
         guard let _ = checkUserLogined(callback), isOwner else { return }
         guard let _ = checkRoomJoined(callback) else { return }
-        guard type == .roomPK, let pkAnchor = memberManager.pkAnchor else {
+        guard status == .roomPK, let pkAnchor = memberManager.pkAnchor else {
             callback?(-1, "当前不是PK状态")
             return
         }
         pkAnchorInfo.reset()
-        type = .single
+        status = .single
         TRTCCloud.sharedInstance()?.disconnectOtherRoom()
         memberManager.removeAnchor(pkAnchor.userId)
         TRTCLiveRoomIMAction.quitRoomPK(userID: pkAnchor.userId, callback: callback)
@@ -612,11 +619,11 @@ extension TRTCLiveRoomImpl: TRTCCloudDelegate {
         if isOwner {
             if memberManager.pkAnchor?.userId == userId {
                 // 收到PK主播的视频流，开始PK
-                type = .roomPK
+                status = .roomPK
                 memberManager.confirmPKAnchor(userId)
             } else if memberManager.anchors[userId] == nil {
                 // 可能是连麦的观众
-                type = .linkMic
+                status = .linkMic
                 addTempAnchor(userId)
             }
             delegate?.trtcLiveRoom?(self, onAnchorEnter: userId)
@@ -641,12 +648,12 @@ extension TRTCLiveRoomImpl: TRTCCloudDelegate {
                 }
                 clearPKState()
                 clearJoinState()
-                type = .single
+                status = .single
             }
             memberManager.removeAnchor(userId)
         }
         
-        delegate?.trtcLiveRoom?(self, onAnchorLeave: userId)
+        delegate?.trtcLiveRoom?(self, onAnchorExit: userId)
         
         if isOwner {
             trtcAction.updateMixingParams(shouldMix: shouldMixStream)
@@ -674,9 +681,9 @@ extension TRTCLiveRoomImpl: TRTCLiveRoomMemberManagerDelegate {
     
     func memberManager(_ manager: TRTCLiveRoomMemberManager, onUserLeave user: TRTCLiveUserInfo, isAnchor: Bool) {
         if isAnchor {
-            delegate?.trtcLiveRoom?(self, onAnchorLeave: user.userId)
+            delegate?.trtcLiveRoom?(self, onAnchorExit: user.userId)
         } else {
-            delegate?.trtcLiveRoom?(self, onAudienceLeave: user)
+            delegate?.trtcLiveRoom?(self, onAudienceExit: user)
         }
     }
     
@@ -690,7 +697,7 @@ extension TRTCLiveRoomImpl: TRTCLiveRoomMemberManagerDelegate {
         if let streamID = streamID, streamID != "" {
             delegate?.trtcLiveRoom?(self, onAnchorEnter: userId)
         } else {
-            delegate?.trtcLiveRoom?(self, onAnchorLeave: userId)
+            delegate?.trtcLiveRoom?(self, onAnchorExit: userId)
         }
     }
     
@@ -699,7 +706,7 @@ extension TRTCLiveRoomImpl: TRTCLiveRoomMemberManagerDelegate {
         guard isOwner else { return }
         guard let roomID = checkRoomJoined(nil) else { return }
         
-        let data: [String: Any] = [ "type": type.rawValue, "list": userList ]
+        let data: [String: Any] = [ "type": status.rawValue, "list": userList ]
         TRTCLiveRoomIMAction.updateGroupInfo(roomID: roomID, groupInfo: data, callback: nil)
     }
 }
@@ -734,14 +741,14 @@ extension TRTCLiveRoomImpl {
     
     // 主播收到观众的连麦请求
     func handleJoinAnchorRequest(from user: TRTCLiveUserInfo, reason: String?) {
-        if type == .roomPK || pkAnchorInfo.userId != nil {
-            responseJoinAnchor(user: user, agree: false, reason: "主播正在跨房PK中", callback: nil)
+        if status == .roomPK || pkAnchorInfo.userId != nil {
+            responseJoinAnchor(userID: user.userId, agree: false, reason: "主播正在跨房PK中")
             return
         }
         
         if joinAnchorInfo.userId != nil {
             if joinAnchorInfo.userId != user.userId {
-                responseJoinAnchor(user: user, agree: false, reason: "主播正在处理他人连麦中", callback: nil)
+                responseJoinAnchor(userID: user.userId, agree: false, reason: "主播正在处理他人连麦中")
             }
             return
         }
@@ -751,7 +758,7 @@ extension TRTCLiveRoomImpl {
         joinAnchorInfo.uuid = UUID().uuidString
         DispatchQueue.main.asyncAfter(deadline: .now() + trtcLiveHandleMsgTimeOut) { [id = joinAnchorInfo.uuid] in //连麦接收方 10s 内回复否则超时
             if !self.joinAnchorInfo.isResponsed && self.joinAnchorInfo.uuid == id {
-                self.responseJoinAnchor(user: user, agree: false, reason: "超时未回应", callback: nil)
+                self.responseJoinAnchor(userID: user.userId, agree: false, reason: "超时未回应")
                 self.clearJoinState()
             }
         }
@@ -759,13 +766,13 @@ extension TRTCLiveRoomImpl {
     
     // 主播收到观众连麦的streamId后，开始连麦
     func startLinkMic(userId: String, streamId: String) {
-        type = .linkMic
+        status = .linkMic
         memberManager.switchMember(userId, toAnchor: true, streamId: streamId)
     }
     
     // 主播结束某个观众的连麦
     func stopLinkMic(userId: String) {
-        type = memberManager.anchors.count <= 2 ? .single : .linkMic
+        status = memberManager.anchors.count <= 2 ? .single : .linkMic
         memberManager.switchMember(userId, toAnchor: false, streamId: nil)
     }
     
@@ -778,7 +785,7 @@ extension TRTCLiveRoomImpl {
         if configCdn && shouldMixStream && !isLinkMic {
             memberManager.anchors.forEach { (userId, user) in
                 if userId != ownerId && trtcAction.isUserPlaying(userId) {
-                    delegate?.trtcLiveRoom?(self, onAnchorLeave: userId)
+                    delegate?.trtcLiveRoom?(self, onAnchorExit: userId)
                 }
             }
         }
@@ -790,12 +797,12 @@ extension TRTCLiveRoomImpl {
     
     // 主播收到其它主播的跨房PK请求
     func handleRoomPKRequest(from user: TRTCLiveUserInfo, roomId: String, streamId: String) {
-        if type == .linkMic || joinAnchorInfo.userId != nil {
-            responseRoomPK(user: user, agree: false, reason: "主播正在连麦中", callback: nil)
+        if status == .linkMic || joinAnchorInfo.userId != nil {
+            responseRoomPK(userID: user.userId, agree: false, reason: "主播正在连麦中")
             return
         }
-        if (pkAnchorInfo.userId != nil && pkAnchorInfo.roomId != roomId) || type == .roomPK {
-            responseRoomPK(user: user, agree: false, reason: "主播正在PK中", callback: nil)
+        if (pkAnchorInfo.userId != nil && pkAnchorInfo.roomId != roomId) || status == .roomPK {
+            responseRoomPK(userID: user.userId, agree: false, reason: "主播正在PK中")
             return
         }
         if pkAnchorInfo.userId == user.userId {
@@ -809,7 +816,7 @@ extension TRTCLiveRoomImpl {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + trtcLiveHandleMsgTimeOut) {[id = pkAnchorInfo.uuid] in //PK接收方 10s 内回复否则超时
             if !self.pkAnchorInfo.isResponsed && self.pkAnchorInfo.uuid == id {
-                self.responseRoomPK(user: user, agree: false, reason: "超时未响应", callback: nil)
+                self.responseRoomPK(userID: user.userId, agree: false, reason: "超时未响应")
                 self.clearPKState()
             }
         }
@@ -898,11 +905,7 @@ extension TRTCLiveRoomImpl {
         trtcAction.setFilterConcentration(concentration: concentration)
     }
     
-    @objc public func setWatermark(image: UIImage, streamType: TRTCVideoStreamType, rect: CGRect) {
-        trtcAction.setWatermark(image: image, streamType: streamType, rect: rect)
-    }
-    
-    @objc public func setGreenScreenFile(file: URL) {
+    @objc public func setGreenScreenFile(file: URL?) {
         trtcAction.setGreenScreenFile(file: file)
     }
 }
@@ -979,7 +982,7 @@ extension TRTCLiveRoomImpl {
     }
     
     var shouldMixStream: Bool {
-        switch type {
+        switch status {
         case .none:
             return false
         case .single:
@@ -992,10 +995,11 @@ extension TRTCLiveRoomImpl {
     }
     
     func reset() {
+        enterRoomCallback = nil
         trtcAction.exitRoom()
         trtcAction.stopAllPlay(usesCDN: shouldPlayCdn)
         trtcAction.roomId = nil
-        type = .none
+        status = .none
         clearPKState()
         clearJoinState()
         memberManager.clearMembers()

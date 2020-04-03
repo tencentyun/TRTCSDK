@@ -63,12 +63,6 @@
     BOOL                  _viewsHidden;
     NSMutableArray        *_heartAnimationPoints;
 	
-//    NSMutableArray *_greenArray;
-    
-//    NSInteger    _filterType;
-//    NSInteger    _greenIndex;
-//    NSMutableArray *_filterArray;
-    
     UITapGestureRecognizer *_tap;
 }
 
@@ -105,6 +99,8 @@
 }
 
 - (void)setLiveInfo:(TRTCLiveRoomInfo *)liveInfo {
+    _isPreview = NO;
+    [self setButtonHidden:NO];
     _liveInfo = liveInfo;
     
     //topview,展示主播头像，在线人数及点赞
@@ -137,6 +133,7 @@
 }
 
 - (void)initUI {
+    _isPreview = YES;
     int   icon_size = BOTTOM_BTN_ICON_WIDTH;
     float startSpace = 15;
     float icon_count = 6;
@@ -514,6 +511,7 @@
     [self addSubview:_cover];
     
     [self addSubview:_vBeauty]; // log挡住了美颜
+    [self setButtonHidden:YES];
 }
 
 - (void)selectBeauty:(UIButton *)button {
@@ -720,6 +718,9 @@
 
 //监听键盘高度变化
 - (void)keyboardFrameDidChange:(NSNotification*)notice {
+    if (![_msgInputFeild isFirstResponder]) {
+        return;
+    }
     NSDictionary * userInfo = notice.userInfo;
     NSValue * endFrameValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
     CGRect endFrame = endFrameValue.CGRectValue;

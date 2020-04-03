@@ -105,7 +105,7 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
             cell.config(model: TRTCLiveRoomInfo(roomId: "", roomName: "",
                                                      coverUrl: "", ownerId: "",
                                                      ownerName: "", streamUrl: "",
-                                                     memberCount: 0, type: .none))
+                                                     memberCount: 0, roomStatus: .none))
         }
 
         return cell
@@ -124,8 +124,7 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
                 }
                 
             } else {
-                let roomID = self.generateRoomID()
-                self._createRoom(sdkAppID: SDKAPPID, roomName: room.roomName, roomID: roomID)
+                createRoom()
             }
         }
     }

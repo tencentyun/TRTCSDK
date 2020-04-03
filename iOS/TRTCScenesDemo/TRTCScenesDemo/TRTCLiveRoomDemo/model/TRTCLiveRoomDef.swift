@@ -8,7 +8,7 @@
 
 import UIKit
 
-@objc public enum TRTCLiveRoomLiveType: Int {
+@objc public enum TRTCLiveRoomLiveStatus: Int {
     case none = 0
     case single = 1         //单人房间
     case linkMic = 2        //连麦
@@ -38,12 +38,12 @@ import UIKit
     /// 【特殊说明】true: 默认进房使用CDN播放 false: 使用低延时播放
     @objc var useCDNFirst: Bool = false
     /// 【字段含义】CDN播放的域名地址
-    @objc var streamUrlDomain: String? = nil
+    @objc var cdnPlayDomain: String? = nil
     
-    convenience init(useCDNFirst: Bool, streamUrlDomain: String?) {
+    convenience init(useCDNFirst: Bool, cdnPlayDomain: String?) {
         self.init()
         self.useCDNFirst = useCDNFirst
-        self.streamUrlDomain = streamUrlDomain
+        self.cdnPlayDomain = cdnPlayDomain
     }
 }
 
@@ -62,10 +62,10 @@ import UIKit
     @objc var streamUrl: String?
     /// 【字段含义】房间人数
     @objc var memberCount: Int = 0
-    /// 【字段含义】房间类型
-    @objc var type: TRTCLiveRoomLiveType = .none
+    /// 【字段含义】房间状态 /单人/连麦/PK
+    @objc var roomStatus: TRTCLiveRoomLiveStatus = .none
     
-    convenience init(roomId: String, roomName: String, coverUrl: String, ownerId: String, ownerName: String, streamUrl: String?, memberCount: Int, type: TRTCLiveRoomLiveType) {
+    convenience init(roomId: String, roomName: String, coverUrl: String, ownerId: String, ownerName: String, streamUrl: String?, memberCount: Int, roomStatus: TRTCLiveRoomLiveStatus) {
         self.init()
         self.roomId = roomId
         self.roomName = roomName
@@ -74,7 +74,7 @@ import UIKit
         self.ownerName = ownerName
         self.streamUrl = streamUrl
         self.memberCount = memberCount
-        self.type = type
+        self.roomStatus = roomStatus
     }
     
     public override var debugDescription: String {

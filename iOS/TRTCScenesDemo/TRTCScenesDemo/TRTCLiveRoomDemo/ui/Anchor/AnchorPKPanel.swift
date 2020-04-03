@@ -84,21 +84,34 @@ import Foundation
         }
     }
     
+    func endLoading() {
+        isLoading = false
+        anchorTable.reloadData()
+    }
+    
     @objc func loadRoomsInfo() {
         roomInfos = []
         anchorTable.reloadData()
         isLoading = true
+        
         RoomManager.shared.getRoomList(sdkAppID: SDKAPPID, success: { [weak self] (ids) in
-            self?.liveRoom?.getRoomInfos(roomIDs: ids, callback: { (code, error, infos) in
+            let uintIDs = ids.compactMap {
+                UInt32($0)
+            }
+            if uintIDs.count == 0 {
+                self?.endLoading()
+                return
+            }
+            self?.liveRoom?.getRoomInfos(roomIDs: uintIDs, callback: { (code, error, infos) in
                 DispatchQueue.main.async {
                     self?.roomInfos = infos.filter {
                         $0.ownerId != ProfileManager.shared.curUserID()
                     }
-                    self?.isLoading = false
-                    self?.anchorTable.reloadData()
+                    self?.endLoading()
                 }
             })
-        }) { (code, error) in
+        }) { [weak self] (code, error) in
+            self?.endLoading()
             debugPrint(error)
         }
     }
@@ -143,7 +156,7 @@ import Foundation
             cell.config(model: TRTCLiveRoomInfo.init(roomId: "", roomName: "",
                                                      coverUrl: "", ownerId: "",
                                                      ownerName: "", streamUrl: "",
-                                                     memberCount: 0, type: .none))
+                                                     memberCount: 0, roomStatus: .none))
         }
         return cell
     }

@@ -56,6 +56,7 @@
 @property (nonatomic, retain) UIView     *vMusicPanel;
 @property (nonatomic, retain) AnchorPKPanel     *vPKPanel;
 @property (nonatomic, weak) TRTCLiveRoomImpl *liveRoom;
+@property (nonatomic, assign) BOOL           isPreview;
 
 - (void)setButtonHidden:(BOOL)buttonHidden;
 - (void)setLiveInfo:(TRTCLiveRoomInfo *)liveInfo;
@@ -67,6 +68,8 @@
 - (void)handleIMMessage:(IMUserAble*)info msgText:(NSString*)msgText;
 
 - (void)triggeValue;
+
+- (void)closeVC;
 
 @end
 

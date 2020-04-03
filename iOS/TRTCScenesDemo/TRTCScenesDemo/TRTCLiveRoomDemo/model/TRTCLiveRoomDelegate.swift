@@ -29,13 +29,13 @@ import UIKit
     
     /// 主播离开回调
     /// - Note: 主播包括房间大主播、连麦观众和跨房PK主播
-    @objc optional func trtcLiveRoom(_ trtcLiveRoom: TRTCLiveRoomImpl, onAnchorLeave userID: String)
+    @objc optional func trtcLiveRoom(_ trtcLiveRoom: TRTCLiveRoomImpl, onAnchorExit userID: String)
 
     /// 观众进房回调
     @objc optional func trtcLiveRoom(_ trtcLiveRoom: TRTCLiveRoomImpl, onAudienceEnter user: TRTCLiveUserInfo)
 
     /// 观众离开回调
-    @objc optional func trtcLiveRoom(_ trtcLiveRoom: TRTCLiveRoomImpl, onAudienceLeave user: TRTCLiveUserInfo)
+    @objc optional func trtcLiveRoom(_ trtcLiveRoom: TRTCLiveRoomImpl, onAudienceExit user: TRTCLiveUserInfo)
 
     /// 主播收到观众的连麦申请
     @objc optional func trtcLiveRoom(_ trtcLiveRoom: TRTCLiveRoomImpl, onRequestJoinAnchor user: TRTCLiveUserInfo, reason: String?, timeout: Double)

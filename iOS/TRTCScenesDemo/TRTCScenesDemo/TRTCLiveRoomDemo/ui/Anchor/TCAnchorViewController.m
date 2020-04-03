@@ -6,6 +6,7 @@
 
 #import "TCAnchorViewController.h"
 #import <Foundation/Foundation.h>
+#import <Masonry.h>
 #import <sys/types.h>
 #import <sys/sysctl.h>
 #import <UIKit/UIKit.h>
@@ -37,12 +38,9 @@
     TRTCLiveUserInfo *curRequest;
     
     NSString*       _testPath;
-    BOOL            _isPreviewing;
     
     BOOL       _appIsInterrupt;
     BOOL       _isPKEnter;
-    
-    TRTCLiveRoomInfo *_liveInfo;
     
     TCAnchorToolbarView *_logicView;
     
@@ -61,12 +59,22 @@
     uint64_t                _endTime;
     NSInteger               _curBgmDuration;
     BOOL                    _isStop;
+    UIButton*               _publishBtn;
+    UIButton*               _cameraBtn;
+    UIButton*               _beautyBtn;
+    UIButton*               _closeBtn;
+    
+    //创建房间
+    UIView*                 _createTopPanel;
+    UIImageView*            _userAvatar;
+    UILabel*                _userName;
+    UITextField*            _roomName;
 }
 
-- (instancetype)initWithPublishInfo:(TRTCLiveRoomInfo *)liveInfo {
+- (instancetype) init {
     if (self = [super init]) {
-        _liveInfo = liveInfo;
         _liveRoom = nil;
+        _liveInfo = [[TRTCLiveRoomInfo alloc] init];
         //link mic
         _sessionId = [self getLinkMicSessionID];
         
@@ -104,6 +112,19 @@
     return self;
 }
 
+- (void)setLiveInfo:(TRTCLiveRoomInfo *)liveInfo {
+    _liveInfo = liveInfo;
+    [_logicView setLiveInfo:_liveInfo];
+}
+
+- (void)setPreviewUIHidden:(BOOL)hide {
+    [_publishBtn setHidden:hide];
+    [_cameraBtn setHidden:hide];
+    [_beautyBtn setHidden:hide];
+    [_closeBtn setHidden:hide];
+    [_createTopPanel setHidden:hide];
+}
+
 - (void)dealloc {
     [self stopRtmp];
     _logicView.delegate = nil;
@@ -113,12 +134,12 @@
 }
 
 - (void)onAppWillEnterForeground:(UIApplication*)app {
-    [self.liveRoom.bgmManager resumeBgm];
+    [[self.liveRoom getAudioEffectManager] resumeBgm];
 }
 
 - (void)onAppDidEnterBackGround:(UIApplication*)app {
     // 暂停背景音乐
-    [self.liveRoom.bgmManager pauseBgm];
+    [[self.liveRoom getAudioEffectManager] pauseBgm];
     [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
     }];
 }
@@ -139,6 +160,7 @@
     
     UIColor* bgColor = [UIColor appBackGround];
     [self.view setBackgroundColor:bgColor];
+    [self setupToast];
     
     //加载背景图
     UIImage *backImage = [UIImage imageNamed:@"avatar0_100"];
@@ -170,7 +192,6 @@
     _logicView = [[TCAnchorToolbarView alloc] initWithFrame:self.view.frame];
     _logicView.delegate = self;
     [_logicView setLiveRoom:_liveRoom];
-    [_logicView setLiveInfo:_liveInfo];
     [self.view addSubview:_logicView];
 
     _logicView.vBeauty.actionPerformer = [[BeautyPerformer alloc] initWithLiveRoom:_liveRoom];
@@ -179,7 +200,7 @@
     _whitening_level = _logicView.vBeauty.whiteLevel;
     _ruddiness_level = _logicView.vBeauty.ruddyLevel;
 
-    [self startRtmp];
+    [self startPreview];
     
     //初始化连麦播放小窗口里的踢人Button
     CGFloat width = self.view.size.width;
@@ -197,6 +218,113 @@
     [_logicView triggeValue];
     _curBgmDuration = 0;
     
+    [self initRoomPreview];
+}
+
+//预览相关视图
+- (void)initRoomPreview {
+    //开始推送
+    _publishBtn = [[UIButton alloc] init];
+    [_publishBtn setBackgroundColor:[UIColor appTint]];
+    [[_publishBtn layer] setCornerRadius:8];
+    [_publishBtn setTitle:@"开始直播" forState:UIControlStateNormal];
+    [[_publishBtn titleLabel] setFont:[UIFont systemFontOfSize:22]];
+    [self.view addSubview:_publishBtn];
+    [_publishBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(@(-(IPHONE_X ? 66 : 34)));
+        make.centerX.equalTo(self.view);
+        make.height.mas_equalTo(50);
+        make.width.mas_equalTo(160);
+    }];
+    [_publishBtn addTarget:self action:@selector(startPublish) forControlEvents:UIControlEventTouchUpInside];
+    
+    //前置后置摄像头切换
+    _cameraBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [_cameraBtn setImage:[UIImage imageNamed:@"camera"] forState:UIControlStateNormal];
+    [self.view addSubview:_cameraBtn];
+    [_cameraBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(_publishBtn);
+        make.centerX.equalTo(self.view).multipliedBy(0.5).offset(-40);
+        make.height.width.mas_equalTo(BOTTOM_BTN_ICON_WIDTH);
+    }];
+    [_cameraBtn addTarget:self action:@selector(clickCamera:) forControlEvents:UIControlEventTouchUpInside];
+    
+    //美颜开关按钮
+    _beautyBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [_beautyBtn setImage:[UIImage imageNamed:@"beauty"] forState:UIControlStateNormal];
+    [self.view addSubview:_beautyBtn];
+    [_beautyBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(_publishBtn);
+        make.centerX.equalTo(self.view).multipliedBy(1.5).offset(40);
+        make.height.width.mas_equalTo(BOTTOM_BTN_ICON_WIDTH);
+    }];
+    [_beautyBtn addTarget:self action:@selector(clickBeauty:) forControlEvents:UIControlEventTouchUpInside];
+    
+    //退出VC
+    _closeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [_closeBtn setImage:[UIImage imageNamed:@"close"] forState:UIControlStateNormal];
+    [self.view addSubview:_closeBtn];
+    [_closeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        if (@available(iOS 11.0, *)) {
+            make.top.mas_equalTo(self.view.safeAreaInsets.top).offset(28);
+        } else {
+            make.top.mas_equalTo(20);
+        }
+        make.trailing.mas_equalTo(-20);
+        make.height.width.mas_equalTo(BOTTOM_BTN_ICON_WIDTH);
+    }];
+    [_closeBtn addTarget:self action:@selector(taggleCloseVC) forControlEvents:UIControlEventTouchUpInside];
+    
+    _createTopPanel = [[UIView alloc] init];
+    [_createTopPanel setBackgroundColor:[UIColor colorWithWhite:0.5 alpha:0.4]];
+    [[_createTopPanel layer] setCornerRadius:6];
+    [self.view addSubview:_createTopPanel];
+    [_createTopPanel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.leading.equalTo(self.view).offset(20);
+        make.trailing.equalTo(self.view).offset(-20);
+        make.top.mas_equalTo(110);
+        make.height.mas_equalTo(90);
+    }];
+
+    _userAvatar = [[UIImageView alloc] init];
+    [_createTopPanel addSubview:_userAvatar];
+    [[_userAvatar layer] setMasksToBounds:YES];
+    [[_userAvatar layer] setCornerRadius:10];
+    [_userAvatar mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.mas_equalTo(70);
+        make.leading.mas_equalTo(12);
+        make.top.mas_equalTo(10);
+    }];
+    [_userAvatar sd_setImageWithURL:[NSURL URLWithString:[ProfileManager shared].curUserModel.avatar]];
+    
+    _userName = [[UILabel alloc] init];
+    [_userName setBackgroundColor:[UIColor clearColor]];
+    [_userName setTextColor:[UIColor whiteColor]];
+    [_userName setFont:[UIFont boldSystemFontOfSize:18]];
+    [_userName setText:[ProfileManager shared].curUserModel.name];
+    [_createTopPanel addSubview:_userName];
+    [_userName mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.height.mas_equalTo(20);
+        make.leading.equalTo(_userAvatar.mas_trailing).offset(8);
+        make.trailing.mas_equalTo(-12);
+        make.top.mas_equalTo(_userAvatar).offset(8);
+    }];
+    
+    _roomName = [[UITextField alloc] init];
+    [_roomName setBackgroundColor:[UIColor clearColor]];
+    [_roomName setTextColor:[UIColor whiteColor]];
+    [_roomName setReturnKeyType:UIReturnKeyDone];
+    [_roomName setFont:[UIFont boldSystemFontOfSize:22]];
+    [_roomName setAttributedPlaceholder:[[NSAttributedString alloc] initWithString:@"标题有趣能吸引人气" attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.8 alpha:1]}]];
+    [_createTopPanel addSubview:_roomName];
+    [_roomName mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.height.mas_equalTo(32);
+        make.leading.equalTo(_userAvatar.mas_trailing).offset(8);
+        make.trailing.mas_equalTo(-12);
+        make.top.mas_equalTo(_userName.mas_bottom).offset(4);
+    }];
+    [_roomName addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+    _roomName.delegate = self;
 }
 
 - (void)initStatusInfoView: (int)index {
@@ -213,6 +341,15 @@
     _beginTime = [[NSDate date] timeIntervalSince1970];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    if (_logicView.isPreview) {
+        if (![_roomName isFirstResponder]) {
+           [_roomName becomeFirstResponder];
+        }
+    }
+}
+
 - (void)viewDidDisappear:(BOOL)animated {
     _endTime = [[NSDate date] timeIntervalSince1970];
 }
@@ -222,21 +359,43 @@
     [self.navigationController setNavigationBarHidden:YES animated:NO];
 }
 
-- (void)startRtmp{
+- (void)startPreview{
     //liveRoom
     if (_liveRoom != nil) {
-        __weak __typeof(self) weakSelf = self;
         [_liveRoom startCameraPreviewWithFrontCamera:YES view:_videoParentView callback:^(NSInteger code, NSString * error) {
             if (code == 0) {
                 [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
-                NSString *streamID = [NSString stringWithFormat:@"%@_stream",[[ProfileManager shared] curUserID]];
-                [weakSelf.liveRoom startPublishWithStreamID:streamID callback:^(NSInteger code, NSString * error) {
-                    NSLog(@"%ld",(long)code);
-                }];
             }
         }];
         [_liveRoom setDelegate:self];
     }
+}
+
+- (void)startPublish {
+    if ([_roomName isFirstResponder]) {
+        [_roomName resignFirstResponder];
+    }
+    if (_roomName.text.length <= 0) {
+        [self makeToastWithMessage:@"房间名不能为空"];
+        return;
+    }
+    [self setPreviewUIHidden:YES];
+    __weak __typeof(self) weakSelf = self;
+    [self _startPublishWithSdkAppID:SDKAPPID roomName:_roomName.text roomID:[self generateRoomID]  callback:^(NSInteger code, NSString * error) {
+        __strong __typeof(weakSelf) self = weakSelf;
+        if (self == nil) {
+            return ;
+        }
+        if (code == 0) {
+            NSString *streamID = [NSString stringWithFormat:@"%@_stream",[[ProfileManager shared] curUserID]];
+            [self.liveRoom startPublishWithStreamID:streamID callback:^(NSInteger code, NSString * error) {
+                NSLog(@"%ld",(long)code);
+            }];
+        } else {
+            [self stopRtmp];
+            [self closeVC];
+        }
+    }];
 }
 
 - (void)stopRtmp {
@@ -259,6 +418,8 @@
            NSLog(@"%d,%@",code,error);
        }];
    }];
+    [self.liveRoom showVideoDebugLog:NO];
+    [_logicView.vBeauty resetAndApplyValues];
    [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
 }
 
@@ -282,9 +443,9 @@
                 statusInfoView.pending = NO;
                 __weak typeof(self) weakSelf = self;
                 [self.liveRoom startPlayWithUserID:userID view:statusInfoView.videoView callback:^(NSInteger code, NSString * error) {
+                    [statusInfoView stopLoading];
                     if (code == 0) {
                          [statusInfoView.btnKickout setHidden:isPKMode];
-                         [statusInfoView stopLoading];
                     } else {
                         if (!isPKMode) {
                             [weakSelf.liveRoom kickoutJoinAnchorWithUserID:userID callback:^(NSInteger code, NSString * error) {
@@ -327,22 +488,16 @@
 - (void)onRequestJoinAnchor:(TRTCLiveUserInfo *)user reason:(NSString *)reason timeout: (double)timeout {
     if ([_setLinkMemeber count] >= MAX_LINKMIC_MEMBER_SUPPORT) {
         [TCUtil toastTip:@"连麦请求拒绝，主播端连麦人数超过最大限制" parentView:self.view];
-        [self.liveRoom responseJoinAnchorWithUser:user agree:NO reason:@"主播端连麦人数超过最大限制" callback:^(NSInteger code, NSString * error) {
-            
-        }];
+        [self.liveRoom responseJoinAnchorWithUserID:user.userId agree:NO reason:@"主播端连麦人数超过最大限制"];
     }
     else if (_userIdRequest.length > 0) {
         if (![_userIdRequest isEqualToString:user.userId]) {
             [TCUtil toastTip:@"连麦请求拒绝，主播正在处理其它人的连麦请求" parentView:self.view];
-            [self.liveRoom responseJoinAnchorWithUser:user agree:NO reason:@"请稍后，主播正在处理其它人的连麦请求" callback:^(NSInteger code, NSString * error) {
-                
-            }];
+            [self.liveRoom responseJoinAnchorWithUserID:user.userId agree:NO reason:@"请稍后，主播正在处理其它人的连麦请求"];
         }
     } else if (_curPkRoom != nil) {
         [TCUtil toastTip:@"连麦请求拒绝，正在进行PK操作" parentView:self.view];
-        [self.liveRoom responseJoinAnchorWithUser:user agree:NO reason:@"请稍后，主播正在进行PK" callback:^(NSInteger code, NSString * error) {
-            
-        }];
+        [self.liveRoom responseJoinAnchorWithUserID:user.userId agree:NO reason:@"请稍后，主播正在进行PK"];
     }
     else {
         TCStatusInfoView * statusInfoView = [self getStatusInfoViewFrom:user.userId];
@@ -370,15 +525,11 @@
     if (_userIdRequest != nil && _userIdRequest.length > 0) {
         if (buttonIndex == 0) {
             //拒绝连麦
-            [self.liveRoom responseJoinAnchorWithUser:curRequest agree:NO reason:@"主播拒绝了您的连麦请求" callback:^(NSInteger code, NSString * error) {
-                
-            }];
+            [self.liveRoom responseJoinAnchorWithUserID:curRequest.userId agree:NO reason:@"主播拒绝了您的连麦请求"];
         }
         else if (buttonIndex == 1) {
             //接受连麦
-            [self.liveRoom responseJoinAnchorWithUser:curRequest agree:YES reason:@"" callback:^(NSInteger code, NSString * error) {
-                
-            }];
+            [self.liveRoom responseJoinAnchorWithUserID:curRequest.userId agree:YES reason:@""];
             //查找空闲的TCLinkMicSmallPlayer, 开始loading
             for (TCStatusInfoView * statusInfoView in _statusInfoViewArray) {
                 if (statusInfoView.userID == nil || statusInfoView.userID.length == 0) {
@@ -489,13 +640,10 @@
     __weak __typeof(self) weakSelf = self;
     UIAlertAction *reject = [UIAlertAction actionWithTitle:@"拒绝" style:(UIAlertActionStyleCancel) handler:^(UIAlertAction * _Nonnull action) {
         [weakSelf linkFrameRestore];
-        [weakSelf.liveRoom responseRoomPKWithUser:user agree:NO reason:@"主播拒绝" callback:^(NSInteger code, NSString * error) {
-            
-        }];
+        [weakSelf.liveRoom responseRoomPKWithUserID:user.userId agree:NO reason:@"主播拒绝"];
     }];
     UIAlertAction *ok = [UIAlertAction actionWithTitle:@"接受" style:(UIAlertActionStyleDefault) handler:^(UIAlertAction * _Nonnull action) {
-        [weakSelf.liveRoom responseRoomPKWithUser:user agree:YES reason:@"" callback:^(NSInteger code, NSString * error) {
-        }];
+        [weakSelf.liveRoom responseRoomPKWithUserID:user.userId agree:YES reason:@""];
     }];
     [alert addAction:reject];
     [alert addAction:ok];
@@ -531,6 +679,7 @@
 #pragma mark -  TCAnchorToolbarDelegate
 
 - (void)closeRTMP {
+    [self setPreviewUIHidden:YES];
     for (TCStatusInfoView* statusInfoView in _statusInfoViewArray) {
         [statusInfoView stopPlay];
     }
@@ -540,13 +689,29 @@
     [self stopRtmp];
 }
 
+- (void)taggleCloseVC {
+    if([_roomName isFirstResponder]) {
+        [_roomName resignFirstResponder];
+    }
+    [self closeRTMP];
+    [self closeVC];
+}
+
 - (void)closeVC {
-    [self.liveRoom showVideoDebugLog:NO];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)clickScreen:(UITapGestureRecognizer *)gestureRecognizer {
     _logicView.vBeauty.hidden = YES;
+    if(_logicView.isPreview) {
+        if([_roomName isFirstResponder]) {
+            [_roomName resignFirstResponder];
+        }
+        if (!_isStop) {
+            [self setPreviewUIHidden:NO];
+        }
+        return;
+    }
     [_logicView setButtonHidden:NO];
     _logicView.vMusicPanel.hidden = YES;
     _logicView.vPKPanel.hidden = YES;
@@ -561,6 +726,7 @@
 }
 
 - (void)clickBeauty:(UIButton *)button {
+    [self setPreviewUIHidden:YES];
     _logicView.vBeauty.hidden = NO;
     [_logicView setButtonHidden:YES];
 }
@@ -604,7 +770,7 @@
             } else {
                 [TCUtil toastTip:@"出现错误，请稍候尝试" parentView:self.view];
             }
-            if (self.roomType != TRTCLiveRoomLiveTypeRoomPK) {
+            if (self.roomStatus != TRTCLiveRoomLiveStatusRoomPK) {
                 self.curPkRoom = nil;
             }
         } else {
@@ -612,7 +778,7 @@
         }
     }];
     
-    if (_roomType != TRTCLiveRoomLiveTypeRoomPK) {
+    if (_roomStatus != TRTCLiveRoomLiveStatusRoomPK) {
         self.curPkRoom = room;
     }
 }
@@ -635,7 +801,7 @@
 
 - (void)clickMusicClose:(UIButton *)button {
     _logicView.vMusicPanel.hidden = YES;
-    [self.liveRoom.bgmManager stopBgm];
+    [[self.liveRoom getAudioEffectManager] stopBgm];
     _curBgmDuration = 0;
 }
 
@@ -655,15 +821,15 @@
     } else if (obj.tag == 4) {// 背景音乐音量
         _bgmVolume = obj.value/obj.maximumValue;
         if (_curBgmDuration != 0) {
-            [self.liveRoom.bgmManager setBGMVolumeWithVolume:(_bgmVolume * 100)];
+            [[self.liveRoom getAudioEffectManager] setBGMVolumeWithVolume:(_bgmVolume * 100)];
         }
     } else if (obj.tag == 5) { // 麦克风音量
         _micVolume = obj.value/obj.maximumValue;
-        [self.liveRoom.bgmManager setAudioCaptureVolumeWithVolume:(_micVolume * 100)];
+        [[self.liveRoom getAudioEffectManager] setMicVolumeWithVolume:(_micVolume * 100)];
     } else if (obj.tag == 6) { // bgm seek
         _bgmPosition = obj.value/obj.maximumValue;
         if (_curBgmDuration != 0) {
-            if ([self.liveRoom.bgmManager setBGMPositionWithPos:_curBgmDuration * _bgmPosition] != 0) {
+            if ([[self.liveRoom getAudioEffectManager] setBGMPositionWithPos:_curBgmDuration * _bgmPosition] != 0) {
                 NSLog(@"error");
             }
         }
@@ -675,11 +841,11 @@
 }
 
 - (void)selectEffect:(NSInteger)index {
-    [self.liveRoom.bgmManager setReverbTypeWithReverbType:index];
+    [[self.liveRoom getAudioEffectManager] setReverbTypeWithReverbType:index];
 }
 
 - (void)selectEffect2:(NSInteger)index {
-    [self.liveRoom.bgmManager setVoiceChangerTypeWithVoiceChangerType:index];
+    [[self.liveRoom getAudioEffectManager] setVoiceChangerTypeWithVoiceChangerType:index];
 }
 
 
@@ -695,7 +861,7 @@
     if (mediaPicker.editing) {
         mediaPicker.editing = NO;
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self.liveRoom.bgmManager stopBgm];
+            [[self.liveRoom getAudioEffectManager] stopBgm];
             [self saveAssetURLToFile: url];
         });
         
@@ -743,7 +909,7 @@
                     if (self == nil) {
                         return;
                     }
-                    [self.liveRoom.bgmManager playBgm:exportFile progress:^(NSInteger progressMs, NSInteger duration) {
+                    [[self.liveRoom getAudioEffectManager] playBgm:exportFile progress:^(NSInteger progressMs, NSInteger duration) {
                         __strong __typeof(weakSelf) self = weakSelf;
                         if (self == nil) {
                             return;
@@ -756,8 +922,8 @@
                                            }
                         self->_curBgmDuration = 0;
                     }];
-                    [self.liveRoom.bgmManager setBGMVolumeWithVolume:(self->_bgmVolume * 100)];
-                    [self.liveRoom.bgmManager setAudioCaptureVolumeWithVolume:(self->_micVolume * 100)];
+                    [[self.liveRoom getAudioEffectManager] setBGMVolumeWithVolume:(self->_bgmVolume * 100)];
+                    [[self.liveRoom getAudioEffectManager] setMicVolumeWithVolume:(self->_micVolume * 100)];
                 });
                 break;
             }
@@ -802,5 +968,37 @@
     
 }
 
+#pragma mark UITextFiled Delegate
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    if (textField == _roomName) {
+        [self startPublish];
+    }
+    return YES;
+}
+
+- (void)textFieldDidChange:(UITextField *)textField
+{
+    if(textField == _roomName){
+        NSInteger kMaxLength = 10;
+        NSString *toBeString = textField.text;
+        NSString *lang = [[UIApplication sharedApplication]textInputMode].primaryLanguage; //ios7之前使用[UITextInputMode currentInputMode].primaryLanguage
+        if ([lang isEqualToString:@"zh-Hans"]) { //中文输入
+            UITextRange *selectedRange = [textField markedTextRange];
+            //获取高亮部分
+            UITextPosition *position = [textField positionFromPosition:selectedRange.start offset:0];
+            if (!position) {// 没有高亮选择的字，则对已输入的文字进行字数统计和限制
+                if (toBeString.length > kMaxLength) {
+                    textField.text = [toBeString substringToIndex:kMaxLength];
+                }
+            }
+            else{//有高亮选择的字符串，则暂不对文字进行统计和限制
+            }
+        } else {//中文输入法以外的直接对其统计限制即可，不考虑其他语种情况
+            if (toBeString.length > kMaxLength) {
+                textField.text = [toBeString substringToIndex:kMaxLength];
+            }
+        }
+    }
+}
 @end
 

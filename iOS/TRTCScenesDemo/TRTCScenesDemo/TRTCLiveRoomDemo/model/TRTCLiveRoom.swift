@@ -39,7 +39,8 @@ import UIKit
     /// 主播创建房间
     /// 主播开播的正常调用流程是：
     /// 1.【主播】调用 startCameraPreview() 打开摄像头预览，此时可以调整美颜参数。
-    /// 2.【主播】调用 createRoom 创建直播间，房间创建成功与否会通过 TRTCLiveRoomDelegate 通知给主播。
+    /// 2.【主播】调用 createRoom() 创建直播间，房间创建成功与否会通过 TRTCLiveRoomDelegate 通知给主播。
+    /// 3.【主播】调用 startPublish() 开始推流
     /// - Parameters:
     ///   - roomID: 房间ID
     ///   - roomInfo: 房间参数
@@ -58,6 +59,7 @@ import UIKit
     ///观众观看直播的正常调用流程是：
     ///1.【观众】通过业务后台拿到最新的直播房间列表。
     ///2.【观众】选择一个直播间以后，调用 enterRoom() 进入该房间。
+    ///3.【观众】调用 startPlay() 播放主播的画面。
     /// - Parameters:
     ///   - roomID: 房间ID
     ///   - callback: 进入房间回调
@@ -76,7 +78,7 @@ import UIKit
     /// 获取房间信息
     /// - Parameter roomIDs: 房间ID列表
     /// - Parameter callback: 房间信息回调
-    @objc func getRoomInfos(roomIDs: [String], callback: RoomInfoCallback?)
+    @objc func getRoomInfos(roomIDs: [UInt32], callback: RoomInfoCallback?)
     
     /// 获取主播列表
     /// - Parameter callback: 主播列表回调
@@ -147,9 +149,8 @@ import UIKit
     ///   - user: 观众
     ///   - agree: 是否同意
     ///   - reason: 回复原因
-    ///   - callback: 回复请求的回调
     /// - Note: 主播回复后，观众端会收到`requestJoinAnchor`传入的`responseCallback`回调
-    @objc func responseJoinAnchor(user: TRTCLiveUserInfo, agree: Bool, reason: String?, callback: Callback?)
+    @objc func responseJoinAnchor(userID: String, agree: Bool, reason: String?)
     
     /// 主播将连麦观众下麦
     /// - Parameters:
@@ -157,7 +158,6 @@ import UIKit
     ///   - callback: 下麦回调
     /// - Note: 下麦后，被下麦的观众会收到`trtcLiveRoomOnKickoutJoinAnchor`回调
     @objc func kickoutJoinAnchor(userID: String, callback: Callback?)
-    
     
     /**
         * 请求跨房 PK
@@ -184,10 +184,8 @@ import UIKit
     /// - Parameters:
     ///   - user: 对方主播
     ///   - agree: 是否同意
-    ///   - reason: 回复原因
-    ///   - callback: 回复请求的回调
-    /// - Note: 主播回复后，对方主播会收到`requestRoomPK`传入的`responseCallback`回调
-    @objc func responseRoomPK(user: TRTCLiveUserInfo, agree: Bool, reason: String?, callback: Callback?)
+    ///   - reason: 回复原因    /// - Note: 主播回复后，对方主播会收到`requestRoomPK`传入的`responseCallback`回调
+    @objc func responseRoomPK(userID: String, agree: Bool, reason: String?)
     
     /// 主播退出连麦
     /// - Parameter callback: 退出连麦的回调
@@ -241,7 +239,7 @@ import UIKit
     * - 添加美妆
     * - 进行手势识别
     */
-    @objc var beautyManager: TXBeautyManager { get }
+    @objc func getBeautyManager() -> TXBeautyManager
     
     /**
      * 设置指定素材滤镜特效
@@ -261,32 +259,14 @@ import UIKit
     @objc func setFilterConcentration(concentration: Float)
 
     /**
-     * 添加水印
-     *
-     * 水印的位置是通过 rect 来指定的，rect 的格式为 (x，y，width，height)
-     * - x：水印的坐标，取值范围为0 - 1的浮点数。
-     * - y：水印的坐标，取值范围为0 - 1的浮点数。
-     * - width：水印的宽度，取值范围为0 - 1的浮点数。
-     * - height：是不用设置的，SDK 内部会根据水印图片的宽高比自动计算一个合适的高度。
-     *
-     * 例如，如果当前编码分辨率是540 × 960，rect 设置为（0.1，0.1，0.2，0.0）。
-     * 那么水印的左上坐标点就是（540 × 0.1，960 × 0.1）即（54，96），水印的宽度是 540 × 0.2 = 108px，高度自动计算。
-     *
-     * @param image 水印图片，**必须使用透明底的 png 格式**
-     * @param streamType 如果要给屏幕分享的一路也设置水印，需要调用两次的 setWatermark。
-     * @param rect 水印相对于编码分辨率的归一化坐标，x，y，width，height 取值范围0 - 1。
-     */
-    @objc func setWatermark(image: UIImage, streamType: TRTCVideoStreamType, rect: CGRect)
-
-    /**
      * 设置绿幕背景视频（企业版有效，其它版本设置此参数无效）
      *
      * 此处的绿幕功能并非智能抠背，需要被拍摄者的背后有一块绿色的幕布来辅助产生特效
      *
      * @param file 视频文件路径。支持 MP4; nil 表示关闭特效。
      */
-    @objc func setGreenScreenFile(file: URL)
+    @objc func setGreenScreenFile(file: URL?)
     
     /// 背景音乐管理实例
-    @objc var bgmManager: TRTCBgmManagerImpl { get }
+    @objc func getAudioEffectManager() -> TRTCAudioEffectManagerImpl
 }
