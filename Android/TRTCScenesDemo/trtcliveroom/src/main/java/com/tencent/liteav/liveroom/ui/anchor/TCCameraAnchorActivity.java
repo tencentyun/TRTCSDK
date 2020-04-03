@@ -47,7 +47,7 @@ import static com.tencent.liteav.liveroom.ui.anchor.music.TCAudioControl.REQUEST
  * Function: 主播推流的页面
  * <p>
  */
-public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
+public class TCCameraAnchorActivity extends TCBaseAnchorActivity implements View.OnClickListener {
     private static final String TAG = TCCameraAnchorActivity.class.getSimpleName();
 
     private TXCloudVideoView mTXCloudVideoView;      // 主播本地预览的 View
@@ -67,7 +67,6 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
     private ObjectAnimator   mObjAnim;               // 动画
     private TXCloudVideoView mPKVideoView;
     private RelativeLayout   mPKContainer;
-    private ConstraintLayout mConstraintLayout;
     private Guideline        mVGuideLine;
     private Guideline        mHGuideLine;
 
@@ -83,12 +82,16 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
     private List<String>   mAnchorUserIdList = new ArrayList<>(); // 麦上主播对应的String(除了自己)
     private int            mCurrentStatus    = TRTCLiveRoomDef.ROOM_STATUS_NONE;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.BeautyTheme);
         super.onCreate(savedInstanceState);
         LiveRoomBeautyKit manager = new LiveRoomBeautyKit(mLiveRoom);
         mBeautyControl.setProxy(manager);
+        // 清空上次的美颜参数
+        mBeautyControl.clear();
+        startPreview();
     }
 
     @Override
@@ -99,7 +102,6 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
     @Override
     protected void initView() {
         super.initView();
-        mConstraintLayout = (ConstraintLayout) findViewById(R.id.cl_anchor);
         mTXCloudVideoView = (TXCloudVideoView) findViewById(R.id.anchor_video_view);
         mTXCloudVideoView.setLogMargin(10, 10, 45, 55);
 
@@ -173,6 +175,7 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
         });
         mVGuideLine = (Guideline) findViewById(R.id.gl_v);
         mHGuideLine = (Guideline) findViewById(R.id.gl_h);
+        mAudioCtrl.setPusher(mLiveRoom);
     }
 
     /**
@@ -188,12 +191,23 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        stopRecordAnimation();
-        mVideoViewMgr.recycleVideoView();
-        mVideoViewMgr = null;
         if (mMainHandler != null) {
             mMainHandler.removeCallbacksAndMessages(null);
         }
+        stopRecordAnimation();
+        mVideoViewMgr.recycleVideoView();
+        mVideoViewMgr = null;
+        if (mAudioCtrl != null) {
+            mAudioCtrl.unInit();
+            mAudioCtrl.setPusher(null);
+            mAudioCtrl = null;
+        }
+    }
+
+    protected void startPreview() {
+        // 打开本地预览，传入预览的 View
+        mTXCloudVideoView.setVisibility(View.VISIBLE);
+        mLiveRoom.startCameraPreview(true, mTXCloudVideoView, null);
     }
 
     /**
@@ -203,38 +217,20 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
      * //
      * /////////////////////////////////////////////////////////////////////////////////
      */
+
     @Override
     protected void enterRoom() {
-        mAudioCtrl.setPusher(mLiveRoom);
-        mTXCloudVideoView.setVisibility(View.VISIBLE);
-        mLiveRoom.startCameraPreview(true, mTXCloudVideoView, null);
         super.enterRoom();
     }
 
     @Override
     protected void exitRoom() {
         super.exitRoom();
-        if (mAudioCtrl != null) {
-            mAudioCtrl.unInit();
-            mAudioCtrl.setPusher(null);
-            mAudioCtrl = null;
-        }
     }
 
     @Override
     protected void onCreateRoomSuccess() {
         startRecordAnimation();
-        // 设置美颜参数
-        BeautyParams beautyParams = new BeautyParams();
-        mLiveRoom.getBeautyManager().setBeautyStyle(beautyParams.mBeautyStyle);
-        mLiveRoom.getBeautyManager().setBeautyLevel(beautyParams.mBeautyLevel);
-        mLiveRoom.getBeautyManager().setWhitenessLevel(beautyParams.mWhiteLevel);
-        mLiveRoom.getBeautyManager().setRuddyLevel(beautyParams.mRuddyLevel);
-        // 设置瘦脸参数
-        mLiveRoom.getBeautyManager().setFaceSlimLevel(beautyParams.mFaceSlimLevel);
-        // 设置大眼参数
-        mLiveRoom.getBeautyManager().setEyeScaleLevel(beautyParams.mBigEyeLevel);
-        // 打开本地预览，传入预览的 View
         // 创建房间成功，开始推流
         mLiveRoom.startPublish(mSelfUserId + "_stream", new TRTCLiveRoomCallback.ActionCallback() {
             @Override
@@ -246,6 +242,13 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
                 }
             }
         });
+    }
+
+    @Override
+    protected void finishRoom() {
+        mBeautyControl.clear();
+        mLiveRoom.stopCameraPreview();
+        super.finishRoom();
     }
 
     private void setAnchorViewFull(boolean isFull) {
@@ -541,8 +544,6 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
                 mAnchorPKSelectView.setVisibility(View.GONE);
                 mAudioCtrl.setVisibility(View.GONE);
             }
-        } else if (id == R.id.btn_close) {
-            showExitInfoDialog("当前正在直播，是否退出直播？", false);
         } else if (id == R.id.btn_audio_ctrl) {
             if (mAudioCtrl.isShown()) {
                 mAudioCtrl.setVisibility(View.GONE);
@@ -550,6 +551,18 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
                 mAudioCtrl.setVisibility(View.VISIBLE);
                 mBeautyControl.setVisibility(View.GONE);
                 mAnchorPKSelectView.setVisibility(View.GONE);
+            }
+        } else if (id == R.id.btn_switch_cam_before_live) {
+            if (mLiveRoom != null) {
+                mLiveRoom.switchCamera();
+            }
+        } else if (id == R.id.btn_beauty_before_live) {
+            if (mBeautyControl.isShown()) {
+                mBeautyControl.setVisibility(View.GONE);
+            } else {
+                mBeautyControl.setVisibility(View.VISIBLE);
+                mAnchorPKSelectView.setVisibility(View.GONE);
+                mAudioCtrl.setVisibility(View.GONE);
             }
         } else {
             super.onClick(v);

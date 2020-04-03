@@ -2,18 +2,28 @@ package com.tencent.liteav.liveroom.ui.anchor;
 
 import android.app.Activity;
 import android.content.DialogInterface;
-import android.content.Intent;
+import android.graphics.Outline;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.constraint.ConstraintLayout;
+import android.support.constraint.ConstraintSet;
+import android.support.constraint.Group;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
+import android.view.ViewOutlineProvider;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blankj.utilcode.util.ToastUtils;
@@ -49,6 +59,8 @@ import master.flame.danmaku.controller.IDanmakuView;
 public abstract class TCBaseAnchorActivity extends Activity implements TRTCLiveRoomDelegate, View.OnClickListener, InputTextMsgDialog.OnTextSendListener {
     private static final String TAG = TCBaseAnchorActivity.class.getSimpleName();
 
+    public static final int ERROR_ROOM_ID_EXIT = -1301;
+
     // 消息列表相关
     private ListView                mLvMessage;             // 消息控件
     private InputTextMsgDialog      mInputTextMsgDialog;    // 消息输入框
@@ -57,19 +69,31 @@ public abstract class TCBaseAnchorActivity extends Activity implements TRTCLiveR
 
     private TCHeartLayout mHeartLayout;           // 点赞动画的布局
 
-    protected String mCoverPicUrl;           // 直播封面图
-    protected String mSelfAvatar;          // 个人头像地址
-    protected String mSelfName;              // 个人昵称
-    protected String mSelfUserId;                // 个人用户id
-    protected String mRoomName;// 直播标题
-    protected int    mRoomId;   //房间号
-    protected long   mTotalMemberCount   = 0;  // 总进房观众数量
-    protected long   mCurrentMemberCount = 0;// 当前观众数量
-    protected long   mHeartCount         = 0;        // 点赞数量
+    protected String  mCoverPicUrl;           // 直播封面图
+    protected String  mSelfAvatar;          // 个人头像地址
+    protected String  mSelfName;              // 个人昵称
+    protected String  mSelfUserId;                // 个人用户id
+    protected String  mRoomName;// 直播标题
+    protected int     mRoomId;   //房间号
+    protected long    mTotalMemberCount   = 0;  // 总进房观众数量
+    protected long    mCurrentMemberCount = 0;// 当前观众数量
+    protected long    mHeartCount         = 0;        // 点赞数量
+    protected boolean mIsEnterRoom        = false;
+    protected boolean mIsCreatingRoom     = false;
 
-    private TCDanmuMgr mDanmuMgr;              // 弹幕管理类
+    protected TCDanmuMgr       mDanmuMgr;              // 弹幕管理类
+    protected TRTCLiveRoom     mLiveRoom;              // 组件类
+    protected Group            mLiveBefore; //开播前的所有控件
+    protected Group            mLiveAfter;  //开播后需要显示的控件
+    private   ImageView        mLiveRoomCoverImg;
+    private   EditText         mLiveRoomNameEt;
+    private   Button           mStartRoomBtn;
+    private   Button           mSwitchCamBeforeLiveBtn;
+    private   Button           mBeautyBeforeLiveBtn;
+    private   TextView         mLiveRoomNameTv;
+    private   View             mToolbarView;
+    protected ConstraintLayout mConstraintLayout;
 
-    protected TRTCLiveRoom mLiveRoom;              // 组件类
 
     protected Handler mMainHandler = new Handler(Looper.getMainLooper());
 
@@ -88,25 +112,22 @@ public abstract class TCBaseAnchorActivity extends Activity implements TRTCLiveR
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(getLayoutId());
 
-        Intent    intent    = getIntent();
         UserModel userModel = ProfileManager.getInstance().getUserModel();
         mSelfUserId = userModel.userId;
         mSelfName = userModel.userName;
         mSelfAvatar = userModel.userAvatar;
         // 直播封面使用用户的头像
         mCoverPicUrl = userModel.userAvatar;
-        mRoomName = intent.getStringExtra(TCConstants.ROOM_TITLE);
-        mRoomId = intent.getIntExtra(TCConstants.GROUP_ID, 0);
+        mRoomId = getRoomId();
 
         mArrayListChatEntity = new ArrayList<>();
         mLiveRoom = TRTCLiveRoom.sharedInstance(this);
-
-        initView();
+        mIsEnterRoom = false;
         if (TextUtils.isEmpty(mSelfName)) {
             mSelfName = mSelfUserId;
         }
 
-        enterRoom();
+        initView();
     }
 
     public abstract int getLayoutId();
@@ -117,6 +138,7 @@ public abstract class TCBaseAnchorActivity extends Activity implements TRTCLiveR
      * 的布局，所以id要保持一致。 若id发生改变，此处id也要同时修改
      */
     protected void initView() {
+        mConstraintLayout = (ConstraintLayout) findViewById(R.id.cl_anchor);
         mLvMessage = (ListView) findViewById(R.id.im_msg_listview);
         mHeartLayout = (TCHeartLayout) findViewById(R.id.heart_layout);
 
@@ -129,18 +151,97 @@ public abstract class TCBaseAnchorActivity extends Activity implements TRTCLiveR
         IDanmakuView danmakuView = (IDanmakuView) findViewById(R.id.anchor_danmaku_view);
         mDanmuMgr = new TCDanmuMgr(this);
         mDanmuMgr.setDanmakuView(danmakuView);
+
+        mLiveBefore = (Group) findViewById(R.id.before_live);
+        mLiveAfter = (Group) findViewById(R.id.after_live);
+        mLiveRoomCoverImg = (ImageView) findViewById(R.id.img_live_room_cover);
+        mLiveRoomNameEt = (EditText) findViewById(R.id.et_live_room_name);
+        mSwitchCamBeforeLiveBtn = (Button) findViewById(R.id.btn_switch_cam_before_live);
+        mStartRoomBtn = (Button) findViewById(R.id.btn_start_room);
+        mBeautyBeforeLiveBtn = (Button) findViewById(R.id.btn_beauty_before_live);
+        mLiveRoomNameTv = (TextView) findViewById(R.id.tv_live_room_name);
+        mToolbarView = findViewById(R.id.tool_bar_view);
+        mLiveBefore.setVisibility(View.VISIBLE);
+        mLiveAfter.setVisibility(View.GONE);
+
+        mStartRoomBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mIsCreatingRoom) {
+                    return;
+                }
+                String roomName = mLiveRoomNameEt.getText().toString().trim();
+                if (TextUtils.isEmpty(roomName)) {
+                    ToastUtils.showLong("房间名不能为空");
+                    return;
+                }
+                InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(mLiveRoomNameEt.getWindowToken(), 0);
+                mRoomName = roomName;
+                createRoom();
+            }
+        });
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mLiveRoomCoverImg.setOutlineProvider(new ViewOutlineProvider() {
+                @Override
+                public void getOutline(View view, Outline outline) {
+                    outline.setRoundRect(0, 0, view.getWidth(), view.getHeight(), 30);
+                }
+            });
+            mLiveRoomCoverImg.setClipToOutline(true);
+        }
+        TCUtils.showPicWithUrl(this, mLiveRoomCoverImg, mSelfAvatar, R.drawable.bg_cover);
+        mLiveRoomNameTv.setText(mSelfName);
     }
 
     @Override
     public void onClick(View v) {
         int id = v.getId();
         if (id == R.id.btn_close) {
-            showExitInfoDialog("当前正在直播，是否退出直播？", false);
+            if (!mIsEnterRoom) {
+                //如果没有进房，直接退出就好了
+                finishRoom();
+            } else {
+                showExitInfoDialog("当前正在直播，是否退出直播？", false);
+            }
+        } else if (id == R.id.btn_close_before_live) {
+            if (!mIsEnterRoom) {
+                //如果没有进房，直接退出就好了
+                finishRoom();
+            } else {
+                showExitInfoDialog("当前正在直播，是否退出直播？", false);
+            }
         } else if (id == R.id.btn_message_input) {
             showInputMsgDialog();
         }
     }
 
+
+    public void createRoom() {
+        mIsCreatingRoom = true;
+        RoomManager.getInstance().createRoom(mRoomId, TCConstants.TYPE_LIVE_ROOM, new RoomManager.ActionCallback() {
+            @Override
+            public void onSuccess() {
+                enterRoom();
+            }
+
+            @Override
+            public void onFailed(int code, String msg) {
+                if (code == ERROR_ROOM_ID_EXIT) {
+                    onSuccess();
+                } else {
+                    mIsCreatingRoom = false;
+                    ToastUtils.showLong("创建房间失败[" + code + "]:" + msg);
+                }
+            }
+        });
+    }
+
+    private int getRoomId() {
+        // 这里我们用简单的 userId hashcode，然后
+        // 您的room id应该是您后台生成的唯一值
+        return mSelfUserId.hashCode() & 0x7FFFFFFF;
+    }
 
     /**
      * /////////////////////////////////////////////////////////////////////////////////
@@ -149,10 +250,13 @@ public abstract class TCBaseAnchorActivity extends Activity implements TRTCLiveR
      * //
      * /////////////////////////////////////////////////////////////////////////////////
      */
-
     @Override
     public void onBackPressed() {
-        showExitInfoDialog("当前正在直播，是否退出直播？", false);
+        if (mIsEnterRoom) {
+            showExitInfoDialog("当前正在直播，是否退出直播？", false);
+        } else {
+            finishRoom();
+        }
     }
 
     @Override
@@ -179,7 +283,10 @@ public abstract class TCBaseAnchorActivity extends Activity implements TRTCLiveR
             mDanmuMgr.destroy();
             mDanmuMgr = null;
         }
-        exitRoom();
+        finishRoom();
+        if (mIsEnterRoom) {
+            exitRoom();
+        }
     }
 
     /**
@@ -199,15 +306,30 @@ public abstract class TCBaseAnchorActivity extends Activity implements TRTCLiveR
             @Override
             public void onCallback(int code, String msg) {
                 if (code == 0) {
-                    //创建成功
+                    mIsEnterRoom = true;
+                    //创建成功, 更新UI界面
+                    mLiveBefore.setVisibility(View.GONE);
+                    mLiveAfter.setVisibility(View.VISIBLE);
+                    freshToolView();
                     startTimer();
                     onCreateRoomSuccess();
                 } else {
                     Log.w(TAG, String.format("创建直播间错误, code=%s,error=%s", code, msg));
                     showErrorAndQuit(code, "创建直播房间失败,Error:" + msg);
                 }
+                mIsCreatingRoom = false;
             }
         });
+    }
+
+    /**
+     * 用于将toolbar挪到合适的位置
+     */
+    private void freshToolView() {
+        ConstraintSet set = new ConstraintSet();
+        set.clone(mConstraintLayout);
+        set.connect(mToolbarView.getId(), ConstraintSet.BOTTOM, R.id.btn_close, ConstraintSet.TOP);;
+        set.applyTo(mConstraintLayout);
     }
 
     /**
@@ -241,6 +363,13 @@ public abstract class TCBaseAnchorActivity extends Activity implements TRTCLiveR
     }
 
     /**
+     * 没有进房的情况下直接退房
+     */
+    protected void finishRoom() {
+        finish();
+    }
+
+    /**
      * /////////////////////////////////////////////////////////////////////////////////
      * //
      * //                      处理接收到的各种信息
@@ -265,10 +394,11 @@ public abstract class TCBaseAnchorActivity extends Activity implements TRTCLiveR
         mCurrentMemberCount++;
         TCChatEntity entity = new TCChatEntity();
         entity.setSenderName("通知");
-        if (TextUtils.isEmpty(userInfo.userName))
+        if (TextUtils.isEmpty(userInfo.userName)) {
             entity.setContent(userInfo.userId + "加入直播");
-        else
+        } else {
             entity.setContent(userInfo.userName + "加入直播");
+        }
         entity.setType(TCConstants.MEMBER_ENTER);
         notifyMsg(entity);
     }
@@ -279,17 +409,19 @@ public abstract class TCBaseAnchorActivity extends Activity implements TRTCLiveR
      * @param userInfo
      */
     protected void handleMemberQuitMsg(TRTCLiveRoomDef.TRTCLiveUserInfo userInfo) {
-        if (mCurrentMemberCount > 0)
+        if (mCurrentMemberCount > 0) {
             mCurrentMemberCount--;
-        else
+        } else {
             Log.d(TAG, "接受多次退出请求，目前人数为负数");
+        }
 
         TCChatEntity entity = new TCChatEntity();
         entity.setSenderName("通知");
-        if (TextUtils.isEmpty(userInfo.userName))
+        if (TextUtils.isEmpty(userInfo.userName)) {
             entity.setContent(userInfo.userId + "退出直播");
-        else
+        } else {
             entity.setContent(userInfo.userName + "退出直播");
+        }
         entity.setType(TCConstants.MEMBER_EXIT);
         notifyMsg(entity);
     }
@@ -438,10 +570,11 @@ public abstract class TCBaseAnchorActivity extends Activity implements TRTCLiveR
         args.putString("totalMemberCount", String.format(Locale.CHINA, "%d", mTotalMemberCount));
         dialogFragment.setArguments(args);
         dialogFragment.setCancelable(false);
-        if (dialogFragment.isAdded())
+        if (dialogFragment.isAdded()) {
             dialogFragment.dismiss();
-        else
+        } else {
             dialogFragment.show(getFragmentManager(), "");
+        }
     }
 
     /**

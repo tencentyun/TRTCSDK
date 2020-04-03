@@ -66,7 +66,6 @@ public class TRTCApplication extends MultiDexApplication {
         startService(intent);
     }
 
-
     private void initShare() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
             StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();

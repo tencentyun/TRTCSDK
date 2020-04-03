@@ -31,7 +31,7 @@ public interface TRTCLiveRoomDelegate {
     void onRoomInfoChange(TRTCLiveRoomDef.TRTCLiveRoomInfo roomInfo);
 
     /**
-     * 房间被销毁，当主播
+     * 房间被销毁，当主播调用destroyRoom后，观众会收到该回调
      * @param roomId
      */
     void onRoomDestroy(String roomId);

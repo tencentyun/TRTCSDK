@@ -4,7 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 
 import com.tencent.liteav.beauty.TXBeautyManager;
-import com.tencent.liteav.liveroom.model.TRTCBGMManager;
+import com.tencent.liteav.liveroom.model.TRTCAudioEffectManager;
 import com.tencent.liteav.liveroom.model.impl.base.TXCallback;
 import com.tencent.rtmp.ui.TXCloudVideoView;
 
@@ -55,7 +55,7 @@ public interface ITRTCTXLiveRoom {
 
     TXBeautyManager getTXBeautyManager();
 
-    TRTCBGMManager getTRTCBgmManager();
+    TRTCAudioEffectManager getAudioEffectManager();
 
     void setFilter(Bitmap filterImage);
 

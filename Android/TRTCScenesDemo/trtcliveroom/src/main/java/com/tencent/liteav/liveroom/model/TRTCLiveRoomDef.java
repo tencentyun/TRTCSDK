@@ -12,18 +12,18 @@ public class TRTCLiveRoomDef {
         /// 【特殊说明】true: 默认进房使用CDN播放 false: 使用低延时播放
         public boolean useCDNFirst;
         /// 【字段含义】CDN播放的域名地址
-        public String  playDomain;
+        public String  cdnPlayDomain;
 
-        public TRTCLiveRoomConfig(boolean useCDNFirst, String playDomain) {
+        public TRTCLiveRoomConfig(boolean useCDNFirst, String cdnPlayDomain) {
             this.useCDNFirst = useCDNFirst;
-            this.playDomain = playDomain;
+            this.cdnPlayDomain = cdnPlayDomain;
         }
 
         @Override
         public String toString() {
             return "TRTCLiveRoomConfig{" +
                     "useCDNFirst=" + useCDNFirst +
-                    ", playDomain='" + playDomain + '\'' +
+                    ", cdnPlayDomain='" + cdnPlayDomain + '\'' +
                     '}';
         }
     }

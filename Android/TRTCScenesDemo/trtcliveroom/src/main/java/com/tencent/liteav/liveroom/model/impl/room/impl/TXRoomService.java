@@ -1030,7 +1030,6 @@ public class TXRoomService implements ITXRoomService, TIMMessageListener, TIMUse
 
     private void changeRoomStatus(int status) {
         TRTCLogger.e(TAG, "changeRoomStatus " + status);
-        Log.v(TAG, Log.getStackTraceString(new Throwable()));
         mInternalStatus = status;
         if (mInternalStatus == STATUS_NONE) {
             // 一旦重新将状态置回, 清空超时逻辑

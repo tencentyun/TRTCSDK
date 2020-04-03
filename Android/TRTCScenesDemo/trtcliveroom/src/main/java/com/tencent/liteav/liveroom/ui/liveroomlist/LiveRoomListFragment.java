@@ -1,8 +1,6 @@
 package com.tencent.liteav.liveroom.ui.liveroomlist;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,9 +12,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.CollectionUtils;
@@ -47,7 +43,6 @@ import java.util.List;
 public class LiveRoomListFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     private static final String TAG = "LiveRoomListFragment";
 
-    public static final int ERROR_ROOM_ID_EXIT = -1301;
 
     private RoomListAdapter    mRoomListViewAdapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
@@ -81,7 +76,7 @@ public class LiveRoomListFragment extends Fragment implements SwipeRefreshLayout
         mCreateRoomBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showCreateDialog();
+                createRoom();
             }
         });
         mSwipeRefreshLayout = (SwipeRefreshLayout) itemView.findViewById(R.id.swipe_refresh_layout_list);
@@ -95,7 +90,7 @@ public class LiveRoomListFragment extends Fragment implements SwipeRefreshLayout
                         RoomInfo info = mRoomInfoList
                                 .get(position);
                         if (info.anchorId.equals(mSelfUserId)) {
-                            createRoom(info.roomName);
+                            createRoom();
                         } else {
                             enterRoom(info);
                         }
@@ -110,6 +105,11 @@ public class LiveRoomListFragment extends Fragment implements SwipeRefreshLayout
 
         mSelfUserId = ProfileManager.getInstance().getUserModel().userId;
         isUseCdnPlay = SPUtils.getInstance().getBoolean(TCConstants.USE_CDN_PLAY, false);
+    }
+
+    private void createRoom() {
+        Intent intent = new Intent(getContext(), TCCameraAnchorActivity.class);
+        startActivity(intent);
     }
 
     private void refreshView() {
@@ -128,70 +128,6 @@ public class LiveRoomListFragment extends Fragment implements SwipeRefreshLayout
         intent.putExtra(TCConstants.COVER_PIC, info.coverUrl);
         intent.putExtra(TCConstants.PUSHER_AVATAR, info.coverUrl);
         startActivity(intent);
-    }
-
-    private void showCreateDialog() {
-        final View view = LayoutInflater.from(getContext())
-                .inflate(R.layout.liveroom_dialog_create_room, null, false);
-        EditText et = (EditText) view.findViewById(R.id.rtmproom_dialog_create_room_edittext);
-        et.setHint("请输入直播间名称");
-        new AlertDialog.Builder(getContext(), R.style.LiveRoomDialogTheme)
-                .setView(view)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        EditText et   = (EditText) view.findViewById(R.id.rtmproom_dialog_create_room_edittext);
-                        String   text = et.getText().toString();
-                        if (!TextUtils.isEmpty(text)) {
-                            createRoom(text);
-                            InputMethodManager m = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                            if (m != null) {
-                                m.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
-                            }
-                            dialog.dismiss();
-                            return;
-                        } else {
-                            ToastUtils.showShort("直播间名称不能为空");
-                        }
-                    }
-                })
-                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        InputMethodManager m = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                        m.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
-                        dialog.dismiss();
-                    }
-                }).create().show();
-    }
-
-
-    public void createRoom(final String title) {
-        RoomManager.getInstance().createRoom(getRoomId(), TCConstants.TYPE_LIVE_ROOM, new RoomManager.ActionCallback() {
-            @Override
-            public void onSuccess() {
-                Intent intent = new Intent(getActivity(), TCCameraAnchorActivity.class);
-                intent.putExtra(TCConstants.ROOM_TITLE, title);
-                intent.putExtra(TCConstants.GROUP_ID, getRoomId());
-                startActivity(intent);
-            }
-
-            @Override
-            public void onFailed(int code, String msg) {
-                if (code == ERROR_ROOM_ID_EXIT) {
-                    ToastUtils.showLong("房间已创建，进入该房间");
-                    onSuccess();
-                } else {
-                    ToastUtils.showLong("创建房间失败[" + code + "]:" + msg);
-                }
-            }
-        });
-    }
-
-    private int getRoomId() {
-        // 这里我们用简单的 userId hashcode，然后
-        // 您的room id应该是您后台生成的唯一值
-        return mSelfUserId.hashCode() & 0x7FFFFFFF;
     }
 
     @Override
@@ -324,19 +260,15 @@ public class LiveRoomListFragment extends Fragment implements SwipeRefreshLayout
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             Context        context  = parent.getContext();
             LayoutInflater inflater = LayoutInflater.from(context);
-
-            View view = inflater.inflate(R.layout.liveroom_item_room_list, parent, false);
-
+            View           view     = inflater.inflate(R.layout.liveroom_item_room_list, parent, false);
             return new ViewHolder(view);
         }
-
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
             RoomInfo item = list.get(position);
             holder.bind(item, onItemClickListener);
         }
-
 
         @Override
         public int getItemCount() {

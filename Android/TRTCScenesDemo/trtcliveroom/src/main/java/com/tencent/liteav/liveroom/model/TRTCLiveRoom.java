@@ -57,7 +57,7 @@ public abstract class TRTCLiveRoom {
     /**
      * 登录到组件系统
      */
-    public abstract void login(int sdkAppId, String userId, String userSign, TRTCLiveRoomDef.TRTCLiveRoomConfig config, TRTCLiveRoomCallback.ActionCallback callback);
+    public abstract void login(int sdkAppId, String userId, String userSig, TRTCLiveRoomDef.TRTCLiveRoomConfig config, TRTCLiveRoomCallback.ActionCallback callback);
 
     /**
      * 退出登录
@@ -78,6 +78,7 @@ public abstract class TRTCLiveRoom {
      * 主播开播的正常调用流程是：
      * 1.【主播】调用 startCameraPreview() 打开摄像头预览，此时可以调整美颜参数。
      * 2.【主播】调用 createRoom 创建直播间，房间创建成功与否会通过 ActionCallback 通知给主播。
+     * 3.【主播】调用 starPublish() 开始推流。
      *
      * @param roomId 房间标识。
      * @param roomInfo 房间信息，用于房间描述的信息，比如房间名称，封面信息。
@@ -98,6 +99,7 @@ public abstract class TRTCLiveRoom {
      * 观众观看直播的正常调用流程是：
      * 1.【观众】通过业务后台拿到最新的直播房间列表。
      * 2.【观众】选择一个直播间以后，调用 enterRoom() 进入该房间。
+     * 3.【观众】调用 startPlay() 播放主播的画面。
      *
      * @param roomId 房间标识
      * @param callback 进入房间的结果回调
@@ -319,7 +321,7 @@ public abstract class TRTCLiveRoom {
     /**
      * BGM控制相关
      */
-    public abstract TRTCBGMManager getBGMManger();
+    public abstract TRTCAudioEffectManager getAudioEffectManager();
 
     /**
      * 美颜相关

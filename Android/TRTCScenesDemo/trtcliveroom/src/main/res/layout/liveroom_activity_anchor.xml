@@ -32,6 +32,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <android.support.constraint.Group
+        android:id="@+id/before_live"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="btn_close_before_live,btn_switch_cam_before_live,btn_beauty_before_live,cl_live_room_before,btn_start_room" />
+
+    <android.support.constraint.Group
+        android:id="@+id/after_live"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="anchor_danmaku_view,layout_live_pusher_info,anchor_rv_avatar,im_msg_listview,tcvideoview_1,tcvideoview_2,tcvideoview_3,btn_audio_ctrl,btn_request_pk,btn_message_input,btn_close,switch_cam,beauty_btn" />
+
     <RelativeLayout
         android:id="@+id/pk_container"
         android:layout_width="0dp"
@@ -87,6 +100,55 @@
         app:layout_constraintStart_toEndOf="@id/layout_live_pusher_info"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/btn_close_before_live"
+        android:layout_width="@dimen/liveroom__btn_size"
+        android:layout_height="@dimen/liveroom__btn_size"
+        android:layout_marginEnd="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/btn_close"
+        android:onClick="onClick"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btn_switch_cam_before_live"
+        android:layout_width="@dimen/liveroom__btn_size"
+        android:layout_height="@dimen/liveroom__btn_size"
+        android:background="@drawable/icon_switch_camera_on"
+        android:onClick="onClick"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_start_room"
+        app:layout_constraintEnd_toStartOf="@+id/btn_start_room"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btn_start_room" />
+
+    <Button
+        android:id="@+id/btn_start_room"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="25dp"
+        android:background="@drawable/bg_start_live_button_border"
+        android:text="开始直播"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_large"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_beauty_before_live"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btn_switch_cam_before_live" />
+
+    <Button
+        android:id="@+id/btn_beauty_before_live"
+        android:layout_width="@dimen/liveroom__btn_size"
+        android:layout_height="@dimen/liveroom__btn_size"
+        android:background="@drawable/icon_beauty_drawable"
+        android:onClick="onClick"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_start_room"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btn_start_room"
+        app:layout_constraintTop_toTopOf="@+id/btn_start_room" />
 
     <Button
         android:id="@+id/btn_message_input"
@@ -98,7 +160,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/switch_cam"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/switch_cam" />
 
 
     <Button
@@ -110,7 +173,7 @@
         app:layout_constraintEnd_toStartOf="@+id/btn_request_pk"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/btn_message_input"
-        app:layout_constraintTop_toTopOf="@+id/btn_message_input" />
+        app:layout_constraintTop_toTopOf="@+id/btn_request_pk" />
 
     <Button
         android:id="@+id/btn_request_pk"
@@ -121,7 +184,7 @@
         app:layout_constraintEnd_toStartOf="@+id/beauty_btn"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/switch_cam"
-        app:layout_constraintTop_toTopOf="@+id/switch_cam" />
+        app:layout_constraintTop_toTopOf="@+id/beauty_btn" />
 
     <Button
         android:id="@+id/beauty_btn"
@@ -132,7 +195,7 @@
         app:layout_constraintEnd_toStartOf="@+id/btn_audio_ctrl"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/btn_request_pk"
-        app:layout_constraintTop_toTopOf="@+id/btn_request_pk" />
+        app:layout_constraintTop_toTopOf="@+id/btn_audio_ctrl" />
 
     <Button
         android:id="@+id/btn_audio_ctrl"
@@ -143,25 +206,26 @@
         app:layout_constraintEnd_toStartOf="@+id/btn_close"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/beauty_btn"
-        app:layout_constraintTop_toTopOf="@+id/beauty_btn" />
+        app:layout_constraintTop_toTopOf="@+id/btn_close" />
 
     <Button
         android:id="@+id/btn_close"
         android:layout_width="@dimen/liveroom__btn_size"
         android:layout_height="@dimen/liveroom__btn_size"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/btn_close"
         android:onClick="onClick"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/btn_audio_ctrl"
-        app:layout_constraintTop_toTopOf="@+id/btn_audio_ctrl" />
+        app:layout_constraintStart_toEndOf="@+id/btn_audio_ctrl" />
 
     <View
         android:id="@+id/tool_bar_view"
         android:layout_width="wrap_content"
         android:layout_height="1px"
-        android:layout_marginBottom="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/btn_close"
+        android:layout_marginBottom="5dp"
+        app:layout_constraintBottom_toTopOf="@id/btn_start_room"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
@@ -195,7 +259,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="visible" />
+        tools:visibility="gone" />
 
 
     <com.tencent.liteav.liveroom.ui.anchor.AnchorPKSelectView
@@ -214,8 +278,10 @@
         android:id="@+id/beauty_panel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/tool_bar_view"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:visibility="gone" />
 
@@ -229,7 +295,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         tools:visibility="gone" />
 
-
     <master.flame.danmaku.ui.widget.DanmakuView
         android:id="@+id/anchor_danmaku_view"
         android:layout_width="wrap_content"
@@ -238,6 +303,64 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/cl_live_room_before"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/message_background"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@id/gl_h"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/img_live_room_cover"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/bg_cover"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_live_room_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="username"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/text_size_large"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/img_live_room_cover"
+            app:layout_constraintTop_toTopOf="@+id/img_live_room_cover" />
+
+        <EditText
+            android:id="@+id/et_live_room_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="5dp"
+            android:background="@null"
+            android:hint="标题有趣能吸引人气"
+            android:maxLength="10"
+            android:singleLine="true"
+            android:maxLines="1"
+            android:textCursorDrawable="@drawable/bg_edittext"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/img_live_room_cover"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/img_live_room_cover" />
+    </android.support.constraint.ConstraintLayout>
 
 
 </android.support.constraint.ConstraintLayout>

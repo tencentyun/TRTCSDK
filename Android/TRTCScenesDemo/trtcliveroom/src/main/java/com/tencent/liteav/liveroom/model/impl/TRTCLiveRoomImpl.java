@@ -7,7 +7,7 @@ import android.os.Looper;
 import android.text.TextUtils;
 
 import com.tencent.liteav.beauty.TXBeautyManager;
-import com.tencent.liteav.liveroom.model.TRTCBGMManager;
+import com.tencent.liteav.liveroom.model.TRTCAudioEffectManager;
 import com.tencent.liteav.liveroom.model.TRTCLiveRoom;
 import com.tencent.liteav.liveroom.model.TRTCLiveRoomCallback;
 import com.tencent.liteav.liveroom.model.TRTCLiveRoomDef;
@@ -226,17 +226,17 @@ public class TRTCLiveRoomImpl extends TRTCLiveRoom implements ITXTRTCLiveRoomDel
      *
      * @param sdkAppId
      * @param userId
-     * @param userSign
+     * @param userSig
      * @param config
      * @param callback
      */
     @Override
-    public void login(final int sdkAppId, final String userId, final String userSign, final TRTCLiveRoomDef.TRTCLiveRoomConfig config, final TRTCLiveRoomCallback.ActionCallback callback) {
+    public void login(final int sdkAppId, final String userId, final String userSig, final TRTCLiveRoomDef.TRTCLiveRoomConfig config, final TRTCLiveRoomCallback.ActionCallback callback) {
         runOnMainThread(new Runnable() {
             @Override
             public void run() {
-                TRTCLogger.i(TAG, "start login, sdkAppId:" + sdkAppId + " userId:" + userId + " config:" + config + " sign is empty:" + TextUtils.isEmpty(userSign));
-                if (sdkAppId == 0 || TextUtils.isEmpty(userId) || TextUtils.isEmpty(userSign) || config == null) {
+                TRTCLogger.i(TAG, "start login, sdkAppId:" + sdkAppId + " userId:" + userId + " config:" + config + " sign is empty:" + TextUtils.isEmpty(userSig));
+                if (sdkAppId == 0 || TextUtils.isEmpty(userId) || TextUtils.isEmpty(userSig) || config == null) {
                     TRTCLogger.e(TAG, "start login fail. params invalid.");
                     if (callback != null) {
                         callback.onCallback(-1, "登录失败，参数有误");
@@ -245,10 +245,10 @@ public class TRTCLiveRoomImpl extends TRTCLiveRoom implements ITXTRTCLiveRoomDel
                 }
                 mSDKAppId = sdkAppId;
                 mUserId = userId;
-                mUserSign = userSign;
+                mUserSign = userSig;
                 mRoomConfig = config;
                 TRTCLogger.i(TAG, "start login room service");
-                TXRoomService.getInstance().login(sdkAppId, userId, userSign, new TXCallback() {
+                TXRoomService.getInstance().login(sdkAppId, userId, userSig, new TXCallback() {
                     @Override
                     public void onCallback(final int code, final String msg) {
                         TRTCLogger.i(TAG, "login room service finish, code:" + code + " msg:" + msg);
@@ -1634,8 +1634,8 @@ public class TRTCLiveRoomImpl extends TRTCLiveRoom implements ITXTRTCLiveRoomDel
     }
 
     @Override
-    public TRTCBGMManager getBGMManger() {
-        return TXTRTCLiveRoom.getInstance().getTRTCBgmManager();
+    public TRTCAudioEffectManager getAudioEffectManager() {
+        return TXTRTCLiveRoom.getInstance().getAudioEffectManager();
     }
 
     @Override
@@ -1763,11 +1763,11 @@ public class TRTCLiveRoomImpl extends TRTCLiveRoom implements ITXTRTCLiveRoomDel
             return null;
         }
         TRTCLiveRoomDef.TRTCLiveRoomConfig config = mRoomConfig;
-        if (config == null || TextUtils.isEmpty(config.playDomain)) {
+        if (config == null || TextUtils.isEmpty(config.cdnPlayDomain)) {
             TRTCLogger.e(TAG, "get play domain in config fail, config:" + mRoomConfig);
             return null;
         }
-        return config.playDomain + (config.playDomain.endsWith("/") ? "" : "/") + streamId + ".flv";
+        return config.cdnPlayDomain + (config.cdnPlayDomain.endsWith("/") ? "" : "/") + streamId + ".flv";
     }
 
     @Override

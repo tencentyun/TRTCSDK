@@ -124,13 +124,13 @@ public class TCAudioControl extends RelativeLayout implements SeekBar.OnSeekBarC
         if (mLastPlayingItemPos >= 0 && mLastPlayingItemPos != pos) {
             mMusicListData.get(mLastPlayingItemPos).state = 0;
         }
-        if (!mPusher.getBGMManger().playBGM(path)) {
+        if (!mPusher.getAudioEffectManager().playBGM(path)) {
             // Note:AndroidQ(10)不可以读取非私有目录文件
             Toast.makeText(getActivity().getApplicationContext(), "打开BGM失败:" + path, Toast.LENGTH_SHORT).show();
             mMusicList.getAdapter().notifyDataSetChanged();
             return;
         }
-        mPusher.getBGMManger().setMicVolume(mBGMVolume);
+        mPusher.getAudioEffectManager().setMicVolume(mBGMVolume);
         mBGMSwitch = true;
         mMusicListData.get(pos).state = 1;
         mLastPlayingItemPos = pos;
@@ -139,7 +139,7 @@ public class TCAudioControl extends RelativeLayout implements SeekBar.OnSeekBarC
 
     public synchronized void stopBGM() {
         mBGMSwitch = false;
-        if (mPusher != null) mPusher.getBGMManger().stopBGM();
+        if (mPusher != null) mPusher.getAudioEffectManager().stopBGM();
     }
 
     public synchronized void playBGM(int order) {
@@ -172,43 +172,43 @@ public class TCAudioControl extends RelativeLayout implements SeekBar.OnSeekBarC
     public void onClick(View v) {
         int id = v.getId();
         if (id == R.id.btn_reverb_default) {
-            mPusher.getBGMManger().setReverbType(0);
+            mPusher.getAudioEffectManager().setReverbType(0);
         } else if (id == R.id.btn_reverb_1) {
-            mPusher.getBGMManger().setReverbType(1);
+            mPusher.getAudioEffectManager().setReverbType(1);
         } else if (id == R.id.btn_reverb_2) {
-            mPusher.getBGMManger().setReverbType(2);
+            mPusher.getAudioEffectManager().setReverbType(2);
         } else if (id == R.id.btn_reverb_3) {
-            mPusher.getBGMManger().setReverbType(3);
+            mPusher.getAudioEffectManager().setReverbType(3);
         } else if (id == R.id.btn_reverb_4) {
-            mPusher.getBGMManger().setReverbType(4);
+            mPusher.getAudioEffectManager().setReverbType(4);
         } else if (id == R.id.btn_reverb_5) {
-            mPusher.getBGMManger().setReverbType(5);
+            mPusher.getAudioEffectManager().setReverbType(5);
         } else if (id == R.id.btn_reverb_6) {
-            mPusher.getBGMManger().setReverbType(6);
+            mPusher.getAudioEffectManager().setReverbType(6);
         } else if (id == R.id.btn_voicechanger_default) {
-            mPusher.getBGMManger().setVoiceChangerType(0);
+            mPusher.getAudioEffectManager().setVoiceChangerType(0);
         } else if (id == R.id.btn_voicechanger_1) {
-            mPusher.getBGMManger().setVoiceChangerType(1);
+            mPusher.getAudioEffectManager().setVoiceChangerType(1);
         } else if (id == R.id.btn_voicechanger_2) {
-            mPusher.getBGMManger().setVoiceChangerType(2);
+            mPusher.getAudioEffectManager().setVoiceChangerType(2);
         } else if (id == R.id.btn_voicechanger_3) {
-            mPusher.getBGMManger().setVoiceChangerType(3);
+            mPusher.getAudioEffectManager().setVoiceChangerType(3);
         } else if (id == R.id.btn_voicechanger_4) {
-            mPusher.getBGMManger().setVoiceChangerType(4);
+            mPusher.getAudioEffectManager().setVoiceChangerType(4);
         } else if (id == R.id.btn_voicechanger_5) {
-            mPusher.getBGMManger().setVoiceChangerType(5);
+            mPusher.getAudioEffectManager().setVoiceChangerType(5);
         } else if (id == R.id.btn_voicechanger_6) {
-            mPusher.getBGMManger().setVoiceChangerType(6);
+            mPusher.getAudioEffectManager().setVoiceChangerType(6);
         } else if (id == R.id.btn_voicechanger_7) {
-            mPusher.getBGMManger().setVoiceChangerType(7);
+            mPusher.getAudioEffectManager().setVoiceChangerType(7);
         } else if (id == R.id.btn_voicechanger_8) {
-            mPusher.getBGMManger().setVoiceChangerType(8);
+            mPusher.getAudioEffectManager().setVoiceChangerType(8);
         } else if (id == R.id.btn_voicechanger_9) {
-            mPusher.getBGMManger().setVoiceChangerType(9);
+            mPusher.getAudioEffectManager().setVoiceChangerType(9);
         } else if (id == R.id.btn_voicechanger_10) {
-            mPusher.getBGMManger().setVoiceChangerType(10);
+            mPusher.getAudioEffectManager().setVoiceChangerType(10);
         } else if (id == R.id.btn_voicechanger_11) {
-            mPusher.getBGMManger().setVoiceChangerType(11);
+            mPusher.getAudioEffectManager().setVoiceChangerType(11);
         } else if (id == R.id.btn_stop_bgm) {
             stopBGM();
         }
@@ -433,7 +433,7 @@ public class TCAudioControl extends RelativeLayout implements SeekBar.OnSeekBarC
         }
         mPathSet.put(musicEntity.path, musicEntity.display_name);
         if (musicEntity.duration == 0) {
-            musicEntity.duration = mPusher.getBGMManger().getBGMDuration(musicEntity.path);
+            musicEntity.duration = mPusher.getAudioEffectManager().getBGMDuration(musicEntity.path);
         }
         musicEntity.durationStr = longToStrTime(musicEntity.duration);
         mMusicListData.add(musicEntity);
@@ -451,10 +451,10 @@ public class TCAudioControl extends RelativeLayout implements SeekBar.OnSeekBarC
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         if (seekBar.getId() == R.id.seekBar_voice_volume) {
             mMicVolume = progress;
-            mPusher.getBGMManger().setMicVolume(mMicVolume);
+            mPusher.getAudioEffectManager().setMicVolume(mMicVolume);
         } else if (seekBar.getId() == R.id.seekBar_bgm_volume) {
             mBGMVolume = progress;
-            mPusher.getBGMManger().setBGMVolume(mBGMVolume);
+            mPusher.getAudioEffectManager().setBGMVolume(mBGMVolume);
         }
     }
 
@@ -466,8 +466,8 @@ public class TCAudioControl extends RelativeLayout implements SeekBar.OnSeekBarC
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
         if (seekBar.getId() == R.id.seekBar_bgm_seek) {
-            int duration = mPusher.getBGMManger().getBGMDuration(null);
-            mPusher.getBGMManger().setBGMPosition(duration * seekBar.getProgress() / 100);
+            int duration = mPusher.getAudioEffectManager().getBGMDuration(null);
+            mPusher.getAudioEffectManager().setBGMPosition(duration * seekBar.getProgress() / 100);
         }
     }
 
@@ -580,7 +580,7 @@ public class TCAudioControl extends RelativeLayout implements SeekBar.OnSeekBarC
                 mPathSet.put(musicEntity.path, musicEntity.display_name);
                 musicEntity.duration = cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.Media.DURATION));
                 if (musicEntity.duration == 0) {
-                    musicEntity.duration = mPusher.getBGMManger().getBGMDuration(musicEntity.path);
+                    musicEntity.duration = mPusher.getAudioEffectManager().getBGMDuration(musicEntity.path);
                 }
                 musicEntity.durationStr = longToStrTime(musicEntity.duration);
                 mediaList.add(musicEntity);

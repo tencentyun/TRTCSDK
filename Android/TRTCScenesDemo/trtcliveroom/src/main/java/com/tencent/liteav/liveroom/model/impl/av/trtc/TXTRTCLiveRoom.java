@@ -7,7 +7,7 @@ import android.os.Looper;
 import android.text.TextUtils;
 
 import com.tencent.liteav.beauty.TXBeautyManager;
-import com.tencent.liteav.liveroom.model.impl.TRTCBGMManagerImpl;
+import com.tencent.liteav.liveroom.model.impl.TRTCAudioEffectManagerImpl;
 import com.tencent.liteav.liveroom.model.impl.base.TRTCLogger;
 import com.tencent.liteav.liveroom.model.impl.base.TXCallback;
 import com.tencent.rtmp.ui.TXCloudVideoView;
@@ -28,21 +28,22 @@ public class TXTRTCLiveRoom extends TRTCCloudListener implements ITRTCTXLiveRoom
 
     private static TXTRTCLiveRoom sInstance;
 
-    private TRTCCloud               mTRTCCloud;
-    private TXBeautyManager         mTXBeautyManager;
-    private TRTCBGMManagerImpl      mTRTCBgmManager;
+    private TRTCCloud                  mTRTCCloud;
+    private TXBeautyManager            mTXBeautyManager;
+    private TRTCAudioEffectManagerImpl mAudioEffectManager;
     // 一开始进房的角色
-    private int                     mOriginRole;
-    private TXCallback              mEnterRoomCallback;
-    private TXCallback              mExitRoomCallback;
-    private TXCallback              mPKCallback;
-    private boolean                 mIsInRoom;
-    private ITXTRTCLiveRoomDelegate mDelegate;
-    private String                  mUserId;
-    private String                  mRoomId;
-    private TRTCCloudDef.TRTCParams mTRTCParams;
-    private Map<String, TXCallback> mPlayCallbackMap;
-    private Handler                 mMainHandler;
+    private int                        mOriginRole;
+    private TXCallback                 mEnterRoomCallback;
+    private TXCallback                 mExitRoomCallback;
+    private TXCallback                 mPKCallback;
+    private boolean                    mIsInRoom;
+    private ITXTRTCLiveRoomDelegate    mDelegate;
+    private String                     mUserId;
+    private String                     mRoomId;
+    private TRTCCloudDef.TRTCParams    mTRTCParams;
+    private Map<String, TXCallback>    mPlayCallbackMap;
+    private Map<String, Runnable>      mPlayTimeoutRunnable;
+    private Handler                    mMainHandler;
 
     public static synchronized TXTRTCLiveRoom getInstance() {
         if (sInstance == null) {
@@ -56,8 +57,9 @@ public class TXTRTCLiveRoom extends TRTCCloudListener implements ITRTCTXLiveRoom
         TRTCLogger.i(TAG, "init context:" + context);
         mTRTCCloud = TRTCCloud.sharedInstance(context);
         mTXBeautyManager = mTRTCCloud.getBeautyManager();
-        mTRTCBgmManager = new TRTCBGMManagerImpl(mTRTCCloud);
+        mAudioEffectManager = new TRTCAudioEffectManagerImpl(mTRTCCloud);
         mPlayCallbackMap = new HashMap<>();
+        mPlayTimeoutRunnable = new HashMap<>();
         mMainHandler = new Handler(Looper.getMainLooper());
     }
 
@@ -103,9 +105,11 @@ public class TXTRTCLiveRoom extends TRTCCloudListener implements ITRTCTXLiveRoom
 
     @Override
     public void onFirstVideoFrame(String userId, int streamType, int width, int height) {
+        TRTCLogger.i(TAG, "onFirstVideoFrame:" + userId);
         if (userId == null) {
             // userId 为 null，代表开始渲染本地采集的摄像头画面
         } else {
+            stopTimeoutRunnable(userId);
             TXCallback callback = mPlayCallbackMap.remove(userId);
             if (callback != null) {
                 callback.onCallback(0, userId + "播放成功");
@@ -120,6 +124,7 @@ public class TXTRTCLiveRoom extends TRTCCloudListener implements ITRTCTXLiveRoom
         mTRTCParams = null;
         mExitRoomCallback = callback;
         mPlayCallbackMap.clear();
+        mPlayTimeoutRunnable.clear();
         mMainHandler.removeCallbacksAndMessages(null);
         mTRTCCloud.exitRoom();
     }
@@ -406,22 +411,36 @@ public class TXTRTCLiveRoom extends TRTCCloudListener implements ITRTCTXLiveRoom
         TRTCLogger.i(TAG, "start play user id:" + userId + " view:" + view);
         mPlayCallbackMap.put(userId, callback);
         mTRTCCloud.startRemoteView(userId, view);
-        mMainHandler.postDelayed(new Runnable() {
+        //停掉上一次超时
+        stopTimeoutRunnable(userId);
+        Runnable runnable = new Runnable() {
             @Override
             public void run() {
+                TRTCLogger.e(TAG, "start play timeout:" + userId);
                 TXCallback callback = mPlayCallbackMap.remove(userId);
                 if (callback != null) {
                     callback.onCallback(-1, "play " + userId + " timeout.");
                 }
             }
-        }, PLAY_TIME_OUT);
+        };
+        mPlayTimeoutRunnable.put(userId, runnable);
+        mMainHandler.postDelayed(runnable, PLAY_TIME_OUT);
 
+    }
+
+    private void stopTimeoutRunnable(String userId) {
+        if (mPlayTimeoutRunnable == null) {
+            return;
+        }
+        Runnable runnable = mPlayTimeoutRunnable.get(userId);
+        mMainHandler.removeCallbacks(runnable);
     }
 
     @Override
     public void stopPlay(String userId, TXCallback callback) {
         TRTCLogger.i(TAG, "stop play user id:" + userId);
         mPlayCallbackMap.remove(userId);
+        stopTimeoutRunnable(userId);
         mTRTCCloud.stopRemoteView(userId);
         if (callback != null) {
             callback.onCallback(0, "stop play success.");
@@ -509,8 +528,8 @@ public class TXTRTCLiveRoom extends TRTCCloudListener implements ITRTCTXLiveRoom
     }
 
     @Override
-    public TRTCBGMManagerImpl getTRTCBgmManager() {
-        return mTRTCBgmManager;
+    public TRTCAudioEffectManagerImpl getAudioEffectManager() {
+        return mAudioEffectManager;
     }
 
 
