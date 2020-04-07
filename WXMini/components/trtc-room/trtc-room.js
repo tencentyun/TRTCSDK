@@ -992,7 +992,7 @@ Component({
           }, 0)
         })
       }
-      return this._requestSigServer(rtcConfig)
+      console.error(TAG_NAME, '组件仅支持微信 App iOS >=7.0.9, Android >= 7.0.8, 小程序基础库版 >= 2.10.0')
     },
     /**
      * 获取签名和推流地址
