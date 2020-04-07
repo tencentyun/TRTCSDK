@@ -41,8 +41,8 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
-    compile project(':trtcliveroom')
-    compile project(':trtcvoiceroom')
+    compile project(':trtcliveroomdemo')
+    compile project(':trtcvoiceroomdemo')
     compile project(':trtcaudiocalldemo')
     compile project(':trtcvideocalldemo')
     compile project(':login')
