@@ -37,6 +37,7 @@
         autopush="{{pusher.autopush}}"
         enable-camera="{{pusher.enableCamera}}"
         enable-mic="{{pusher.enableMic}}"
+        muted="{{!pusher.enableMic}}"
         enable-agc="{{pusher.enableAgc}}"
         enable-ans="{{pusher.enableAns}}"
         enable-ear-monitor="{{pusher.enableEarMonitor}}"

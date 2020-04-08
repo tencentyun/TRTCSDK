@@ -434,7 +434,7 @@ Component({
       if (this.data.template !== 'custom') {
         console.warn(`如需使用setViewRect方法，请初始化时设置template:"custom", 当前 template:"${this.data.template}"`)
       }
-      console.info(`不建议谁用该方法动态修改样式，避免引起微信小程序渲染问题，建议直接修改 wxml wxss 进行样式定制化`)
+      console.info(`不建议使用该方法动态修改样式，避免引起小程序渲染层问题，建议直接修改 wxml wxss 进行样式定制化`)
       if (this.data.pusher.userID === params.userID) {
         return this._setPusherConfig({
           xAxis: params.xAxis,
@@ -467,7 +467,7 @@ Component({
       if (this.data.template !== 'custom') {
         console.warn(`如需使用setViewVisible方法，请初始化时设置template:"custom", 当前 template:"${this.data.template}"`)
       }
-      console.info(`不建议谁用该方法动态修改样式，避免引起微信小程序渲染问题，建议直接修改 wxml wxss 进行样式定制化`)
+      console.info(`不建议使用该方法动态修改样式，避免引起小程序渲染层问题，建议直接修改 wxml wxss 进行样式定制化`)
       if (this.data.pusher.userID === params.userID) {
         return this._setPusherConfig({
           isVisible: params.isVisible,
@@ -494,7 +494,7 @@ Component({
       if (this.data.template !== 'custom') {
         console.warn(`如需使用setViewZIndex方法，请初始化时设置template:"custom", 当前 template:"${this.data.template}"`)
       }
-      console.info(`不建议谁用该方法动态修改样式，避免引起微信小程序渲染问题，建议直接修改 wxml wxss 进行样式定制化`)
+      console.info(`不建议使用该方法动态修改样式，避免引起小程序渲染层问题，建议直接修改 wxml wxss 进行样式定制化`)
       if (this.data.pusher.userID === params.userID) {
         return this._setPusherConfig({
           zIndex: params.zindex || params.zIndex,
