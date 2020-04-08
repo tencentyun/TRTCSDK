@@ -1013,6 +1013,7 @@ let demoApp = new Vue({
         case '4':
           return this.cnfTPLTranscodingConfigModeTemplateScreenSharing(localMainStream);
       }
+      return null;
     },
 
     // 全手动模式
@@ -1020,7 +1021,7 @@ let demoApp = new Vue({
       // 云端混流的没有辅流（屏幕分享）界面，则退出（无需混流）
       if (this.mixStreamInfos.length == 0) {
         this.rtcCloud.setMixTranscodingConfig(null);
-        return;
+        return null;
       }
       
       let sdkInfo = genTestUserSig(this.userId);
