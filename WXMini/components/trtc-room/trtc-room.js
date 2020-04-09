@@ -108,12 +108,12 @@ Component({
       if (this.status.isPending) {
         // 经历了 5000 挂起事件
         this.status.isPending = false
-        // 修复iOS 最小化触发5000事件后，音频推流失败的问题
-        if (ENV.IS_IOS && this.data.pusher.enableMic) {
-          this.unpublishLocalAudio().then(()=>{
-            this.publishLocalAudio()
-          })
-        }
+        // 修复iOS 最小化触发5000事件后，音频推流失败的问题 20200409注释修复逻辑
+        // if (ENV.IS_IOS && this.data.pusher.enableMic) {
+        //   this.unpublishLocalAudio().then(()=>{
+        //     this.publishLocalAudio()
+        //   })
+        // }
       }
       if (this.status.isPush) {
         // 小程序hide - show 有一定概率本地黑屏或静止，远端正常，或者远端和本地同时黑屏或静止，需要手动启动预览，非必现
@@ -1286,23 +1286,23 @@ Component({
           console.log('小程序被挂起: ', code)
           // 终端 sdk 建议执行退房操作，唤起时重新进房，临时解决方案，待小程序SDK完全实现自动重新推流后可以去掉
           this.status.isPending = true
-          if (this.status.isPush) {
-            // this.exitRoom()
-            const tempUrl = this.data.pusher.url
-            this.data.pusher.url = ''
-            // console.log('5000 小程序被挂起后更换pusher', this.data.pusher.getPusherContext().webviewId)
-            this.setData({
-              pusher: this.data.pusher,
-            }, () => {
-              this.data.pusher.url = tempUrl
-              this.setData({
-                pusher: this.data.pusher,
-              }, () => {
-                this.data.pusher.getPusherContext().start()
-                console.log('5000 小程序被挂起后更换pusher', this.data.pusher)
-              })
-            })
-          }
+          // if (this.status.isPush) {
+          //   // this.exitRoom()
+          //   const tempUrl = this.data.pusher.url
+          //   this.data.pusher.url = ''
+          //   // console.log('5000 小程序被挂起后更换pusher', this.data.pusher.getPusherContext().webviewId)
+          //   this.setData({
+          //     pusher: this.data.pusher,
+          //   }, () => {
+          //     this.data.pusher.url = tempUrl
+          //     this.setData({
+          //       pusher: this.data.pusher,
+          //     }, () => {
+          //       this.data.pusher.getPusherContext().start()
+          //       console.log('5000 小程序被挂起后更换pusher', this.data.pusher)
+          //     })
+          //   })
+          // }
           break
         case 1021:
           console.log('网络类型发生变化，需要重新进房', code)
