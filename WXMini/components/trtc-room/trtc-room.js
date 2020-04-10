@@ -1659,7 +1659,7 @@ Component({
     },
     _onIMReady(event) {
       console.log(TAG_NAME, 'IM.SDK_READY', event)
-      this._emitter.emit(EVENT.IM_SDK_READY, event)
+      this._emitter.emit(EVENT.IM_READY, event)
       const roomID = this.data.config.roomID
       // 查询群组是否存在
       this._searchGroup({ roomID }).then((res) => {
