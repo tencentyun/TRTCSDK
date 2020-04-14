@@ -26,6 +26,9 @@ public interface TRTCLiveRoomDelegate {
 
     /**
      * 房间信息改变的通知
+     *
+     * 房间信息发生改变回调，多用于直播连麦、PK下房间状态变化通知场景。
+     *
      * @param roomInfo 房间信息
      */
     void onRoomInfoChange(TRTCLiveRoomDef.TRTCLiveRoomInfo roomInfo);
@@ -62,7 +65,7 @@ public interface TRTCLiveRoomDelegate {
      * 主播收到连麦请求
      * @param userInfo 连麦对象
      * @param reason 原因
-     * @param timeOut
+     * @param timeOut 处理请求的超时时间，如果上层超过该时间没有处理，则会自动将该次请求废弃
      */
     void onRequestJoinAnchor(TRTCLiveRoomDef.TRTCLiveUserInfo userInfo, String reason, int timeOut);
 
@@ -72,9 +75,12 @@ public interface TRTCLiveRoomDelegate {
     void onKickoutJoinAnchor();
 
     /**
-     * 主播收到PK请求
+     * 收到请求跨房 PK 通知
+     *
+     * 主播收到其他房间主播的 PK 请求，如果同意 PK ，您需要等待 `TRTCLiveRoomDelegate` 的 `onAnchorEnter` 通知，然后调用 `startPlay()` 来播放邀约主播的流。
+     *
      * @param userInfo
-     * @param timeout
+     * @param timeout 处理请求的超时时间，如果上层超过该时间没有处理，则会自动将该次请求废弃
      */
     void onRequestRoomPK(TRTCLiveRoomDef.TRTCLiveUserInfo userInfo, int timeout);
 
@@ -85,19 +91,17 @@ public interface TRTCLiveRoomDelegate {
 
     /**
      * 收到文字消息
-     * @param roomId
      * @param message
      * @param userInfo
      */
-    void onRecvRoomTextMsg(String roomId, String message, TRTCLiveRoomDef.TRTCLiveUserInfo userInfo);
+    void onRecvRoomTextMsg(String message, TRTCLiveRoomDef.TRTCLiveUserInfo userInfo);
 
     /**
      * 收到自定义消息
-     * @param roomId
      * @param cmd
      * @param message
      * @param userInfo
      */
-    void onRecvRoomCustomMsg(String roomId, String cmd, String message, TRTCLiveRoomDef.TRTCLiveUserInfo userInfo);
+    void onRecvRoomCustomMsg(String cmd, String message, TRTCLiveRoomDef.TRTCLiveUserInfo userInfo);
 
 }

@@ -85,10 +85,10 @@ public interface TRTCAudioEffectManager {
      * @param publish 是否推送/ true 推送给观众，false 本地预览
      * @param volume 音量大小
      */
-    void playAudioEffect(int effectId, String path, int count, boolean publish, double volume);
+    void playAudioEffect(int effectId, String path, int count, boolean publish, int volume);
 
     /**
-     * 播放音效
+     * 暂停音效
      *
      * 每个音效都需要您指定具体的 ID，您可以通过该 ID 对音效的开始、停止、音量等进行设置。
      * 支持的文件格式：aac, mp3。
@@ -124,18 +124,18 @@ public interface TRTCAudioEffectManager {
      * @note 该操作会覆盖通过 setAllAudioEffectsVolume 指定的整体音效音量。
      *
      * @param effectId 音效 ID
-     * @param gain 音量大小，取值范围为0 - 100；默认值：100
+     * @param volume 音量大小，取值范围为0 - 100；默认值：100
      */
-    void setAudioEffectVolume(int effectId, int gain);
+    void setAudioEffectVolume(int effectId, int volume);
 
     /**
      * 设置所有音效的音量
      *
      * @note 该操作会覆盖通过 setAudioEffectVolume 指定的单独音效音量。
      *
-     * @param gain 音量大小，取值范围为0 - 100；默认值：100
+     * @param volume 音量大小，取值范围为0 - 100；默认值：100
      */
-    void setAllAudioEffectsVolume(int gain);
+    void setAllAudioEffectsVolume(int volume);
 
     /**
      * ==================================变声和混响==================================

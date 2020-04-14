@@ -285,12 +285,12 @@ public class TCAudienceActivity extends AppCompatActivity implements View.OnClic
         }
 
         @Override
-        public void onRecvRoomTextMsg(String roomId, String message, TRTCLiveRoomDef.TRTCLiveUserInfo userInfo) {
+        public void onRecvRoomTextMsg(String message, TRTCLiveRoomDef.TRTCLiveUserInfo userInfo) {
             handleTextMsg(userInfo, message);
         }
 
         @Override
-        public void onRecvRoomCustomMsg(String roomId, String cmd, String message, TRTCLiveRoomDef.TRTCLiveUserInfo userInfo) {
+        public void onRecvRoomCustomMsg(String cmd, String message, TRTCLiveRoomDef.TRTCLiveUserInfo userInfo) {
             int type = Integer.valueOf(cmd);
             switch (type) {
                 case TCConstants.IMCMD_PRAISE:

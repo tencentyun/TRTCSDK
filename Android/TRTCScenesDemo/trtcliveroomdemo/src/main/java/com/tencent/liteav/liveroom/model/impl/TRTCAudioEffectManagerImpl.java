@@ -25,13 +25,13 @@ public class TRTCAudioEffectManagerImpl implements TRTCAudioEffectManager {
      * ==================================音效面板控制==================================
      */
     @Override
-    public void playAudioEffect(int effectId, String path, int count, boolean publish, double volume) {
+    public void playAudioEffect(int effectId, String path, int count, boolean publish, int volume) {
         if (mTRTCCloud != null) {
             TRTCCloudDef.TRTCAudioEffectParam effect = new TRTCCloudDef.TRTCAudioEffectParam(effectId, path);
             effect.loopCount = count;
             effect.publish = publish;
             effect.effectId = effectId;
-            effect.volume = (int) volume;
+            effect.volume = volume;
             mTRTCCloud.playAudioEffect(effect);
         }
     }
@@ -58,9 +58,9 @@ public class TRTCAudioEffectManagerImpl implements TRTCAudioEffectManager {
     }
 
     @Override
-    public void setAudioEffectVolume(int effectId, int gain) {
+    public void setAudioEffectVolume(int effectId, int volume) {
         if (mTRTCCloud != null) {
-            mTRTCCloud.setAudioEffectVolume(effectId, gain);
+            mTRTCCloud.setAudioEffectVolume(effectId, volume);
         }
     }
 
@@ -72,9 +72,9 @@ public class TRTCAudioEffectManagerImpl implements TRTCAudioEffectManager {
     }
 
     @Override
-    public void setAllAudioEffectsVolume(int gain) {
+    public void setAllAudioEffectsVolume(int volume) {
         if (mTRTCCloud != null) {
-            mTRTCCloud.setAllAudioEffectsVolume(gain);
+            mTRTCCloud.setAllAudioEffectsVolume(volume);
         }
     }
 

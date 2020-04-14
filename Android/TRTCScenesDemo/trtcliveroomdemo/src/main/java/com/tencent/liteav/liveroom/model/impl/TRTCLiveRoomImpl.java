@@ -353,15 +353,15 @@ public class TRTCLiveRoomImpl extends TRTCLiveRoom implements ITXTRTCLiveRoomDel
      * 2. 创建房间成功后，组装 RoomInfo，并通知房间状态变更，回调上层RoomInfoChange
      *
      * @param roomId
-     * @param roomInfo
+     * @param roomParam
      * @param callback
      */
     @Override
-    public void createRoom(final int roomId, final TRTCLiveRoomDef.TRTCCreateRoomParam roomInfo, final TRTCLiveRoomCallback.ActionCallback callback) {
+    public void createRoom(final int roomId, final TRTCLiveRoomDef.TRTCCreateRoomParam roomParam, final TRTCLiveRoomCallback.ActionCallback callback) {
         runOnMainThread(new Runnable() {
             @Override
             public void run() {
-                TRTCLogger.i(TAG, "create room, room id:" + roomId + " info:" + roomInfo);
+                TRTCLogger.i(TAG, "create room, room id:" + roomId + " info:" + roomParam);
                 if (roomId == 0) {
                     TRTCLogger.e(TAG, "create room fail. params invalid");
                     return;
@@ -379,8 +379,8 @@ public class TRTCLiveRoomImpl extends TRTCLiveRoom implements ITXTRTCLiveRoomDel
                 mAudienceList.clear();
 
                 mTargetRole = Role.TRTC_ANCHOR;
-                final String roomName  = (roomInfo == null ? "" : roomInfo.roomName);
-                final String roomCover = (roomInfo == null ? "" : roomInfo.coverUrl);
+                final String roomName  = (roomParam == null ? "" : roomParam.roomName);
+                final String roomCover = (roomParam == null ? "" : roomParam.coverUrl);
                 // 创建房间
                 TXRoomService.getInstance().createRoom(mRoomId, roomName, roomCover, new TXCallback() {
                     @Override
@@ -2087,7 +2087,7 @@ public class TRTCLiveRoomImpl extends TRTCLiveRoom implements ITXTRTCLiveRoomDel
                     info.userId = userInfo.userId;
                     info.userName = userInfo.userName;
                     info.userAvatar = userInfo.avatarURL;
-                    delegate.onRecvRoomTextMsg(roomId, message, info);
+                    delegate.onRecvRoomTextMsg(message, info);
                 }
             }
         });
@@ -2104,7 +2104,7 @@ public class TRTCLiveRoomImpl extends TRTCLiveRoom implements ITXTRTCLiveRoomDel
                     info.userId = userInfo.userId;
                     info.userName = userInfo.userName;
                     info.userAvatar = userInfo.avatarURL;
-                    delegate.onRecvRoomCustomMsg(roomId, cmd, message, info);
+                    delegate.onRecvRoomCustomMsg(cmd, message, info);
                 }
             }
         });
