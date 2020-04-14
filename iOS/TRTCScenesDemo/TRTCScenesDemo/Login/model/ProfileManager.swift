@@ -32,7 +32,7 @@ let loginBaseUrl = "https://xxx.com/release/"
         token = userID
         phone = userID
         name = userID
-        avatar = "https://wx4.sinaimg.cn/large/006DFKaTly1fhvvnpuwe2j30gq0gqmy4.jpg"
+        avatar = "https://imgcache.qq.com/qcloud/public/static//avatar1_100.20191230.png"
         super.init()
     }
 }
@@ -58,7 +58,7 @@ let loginBaseUrl = "https://xxx.com/release/"
     public init(userID: String) {
         userId = userID
         name = userID
-        avatar = "https://wx4.sinaimg.cn/large/006DFKaTly1fhvvnpuwe2j30gq0gqmy4.jpg"
+        avatar = "https://imgcache.qq.com/qcloud/public/static//avatar1_100.20191230.png"
         phone = userID
         super.init()
     }

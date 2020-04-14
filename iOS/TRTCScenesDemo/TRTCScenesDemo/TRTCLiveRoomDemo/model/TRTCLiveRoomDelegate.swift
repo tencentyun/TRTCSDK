@@ -14,10 +14,11 @@ import UIKit
     
     /// 警告回调
     @objc optional func trtcLiveRoom(_ trtcLiveRoom: TRTCLiveRoomImpl, onWarning code: Int, message: String?)
-
+    
+    /// 日志回调
     @objc optional func trtcLiveRoom(_ trtcLiveRoom: TRTCLiveRoomImpl, onDebugLog log: String)
 
-    /// 日志回调
+    /// 房间销毁回调
     @objc optional func trtcLiveRoom(_ trtcLiveRoom: TRTCLiveRoomImpl, onRoomDestroy roomID: String)
 
     /// 直播房间信息变更回调

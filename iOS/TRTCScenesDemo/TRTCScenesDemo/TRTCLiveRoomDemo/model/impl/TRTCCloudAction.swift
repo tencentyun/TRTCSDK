@@ -20,7 +20,7 @@ class TRTCCloudAction: NSObject {
     
     private var userId: String?
     private var urlDomain: String?
-    private var sdkAppId = SDKAPPID
+    private var sdkAppId:Int32 = 0
     private var userSig: String?
     var curRoomUUID: String? = nil
     

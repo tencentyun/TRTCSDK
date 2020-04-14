@@ -379,25 +379,30 @@ public class TRTCLiveRoomImpl: NSObject, TRTCLiveRoom {
     // MARK: - 连麦
     
     public func requestJoinAnchor(reason: String?,
-                                  responseCallback: TRTCLiveRoomImpl.ResponseCallback?,
-                                  callback: TRTCLiveRoomImpl.Callback?) {
+                                  responseCallback: TRTCLiveRoomImpl.ResponseCallback?) {
         logApi("requestJoinAnchor", data: reason)
-        guard let _ = checkUserLogined(callback) else { return }
-        guard let _ = checkRoomJoined(callback) else { return }
+        guard let _ = checkUserLogined(nil) else {
+            responseCallback?(false, "还未登录")
+            return
+        }
+        guard let _ = checkRoomJoined(nil) else {
+            responseCallback?(false, "没有进入房间")
+            return
+        }
         guard !isAnchor else {
-            callback?(-1, "当前已经是连麦状态")
+            responseCallback?(false, "当前已经是连麦状态")
             return
         }
         if status == .roomPK || pkAnchorInfo.userId != nil {
-            callback?(-1, "当前主播正在PK")
+            responseCallback?(false, "当前主播正在PK")
             return
         }
         if joinAnchorInfo.userId != nil {
-            callback?(-1, "当前用户正在等待连麦回复")
+            responseCallback?(false, "当前用户正在等待连麦回复")
             return
         }
         if status == .none {
-            callback?(-1, "出错请稍候尝试")
+            responseCallback?(false, "出错请稍候尝试")
             return
         }
         guard let ownerId = ownerId else { fatalError() }
@@ -409,7 +414,7 @@ public class TRTCLiveRoomImpl: NSObject, TRTCLiveRoom {
         TRTCLiveRoomIMAction.requestJoinAnchor(userID: ownerId, reason: reason, callback: { (code, message) in
             // 只处理失败时的回调，成功的回调要等收到主播的responseJoinAnchor消息
             if (code != 0) {
-                callback?(code, message)
+                responseCallback?(false, message)
             }
         })
         
@@ -461,27 +466,38 @@ public class TRTCLiveRoomImpl: NSObject, TRTCLiveRoom {
     
     public func requestRoomPK(roomID: UInt32,
                               userID: String,
-                              responseCallback: TRTCLiveRoomImpl.ResponseCallback?,
-                              callback: TRTCLiveRoomImpl.Callback?) {
+                              responseCallback: TRTCLiveRoomImpl.ResponseCallback?) {
         logApi("requestRoomPK", data: roomID, userID)
-        guard let _ = checkUserLogined(callback) else { return }
-        guard let myRoomId = checkRoomJoined(callback) else { return }
-        guard checkIsOwner(callback) else { return }
-        guard let streamId = checkIsPublishing(callback) else { return }
+        guard let _ = checkUserLogined(nil) else {
+            responseCallback?(false, "还未登录")
+            return
+        }
+        guard let myRoomId = checkRoomJoined(nil) else {
+            responseCallback?(false, "没有进入房间")
+            return
+        }
+        guard checkIsOwner(nil) else {
+            responseCallback?(false, "只有主播才能操作")
+            return
+        }
+        guard let streamId = checkIsPublishing(nil) else {
+            responseCallback?(false, "只有推流后才能操作")
+            return
+        }
         if status == .linkMic || joinAnchorInfo.userId != nil {
-            callback?(-1, "当前正在连麦中，无法开启PK")
+            responseCallback?(false, "当前正在连麦中，无法开启PK")
             return
         }
         if status == .roomPK {
-            callback?(-1, "当前主播正在PK")
+            responseCallback?(false, "当前主播正在PK")
             return
         }
         if pkAnchorInfo.userId != nil {
-            callback?(-1, "当前主播正在等待PK回复")
+            responseCallback?(false, "当前主播正在等待PK回复")
             return
         }
         if status == .none {
-            callback?(-1, "出错请稍候尝试")
+            responseCallback?(false, "出错请稍候尝试")
             return
         }
         requestRoomPKCallback = responseCallback
@@ -492,7 +508,7 @@ public class TRTCLiveRoomImpl: NSObject, TRTCLiveRoom {
         TRTCLiveRoomIMAction.requestRoomPK(userID: userID, fromRoomID: myRoomId, fromStreamId: streamId, callback: { (code, message) in
             // 只处理失败时的回调，成功的回调要等收到主播的responseRoomPK消息
             if (code != 0) {
-                callback?(code, message)
+                responseCallback?(false, message)
             }
         })
         

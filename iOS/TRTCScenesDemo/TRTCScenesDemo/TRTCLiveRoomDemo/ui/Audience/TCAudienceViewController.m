@@ -344,27 +344,6 @@ TRTCLiveRoomDelegate>
                 [TCUtil toastTip:@"主播拒绝了您的连麦请求" parentView:self.view];
             }
         }
-    } callback:^(NSInteger code, NSString * error) {
-        __strong __typeof(wself) self = wself;
-        if (self == nil) {
-            return ;
-        }
-        if (self->_isWaitingResponse == NO || !self->_isInVC) {
-            return;
-        }
-        self->_isWaitingResponse = NO;
-        [self->_btnLinkMic setEnabled:YES];
-        [self hideWaitingNotice];
-        if (code != 0) {
-            self->_isBeingLinkMic = NO;
-            self->_isWaitingResponse = NO;
-            [self->_btnLinkMic setImage:[UIImage imageNamed:@"linkmic_on"] forState:UIControlStateNormal];
-            if ([error length] > 0) {
-                [TCUtil toastTip:error parentView:self.view];
-            } else {
-                [TCUtil toastTip:@"出现错误，请稍候尝试" parentView:self.view];
-            }
-        }
     }];
 }
 

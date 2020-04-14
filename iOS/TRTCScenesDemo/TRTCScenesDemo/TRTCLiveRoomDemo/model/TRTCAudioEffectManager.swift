@@ -9,9 +9,9 @@
 import Foundation
 @objc public protocol TRTCAudioEffectManager: class {
     typealias Callback = (_ code: Int, _ message: String?) -> Void
-    /// 播放Bgm
+    /// 播放背景音乐
     /// - Parameters:
-    ///   - url: Bgm url, 可以是本地文件url, 或的url
+    ///   - url: 背景音乐文件路径
     ///   - progress: 进度回调，返回当前已播放的时间，和总的bgm时长，单位是毫秒(ms)
     ///   - completion: Bgm播放结束回调
     /// - Note:
@@ -20,24 +20,24 @@ import Foundation
                  progress:@escaping (_ progressMs: Int, _ duration: Int) -> Void,
                  completion: Callback?)
     
-    /// 暂停Bgm
+    /// 暂停背景音乐
     @objc func pauseBgm()
     
-    /// 继续播放Bgm
+    /// 继续播放背景音乐
     @objc func resumeBgm()
     
-    /// 停止播放Bgm
+    /// 停止播放背景音乐
     @objc func stopBgm()
     
-    /// 设置Bgm音量
+    /// 设置背景音乐的音量大小，播放背景音乐混音时使用，用来控制背景音音量大小。
     /// - Parameter volume:音量大小，100为正常音量，取值范围为0 - 100；默认值：100
     @objc func setBGMVolume(volume: Int)
     
-    /// 设置 BGM 播放进度 0 表示成功
+    /// 设置背景音乐播放进度 0 表示成功
     /// - Parameter pos: 单位毫秒
     @objc func setBGMPosition(pos: Int) -> Int
     
-    /// 设置麦克风采集音量
+    /// 设置麦克风的音量大小，播放背景音乐混音时使用，用来控制麦克风音量大小。
     /// - Parameter volume: 音量大小，取值0 - 100，默认值为100
     @objc func setMicVolume(volume: Int)
     
@@ -50,7 +50,7 @@ import Foundation
     @objc func setVoiceChangerType(voiceChangerType:TRTCVoiceChangerType)
     
     /// 每个音效都需要您指定具体的 ID，您可以通过该 ID 对音效的开始、停止、音量等进行设置。
-    /// 支持的文件格式：aac, mp3, m4a。
+    /// 支持 aac、mp3 以及 m4a 格式。
     /// - 若您想同时播放多个音效，请分配不同的 ID 进行播放。因为使用同一个 ID 播放不同音效，SDK 会先停止播放旧的音效，再播放新的音效。
     /// - Parameters:
     ///   - effectId: 音效 ID
@@ -66,14 +66,7 @@ import Foundation
     ///   - effectId: effectId 音效 ID
     ///   - volume: volume   音量大小，取值范围为0 - 100；默认值：100
     @objc func setAudioEffectVolume(effectId: Int32, volume: Int32)
-
-    /// 停止音效
-    /// - Parameter effectId: 音效 ID
-    @objc func stopAudioEffect(effectId: Int32)
-
-    /// 停止所有音效
-    @objc func stopAllAudioEffects()
-
+    
     /// 设置所有音效音量
     /// - 该操作会覆盖通过 setAudioEffectVolume 指定的单独音效音量。
     /// - Parameter volume: 音量大小，取值范围为0 - 100；默认值：100
@@ -86,4 +79,11 @@ import Foundation
     /// 恢复音效
     /// - Parameter effectId: 音效 ID
     @objc func resumeAudioEffect(effectId: Int32)
+
+    /// 停止音效
+    /// - Parameter effectId: 音效 ID
+    @objc func stopAudioEffect(effectId: Int32)
+
+    /// 停止所有音效
+    @objc func stopAllAudioEffects()
 }

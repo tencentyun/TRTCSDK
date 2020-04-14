@@ -681,6 +681,11 @@
 - (void)closeRTMP {
     [self setPreviewUIHidden:YES];
     for (TCStatusInfoView* statusInfoView in _statusInfoViewArray) {
+        if (statusInfoView.userID.length > 0 && [_setLinkMemeber containsObject:statusInfoView.userID]) {
+            [self.liveRoom kickoutJoinAnchorWithUserID:statusInfoView.userID callback:^(NSInteger code, NSString * error) {
+                
+            }];
+        }
         [statusInfoView stopPlay];
     }
     if (_curPkRoom != nil) {
@@ -760,21 +765,14 @@
         if (accept) {
             [TCUtil toastTip:[NSString stringWithFormat:@"%@已接受您的PK请求",room.ownerName] parentView:self.view];
         } else {
-            [TCUtil toastTip:[NSString stringWithFormat:@"%@拒绝了您的PK请求",room.ownerName] parentView:self.view];
-            self.curPkRoom = nil;
-        }
-    } callback:^(NSInteger code, NSString * error) {
-        if (code != 0) {
             if (error.length > 0) {
-               [TCUtil toastTip:error parentView:self.view];
+                [TCUtil toastTip: error parentView:self.view];
             } else {
-                [TCUtil toastTip:@"出现错误，请稍候尝试" parentView:self.view];
+               [TCUtil toastTip:[NSString stringWithFormat:@"%@拒绝了您的PK请求",room.ownerName] parentView:self.view];
             }
-            if (self.roomStatus != TRTCLiveRoomLiveStatusRoomPK) {
+            if (self->_roomStatus != TRTCLiveRoomLiveStatusRoomPK) {
                 self.curPkRoom = nil;
             }
-        } else {
-            
         }
     }];
     

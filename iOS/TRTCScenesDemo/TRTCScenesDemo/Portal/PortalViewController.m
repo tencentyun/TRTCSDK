@@ -143,7 +143,9 @@
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         [[ProfileManager shared] removeLoginCache];
         [[appUtils shared] showLoginController];
-        [wSelf.liveRoom logout:^(NSInteger code, NSString * error) {
+        [[TIMManager sharedInstance] logout:^{
+            
+        } fail:^(int code, NSString *msg) {
             
         }];
     }];

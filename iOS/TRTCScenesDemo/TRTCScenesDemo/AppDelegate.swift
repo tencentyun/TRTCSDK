@@ -8,11 +8,11 @@
 
 import UIKit
 
-//推送证书 ID
+//此处设置 IM 推送证书 ID 详情见：https://cloud.tencent.com/document/product/269/9154
 #if DEBUG
-    let timSdkBusiId: UInt32 = <#busiId#>
+    let timSdkBusiId: UInt32 = 0
 #else
-    let timSdkBusiId: UInt32 = <#busiId#>
+    let timSdkBusiId: UInt32 = 0
 #endif
 
 @UIApplicationMain

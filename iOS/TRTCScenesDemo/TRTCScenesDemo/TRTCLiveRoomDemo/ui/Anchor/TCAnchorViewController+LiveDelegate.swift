@@ -70,6 +70,7 @@ extension TCAnchorViewController: TRTCLiveRoomDelegate {
     }
     
     public func trtcLiveRoomOnQuitRoomPK(_ trtcLiveRoom: TRTCLiveRoomImpl) {
+        self.curPkRoom = nil
         TCUtil.toastTip("对方主播已结束PK", parentView: view)
         linkFrameRestore()
     }
@@ -77,6 +78,7 @@ extension TCAnchorViewController: TRTCLiveRoomDelegate {
     public func trtcLiveRoom(_ trtcLiveRoom: TRTCLiveRoomImpl, onRoomInfoChange info: TRTCLiveRoomInfo) {
         self.roomStatus = info.roomStatus.rawValue
         if info.roomStatus == .single || info.roomStatus == .linkMic {
+            self.curPkRoom = nil
             UIView.animate(withDuration: 0.1) {
                 self.videoParentView.frame = self.view.frame
                 self.linkFrameRestore()

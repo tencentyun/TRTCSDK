@@ -149,7 +149,13 @@
 		86D4C4E523F295AC0002CA29 /* ITRTCVideoCallInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86D4C4E423F295AC0002CA29 /* ITRTCVideoCallInterface.swift */; };
 		86D4C4E723F295C20002CA29 /* TRTCVideoCallDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86D4C4E623F295C20002CA29 /* TRTCVideoCallDelegate.swift */; };
 		D055FF88CEC31D7F45C4984C /* libPods-TRTCScenesDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 97426558871F744770FD9030 /* libPods-TRTCScenesDemo.a */; };
-		F8713C362411D7E70024ECFD /* TXLiteAVSDK_TRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8713C352411D7E70024ECFD /* TXLiteAVSDK_TRTC.framework */; };
+		F80E81632434BA0C00462D25 /* TXLiteAVSDK_TRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F80E81622434BA0C00462D25 /* TXLiteAVSDK_TRTC.framework */; };
+		F80E81652434BA9300462D25 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F80E81642434BA9300462D25 /* AssetsLibrary.framework */; };
+		F80E81672434BA9B00462D25 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F80E81662434BA9A00462D25 /* CoreMedia.framework */; };
+		F80E81692434BAA200462D25 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F80E81682434BAA100462D25 /* Accelerate.framework */; };
+		F80E816B2434BAAC00462D25 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F80E816A2434BAAC00462D25 /* Metal.framework */; };
+		F80E81702434BFF000462D25 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = F80E816F2434BFE900462D25 /* libsqlite3.0.tbd */; };
+		F80E81712434BFF300462D25 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = F80E816E2434BFE000462D25 /* libsqlite3.tbd */; };
 		F8713C472411F8740024ECFD /* TCBeautyPanelResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 860C14B02404CFE50023A19E /* TCBeautyPanelResources.bundle */; };
 		F8713C5E2411FD300024ECFD /* FilterResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = F8713C5D2411FD300024ECFD /* FilterResource.bundle */; };
 		F8A3CCE42431D431003465AF /* TCAnchorViewController+Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A3CCE32431D430003465AF /* TCAnchorViewController+Room.swift */; };
@@ -413,7 +419,13 @@
 		A4D3D68F96CA6ACA06ECF88F /* Pods-TRTCScenesDemo.dailybuild.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TRTCScenesDemo.dailybuild.xcconfig"; path = "Target Support Files/Pods-TRTCScenesDemo/Pods-TRTCScenesDemo.dailybuild.xcconfig"; sourceTree = "<group>"; };
 		B161EC174E5495A3067A8268 /* Pods-TRTCScenesDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TRTCScenesDemo.release.xcconfig"; path = "Target Support Files/Pods-TRTCScenesDemo/Pods-TRTCScenesDemo.release.xcconfig"; sourceTree = "<group>"; };
 		F0063A12EB70BB29A75838F4 /* Pods-TRTCScenesDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TRTCScenesDemo.debug.xcconfig"; path = "Target Support Files/Pods-TRTCScenesDemo/Pods-TRTCScenesDemo.debug.xcconfig"; sourceTree = "<group>"; };
-		F8713C352411D7E70024ECFD /* TXLiteAVSDK_TRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TXLiteAVSDK_TRTC.framework; path = ../SDK/TXLiteAVSDK_TRTC.framework; sourceTree = "<group>"; };
+		F80E81622434BA0C00462D25 /* TXLiteAVSDK_TRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TXLiteAVSDK_TRTC.framework; path = ../SDK/TXLiteAVSDK_TRTC.framework; sourceTree = "<group>"; };
+		F80E81642434BA9300462D25 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		F80E81662434BA9A00462D25 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		F80E81682434BAA100462D25 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		F80E816A2434BAAC00462D25 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
+		F80E816E2434BFE000462D25 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
+		F80E816F2434BFE900462D25 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		F8713C5D2411FD300024ECFD /* FilterResource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FilterResource.bundle; sourceTree = "<group>"; };
 		F8A3CCE32431D430003465AF /* TCAnchorViewController+Room.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TCAnchorViewController+Room.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -423,11 +435,17 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F8713C362411D7E70024ECFD /* TXLiteAVSDK_TRTC.framework in Frameworks */,
 				860C14B12404CFF50023A19E /* TCBeautyPanel.framework in Frameworks */,
+				F80E816B2434BAAC00462D25 /* Metal.framework in Frameworks */,
+				F80E81692434BAA200462D25 /* Accelerate.framework in Frameworks */,
 				1A301E7E23CC4E05005CA7D3 /* libc++.tbd in Frameworks */,
+				F80E81632434BA0C00462D25 /* TXLiteAVSDK_TRTC.framework in Frameworks */,
+				F80E81652434BA9300462D25 /* AssetsLibrary.framework in Frameworks */,
 				1A301E7C23CC4DF0005CA7D3 /* libresolv.tbd in Frameworks */,
 				D055FF88CEC31D7F45C4984C /* libPods-TRTCScenesDemo.a in Frameworks */,
+				F80E81702434BFF000462D25 /* libsqlite3.0.tbd in Frameworks */,
+				F80E81712434BFF300462D25 /* libsqlite3.tbd in Frameworks */,
+				F80E81672434BA9B00462D25 /* CoreMedia.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -808,7 +826,13 @@
 		74325509BCD7A4F9A25D2F16 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				F8713C352411D7E70024ECFD /* TXLiteAVSDK_TRTC.framework */,
+				F80E816F2434BFE900462D25 /* libsqlite3.0.tbd */,
+				F80E816E2434BFE000462D25 /* libsqlite3.tbd */,
+				F80E816A2434BAAC00462D25 /* Metal.framework */,
+				F80E81682434BAA100462D25 /* Accelerate.framework */,
+				F80E81662434BA9A00462D25 /* CoreMedia.framework */,
+				F80E81642434BA9300462D25 /* AssetsLibrary.framework */,
+				F80E81622434BA0C00462D25 /* TXLiteAVSDK_TRTC.framework */,
 				1A301E7D23CC4DFB005CA7D3 /* libc++.tbd */,
 				1A301E7B23CC4DCA005CA7D3 /* libresolv.tbd */,
 				97426558871F744770FD9030 /* libPods-TRTCScenesDemo.a */,
@@ -1057,7 +1081,6 @@
 			buildConfigurationList = 1A7F963423A7706E007DF584 /* Build configuration list for PBXNativeTarget "TRTCScenesDemo" */;
 			buildPhases = (
 				D976696AD985EED68B0C6BD1 /* [CP] Check Pods Manifest.lock */,
-				F85B3890240FF5C700E98B9A /* Download SDK */,
 				1A7F960623A7706B007DF584 /* Sources */,
 				1A7F960723A7706B007DF584 /* Frameworks */,
 				1A7F960823A7706B007DF584 /* Resources */,
@@ -1282,24 +1305,6 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
-		};
-		F85B3890240FF5C700E98B9A /* Download SDK */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Download SDK";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if [ ! -e \"../SDK/TXLiteAVSDK_TRTC.framework\" ]; then\nURL=\"$(cat ../SDK/README.md | grep -o 'http.*zip')\"\necho \"Downloading SDK from $URL\"\ncurl \"$URL\" --output ../SDK/TXLiteAVSDK_TRTC_iOS.zip\ncd ../SDK\nunzip TXLiteAVSDK_TRTC_iOS.zip\nrm -rf __MACOSX\nmv TXLiteAVSDK_TRTC_*/SDK/*.framework .\nrm -rf TXLiteAVSDK_TRTC_*\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

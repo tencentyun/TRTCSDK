@@ -9,7 +9,7 @@
 #import "HUDHelper.h"
 #import "NSString+Common.h"
 #import "UIAlertView+BlocksKit.h"
-#import "trtcScenesDemo-Swift.h"
+#import "TRTCScenesDemo-Swift.h"
 
 @implementation HUDHelper
 
