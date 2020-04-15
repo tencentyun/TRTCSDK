@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Scheme
+   LastUpgradeVersion = "1130"
+   version = "1.7">
+   <BuildAction
+      parallelizeBuildables = "YES"
+      buildImplicitDependencies = "YES">
+      <PreActions>
+         <ExecutionAction
+            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+            <ActionContent
+               title = "Run Script"
+               scriptText = "# Type a script or drag a script file from your workspace to insert its path.&#10;cd ${SRCROOT}&#10;WORK_DIR=$(pwd)&#10;&#10;if [ ! -e &quot;../SDK&quot; ]; then&#10;mkdir ../SDK&#10;fi&#10;&#10;if [ ! -e &quot;../SDK/TXLiteAVSDK_TRTC.framework&quot; ] || [ ! -e &quot;./Pods&quot; ]; then&#10;URL=&quot;http://liteavsdk-1252463788.cosgz.myqcloud.com/TXLiteAVSDK_TRTC_iOS_latest.zip&quot;&#10;echo &quot;Downloading SDK from $URL&quot;&#10;curl &quot;$URL&quot; --output ../SDK/TXLiteAVSDK_TRTC_iOS.zip&#10;&#10;cd ../SDK&#10;unzip TXLiteAVSDK_TRTC_iOS.zip&#10;&#10;rm -rf __MACOSX&#10;if [ ! -e &quot;TXLiteAVSDK_TRTC.framework&quot; ]; then&#10;echo &quot;move TXLiteAVSDK_TRTC.framework&quot;&#10;mv TXLiteAVSDK_TRTC_*/SDK/*.framework .&#10;fi&#10;if [ ! -e &quot;../TRTCSimpleDemo/Pods&quot; ]; then&#10;echo &quot;copy Pods&quot;&#10;cp -rf TXLiteAVSDK_TRTC_*/TRTCSimpleDemo/Pods ../TRTCSimpleDemo/&#10;xcodebuild -project ../TRTCSimpleDemo/Pods/Pods.xcodeproj -configuration ${CONFIGURATION}&#10;fi&#10;rm -rf TXLiteAVSDK_TRTC_*&#10;fi&#10;">
+               <EnvironmentBuildable>
+                  <BuildableReference
+                     BuildableIdentifier = "primary"
+                     BlueprintIdentifier = "812E142D2412403400642B19"
+                     BuildableName = "SimpleDemo.app"
+                     BlueprintName = "TRTCSimpleDemo"
+                     ReferencedContainer = "container:TRTCSimpleDemo.xcodeproj">
+                  </BuildableReference>
+               </EnvironmentBuildable>
+            </ActionContent>
+         </ExecutionAction>
+      </PreActions>
+      <BuildActionEntries>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "812E142D2412403400642B19"
+               BuildableName = "SimpleDemo.app"
+               BlueprintName = "TRTCSimpleDemo"
+               ReferencedContainer = "container:TRTCSimpleDemo.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+      </BuildActionEntries>
+   </BuildAction>
+   <TestAction
+      buildConfiguration = "Debug"
+      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
+      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      shouldUseLaunchSchemeArgsEnv = "YES">
+      <Testables>
+      </Testables>
+   </TestAction>
+   <LaunchAction
+      buildConfiguration = "Debug"
+      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
+      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      launchStyle = "0"
+      useCustomWorkingDirectory = "NO"
+      ignoresPersistentStateOnLaunch = "NO"
+      debugDocumentVersioning = "YES"
+      debugServiceExtension = "internal"
+      allowLocationSimulation = "YES">
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "812E142D2412403400642B19"
+            BuildableName = "SimpleDemo.app"
+            BlueprintName = "TRTCSimpleDemo"
+            ReferencedContainer = "container:TRTCSimpleDemo.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
+   </LaunchAction>
+   <ProfileAction
+      buildConfiguration = "Release"
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      savedToolIdentifier = ""
+      useCustomWorkingDirectory = "NO"
+      debugDocumentVersioning = "YES">
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "812E142D2412403400642B19"
+            BuildableName = "SimpleDemo.app"
+            BlueprintName = "TRTCSimpleDemo"
+            ReferencedContainer = "container:TRTCSimpleDemo.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
+   </ProfileAction>
+   <AnalyzeAction
+      buildConfiguration = "Debug">
+   </AnalyzeAction>
+   <ArchiveAction
+      buildConfiguration = "Release"
+      revealArchiveInOrganizer = "YES">
+   </ArchiveAction>
+</Scheme>

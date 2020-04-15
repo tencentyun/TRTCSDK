@@ -8,7 +8,7 @@
 - 视频互动直播
 
 ## 环境要求
-- Xcode 11.0及以上版本
+- Xcode 10.2及以上版本
 
 ## 前提条件
 您已 [注册腾讯云](https://cloud.tencent.com/document/product/378/17985) 账号，并完成 [实名认证](https://cloud.tencent.com/document/product/378/3629)。
@@ -41,4 +41,4 @@
 >正确的 UserSig 签发方式是将 UserSig 的计算代码集成到您的服务端，并提供面向 App 的接口，在需要 UserSig 时由您的 App 向业务服务器发起请求获取动态 UserSig。更多详情请参见 [服务端生成 UserSig](https://cloud.tencent.com/document/product/647/17275#Server)。
 
 ### 步骤4：编译运行
-使用 XCode（11.0及以上的版本）打开源码目录下的 TRTCSimpleDemo.xcodeproj 工程，编译并运行 Demo 工程即可。
+使用 XCode（10.2及以上的版本）打开源码目录下的 TRTCSimpleDemo.xcworkspace 工程，编译并运行 Demo 工程即可。

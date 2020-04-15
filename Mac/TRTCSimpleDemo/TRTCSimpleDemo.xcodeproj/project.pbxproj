@@ -3,18 +3,20 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F847B9E7AD2A43114D79EFF3 /* libPods-TRTCSimpleDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B6E2ECBAC34385AFE7D71A3 /* libPods-TRTCSimpleDemo.a */; };
+		FD1986A02445FD2800E0819A /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = FD19869F2445FD2800E0819A /* libresolv.tbd */; };
 		FD3B3A152423B4E8001720A3 /* GenerateTestUserSig.m in Sources */ = {isa = PBXBuildFile; fileRef = FD3B3A132423B4E8001720A3 /* GenerateTestUserSig.m */; };
+		FD57DBEC2445F8F800C44C47 /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD57DBEB2445F8F800C44C47 /* AudioUnit.framework */; };
 		FDB22483241F365C00E99DE2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDB22482241F365C00E99DE2 /* AppDelegate.swift */; };
 		FDB22487241F365D00E99DE2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FDB22486241F365D00E99DE2 /* Assets.xcassets */; };
 		FDB9D9A524207A5F0040A0F4 /* Live.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FDB9D9A424207A5F0040A0F4 /* Live.storyboard */; };
 		FDB9D9E02420CAE10040A0F4 /* RTCEntranceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDB9D9DF2420CAE10040A0F4 /* RTCEntranceViewController.swift */; };
 		FDB9D9E22420CBAA0040A0F4 /* RTCViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDB9D9E12420CBAA0040A0F4 /* RTCViewController.swift */; };
 		FDB9D9E32420ED840040A0F4 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = FDBE1FE5241F940900290D0B /* libc++.tbd */; };
-		FDB9D9E624210F910040A0F4 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = FDB9D9E524210F910040A0F4 /* Alamofire */; };
 		FDB9D9E824210FD30040A0F4 /* LiveRoomManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDB9D9E724210FD30040A0F4 /* LiveRoomManager.swift */; };
 		FDBE1FE4241F933B00290D0B /* TXLiteAVSDK_TRTC_Mac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDBE1FE2241F92FA00290D0B /* TXLiteAVSDK_TRTC_Mac.framework */; };
 		FDBE2009241FB48700290D0B /* RTC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FDBE2008241FB48700290D0B /* RTC.storyboard */; };
@@ -27,8 +29,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		312EC8FCF5103F915238D3A0 /* Pods-TRTCSimpleDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TRTCSimpleDemo.release.xcconfig"; path = "Target Support Files/Pods-TRTCSimpleDemo/Pods-TRTCSimpleDemo.release.xcconfig"; sourceTree = "<group>"; };
+		9B6E2ECBAC34385AFE7D71A3 /* libPods-TRTCSimpleDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TRTCSimpleDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9EB38867782F5910DC1C0248 /* Pods-TRTCSimpleDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TRTCSimpleDemo.debug.xcconfig"; path = "Target Support Files/Pods-TRTCSimpleDemo/Pods-TRTCSimpleDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		FD19869F2445FD2800E0819A /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
 		FD3B3A132423B4E8001720A3 /* GenerateTestUserSig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenerateTestUserSig.m; sourceTree = "<group>"; };
 		FD3B3A142423B4E8001720A3 /* GenerateTestUserSig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GenerateTestUserSig.h; sourceTree = "<group>"; };
+		FD57DBEB2445F8F800C44C47 /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = System/Library/Frameworks/AudioUnit.framework; sourceTree = SDKROOT; };
 		FDB2247F241F365C00E99DE2 /* TRTCSimpleDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TRTCSimpleDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FDB22482241F365C00E99DE2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FDB22486241F365D00E99DE2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -56,15 +63,26 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FDB9D9E624210F910040A0F4 /* Alamofire in Frameworks */,
+				FD1986A02445FD2800E0819A /* libresolv.tbd in Frameworks */,
 				FDB9D9E32420ED840040A0F4 /* libc++.tbd in Frameworks */,
+				FD57DBEC2445F8F800C44C47 /* AudioUnit.framework in Frameworks */,
 				FDBE1FE4241F933B00290D0B /* TXLiteAVSDK_TRTC_Mac.framework in Frameworks */,
+				F847B9E7AD2A43114D79EFF3 /* libPods-TRTCSimpleDemo.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		163173052512B33D67E0652A /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				9EB38867782F5910DC1C0248 /* Pods-TRTCSimpleDemo.debug.xcconfig */,
+				312EC8FCF5103F915238D3A0 /* Pods-TRTCSimpleDemo.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		FD3B3A122423B4E8001720A3 /* debug */ = {
 			isa = PBXGroup;
 			children = (
@@ -85,6 +103,7 @@
 				FDB22481241F365C00E99DE2 /* TRTCSimpleDemo */,
 				FDB22480241F365C00E99DE2 /* Products */,
 				FDBE1FE1241F92FA00290D0B /* Frameworks */,
+				163173052512B33D67E0652A /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -110,9 +129,12 @@
 		FDBE1FE1241F92FA00290D0B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				FD19869F2445FD2800E0819A /* libresolv.tbd */,
+				FD57DBEB2445F8F800C44C47 /* AudioUnit.framework */,
 				FDBE1FE7241F941100290D0B /* libiconv.tbd */,
 				FDBE1FE5241F940900290D0B /* libc++.tbd */,
 				FDBE1FE2241F92FA00290D0B /* TXLiteAVSDK_TRTC_Mac.framework */,
+				9B6E2ECBAC34385AFE7D71A3 /* libPods-TRTCSimpleDemo.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -156,7 +178,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = FDB2248F241F365D00E99DE2 /* Build configuration list for PBXNativeTarget "TRTCSimpleDemo" */;
 			buildPhases = (
-				FDBE1FF2241F9ED500290D0B /* Download TRTC Mac SDK */,
+				764E599756B2EAE614D0E948 /* [CP] Check Pods Manifest.lock */,
 				FDB2247B241F365C00E99DE2 /* Sources */,
 				FDB2247C241F365C00E99DE2 /* Frameworks */,
 				FDB2247D241F365C00E99DE2 /* Resources */,
@@ -166,9 +188,6 @@
 			dependencies = (
 			);
 			name = TRTCSimpleDemo;
-			packageProductDependencies = (
-				FDB9D9E524210F910040A0F4 /* Alamofire */,
-			);
 			productName = TRTCSimpleDemo;
 			productReference = FDB2247F241F365C00E99DE2 /* TRTCSimpleDemo.app */;
 			productType = "com.apple.product-type.application";
@@ -198,9 +217,6 @@
 				Base,
 			);
 			mainGroup = FDB22476241F365C00E99DE2;
-			packageReferences = (
-				FDB9D9E424210F910040A0F4 /* XCRemoteSwiftPackageReference "Alamofire" */,
-			);
 			productRefGroup = FDB22480241F365C00E99DE2 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -225,7 +241,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		FDBE1FF2241F9ED500290D0B /* Download TRTC Mac SDK */ = {
+		764E599756B2EAE614D0E948 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -233,15 +249,19 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
-			name = "Download TRTC Mac SDK";
+			name = "[CP] Check Pods Manifest.lock";
 			outputFileListPaths = (
 			);
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TRTCSimpleDemo-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif [ ! -e \"../SDK/TXLiteAVSDK_TRTC_Mac.framework\" ]; then\nURL=\"$(cat ../SDK/README.md | grep -o 'http.*tar\\.bz2')\"\necho \"Downloading SDK from $URL\"\ncurl \"$URL\" --output ../SDK/TXLiteAVSDK_TRTC_Mac.tar.bz2\ncd ../SDK\nif [ -e result ] ;then\nrm -r result\nfi\nmkdir result\ntar -xjf TXLiteAVSDK_TRTC_Mac.tar.bz2\nrm -rf __MACOSX\nmv TXLiteAVSDK_TRTC_*/SDK/*.framework result/\nrm -rf TXLiteAVSDK_TRTC_*\nmv result/*.framework .\nrm -rf result\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -381,6 +401,7 @@
 		};
 		FDB22490241F365D00E99DE2 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9EB38867782F5910DC1C0248 /* Pods-TRTCSimpleDemo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -397,12 +418,13 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "TRTCSimpleDemo/TRTCSimpleDemo-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
 		FDB22491241F365D00E99DE2 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 312EC8FCF5103F915238D3A0 /* Pods-TRTCSimpleDemo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -418,7 +440,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.tencent.TRTCSimpleDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "TRTCSimpleDemo/TRTCSimpleDemo-Bridging-Header.h";
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
 		};
@@ -444,25 +466,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		FDB9D9E424210F910040A0F4 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
-			requirement = {
-				kind = exactVersion;
-				version = 4.9.1;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		FDB9D9E524210F910040A0F4 /* Alamofire */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = FDB9D9E424210F910040A0F4 /* XCRemoteSwiftPackageReference "Alamofire" */;
-			productName = Alamofire;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = FDB22477241F365C00E99DE2 /* Project object */;
 }
