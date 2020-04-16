@@ -9,6 +9,7 @@
 using namespace DuiLib;
 #include <string>
 #include "TRTCCloudCallback.h"
+#include "ITXLiteAVLocalRecord.h"
 
 class TXLiveAvVideoView;
 class TRTCSettingViewControllerNotify {
@@ -21,6 +22,7 @@ class TRTCSettingViewController
     , public INotifyUI
     , public IDialogBuilderCallback
     , public ITRTCCloudCallback
+    , public TXLiteAVLocalRecordCallback
 {
 public:
     enum SettingTagEnum {
@@ -46,6 +48,7 @@ public: //cb
     virtual void NotifyAudioEffectTab(TNotifyUI& msg);
     virtual void NotifyOtherTab(TNotifyUI& msg);
     virtual void NotifyMixTab(TNotifyUI& msg);
+    virtual void NotifyRecordTab(TNotifyUI& msg);
     virtual CControlUI* CreateControl(LPCTSTR pstrClass);
 
     //ITRTCCloudCallback
@@ -59,6 +62,13 @@ public: //cb
     virtual void onSpeedTest(const TRTCSpeedTestResult& currentResult, uint32_t finishedCount, uint32_t totalCount);
     virtual void onTestMicVolume(uint32_t volume);
     virtual void onTestSpeakerVolume(uint32_t volume);
+
+    void OnRecordError (TXLiteAVLocalRecordError err, const char* msg) override;
+    void OnRecordComplete (const char* path) override;
+    void OnRecordProgress(int duration,int fileSize, int width, int height) override;
+    void DoRecordError (int nRet,std::string msg);
+    void DoRecordComplete (std::string path);
+    void DoRecordProgress(int duration,int fileSize);
 private:
     static void addRef();
     static void subRef();
@@ -69,6 +79,7 @@ private:
     void InitVideoTab();
     void InitOtherTab();
     void InitMixTab();
+    void InitRecordTab();
     void UpdateCameraDevice();
     void UpdateMicDevice();
     void UpdateSpeakerDevice();

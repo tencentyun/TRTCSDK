@@ -19,6 +19,7 @@ class MainViewBottomBar;
 class TRTCCloudCore;
 class TXLiveAvVideoView;
 class CBaseLayoutUI;
+class UserListController;
 class TRTCMainViewController
     : public CWindowWnd
     , public INotifyUI
@@ -69,6 +70,8 @@ public:
 private:
     MainViewBottomBar* m_pMainViewBottomBar = nullptr;  //管理主面板下功能按钮列表。
     TRTCVideoViewLayout* m_pVideoViewLayout = nullptr;  //管理主面板的视频渲染窗口分配。
+    UserListController* m_pUserListController = nullptr;  //管理成员列表。
+
     CBaseLayoutUI * m_pBaseLayoutUI = nullptr;          //
     CPaintManagerUI m_pmUI;
     bool m_bQuit = true;

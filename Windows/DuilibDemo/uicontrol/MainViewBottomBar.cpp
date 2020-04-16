@@ -39,30 +39,7 @@ void MainViewBottomBar::Notify(TNotifyUI& msg)
 {
     if (msg.sType == _T("click"))
     {
-        if (msg.pSender->GetName() == _T("btn_change_view_mode") && m_pMainWnd)
-        {
-            CButtonUI* pBtn = static_cast<CButtonUI*>(msg.pSender);
-            if (pBtn)
-            {
-                if (m_bShowLectureModeUi)
-                {
-                    pBtn->SetForeImage(L"dest='4,1,20,19' source='0,0,16,18' res='videoview/gallery.png'");
-                    pBtn->SetText(L"画廊视图");
-                    m_bShowLectureModeUi = false;
-                    if (m_pMainWnd && m_pMainWnd->getTRTCVideoViewLayout())
-                        m_pMainWnd->getTRTCVideoViewLayout()->setLayoutStyle(ViewLayoutStyle_Lecture);
-                }
-                else
-                {
-                    m_bShowLectureModeUi = true;
-                    pBtn->SetForeImage(L"dest='4,1,20,19' source='0,0,16,18' res='videoview/lecture.png'");
-                    pBtn->SetText(L"演讲视图");
-                    if (m_pMainWnd && m_pMainWnd->getTRTCVideoViewLayout())
-                        m_pMainWnd->getTRTCVideoViewLayout()->setLayoutStyle(ViewLayoutStyle_Gallery);
-                }
-            }
-        }
-        else if (msg.pSender->GetName() == _T("btn_open_audio") && m_pMainWnd)
+        if (msg.pSender->GetName() == _T("btn_open_audio") && m_pMainWnd)
         {
             onClickMuteAudioBtn();
         }
@@ -94,7 +71,7 @@ void MainViewBottomBar::Notify(TNotifyUI& msg)
             CMenuUI* rootMenu = pMenu->GetMenuUI();
             if (rootMenu != NULL)
             {
-                // mic 
+                // mic
                 {
                     //title
                     CMenuElementUI* pNewTabContainer = new CMenuElementUI;
@@ -313,6 +290,10 @@ void MainViewBottomBar::Notify(TNotifyUI& msg)
         {
             TRTCCloudCore::GetInstance()->getTRTCCloud()->disconnectOtherRoom();
         }
+        else if (msg.pSender->GetName() == _T("btn_member"))
+        {
+            onBtnMemberClick();
+        }
     }
 }
 
@@ -395,7 +376,7 @@ LRESULT MainViewBottomBar::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lPara
         CDataCenter::GetInstance()->m_localInfo.publish_sub_video = true;
         TRTCShareScreenToolMgr::GetInstance()->createToolWnd(CDataCenter::GetInstance()->getLocalUserID());
         //TRTCShareScreenToolMgr::GetInstance()->showScreenVideoView(true);
-        if(CDataCenter::GetInstance()->m_mixTemplateID <= TRTCTranscodingConfigMode_Manual) TRTCCloudCore::GetInstance()->updateMixTranCodeInfo();
+        if (CDataCenter::GetInstance()->m_mixTemplateID <= TRTCTranscodingConfigMode_Manual) TRTCCloudCore::GetInstance()->updateMixTranCodeInfo();
 	}
 	else if (uMsg == WM_USER_CMD_ScreenEnd)
 	{
@@ -516,6 +497,21 @@ void MainViewBottomBar::RefreshAudioDevice()
                 TRTCCloudCore::GetInstance()->selectMicDevice(info._text); break;
             }
         }
+    }
+}
+
+void MainViewBottomBar::onBtnMemberClick()
+{
+    CVerticalLayoutUI* pMemberView = static_cast<CVerticalLayoutUI*>(m_pMainWnd->getPaintManagerUI().FindControl(_T("layout_im_user_area")));
+    CVerticalLayoutUI* pBottomToolArea = static_cast<CVerticalLayoutUI*>(m_pMainWnd->getPaintManagerUI().FindControl(_T("layout_bottom_tool_area")));
+    m_bShowMemberWnd = !m_bShowMemberWnd;
+    if (m_bShowMemberWnd) {
+        pMemberView->SetVisible(true);
+        pBottomToolArea->SetFixedWidth(pBottomToolArea->GetFixedWidth() - 320);
+    }
+    else {
+        pMemberView->SetVisible(false);
+        pBottomToolArea->SetFixedWidth(pBottomToolArea->GetFixedWidth() + 320);
     }
 }
 
@@ -697,7 +693,11 @@ void MainViewBottomBar::OpenScreenBtnEvent(const TRTCScreenCaptureSourceInfo &so
 		rect.right = 0;
 		rect.top = 0;
 		TRTCCloudCore::GetInstance()->selectScreenCaptureTarget(source, rect);
-		TRTCCloudCore::GetInstance()->startScreen(nullptr);
-	
+        if (CDataCenter::GetInstance()->m_bPublishScreenInBigStream) {
+            TRTCCloudCore::GetInstance()->startScreenCapture(nullptr, TRTCVideoStreamTypeBig, nullptr);
+        }
+        else {
+            TRTCCloudCore::GetInstance()->startScreen(nullptr);
+        }
     }
 }

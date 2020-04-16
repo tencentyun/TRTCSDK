@@ -38,6 +38,7 @@ TRTCSettingViewController::TRTCSettingViewController(SettingTagEnum tagType, HWN
     TRTCSettingViewController::addRef();
 
     TRTCCloudCore::GetInstance()->getTRTCCloud()->addCallback(this);
+    TRTCCloudCore::GetInstance()->getTRTCCloud()->setLocalVideoRenderCallback(TRTCVideoPixelFormat_BGRA32, TRTCVideoBufferType_Buffer, (ITRTCVideoRenderCallback*)getShareViewMgrInstance());
 
     m_audioEffectParam1 = new TRTCAudioEffectParam(0, NULL);
     m_audioEffectParam2 = new TRTCAudioEffectParam(0, NULL);
@@ -69,7 +70,7 @@ TRTCSettingViewController::~TRTCSettingViewController()
 void TRTCSettingViewController::preUnInit()
 {
     //退出所有功能测试
-    m_pVideoView->RemoveEngine(TRTCCloudCore::GetInstance()->getTRTCCloud());
+    m_pVideoView->RemoveRenderInfo();
     stopAllTestSetting();
 
     TRTCCloudCore::GetInstance()->getTRTCCloud()->removeCallback(this);
@@ -127,6 +128,7 @@ void TRTCSettingViewController::Notify(TNotifyUI & msg)
     NotifyOtherTab(msg);
     NotifyAudioEffectTab(msg);
     NotifyMixTab(msg);
+    NotifyRecordTab(msg);
     CDuiString name = msg.pSender->GetName();
     if (msg.sType == _T("selectchanged"))  
     {
@@ -1096,6 +1098,17 @@ void TRTCSettingViewController::NotifyOtherTab(TNotifyUI & msg)
             }
             ::PostMessage(m_parentHwnd, WM_USER_SET_SHOW_VOICEVOLUME, (WPARAM)CDataCenter::GetInstance()->m_bShowAudioVolume, 0);
         }
+        else if (msg.pSender->GetName() == _T("check_use_main_stream")) {
+            COptionUI* pOpenSender = static_cast<COptionUI*>(msg.pSender);
+            if (pOpenSender->IsSelected() == false) //事件值是反的
+            {
+                CDataCenter::GetInstance()->m_bPublishScreenInBigStream = true;
+            }
+            else
+            {
+                CDataCenter::GetInstance()->m_bPublishScreenInBigStream = false;
+            }
+        }
     }
 
 }
@@ -1248,6 +1261,202 @@ void TRTCSettingViewController::NotifyMixTab(TNotifyUI & msg)
     }
 }
 
+void TRTCSettingViewController::NotifyRecordTab(TNotifyUI & msg)
+{
+    CDuiString name = msg.pSender->GetName();
+    if(msg.sType == _T("click"))
+    {
+        if(msg.pSender->GetName() == _T("check_start_record"))
+        {
+            COptionUI* pOpenSender = static_cast<COptionUI*>(msg.pSender);
+            if(pOpenSender->IsSelected() == false) //事件值是反的
+            {
+                LiteAVScreenCaptureSourceInfo source = CDataCenter::GetInstance()->m_recordCaptureSourceInfo;
+                std::string path = Wide2UTF8(CDataCenter::GetInstance()->m_wstrRecordFile);
+                if (source.type == LiteAVScreenCaptureSourceTypeUnknown)
+                {
+                    CMsgWnd::ShowMessageBox(GetHWND(),_T("TRTCDuilibDemo"),_T("启动录制失败，您尚未选择录制内容！"),0xFFF08080);
+                    pOpenSender->Selected(true);
+                    return;
+                }
+                if(path.empty())
+                {
+                    CMsgWnd::ShowMessageBox(GetHWND(),_T("TRTCDuilibDemo"),_T("启动录制失败，您尚未输入录制文件地址！"),0xFFF08080);
+                    pOpenSender->Selected(true);
+                    return;
+                }
+
+                RECT captureRect = CDataCenter::GetInstance()->m_recordCaptureRect;
+                ITXLiteAVLocalRecord * pRecorder = getLocalRecordShareInstance();
+                if(pRecorder)
+                {
+                    pRecorder->setCallback(this);
+                    pRecorder->startLocalRecord(source, captureRect, path.c_str());
+                }
+                CDataCenter::GetInstance()->m_bStartLocalRecord = true;
+                CDataCenter::GetInstance()->m_bWaitStartRecordNotify = true;
+                CLabelUI* pLabelValue = static_cast<CLabelUI*>(m_pmUI.FindControl(_T("label_record_opt_status")));
+                if(pLabelValue)
+                {
+                    CDuiString sText;
+                    sText.Format(_T("正在启动录制:%s ...."), CDataCenter::GetInstance()->m_recordCaptureSourceInfoName.c_str());
+                    pLabelValue->SetText(sText);
+                }
+            }
+            else
+            {
+
+                CDataCenter::GetInstance()->m_bStartLocalRecord = false;
+                ITXLiteAVLocalRecord * pRecorder = getLocalRecordShareInstance();
+                if(pRecorder)
+                {
+                    pRecorder->stopLocalRecord();
+                }
+
+                CLabelUI* pLabelValue = static_cast<CLabelUI*>(m_pmUI.FindControl(_T("label_record_opt_status")));
+                if(pLabelValue)
+                {
+                    pLabelValue->SetText(L"");
+                }
+
+            }
+        }
+        else if(msg.pSender->GetName() == _T("check_pause_record"))
+        {
+            COptionUI* pOpenSender = static_cast<COptionUI*>(msg.pSender);
+            if(pOpenSender->IsSelected() == false) //事件值是反的
+            {
+                if(CDataCenter::GetInstance()->m_bStartLocalRecord == false)
+                {
+                    CMsgWnd::ShowMessageBox(GetHWND(),_T("TRTCDuilibDemo"),_T("暂停录制失败，您尚未启动录制！"),0xFFF08080);
+                    pOpenSender->Selected(true);
+                    return;
+                }
+                ITXLiteAVLocalRecord * pRecorder = getLocalRecordShareInstance();
+                if(pRecorder)
+                {
+                    pRecorder->pauseLocalRecord();
+                }
+                CDataCenter::GetInstance()->m_bPauseLocalRecord = true;
+                CLabelUI* pLabelValue = static_cast<CLabelUI*>(m_pmUI.FindControl(_T("label_record_opt_status")));
+                if(pLabelValue)
+                    pLabelValue->SetText(_T("暂停录制..."));
+            } else
+            {
+                if(CDataCenter::GetInstance()->m_bPauseLocalRecord == false || CDataCenter::GetInstance()->m_bStartLocalRecord == false)
+                {
+                    CMsgWnd::ShowMessageBox(GetHWND(),_T("TRTCDuilibDemo"),_T("取消暂停录制失败，当前录制状态不对！"),0xFFF08080);
+                    pOpenSender->Selected(true);
+                    return;
+                }
+                CDataCenter::GetInstance()->m_bPauseLocalRecord = false;
+                ITXLiteAVLocalRecord * pRecorder = getLocalRecordShareInstance();
+                if(pRecorder)
+                {
+                    pRecorder->resumeLocalRecord();
+                }
+                CLabelUI* pLabelValue = static_cast<CLabelUI*>(m_pmUI.FindControl(_T("label_record_opt_status")));
+                if(pLabelValue)
+                    pLabelValue->SetText(L"唤醒录制....");
+            }
+        }
+        else if(msg.pSender->GetName() == _T("btn_update_recode_hwnd"))
+        {
+            UiShareSelect uiShareSelect;
+            uiShareSelect.Create(GetHWND() ,_T("选择录制内容"),UI_WNDSTYLE_DIALOG,0);
+            uiShareSelect.CenterWindow();
+            UINT nRet = uiShareSelect.ShowModal();
+            if(nRet == IDOK)
+            {
+                TRTCScreenCaptureSourceInfo info = uiShareSelect.getSelectWnd();
+                CDataCenter::GetInstance()->m_recordCaptureSourceInfo = uiShareSelect.getSelectWnd();
+                std::string sourceName = info.sourceName == nullptr ? "" : info.sourceName;
+                CDataCenter::GetInstance()->m_recordCaptureSourceInfoName = UTF82Wide(sourceName);
+                CLabelUI* pLabelValue = static_cast<CLabelUI*>(m_pmUI.FindControl(_T("label_record_hwnd_name")));
+                if(pLabelValue)
+                {
+                    CDuiString sText; 
+                    sText.Format(_T("窗口:%s"),UTF82Wide(sourceName).c_str());
+                    pLabelValue->SetText(sText);
+                }
+            }
+        }
+        else if(msg.pSender->GetName() == _T("btn_update_record_pos")) 
+        {
+            CEditUI* pEdit = static_cast<CEditUI*>(m_pmUI.FindControl(_T("edit_record_pos_left")));
+            if(pEdit != nullptr)
+            {
+                std::wstring strValue = pEdit->GetText();
+                if((strValue.compare(L"") == 0))
+                    CDataCenter::GetInstance()->m_recordCaptureRect.left = 0;
+                else
+                    CDataCenter::GetInstance()->m_recordCaptureRect.left = _wtoi(strValue.c_str());
+            }
+            pEdit = static_cast<CEditUI*>(m_pmUI.FindControl(_T("edit_record_pos_top")));
+            if(pEdit != nullptr)
+            {
+                std::wstring strValue = pEdit->GetText();
+                if((strValue.compare(L"") == 0))
+                    CDataCenter::GetInstance()->m_recordCaptureRect.top = 0;
+                else
+                    CDataCenter::GetInstance()->m_recordCaptureRect.top = _wtoi(strValue.c_str());
+            }
+            pEdit = static_cast<CEditUI*>(m_pmUI.FindControl(_T("edit_record_pos_right")));
+            if(pEdit != nullptr)
+            {
+                std::wstring strValue = pEdit->GetText();
+                if((strValue.compare(L"") == 0))
+                    CDataCenter::GetInstance()->m_recordCaptureRect.right = 0;
+                else
+                    CDataCenter::GetInstance()->m_recordCaptureRect.right = _wtoi(strValue.c_str());
+            }
+            pEdit = static_cast<CEditUI*>(m_pmUI.FindControl(_T("edit_record_pos_bottom")));
+            if(pEdit != nullptr)
+            {
+                std::wstring strValue = pEdit->GetText();
+                if((strValue.compare(L"") == 0))
+                    CDataCenter::GetInstance()->m_recordCaptureRect.bottom = 0;
+                else
+                    CDataCenter::GetInstance()->m_recordCaptureRect.bottom = _wtoi(strValue.c_str());
+            }
+
+            CLabelUI* pLabelValue = static_cast<CLabelUI*>(m_pmUI.FindControl(_T("label_record_opt_status")));
+            if(pLabelValue)
+            {
+                CDuiString sText;
+                sText.Format(_T("更新录制区域(left:%d, top:%d, right:%d, bottom:%d)"), CDataCenter::GetInstance()->m_recordCaptureRect.left, CDataCenter::GetInstance()->m_recordCaptureRect.top, \
+                    CDataCenter::GetInstance()->m_recordCaptureRect.right, CDataCenter::GetInstance()->m_recordCaptureRect.bottom );
+                pLabelValue->SetText(sText);
+            }
+
+        }
+        else if(msg.pSender->GetName() == _T("btn_update_record_filepath"))
+        {
+            CEditUI* pEdit = static_cast<CEditUI*>(m_pmUI.FindControl(_T("edit_record_filepath")));
+            if(pEdit != nullptr)
+            {
+                std::wstring strId = pEdit->GetText();
+                if(strId.compare(L"") == 0)
+                {
+                    CDataCenter::GetInstance()->m_wstrRecordFile = L"";
+                }
+                else
+                {
+                    CDataCenter::GetInstance()->m_wstrRecordFile = strId;
+                }
+                CLabelUI* pLabelValue = static_cast<CLabelUI*>(m_pmUI.FindControl(_T("label_record_opt_status")));
+                if(pLabelValue)
+                {
+                    CDuiString sText;
+                    sText.Format(_T("更新录制文件路径：%s"),CDataCenter::GetInstance()->m_wstrRecordFile.c_str());
+                    pLabelValue->SetText(sText);
+                }
+            }
+        }
+    }
+}
+
+
 DuiLib::CControlUI* TRTCSettingViewController::CreateControl(LPCTSTR pstrClass)
 {
     if (_tcsicmp(pstrClass, _T("VideoViewLayoutUI")) == 0)
@@ -1296,6 +1505,90 @@ void TRTCSettingViewController::onTestSpeakerVolume(uint32_t volume)
     ::PostMessage(GetHWND(), WM_USER_CMD_SpeakerVolumeCallback, (WPARAM)volume, 0);
 }
 
+void TRTCSettingViewController::OnRecordError(TXLiteAVLocalRecordError err,const char * msg)
+{
+    std::string * str = new std::string(msg);
+
+    ::PostMessage(GetHWND(),WM_USER_CMD_OnRecordError,(WPARAM)str,(LPARAM)err);
+}
+
+void TRTCSettingViewController::OnRecordComplete(const char * path)
+{
+    std::string * str = new std::string(path);
+
+    ::PostMessage(GetHWND(),WM_USER_CMD_OnRecordComplete,(WPARAM)str, 0);
+}
+
+void TRTCSettingViewController::OnRecordProgress(int duration,int fileSize,int width,int height)
+{
+    ::PostMessage(GetHWND(), WM_USER_CMD_OnRecordProgress, (WPARAM)duration,  (LPARAM)fileSize);
+}
+
+void TRTCSettingViewController::DoRecordError(int nRet,std::string msg)
+{
+    if (nRet == ERR_RECORD_SUCCESS)
+    {
+        CDataCenter::GetInstance()->m_bWaitStartRecordNotify = false;
+        CLabelUI* pLabelValue = static_cast<CLabelUI*>(m_pmUI.FindControl(_T("label_record_opt_status")));
+        if(pLabelValue)
+            pLabelValue->SetText(L"启动录制成功");
+
+    }
+    else if (nRet == ERR_RECORD_PARAM_INVALID || nRet == ERR_START_RECORD_EXE_FAULURE || nRet == ERR_CREATE_RECORD_FILE_FAILURE || nRet == ERR_RECORD_CANCEL_BY_EXCEPTION)
+    {
+        CDataCenter::GetInstance()->m_bStartLocalRecord = false;
+        ITXLiteAVLocalRecord * pRecorder = getLocalRecordShareInstance();
+        if(pRecorder)
+        {
+            pRecorder->stopLocalRecord();
+        }
+        COptionUI* pCheckUI = static_cast<COptionUI*>(m_pmUI.FindControl(_T("check_start_record")));
+        if(pCheckUI)
+            pCheckUI->Selected(false);
+
+        CLabelUI* pLabelValue = static_cast<CLabelUI*>(m_pmUI.FindControl(_T("label_record_opt_status")));
+        if(pLabelValue)
+        {
+            CDuiString sText;
+            sText.Format(_T("启动录制失败:%s"), UTF82Wide(msg).c_str());
+            pLabelValue->SetText(sText);
+        }
+    }
+
+}
+
+void TRTCSettingViewController::DoRecordComplete(std::string path)
+{
+    CLabelUI* pLabelValue = static_cast<CLabelUI*>(m_pmUI.FindControl(_T("label_record_opt_status")));
+    if(pLabelValue)
+    {
+        CDuiString sText;
+        sText.Format(_T("录制文件生成:%s"),UTF82Wide(path).c_str());
+        pLabelValue->SetText(sText);
+    }
+}
+
+void TRTCSettingViewController::DoRecordProgress(int duration,int fileSize)
+{
+    int duration_s = duration / 1000;
+    int h,m,s;
+    h = duration_s / 3600;
+    m = (duration_s % 3600) / 60;
+    s = duration_s % 3600 % 60;
+
+    CLabelUI* pLabelValue = static_cast<CLabelUI*>(m_pmUI.FindControl(_T("label_record_opt_status")));
+    if(pLabelValue)
+    {
+        CDuiString sText;
+        if (CDataCenter::GetInstance()->m_bPauseLocalRecord)
+            sText.Format(_T("【暂停录制】录制时长【 %d:%d:%d 】, 录制大小【 %d KB 】"), h, m , s ,fileSize / 1024);
+        else
+            sText.Format(_T("录制时长【 %d:%d:%d 】, 录制大小【 %d KB 】"), h, m , s ,fileSize / 1024);
+        pLabelValue->SetText(sText);
+    }
+    CDataCenter::GetInstance()->m_bWaitStartRecordNotify = true;
+}
+
 void TRTCSettingViewController::InitWindow()
 {
     TRTCCloudCore::GetInstance()->regSDKMsgObserver(WM_USER_CMD_DeviceChange, GetHWND());
@@ -1307,6 +1600,7 @@ void TRTCSettingViewController::InitWindow()
     InitVideoTab();
     InitOtherTab();
     InitMixTab();
+    InitRecordTab();
 
     //初始化tab面板  
     CTabLayoutUI* pTabSwitch = static_cast<CTabLayoutUI*>(m_pmUI.FindControl(_T("tab_switch")));
@@ -1378,9 +1672,9 @@ void TRTCSettingViewController::InitNormalTab()
         if (appScene == TRTCAppSceneLIVE)
             pSceneLive->Selected(true);
         if(appScene == TRTCAppSceneAudioCall)
-            pAudioSceneLive->Selected(true);
-        if(appScene == TRTCAppSceneVoiceChatRoom)
             pAudioSceneCall->Selected(true);
+        if(appScene == TRTCAppSceneVoiceChatRoom)
+            pAudioSceneLive->Selected(true);
     }
 
     TRTCRoleType roleType = CDataCenter::GetInstance()->m_roleType;
@@ -1776,6 +2070,14 @@ void TRTCSettingViewController::InitOtherTab()
         pVideoFileCombo->SelectItem(0);
     }
 
+    COptionUI* pPublishScreenInBigStream = static_cast<COptionUI*>(m_pmUI.FindControl(_T("check_use_main_stream")));
+    if (pPublishScreenInBigStream)
+    {
+        pPublishScreenInBigStream->Selected(false);
+        if (CDataCenter::GetInstance()->m_bPublishScreenInBigStream)
+            pPublishScreenInBigStream->Selected(true);
+    }
+
 #ifdef _WIN64
     COptionUI* pSystemAudioMix = static_cast<COptionUI*>(m_pmUI.FindControl(_T("check_system_audio_mix")));
     if (pSystemAudioMix)
@@ -1837,6 +2139,37 @@ void TRTCSettingViewController::InitMixTab()
     }
 }
 
+void TRTCSettingViewController::InitRecordTab()
+{
+    //TRTCSettingViewController::preUnInit() 会清空所有录制状态，此处先不处理录制demo的交互。
+    /*
+    COptionUI* pCheckUI = static_cast<COptionUI*>(m_pmUI.FindControl(_T("check_start_record")));
+    if(pCheckUI)
+    {
+        pCheckUI->Selected(false);
+        if(CDataCenter::GetInstance()->m_bStartLocalRecord)
+            pCheckUI->Selected(true);
+    }
+
+    pCheckUI = static_cast<COptionUI*>(m_pmUI.FindControl(_T("check_pause_record")));
+    if(pCheckUI)
+    {
+        pCheckUI->Selected(false);
+        if(CDataCenter::GetInstance()->m_bStartLocalRecord)
+            pCheckUI->Selected(true);
+    }
+    */
+
+    if(CDataCenter::GetInstance()->m_bOpenDemoTestConfig)
+    {
+        COptionUI* pRecordTab = static_cast<COptionUI*>(m_pmUI.FindControl(_T("record_tab")));
+        if(pRecordTab)
+        {
+            pRecordTab->SetVisible(true);
+        }
+    }
+}
+
 void TRTCSettingViewController::UpdateCameraDevice()
 {
     //初始化视频设备 
@@ -1864,7 +2197,7 @@ void TRTCSettingViewController::UpdateCameraDevice()
             LocalUserInfo info = CDataCenter::GetInstance()->getLocalUserInfo();
             if (m_pVideoView->IsViewOccupy() == false)
             {
-                m_pVideoView->RegEngine(info._userId, TRTCVideoStreamType::TRTCVideoStreamTypeBig, TRTCCloudCore::GetInstance()->getTRTCCloud(), true);
+                m_pVideoView->SetRenderInfo(info._userId, TRTCVideoStreamType::TRTCVideoStreamTypeBig, true);
                 m_pVideoView->SetRenderMode(TXLiveAvVideoView::EVideoRenderModeFit);
             }
 
@@ -1948,6 +2281,20 @@ void TRTCSettingViewController::ResetBeautyConfig()
 
 void TRTCSettingViewController::stopAllTestSetting()
 {
+    //把录制模块停止了
+    ITXLiteAVLocalRecord * pRecorder = getLocalRecordShareInstance();
+    pRecorder->setCallback(nullptr);
+    if(CDataCenter::GetInstance()->m_bStartLocalRecord)
+    {
+        pRecorder->stopLocalRecord();
+        CDataCenter::GetInstance()->m_recordCaptureRect ={0};
+        CDataCenter::GetInstance()->m_recordCaptureSourceInfo.type = LiteAVScreenCaptureSourceTypeUnknown;
+        CDataCenter::GetInstance()->m_bStartLocalRecord = false;
+        CDataCenter::GetInstance()->m_bPauseLocalRecord = false;
+        CDataCenter::GetInstance()->m_wstrRecordFile = L"";
+    }
+    destroyLocalRecordShareInstance();
+
     if (m_bStartLocalPreview)
         TRTCCloudCore::GetInstance()->stopPreview(true);
     if (m_bStartTestMic)
@@ -2061,7 +2408,7 @@ LRESULT TRTCSettingViewController::HandleMessage(UINT uMsg, WPARAM wParam, LPARA
     else if (uMsg == WM_CLOSE)
     {
         //退出所有功能测试
-        m_pVideoView->RemoveEngine(TRTCCloudCore::GetInstance()->getTRTCCloud());
+        m_pVideoView->RemoveRenderInfo();
         stopAllTestSetting();
 
     }
@@ -2118,6 +2465,29 @@ LRESULT TRTCSettingViewController::HandleMessage(UINT uMsg, WPARAM wParam, LPARA
         {
             m_pProgressTestSpeaker->SetValue(volume);
         }
+    }
+    else if(uMsg == WM_USER_CMD_OnRecordError)
+    {
+        std::string * msg = (std::string *)wParam;
+        uint32_t nRet = lParam;
+        DoRecordError(nRet, *msg);   
+        delete msg;
+        msg = nullptr;
+
+    }
+    else if(uMsg == WM_USER_CMD_OnRecordComplete)
+    {
+        std::string * msg = (std::string *)wParam;
+        DoRecordComplete(*msg);
+        delete msg;
+        msg = nullptr;
+
+    }
+    else if(uMsg == WM_USER_CMD_OnRecordProgress)
+    {
+        uint32_t duration = wParam;
+        uint32_t filesize = lParam;
+        DoRecordProgress(duration, filesize);
     }
     LRESULT lRes = 0;
     if (m_pmUI.MessageHandler(uMsg, wParam, lParam, lRes))

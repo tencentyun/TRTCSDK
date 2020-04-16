@@ -14,7 +14,6 @@
 using namespace DuiLib;
 #include <vector>
 
-
 class CCriticalSection
 {
 public:
@@ -36,6 +35,8 @@ protected:
 };
 
 class CTXLiveAvVideoViewMgr;
+extern  CTXLiveAvVideoViewMgr* getShareViewMgrInstance();
+
 class TXLiveAvVideoView : public CControlUI, public IMessageFilterUI
 {
     DECLARE_DUICONTROL(TXLiveAvVideoView)
@@ -59,17 +60,16 @@ public:
     /**
     * \brief：设置View绑定参数
     * \param：userId - 需要渲染画面的userid，如果是本地画面，则传空字符串。
-    * \param：engine - trtcengine实例，用户注册视频数据回调。
+    * \param：type - 需要渲染的视频流类型。
     * \param：bLocal - 渲染本地画面，SDK返回的userID为""
     */
-    bool RegEngine(const std::string& userId, TRTCVideoStreamType type, ITRTCCloud* engine, bool bLocal = false);
+    bool SetRenderInfo(const std::string& userId, TRTCVideoStreamType type, bool bLocal = false);
 
     /**
     * \brief：移除View绑定参数
     * \param：userId - 需要渲染画面的userid
-    * \param：engine - trtcengine实例，用户注册视频数据回调。
     */
-    void RemoveEngine(ITRTCCloud* engine);
+    void RemoveRenderInfo();
 
     /**
     * \brief：判断view是否被占用

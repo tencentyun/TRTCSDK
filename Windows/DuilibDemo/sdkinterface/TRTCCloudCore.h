@@ -92,6 +92,7 @@ public:
     void startPreview(bool bSetting = false);
     void stopPreview(bool bSetting = false);
 	void startScreen(HWND rendHwnd);
+    void startScreenCapture(HWND rendHwnd, TRTCVideoStreamType streamType, TRTCVideoEncParam* params);
 	void stopScreen();
     void startMedia(const char *mediaFile, HWND rendHwnd);
     void stopMedia();

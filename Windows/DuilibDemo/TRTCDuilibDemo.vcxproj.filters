@@ -110,6 +110,12 @@
     <ClCompile Include="Common\zlib\zutil.c">
       <Filter>Common\zlib</Filter>
     </ClCompile>
+    <ClCompile Include="userlist\UserListController.cpp">
+      <Filter>userlist</Filter>
+    </ClCompile>
+    <ClCompile Include="userlist\UserItem.cpp">
+      <Filter>userlist</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -223,6 +229,12 @@
     <ClInclude Include="Common\zlib\zutil.h">
       <Filter>Common\zlib</Filter>
     </ClInclude>
+    <ClInclude Include="userlist\UserListController.h">
+      <Filter>userlist</Filter>
+    </ClInclude>
+    <ClInclude Include="userlist\UserItem.h">
+      <Filter>userlist</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="res">
@@ -254,6 +266,9 @@
     </Filter>
     <Filter Include="Common\zlib">
       <UniqueIdentifier>{ef958852-0097-4b39-9bb0-593e7d349c86}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="userlist">
+      <UniqueIdentifier>{eadfbfff-9c04-450c-b828-7befdda9ac95}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

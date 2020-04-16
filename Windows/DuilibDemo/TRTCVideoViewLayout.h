@@ -11,12 +11,9 @@
 
 #pragma once
 #include "TRTCCloudDef.h"
-#include "ITRTCCloud.h"
+#include "TXLiveAvVideoView.h"
 
-enum ViewLayoutStyleEnum {
-    ViewLayoutStyle_Lecture,    //演讲模式
-    ViewLayoutStyle_Gallery,    //画廊模式
-};
+static const int MAX_VIEW_PER_PAGE = 4;     //右侧列表最多显示的视图数，排除占位视图
 
 class TXLiveAvVideoView;
 class VideoCanvasContainerCB {
@@ -46,6 +43,7 @@ public:
     ~VideoCanvasContainer();
     void initCanvasContainer();
     void cleanViewStatus();
+    void SetIsLable();
     void resetViewUIStatus(std::wstring userId, TRTCVideoStreamType type = TRTCVideoStreamTypeBig);
     void updateVoiceVolume(int volume);
     void updateNetSignal(int quality);
@@ -105,6 +103,7 @@ private:
     CButtonUI *m_pBtnAudioIcon = nullptr;
     CButtonUI *m_pBtnVideoIcon = nullptr;
     CButtonUI *m_pBtnNetSignalIcon = nullptr;
+    CLabelUI *m_pLableText = nullptr;
     CHorizontalLayoutUI * m_pIconBg = nullptr;
     CDuiString strBtnRotationName;
     CDuiString strBtnRenderModeName;
@@ -127,20 +126,24 @@ public:
     typedef struct _tagVideoRenderInfo {
      public:
         _tagVideoRenderInfo() {
-            _viewLayout = nullptr; 
+            _viewLayout = nullptr;
+            _isLable = false;
         }
         std::wstring _userId;
 		TRTCVideoStreamType _streamType;
+        bool _isLable;
         VideoCanvasContainer* _viewLayout;
         void copyVideoRenderInfo(_tagVideoRenderInfo& info)
         {
             _userId = info._userId;
             _streamType = info._streamType;
+            _isLable = info._isLable;
         }
         void clean()
         {
             _userId = L"";
             _streamType = TRTCVideoStreamTypeBig;
+            _isLable = false;
         }
     }VideoRenderInfo;
 public:
@@ -153,42 +156,51 @@ public:
     int  dispatchVideoView(std::wstring userId, TRTCVideoStreamType type);
     int  dispatchPKVideoView(std::wstring userId, TRTCVideoStreamType type, uint32_t roomId);
     bool deleteVideoView(std::wstring userId, TRTCVideoStreamType type);
+    bool IsRemoteViewShow(std::wstring userId, TRTCVideoStreamType type);
 public:
     bool muteAudio(std::wstring userId, TRTCVideoStreamType type, bool bMute);
     bool muteVideo(std::wstring userId, TRTCVideoStreamType type, bool bMute);
-    void setLayoutStyle(ViewLayoutStyleEnum style);
     void updateVoiceVolume(std::wstring userId, int volume);
     void updateNetSignal(std::wstring userId, int quality);
+public:
+    void updateSize();
+    void changeLectureviewVisable();
+    bool turnPage(bool forward, bool isDel = false);
 protected:
-    int  dispatchVideoView(std::wstring userId, TRTCVideoStreamType type,bool bPKUser, int roomId);
+    void InsertIntoAllView(VideoRenderInfo& info);
+    int  dispatchVideoView(std::wstring userId, TRTCVideoStreamType type, bool bPKUser, int roomId);
     bool IsUserRender(std::wstring userId, TRTCVideoStreamType type);
     bool IsMainRenderWndUse();
-    VideoRenderInfo &FindIdleRenderView(bool& bFind);
-    VideoRenderInfo &FindFitMainRenderView(bool& bFind);   //寻找符合主窗口渲染的视频对象。
-    VideoRenderInfo &FindRenderView(std::wstring userId, TRTCVideoStreamType type, bool& bFind);   //
-    VideoRenderInfo &GetMainRenderView();
-    void AdjustViewDispatch(std::map<std::wstring, VideoRenderInfo>& mapView);//主要是把按 1 2 3 4 5 次序从新排位视频
+    VideoRenderInfo *FindIdleRenderView(bool& bFind);
+    VideoRenderInfo *FindFitMainRenderView(bool& bFind);   //寻找符合主窗口渲染的视频对象。
+    VideoRenderInfo *FindRenderView(std::wstring userId, TRTCVideoStreamType type, bool label, bool& bFind);   //
+    VideoRenderInfo *GetMainRenderView();
+    void AdjustViewDispatch(std::map<std::wstring, VideoRenderInfo>& mapView, int delCnt);//主要是把按 1 2 3 4 5 次序从新排位视频
     bool SwapVideoView(std::wstring userIdA, std::wstring userIdB, TRTCVideoStreamType typeA, TRTCVideoStreamType typeB);
-    bool SwapViewLayoutStyle(ViewLayoutStyleEnum oldStyle, ViewLayoutStyleEnum newStyle);
 public:
     virtual void DoubleClickView(std::wstring userId, TRTCVideoStreamType type);
     virtual int  GetDispatchViewCnt();
     static void switchVideoRenderInfo(VideoRenderInfo& viewA, VideoRenderInfo& viewB);
 private:
+    void updateLectureview();
+    void checkPageBtnStatus();
+private:
     CPaintManagerUI * m_pmUI = nullptr;
     int nHadUseCnt = 0;
     int nTotalRenderWindowCnt = 0;
-    ViewLayoutStyleEnum mViewLayoutStyleEnum = ViewLayoutStyle_Lecture;
+    bool bLectureviewShow = true;
 
     std::map<std::wstring, VideoRenderInfo> m_mapLectureView; // uiName/info
-    CControlUI* lectureview_sublayout_container1 = nullptr;  //
-    
-    std::map<std::wstring, VideoRenderInfo> m_mapGalleryView; // uiName/info
-    CControlUI* galleryview_sublayout_line2 = nullptr;       //
-    CControlUI* galleryview_sublayout_line3 = nullptr;       //
+    std::map<int, VideoRenderInfo> m_mapAllViews; // 所有的视图信息
+    CVerticalLayoutUI* lectureview_sublayout_container1 = nullptr;  //
+    int nCurrentPage = 0;
+    int nId = 0;
+
+    CButtonUI* m_pForward = nullptr;
+    CButtonUI* m_pBackword = nullptr;
 
     CVerticalLayoutUI* lecture_layout_videoview_container = nullptr;       //
-    CVerticalLayoutUI* gallery_layout_videoview_container = nullptr;       //
-    CLabelUI* mainview_container_bgtext = nullptr;       //
+    CButtonUI* lecture_change_remote_visible = nullptr;
+    CLabelUI* mainview_container_bgtext = nullptr;      //
 };
 

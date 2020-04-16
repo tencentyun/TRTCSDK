@@ -30,6 +30,7 @@ protected:
 protected:
     void RefreshVideoDevice();
     void RefreshAudioDevice();
+    void onBtnMemberClick();
 public:
     void muteLocalVideoBtn(bool bMute);
     void muteLocalAudioBtn(bool bMute);
@@ -45,9 +46,11 @@ public:
 private:
     TRTCSettingViewController* m_pSettingWnd = nullptr;
     TRTCMainViewController *m_pMainWnd = nullptr;
-	bool m_bPlay = false;
+
+    bool m_bPlay = false;
     bool m_bShowLectureModeUi = false;
     int m_showDashboardStyle = 0;
+    bool m_bShowMemberWnd = false;
 
     std::wstring m_pkUserId;
     std::wstring m_pkRoomId;

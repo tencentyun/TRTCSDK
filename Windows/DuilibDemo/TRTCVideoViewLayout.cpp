@@ -11,7 +11,6 @@
 #include "StdAfx.h"
 #include "TRTCVideoViewLayout.h"
 #include "TRTCCloudCore.h"
-#include "TXLiveAvVideoView.h"
 #include "DataCenter.h"
 #include "util/Base.h"
 
@@ -32,7 +31,7 @@ VideoCanvasContainer::~VideoCanvasContainer()
 
 void VideoCanvasContainer::initCanvasContainer()
 {
-
+    this->SetBorderColor(0xFF000000);
     if (m_pManager && m_bRegMsgFilter == false)
     {
         m_pManager->AddMessageFilter(this);
@@ -45,9 +44,9 @@ void VideoCanvasContainer::initCanvasContainer()
     strBtnAudioIconName.Format(L"audioicon_%s_%d", m_userId.c_str(), m_streamType);
     strBtnVideoIconName.Format(L"videoicon_%s_%d", m_userId.c_str(), m_streamType);
     strBtnNetSignalIconName.Format(L"netsignalicon_%s_%d", m_userId.c_str(), m_streamType);
-    
+
     std::wstring _name = GetName();
-    if (_name.compare(L"lecture_view1") == 0 || _name.compare(L"gallery_view1") == 0)
+    if (_name.compare(L"lecture_view0") == 0 || _name.compare(L"gallery_view0") == 0)
         m_bMainView = true;
 
     CContainerUI* p = static_cast<CContainerUI*> (this);
@@ -83,7 +82,7 @@ void VideoCanvasContainer::initCanvasContainer()
         p->Add(m_pBtnNetSignalIcon);
     }
 
-    
+
     if (m_pBtnRotation == nullptr)
     {
         m_pBtnRotation = new CButtonUI();
@@ -133,12 +132,22 @@ void VideoCanvasContainer::initCanvasContainer()
         m_pBtnVideoIcon->SetToolTip(L"关闭视频");
         p->Add(m_pBtnVideoIcon);
     }
+
+    if (!m_bMainView && m_pLableText == nullptr)
+    {
+        m_pLableText = new CLabelUI();
+        m_pLableText->SetText(m_userId.c_str());
+        m_pLableText->SetTextColor(0x00FFFFFF);
+        m_pLableText->SetFont(1);
+        m_pLableText->SetBkColor(0xB0202020);
+        p->Add(m_pLableText);
+    }
 }
 
 void VideoCanvasContainer::cleanViewStatus()
 {
     m_canvasAttribute.clean();
-    if(m_pBtnRenderMode)
+    if (m_pBtnRenderMode)
         m_pBtnRenderMode->SetNormalImage(L"videoview/render_fill.png");
     if (m_pBtnAudioIcon)
     {
@@ -155,6 +164,11 @@ void VideoCanvasContainer::cleanViewStatus()
         m_pBtnNetSignalIcon->SetNormalImage(L"videoview/net_signal_1.png");
     }
 
+    if (m_pLableText)
+    {
+        m_pLableText->SetText(L"");
+    }
+
     if (m_pLiveAvView)
     {
         m_pLiveAvView->SetPause(false);
@@ -162,20 +176,54 @@ void VideoCanvasContainer::cleanViewStatus()
     }
 }
 
+void VideoCanvasContainer::SetIsLable()
+{
+    this->SetBorderColor(0xFFFFFFFF);
+    if (m_pLiveAvView)
+    {
+        m_pLiveAvView->SetPause(true);
+    }
+    if (m_pBtnRenderMode)
+    {
+        m_pBtnRenderMode->SetVisible(false);
+    }
+    if (m_pBtnRotation)
+    {
+        m_pBtnRotation->SetVisible(false);
+    }
+    if (m_pBtnAudioIcon)
+    {
+        m_pBtnAudioIcon->SetVisible(false);
+    }
+    if (m_pBtnVideoIcon)
+    {
+        m_pBtnVideoIcon->SetVisible(false);
+    }
+    if (m_pBtnNetSignalIcon)
+    {
+        m_pBtnNetSignalIcon->SetVisible(false);
+    }
+    if (m_pLableText)
+    {
+        m_pLableText->SetVisible(false);
+    }
+}
+
 void VideoCanvasContainer::resetViewUIStatus(std::wstring userId, TRTCVideoStreamType type)
 {
+    this->SetBorderColor(0xFF000000);
     m_userId = userId;
     m_streamType = type;
     if (m_pLiveAvView)
     {
         if (userId.compare(L"") == 0)
-            m_pLiveAvView->RemoveEngine(TRTCCloudCore::GetInstance()->getTRTCCloud());
+            m_pLiveAvView->RemoveRenderInfo();
         else
         {
             if (m_userId.compare(localUserId) == 0)
-                m_pLiveAvView->RegEngine(Wide2UTF8(m_userId), type, TRTCCloudCore::GetInstance()->getTRTCCloud(), true);
+                m_pLiveAvView->SetRenderInfo(Wide2UTF8(m_userId), type, true);
             else
-                m_pLiveAvView->RegEngine(Wide2UTF8(m_userId), type, TRTCCloudCore::GetInstance()->getTRTCCloud());
+                m_pLiveAvView->SetRenderInfo(Wide2UTF8(m_userId), type);
         }
         m_pLiveAvView->NeedUpdate();
     }
@@ -202,7 +250,7 @@ void VideoCanvasContainer::resetViewUIStatus(std::wstring userId, TRTCVideoStrea
         }
         else
             TRTCCloudCore::GetInstance()->getTRTCCloud()->setRemoteViewRotation(Wide2UTF8(m_userId).c_str(), m_canvasAttribute._viewRotation);
-        
+
         if (m_streamType != TRTCVideoStreamTypeBig)
             m_pBtnRotation->SetVisible(false);
         else
@@ -256,8 +304,14 @@ void VideoCanvasContainer::resetViewUIStatus(std::wstring userId, TRTCVideoStrea
 
     if (m_pBtnNetSignalIcon)
     {
+        m_pBtnNetSignalIcon->SetVisible(true);
         std::wstring formatStr = format(L"videoview/net_signal_%d.png", m_canvasAttribute._netSignalQuality);
         m_pBtnNetSignalIcon->SetNormalImage(formatStr.c_str());
+    }
+
+    if (m_pLableText)
+    {
+        m_pLableText->SetText(m_userId.c_str());
     }
 
     SetPos(m_rcItem, true);
@@ -319,7 +373,7 @@ void VideoCanvasContainer::updateNetSignal(int quality)
 void VideoCanvasContainer::SetPos(RECT rc, bool bNeedInvalidate)
 {
     CContainerUI::SetPos(rc, bNeedInvalidate);
-    
+
     if (m_pLiveAvView)
     {
         RECT rc;
@@ -384,9 +438,9 @@ void VideoCanvasContainer::SetPos(RECT rc, bool bNeedInvalidate)
         RECT rc = m_rcItem;
         int width = rc.right - rc.left;
         int left = width - right_pos;
-        int top =  4;
+        int top = 4;
         SIZE leftTop = { left,top };
-        
+
         SIZE btnLeftTop = m_pBtnRotation->GetFixedXY();
         if (btnLeftTop.cx != leftTop.cx || btnLeftTop.cy != leftTop.cy)
         {
@@ -426,6 +480,16 @@ void VideoCanvasContainer::SetPos(RECT rc, bool bNeedInvalidate)
         }
     }
 
+    if (m_pLableText)
+    {
+        RECT rc;
+        rc.left = m_rcItem.left + 1;
+        rc.right = m_rcItem.right - 1;
+        rc.top = m_rcItem.bottom - 30;
+        rc.bottom = m_rcItem.bottom - 1;
+        m_pLableText->SetPos(rc);
+    }
+
 }
 
 void VideoCanvasContainer::DoEvent(TEventUI & event)
@@ -448,7 +512,7 @@ void VideoCanvasContainer::Notify(TNotifyUI & msg)
 {
     if (msg.sType == _T("click"))
     {
-        if (msg.pSender->GetName() == strBtnRotationName)
+        if (msg.pSender == m_pBtnRotation)
         {
             if (m_canvasAttribute._viewRotation == TRTCVideoRotation0)
                 m_canvasAttribute._viewRotation = TRTCVideoRotation90;
@@ -469,7 +533,7 @@ void VideoCanvasContainer::Notify(TNotifyUI & msg)
             return;
         }
 
-        if (msg.pSender->GetName() == strBtnRenderModeName)
+        if (msg.pSender == m_pBtnRenderMode)
         {
             if (m_canvasAttribute._vidwFillMode == TRTCVideoFillMode_Fit)
             {
@@ -492,11 +556,11 @@ void VideoCanvasContainer::Notify(TNotifyUI & msg)
                 TRTCCloudCore::GetInstance()->getTRTCCloud()->setRemoteViewFillMode(Wide2UTF8(m_userId).c_str(), m_canvasAttribute._vidwFillMode);
             return;
         }
-        
+
 
         if (m_streamType == TRTCVideoStreamTypeBig)
         {
-            if (msg.pSender->GetName() == strBtnAudioIconName)
+            if (msg.pSender == m_pBtnAudioIcon)
             {
                 HWND _hwnd = GetManager()->GetPaintWindow();
                 UI_EVENT_MSG *msg = new UI_EVENT_MSG;
@@ -507,7 +571,7 @@ void VideoCanvasContainer::Notify(TNotifyUI & msg)
             }
         }
 
-        if (msg.pSender->GetName() == strBtnVideoIconName)
+        if (msg.pSender == m_pBtnVideoIcon)
         {
             HWND _hwnd = GetManager()->GetPaintWindow();
             UI_EVENT_MSG *msg = new UI_EVENT_MSG;
@@ -516,9 +580,8 @@ void VideoCanvasContainer::Notify(TNotifyUI & msg)
             msg->_streamType = m_streamType;
             ::PostMessage(_hwnd, WM_USER_VIEW_BTN_CLICK, (WPARAM)msg, 0);
         }
-        
     }
-     
+
 }
 
 LRESULT VideoCanvasContainer::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, bool & bHandled)
@@ -558,12 +621,22 @@ void VideoCanvasContainer::updateVideoIconStatus()
         m_pBtnVideoIcon->SetNormalImage(L"videoview/video_open.png");
         m_pBtnVideoIcon->SetToolTip(L"关闭视频");
         m_pLiveAvView->SetPause(false);
+
+        if (m_pLableText)
+        {
+            m_pLableText->SetVisible(true);
+        }
     }
     else
     {
         m_pBtnVideoIcon->SetNormalImage(L"videoview/video_close.png");
         m_pBtnVideoIcon->SetToolTip(L"启动视频");
         m_pLiveAvView->SetPause(true);
+
+        if (m_pLableText)
+        {
+            m_pLableText->SetVisible(false);
+        }
     }
 }
 
@@ -596,7 +669,7 @@ CControlUI * TRTCVideoViewLayout::CreateControl(LPCTSTR pstrClass, CPaintManager
 {
     if (m_pmUI == nullptr)
         m_pmUI = pPM;
-    if (_tcsicmp(pstrClass, _T("VideoCanvasContainer")) == 0) 
+    if (_tcsicmp(pstrClass, _T("VideoCanvasContainer")) == 0)
     {
         VideoCanvasContainer  *pVideoRenderUI = new VideoCanvasContainer(this);
         g_VideoCanvasContainerList.push_back(pVideoRenderUI);
@@ -622,34 +695,18 @@ void TRTCVideoViewLayout::initRenderUI()
             info._viewLayout->initCanvasContainer();
             m_mapLectureView.insert(std::pair<std::wstring, VideoRenderInfo>(viewName, info));
         }
-        else if (viewName.find(L"gallery_view") != std::wstring::npos)
-        {
-            info._viewLayout->SetVisible(false);
-            info._viewLayout->initCanvasContainer();
-            m_mapGalleryView.insert(std::pair<std::wstring, VideoRenderInfo>(viewName, info));
-        }
-        
     }
     g_VideoCanvasContainerList.clear();
-    nTotalRenderWindowCnt = nTotalRenderWindowCnt / 2;
-    lectureview_sublayout_container1 = static_cast<CControlUI*>(m_pmUI->FindControl(_T("view_sublayout_container1")));
-    galleryview_sublayout_line2 = static_cast<CControlUI*>(m_pmUI->FindControl(_T("view_sublayout_line2")));
-    galleryview_sublayout_line3 = static_cast<CControlUI*>(m_pmUI->FindControl(_T("view_sublayout_line3")));
-
+    nTotalRenderWindowCnt = nTotalRenderWindowCnt;
+    lectureview_sublayout_container1 = static_cast<CVerticalLayoutUI*>(m_pmUI->FindControl(_T("view_sublayout_container1")));
+    lectureview_sublayout_container1->GetVerticalScrollBar()->SetFixedWidth(2);
     lecture_layout_videoview_container = static_cast<CVerticalLayoutUI*>(m_pmUI->FindControl(_T("lecture_layout_videoview_container")));;       //
-    gallery_layout_videoview_container = static_cast<CVerticalLayoutUI*>(m_pmUI->FindControl(_T("gallery_layout_videoview_container")));;       //
     mainview_container_bgtext = static_cast<CLabelUI*>(m_pmUI->FindControl(_T("mainview_container_bgtext")));;
+    lecture_change_remote_visible = static_cast<CButtonUI*>(m_pmUI->FindControl(_T("lecture_change_remote_visible")));
     mainview_container_bgtext->SetVisible(false);
-    if (mViewLayoutStyleEnum == ViewLayoutStyle_Lecture)
-    {
-        lecture_layout_videoview_container->SetVisible(true);
-        gallery_layout_videoview_container->SetVisible(false);
-    }
-    else
-    {
-        lecture_layout_videoview_container->SetVisible(false);
-        gallery_layout_videoview_container->SetVisible(true);
-    }
+
+    m_pForward = static_cast<CButtonUI*>(m_pmUI->FindControl(_T("btn_forward")));
+    m_pBackword = static_cast<CButtonUI*>(m_pmUI->FindControl(_T("btn_backword")));
 }
 
 void TRTCVideoViewLayout::unInitRenderUI()
@@ -661,13 +718,8 @@ void TRTCVideoViewLayout::unInitRenderUI()
             itr.second._viewLayout->resetViewUIStatus(L"");
         }
     }
-    for (auto &itr : m_mapGalleryView)
-    {
-        if (_tcsicmp(itr.second._userId.c_str(), L"") != 0)
-        {
-            itr.second._viewLayout->resetViewUIStatus(L"");
-        }
-    }
+    m_mapAllViews.clear();
+    nId = 0;
     TXLiveAvVideoView::RemoveAllRegEngine();
 }
 
@@ -679,79 +731,124 @@ int TRTCVideoViewLayout::dispatchVideoView(std::wstring userId, TRTCVideoStreamT
     return dispatchVideoView(userId, type, false, 0);
 }
 
+void TRTCVideoViewLayout::InsertIntoAllView(VideoRenderInfo& info)
+{
+    bool bFind = false;
+    for (auto &itr : m_mapAllViews)
+    {
+        if (_tcsicmp(itr.second._userId.c_str(), info._userId.c_str()) == 0 && itr.second._streamType == info._streamType)
+        {
+            bFind = true;
+            break;
+        }
+    }
+    if (!bFind)
+    {
+        m_mapAllViews.insert(std::pair<int, VideoRenderInfo>(++nId, info));
+    }
+
+    checkPageBtnStatus();
+}
+
 int TRTCVideoViewLayout::dispatchVideoView(std::wstring userId, TRTCVideoStreamType type, bool bPKUser, int roomId)
 {
     HWND dispacthHwnd = NULL;
     if (IsUserRender(userId, type))
         return -1;
     if (nHadUseCnt >= nTotalRenderWindowCnt) //已经没有渲染视频的位置了
+    {
+        VideoRenderInfo info = VideoRenderInfo();
+        info._userId = userId;
+        info._streamType = type;
+        info._isLable = false;
+        InsertIntoAllView(info);
         return -2;
+    }
+
     //首先个窗口直接分配主窗口
     if (nHadUseCnt == 0)
     {
-        VideoRenderInfo& info = GetMainRenderView();
-        info._userId = userId;
-        info._streamType = type;
-        if (bPKUser) info._viewLayout->showPKIcon(true, roomId);
-        info._viewLayout->cleanViewStatus();
-        info._viewLayout->resetViewUIStatus(userId.c_str(), type);
-        info._viewLayout->SetVisible(true);
-        nHadUseCnt++;
+        VideoRenderInfo* info = GetMainRenderView();
+        if (info != nullptr)
+        {
+            info->_userId = userId;
+            info->_streamType = type;
+            info->_isLable = false;
+            if (bPKUser) info->_viewLayout->showPKIcon(true, roomId);
+            info->_viewLayout->cleanViewStatus();
+            info->_viewLayout->resetViewUIStatus(userId.c_str(), type);
+            info->_viewLayout->SetVisible(true);
+            nHadUseCnt++;
+        }
+        
+
+        bool bFind = false;
+        VideoRenderInfo* lableInfo = FindIdleRenderView(bFind);
+        if (lableInfo != nullptr)
+        {
+            lableInfo->_userId = userId;
+            lableInfo->_streamType = type;
+            lableInfo->_isLable = true;
+            lableInfo->_viewLayout->cleanViewStatus();
+            lableInfo->_viewLayout->resetViewUIStatus(userId.c_str(), type);
+            lableInfo->_viewLayout->SetVisible(true);
+            lableInfo->_viewLayout->SetIsLable();
+
+            InsertIntoAllView(*lableInfo);
+            nHadUseCnt++;
+        }
+        
     }
     else if (IsMainRenderWndUse() && nHadUseCnt == 1)     //主窗口被占用,mViewLayoutStyleEnum == ViewLayoutStyle_Lecture暂定
     {
         bool bFind = false;
-        VideoRenderInfo& minInfo = FindIdleRenderView(bFind);
-        if (bFind == false)
-            return -3;
-        //把主窗口视频移走:分配主窗口给远程视频
-        VideoRenderInfo& mainInfo = GetMainRenderView();
+        VideoRenderInfo* minInfo = FindIdleRenderView(bFind);
+        if (minInfo != nullptr)
+        {
+            minInfo->_userId = userId;
+            minInfo->_streamType = type;
+            minInfo->_isLable = false;
+            if (bFind == false)
+            {
+                InsertIntoAllView(*minInfo);
+                return -3;
+            }
 
-        minInfo._userId = mainInfo._userId;
-        minInfo._streamType = mainInfo._streamType;
-        minInfo._viewLayout->cleanViewStatus();
-        minInfo._viewLayout->copyCanvasAttribute(mainInfo._viewLayout);
-
-        //先清除旧窗口的注册回调
-        mainInfo._viewLayout->cleanViewStatus();
-        mainInfo._viewLayout->resetViewUIStatus(L""); //先清除旧记录
-
-        minInfo._viewLayout->resetViewUIStatus(mainInfo._userId.c_str(), mainInfo._streamType);
-        minInfo._viewLayout->SetVisible(true);
-
-        //分配主窗口视图。
-        mainInfo._userId = userId;
-        mainInfo._streamType = type;
-        if (bPKUser) mainInfo._viewLayout->showPKIcon(true, roomId);
-        mainInfo._viewLayout->resetViewUIStatus(userId.c_str(), type);
-        mainInfo._viewLayout->SetVisible(true);
-        nHadUseCnt++;
+            InsertIntoAllView(*minInfo);
+            if (bPKUser) minInfo->_viewLayout->showPKIcon(true, roomId);
+            minInfo->_viewLayout->resetViewUIStatus(userId.c_str(), type);
+            minInfo->_viewLayout->SetVisible(true);
+            nHadUseCnt++;
+        }
     }
     else
     {
         bool bFind = false;
-        VideoRenderInfo& info = FindIdleRenderView(bFind);
-        if (bFind == false)
-            return -4;
-        info._userId = userId;
-        info._streamType = type;
-        info._viewLayout->cleanViewStatus();
-        if (bPKUser) info._viewLayout->showPKIcon(true, roomId);
-        info._viewLayout->resetViewUIStatus(userId.c_str(), type);
-        info._viewLayout->SetVisible(true);
-        nHadUseCnt++;
+        VideoRenderInfo* info = FindIdleRenderView(bFind);
+        if (info != nullptr)
+        {
+            info->_userId = userId;
+            info->_streamType = type;
+            info->_isLable = false;
+            if (bFind == false) {
+                InsertIntoAllView(*info);
+                return -4;
+            }
+
+            InsertIntoAllView(*info);
+            info->_viewLayout->cleanViewStatus();
+            if (bPKUser) info->_viewLayout->showPKIcon(true, roomId);
+            info->_viewLayout->resetViewUIStatus(userId.c_str(), type);
+            info->_viewLayout->SetVisible(true);
+            nHadUseCnt++;
+        }
     }
-    if (mViewLayoutStyleEnum == ViewLayoutStyle_Lecture)
+
+    updateLectureview();
+
+    if (type == TRTCVideoStreamTypeSub)
     {
-        if (nHadUseCnt >= 2)
-            lectureview_sublayout_container1->SetVisible(true);
-    }
-    else
-    {
-        if (nHadUseCnt >= 3)
-            galleryview_sublayout_line2->SetVisible(true);
-        if (nHadUseCnt >= 5)
-            galleryview_sublayout_line3->SetVisible(true);
+        DoubleClickView(userId, type);
     }
     return 0;
 }
@@ -764,178 +861,141 @@ int TRTCVideoViewLayout::dispatchPKVideoView(std::wstring userId, TRTCVideoStrea
 bool TRTCVideoViewLayout::deleteVideoView(std::wstring userId, TRTCVideoStreamType type)
 {
     bool bDel = false;
+    int delCnt = 0;
+
+    int index = 0;
+    bool needUpdate = false;
+    int curMaxIndex = (nCurrentPage + 1) * MAX_VIEW_PER_PAGE + 1;
     //调整窗口
-    if (mViewLayoutStyleEnum == ViewLayoutStyle_Lecture)
+    for (auto itr = m_mapAllViews.begin(); itr != m_mapAllViews.end();)
     {
-        for (auto &itr : m_mapLectureView)
+        if (_tcsicmp(itr->second._userId.c_str(), userId.c_str()) == 0 && itr->second._streamType == type)
         {
-            if (_tcsicmp(itr.second._userId.c_str(), userId.c_str()) == 0 && itr.second._streamType == type)
+            if (index++ <= curMaxIndex)
             {
-                itr.second._userId = L"";
-                itr.second._viewLayout->resetViewUIStatus(itr.second._userId.c_str(), itr.second._streamType);
-                itr.second._viewLayout->SetVisible(false);
-                nHadUseCnt--;
-                bDel = true;
-                break;
+                needUpdate = true;
+            }
+            m_mapAllViews.erase(itr++);
+        }
+        else
+        {
+            itr++;
+        }
+    }
+
+    for (auto &itr : m_mapLectureView)
+    {
+        if (_tcsicmp(itr.second._userId.c_str(), userId.c_str()) == 0 && itr.second._streamType == type)
+        {
+            itr.second._userId = L"";
+            itr.second._viewLayout->resetViewUIStatus(itr.second._userId.c_str(), itr.second._streamType);
+            itr.second._isLable = false;
+            itr.second._viewLayout->SetVisible(false);
+            nHadUseCnt--;
+            ++delCnt;
+            bDel = true;
+        }
+    }
+    if (bDel == false)
+    {
+        checkPageBtnStatus();
+        return bDel;
+    }
+
+    AdjustViewDispatch(m_mapLectureView, delCnt);
+
+    if (delCnt == 2)
+    {
+        bool bFindMain = false;
+        VideoRenderInfo* mainInfo = FindFitMainRenderView(bFindMain);
+        if (bFindMain && mainInfo != nullptr)
+        {
+            bool bFind = false;
+            VideoRenderInfo* lableInfo = FindIdleRenderView(bFind);
+            if (bFind && lableInfo != nullptr)
+            {
+                lableInfo->_userId = mainInfo->_userId;
+                lableInfo->_streamType = mainInfo->_streamType;
+                lableInfo->_isLable = true;
+                lableInfo->_viewLayout->cleanViewStatus();
+                lableInfo->_viewLayout->resetViewUIStatus(mainInfo->_userId, mainInfo->_streamType);
+                lableInfo->_viewLayout->SetVisible(true);
+                lableInfo->_viewLayout->SetIsLable();
+
+                ++nHadUseCnt;
             }
         }
-        if (bDel == false) return bDel;
-        AdjustViewDispatch(m_mapLectureView);
     }
-    else
+    if (needUpdate)
     {
-        for (auto &itr : m_mapGalleryView)
-        {
-            if (_tcsicmp(itr.second._userId.c_str(), userId.c_str()) == 0 && itr.second._streamType == type)
-            {
-                itr.second._userId = L"";
-                itr.second._viewLayout->resetViewUIStatus(itr.second._userId.c_str(), itr.second._streamType);
-                itr.second._viewLayout->SetVisible(false);
-                bDel = true;
-                nHadUseCnt--;
-                break;
-            }
-        }
-        if (bDel == false) return bDel;
-        AdjustViewDispatch(m_mapGalleryView);
+        turnPage(true, needUpdate);
     }
+   
+    checkPageBtnStatus();
+
     //调整布局渲染区域
-    
-    if (mViewLayoutStyleEnum == ViewLayoutStyle_Lecture)
-    {
-        if (nHadUseCnt <= 1)
-            lectureview_sublayout_container1->SetVisible(false);
-    }
-    else
-    {
-        if (nHadUseCnt <= 2)
-            galleryview_sublayout_line2->SetVisible(false);
-        if (nHadUseCnt <= 4)
-            galleryview_sublayout_line3->SetVisible(false);
-    }
+    updateLectureview();
     return bDel;
+}
+
+bool TRTCVideoViewLayout::IsRemoteViewShow(std::wstring userId, TRTCVideoStreamType type)
+{
+    bool bFind = false;
+    FindRenderView(userId, type, false, bFind);
+    return bFind;
 }
 
 bool TRTCVideoViewLayout::SwapVideoView(std::wstring userIdA, std::wstring userIdB, TRTCVideoStreamType typeA, TRTCVideoStreamType typeB)
 {
+    // A-待切换到主窗口的窗口
     bool bFindA = false;
-    VideoRenderInfo& minInfoA = FindRenderView(userIdA, typeA, bFindA);
-    if (bFindA == false)
+    VideoRenderInfo* minInfoA = FindRenderView(userIdA, typeA, false, bFindA);
+    if (bFindA == false || minInfoA == nullptr)
         return NULL;
+
+    // B-主窗口
     bool bFindB = false;
-    VideoRenderInfo& minInfoB = FindRenderView(userIdB, typeB, bFindB);
-    if (bFindB == false)
+    VideoRenderInfo* minInfoB = FindRenderView(userIdB, typeB, false, bFindB);
+    if (bFindB == false || minInfoB == nullptr)
         return NULL;
 
-    minInfoA._viewLayout->resetViewUIStatus(L"");
-    minInfoB._viewLayout->resetViewUIStatus(L"");
+    //BLable-主窗口B的右侧展位
+    bool bFindBLable = false;
+    VideoRenderInfo* minInfoBLable = FindRenderView(userIdB, typeB, true, bFindBLable);
+    if (bFindBLable == false || minInfoBLable == nullptr)
+        return NULL;
 
-    VideoCanvasContainer::switchCanvasAttribute(minInfoA._viewLayout, minInfoB._viewLayout);
-    TRTCVideoViewLayout::switchVideoRenderInfo(minInfoA, minInfoB);
+    minInfoA->_viewLayout->resetViewUIStatus(L"");
+    minInfoB->_viewLayout->resetViewUIStatus(L"");
+    minInfoBLable->_viewLayout->resetViewUIStatus(L"");
 
-    minInfoA._viewLayout->resetViewUIStatus(minInfoA._userId.c_str(), minInfoA._streamType);
-    minInfoB._viewLayout->resetViewUIStatus(minInfoB._userId.c_str(), minInfoB._streamType);  
-    return true;
-}
+    // A-B切换
+    VideoCanvasContainer::switchCanvasAttribute(minInfoA->_viewLayout, minInfoB->_viewLayout);
+    TRTCVideoViewLayout::switchVideoRenderInfo(*minInfoA, *minInfoB);
 
-bool TRTCVideoViewLayout::SwapViewLayoutStyle(ViewLayoutStyleEnum oldStyle, ViewLayoutStyleEnum newStyle)
-{
-    //主要从新把占用窗口，按 1、2、3、4、5、6、7、8、9排序
-    if (oldStyle == ViewLayoutStyle_Lecture && newStyle == ViewLayoutStyle_Gallery)
-    {
-        for (auto &itr1 : m_mapGalleryView)
-        {
-            if (_tcsicmp(itr1.second._userId.c_str(), L"") != 0)
-            {
-                itr1.second.clean();
-                itr1.second._viewLayout->cleanViewStatus();
-                itr1.second._viewLayout->resetViewUIStatus(itr1.second._userId.c_str(), itr1.second._streamType);
-                itr1.second._viewLayout->SetVisible(false);
-            }
-            for (auto &itr2 : m_mapLectureView)
-            {
-                if (_tcsicmp(itr2.second._userId.c_str(), L"") != 0)
-                {
-                    itr1.second.copyVideoRenderInfo(itr2.second);
-                    itr1.second._viewLayout->copyCanvasAttribute(itr2.second._viewLayout);
+    //BL-A切换
+    VideoCanvasContainer::switchCanvasAttribute(minInfoA->_viewLayout, minInfoBLable->_viewLayout);
+    TRTCVideoViewLayout::switchVideoRenderInfo(*minInfoA, *minInfoBLable);
 
-                    itr2.second.clean();
-                    itr2.second._viewLayout->cleanViewStatus();
-                    itr2.second._viewLayout->resetViewUIStatus(L"");
-                    itr2.second._viewLayout->SetVisible(false);
-  
-                    itr1.second._viewLayout->resetViewUIStatus(itr1.second._userId.c_str(), itr1.second._streamType);
-                    itr1.second._viewLayout->SetVisible(true);
-                    break;
-                }
-            }
-        }
-    }
-    else if (oldStyle == ViewLayoutStyle_Gallery && newStyle == ViewLayoutStyle_Lecture)
-    {
-        for (auto &itr1 : m_mapLectureView)
-        {
-            if (_tcsicmp(itr1.second._userId.c_str(), L"") != 0)
-            {
-                itr1.second.clean();
-                itr1.second._viewLayout->cleanViewStatus();
-                itr1.second._viewLayout->resetViewUIStatus(itr1.second._userId.c_str(), itr1.second._streamType);
-                itr1.second._viewLayout->SetVisible(false);
-            }
-            for (auto &itr2 : m_mapGalleryView)
-            {
-                if (_tcsicmp(itr2.second._userId.c_str(), L"") != 0)
-                {
-                    itr1.second.copyVideoRenderInfo(itr2.second);
-                    itr1.second._viewLayout->copyCanvasAttribute(itr2.second._viewLayout);
+    minInfoA->_userId = minInfoB->_userId;
+    minInfoA->_streamType = typeA;
+    minInfoA->_viewLayout->resetViewUIStatus(minInfoB->_userId.c_str(), minInfoB->_streamType);
+    minInfoB->_viewLayout->resetViewUIStatus(minInfoB->_userId.c_str(), minInfoB->_streamType);
+    minInfoBLable->_viewLayout->resetViewUIStatus(minInfoBLable->_userId.c_str(), minInfoBLable->_streamType);
 
-                    itr2.second.clean();
-                    itr2.second._viewLayout->cleanViewStatus();
-                    itr2.second._viewLayout->resetViewUIStatus(L"");
-                    itr2.second._viewLayout->SetVisible(false);
-
-                    itr1.second._viewLayout->resetViewUIStatus(itr1.second._userId.c_str(), itr1.second._streamType);
-                    itr1.second._viewLayout->SetVisible(true);
-
-                    break;
-                }
-            }
-        }
-    }
-
-    if (newStyle == ViewLayoutStyle_Lecture)
-    {
-        if (nHadUseCnt >= 2)
-            lectureview_sublayout_container1->SetVisible(true);
-        galleryview_sublayout_line2->SetVisible(false);
-        galleryview_sublayout_line3->SetVisible(false);
-        lecture_layout_videoview_container->SetVisible(true);
-        gallery_layout_videoview_container->SetVisible(false);
-
-    }
-    else if (newStyle == ViewLayoutStyle_Gallery)
-    {
-        if (nHadUseCnt >= 3 )
-            galleryview_sublayout_line2->SetVisible(true);
-        if (nHadUseCnt >= 5)
-            galleryview_sublayout_line3->SetVisible(true);
-        lectureview_sublayout_container1->SetVisible(false);
-        lecture_layout_videoview_container->SetVisible(false);
-        gallery_layout_videoview_container->SetVisible(true);
-    }
-
+    minInfoA->_viewLayout->SetIsLable();
     return true;
 }
 
 bool TRTCVideoViewLayout::muteAudio(std::wstring userId, TRTCVideoStreamType type, bool bMute)
 {
     bool bFind = false;
-    VideoRenderInfo& info = FindRenderView(userId, type, bFind);
-    if (bFind == false)
+    VideoRenderInfo* info = FindRenderView(userId, type, false, bFind);
+    if (bFind == false || info == nullptr)
         return false;
-    if (info._viewLayout)
+    if (info->_viewLayout)
     {
-        info._viewLayout->muteAudio(bMute);
+        info->_viewLayout->muteAudio(bMute);
     }
     return true;
 }
@@ -943,23 +1003,14 @@ bool TRTCVideoViewLayout::muteAudio(std::wstring userId, TRTCVideoStreamType typ
 bool TRTCVideoViewLayout::muteVideo(std::wstring userId, TRTCVideoStreamType type, bool bMute)
 {
     bool bFind = false;
-    VideoRenderInfo& info = FindRenderView(userId, type, bFind);
-    if (bFind == false)
+    VideoRenderInfo* info = FindRenderView(userId, type, false, bFind);
+    if (bFind == false || info == nullptr)
         return false;
-    if (info._viewLayout)
+    if (info->_viewLayout)
     {
-        info._viewLayout->muteVideo(bMute);
+        info->_viewLayout->muteVideo(bMute);
     }
     return true;
-}
-
-void TRTCVideoViewLayout::setLayoutStyle(ViewLayoutStyleEnum style)
-{
-    if (mViewLayoutStyleEnum == style) return;
-
-    SwapViewLayoutStyle(mViewLayoutStyleEnum, style);
-
-    mViewLayoutStyleEnum = style;
 }
 
 void TRTCVideoViewLayout::updateVoiceVolume(std::wstring userId, int volume)
@@ -967,41 +1018,18 @@ void TRTCVideoViewLayout::updateVoiceVolume(std::wstring userId, int volume)
     //设置所有view的音量回归初始状态。
     if (userId.compare(L"") == 0)
     {
-        if (mViewLayoutStyleEnum == ViewLayoutStyle_Lecture)
+        for (auto &itr : m_mapLectureView)
         {
-            for (auto &itr : m_mapLectureView)
-            {
-                itr.second._viewLayout->updateVoiceVolume(volume);
-            }
-        }
-        else
-        {
-            for (auto &itr : m_mapGalleryView)
-            {
-                itr.second._viewLayout->updateVoiceVolume(volume);
-            }
+            itr.second._viewLayout->updateVoiceVolume(volume);
         }
     }
     else
     {
-        if (mViewLayoutStyleEnum == ViewLayoutStyle_Lecture)
+        for (auto &itr : m_mapLectureView)
         {
-            for (auto &itr : m_mapLectureView)
+            if (_tcsicmp(itr.second._userId.c_str(), userId.c_str()) == 0 && itr.second._streamType == TRTCVideoStreamTypeBig)
             {
-                if (_tcsicmp(itr.second._userId.c_str(), userId.c_str()) == 0 && itr.second._streamType == TRTCVideoStreamTypeBig)
-                {
-                    itr.second._viewLayout->updateVoiceVolume(volume);
-                }
-            }
-        }
-        else
-        {
-            for (auto &itr : m_mapGalleryView)
-            {
-                if (_tcsicmp(itr.second._userId.c_str(), userId.c_str()) == 0 && itr.second._streamType == TRTCVideoStreamTypeBig)
-                {
-                    itr.second._viewLayout->updateVoiceVolume(volume);
-                }
+                itr.second._viewLayout->updateVoiceVolume(volume);
             }
         }
     }
@@ -1009,29 +1037,16 @@ void TRTCVideoViewLayout::updateVoiceVolume(std::wstring userId, int volume)
 
 void TRTCVideoViewLayout::updateNetSignal(std::wstring userId, int quality)
 {
-    if (mViewLayoutStyleEnum == ViewLayoutStyle_Lecture)
+    for (auto &itr : m_mapLectureView)
     {
-        for (auto &itr : m_mapLectureView)
+        if (_tcsicmp(itr.second._userId.c_str(), userId.c_str()) == 0)
         {
-            if (_tcsicmp(itr.second._userId.c_str(), userId.c_str()) == 0 )
-            {
-                itr.second._viewLayout->updateNetSignal(quality);
-            }
-        }
-    }
-    else
-    {
-        for (auto &itr : m_mapGalleryView)
-        {
-            if (_tcsicmp(itr.second._userId.c_str(), userId.c_str()) == 0)
-            {
-                itr.second._viewLayout->updateNetSignal(quality);
-            }
+            itr.second._viewLayout->updateNetSignal(quality);
         }
     }
 }
 
-void TRTCVideoViewLayout::AdjustViewDispatch(std::map<std::wstring, VideoRenderInfo>& mapView)
+void TRTCVideoViewLayout::AdjustViewDispatch(std::map<std::wstring, VideoRenderInfo>& mapView, int delCnt)
 {
     //主要从新把占用窗口，按 1、2、3、4、5排序
     int index = 0;
@@ -1040,11 +1055,10 @@ void TRTCVideoViewLayout::AdjustViewDispatch(std::map<std::wstring, VideoRenderI
         index++;
         if (_tcsicmp(itr1.second._userId.c_str(), L"") == 0)
         {
-            bool bFind = false;
             int i = index;
             for (auto &itr2 : mapView)
             {
-                if (i>0)
+                if (i > 0)
                 {
                     i--; continue;
                 }
@@ -1057,15 +1071,20 @@ void TRTCVideoViewLayout::AdjustViewDispatch(std::map<std::wstring, VideoRenderI
                     itr1.second._viewLayout->copyCanvasAttribute(itr2.second._viewLayout);
                     itr1.second._viewLayout->resetViewUIStatus(itr1.second._userId.c_str(), itr1.second._streamType);
                     itr1.second._viewLayout->SetVisible(true);
+                    if (itr1.second._isLable)
+                    {
+                        itr1.second._viewLayout->SetIsLable();
+                    }
 
+                    itr2.second._isLable = false;
                     itr2.second.clean();
                     itr2.second._viewLayout->cleanViewStatus();
                     itr2.second._viewLayout->SetVisible(false);
-                    bFind = true;
+                    --delCnt;
                     break;
                 }
             }
-            if (bFind == true)
+            if (delCnt == 0)
                 break;
         }
     }
@@ -1073,182 +1092,98 @@ void TRTCVideoViewLayout::AdjustViewDispatch(std::map<std::wstring, VideoRenderI
 
 bool TRTCVideoViewLayout::IsUserRender(std::wstring userId, TRTCVideoStreamType type)
 {
-    if (mViewLayoutStyleEnum == ViewLayoutStyle_Lecture)
+    for (auto &itr : m_mapLectureView)
     {
-        for (auto &itr : m_mapLectureView)
+        if (_tcsicmp(itr.second._userId.c_str(), userId.c_str()) == 0 && itr.second._streamType == type)
         {
-            if (_tcsicmp(itr.second._userId.c_str(), userId.c_str()) == 0 && itr.second._streamType == type)
-            {
-                return true;
-            }
+            return true;
         }
     }
-    else
-    {
-        for (auto &itr : m_mapGalleryView)
-        {
-            if (_tcsicmp(itr.second._userId.c_str(), userId.c_str()) == 0 && itr.second._streamType == type)
-            {
-                return true;
-            }
-        }
-    }
+
     return false;
 }
 
 bool TRTCVideoViewLayout::IsMainRenderWndUse()
 {
-    if (mViewLayoutStyleEnum == ViewLayoutStyle_Lecture)
+    for (auto &itr : m_mapLectureView)
     {
-        for (auto &itr : m_mapLectureView)
+        if (itr.second._viewLayout->isMainView())
         {
-            if (itr.second._viewLayout->isMainView())
-            {
-                if (_tcsicmp(itr.second._userId.c_str(), L"") != 0)
-                    return true;
-            }
+            if (_tcsicmp(itr.second._userId.c_str(), L"") != 0)
+                return true;
         }
     }
-    else
-    {
-        for (auto &itr : m_mapGalleryView)
-        {
-            if (itr.second._viewLayout->isMainView())
-            {
-                if (_tcsicmp(itr.second._userId.c_str(), L"") != 0)
-                    return true;
-            }
-        }
-    }
+
     return false;
 }
 
-TRTCVideoViewLayout::VideoRenderInfo & TRTCVideoViewLayout::FindIdleRenderView(bool& bFind)
+TRTCVideoViewLayout::VideoRenderInfo * TRTCVideoViewLayout::FindIdleRenderView(bool& bFind)
 {
-    if (mViewLayoutStyleEnum == ViewLayoutStyle_Lecture)
+    for (auto &itr : m_mapLectureView)
     {
-        for (auto &itr : m_mapLectureView)
+        if (_tcsicmp(itr.second._userId.c_str(), L"") == 0)
         {
-            if (_tcsicmp(itr.second._userId.c_str(), L"") == 0)
-            {
-                bFind = true;
-                return itr.second;
-            }
+            bFind = true;
+            return &itr.second;
         }
-        bFind = false;
     }
-    else
-    {
-        for (auto &itr : m_mapGalleryView)
-        {
-            if (_tcsicmp(itr.second._userId.c_str(), L"") == 0)
-            {
-                bFind = true;
-                return itr.second;
-            }
-        }
-        bFind = false;
-    }
-    return VideoRenderInfo();
+    bFind = false;
+   
+    return nullptr;
 }
 
-TRTCVideoViewLayout::VideoRenderInfo & TRTCVideoViewLayout::FindFitMainRenderView(bool& bFind)
+TRTCVideoViewLayout::VideoRenderInfo * TRTCVideoViewLayout::FindFitMainRenderView(bool& bFind)
 {
-    if (mViewLayoutStyleEnum == ViewLayoutStyle_Lecture)
+    for (auto &itr : m_mapLectureView)
     {
-        for (auto &itr : m_mapLectureView)
+        if (_tcsicmp(itr.second._userId.c_str(), L"") != 0)
         {
-            if (_tcsicmp(itr.second._userId.c_str(), L"") != 0)
-            {
-                bFind = true;
-                return itr.second;
-            }
+            bFind = true;
+            return &itr.second;
         }
-        bFind = false;
     }
-    else
-    {
-        for (auto &itr : m_mapGalleryView)
-        {
-            if (_tcsicmp(itr.second._userId.c_str(), L"") != 0)
-            {
-                bFind = true;
-                return itr.second;
-            }
-        }
-        bFind = false;
-    }
-    return VideoRenderInfo();
+    bFind = false;
+
+    return nullptr;
 }
 
-TRTCVideoViewLayout::VideoRenderInfo & TRTCVideoViewLayout::FindRenderView(std::wstring userId, TRTCVideoStreamType type, bool& bFind)
+TRTCVideoViewLayout::VideoRenderInfo * TRTCVideoViewLayout::FindRenderView(std::wstring userId, TRTCVideoStreamType type, bool label, bool& bFind)
 {
-    if (mViewLayoutStyleEnum == ViewLayoutStyle_Lecture)
+    for (auto &itr : m_mapLectureView)
     {
-        for (auto &itr : m_mapLectureView)
+        if (_tcsicmp(itr.second._userId.c_str(), userId.c_str()) == 0 && itr.second._streamType == type && itr.second._isLable == label)
         {
-            if (_tcsicmp(itr.second._userId.c_str(), userId.c_str()) == 0 && itr.second._streamType == type)
-            {
-                bFind = true;
-                return itr.second;
-            }
+            bFind = true;
+            return &itr.second;
         }
-        bFind = false;
     }
-    else
-    {
-        for (auto &itr : m_mapGalleryView)
-        {
-            if (_tcsicmp(itr.second._userId.c_str(), userId.c_str()) == 0 && itr.second._streamType == type)
-            {
-                bFind = true;
-                return itr.second;
-            }
-        }
-        bFind = false;
-    }
-    
-    return VideoRenderInfo();
+    bFind = false;
+
+    return nullptr;
 }
 
-TRTCVideoViewLayout::VideoRenderInfo & TRTCVideoViewLayout::GetMainRenderView()
+TRTCVideoViewLayout::VideoRenderInfo * TRTCVideoViewLayout::GetMainRenderView()
 {
-    if (mViewLayoutStyleEnum == ViewLayoutStyle_Lecture)
+    for (auto &itr : m_mapLectureView)
     {
-        for (auto &itr : m_mapLectureView)
+        if (itr.second._viewLayout->isMainView())
         {
-            if (itr.second._viewLayout->isMainView())
-            {
-                return itr.second;
-            }
+            return &itr.second;
         }
     }
-    else
-    {
-        for (auto &itr : m_mapGalleryView)
-        {
-            if (itr.second._viewLayout->isMainView())
-            {
-                return itr.second;
-            }
-        }
-    }
-    return VideoRenderInfo();
+
+    return nullptr;
 }
 
 void TRTCVideoViewLayout::DoubleClickView(std::wstring userId, TRTCVideoStreamType type)
 {
-    if (mViewLayoutStyleEnum == ViewLayoutStyle_Lecture || mViewLayoutStyleEnum == ViewLayoutStyle_Gallery)
-    {
-        bool bFind = false;
-        VideoRenderInfo& mainInfo = FindFitMainRenderView(bFind);
-        if (!bFind)
-            return;
-        if (userId.compare(mainInfo._userId) == 0 && mainInfo._viewLayout->getVideoStreamType() == type)
-            return;
-        SwapVideoView(userId, mainInfo._userId, type, mainInfo._streamType);
-    }
-
+    bool bFind = false;
+    VideoRenderInfo* mainInfo = FindFitMainRenderView(bFind);
+    if (!bFind || mainInfo == nullptr)
+        return;
+    if (userId.compare(mainInfo->_userId) == 0 && mainInfo->_viewLayout->getVideoStreamType() == type)
+        return;
+    SwapVideoView(userId, mainInfo->_userId, type, mainInfo->_streamType);
 }
 
 int TRTCVideoViewLayout::GetDispatchViewCnt()
@@ -1260,8 +1195,247 @@ void TRTCVideoViewLayout::switchVideoRenderInfo(VideoRenderInfo & viewA, VideoRe
 {
     std::wstring tempUserIdA = viewA._userId;
     TRTCVideoStreamType tempTypeA = viewA._streamType;
+    bool tempLableA = viewA._isLable;
     viewA._userId = viewB._userId;
     viewA._streamType = viewB._streamType;
+    viewA._isLable = viewB._isLable;
     viewB._userId = tempUserIdA;
     viewB._streamType = tempTypeA;
+    viewB._isLable = tempLableA;
+}
+
+void TRTCVideoViewLayout::updateLectureview()
+{
+    if (lectureview_sublayout_container1 == nullptr)
+        return;
+
+    if (!bLectureviewShow)
+    {
+        lectureview_sublayout_container1->GetParent()->SetFixedWidth(16);
+        lectureview_sublayout_container1->SetVisible(false);
+        return;
+    }
+
+    if (nHadUseCnt <= 1)
+    {
+        lectureview_sublayout_container1->GetParent()->SetFixedWidth(16);
+        lectureview_sublayout_container1->SetVisible(false);
+    }
+    else
+    {
+        lectureview_sublayout_container1->GetParent()->SetFixedWidth(216);
+        lectureview_sublayout_container1->SetVisible(true);
+        VideoRenderInfo* mainInfo = GetMainRenderView();
+        if (mainInfo != nullptr)
+        {
+            // 演讲布局List高度要取相对小的值。
+            int mainViewHeight = mainInfo->_viewLayout->GetPos().bottom - mainInfo->_viewLayout->GetPos().top;
+            bool bForwardVisible = m_pForward->IsVisible();
+            bool bBackword = m_pBackword->IsVisible();
+            int height = MIN(120 * (nHadUseCnt - 1), mainViewHeight > 0 ? mainViewHeight - 100 : 120 * (nHadUseCnt - 1)) + (bForwardVisible ? 32 : 0) + (bBackword ? 32 : 0) + (nHadUseCnt - 1) * 2;
+            lectureview_sublayout_container1->SetFixedHeight(height);
+            lectureview_sublayout_container1->GetParent()->SetFixedHeight(height);
+        }
+    }
+}
+
+void TRTCVideoViewLayout::checkPageBtnStatus()
+{
+    if (m_pForward == nullptr || m_pBackword == nullptr)
+    {
+        return;
+    }
+    bool bForwardVisible = m_pForward->IsVisible();
+    bool bBackword = m_pBackword->IsVisible();
+    int height = lectureview_sublayout_container1->GetFixedHeight();
+
+    if (bForwardVisible && nCurrentPage < 1)
+    {
+        m_pForward->SetVisible(false);
+        m_pForward->GetParent()->SetVisible(false);
+        height -= 32;
+    }
+    if (!bForwardVisible && nCurrentPage > 0)
+    {
+        m_pForward->SetVisible(true);
+        m_pForward->GetParent()->SetVisible(true);
+        height += 32;
+    }
+
+    if (bBackword && (nCurrentPage + 1)* MAX_VIEW_PER_PAGE >= (m_mapAllViews.size() - 1))
+    {
+        m_pBackword->SetVisible(false);
+        m_pBackword->GetParent()->SetVisible(false);
+        height -= 32;
+    }
+    if (!bBackword && (nCurrentPage + 1)* MAX_VIEW_PER_PAGE < (m_mapAllViews.size() - 1))
+    {
+        m_pBackword->SetVisible(true);
+        m_pBackword->GetParent()->SetVisible(true);
+        height += 32;
+    }
+
+    lectureview_sublayout_container1->SetFixedHeight(height);
+    lectureview_sublayout_container1->GetParent()->SetFixedHeight(height);
+}
+
+void TRTCVideoViewLayout::updateSize()
+{
+    updateLectureview();
+}
+
+void TRTCVideoViewLayout::changeLectureviewVisable()
+{
+    bLectureviewShow = !bLectureviewShow;
+    if (bLectureviewShow)
+    {
+        for (auto &itr : m_mapLectureView)
+        {
+            if (itr.second._viewLayout->isMainView() || _tcsicmp(itr.second._userId.c_str(), L"") == 0
+                || _tcsicmp(itr.second._userId.c_str(), VideoCanvasContainer::localUserId.c_str()) == 0
+                || itr.second._isLable)
+            {
+                continue;
+            }
+            if (itr.second._viewLayout->getVideoStreamType() == TRTCVideoStreamTypeSub)
+            {
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->startRemoteSubStreamView(Wide2UTF8(itr.second._userId).c_str(), nullptr);
+            }
+            else if (!itr.second._isLable)
+            {
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->startRemoteView(Wide2UTF8(itr.second._userId).c_str(), NULL);
+            }
+        }
+
+        lecture_change_remote_visible->SetForeImage(L"source='16,0,32,32' res='videoview/lecture.png'");
+    }
+    else
+    {
+        for (auto &itr : m_mapLectureView)
+        {
+            if (itr.second._viewLayout->isMainView() || _tcsicmp(itr.second._userId.c_str(), L"") == 0
+                || _tcsicmp(itr.second._userId.c_str(), VideoCanvasContainer::localUserId.c_str()) == 0
+                || itr.second._isLable)
+            {
+                continue;
+            }
+            if (itr.second._viewLayout->getVideoStreamType() == TRTCVideoStreamTypeSub)
+            {
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->stopRemoteSubStreamView(Wide2UTF8(itr.second._userId).c_str());
+            }
+            else
+            {
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->stopRemoteView(Wide2UTF8(itr.second._userId).c_str());
+            }
+        }
+        lecture_change_remote_visible->SetForeImage(L"source='0,0,16,32' res='videoview/lecture.png'");
+    }
+    updateLectureview();
+}
+
+bool TRTCVideoViewLayout::turnPage(bool forward, bool adjustCurrent)
+{
+    if (!adjustCurrent)
+    {
+        if (forward && nCurrentPage < 1)
+        {
+            return false;
+        }
+        if (!forward && (nCurrentPage + 1)* MAX_VIEW_PER_PAGE >= (m_mapAllViews.size() - 1))
+        {
+            return false;
+        }
+
+        nCurrentPage = forward ? (nCurrentPage - 1) : (nCurrentPage + 1);
+    }
+
+    int minIndex = nCurrentPage * MAX_VIEW_PER_PAGE;
+    int maxIndex = (nCurrentPage + 1) * MAX_VIEW_PER_PAGE - 1;
+    int index = 0;
+    std::wstring mainUserId = L"";
+    TRTCVideoStreamType mainStreamType = TRTCVideoStreamTypeBig;
+
+    for (auto &itr1 : m_mapLectureView)
+    {
+        if (itr1.second._viewLayout->isMainView() || itr1.second._isLable == true)
+        {
+            mainUserId = itr1.second._userId;
+            mainStreamType = itr1.second._streamType;
+            continue;
+        }
+
+        if (_tcsicmp(itr1.second._userId.c_str(), L"") != 0)
+        {
+            if (itr1.second._streamType == TRTCVideoStreamTypeSub)
+            {
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->stopRemoteSubStreamView(Wide2UTF8(itr1.second._userId).c_str());
+            }
+            else
+            {
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->stopRemoteView(Wide2UTF8(itr1.second._userId).c_str());
+            }
+
+            itr1.second._userId = L"";
+            itr1.second._viewLayout->cleanViewStatus();
+            itr1.second._viewLayout->resetViewUIStatus(itr1.second._userId.c_str(), itr1.second._streamType);
+            itr1.second._isLable = false;
+            itr1.second._viewLayout->SetVisible(false);
+            nHadUseCnt--;
+        }
+    }
+
+    for (auto &itr2 : m_mapAllViews)
+    {
+        if (_tcsicmp(itr2.second._userId.c_str(), mainUserId.c_str()) == 0 && itr2.second._streamType == mainStreamType)
+        {
+            ++index;
+            ++minIndex;
+            ++maxIndex;
+            continue;
+        }
+        if (index < minIndex)
+        {
+            ++index;
+            continue;
+        }
+        if (index > maxIndex)
+        {
+            break;
+        }
+
+        ++index;
+
+        for (auto &itr1 : m_mapLectureView)
+        {
+            if (_tcsicmp(itr1.second._userId.c_str(), L"") == 0)
+            {
+                itr1.second._userId = itr2.second._userId;
+                itr1.second._streamType = itr2.second._streamType;
+                itr1.second._viewLayout->cleanViewStatus();
+                itr1.second._viewLayout->resetViewUIStatus(itr2.second._userId, itr2.second._streamType);
+                itr1.second._viewLayout->muteAudio(!CDataCenter::GetInstance()->getAudioAvaliable(Wide2UTF8(itr1.second._userId)));
+                itr1.second._viewLayout->muteVideo(!CDataCenter::GetInstance()->getVideoAvaliable(Wide2UTF8(itr1.second._userId), itr1.second._streamType));
+                itr1.second._viewLayout->SetVisible(true);
+
+                ++nHadUseCnt;
+
+                if (itr2.second._streamType == TRTCVideoStreamTypeSub)
+                {
+                    TRTCCloudCore::GetInstance()->getTRTCCloud()->startRemoteSubStreamView(Wide2UTF8(itr2.second._userId).c_str(), NULL);
+                }
+                else
+                {
+                    TRTCCloudCore::GetInstance()->getTRTCCloud()->startRemoteView(Wide2UTF8(itr2.second._userId).c_str(), NULL);
+                }
+                break;
+            }
+
+        }
+
+        ++minIndex;
+        continue;
+    }
+    checkPageBtnStatus();
+    updateLectureview();
+    return true;
 }

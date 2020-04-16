@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Window>
+	<HorizontalLayout padding="0,2,0,0" bordersize="1">
+		<Label name="useritem_userid" text="" width="150" align="left" textpadding="10,0,0,0" endellipsis="true" textcolor="#FFFFFFFF" />
+		<!-- <Label name="useritem_audio_st" text="禁音" width="80" align="right" textpadding="10,0,0,0" endellipsis="true" textcolor="#FFFFFFFF" /> -->
+		<!-- <Label name="useritem_video_st" text="禁画" width="80" align="right" textpadding="10,0,10,0" endellipsis="true" textcolor="#FFFFFFFF" /> -->
+		<!-- <Button height="54" width="50" align="right" foreimage="dest='24,4,50,30' source='0,0,26,26' res='bottom/audio_start.png'" />
+		<Button height="54" width="50" align="right" foreimage="dest='24,4,50,30' source='0,0,26,26' res='bottom/camera_start.png'" /> -->
+		<Button height="54" width="50" align="right" foreimage="dest='24,4,50,30' source='0,0,70,70' res='userlist/sound.png'" />
+		<Button height="54" width="50" align="right" foreimage="dest='24,4,50,30' source='0,0,70,70' res='userlist/camera_nol.png'" />
+	</HorizontalLayout>
+</Window>
+<!--
+<?xml version="1.0" encoding="utf-8"?>
+<Window size="480,400" caption="0,0,0,32">
+<Font id="0" name="微软雅黑" size="15" bold="false" default="false" />
+<HorizontalLayout name="" text="" tooltip="" float="false" bkcolor="#FFE0F0FE" childpadding="10" inset="3,5,3,5">
+<Label name="userid" text="" textcolor="#FFFFFFFF" />
+<Label text="<b>打开</b>" textcolor="#FFAAAAAA" showhtml="true"/>
+<Label text="<b>文件夹</b>" textcolor="#FFAAAAAA" showhtml="true"/>
+</HorizontalLayout>
+</Window>
+-->

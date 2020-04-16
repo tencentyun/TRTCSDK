@@ -263,6 +263,8 @@ xcopy /E /Y "$(ProjectDir)res\resouce" "$(OutDir)"</Command>
     <ClCompile Include="uicontrol\MsgBoxWnd.cpp" />
     <ClCompile Include="uicontrol\PopBoxWnd.cpp" />
     <ClCompile Include="uicontrol\TXLiveAvVideoView.cpp" />
+    <ClCompile Include="userlist\UserItem.cpp" />
+    <ClCompile Include="userlist\UserListController.cpp" />
     <ClCompile Include="utils\ConfigMgr.cpp" />
     <ClCompile Include="utils\DataCenter.cpp" />
     <ClCompile Include="utils\TrtcUtil.cpp" />
@@ -306,6 +308,8 @@ xcopy /E /Y "$(ProjectDir)res\resouce" "$(OutDir)"</Command>
     <ClInclude Include="uicontrol\MsgBoxWnd.h" />
     <ClInclude Include="uicontrol\PopBoxWnd.h" />
     <ClInclude Include="uicontrol\TXLiveAvVideoView.h" />
+    <ClInclude Include="userlist\UserItem.h" />
+    <ClInclude Include="userlist\UserListController.h" />
     <ClInclude Include="utils\ConfigMgr.h" />
     <ClInclude Include="utils\DataCenter.h" />
     <ClInclude Include="utils\TrtcUtil.h" />

@@ -942,6 +942,11 @@ void TRTCCloudCore::startScreen(HWND rendHwnd)
 	m_pCloud->startScreenCapture(rendHwnd);
 }
 
+void TRTCCloudCore::startScreenCapture(HWND rendHwnd, TRTCVideoStreamType streamType, TRTCVideoEncParam* params)
+{
+    m_pCloud->startScreenCapture(rendHwnd, streamType, params);
+}
+
 void TRTCCloudCore::stopScreen()
 {
 	m_pCloud->stopScreenCapture();
@@ -1122,7 +1127,7 @@ void TRTCCloudCore::updateMixTranCodeInfo()
         bool pureAudioRemoteUser = true; //如果远端有音视频，则混流是音视频的。
         for(auto& it : remoteMetaInfo)
         {
-            if(it.second.subscribe_main_video || it.second.subscribe_sub_vidoe)
+            if(it.second.subscribe_main_video || it.second.subscribe_sub_video)
                 pureAudioRemoteUser = false;
         }
         int canvasWidth = 960,canvasHeight = 720;
@@ -1146,7 +1151,7 @@ void TRTCCloudCore::updateMixTranCodeInfo()
         {
             if(it.second.subscribe_audio || it.second.subscribe_main_video)
                 mixUsersArraySize++;
-            if(it.second.subscribe_sub_vidoe)
+            if(it.second.subscribe_sub_video)
                 mixUsersArraySize++;
         }
         if(mixUsersArraySize > 16)
@@ -1242,7 +1247,7 @@ void TRTCCloudCore::updateMixTranCodeInfo()
                 index++;
             }
 
-            if(it.second.subscribe_sub_vidoe)
+            if(it.second.subscribe_sub_video)
             {
                 getMixVideoPos(pos,left,top,right,bottom);
                 mixUsersArray[index].userId = it.second.user_id.c_str();

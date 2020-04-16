@@ -18,7 +18,7 @@ typedef struct RemoteUserInfo
     bool available_audio = false;
     bool subscribe_audio = false;
     bool subscribe_main_video = false;
-    bool subscribe_sub_vidoe = false;
+    bool subscribe_sub_video = false;
 }RemoteUserInfo;
 
 typedef struct _tagLocalUserInfo {
@@ -85,6 +85,8 @@ public:
     LocalUserInfo& getLocalUserInfo();
     std::string getLocalUserID() { return m_localInfo._userId; };
     VideoResBitrateTable getVideoConfigInfo(int resolution);
+    bool getAudioAvaliable(std::string userId);
+    bool getVideoAvaliable(std::string userId, TRTCVideoStreamType type);
 public:
     void WriteEngineConfig();
     BeautyConfig& GetBeautyConfig();
@@ -133,6 +135,7 @@ public: //trtc
 
     bool m_bOpenAudioAndCanvasMix = false; //开启纯音频+画布混流模式。
     bool m_bCDNMixTranscoding = false;     //混流设置
+    bool m_bPublishScreenInBigStream = false;
     int m_mixTemplateID = 0;
     std::string m_strMixStreamId;
     std::string m_strCustomStreamId;
@@ -157,7 +160,7 @@ public:
     RemoteUserInfoList m_remoteUser;
     void addRemoteUser(std::string userId, bool bClear = true);
     void removeRemoteUser(std::string userId);
-    RemoteUserInfo &FindRemoteUser(std::string userId);
+    RemoteUserInfo* FindRemoteUser(std::string userId);
 public:
     CConfigMgr* m_pConfigMgr;
 
