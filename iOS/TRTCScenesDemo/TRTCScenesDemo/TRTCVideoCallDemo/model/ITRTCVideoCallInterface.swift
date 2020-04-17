@@ -50,10 +50,10 @@ import Foundation
     // MARK: - life-cycle
     
     /// 初始化函数，请在使用所有功能之前先调用该函数进行必要的初始化
-    func setup()
+    @objc func setup()
     
     /// 销毁函数，如果不需要再运行该实例，请调用该接口
-    func destroy()
+    @objc func destroy()
     
     // MARK: - login
     
@@ -82,24 +82,35 @@ import Foundation
     /// c2c通话邀请
     /// - Parameters:
     ///   - userID: 用户ID | userID
+    ///   - type: 1-语音通话，2-视频通话
     @objc func call(userID: String, type: VideoCallType)
     
     /// 群聊通话邀请
     /// - Parameters:
     ///   - userIDs: 用户ID列表 | userIDs
+    ///   - type: 1-语音通话，2-视频通话
     ///   - groupID: 群组ID | groupID
+    /// - Note:
+    ///    IM群组邀请通话，被邀请方会收到 onInvited 回调
+    ///    如果当前处于通话中，可以继续调用该函数继续邀请他人进入通话，同时正在通话的用户会收到 onGroupCallInviteeListUpdate 回调
     @objc func groupCall(userIDs: [String], type: VideoCallType, groupID: String)
     
     /// 接受当前通话 |
     ///  accept current call
+    /// - Note:
+    ///    当您作为被邀请方收到 onInvited 的回调时，可以调用该函数接听来电
     @objc func accept()
     
     /// 拒绝当前通话 |
     ///  reject cunrrent call
+    /// - Note:
+    ///    当您作为被邀请方收到 onInvited 的回调时，可以调用该函数拒绝来电
     @objc func reject()
     
-    /// 挂断多人通话如果有人未应答就发送取消 |
+    /// 挂断当前通话如果多人通话中有人未应答就发送取消 |
     /// In a multi-person call a cancel message will be sent if there have user who not respond
+    /// - Note:
+    ///    当您处于通话中，可以调用该函数结束通话
     @objc func hangup()
     
     // MARK: - Device

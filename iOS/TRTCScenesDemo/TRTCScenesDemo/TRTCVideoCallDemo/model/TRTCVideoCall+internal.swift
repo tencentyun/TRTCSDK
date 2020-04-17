@@ -118,7 +118,7 @@ extension TRTCVideoCall {
                 curInvitingList = curInvitingList.filter {
                     $0 != user
                 }
-                dele.onCallingError?(uid: user, code: model.code)
+                dele.onError?(code: -1, msg: "系统错误")
                 checkAutoHangUp()
             }
         default:
@@ -177,7 +177,8 @@ extension TRTCVideoCall {
             TIMManager.sharedInstance()?.getConversation(.C2C, receiver: user)
         conv?.send(msg, succ: {
             
-        }, fail: { (code, error) in
+        }, fail: { [weak self] (code, error) in
+            self?.delegate?.onError?(code: code, msg: error)
             debugPrint("send message error \(code) \(error ?? "")")
         })
         debugPrint("📳 send msg to \(user): call_id:\(realModel.callid), room_id:\(realModel.roomid), action:\(realModel.action.debug)")

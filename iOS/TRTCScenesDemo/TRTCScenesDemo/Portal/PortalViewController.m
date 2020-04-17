@@ -4,7 +4,8 @@
 
 #import "ColorMacro.h"
 #import "MainMenuCell.h"
-#import "trtcScenesDemo-Swift.h"
+#import "TRTCNewViewController.h"
+#import "TRTCScenesDemo-Swift.h"
 
 #if DEBUG
 #define SdkBusiId (18069)
@@ -26,7 +27,14 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = UIColorFromRGB(0x0d0d0d);
+    self.view.backgroundColor = [UIColor whiteColor];
+    NSArray *colors = [NSArray arrayWithObjects:(__bridge id)[UIColor colorWithRed:19.0 / 255.0 green:41.0 / 255.0 blue:75.0 / 255.0 alpha:1].CGColor, (__bridge id)[UIColor colorWithRed:5.0 / 255.0 green:12.0 / 255.0 blue:23.0 / 255.0 alpha:1].CGColor, nil];
+    CAGradientLayer *gradientLayer = [CAGradientLayer layer];
+    gradientLayer.colors = colors;
+    gradientLayer.startPoint = CGPointMake(0, 0);
+    gradientLayer.endPoint = CGPointMake(1, 1);
+    gradientLayer.frame = self.view.bounds;
+    [self.view.layer insertSublayer:gradientLayer atIndex:0];
     
     _videoCallVC = [[VideoCallMainViewController alloc] init];
     _audioCallVC = [[AudioCallMainViewController alloc] init];
@@ -50,6 +58,11 @@
          title:@"视频互动直播"
          content:@"观众时延低至800ms，上下麦无需loading，适用于低延时、十万人高并发的大型互动直播"
          onSelect:^{ [wSelf gotoLiveView]; }],
+        [[MainMenuItem alloc]
+        initWithIcon:[UIImage imageNamed:@"MenuMeeting"]
+        title:@"多人视频会议"
+        content:@"语音自动降噪、视频画质超高清，适用于在线会议、远程培训、小班课等场景"
+        onSelect:^{ [wSelf gotoMeetingView]; }],
         [[MainMenuItem alloc]
         initWithIcon:[UIImage imageNamed:@"MenuAudioCall"]
         title:@"语音通话"
@@ -104,7 +117,7 @@
                 
             }];
             
-            loginResultModel *curUser = [[ProfileManager shared] curUserModel];
+            LoginResultModel *curUser = [[ProfileManager shared] curUserModel];
             [self.liveRoom setSelfProfileWithName:curUser.name avatarURL:curUser.avatar callback:^(NSInteger code, NSString * error) {
                 
             }];
@@ -127,6 +140,11 @@
     [self.navigationController pushViewController:self.audioCallVC animated:YES];
 }
 
+- (void)gotoMeetingView {
+    TRTCNewViewController *vc = [[TRTCNewViewController alloc] init];
+    [vc setAppScene:TRTCAppSceneVideoCall];
+     [self.navigationController pushViewController:vc animated:YES];
+}
 
 - (void)gotoVoiceRoomView {
     UIStoryboard *stroyBoard = [UIStoryboard storyboardWithName:@"TRTCVoiceRoom" bundle:nil];
@@ -139,7 +157,6 @@
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
         
     }];
-    __weak __typeof(self) wSelf = self;
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         [[ProfileManager shared] removeLoginCache];
         [[appUtils shared] showLoginController];
@@ -171,7 +188,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 150;
+    return 120;
 }
 
 - (void) setupFooter {

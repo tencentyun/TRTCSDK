@@ -40,24 +40,8 @@
         ];
         NSArray *gestureMotionArray = @[
             @[@"video_pikachu", @"http://dldir1.qq.com/hudongzhibo/AISpecial/Android/181/video_pikachu.zip", L(@"皮卡丘")],
-// - Remove From Demo
-            @[@"video_liuxingyu", @"https://pitu-sticker-1252463788.cos.ap-guangzhou.myqcloud.com/video_liuxingyu.zip", L(@"流星雨")],
-            @[@"video_kongxue2", @"https://pitu-sticker-1252463788.cos.ap-guangzhou.myqcloud.com/video_kongxue2.zip", L(@"控雪")],
-            @[@"video_dianshizhixing", @"https://pitu-sticker-1252463788.cos.ap-guangzhou.myqcloud.com/video_dianshizhixing.zip", L(@"电视之星")],
-            @[@"video_bottle1", @"https://pitu-sticker-1252463788.cos.ap-guangzhou.myqcloud.com/video_bottle1.zip", L(@"瓶盖挑战")],
-// - /Remove From Demo
         ];
         NSArray *cosmeticMotionArray = @[
-// - Remove From Demo
-            @[@"video_cherries", @"https://pitu-sticker-1252463788.cos.ap-guangzhou.myqcloud.com/video_cherries.zip", L(@"樱桃")],
-            @[@"video_haiyang2", @"https://pitu-sticker-1252463788.cos.ap-guangzhou.myqcloud.com/video_haiyang2.zip", L(@"海洋")],
-            @[@"video_fenfenxia_square_iOS", @"https://pitu-sticker-1252463788.cos.ap-guangzhou.myqcloud.com/video_fenfenxia_square_iOS.zip", L(@"粉粉霞")],
-            @[@"video_guajiezhuang", @"https://pitu-sticker-1252463788.cos.ap-guangzhou.myqcloud.com/video_guajiezhuang.zip", L(@"寡姐妆")],
-            @[@"video_qixichun", @"https://pitu-sticker-1252463788.cos.ap-guangzhou.myqcloud.com/video_qixichun.zip", L(@"七夕唇印")],
-            @[@"video_gufengzhuang", @"https://pitu-sticker-1252463788.cos.ap-guangzhou.myqcloud.com/video_gufengzhuang.zip", L(@"古风妆")],
-            @[@"video_dxxiaochounv", @"https://pitu-sticker-1252463788.cos.ap-guangzhou.myqcloud.com/video_dxxiaochounv.zip", L(@"小丑女")],
-            @[@"video_remix1", @"https://pitu-sticker-1252463788.cos.ap-guangzhou.myqcloud.com/video_remix1.zip", L(@"混合妆")],
-// - /Remove From Demo
             @[@"video_qingchunzannan_iOS", @"http://res.tu.qq.com/materials/video_qingchunzannan_iOS.zip", L(@"原宿复古")],
         ];
         NSArray *backgroundRemovalArray = @[

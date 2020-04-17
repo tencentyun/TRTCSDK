@@ -68,11 +68,6 @@ import Foundation
         table.dataSource = self
         table.separatorColor = UIColor.clear
         table.allowsSelection = true
-        if #available(iOS 13.0, *) {
-            table.automaticallyAdjustsScrollIndicatorInsets = false
-        } else {
-            // Fallback on earlier versions
-        }
         return table
     }()
     

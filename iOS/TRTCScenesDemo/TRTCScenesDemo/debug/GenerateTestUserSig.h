@@ -20,6 +20,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/** TRTC的bizid的appid用于转推直播流，https://console.cloud.tencent.com/rav 点击【应用】【帐号信息】
+ * 在【直播信息】中可以看到bizid和appid，分别填到下面这两个符号
+ */
+#define TX_BIZID 0
+
+#define TX_APPID 0
+
 /**
  * 腾讯云 SDKAppId，需要替换为您自己账号下的 SDKAppId。
  *

@@ -15,7 +15,7 @@ class VideoSelectUserCollectionViewCell: UICollectionViewCell {
         return img
     }()
     
-    func config(model: userModel) {
+    func config(model: UserModel) {
         userImg.snp.remakeConstraints { (make) in
             make.edges.equalTo(self)
         }
@@ -87,7 +87,7 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
             let user = selectedUsers[indexPath.row]
             cell.config(model: user)
         } else {
-            cell.config(model: userModel(userID: ""))
+            cell.config(model: UserModel(userID: ""))
         }
         return cell
     }

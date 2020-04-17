@@ -170,7 +170,8 @@ import Foundation
                     debugPrint("-----> 上传 token 失败 ")
                 })
             }
-        }, fail: { (code, errorDes) in
+        }, fail: { [weak self] (code, errorDes) in
+            self?.delegate?.onError?(code: code, msg: errorDes)
             failed(Int(code), errorDes ?? "nil")
         })
     }
@@ -179,7 +180,8 @@ import Foundation
                              failed: @escaping ((_ code: Int, _ message: String) -> Void)) {
         TIMManager.sharedInstance()?.logout({
             success()
-        }, fail: { (code, errorDes) in
+        }, fail: { [weak self] (code, errorDes) in
+            self?.delegate?.onError?(code: code, msg: errorDes)
             failed(Int(code), errorDes ?? "nil")
         })
     }

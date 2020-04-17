@@ -13,6 +13,12 @@ import Foundation
 @objc protocol TRTCAudioCallDelegate {
     // common callback
     
+    /// sdk内部发生了错误 | sdk error
+    /// - Parameters:
+    ///   - code: 错误码
+    ///   - msg: 错误消息
+    @objc optional func onError(code: Int32, msg: String?)
+    
     /// 被邀请通话回调 | invitee callback
     /// - Parameter userIds: 邀请列表 (invited list)
     @objc optional func onInvited(sponsor: String, userIds: [String], isFromGroup: Bool)
@@ -53,9 +59,6 @@ import Foundation
     /// linebusy callback only worked for Sponsor, others should use onUserEnter
     /// - Parameter uid: userid
     @objc optional func onLineBusy(uid: String)
-    
-    /// 通话出现错误的回调 | timeout callback
-    @objc optional func onCallingError(uid: String, code: Int)
     
     // invitee callback
     

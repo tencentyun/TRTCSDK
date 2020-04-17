@@ -11,7 +11,7 @@ extension AudioSelectContactViewController {
     
     /// save recent contacts to file
     /// - Parameter users: userlist
-    func saveRecentContacts(users: [userModel]) {
+    func saveRecentContacts(users: [UserModel]) {
         var recent = recentContacts
         for user in users {
             if recent.contains(user) {
@@ -30,10 +30,10 @@ extension AudioSelectContactViewController {
     }
     
     /// get recent userlist from file
-    var recentContacts: [userModel] {
+    var recentContacts: [UserModel] {
         if let cacheData = NSKeyedUnarchiver.unarchiveObject(withFile: filePath) as? Data {
             do {
-                let contacts = try JSONDecoder().decode([userModel].self, from: cacheData)
+                let contacts = try JSONDecoder().decode([UserModel].self, from: cacheData)
                 return contacts
             } catch {
                 print("Retrieve Failed")

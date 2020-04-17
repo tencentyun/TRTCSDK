@@ -43,6 +43,10 @@ class VideoCallMainViewController: UIViewController, TRTCVideoCallDelegate {
     deinit {
     }
     
+    func onError(code: Int32, msg: String?) {
+        debugPrint("📳 onError: code \(code), msg: \(String(describing: msg))")
+    }
+    
     func onInvited(sponsor: String, userIds: [String], isFromGroup: Bool) {
         debugPrint("📳 onInvited sponsor:\(sponsor) userIds:\(userIds)")
         ProfileManager.shared.queryUserInfo(userID: sponsor, success: { [weak self] (user) in
@@ -93,10 +97,6 @@ class VideoCallMainViewController: UIViewController, TRTCVideoCallDelegate {
         removeUserFromCallVC(uid: uid, reason: .noresp)
     }
     
-    func onCallingError(uid: String, code: Int) {
-        debugPrint("📳 onCallingError: \(uid), errorCode: \(code)")
-    }
-    
     func onLineBusy(uid: String) {
         debugPrint("📳 onLineBusy: \(uid)")
         removeUserFromCallVC(uid: uid, reason: .busy)
@@ -145,7 +145,7 @@ class VideoCallMainViewController: UIViewController, TRTCVideoCallDelegate {
         }
     }
     
-    func covertUser(user: userModel,
+    func covertUser(user: UserModel,
                         isEnter: Bool = false) -> VideoCallUserModel {
         var dstUser = VideoCallUserModel()
         dstUser.name = user.name

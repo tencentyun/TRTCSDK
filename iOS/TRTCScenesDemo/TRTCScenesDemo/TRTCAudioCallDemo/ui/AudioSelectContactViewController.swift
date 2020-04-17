@@ -10,7 +10,7 @@ import Foundation
 import RxSwift
 
 class AudioSelectContactViewController: UIViewController {
-    var selectedFinished: (([userModel])->Void)? = nil
+    var selectedFinished: (([UserModel])->Void)? = nil
     
     let disposebag = DisposeBag()
     let searchBar = UISearchBar()
@@ -28,7 +28,7 @@ class AudioSelectContactViewController: UIViewController {
     }
     
     /// 已选择的用户列表
-    var selectedUsers: [userModel] = [] {
+    var selectedUsers: [UserModel] = [] {
         didSet {//更新UI
             userPanel.snp.remakeConstraints { (make) in
                 make.leading.equalTo(view).offset(kUserPanelLeftSpacing)
@@ -61,7 +61,7 @@ class AudioSelectContactViewController: UIViewController {
         if self.selectedUsers.count == 0 {
             return
         }
-        var users:[userModel] = []
+        var users:[UserModel] = []
         for user in self.selectedUsers {
             users.append(user.copy())
         }
@@ -76,10 +76,10 @@ class AudioSelectContactViewController: UIViewController {
     }()
     
     /// 搜索结果model
-    var searchResult: userModel? = nil
+    var searchResult: UserModel? = nil
     
     /// 历史搜索列表
-    var historyList: [userModel] = []
+    var historyList: [UserModel] = []
     
     /// 选择列表
     lazy var selectTable: UITableView = {

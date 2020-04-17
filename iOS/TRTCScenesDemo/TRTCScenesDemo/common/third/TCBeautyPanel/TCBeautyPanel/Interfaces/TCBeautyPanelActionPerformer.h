@@ -19,13 +19,13 @@ NS_ASSUME_NONNULL_BEGIN
  *
  * @param level 滤镜强度, 从0到1，越大滤镜效果越明显，默认值为0.5。
  */
-- (void)setFilterConcentration:(float)level;
+- (void)setFilterStrength:(float)level;
 
 /** 设置绿幕文件（增值版本有效，普通版本设置此参数无效）[仅限企业版Pro]
  *
  * @param file 绿幕文件路径
  */
-- (void)setGreenScreenFile:(nullable NSURL *)file;
+- (void)setGreenScreenFile:(nullable NSString *)file;
 
 // 以下为 TXBeautyManager 方法
 /**

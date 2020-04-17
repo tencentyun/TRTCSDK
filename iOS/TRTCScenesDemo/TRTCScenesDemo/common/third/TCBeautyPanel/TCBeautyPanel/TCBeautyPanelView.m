@@ -14,6 +14,7 @@
 #import "TCBeautyPanelTheme.h"
 #import "TCBeautyPanelActionPerformer.h"
 #import "TCFilter.h"
+#import "TCBeautyPanelActionProxy.h"
 
 #define BeautyViewMargin 8
 #define BeautyViewSliderHeight 30
@@ -128,6 +129,14 @@ static  TCBeautyPanelItem * makeMenuItem(NSString *title, UIImage *icon, id targ
 @implementation TCBeautyPanel
 
 #pragma mark - Public API
++ (instancetype)beautyPanelWithFrame:(CGRect)frame
+                               theme:(nullable id<TCBeautyPanelThemeProtocol>)theme
+                           SDKObject:(id)SDKObject {
+    return [[TCBeautyPanel alloc] initWithFrame:frame
+                                          theme:nil
+                                actionPerformer:[TCBeautyPanelActionProxy proxyWithSDKObject:SDKObject]];
+}
+
 + (instancetype)beautyPanelWithFrame:(CGRect)frame
                      actionPerformer:(id<TCBeautyPanelActionPerformer>)actionPerformer {
     TCBeautyPanel *panel = [[TCBeautyPanel alloc] initWithFrame:frame
@@ -259,7 +268,7 @@ static  TCBeautyPanelItem * makeMenuItem(NSString *title, UIImage *icon, id targ
         TCFilterIdentifier defaultFilterIdentifier = _filters[defaultFilterIndex].identifier;
         UIImage *lutImage = [self filterImageByMenuOptionIndex:defaultFilterIndex+1];
         [performer setFilter:lutImage];
-        [performer setFilterConcentration:self.filterValueDic[defaultFilterIdentifier].floatValue/10.0];
+        [performer setFilterStrength:self.filterValueDic[defaultFilterIdentifier].floatValue/10.0];
 
         // 重置各高级美颜选项，瘦脸大脸等
         NSArray<TCBeautyPanelItem *> *beautySettingItems = _optionsContainer[PanelMenuIndexBeauty];
@@ -300,7 +309,7 @@ static  TCBeautyPanelItem * makeMenuItem(NSString *title, UIImage *icon, id targ
     return [UIImage imageWithContentsOfFile:filter.lookupImagePath];
 }
 
--(float)filterMixLevelByIndex:(NSInteger)optionIndex
+-(float)filterStrengthAtIndex:(NSInteger)optionIndex
 {
     optionIndex = [self _converOptionIndexToFilterArrayIndex:optionIndex];
 
@@ -348,8 +357,8 @@ static  TCBeautyPanelItem * makeMenuItem(NSString *title, UIImage *icon, id targ
         makeMenuItem(L(@"TC.BeautySettingPanel.BeautySmooth"), _theme.beautyPanelSmoothBeautyStyleIcon, nil, nil, 0, 10),
         makeMenuItem(L(@"TC.BeautySettingPanel.Beauty-Natural"), _theme.beautyPanelNatureBeautyStyleIcon, nil, nil, 0, 10),
         makeMenuItem(L(@"TC.BeautySettingPanel.Beauty-P"),     _theme.beautyPanelPTuBeautyStyleIcon, nil, nil, 0, 10),
-        makeMenuItem(L(@"TC.BeautySettingPanel.White"), _theme.beautyPanelWhitnessIcon, nil, @selector(setWhitenessLevel:), 0, 10),
-        makeMenuItem(L(@"TC.BeautySettingPanel.Ruddy"), _theme.beautyPanelRuddyIcon,  nil, @selector(setRuddyLevel:), 0, 10),
+        makeMenuItem(L(@"TC.BeautySettingPanel.White"), _theme.beautyPanelWhitnessIcon, nil, nil, 0, 10),
+        makeMenuItem(L(@"TC.BeautySettingPanel.Ruddy"), _theme.beautyPanelRuddyIcon,  nil, nil, 0, 10),
         makeMenuItem(L(@"TC.BeautySettingPanel.BigEyes"), _theme.beautyPanelEyeScaleIcon, nil, @selector(setEyeScaleLevel:), 0, 10),
         makeMenuItem(L(@"TC.BeautySettingPanel.ThinFace"), _theme.beautyPanelFaceSlimIcon, nil, @selector(setFaceSlimLevel:), 0, 10),
         makeMenuItem(L(@"TC.BeautySettingPanel.VFace"), _theme.beautyPanelFaceVIcon, nil, @selector(setFaceVLevel:), 0, 10),
@@ -478,7 +487,7 @@ static  TCBeautyPanelItem * makeMenuItem(NSString *title, UIImage *icon, id targ
                 self.beautyStyle = optionIndex;
             }
 
-             TCBeautyPanelItem *item = _optionsContainer[menu.menuIndex][menu.optionIndex];
+            TCBeautyPanelItem *item = _optionsContainer[menu.menuIndex][menu.optionIndex];
             if ([item isKindOfClass:[ TCBeautyPanelItem class]]) {
                 self.slider.minimumValue = item.minValue;
                 self.slider.maximumValue = item.maxValue;
@@ -489,6 +498,9 @@ static  TCBeautyPanelItem * makeMenuItem(NSString *title, UIImage *icon, id targ
         } break;
         case PanelMenuIndexFilter: {
             _currentFilterIndex = optionIndex;
+            self.slider.minimumValue = BeautyMinLevel;
+            self.slider.maximumValue = BeautyMaxLevel;
+
             [self onSetFilterAtMenuIndex:optionIndex];
             if (optionIndex > 0) {
                 TCFilterIdentifier filterId = _filters[optionIndex - 1].identifier;
@@ -560,8 +572,8 @@ static  TCBeautyPanelItem * makeMenuItem(NSString *title, UIImage *icon, id targ
     if(menuIndex == PanelMenuIndexFilter) {
         NSString *filterID = _filters[_menu.optionIndex-1].identifier;
         self.filterValueDic[filterID] = @(value);
-        if([self.actionPerformer respondsToSelector:@selector(setFilterConcentration:)]){
-            [self.actionPerformer setFilterConcentration:value / 10.f];
+        if([self.actionPerformer respondsToSelector:@selector(setFilterStrength:)]){
+            [self.actionPerformer setFilterStrength:value / 10.f];
         }
     } else if(menuIndex == PanelMenuIndexBeauty) {
         // 美颜数值变化
@@ -594,7 +606,7 @@ static  TCBeautyPanelItem * makeMenuItem(NSString *title, UIImage *icon, id targ
             [self.actionPerformer setGreenScreenFile:nil];
         }
         if (index == 1) {
-            [self.actionPerformer setGreenScreenFile:[_theme goodLuckVideoFileURL]];
+            [self.actionPerformer setGreenScreenFile:[_theme goodLuckVideoFilePath]];
         }
     }
 }

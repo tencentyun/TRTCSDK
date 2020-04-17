@@ -24,9 +24,7 @@ extension VideoCallMainViewController {
         }
         
         let newCallBtn = UIButton()
-        newCallBtn.setTitle("+", for: .normal)
-        newCallBtn.titleLabel?.font = UIFont.systemFont(ofSize: 40)
-        newCallBtn.backgroundColor = .appTint
+        newCallBtn.setBackgroundImage(UIImage(named: "ic_add_contact"), for: .normal)
         noHistoryView.addSubview(newCallBtn)
         newCallBtn.layer.cornerRadius = 40
         newCallBtn.snp.makeConstraints { (make) in

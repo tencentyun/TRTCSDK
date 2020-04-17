@@ -1,5 +1,5 @@
 @objc enum AudioCallAction: Int32, Codable { //UserA 向 UserB 发起通话请求
-    case error = -1             //用户错误
+    case error = -1             //系统错误
     case unknown = 0            //未知流程
     case dialing = 1            //请求发起
     case sponsorCancel = 2      //用户取消 [UserA 在 UserB 未回应时主动取消视频请求]
@@ -26,13 +26,13 @@
     @objc var code: Int = 0                                     //信令代码
     @objc var invitedList: [String] = []                        //邀请列表
     
-    func copy() -> Self {
+    func copy() -> AudioCallModel {
         let encoder = JSONEncoder()
         guard let data = try? encoder.encode(self) else {
             fatalError("encode失败")
         }
         let decoder = JSONDecoder()
-        guard let target = try? decoder.decode(Self.self, from: data) else {
+        guard let target = try? decoder.decode(AudioCallModel.self, from: data) else {
            fatalError("decode失败")
         }
         return target

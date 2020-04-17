@@ -119,8 +119,8 @@ static void setImageForKey(id self, SEL selector, UIImage *image) {
     }
     return self;
 }
-- (NSURL *)goodLuckVideoFileURL {
-    return [_resourceBundle URLForResource:@"goodluck" withExtension:@"mp4"];
+- (NSString *)goodLuckVideoFilePath {
+    return [_resourceBundle pathForResource:@"goodluck" ofType:@"mp4"];
 }
 
 - (UIImage *)iconForFilter:(nonnull NSString *)filter {

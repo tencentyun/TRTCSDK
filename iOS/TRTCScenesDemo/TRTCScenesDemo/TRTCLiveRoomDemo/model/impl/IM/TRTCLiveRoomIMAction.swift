@@ -339,7 +339,7 @@ extension TRTCLiveRoomIMAction {
 private extension TRTCLiveRoomIMAction {
     enum ConvType {
         case user(_ userID: String)
-        case group(_ groupID: String, text: String?, priority: TIMMessagePriority = .MSG_PRIORITY_NORMAL)
+        case group(_ groupID: String, text: String?, priority: TIMMessagePriority )
     }
     
     static func sendMessage(data: [String: Any], convType: ConvType, callback: Callback?) {

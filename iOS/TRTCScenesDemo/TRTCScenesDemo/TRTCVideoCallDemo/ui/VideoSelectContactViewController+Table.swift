@@ -30,7 +30,7 @@ class VideoSelectUserTableViewCell: UITableViewCell {
         return label
     }()
     
-    func config(model: userModel, selected: Bool = false) {
+    func config(model: UserModel, selected: Bool = false) {
         backgroundColor = .appBackGround
         selectedMark.snp.remakeConstraints { (make) in
             make.leading.equalTo(12)
@@ -71,7 +71,7 @@ extension VideoSelectContactViewController: UITableViewDelegate, UITableViewData
                 let isSelected = isUserSelected(user: user)
                 cell.config(model:user, selected: isSelected )
             } else {
-                cell.config(model: userModel(userID: ""))
+                cell.config(model: UserModel(userID: ""))
             }
         } else {
             if (indexPath.row < historyList.count) {
@@ -79,7 +79,7 @@ extension VideoSelectContactViewController: UITableViewDelegate, UITableViewData
                 let isSelected = isUserSelected(user: user)
                 cell.config(model: user, selected: isSelected)
             } else {
-                cell.config(model: userModel(userID: ""))
+                cell.config(model: UserModel(userID: ""))
             }
         }
         
@@ -111,7 +111,7 @@ extension VideoSelectContactViewController: UITableViewDelegate, UITableViewData
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         var isSelected = false
-        var userSelected = userModel.init(userID: "")
+        var userSelected = UserModel.init(userID: "")
         if shouldShowSearchResult {
             if let user = searchResult {
                 isSelected = isUserSelected(user: user)
@@ -145,7 +145,7 @@ extension VideoSelectContactViewController: UITableViewDelegate, UITableViewData
     
     //MARK: - internal func
     
-    func isUserSelected(user: userModel)->Bool {
+    func isUserSelected(user: UserModel)->Bool {
         var isSelected = false
         for selectUser in selectedUsers {
             if selectUser.userId == user.userId && selectUser.userId != appUtils.shared.curUserId{

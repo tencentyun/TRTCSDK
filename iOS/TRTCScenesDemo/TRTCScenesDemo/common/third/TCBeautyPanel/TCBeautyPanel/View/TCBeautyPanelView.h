@@ -43,7 +43,14 @@ typedef NS_ENUM(NSInteger, TCBeautyStyle) {
 @property (nonatomic, strong) id<TCBeautyPanelActionPerformer> actionPerformer;
 @property (nonatomic, weak) id<BeautyLoadPituDelegate> pituDelegate;
 
-/// 以默认主题实例化美颜面板
+/// 使用 frame 和SDK对象创建 TCBeautyPanel
+/// @param frame 界面位置及大小
+/// @param theme 主题，传空为默认主题
+/// @param SDKObject SDK 对象可以是 TRTCCloud, TXLivePush, TXUGCRecord 等有 getBeautyManager 方法的对象
++ (instancetype)beautyPanelWithFrame:(CGRect)frame
+                               theme:(nullable id<TCBeautyPanelThemeProtocol>)theme
+                           SDKObject:(id)SDKObject;
+
 + (instancetype)beautyPanelWithFrame:(CGRect)frame
                      actionPerformer:(id<TCBeautyPanelActionPerformer>)actionPerformer;
 
@@ -60,7 +67,7 @@ typedef NS_ENUM(NSInteger, TCBeautyStyle) {
 - (void)resetAndApplyValues;
 + (NSUInteger)getHeight;
 - (UIImage*)filterImageByMenuOptionIndex:(NSInteger)index;
-- (float)filterMixLevelByIndex:(NSInteger)index;
+- (float)filterStrengthAtIndex:(NSInteger)index;
 @end
 
 NS_ASSUME_NONNULL_END

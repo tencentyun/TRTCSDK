@@ -17,17 +17,23 @@ import Foundation
     }
     
     func setFilter(_ filterImage: UIImage?) {
-        if let image = filterImage {
-           liveRoom.setFilter(image: image)
+        guard let filterImage = filterImage else {
+            TRTCCloud.sharedInstance()?.setFilter(nil)
+            return
         }
+        liveRoom.getBeautyManager().setFilter(filterImage)
     }
     
-    func setFilterConcentration(_ level: Float) {
-        liveRoom.setFilterConcentration(concentration: level)
+    func setFilterStrength(_ level: Float) {
+        liveRoom.getBeautyManager().setFilterStrength(level)
     }
     
-    func setGreenScreenFile(_ file: URL?) {
-        liveRoom.setGreenScreenFile(file: file)
+    func setGreenScreenFile(_ file: String?) {
+        guard let file = file else {
+            TRTCCloud.sharedInstance()?.setGreenScreenFile(nil)
+            return
+        }
+        liveRoom.getBeautyManager().setGreenScreenFile(file)
     }
     
     func setBeautyStyle(_ beautyStyle: Int) {

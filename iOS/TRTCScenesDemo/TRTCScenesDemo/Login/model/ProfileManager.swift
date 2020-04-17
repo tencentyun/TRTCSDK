@@ -13,14 +13,14 @@ import Alamofire
 
 let loginBaseUrl = "https://xxx.com/release/"
 
-//loginModel
-@objc class loginModel: NSObject, Codable {
+//LoginModel
+@objc class LoginModel: NSObject, Codable {
     @objc var errorCode: Int = -1
     @objc var errorMessage: String = ""
-    var data: loginResultModel? = nil
+    var data: LoginResultModel? = nil
 }
 
-@objc class loginResultModel: NSObject, Codable {
+@objc class LoginResultModel: NSObject, Codable {
     @objc var token: String
     @objc var phone: String
     @objc var name: String
@@ -37,19 +37,19 @@ let loginBaseUrl = "https://xxx.com/release/"
     }
 }
 
-@objc class queryModel: NSObject, Codable {
+@objc class QueryModel: NSObject, Codable {
     @objc var errorCode: Int = -1
     @objc var errorMessage: String = ""
-    var data: userModel? = nil
+    var data: UserModel? = nil
 }
 
-@objc class queryBatchModel: NSObject, Codable {
+@objc class QueryBatchModel: NSObject, Codable {
     @objc var errorCode: Int = -1
     @objc var errorMessage: String = ""
-    var data: [userModel]? = nil
+    var data: [UserModel]? = nil
 }
 
-@objc public class userModel: NSObject, Codable {
+@objc public class UserModel: NSObject, Codable {
     @objc var phone: String?
     @objc var name: String
     @objc var avatar: String
@@ -63,20 +63,20 @@ let loginBaseUrl = "https://xxx.com/release/"
         super.init()
     }
     
-    func copy() -> Self {
+    func copy() -> UserModel {
         let encoder = JSONEncoder()
         guard let data = try? encoder.encode(self) else {
             fatalError("encode失败")
         }
         let decoder = JSONDecoder()
-        guard let target = try? decoder.decode(Self.self, from: data) else {
+        guard let target = try? decoder.decode(UserModel.self, from: data) else {
            fatalError("decode失败")
         }
         return target
     }
     
     override public func isEqual(_ object: Any?) -> Bool {
-        if let user = object as? userModel {
+        if let user = object as? UserModel {
             if user.userId == userId {
                 return true
             }
@@ -85,21 +85,21 @@ let loginBaseUrl = "https://xxx.com/release/"
     }
 }
 
-//nameModel
-@objc class nameModel: NSObject, Codable {
+//NameModel
+@objc class NameModel: NSObject, Codable {
     @objc var errorCode:
         Int32 = -1
     @objc var errorMessage: String = ""
 }
 
-//verifyModel
-@objc class verifyModel: NSObject, Codable {
+//VerifyModel
+@objc class VerifyModel: NSObject, Codable {
     @objc var errorCode: Int32 = -1
     @objc var errorMessage: String = ""
-    var data: verifyResultModel? = nil
+    var data: VerifyResultModel? = nil
 }
 
-@objc class verifyResultModel: NSObject, Codable {
+@objc class VerifyResultModel: NSObject, Codable {
     var sessionId: String? = nil
     var requestId: String? = nil
     var codeStr: String? = nil
@@ -112,7 +112,7 @@ let loginBaseUrl = "https://xxx.com/release/"
     var phone = BehaviorRelay<String>(value: "")
     var code = BehaviorRelay<String>(value: "")
     var sessionId: String = ""
-    @objc var curUserModel: loginResultModel? = nil
+    @objc var curUserModel: LoginResultModel? = nil
     
     /// 自动登录
     /// - Parameters:
@@ -125,7 +125,7 @@ let loginBaseUrl = "https://xxx.com/release/"
         let tokenKey = "com.tencent.trtcScences.demo"
         if let cacheData = UserDefaults.standard.object(forKey: tokenKey) as? Data {
             do {
-                let cacheUser = try JSONDecoder().decode(loginResultModel.self, from: cacheData)
+                let cacheUser = try JSONDecoder().decode(LoginResultModel.self, from: cacheData)
                 curUserModel = cacheUser
                 let fail: (_ error: String)->Void = { err in
                     failed(err)
@@ -156,9 +156,9 @@ let loginBaseUrl = "https://xxx.com/release/"
             guard let self = self else {return}
             if let respData = data.data, respData.count > 0 {
                 let decoder = JSONDecoder()
-                guard let result = try? decoder.decode(verifyModel.self, from: respData) else {
-                    failed("verifyModel decode失败")
-                    fatalError("verifyModel decode失败")
+                guard let result = try? decoder.decode(VerifyModel.self, from: respData) else {
+                    failed("VerifyModel decode失败")
+                    fatalError("VerifyModel decode失败")
                 }
                 if result.errorCode == 0 , let sessionID = result.data?.sessionId {
                     self.sessionId = sessionID
@@ -182,7 +182,7 @@ let loginBaseUrl = "https://xxx.com/release/"
         let phoneValue = phone.value
         if !auto {
             assert(phoneValue.count > 0)
-            curUserModel = loginResultModel(userID: phone.value)
+            curUserModel = LoginResultModel(userID: phone.value)
         }
         // cache data
         let tokenKey = "com.tencent.trtcScences.demo"
@@ -216,9 +216,9 @@ let loginBaseUrl = "https://xxx.com/release/"
         Alamofire.request(nameUrl, method: .post, parameters: params).responseJSON { (data) in
             if let respData = data.data, respData.count > 0 {
                 let decoder = JSONDecoder()
-                guard let result = try? decoder.decode(nameModel.self, from: respData) else {
-                    failed("nameModel decode失败")
-                    fatalError("nameModel decode失败")
+                guard let result = try? decoder.decode(NameModel.self, from: respData) else {
+                    failed("NameModel decode失败")
+                    fatalError("NameModel decode失败")
                 }
                 if result.errorCode == 0 {
                     success()
@@ -243,10 +243,10 @@ let loginBaseUrl = "https://xxx.com/release/"
     ///   - success: 成功回调
     ///   - failed: 失败回调
     ///   - error: 错误信息
-    @objc public func queryUserInfo(phone: String, success: @escaping (userModel)->Void,
+    @objc public func queryUserInfo(phone: String, success: @escaping (UserModel)->Void,
                               failed: @escaping (_ error: String)->Void) {
         if phone.count > 0 {
-            success(userModel.init(userID: phone))
+            success(UserModel.init(userID: phone))
         } else {
             failed("错误的userID")
         }
@@ -258,10 +258,10 @@ let loginBaseUrl = "https://xxx.com/release/"
     ///   - success: 成功回调
     ///   - failed: 失败回调
     ///   - error: 错误信息
-    @objc public func queryUserInfo(userID: String, success: @escaping (userModel)->Void,
+    @objc public func queryUserInfo(userID: String, success: @escaping (UserModel)->Void,
                                     failed: @escaping (_ error: String)->Void) {
         if userID.count > 0 {
-            success(userModel.init(userID: userID))
+            success(UserModel.init(userID: userID))
         } else {
             failed("错误的userID")
         }
@@ -273,12 +273,12 @@ let loginBaseUrl = "https://xxx.com/release/"
     ///   - success: 成功回调
     ///   - failed: 失败回调
     ///   - error : 错误信息
-    @objc public func queryUserListInfo(userIDs: [String], success: @escaping ([userModel])->Void,
+    @objc public func queryUserListInfo(userIDs: [String], success: @escaping ([UserModel])->Void,
                                   failed: @escaping (_ error: String)->Void) {
         if userIDs.count > 0 {
-            var models: [userModel] = []
+            var models: [UserModel] = []
             for userID in userIDs {
-                models.append(userModel.init(userID: userID))
+                models.append(UserModel.init(userID: userID))
             }
             success(models)
         } else {

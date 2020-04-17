@@ -313,20 +313,6 @@ private extension TRTCCloudAction {
     }
 }
 
-extension TRTCCloudAction {
-    @objc public func setFilter(image: UIImage) {
-        TRTCCloud.sharedInstance()?.setFilter(image)
-    }
-    
-    @objc public func setFilterConcentration(concentration: Float) {
-        TRTCCloud.sharedInstance()?.setFilterConcentration(concentration)
-    }
-    
-    @objc public func setGreenScreenFile(file: URL?) {
-        TRTCCloud.sharedInstance()?.setGreenScreenFile(file)
-    }
-}
-
 private class PlayInfo: NSObject {
     var videoView: UIView
     var streamId: String?

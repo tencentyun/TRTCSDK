@@ -911,21 +911,6 @@ extension TRTCLiveRoomImpl {
     }
 }
 
-//MARK: - Beauty
-extension TRTCLiveRoomImpl {
-    @objc public func setFilter(image: UIImage) {
-        trtcAction.setFilter(image: image)
-    }
-    
-    @objc public func setFilterConcentration(concentration: Float) {
-        trtcAction.setFilterConcentration(concentration: concentration)
-    }
-    
-    @objc public func setGreenScreenFile(file: URL?) {
-        trtcAction.setGreenScreenFile(file: file)
-    }
-}
-
 // MARK: - Utils
 
 extension TRTCLiveRoomImpl {
