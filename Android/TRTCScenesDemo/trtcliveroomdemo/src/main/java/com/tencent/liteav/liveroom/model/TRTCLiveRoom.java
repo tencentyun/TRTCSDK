@@ -371,34 +371,6 @@ public abstract class TRTCLiveRoom {
      */
     public abstract TXBeautyManager getBeautyManager();
 
-    /**
-     * 设置指定素材滤镜特效
-     *
-     * @param image 指定素材，即颜色查找表图片。**必须使用 png 格式**
-     */
-    public abstract void setFilter(Bitmap image);
-
-    /**
-     * 设置滤镜浓度
-     * <p>
-     * 在美女秀场等应用场景里，滤镜浓度的要求会比较高，以便更加突显主播的差异。
-     * 我们默认的滤镜浓度是0.5，如果您觉得滤镜效果不明显，可以使用下面的接口进行调节。
-     *
-     * @param concentration 从0到1，越大滤镜效果越明显，默认值为0.5。
-     */
-    public abstract void setFilterConcentration(float concentration);
-
-    /**
-     * 设置绿幕背景视频（企业版有效，其它版本设置此参数无效）
-     * <p>
-     * 此处的绿幕功能并非智能抠背，它需要被拍摄者的背后有一块绿色的幕布来辅助产生特效
-     *
-     * @param file 视频文件路径。支持 MP4；null：表示关闭特效。
-     */
-    @TargetApi(18)
-    public abstract void setGreenScreenFile(String file);
-
-
     //////////////////////////////////////////////////////////
     //
     //                  弹幕聊天相关

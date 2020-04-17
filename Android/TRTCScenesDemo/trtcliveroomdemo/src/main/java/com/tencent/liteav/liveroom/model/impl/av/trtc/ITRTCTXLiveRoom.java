@@ -56,10 +56,4 @@ public interface ITRTCTXLiveRoom {
     TXBeautyManager getTXBeautyManager();
 
     TRTCAudioEffectManager getAudioEffectManager();
-
-    void setFilter(Bitmap filterImage);
-
-    void setGreenScreenFile(String path);
-
-    void setFilterConcentration(float concentration);
 }

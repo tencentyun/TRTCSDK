@@ -1643,21 +1643,6 @@ public class TRTCLiveRoomImpl extends TRTCLiveRoom implements ITXTRTCLiveRoomDel
         return TXTRTCLiveRoom.getInstance().getTXBeautyManager();
     }
 
-    @Override
-    public void setFilter(Bitmap image) {
-        TXTRTCLiveRoom.getInstance().setFilter(image);
-    }
-
-    @Override
-    public void setFilterConcentration(float concentration) {
-        TXTRTCLiveRoom.getInstance().setFilterConcentration(concentration);
-    }
-
-    @Override
-    public void setGreenScreenFile(String file) {
-        TXTRTCLiveRoom.getInstance().setGreenScreenFile(file);
-    }
-
     private void enterTRTCRoomInner(final String roomId, final String userId, final String userSign, final int role, final TRTCLiveRoomCallback.ActionCallback callback) {
         // 进入 TRTC 房间
         TRTCLogger.i(TAG, "enter trtc room.");

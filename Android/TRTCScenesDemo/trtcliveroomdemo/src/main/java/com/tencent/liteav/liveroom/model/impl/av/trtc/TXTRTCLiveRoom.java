@@ -531,26 +531,4 @@ public class TXTRTCLiveRoom extends TRTCCloudListener implements ITRTCTXLiveRoom
     public TRTCAudioEffectManagerImpl getAudioEffectManager() {
         return mAudioEffectManager;
     }
-
-
-    @Override
-    public void setFilter(Bitmap filterImage) {
-        if (mTRTCCloud != null) {
-            mTRTCCloud.setFilter(filterImage);
-        }
-    }
-
-    @Override
-    public void setGreenScreenFile(String path) {
-        if (mTRTCCloud != null) {
-            mTRTCCloud.setGreenScreenFile(path);
-        }
-    }
-
-    @Override
-    public void setFilterConcentration(float concentration) {
-        if (mTRTCCloud != null) {
-            mTRTCCloud.setFilterConcentration(concentration);
-        }
-    }
 }

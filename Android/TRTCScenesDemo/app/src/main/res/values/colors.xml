@@ -3,6 +3,8 @@
     <color name="colorWhite">#FFFFFF</color>
     <color name="transparent">#00000000</color>
     <color name="white">#FFFFFF</color>
+    <color name="colorPrimary">#00A66b</color>
     <color name="hlfTransparent">#30000000</color>
     <!--MainActivity item被选中的颜色-->
+    <color name="textColorSecond">#37465F</color>
 </resources>
