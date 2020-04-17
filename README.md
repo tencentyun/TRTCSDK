@@ -14,28 +14,17 @@
 | Electron | [下载](http://liteavsdk-1252463788.cosgz.myqcloud.com/TXLiteAVSDK_TRTC_Electron_latest.zip) | [DOC](https://cloud.tencent.com/document/product/647/38548) | [DOC](https://cloud.tencent.com/document/product/647/38549) |[API](https://cloud.tencent.com/document/product/647/38551) |
 | 微信小程序 | [下载](http://liteavsdk-1252463788.cosgz.myqcloud.com/TRTC_WXMini_latest.zip) | [DOC](https://cloud.tencent.com/document/product/647/32399) | [DOC](https://cloud.tencent.com/document/product/647/32183) |[API](https://cloud.tencent.com/document/product/647/17018) |
 
-## 最新版本 7.1 @ 2020.03.27
-1. 全平台：优化混流预设模版易用性。
-1. 全平台：修复进房自动旁路的问题。
-1. 全平台：混流优化，提升成功率。
-1. Android：修复进房频繁开关AGC的时候，处理声音变成全零的问题。
-1. Android：C++ STL基础库全静态编译。
-1. Android：通话音量默认开启ANS、AGC，提高通话模式下的音质。
-1. Android：修复测速导致其他API调用响应较慢的问题。
-1. Android：修复被系统电话打断后上行音量翻倍及声音有噪音问题。
-1. iOS：修复进房前先 startLocalPreview 再进房会预览黑一下的问题。
-1. iOS：修复iOS9及更低版本下，无法切换扬声器模式的问题。
-1. iOS：解决部分机型iOS13.3系统回声严重的问题。
-1. iOS：修复偶现内存占用异常问题。
-1. iOS：BGM播放支持不带后缀的音频文件。
-1. Mac：修复硬编码率波动较大的问题，解决开关摄像头引起的码率波动问题。
-1. Mac: 屏幕分享支持从主路推流。
-1. windows：修复关闭AERO时全屏分享看不到透明窗口的问题。
-1. windows：修复win10缩略图捕获失效。
-1. windows：修复win8.0及更低版本屏幕采集概率失效问题。
-1. windows：修复偶现日志模块死锁问题。
-1. windows：屏幕分享支持从主路推流。
-1. windows：修复部分win10机型屏幕分享导致卡死主线程问题。
+## 最新版本 7.2 @ 2020.04.16
+1. iOS：新增iOS支持APP内录屏，适用于手机端APP内录屏直播。
+1. iOS：优化iOS低端机通话音质，提升语音效果。
+1. Android：新增 Android支持手机录屏，适用于手机端录屏直播。
+1. Android：优化中低端Android手机在通话场景下的性能消耗，提升语音体验。
+1. iOS&Android：优化滤镜、绿幕等视效接口，归并到TXCBeautyManager类下，实现统一的调用方式。
+1. Mac：修复Mac偶现本地自定义渲染分辨率不一致问题。
+1. windows：优化Windows端getCurrentCameraDevice逻辑，在未使用摄像头时，返回第一个设备作为默认设备。
+1. windows：修复Electron屏幕分享，高亮窗口在分享时显示为灰屏的问题。
+1. windows：修复Win10系统获取屏幕分享缩略图偶现卡死问题。
+1. 全平台：修复切换角色时，自定义流ID偶现未及时生效的问题。
 
 ## Demo 体验地址
 
