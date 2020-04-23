@@ -14,6 +14,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.TextureView;
 import android.view.View;
 import android.view.Window;
@@ -539,7 +540,27 @@ public class TRTCVideoRoomActivity extends AppCompatActivity implements View.OnC
     private void startLocalPreview() {
         TXCloudVideoView localVideoView = mTRTCVideoLayout.allocCloudVideoView(mTRTCParams.userId, TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG);
         if (mIsScreenCapture) {
-            mTRTCCloudManager.startScreenCapture();
+            VideoConfig videoConfig = ConfigHelper.getInstance().getVideoConfig();
+            videoConfig.setVideoFps(10);
+            videoConfig.setVideoResolution(TRTCCloudDef.TRTC_VIDEO_RESOLUTION_1280_720);
+            videoConfig.setVideoBitrate(1200);
+            videoConfig.setVideoVertical(true);
+
+            TRTCCloudDef.TRTCVideoEncParam encParams = new TRTCCloudDef.TRTCVideoEncParam();
+            encParams.videoResolution = videoConfig.getVideoResolution();
+            if (videoConfig.isVideoVertical()) {
+                encParams.videoResolutionMode = TRTCCloudDef.TRTC_VIDEO_RESOLUTION_MODE_PORTRAIT;
+            } else {
+                encParams.videoResolutionMode = TRTCCloudDef.TRTC_VIDEO_RESOLUTION_MODE_LANDSCAPE;
+            }
+            encParams.videoFps = videoConfig.getVideoFps();
+            encParams.enableAdjustRes = false;
+            encParams.videoBitrate = videoConfig.getVideoBitrate();
+
+            TRTCCloudDef.TRTCScreenShareParams params = new TRTCCloudDef.TRTCScreenShareParams();
+            LayoutInflater inflater = LayoutInflater.from(this);
+            params.floatingView = inflater.inflate(R.layout.trtc_screen_capture_floating_window, null, false);
+            mTRTCCloudManager.startScreenCapture(encParams, params);
         } else if (!mIsCustomCaptureAndRender) {
             // 开启本地预览
             mTRTCCloudManager.setLocalPreviewView(localVideoView);

@@ -356,9 +356,10 @@ public class TRTCCloudManager {
     /**
      * 开启屏幕采集
      */
-    public void startScreenCapture() {
-        mTRTCCloud.startScreenCapture();
+    public void startScreenCapture(TRTCCloudDef.TRTCVideoEncParam param, TRTCCloudDef.TRTCScreenShareParams screenShareParams) {
+        mTRTCCloud.startScreenCapture(param, screenShareParams);
     }
+
 
     /**
      * 恢复屏幕采集
