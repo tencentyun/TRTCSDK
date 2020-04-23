@@ -599,7 +599,11 @@
             //录屏功能需要使用最低 7.2 版本的 TXLiteAVSDK，如遇编译错误
             //请在工程上级目录内 SDK 文件夹中删除 TXLiteAVSDK_TRTC.framework 后重新运行
             if (@available(iOS 13.0, *)) {
-                [self.trtc startScreenCapture];
+                TRTCVideoEncParam *param = [[TRTCVideoEncParam alloc] init];
+                param.videoResolution = TRTCVideoResolution_960_540;
+                param.videoFps = 10;
+                param.videoBitrate = 1000;
+                [self.trtc startScreenCapture:param];
             }
             break;
     }
