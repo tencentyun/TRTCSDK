@@ -6,6 +6,7 @@ if (!env) {
   console.error(TAG_NAME, '不支持当前小程序环境')
 }
 const systemInfo = env.getSystemInfoSync()
+const safeArea = systemInfo.safeArea
 if (systemInfo.system === 'iOS 13.3' || (systemInfo.model === 'iPhoneX' && systemInfo.system === 'iOS 13.3.1') ) {
   // audio-volume-type = media
   console.log('use media audio volume type')
@@ -37,5 +38,13 @@ export const LIB_VERSION = (function() {
   }
   return systemInfo.SDKVersion
 })()
+
+let isFullscreenDevie = false
+if (systemInfo.screenHeight > safeArea.bottom) {
+// if (/iphone\s{0,}x/i.test(systemInfo.model)) {
+  isFullscreenDevie = true
+}
+
+export const IS_FULLSCREEN_DEVICE = isFullscreenDevie
 
 console.log(TAG_NAME, 'APP_VERSION:', APP_VERSION, ' LIB_VERSION:', LIB_VERSION, ' is new version:', IS_TRTC)

@@ -2,5 +2,6 @@
   "usingComponents": {
     "trtc-room": "/components/trtc-room/trtc-room"
   },
-  "navigationStyle": "custom"
+  "navigationStyle": "custom",
+  "disableScroll": true
 }

@@ -36,6 +36,7 @@ Page({
       userSig: userSig,
       template: template, // 1v1 grid custom
       debugMode: this.data.debugMode, // 非必要参数，打开组件的调试模式，开发调试时建议设置为 true
+      audioVolumeType: this.data.audioVolumeType,
     }
     this.setData({
       rtcConfig: this.data.rtcConfig,
@@ -293,6 +294,7 @@ Page({
       initialRole: options.role,
       userID: options.userID,
       debugMode: options.debugMode,
+      audioVolumeType: options.audioVolumeType,
     }, () => {
       this.getSignature(options.userID)
     })

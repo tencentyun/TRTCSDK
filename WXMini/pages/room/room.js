@@ -13,6 +13,7 @@ Page({
       template: '', // 必要参数 组件模版，支持的值 1v1 grid custom ，注意：不支持动态修改, iOS 不支持 pusher 动态渲染
     },
     showTipToast: false,
+    subscribeList: {},
   },
   enterRoom: function(params) {
     params.template = params.template || '1v1'
@@ -38,14 +39,25 @@ Page({
         localMirror: params.localMirror,
         enableAgc: params.enableAgc,
         enableAns: params.enableAns,
-        encsmall: params.encsmall ? 1 : 0,
         videoWidth: params.videoWidth,
         videoHeight: params.videoHeight,
-        scene: params.scene, // rtc live
         maxBitrate: params.maxBitrate,
         minBitrate: params.minBitrate,
         beautyLevel: 9, // 开启美颜等级 0～9级美颜
-        enableIM: false, // 可选，仅支持初始化设置（进房前设置），不支持动态修改，需要开通云通信功能
+        enableIM: false, // 可选，仅支持初始化设置（进房前设置），不支持动态修改
+        audioVolumeType: params.audioVolumeType,
+        audioQuality: params.audioQuality,
+
+        // pusher URL 参数
+        scene: params.scene, // rtc live
+        encsmall: params.encsmall ? 1 : 0,
+        cloudenv: params.cloudenv,
+        enableBlackStream: params.enableBlackStream,
+        streamID: params.streamID,
+        userDefineRecordID: params.userDefineRecordID,
+        privateMapKey: params.privateMapKey,
+        pureAudioMode: params.pureAudioMode,
+        recvMode: params.recvMode,
       }
     } else {
       this.data.rtcConfig = {
@@ -55,22 +67,14 @@ Page({
         template: params.template, // 1v1 grid custom
         debugMode: params.debugMode, // 非必要参数，打开组件的调试模式，开发调试时建议设置为 true
         beautyLevel: 9, // 默认开启美颜
-        enableIM: false, // 可选，仅支持初始化设置（进房前设置），不支持动态修改，需要开通云通信功能
+        enableIM: false, // 可选，仅支持初始化设置（进房前设置），不支持动态修改
+        audioVolumeType: params.audioVolumeType,
       }
     }
 
     this.setData({
       rtcConfig: this.data.rtcConfig,
     }, () => {
-      // 进房前决定是否推送视频或音频 部分机型会出现画面卡死，原因不明，必须放到进房成功事件后设置
-      // console.log('rtcConfig', this.data.rtcConfig)
-      // if (params.localVideo === true || params.template === '1v1') {
-      //   this.trtcComponent.publishLocalVideo()
-      // }
-      // if (params.localAudio === true || params.template === '1v1') {
-      //   this.trtcComponent.publishLocalAudio()
-      // }
-
       // roomID 取值范围 1 ~ 4294967295
       this.trtcComponent.enterRoom({ roomID: params.roomID }).then(()=>{
         if (this.template === 'custom') {
@@ -100,6 +104,15 @@ Page({
       }
       if (this.options.localAudio === true || this.options.template === '1v1') {
         this.trtcComponent.publishLocalAudio()
+      }
+      if (this.options.template === 'custom') {
+        this.trtcComponent.setViewRect({
+          userID: event.userID,
+          xAxis: '0rpx',
+          yAxis: '0rpx',
+          width: '240rpx',
+          height: '320rpx',
+        })
       }
     })
     this.trtcComponent.on(TRTC_EVENT.LOCAL_LEAVE, (event)=>{
@@ -156,11 +169,15 @@ Page({
           userID: data.userID,
           streamType: data.streamType,
         })
-      } else if (this.template === 'grid') {
+      } else {
+        // if (!this.data.subscribeList[data.userID + '-video']) {
         this.trtcComponent.subscribeRemoteVideo({
           userID: data.userID,
           streamType: data.streamType,
         })
+        // 标记该用户已首次订阅过
+        this.data.subscribeList[data.userID + '-video'] = true
+        // }
       }
       if (this.template === 'custom' && data.userID && data.streamType) {
         let index = userList.findIndex((item)=>{
@@ -191,18 +208,28 @@ Page({
       if (this.template === '1v1' && (!this.remoteUser || this.remoteUser === data.userID)) {
         this.remoteUser = data.userID
         this.trtcComponent.subscribeRemoteAudio({ userID: data.userID })
-      } else if (this.template === 'grid' || this.template === 'custom') {
-        this.trtcComponent.subscribeRemoteAudio({ userID: data.userID })
+      } else {
+        // if (!this.data.subscribeList[data.userID + '-audio']) {
+        this.trtcComponent.subscribeRemoteAudio({
+          userID: data.userID,
+        })
+        // 标记该用户已首次订阅过
+        this.data.subscribeList[data.userID + '-audio'] = true
+        // }
       }
-      // 如果不订阅就不会自动播放音频
-      // this.trtcComponent.subscribeRemoteAudio({ userID: data.userID })
     })
     // 远端用户取消推送音频
     this.trtcComponent.on(TRTC_EVENT.REMOTE_AUDIO_REMOVE, (event)=>{
       console.log('* room REMOTE_AUDIO_REMOVE', event, this.trtcComponent.getRemoteUserList())
     })
-    this.trtcComponent.on(TRTC_EVENT.IM_SDK_READY, (event)=>{
-      console.log('* room IM_SDK_READY', event)
+    // this.trtcComponent.on(TRTC_EVENT.LOCAL_NET_STATE_UPDATE, (event)=>{
+    //   console.log('* room LOCAL_NET_STATE_UPDATE', event)
+    // })
+    // this.trtcComponent.on(TRTC_EVENT.REMOTE_NET_STATE_UPDATE, (event)=>{
+    //   console.log('* room REMOTE_NET_STATE_UPDATE', event)
+    // })
+    this.trtcComponent.on(TRTC_EVENT.IM_READY, (event)=>{
+      console.log('* room IM_READY', event)
     })
     this.trtcComponent.on(TRTC_EVENT.IM_MESSAGE_RECEIVED, (event)=>{
       console.log('* room IM_MESSAGE_RECEIVED', event)
@@ -243,7 +270,6 @@ Page({
       userID: options.userID,
       template: options.template,
       debugMode: options.debugMode,
-      cloudenv: options.cloudenv,
       frontCamera: options.frontCamera,
       localVideo: options.localVideo,
       localAudio: options.localAudio,
@@ -252,12 +278,26 @@ Page({
       localMirror: options.localMirror,
       enableAgc: options.enableAgc,
       enableAns: options.enableAns,
-      encsmall: options.encsmall,
       videoHeight: options.videoHeight,
       videoWidth: options.videoWidth,
-      scene: options.scene,
       maxBitrate: Number(options.maxBitrate),
       minBitrate: Number(options.minBitrate),
+      audioVolumeType: options.audioVolumeType,
+      audioQuality: options.audioQuality,
+
+      // pusher URL 参数
+      scene: options.scene,
+      encsmall: options.encsmall,
+      cloudenv: options.cloudenv,
+      enableBlackStream: options.enableBlackStream,
+      streamID: options.streamID,
+      userDefineRecordID: options.userDefineRecordID,
+      privateMapKey: options.privateMapKey,
+      pureAudioMode: options.pureAudioMode,
+      recvMode: options.recvMode,
+
+      // player 参数
+      enableRecvMessage: options.enableRecvMessage,
     })
   },
 
@@ -286,6 +326,9 @@ Page({
    */
   onHide: function() {
     console.log('room hide')
+    // onHide 后由微信接管，限制了不能退房，只能取消订阅
+    // 退后台后取消发布音频
+    // this.trtcComponent.unpublishLocalAudio()
   },
 
   /**

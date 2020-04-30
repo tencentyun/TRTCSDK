@@ -60,7 +60,7 @@
 .debug-info-btn{
   position: absolute;
   z-index: 9998;
-  bottom: 20rpx;
+  bottom: 160rpx;
   left: 0;
 }
 
@@ -189,6 +189,35 @@
   height: 50rpx;
   min-height: 50rpx;
   line-height: 50rpx;
+}
+
+.volume-animation{
+  position: absolute;
+  width: 80rpx;
+  height: 80rpx;
+  left: 0;
+  top: initial;
+  bottom: 20rpx;
+  z-index: 9;
+  /* transform: translate(-50%, 0); */
+}
+.volume-animation .image{
+  position: absolute;
+  width: 80rpx;
+  height: 80rpx;
+}
+.volume-animation .audio-active{
+  animation: viewlinear 1.5s linear infinite;
+} 
+@keyframes viewlinear {
+  
+  /** 第一种写法**/
+  0% {
+    height: 0;
+  }
+  100% {
+    height: 100%;
+  }
 }
 
 .none,

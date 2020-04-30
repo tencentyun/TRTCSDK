@@ -31,7 +31,7 @@
         />
       </view>
     </view>
-    <view class="view-container pusher-container {{pusher.isVisible?'':'none'}}" style="left:{{pusher.xAxis}};top:{{pusher.yAxis}};width:{{pusher.width}};height:{{pusher.height}};zindex:{{pusher.zindex}};">
+    <view class="view-container pusher-container {{pusher.isVisible?'':'none'}}" style="left:{{pusher.xAxis}};top:{{pusher.yAxis}};width:{{pusher.width}};height:{{pusher.height}};z-index:{{pusher.zindex}};">
       <live-pusher 
         class="pusher" 
         url="{{pusher.url}}" 
@@ -68,6 +68,7 @@
         bindbgmstart="_pusherBGMStartHandler"
         bindbgmprogress="_pusherBGMProgressHandler"
         bindbgmcomplete="_pusherBGMCompleteHandler"
+        bindaudiovolumenotify="_pusherAudioVolumeNotify"
       />
     </view>
   </view>

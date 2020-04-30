@@ -9,13 +9,25 @@
   box-sizing: border-box;
 }
 .choice-content {
-  margin-top: 60rpx;
+  margin-top: 20rpx;
   width: 100%;
   font-size: 14px;
   color: white;
+
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	flex-wrap: wrap;
 }
 .choice-content switch {
   transform: scale(0.8);
+}
+.radio-group-choice {
+	display: flex;
+	justify-content: flex-end;
+}
+.radio-group-choice label:not(:last-child){
+	margin-right: 20rpx;
 }
 
 .title{

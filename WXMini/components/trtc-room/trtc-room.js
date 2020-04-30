@@ -65,6 +65,35 @@ Component({
     gridCurrentPage: 1, // grid 布局 当前页码
     gridPlayerPerPage: 4, // grid 布局每页 player的数量, 如果大于3，在逻辑里第一页需要减1。等于3 pusher 在每一页都出现。可选值: 3,4
     gridPagePlaceholderStreamList: [], // 占位数量
+    isFullscreenDevice: ENV.IS_FULLSCREEN_DEVICE,
+    isShowMoreMenu: false,
+    MICVolume: 50,
+    BGMVolume: 50,
+    BGMProgress: 0,
+
+    beautyStyle: 'smooth',
+    beautyStyleArray: [
+      { value: 'smooth', label: '光滑', checked: true },
+      { value: 'nature', label: '自然', checked: false },
+      { value: 'close', label: '关闭', checked: false },
+    ],
+    filterIndex: 0,
+    filterArray: [
+      { value: 'standard', label: '标准' },
+      { value: 'pink', label: '粉嫩' },
+      { value: 'nostalgia', label: '怀旧' },
+      { value: 'blues', label: '蓝调' },
+      { value: 'romantic', label: '浪漫' },
+      { value: 'cool', label: '清凉' },
+      { value: 'fresher', label: '清新' },
+      { value: 'solor', label: '日系' },
+      { value: 'aestheticism', label: '唯美' },
+      { value: 'whitening', label: '美白' },
+      { value: 'cerisered', label: '樱红' },
+    ],
+    audioReverbType: 0,
+    audioReverbTypeArray: ['关闭', 'KTV', '小房间', '大会堂', '低沉', '洪亮', '金属声', '磁性'],
+
   },
   /**
    * 生命周期方法
@@ -108,22 +137,33 @@ Component({
       if (this.status.isPending) {
         // 经历了 5000 挂起事件
         this.status.isPending = false
-        // 修复iOS 最小化触发5000事件后，音频推流失败的问题 20200409注释修复逻辑
+        // 修复iOS 最小化触发5000事件后，音频推流失败的问题
         // if (ENV.IS_IOS && this.data.pusher.enableMic) {
         //   this.unpublishLocalAudio().then(()=>{
         //     this.publishLocalAudio()
         //   })
         // }
+        // 经历了 5001 浮窗关闭事件，小程序底层会自动退房，恢复小程序时组件需要重新进房
+        // 重新进房
+        this.enterRoom({ roomID: this.data.config.roomID }).then(()=>{
+          setTimeout(()=>{
+            this.publishLocalVideo()
+            this.publishLocalAudio()
+          }, 2000)
+          // 进房后开始推送视频或音频
+        })
       }
-      if (this.status.isPush) {
-        // 小程序hide - show 有一定概率本地黑屏或静止，远端正常，或者远端和本地同时黑屏或静止，需要手动启动预览，非必现
-        // this.data.pusher.getPusherContext().startPreview()
-        // this.data.pusher.getPusherContext().resume()
-      }
+      // if (this.status.isPush) {
+      //   // 小程序hide - show 有一定概率本地黑屏或静止，远端正常，或者远端和本地同时黑屏或静止，需要手动启动预览，非必现
+      //   this.data.pusher.getPusherContext().startPreview()
+      //   this.data.pusher.getPusherContext().resume()
+      // }
+      this.status.pageLife = 'show'
     },
     hide: function() {
       // 组件所在的页面被隐藏时执行
       console.log(TAG_NAME, 'hide')
+      this.status.pageLife = 'hide'
     },
     resize: function(size) {
       // 组件所在的页面尺寸变化时执行
@@ -152,6 +192,7 @@ Component({
       this.status = {
         isPush: false, // 推流状态
         isPending: false, // 挂起状态，触发5000事件标记为true，onShow后标记为false
+        pageLife: '', // 页面生命周期 hide, show
       }
       this._lastTapTime = 0 // 点击时间戳 用于判断双击事件
       this._beforeLastTapTime = 0 // 点击时间戳 用于判断双击事件
@@ -248,6 +289,10 @@ Component({
      * @returns {Promise}
      */
     exitRoom() {
+      if (this.status.pageLife === 'hide') {
+        // 如果是退后台触发 onHide，不能调用 pusher API
+        console.warn(TAG_NAME, '小程序最小化时不能调用 exitRoom，如果不想听到远端声音，可以调用取消订阅，如果不想远端听到声音，可以调用取消发布')
+      }
       return new Promise((resolve, reject) => {
         console.log(TAG_NAME, 'exitRoom')
         this._exitIM()
@@ -260,9 +305,11 @@ Component({
           streamList: result.streamList,
           visibleStreamList: this._filterVisibleStream(result.streamList),
         }, () => {
-          // 在销毁页面时调用，不会走到这里
+          // 在销毁页面时调用exitRoom时，不会走到这里
           resolve({ userList: this.data.userList, streamList: this.data.streamList })
           console.log(TAG_NAME, 'exitRoom success', this.data.pusher, this.data.streamList, this.data.userList)
+          // 20200421 iOS 仍然没有1019事件通知退房，退房事件移动到 exitRoom 方法里，但不是后端通知的退房成功
+          this._emitter.emit(EVENT.LOCAL_LEAVE, { userID: this.data.pusher.userID })
         })
       })
     },
@@ -434,7 +481,7 @@ Component({
       if (this.data.template !== 'custom') {
         console.warn(`如需使用setViewRect方法，请初始化时设置template:"custom", 当前 template:"${this.data.template}"`)
       }
-      console.info(`不建议使用该方法动态修改样式，避免引起小程序渲染层问题，建议直接修改 wxml wxss 进行样式定制化`)
+      console.info(`不建议使用该方法动态修改样式，避免引起微信小程序渲染问题，建议直接修改 wxml wxss 进行样式定制化`)
       if (this.data.pusher.userID === params.userID) {
         return this._setPusherConfig({
           xAxis: params.xAxis,
@@ -467,7 +514,7 @@ Component({
       if (this.data.template !== 'custom') {
         console.warn(`如需使用setViewVisible方法，请初始化时设置template:"custom", 当前 template:"${this.data.template}"`)
       }
-      console.info(`不建议使用该方法动态修改样式，避免引起小程序渲染层问题，建议直接修改 wxml wxss 进行样式定制化`)
+      console.info(`不建议使用该方法动态修改样式，避免引起微信小程序渲染问题，建议直接修改 wxml wxss 进行样式定制化`)
       if (this.data.pusher.userID === params.userID) {
         return this._setPusherConfig({
           isVisible: params.isVisible,
@@ -494,7 +541,7 @@ Component({
       if (this.data.template !== 'custom') {
         console.warn(`如需使用setViewZIndex方法，请初始化时设置template:"custom", 当前 template:"${this.data.template}"`)
       }
-      console.info(`不建议使用该方法动态修改样式，避免引起小程序渲染层问题，建议直接修改 wxml wxss 进行样式定制化`)
+      console.info(`不建议使用该方法动态修改样式，避免引起微信小程序渲染问题，建议直接修改 wxml wxss 进行样式定制化`)
       if (this.data.pusher.userID === params.userID) {
         return this._setPusherConfig({
           zIndex: params.zindex || params.zIndex,
@@ -549,6 +596,7 @@ Component({
      * @param {Object} params volume
      */
     setBGMVolume(params) {
+      console.log(TAG_NAME, 'setBGMVolume', params)
       this.data.pusher.getPusherContext().setBGMVolume({ volume: params.volume })
     },
     /**
@@ -556,6 +604,7 @@ Component({
      * @param {Object} params volume
      */
     setMICVolume(params) {
+      console.log(TAG_NAME, 'setMICVolume', params)
       this.data.pusher.getPusherContext().setMICVolume({ volume: params.volume })
     },
     /**
@@ -858,8 +907,10 @@ Component({
      * @param {Object} config live-pusher 的配置
      * @returns {Promise}
      */
-    _setPusherConfig(config) {
-      console.log(TAG_NAME, '_setPusherConfig', config, this.data.pusher)
+    _setPusherConfig(config, skipLog = false) {
+      if (!skipLog) {
+        console.log(TAG_NAME, '_setPusherConfig', config, this.data.pusher)
+      }
       return new Promise((resolve, reject) => {
         if (!this.data.pusher) {
           this.data.pusher = new Pusher(config)
@@ -869,7 +920,9 @@ Component({
         this.setData({
           pusher: this.data.pusher,
         }, () => {
-          // console.log(TAG_NAME, '_setPusherConfig setData compelete', 'config:', config, 'pusher:', this.data.pusher)
+          if (!skipLog) {
+            console.log(TAG_NAME, '_setPusherConfig setData compelete', 'config:', config, 'pusher:', this.data.pusher)
+          }
           resolve(config)
         })
       })
@@ -974,25 +1027,44 @@ Component({
           // cloudenv PRO CCC DEV UAT
           // encsmall 0
           // 对外的默认值是rtc ，对内的默认值是videocall
-          rtcConfig.scene = !rtcConfig.scene || rtcConfig.scene === 'rtc' ? 'videocall' : 'live'
-          rtcConfig.enableBlackStream = rtcConfig.enableBlackStream || 1
-          rtcConfig.encsmall = rtcConfig.encsmall || 0
+          rtcConfig.scene = !rtcConfig.scene || rtcConfig.scene === 'rtc' ? 'videocall' : rtcConfig.scene
+          rtcConfig.enableBlackStream = rtcConfig.enableBlackStream || '' // 是否支持在纯音频下推送SEI消息，注意：在关闭enable-recv-message后还是无法接收
+          rtcConfig.encsmall = rtcConfig.encsmall || 0 // 是否编小画面，这个特性不建议学生默认开启，只有老师端才比较有意义
           rtcConfig.cloudenv = rtcConfig.cloudenv || 'PRO'
+          rtcConfig.streamID = rtcConfig.streamID || '' // 指定旁边路直播的流ID
+          rtcConfig.userDefineRecordID = rtcConfig.userDefineRecordID || '' // 指定录制文件的recordid
+          rtcConfig.privateMapKey = rtcConfig.privateMapKey || '' // 字符串房间号
+          rtcConfig.pureAudioMode = rtcConfig.pureAudioMode || ''// 指定是否纯音频推流及录制，默认不填，值为1 或 2，其他值非法不处理
+          rtcConfig.recvMode = rtcConfig.recvMode || 3 // 1. 自动接收音视频 2. 仅自动接收音频 3. 仅自动接收视频 4. 音视频都不自动接收, 不能绑定player
+          let roomID = ''
+          if (/^\d+$/.test(rtcConfig.roomID)) {
+            // 数字房间号
+            roomID = '&roomid=' + rtcConfig.roomID
+          } else {
+            // 字符串房间号
+            roomID = '&strroomid=' + rtcConfig.roomID
+          }
           setTimeout(()=> {
             const pushUrl = 'room://cloud.tencent.com/rtc?sdkappid=' + rtcConfig.sdkAppID +
-                            '&roomid=' + rtcConfig.roomID +
+                            roomID +
                             '&userid=' + rtcConfig.userID +
                             '&usersig=' + rtcConfig.userSig +
                             '&appscene=' + rtcConfig.scene +
                             '&encsmall=' + rtcConfig.encsmall +
-                            '&cloudenv=' + rtcConfig.cloudenv
-
-            console.log(TAG_NAME, 'getPushUrl result:', pushUrl)
+                            '&cloudenv=' + rtcConfig.cloudenv +
+                            '&enableBlackStream=' + rtcConfig.enableBlackStream +
+                            '&streamid=' + rtcConfig.streamID +
+                            '&userdefinerecordid=' + rtcConfig.userDefineRecordID +
+                            '&privatemapkey=' + rtcConfig.privateMapKey +
+                            '&pureaudiomode=' + rtcConfig.pureAudioMode +
+                            '&recvmode=' + rtcConfig.recvMode
+            console.warn(TAG_NAME, 'getPushUrl result:', pushUrl)
             resolve(pushUrl)
           }, 0)
         })
       }
       console.error(TAG_NAME, '组件仅支持微信 App iOS >=7.0.9, Android >= 7.0.8, 小程序基础库版 >= 2.10.0')
+      console.error(TAG_NAME, '需要真机运行，开发工具不支持实时音视频')
     },
     /**
      * 获取签名和推流地址
@@ -1212,43 +1284,44 @@ Component({
       const message = event.detail.message
       console.log(TAG_NAME, 'pusherStateChange：', code, event)
       switch (code) {
-        case 0:
-          console.log(message, code)
+        case 0: // 未知状态码，不做处理
+          console.log(TAG_NAME, message, code)
           break
         case 1001:
-          console.log('已经连接推流服务器', code)
+          console.log(TAG_NAME, '已经连接推流服务器', code)
           break
         case 1002:
-          console.log('已经与服务器握手完毕,开始推流', code)
+          console.log(TAG_NAME, '已经与服务器握手完毕,开始推流', code)
           break
         case 1003:
-          console.log('打开摄像头成功', code)
+          console.log(TAG_NAME, '打开摄像头成功', code)
           break
         case 1004:
-          console.log('录屏启动成功', code)
+          console.log(TAG_NAME, '录屏启动成功', code)
           break
         case 1005:
-          console.log('推流动态调整分辨率', code)
+          console.log(TAG_NAME, '推流动态调整分辨率', code)
           break
         case 1006:
-          console.log('推流动态调整码率', code)
+          console.log(TAG_NAME, '推流动态调整码率', code)
           break
         case 1007:
-          console.log('首帧画面采集完成', code)
+          console.log(TAG_NAME, '首帧画面采集完成', code)
           break
         case 1008:
-          console.log('编码器启动', code)
+          console.log(TAG_NAME, '编码器启动', code)
           break
         case 1018:
-          console.log('进房成功', code)
+          console.log(TAG_NAME, '进房成功', code)
           this._emitter.emit(EVENT.LOCAL_JOIN, { userID: this.data.pusher.userID })
           break
         case 1019:
-          console.log('退出房间', code)
-          this._emitter.emit(EVENT.LOCAL_LEAVE, { userID: this.data.pusher.userID })
+          console.log(TAG_NAME, '退出房间', code)
+          // 20200421 iOS 仍然没有1019事件通知退房，退房事件移动到 exitRoom 方法里，但不是后端通知的退房成功
+          // this._emitter.emit(EVENT.LOCAL_LEAVE, { userID: this.data.pusher.userID })
           break
         case 2003:
-          console.log('渲染首帧视频', code)
+          console.log(TAG_NAME, '渲染首帧视频', code)
           break
         case 1020:
         case 1031:
@@ -1259,62 +1332,53 @@ Component({
           this.userController.userEventHandler(event)
           break
         case -1301:
-          console.error('打开摄像头失败: ', code)
+          console.error(TAG_NAME, '打开摄像头失败: ', code)
           this._emitter.emit(EVENT.ERROR, { code, message })
           break
         case -1302:
-          console.error('打开麦克风失败: ', code)
+          console.error(TAG_NAME, '打开麦克风失败: ', code)
           this._emitter.emit(EVENT.ERROR, { code, message })
           break
         case -1303:
-          console.error('视频编码失败: ', code)
+          console.error(TAG_NAME, '视频编码失败: ', code)
           this._emitter.emit(EVENT.ERROR, { code, message })
           break
         case -1304:
-          console.error('音频编码失败: ', code)
+          console.error(TAG_NAME, '音频编码失败: ', code)
           this._emitter.emit(EVENT.ERROR, { code, message })
           break
         case -1307:
-          console.error('推流连接断开: ', code)
+          console.error(TAG_NAME, '推流连接断开: ', code)
           this._emitter.emit(EVENT.ERROR, { code, message })
           break
         case -100018:
-          console.error('进房失败: ', code, message)
+          console.error(TAG_NAME, '进房失败: ', code, message)
           this._emitter.emit(EVENT.ERROR, { code, message })
           break
         case 5000:
-          console.log('小程序被挂起: ', code)
-          // 终端 sdk 建议执行退房操作，唤起时重新进房，临时解决方案，待小程序SDK完全实现自动重新推流后可以去掉
+          console.log(TAG_NAME, '小程序被挂起: ', code)
+          // 20200421 iOS 微信点击胶囊圆点会触发该事件
+          // 触发 5000 后，底层SDK会退房，返回前台后会自动进房
+          break
+        case 5001:
+          // 20200421 仅有 Android 微信会触发该事件
+          console.log(TAG_NAME, '小程序悬浮窗被关闭: ', code)
           this.status.isPending = true
-          // if (this.status.isPush) {
-          //   // this.exitRoom()
-          //   const tempUrl = this.data.pusher.url
-          //   this.data.pusher.url = ''
-          //   // console.log('5000 小程序被挂起后更换pusher', this.data.pusher.getPusherContext().webviewId)
-          //   this.setData({
-          //     pusher: this.data.pusher,
-          //   }, () => {
-          //     this.data.pusher.url = tempUrl
-          //     this.setData({
-          //       pusher: this.data.pusher,
-          //     }, () => {
-          //       this.data.pusher.getPusherContext().start()
-          //       console.log('5000 小程序被挂起后更换pusher', this.data.pusher)
-          //     })
-          //   })
-          // }
+          if (this.status.isPush) {
+            this.exitRoom()
+          }
           break
         case 1021:
-          console.log('网络类型发生变化，需要重新进房', code)
+          console.log(TAG_NAME, '网络类型发生变化，需要重新进房', code)
           break
         case 2007:
-          console.log('本地视频播放loading: ', code)
+          console.log(TAG_NAME, '本地视频播放loading: ', code)
           break
         case 2004:
-          console.log('本地视频播放开始: ', code)
+          console.log(TAG_NAME, '本地视频播放开始: ', code)
           break
         default:
-          console.log(message, code)
+          console.log(TAG_NAME, message, code)
       }
 
       this._emitter.emit(EVENT.LOCAL_STATE_UPDATE, event)
@@ -1345,6 +1409,10 @@ Component({
     _pusherBGMCompleteHandler(event) {
       // BGM_COMPLETE
       this._emitter.emit(EVENT.BGM_PLAY_COMPLETE, event)
+    },
+    _pusherAudioVolumeNotify: function(event) {
+      // console.log(TAG_NAME, '_pusherAudioVolumeNotify', event)
+      this._emitter.emit(EVENT.LOCAL_AUDIO_VOLUME_UPDATE, event)
     },
     // player event handler
     // 获取 player ID 再进行触发
@@ -1396,7 +1464,7 @@ Component({
       })
       if (this.data.template === 'grid' && !skipPagination) {
         this._filterGridPageVisibleStream(list)
-        console.log(TAG_NAME, '_filterVisibleStream gridPagePlaceholderStreamList:', this.data.gridPagePlaceholderStreamList)
+        // console.log(TAG_NAME, '_filterVisibleStream gridPagePlaceholderStreamList:', this.data.gridPagePlaceholderStreamList)
         if (// list.length > this.data.gridPlayerPerPage - 2 &&
           this.data.gridCurrentPage > 1 &&
           this.data.gridPagePlaceholderStreamList.length === this.data.gridPlayerPerPage) {
@@ -1404,7 +1472,7 @@ Component({
           this._gridPageToPrev(list)
         }
       }
-      console.log(TAG_NAME, '_filterVisibleStream list:', list)
+      // console.log(TAG_NAME, '_filterVisibleStream list:', list)
       return list
     },
     _filterGridPageVisibleStream(list) {
@@ -1436,15 +1504,18 @@ Component({
       for (let i = 0; i < length; i++) {
         if ( i > interval[0] && i < interval[1]) {
           list[i].isVisible = true
-          list[i].muteVideo = list[i].muteVideoPrev || false
+          list[i].muteVideo = list[i].muteVideoPrev === undefined ? list[i].muteVideo : list[i].muteVideoPrev
           visibleCount++
         } else {
           list[i].isVisible = false
           list[i].muteVideo = true
         }
       }
-      for (let i = 0; i < this.data.gridPlayerPerPage - visibleCount; i++) {
-        this.data.gridPagePlaceholderStreamList.push({ id: 'holder-' + i })
+      // 第一页，不需要占位
+      if (this.data.gridCurrentPage !== 1) {
+        for (let i = 0; i < this.data.gridPlayerPerPage - visibleCount; i++) {
+          this.data.gridPagePlaceholderStreamList.push({ id: 'holder-' + i })
+        }
       }
       return list
     },
@@ -1658,8 +1729,8 @@ Component({
       return promise
     },
     _onIMReady(event) {
-      console.log(TAG_NAME, 'IM.SDK_READY', event)
-      this._emitter.emit(EVENT.IM_SDK_READY, event)
+      console.log(TAG_NAME, 'IM.READY', event)
+      this._emitter.emit(EVENT.IM_READY, event)
       const roomID = this.data.config.roomID
       // 查询群组是否存在
       this._searchGroup({ roomID }).then((res) => {
@@ -1679,7 +1750,7 @@ Component({
         })
       })
       // 收到离线消息和会话列表同步完毕通知，接入侧可以调用 sendMessage 等需要鉴权的接口
-      // event.name - TIM.EVENT.SDK_READY
+      // event.name - TIM.EVENT.IM_READY
     },
     _onIMMessageReceived(event) {
       // 收到推送的单聊、群聊、群提示、群系统通知的新消息，可通过遍历 event.data 获取消息列表数据并渲染到页面
@@ -1714,10 +1785,10 @@ Component({
       this._emitter.emit(EVENT.IM_MESSAGE_RECEIVED, event)
     },
     _onIMNotReady(event) {
-      console.log(TAG_NAME, 'IM.SDK_NOT_READY', event)
-      this._emitter.emit(EVENT.IM_SDK_NOT_READY, event)
+      console.log(TAG_NAME, 'IM.NOT_READY', event)
+      this._emitter.emit(EVENT.IM_NOT_READY, event)
       // 收到 SDK 进入 not ready 状态通知，此时 SDK 无法正常工作
-      // event.name - TIM.EVENT.SDK_NOT_READY
+      // event.name - TIM.EVENT.IM_NOT_READY
     },
     _onIMKickedOut(event) {
       console.log(TAG_NAME, 'IM.KICKED_OUT', event)
@@ -1803,6 +1874,7 @@ Component({
       this.exitRoom()
     },
     _debugEnterRoom() {
+      Object.assign(this.data.pusher, this.data.config)
       this.enterRoom({ roomID: this.data.config.roomID }).then(()=>{
         setTimeout(()=>{
           this.publishLocalVideo()
@@ -1963,6 +2035,11 @@ Component({
         panelName: this.data.panelName !== 'setting-panel' ? 'setting-panel' : '',
       })
     },
+    _switchBGMPanel() {
+      this.setData({
+        panelName: this.data.panelName !== 'bgm-panel' ? 'bgm-panel' : '',
+      })
+    },
     _handleMaskerClick() {
       this.setData({
         panelName: '',
@@ -2030,6 +2107,21 @@ Component({
       console.log(TAG_NAME, '_setPlayerProperty', config)
       this._setPlayerConfig({ userID, streamType, config })
     },
+    _changeProperty(event) {
+      const propertyName = event.currentTarget.dataset.propertyName
+      const newData = {}
+      newData[propertyName] = event.detail.value
+      this.setData(newData)
+      const volume = newData[propertyName] / 100
+      switch (propertyName) {
+        case 'MICVolume':
+          this.setMICVolume({ volume })
+          break
+        case 'BGMVolume':
+          this.setBGMVolume({ volume })
+          break
+      }
+    },
     _switchStreamType(event) {
       const userID = event.currentTarget.dataset.userid
       const streamType = event.currentTarget.dataset.streamtype
@@ -2078,6 +2170,18 @@ Component({
           visibleStreamList: this._filterVisibleStream(this.data.streamList, true),
         }, () => {
         })
+      })
+      this.on(EVENT.BGM_PLAY_PROGRESS, (event) => {
+        // console.log(TAG_NAME, '_gridBindEvent on BGM_PLAY_PROGRESS', event)
+        const BGMProgress = event.data.detail.progress / event.data.detail.duration * 100
+        this.setData({ BGMProgress })
+      })
+      this.on(EVENT.LOCAL_AUDIO_VOLUME_UPDATE, (event) => {
+        // console.log(TAG_NAME, '_gridBindEvent on LOCAL_AUDIO_VOLUME_UPDATE', event)
+        // const data = event.data
+        const volume = event.data.detail.volume
+        // 避免频繁输出log
+        this._setPusherConfig({ volume }, true)
       })
     },
     _handleGridTouchStart(event) {
@@ -2177,10 +2281,55 @@ Component({
         })
       }
     },
+    _toggleMoreMenu() {
+      this.setData({
+        isShowMoreMenu: !this.data.isShowMoreMenu,
+      })
+    },
     _toggleIMPanel() {
+      if (!this.data.enableIM) {
+        wx.showToast({
+          icon: 'none',
+          title: '当前没有开启IM功能，请设置 enableIM:true',
+        })
+      }
       this.setData({
         showIMPanel: !this.data.showIMPanel,
       })
+    },
+    _handleBGMOperation(event) {
+      const operationName = event.currentTarget.dataset.operationName
+      if (this[operationName]) {
+        this[operationName]({ url: 'http://music.163.com/song/media/outer/url?id=317181.mp3' })
+      }
+    },
+    _selectBeautyStyle: function(event) {
+      console.log(TAG_NAME, '_selectBeautyStyle', event)
+      // this.data.beauty = (event.detail.value === 'close' ? 0 : 9)
+      const value = event.detail.value
+      this.setData({
+        // beauty: (value === 'close' ? 0 : 9),
+        beautyStyle: value,
+      }, () => {
+        this._setPusherConfig({
+          beautyLevel: value === 'close' ? 0 : 9,
+          beautyStyle: value === 'close' ? 'smooth' : value,
+        })
+      })
+    },
+    _selectFilter: function(event) {
+      console.log(TAG_NAME, '_selectFilter', event)
+      const index = parseInt(event.detail.value)
+      this.setData({ filterIndex: index }, () => {
+        this._setPusherConfig({
+          filter: this.data.filterArray[index].value,
+        })
+      })
+    },
+    _selectAudioReverbType: function(event) {
+      console.log(TAG_NAME, '_selectAudioReverbType', event)
+      const audioReverbType = parseInt(event.detail.value)
+      this._setPusherConfig({ audioReverbType })
     },
     _sendIMMessage(event) {
       console.log(TAG_NAME, '_sendIMMessage', event)

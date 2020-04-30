@@ -9,8 +9,6 @@ Page({
     roomID: '',
     userID: '',
     template: 'grid',
-    cloudenv: 'PRO',
-    scene: 'rtc',
     localVideo: true,
     localAudio: true,
     enableEarMonitor: false,
@@ -18,22 +16,48 @@ Page({
     localMirror: 'auto',
     enableAgc: true,
     enableAns: true,
-    encsmall: false,
     frontCamera: 'front',
+    audioVolumeType: 'auto',
     resolution: 'SD',
     debugMode: false,
-
+    audioQuality: 'high',
     // 用于自定义输入视频分辨率和默认值
-    // videoHeight: 720,
-    // videoWidth: 1280,
-    // minBitrate: 1500,
-    // maxBitrate: 2000,
-
     videoWidth: 360,
     videoHeight: 640,
     minBitrate: 600,
     maxBitrate: 900,
+    // pusher URL 参数
+    scene: 'rtc',
+    encsmall: false,
+    cloudenv: 'PRO',
+    enableBlackStream: 0,
+    streamID: '',
+    userDefineRecordID: '',
+    privateMapKey: '',
+    pureAudioMode: '', // 默认不填，值为1或者2
+    recvMode: '',
+    // player 参数
+    enableRecvMessage: false,
 
+    audioQualityArray: [
+      { value: 'high', title: '48K' },
+      { value: 'low', title: '16K' },
+    ],
+    cloudenvArray: [
+      { value: 'PRO', title: 'PRO' },
+      { value: 'CCC', title: 'CCC' },
+      { value: 'DEV', title: 'DEV' },
+      { value: 'UAT', title: 'UAT' },
+    ],
+    sceneArray: [
+      { value: 'rtc', title: '通话' },
+      { value: 'live', title: '直播' },
+    ],
+    audioVolumeTypeArray: [
+      { value: 'auto', title: '自动' },
+      { value: 'media', title: '媒体' },
+      { value: 'voicecall', title: '通话' },
+    ],
     localMirrorArray: [
       { value: 'auto', title: '自动' },
       { value: 'enable', title: '开启' },
@@ -43,137 +67,83 @@ Page({
       { value: 'FHD', title: 'FHD' },
       { value: 'HD', title: 'HD' },
       { value: 'SD', title: 'SD' },
-      // { value: 'default', title: '自定义' }
     ],
     headerHeight: app.globalData.headerHeight,
     statusBarHeight: app.globalData.statusBarHeight,
   },
 
-  enterRoomID: function(e) {
-    this.setData({
-      roomID: e.detail.value,
+  enterHandler: function(event) {
+    const key = event.currentTarget.dataset.key
+    const data = {}
+    data[key] = event.detail.value
+    if ('roomID' === key) {
+      data[key] = data[key].replace(/[^A-Za-z0-9]/g, '')
+    }
+    this.setData(data, () => {
+      console.log(`set ${key}:`, data[key])
     })
   },
 
-  enterUserID: function(e) {
-    this.setData({
-      userID: e.detail.value,
+  switchHandler: function(event) {
+    const key = event.currentTarget.dataset.key
+    const data = {}
+    data[key] = event.detail.value
+    if (key === 'enableBlackStream') {
+      data[key] = data[key] === false ? 0 : 1
+    }
+    this.setData(data, () => {
+      console.log(`set ${key}:`, data[key])
     })
   },
 
-  selectScene: function(e) {
-    this.setData({
-      scene: e.detail.value,
-    })
-  },
-
-  switchLocalVideo: function(e) {
-    this.setData({
-      localVideo: e.detail.value,
-    })
-  },
-
-  switchLocalAudio: function(e) {
-    this.setData({
-      localAudio: e.detail.value,
-    })
-  },
-
-  switchEarMonitor: function(e) {
-    this.setData({
-      enableEarMonitor: e.detail.value,
-    })
-  },
-
-  switchAutoFocus: function(e) {
-    this.setData({
-      enableAutoFocus: e.detail.value,
-    })
-  },
-
-  switchAgc: function(e) {
-    this.setData({
-      enableAgc: e.detail.value,
-    })
-  },
-
-  switchAns: function(e) {
-    this.setData({
-      enableAns: e.detail.value,
-    })
-  },
-
-  switchSmallScreen: function(e) {
-    this.setData({
-      encsmall: e.detail.value,
-    })
-  },
-
-  selectDevicePosition: function(e) {
-    this.setData({
-      frontCamera: e.detail.value,
-    })
-  },
-
-  selectLocalMirror: function(e) {
-    this.setData({
-      localMirror: e.detail.value,
-    })
-  },
-
-  switchDebugMode: function(e) {
-    this.setData({
-      debugMode: e.detail.value,
-    })
-  },
-
-  selectResolution: function(e) {
-    this.setData({
-      resolution: e.detail.value,
-    }, () => {
-      // 如果用户选择自定义的话, 手动输入分辨率，并且在传递的时候进行一下判断
-      switch (this.data.resolution) {
-        case 'FHD':
-          this.setData({
-            videoWidth: 720,
-            videoHeight: 1280,
-            minBitrate: 1500,
-            maxBitrate: 2000,
-          })
-          break
-        case 'SD':
-          this.setData({
-            videoWidth: 360,
-            videoHeight: 640,
-            minBitrate: 600,
-            maxBitrate: 900,
-          })
-          break
-        case 'HD':
-          this.setData({
-            videoWidth: 540,
-            videoHeight: 960,
-            minBitrate: 1000,
-            maxBitrate: 1500,
-          })
-          break
-        default:
-          console.log('choose resolution error')
-          break
+  selectHandler: function(event) {
+    const key = event.currentTarget.dataset.key
+    const data = {}
+    data[key] = event.detail.value
+    this.setData(data, () => {
+      console.log(`set ${key}:`, data[key])
+      if ('resolution' === key) {
+        switch (this.data.resolution) {
+          case 'FHD':
+            this.setData({
+              videoWidth: 720,
+              videoHeight: 1280,
+              minBitrate: 1500,
+              maxBitrate: 2000,
+            })
+            break
+          case 'SD':
+            this.setData({
+              videoWidth: 360,
+              videoHeight: 640,
+              minBitrate: 600,
+              maxBitrate: 900,
+            })
+            break
+          case 'HD':
+            this.setData({
+              videoWidth: 540,
+              videoHeight: 960,
+              minBitrate: 1000,
+              maxBitrate: 1500,
+            })
+            break
+          default:
+            break
+        }
       }
     })
   },
 
   enterRoom: function() {
     const nowTime = new Date()
-    if (nowTime - this.tapTime < 1000) {
+    if (nowTime - this.tapTime < 1200) {
       return
     }
 
     const url = `../room/room?roomID=${this.data.roomID}` +
                 `&template=${this.data.template}` +
                 `&debugMode=${this.data.debugMode}` +
-                `&cloudenv=${this.data.cloudenv}` +
                 `&localVideo=${this.data.localVideo}` +
                 `&localAudio=${this.data.localAudio}` +
                 `&enableEarMonitor=${this.data.enableEarMonitor}` +
@@ -181,15 +151,26 @@ Page({
                 `&localMirror=${this.data.localMirror}` +
                 `&enableAgc=${this.data.enableAgc}` +
                 `&enableAns=${this.data.enableAns}` +
-                `&encsmall=${this.data.encsmall}` +
                 `&frontCamera=${this.data.frontCamera}` +
+                `&audioVolumeType=${this.data.audioVolumeType}` +
+                `&audioQuality=${this.data.audioQuality}` +
                 `&videoWidth=${this.data.videoWidth}` +
                 `&videoHeight=${this.data.videoHeight}` +
-                `&scene=${this.data.scene}` +
                 `&userID=${this.data.userID}` +
                 `&minBitrate=${this.data.minBitrate}` +
-                `&maxBitrate=${this.data.maxBitrate}`
-
+                `&maxBitrate=${this.data.maxBitrate}` +
+                // pusher URL 参数
+                `&encsmall=${this.data.encsmall}` +
+                `&scene=${this.data.scene}` +
+                `&cloudenv=${this.data.cloudenv}` +
+                `&enableBlackStream=${this.data.enableBlackStream}` +
+                `&streamID=${this.data.streamID}` +
+                `&userDefineRecordID=${this.data.userDefineRecordID}` +
+                `&privateMapKey=${this.data.privateMapKey}` +
+                `&pureAudioMode=${this.data.pureAudioMode}` +
+                `&recvMode=${this.data.recvMode}` +
+                // player参数
+                `&enableRecvMessage=${this.data.enableRecvMessage}`
     if (!this.data.roomID) {
       wx.showToast({
         title: '请输入房间号',
@@ -213,11 +194,91 @@ Page({
         title: '用户名为英文加数字',
       })
     } else {
-      wx.navigateTo({
-        url: url,
+      this.tapTime = nowTime
+      this.checkDeviceAuthorize().then((result)=>{
+        console.log('授权成功', result)
+        console.log('navigateTo', url)
+        wx.navigateTo({ url: url })
+      }).catch((error)=>{
+        console.log('没有授权', error)
       })
-      this.setData({ 'tapTime': nowTime })
     }
+  },
+
+  checkDeviceAuthorize: function() {
+    this.hasOpenDeviceAuthorizeModal = false
+    return new Promise((resolve, reject) => {
+      if (!wx.getSetting || !wx.getSetting()) {
+        // 微信测试版 获取授权API异常，目前只能即使没授权也可以通过
+        resolve()
+      }
+      wx.getSetting().then((result)=> {
+        console.log('getSetting', result)
+        this.authorizeMic = result.authSetting['scope.record']
+        this.authorizeCamera = result.authSetting['scope.camera']
+        if (result.authSetting['scope.camera'] && result.authSetting['scope.record']) {
+          // 授权成功
+          resolve()
+        } else {
+          // 没有授权，弹出授权窗口
+          // 注意： wx.authorize 只有首次调用会弹框，之后调用只返回结果，如果没有授权需要自行弹框提示处理
+          console.log('getSetting 没有授权，弹出授权窗口', result)
+          wx.authorize({
+            scope: 'scope.record',
+          }).then((res)=>{
+            console.log('authorize mic', res)
+            this.authorizeMic = true
+            if (this.authorizeCamera) {
+              resolve()
+            }
+          }).catch((error)=>{
+            console.log('authorize mic error', error)
+            this.authorizeMic = false
+          })
+          wx.authorize({
+            scope: 'scope.camera',
+          }).then((res)=>{
+            console.log('authorize camera', res)
+            this.authorizeCamera = true
+            if (this.authorizeMic) {
+              resolve()
+            } else {
+              this.openConfirm()
+              reject(new Error('authorize fail'))
+            }
+          }).catch((error)=>{
+            console.log('authorize camera error', error)
+            this.authorizeCamera = false
+            this.openConfirm()
+            reject(new Error('authorize fail'))
+          })
+        }
+      })
+    })
+  },
+  openConfirm: function() {
+    if (this.hasOpenDeviceAuthorizeModal) {
+      return
+    }
+    this.hasOpenDeviceAuthorizeModal = true
+    return wx.showModal({
+      content: '您没有打开麦克风和摄像头的权限，是否去设置打开？',
+      confirmText: '确认',
+      cancelText: '取消',
+      success: (res)=>{
+        this.hasOpenDeviceAuthorizeModal = false
+        console.log(res)
+        // 点击“确认”时打开设置页面
+        if (res.confirm) {
+          console.log('用户点击确认')
+          wx.openSetting({
+            success: (res) => { },
+          })
+        } else {
+          console.log('用户点击取消')
+        }
+      },
+    })
   },
   onBack: function() {
     wx.navigateBack({
@@ -238,6 +299,7 @@ Page({
     wx.setKeepScreenOn({
       keepScreenOn: true,
     })
+    // this.randomUserID()
     // 随机 userID roomID
     // this.setData({
     //   roomID: parseInt(10000 * Math.random()),
