@@ -37,14 +37,24 @@ class RtcClient {
       this.isJoined_ = true;
 
       // create a local stream with audio/video from microphone/camera
-      this.localStream_ = TRTC.createStream({
-        audio: true,
-        video: true,
-        userId: this.userId_,
-        cameraId: getCameraId(),
-        microphoneId: getMicrophoneId(),
-        mirror: true
-      });
+      if (getCameraId() && getMicrophoneId()) {
+        this.localStream_ = TRTC.createStream({
+          audio: true,
+          video: true,
+          userId: this.userId_,
+          cameraId: getCameraId(),
+          microphoneId: getMicrophoneId(),
+          mirror: true
+        });
+      } else {
+        // not to specify cameraId/microphoneId to avoid OverConstrainedError
+        this.localStream_ = TRTC.createStream({
+          audio: true,
+          video: true,
+          userId: this.userId_,
+          mirror: true
+        });
+      }
       try {
         // initialize the local stream and the stream will be populated with audio/video
         await this.localStream_.initialize();
@@ -269,13 +279,13 @@ class RtcClient {
       }
       console.log(
         'type: ' +
-          remoteStream.getType() +
-          ' stream-updated hasAudio: ' +
-          remoteStream.hasAudio() +
-          ' hasVideo: ' +
-          remoteStream.hasVideo() +
-          ' uid: ' +
-          uid
+        remoteStream.getType() +
+        ' stream-updated hasAudio: ' +
+        remoteStream.hasAudio() +
+        ' hasVideo: ' +
+        remoteStream.hasVideo() +
+        ' uid: ' +
+        uid
       );
     });
 
