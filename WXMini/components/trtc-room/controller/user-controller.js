@@ -125,6 +125,10 @@ class UserController {
       incomingUserList.forEach((item) => {
         const userID = item.userid
         let user = this.getUser(userID)
+        // 偶现SDK触发退房事件前没有触发进房事件
+        if (!user || !user.streams) {
+          return
+        }
         // 从userList 里删除指定的用户和 stream
         this._removeUserAndStream(userID)
         // 重置
