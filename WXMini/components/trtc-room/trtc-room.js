@@ -210,7 +210,7 @@ Component({
         console.log(TAG_NAME, '_propertyObserver config:', config)
         // 由于 querystring 只支持 String 类型，做一个类型防御
         if (typeof config.debugMode === 'string') {
-          config.debugMode === 'true' ? true : false
+          config.debugMode = config.debugMode === 'true' ? true : false
         }
         // 初始化IM
         if (config.enableIM && config.sdkAppID) {
@@ -1352,7 +1352,7 @@ Component({
           this._emitter.emit(EVENT.ERROR, { code, message })
           break
         case -100018:
-          console.error(TAG_NAME, '进房失败: ', code, message)
+          console.error(TAG_NAME, '进房失败: userSig 校验失败，请检查 userSig 是否填写正确', code, message)
           this._emitter.emit(EVENT.ERROR, { code, message })
           break
         case 5000:
