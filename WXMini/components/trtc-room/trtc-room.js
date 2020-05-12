@@ -2300,7 +2300,7 @@ Component({
     _handleBGMOperation(event) {
       const operationName = event.currentTarget.dataset.operationName
       if (this[operationName]) {
-        this[operationName]({ url: 'http://music.163.com/song/media/outer/url?id=317181.mp3' })
+        this[operationName]({ url: 'https://trtc-1252463788.cos.ap-guangzhou.myqcloud.com/web/assets/bgm-test.mp3' })
       }
     },
     _selectBeautyStyle: function(event) {
