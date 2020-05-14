@@ -146,18 +146,51 @@ Component({
         // 经历了 5001 浮窗关闭事件，小程序底层会自动退房，恢复小程序时组件需要重新进房
         // 重新进房
         this.enterRoom({ roomID: this.data.config.roomID }).then(()=>{
-          setTimeout(()=>{
-            this.publishLocalVideo()
-            this.publishLocalAudio()
-          }, 2000)
           // 进房后开始推送视频或音频
+          // setTimeout(()=>{
+          //   this.publishLocalVideo()
+          //   this.publishLocalAudio()
+          // }, 2000)
         })
+      } else if (ENV.IS_ANDROID && this.status.pageLife === 'hide' && this.status.isOnHideAddStream && this.data.streamList.length > 0) {
+        // 微信没有提供明确的最小化事件，onHide事件，不一定是最小化
+        // 获取所有的player 清空 src 重新赋值 验证无效
+        // 清空 visibleStreamList 重新赋值， 验证无效
+        // 退房重新进房，有效但是成本比较高
+
+        // 将标记了 isOnHideAdd 的 stream 的 palyer 销毁并重新渲染
+        const streamList = this.data.streamList
+        let tempStreamList = []
+        // 过滤 onHide 时新增的 stream
+        for (let i = 0; i < streamList.length; i++) {
+          if (streamList[i].isOnHideAdd && streamList[i].playerContext) {
+            const stream = streamList[i]
+            tempStreamList.push(stream)
+            stream.playerContext = undefined
+            streamList.splice(i, 1)
+          }
+        }
+        // 设置渲染，销毁onHide 时新增的 player
+        this._setList({
+          streamList: streamList,
+        }).then(() => {
+          for (let i = 0; i < tempStreamList.length; i++) {
+            streamList.push(tempStreamList[i])
+          }
+          // 设置渲染，重新创建 onHide 时新增的 player
+          // setTimeout(()=>{
+          this._setList({
+            streamList: streamList,
+          }).then(() => {
+            for (let i = 0; i < tempStreamList.length; i++) {
+              tempStreamList[i] = wx.createLivePlayerContext(tempStreamList[i].streamID, this)
+            }
+            tempStreamList = []
+          })
+          // }, 500)
+        })
+        this.status.isOnHideAddStream = false
       }
-      // if (this.status.isPush) {
-      //   // 小程序hide - show 有一定概率本地黑屏或静止，远端正常，或者远端和本地同时黑屏或静止，需要手动启动预览，非必现
-      //   this.data.pusher.getPusherContext().startPreview()
-      //   this.data.pusher.getPusherContext().resume()
-      // }
       this.status.pageLife = 'show'
     },
     hide: function() {
@@ -193,6 +226,7 @@ Component({
         isPush: false, // 推流状态
         isPending: false, // 挂起状态，触发5000事件标记为true，onShow后标记为false
         pageLife: '', // 页面生命周期 hide, show
+        isOnHideAddStream: false, // onHide后有新增Stream
       }
       this._lastTapTime = 0 // 点击时间戳 用于判断双击事件
       this._beforeLastTapTime = 0 // 点击时间戳 用于判断双击事件
@@ -1035,7 +1069,7 @@ Component({
           rtcConfig.userDefineRecordID = rtcConfig.userDefineRecordID || '' // 指定录制文件的recordid
           rtcConfig.privateMapKey = rtcConfig.privateMapKey || '' // 字符串房间号
           rtcConfig.pureAudioMode = rtcConfig.pureAudioMode || ''// 指定是否纯音频推流及录制，默认不填，值为1 或 2，其他值非法不处理
-          rtcConfig.recvMode = rtcConfig.recvMode || 3 // 1. 自动接收音视频 2. 仅自动接收音频 3. 仅自动接收视频 4. 音视频都不自动接收, 不能绑定player
+          rtcConfig.recvMode = rtcConfig.recvMode || 1 // 1. 自动接收音视频 2. 仅自动接收音频 3. 仅自动接收视频 4. 音视频都不自动接收, 不能绑定player
           let roomID = ''
           if (/^\d+$/.test(rtcConfig.roomID)) {
             // 数字房间号
@@ -1215,6 +1249,11 @@ Component({
       this.userController.on(EVENT.REMOTE_VIDEO_ADD, (event)=>{
         console.log(TAG_NAME, '远端视频可用', event, event.data.stream.userID)
         const stream = event.data.stream
+        // 如果Android onHide 时，新增的player 无法播放 记录标识位
+        if (this.status.pageLife === 'hide') {
+          this.status.isOnHideAddStream = true
+          stream.isOnHideAdd = true
+        }
         this._setList({
           userList: event.data.userList,
           streamList: event.data.streamList,

@@ -31,7 +31,7 @@
         />
       </view>
     </view>
-    <view class="view-container pusher-container {{pusher.isVisible?'':'none'}}" style="left:{{pusher.xAxis}};top:{{pusher.yAxis}};width:{{pusher.width}};height:{{pusher.height}};z-index:{{pusher.zindex}};">
+    <view class="view-container pusher-container {{pusher.isVisible?'':'none'}}" style="left:{{pusher.xAxis}};top:{{pusher.yAxis}};width:{{pusher.width}};height:{{pusher.height}};z-index:{{pusher.zIndex}};">
       <live-pusher 
         class="pusher" 
         url="{{pusher.url}}" 
