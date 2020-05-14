@@ -123,6 +123,9 @@ Component({
       // 在组件实例被从页面节点树移除时执行
       console.log(TAG_NAME, 'detached')
       // 停止所有拉流，并重置数据
+      // 组件销毁清除事件总线
+      this.userController = null
+      this._emitter = null
       this.exitRoom()
     },
     error: function(error) {
