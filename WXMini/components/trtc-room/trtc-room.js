@@ -1419,8 +1419,6 @@ Component({
         default:
           console.log(TAG_NAME, message, code)
       }
-
-      this._emitter.emit(EVENT.LOCAL_STATE_UPDATE, event)
     },
     _pusherNetStatusHandler(event) {
       // 触发 LOCAL_NET_STATE_UPDATE
