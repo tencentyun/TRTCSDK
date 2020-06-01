@@ -1,10 +1,9 @@
 package com.tencent.liteav.liveroom.model.impl.av.trtc;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 
+import com.tencent.liteav.audio.TXAudioEffectManager;
 import com.tencent.liteav.beauty.TXBeautyManager;
-import com.tencent.liteav.liveroom.model.TRTCAudioEffectManager;
 import com.tencent.liteav.liveroom.model.impl.base.TXCallback;
 import com.tencent.rtmp.ui.TXCloudVideoView;
 
@@ -55,5 +54,7 @@ public interface ITRTCTXLiveRoom {
 
     TXBeautyManager getTXBeautyManager();
 
-    TRTCAudioEffectManager getAudioEffectManager();
+    TXAudioEffectManager getAudioEffectManager();
+
+    void setAudioQuality(int quality);
 }

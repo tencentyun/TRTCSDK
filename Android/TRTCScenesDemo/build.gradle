@@ -3,11 +3,12 @@
 buildscript {
 
     repositories {
+//        maven { url "https://mirrors.tencent.com/nexus/repository/maven-public/" }
         jcenter()
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.1'
+        classpath 'com.android.tools.build:gradle:3.5.3'
 
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -22,6 +23,7 @@ allprojects {
             dirs project(':app').file('libs')
         }
 
+//        maven { url "https://mirrors.tencent.com/nexus/repository/maven-public/" }
         jcenter()
         google()
     }
@@ -38,9 +40,9 @@ ext {
     minSdkVersion = 16
     targetSdkVersion = 26
     liteavSdk="com.tencent.liteav:LiteAVSDK_TRTC:latest.release"
-    imSdk = 'com.tencent.imsdk:imsdk:4.6.56'
+    imSdk = 'com.tencent.imsdk:imsdk:4.7.10'
     versionCode = 1
     versionName = "v1.0"
-    ndkAbi = 'armeabi-v7a'//,'armeabi-v7a', 'arm64-v8a'
+    ndkAbi = 'armeabi'//,'armeabi-v7a', 'arm64-v8a'
     aekit_version = '1.0.10-cloud'
 }

@@ -10,6 +10,7 @@ import android.util.Log;
 import com.blankj.utilcode.util.CollectionUtils;
 import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.tencent.liteav.audio.TXAudioEffectManager;
 import com.tencent.liteav.demo.trtcvoiceroom.model.SeiMessageData;
 import com.tencent.liteav.demo.trtcvoiceroom.model.SettingConfig;
 import com.tencent.liteav.demo.trtcvoiceroom.model.VoiceRoomConfig;
@@ -22,7 +23,6 @@ import com.tencent.trtc.TRTCCloud;
 import com.tencent.trtc.TRTCCloudDef;
 import com.tencent.trtc.TRTCCloudListener;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -294,6 +294,7 @@ public class VoiceRoomMainPresenter implements VoiceRoomContract.IPresenter {
         mTRTCCloud.enableAudioVolumeEvaluation(800);
 
         mTRTCCloud.setListener(mChatRoomTRTCListener);
+        setAudioQuality(mVoiceRoomConfig.audioQuality);
         if (mVoiceRoomConfig.role == TRTCCloudDef.TRTCRoleAnchor) {
             mTRTCCloud.startLocalAudio();
         } else {
@@ -318,27 +319,12 @@ public class VoiceRoomMainPresenter implements VoiceRoomContract.IPresenter {
 
         }
         params.businessInfo = businessInfo.toString();
-        //设置音频采样率，高音质是48k，标准音质是16k
-        enable16KSampleRate(!mVoiceRoomConfig.isHighQuality);
         mTRTCCloud.enterRoom(params, TRTCCloudDef.TRTC_APP_SCENE_VOICE_CHATROOM);
     }
 
-    /**
-     * 声音采样率
-     *
-     * @param enable true 开启16k采样率 false 开启48k采样率
-     */
-    public void enable16KSampleRate(boolean enable) {
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put("api", "setAudioSampleRate");
-            JSONObject params = new JSONObject();
-            params.put("sampleRate", enable ? 16000 : 48000);
-            jsonObject.put("params", params);
-            mTRTCCloud.callExperimentalAPI(jsonObject.toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+
+    public void setAudioQuality(int type) {
+        mTRTCCloud.setAudioQuality(type);
     }
 
 
@@ -578,6 +564,11 @@ public class VoiceRoomMainPresenter implements VoiceRoomContract.IPresenter {
             isNeedCdnPlay = true;
             mIView.updateLiveView(true);
         }
+    }
+
+    @Override
+    public TXAudioEffectManager getAudioEffectManager() {
+        return mTRTCCloud.getAudioEffectManager();
     }
 
     private void exitRoom() {

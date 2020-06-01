@@ -21,6 +21,8 @@ import com.tencent.liteav.liveroom.model.TRTCLiveRoomDef;
 import com.tencent.liteav.liveroom.ui.common.utils.TCConstants;
 import com.tencent.liteav.login.ProfileManager;
 import com.tencent.liteav.login.UserModel;
+import com.tencent.liteav.meeting.model.TRTCMeeting;
+import com.tencent.liteav.meeting.model.TRTCMeetingCallback;
 import com.tencent.liteav.trtcaudiocalldemo.model.ITRTCAudioCall;
 import com.tencent.liteav.trtcaudiocalldemo.model.TRTCAudioCallImpl;
 import com.tencent.liteav.trtcaudiocalldemo.model.TRTCAudioCallListener;
@@ -253,6 +255,7 @@ public class CallService extends Service {
                 initAudioCallData();
                 initVideoCallData();
                 initLiveRoom();
+                initMeetingData();
             }
         });
     }
@@ -261,7 +264,6 @@ public class CallService extends Service {
         final UserModel userModel = ProfileManager.getInstance().getUserModel();
         mTRTCLiveRoom = TRTCLiveRoom.sharedInstance(this);
         boolean                            useCDNFirst = SPUtils.getInstance().getBoolean(TCConstants.USE_CDN_PLAY, false);
-        //您可以设置类似于 http://{bizid}.liveplay.myqcloud.com/live 的播放地址
         TRTCLiveRoomDef.TRTCLiveRoomConfig config      = new TRTCLiveRoomDef.TRTCLiveRoomConfig(useCDNFirst, "");
         mTRTCLiveRoom.login(GenerateTestUserSig.SDKAPPID, userModel.userId, userModel.userSig, config, new TRTCLiveRoomCallback.ActionCallback() {
             @Override
@@ -307,6 +309,14 @@ public class CallService extends Service {
         mITRTCVideoCall.login(appid, userId, userSig, null);
     }
 
+    private void initMeetingData() {
+        final UserModel userModel = ProfileManager.getInstance().getUserModel();
+        TRTCMeeting.sharedInstance(this).login(GenerateTestUserSig.SDKAPPID, userModel.userId, userModel.userSig, new TRTCMeetingCallback.ActionCallback() {
+            @Override
+            public void onCallback(int code, String msg) {
+            }
+        });
+    }
 
     @Override
     public IBinder onBind(Intent intent) {

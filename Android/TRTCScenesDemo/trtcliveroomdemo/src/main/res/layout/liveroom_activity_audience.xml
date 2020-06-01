@@ -209,19 +209,6 @@
         app:layout_constraintTop_toTopOf="@+id/gl_h"
         tools:visibility="visible" />
 
-    <!--    <com.tencent.liteav.liveroom.ui.anchor.music.TCAudioControl-->
-    <!--        android:id="@+id/anchor_audio_control"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:background="@color/dialogBg"-->
-    <!--        android:clickable="true"-->
-    <!--        android:orientation="vertical"-->
-    <!--        android:padding="0dp"-->
-    <!--        android:visibility="gone"-->
-    <!--        app:layout_constraintBottom_toBottomOf="@id/tool_bar_view"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        tools:visibility="gone" />-->
-
     <com.tencent.liteav.demo.beauty.BeautyPanel
         android:id="@+id/beauty_panel"
         android:layout_width="wrap_content"

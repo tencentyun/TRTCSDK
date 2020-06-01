@@ -29,6 +29,7 @@ public class CreateVoiceRoomActivity extends AppCompatActivity {
     private TextView     mEnterTv;
     private RadioButton  mAnchorRb;
     private RadioButton  mAudienceRb;
+    private RadioButton  mLowQualityRb;
     private RadioButton  mHighQualityRb;
     private RadioButton  mNormalQualityRb;
     private Toolbar      mToolbar;
@@ -76,6 +77,7 @@ public class CreateVoiceRoomActivity extends AppCompatActivity {
         });
         mAnchorRb = (RadioButton) findViewById(R.id.rb_anchor);
         mAudienceRb = (RadioButton) findViewById(R.id.rb_audience);
+        mLowQualityRb = (RadioButton) findViewById(R.id.rb_low_quality);
         mHighQualityRb = (RadioButton) findViewById(R.id.rb_high_quality);
         mNormalQualityRb = (RadioButton) findViewById(R.id.rb_normal_quality);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -87,6 +89,7 @@ public class CreateVoiceRoomActivity extends AppCompatActivity {
         });
         setStyle(mAnchorRb);
         setStyle(mAudienceRb);
+        setStyle(mLowQualityRb);
         setStyle(mHighQualityRb);
         setStyle(mNormalQualityRb);
     }
@@ -116,7 +119,13 @@ public class CreateVoiceRoomActivity extends AppCompatActivity {
         config.sdkAppId = GenerateTestUserSig.SDKAPPID;
         config.userSig = GenerateTestUserSig.genTestUserSig(userId);
         config.role = mAnchorRb.isChecked() ? TRTCCloudDef.TRTCRoleAnchor : TRTCCloudDef.TRTCRoleAudience;
-        config.isHighQuality = mHighQualityRb.isChecked();
+        if (mHighQualityRb.isChecked()) {
+            config.audioQuality = TRTCCloudDef.TRTC_AUDIO_QUALITY_MUSIC;
+        } else if (mNormalQualityRb.isChecked()) {
+            config.audioQuality = TRTCCloudDef.TRTC_AUDIO_QUALITY_DEFAULT;
+        } else {
+            config.audioQuality = TRTCCloudDef.TRTC_AUDIO_QUALITY_SPEECH;
+        }
         intent.putExtra(VoiceRoomConfig.DATA, config);
         startActivity(intent);
     }

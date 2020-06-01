@@ -8,7 +8,6 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.support.constraint.Guideline;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,28 +17,28 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.ToastUtils;
+import com.tencent.liteav.audiosettingkit.AudioEffectPanel;
 import com.tencent.liteav.demo.beauty.BeautyPanel;
-import com.tencent.liteav.demo.beauty.BeautyParams;
 import com.tencent.liteav.liveroom.R;
 import com.tencent.liteav.liveroom.model.TRTCLiveRoomCallback;
 import com.tencent.liteav.liveroom.model.TRTCLiveRoomDef;
-import com.tencent.liteav.liveroom.ui.anchor.music.TCAudioControl;
 import com.tencent.liteav.liveroom.ui.common.adapter.TCUserAvatarListAdapter;
 import com.tencent.liteav.liveroom.ui.common.utils.TCUtils;
 import com.tencent.liteav.liveroom.ui.widget.beauty.LiveRoomBeautyKit;
 import com.tencent.liteav.liveroom.ui.widget.video.TCVideoView;
 import com.tencent.liteav.liveroom.ui.widget.video.TCVideoViewMgr;
 import com.tencent.rtmp.ui.TXCloudVideoView;
+import com.tencent.trtc.TRTCCloud;
+import com.tencent.trtc.TRTCCloudDef;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
-import static com.tencent.liteav.liveroom.ui.anchor.music.TCAudioControl.REQUESTCODE;
 
 /**
  * Module:   TCBaseAnchorActivity
@@ -67,10 +66,12 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity implements View
     private ObjectAnimator   mObjAnim;               // 动画
     private TXCloudVideoView mPKVideoView;
     private RelativeLayout   mPKContainer;
+    private RadioButton      mRbNormalQuality;
+    private RadioButton      mRbMusicQuality;
     private Guideline        mVGuideLine;
     private Guideline        mHGuideLine;
 
-    private TCAudioControl     mAudioCtrl;             // 音效控制面板
+    private AudioEffectPanel     mAudioCtrl;             // 音效控制面板
     private AnchorPKSelectView mAnchorPKSelectView; //PK选择
 
     private BeautyPanel mBeautyControl;          // 美颜设置的控制类
@@ -131,8 +132,15 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity implements View
         mMemberCount = (TextView) findViewById(R.id.anchor_tv_member_counts);
         mMemberCount.setText("0");
         mPKButton = (Button) findViewById(R.id.btn_request_pk);
-        //AudioControl
-        mAudioCtrl = (TCAudioControl) findViewById(R.id.anchor_audio_control);
+        //AudioEffectPanel
+        mAudioCtrl = (AudioEffectPanel) findViewById(R.id.anchor_audio_panel);
+        mAudioCtrl.setAudioEffectManager(mLiveRoom.getAudioEffectManager());
+        mAudioCtrl.setOnAudioEffectPanelHideListener(new AudioEffectPanel.OnAudioEffectPanelHideListener() {
+            @Override
+            public void onClosePanel() {
+                mLiveAfter.setVisibility(View.VISIBLE);
+            }
+        });
 
         mBeautyControl = (BeautyPanel) findViewById(R.id.beauty_panel);
 
@@ -175,7 +183,8 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity implements View
         });
         mVGuideLine = (Guideline) findViewById(R.id.gl_v);
         mHGuideLine = (Guideline) findViewById(R.id.gl_h);
-        mAudioCtrl.setPusher(mLiveRoom);
+        mRbNormalQuality = (RadioButton) findViewById(R.id.rb_live_room_quality_normal);
+        mRbMusicQuality = (RadioButton) findViewById(R.id.rb_live_room_quality_music);
     }
 
     /**
@@ -199,7 +208,6 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity implements View
         mVideoViewMgr = null;
         if (mAudioCtrl != null) {
             mAudioCtrl.unInit();
-            mAudioCtrl.setPusher(null);
             mAudioCtrl = null;
         }
     }
@@ -231,6 +239,13 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity implements View
     @Override
     protected void onCreateRoomSuccess() {
         startRecordAnimation();
+        int audioQuality = TRTCCloudDef.TRTC_AUDIO_QUALITY_DEFAULT;
+        if (mRbNormalQuality.isChecked()) {
+            audioQuality = TRTCCloudDef.TRTC_AUDIO_QUALITY_DEFAULT;
+        } else if (mRbMusicQuality.isChecked()) {
+            audioQuality = TRTCCloudDef.TRTC_AUDIO_QUALITY_MUSIC;
+        }
+        mLiveRoom.setAudioQuality(audioQuality);
         // 创建房间成功，开始推流
         mLiveRoom.startPublish(mSelfUserId + "_stream", new TRTCLiveRoomCallback.ActionCallback() {
             @Override
@@ -453,30 +468,11 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity implements View
     public boolean dispatchTouchEvent(MotionEvent ev) {
         if (null != mAudioCtrl && mAudioCtrl.getVisibility() != View.GONE && ev.getRawY() < mAudioCtrl.getTop()) {
             mAudioCtrl.setVisibility(View.GONE);
+            mAudioCtrl.hideAudioPanel();
+            mLiveAfter.setVisibility(View.VISIBLE);
         }
         return super.dispatchTouchEvent(ev);
     }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        /** attention to this below ,must add this**/
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {//是否选择，没选择就不会继续
-            if (requestCode == REQUESTCODE) {
-                if (data == null) {
-                    Log.e(TAG, "null data");
-                } else {
-                    Uri uri = data.getData();//得到uri，后面就是将uri转化成file的过程。
-                    if (mAudioCtrl != null) {
-                        mAudioCtrl.processActivityResult(uri);
-                    } else {
-                        Log.e(TAG, "NULL Pointer! Get Music Failed");
-                    }
-                }
-            }
-        }
-    }
-
 
     /**
      *     /////////////////////////////////////////////////////////////////////////////////
@@ -547,8 +543,12 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity implements View
         } else if (id == R.id.btn_audio_ctrl) {
             if (mAudioCtrl.isShown()) {
                 mAudioCtrl.setVisibility(View.GONE);
+                mAudioCtrl.hideAudioPanel();
+                mLiveAfter.setVisibility(View.VISIBLE);
             } else {
                 mAudioCtrl.setVisibility(View.VISIBLE);
+                mAudioCtrl.showAudioPanel();
+                mLiveAfter.setVisibility(View.GONE);
                 mBeautyControl.setVisibility(View.GONE);
                 mAnchorPKSelectView.setVisibility(View.GONE);
             }

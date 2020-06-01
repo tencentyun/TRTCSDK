@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Handler;
 
+import com.tencent.liteav.audio.TXAudioEffectManager;
 import com.tencent.liteav.beauty.TXBeautyManager;
 import com.tencent.liteav.liveroom.model.impl.TRTCLiveRoomImpl;
 import com.tencent.rtmp.ui.TXCloudVideoView;
@@ -358,8 +359,13 @@ public abstract class TRTCLiveRoom {
     /**
      * 音效控制相关
      */
-    public abstract TRTCAudioEffectManager getAudioEffectManager();
+    public abstract TXAudioEffectManager getAudioEffectManager();
 
+    /**
+     * 设置音质
+     * @param quality TRTC_AUDIO_QUALITY_MUSIC/TRTC_AUDIO_QUALITY_DEFAULT/TRTC_AUDIO_QUALITY_SPEECH
+     */
+    public abstract void setAudioQuality(int quality);
 
     //////////////////////////////////////////////////////////
     //

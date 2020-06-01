@@ -10,6 +10,6 @@
         android:layout_weight="1"
         android:checked="true"
         android:textColor="#999999"
-        android:textSize="@dimen/item_text_size"
+        android:textSize="16sp"
         tools:text="开启" />
 </merge>

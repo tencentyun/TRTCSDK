@@ -6,4 +6,5 @@
     <color name="textSecond">#737373</color>
     <color name="colorWhite">#ffffff</color>
     <color name="colorShade">#33000000</color>
+    <color name="login_button_bg">#00A66b</color>
 </resources>

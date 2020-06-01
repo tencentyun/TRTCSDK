@@ -74,7 +74,7 @@ public class VoiceRoomSeatAdapter extends
             });
             if (model.isPlaceHolder) {
                 // 占位图片
-                mHeadImg.setImageResource(R.drawable.wait_background);
+                mHeadImg.setImageResource(R.drawable.voiceroom_default_avatar);
                 mNameTv.setText("虚位以待");
                 mNameTv.setTextColor(context.getResources().getColor(R.color.colorWaitText));
                 mOldUserId = "";

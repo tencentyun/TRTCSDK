@@ -11,5 +11,5 @@ public class VoiceRoomConfig implements Serializable {
     public int    role;
     public int    roomId;
     public String userId;
-    public boolean isHighQuality;
+    public int    audioQuality;
 }

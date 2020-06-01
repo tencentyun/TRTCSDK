@@ -6,8 +6,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 
+import com.tencent.liteav.audio.TXAudioEffectManager;
 import com.tencent.liteav.beauty.TXBeautyManager;
-import com.tencent.liteav.liveroom.model.TRTCAudioEffectManager;
 import com.tencent.liteav.liveroom.model.TRTCLiveRoom;
 import com.tencent.liteav.liveroom.model.TRTCLiveRoomCallback;
 import com.tencent.liteav.liveroom.model.TRTCLiveRoomDef;
@@ -1634,8 +1634,18 @@ public class TRTCLiveRoomImpl extends TRTCLiveRoom implements ITXTRTCLiveRoomDel
     }
 
     @Override
-    public TRTCAudioEffectManager getAudioEffectManager() {
+    public TXAudioEffectManager getAudioEffectManager() {
         return TXTRTCLiveRoom.getInstance().getAudioEffectManager();
+    }
+
+    @Override
+    public void setAudioQuality(final int quality) {
+        runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                TXTRTCLiveRoom.getInstance().setAudioQuality(quality);
+            }
+        });
     }
 
     @Override

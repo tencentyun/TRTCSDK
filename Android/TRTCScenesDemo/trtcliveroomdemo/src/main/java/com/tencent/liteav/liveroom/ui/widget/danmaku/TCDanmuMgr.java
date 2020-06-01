@@ -338,7 +338,7 @@ public class TCDanmuMgr {
         danmaku.padding = DANMU_PADDING;
         danmaku.priority = 0;  // 1:一定会显示, 一般用于本机发送的弹幕,但会导致行数的限制失效
         danmaku.isLive = false;
-        danmaku.time = mDanmakuView.getCurrentTime() + ADD_DANMU_TIME;
+        danmaku.setTime(mDanmakuView.getCurrentTime() + ADD_DANMU_TIME);
         //        danmaku.textSize = DANMU_TEXT_SIZE * (mDanmakuContext.getDisplayer().getDensity() - 0.6f);
         danmaku.textSize = DANMU_TEXT_SIZE;
         danmaku.textColor = Color.WHITE;
