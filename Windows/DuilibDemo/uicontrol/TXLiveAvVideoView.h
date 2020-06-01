@@ -152,7 +152,7 @@ private:
     BITMAPINFO m_bmi;
     bool m_bPause = false;
     std::string m_userId;
-	TRTCVideoStreamType m_type;
+    TRTCVideoStreamType m_type;
 private:
     UINT m_nDefineMsg = 0;  //自定义win32消息，用来通知主线程刷新
     HWND m_hWnd = nullptr;

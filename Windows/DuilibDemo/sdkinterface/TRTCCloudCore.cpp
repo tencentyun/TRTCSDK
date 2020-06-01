@@ -58,8 +58,8 @@ void TRTCCloudCore::Init()
     m_pCloud->setLogCallback(this);
     m_bPreUninit = false;
     //std::string logPath = Wide2UTF8(L"D:/中文/log/");
-    //m_pCloud->setLogDirPath(logPath.c_str());
-    
+   //m_pCloud->setLogDirPath(logPath.c_str());
+   // m_pCloud->setConsoleEnabled(true);
     m_pCloud->setAudioFrameCallback(this);
 }
 
@@ -76,6 +76,14 @@ void TRTCCloudCore::Uninit()
 void TRTCCloudCore::PreUninit()
 {
     m_bPreUninit = true;
+    if (CDataCenter::GetInstance()->m_bStartSystemVoice)
+    {
+        CDataCenter::GetInstance()->m_bStartSystemVoice = false;
+        TRTCCloudCore::GetInstance()->getTRTCCloud()->stopSystemAudioLoopback();
+    }
+
+    stopLocalRecord();
+    destroyLocalRecordShareInstance();
     stopCloudMixStream();
     stopCustomCaptureVideo();
     stopCustomCaptureAudio();
@@ -180,6 +188,19 @@ void TRTCCloudCore::onUserAudioAvailable(const char * userId, bool available)
     }
 }
 
+void TRTCCloudCore::onFirstAudioFrame(const char * userId)
+{
+    LINFO(L"onFirstAudioFrame userId[%s] \n", UTF82Wide(userId).c_str());
+    for (auto& itr : m_mapSDKMsgFilter)
+    {
+        if (itr.first == WM_USER_CMD_OnFirstAudioFrame && itr.second != nullptr)
+        {
+            std::string * str = new std::string(userId);
+            ::PostMessage(itr.second, WM_USER_CMD_OnFirstAudioFrame, (WPARAM)str, NULL);
+        }
+    }
+}
+
 void TRTCCloudCore::onUserVoiceVolume(TRTCVolumeInfo* userVolumes, uint32_t userVolumesCount, uint32_t totalVolume)
 {
     for (auto& itr : m_mapSDKMsgFilter)
@@ -234,28 +255,28 @@ void TRTCCloudCore::onNetworkQuality(TRTCQualityInfo localQuality, TRTCQualityIn
 
 void TRTCCloudCore::onUserSubStreamAvailable(const char * userId, bool available)
 {
-	LINFO(L"onUserSubStreamAvailable userId[%s] available[%d]\n", UTF82Wide(userId).c_str(), available);
-	for (auto& itr : m_mapSDKMsgFilter)
-	{
-		if (itr.first == WM_USER_CMD_SubVideoAvailable && itr.second != nullptr)
-		{
-			std::string * str = new std::string(userId);
-			::PostMessage(itr.second, WM_USER_CMD_SubVideoAvailable, (WPARAM)str, available);
-		}
-	}
+    LINFO(L"onUserSubStreamAvailable userId[%s] available[%d]\n", UTF82Wide(userId).c_str(), available);
+    for (auto& itr : m_mapSDKMsgFilter)
+    {
+        if (itr.first == WM_USER_CMD_SubVideoAvailable && itr.second != nullptr)
+        {
+            std::string * str = new std::string(userId);
+            ::PostMessage(itr.second, WM_USER_CMD_SubVideoAvailable, (WPARAM)str, available);
+        }
+    }
 }
 
 void TRTCCloudCore::onUserVideoAvailable(const char * userId, bool available)
 {
-	LINFO(L"onUserVideoAvailable userId[%s] available[%d]\n", UTF82Wide(userId).c_str(), available);
-	for (auto& itr : m_mapSDKMsgFilter)
-	{
-		if (itr.first == WM_USER_CMD_VideoAvailable && itr.second != nullptr)
-		{
-			std::string * str = new std::string(userId);
-			::PostMessage(itr.second, WM_USER_CMD_VideoAvailable, (WPARAM)str, available);
-		}
-	}
+    LINFO(L"onUserVideoAvailable userId[%s] available[%d]\n", UTF82Wide(userId).c_str(), available);
+    for (auto& itr : m_mapSDKMsgFilter)
+    {
+        if (itr.first == WM_USER_CMD_VideoAvailable && itr.second != nullptr)
+        {
+            std::string * str = new std::string(userId);
+            ::PostMessage(itr.second, WM_USER_CMD_VideoAvailable, (WPARAM)str, available);
+        }
+    }
 }
 
 void TRTCCloudCore::onStatistics(const TRTCStatistics& statis)
@@ -292,50 +313,50 @@ void TRTCCloudCore::onStatistics(const TRTCStatistics& statis)
 
 void TRTCCloudCore::onScreenCaptureStarted()
 {
-	for (auto& itr : m_mapSDKMsgFilter)
-	{
-		if (itr.first == WM_USER_CMD_ScreenStart && itr.second != nullptr)
-		{
-			::PostMessage(itr.second, WM_USER_CMD_ScreenStart, 0, 0);
-		}
-	}
+    for (auto& itr : m_mapSDKMsgFilter)
+    {
+        if (itr.first == WM_USER_CMD_ScreenStart && itr.second != nullptr)
+        {
+            ::PostMessage(itr.second, WM_USER_CMD_ScreenStart, 0, 0);
+        }
+    }
 }
 
 void TRTCCloudCore::onScreenCaptureStoped(int reason)
 {
-	for (auto& itr : m_mapSDKMsgFilter)
-	{
-		if (itr.first == WM_USER_CMD_ScreenStart && itr.second != nullptr)
-		{
-			::PostMessage(itr.second, WM_USER_CMD_ScreenEnd, (WPARAM)reason, 0);
-		}
-	}
+    for (auto& itr : m_mapSDKMsgFilter)
+    {
+        if (itr.first == WM_USER_CMD_ScreenStart && itr.second != nullptr)
+        {
+            ::PostMessage(itr.second, WM_USER_CMD_ScreenEnd, (WPARAM)reason, 0);
+        }
+    }
 }
 
 void TRTCCloudCore::onVodPlayerStarted(uint64_t msLength)
 {
-	for (auto& itr : m_mapSDKMsgFilter)
-	{
-		if (itr.first == WM_USER_CMD_VodStart && itr.second != nullptr)
-		{
-			::PostMessage(itr.second, WM_USER_CMD_VodStart, 0, 0);
-		}
-	}
+    for (auto& itr : m_mapSDKMsgFilter)
+    {
+        if (itr.first == WM_USER_CMD_VodStart && itr.second != nullptr)
+        {
+            ::PostMessage(itr.second, WM_USER_CMD_VodStart, 0, 0);
+        }
+    }
 }
 
 void TRTCCloudCore::onVodPlayerStoped(int reason)
 {
-	for (auto& itr : m_mapSDKMsgFilter)
-	{
-		if (itr.first == WM_USER_CMD_VodEnd && itr.second != nullptr)
-		{
-			::PostMessage(itr.second, WM_USER_CMD_VodEnd, 0, 0);
-		}
-	}
-	if (m_pVodPlayer) {
+    for (auto& itr : m_mapSDKMsgFilter)
+    {
+        if (itr.first == WM_USER_CMD_VodEnd && itr.second != nullptr)
+        {
+            ::PostMessage(itr.second, WM_USER_CMD_VodEnd, 0, 0);
+        }
+    }
+    if (m_pVodPlayer) {
         destroyTXVodPlayer(&m_pVodPlayer);
         m_pVodPlayer = nullptr;
-	}
+    }
 }
 
 void TRTCCloudCore::onVodPlayerError(int error)
@@ -421,26 +442,26 @@ void TRTCCloudCore::onDisconnectOtherRoom(TXLiteAVError errCode, const char * er
 
 void TRTCCloudCore::onCapturedAudioFrame(TRTCAudioFrame * frame)
 {
-    
+    //LINFO(L"onCapturedAudioFrame\n");
 }
 
 void TRTCCloudCore::onPlayAudioFrame(TRTCAudioFrame * frame, const char * userId)
 {
-    /*
-    LINFO(L"onPlayAudioFrame\n");
-    FILE* file = NULL;
+    
+    //LINFO(L"onPlayAudioFrame\n");
+    /*FILE* file = NULL;
     ::fopen_s(&file, "D:/subTest/playaudio_frame.pcm", "ab+");
     ::fwrite(frame->data, frame->length, 1, file);
     ::fflush(file);
-    ::fclose(file);
-    */
+    ::fclose(file);*/
+    
 }
 
 void TRTCCloudCore::onMixedPlayAudioFrame(TRTCAudioFrame * frame)
 {
-    /*
-    LINFO(L"onMixedPlayAudioFrame\n");
-    FILE* file = NULL;
+   
+    //LINFO(L"onMixedPlayAudioFrame\n");
+    /*FILE* file = NULL;
     ::fopen_s(&file, "D:/subTest/mixplayaudio_frame.pcm", "ab+");
     ::fwrite(frame->data, frame->length, 1, file);
     ::fflush(file);
@@ -507,7 +528,7 @@ void TRTCCloudCore::onSendFirstLocalAudioFrame()
 
 void TRTCCloudCore::onAudioEffectFinished(int effectId, int code)
 {
-
+    LINFO(L"onAudioEffectFinished effectId[%d], code[%d]\n", effectId, code);
 }
 
 void TRTCCloudCore::onStartPublishing(int err,const char *errMsg)
@@ -551,6 +572,57 @@ void TRTCCloudCore::onStopPublishing(int err,const char * errMsg)
     }
 }
 
+void TRTCCloudCore::startLocalRecord(const LiteAVScreenCaptureSourceInfo & source,  const char * szRecordPath)
+{
+    RECT captureRect = CDataCenter::GetInstance()->m_recordCaptureRect;
+    ITXLiteAVLocalRecord * pRecorder = getLocalRecordShareInstance();
+    if (pRecorder)
+    {
+        pRecorder->setCallback(this);
+        pRecorder->startLocalRecord(source, captureRect, szRecordPath);
+    }
+    CDataCenter::GetInstance()->m_bStartLocalRecord = true;
+    CDataCenter::GetInstance()->m_bWaitStartRecordNotify = true;
+}
+
+void TRTCCloudCore::stopLocalRecord()
+{
+    CDataCenter::GetInstance()->m_bStartLocalRecord = false;
+    ITXLiteAVLocalRecord * pRecorder = getLocalRecordShareInstance();
+    if (pRecorder)
+    {
+        pRecorder->stopLocalRecord();
+        pRecorder->setCallback(nullptr);
+      
+        CDataCenter::GetInstance()->m_recordCaptureRect = { 0 };
+        CDataCenter::GetInstance()->m_recordCaptureSourceInfo.type = LiteAVScreenCaptureSourceTypeUnknown;
+        CDataCenter::GetInstance()->m_bStartLocalRecord = false;
+        CDataCenter::GetInstance()->m_bPauseLocalRecord = false;
+        CDataCenter::GetInstance()->m_wstrRecordFile = L"";
+
+    }
+}
+
+void TRTCCloudCore::pauseLocalRecord()
+{
+    ITXLiteAVLocalRecord * pRecorder = getLocalRecordShareInstance();
+    if (pRecorder)
+    {
+        pRecorder->pauseLocalRecord();
+    }
+    CDataCenter::GetInstance()->m_bPauseLocalRecord = true;
+}
+
+void TRTCCloudCore::resumeLocalRecord()
+{
+    CDataCenter::GetInstance()->m_bPauseLocalRecord = false;
+    ITXLiteAVLocalRecord * pRecorder = getLocalRecordShareInstance();
+    if (pRecorder)
+    {
+        pRecorder->resumeLocalRecord();
+    }
+}
+
 void TRTCCloudCore::onConnectionLost()
 {
     LINFO(L"onConnectionLost\n");
@@ -587,6 +659,93 @@ void TRTCCloudCore::onConnectionRecovery()
     }
 }
 
+void TRTCCloudCore::onCameraDidReady()
+{
+    LINFO(L"onCameraDidReady\n");
+    for (auto& itr : m_mapSDKMsgFilter)
+    {
+        if (itr.first == WM_USER_CMD_OnCameraDidReady && itr.second != nullptr)
+        {
+            ::PostMessage(itr.second, WM_USER_CMD_OnCameraDidReady, 0, 0);
+        }
+    }
+}
+
+void TRTCCloudCore::onMicDidReady()
+{
+    LINFO(L"onMicDidReady\n");
+    for (auto& itr : m_mapSDKMsgFilter)
+    {
+        if (itr.first == WM_USER_CMD_OnMicDidReady && itr.second != nullptr)
+        {
+            ::PostMessage(itr.second, WM_USER_CMD_OnMicDidReady, 0, 0);
+        }
+    }
+}
+
+void TRTCCloudCore::onTestMicVolume(uint32_t volume)
+{
+    LINFO(L"onTestMicVolume\n");
+    for (auto& itr : m_mapSDKMsgFilter)
+    {
+        if (itr.first == WM_USER_CMD_OnTestMicVolume && itr.second != nullptr)
+        {
+            ::PostMessage(itr.second, WM_USER_CMD_OnTestMicVolume, 0, 0);
+        }
+    }
+}
+
+void TRTCCloudCore::onTestSpeakerVolume(uint32_t volume)
+{
+    LINFO(L"onTestSpeakerVolume\n");
+    for (auto& itr : m_mapSDKMsgFilter)
+    {
+        if (itr.first == WM_USER_CMD_OnTestSpeakerVolume && itr.second != nullptr)
+        {
+            ::PostMessage(itr.second, WM_USER_CMD_OnTestSpeakerVolume, 0, 0);
+        }
+    }
+}
+void TRTCCloudCore::OnRecordError(TXLiteAVLocalRecordError err, const char * msg)
+{
+    std::string * str = new std::string(msg);
+
+    LINFO(L"OnRecordError\n");
+    for (auto& itr : m_mapSDKMsgFilter)
+    {
+        if (itr.first == WM_USER_CMD_OnRecordError && itr.second != nullptr)
+        {
+            ::PostMessage(itr.second, WM_USER_CMD_OnRecordError, (WPARAM)str, (LPARAM)err);
+        }
+    }
+}
+
+void TRTCCloudCore::OnRecordComplete(const char * path)
+{
+    LINFO(L"OnRecordComplete\n");
+    std::string * str = new std::string(path);
+  
+    for (auto& itr : m_mapSDKMsgFilter)
+    {
+        if (itr.first == WM_USER_CMD_OnRecordComplete && itr.second != nullptr)
+        {
+            ::PostMessage(itr.second, WM_USER_CMD_OnRecordComplete, (WPARAM)str, 0);
+        }
+    }
+}
+
+void TRTCCloudCore::OnRecordProgress(int duration, int fileSize, int width, int height)
+{
+    LINFO(L"OnRecordProgress\n");
+   
+    for (auto& itr : m_mapSDKMsgFilter)
+    {
+        if (itr.first == WM_USER_CMD_OnRecordProgress && itr.second != nullptr)
+        {
+            ::PostMessage(itr.second, WM_USER_CMD_OnRecordProgress, (WPARAM)duration, (LPARAM)fileSize);
+        }
+    }
+}
 void TRTCCloudCore::regSDKMsgObserver(uint32_t msg, HWND hwnd)
 {
     std::unique_lock<std::mutex> lck(m_mutexMsgFilter);
@@ -768,7 +927,7 @@ std::vector<TRTCCloudCore::MediaDeviceInfo>& TRTCCloudCore::getCameraDevice()
 
 ITRTCScreenCaptureSourceList* TRTCCloudCore::GetWndList()
 {
-	return m_pCloud->getScreenCaptureSources(SIZE{ 120, 70 }, SIZE{ 20,20 });
+    return m_pCloud->getScreenCaptureSources(SIZE{ 120, 70 }, SIZE{ 20,20 });
 }
 
 void TRTCCloudCore::selectMicDevice(std::wstring text)
@@ -939,7 +1098,7 @@ void TRTCCloudCore::stopPreview(bool bSetting)
 
 void TRTCCloudCore::startScreen(HWND rendHwnd)
 {
-	m_pCloud->startScreenCapture(rendHwnd);
+    m_pCloud->startScreenCapture(rendHwnd);
 }
 
 void TRTCCloudCore::startScreenCapture(HWND rendHwnd, TRTCVideoStreamType streamType, TRTCVideoEncParam* params)
@@ -949,7 +1108,7 @@ void TRTCCloudCore::startScreenCapture(HWND rendHwnd, TRTCVideoStreamType stream
 
 void TRTCCloudCore::stopScreen()
 {
-	m_pCloud->stopScreenCapture();
+    m_pCloud->stopScreenCapture();
 }
 
 void TRTCCloudCore::startMedia(const char * mediaFile, HWND rendHwnd)
@@ -970,7 +1129,7 @@ void TRTCCloudCore::stopMedia()
 
 void TRTCCloudCore::selectScreenCaptureTarget(const TRTCScreenCaptureSourceInfo &source, const RECT & captureRect)
 {
-	m_pCloud->selectScreenCaptureTarget(source, captureRect);
+    m_pCloud->selectScreenCaptureTarget(source, captureRect);
 }
 
 void TRTCCloudCore::showDashboardStyle(int logStyle)
@@ -1595,10 +1754,10 @@ void TRTCCloudCore::setPresetLayoutConfig(TRTCTranscodingConfig & config) {
 
 void TRTCCloudCore::startGreenScreen(const std::string &path)
 {
-	
+    
 }
 
 void TRTCCloudCore::stopGreenScreen()
 {
-	
+    
 }

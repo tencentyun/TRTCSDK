@@ -45,13 +45,13 @@ CConfigMgr::~CConfigMgr()
 }
 
 //************************************************************************
-// 函数名称:    	TrimString
-// 访问权限:    	public 
-// 创建日期:		2017/01/05
-// 创 建 人:		
-// 函数说明:		去除空格
-// 函数参数: 	string & str	输入的字符串
-// 返 回 值:   	std::string &	结果字符串
+// 函数名称:        TrimString
+// 访问权限:        public 
+// 创建日期:        2017/01/05
+// 创 建 人:        
+// 函数说明:        去除空格
+// 函数参数:     string & str    输入的字符串
+// 返 回 值:       std::string &    结果字符串
 //************************************************************************
 std::string &TrimString(std::string &str)
 {
@@ -62,12 +62,12 @@ std::string &TrimString(std::string &str)
 }
 
 //************************************************************************
-// 函数名称:    	ReadINI
-// 访问权限:    	public 
-// 创建日期:		2017/01/05
-// 创 建 人:		
-// 函数说明:		读取INI文件，并将其保存到map结构中
-// 返 回 值:   	int
+// 函数名称:        ReadINI
+// 访问权限:        public 
+// 创建日期:        2017/01/05
+// 创 建 人:        
+// 函数说明:        读取INI文件，并将其保存到map结构中
+// 返 回 值:       int
 //************************************************************************
 int CConfigMgr::InitReadINI()
 {
@@ -113,12 +113,12 @@ int CConfigMgr::InitReadINI()
     for (vector<ININode>::iterator itr = vec_ini.begin(); itr != vec_ini.end(); ++itr)
     {
         map_tmp.insert(std::pair<std::wstring, std::wstring>(itr->root, L""));
-    }	//提取出根节点
+    }    //提取出根节点
     for (std::map<std::wstring, std::wstring>::iterator itr = map_tmp.begin(); itr != map_tmp.end(); ++itr)
     {
 #ifdef INIDEBUG
         cout << "根节点： " << itr->first << endl;
-#endif	//INIDEBUG
+#endif    //INIDEBUG
         SubNode sn;
         for (std::vector<ININode>::iterator sub_itr = vec_ini.begin(); sub_itr != vec_ini.end(); ++sub_itr)
         {
@@ -126,7 +126,7 @@ int CConfigMgr::InitReadINI()
             {
 #ifdef INIDEBUG
                 cout << "键值对： " << sub_itr->key << "=" << sub_itr->value << endl;
-#endif	//INIDEBUG
+#endif    //INIDEBUG
                 sn.InsertElement(sub_itr->key, sub_itr->value);
             }
         }
@@ -136,14 +136,14 @@ int CConfigMgr::InitReadINI()
 }
 
 //************************************************************************
-// 函数名称:    	GetValue
-// 访问权限:    	public 
-// 创建日期:		2017/01/05
-// 创 建 人:		
-// 函数说明:		根据给出的根结点和键值查找配置项的值
-// 函数参数: 	string root		配置项的根结点
-// 函数参数: 	string key		配置项的键
-// 返 回 值:   	std::string		配置项的值
+// 函数名称:        GetValue
+// 访问权限:        public 
+// 创建日期:        2017/01/05
+// 创 建 人:        
+// 函数说明:        根据给出的根结点和键值查找配置项的值
+// 函数参数:     string root        配置项的根结点
+// 函数参数:     string key        配置项的键
+// 返 回 值:       std::string        配置项的值
 //************************************************************************
 bool CConfigMgr::GetValue(std::wstring root, std::wstring key, std::wstring& value)
 {
@@ -172,13 +172,13 @@ bool CConfigMgr::GetValue(std::wstring root, std::wstring key, std::wstring& val
 }
 
 //************************************************************************
-// 函数名称:    	WriteINI
-// 访问权限:    	public 
-// 创建日期:		2017/01/05
-// 创 建 人:		
+// 函数名称:        WriteINI
+// 访问权限:        public 
+// 创建日期:        2017/01/05
+// 创 建 人:        
 // 函数说明:    保存XML的信息到文件中
-// 函数参数: 	string path	INI文件的保存路径
-// 返 回 值:   	int
+// 函数参数:     string path    INI文件的保存路径
+// 返 回 值:       int
 //************************************************************************
 int CConfigMgr::WriteINI()
 {
@@ -204,40 +204,40 @@ int CConfigMgr::WriteINI()
 
 
 //************************************************************************
-// 函数名称:    	SetValue
-// 访问权限:    	public 
-// 创建日期:		2017/01/05
-// 创 建 人:		
-// 函数说明:		设置配置项的值
-// 函数参数: 	string root		配置项的根节点
-// 函数参数: 	string key		配置项的键
-// 函数参数: 	string value	配置项的值
-// 返 回 值:   	std::vector<ININode>::size_type	
+// 函数名称:        SetValue
+// 访问权限:        public 
+// 创建日期:        2017/01/05
+// 创 建 人:        
+// 函数说明:        设置配置项的值
+// 函数参数:     string root        配置项的根节点
+// 函数参数:     string key        配置项的键
+// 函数参数:     string value    配置项的值
+// 返 回 值:       std::vector<ININode>::size_type    
 //************************************************************************
 bool CConfigMgr::SetValue(std::wstring root, std::wstring key, std::wstring value)
 {
-    std::map<std::wstring, SubNode>::iterator itr = map_ini.find(root);	//查找
+    std::map<std::wstring, SubNode>::iterator itr = map_ini.find(root);    //查找
     if (map_ini.end() != itr)
     {
         itr->second.sub_node[key] = value;
-    }	//根节点已经存在了，更新值
+    }    //根节点已经存在了，更新值
     else
     {
         SubNode sn;
         sn.InsertElement(key, value);
         map_ini.insert(std::pair<std::wstring, SubNode>(root, sn));
-    }	//根节点不存在，添加值
+    }    //根节点不存在，添加值
 
     return true;
 }
 
 //************************************************************************
-// 函数名称:    	Travel
-// 访问权限:    	public 
-// 创建日期:		2017/01/05
-// 创 建 人:		
-// 函数说明:		遍历打印INI文件
-// 返 回 值:   	void
+// 函数名称:        Travel
+// 访问权限:        public 
+// 创建日期:        2017/01/05
+// 创 建 人:        
+// 函数说明:        遍历打印INI文件
+// 返 回 值:       void
 //************************************************************************
 void CConfigMgr::Travel()
 {

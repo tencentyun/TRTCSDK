@@ -105,7 +105,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>liteav.lib;winhttp.lib;httpapi.lib;wldap32.lib;yuv.lib;Gdiplus.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\SDK\CPlusPlus\Win32\lib;$(ProjectDir)Common\libyuv\Win32\lib;$(ProjectDir)Common\usersig\lib\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\SDK\CPlusPlus\Win32\lib;$(ProjectDir)Common\libyuv\Win32\lib;$(ProjectDir)Common\usersig\lib\Win32;$(ProjectDir)Common\duilib\Build\Bin\Win32\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>copy /Y "$(ProjectDir)..\SDK\CPlusPlus\Win32\lib\*.dll" "$(OutDir)"
@@ -142,7 +142,7 @@ if exist %SourceFile% (
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\SDK\CPlusPlus\Win64\lib;$(ProjectDir)Common\libyuv\Win64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\SDK\CPlusPlus\Win64\lib;$(ProjectDir)Common\libyuv\Win64\lib;$(ProjectDir)Common\usersig\lib\Win64;$(ProjectDir)Common\duilib\Build\Bin\Win64\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>liteav.lib;winhttp.lib;httpapi.lib;wldap32.lib;yuv.lib;Gdiplus.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
@@ -170,7 +170,7 @@ xcopy /E /Y "$(ProjectDir)res\resouce" "$(OutDir)"</Command>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>yuv.lib;liteav.lib;winhttp.lib;httpapi.lib;wldap32.lib;Gdiplus.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\SDK\CPlusPlus\Win32\lib;$(ProjectDir)Common\libyuv\Win32\lib;$(ProjectDir)Common\usersig\lib\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\SDK\CPlusPlus\Win32\lib;$(ProjectDir)Common\libyuv\Win32\lib;$(ProjectDir)Common\usersig\lib\Win32;$(ProjectDir)Common\duilib\Build\Bin\Win32\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>copy /Y "$(ProjectDir)..\SDK\CPlusPlus\Win32\lib\*.dll" "$(OutDir)"
@@ -211,7 +211,7 @@ if exist %SourceFile% (
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\SDK\CPlusPlus\Win64\lib;$(ProjectDir)Common\libyuv\Win64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\SDK\CPlusPlus\Win64\lib;$(ProjectDir)Common\libyuv\Win64\lib;$(ProjectDir)Common\duilib\Build\Bin\Win64\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>yuv.lib;liteav.lib;winhttp.lib;httpapi.lib;wldap32.lib;Gdiplus.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>
       </IgnoreAllDefaultLibraries>
@@ -222,6 +222,8 @@ xcopy /E /Y "$(ProjectDir)res\resouce" "$(OutDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AudioEffectOldViewController.cpp" />
+    <ClCompile Include="AudioEffectViewController.cpp" />
     <ClCompile Include="Common\http\HttpClient.cpp" />
     <ClCompile Include="Common\json\jsoncpp.cpp" />
     <ClCompile Include="Common\util\crashdump.cpp" />
@@ -270,6 +272,8 @@ xcopy /E /Y "$(ProjectDir)res\resouce" "$(OutDir)"</Command>
     <ClCompile Include="utils\TrtcUtil.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AudioEffectOldViewController.h" />
+    <ClInclude Include="AudioEffectViewController.h" />
     <ClInclude Include="Common\http\HttpClient.h" />
     <ClInclude Include="Common\json\json-forwards.h" />
     <ClInclude Include="Common\json\json.h" />
@@ -321,12 +325,12 @@ xcopy /E /Y "$(ProjectDir)res\resouce" "$(OutDir)"</Command>
     <Image Include="res\trtc.ico" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Common\zlib\zlib.cmake" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="Common\duilib\DuiLib_Trtc.vcxproj">
       <Project>{28fdae9e-240e-4354-8a24-dcd236a54c53}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Common\zlib\zlib.cmake" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

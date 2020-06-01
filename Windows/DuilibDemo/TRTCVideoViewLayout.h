@@ -130,7 +130,7 @@ public:
             _isLable = false;
         }
         std::wstring _userId;
-		TRTCVideoStreamType _streamType;
+        TRTCVideoStreamType _streamType;
         bool _isLable;
         VideoCanvasContainer* _viewLayout;
         void copyVideoRenderInfo(_tagVideoRenderInfo& info)

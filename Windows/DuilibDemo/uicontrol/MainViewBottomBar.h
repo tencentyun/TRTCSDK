@@ -16,6 +16,8 @@ using namespace DuiLib;
 
 class TRTCMainViewController;
 class TRTCSettingViewController;
+class AudioEffectViewController;
+class AudioEffectOldViewController;
 class MainViewBottomBar : public INotifyUI, public IMessageFilterUI
 {
 public:
@@ -44,9 +46,13 @@ public:
     void onConnectOtherRoom(int errCode, std::string errMsg);
     void onDisconnectOtherRoom(int errCode, std::string errMsg);
 private:
+    void OpenAudioEffectWnd();
+private:
     TRTCSettingViewController* m_pSettingWnd = nullptr;
     TRTCMainViewController *m_pMainWnd = nullptr;
 
+    AudioEffectViewController *m_pAudioEffectWnd = nullptr;
+    AudioEffectOldViewController *m_pAudioEffectOldWnd = nullptr;
     bool m_bPlay = false;
     bool m_bShowLectureModeUi = false;
     int m_showDashboardStyle = 0;

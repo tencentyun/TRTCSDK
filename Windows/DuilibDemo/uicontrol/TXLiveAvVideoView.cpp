@@ -48,16 +48,16 @@ public:
         bool bFind = false;
         for (auto& itr : m_mapViews)
         {
-			if (itr.first == std::make_pair(userId, type) && itr.second == view)
+            if (itr.first == std::make_pair(userId, type) && itr.second == view)
             {
                 bFind = true;
                 break;
             }
         }
-		if (!bFind) {
-			std::pair<std::string, TRTCVideoStreamType> key = { userId, type };
-			m_mapViews.insert({key, view});
-		}
+        if (!bFind) {
+            std::pair<std::string, TRTCVideoStreamType> key = { userId, type };
+            m_mapViews.insert({key, view});
+        }
             
     }
 
@@ -186,7 +186,7 @@ bool TXLiveAvVideoView::SetRenderInfo(const std::string & userId, TRTCVideoStrea
         m_bRegMsgFilter = true;
     }
     m_userId = userId;
-	m_type = type;
+    m_type = type;
     uint32_t ref = getShareViewMgrInstance()->GetRef();
 
     /*
