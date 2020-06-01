@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Tencent Cloud TRTC</string>
+
+    <string name="btn_cancel">Cancel</string>
+    <string name="btn_ok">Confirm</string>
+
+    <string name="vod_ffplay">ffplay</string>
+    <string name="vod_exo">exo</string>
+
+    <string name="title_activity_rtmp_room_demo">RtmpRoomDemoActivity</string>
+
+    <string name="str_room_id_tips">Input Room Id</string>
+    <string name="str_user_id_tips">Input Username</string>
+
+</resources>

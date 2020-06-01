@@ -116,6 +116,8 @@
     <ClCompile Include="userlist\UserItem.cpp">
       <Filter>userlist</Filter>
     </ClCompile>
+    <ClCompile Include="AudioEffectViewController.cpp" />
+    <ClCompile Include="AudioEffectOldViewController.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -235,6 +237,8 @@
     <ClInclude Include="userlist\UserItem.h">
       <Filter>userlist</Filter>
     </ClInclude>
+    <ClInclude Include="AudioEffectViewController.h" />
+    <ClInclude Include="AudioEffectOldViewController.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="res">

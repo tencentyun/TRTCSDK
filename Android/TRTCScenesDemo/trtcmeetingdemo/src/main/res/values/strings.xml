@@ -1,8 +1,9 @@
 <resources>
-    <string name="app_name">trtc</string>
-    <string name="str_room_id_tips">输入房间号</string>
-    <string name="str_user_id_tips">输入用户名</string>
-    <string name="confirm">确定</string>
     <string name="share">分享</string>
-    <string name="str_cdn_switch">切换cdn播放</string>
+    <string name="enter_tag_normal">进入会议</string>
+    <string name="enter_fomat">进入 %s 会议</string>
+    <string name="meeting_rb_voice">语音</string>
+    <string name="meeting_rb_normal">标准</string>
+    <string name="meeting_rb_music">音乐</string>
+    <string name="meeting_tv_audio_quality">音质选择</string>
 </resources>

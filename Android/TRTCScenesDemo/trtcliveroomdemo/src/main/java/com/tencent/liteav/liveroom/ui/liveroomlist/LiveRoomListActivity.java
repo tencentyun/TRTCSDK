@@ -22,7 +22,6 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.tencent.liteav.debug.GenerateTestUserSig;
 import com.tencent.liteav.liveroom.R;
 import com.tencent.liteav.liveroom.ui.common.utils.TCConstants;
-import com.tencent.liteav.login.ProfileManager;
 import com.tencent.liteav.login.RoomManager;
 
 import java.text.SimpleDateFormat;

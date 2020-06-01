@@ -90,7 +90,7 @@ public class TRTCVideoCallActivity extends AppCompatActivity {
         public void onError(int code, String msg) {
             //发生了错误，报错并退出该页面
             ToastUtils.showLong("发送错误[" + code + "]:" + msg);
-            finish();
+            stopCameraAndFinish();
         }
 
         @Override
@@ -222,7 +222,7 @@ public class TRTCVideoCallActivity extends AppCompatActivity {
             if (mSponsorUserModel != null) {
                 ToastUtils.showLong(mSponsorUserModel.userName + " 取消了通话");
             }
-            finish();
+            stopCameraAndFinish();
         }
 
         @Override
@@ -230,12 +230,12 @@ public class TRTCVideoCallActivity extends AppCompatActivity {
             if (mSponsorUserModel != null) {
                 ToastUtils.showLong(mSponsorUserModel.userName + " 通话超时");
             }
-            finish();
+            stopCameraAndFinish();
         }
 
         @Override
         public void onCallEnd() {
-            finish();
+            stopCameraAndFinish();
         }
 
         @Override
@@ -298,6 +298,7 @@ public class TRTCVideoCallActivity extends AppCompatActivity {
         starter.putExtra(PARAM_TYPE, TYPE_BEING_CALLED);
         starter.putExtra(PARAM_BEINGCALL_USER, beingCallUserModel);
         starter.putExtra(PARAM_OTHER_INVITING_USER, new IntentParams(otherInvitingUserModel));
+        starter.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(starter);
     }
 
@@ -318,14 +319,19 @@ public class TRTCVideoCallActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         mITRTCVideoCall.hangup();
+        stopCameraAndFinish();
         super.onBackPressed();
     }
 
+    private void stopCameraAndFinish() {
+        mITRTCVideoCall.closeCamera();
+        mITRTCVideoCall.removeListener(mTRTCVideoCallListener);
+        finish();
+    }
+    
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mITRTCVideoCall.closeCamera();
-        mITRTCVideoCall.removeListener(mTRTCVideoCallListener);
         stopTimeCount();
         mTimeHandlerThread.quit();
     }
@@ -443,7 +449,7 @@ public class TRTCVideoCallActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mITRTCVideoCall.reject();
-                finish();
+                stopCameraAndFinish();
             }
         });
         mDialingLl.setOnClickListener(new View.OnClickListener() {
@@ -480,7 +486,7 @@ public class TRTCVideoCallActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mITRTCVideoCall.hangup();
-                finish();
+                stopCameraAndFinish();
             }
         });
         mDialingLl.setVisibility(View.GONE);
@@ -508,7 +514,7 @@ public class TRTCVideoCallActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mITRTCVideoCall.hangup();
-                finish();
+                stopCameraAndFinish();
             }
         });
         showTimeCount();

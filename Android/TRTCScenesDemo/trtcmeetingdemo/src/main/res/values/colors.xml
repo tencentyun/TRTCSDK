@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorComBg">#0B1829</color>
-    <color name="colorWhite">#FFFFFF</color>
-    <color name="colorBtn">#00A66b</color>
-    <color name="transparent">#00000000</color>
-    <color name="white">#FFFFFF</color>
-    <color name="hlfTransparent">#777777</color>
-    <color name="line_btn">#BBBBBB</color>
-    <color name="colorPrimaryDark">#00A66b</color>
-    <color name="colorAccent">#0accac</color>
-    <color name="tabColorNormal">#ffffff</color>
-    <color name="tabColorSelected">#0accac</color>
-    <color name="colorRadioText">#999999</color>
+    <color name="colorWhite">#ffffff</color>
+    <color name="colorTranslucent">#7013294B</color>
+    <color name="meetingTextColorSecond">#EBF4FF</color>
+    <color name="meetingTextColorHint">#6B82A8</color>
+    <color name="meetingTextColorDisable">#56749E</color>
+    <color name="meetingItemBtn">@color/meetingTextColorSecond</color>
+
+    <color name="tabColorNormal">@color/meetingTextColorDisable</color>
+    <color name="tabColorSelected">@color/meetingTextColorSecond</color>
 </resources>

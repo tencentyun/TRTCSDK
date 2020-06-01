@@ -34,9 +34,9 @@ using namespace DuiLib;
 #endif //FormatStr
 
 #ifndef UNICODE
-#define TString			std::string
-#define TStr2A(str)		(str)
+#define TString            std::string
+#define TStr2A(str)        (str)
 #else
-#define TString			std::wstring
-#define TStr2A(str)		w2a(str)
+#define TString            std::wstring
+#define TStr2A(str)        w2a(str)
 #endif//UNICODE

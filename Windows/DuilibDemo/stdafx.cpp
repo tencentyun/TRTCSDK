@@ -12,18 +12,18 @@
 class GDIPlusHelper
 {
 public:
-	GDIPlusHelper()
-	{
-		::GdiplusStartup(&gdiplustoken, &gdiplusstartupinput, NULL);
-	}
+    GDIPlusHelper()
+    {
+        ::GdiplusStartup(&gdiplustoken, &gdiplusstartupinput, NULL);
+    }
 
-	~GDIPlusHelper()
-	{
-		::GdiplusShutdown(gdiplustoken);
-	}
+    ~GDIPlusHelper()
+    {
+        ::GdiplusShutdown(gdiplustoken);
+    }
 
 private:
-	GdiplusStartupInput gdiplusstartupinput;
-	ULONG_PTR gdiplustoken;
+    GdiplusStartupInput gdiplusstartupinput;
+    ULONG_PTR gdiplustoken;
 };
 static GDIPlusHelper gdiplushelper;

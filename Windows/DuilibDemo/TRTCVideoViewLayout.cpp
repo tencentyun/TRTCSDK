@@ -347,7 +347,7 @@ void VideoCanvasContainer::updateVoiceVolume(int volume)
         _volume = 0;
 
     m_canvasAttribute._volume = _volume;
-    int id = _volume * 15 / 100;
+    int id = _volume * 14 / 100;
 
     if (m_canvasAttribute._bMuteAudio)
         return;

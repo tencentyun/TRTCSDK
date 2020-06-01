@@ -1,57 +1,286 @@
-本文主要介绍如何快速地将腾讯云 TRTC Demo 运行起来，您只需参考如下步骤依次执行即可。
+#### 实时音视频（TRTC）版SDK
+实时音视频（TRTC）版SDK包含实时音视频（TRTC）和直播播放的能力。腾讯实时音视频（Tencent Real-Time Communication，TRTC）将腾讯21年来在网络与音视频技术上的深度积累，以多人音视频通话和低延时互动直播两大场景化方案，通过腾讯云服务向开发者开放，致力于帮助开发者快速搭建低成本、低延时、高品质的音视频互动解决方案。
+实时音视频（TRTC）产品请参见：[实时音视频（TRTC）](https://cloud.tencent.com/product/trtc)
 
-## 1. 创建新的应用
-进入腾讯云实时音视频 [控制台](https://console.cloud.tencent.com/rav) 创建一个新的应用，获得 SDKAppID，SDKAppID 是腾讯云后台用来区分不同实时音视频应用的唯一标识，在第4步中会用到。
-![](https://main.qcloudimg.com/raw/b9d211494b6ec8fcea765d1518b228a1.png)
+#### 目录结构
 
-接下来，点击应用进入**快速上手**页面，参考页面上指引的“第一步”、“第二步”和“第三步”操作，即可快速跑通 Demo。
+```
+├─ TRTCScenceDemo // TRTC场景化Demo，包括视频通话、语音通话、视频互动直播、语音聊天室示例代码
+├─ TRTCSimpleDemo // TRTC精简版Demo，包含通话模式和直播模式示例代码
+├─ SDK            // TRTCSDK相关
+```
 
-## 2. 下载 SDK+Demo 源码
-“快速上手”页面中第一步里的几个链接地址分别为各个平台的 SDK 和 Demo 源码，点击会跳转到 Github 上，如果您当前网络访问 Github 太慢，可以在项目首页中找到镜像下载地址。
+#### SDK更新地址
 
-![](https://main.qcloudimg.com/raw/d56b4e4434da42d1a3b8e3540cf6718e.png)
+[SDK更新地址](https://cloud.tencent.com/document/product/647/32689)
 
-## 3. 查看并拷贝加密密钥
-点击**查看密钥**按钮，即可看到用于计算 UserSig 的加密密钥，点击“复制密钥”按钮，可以将密钥拷贝到剪贴板中。
 
-![](https://main.qcloudimg.com/raw/5843542ec2e0446d326d7d44f96a5ec0.png)
+#### 版本更新记录
 
-<h2 id="CopyKey"> 4. 粘贴密钥到Demo工程的指定文件中 </h2>
-我们在各个平台的 Demo 的源码工程中都提供了一个叫做 “GenerateTestUserSig” 的文件，它可以通过 HMAC-SHA256 算法本地计算出 UserSig，用于快速跑通 Demo。
+[版本更新记录](https://github.com/tencentyun/TRTCSDK/releases)
 
-| 语言版本 |  适用平台 | GenerateTestUserSig 的源码位置 |
-|:---------:|:---------:|:---------:|
-| Objective-C | iOS  | [Github](https://github.com/tencentyun/TRTCSDK/tree/master/iOS/TRTCDemo/TRTC/GenerateTestUserSig.h)|
-| Objective-C | Mac  | [Github](https://github.com/tencentyun/TRTCSDK/tree/master/Mac/TRTCDemo/TRTC/GenerateTestUserSig.h)|
-| Java | Android  | [Github](https://github.com/tencentyun/TRTCSDK/tree/master/Android/TRTCDemo/app/src/main/java/com/tencent/liteav/demo/trtc/debug/GenerateTestUserSig.java) |
-| C++ | Windows | [Github](https://github.com/tencentyun/TRTCSDK/tree/master/Windows/DuilibDemo/GenerateTestUserSig.h)|
-| C# | Windows | [Github](https://github.com/tencentyun/TRTCSDK/tree/master/Windows/CSharpDemo/GenerateTestUserSig.cs)|
-| Javascript | Web | [Github](https://github.com/tencentyun/TRTCSDK/tree/master/H5/js/debug/GenerateTestUserSig.js)|
-| Javascript | 微信小程序 | [Github](https://github.com/tencentyun/TRTCSDK/tree/master/WXMini/pages/webrtc-room/debug/GenerateTestUserSig.js)|
+#### API文档
 
-您只需要将第1步中获得的 SDKAppID 和第3步中获得的加密密钥拷贝到文件中的指定位置即可，如下所示：
+[实时音视频（TRTC）API文档](http://doc.qcloudtrtc.com/md_introduction_trtc_Android_%E6%A6%82%E8%A7%88.html)
 
-![](https://main.qcloudimg.com/raw/33aaae61fe949f3fbee881f0e7ea4e05.png)
 
-> !安全警告：本地计算 UserSig 的做法虽然能够工作，但仅适合于调试 Demo 的场景，不适用于线上产品。
-> 
-> 这是因为客户端代码中的 SECRETKEY 很容易被反编译逆向破解，尤其是 Web 端的代码被破解的难度几乎为零。一旦您的密钥泄露，攻击者就可以计算出正确的 UserSig 来盗用您的腾讯云流量。
-> 
-> [安全方案](https://cloud.tencent.com/document/product/454/14548#Server)：将 UserSig 的计算代码和加密密钥放在您的业务服务器上，然后由 App 按需向您的服务器获取实时算出的 UserSig。由于攻破服务器的成本要远高于破解客户端 App，所以服务器计算的方案能够更好地保护您的加密密钥。
+#### TRTC场景化方案
 
-## 5. 编译运行
-使用 Android Studio （3.2 以上的版本） 打开源码工程TRTCDemo，直接单击【运行】即可。。
+| 场景 |Andorid平台| iOS平台 |
+| ------ | ------ | ------ |
+| 视频互动直播 | [Andorid](https://cloud.tencent.com/document/product/647/43182) | [iOS](https://cloud.tencent.com/document/product/647/43181) |
+| 实时视频通话 |[Andorid](https://cloud.tencent.com/document/product/647/42045) | [iOS](https://cloud.tencent.com/document/product/647/42044) |
+| 实时语音通话 | [Andorid](https://cloud.tencent.com/document/product/647/42047) | [iOS](https://cloud.tencent.com/document/product/647/42046) |
 
-## 常见问题
 
-### 1. 开发环境有什么要求？
-- 最低兼容 Android 4.1（SDK API Level 16），建议使用 Android 5.0 （SDK API Level 21）及以上版本
-- Android Studio 2.0 或以上版本
-- App 要求 Android 4.1 或以上设备
+#### 体验地址
 
-### 2. 两台手机同时运行 Demo，为什么看不到彼此的画面？
-请确保两台手机在运行 Demo 时使用的是不同的 UserID，TRTC 不支持同一个 UserID （除非 SDKAppID 不同）在两个终端同时使用。
-![](https://main.qcloudimg.com/raw/c7b1589e1a637cf502c6728f3c3c4f99.png)
+<table style="text-align:center;vertical-align:middle;">
+  <tr>
+    <th width="150px">iOS</th>
+    <th width="150px">Android</th>
+    <th width="150px">Mac OS</th>
+    <th width="150px">Windows</th>
+    <th width="150px">桌面浏览器</th>
+    <th width="150px">微信小程序</th>
+  </tr>
+  <tr>
+    <td><img src="https://main.qcloudimg.com/raw/b637949cbfc255ecefb060fafbfc70be.png" /></td>
+    <td><img onclick="window.open('http://dldir1.qq.com/hudongzhibo/TRTC/Demo/TRTCDemo.apk')" style="display: block;cursor: pointer;" src="https://main.qcloudimg.com/raw/cb4c811e2f4dc4a7c9cc4f759e9ca86b.png" /></td>
+    <td><a href="http://trtc-1252463788.cosgz.myqcloud.com/TXLiteAVSDK_Mac_Demo.tar.bz2"><img src="https://main.qcloudimg.com/raw/e2acfcec98990f8e3b10e379b62b6ab6.jpg"></a></td>
+    <td><a href="http://trtc-1252463788.cosgz.myqcloud.com/TXLiteAVSDK_Win_Demo.exe"><img src="https://main.qcloudimg.com/raw/e2acfcec98990f8e3b10e379b62b6ab6.jpg"></a></td>
+    <td><a href="https://trtc-1252463788.file.myqcloud.com/web/demo/official-demo/index.html"><img src="https://main.qcloudimg.com/raw/e2acfcec98990f8e3b10e379b62b6ab6.jpg"></a></td>
+    <td><img src="https://main.qcloudimg.com/raw/7298c4c6297b3dc6d9fac973c52caf66.png" /></td>
+  </tr>
+</table>
 
-### 3. 防火墙有什么限制？
-由于 SDK 使用 UDP 协议进行音视频传输，所以对 UDP 有拦截的办公网络下无法使用，如遇到类似问题，请参考文档：[应对公司防火墙限制](https://cloud.tencent.com/document/product/647/34399)。
+
+#### 其他产品
+
+- 短视频（UGSV）：[链接地址](https://cloud.tencent.com/product/ugsv)
+
+- 播放器（Player）：[链接地址](https://cloud.tencent.com/product/player)
+
+
+#### 各版本差异对照表
+
+![](https://main.qcloudimg.com/raw/76d9d6f854ba4cc8cf3b3c18ed230a35.png)
+
+<table>
+  <tr>
+    <th width="100px" style="text-align:center">功能模块</th>
+    <th width="100px" style="text-align:center">功能项</th>
+    <th width="100px" style="text-align:center"><a href="https://cloud.tencent.com/document/product/454/7873">直播精简版</a><br>LiteAV_Smart</th>
+    <th width="100px" style="text-align:center"><a href="https://cloud.tencent.com/document/product/584/9366">短视频版</a><br>LiteAV_UGC</th>
+    <th width="100px" style="text-align:center"><a href="https://cloud.tencent.com/document/product/647/32689">TRTC版</a><br>LiteAV_TRTC</th>
+    <th width="100px" style="text-align:center"><a href="https://cloud.tencent.com/document/product/881/20205">播放器版</a><br>LiteAV_Player</th>
+    <th width="100px" style="text-align:center"><a href="#Professional">专业版</a><br>Professional</th>
+    <th width="100px" style="text-align:center"><a href="#Enterprise">企业版</a><br>Enterprise</th>
+  </tr>
+  <tr>
+    <td rowspan='2' style="text-align:center">直播推流</td>
+    <td style="text-align:center">摄像头推流</td>
+    <td style="text-align:center">&#10003;</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">&#10003;</td>
+    <td style="text-align:center">&#10003;</td>
+  </tr>
+   <tr>
+    <td style="text-align:center">录屏推流</td>
+    <td style="text-align:center">&#10003;</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">&#10003;</td>
+    <td style="text-align:center">&#10003;</td>
+  </tr>
+  <tr>
+    <td rowspan='3' style="text-align:center">直播播放</td>
+    <td style="text-align:center">RTMP 协议</td>
+    <td style="text-align:center">&#10003;</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">&#10003;</td>
+    <td style="text-align:center">&#10003;</td>
+    <td style="text-align:center">&#10003;</td>
+  </tr>
+  <tr>
+    <td style="text-align:center">HTTP - FLV</td>
+    <td style="text-align:center">&#10003;</td>
+     <td style="text-align:center">-</td>
+    <td style="text-align:center">&#10003;</td>
+    <td style="text-align:center">&#10003;</td>
+    <td style="text-align:center">&#10003;</td>
+    <td style="text-align:center">&#10003;</td>
+  </tr>
+  <tr>
+    <td style="text-align:center">HLS(m3u8)</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">&#10003;</td>
+    <td style="text-align:center">&#10003;</td>
+    <td style="text-align:center">&#10003;</td>
+  </tr>
+  <tr>
+    <td rowspan='3' style="text-align:center">点播播放</td>
+    <td style="text-align:center">MP4 格式</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">&#10003;</td>
+    <td style="text-align:center">&#10003;</td>
+    <td style="text-align:center">&#10003;</td>
+  </tr>
+   <tr>
+    <td style="text-align:center">HLS(m3u8)</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">&#10003;</td>
+    <td style="text-align:center">&#10003;</td>
+    <td style="text-align:center">&#10003;</td>
+  </tr>
+   <tr>
+    <td style="text-align:center">DRM 加密</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">&#10003;</td>
+    <td style="text-align:center">&#10003;</td>
+    <td style="text-align:center">&#10003;</td>
+  </tr>
+  <tr>
+    <td rowspan='2' style="text-align:center">美颜滤镜</td>
+    <td style="text-align:center">基础美颜</td>
+    <td style="text-align:center">&#10003;</td>
+    <td style="text-align:center">&#10003;</td>
+    <td style="text-align:center">&#10003;</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">&#10003;</td>
+    <td style="text-align:center">&#10003;</td>
+  </tr>
+  <tr>
+    <td style="text-align:center">基础滤镜</td>
+    <td style="text-align:center">&#10003;</td>
+    <td style="text-align:center">&#10003;</td>
+    <td style="text-align:center">&#10003;</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">&#10003;</td>
+    <td style="text-align:center">&#10003;</td>
+  </tr>
+  <tr>
+    <td rowspan='2' style="text-align:center">直播连麦</td>
+    <td style="text-align:center">连麦互动</td>
+    <td style="text-align:center">&#10003;</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">&#10003;</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">&#10003;</td>
+    <td style="text-align:center">&#10003;</td>
+  </tr>
+  <tr>
+    <td style="text-align:center">跨房 PK</td>
+    <td style="text-align:center">&#10003;</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">&#10003;</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">&#10003;</td>
+    <td style="text-align:center">&#10003;</td>
+  </tr>
+  <tr>
+    <td rowspan='2' style="text-align:center">视频通话</td>
+    <td style="text-align:center">双人通话</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">&#10003;</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">&#10003;</td>
+    <td style="text-align:center">&#10003;</td>
+  </tr>
+  <tr>
+    <td style="text-align:center">视频会议</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">&#10003;</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">&#10003;</td>
+    <td style="text-align:center">&#10003;</td>
+  </tr>
+  <tr>
+    <td rowspan='4' style="text-align:center">短视频</td>
+    <td style="text-align:center">录制和拍摄</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">&#10003;</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">&#10003;</td>
+    <td style="text-align:center">&#10003;</td>
+  </tr>
+  <tr>
+    <td style="text-align:center">裁剪拼接</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">&#10003;</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">&#10003;</td>
+    <td style="text-align:center">&#10003;</td>
+  </tr>
+  <tr>
+    <td style="text-align:center">“抖音”特效</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">&#10003;</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">&#10003;</td>
+    <td style="text-align:center">&#10003;</td>
+  </tr>
+  <tr>
+    <td style="text-align:center">视频上传</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">&#10003;</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">&#10003;</td>
+    <td style="text-align:center">&#10003;</td>
+  </tr>
+  <tr>
+    <td rowspan='4' style="text-align:center">AI 美颜特效</td>
+    <td style="text-align:center">大眼瘦脸</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">&#10003;</td>
+  </tr>
+  <tr>
+    <td style="text-align:center">V 脸隆鼻</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">&#10003;</td>
+  </tr>
+  <tr>
+    <td style="text-align:center">动效贴纸</td>
+   <td style="text-align:center">-</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">&#10003;</td>
+  </tr>
+  <tr>
+    <td style="text-align:center">绿幕抠图</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">-</td>
+    <td style="text-align:center">&#10003;</td>
+  </tr>
+</table>

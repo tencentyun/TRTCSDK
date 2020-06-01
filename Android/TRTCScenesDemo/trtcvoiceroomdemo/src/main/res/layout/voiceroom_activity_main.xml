@@ -10,7 +10,6 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
-        android:background="@color/colorChatRoomPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/ic_back">
@@ -64,8 +63,8 @@
         android:layout_height="30dp"
         android:layout_marginEnd="5dp"
         android:layout_marginRight="5dp"
-        android:gravity="center"
         android:background="@drawable/switch_button_border"
+        android:gravity="center"
         android:text="切换"
         android:textColor="@color/white"
         android:textSize="@dimen/text_size_small"
@@ -156,81 +155,76 @@
         tools:text="混响类型：关闭"
         tools:visibility="visible" />
 
-    <android.support.v7.widget.AppCompatImageButton
-        android:id="@+id/btn_mic"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginBottom="10dp"
-        android:background="@android:color/transparent"
-        android:scaleType="fitXY"
-        android:src="@drawable/button_mic"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="60dp"
+        android:layout_marginRight="60dp"
+        android:layout_marginBottom="20dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.AppCompatImageButton
+                android:id="@+id/btn_mic"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:background="@android:color/transparent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/button_mic" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.AppCompatImageButton
+                android:id="@+id/btn_audio"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:background="@android:color/transparent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/button_audio" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.AppCompatImageButton
+                android:id="@+id/btn_bgm"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:background="@android:color/transparent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/button_audio_effect" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <com.tencent.liteav.audiosettingkit.AudioEffectPanel
+        android:id="@+id/anchor_audio_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_audio"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <android.support.v7.widget.AppCompatImageButton
-        android:id="@+id/btn_audio"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="@android:color/transparent"
-        android:scaleType="fitXY"
-        android:src="@drawable/button_audio"
-        app:layout_constraintEnd_toStartOf="@+id/btn_bgm"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/btn_mic"
-        app:layout_constraintTop_toTopOf="@+id/btn_mic" />
-
-    <android.support.v7.widget.AppCompatImageButton
-        android:id="@+id/btn_bgm"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="@android:color/transparent"
-        android:scaleType="fitXY"
-        android:src="@drawable/ic_music"
-        app:layout_constraintEnd_toStartOf="@+id/btn_effect"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/btn_audio"
-        app:layout_constraintTop_toTopOf="@+id/btn_audio"
-        app:tint="@color/button_tint" />
-
-    <android.support.v7.widget.AppCompatImageButton
-        android:id="@+id/btn_effect"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="@android:color/transparent"
-        android:scaleType="fitXY"
-        android:src="@drawable/ic_voice_effector"
-        app:layout_constraintEnd_toStartOf="@+id/btn_voice_change"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/btn_bgm"
-        app:layout_constraintTop_toTopOf="@+id/btn_bgm"
-        app:tint="@color/button_tint" />
-
-    <android.support.v7.widget.AppCompatImageButton
-        android:id="@+id/btn_voice_change"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="@android:color/transparent"
-        android:scaleType="fitXY"
-        android:src="@drawable/ic_voice_changer"
-        app:layout_constraintEnd_toEndOf="@+id/btn_more"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/btn_effect"
-        app:layout_constraintTop_toTopOf="@+id/btn_effect"
-        app:tint="@color/button_tint" />
-
-    <android.support.v7.widget.AppCompatImageButton
-        android:id="@+id/btn_more"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="@android:color/transparent"
-        android:scaleType="fitXY"
-        android:src="@drawable/ic_more"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/btn_voice_change"
-        app:layout_constraintTop_toTopOf="@+id/btn_voice_change"
-        app:tint="@color/button_tint" />
+        tools:visibility="gone"/>
 
 </android.support.constraint.ConstraintLayout>

@@ -104,9 +104,9 @@
         android:id="@+id/btn_close_before_live"
         android:layout_width="@dimen/liveroom__btn_size"
         android:layout_height="@dimen/liveroom__btn_size"
+        android:layout_marginTop="15dp"
         android:layout_marginEnd="15dp"
         android:layout_marginRight="15dp"
-        android:layout_marginTop="15dp"
         android:background="@drawable/btn_close"
         android:onClick="onClick"
         app:layout_constraintEnd_toEndOf="parent"
@@ -246,21 +246,6 @@
         app:layout_constraintTop_toTopOf="@+id/gl_h"
         tools:visibility="visible" />
 
-    <com.tencent.liteav.liveroom.ui.anchor.music.TCAudioControl
-        android:id="@+id/anchor_audio_control"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:background="@color/dialogBg"
-        android:clickable="true"
-        android:orientation="vertical"
-        android:padding="0dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/tool_bar_view"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="gone" />
-
 
     <com.tencent.liteav.liveroom.ui.anchor.AnchorPKSelectView
         android:id="@+id/anchor_pk_select_view"
@@ -308,9 +293,9 @@
         android:id="@+id/cl_live_room_before"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/message_background"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:background="@drawable/message_background"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="@id/gl_h"
@@ -322,11 +307,9 @@
             android:id="@+id/img_live_room_cover"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
             android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
             android:src="@drawable/bg_cover"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -352,15 +335,77 @@
             android:background="@null"
             android:hint="标题有趣能吸引人气"
             android:maxLength="10"
-            android:singleLine="true"
             android:maxLines="1"
+            android:singleLine="true"
             android:textCursorDrawable="@drawable/bg_edittext"
             android:textSize="22sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/img_live_room_cover"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/img_live_room_cover" />
+
+        <TextView
+            android:id="@+id/tv_live_room_quality_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="直播音质"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/text_size_middle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/img_live_room_cover"
+            app:layout_constraintTop_toBottomOf="@+id/et_live_room_name" />
+
+        <RadioGroup
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_live_room_quality_tag"
+            app:layout_constraintStart_toEndOf="@+id/tv_live_room_quality_tag"
+            app:layout_constraintTop_toTopOf="@+id/tv_live_room_quality_tag">
+
+            <RadioButton
+                android:id="@+id/rb_live_room_quality_normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_live_room_rb_quality"
+                android:button="@null"
+                android:gravity="center"
+                android:text="标准"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_live_room_quality_tag"
+                app:layout_constraintStart_toEndOf="@+id/tv_live_room_quality_tag"
+                app:layout_constraintTop_toTopOf="@+id/tv_live_room_quality_tag" />
+
+            <RadioButton
+                android:id="@+id/rb_live_room_quality_music"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/bg_live_room_rb_quality"
+                android:button="@null"
+                android:gravity="center"
+                android:checked="true"
+                android:text="音乐"
+                android:textColor="@color/white" />
+
+        </RadioGroup>
+
+
     </android.support.constraint.ConstraintLayout>
 
+
+    <com.tencent.liteav.audiosettingkit.AudioEffectPanel
+        android:id="@+id/anchor_audio_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:visibility="gone"/>
 
 </android.support.constraint.ConstraintLayout>

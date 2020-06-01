@@ -10,6 +10,7 @@
 #include <cstdint>
 #include "GenerateTestUserSig.h"
 #include "utils/TrtcUtil.h"
+#include <assert.h>
 
 TRTCCloudCore* TRTCCloudCore::m_instance = nullptr;
 static std::mutex engine_mex;
@@ -58,8 +59,8 @@ void TRTCCloudCore::Init()
     m_pCloud->setLogCallback(this);
     m_bPreUninit = false;
     //std::string logPath = Wide2UTF8(L"D:/中文/log/");
-    //m_pCloud->setLogDirPath(logPath.c_str());
-    
+   //m_pCloud->setLogDirPath(logPath.c_str());
+   // m_pCloud->setConsoleEnabled(true);
     m_pCloud->setAudioFrameCallback(this);
 }
 
@@ -76,6 +77,14 @@ void TRTCCloudCore::Uninit()
 void TRTCCloudCore::PreUninit()
 {
     m_bPreUninit = true;
+    if (CDataCenter::GetInstance()->m_bStartSystemVoice)
+    {
+        CDataCenter::GetInstance()->m_bStartSystemVoice = false;
+        TRTCCloudCore::GetInstance()->getTRTCCloud()->stopSystemAudioLoopback();
+    }
+
+    stopLocalRecord();
+    destroyLocalRecordShareInstance();
     stopCloudMixStream();
     stopCustomCaptureVideo();
     stopCustomCaptureAudio();
@@ -180,6 +189,19 @@ void TRTCCloudCore::onUserAudioAvailable(const char * userId, bool available)
     }
 }
 
+void TRTCCloudCore::onFirstAudioFrame(const char * userId)
+{
+    LINFO(L"onFirstAudioFrame userId[%s] \n", UTF82Wide(userId).c_str());
+    for (auto& itr : m_mapSDKMsgFilter)
+    {
+        if (itr.first == WM_USER_CMD_OnFirstAudioFrame && itr.second != nullptr)
+        {
+            std::string * str = new std::string(userId);
+            ::PostMessage(itr.second, WM_USER_CMD_OnFirstAudioFrame, (WPARAM)str, NULL);
+        }
+    }
+}
+
 void TRTCCloudCore::onUserVoiceVolume(TRTCVolumeInfo* userVolumes, uint32_t userVolumesCount, uint32_t totalVolume)
 {
     for (auto& itr : m_mapSDKMsgFilter)
@@ -234,28 +256,28 @@ void TRTCCloudCore::onNetworkQuality(TRTCQualityInfo localQuality, TRTCQualityIn
 
 void TRTCCloudCore::onUserSubStreamAvailable(const char * userId, bool available)
 {
-	LINFO(L"onUserSubStreamAvailable userId[%s] available[%d]\n", UTF82Wide(userId).c_str(), available);
-	for (auto& itr : m_mapSDKMsgFilter)
-	{
-		if (itr.first == WM_USER_CMD_SubVideoAvailable && itr.second != nullptr)
-		{
-			std::string * str = new std::string(userId);
-			::PostMessage(itr.second, WM_USER_CMD_SubVideoAvailable, (WPARAM)str, available);
-		}
-	}
+    LINFO(L"onUserSubStreamAvailable userId[%s] available[%d]\n", UTF82Wide(userId).c_str(), available);
+    for (auto& itr : m_mapSDKMsgFilter)
+    {
+        if (itr.first == WM_USER_CMD_SubVideoAvailable && itr.second != nullptr)
+        {
+            std::string * str = new std::string(userId);
+            ::PostMessage(itr.second, WM_USER_CMD_SubVideoAvailable, (WPARAM)str, available);
+        }
+    }
 }
 
 void TRTCCloudCore::onUserVideoAvailable(const char * userId, bool available)
 {
-	LINFO(L"onUserVideoAvailable userId[%s] available[%d]\n", UTF82Wide(userId).c_str(), available);
-	for (auto& itr : m_mapSDKMsgFilter)
-	{
-		if (itr.first == WM_USER_CMD_VideoAvailable && itr.second != nullptr)
-		{
-			std::string * str = new std::string(userId);
-			::PostMessage(itr.second, WM_USER_CMD_VideoAvailable, (WPARAM)str, available);
-		}
-	}
+    LINFO(L"onUserVideoAvailable userId[%s] available[%d]\n", UTF82Wide(userId).c_str(), available);
+    for (auto& itr : m_mapSDKMsgFilter)
+    {
+        if (itr.first == WM_USER_CMD_VideoAvailable && itr.second != nullptr)
+        {
+            std::string * str = new std::string(userId);
+            ::PostMessage(itr.second, WM_USER_CMD_VideoAvailable, (WPARAM)str, available);
+        }
+    }
 }
 
 void TRTCCloudCore::onStatistics(const TRTCStatistics& statis)
@@ -292,50 +314,50 @@ void TRTCCloudCore::onStatistics(const TRTCStatistics& statis)
 
 void TRTCCloudCore::onScreenCaptureStarted()
 {
-	for (auto& itr : m_mapSDKMsgFilter)
-	{
-		if (itr.first == WM_USER_CMD_ScreenStart && itr.second != nullptr)
-		{
-			::PostMessage(itr.second, WM_USER_CMD_ScreenStart, 0, 0);
-		}
-	}
+    for (auto& itr : m_mapSDKMsgFilter)
+    {
+        if (itr.first == WM_USER_CMD_ScreenStart && itr.second != nullptr)
+        {
+            ::PostMessage(itr.second, WM_USER_CMD_ScreenStart, 0, 0);
+        }
+    }
 }
 
 void TRTCCloudCore::onScreenCaptureStoped(int reason)
 {
-	for (auto& itr : m_mapSDKMsgFilter)
-	{
-		if (itr.first == WM_USER_CMD_ScreenStart && itr.second != nullptr)
-		{
-			::PostMessage(itr.second, WM_USER_CMD_ScreenEnd, (WPARAM)reason, 0);
-		}
-	}
+    for (auto& itr : m_mapSDKMsgFilter)
+    {
+        if (itr.first == WM_USER_CMD_ScreenStart && itr.second != nullptr)
+        {
+            ::PostMessage(itr.second, WM_USER_CMD_ScreenEnd, (WPARAM)reason, 0);
+        }
+    }
 }
 
 void TRTCCloudCore::onVodPlayerStarted(uint64_t msLength)
 {
-	for (auto& itr : m_mapSDKMsgFilter)
-	{
-		if (itr.first == WM_USER_CMD_VodStart && itr.second != nullptr)
-		{
-			::PostMessage(itr.second, WM_USER_CMD_VodStart, 0, 0);
-		}
-	}
+    for (auto& itr : m_mapSDKMsgFilter)
+    {
+        if (itr.first == WM_USER_CMD_VodStart && itr.second != nullptr)
+        {
+            ::PostMessage(itr.second, WM_USER_CMD_VodStart, 0, 0);
+        }
+    }
 }
 
 void TRTCCloudCore::onVodPlayerStoped(int reason)
 {
-	for (auto& itr : m_mapSDKMsgFilter)
-	{
-		if (itr.first == WM_USER_CMD_VodEnd && itr.second != nullptr)
-		{
-			::PostMessage(itr.second, WM_USER_CMD_VodEnd, 0, 0);
-		}
-	}
-	if (m_pVodPlayer) {
+    for (auto& itr : m_mapSDKMsgFilter)
+    {
+        if (itr.first == WM_USER_CMD_VodEnd && itr.second != nullptr)
+        {
+            ::PostMessage(itr.second, WM_USER_CMD_VodEnd, 0, 0);
+        }
+    }
+    if (m_pVodPlayer) {
         destroyTXVodPlayer(&m_pVodPlayer);
         m_pVodPlayer = nullptr;
-	}
+    }
 }
 
 void TRTCCloudCore::onVodPlayerError(int error)
@@ -421,26 +443,26 @@ void TRTCCloudCore::onDisconnectOtherRoom(TXLiteAVError errCode, const char * er
 
 void TRTCCloudCore::onCapturedAudioFrame(TRTCAudioFrame * frame)
 {
-    
+    //LINFO(L"onCapturedAudioFrame\n");
 }
 
 void TRTCCloudCore::onPlayAudioFrame(TRTCAudioFrame * frame, const char * userId)
 {
-    /*
-    LINFO(L"onPlayAudioFrame\n");
-    FILE* file = NULL;
+    
+    //LINFO(L"onPlayAudioFrame\n");
+    /*FILE* file = NULL;
     ::fopen_s(&file, "D:/subTest/playaudio_frame.pcm", "ab+");
     ::fwrite(frame->data, frame->length, 1, file);
     ::fflush(file);
-    ::fclose(file);
-    */
+    ::fclose(file);*/
+    
 }
 
 void TRTCCloudCore::onMixedPlayAudioFrame(TRTCAudioFrame * frame)
 {
-    /*
-    LINFO(L"onMixedPlayAudioFrame\n");
-    FILE* file = NULL;
+   
+    //LINFO(L"onMixedPlayAudioFrame\n");
+    /*FILE* file = NULL;
     ::fopen_s(&file, "D:/subTest/mixplayaudio_frame.pcm", "ab+");
     ::fwrite(frame->data, frame->length, 1, file);
     ::fflush(file);
@@ -507,7 +529,7 @@ void TRTCCloudCore::onSendFirstLocalAudioFrame()
 
 void TRTCCloudCore::onAudioEffectFinished(int effectId, int code)
 {
-
+    LINFO(L"onAudioEffectFinished effectId[%d], code[%d]\n", effectId, code);
 }
 
 void TRTCCloudCore::onStartPublishing(int err,const char *errMsg)
@@ -551,6 +573,57 @@ void TRTCCloudCore::onStopPublishing(int err,const char * errMsg)
     }
 }
 
+void TRTCCloudCore::startLocalRecord(const LiteAVScreenCaptureSourceInfo & source,  const char * szRecordPath)
+{
+    RECT captureRect = CDataCenter::GetInstance()->m_recordCaptureRect;
+    ITXLiteAVLocalRecord * pRecorder = getLocalRecordShareInstance();
+    if (pRecorder)
+    {
+        pRecorder->setCallback(this);
+        pRecorder->startLocalRecord(source, captureRect, szRecordPath);
+    }
+    CDataCenter::GetInstance()->m_bStartLocalRecord = true;
+    CDataCenter::GetInstance()->m_bWaitStartRecordNotify = true;
+}
+
+void TRTCCloudCore::stopLocalRecord()
+{
+    CDataCenter::GetInstance()->m_bStartLocalRecord = false;
+    ITXLiteAVLocalRecord * pRecorder = getLocalRecordShareInstance();
+    if (pRecorder)
+    {
+        pRecorder->stopLocalRecord();
+        pRecorder->setCallback(nullptr);
+      
+        CDataCenter::GetInstance()->m_recordCaptureRect = { 0 };
+        CDataCenter::GetInstance()->m_recordCaptureSourceInfo.type = LiteAVScreenCaptureSourceTypeUnknown;
+        CDataCenter::GetInstance()->m_bStartLocalRecord = false;
+        CDataCenter::GetInstance()->m_bPauseLocalRecord = false;
+        CDataCenter::GetInstance()->m_wstrRecordFile = L"";
+
+    }
+}
+
+void TRTCCloudCore::pauseLocalRecord()
+{
+    ITXLiteAVLocalRecord * pRecorder = getLocalRecordShareInstance();
+    if (pRecorder)
+    {
+        pRecorder->pauseLocalRecord();
+    }
+    CDataCenter::GetInstance()->m_bPauseLocalRecord = true;
+}
+
+void TRTCCloudCore::resumeLocalRecord()
+{
+    CDataCenter::GetInstance()->m_bPauseLocalRecord = false;
+    ITXLiteAVLocalRecord * pRecorder = getLocalRecordShareInstance();
+    if (pRecorder)
+    {
+        pRecorder->resumeLocalRecord();
+    }
+}
+
 void TRTCCloudCore::onConnectionLost()
 {
     LINFO(L"onConnectionLost\n");
@@ -587,6 +660,93 @@ void TRTCCloudCore::onConnectionRecovery()
     }
 }
 
+void TRTCCloudCore::onCameraDidReady()
+{
+    LINFO(L"onCameraDidReady\n");
+    for (auto& itr : m_mapSDKMsgFilter)
+    {
+        if (itr.first == WM_USER_CMD_OnCameraDidReady && itr.second != nullptr)
+        {
+            ::PostMessage(itr.second, WM_USER_CMD_OnCameraDidReady, 0, 0);
+        }
+    }
+}
+
+void TRTCCloudCore::onMicDidReady()
+{
+    LINFO(L"onMicDidReady\n");
+    for (auto& itr : m_mapSDKMsgFilter)
+    {
+        if (itr.first == WM_USER_CMD_OnMicDidReady && itr.second != nullptr)
+        {
+            ::PostMessage(itr.second, WM_USER_CMD_OnMicDidReady, 0, 0);
+        }
+    }
+}
+
+void TRTCCloudCore::onTestMicVolume(uint32_t volume)
+{
+    LINFO(L"onTestMicVolume\n");
+    for (auto& itr : m_mapSDKMsgFilter)
+    {
+        if (itr.first == WM_USER_CMD_OnTestMicVolume && itr.second != nullptr)
+        {
+            ::PostMessage(itr.second, WM_USER_CMD_OnTestMicVolume, 0, 0);
+        }
+    }
+}
+
+void TRTCCloudCore::onTestSpeakerVolume(uint32_t volume)
+{
+    LINFO(L"onTestSpeakerVolume\n");
+    for (auto& itr : m_mapSDKMsgFilter)
+    {
+        if (itr.first == WM_USER_CMD_OnTestSpeakerVolume && itr.second != nullptr)
+        {
+            ::PostMessage(itr.second, WM_USER_CMD_OnTestSpeakerVolume, 0, 0);
+        }
+    }
+}
+void TRTCCloudCore::OnRecordError(TXLiteAVLocalRecordError err, const char * msg)
+{
+    std::string * str = new std::string(msg);
+
+    LINFO(L"OnRecordError\n");
+    for (auto& itr : m_mapSDKMsgFilter)
+    {
+        if (itr.first == WM_USER_CMD_OnRecordError && itr.second != nullptr)
+        {
+            ::PostMessage(itr.second, WM_USER_CMD_OnRecordError, (WPARAM)str, (LPARAM)err);
+        }
+    }
+}
+
+void TRTCCloudCore::OnRecordComplete(const char * path)
+{
+    LINFO(L"OnRecordComplete\n");
+    std::string * str = new std::string(path);
+  
+    for (auto& itr : m_mapSDKMsgFilter)
+    {
+        if (itr.first == WM_USER_CMD_OnRecordComplete && itr.second != nullptr)
+        {
+            ::PostMessage(itr.second, WM_USER_CMD_OnRecordComplete, (WPARAM)str, 0);
+        }
+    }
+}
+
+void TRTCCloudCore::OnRecordProgress(int duration, int fileSize, int width, int height)
+{
+    LINFO(L"OnRecordProgress\n");
+   
+    for (auto& itr : m_mapSDKMsgFilter)
+    {
+        if (itr.first == WM_USER_CMD_OnRecordProgress && itr.second != nullptr)
+        {
+            ::PostMessage(itr.second, WM_USER_CMD_OnRecordProgress, (WPARAM)duration, (LPARAM)fileSize);
+        }
+    }
+}
 void TRTCCloudCore::regSDKMsgObserver(uint32_t msg, HWND hwnd)
 {
     std::unique_lock<std::mutex> lck(m_mutexMsgFilter);
@@ -644,98 +804,89 @@ void TRTCCloudCore::removeAllSDKMsgObserver()
 
 std::vector<TRTCCloudCore::MediaDeviceInfo>& TRTCCloudCore::getMicDevice()
 {
-    std::wstring& selectDevice = CDataCenter::GetInstance()->m_selectMic;
-    std::vector<MediaDeviceInfo>& vecDeviceList = m_vecMicDevice;
+    std::vector<MediaDeviceInfo> &vecDeviceList = m_vecMicDevice;
+    std::wstring& select_device =  CDataCenter::GetInstance()->m_selectMic;
     vecDeviceList.clear();
-    ITRTCDeviceCollection * pDevice = m_pCloud->getMicDevicesList();
-    bool bFindSelect = false;
+    ITRTCDeviceInfo* activeMic = m_pCloud->getCurrentMicDevice();
+    select_device = UTF82Wide(activeMic->getDeviceName());
+    activeMic->release();
 
-    for (int i = 0; i < pDevice->getCount(); i++)
-    {
+    bool find_select_device = false;
+    ITRTCDeviceCollection * pDevice = m_pCloud->getMicDevicesList();
+    for (int i = 0; i < pDevice->getCount(); i++) {
         std::wstring name = UTF82Wide(pDevice->getDeviceName(i));
         TRTCCloudCore::MediaDeviceInfo info;
         info._index = i;
         info._text = name;
         info._deviceId = UTF82Wide(pDevice->getDevicePID(i));
         info._type = L"mic";
-        if (info._text.compare(selectDevice.c_str()) == 0)
-        {
-            bFindSelect = true;
+
+        if (info._text.compare(select_device) == 0) {
             info._select = true;
+            find_select_device = true;
         }
         vecDeviceList.push_back(info);
     }
     pDevice->release();
     pDevice = nullptr;
 
-    if (!bFindSelect && vecDeviceList.size() > 0)
-    {
-        ITRTCDeviceInfo* activeMic = m_pCloud->getCurrentMicDevice();
-        selectDevice = UTF82Wide(activeMic->getDeviceName());
-        activeMic->release();
-        for (auto& it : vecDeviceList)
-        {
-            if (it._text.compare(selectDevice.c_str()) == 0)
-                it._select = true;
-        }
-    }
-    else if (!bFindSelect && vecDeviceList.size() <= 0)
-    {
-        selectDevice = L"";
+    
+    if (vecDeviceList.size() <= 0) {
+        select_device = L"";
+    } else {
+        assert(find_select_device);
     }
     return vecDeviceList;
 }
 
 std::vector<TRTCCloudCore::MediaDeviceInfo>& TRTCCloudCore::getSpeakDevice()
 {
-    std::wstring& selectDevice = CDataCenter::GetInstance()->m_selectSpeak;
-    std::vector<MediaDeviceInfo>& vecDeviceList = m_vecSpeakDevice;
+    std::vector<MediaDeviceInfo> &vecDeviceList = m_vecSpeakDevice;
+    std::wstring& select_device =  CDataCenter::GetInstance()->m_selectSpeak;
     vecDeviceList.clear();
 
+    ITRTCDeviceInfo* activeSpeaker = m_pCloud->getCurrentSpeakerDevice();
+    select_device = UTF82Wide(activeSpeaker->getDeviceName());
+    activeSpeaker->release();
+
+    bool find_select_device = false;
     ITRTCDeviceCollection * pDevice = m_pCloud->getSpeakerDevicesList();
-    bool bFindSelect = false;
-    for (int i = 0; i < pDevice->getCount(); i++)
-    {
+    for (int i = 0; i < pDevice->getCount(); i++) {
         std::wstring name = UTF82Wide(pDevice->getDeviceName(i));
         TRTCCloudCore::MediaDeviceInfo info;
         info._index = i;
         info._text = name;
         info._deviceId = UTF82Wide(pDevice->getDevicePID(i));
         info._type = L"speaker";
-        if (info._text.compare(selectDevice.c_str()) == 0)
-        {
-            bFindSelect = true;
+        if (info._text.compare(select_device) == 0) {
             info._select = true;
+            find_select_device = true;
         }
         vecDeviceList.push_back(info);
     }
     pDevice->release();
     pDevice = nullptr;
-    if (!bFindSelect && vecDeviceList.size() > 0)
-    {
-        ITRTCDeviceInfo* activeSpeaker = m_pCloud->getCurrentSpeakerDevice();
-        selectDevice = UTF82Wide(activeSpeaker->getDeviceName());
-        activeSpeaker->release();
-        for (auto& it : vecDeviceList)
-        {
-            if (it._text.compare(selectDevice.c_str()) == 0)
-                it._select = true;
-        }
-    }
-    else if (!bFindSelect && vecDeviceList.size() <= 0)
-    {
-        selectDevice = L"";
+
+    if (vecDeviceList.size() <= 0) {
+        select_device = L"";
+    } else {
+        assert(find_select_device);
     }
     return vecDeviceList;
 }
 
 std::vector<TRTCCloudCore::MediaDeviceInfo>& TRTCCloudCore::getCameraDevice()
 {
-    std::wstring& selectDevice = CDataCenter::GetInstance()->m_selectCamera;
-    std::vector<MediaDeviceInfo>& vecDeviceList = m_vecCameraDevice;
+    std::vector<MediaDeviceInfo> &vecDeviceList = m_vecCameraDevice;
+    std::wstring& select_device =  CDataCenter::GetInstance()->m_selectCamera;
     vecDeviceList.clear();
+
+    ITRTCDeviceInfo* activeCamera = m_pCloud->getCurrentCameraDevice();
+    select_device = UTF82Wide(activeCamera->getDeviceName());
+    activeCamera->release();
+
+    bool find_select_device = false;
     ITRTCDeviceCollection * pDevice = m_pCloud->getCameraDevicesList();
-    bool bFindSelect = false;
     for (int i = 0; i < pDevice->getCount(); i++)
     {
         std::wstring name = UTF82Wide(pDevice->getDeviceName(i));
@@ -744,145 +895,50 @@ std::vector<TRTCCloudCore::MediaDeviceInfo>& TRTCCloudCore::getCameraDevice()
         info._text = name;
         info._deviceId = UTF82Wide(pDevice->getDevicePID(i));
         info._type = L"camera";
-        if (info._text.compare(selectDevice.c_str()) == 0)
-        {
-            bFindSelect = true;
+        if (info._text.compare(select_device) == 0) {
             info._select = true;
+            find_select_device = true;
         }
         vecDeviceList.push_back(info);
     }
     pDevice->release();
     pDevice = nullptr;
 
-    if (!bFindSelect && vecDeviceList.size() > 0)
-    {
-        selectDevice = vecDeviceList[0]._text;
-        vecDeviceList[0]._select = true;
-    }
-    else if (!bFindSelect && vecDeviceList.size() <= 0)
-    {
-        selectDevice = L"";
-    }
-    return vecDeviceList;
+   if (vecDeviceList.size() <= 0) {
+       select_device = L"";
+   } else {
+       assert(find_select_device);
+   }
+   return vecDeviceList;
 }
 
 ITRTCScreenCaptureSourceList* TRTCCloudCore::GetWndList()
 {
-	return m_pCloud->getScreenCaptureSources(SIZE{ 120, 70 }, SIZE{ 20,20 });
+    return m_pCloud->getScreenCaptureSources(SIZE{ 120, 70 }, SIZE{ 20,20 });
 }
 
 void TRTCCloudCore::selectMicDevice(std::wstring text)
 {
-    std::wstring& selectDevice = CDataCenter::GetInstance()->m_selectMic;
-    std::vector<MediaDeviceInfo>& vecDeviceList = m_vecMicDevice;
-    if (text.compare(selectDevice) != 0)
-    {
-        for (auto& item : vecDeviceList)
-        {
-            if (item._select)
-                item._select = false;
-        }
-        for (auto& item : vecDeviceList)
-        {
-            if (item._text.compare(text) == 0)
-            {
-                item._select = true;
-                break;
-            }
-        }
-        selectDevice = text;
-    }
-
-    std::wstring deviceId = text;
-    for (auto itr: vecDeviceList)
-    {
-        if (itr._text.compare(text) == 0)
-        {
-            deviceId = itr._deviceId;
-            break;
-        }
-    }
-
     if (m_pCloud)
     {
-        m_pCloud->setCurrentMicDevice(Wide2UTF8(deviceId.c_str()).c_str());
+        m_pCloud->setCurrentMicDevice(Wide2UTF8(text.c_str()).c_str());
         m_pCloud->setCurrentMicDeviceVolume(CDataCenter::GetInstance()->m_micVolume);
     }
 }
 
 void TRTCCloudCore::selectSpeakerDevice(std::wstring text)
 {
-    std::wstring& selectDevice = CDataCenter::GetInstance()->m_selectSpeak;
-    std::vector<MediaDeviceInfo>& vecDeviceList = m_vecSpeakDevice;
-    if (text.compare(selectDevice) != 0)
-    {
-        for (auto& item : vecDeviceList)
-        {
-            if (item._select)
-                item._select = false;
-        }
-        for (auto& item : vecDeviceList)
-        {
-            if (item._text.compare(text) == 0)
-            {
-                item._select = true;
-                break;
-            }
-        }
-        selectDevice = text;
-    }
-
-    std::wstring deviceId = text;
-    for (auto itr : vecDeviceList)
-    {
-        if (itr._text.compare(text) == 0)
-        {
-            deviceId = itr._deviceId;
-            break;
-        }
-    }
-
     if (m_pCloud)
     {
-        m_pCloud->setCurrentSpeakerDevice(Wide2UTF8(deviceId.c_str()).c_str());
+        m_pCloud->setCurrentSpeakerDevice(Wide2UTF8(text.c_str()).c_str());
         m_pCloud->setCurrentSpeakerVolume(CDataCenter::GetInstance()->m_speakerVolume);
     }
 }
 
 void TRTCCloudCore::selectCameraDevice(std::wstring text)
 {
-    std::wstring& selectDevice = CDataCenter::GetInstance()->m_selectCamera;
-    std::vector<MediaDeviceInfo>& vecDeviceList = m_vecCameraDevice;
-    if (text.compare(selectDevice) != 0)
-    {
-        for (auto& item : vecDeviceList)
-        {
-            if (item._select)
-                item._select = false;
-        }
-        for (auto& item : vecDeviceList)
-        {
-            if (item._text.compare(text) == 0)
-            {
-                item._select = true;
-                break;
-            }
-        }
-        selectDevice = text;
-    }
-
-    std::wstring deviceId = text;
-    for (auto itr : vecDeviceList)
-    {
-        if (itr._text.compare(text) == 0)
-        {
-            deviceId = itr._deviceId;
-            break;
-        }
-    }
-
     if (m_pCloud)
-        m_pCloud->setCurrentCameraDevice(Wide2UTF8(deviceId.c_str()).c_str());
+        m_pCloud->setCurrentCameraDevice(Wide2UTF8(text.c_str()).c_str());
 }
 
 void TRTCCloudCore::startPreview(bool bSetting)
@@ -939,7 +995,7 @@ void TRTCCloudCore::stopPreview(bool bSetting)
 
 void TRTCCloudCore::startScreen(HWND rendHwnd)
 {
-	m_pCloud->startScreenCapture(rendHwnd);
+    m_pCloud->startScreenCapture(rendHwnd);
 }
 
 void TRTCCloudCore::startScreenCapture(HWND rendHwnd, TRTCVideoStreamType streamType, TRTCVideoEncParam* params)
@@ -949,7 +1005,7 @@ void TRTCCloudCore::startScreenCapture(HWND rendHwnd, TRTCVideoStreamType stream
 
 void TRTCCloudCore::stopScreen()
 {
-	m_pCloud->stopScreenCapture();
+    m_pCloud->stopScreenCapture();
 }
 
 void TRTCCloudCore::startMedia(const char * mediaFile, HWND rendHwnd)
@@ -970,7 +1026,7 @@ void TRTCCloudCore::stopMedia()
 
 void TRTCCloudCore::selectScreenCaptureTarget(const TRTCScreenCaptureSourceInfo &source, const RECT & captureRect)
 {
-	m_pCloud->selectScreenCaptureTarget(source, captureRect);
+    m_pCloud->selectScreenCaptureTarget(source, captureRect);
 }
 
 void TRTCCloudCore::showDashboardStyle(int logStyle)
@@ -1595,10 +1651,10 @@ void TRTCCloudCore::setPresetLayoutConfig(TRTCTranscodingConfig & config) {
 
 void TRTCCloudCore::startGreenScreen(const std::string &path)
 {
-	
+    
 }
 
 void TRTCCloudCore::stopGreenScreen()
 {
-	
+    
 }

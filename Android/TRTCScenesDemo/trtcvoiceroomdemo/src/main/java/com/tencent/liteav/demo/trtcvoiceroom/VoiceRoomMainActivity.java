@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.CollectionUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.tencent.liteav.audiosettingkit.AudioEffectPanel;
 import com.tencent.liteav.demo.trtcvoiceroom.model.SettingConfig;
 import com.tencent.liteav.demo.trtcvoiceroom.model.VoiceRoomConfig;
 import com.tencent.liteav.demo.trtcvoiceroom.widgets.BGMSettingFragment;
@@ -30,6 +31,7 @@ import com.tencent.liteav.demo.trtcvoiceroom.widgets.MoreSettingFragment;
 import com.tencent.liteav.demo.trtcvoiceroom.widgets.VoiceChangerSettingFragment;
 import com.tencent.liteav.demo.trtcvoiceroom.widgets.VoiceRoomSeatAdapter;
 import com.tencent.liteav.demo.trtcvoiceroom.widgets.VoiceRoomSeatEntity;
+import com.tencent.trtc.TRTCCloud;
 import com.tencent.trtc.TRTCCloudDef;
 
 import java.util.ArrayList;
@@ -72,17 +74,15 @@ public class VoiceRoomMainActivity extends AppCompatActivity implements VoiceRoo
     private AppCompatImageButton         mMicBtn;
     private AppCompatImageButton         mAudioBtn;
     private AppCompatImageButton         mBgmBtn;
-    private AppCompatImageButton         mEffectBtn;
-    private AppCompatImageButton         mVoiceChangeBtn;
     private TextView                     mBgmTypeTv;
     private TextView                     mVoiceChangeTv;
     private ProgressDialog               mLoadingDialog;
     private AlertDialog                  mAlertDialog;
-    private AppCompatImageButton         mMoreBtn;
     private TextView                     mReverbTv;
     private Group                        mLiveGp;
     private TextView                     mLiveStatusTv;
     private TextView                     mLiveSwitchBtn;
+    private AudioEffectPanel             mAudioCtrl;             // 音效控制面板
 
     // 用于loading超时处理
     private Handler  mMainHandler;
@@ -108,6 +108,10 @@ public class VoiceRoomMainActivity extends AppCompatActivity implements VoiceRoo
         mMainHandler.removeCallbacks(mLoadingTimeoutRunnable);
         if (mPresenter != null) {
             mPresenter.destroy();
+        }
+        if (mAudioCtrl != null) {
+            mAudioCtrl.unInit();
+            mAudioCtrl = null;
         }
     }
 
@@ -145,52 +149,21 @@ public class VoiceRoomMainActivity extends AppCompatActivity implements VoiceRoo
             @Override
             public void onClick(View v) {
                 if (checkButtonPermission()) {
-                    if (mBGMSettingFragment == null) {
-                        mBGMSettingFragment = new BGMSettingFragment();
-                        mBGMSettingFragment.setMarginBottom(getResources().getDimensionPixelOffset(R.dimen.dialog_margin_bottom));
-                        mBGMSettingFragment.setPresenter(mPresenter);
+                    boolean currentMode = !mBgmBtn.isSelected();
+                    mBgmBtn.setSelected(currentMode);
+                    if (mAudioCtrl.isShown()) {
+                        mAudioCtrl.setVisibility(View.GONE);
+                        mAudioCtrl.hideAudioPanel();
+                    } else {
+                        mAudioCtrl.setVisibility(View.VISIBLE);
+                        mAudioCtrl.showAudioPanel();
                     }
-                    showDialogFragment(mBGMSettingFragment, "BGMSettingFragment");
-                }
-            }
-        });
-        mEffectBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (checkButtonPermission()) {
-                    if (mEffectSettingFragment == null) {
-                        mEffectSettingFragment = new EffectSettingFragment();
-                        mEffectSettingFragment.setMarginBottom(getResources().getDimensionPixelOffset(R.dimen.dialog_margin_bottom));
-                        mEffectSettingFragment.copyEffectFolder(VoiceRoomMainActivity.this);
-                        mEffectSettingFragment.setPresenter(mPresenter);
-                    }
-                    showDialogFragment(mEffectSettingFragment, "EffectSettingFragment");
-                }
-            }
-        });
-        mVoiceChangeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (checkButtonPermission()) {
-                    if (mVoiceChangerSettingFragment == null) {
-                        mVoiceChangerSettingFragment = new VoiceChangerSettingFragment();
-                        mVoiceChangerSettingFragment.setMarginBottom(getResources().getDimensionPixelOffset(R.dimen.dialog_margin_bottom));
-                        mVoiceChangerSettingFragment.setPresenter(mPresenter);
-                    }
-                    showDialogFragment(mVoiceChangerSettingFragment, "VoiceChangerSettingFragment");
-                }
-            }
-        });
-        mMoreBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (checkButtonPermission()) {
-                    if (mMoreSettingFragment == null) {
-                        mMoreSettingFragment = new MoreSettingFragment();
-                        mMoreSettingFragment.setMarginBottom(getResources().getDimensionPixelOffset(R.dimen.dialog_margin_bottom));
-                        mMoreSettingFragment.setPresenter(mPresenter);
-                    }
-                    showDialogFragment(mMoreSettingFragment, "MoreSettingFragment");
+//                    if (mBGMSettingFragment == null) {
+//                        mBGMSettingFragment = new BGMSettingFragment();
+//                        mBGMSettingFragment.setMarginBottom(getResources().getDimensionPixelOffset(R.dimen.dialog_margin_bottom));
+//                        mBGMSettingFragment.setPresenter(mPresenter);
+//                    }
+//                    showDialogFragment(mBGMSettingFragment, "BGMSettingFragment");
                 }
             }
         });
@@ -257,6 +230,7 @@ public class VoiceRoomMainActivity extends AppCompatActivity implements VoiceRoo
         VoiceRoomConfig config = (VoiceRoomConfig) intent.getSerializableExtra(VoiceRoomConfig.DATA);
         if (config != null) {
             mPresenter = new VoiceRoomMainPresenter(this, config, this);
+            mAudioCtrl.setAudioEffectManager(mPresenter.getAudioEffectManager());
             mSeatUserSet = new HashSet<>();
             mSelfUserId = String.valueOf(config.userId);
             mCurrentRole = config.role;
@@ -279,9 +253,6 @@ public class VoiceRoomMainActivity extends AppCompatActivity implements VoiceRoo
             mMicBtn.setActivated(true);
             mAudioBtn.setActivated(true);
             mBgmBtn.setActivated(true);
-            mEffectBtn.setActivated(true);
-            mVoiceChangeBtn.setActivated(true);
-            mMoreBtn.setActivated(true);
             //设置选中态
             mMicBtn.setSelected(true);
             mAudioBtn.setSelected(true);
@@ -296,9 +267,6 @@ public class VoiceRoomMainActivity extends AppCompatActivity implements VoiceRoo
             mMicBtn.setActivated(false);
             mAudioBtn.setActivated(true);
             mBgmBtn.setActivated(false);
-            mEffectBtn.setActivated(false);
-            mVoiceChangeBtn.setActivated(false);
-            mMoreBtn.setActivated(false);
             //设置选中态
             mAudioBtn.setSelected(true);
             //重置界面状态
@@ -333,6 +301,14 @@ public class VoiceRoomMainActivity extends AppCompatActivity implements VoiceRoo
         mHeadImg = (CircleImageView) findViewById(R.id.img_head);
         mNameTv = (TextView) findViewById(R.id.tv_name);
         mSeatRv = (RecyclerView) findViewById(R.id.rv_seat);
+        mAudioCtrl = (AudioEffectPanel) findViewById(R.id.anchor_audio_panel);
+        mAudioCtrl.setOnAudioEffectPanelHideListener(new AudioEffectPanel.OnAudioEffectPanelHideListener() {
+            @Override
+            public void onClosePanel() {
+                mAudioCtrl.setVisibility(View.GONE);
+                mAudioCtrl.hideAudioPanel();
+            }
+        });
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
         mVoiceRoomSeatEntityList = new ArrayList<>();
@@ -345,8 +321,6 @@ public class VoiceRoomMainActivity extends AppCompatActivity implements VoiceRoo
         mMicBtn = (AppCompatImageButton) findViewById(R.id.btn_mic);
         mAudioBtn = (AppCompatImageButton) findViewById(R.id.btn_audio);
         mBgmBtn = (AppCompatImageButton) findViewById(R.id.btn_bgm);
-        mEffectBtn = (AppCompatImageButton) findViewById(R.id.btn_effect);
-        mVoiceChangeBtn = (AppCompatImageButton) findViewById(R.id.btn_voice_change);
         mBgmTypeTv = (TextView) findViewById(R.id.tv_bgm_type);
         mVoiceChangeTv = (TextView) findViewById(R.id.tv_voice_change);
         // 设置loading对话框
@@ -355,7 +329,6 @@ public class VoiceRoomMainActivity extends AppCompatActivity implements VoiceRoo
         mLoadingDialog.setCanceledOnTouchOutside(false);
         // 在线主播暂时隐藏
         mOnlineNumberTv.setVisibility(View.GONE);
-        mMoreBtn = (AppCompatImageButton) findViewById(R.id.btn_more);
 
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -446,9 +419,7 @@ public class VoiceRoomMainActivity extends AppCompatActivity implements VoiceRoo
     public void updateVoiceChangeView(int type, String name) {
         if (type == TRTCCloudDef.TRTC_VOICE_CHANGER_TYPE_0) {
             mVoiceChangeTv.setVisibility(View.GONE);
-            mVoiceChangeBtn.setSelected(false);
         } else {
-            mVoiceChangeBtn.setSelected(true);
             mVoiceChangeTv.setVisibility(View.VISIBLE);
             mVoiceChangeTv.setText(Html.fromHtml(getString(R.string.voiceroom_voice_changer, name)));
         }
@@ -466,7 +437,6 @@ public class VoiceRoomMainActivity extends AppCompatActivity implements VoiceRoo
 
     @Override
     public void updateEffectView(boolean isPlay) {
-        mEffectBtn.setSelected(isPlay);
     }
 
     @Override

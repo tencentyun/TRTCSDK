@@ -119,6 +119,9 @@ public: //trtc
     bool m_bAutoRecvAudio = true;
     bool m_bAutoRecvVideo = true;
 
+    bool m_bMuteLocalVideo = false;
+    bool m_bMuteLocalAudio = false;
+
     bool m_bLocalVideoMirror = false;      //本地镜像
     bool m_bRemoteVideoMirror = false;     //暂不支持
     bool m_bShowAudioVolume =   true;      //开启音量提示
@@ -146,6 +149,8 @@ public: //trtc
     uint32_t m_audioCaptureVolume = 100; // 软件采集音量
     uint32_t m_audioPlayoutVolume = 100; // 软件播放音量（人声）
 
+    //是否在room中
+    bool m_bIsEnteredRoom = false;
 
     //录制参数
     bool m_bStartLocalRecord = false;
@@ -155,6 +160,16 @@ public: //trtc
     std::wstring m_recordCaptureSourceInfoName;
     RECT m_recordCaptureRect = {0};
     std::wstring m_wstrRecordFile;
+
+    //录音参数
+    bool m_bStartAudioRecording = false;
+    std::wstring m_wstrAudioRecordFile;
+
+
+    bool m_bStartSystemVoice = false;
+
+    TRTCAudioQuality audio_quality_ = TRTCAudioQualityDefault;
+
 public: 
     //远端用户信息
     RemoteUserInfoList m_remoteUser;

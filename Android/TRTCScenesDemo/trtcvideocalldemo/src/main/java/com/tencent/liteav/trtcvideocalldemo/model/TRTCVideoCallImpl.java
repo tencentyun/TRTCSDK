@@ -542,11 +542,11 @@ public class TRTCVideoCallImpl implements ITRTCVideoCall {
 
             @Override
             public void onSuccess() {
+                mCurUserId = userId;
+                mCurUserSig = userSign;
                 if (callback != null) {
                     callback.onSuccess();
                 }
-                mCurUserId = userId;
-                mCurUserSig = userSign;
             }
         });
     }
@@ -704,6 +704,7 @@ public class TRTCVideoCallImpl implements ITRTCVideoCall {
         TRTCParams.role = TRTCCloudDef.TRTCRoleAnchor;
         mTRTCCloud.enableAudioVolumeEvaluation(300);
         mTRTCCloud.setAudioRoute(TRTCCloudDef.TRTC_AUDIO_ROUTE_SPEAKER);
+        mTRTCCloud.setAudioQuality(TRTCCloudDef.TRTC_AUDIO_QUALITY_SPEECH);
         mTRTCCloud.startLocalAudio();
         mTRTCCloud.enterRoom(TRTCParams, TRTCCloudDef.TRTC_APP_SCENE_VIDEOCALL);
     }

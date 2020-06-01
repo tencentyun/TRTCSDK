@@ -1,34 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.tencent.liteav.demo">
-
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-
-    <uses-feature android:name="android.hardware.camera" />
-    <uses-feature android:name="android.hardware.camera.autofocus" />
+    package="com.tencent.liteav.demo"
+    android:versionCode="1"
+    android:versionName="1.0">
 
     <application
-        android:name=".TRTCApplication"
-        android:allowBackup="false"
+        android:name=".DemoApplication"
+        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        tools:replace="android:allowBackup">
+        android:largeHeap="true"
+        android:theme="@style/AppTheme">
+
         <service
             android:name=".CallService"
             android:enabled="true"
             android:exported="false"></service>
+
+        <!-- 【必须】消息收发service -->
 
         <activity android:name=".SplashActivity">
             <intent-filter>
@@ -37,8 +27,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
-            android:name=".MainActivity"
+            android:name=".TRTCMainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/app_name"
             android:launchMode="singleTask"
@@ -49,6 +40,70 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name="com.tencent.rtmp.video.TXScreenCapture$TXScreenCaptureAssistantActivity"
+            android:theme="@android:style/Theme.Translucent" />
+
+        <!-- 配置bugly组件的APP ID，bugly组件为腾讯提供的用于crash上报和分析的开放组件，如果您不需要该组件，可以自行移除 -->
+
+        <!-- 配置bugly组件的APP渠道号 -->
+        <meta-data
+            android:name="BUGLY_APPID"
+            android:value="928c8ef035" />
+
+        <!-- 配置bugly组件的调试模式（true或者false） -->
+        <meta-data
+            android:name="BUGLY_APP_CHANNEL"
+            android:value="RDM版本" />
+
+        <meta-data
+            android:name="BUGLY_ENABLE_DEBUG"
+            android:value="true" />
+
+        <receiver android:name="com.tencent.imsdk.session.SessionBroadcastReceiver">
+            <intent-filter>
+                <action android:name="com.tencent.imsdk.session.boot" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="com.tencent.qcloud.qal.TASK_REMOVED" />
+            </intent-filter>
+        </receiver>
+        <service
+            android:name="com.tencent.imsdk.session.remote.SessionService"
+            android:process=":network" />
+        <service
+            android:name="com.tencent.imsdk.session.remote.AssistService"
+            android:process=":network" />
+
+        <service
+            android:name="com.tencent.imsdk.session.remote.KeepAliveJobService"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:process=":network" />
     </application>
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.CAPTURE_AUDIO_OUTPUT" />
+    <uses-permission android:name="android.permission.CAPTURE_VIDEO_OUTPUT" />
+
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+
+    <!-- <android:uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/> -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
 </manifest>

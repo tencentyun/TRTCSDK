@@ -13,8 +13,6 @@ import com.blankj.utilcode.constant.PermissionConstants;
 import com.blankj.utilcode.util.CollectionUtils;
 import com.blankj.utilcode.util.PermissionUtils;
 import com.blankj.utilcode.util.ToastUtils;
-import com.tencent.liteav.login.ProfileManager;
-import com.tencent.liteav.login.UserModel;
 import com.tencent.liteav.trtcaudiocalldemo.R;
 import com.tencent.liteav.trtcaudiocalldemo.model.ITRTCAudioCall;
 import com.tencent.liteav.trtcaudiocalldemo.model.TRTCAudioCallImpl;

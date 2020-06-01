@@ -2,6 +2,8 @@ package com.tencent.liteav.demo.trtcvoiceroom;
 
 import android.content.Context;
 
+import com.tencent.liteav.audio.TXAudioEffectManager;
+
 import java.util.List;
 
 public class VoiceRoomContract {
@@ -42,6 +44,7 @@ public class VoiceRoomContract {
 
         void switchLivePlay();
 
+        TXAudioEffectManager getAudioEffectManager();
     }
 
     interface IView {

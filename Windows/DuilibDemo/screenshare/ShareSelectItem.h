@@ -6,22 +6,22 @@ using namespace DuiLib;
 class ShareSelectItem : public IDialogBuilderCallback
 {
 public:
-	ShareSelectItem();
-	~ShareSelectItem();
+    ShareSelectItem();
+    ~ShareSelectItem();
 
-	CVerticalLayoutUI* CreateControl(CPaintManagerUI* pManager);
-	void setWndInfo(const TRTCScreenCaptureSourceInfo& info);
+    CVerticalLayoutUI* CreateControl(CPaintManagerUI* pManager);
+    void setWndInfo(const TRTCScreenCaptureSourceInfo& info);
     TRTCScreenCaptureSourceInfo getWndInfo();
-	bool checkSelect(CControlUI* pSender);
-	void select(bool bSelected);
-	HWND getHwnd();
+    bool checkSelect(CControlUI* pSender);
+    void select(bool bSelected);
+    HWND getHwnd();
 
 private:
-	virtual CControlUI* CreateControl(LPCTSTR pstrClass) override;
+    virtual CControlUI* CreateControl(LPCTSTR pstrClass) override;
 
 private:
-	CVerticalLayoutUI*	m_pRootControl = NULL;
-	TRTCScreenCaptureSourceInfo m_info;
+    CVerticalLayoutUI*    m_pRootControl = NULL;
+    TRTCScreenCaptureSourceInfo m_info;
     std::string m_sourceName;
 };
 

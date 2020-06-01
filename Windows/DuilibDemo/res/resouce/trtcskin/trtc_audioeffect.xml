@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Window size="540,700" sizebox="0,0,0,0">
+	<Font name="微软雅黑" size="12" default="true" />
+	<Font id="0" name="微软雅黑" size="14" bold="true"/>
+	<Font id="1" name="微软雅黑" size="14" bold="false"/>
+	<Font id="2" name="微软雅黑" size="13" bold="false"/>
+	<Font id="3" name="微软雅黑" size="15" default="true"/>
+	<Style name="voice_combo" shared="true" value="font=&quot;2&quot; normalimage=&quot;file='setting/combo_noraml.png' corner='4,4,30,4'&quot; hotimage=&quot;file='setting/combo_hover.png' corner='4,4,30,4'&quot; pushedimage=&quot;file='setting/combo_hover.png' corner='4,4,30,4'&quot; itemselectedbkcolor=&quot;#FF1E90FF&quot; itemtextpadding=&quot;10,6,10,0&quot; textpadding=&quot;10,0,35,0&quot;"/>
+	<Style name="radio_style" shared="true" value="align=&quot;left&quot; valign=&quot;vcenter&quot; height=&quot;17&quot; textcolor=&quot;#FF000000&quot; hottextcolor=&quot;#FF000000&quot; textpadding=&quot;20,0,6,0&quot; stateimage=&quot;res='setting/radio_normal.png' dest='0,0,17,17'&quot; statecount=&quot;2&quot; selectedstateimage=&quot;res='setting/radio_selected.png' dest='0,0,17,17'&quot; selectedstatecount=&quot;2&quot;" />
+	<Style name="btn_style" shared="true" value="normalimage=&quot;res='login/btn_normal.png' corner='2,2,2,2'&quot; hotimage=&quot;res='login/btn_hover.png' corner='2,2,2,2'&quot; pushedimage=&quot;res='login/btn_hover.png' corner='2,2,2,2'&quot; width=&quot;108&quot; height=&quot;23&quot;" />
+	<Style name="slider_style" shared="true" value="bkimage=&quot;res='setting/SliderBar_BK.bmp' mask='#ffff00ff' corner='2,2,2,2'&quot; thumbimage=&quot;res='setting/SliderBar_Thumb.png'&quot; thumbhotimage=&quot;res='setting/SliderBar_Thumb.png'&quot; thumbpushedimage=&quot;res='setting/SliderBar_Thumb.png'&quot; thumbsize=&quot;12,20&quot;"/>
+	<Style name="cb_style" shared="true" value="align=&quot;left&quot; valign=&quot;vcenter&quot; height=&quot;18&quot; textcolor=&quot;#FF000000&quot; hottextcolor=&quot;#FF303030&quot; textpadding=&quot;20,0,6,0&quot; normalimage=&quot;res='setting/cb_normal.png' dest='0,0,18.18'&quot; hotimage=&quot;res='setting/cb_hot.png' dest='0,0,18.18'&quot; pushedimage=&quot;res='setting/cb_pushed.png' dest='0,0,18.18'&quot; selectedimage=&quot;res='setting/cb_selected.png' dest='0,0,18,18'&quot;" />
+	
+	<Default name="VScrollBar" shared="true" value="width=&quot;8&quot; showbutton1=&quot;false&quot; showbutton2=&quot;false&quot; thumbnormalimage=&quot;file='common/vscrollbar.png' source='0,60,8,100' corner='0,4,0,4'&quot; thumbhotimage=&quot;file='common/vscrollbar.png' source='8,60,16,100' corner='0,4,0,4'&quot; thumbpushedimage=&quot;file='common/vscrollbar.png' source='16,60,24,100' corner='0,4,0,4'&quot; railnormalimage=&quot;&quot; railhotimage=&quot;&quot; railpushedimage=&quot;&quot; raildisabledimage=&quot;&quot; bknormalimage=&quot;file='common/vscrollbar.png' source='0,0,8,60' corner='0,4,0,4'&quot; bkhotimage=&quot;&quot; bkpushedimage=&quot;&quot; bkdisabledimage=&quot;&quot; "/>
+    <Default name="HScrollBar" shared="true" value="height=&quot;8&quot; showbutton1=&quot;false&quot; showbutton2=&quot;false&quot; thumbnormalimage=&quot;file='common/hscrollbar.png' source='0,0,32,8' corner='4,0,4,0'&quot; thumbhotimage=&quot;file='common/hscrollbar.png' source='0,8,32,16' corner='4,0,4,0'&quot; thumbpushedimage=&quot;file='common/hscrollbar.png' source='0,16,32,24' corner='4,0,4,0'&quot; railnormalimage=&quot;&quot; railhotimage=&quot;&quot; railpushedimage=&quot;&quot; raildisabledimage=&quot;&quot; bknormalimage=&quot;file='common/hscrollbar.png' source='0,0,32,8' corner='4,0,4,0'&quot; bkhotimage=&quot;&quot; bkpushedimage=&quot;&quot; bkdisabledimage=&quot;&quot; "/>
+	<HorizontalLayout  bkcolor="#FFFFFFFF">s
+		<VerticalLayout childpadding="10">
+		<HorizontalLayout height="10"/>
+			<GroupBox name="BGM_groupbox"text="BGM" padding="20,0,20,0" childpadding="20" bordercolor="#FF808080" bkcolor="#FFF0F0F0" bordersize="1" height="350">
+
+				<HorizontalLayout inset="20,0,0,0" height="20">
+					<Button name="btn_start_bgm"   padding="40,0,10,0"  normalimage="file='music/bgm_start.png' corner='2,2,2,2'" width="20" height="20" />
+					<Button name="btn_stop_bgm"   padding="5,0,5,0"  normalimage="file='music/bgm_stop.png' corner='2,2,2,2'" width="20" height="20" />
+					<Slider name="slider_progress_bgm"  padding="5,5,0,0"  height="10" width="200" bkimage="file='music/progress_back.png' corner='5,4,4,5' dest='0,0,200,18'" foreimage="file='music/progress_fore.png' corner='5,4,4,5' dest='0,0,200,18"  thumbimage="file='music/thumbimage.png' corner='5,4,4,5' dest='0,0,200,18"  min="0" max="100" value="0"/> 
+				    <Label name="label_time_bgm" padding="5,5,0,0"  text="00:00/00:00" font="2" height="15" width="90" />
+				</HorizontalLayout>
+				
+				<HorizontalLayout inset="20,0,0,0" height="20">
+					<Label text="BGM音量:" font="2" width="100"  align="right" valign="center" textcolor="#FF000000" height="20"/>
+					<Slider name="slider_bgm_volume" enabled="true" width="200" height="19" value="19" min="0" max="100" style="slider_style"/>
+					<Label name="lable_bgm_volume" text="" font="2" width="60" height="16" align="left" valign="bottom" padding="10,3,0,0" textcolor="#FF000000"/>
+				</HorizontalLayout>
+				<HorizontalLayout inset="20,0,0,0" height="20">
+					<Label text="本地音量: " font="2" width="100"  align="right" valign="center" textcolor="#FF000000" height="20"/>
+					<Slider name="slider_bgm_playout_volume" enabled="true" width="200" height="19" value="19" min="0" max="100" style="slider_style"/>
+					<Label name="lable_bgm_playout_volume" text="" font="2" width="60" height="16" align="left" valign="bottom" padding="10,3,0,0" textcolor="#FF000000"/>
+				</HorizontalLayout>
+				<HorizontalLayout inset="20,0,0,0" height="20">
+					<Label text="远端音量: " font="2" width="100" align="right"  valign="center" textcolor="#FF000000" height="20"/>
+					<Slider name="slider_bgm_publish_volume" enabled="true" width="200" height="19" value="19" min="0" max="100" style="slider_style"/>
+					<Label name="lable_bgm_publish_volume" text="" font="2" width="60" height="16" align="left" valign="bottom" padding="10,3,0,0" textcolor="#FF000000"/>
+				</HorizontalLayout>
+				<HorizontalLayout inset="20,0,0,0" height="20">
+					<Label name="lable_bgm_speed_text" text="播放速度:" font="2" width="100" align="right" valign="center" textcolor="#FF000000" height="20"/>
+					<Slider name="slider_bgm_speed" enabled="true" width="200" height="19" value="10" min="5" max="20" style="slider_style"/>
+					<Label name="lable_bgm_speed" text="" font="2" width="60" height="16" align="left" valign="bottom" padding="10,3,0,0" textcolor="#FF000000"/>
+				</HorizontalLayout>
+				<HorizontalLayout inset="20,0,0,0" height="20">
+					<Label name="lable_bgm_pitch_text" text="播放音调:" font="2" width="100" align="right" valign="center" textcolor="#FF000000" height="20"/>
+					<Slider name="slider_bgm_pitch" enabled="true" width="200" height="19" value="0" min="-10" max="10" style="slider_style"/>
+					<Label name="lable_bgm_pitch" text="" font="2" width="60" height="16" align="left" valign="bottom" padding="10,3,0,0" textcolor="#FF000000"/>
+				</HorizontalLayout>
+			</GroupBox>
+			<GroupBox text="音效" padding="20,0,20,0" childpadding="20" bordercolor="#FF808080" bkcolor="#FFF0F0F0" bordersize="1" height="170">
+					<HorizontalLayout inset="0,6,0,0" childvalign="left" height="24">
+						<Label text="音效1" font="2" width="80" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,1"/>
+						<VerticalLayout width="20"/>
+						<Option name="check_btn_effect1_start" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
+						<VerticalLayout width="20"/>
+						<Label text="循环" font="2" width="60" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,1"/>
+						<VerticalLayout width="20"/>
+						<Option name="check_btn_effect1_loop" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
+						<VerticalLayout width="20"/>
+						<Label text="推送远端" font="2" width="80" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,1"/>
+						<VerticalLayout width="20"/>
+						<Option name="check_btn_effect1_publish" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
+					</HorizontalLayout>
+					<HorizontalLayout inset="0,6,0,0" childvalign="left" height="24">
+						<Label text="音效2" font="2" width="80" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,1"/>
+						<VerticalLayout width="20"/>
+						<Option name="check_btn_effect2_start" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
+						<VerticalLayout width="20"/>
+						<Label text="循环" font="2" width="60" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,1"/>
+						<VerticalLayout width="20"/>
+						<Option name="check_btn_effect2_loop" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
+						<VerticalLayout width="20"/>
+						<Label text="推送远端" font="2" width="80" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,1"/>
+						<VerticalLayout width="20"/>
+						<Option name="check_btn_effect2_publish" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
+					</HorizontalLayout>
+					<HorizontalLayout inset="0,6,0,0" childvalign="left" height="24">
+						<Label text="音效3" font="2" width="80" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,1"/>
+						<VerticalLayout width="20"/>
+						<Option name="check_btn_effect3_start" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
+						<VerticalLayout width="20"/>
+						<Label text="循环" font="2" width="60" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,1"/>
+						<VerticalLayout width="20"/>
+						<Option name="check_btn_effect3_loop" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
+						<VerticalLayout width="20"/>
+						<Label text="推送远端" font="2" width="80" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,1"/>
+						<VerticalLayout width="20"/>
+						<Option name="check_btn_effect3_publish" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
+					</HorizontalLayout>
+				</GroupBox>
+		</VerticalLayout>
+	</HorizontalLayout>
+</Window>

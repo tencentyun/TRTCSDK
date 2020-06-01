@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">腾讯云 TRTC</string>
+
+    <string name="btn_cancel">取消</string>
+    <string name="btn_ok">确定</string>
+
+    <string name="vod_ffplay">ffplay</string>
+    <string name="vod_exo">exo</string>
+
+    <string name="title_activity_rtmp_room_demo">RtmpRoomDemoActivity</string>
+
+    <string name="str_room_id_tips">输入房间号</string>
+    <string name="str_user_id_tips">输入用户名</string>
+</resources>

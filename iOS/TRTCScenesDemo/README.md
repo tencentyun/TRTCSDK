@@ -1,65 +1,101 @@
-本文主要介绍如何快速地将腾讯云 TRTC Demo 运行起来，您只需参考如下步骤依次执行即可。
+本文档主要介绍如何快速集成实时音视频（TRTC）SDK，运行TRTC场景化Demo，实现多人视频会议、语音聊天室、视频连麦互动直播等。
+## 功能简介
 
-## 1. 创建新的应用
-进入腾讯云实时音视频 [控制台](https://console.cloud.tencent.com/rav) 创建一个新的应用，获得 SDKAppID，SDKAppID 是腾讯云后台用来区分不同实时音视频应用的唯一标识，在第4步中会用到。
-![](https://main.qcloudimg.com/raw/b9d211494b6ec8fcea765d1518b228a1.png)
+在这个示例项目中包含了以下功能：
 
-接下来，点击应用进入**快速上手**页面，参考页面上指引的“第一步”、“第二步”和“第三步”操作，即可快速跑通 Demo。
-
-## 2. 下载 SDK+Demo 源码
-“快速上手”页面中第一步里的几个链接地址分别为各个平台的 SDK 和 Demo 源码，点击会跳转到 Github 上，如果您当前网络访问 Github 太慢，可以在项目首页中找到镜像下载地址。
-
-![](https://main.qcloudimg.com/raw/d56b4e4434da42d1a3b8e3540cf6718e.png)
-
-## 3. 查看并拷贝加密密钥
-点击**查看密钥**按钮，即可看到用于计算 UserSig 的加密密钥，点击“复制密钥”按钮，可以将密钥拷贝到剪贴板中。
-
-![](https://main.qcloudimg.com/raw/5843542ec2e0446d326d7d44f96a5ec0.png)
-
-<h2 id="CopyKey"> 4. 粘贴密钥到Demo工程的指定文件中 </h2>
-我们在各个平台的 Demo 的源码工程中都提供了一个叫做 “GenerateTestUserSig” 的文件，它可以通过 HMAC-SHA256 算法本地计算出 UserSig，用于快速跑通 Demo。
-
-| 语言版本 |  适用平台 | GenerateTestUserSig 的源码位置 |
-|:---------:|:---------:|:---------:|
-| Objective-C | iOS  | [Github](https://github.com/tencentyun/TRTCSDK/tree/master/iOS/TRTCDemo/TRTC/GenerateTestUserSig.h)|
-| Objective-C | Mac  | [Github](https://github.com/tencentyun/TRTCSDK/tree/master/Mac/TRTCDemo/TRTC/GenerateTestUserSig.h)|
-| Java | Android  | [Github](https://github.com/tencentyun/TRTCSDK/tree/master/Android/TRTCDemo/app/src/main/java/com/tencent/liteav/demo/trtc/debug/GenerateTestUserSig.java) |
-| C++ | Windows | [Github](https://github.com/tencentyun/TRTCSDK/tree/master/Windows/DuilibDemo/GenerateTestUserSig.h)|
-| C# | Windows | [Github](https://github.com/tencentyun/TRTCSDK/tree/master/Windows/CSharpDemo/GenerateTestUserSig.cs)|
-| Javascript | Web | [Github](https://github.com/tencentyun/TRTCSDK/tree/master/H5/js/debug/GenerateTestUserSig.js)|
-| Javascript | 微信小程序 | [Github](https://github.com/tencentyun/TRTCSDK/tree/master/WXMini/pages/webrtc-room/debug/GenerateTestUserSig.js)|
+- 多人视频会议；
+- 语音聊天室
+- 视频互动直播；
+- 语音通话；
+- 视频通话；
 
 
-您只需要将第1步中获得的 SDKAppID 和第3步中获得的加密密钥拷贝到文件中的指定位置即可，如下所示：
+## 环境准备
+- 最低兼容 iOS 8.0 ，建议使用 iOS 10.0 及以上版本
+- Xcode 10.0 及以上版本
+- App 要求 iOS9.0 及以上设备
 
-![](https://main.qcloudimg.com/raw/de28c1eb03e779ddb7131dc2d666d8d2.jpg)
+## 运行示例
 
-> !安全警告：本地计算 UserSig 的做法虽然能够工作，但仅适合于调试 Demo 的场景，不适用于线上产品。
-> 
-> 这是因为客户端代码中的 SECRETKEY 很容易被反编译逆向破解，尤其是 Web 端的代码被破解的难度几乎为零。一旦您的密钥泄露，攻击者就可以计算出正确的 UserSig 来盗用您的腾讯云流量。
-> 
-> [安全方案](https://cloud.tencent.com/document/product/647/17275#Server)：将 UserSig 的计算代码和加密密钥放在您的业务服务器上，然后由 App 按需向您的服务器获取实时算出的 UserSig。由于攻破服务器的成本要远高于破解客户端 App，所以服务器计算的方案能够更好地保护您的加密密钥。
+### 前提条件
+您已 [注册腾讯云](https://cloud.tencent.com/document/product/378/17985) 账号，并完成 [实名认证](https://cloud.tencent.com/document/product/378/3629)。
 
-## 5. 编译运行
-在终端窗口中 cd 到 Podfile 所在目录执行以下命令安装 TRTC SDK
+### 申请 SDKAPPID 和 SECRETKEY
+1. 登录实时音视频控制台，选择【开发辅助】>【[快速跑通Demo](https://console.cloud.tencent.com/trtc/quickstart)】。
+2. 单击【立即开始】，输入您的应用名称，例如`TestTRTC`，单击【创建应用】。
+
+<img width=800 src="https://main.qcloudimg.com/raw/169391f6711857dca6ed8cfce7b391bd.png" />
+3. 创建应用完成后，单击【我已下载，下一步】，可以查看 SDKAppID 和密钥信息。
+
+### 配置 Demo 工程文件
+1. 使用 Xcode（10.0及以上的版本）打开源码工程`iOS/TRTCScenesDemo/TXLiteAVDemo.xcworkspace`
+3. 找到并打开`iOS/TRTCScenesDemo/TRTCScenesDemo/debug/GenerateTestUserSig.h`文件。
+4. 设置`GenerateTestUserSig.h`文件中的相关参数：
+  <ul><li>SDKAPPID：默认为0，请设置为实际的 SDKAppID。</li>
+  <li>SECRETKEY：默认为空字符串，请设置为实际的密钥信息。</li></ul>
+
+ ![](https://main.qcloudimg.com/raw/15d986c5f4bc340e555630a070b90d63.png)
+
+4. 返回实时音视频控制台，单击【粘贴完成，下一步】。
+5. 单击【关闭指引，进入控制台管理应用】。
+
+>!本文提到的生成 UserSig 的方案是在客户端代码中配置 SECRETKEY，该方法中 SECRETKEY 很容易被反编译逆向破解，一旦您的密钥泄露，攻击者就可以盗用您的腾讯云流量，因此**该方法仅适合本地跑通 Demo 和功能调试**。
+>正确的 UserSig 签发方式是将 UserSig 的计算代码集成到您的服务端，并提供面向 App 的接口，在需要 UserSig 时由您的 App 向业务服务器发起请求获取动态 UserSig。更多详情请参见 [服务端生成 UserSig](https://cloud.tencent.com/document/product/647/17275#Server)。
+
+### 集成 SDK
+你可以通过下载framework Zip包，集成SDK。也可以通过Cocoapods方式集成，Demo默认使用方法一进行集成。
+
+#### 方法一：Cocoapods集成framework
+在终端窗口中 cd 到 Podfile 所在目录执行以下命令安装需要的pod 库（如果从zip包解压的工程，可以跳过这一步）。
+
 ```
 pod install
 ```
 或使用以下命令更新本地库版本：
+
 ```
 pod update
 ```
-使用 XCode （9.0 以上的版本） 打开源码目录下的 trtcScenesDemo.xcworkspace 工程，编译并运行 Demo 工程即可。
+使用 XCode （10.0 以上的版本，建议使用最新版Xcode） 打开源码目录下的 `.xcworkspace` 工程，编译并运行 Demo 工程即可。
+
+#### 方法二：手动下载（framework）
+如果您的网络连接 Pods 有问题，您也可以手动下载 SDK 集成到工程里：
+
+1. 下载最新版本 [实时音视频 SDK](http://liteavsdk-1252463788.cosgz.myqcloud.com/TXLiteAVSDK_TRTC_iOS_latest.zip)。
+2. 将下载到的 zip包解压，找到对应的framework文件，将文件拷贝到工程的 **iOS/SDK** 目录下。
+3. 用xcode打开TXLiteAVDemo.xcworkspace文件，检查SDK目录下的framework是否正确引入。
+
+### 编译运行
+用 xcode 打开该项目，连上iOS设备，修改bundleID，配置你自己的测试证书和描述文件，编译并运行。
+> 注意：如果是从github下载的工程，不含Pods目录，需要执行`pod install`。可以打开.xcworkspace工程，直接运行，工程会自动检测Pods目录是否存在，执行**运行前置脚本**，从远端下载zip包，自动配置Pod相关文件。如果`pod install`执行失败，也可以删除Pods文件夹，保留Podfile，Podfile.lock, xcworkspace，直接运行工程即可。
+
 
 ## 常见问题
+#### 1. 查看密钥时只能获取公钥和私钥信息，该如何获取密钥？
+TRTC SDK 6.6 版本（2019年08月）开始启用新的签名算法 HMAC-SHA256。在此之前已创建的应用，需要先升级签名算法才能获取新的加密密钥。如不升级，您也可以继续使用 [老版本算法 ECDSA-SHA256](https://cloud.tencent.com/document/product/647/17275#.E8.80.81.E7.89.88.E6.9C.AC.E7.AE.97.E6.B3.95)，如已升级，您按需切换为新旧算法。
 
-### 1. 开发环境有什么要求？
-- Xcode 9.0+
-- 请确保您的项目已设置有效的开发者签名。
+升级/切换操作：
 
-### 2. 两台手机运行 Demo，为什么看不到彼此的画面？
+ 1. 登录 [实时音视频控制台](https://console.cloud.tencent.com/trtc)。
+ 2. 在左侧导航栏选择【应用管理】，单击目标应用所在行的【应用信息】。
+ 3. 选择【快速上手】页签，单击【第二步 获取签发UserSig的密钥】区域的【点此升级】、【非对称式加密】或【HMAC-SHA256】。
+  - 升级：
+  
+   	![](https://main.qcloudimg.com/raw/69bd0957c99e6a6764368d7f13c6a257.png)
+   	
+  - 切换回老版本算法 ECDSA-SHA256：
+   
+   ![](https://main.qcloudimg.com/raw/f89c00f4a98f3493ecc1fe89bea02230.png)
+   
+  - 切换为新版本算法 HMAC-SHA256：
+   
+   ![](https://main.qcloudimg.com/raw/b0412153935704abc9e286868ad8a916.png)
+
+#### 2. 两台手机同时运行 Demo，为什么看不到彼此的画面？
 请确保两台手机在运行 Demo 时使用的是不同的 UserID，TRTC 不支持同一个 UserID （除非 SDKAppID 不同）在两个终端同时使用。
+
 ![](https://main.qcloudimg.com/raw/c7b1589e1a637cf502c6728f3c3c4f99.png)
 
-### 3. 防火墙有什么限制？
-由于 SDK 使用 UDP 协议进行音视频传输，所以对 UDP 有拦截的办公网络下无法使用，如遇到类似问题，请参考文档：[应对公司防火墙限制](https://cloud.tencent.com/document/product/647/34399)。
+#### 3. 防火墙有什么限制？
+由于 SDK 使用 UDP 协议进行音视频传输，所以在对 UDP 有拦截的办公网络下无法使用。如遇到类似问题，请参考 [应对公司防火墙限制](https://cloud.tencent.com/document/product/647/34399) 排查并解决。
+

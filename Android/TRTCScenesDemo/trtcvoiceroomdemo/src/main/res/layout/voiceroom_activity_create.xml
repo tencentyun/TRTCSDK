@@ -151,15 +151,20 @@
                 android:orientation="horizontal">
 
                 <RadioButton
-                    android:id="@+id/rb_high_quality"
+                    android:id="@+id/rb_low_quality"
                     style="@style/CreateRadioButtonStyle"
-                    android:checked="true"
-                    android:text="高音质" />
+                    android:text="语音" />
 
                 <RadioButton
                     android:id="@+id/rb_normal_quality"
                     style="@style/CreateRadioButtonStyle"
-                    android:text="标准音质" />
+                    android:text="标准" />
+
+                <RadioButton
+                    android:id="@+id/rb_high_quality"
+                    style="@style/CreateRadioButtonStyle"
+                    android:checked="true"
+                    android:text="音乐" />
             </RadioGroup>
 
             <LinearLayout

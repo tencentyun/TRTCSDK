@@ -4,36 +4,36 @@
 
 class UiShareSelect : public WindowImplBase
 {
-	DUI_DECLARE_MESSAGE_MAP()
+    DUI_DECLARE_MESSAGE_MAP()
 public:
-	UiShareSelect();
-	~UiShareSelect();
+    UiShareSelect();
+    ~UiShareSelect();
 
-	void setBoardWnd(HWND hBoardWnd);
+    void setBoardWnd(HWND hBoardWnd);
 
-	void centerToDesktop();
+    void centerToDesktop();
 
-	TRTCScreenCaptureSourceInfo getSelectWnd() const;
+    TRTCScreenCaptureSourceInfo getSelectWnd() const;
 
 protected:
-	virtual CDuiString GetSkinFile() override;
-	virtual LPCTSTR GetWindowClassName(void) const override;
+    virtual CDuiString GetSkinFile() override;
+    virtual LPCTSTR GetWindowClassName(void) const override;
 
-	virtual void InitWindow() override;
+    virtual void InitWindow() override;
 
-	void _onBtnClose(TNotifyUI& msg);
-	void _onBtnConfirm(TNotifyUI& msg);
+    void _onBtnClose(TNotifyUI& msg);
+    void _onBtnConfirm(TNotifyUI& msg);
 
-	void _onSelChanged(TNotifyUI& msg);
+    void _onSelChanged(TNotifyUI& msg);
 
-	void _cleanShareSelectItems();
+    void _cleanShareSelectItems();
 
 private:
-	HWND m_hBoardWnd = NULL;
+    HWND m_hBoardWnd = NULL;
 
-	HWND m_hSelectWnd = NULL;
-	std::vector<ShareSelectItem*>	m_vecShareSelectItem;
+    HWND m_hSelectWnd = NULL;
+    std::vector<ShareSelectItem*>    m_vecShareSelectItem;
 
-	static size_t ms_nLastSelectedIndex;
+    static size_t ms_nLastSelectedIndex;
 };
 

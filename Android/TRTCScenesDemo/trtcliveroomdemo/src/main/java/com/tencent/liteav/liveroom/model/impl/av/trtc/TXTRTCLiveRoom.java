@@ -1,13 +1,12 @@
 package com.tencent.liteav.liveroom.model.impl.av.trtc;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 
+import com.tencent.liteav.audio.TXAudioEffectManager;
 import com.tencent.liteav.beauty.TXBeautyManager;
-import com.tencent.liteav.liveroom.model.impl.TRTCAudioEffectManagerImpl;
 import com.tencent.liteav.liveroom.model.impl.base.TRTCLogger;
 import com.tencent.liteav.liveroom.model.impl.base.TXCallback;
 import com.tencent.rtmp.ui.TXCloudVideoView;
@@ -28,22 +27,21 @@ public class TXTRTCLiveRoom extends TRTCCloudListener implements ITRTCTXLiveRoom
 
     private static TXTRTCLiveRoom sInstance;
 
-    private TRTCCloud                  mTRTCCloud;
-    private TXBeautyManager            mTXBeautyManager;
-    private TRTCAudioEffectManagerImpl mAudioEffectManager;
+    private TRTCCloud               mTRTCCloud;
+    private TXBeautyManager         mTXBeautyManager;
     // 一开始进房的角色
-    private int                        mOriginRole;
-    private TXCallback                 mEnterRoomCallback;
-    private TXCallback                 mExitRoomCallback;
-    private TXCallback                 mPKCallback;
-    private boolean                    mIsInRoom;
-    private ITXTRTCLiveRoomDelegate    mDelegate;
-    private String                     mUserId;
-    private String                     mRoomId;
-    private TRTCCloudDef.TRTCParams    mTRTCParams;
-    private Map<String, TXCallback>    mPlayCallbackMap;
-    private Map<String, Runnable>      mPlayTimeoutRunnable;
-    private Handler                    mMainHandler;
+    private int                     mOriginRole;
+    private TXCallback              mEnterRoomCallback;
+    private TXCallback              mExitRoomCallback;
+    private TXCallback              mPKCallback;
+    private boolean                 mIsInRoom;
+    private ITXTRTCLiveRoomDelegate mDelegate;
+    private String                  mUserId;
+    private String                  mRoomId;
+    private TRTCCloudDef.TRTCParams mTRTCParams;
+    private Map<String, TXCallback> mPlayCallbackMap;
+    private Map<String, Runnable>   mPlayTimeoutRunnable;
+    private Handler                 mMainHandler;
 
     public static synchronized TXTRTCLiveRoom getInstance() {
         if (sInstance == null) {
@@ -57,7 +55,6 @@ public class TXTRTCLiveRoom extends TRTCCloudListener implements ITRTCTXLiveRoom
         TRTCLogger.i(TAG, "init context:" + context);
         mTRTCCloud = TRTCCloud.sharedInstance(context);
         mTXBeautyManager = mTRTCCloud.getBeautyManager();
-        mAudioEffectManager = new TRTCAudioEffectManagerImpl(mTRTCCloud);
         mPlayCallbackMap = new HashMap<>();
         mPlayTimeoutRunnable = new HashMap<>();
         mMainHandler = new Handler(Looper.getMainLooper());
@@ -127,8 +124,8 @@ public class TXTRTCLiveRoom extends TRTCCloudListener implements ITRTCTXLiveRoom
         mPlayTimeoutRunnable.clear();
         mMainHandler.removeCallbacksAndMessages(null);
         mTRTCCloud.exitRoom();
+        mEnterRoomCallback = null;
     }
-
 
     @Override
     public void startPublish(String streamId, TXCallback callback) {
@@ -460,9 +457,11 @@ public class TXTRTCLiveRoom extends TRTCCloudListener implements ITRTCTXLiveRoom
             if (l > 0) {
                 mIsInRoom = true;
                 mEnterRoomCallback.onCallback(0, "enter room success.");
+                mEnterRoomCallback = null;
             } else {
                 mIsInRoom = false;
                 mEnterRoomCallback.onCallback((int) l, "enter room fail");
+                mEnterRoomCallback = null;
             }
         }
     }
@@ -473,6 +472,7 @@ public class TXTRTCLiveRoom extends TRTCCloudListener implements ITRTCTXLiveRoom
         if (mExitRoomCallback != null) {
             mIsInRoom = false;
             mExitRoomCallback.onCallback(0, "exit room success.");
+            mExitRoomCallback = null;
         }
     }
 
@@ -528,7 +528,12 @@ public class TXTRTCLiveRoom extends TRTCCloudListener implements ITRTCTXLiveRoom
     }
 
     @Override
-    public TRTCAudioEffectManagerImpl getAudioEffectManager() {
-        return mAudioEffectManager;
+    public TXAudioEffectManager getAudioEffectManager() {
+        return mTRTCCloud.getAudioEffectManager();
+    }
+
+    @Override
+    public void setAudioQuality(int quality) {
+        mTRTCCloud.setAudioQuality(quality);
     }
 }

@@ -5,7 +5,7 @@
 #include <map>
 #include <string>
 #include <mutex>
-
+#include "ITXLiteAVLocalRecord.h"
 struct DashboardInfo
 {
     int streamType = -1;
@@ -16,8 +16,9 @@ struct DashboardInfo
 class TRTCCloudCore 
     : public ITRTCCloudCallback
     , public ITRTCLogCallback
-	, public ITXVodPlayerCallback
+    , public ITXVodPlayerCallback
     , public ITRTCAudioFrameCallback
+    , public TXLiteAVLocalRecordCallback
 {
 public:
     typedef struct _tagMediaDeviceInfo
@@ -47,20 +48,31 @@ public:
     virtual void onRemoteUserEnterRoom(const char* userId);
     virtual void onRemoteUserLeaveRoom(const char* userId, int reason);
     virtual void onUserAudioAvailable(const char* userId, bool available);
+    virtual void onFirstAudioFrame(const char* userId);
     virtual void onUserVoiceVolume(TRTCVolumeInfo* userVolumes, uint32_t userVolumesCount, uint32_t totalVolume);
-	virtual void onUserSubStreamAvailable(const char* userId, bool available);
-	virtual void onUserVideoAvailable(const char* userId, bool available);
+    virtual void onUserSubStreamAvailable(const char* userId, bool available);
+    virtual void onUserVideoAvailable(const char* userId, bool available);
     virtual void onNetworkQuality(TRTCQualityInfo localQuality, TRTCQualityInfo* remoteQuality, uint32_t remoteQualityCount);
     virtual void onStatistics(const TRTCStatistics& statis);
     virtual void onConnectionLost();
     virtual void onTryToReconnect();
     virtual void onConnectionRecovery();
+    //设备相关接口回调
+    virtual void onCameraDidReady();
+    
+    virtual void onMicDidReady();
+
+    virtual void onTestMicVolume(uint32_t volume);
+
+    virtual void onTestSpeakerVolume(uint32_t volume);
+
+
     virtual void onDeviceChange(const char* deviceId, TRTCDeviceType type, TRTCDeviceState state);
-	virtual void onScreenCaptureStarted();
-	virtual void onScreenCaptureStoped(int reason);
-	virtual void onVodPlayerStarted(uint64_t msLength);
-	virtual void onVodPlayerStoped(int reason);
-	virtual void onVodPlayerError(int error) override;
+    virtual void onScreenCaptureStarted();
+    virtual void onScreenCaptureStoped(int reason);
+    virtual void onVodPlayerStarted(uint64_t msLength);
+    virtual void onVodPlayerStoped(int reason);
+    virtual void onVodPlayerError(int error) override;
     virtual void onLog(const char* log, TRTCLogLevel level, const char* module);
     virtual void onConnectOtherRoom(const char* userId, TXLiteAVError errCode, const char* errMsg);
     virtual void onDisconnectOtherRoom(TXLiteAVError errCode, const char* errMsg);
@@ -74,7 +86,15 @@ public:
     virtual void onAudioEffectFinished(int effectId, int code);
     virtual void onStartPublishing(int err, const char *errMsg);
     virtual void onStopPublishing(int err, const char *errMsg);
-    
+
+
+    void startLocalRecord(const LiteAVScreenCaptureSourceInfo &source, const char* szRecordPath);
+    void stopLocalRecord();
+    void pauseLocalRecord();
+    void resumeLocalRecord();
+    void OnRecordError(TXLiteAVLocalRecordError err, const char* msg) override;
+    void OnRecordComplete(const char* path) override;
+    void OnRecordProgress(int duration, int fileSize, int width, int height) override;
 public:
     void regSDKMsgObserver(uint32_t msg, HWND hwnd);
     void removeSDKMsgObserver(uint32_t msg, HWND hwnd);
@@ -91,14 +111,14 @@ public:
     //此处要添加引用计数，支持多处渲染
     void startPreview(bool bSetting = false);
     void stopPreview(bool bSetting = false);
-	void startScreen(HWND rendHwnd);
+    void startScreen(HWND rendHwnd);
     void startScreenCapture(HWND rendHwnd, TRTCVideoStreamType streamType, TRTCVideoEncParam* params);
-	void stopScreen();
+    void stopScreen();
     void startMedia(const char *mediaFile, HWND rendHwnd);
     void stopMedia();
-	void startGreenScreen(const std::string &path);
-	void stopGreenScreen();
-	void selectScreenCaptureTarget(const TRTCScreenCaptureSourceInfo &source, const RECT& captureRect);
+    void startGreenScreen(const std::string &path);
+    void stopGreenScreen();
+    void selectScreenCaptureTarget(const TRTCScreenCaptureSourceInfo &source, const RECT& captureRect);
     void showDashboardStyle(int logStyle);
 
     void connectOtherRoom(std::string userId, uint32_t roomId);

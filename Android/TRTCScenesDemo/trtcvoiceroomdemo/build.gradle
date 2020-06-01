@@ -28,6 +28,7 @@ dependencies {
 //    compile project(':liteav_sdk')
 
     compile project(':debug')
+    compile project(':audioeffectsettingkit')
     compile "$rootProject.ext.liteavSdk"
     //依赖一个utils类
     compile 'com.blankj:utilcode:1.25.9'

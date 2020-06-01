@@ -30,7 +30,8 @@ dependencies {
     compile rootProject.ext.imSdk
     compile project(':login')
     compile project(':debug')
-    compile project(':beauty')
+    compile project(':beautysettingkit')
+    compile project(':audioeffectsettingkit')
 
     compile 'com.google.code.gson:gson:2.8.6'
     //依赖一个utils类
@@ -38,7 +39,8 @@ dependencies {
     //快速集成圆形image view
     compile 'de.hdodenhof:circleimageview:3.0.1'
     //弹幕功能
-    compile 'com.github.ctiao:dfm:0.4.4'
+//    compile 'com.github.ctiao:dfm:0.4.4'
+    compile 'com.github.ctiao:DanmakuFlameMaster:0.5.3'
     compile 'com.android.support.constraint:constraint-layout:1.1.3'
     compile "com.android.support:design:$rootProject.ext.supportSdkVersion"
     compile "com.android.support:appcompat-v7:$rootProject.ext.supportSdkVersion"

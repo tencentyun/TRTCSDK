@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_main_gradient"
+    android:orientation="vertical"
+    tools:context="com.tencent.liteav.meeting.ui.CreateMeetingActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ic_back">
+
+        <TextView
+            android:id="@+id/main_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:singleLine="true"
+            android:text="多人视频会议"
+            android:textColor="@color/colorWhite"
+            android:textSize="18sp" />
+    </android.support.v7.widget.Toolbar>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/bg_item_gradient"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:id="@+id/room_id_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="会议号"
+            android:textColor="@color/meetingTextColorSecond"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/et_room_id"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:background="@null"
+            android:maxEms="10"
+            android:hint="请输入会议号"
+            android:inputType="number"
+            android:textColorHint="@color/meetingTextColorHint"
+            app:layout_constraintBottom_toBottomOf="@+id/room_id_tag"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/room_id_tag"
+            app:layout_constraintTop_toTopOf="@+id/room_id_tag" />
+
+        <View
+            android:id="@+id/view_divide"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@color/meetingTextColorHint"
+            app:layout_constraintTop_toBottomOf="@+id/room_id_tag" />
+
+        <TextView
+            android:id="@+id/user_id_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="用户名"
+            android:textColor="@color/meetingTextColorSecond"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="@+id/room_id_tag"
+            app:layout_constraintTop_toBottomOf="@+id/view_divide" />
+
+        <EditText
+            android:id="@+id/et_user_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:background="@null"
+            android:hint="请输入用户名"
+            android:textColorHint="@color/meetingTextColorHint"
+            app:layout_constraintBottom_toBottomOf="@id/user_id_tag"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/user_id_tag"
+            app:layout_constraintTop_toTopOf="@id/user_id_tag" />
+    </android.support.constraint.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_setting_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:orientation="vertical" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="30dp"
+        android:text="@string/meeting_tv_audio_quality"
+        android:textColor="@color/meetingTextColorSecond"
+        android:textSize="@dimen/meetingItemTitleSize" />
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="5dp"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rb_voice"
+            style="@style/MeetingCreateRadioButtonStyle"
+            android:checked="true"
+            android:text="@string/meeting_rb_voice" />
+
+        <RadioButton
+            android:id="@+id/rb_normal"
+            style="@style/MeetingCreateRadioButtonStyle"
+            android:text="@string/meeting_rb_normal" />
+
+        <RadioButton
+            android:id="@+id/rb_music"
+            style="@style/MeetingCreateRadioButtonStyle"
+            android:text="@string/meeting_rb_music" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/tv_enter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/meeting_button_border"
+        android:gravity="center"
+        android:padding="10dp"
+        android:enabled="false"
+        android:text="进入会议"
+        android:textColor="@drawable/meeting_button_text_color"
+        android:textSize="18sp" />
+
+<!--    <TextView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginLeft="20dp"-->
+<!--        android:layout_marginTop="30dp"-->
+<!--        android:layout_marginRight="20dp"-->
+<!--        android:gravity="center"-->
+<!--        android:textColor="@color/meetingTextColorHint"-->
+<!--        android:text="or"-->
+<!--        android:textSize="20sp" />-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/tv_create"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginLeft="20dp"-->
+<!--        android:layout_marginTop="30dp"-->
+<!--        android:layout_marginRight="20dp"-->
+<!--        android:background="@drawable/meeting_button_border"-->
+<!--        android:gravity="center"-->
+<!--        android:padding="10dp"-->
+<!--        android:text="快速创建会议"-->
+<!--        android:textColor="@drawable/meeting_button_text_color"-->
+<!--        android:textSize="18sp" />-->
+<!--    <TextView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:layout_marginLeft="20dp"-->
+<!--        android:layout_marginRight="20dp"-->
+<!--        android:gravity="center"-->
+<!--        android:textColor="@color/meetingTextColorHint"-->
+<!--        android:text="随机生成会议号和用户名"-->
+<!--        android:textSize="16sp" />-->
+
+</LinearLayout>

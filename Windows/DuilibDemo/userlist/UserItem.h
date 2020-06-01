@@ -27,7 +27,7 @@ protected:
     void UpdateUI();
 private:
     HWND m_pHWnd;
-    CHorizontalLayoutUI*	m_pRootControl = nullptr;
+    CHorizontalLayoutUI*    m_pRootControl = nullptr;
     CLabelUI* m_pUserIdLabel = nullptr;
     CButtonUI* m_pAudioBtn = nullptr;
     CButtonUI* m_pVideoBtn = nullptr;

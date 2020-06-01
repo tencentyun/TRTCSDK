@@ -68,15 +68,15 @@ public:
     CConfigMgr();
     ~CConfigMgr();
 public:
-    bool GetValue(std::wstring root, std::wstring key, std::wstring& value );			    //由根结点和键获取值
-    bool SetValue(std::wstring root, std::wstring key, std::wstring value);	//设置根结点和键获取值
+    bool GetValue(std::wstring root, std::wstring key, std::wstring& value );                //由根结点和键获取值
+    bool SetValue(std::wstring root, std::wstring key, std::wstring value);    //设置根结点和键获取值
     int GetSize() { return map_ini.size(); }
 private:
-    int WriteINI();			//写入INI文件
-    void Clear() { map_ini.clear(); }	//清空
-    void Travel();						//遍历打印INI文件
+    int WriteINI();            //写入INI文件
+    void Clear() { map_ini.clear(); }    //清空
+    void Travel();                        //遍历打印INI文件
     int InitReadINI();
 private:
-    std::map<std::wstring, SubNode> map_ini;		//INI文件内容的存储变量
+    std::map<std::wstring, SubNode> map_ini;        //INI文件内容的存储变量
     std::wstring _IncFilePath;                      //文件路径
 };
