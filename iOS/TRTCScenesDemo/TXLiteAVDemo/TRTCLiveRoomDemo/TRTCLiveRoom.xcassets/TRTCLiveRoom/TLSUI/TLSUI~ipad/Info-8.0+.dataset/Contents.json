@@ -1,0 +1,12 @@
+{
+  "data" : [
+    {
+      "filename" : "Info-8.0+.plist",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
