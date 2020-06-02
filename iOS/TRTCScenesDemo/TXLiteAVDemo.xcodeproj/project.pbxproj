@@ -1,0 +1,2464 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1D538D13CFAC9A2494BD784A /* ProfileManager_Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833191D9D6BABFF3DFEBA063 /* ProfileManager_Mock.swift */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		402A010624506F740037A219 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 402A010024506F740037A219 /* main.m */; };
+		4041832B2455853000DD70AB /* V8HorizontalPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 404183282455853000DD70AB /* V8HorizontalPickerView.m */; };
+		4090F694246ADBC000EA72A0 /* TRTCCdnPlayerSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F619246ADBBF00EA72A0 /* TRTCCdnPlayerSettingsViewController.m */; };
+		4090F697246ADBC000EA72A0 /* TRTCRemoteUserSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F61B246ADBBF00EA72A0 /* TRTCRemoteUserSettingsViewController.m */; };
+		4090F69A246ADBC000EA72A0 /* TRTCRemoteUserListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F61C246ADBBF00EA72A0 /* TRTCRemoteUserListViewController.m */; };
+		4090F69D246ADBC000EA72A0 /* TRTCRemoteUserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F61D246ADBBF00EA72A0 /* TRTCRemoteUserCell.m */; };
+		4090F6A0246ADBC000EA72A0 /* TRTCSettings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4090F621246ADBBF00EA72A0 /* TRTCSettings.storyboard */; };
+		4090F6A3246ADBC000EA72A0 /* TRTCCdnPlayerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F624246ADBBF00EA72A0 /* TRTCCdnPlayerManager.m */; };
+		4090F6A6246ADBC000EA72A0 /* TRTCCdnPlayerConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F627246ADBBF00EA72A0 /* TRTCCdnPlayerConfig.m */; };
+		4090F6A9246ADBC000EA72A0 /* TRTCRemoteUserConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F629246ADBBF00EA72A0 /* TRTCRemoteUserConfig.m */; };
+		4090F6AC246ADBC000EA72A0 /* TRTCRemoteUserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F62A246ADBBF00EA72A0 /* TRTCRemoteUserManager.m */; };
+		4090F6AF246ADBC000EA72A0 /* TRTCCustomAudioEffectManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F62E246ADBBF00EA72A0 /* TRTCCustomAudioEffectManager.m */; };
+		4090F6B2246ADBC000EA72A0 /* TRTCBgmManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F62F246ADBBF00EA72A0 /* TRTCBgmManager.m */; };
+		4090F6B5246ADBC000EA72A0 /* TRTCAudioRecordManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F633246ADBBF00EA72A0 /* TRTCAudioRecordManager.m */; };
+		4090F6B8246ADBC000EA72A0 /* TRTCStreamConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F634246ADBBF00EA72A0 /* TRTCStreamConfig.m */; };
+		4090F6BB246ADBC000EA72A0 /* TRTCAudioConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F635246ADBBF00EA72A0 /* TRTCAudioConfig.m */; };
+		4090F6BE246ADBC000EA72A0 /* TRTCCloudManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F63A246ADBBF00EA72A0 /* TRTCCloudManager.m */; };
+		4090F6C1246ADBC000EA72A0 /* TRTCVideoConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F63B246ADBBF00EA72A0 /* TRTCVideoConfig.m */; };
+		4090F6C4246ADBC000EA72A0 /* TRTCSettingsContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F640246ADBBF00EA72A0 /* TRTCSettingsContainerViewController.m */; };
+		4090F6C7246ADBC000EA72A0 /* UIButton+TRTC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F642246ADBBF00EA72A0 /* UIButton+TRTC.m */; };
+		4090F6CA246ADBC000EA72A0 /* UILabel+TRTC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F643246ADBBF00EA72A0 /* UILabel+TRTC.m */; };
+		4090F6CD246ADBC000EA72A0 /* UITextField+TRTC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F645246ADBBF00EA72A0 /* UITextField+TRTC.m */; };
+		4090F6D0246ADBC000EA72A0 /* UISlider+TRTC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F649246ADBBF00EA72A0 /* UISlider+TRTC.m */; };
+		4090F6D3246ADBC000EA72A0 /* UISegmentedControl+TRTC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F64A246ADBBF00EA72A0 /* UISegmentedControl+TRTC.m */; };
+		4090F6D6246ADBC000EA72A0 /* TRTCSettingsMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F64E246ADBBF00EA72A0 /* TRTCSettingsMessageCell.m */; };
+		4090F6D9246ADBC000EA72A0 /* TRTCSettingsInputCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F650246ADBBF00EA72A0 /* TRTCSettingsInputCell.m */; };
+		4090F6DC246ADBC000EA72A0 /* TRTCSettingsSegmentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F652246ADBBF00EA72A0 /* TRTCSettingsSegmentCell.m */; };
+		4090F6DF246ADBC000EA72A0 /* TRTCSettingsLargeInputCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F654246ADBBF00EA72A0 /* TRTCSettingsLargeInputCell.m */; };
+		4090F6E2246ADBC000EA72A0 /* TRTCSettingsBaseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F659246ADBBF00EA72A0 /* TRTCSettingsBaseCell.m */; };
+		4090F6E5246ADBC000EA72A0 /* TRTCSettingsButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F65B246ADBBF00EA72A0 /* TRTCSettingsButtonCell.m */; };
+		4090F6E8246ADBC000EA72A0 /* TRTCSettingsSwitchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F65C246ADBBF00EA72A0 /* TRTCSettingsSwitchCell.m */; };
+		4090F6EB246ADBC000EA72A0 /* TRTCSettingsSliderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F65E246ADBBF00EA72A0 /* TRTCSettingsSliderCell.m */; };
+		4090F6EE246ADBC000EA72A0 /* TRTCSettingsSelectorCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F65F246ADBBF00EA72A0 /* TRTCSettingsSelectorCell.m */; };
+		4090F6F1246ADBC000EA72A0 /* TRTCSettingsBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F661246ADBBF00EA72A0 /* TRTCSettingsBaseViewController.m */; };
+		4090F6F4246ADBC000EA72A0 /* TRTCMoreSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F663246ADBBF00EA72A0 /* TRTCMoreSettingsViewController.m */; };
+		4090F6F7246ADBC000EA72A0 /* TRTCAudioSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F664246ADBBF00EA72A0 /* TRTCAudioSettingsViewController.m */; };
+		4090F6FA246ADBC000EA72A0 /* TRTCVideoSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F666246ADBBF00EA72A0 /* TRTCVideoSettingsViewController.m */; };
+		4090F6FD246ADBC000EA72A0 /* TRTCStreamSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F667246ADBBF00EA72A0 /* TRTCStreamSettingsViewController.m */; };
+		4090F700246ADBC000EA72A0 /* TRTCPKSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F668246ADBBF00EA72A0 /* TRTCPKSettingsViewController.m */; };
+		4090F703246ADBC000EA72A0 /* TRTCFeatureContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F66E246ADBBF00EA72A0 /* TRTCFeatureContainerViewController.m */; };
+		4090F706246ADBC000EA72A0 /* TRTCBgmContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F670246ADBBF00EA72A0 /* TRTCBgmContainerViewController.m */; };
+		4090F709246ADBC000EA72A0 /* TRTCSettingsEffectCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F672246ADBBF00EA72A0 /* TRTCSettingsEffectCell.m */; };
+		4090F70C246ADBC000EA72A0 /* TRTCSettingsEffectLoopCountCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F674246ADBBF00EA72A0 /* TRTCSettingsEffectLoopCountCell.m */; };
+		4090F70F246ADBC000EA72A0 /* TRTCEffectSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F675246ADBBF00EA72A0 /* TRTCEffectSettingsViewController.m */; };
+		4090F712246ADBC000EA72A0 /* TRTCBgmSettingsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F67A246ADBBF00EA72A0 /* TRTCBgmSettingsCell.m */; };
+		4090F715246ADBC000EA72A0 /* TRTCBgmSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F67B246ADBBF00EA72A0 /* TRTCBgmSettingsViewController.m */; };
+		4090F718246ADBC000EA72A0 /* TRTCMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F67F246ADBBF00EA72A0 /* TRTCMainViewController.m */; };
+		4090F71B246ADBC000EA72A0 /* record_test_background.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4090F682246ADBBF00EA72A0 /* record_test_background.mp3 */; };
+		4090F71E246ADBC000EA72A0 /* TRTC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4090F683246ADBBF00EA72A0 /* TRTC.storyboard */; };
+		4090F721246ADBC000EA72A0 /* TCMediaFileReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F685246ADBBF00EA72A0 /* TCMediaFileReader.m */; };
+		4090F724246ADBC000EA72A0 /* TestRenderVideoFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F686246ADBBF00EA72A0 /* TestRenderVideoFrame.m */; };
+		4090F727246ADBC000EA72A0 /* TestSendCustomVideoData.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F689246ADBBF00EA72A0 /* TestSendCustomVideoData.m */; };
+		4090F72A246ADBC000EA72A0 /* TRTCMettingAssert.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4090F68B246ADBBF00EA72A0 /* TRTCMettingAssert.xcassets */; };
+		4090F72D246ADBC000EA72A0 /* TRTCNewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F68C246ADBBF00EA72A0 /* TRTCNewViewController.m */; };
+		4090F730246ADBC000EA72A0 /* TRTCFloatWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F68E246ADBBF00EA72A0 /* TRTCFloatWindow.m */; };
+		4090F733246ADBC000EA72A0 /* TRTCVideoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F68F246ADBBF00EA72A0 /* TRTCVideoView.m */; };
+		4090F736246ADBC000EA72A0 /* TRTCVideoViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F690246ADBBF00EA72A0 /* TRTCVideoViewLayout.m */; };
+		4090F756246ADEB500EA72A0 /* QBImagePicker.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4090F739246ADEB500EA72A0 /* QBImagePicker.strings */; };
+		4090F759246ADEB500EA72A0 /* QBVideoIconView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F740246ADEB500EA72A0 /* QBVideoIconView.m */; };
+		4090F75C246ADEB500EA72A0 /* QBVideoIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F741246ADEB500EA72A0 /* QBVideoIndicatorView.m */; };
+		4090F75F246ADEB500EA72A0 /* QBAlbumCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F748246ADEB500EA72A0 /* QBAlbumCell.m */; };
+		4090F762246ADEB500EA72A0 /* QBImagePicker.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4090F749246ADEB500EA72A0 /* QBImagePicker.storyboard */; };
+		4090F765246ADEB500EA72A0 /* QBAlbumsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F74B246ADEB500EA72A0 /* QBAlbumsViewController.m */; };
+		4090F768246ADEB500EA72A0 /* QBAssetsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F74D246ADEB500EA72A0 /* QBAssetsViewController.m */; };
+		4090F76B246ADEB500EA72A0 /* QBImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F74E246ADEB500EA72A0 /* QBImagePickerController.m */; };
+		4090F76E246ADEB500EA72A0 /* QBCheckmarkView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F750246ADEB500EA72A0 /* QBCheckmarkView.m */; };
+		4090F771246ADEB500EA72A0 /* QBSlomoIconView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F752246ADEB500EA72A0 /* QBSlomoIconView.m */; };
+		4090F774246ADEB500EA72A0 /* QBAssetCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F753246ADEB500EA72A0 /* QBAssetCell.m */; };
+		4090F77E246AE09600EA72A0 /* CustomAudioCapturor.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F776246AE09600EA72A0 /* CustomAudioCapturor.m */; };
+		4090F781246AE09600EA72A0 /* CustomAudioFileReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F777246AE09600EA72A0 /* CustomAudioFileReader.m */; };
+		4090F784246AE09600EA72A0 /* CustomAudio44100_2.pcm in Resources */ = {isa = PBXBuildFile; fileRef = 4090F77A246AE09600EA72A0 /* CustomAudio44100_2.pcm */; };
+		4090F787246AE09600EA72A0 /* CustomAudio48000_1.pcm in Resources */ = {isa = PBXBuildFile; fileRef = 4090F77B246AE09600EA72A0 /* CustomAudio48000_1.pcm */; };
+		4090F790246AE23B00EA72A0 /* PortalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F78A246AE23B00EA72A0 /* PortalViewController.m */; };
+		4090F791246AE23B00EA72A0 /* Portal.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4090F78C246AE23B00EA72A0 /* Portal.storyboard */; };
+		4090F792246AE23B00EA72A0 /* MainMenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F78E246AE23B00EA72A0 /* MainMenuCell.m */; };
+		4090F794246AE25A00EA72A0 /* TRTCPortalAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4090F793246AE25A00EA72A0 /* TRTCPortalAssets.xcassets */; };
+		4090F79A246AE57F00EA72A0 /* ThemeConfigurator.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F796246AE57E00EA72A0 /* ThemeConfigurator.m */; };
+		4090F7A0246AE5C800EA72A0 /* QRCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F79C246AE5C800EA72A0 /* QRCode.m */; };
+		40A7CFD6245FC09300E792A5 /* TRTCAuidoCall.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 40A7CFD3245FC09300E792A5 /* TRTCAuidoCall.xcassets */; };
+		40A7CFDA245FC0CF00E792A5 /* TRTCLiveRoom.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 40A7CFD7245FC0CF00E792A5 /* TRTCLiveRoom.xcassets */; };
+		40A7CFE2245FC14400E792A5 /* TRTCVoiceRoom.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 40A7CFDF245FC14400E792A5 /* TRTCVoiceRoom.xcassets */; };
+		40B3F66A2446E518000C37A3 /* UIButton+Glossy.m in Sources */ = {isa = PBXBuildFile; fileRef = 40F8534B1EE8FCDF00EE47D7 /* UIButton+Glossy.m */; };
+		40B3F6762446E518000C37A3 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 40F853261EE8FC8400EE47D7 /* AppDelegate.m */; };
+		40B3F6812446E518000C37A3 /* UIView+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 40F8534F1EE8FCDF00EE47D7 /* UIView+Additions.m */; };
+		40B3F6852446E518000C37A3 /* NSString+Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 40F853471EE8FCDF00EE47D7 /* NSString+Common.m */; };
+		40B3F6902446E518000C37A3 /* UIButton+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 40F853491EE8FCDF00EE47D7 /* UIButton+Additions.m */; };
+		40B3F6912446E518000C37A3 /* UIView+CustomAutoLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 40F853511EE8FCDF00EE47D7 /* UIView+CustomAutoLayout.m */; };
+		40B3F6922446E518000C37A3 /* UIViewController+BackButtonHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A03ED3F1FD13DFB00F2F063 /* UIViewController+BackButtonHandler.m */; };
+		40B3F6942446E518000C37A3 /* AppLogMgr.m in Sources */ = {isa = PBXBuildFile; fileRef = 40F853281EE8FC8400EE47D7 /* AppLogMgr.m */; };
+		40B3F6972446E518000C37A3 /* NSObject+CommonBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = 40F853451EE8FCDF00EE47D7 /* NSObject+CommonBlock.m */; };
+		40B3F69F2446E518000C37A3 /* NSData+Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 40F853431EE8FCDF00EE47D7 /* NSData+Common.m */; };
+		40B3F6AA2446E518000C37A3 /* UIImage+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 40F8534D1EE8FCDF00EE47D7 /* UIImage+Additions.m */; };
+		40B3F6AE2446E518000C37A3 /* TCBeautyPanel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40AA536524458EC800303EF7 /* TCBeautyPanel.framework */; };
+		40B3F6AF2446E518000C37A3 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 91F87A7E1FF4A0FC001644B1 /* libsqlite3.tbd */; };
+		40B3F6B02446E518000C37A3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40407ACA1F3035CA006C7301 /* Foundation.framework */; };
+		40B3F6B22446E518000C37A3 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40F8553C1EE8FDC500EE47D7 /* AVFoundation.framework */; };
+		40B3F6B32446E518000C37A3 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51A4AD391F1F8AE300B4A806 /* MediaPlayer.framework */; };
+		40B3F6B42446E518000C37A3 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 40F8554E1EE8FE0100EE47D7 /* libiconv.tbd */; };
+		40B3F6B52446E518000C37A3 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 40F8554C1EE8FDFC00EE47D7 /* libz.tbd */; };
+		40B3F6B62446E518000C37A3 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CE45D2971F15C527003506D1 /* libc++.tbd */; };
+		40B3F6B72446E518000C37A3 /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 40F855481EE8FDF100EE47D7 /* libresolv.tbd */; };
+		40B3F6B82446E518000C37A3 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40F855461EE8FDE800EE47D7 /* SystemConfiguration.framework */; };
+		40B3F6B92446E518000C37A3 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40F855441EE8FDE100EE47D7 /* CoreTelephony.framework */; };
+		40B3F6BA2446E518000C37A3 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40F855421EE8FDDA00EE47D7 /* VideoToolbox.framework */; };
+		40B3F6BB2446E518000C37A3 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40F855401EE8FDD300EE47D7 /* CoreMedia.framework */; };
+		40B3F6BC2446E518000C37A3 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40F8553E1EE8FDCC00EE47D7 /* CoreGraphics.framework */; };
+		40B3F6BD2446E518000C37A3 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40F8553A1EE8FDBF00EE47D7 /* Accelerate.framework */; };
+		40B3F6BE2446E518000C37A3 /* TXLiteAVSDK_TRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45736E97243F5B2200F7F601 /* TXLiteAVSDK_TRTC.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		40B3F6BF2446E518000C37A3 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40F855381EE8FDB600EE47D7 /* Security.framework */; };
+		40B3F6C02446E518000C37A3 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40F855361EE8FDAD00EE47D7 /* AssetsLibrary.framework */; };
+		40B3F6C22446E518000C37A3 /* TCBeautyPanelResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 40AA536724458EC800303EF7 /* TCBeautyPanelResources.bundle */; };
+		40B3F6C72446E518000C37A3 /* FilterResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CE7C6E4A1FC2C5320095663F /* FilterResource.bundle */; };
+		40B3F6C82446E518000C37A3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 40F853311EE8FC9B00EE47D7 /* LaunchScreen.storyboard */; };
+		40B3F6CA2446E518000C37A3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 40F853221EE8FC7300EE47D7 /* Assets.xcassets */; };
+		40B3F6CC2446E518000C37A3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 40F853331EE8FC9B00EE47D7 /* Main.storyboard */; };
+		40B3F95E2446E6C6000C37A3 /* VideoCallUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8C62446E6C5000C37A3 /* VideoCallUserCell.swift */; };
+		40B3F95F2446E6C6000C37A3 /* VideoCallMainViewController+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8C72446E6C5000C37A3 /* VideoCallMainViewController+UI.swift */; };
+		40B3F9602446E6C6000C37A3 /* VideoCallMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8C82446E6C5000C37A3 /* VideoCallMainViewController.swift */; };
+		40B3F9612446E6C6000C37A3 /* VideoSelectContactViewController+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8C92446E6C5000C37A3 /* VideoSelectContactViewController+UI.swift */; };
+		40B3F9622446E6C6000C37A3 /* VideoSelectContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8CA2446E6C5000C37A3 /* VideoSelectContactViewController.swift */; };
+		40B3F9632446E6C6000C37A3 /* VideoSelectContactViewController+search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8CB2446E6C5000C37A3 /* VideoSelectContactViewController+search.swift */; };
+		40B3F9642446E6C6000C37A3 /* VideoCallViewController+Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8CC2446E6C5000C37A3 /* VideoCallViewController+Data.swift */; };
+		40B3F9652446E6C6000C37A3 /* VideoCallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8CD2446E6C5000C37A3 /* VideoCallViewController.swift */; };
+		40B3F9662446E6C6000C37A3 /* VideoSelectContactViewController+file.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8CE2446E6C5000C37A3 /* VideoSelectContactViewController+file.swift */; };
+		40B3F9672446E6C6000C37A3 /* VideoCallViewController+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8CF2446E6C5000C37A3 /* VideoCallViewController+UI.swift */; };
+		40B3F9682446E6C6000C37A3 /* VideoSelectContactViewController+CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8D02446E6C5000C37A3 /* VideoSelectContactViewController+CollectionView.swift */; };
+		40B3F9692446E6C6000C37A3 /* VideoSelectContactViewController+Table.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8D12446E6C5000C37A3 /* VideoSelectContactViewController+Table.swift */; };
+		40B3F96A2446E6C6000C37A3 /* ITRTCVideoCallInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8D32446E6C5000C37A3 /* ITRTCVideoCallInterface.swift */; };
+		40B3F96B2446E6C6000C37A3 /* TRTCVideoCall+OnNewMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8D42446E6C5000C37A3 /* TRTCVideoCall+OnNewMessage.swift */; };
+		40B3F96C2446E6C6000C37A3 /* TRTCVideoCallDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8D52446E6C5000C37A3 /* TRTCVideoCallDelegate.swift */; };
+		40B3F96D2446E6C6000C37A3 /* TRTCVideoCall+internal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8D62446E6C5000C37A3 /* TRTCVideoCall+internal.swift */; };
+		40B3F96E2446E6C6000C37A3 /* VideoCallUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8D72446E6C5000C37A3 /* VideoCallUtils.swift */; };
+		40B3F96F2446E6C6000C37A3 /* TRTCVideoCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8D82446E6C5000C37A3 /* TRTCVideoCall.swift */; };
+		40B3F9702446E6C6000C37A3 /* TRTCVideoCall+Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8D92446E6C5000C37A3 /* TRTCVideoCall+Room.swift */; };
+		40B3F9712446E6C6000C37A3 /* TRTCVideoCall+model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8DA2446E6C5000C37A3 /* TRTCVideoCall+model.swift */; };
+		40B3F9722446E6C6000C37A3 /* GenerateTestUserSig.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8DC2446E6C5000C37A3 /* GenerateTestUserSig.m */; };
+		40B3F9732446E6C6000C37A3 /* AudioCallViewController+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8E02446E6C5000C37A3 /* AudioCallViewController+UI.swift */; };
+		40B3F9742446E6C6000C37A3 /* AudioCallUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8E12446E6C5000C37A3 /* AudioCallUserCell.swift */; };
+		40B3F9752446E6C6000C37A3 /* AudioCallMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8E22446E6C5000C37A3 /* AudioCallMainViewController.swift */; };
+		40B3F9762446E6C6000C37A3 /* AudioSelectContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8E32446E6C5000C37A3 /* AudioSelectContactViewController.swift */; };
+		40B3F9772446E6C6000C37A3 /* AudioCallMainViewController+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8E42446E6C5000C37A3 /* AudioCallMainViewController+UI.swift */; };
+		40B3F9782446E6C6000C37A3 /* AudioCallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8E52446E6C5000C37A3 /* AudioCallViewController.swift */; };
+		40B3F9792446E6C6000C37A3 /* AudioSelectContactViewController+CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8E62446E6C5000C37A3 /* AudioSelectContactViewController+CollectionView.swift */; };
+		40B3F97A2446E6C6000C37A3 /* AudioSelectContactViewController+search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8E72446E6C5000C37A3 /* AudioSelectContactViewController+search.swift */; };
+		40B3F97B2446E6C6000C37A3 /* AudioSelectContactViewController+Table.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8E82446E6C5000C37A3 /* AudioSelectContactViewController+Table.swift */; };
+		40B3F97C2446E6C6000C37A3 /* AudioCallViewController+Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8E92446E6C5000C37A3 /* AudioCallViewController+Data.swift */; };
+		40B3F97D2446E6C6000C37A3 /* AudioSelectContactViewController+file.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8EA2446E6C5000C37A3 /* AudioSelectContactViewController+file.swift */; };
+		40B3F97E2446E6C6000C37A3 /* AudioSelectContactViewController+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8EB2446E6C5000C37A3 /* AudioSelectContactViewController+UI.swift */; };
+		40B3F97F2446E6C6000C37A3 /* TRTCAudioCall+internal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8ED2446E6C5000C37A3 /* TRTCAudioCall+internal.swift */; };
+		40B3F9802446E6C6000C37A3 /* TRTCAudioCallDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8EE2446E6C5000C37A3 /* TRTCAudioCallDelegate.swift */; };
+		40B3F9812446E6C6000C37A3 /* ITRTCAudioCallInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8EF2446E6C5000C37A3 /* ITRTCAudioCallInterface.swift */; };
+		40B3F9822446E6C6000C37A3 /* TRTCAudioCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8F02446E6C5000C37A3 /* TRTCAudioCall.swift */; };
+		40B3F9832446E6C6000C37A3 /* TRTCAudioCall+model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8F12446E6C5000C37A3 /* TRTCAudioCall+model.swift */; };
+		40B3F9842446E6C6000C37A3 /* TRTCAudioCall+Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8F22446E6C5000C37A3 /* TRTCAudioCall+Room.swift */; };
+		40B3F9852446E6C6000C37A3 /* TRTCAudioCall+OnNewMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8F32446E6C5000C37A3 /* TRTCAudioCall+OnNewMessage.swift */; };
+		40B3F9862446E6C6000C37A3 /* AudioCallUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8F42446E6C5000C37A3 /* AudioCallUtils.swift */; };
+		40B3F9872446E6C6000C37A3 /* TRTCVoiceRoomMoreView.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8F72446E6C5000C37A3 /* TRTCVoiceRoomMoreView.m */; };
+		40B3F9882446E6C6000C37A3 /* TRTCVoiceRoomMoreView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40B3F8F82446E6C5000C37A3 /* TRTCVoiceRoomMoreView.xib */; };
+		40B3F9892446E6C6000C37A3 /* TRTCVoiceRoomChangeVoiceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8FC2446E6C5000C37A3 /* TRTCVoiceRoomChangeVoiceView.m */; };
+		40B3F98A2446E6C6000C37A3 /* TRTCVoiceRoomChangeVoiceView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40B3F8FD2446E6C5000C37A3 /* TRTCVoiceRoomChangeVoiceView.xib */; };
+		40B3F98B2446E6C6000C37A3 /* CreateTRTCVoiceRoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8FF2446E6C5000C37A3 /* CreateTRTCVoiceRoomViewController.m */; };
+		40B3F98C2446E6C6000C37A3 /* TRTCVoiceRoomAudioEffectView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40B3F9022446E6C5000C37A3 /* TRTCVoiceRoomAudioEffectView.xib */; };
+		40B3F98D2446E6C6000C37A3 /* TRTCVoiceRoomAudioEffectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9032446E6C5000C37A3 /* TRTCVoiceRoomAudioEffectView.m */; };
+		40B3F98E2446E6C6000C37A3 /* TRTCVoiceRoomBgmView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40B3F9062446E6C5000C37A3 /* TRTCVoiceRoomBgmView.xib */; };
+		40B3F98F2446E6C6000C37A3 /* TRTCVoiceRoomBgmView.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9082446E6C5000C37A3 /* TRTCVoiceRoomBgmView.m */; };
+		40B3F9902446E6C6000C37A3 /* TRTCVoiceRoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9092446E6C5000C37A3 /* TRTCVoiceRoomViewController.m */; };
+		40B3F9912446E6C6000C37A3 /* UserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F90C2446E6C5000C37A3 /* UserModel.m */; };
+		40B3F9922446E6C6000C37A3 /* SEIMessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F90D2446E6C5000C37A3 /* SEIMessageModel.m */; };
+		40B3F9932446E6C6000C37A3 /* TRTCVoiceRoomAudioEffectManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9112446E6C6000C37A3 /* TRTCVoiceRoomAudioEffectManager.m */; };
+		40B3F9942446E6C6000C37A3 /* TRTCVoiceRoomBgmManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9142446E6C6000C37A3 /* TRTCVoiceRoomBgmManager.m */; };
+		40B3F9952446E6C6000C37A3 /* TRTCVoiceRoomCloudManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9182446E6C6000C37A3 /* TRTCVoiceRoomCloudManager.m */; };
+		40B3F9962446E6C6000C37A3 /* TRTCVoiceRoomAudioConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9192446E6C6000C37A3 /* TRTCVoiceRoomAudioConfig.m */; };
+		40B3F9972446E6C6000C37A3 /* TRTCVoiceRoomCustomAudioFileReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F91C2446E6C6000C37A3 /* TRTCVoiceRoomCustomAudioFileReader.m */; };
+		40B3F9982446E6C6000C37A3 /* giftSent.aac in Resources */ = {isa = PBXBuildFile; fileRef = 40B3F91E2446E6C6000C37A3 /* giftSent.aac */; };
+		40B3F9992446E6C6000C37A3 /* vchat_cheers.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 40B3F91F2446E6C6000C37A3 /* vchat_cheers.m4a */; };
+		40B3F99A2446E6C6000C37A3 /* on_mic.aac in Resources */ = {isa = PBXBuildFile; fileRef = 40B3F9202446E6C6000C37A3 /* on_mic.aac */; };
+		40B3F99B2446E6C6000C37A3 /* bgm_demo.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 40B3F9212446E6C6000C37A3 /* bgm_demo.mp3 */; };
+		40B3F99C2446E6C6000C37A3 /* TRTCVoiceRoom.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 40B3F9222446E6C6000C37A3 /* TRTCVoiceRoom.storyboard */; };
+		40B3F99D2446E6C6000C37A3 /* TRTCVoiceRoomTestUserSig.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9232446E6C6000C37A3 /* TRTCVoiceRoomTestUserSig.m */; };
+		40B3F99E2446E6C6000C37A3 /* LiveRoomMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9272446E6C6000C37A3 /* LiveRoomMainViewController.swift */; };
+		40B3F99F2446E6C6000C37A3 /* TCStatusInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9292446E6C6000C37A3 /* TCStatusInfoView.m */; };
+		40B3F9A02446E6C6000C37A3 /* TCPlaceHolderTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F92D2446E6C6000C37A3 /* TCPlaceHolderTextView.m */; };
+		40B3F9A22446E6C6000C37A3 /* TCMsgListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9342446E6C6000C37A3 /* TCMsgListCell.m */; };
+		40B3F9A32446E6C6000C37A3 /* TCMsgBarrageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9392446E6C6000C37A3 /* TCMsgBarrageView.m */; };
+		40B3F9A42446E6C6000C37A3 /* TCMsgModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F93A2446E6C6000C37A3 /* TCMsgModel.m */; };
+		40B3F9A52446E6C6000C37A3 /* TCMsgListTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F93B2446E6C6000C37A3 /* TCMsgListTableView.m */; };
+		40B3F9A62446E6C6000C37A3 /* LiveRoomMainViewController+CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F93C2446E6C6000C37A3 /* LiveRoomMainViewController+CollectionView.swift */; };
+		40B3F9A72446E6C6000C37A3 /* TCAnchorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F93F2446E6C6000C37A3 /* TCAnchorViewController.m */; };
+		40B3F9A82446E6C6000C37A3 /* TCAnchorViewController+Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9402446E6C6000C37A3 /* TCAnchorViewController+Room.swift */; };
+		40B3F9A92446E6C6000C37A3 /* AnchorPKPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9412446E6C6000C37A3 /* AnchorPKPanel.swift */; };
+		40B3F9AA2446E6C6000C37A3 /* TCAnchorToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9432446E6C6000C37A3 /* TCAnchorToolbarView.m */; };
+		40B3F9AB2446E6C6000C37A3 /* BeautyPerformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9442446E6C6000C37A3 /* BeautyPerformer.swift */; };
+		40B3F9AC2446E6C6000C37A3 /* TCAnchorViewController+LiveDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9452446E6C6000C37A3 /* TCAnchorViewController+LiveDelegate.swift */; };
+		40B3F9AD2446E6C6000C37A3 /* TCAudienceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9482446E6C6000C37A3 /* TCAudienceViewController.m */; };
+		40B3F9AE2446E6C6000C37A3 /* TCAudienceViewController+LiveDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9492446E6C6000C37A3 /* TCAudienceViewController+LiveDelegate.swift */; };
+		40B3F9AF2446E6C6000C37A3 /* TCAudienceToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F94A2446E6C6000C37A3 /* TCAudienceToolbarView.m */; };
+		40B3F9B02446E6C6000C37A3 /* LiveRoomMainViewController+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F94C2446E6C6000C37A3 /* LiveRoomMainViewController+UI.swift */; };
+		40B3F9B12446E6C6000C37A3 /* TRTCLiveRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F94E2446E6C6000C37A3 /* TRTCLiveRoom.swift */; };
+		40B3F9B22446E6C6000C37A3 /* TRTCLiveRoomImpl+RecvMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9502446E6C6000C37A3 /* TRTCLiveRoomImpl+RecvMessage.swift */; };
+		40B3F9B32446E6C6000C37A3 /* TRTCCustomAudioEffectManagerImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9512446E6C6000C37A3 /* TRTCCustomAudioEffectManagerImpl.swift */; };
+		40B3F9B42446E6C6000C37A3 /* TRTCLiveRoomImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9522446E6C6000C37A3 /* TRTCLiveRoomImpl.swift */; };
+		40B3F9B52446E6C6000C37A3 /* TRTCCloudAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9532446E6C6000C37A3 /* TRTCCloudAction.swift */; };
+		40B3F9B62446E6C6000C37A3 /* TRTCLiveRoomMemberManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9552446E6C6000C37A3 /* TRTCLiveRoomMemberManager.swift */; };
+		40B3F9B72446E6C7000C37A3 /* TRTCLiveRoomMemberProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9562446E6C6000C37A3 /* TRTCLiveRoomMemberProtocol.swift */; };
+		40B3F9B82446E6C7000C37A3 /* RoomManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9572446E6C6000C37A3 /* RoomManager.swift */; };
+		40B3F9B92446E6C7000C37A3 /* TRTCLiveRoomIMAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9592446E6C6000C37A3 /* TRTCLiveRoomIMAction.swift */; };
+		40B3F9BA2446E6C7000C37A3 /* TRTCLiveRoomIMActionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F95A2446E6C6000C37A3 /* TRTCLiveRoomIMActionType.swift */; };
+		40B3F9BB2446E6C7000C37A3 /* TRTCLiveRoomDef.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F95B2446E6C6000C37A3 /* TRTCLiveRoomDef.swift */; };
+		40B3F9BC2446E6C7000C37A3 /* TRTCAudioEffectManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F95C2446E6C6000C37A3 /* TRTCAudioEffectManager.swift */; };
+		40B3F9BD2446E6C7000C37A3 /* TRTCLiveRoomDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F95D2446E6C6000C37A3 /* TRTCLiveRoomDelegate.swift */; };
+		40B3F9DF2446EF11000C37A3 /* TCLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9DA2446EF11000C37A3 /* TCLog.m */; };
+		40B3F9E22446EF11000C37A3 /* TCUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9DD2446EF11000C37A3 /* TCUtil.m */; };
+		40B3F9FF2447042C000C37A3 /* HUDHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9FD2447042B000C37A3 /* HUDHelper.m */; };
+		40B3FA022447056D000C37A3 /* UIColor+MLPFlatColors.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3FA002447056D000C37A3 /* UIColor+MLPFlatColors.m */; };
+		40B5C68C2484BBFC00D3A718 /* AudioEffectSettingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40B5C6832484BBE500D3A718 /* AudioEffectSettingKit.framework */; };
+		40B5C6942484BE4800D3A718 /* AudioEffectSettingKitResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 40B5C6872484BBE500D3A718 /* AudioEffectSettingKitResources.bundle */; };
+		40E1F4492468F74A00F3D350 /* NSString+UISize.m in Sources */ = {isa = PBXBuildFile; fileRef = 457FD2F921C7530C00EEB03F /* NSString+UISize.m */; };
+		40E1F44F2468F75300F3D350 /* NSDictionary+Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A395A02234AEE9700AFBCE8 /* NSDictionary+Common.m */; };
+		40E25FCE2480C797005EB543 /* Portal+Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40E25FCC2480C796005EB543 /* Portal+Swift.swift */; };
+		45F21F82244714E8006B8B4D /* TRTCAudioCall.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 45F21F81244714E8006B8B4D /* TRTCAudioCall.storyboard */; };
+		5006CFFD1CD3BB5C9D38CD3A /* AppUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17C8B052FC7587E915FB61ED /* AppUtils.swift */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		9E5CD490044F2F99502665E7 /* CommonUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAB18E3F60B5C71F656DB34 /* CommonUtils.swift */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		BD32F8A6AF7CC2FF9A53096E /* libPods-TXLiteAVDemo_TRTC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A32AD4BB38080AB19D3659FC /* libPods-TXLiteAVDemo_TRTC.a */; };
+		DD0B5504C80DA1D2CFA8823C /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92FAD99402D6919018829582 /* ProfileViewController.swift */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DF53B08D57A07523C71340CD /* LoginViewController_Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AAB45AB4EE92228E7ACCDB5 /* LoginViewController_Mock.swift */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		F61EE2AE404AC9852FBA1F31 /* LoginViewController+UI_Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB0ACF231353A46AE0822B1 /* LoginViewController+UI_Mock.swift */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		FC67C486D593D9BB50E4EDB7 /* ProfileViewController+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7AB9322BA3DCFE48EEB91E7 /* ProfileViewController+UI.swift */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		40A49D6424598CD700BFCB18 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 40A49D5E24598CD200BFCB18 /* UGCKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 453DE2D6237945B10083E759;
+			remoteInfo = UGCKit;
+		};
+		40A49D6624598CD700BFCB18 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 40A49D5E24598CD200BFCB18 /* UGCKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 454616C223797C39009CDF83;
+			remoteInfo = UGCKitResources;
+		};
+		40AA536424458EC800303EF7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 40AA533524458EC800303EF7 /* TCBeautyPanel.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4579C38623AC64DC005ECC1C;
+			remoteInfo = TCBeautyPanel;
+		};
+		40AA536624458EC800303EF7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 40AA533524458EC800303EF7 /* TCBeautyPanel.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4579C3FA23AC660C005ECC1C;
+			remoteInfo = TCBeautyPanelResources;
+		};
+		40B3F65D2446E518000C37A3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 40AA533524458EC800303EF7 /* TCBeautyPanel.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 4579C38523AC64DC005ECC1C;
+			remoteInfo = TCBeautyPanel;
+		};
+		40B3F65F2446E518000C37A3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 40AA533524458EC800303EF7 /* TCBeautyPanel.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 4579C3F923AC660C005ECC1C;
+			remoteInfo = TCBeautyPanelResources;
+		};
+		40B5C6822484BBE500D3A718 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 401A9B3D247FCC7600C0763B /* AudioEffectSettingKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 40AF719A247D036200EBB371;
+			remoteInfo = AudioEffectSettingKit;
+		};
+		40B5C6842484BBE500D3A718 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 401A9B3D247FCC7600C0763B /* AudioEffectSettingKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 40AF71AA247D03E700EBB371;
+			remoteInfo = AudioEffectSettingKitExample;
+		};
+		40B5C6862484BBE500D3A718 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 401A9B3D247FCC7600C0763B /* AudioEffectSettingKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 40AF71C9247D08F700EBB371;
+			remoteInfo = AudioEffectSettingKitResources;
+		};
+		40B5C68A2484BBF600D3A718 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 401A9B3D247FCC7600C0763B /* AudioEffectSettingKit.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 40AF71C8247D08F700EBB371;
+			remoteInfo = AudioEffectSettingKitResources;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		45F21F7E244712F6006B8B4D /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		1505E8456BF1BD9159B19BDD /* Pods-TXLiteAVDemo_TRTC_AppStore.dailybuild.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TXLiteAVDemo_TRTC_AppStore.dailybuild.xcconfig"; path = "Target Support Files/Pods-TXLiteAVDemo_TRTC_AppStore/Pods-TXLiteAVDemo_TRTC_AppStore.dailybuild.xcconfig"; sourceTree = "<group>"; };
+		17C8B052FC7587E915FB61ED /* AppUtils.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppUtils.swift; sourceTree = "<group>"; };
+		1BB0ACF231353A46AE0822B1 /* LoginViewController+UI_Mock.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "LoginViewController+UI_Mock.swift"; sourceTree = "<group>"; };
+		1CAB18E3F60B5C71F656DB34 /* CommonUtils.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CommonUtils.swift; sourceTree = "<group>"; };
+		3AAB45AB4EE92228E7ACCDB5 /* LoginViewController_Mock.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LoginViewController_Mock.swift; sourceTree = "<group>"; };
+		401A9B3D247FCC7600C0763B /* AudioEffectSettingKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = AudioEffectSettingKit.xcodeproj; sourceTree = "<group>"; };
+		402A00DD2450552E0037A219 /* TXLiteAVDemo-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TXLiteAVDemo-Bridging-Header.h"; sourceTree = "<group>"; };
+		402A010024506F740037A219 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = App/main.m; sourceTree = "<group>"; };
+		402ABFC3248558C600C84246 /* TRTC-Appstore-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "TRTC-Appstore-Info.plist"; path = "../../../../Desktop/LiteAVSDK_TRTC_iOS_7.3.9132/TRTCScenesDemo/TXLiteAVDemo/App/TRTC-Appstore-Info.plist"; sourceTree = "<group>"; };
+		40407ACA1F3035CA006C7301 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		404183282455853000DD70AB /* V8HorizontalPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = V8HorizontalPickerView.m; sourceTree = "<group>"; };
+		404183292455853000DD70AB /* V8HorizontalPickerViewProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = V8HorizontalPickerViewProtocol.h; sourceTree = "<group>"; };
+		4041832A2455853000DD70AB /* V8HorizontalPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = V8HorizontalPickerView.h; sourceTree = "<group>"; };
+		4071CF702444477A000B7707 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
+		40802A272484BBBE008151C1 /* AudioEffectSettingKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AudioEffectSettingKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4090F615246ADBBF00EA72A0 /* TRTCVideoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCVideoView.h; sourceTree = "<group>"; };
+		4090F618246ADBBF00EA72A0 /* TRTCCdnPlayerSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCCdnPlayerSettingsViewController.h; sourceTree = "<group>"; };
+		4090F619246ADBBF00EA72A0 /* TRTCCdnPlayerSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCCdnPlayerSettingsViewController.m; sourceTree = "<group>"; };
+		4090F61B246ADBBF00EA72A0 /* TRTCRemoteUserSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCRemoteUserSettingsViewController.m; sourceTree = "<group>"; };
+		4090F61C246ADBBF00EA72A0 /* TRTCRemoteUserListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCRemoteUserListViewController.m; sourceTree = "<group>"; };
+		4090F61D246ADBBF00EA72A0 /* TRTCRemoteUserCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCRemoteUserCell.m; sourceTree = "<group>"; };
+		4090F61E246ADBBF00EA72A0 /* TRTCRemoteUserSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCRemoteUserSettingsViewController.h; sourceTree = "<group>"; };
+		4090F61F246ADBBF00EA72A0 /* TRTCRemoteUserListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCRemoteUserListViewController.h; sourceTree = "<group>"; };
+		4090F620246ADBBF00EA72A0 /* TRTCRemoteUserCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCRemoteUserCell.h; sourceTree = "<group>"; };
+		4090F621246ADBBF00EA72A0 /* TRTCSettings.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = TRTCSettings.storyboard; sourceTree = "<group>"; };
+		4090F624246ADBBF00EA72A0 /* TRTCCdnPlayerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCCdnPlayerManager.m; sourceTree = "<group>"; };
+		4090F625246ADBBF00EA72A0 /* TRTCCdnPlayerConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCCdnPlayerConfig.h; sourceTree = "<group>"; };
+		4090F626246ADBBF00EA72A0 /* TRTCCdnPlayerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCCdnPlayerManager.h; sourceTree = "<group>"; };
+		4090F627246ADBBF00EA72A0 /* TRTCCdnPlayerConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCCdnPlayerConfig.m; sourceTree = "<group>"; };
+		4090F629246ADBBF00EA72A0 /* TRTCRemoteUserConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCRemoteUserConfig.m; sourceTree = "<group>"; };
+		4090F62A246ADBBF00EA72A0 /* TRTCRemoteUserManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCRemoteUserManager.m; sourceTree = "<group>"; };
+		4090F62B246ADBBF00EA72A0 /* TRTCRemoteUserConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCRemoteUserConfig.h; sourceTree = "<group>"; };
+		4090F62C246ADBBF00EA72A0 /* TRTCRemoteUserManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCRemoteUserManager.h; sourceTree = "<group>"; };
+		4090F62E246ADBBF00EA72A0 /* TRTCCustomAudioEffectManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCCustomAudioEffectManager.m; sourceTree = "<group>"; };
+		4090F62F246ADBBF00EA72A0 /* TRTCBgmManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCBgmManager.m; sourceTree = "<group>"; };
+		4090F630246ADBBF00EA72A0 /* TRTCCustomAudioEffectManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCCustomAudioEffectManager.h; sourceTree = "<group>"; };
+		4090F631246ADBBF00EA72A0 /* TRTCBgmManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCBgmManager.h; sourceTree = "<group>"; };
+		4090F633246ADBBF00EA72A0 /* TRTCAudioRecordManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCAudioRecordManager.m; sourceTree = "<group>"; };
+		4090F634246ADBBF00EA72A0 /* TRTCStreamConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCStreamConfig.m; sourceTree = "<group>"; };
+		4090F635246ADBBF00EA72A0 /* TRTCAudioConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCAudioConfig.m; sourceTree = "<group>"; };
+		4090F636246ADBBF00EA72A0 /* TRTCVideoConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCVideoConfig.h; sourceTree = "<group>"; };
+		4090F637246ADBBF00EA72A0 /* TRTCCloudManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCCloudManager.h; sourceTree = "<group>"; };
+		4090F638246ADBBF00EA72A0 /* TRTCStreamConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCStreamConfig.h; sourceTree = "<group>"; };
+		4090F639246ADBBF00EA72A0 /* TRTCAudioRecordManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCAudioRecordManager.h; sourceTree = "<group>"; };
+		4090F63A246ADBBF00EA72A0 /* TRTCCloudManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCCloudManager.m; sourceTree = "<group>"; };
+		4090F63B246ADBBF00EA72A0 /* TRTCVideoConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCVideoConfig.m; sourceTree = "<group>"; };
+		4090F63C246ADBBF00EA72A0 /* TRTCAudioConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCAudioConfig.h; sourceTree = "<group>"; };
+		4090F63F246ADBBF00EA72A0 /* TRTCSettingsContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCSettingsContainerViewController.h; sourceTree = "<group>"; };
+		4090F640246ADBBF00EA72A0 /* TRTCSettingsContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCSettingsContainerViewController.m; sourceTree = "<group>"; };
+		4090F642246ADBBF00EA72A0 /* UIButton+TRTC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+TRTC.m"; sourceTree = "<group>"; };
+		4090F643246ADBBF00EA72A0 /* UILabel+TRTC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+TRTC.m"; sourceTree = "<group>"; };
+		4090F644246ADBBF00EA72A0 /* UISlider+TRTC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UISlider+TRTC.h"; sourceTree = "<group>"; };
+		4090F645246ADBBF00EA72A0 /* UITextField+TRTC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextField+TRTC.m"; sourceTree = "<group>"; };
+		4090F646246ADBBF00EA72A0 /* UISegmentedControl+TRTC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UISegmentedControl+TRTC.h"; sourceTree = "<group>"; };
+		4090F647246ADBBF00EA72A0 /* UILabel+TRTC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+TRTC.h"; sourceTree = "<group>"; };
+		4090F648246ADBBF00EA72A0 /* UIButton+TRTC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+TRTC.h"; sourceTree = "<group>"; };
+		4090F649246ADBBF00EA72A0 /* UISlider+TRTC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UISlider+TRTC.m"; sourceTree = "<group>"; };
+		4090F64A246ADBBF00EA72A0 /* UISegmentedControl+TRTC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UISegmentedControl+TRTC.m"; sourceTree = "<group>"; };
+		4090F64B246ADBBF00EA72A0 /* UITextField+TRTC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextField+TRTC.h"; sourceTree = "<group>"; };
+		4090F64E246ADBBF00EA72A0 /* TRTCSettingsMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCSettingsMessageCell.m; sourceTree = "<group>"; };
+		4090F64F246ADBBF00EA72A0 /* TRTCSettingsButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCSettingsButtonCell.h; sourceTree = "<group>"; };
+		4090F650246ADBBF00EA72A0 /* TRTCSettingsInputCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCSettingsInputCell.m; sourceTree = "<group>"; };
+		4090F651246ADBBF00EA72A0 /* TRTCSettingsBaseCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCSettingsBaseCell.h; sourceTree = "<group>"; };
+		4090F652246ADBBF00EA72A0 /* TRTCSettingsSegmentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCSettingsSegmentCell.m; sourceTree = "<group>"; };
+		4090F653246ADBBF00EA72A0 /* TRTCSettingsSwitchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCSettingsSwitchCell.h; sourceTree = "<group>"; };
+		4090F654246ADBBF00EA72A0 /* TRTCSettingsLargeInputCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCSettingsLargeInputCell.m; sourceTree = "<group>"; };
+		4090F655246ADBBF00EA72A0 /* TRTCSettingsSelectorCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCSettingsSelectorCell.h; sourceTree = "<group>"; };
+		4090F656246ADBBF00EA72A0 /* TRTCSettingsSliderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCSettingsSliderCell.h; sourceTree = "<group>"; };
+		4090F657246ADBBF00EA72A0 /* TRTCSettingsMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCSettingsMessageCell.h; sourceTree = "<group>"; };
+		4090F658246ADBBF00EA72A0 /* TRTCSettingsSegmentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCSettingsSegmentCell.h; sourceTree = "<group>"; };
+		4090F659246ADBBF00EA72A0 /* TRTCSettingsBaseCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCSettingsBaseCell.m; sourceTree = "<group>"; };
+		4090F65A246ADBBF00EA72A0 /* TRTCSettingsInputCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCSettingsInputCell.h; sourceTree = "<group>"; };
+		4090F65B246ADBBF00EA72A0 /* TRTCSettingsButtonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCSettingsButtonCell.m; sourceTree = "<group>"; };
+		4090F65C246ADBBF00EA72A0 /* TRTCSettingsSwitchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCSettingsSwitchCell.m; sourceTree = "<group>"; };
+		4090F65D246ADBBF00EA72A0 /* TRTCSettingsLargeInputCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCSettingsLargeInputCell.h; sourceTree = "<group>"; };
+		4090F65E246ADBBF00EA72A0 /* TRTCSettingsSliderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCSettingsSliderCell.m; sourceTree = "<group>"; };
+		4090F65F246ADBBF00EA72A0 /* TRTCSettingsSelectorCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCSettingsSelectorCell.m; sourceTree = "<group>"; };
+		4090F660246ADBBF00EA72A0 /* TRTCSettingsBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCSettingsBaseViewController.h; sourceTree = "<group>"; };
+		4090F661246ADBBF00EA72A0 /* TRTCSettingsBaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCSettingsBaseViewController.m; sourceTree = "<group>"; };
+		4090F663246ADBBF00EA72A0 /* TRTCMoreSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCMoreSettingsViewController.m; sourceTree = "<group>"; };
+		4090F664246ADBBF00EA72A0 /* TRTCAudioSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCAudioSettingsViewController.m; sourceTree = "<group>"; };
+		4090F665246ADBBF00EA72A0 /* TRTCFeatureContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCFeatureContainerViewController.h; sourceTree = "<group>"; };
+		4090F666246ADBBF00EA72A0 /* TRTCVideoSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCVideoSettingsViewController.m; sourceTree = "<group>"; };
+		4090F667246ADBBF00EA72A0 /* TRTCStreamSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCStreamSettingsViewController.m; sourceTree = "<group>"; };
+		4090F668246ADBBF00EA72A0 /* TRTCPKSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCPKSettingsViewController.m; sourceTree = "<group>"; };
+		4090F669246ADBBF00EA72A0 /* TRTCMoreSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCMoreSettingsViewController.h; sourceTree = "<group>"; };
+		4090F66A246ADBBF00EA72A0 /* TRTCAudioSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCAudioSettingsViewController.h; sourceTree = "<group>"; };
+		4090F66B246ADBBF00EA72A0 /* TRTCPKSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCPKSettingsViewController.h; sourceTree = "<group>"; };
+		4090F66C246ADBBF00EA72A0 /* TRTCStreamSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCStreamSettingsViewController.h; sourceTree = "<group>"; };
+		4090F66D246ADBBF00EA72A0 /* TRTCVideoSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCVideoSettingsViewController.h; sourceTree = "<group>"; };
+		4090F66E246ADBBF00EA72A0 /* TRTCFeatureContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCFeatureContainerViewController.m; sourceTree = "<group>"; };
+		4090F670246ADBBF00EA72A0 /* TRTCBgmContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCBgmContainerViewController.m; sourceTree = "<group>"; };
+		4090F672246ADBBF00EA72A0 /* TRTCSettingsEffectCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCSettingsEffectCell.m; sourceTree = "<group>"; };
+		4090F673246ADBBF00EA72A0 /* TRTCEffectSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCEffectSettingsViewController.h; sourceTree = "<group>"; };
+		4090F674246ADBBF00EA72A0 /* TRTCSettingsEffectLoopCountCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCSettingsEffectLoopCountCell.m; sourceTree = "<group>"; };
+		4090F675246ADBBF00EA72A0 /* TRTCEffectSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCEffectSettingsViewController.m; sourceTree = "<group>"; };
+		4090F676246ADBBF00EA72A0 /* TRTCSettingsEffectCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCSettingsEffectCell.h; sourceTree = "<group>"; };
+		4090F677246ADBBF00EA72A0 /* TRTCSettingsEffectLoopCountCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCSettingsEffectLoopCountCell.h; sourceTree = "<group>"; };
+		4090F678246ADBBF00EA72A0 /* TRTCBgmContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCBgmContainerViewController.h; sourceTree = "<group>"; };
+		4090F67A246ADBBF00EA72A0 /* TRTCBgmSettingsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCBgmSettingsCell.m; sourceTree = "<group>"; };
+		4090F67B246ADBBF00EA72A0 /* TRTCBgmSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCBgmSettingsViewController.m; sourceTree = "<group>"; };
+		4090F67C246ADBBF00EA72A0 /* TRTCBgmSettingsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCBgmSettingsCell.h; sourceTree = "<group>"; };
+		4090F67D246ADBBF00EA72A0 /* TRTCBgmSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCBgmSettingsViewController.h; sourceTree = "<group>"; };
+		4090F67E246ADBBF00EA72A0 /* TRTCFloatWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCFloatWindow.h; sourceTree = "<group>"; };
+		4090F67F246ADBBF00EA72A0 /* TRTCMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCMainViewController.m; sourceTree = "<group>"; };
+		4090F680246ADBBF00EA72A0 /* TRTCVideoViewLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCVideoViewLayout.h; sourceTree = "<group>"; };
+		4090F682246ADBBF00EA72A0 /* record_test_background.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = record_test_background.mp3; sourceTree = "<group>"; };
+		4090F683246ADBBF00EA72A0 /* TRTC.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = TRTC.storyboard; sourceTree = "<group>"; };
+		4090F685246ADBBF00EA72A0 /* TCMediaFileReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCMediaFileReader.m; sourceTree = "<group>"; };
+		4090F686246ADBBF00EA72A0 /* TestRenderVideoFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestRenderVideoFrame.m; sourceTree = "<group>"; };
+		4090F687246ADBBF00EA72A0 /* TestSendCustomVideoData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestSendCustomVideoData.h; sourceTree = "<group>"; };
+		4090F688246ADBBF00EA72A0 /* TCMediaFileReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCMediaFileReader.h; sourceTree = "<group>"; };
+		4090F689246ADBBF00EA72A0 /* TestSendCustomVideoData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestSendCustomVideoData.m; sourceTree = "<group>"; };
+		4090F68A246ADBBF00EA72A0 /* TestRenderVideoFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestRenderVideoFrame.h; sourceTree = "<group>"; };
+		4090F68B246ADBBF00EA72A0 /* TRTCMettingAssert.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = TRTCMettingAssert.xcassets; sourceTree = "<group>"; };
+		4090F68C246ADBBF00EA72A0 /* TRTCNewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCNewViewController.m; sourceTree = "<group>"; };
+		4090F68D246ADBBF00EA72A0 /* TRTCMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCMainViewController.h; sourceTree = "<group>"; };
+		4090F68E246ADBBF00EA72A0 /* TRTCFloatWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCFloatWindow.m; sourceTree = "<group>"; };
+		4090F68F246ADBBF00EA72A0 /* TRTCVideoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCVideoView.m; sourceTree = "<group>"; };
+		4090F690246ADBBF00EA72A0 /* TRTCVideoViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCVideoViewLayout.m; sourceTree = "<group>"; };
+		4090F691246ADBBF00EA72A0 /* TRTCNewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCNewViewController.h; sourceTree = "<group>"; };
+		4090F73A246ADEB500EA72A0 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/QBImagePicker.strings; sourceTree = "<group>"; };
+		4090F73B246ADEB500EA72A0 /* QBImagePickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBImagePickerController.h; sourceTree = "<group>"; };
+		4090F73C246ADEB500EA72A0 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/QBImagePicker.strings"; sourceTree = "<group>"; };
+		4090F73D246ADEB500EA72A0 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/QBImagePicker.strings; sourceTree = "<group>"; };
+		4090F73E246ADEB500EA72A0 /* QBAssetsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBAssetsViewController.h; sourceTree = "<group>"; };
+		4090F73F246ADEB500EA72A0 /* QBAlbumsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBAlbumsViewController.h; sourceTree = "<group>"; };
+		4090F740246ADEB500EA72A0 /* QBVideoIconView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBVideoIconView.m; sourceTree = "<group>"; };
+		4090F741246ADEB500EA72A0 /* QBVideoIndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBVideoIndicatorView.m; sourceTree = "<group>"; };
+		4090F742246ADEB500EA72A0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/QBImagePicker.strings; sourceTree = "<group>"; };
+		4090F743246ADEB500EA72A0 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/QBImagePicker.strings; sourceTree = "<group>"; };
+		4090F744246ADEB500EA72A0 /* QBCheckmarkView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBCheckmarkView.h; sourceTree = "<group>"; };
+		4090F745246ADEB500EA72A0 /* QBImagePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBImagePicker.h; sourceTree = "<group>"; };
+		4090F746246ADEB500EA72A0 /* QBAssetCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBAssetCell.h; sourceTree = "<group>"; };
+		4090F747246ADEB500EA72A0 /* QBSlomoIconView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBSlomoIconView.h; sourceTree = "<group>"; };
+		4090F748246ADEB500EA72A0 /* QBAlbumCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBAlbumCell.m; sourceTree = "<group>"; };
+		4090F749246ADEB500EA72A0 /* QBImagePicker.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = QBImagePicker.storyboard; sourceTree = "<group>"; };
+		4090F74A246ADEB500EA72A0 /* QBVideoIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBVideoIndicatorView.h; sourceTree = "<group>"; };
+		4090F74B246ADEB500EA72A0 /* QBAlbumsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBAlbumsViewController.m; sourceTree = "<group>"; };
+		4090F74C246ADEB500EA72A0 /* QBVideoIconView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBVideoIconView.h; sourceTree = "<group>"; };
+		4090F74D246ADEB500EA72A0 /* QBAssetsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBAssetsViewController.m; sourceTree = "<group>"; };
+		4090F74E246ADEB500EA72A0 /* QBImagePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBImagePickerController.m; sourceTree = "<group>"; };
+		4090F74F246ADEB500EA72A0 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/QBImagePicker.strings; sourceTree = "<group>"; };
+		4090F750246ADEB500EA72A0 /* QBCheckmarkView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBCheckmarkView.m; sourceTree = "<group>"; };
+		4090F751246ADEB500EA72A0 /* QBAlbumCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBAlbumCell.h; sourceTree = "<group>"; };
+		4090F752246ADEB500EA72A0 /* QBSlomoIconView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBSlomoIconView.m; sourceTree = "<group>"; };
+		4090F753246ADEB500EA72A0 /* QBAssetCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBAssetCell.m; sourceTree = "<group>"; };
+		4090F776246AE09600EA72A0 /* CustomAudioCapturor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomAudioCapturor.m; sourceTree = "<group>"; };
+		4090F777246AE09600EA72A0 /* CustomAudioFileReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomAudioFileReader.m; sourceTree = "<group>"; };
+		4090F778246AE09600EA72A0 /* CustomAudioCapturor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomAudioCapturor.h; sourceTree = "<group>"; };
+		4090F779246AE09600EA72A0 /* CustomAudioFileReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomAudioFileReader.h; sourceTree = "<group>"; };
+		4090F77A246AE09600EA72A0 /* CustomAudio44100_2.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = CustomAudio44100_2.pcm; sourceTree = "<group>"; };
+		4090F77B246AE09600EA72A0 /* CustomAudio48000_1.pcm */ = {isa = PBXFileReference; lastKnownFileType = file; path = CustomAudio48000_1.pcm; sourceTree = "<group>"; };
+		4090F78A246AE23B00EA72A0 /* PortalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PortalViewController.m; sourceTree = "<group>"; };
+		4090F78B246AE23B00EA72A0 /* MainMenuCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMenuCell.h; sourceTree = "<group>"; };
+		4090F78C246AE23B00EA72A0 /* Portal.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Portal.storyboard; sourceTree = "<group>"; };
+		4090F78D246AE23B00EA72A0 /* PortalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PortalViewController.h; sourceTree = "<group>"; };
+		4090F78E246AE23B00EA72A0 /* MainMenuCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainMenuCell.m; sourceTree = "<group>"; };
+		4090F78F246AE23B00EA72A0 /* ColorMacro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorMacro.h; sourceTree = "<group>"; };
+		4090F793246AE25A00EA72A0 /* TRTCPortalAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = TRTCPortalAssets.xcassets; sourceTree = "<group>"; };
+		4090F796246AE57E00EA72A0 /* ThemeConfigurator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThemeConfigurator.m; sourceTree = "<group>"; };
+		4090F797246AE57E00EA72A0 /* ThemeConfigurator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThemeConfigurator.h; sourceTree = "<group>"; };
+		4090F79C246AE5C800EA72A0 /* QRCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QRCode.m; sourceTree = "<group>"; };
+		4090F79D246AE5C800EA72A0 /* QRCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QRCode.h; sourceTree = "<group>"; };
+		40A49D5E24598CD200BFCB18 /* UGCKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = UGCKit.xcodeproj; path = UGCKit/UGCKit.xcodeproj; sourceTree = "<group>"; };
+		40A7CFD3245FC09300E792A5 /* TRTCAuidoCall.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = TRTCAuidoCall.xcassets; sourceTree = "<group>"; };
+		40A7CFD7245FC0CF00E792A5 /* TRTCLiveRoom.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = TRTCLiveRoom.xcassets; sourceTree = "<group>"; };
+		40A7CFDF245FC14400E792A5 /* TRTCVoiceRoom.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = TRTCVoiceRoom.xcassets; sourceTree = "<group>"; };
+		40AA533524458EC800303EF7 /* TCBeautyPanel.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = TCBeautyPanel.xcodeproj; sourceTree = "<group>"; };
+		40AA539724459DF900303EF7 /* UGCKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UGCKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		40AC7322246D35A300FAF33D /* TXLiteAVDemo_TRTC_AppStore.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TXLiteAVDemo_TRTC_AppStore.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		40B3F6D22446E518000C37A3 /* TXLiteAVDemo_TRTC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TXLiteAVDemo_TRTC.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		40B3F8C62446E6C5000C37A3 /* VideoCallUserCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoCallUserCell.swift; sourceTree = "<group>"; };
+		40B3F8C72446E6C5000C37A3 /* VideoCallMainViewController+UI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VideoCallMainViewController+UI.swift"; sourceTree = "<group>"; };
+		40B3F8C82446E6C5000C37A3 /* VideoCallMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoCallMainViewController.swift; sourceTree = "<group>"; };
+		40B3F8C92446E6C5000C37A3 /* VideoSelectContactViewController+UI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VideoSelectContactViewController+UI.swift"; sourceTree = "<group>"; };
+		40B3F8CA2446E6C5000C37A3 /* VideoSelectContactViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoSelectContactViewController.swift; sourceTree = "<group>"; };
+		40B3F8CB2446E6C5000C37A3 /* VideoSelectContactViewController+search.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VideoSelectContactViewController+search.swift"; sourceTree = "<group>"; };
+		40B3F8CC2446E6C5000C37A3 /* VideoCallViewController+Data.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VideoCallViewController+Data.swift"; sourceTree = "<group>"; };
+		40B3F8CD2446E6C5000C37A3 /* VideoCallViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoCallViewController.swift; sourceTree = "<group>"; };
+		40B3F8CE2446E6C5000C37A3 /* VideoSelectContactViewController+file.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VideoSelectContactViewController+file.swift"; sourceTree = "<group>"; };
+		40B3F8CF2446E6C5000C37A3 /* VideoCallViewController+UI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VideoCallViewController+UI.swift"; sourceTree = "<group>"; };
+		40B3F8D02446E6C5000C37A3 /* VideoSelectContactViewController+CollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VideoSelectContactViewController+CollectionView.swift"; sourceTree = "<group>"; };
+		40B3F8D12446E6C5000C37A3 /* VideoSelectContactViewController+Table.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VideoSelectContactViewController+Table.swift"; sourceTree = "<group>"; };
+		40B3F8D32446E6C5000C37A3 /* ITRTCVideoCallInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ITRTCVideoCallInterface.swift; sourceTree = "<group>"; };
+		40B3F8D42446E6C5000C37A3 /* TRTCVideoCall+OnNewMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TRTCVideoCall+OnNewMessage.swift"; sourceTree = "<group>"; };
+		40B3F8D52446E6C5000C37A3 /* TRTCVideoCallDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCVideoCallDelegate.swift; sourceTree = "<group>"; };
+		40B3F8D62446E6C5000C37A3 /* TRTCVideoCall+internal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TRTCVideoCall+internal.swift"; sourceTree = "<group>"; };
+		40B3F8D72446E6C5000C37A3 /* VideoCallUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoCallUtils.swift; sourceTree = "<group>"; };
+		40B3F8D82446E6C5000C37A3 /* TRTCVideoCall.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCVideoCall.swift; sourceTree = "<group>"; };
+		40B3F8D92446E6C5000C37A3 /* TRTCVideoCall+Room.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TRTCVideoCall+Room.swift"; sourceTree = "<group>"; };
+		40B3F8DA2446E6C5000C37A3 /* TRTCVideoCall+model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TRTCVideoCall+model.swift"; sourceTree = "<group>"; };
+		40B3F8DC2446E6C5000C37A3 /* GenerateTestUserSig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenerateTestUserSig.m; sourceTree = "<group>"; };
+		40B3F8DD2446E6C5000C37A3 /* GenerateTestUserSig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GenerateTestUserSig.h; sourceTree = "<group>"; };
+		40B3F8E02446E6C5000C37A3 /* AudioCallViewController+UI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AudioCallViewController+UI.swift"; sourceTree = "<group>"; };
+		40B3F8E12446E6C5000C37A3 /* AudioCallUserCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioCallUserCell.swift; sourceTree = "<group>"; };
+		40B3F8E22446E6C5000C37A3 /* AudioCallMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioCallMainViewController.swift; sourceTree = "<group>"; };
+		40B3F8E32446E6C5000C37A3 /* AudioSelectContactViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioSelectContactViewController.swift; sourceTree = "<group>"; };
+		40B3F8E42446E6C5000C37A3 /* AudioCallMainViewController+UI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AudioCallMainViewController+UI.swift"; sourceTree = "<group>"; };
+		40B3F8E52446E6C5000C37A3 /* AudioCallViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioCallViewController.swift; sourceTree = "<group>"; };
+		40B3F8E62446E6C5000C37A3 /* AudioSelectContactViewController+CollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AudioSelectContactViewController+CollectionView.swift"; sourceTree = "<group>"; };
+		40B3F8E72446E6C5000C37A3 /* AudioSelectContactViewController+search.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AudioSelectContactViewController+search.swift"; sourceTree = "<group>"; };
+		40B3F8E82446E6C5000C37A3 /* AudioSelectContactViewController+Table.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AudioSelectContactViewController+Table.swift"; sourceTree = "<group>"; };
+		40B3F8E92446E6C5000C37A3 /* AudioCallViewController+Data.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AudioCallViewController+Data.swift"; sourceTree = "<group>"; };
+		40B3F8EA2446E6C5000C37A3 /* AudioSelectContactViewController+file.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AudioSelectContactViewController+file.swift"; sourceTree = "<group>"; };
+		40B3F8EB2446E6C5000C37A3 /* AudioSelectContactViewController+UI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AudioSelectContactViewController+UI.swift"; sourceTree = "<group>"; };
+		40B3F8ED2446E6C5000C37A3 /* TRTCAudioCall+internal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TRTCAudioCall+internal.swift"; sourceTree = "<group>"; };
+		40B3F8EE2446E6C5000C37A3 /* TRTCAudioCallDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCAudioCallDelegate.swift; sourceTree = "<group>"; };
+		40B3F8EF2446E6C5000C37A3 /* ITRTCAudioCallInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ITRTCAudioCallInterface.swift; sourceTree = "<group>"; };
+		40B3F8F02446E6C5000C37A3 /* TRTCAudioCall.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCAudioCall.swift; sourceTree = "<group>"; };
+		40B3F8F12446E6C5000C37A3 /* TRTCAudioCall+model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TRTCAudioCall+model.swift"; sourceTree = "<group>"; };
+		40B3F8F22446E6C5000C37A3 /* TRTCAudioCall+Room.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TRTCAudioCall+Room.swift"; sourceTree = "<group>"; };
+		40B3F8F32446E6C5000C37A3 /* TRTCAudioCall+OnNewMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TRTCAudioCall+OnNewMessage.swift"; sourceTree = "<group>"; };
+		40B3F8F42446E6C5000C37A3 /* AudioCallUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioCallUtils.swift; sourceTree = "<group>"; };
+		40B3F8F72446E6C5000C37A3 /* TRTCVoiceRoomMoreView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCVoiceRoomMoreView.m; sourceTree = "<group>"; };
+		40B3F8F82446E6C5000C37A3 /* TRTCVoiceRoomMoreView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TRTCVoiceRoomMoreView.xib; sourceTree = "<group>"; };
+		40B3F8F92446E6C5000C37A3 /* TRTCVoiceRoomMoreView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCVoiceRoomMoreView.h; sourceTree = "<group>"; };
+		40B3F8FA2446E6C5000C37A3 /* TRTCVoiceRoomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCVoiceRoomViewController.h; sourceTree = "<group>"; };
+		40B3F8FC2446E6C5000C37A3 /* TRTCVoiceRoomChangeVoiceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCVoiceRoomChangeVoiceView.m; sourceTree = "<group>"; };
+		40B3F8FD2446E6C5000C37A3 /* TRTCVoiceRoomChangeVoiceView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TRTCVoiceRoomChangeVoiceView.xib; sourceTree = "<group>"; };
+		40B3F8FE2446E6C5000C37A3 /* TRTCVoiceRoomChangeVoiceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCVoiceRoomChangeVoiceView.h; sourceTree = "<group>"; };
+		40B3F8FF2446E6C5000C37A3 /* CreateTRTCVoiceRoomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateTRTCVoiceRoomViewController.m; sourceTree = "<group>"; };
+		40B3F9002446E6C5000C37A3 /* TRTCVoiceRoomTestUserSig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCVoiceRoomTestUserSig.h; sourceTree = "<group>"; };
+		40B3F9022446E6C5000C37A3 /* TRTCVoiceRoomAudioEffectView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TRTCVoiceRoomAudioEffectView.xib; sourceTree = "<group>"; };
+		40B3F9032446E6C5000C37A3 /* TRTCVoiceRoomAudioEffectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCVoiceRoomAudioEffectView.m; sourceTree = "<group>"; };
+		40B3F9042446E6C5000C37A3 /* TRTCVoiceRoomAudioEffectView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCVoiceRoomAudioEffectView.h; sourceTree = "<group>"; };
+		40B3F9062446E6C5000C37A3 /* TRTCVoiceRoomBgmView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TRTCVoiceRoomBgmView.xib; sourceTree = "<group>"; };
+		40B3F9072446E6C5000C37A3 /* TRTCVoiceRoomBgmView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCVoiceRoomBgmView.h; sourceTree = "<group>"; };
+		40B3F9082446E6C5000C37A3 /* TRTCVoiceRoomBgmView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCVoiceRoomBgmView.m; sourceTree = "<group>"; };
+		40B3F9092446E6C5000C37A3 /* TRTCVoiceRoomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCVoiceRoomViewController.m; sourceTree = "<group>"; };
+		40B3F90B2446E6C5000C37A3 /* SEIMessageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEIMessageModel.h; sourceTree = "<group>"; };
+		40B3F90C2446E6C5000C37A3 /* UserModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserModel.m; sourceTree = "<group>"; };
+		40B3F90D2446E6C5000C37A3 /* SEIMessageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEIMessageModel.m; sourceTree = "<group>"; };
+		40B3F90E2446E6C5000C37A3 /* UserModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserModel.h; sourceTree = "<group>"; };
+		40B3F9112446E6C6000C37A3 /* TRTCVoiceRoomAudioEffectManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCVoiceRoomAudioEffectManager.m; sourceTree = "<group>"; };
+		40B3F9122446E6C6000C37A3 /* TRTCVoiceRoomBgmManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCVoiceRoomBgmManager.h; sourceTree = "<group>"; };
+		40B3F9132446E6C6000C37A3 /* TRTCVoiceRoomAudioEffectManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCVoiceRoomAudioEffectManager.h; sourceTree = "<group>"; };
+		40B3F9142446E6C6000C37A3 /* TRTCVoiceRoomBgmManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCVoiceRoomBgmManager.m; sourceTree = "<group>"; };
+		40B3F9162446E6C6000C37A3 /* TRTCVoiceRoomAudioConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCVoiceRoomAudioConfig.h; sourceTree = "<group>"; };
+		40B3F9172446E6C6000C37A3 /* TRTCVoiceRoomCloudManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCVoiceRoomCloudManager.h; sourceTree = "<group>"; };
+		40B3F9182446E6C6000C37A3 /* TRTCVoiceRoomCloudManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCVoiceRoomCloudManager.m; sourceTree = "<group>"; };
+		40B3F9192446E6C6000C37A3 /* TRTCVoiceRoomAudioConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCVoiceRoomAudioConfig.m; sourceTree = "<group>"; };
+		40B3F91B2446E6C6000C37A3 /* TRTCVoiceRoomCustomAudioFileReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCVoiceRoomCustomAudioFileReader.h; sourceTree = "<group>"; };
+		40B3F91C2446E6C6000C37A3 /* TRTCVoiceRoomCustomAudioFileReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCVoiceRoomCustomAudioFileReader.m; sourceTree = "<group>"; };
+		40B3F91E2446E6C6000C37A3 /* giftSent.aac */ = {isa = PBXFileReference; lastKnownFileType = file; path = giftSent.aac; sourceTree = "<group>"; };
+		40B3F91F2446E6C6000C37A3 /* vchat_cheers.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = vchat_cheers.m4a; sourceTree = "<group>"; };
+		40B3F9202446E6C6000C37A3 /* on_mic.aac */ = {isa = PBXFileReference; lastKnownFileType = file; path = on_mic.aac; sourceTree = "<group>"; };
+		40B3F9212446E6C6000C37A3 /* bgm_demo.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bgm_demo.mp3; sourceTree = "<group>"; };
+		40B3F9222446E6C6000C37A3 /* TRTCVoiceRoom.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = TRTCVoiceRoom.storyboard; sourceTree = "<group>"; };
+		40B3F9232446E6C6000C37A3 /* TRTCVoiceRoomTestUserSig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCVoiceRoomTestUserSig.m; sourceTree = "<group>"; };
+		40B3F9242446E6C6000C37A3 /* CreateTRTCVoiceRoomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateTRTCVoiceRoomViewController.h; sourceTree = "<group>"; };
+		40B3F9272446E6C6000C37A3 /* LiveRoomMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveRoomMainViewController.swift; sourceTree = "<group>"; };
+		40B3F9292446E6C6000C37A3 /* TCStatusInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCStatusInfoView.m; sourceTree = "<group>"; };
+		40B3F92A2446E6C6000C37A3 /* TCStatusInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCStatusInfoView.h; sourceTree = "<group>"; };
+		40B3F92D2446E6C6000C37A3 /* TCPlaceHolderTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCPlaceHolderTextView.m; sourceTree = "<group>"; };
+		40B3F92E2446E6C6000C37A3 /* TCPlaceHolderTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCPlaceHolderTextView.h; sourceTree = "<group>"; };
+		40B3F9342446E6C6000C37A3 /* TCMsgListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCMsgListCell.m; sourceTree = "<group>"; };
+		40B3F9352446E6C6000C37A3 /* TCMsgBarrageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCMsgBarrageView.h; sourceTree = "<group>"; };
+		40B3F9362446E6C6000C37A3 /* TCMsgListTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCMsgListTableView.h; sourceTree = "<group>"; };
+		40B3F9372446E6C6000C37A3 /* TCMsgModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCMsgModel.h; sourceTree = "<group>"; };
+		40B3F9382446E6C6000C37A3 /* TCMsgListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCMsgListCell.h; sourceTree = "<group>"; };
+		40B3F9392446E6C6000C37A3 /* TCMsgBarrageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCMsgBarrageView.m; sourceTree = "<group>"; };
+		40B3F93A2446E6C6000C37A3 /* TCMsgModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCMsgModel.m; sourceTree = "<group>"; };
+		40B3F93B2446E6C6000C37A3 /* TCMsgListTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCMsgListTableView.m; sourceTree = "<group>"; };
+		40B3F93C2446E6C6000C37A3 /* LiveRoomMainViewController+CollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LiveRoomMainViewController+CollectionView.swift"; sourceTree = "<group>"; };
+		40B3F93E2446E6C6000C37A3 /* TCAnchorToolbarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCAnchorToolbarView.h; sourceTree = "<group>"; };
+		40B3F93F2446E6C6000C37A3 /* TCAnchorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCAnchorViewController.m; sourceTree = "<group>"; };
+		40B3F9402446E6C6000C37A3 /* TCAnchorViewController+Room.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TCAnchorViewController+Room.swift"; sourceTree = "<group>"; };
+		40B3F9412446E6C6000C37A3 /* AnchorPKPanel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnchorPKPanel.swift; sourceTree = "<group>"; };
+		40B3F9422446E6C6000C37A3 /* TCAnchorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCAnchorViewController.h; sourceTree = "<group>"; };
+		40B3F9432446E6C6000C37A3 /* TCAnchorToolbarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCAnchorToolbarView.m; sourceTree = "<group>"; };
+		40B3F9442446E6C6000C37A3 /* BeautyPerformer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BeautyPerformer.swift; sourceTree = "<group>"; };
+		40B3F9452446E6C6000C37A3 /* TCAnchorViewController+LiveDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TCAnchorViewController+LiveDelegate.swift"; sourceTree = "<group>"; };
+		40B3F9472446E6C6000C37A3 /* TCAudienceToolbarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCAudienceToolbarView.h; sourceTree = "<group>"; };
+		40B3F9482446E6C6000C37A3 /* TCAudienceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCAudienceViewController.m; sourceTree = "<group>"; };
+		40B3F9492446E6C6000C37A3 /* TCAudienceViewController+LiveDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TCAudienceViewController+LiveDelegate.swift"; sourceTree = "<group>"; };
+		40B3F94A2446E6C6000C37A3 /* TCAudienceToolbarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCAudienceToolbarView.m; sourceTree = "<group>"; };
+		40B3F94B2446E6C6000C37A3 /* TCAudienceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCAudienceViewController.h; sourceTree = "<group>"; };
+		40B3F94C2446E6C6000C37A3 /* LiveRoomMainViewController+UI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LiveRoomMainViewController+UI.swift"; sourceTree = "<group>"; };
+		40B3F94E2446E6C6000C37A3 /* TRTCLiveRoom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCLiveRoom.swift; sourceTree = "<group>"; };
+		40B3F9502446E6C6000C37A3 /* TRTCLiveRoomImpl+RecvMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TRTCLiveRoomImpl+RecvMessage.swift"; sourceTree = "<group>"; };
+		40B3F9512446E6C6000C37A3 /* TRTCCustomAudioEffectManagerImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCCustomAudioEffectManagerImpl.swift; sourceTree = "<group>"; };
+		40B3F9522446E6C6000C37A3 /* TRTCLiveRoomImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCLiveRoomImpl.swift; sourceTree = "<group>"; };
+		40B3F9532446E6C6000C37A3 /* TRTCCloudAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCCloudAction.swift; sourceTree = "<group>"; };
+		40B3F9552446E6C6000C37A3 /* TRTCLiveRoomMemberManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCLiveRoomMemberManager.swift; sourceTree = "<group>"; };
+		40B3F9562446E6C6000C37A3 /* TRTCLiveRoomMemberProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCLiveRoomMemberProtocol.swift; sourceTree = "<group>"; };
+		40B3F9572446E6C6000C37A3 /* RoomManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomManager.swift; sourceTree = "<group>"; };
+		40B3F9592446E6C6000C37A3 /* TRTCLiveRoomIMAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCLiveRoomIMAction.swift; sourceTree = "<group>"; };
+		40B3F95A2446E6C6000C37A3 /* TRTCLiveRoomIMActionType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCLiveRoomIMActionType.swift; sourceTree = "<group>"; };
+		40B3F95B2446E6C6000C37A3 /* TRTCLiveRoomDef.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCLiveRoomDef.swift; sourceTree = "<group>"; };
+		40B3F95C2446E6C6000C37A3 /* TRTCAudioEffectManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCAudioEffectManager.swift; sourceTree = "<group>"; };
+		40B3F95D2446E6C6000C37A3 /* TRTCLiveRoomDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCLiveRoomDelegate.swift; sourceTree = "<group>"; };
+		40B3F9D92446EF11000C37A3 /* TCUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCUtil.h; sourceTree = "<group>"; };
+		40B3F9DA2446EF11000C37A3 /* TCLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCLog.m; sourceTree = "<group>"; };
+		40B3F9DD2446EF11000C37A3 /* TCUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCUtil.m; sourceTree = "<group>"; };
+		40B3F9DE2446EF11000C37A3 /* TCLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCLog.h; sourceTree = "<group>"; };
+		40B3F9FD2447042B000C37A3 /* HUDHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUDHelper.m; sourceTree = "<group>"; };
+		40B3F9FE2447042C000C37A3 /* HUDHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUDHelper.h; sourceTree = "<group>"; };
+		40B3FA002447056D000C37A3 /* UIColor+MLPFlatColors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+MLPFlatColors.m"; sourceTree = "<group>"; };
+		40B3FA012447056D000C37A3 /* UIColor+MLPFlatColors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+MLPFlatColors.h"; sourceTree = "<group>"; };
+		40E25FCC2480C796005EB543 /* Portal+Swift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Portal+Swift.swift"; sourceTree = "<group>"; };
+		40F853221EE8FC7300EE47D7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		40F853251EE8FC8400EE47D7 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		40F853261EE8FC8400EE47D7 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		40F853271EE8FC8400EE47D7 /* AppLogMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppLogMgr.h; sourceTree = "<group>"; };
+		40F853281EE8FC8400EE47D7 /* AppLogMgr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppLogMgr.m; sourceTree = "<group>"; };
+		40F853321EE8FC9B00EE47D7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		40F853341EE8FC9B00EE47D7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		40F853421EE8FCDF00EE47D7 /* NSData+Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Common.h"; sourceTree = "<group>"; };
+		40F853431EE8FCDF00EE47D7 /* NSData+Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Common.m"; sourceTree = "<group>"; };
+		40F853441EE8FCDF00EE47D7 /* NSObject+CommonBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+CommonBlock.h"; sourceTree = "<group>"; };
+		40F853451EE8FCDF00EE47D7 /* NSObject+CommonBlock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+CommonBlock.m"; sourceTree = "<group>"; };
+		40F853461EE8FCDF00EE47D7 /* NSString+Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Common.h"; sourceTree = "<group>"; };
+		40F853471EE8FCDF00EE47D7 /* NSString+Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Common.m"; sourceTree = "<group>"; };
+		40F853481EE8FCDF00EE47D7 /* UIButton+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+Additions.h"; sourceTree = "<group>"; };
+		40F853491EE8FCDF00EE47D7 /* UIButton+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+Additions.m"; sourceTree = "<group>"; };
+		40F8534A1EE8FCDF00EE47D7 /* UIButton+Glossy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+Glossy.h"; sourceTree = "<group>"; };
+		40F8534B1EE8FCDF00EE47D7 /* UIButton+Glossy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+Glossy.m"; sourceTree = "<group>"; };
+		40F8534C1EE8FCDF00EE47D7 /* UIImage+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Additions.h"; sourceTree = "<group>"; };
+		40F8534D1EE8FCDF00EE47D7 /* UIImage+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Additions.m"; sourceTree = "<group>"; };
+		40F8534E1EE8FCDF00EE47D7 /* UIView+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Additions.h"; sourceTree = "<group>"; };
+		40F8534F1EE8FCDF00EE47D7 /* UIView+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Additions.m"; sourceTree = "<group>"; };
+		40F853501EE8FCDF00EE47D7 /* UIView+CustomAutoLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+CustomAutoLayout.h"; sourceTree = "<group>"; };
+		40F853511EE8FCDF00EE47D7 /* UIView+CustomAutoLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+CustomAutoLayout.m"; sourceTree = "<group>"; };
+		40F853531EE8FCDF00EE47D7 /* ColorMacro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorMacro.h; sourceTree = "<group>"; };
+		40F855361EE8FDAD00EE47D7 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		40F855381EE8FDB600EE47D7 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		40F8553A1EE8FDBF00EE47D7 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		40F8553C1EE8FDC500EE47D7 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		40F8553E1EE8FDCC00EE47D7 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		40F855401EE8FDD300EE47D7 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		40F855421EE8FDDA00EE47D7 /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = System/Library/Frameworks/VideoToolbox.framework; sourceTree = SDKROOT; };
+		40F855441EE8FDE100EE47D7 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		40F855461EE8FDE800EE47D7 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		40F855481EE8FDF100EE47D7 /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
+		40F8554C1EE8FDFC00EE47D7 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		40F8554E1EE8FE0100EE47D7 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
+		455DA212235566F400A5B146 /* AECore.metallib */ = {isa = PBXFileReference; lastKnownFileType = "archive.metal-library"; path = AECore.metallib; sourceTree = "<group>"; };
+		455DA218235566F500A5B146 /* v1 */ = {isa = PBXFileReference; lastKnownFileType = text; path = v1; sourceTree = "<group>"; };
+		455DA219235566F500A5B146 /* u1 */ = {isa = PBXFileReference; lastKnownFileType = text; path = u1; sourceTree = "<group>"; };
+		455DA21A235566F500A5B146 /* o1 */ = {isa = PBXFileReference; lastKnownFileType = text; path = o1; sourceTree = "<group>"; };
+		455DA21B235566F500A5B146 /* e1 */ = {isa = PBXFileReference; lastKnownFileType = text; path = e1; sourceTree = "<group>"; };
+		45736E97243F5B2200F7F601 /* TXLiteAVSDK_TRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TXLiteAVSDK_TRTC.framework; sourceTree = "<group>"; };
+		457FD2F821C7530C00EEB03F /* NSString+UISize.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+UISize.h"; sourceTree = "<group>"; };
+		457FD2F921C7530C00EEB03F /* NSString+UISize.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+UISize.m"; sourceTree = "<group>"; };
+		45C37797226765A60054D0B8 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		45F21F81244714E8006B8B4D /* TRTCAudioCall.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = TRTCAudioCall.storyboard; sourceTree = "<group>"; };
+		4B4B291177070EC8D226E1E2 /* Pods-TXLiteAVDemo_TRTC_AppStore.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TXLiteAVDemo_TRTC_AppStore.release.xcconfig"; path = "Target Support Files/Pods-TXLiteAVDemo_TRTC_AppStore/Pods-TXLiteAVDemo_TRTC_AppStore.release.xcconfig"; sourceTree = "<group>"; };
+		51A289F8230FB93A00B9B73F /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
+		51A4AD391F1F8AE300B4A806 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		5BD8B4F3BB859A4568C43B7D /* Pods-TXLiteAVDemo_TRTC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TXLiteAVDemo_TRTC.debug.xcconfig"; path = "Target Support Files/Pods-TXLiteAVDemo_TRTC/Pods-TXLiteAVDemo_TRTC.debug.xcconfig"; sourceTree = "<group>"; };
+		6A03ED3F1FD13DFB00F2F063 /* UIViewController+BackButtonHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+BackButtonHandler.m"; sourceTree = "<group>"; };
+		6A03ED401FD13DFB00F2F063 /* UIViewController+BackButtonHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+BackButtonHandler.h"; sourceTree = "<group>"; };
+		6A395A01234AEE9700AFBCE8 /* NSDictionary+Common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+Common.h"; sourceTree = "<group>"; };
+		6A395A02234AEE9700AFBCE8 /* NSDictionary+Common.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+Common.m"; sourceTree = "<group>"; };
+		833191D9D6BABFF3DFEBA063 /* ProfileManager_Mock.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ProfileManager_Mock.swift; sourceTree = "<group>"; };
+		91D47F3920B6B13C0072AC0B /* ReplayKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReplayKit.framework; path = System/Library/Frameworks/ReplayKit.framework; sourceTree = SDKROOT; };
+		91F87A7E1FF4A0FC001644B1 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
+		92FAD99402D6919018829582 /* ProfileViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		A256AF019D8E84B3B797494C /* libPods-TXLiteAVDemo_TRTC_AppStore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TXLiteAVDemo_TRTC_AppStore.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A32AD4BB38080AB19D3659FC /* libPods-TXLiteAVDemo_TRTC.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TXLiteAVDemo_TRTC.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE45D2971F15C527003506D1 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		CE7C6E4A1FC2C5320095663F /* FilterResource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FilterResource.bundle; sourceTree = "<group>"; };
+		CF31F0EB1FBB2A7E0066BF7D /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
+		CF61F5551FD690FB007CDAF4 /* YTFaceSDK.licence */ = {isa = PBXFileReference; lastKnownFileType = file; path = YTFaceSDK.licence; sourceTree = "<group>"; };
+		D650607A20EE145F00C8BC44 /* libc.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libc.tbd; path = usr/lib/libc.tbd; sourceTree = SDKROOT; };
+		D6A42A7E1021785CCD2A7113 /* Pods-TXLiteAVDemo_TRTC.dailybuild.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TXLiteAVDemo_TRTC.dailybuild.xcconfig"; path = "Target Support Files/Pods-TXLiteAVDemo_TRTC/Pods-TXLiteAVDemo_TRTC.dailybuild.xcconfig"; sourceTree = "<group>"; };
+		D7AB9322BA3DCFE48EEB91E7 /* ProfileViewController+UI.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "ProfileViewController+UI.swift"; sourceTree = "<group>"; };
+		E0D8BC526E0FAB3AC4FA5FB4 /* Pods-TXLiteAVDemo_TRTC_AppStore.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TXLiteAVDemo_TRTC_AppStore.debug.xcconfig"; path = "Target Support Files/Pods-TXLiteAVDemo_TRTC_AppStore/Pods-TXLiteAVDemo_TRTC_AppStore.debug.xcconfig"; sourceTree = "<group>"; };
+		E95CAD575C1A00021285A090 /* Pods-TXLiteAVDemo_TRTC.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TXLiteAVDemo_TRTC.release.xcconfig"; path = "Target Support Files/Pods-TXLiteAVDemo_TRTC/Pods-TXLiteAVDemo_TRTC.release.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		40B3F6AD2446E518000C37A3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				40B5C68C2484BBFC00D3A718 /* AudioEffectSettingKit.framework in Frameworks */,
+				40B3F6AE2446E518000C37A3 /* TCBeautyPanel.framework in Frameworks */,
+				40B3F6AF2446E518000C37A3 /* libsqlite3.tbd in Frameworks */,
+				40B3F6B02446E518000C37A3 /* Foundation.framework in Frameworks */,
+				40B3F6B22446E518000C37A3 /* AVFoundation.framework in Frameworks */,
+				40B3F6B32446E518000C37A3 /* MediaPlayer.framework in Frameworks */,
+				40B3F6B42446E518000C37A3 /* libiconv.tbd in Frameworks */,
+				40B3F6B52446E518000C37A3 /* libz.tbd in Frameworks */,
+				40B3F6B62446E518000C37A3 /* libc++.tbd in Frameworks */,
+				40B3F6B72446E518000C37A3 /* libresolv.tbd in Frameworks */,
+				40B3F6B82446E518000C37A3 /* SystemConfiguration.framework in Frameworks */,
+				40B3F6B92446E518000C37A3 /* CoreTelephony.framework in Frameworks */,
+				40B3F6BA2446E518000C37A3 /* VideoToolbox.framework in Frameworks */,
+				40B3F6BB2446E518000C37A3 /* CoreMedia.framework in Frameworks */,
+				40B3F6BC2446E518000C37A3 /* CoreGraphics.framework in Frameworks */,
+				40B3F6BD2446E518000C37A3 /* Accelerate.framework in Frameworks */,
+				40B3F6BE2446E518000C37A3 /* TXLiteAVSDK_TRTC.framework in Frameworks */,
+				40B3F6BF2446E518000C37A3 /* Security.framework in Frameworks */,
+				40B3F6C02446E518000C37A3 /* AssetsLibrary.framework in Frameworks */,
+				BD32F8A6AF7CC2FF9A53096E /* libPods-TXLiteAVDemo_TRTC.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		390BF453D6B5E743C461F64D /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				3AAB45AB4EE92228E7ACCDB5 /* LoginViewController_Mock.swift */,
+				833191D9D6BABFF3DFEBA063 /* ProfileManager_Mock.swift */,
+				1BB0ACF231353A46AE0822B1 /* LoginViewController+UI_Mock.swift */,
+				17C8B052FC7587E915FB61ED /* AppUtils.swift */,
+				1CAB18E3F60B5C71F656DB34 /* CommonUtils.swift */,
+				92FAD99402D6919018829582 /* ProfileViewController.swift */,
+				D7AB9322BA3DCFE48EEB91E7 /* ProfileViewController+UI.swift */,
+			);
+			name = Login;
+			path = TXLiteAVDemo/Login;
+			sourceTree = SOURCE_ROOT;
+		};
+		401A9A56247FCC6300C0763B /* AudioSettingKit */ = {
+			isa = PBXGroup;
+			children = (
+				401A9B3D247FCC7600C0763B /* AudioEffectSettingKit.xcodeproj */,
+			);
+			path = AudioSettingKit;
+			sourceTree = "<group>";
+		};
+		402A010A245070290037A219 /* BridgeHeader */ = {
+			isa = PBXGroup;
+			children = (
+				402A00DD2450552E0037A219 /* TXLiteAVDemo-Bridging-Header.h */,
+			);
+			name = BridgeHeader;
+			sourceTree = "<group>";
+		};
+		402ABF94248550C800C84246 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				455DA219235566F500A5B146 /* u1 */,
+				455DA212235566F400A5B146 /* AECore.metallib */,
+				455DA21A235566F500A5B146 /* o1 */,
+				455DA21B235566F500A5B146 /* e1 */,
+				455DA218235566F500A5B146 /* v1 */,
+				CF61F5551FD690FB007CDAF4 /* YTFaceSDK.licence */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
+		404183272455853000DD70AB /* V8HorizontalPickerView */ = {
+			isa = PBXGroup;
+			children = (
+				404183282455853000DD70AB /* V8HorizontalPickerView.m */,
+				404183292455853000DD70AB /* V8HorizontalPickerViewProtocol.h */,
+				4041832A2455853000DD70AB /* V8HorizontalPickerView.h */,
+			);
+			path = V8HorizontalPickerView;
+			sourceTree = "<group>";
+		};
+		405339102465444D00A6B478 /* AppCommon */ = {
+			isa = PBXGroup;
+			children = (
+				40F853531EE8FCDF00EE47D7 /* ColorMacro.h */,
+				40F853411EE8FCDF00EE47D7 /* Catetory */,
+			);
+			path = AppCommon;
+			sourceTree = "<group>";
+		};
+		4090F614246ADBBF00EA72A0 /* TRTCMeetingDemo */ = {
+			isa = PBXGroup;
+			children = (
+				4090F737246ADE9100EA72A0 /* Common */,
+				4090F615246ADBBF00EA72A0 /* TRTCVideoView.h */,
+				4090F616246ADBBF00EA72A0 /* Settings */,
+				4090F67E246ADBBF00EA72A0 /* TRTCFloatWindow.h */,
+				4090F67F246ADBBF00EA72A0 /* TRTCMainViewController.m */,
+				4090F680246ADBBF00EA72A0 /* TRTCVideoViewLayout.h */,
+				4090F681246ADBBF00EA72A0 /* Resources */,
+				4090F683246ADBBF00EA72A0 /* TRTC.storyboard */,
+				4090F684246ADBBF00EA72A0 /* testCustomVideo */,
+				4090F68B246ADBBF00EA72A0 /* TRTCMettingAssert.xcassets */,
+				4090F68C246ADBBF00EA72A0 /* TRTCNewViewController.m */,
+				4090F68D246ADBBF00EA72A0 /* TRTCMainViewController.h */,
+				4090F68E246ADBBF00EA72A0 /* TRTCFloatWindow.m */,
+				4090F68F246ADBBF00EA72A0 /* TRTCVideoView.m */,
+				4090F690246ADBBF00EA72A0 /* TRTCVideoViewLayout.m */,
+				4090F691246ADBBF00EA72A0 /* TRTCNewViewController.h */,
+			);
+			path = TRTCMeetingDemo;
+			sourceTree = "<group>";
+		};
+		4090F616246ADBBF00EA72A0 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				4090F617246ADBBF00EA72A0 /* CdnPlayerSettings */,
+				4090F61A246ADBBF00EA72A0 /* RemoteUser */,
+				4090F621246ADBBF00EA72A0 /* TRTCSettings.storyboard */,
+				4090F622246ADBBF00EA72A0 /* SDKManager */,
+				4090F63D246ADBBF00EA72A0 /* BaseUI */,
+				4090F662246ADBBF00EA72A0 /* FeatureSettings */,
+				4090F66F246ADBBF00EA72A0 /* BGMSettings */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		4090F617246ADBBF00EA72A0 /* CdnPlayerSettings */ = {
+			isa = PBXGroup;
+			children = (
+				4090F618246ADBBF00EA72A0 /* TRTCCdnPlayerSettingsViewController.h */,
+				4090F619246ADBBF00EA72A0 /* TRTCCdnPlayerSettingsViewController.m */,
+			);
+			path = CdnPlayerSettings;
+			sourceTree = "<group>";
+		};
+		4090F61A246ADBBF00EA72A0 /* RemoteUser */ = {
+			isa = PBXGroup;
+			children = (
+				4090F61B246ADBBF00EA72A0 /* TRTCRemoteUserSettingsViewController.m */,
+				4090F61C246ADBBF00EA72A0 /* TRTCRemoteUserListViewController.m */,
+				4090F61D246ADBBF00EA72A0 /* TRTCRemoteUserCell.m */,
+				4090F61E246ADBBF00EA72A0 /* TRTCRemoteUserSettingsViewController.h */,
+				4090F61F246ADBBF00EA72A0 /* TRTCRemoteUserListViewController.h */,
+				4090F620246ADBBF00EA72A0 /* TRTCRemoteUserCell.h */,
+			);
+			path = RemoteUser;
+			sourceTree = "<group>";
+		};
+		4090F622246ADBBF00EA72A0 /* SDKManager */ = {
+			isa = PBXGroup;
+			children = (
+				4090F623246ADBBF00EA72A0 /* CdnPlayer */,
+				4090F628246ADBBF00EA72A0 /* RemoteUser */,
+				4090F62D246ADBBF00EA72A0 /* BGM */,
+				4090F632246ADBBF00EA72A0 /* Feature */,
+			);
+			path = SDKManager;
+			sourceTree = "<group>";
+		};
+		4090F623246ADBBF00EA72A0 /* CdnPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				4090F624246ADBBF00EA72A0 /* TRTCCdnPlayerManager.m */,
+				4090F625246ADBBF00EA72A0 /* TRTCCdnPlayerConfig.h */,
+				4090F626246ADBBF00EA72A0 /* TRTCCdnPlayerManager.h */,
+				4090F627246ADBBF00EA72A0 /* TRTCCdnPlayerConfig.m */,
+			);
+			path = CdnPlayer;
+			sourceTree = "<group>";
+		};
+		4090F628246ADBBF00EA72A0 /* RemoteUser */ = {
+			isa = PBXGroup;
+			children = (
+				4090F629246ADBBF00EA72A0 /* TRTCRemoteUserConfig.m */,
+				4090F62A246ADBBF00EA72A0 /* TRTCRemoteUserManager.m */,
+				4090F62B246ADBBF00EA72A0 /* TRTCRemoteUserConfig.h */,
+				4090F62C246ADBBF00EA72A0 /* TRTCRemoteUserManager.h */,
+			);
+			path = RemoteUser;
+			sourceTree = "<group>";
+		};
+		4090F62D246ADBBF00EA72A0 /* BGM */ = {
+			isa = PBXGroup;
+			children = (
+				4090F62E246ADBBF00EA72A0 /* TRTCCustomAudioEffectManager.m */,
+				4090F62F246ADBBF00EA72A0 /* TRTCBgmManager.m */,
+				4090F630246ADBBF00EA72A0 /* TRTCCustomAudioEffectManager.h */,
+				4090F631246ADBBF00EA72A0 /* TRTCBgmManager.h */,
+			);
+			path = BGM;
+			sourceTree = "<group>";
+		};
+		4090F632246ADBBF00EA72A0 /* Feature */ = {
+			isa = PBXGroup;
+			children = (
+				4090F633246ADBBF00EA72A0 /* TRTCAudioRecordManager.m */,
+				4090F634246ADBBF00EA72A0 /* TRTCStreamConfig.m */,
+				4090F635246ADBBF00EA72A0 /* TRTCAudioConfig.m */,
+				4090F636246ADBBF00EA72A0 /* TRTCVideoConfig.h */,
+				4090F637246ADBBF00EA72A0 /* TRTCCloudManager.h */,
+				4090F638246ADBBF00EA72A0 /* TRTCStreamConfig.h */,
+				4090F639246ADBBF00EA72A0 /* TRTCAudioRecordManager.h */,
+				4090F63A246ADBBF00EA72A0 /* TRTCCloudManager.m */,
+				4090F63B246ADBBF00EA72A0 /* TRTCVideoConfig.m */,
+				4090F63C246ADBBF00EA72A0 /* TRTCAudioConfig.h */,
+			);
+			path = Feature;
+			sourceTree = "<group>";
+		};
+		4090F63D246ADBBF00EA72A0 /* BaseUI */ = {
+			isa = PBXGroup;
+			children = (
+				4090F63E246ADBBF00EA72A0 /* Container */,
+				4090F641246ADBBF00EA72A0 /* CommonWidgets */,
+				4090F64C246ADBBF00EA72A0 /* SettingsList */,
+			);
+			path = BaseUI;
+			sourceTree = "<group>";
+		};
+		4090F63E246ADBBF00EA72A0 /* Container */ = {
+			isa = PBXGroup;
+			children = (
+				4090F63F246ADBBF00EA72A0 /* TRTCSettingsContainerViewController.h */,
+				4090F640246ADBBF00EA72A0 /* TRTCSettingsContainerViewController.m */,
+			);
+			path = Container;
+			sourceTree = "<group>";
+		};
+		4090F641246ADBBF00EA72A0 /* CommonWidgets */ = {
+			isa = PBXGroup;
+			children = (
+				4090F642246ADBBF00EA72A0 /* UIButton+TRTC.m */,
+				4090F643246ADBBF00EA72A0 /* UILabel+TRTC.m */,
+				4090F644246ADBBF00EA72A0 /* UISlider+TRTC.h */,
+				4090F645246ADBBF00EA72A0 /* UITextField+TRTC.m */,
+				4090F646246ADBBF00EA72A0 /* UISegmentedControl+TRTC.h */,
+				4090F647246ADBBF00EA72A0 /* UILabel+TRTC.h */,
+				4090F648246ADBBF00EA72A0 /* UIButton+TRTC.h */,
+				4090F649246ADBBF00EA72A0 /* UISlider+TRTC.m */,
+				4090F64A246ADBBF00EA72A0 /* UISegmentedControl+TRTC.m */,
+				4090F64B246ADBBF00EA72A0 /* UITextField+TRTC.h */,
+			);
+			path = CommonWidgets;
+			sourceTree = "<group>";
+		};
+		4090F64C246ADBBF00EA72A0 /* SettingsList */ = {
+			isa = PBXGroup;
+			children = (
+				4090F64D246ADBBF00EA72A0 /* Cells */,
+				4090F660246ADBBF00EA72A0 /* TRTCSettingsBaseViewController.h */,
+				4090F661246ADBBF00EA72A0 /* TRTCSettingsBaseViewController.m */,
+			);
+			path = SettingsList;
+			sourceTree = "<group>";
+		};
+		4090F64D246ADBBF00EA72A0 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				4090F64E246ADBBF00EA72A0 /* TRTCSettingsMessageCell.m */,
+				4090F64F246ADBBF00EA72A0 /* TRTCSettingsButtonCell.h */,
+				4090F650246ADBBF00EA72A0 /* TRTCSettingsInputCell.m */,
+				4090F651246ADBBF00EA72A0 /* TRTCSettingsBaseCell.h */,
+				4090F652246ADBBF00EA72A0 /* TRTCSettingsSegmentCell.m */,
+				4090F653246ADBBF00EA72A0 /* TRTCSettingsSwitchCell.h */,
+				4090F654246ADBBF00EA72A0 /* TRTCSettingsLargeInputCell.m */,
+				4090F655246ADBBF00EA72A0 /* TRTCSettingsSelectorCell.h */,
+				4090F656246ADBBF00EA72A0 /* TRTCSettingsSliderCell.h */,
+				4090F657246ADBBF00EA72A0 /* TRTCSettingsMessageCell.h */,
+				4090F658246ADBBF00EA72A0 /* TRTCSettingsSegmentCell.h */,
+				4090F659246ADBBF00EA72A0 /* TRTCSettingsBaseCell.m */,
+				4090F65A246ADBBF00EA72A0 /* TRTCSettingsInputCell.h */,
+				4090F65B246ADBBF00EA72A0 /* TRTCSettingsButtonCell.m */,
+				4090F65C246ADBBF00EA72A0 /* TRTCSettingsSwitchCell.m */,
+				4090F65D246ADBBF00EA72A0 /* TRTCSettingsLargeInputCell.h */,
+				4090F65E246ADBBF00EA72A0 /* TRTCSettingsSliderCell.m */,
+				4090F65F246ADBBF00EA72A0 /* TRTCSettingsSelectorCell.m */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		4090F662246ADBBF00EA72A0 /* FeatureSettings */ = {
+			isa = PBXGroup;
+			children = (
+				4090F663246ADBBF00EA72A0 /* TRTCMoreSettingsViewController.m */,
+				4090F664246ADBBF00EA72A0 /* TRTCAudioSettingsViewController.m */,
+				4090F665246ADBBF00EA72A0 /* TRTCFeatureContainerViewController.h */,
+				4090F666246ADBBF00EA72A0 /* TRTCVideoSettingsViewController.m */,
+				4090F667246ADBBF00EA72A0 /* TRTCStreamSettingsViewController.m */,
+				4090F668246ADBBF00EA72A0 /* TRTCPKSettingsViewController.m */,
+				4090F669246ADBBF00EA72A0 /* TRTCMoreSettingsViewController.h */,
+				4090F66A246ADBBF00EA72A0 /* TRTCAudioSettingsViewController.h */,
+				4090F66B246ADBBF00EA72A0 /* TRTCPKSettingsViewController.h */,
+				4090F66C246ADBBF00EA72A0 /* TRTCStreamSettingsViewController.h */,
+				4090F66D246ADBBF00EA72A0 /* TRTCVideoSettingsViewController.h */,
+				4090F66E246ADBBF00EA72A0 /* TRTCFeatureContainerViewController.m */,
+			);
+			path = FeatureSettings;
+			sourceTree = "<group>";
+		};
+		4090F66F246ADBBF00EA72A0 /* BGMSettings */ = {
+			isa = PBXGroup;
+			children = (
+				4090F670246ADBBF00EA72A0 /* TRTCBgmContainerViewController.m */,
+				4090F671246ADBBF00EA72A0 /* Effect */,
+				4090F678246ADBBF00EA72A0 /* TRTCBgmContainerViewController.h */,
+				4090F679246ADBBF00EA72A0 /* Bgm */,
+			);
+			path = BGMSettings;
+			sourceTree = "<group>";
+		};
+		4090F671246ADBBF00EA72A0 /* Effect */ = {
+			isa = PBXGroup;
+			children = (
+				4090F672246ADBBF00EA72A0 /* TRTCSettingsEffectCell.m */,
+				4090F673246ADBBF00EA72A0 /* TRTCEffectSettingsViewController.h */,
+				4090F674246ADBBF00EA72A0 /* TRTCSettingsEffectLoopCountCell.m */,
+				4090F675246ADBBF00EA72A0 /* TRTCEffectSettingsViewController.m */,
+				4090F676246ADBBF00EA72A0 /* TRTCSettingsEffectCell.h */,
+				4090F677246ADBBF00EA72A0 /* TRTCSettingsEffectLoopCountCell.h */,
+			);
+			path = Effect;
+			sourceTree = "<group>";
+		};
+		4090F679246ADBBF00EA72A0 /* Bgm */ = {
+			isa = PBXGroup;
+			children = (
+				4090F67A246ADBBF00EA72A0 /* TRTCBgmSettingsCell.m */,
+				4090F67B246ADBBF00EA72A0 /* TRTCBgmSettingsViewController.m */,
+				4090F67C246ADBBF00EA72A0 /* TRTCBgmSettingsCell.h */,
+				4090F67D246ADBBF00EA72A0 /* TRTCBgmSettingsViewController.h */,
+			);
+			path = Bgm;
+			sourceTree = "<group>";
+		};
+		4090F681246ADBBF00EA72A0 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				4090F682246ADBBF00EA72A0 /* record_test_background.mp3 */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		4090F684246ADBBF00EA72A0 /* testCustomVideo */ = {
+			isa = PBXGroup;
+			children = (
+				4090F685246ADBBF00EA72A0 /* TCMediaFileReader.m */,
+				4090F686246ADBBF00EA72A0 /* TestRenderVideoFrame.m */,
+				4090F687246ADBBF00EA72A0 /* TestSendCustomVideoData.h */,
+				4090F688246ADBBF00EA72A0 /* TCMediaFileReader.h */,
+				4090F689246ADBBF00EA72A0 /* TestSendCustomVideoData.m */,
+				4090F68A246ADBBF00EA72A0 /* TestRenderVideoFrame.h */,
+			);
+			path = testCustomVideo;
+			sourceTree = "<group>";
+		};
+		4090F737246ADE9100EA72A0 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				4090F79B246AE5C800EA72A0 /* QRGenerate */,
+				4090F795246AE57E00EA72A0 /* Theme */,
+				4090F775246AE09600EA72A0 /* customcapture */,
+				4090F738246ADEB500EA72A0 /* QBImagePicker */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		4090F738246ADEB500EA72A0 /* QBImagePicker */ = {
+			isa = PBXGroup;
+			children = (
+				4090F739246ADEB500EA72A0 /* QBImagePicker.strings */,
+				4090F73B246ADEB500EA72A0 /* QBImagePickerController.h */,
+				4090F73E246ADEB500EA72A0 /* QBAssetsViewController.h */,
+				4090F73F246ADEB500EA72A0 /* QBAlbumsViewController.h */,
+				4090F740246ADEB500EA72A0 /* QBVideoIconView.m */,
+				4090F741246ADEB500EA72A0 /* QBVideoIndicatorView.m */,
+				4090F744246ADEB500EA72A0 /* QBCheckmarkView.h */,
+				4090F745246ADEB500EA72A0 /* QBImagePicker.h */,
+				4090F746246ADEB500EA72A0 /* QBAssetCell.h */,
+				4090F747246ADEB500EA72A0 /* QBSlomoIconView.h */,
+				4090F748246ADEB500EA72A0 /* QBAlbumCell.m */,
+				4090F749246ADEB500EA72A0 /* QBImagePicker.storyboard */,
+				4090F74A246ADEB500EA72A0 /* QBVideoIndicatorView.h */,
+				4090F74B246ADEB500EA72A0 /* QBAlbumsViewController.m */,
+				4090F74C246ADEB500EA72A0 /* QBVideoIconView.h */,
+				4090F74D246ADEB500EA72A0 /* QBAssetsViewController.m */,
+				4090F74E246ADEB500EA72A0 /* QBImagePickerController.m */,
+				4090F750246ADEB500EA72A0 /* QBCheckmarkView.m */,
+				4090F751246ADEB500EA72A0 /* QBAlbumCell.h */,
+				4090F752246ADEB500EA72A0 /* QBSlomoIconView.m */,
+				4090F753246ADEB500EA72A0 /* QBAssetCell.m */,
+			);
+			path = QBImagePicker;
+			sourceTree = "<group>";
+		};
+		4090F775246AE09600EA72A0 /* customcapture */ = {
+			isa = PBXGroup;
+			children = (
+				4090F776246AE09600EA72A0 /* CustomAudioCapturor.m */,
+				4090F777246AE09600EA72A0 /* CustomAudioFileReader.m */,
+				4090F778246AE09600EA72A0 /* CustomAudioCapturor.h */,
+				4090F779246AE09600EA72A0 /* CustomAudioFileReader.h */,
+				4090F77A246AE09600EA72A0 /* CustomAudio44100_2.pcm */,
+				4090F77B246AE09600EA72A0 /* CustomAudio48000_1.pcm */,
+			);
+			path = customcapture;
+			sourceTree = "<group>";
+		};
+		4090F789246AE23B00EA72A0 /* Portal */ = {
+			isa = PBXGroup;
+			children = (
+				40E25FCC2480C796005EB543 /* Portal+Swift.swift */,
+				4090F78A246AE23B00EA72A0 /* PortalViewController.m */,
+				4090F78B246AE23B00EA72A0 /* MainMenuCell.h */,
+				4090F78C246AE23B00EA72A0 /* Portal.storyboard */,
+				4090F78D246AE23B00EA72A0 /* PortalViewController.h */,
+				4090F78E246AE23B00EA72A0 /* MainMenuCell.m */,
+				4090F78F246AE23B00EA72A0 /* ColorMacro.h */,
+				4090F793246AE25A00EA72A0 /* TRTCPortalAssets.xcassets */,
+			);
+			path = Portal;
+			sourceTree = "<group>";
+		};
+		4090F795246AE57E00EA72A0 /* Theme */ = {
+			isa = PBXGroup;
+			children = (
+				4090F796246AE57E00EA72A0 /* ThemeConfigurator.m */,
+				4090F797246AE57E00EA72A0 /* ThemeConfigurator.h */,
+			);
+			path = Theme;
+			sourceTree = "<group>";
+		};
+		4090F79B246AE5C800EA72A0 /* QRGenerate */ = {
+			isa = PBXGroup;
+			children = (
+				4090F79C246AE5C800EA72A0 /* QRCode.m */,
+				4090F79D246AE5C800EA72A0 /* QRCode.h */,
+			);
+			path = QRGenerate;
+			sourceTree = "<group>";
+		};
+		40A49D5F24598CD200BFCB18 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				40A49D6524598CD700BFCB18 /* UGCKit.framework */,
+				40A49D6724598CD700BFCB18 /* UGCKitResources.bundle */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		40AA533424458EC800303EF7 /* BeautySettingKit */ = {
+			isa = PBXGroup;
+			children = (
+				40AA533524458EC800303EF7 /* TCBeautyPanel.xcodeproj */,
+			);
+			path = BeautySettingKit;
+			sourceTree = "<group>";
+		};
+		40AA533624458EC800303EF7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				40AA536524458EC800303EF7 /* TCBeautyPanel.framework */,
+				40AA536724458EC800303EF7 /* TCBeautyPanelResources.bundle */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		40B3F8C42446E6C5000C37A3 /* TRTCVideoCallDemo */ = {
+			isa = PBXGroup;
+			children = (
+				45F21F83244714FB006B8B4D /* storyboard */,
+				40B3F8C52446E6C5000C37A3 /* ui */,
+				40B3F8D22446E6C5000C37A3 /* model */,
+			);
+			path = TRTCVideoCallDemo;
+			sourceTree = "<group>";
+		};
+		40B3F8C52446E6C5000C37A3 /* ui */ = {
+			isa = PBXGroup;
+			children = (
+				40B3F8C62446E6C5000C37A3 /* VideoCallUserCell.swift */,
+				40B3F8C72446E6C5000C37A3 /* VideoCallMainViewController+UI.swift */,
+				40B3F8C82446E6C5000C37A3 /* VideoCallMainViewController.swift */,
+				40B3F8C92446E6C5000C37A3 /* VideoSelectContactViewController+UI.swift */,
+				40B3F8CA2446E6C5000C37A3 /* VideoSelectContactViewController.swift */,
+				40B3F8CB2446E6C5000C37A3 /* VideoSelectContactViewController+search.swift */,
+				40B3F8CC2446E6C5000C37A3 /* VideoCallViewController+Data.swift */,
+				40B3F8CD2446E6C5000C37A3 /* VideoCallViewController.swift */,
+				40B3F8CE2446E6C5000C37A3 /* VideoSelectContactViewController+file.swift */,
+				40B3F8CF2446E6C5000C37A3 /* VideoCallViewController+UI.swift */,
+				40B3F8D02446E6C5000C37A3 /* VideoSelectContactViewController+CollectionView.swift */,
+				40B3F8D12446E6C5000C37A3 /* VideoSelectContactViewController+Table.swift */,
+			);
+			path = ui;
+			sourceTree = "<group>";
+		};
+		40B3F8D22446E6C5000C37A3 /* model */ = {
+			isa = PBXGroup;
+			children = (
+				40B3F8D32446E6C5000C37A3 /* ITRTCVideoCallInterface.swift */,
+				40B3F8D42446E6C5000C37A3 /* TRTCVideoCall+OnNewMessage.swift */,
+				40B3F8D52446E6C5000C37A3 /* TRTCVideoCallDelegate.swift */,
+				40B3F8D62446E6C5000C37A3 /* TRTCVideoCall+internal.swift */,
+				40B3F8D72446E6C5000C37A3 /* VideoCallUtils.swift */,
+				40B3F8D82446E6C5000C37A3 /* TRTCVideoCall.swift */,
+				40B3F8D92446E6C5000C37A3 /* TRTCVideoCall+Room.swift */,
+				40B3F8DA2446E6C5000C37A3 /* TRTCVideoCall+model.swift */,
+			);
+			path = model;
+			sourceTree = "<group>";
+		};
+		40B3F8DB2446E6C5000C37A3 /* Debug */ = {
+			isa = PBXGroup;
+			children = (
+				40B3F8DC2446E6C5000C37A3 /* GenerateTestUserSig.m */,
+				40B3F8DD2446E6C5000C37A3 /* GenerateTestUserSig.h */,
+			);
+			path = Debug;
+			sourceTree = "<group>";
+		};
+		40B3F8DE2446E6C5000C37A3 /* TRTCAudioCallDemo */ = {
+			isa = PBXGroup;
+			children = (
+				45F21F80244714DC006B8B4D /* storyboard */,
+				40B3F8DF2446E6C5000C37A3 /* ui */,
+				40B3F8EC2446E6C5000C37A3 /* model */,
+				40A7CFD3245FC09300E792A5 /* TRTCAuidoCall.xcassets */,
+			);
+			path = TRTCAudioCallDemo;
+			sourceTree = "<group>";
+		};
+		40B3F8DF2446E6C5000C37A3 /* ui */ = {
+			isa = PBXGroup;
+			children = (
+				40B3F8E02446E6C5000C37A3 /* AudioCallViewController+UI.swift */,
+				40B3F8E12446E6C5000C37A3 /* AudioCallUserCell.swift */,
+				40B3F8E22446E6C5000C37A3 /* AudioCallMainViewController.swift */,
+				40B3F8E32446E6C5000C37A3 /* AudioSelectContactViewController.swift */,
+				40B3F8E42446E6C5000C37A3 /* AudioCallMainViewController+UI.swift */,
+				40B3F8E52446E6C5000C37A3 /* AudioCallViewController.swift */,
+				40B3F8E62446E6C5000C37A3 /* AudioSelectContactViewController+CollectionView.swift */,
+				40B3F8E72446E6C5000C37A3 /* AudioSelectContactViewController+search.swift */,
+				40B3F8E82446E6C5000C37A3 /* AudioSelectContactViewController+Table.swift */,
+				40B3F8E92446E6C5000C37A3 /* AudioCallViewController+Data.swift */,
+				40B3F8EA2446E6C5000C37A3 /* AudioSelectContactViewController+file.swift */,
+				40B3F8EB2446E6C5000C37A3 /* AudioSelectContactViewController+UI.swift */,
+			);
+			path = ui;
+			sourceTree = "<group>";
+		};
+		40B3F8EC2446E6C5000C37A3 /* model */ = {
+			isa = PBXGroup;
+			children = (
+				40B3F8ED2446E6C5000C37A3 /* TRTCAudioCall+internal.swift */,
+				40B3F8EE2446E6C5000C37A3 /* TRTCAudioCallDelegate.swift */,
+				40B3F8EF2446E6C5000C37A3 /* ITRTCAudioCallInterface.swift */,
+				40B3F8F02446E6C5000C37A3 /* TRTCAudioCall.swift */,
+				40B3F8F12446E6C5000C37A3 /* TRTCAudioCall+model.swift */,
+				40B3F8F22446E6C5000C37A3 /* TRTCAudioCall+Room.swift */,
+				40B3F8F32446E6C5000C37A3 /* TRTCAudioCall+OnNewMessage.swift */,
+				40B3F8F42446E6C5000C37A3 /* AudioCallUtils.swift */,
+			);
+			path = model;
+			sourceTree = "<group>";
+		};
+		40B3F8F52446E6C5000C37A3 /* TRTCVoiceRoomDemo */ = {
+			isa = PBXGroup;
+			children = (
+				40B3F8F62446E6C5000C37A3 /* MoreView */,
+				40B3F8FA2446E6C5000C37A3 /* TRTCVoiceRoomViewController.h */,
+				40B3F8FB2446E6C5000C37A3 /* ChangeVoiceView */,
+				40B3F8FF2446E6C5000C37A3 /* CreateTRTCVoiceRoomViewController.m */,
+				40B3F9002446E6C5000C37A3 /* TRTCVoiceRoomTestUserSig.h */,
+				40B3F9012446E6C5000C37A3 /* AudioEffectView */,
+				40B3F9052446E6C5000C37A3 /* BgmView */,
+				40B3F90A2446E6C5000C37A3 /* Model */,
+				40B3F90F2446E6C6000C37A3 /* SDKManager */,
+				40B3F91D2446E6C6000C37A3 /* Resource */,
+				40B3F9222446E6C6000C37A3 /* TRTCVoiceRoom.storyboard */,
+				40B3F9092446E6C5000C37A3 /* TRTCVoiceRoomViewController.m */,
+				40B3F9232446E6C6000C37A3 /* TRTCVoiceRoomTestUserSig.m */,
+				40B3F9242446E6C6000C37A3 /* CreateTRTCVoiceRoomViewController.h */,
+				40A7CFDF245FC14400E792A5 /* TRTCVoiceRoom.xcassets */,
+			);
+			path = TRTCVoiceRoomDemo;
+			sourceTree = "<group>";
+		};
+		40B3F8F62446E6C5000C37A3 /* MoreView */ = {
+			isa = PBXGroup;
+			children = (
+				40B3F8F72446E6C5000C37A3 /* TRTCVoiceRoomMoreView.m */,
+				40B3F8F82446E6C5000C37A3 /* TRTCVoiceRoomMoreView.xib */,
+				40B3F8F92446E6C5000C37A3 /* TRTCVoiceRoomMoreView.h */,
+			);
+			path = MoreView;
+			sourceTree = "<group>";
+		};
+		40B3F8FB2446E6C5000C37A3 /* ChangeVoiceView */ = {
+			isa = PBXGroup;
+			children = (
+				40B3F8FC2446E6C5000C37A3 /* TRTCVoiceRoomChangeVoiceView.m */,
+				40B3F8FD2446E6C5000C37A3 /* TRTCVoiceRoomChangeVoiceView.xib */,
+				40B3F8FE2446E6C5000C37A3 /* TRTCVoiceRoomChangeVoiceView.h */,
+			);
+			path = ChangeVoiceView;
+			sourceTree = "<group>";
+		};
+		40B3F9012446E6C5000C37A3 /* AudioEffectView */ = {
+			isa = PBXGroup;
+			children = (
+				40B3F9022446E6C5000C37A3 /* TRTCVoiceRoomAudioEffectView.xib */,
+				40B3F9032446E6C5000C37A3 /* TRTCVoiceRoomAudioEffectView.m */,
+				40B3F9042446E6C5000C37A3 /* TRTCVoiceRoomAudioEffectView.h */,
+			);
+			path = AudioEffectView;
+			sourceTree = "<group>";
+		};
+		40B3F9052446E6C5000C37A3 /* BgmView */ = {
+			isa = PBXGroup;
+			children = (
+				40B3F9062446E6C5000C37A3 /* TRTCVoiceRoomBgmView.xib */,
+				40B3F9072446E6C5000C37A3 /* TRTCVoiceRoomBgmView.h */,
+				40B3F9082446E6C5000C37A3 /* TRTCVoiceRoomBgmView.m */,
+			);
+			path = BgmView;
+			sourceTree = "<group>";
+		};
+		40B3F90A2446E6C5000C37A3 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				40B3F90B2446E6C5000C37A3 /* SEIMessageModel.h */,
+				40B3F90C2446E6C5000C37A3 /* UserModel.m */,
+				40B3F90D2446E6C5000C37A3 /* SEIMessageModel.m */,
+				40B3F90E2446E6C5000C37A3 /* UserModel.h */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		40B3F90F2446E6C6000C37A3 /* SDKManager */ = {
+			isa = PBXGroup;
+			children = (
+				40B3F9102446E6C6000C37A3 /* BGM */,
+				40B3F9152446E6C6000C37A3 /* Feature */,
+				40B3F91A2446E6C6000C37A3 /* CustomAudio */,
+			);
+			path = SDKManager;
+			sourceTree = "<group>";
+		};
+		40B3F9102446E6C6000C37A3 /* BGM */ = {
+			isa = PBXGroup;
+			children = (
+				40B3F9112446E6C6000C37A3 /* TRTCVoiceRoomAudioEffectManager.m */,
+				40B3F9122446E6C6000C37A3 /* TRTCVoiceRoomBgmManager.h */,
+				40B3F9132446E6C6000C37A3 /* TRTCVoiceRoomAudioEffectManager.h */,
+				40B3F9142446E6C6000C37A3 /* TRTCVoiceRoomBgmManager.m */,
+			);
+			path = BGM;
+			sourceTree = "<group>";
+		};
+		40B3F9152446E6C6000C37A3 /* Feature */ = {
+			isa = PBXGroup;
+			children = (
+				40B3F9162446E6C6000C37A3 /* TRTCVoiceRoomAudioConfig.h */,
+				40B3F9172446E6C6000C37A3 /* TRTCVoiceRoomCloudManager.h */,
+				40B3F9182446E6C6000C37A3 /* TRTCVoiceRoomCloudManager.m */,
+				40B3F9192446E6C6000C37A3 /* TRTCVoiceRoomAudioConfig.m */,
+			);
+			path = Feature;
+			sourceTree = "<group>";
+		};
+		40B3F91A2446E6C6000C37A3 /* CustomAudio */ = {
+			isa = PBXGroup;
+			children = (
+				40B3F91B2446E6C6000C37A3 /* TRTCVoiceRoomCustomAudioFileReader.h */,
+				40B3F91C2446E6C6000C37A3 /* TRTCVoiceRoomCustomAudioFileReader.m */,
+			);
+			path = CustomAudio;
+			sourceTree = "<group>";
+		};
+		40B3F91D2446E6C6000C37A3 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				40B3F91E2446E6C6000C37A3 /* giftSent.aac */,
+				40B3F91F2446E6C6000C37A3 /* vchat_cheers.m4a */,
+				40B3F9202446E6C6000C37A3 /* on_mic.aac */,
+				40B3F9212446E6C6000C37A3 /* bgm_demo.mp3 */,
+			);
+			path = Resource;
+			sourceTree = "<group>";
+		};
+		40B3F9252446E6C6000C37A3 /* TRTCLiveRoomDemo */ = {
+			isa = PBXGroup;
+			children = (
+				40B3F9D82446EF11000C37A3 /* TRTCCommonUtils */,
+				40B3F9262446E6C6000C37A3 /* ui */,
+				40B3F94D2446E6C6000C37A3 /* model */,
+				40A7CFD7245FC0CF00E792A5 /* TRTCLiveRoom.xcassets */,
+			);
+			path = TRTCLiveRoomDemo;
+			sourceTree = "<group>";
+		};
+		40B3F9262446E6C6000C37A3 /* ui */ = {
+			isa = PBXGroup;
+			children = (
+				404183272455853000DD70AB /* V8HorizontalPickerView */,
+				40B3F9272446E6C6000C37A3 /* LiveRoomMainViewController.swift */,
+				40B3F9282446E6C6000C37A3 /* StatusView */,
+				40B3F92B2446E6C6000C37A3 /* Common */,
+				40B3F9332446E6C6000C37A3 /* ChatRoom */,
+				40B3F93C2446E6C6000C37A3 /* LiveRoomMainViewController+CollectionView.swift */,
+				40B3F93D2446E6C6000C37A3 /* Anchor */,
+				40B3F9462446E6C6000C37A3 /* Audience */,
+				40B3F94C2446E6C6000C37A3 /* LiveRoomMainViewController+UI.swift */,
+			);
+			path = ui;
+			sourceTree = "<group>";
+		};
+		40B3F9282446E6C6000C37A3 /* StatusView */ = {
+			isa = PBXGroup;
+			children = (
+				40B3F9292446E6C6000C37A3 /* TCStatusInfoView.m */,
+				40B3F92A2446E6C6000C37A3 /* TCStatusInfoView.h */,
+			);
+			path = StatusView;
+			sourceTree = "<group>";
+		};
+		40B3F92B2446E6C6000C37A3 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				40B3F92C2446E6C6000C37A3 /* TextView */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		40B3F92C2446E6C6000C37A3 /* TextView */ = {
+			isa = PBXGroup;
+			children = (
+				40B3F92D2446E6C6000C37A3 /* TCPlaceHolderTextView.m */,
+				40B3F92E2446E6C6000C37A3 /* TCPlaceHolderTextView.h */,
+			);
+			path = TextView;
+			sourceTree = "<group>";
+		};
+		40B3F9332446E6C6000C37A3 /* ChatRoom */ = {
+			isa = PBXGroup;
+			children = (
+				40B3F9342446E6C6000C37A3 /* TCMsgListCell.m */,
+				40B3F9352446E6C6000C37A3 /* TCMsgBarrageView.h */,
+				40B3F9362446E6C6000C37A3 /* TCMsgListTableView.h */,
+				40B3F9372446E6C6000C37A3 /* TCMsgModel.h */,
+				40B3F9382446E6C6000C37A3 /* TCMsgListCell.h */,
+				40B3F9392446E6C6000C37A3 /* TCMsgBarrageView.m */,
+				40B3F93A2446E6C6000C37A3 /* TCMsgModel.m */,
+				40B3F93B2446E6C6000C37A3 /* TCMsgListTableView.m */,
+			);
+			path = ChatRoom;
+			sourceTree = "<group>";
+		};
+		40B3F93D2446E6C6000C37A3 /* Anchor */ = {
+			isa = PBXGroup;
+			children = (
+				40B3F9412446E6C6000C37A3 /* AnchorPKPanel.swift */,
+				40B3F9442446E6C6000C37A3 /* BeautyPerformer.swift */,
+				40B3F93E2446E6C6000C37A3 /* TCAnchorToolbarView.h */,
+				40B3F9432446E6C6000C37A3 /* TCAnchorToolbarView.m */,
+				40B3F9422446E6C6000C37A3 /* TCAnchorViewController.h */,
+				40B3F93F2446E6C6000C37A3 /* TCAnchorViewController.m */,
+				40B3F9452446E6C6000C37A3 /* TCAnchorViewController+LiveDelegate.swift */,
+				40B3F9402446E6C6000C37A3 /* TCAnchorViewController+Room.swift */,
+			);
+			path = Anchor;
+			sourceTree = "<group>";
+		};
+		40B3F9462446E6C6000C37A3 /* Audience */ = {
+			isa = PBXGroup;
+			children = (
+				40B3F9472446E6C6000C37A3 /* TCAudienceToolbarView.h */,
+				40B3F9482446E6C6000C37A3 /* TCAudienceViewController.m */,
+				40B3F9492446E6C6000C37A3 /* TCAudienceViewController+LiveDelegate.swift */,
+				40B3F94A2446E6C6000C37A3 /* TCAudienceToolbarView.m */,
+				40B3F94B2446E6C6000C37A3 /* TCAudienceViewController.h */,
+			);
+			path = Audience;
+			sourceTree = "<group>";
+		};
+		40B3F94D2446E6C6000C37A3 /* model */ = {
+			isa = PBXGroup;
+			children = (
+				40B3F94E2446E6C6000C37A3 /* TRTCLiveRoom.swift */,
+				40B3F94F2446E6C6000C37A3 /* impl */,
+				40B3F95B2446E6C6000C37A3 /* TRTCLiveRoomDef.swift */,
+				40B3F95C2446E6C6000C37A3 /* TRTCAudioEffectManager.swift */,
+				40B3F95D2446E6C6000C37A3 /* TRTCLiveRoomDelegate.swift */,
+			);
+			path = model;
+			sourceTree = "<group>";
+		};
+		40B3F94F2446E6C6000C37A3 /* impl */ = {
+			isa = PBXGroup;
+			children = (
+				40B3F9502446E6C6000C37A3 /* TRTCLiveRoomImpl+RecvMessage.swift */,
+				40B3F9512446E6C6000C37A3 /* TRTCCustomAudioEffectManagerImpl.swift */,
+				40B3F9522446E6C6000C37A3 /* TRTCLiveRoomImpl.swift */,
+				40B3F9532446E6C6000C37A3 /* TRTCCloudAction.swift */,
+				40B3F9542446E6C6000C37A3 /* MemberManager */,
+				40B3F9572446E6C6000C37A3 /* RoomManager.swift */,
+				40B3F9582446E6C6000C37A3 /* IM */,
+			);
+			path = impl;
+			sourceTree = "<group>";
+		};
+		40B3F9542446E6C6000C37A3 /* MemberManager */ = {
+			isa = PBXGroup;
+			children = (
+				40B3F9552446E6C6000C37A3 /* TRTCLiveRoomMemberManager.swift */,
+				40B3F9562446E6C6000C37A3 /* TRTCLiveRoomMemberProtocol.swift */,
+			);
+			path = MemberManager;
+			sourceTree = "<group>";
+		};
+		40B3F9582446E6C6000C37A3 /* IM */ = {
+			isa = PBXGroup;
+			children = (
+				40B3F9592446E6C6000C37A3 /* TRTCLiveRoomIMAction.swift */,
+				40B3F95A2446E6C6000C37A3 /* TRTCLiveRoomIMActionType.swift */,
+			);
+			path = IM;
+			sourceTree = "<group>";
+		};
+		40B3F9D82446EF11000C37A3 /* TRTCCommonUtils */ = {
+			isa = PBXGroup;
+			children = (
+				40B3F9DE2446EF11000C37A3 /* TCLog.h */,
+				40B3F9DA2446EF11000C37A3 /* TCLog.m */,
+				40B3F9D92446EF11000C37A3 /* TCUtil.h */,
+				40B3F9DD2446EF11000C37A3 /* TCUtil.m */,
+			);
+			path = TRTCCommonUtils;
+			sourceTree = "<group>";
+		};
+		40B5C67D2484BBE500D3A718 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				40B5C6832484BBE500D3A718 /* AudioEffectSettingKit.framework */,
+				40B5C6852484BBE500D3A718 /* AudioEffectSettingKitExample.app */,
+				40B5C6872484BBE500D3A718 /* AudioEffectSettingKitResources.bundle */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		40F852FA1EE8FB3800EE47D7 = {
+			isa = PBXGroup;
+			children = (
+				45736E91243F5B2200F7F601 /* SDK */,
+				40F853051EE8FB3800EE47D7 /* TXLiteAVDemo */,
+				40F854FF1EE8FD2F00EE47D7 /* Frameworks */,
+				40F853041EE8FB3800EE47D7 /* Products */,
+				DE336FBCF7A8A2B1C7E9E0C1 /* Pods */,
+				402ABF94248550C800C84246 /* Recovered References */,
+			);
+			sourceTree = "<group>";
+		};
+		40F853041EE8FB3800EE47D7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				40B3F6D22446E518000C37A3 /* TXLiteAVDemo_TRTC.app */,
+				40AC7322246D35A300FAF33D /* TXLiteAVDemo_TRTC_AppStore.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		40F853051EE8FB3800EE47D7 /* TXLiteAVDemo */ = {
+			isa = PBXGroup;
+			children = (
+				401A9A56247FCC6300C0763B /* AudioSettingKit */,
+				40F853241EE8FC8400EE47D7 /* App */,
+				40B3F8DB2446E6C5000C37A3 /* Debug */,
+				40B3F8DE2446E6C5000C37A3 /* TRTCAudioCallDemo */,
+				40B3F9252446E6C6000C37A3 /* TRTCLiveRoomDemo */,
+				40B3F8C42446E6C5000C37A3 /* TRTCVideoCallDemo */,
+				40B3F8F52446E6C5000C37A3 /* TRTCVoiceRoomDemo */,
+				4090F614246ADBBF00EA72A0 /* TRTCMeetingDemo */,
+				40F8531D1EE8FC1E00EE47D7 /* Supporting Files */,
+				40AA533424458EC800303EF7 /* BeautySettingKit */,
+				390BF453D6B5E743C461F64D /* Login */,
+			);
+			path = TXLiteAVDemo;
+			sourceTree = "<group>";
+		};
+		40F8531D1EE8FC1E00EE47D7 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				402ABFC3248558C600C84246 /* TRTC-Appstore-Info.plist */,
+				402A010024506F740037A219 /* main.m */,
+				40F853311EE8FC9B00EE47D7 /* LaunchScreen.storyboard */,
+				40F853331EE8FC9B00EE47D7 /* Main.storyboard */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		40F853241EE8FC8400EE47D7 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				4090F789246AE23B00EA72A0 /* Portal */,
+				40F853721EE8FD0700EE47D7 /* Resource */,
+				405339102465444D00A6B478 /* AppCommon */,
+				402A010A245070290037A219 /* BridgeHeader */,
+				40F853251EE8FC8400EE47D7 /* AppDelegate.h */,
+				40F853261EE8FC8400EE47D7 /* AppDelegate.m */,
+				40F853271EE8FC8400EE47D7 /* AppLogMgr.h */,
+				40F853281EE8FC8400EE47D7 /* AppLogMgr.m */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		40F853411EE8FCDF00EE47D7 /* Catetory */ = {
+			isa = PBXGroup;
+			children = (
+				40B3FA012447056D000C37A3 /* UIColor+MLPFlatColors.h */,
+				40B3FA002447056D000C37A3 /* UIColor+MLPFlatColors.m */,
+				40B3F9FE2447042C000C37A3 /* HUDHelper.h */,
+				40B3F9FD2447042B000C37A3 /* HUDHelper.m */,
+				6A03ED401FD13DFB00F2F063 /* UIViewController+BackButtonHandler.h */,
+				6A03ED3F1FD13DFB00F2F063 /* UIViewController+BackButtonHandler.m */,
+				40F853421EE8FCDF00EE47D7 /* NSData+Common.h */,
+				40F853431EE8FCDF00EE47D7 /* NSData+Common.m */,
+				40F853441EE8FCDF00EE47D7 /* NSObject+CommonBlock.h */,
+				40F853451EE8FCDF00EE47D7 /* NSObject+CommonBlock.m */,
+				40F853461EE8FCDF00EE47D7 /* NSString+Common.h */,
+				40F853471EE8FCDF00EE47D7 /* NSString+Common.m */,
+				40F853481EE8FCDF00EE47D7 /* UIButton+Additions.h */,
+				40F853491EE8FCDF00EE47D7 /* UIButton+Additions.m */,
+				40F8534A1EE8FCDF00EE47D7 /* UIButton+Glossy.h */,
+				40F8534B1EE8FCDF00EE47D7 /* UIButton+Glossy.m */,
+				40F8534C1EE8FCDF00EE47D7 /* UIImage+Additions.h */,
+				40F8534D1EE8FCDF00EE47D7 /* UIImage+Additions.m */,
+				40F8534E1EE8FCDF00EE47D7 /* UIView+Additions.h */,
+				40F8534F1EE8FCDF00EE47D7 /* UIView+Additions.m */,
+				40F853501EE8FCDF00EE47D7 /* UIView+CustomAutoLayout.h */,
+				40F853511EE8FCDF00EE47D7 /* UIView+CustomAutoLayout.m */,
+				457FD2F821C7530C00EEB03F /* NSString+UISize.h */,
+				457FD2F921C7530C00EEB03F /* NSString+UISize.m */,
+				6A395A01234AEE9700AFBCE8 /* NSDictionary+Common.h */,
+				6A395A02234AEE9700AFBCE8 /* NSDictionary+Common.m */,
+			);
+			path = Catetory;
+			sourceTree = "<group>";
+		};
+		40F853721EE8FD0700EE47D7 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				40F853221EE8FC7300EE47D7 /* Assets.xcassets */,
+				CE7C6E4A1FC2C5320095663F /* FilterResource.bundle */,
+				45C37797226765A60054D0B8 /* Settings.bundle */,
+			);
+			path = Resource;
+			sourceTree = "<group>";
+		};
+		40F854FF1EE8FD2F00EE47D7 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				40802A272484BBBE008151C1 /* AudioEffectSettingKit.framework */,
+				40AA539724459DF900303EF7 /* UGCKit.framework */,
+				4071CF702444477A000B7707 /* libsqlite3.0.tbd */,
+				51A289F8230FB93A00B9B73F /* OpenAL.framework */,
+				D650607A20EE145F00C8BC44 /* libc.tbd */,
+				91F87A7E1FF4A0FC001644B1 /* libsqlite3.tbd */,
+				CF31F0EB1FBB2A7E0066BF7D /* Metal.framework */,
+				40407ACA1F3035CA006C7301 /* Foundation.framework */,
+				51A4AD391F1F8AE300B4A806 /* MediaPlayer.framework */,
+				CE45D2971F15C527003506D1 /* libc++.tbd */,
+				40F8554E1EE8FE0100EE47D7 /* libiconv.tbd */,
+				40F8554C1EE8FDFC00EE47D7 /* libz.tbd */,
+				40F855481EE8FDF100EE47D7 /* libresolv.tbd */,
+				40F855461EE8FDE800EE47D7 /* SystemConfiguration.framework */,
+				40F855441EE8FDE100EE47D7 /* CoreTelephony.framework */,
+				40F855421EE8FDDA00EE47D7 /* VideoToolbox.framework */,
+				40F855401EE8FDD300EE47D7 /* CoreMedia.framework */,
+				40F8553E1EE8FDCC00EE47D7 /* CoreGraphics.framework */,
+				40F8553C1EE8FDC500EE47D7 /* AVFoundation.framework */,
+				40F8553A1EE8FDBF00EE47D7 /* Accelerate.framework */,
+				40F855381EE8FDB600EE47D7 /* Security.framework */,
+				40F855361EE8FDAD00EE47D7 /* AssetsLibrary.framework */,
+				91D47F3920B6B13C0072AC0B /* ReplayKit.framework */,
+				A32AD4BB38080AB19D3659FC /* libPods-TXLiteAVDemo_TRTC.a */,
+				A256AF019D8E84B3B797494C /* libPods-TXLiteAVDemo_TRTC_AppStore.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		45736E91243F5B2200F7F601 /* SDK */ = {
+			isa = PBXGroup;
+			children = (
+				45736E97243F5B2200F7F601 /* TXLiteAVSDK_TRTC.framework */,
+			);
+			name = SDK;
+			path = ../SDK;
+			sourceTree = "<group>";
+		};
+		45F21F80244714DC006B8B4D /* storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				45F21F81244714E8006B8B4D /* TRTCAudioCall.storyboard */,
+			);
+			path = storyboard;
+			sourceTree = "<group>";
+		};
+		45F21F83244714FB006B8B4D /* storyboard */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = storyboard;
+			sourceTree = "<group>";
+		};
+		DE336FBCF7A8A2B1C7E9E0C1 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				5BD8B4F3BB859A4568C43B7D /* Pods-TXLiteAVDemo_TRTC.debug.xcconfig */,
+				E95CAD575C1A00021285A090 /* Pods-TXLiteAVDemo_TRTC.release.xcconfig */,
+				D6A42A7E1021785CCD2A7113 /* Pods-TXLiteAVDemo_TRTC.dailybuild.xcconfig */,
+				E0D8BC526E0FAB3AC4FA5FB4 /* Pods-TXLiteAVDemo_TRTC_AppStore.debug.xcconfig */,
+				4B4B291177070EC8D226E1E2 /* Pods-TXLiteAVDemo_TRTC_AppStore.release.xcconfig */,
+				1505E8456BF1BD9159B19BDD /* Pods-TXLiteAVDemo_TRTC_AppStore.dailybuild.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		40B3F65B2446E518000C37A3 /* TXLiteAVDemo_TRTC */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 40B3F6CE2446E518000C37A3 /* Build configuration list for PBXNativeTarget "TXLiteAVDemo_TRTC" */;
+			buildPhases = (
+				EC20688869C94915D95B12FA /* [CP] Check Pods Manifest.lock */,
+				405338B62463F8EA00A6B478 /* ShellScript */,
+				40B3F6602446E518000C37A3 /* Sources */,
+				40B3F6AD2446E518000C37A3 /* Frameworks */,
+				40B3F6C12446E518000C37A3 /* Resources */,
+				45F21F7E244712F6006B8B4D /* Embed Frameworks */,
+				95FB37E483C2464FB3E40700 /* [CP] Copy Pods Resources */,
+				83BEAD8FA652EE733DB35813 /* [CP] Embed Pods Frameworks */,
+				40B3F6CD2446E518000C37A3 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				40B5C68B2484BBF600D3A718 /* PBXTargetDependency */,
+				40B3F65C2446E518000C37A3 /* PBXTargetDependency */,
+				40B3F65E2446E518000C37A3 /* PBXTargetDependency */,
+			);
+			name = TXLiteAVDemo_TRTC;
+			productName = TXLiteAVDemo;
+			productReference = 40B3F6D22446E518000C37A3 /* TXLiteAVDemo_TRTC.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		40F852FB1EE8FB3800EE47D7 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0830;
+				ORGANIZATIONNAME = Tencent;
+				TargetAttributes = {
+					40B3F65B2446E518000C37A3 = {
+						DevelopmentTeam = 5GHU44CJHG;
+						ProvisioningStyle = Manual;
+					};
+				};
+			};
+			buildConfigurationList = 40F852FE1EE8FB3800EE47D7 /* Build configuration list for PBXProject "TXLiteAVDemo" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				English,
+				en,
+				Base,
+				de,
+				es,
+				ja,
+				pl,
+				"zh-Hans",
+			);
+			mainGroup = 40F852FA1EE8FB3800EE47D7;
+			productRefGroup = 40F853041EE8FB3800EE47D7 /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 40B5C67D2484BBE500D3A718 /* Products */;
+					ProjectRef = 401A9B3D247FCC7600C0763B /* AudioEffectSettingKit.xcodeproj */;
+				},
+				{
+					ProductGroup = 40AA533624458EC800303EF7 /* Products */;
+					ProjectRef = 40AA533524458EC800303EF7 /* TCBeautyPanel.xcodeproj */;
+				},
+				{
+					ProductGroup = 40A49D5F24598CD200BFCB18 /* Products */;
+					ProjectRef = 40A49D5E24598CD200BFCB18 /* UGCKit.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				40B3F65B2446E518000C37A3 /* TXLiteAVDemo_TRTC */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		40A49D6524598CD700BFCB18 /* UGCKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = UGCKit.framework;
+			remoteRef = 40A49D6424598CD700BFCB18 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		40A49D6724598CD700BFCB18 /* UGCKitResources.bundle */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = UGCKitResources.bundle;
+			remoteRef = 40A49D6624598CD700BFCB18 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		40AA536524458EC800303EF7 /* TCBeautyPanel.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = TCBeautyPanel.framework;
+			remoteRef = 40AA536424458EC800303EF7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		40AA536724458EC800303EF7 /* TCBeautyPanelResources.bundle */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = TCBeautyPanelResources.bundle;
+			remoteRef = 40AA536624458EC800303EF7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		40B5C6832484BBE500D3A718 /* AudioEffectSettingKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = AudioEffectSettingKit.framework;
+			remoteRef = 40B5C6822484BBE500D3A718 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		40B5C6852484BBE500D3A718 /* AudioEffectSettingKitExample.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = AudioEffectSettingKitExample.app;
+			remoteRef = 40B5C6842484BBE500D3A718 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		40B5C6872484BBE500D3A718 /* AudioEffectSettingKitResources.bundle */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = AudioEffectSettingKitResources.bundle;
+			remoteRef = 40B5C6862484BBE500D3A718 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		40B3F6C12446E518000C37A3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				40B5C6942484BE4800D3A718 /* AudioEffectSettingKitResources.bundle in Resources */,
+				40B3F99A2446E6C6000C37A3 /* on_mic.aac in Resources */,
+				4090F787246AE09600EA72A0 /* CustomAudio48000_1.pcm in Resources */,
+				4090F784246AE09600EA72A0 /* CustomAudio44100_2.pcm in Resources */,
+				40B3F6C22446E518000C37A3 /* TCBeautyPanelResources.bundle in Resources */,
+				4090F791246AE23B00EA72A0 /* Portal.storyboard in Resources */,
+				4090F756246ADEB500EA72A0 /* QBImagePicker.strings in Resources */,
+				4090F6A0246ADBC000EA72A0 /* TRTCSettings.storyboard in Resources */,
+				40B3F99B2446E6C6000C37A3 /* bgm_demo.mp3 in Resources */,
+				40B3F98C2446E6C6000C37A3 /* TRTCVoiceRoomAudioEffectView.xib in Resources */,
+				4090F71B246ADBC000EA72A0 /* record_test_background.mp3 in Resources */,
+				40B3F9982446E6C6000C37A3 /* giftSent.aac in Resources */,
+				40A7CFE2245FC14400E792A5 /* TRTCVoiceRoom.xcassets in Resources */,
+				40B3F9992446E6C6000C37A3 /* vchat_cheers.m4a in Resources */,
+				4090F72A246ADBC000EA72A0 /* TRTCMettingAssert.xcassets in Resources */,
+				4090F762246ADEB500EA72A0 /* QBImagePicker.storyboard in Resources */,
+				40B3F99C2446E6C6000C37A3 /* TRTCVoiceRoom.storyboard in Resources */,
+				40B3F98A2446E6C6000C37A3 /* TRTCVoiceRoomChangeVoiceView.xib in Resources */,
+				40B3F6C72446E518000C37A3 /* FilterResource.bundle in Resources */,
+				4090F71E246ADBC000EA72A0 /* TRTC.storyboard in Resources */,
+				40B3F6C82446E518000C37A3 /* LaunchScreen.storyboard in Resources */,
+				40B3F9882446E6C6000C37A3 /* TRTCVoiceRoomMoreView.xib in Resources */,
+				40A7CFD6245FC09300E792A5 /* TRTCAuidoCall.xcassets in Resources */,
+				40A7CFDA245FC0CF00E792A5 /* TRTCLiveRoom.xcassets in Resources */,
+				4090F794246AE25A00EA72A0 /* TRTCPortalAssets.xcassets in Resources */,
+				40B3F6CA2446E518000C37A3 /* Assets.xcassets in Resources */,
+				40B3F98E2446E6C6000C37A3 /* TRTCVoiceRoomBgmView.xib in Resources */,
+				45F21F82244714E8006B8B4D /* TRTCAudioCall.storyboard in Resources */,
+				40B3F6CC2446E518000C37A3 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		405338B62463F8EA00A6B478 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif [ -e ../download.sh ]; then\n    bash ../download.sh TRTC\nfi\n";
+		};
+		40B3F6CD2446E518000C37A3 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# compress application.\n/bin/rm -rf $CONFIGURATION_BUILD_DIR/Payload\n/bin/mkdir -p $CONFIGURATION_BUILD_DIR/Payload\n/bin/cp -R $CONFIGURATION_BUILD_DIR/${PRODUCT_NAME}.app $CONFIGURATION_BUILD_DIR/Payload\n#/bin/cp images/logo_itunes.png $CONFIGURATION_BUILD_DIR/iTunesArtwork\ncd $CONFIGURATION_BUILD_DIR\n# zip up the HelloWorld directory\n/usr/bin/zip -r -q ${PRODUCT_NAME}.ipa Payload iTunesArtwork\n";
+		};
+		83BEAD8FA652EE733DB35813 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TXLiteAVDemo_TRTC/Pods-TXLiteAVDemo_TRTC-frameworks.sh",
+				"${PODS_ROOT}/TXIMSDK_iOS/ImSDK.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ImSDK.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TXLiteAVDemo_TRTC/Pods-TXLiteAVDemo_TRTC-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		95FB37E483C2464FB3E40700 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TXLiteAVDemo_TRTC/Pods-TXLiteAVDemo_TRTC-resources.sh",
+				"${PODS_ROOT}/MJRefresh/MJRefresh/MJRefresh.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/Material/com.cosmicmind.material.icons.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/Material/com.cosmicmind.material.fonts.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MJRefresh.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/com.cosmicmind.material.icons.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/com.cosmicmind.material.fonts.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TXLiteAVDemo_TRTC/Pods-TXLiteAVDemo_TRTC-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EC20688869C94915D95B12FA /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TXLiteAVDemo_TRTC-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		40B3F6602446E518000C37A3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				40B3F9712446E6C6000C37A3 /* TRTCVideoCall+model.swift in Sources */,
+				40B3F9A02446E6C6000C37A3 /* TCPlaceHolderTextView.m in Sources */,
+				4090F781246AE09600EA72A0 /* CustomAudioFileReader.m in Sources */,
+				40B3F9A22446E6C6000C37A3 /* TCMsgListCell.m in Sources */,
+				40B3F9752446E6C6000C37A3 /* AudioCallMainViewController.swift in Sources */,
+				40B3F97B2446E6C6000C37A3 /* AudioSelectContactViewController+Table.swift in Sources */,
+				40B3F9B62446E6C6000C37A3 /* TRTCLiveRoomMemberManager.swift in Sources */,
+				4041832B2455853000DD70AB /* V8HorizontalPickerView.m in Sources */,
+				40B3F9822446E6C6000C37A3 /* TRTCAudioCall.swift in Sources */,
+				4090F6FD246ADBC000EA72A0 /* TRTCStreamSettingsViewController.m in Sources */,
+				4090F792246AE23B00EA72A0 /* MainMenuCell.m in Sources */,
+				40B3F9BC2446E6C7000C37A3 /* TRTCAudioEffectManager.swift in Sources */,
+				4090F76B246ADEB500EA72A0 /* QBImagePickerController.m in Sources */,
+				40B3F66A2446E518000C37A3 /* UIButton+Glossy.m in Sources */,
+				4090F79A246AE57F00EA72A0 /* ThemeConfigurator.m in Sources */,
+				4090F730246ADBC000EA72A0 /* TRTCFloatWindow.m in Sources */,
+				4090F6E8246ADBC000EA72A0 /* TRTCSettingsSwitchCell.m in Sources */,
+				4090F790246AE23B00EA72A0 /* PortalViewController.m in Sources */,
+				4090F759246ADEB500EA72A0 /* QBVideoIconView.m in Sources */,
+				40B3F9A42446E6C6000C37A3 /* TCMsgModel.m in Sources */,
+				40B3F9942446E6C6000C37A3 /* TRTCVoiceRoomBgmManager.m in Sources */,
+				40B3F9912446E6C6000C37A3 /* UserModel.m in Sources */,
+				40B3F9812446E6C6000C37A3 /* ITRTCAudioCallInterface.swift in Sources */,
+				4090F736246ADBC000EA72A0 /* TRTCVideoViewLayout.m in Sources */,
+				4090F6AF246ADBC000EA72A0 /* TRTCCustomAudioEffectManager.m in Sources */,
+				4090F6CD246ADBC000EA72A0 /* UITextField+TRTC.m in Sources */,
+				4090F7A0246AE5C800EA72A0 /* QRCode.m in Sources */,
+				40B3F9872446E6C6000C37A3 /* TRTCVoiceRoomMoreView.m in Sources */,
+				40E1F4492468F74A00F3D350 /* NSString+UISize.m in Sources */,
+				40B3F9A82446E6C6000C37A3 /* TCAnchorViewController+Room.swift in Sources */,
+				40B3F9FF2447042C000C37A3 /* HUDHelper.m in Sources */,
+				40E1F44F2468F75300F3D350 /* NSDictionary+Common.m in Sources */,
+				40B3F9852446E6C6000C37A3 /* TRTCAudioCall+OnNewMessage.swift in Sources */,
+				4090F694246ADBC000EA72A0 /* TRTCCdnPlayerSettingsViewController.m in Sources */,
+				4090F715246ADBC000EA72A0 /* TRTCBgmSettingsViewController.m in Sources */,
+				4090F6B5246ADBC000EA72A0 /* TRTCAudioRecordManager.m in Sources */,
+				40B3F9B02446E6C6000C37A3 /* LiveRoomMainViewController+UI.swift in Sources */,
+				4090F70F246ADBC000EA72A0 /* TRTCEffectSettingsViewController.m in Sources */,
+				40B3F9DF2446EF11000C37A3 /* TCLog.m in Sources */,
+				40B3F9B52446E6C6000C37A3 /* TRTCCloudAction.swift in Sources */,
+				40B3F96F2446E6C6000C37A3 /* TRTCVideoCall.swift in Sources */,
+				4090F771246ADEB500EA72A0 /* QBSlomoIconView.m in Sources */,
+				4090F6BE246ADBC000EA72A0 /* TRTCCloudManager.m in Sources */,
+				40B3F9682446E6C6000C37A3 /* VideoSelectContactViewController+CollectionView.swift in Sources */,
+				40B3F9742446E6C6000C37A3 /* AudioCallUserCell.swift in Sources */,
+				40B3F9782446E6C6000C37A3 /* AudioCallViewController.swift in Sources */,
+				4090F6A6246ADBC000EA72A0 /* TRTCCdnPlayerConfig.m in Sources */,
+				40B3F9672446E6C6000C37A3 /* VideoCallViewController+UI.swift in Sources */,
+				4090F6C1246ADBC000EA72A0 /* TRTCVideoConfig.m in Sources */,
+				4090F6E5246ADBC000EA72A0 /* TRTCSettingsButtonCell.m in Sources */,
+				40B3F9692446E6C6000C37A3 /* VideoSelectContactViewController+Table.swift in Sources */,
+				40B3F9E22446EF11000C37A3 /* TCUtil.m in Sources */,
+				40B3F9802446E6C6000C37A3 /* TRTCAudioCallDelegate.swift in Sources */,
+				40B3F6762446E518000C37A3 /* AppDelegate.m in Sources */,
+				4090F6D9246ADBC000EA72A0 /* TRTCSettingsInputCell.m in Sources */,
+				4090F6EB246ADBC000EA72A0 /* TRTCSettingsSliderCell.m in Sources */,
+				40B3F9B22446E6C6000C37A3 /* TRTCLiveRoomImpl+RecvMessage.swift in Sources */,
+				4090F709246ADBC000EA72A0 /* TRTCSettingsEffectCell.m in Sources */,
+				40B3F9832446E6C6000C37A3 /* TRTCAudioCall+model.swift in Sources */,
+				4090F6A9246ADBC000EA72A0 /* TRTCRemoteUserConfig.m in Sources */,
+				4090F706246ADBC000EA72A0 /* TRTCBgmContainerViewController.m in Sources */,
+				40B3F9BB2446E6C7000C37A3 /* TRTCLiveRoomDef.swift in Sources */,
+				4090F700246ADBC000EA72A0 /* TRTCPKSettingsViewController.m in Sources */,
+				40B3F9612446E6C6000C37A3 /* VideoSelectContactViewController+UI.swift in Sources */,
+				4090F727246ADBC000EA72A0 /* TestSendCustomVideoData.m in Sources */,
+				40B3F9622446E6C6000C37A3 /* VideoSelectContactViewController.swift in Sources */,
+				4090F70C246ADBC000EA72A0 /* TRTCSettingsEffectLoopCountCell.m in Sources */,
+				40B3F98B2446E6C6000C37A3 /* CreateTRTCVoiceRoomViewController.m in Sources */,
+				40B3F9AB2446E6C6000C37A3 /* BeautyPerformer.swift in Sources */,
+				4090F6EE246ADBC000EA72A0 /* TRTCSettingsSelectorCell.m in Sources */,
+				4090F697246ADBC000EA72A0 /* TRTCRemoteUserSettingsViewController.m in Sources */,
+				4090F6B2246ADBC000EA72A0 /* TRTCBgmManager.m in Sources */,
+				4090F6DC246ADBC000EA72A0 /* TRTCSettingsSegmentCell.m in Sources */,
+				40B3F9B82446E6C7000C37A3 /* RoomManager.swift in Sources */,
+				40B3F6812446E518000C37A3 /* UIView+Additions.m in Sources */,
+				40B3F9932446E6C6000C37A3 /* TRTCVoiceRoomAudioEffectManager.m in Sources */,
+				40B3F9972446E6C6000C37A3 /* TRTCVoiceRoomCustomAudioFileReader.m in Sources */,
+				4090F6B8246ADBC000EA72A0 /* TRTCStreamConfig.m in Sources */,
+				4090F72D246ADBC000EA72A0 /* TRTCNewViewController.m in Sources */,
+				4090F6CA246ADBC000EA72A0 /* UILabel+TRTC.m in Sources */,
+				40B3F9AF2446E6C6000C37A3 /* TCAudienceToolbarView.m in Sources */,
+				40B3F9952446E6C6000C37A3 /* TRTCVoiceRoomCloudManager.m in Sources */,
+				40B3F95F2446E6C6000C37A3 /* VideoCallMainViewController+UI.swift in Sources */,
+				4090F6C7246ADBC000EA72A0 /* UIButton+TRTC.m in Sources */,
+				40B3F9AA2446E6C6000C37A3 /* TCAnchorToolbarView.m in Sources */,
+				40B3F99D2446E6C6000C37A3 /* TRTCVoiceRoomTestUserSig.m in Sources */,
+				40B3F6852446E518000C37A3 /* NSString+Common.m in Sources */,
+				4090F6F4246ADBC000EA72A0 /* TRTCMoreSettingsViewController.m in Sources */,
+				40B3F9662446E6C6000C37A3 /* VideoSelectContactViewController+file.swift in Sources */,
+				4090F75F246ADEB500EA72A0 /* QBAlbumCell.m in Sources */,
+				40B3F9AC2446E6C6000C37A3 /* TCAnchorViewController+LiveDelegate.swift in Sources */,
+				40E25FCE2480C797005EB543 /* Portal+Swift.swift in Sources */,
+				40B3F97C2446E6C6000C37A3 /* AudioCallViewController+Data.swift in Sources */,
+				40B3F9B12446E6C6000C37A3 /* TRTCLiveRoom.swift in Sources */,
+				4090F768246ADEB500EA72A0 /* QBAssetsViewController.m in Sources */,
+				4090F6AC246ADBC000EA72A0 /* TRTCRemoteUserManager.m in Sources */,
+				40B3F9702446E6C6000C37A3 /* TRTCVideoCall+Room.swift in Sources */,
+				40B3F9AD2446E6C6000C37A3 /* TCAudienceViewController.m in Sources */,
+				4090F6BB246ADBC000EA72A0 /* TRTCAudioConfig.m in Sources */,
+				40B3F9A62446E6C6000C37A3 /* LiveRoomMainViewController+CollectionView.swift in Sources */,
+				4090F6F1246ADBC000EA72A0 /* TRTCSettingsBaseViewController.m in Sources */,
+				40B3F96B2446E6C6000C37A3 /* TRTCVideoCall+OnNewMessage.swift in Sources */,
+				40B3F9BA2446E6C7000C37A3 /* TRTCLiveRoomIMActionType.swift in Sources */,
+				40B3F9642446E6C6000C37A3 /* VideoCallViewController+Data.swift in Sources */,
+				40B3F9632446E6C6000C37A3 /* VideoSelectContactViewController+search.swift in Sources */,
+				40B3F9A92446E6C6000C37A3 /* AnchorPKPanel.swift in Sources */,
+				40B3F97E2446E6C6000C37A3 /* AudioSelectContactViewController+UI.swift in Sources */,
+				4090F712246ADBC000EA72A0 /* TRTCBgmSettingsCell.m in Sources */,
+				402A010624506F740037A219 /* main.m in Sources */,
+				4090F76E246ADEB500EA72A0 /* QBCheckmarkView.m in Sources */,
+				4090F6D0246ADBC000EA72A0 /* UISlider+TRTC.m in Sources */,
+				4090F77E246AE09600EA72A0 /* CustomAudioCapturor.m in Sources */,
+				4090F6E2246ADBC000EA72A0 /* TRTCSettingsBaseCell.m in Sources */,
+				40B3F9AE2446E6C6000C37A3 /* TCAudienceViewController+LiveDelegate.swift in Sources */,
+				4090F718246ADBC000EA72A0 /* TRTCMainViewController.m in Sources */,
+				40B3F9B92446E6C7000C37A3 /* TRTCLiveRoomIMAction.swift in Sources */,
+				4090F6D6246ADBC000EA72A0 /* TRTCSettingsMessageCell.m in Sources */,
+				40B3F9652446E6C6000C37A3 /* VideoCallViewController.swift in Sources */,
+				40B3F9A32446E6C6000C37A3 /* TCMsgBarrageView.m in Sources */,
+				40B3F99F2446E6C6000C37A3 /* TCStatusInfoView.m in Sources */,
+				40B3F9B32446E6C6000C37A3 /* TRTCCustomAudioEffectManagerImpl.swift in Sources */,
+				4090F6DF246ADBC000EA72A0 /* TRTCSettingsLargeInputCell.m in Sources */,
+				40B3F95E2446E6C6000C37A3 /* VideoCallUserCell.swift in Sources */,
+				40B3F97D2446E6C6000C37A3 /* AudioSelectContactViewController+file.swift in Sources */,
+				40B3F97A2446E6C6000C37A3 /* AudioSelectContactViewController+search.swift in Sources */,
+				40B3F6902446E518000C37A3 /* UIButton+Additions.m in Sources */,
+				40B3FA022447056D000C37A3 /* UIColor+MLPFlatColors.m in Sources */,
+				4090F75C246ADEB500EA72A0 /* QBVideoIndicatorView.m in Sources */,
+				4090F6C4246ADBC000EA72A0 /* TRTCSettingsContainerViewController.m in Sources */,
+				4090F6A3246ADBC000EA72A0 /* TRTCCdnPlayerManager.m in Sources */,
+				40B3F9922446E6C6000C37A3 /* SEIMessageModel.m in Sources */,
+				40B3F9B72446E6C7000C37A3 /* TRTCLiveRoomMemberProtocol.swift in Sources */,
+				40B3F9602446E6C6000C37A3 /* VideoCallMainViewController.swift in Sources */,
+				4090F6F7246ADBC000EA72A0 /* TRTCAudioSettingsViewController.m in Sources */,
+				4090F6D3246ADBC000EA72A0 /* UISegmentedControl+TRTC.m in Sources */,
+				40B3F6912446E518000C37A3 /* UIView+CustomAutoLayout.m in Sources */,
+				40B3F9842446E6C6000C37A3 /* TRTCAudioCall+Room.swift in Sources */,
+				40B3F6922446E518000C37A3 /* UIViewController+BackButtonHandler.m in Sources */,
+				40B3F6942446E518000C37A3 /* AppLogMgr.m in Sources */,
+				40B3F9732446E6C6000C37A3 /* AudioCallViewController+UI.swift in Sources */,
+				4090F733246ADBC000EA72A0 /* TRTCVideoView.m in Sources */,
+				40B3F9A52446E6C6000C37A3 /* TCMsgListTableView.m in Sources */,
+				40B3F9892446E6C6000C37A3 /* TRTCVoiceRoomChangeVoiceView.m in Sources */,
+				40B3F9A72446E6C6000C37A3 /* TCAnchorViewController.m in Sources */,
+				4090F6FA246ADBC000EA72A0 /* TRTCVideoSettingsViewController.m in Sources */,
+				40B3F9862446E6C6000C37A3 /* AudioCallUtils.swift in Sources */,
+				40B3F96A2446E6C6000C37A3 /* ITRTCVideoCallInterface.swift in Sources */,
+				40B3F96D2446E6C6000C37A3 /* TRTCVideoCall+internal.swift in Sources */,
+				40B3F6972446E518000C37A3 /* NSObject+CommonBlock.m in Sources */,
+				40B3F96C2446E6C6000C37A3 /* TRTCVideoCallDelegate.swift in Sources */,
+				4090F703246ADBC000EA72A0 /* TRTCFeatureContainerViewController.m in Sources */,
+				40B3F9792446E6C6000C37A3 /* AudioSelectContactViewController+CollectionView.swift in Sources */,
+				4090F774246ADEB500EA72A0 /* QBAssetCell.m in Sources */,
+				40B3F9962446E6C6000C37A3 /* TRTCVoiceRoomAudioConfig.m in Sources */,
+				4090F765246ADEB500EA72A0 /* QBAlbumsViewController.m in Sources */,
+				4090F69A246ADBC000EA72A0 /* TRTCRemoteUserListViewController.m in Sources */,
+				40B3F9902446E6C6000C37A3 /* TRTCVoiceRoomViewController.m in Sources */,
+				40B3F9B42446E6C6000C37A3 /* TRTCLiveRoomImpl.swift in Sources */,
+				40B3F69F2446E518000C37A3 /* NSData+Common.m in Sources */,
+				40B3F97F2446E6C6000C37A3 /* TRTCAudioCall+internal.swift in Sources */,
+				4090F724246ADBC000EA72A0 /* TestRenderVideoFrame.m in Sources */,
+				40B3F9772446E6C6000C37A3 /* AudioCallMainViewController+UI.swift in Sources */,
+				4090F69D246ADBC000EA72A0 /* TRTCRemoteUserCell.m in Sources */,
+				40B3F9722446E6C6000C37A3 /* GenerateTestUserSig.m in Sources */,
+				40B3F6AA2446E518000C37A3 /* UIImage+Additions.m in Sources */,
+				40B3F98D2446E6C6000C37A3 /* TRTCVoiceRoomAudioEffectView.m in Sources */,
+				40B3F9BD2446E6C7000C37A3 /* TRTCLiveRoomDelegate.swift in Sources */,
+				40B3F96E2446E6C6000C37A3 /* VideoCallUtils.swift in Sources */,
+				40B3F99E2446E6C6000C37A3 /* LiveRoomMainViewController.swift in Sources */,
+				40B3F98F2446E6C6000C37A3 /* TRTCVoiceRoomBgmView.m in Sources */,
+				4090F721246ADBC000EA72A0 /* TCMediaFileReader.m in Sources */,
+				40B3F9762446E6C6000C37A3 /* AudioSelectContactViewController.swift in Sources */,
+				DF53B08D57A07523C71340CD /* LoginViewController_Mock.swift in Sources */,
+				1D538D13CFAC9A2494BD784A /* ProfileManager_Mock.swift in Sources */,
+				F61EE2AE404AC9852FBA1F31 /* LoginViewController+UI_Mock.swift in Sources */,
+				5006CFFD1CD3BB5C9D38CD3A /* AppUtils.swift in Sources */,
+				9E5CD490044F2F99502665E7 /* CommonUtils.swift in Sources */,
+				DD0B5504C80DA1D2CFA8823C /* ProfileViewController.swift in Sources */,
+				FC67C486D593D9BB50E4EDB7 /* ProfileViewController+UI.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		40B3F65C2446E518000C37A3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = TCBeautyPanel;
+			targetProxy = 40B3F65D2446E518000C37A3 /* PBXContainerItemProxy */;
+		};
+		40B3F65E2446E518000C37A3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = TCBeautyPanelResources;
+			targetProxy = 40B3F65F2446E518000C37A3 /* PBXContainerItemProxy */;
+		};
+		40B5C68B2484BBF600D3A718 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = AudioEffectSettingKitResources;
+			targetProxy = 40B5C68A2484BBF600D3A718 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		4090F739246ADEB500EA72A0 /* QBImagePicker.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				4090F73A246ADEB500EA72A0 /* de */,
+				4090F73C246ADEB500EA72A0 /* zh-Hans */,
+				4090F73D246ADEB500EA72A0 /* ja */,
+				4090F742246ADEB500EA72A0 /* en */,
+				4090F743246ADEB500EA72A0 /* es */,
+				4090F74F246ADEB500EA72A0 /* pl */,
+			);
+			name = QBImagePicker.strings;
+			sourceTree = "<group>";
+		};
+		40F853311EE8FC9B00EE47D7 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				40F853321EE8FC9B00EE47D7 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		40F853331EE8FC9B00EE47D7 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				40F853341EE8FC9B00EE47D7 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		40B3F6CF2446E518000C37A3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5BD8B4F3BB859A4568C43B7D /* Pods-TXLiteAVDemo_TRTC.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_TRTC;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CODE_SIGN_ENTITLEMENTS = TXLiteAVDemo_TRTCDebug.entitlements;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = 5GHU44CJHG;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/TXLiteAVDemo",
+					"$(PROJECT_DIR)/../SDK",
+				);
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"SDK_MAIN_VERSION=$(MAIN_VERSION)",
+					"SDK_SUB_VERSION=$(SUB_VERSION)",
+					"SDK_FIX_VERSION=$(FIX_VERSION)",
+					"SDK_BUILD_NUMBER=$(BUILD_NUMBER)",
+					DISABLE_VOD,
+					ENABLE_PLAY,
+					ENABLE_TRTC,
+					"FOR_RELEASE=$FOR_RELEASE",
+					TRTC,
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(CONFIGURATION_BUILD_DIR)/TXLiteAVSDK_TRTC.framework/Headers",
+					"$(PROJECT_DIR)/../SDK/TXLiteAVSDK_TRTC.framework/Headers",
+				);
+				INFOPLIST_FILE = "TXLiteAVDemo/App/TRTC-Appstore-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 7.3;
+				OTHER_LDFLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.tencent.trtcScenesDemo1;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = trtcscenesdemo;
+				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/TXLiteAVDemo/App/TXLiteAVDemo-Bridging-Header.h";
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "TXLiteAVDemo-Swift.h";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		40B3F6D02446E518000C37A3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E95CAD575C1A00021285A090 /* Pods-TXLiteAVDemo_TRTC.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_TRTC;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_DEBUG_INFORMATION_LEVEL = "line-tables-only";
+				CODE_SIGN_ENTITLEMENTS = TXLiteAVDemo_TRTCRelease.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = YES;
+				DEVELOPMENT_TEAM = FN2V63AD2J;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/TXLiteAVDemo",
+					"$(PROJECT_DIR)/../SDK",
+				);
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"SDK_MAIN_VERSION=$(MAIN_VERSION)",
+					"SDK_SUB_VERSION=$(SUB_VERSION)",
+					"SDK_FIX_VERSION=$(FIX_VERSION)",
+					"SDK_BUILD_NUMBER=$(BUILD_NUMBER)",
+					DISABLE_VOD,
+					ENABLE_PLAY,
+					ENABLE_TRTC,
+					"FOR_RELEASE=$FOR_RELEASE",
+					TRTC,
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(CONFIGURATION_BUILD_DIR)/TXLiteAVSDK_TRTC.framework/Headers",
+					"$(PROJECT_DIR)/../SDK/TXLiteAVSDK_TRTC.framework/Headers",
+				);
+				INFOPLIST_FILE = "TXLiteAVDemo/App/TRTC-Appstore-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_GENERATE_MAP_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 7.3;
+				OTHER_LDFLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.tencent.mrtc;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = com.tencent.mrtc_Production_SignProvision;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/TXLiteAVDemo/App/TXLiteAVDemo-Bridging-Header.h";
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "TXLiteAVDemo-Swift.h";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		40F853181EE8FB3800EE47D7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../SDK";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		40F853191EE8FB3800EE47D7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Tencent Technology (Shenzhen) Co., Ltd";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../SDK";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		40B3F6CE2446E518000C37A3 /* Build configuration list for PBXNativeTarget "TXLiteAVDemo_TRTC" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				40B3F6CF2446E518000C37A3 /* Debug */,
+				40B3F6D02446E518000C37A3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		40F852FE1EE8FB3800EE47D7 /* Build configuration list for PBXProject "TXLiteAVDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				40F853181EE8FB3800EE47D7 /* Debug */,
+				40F853191EE8FB3800EE47D7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 40F852FB1EE8FB3800EE47D7 /* Project object */;
+}
