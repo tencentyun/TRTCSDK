@@ -1,0 +1,6 @@
+module RxSwift {
+  umbrella header "RxSwift-umbrella.h"
+
+  export *
+  module * { export * }
+}

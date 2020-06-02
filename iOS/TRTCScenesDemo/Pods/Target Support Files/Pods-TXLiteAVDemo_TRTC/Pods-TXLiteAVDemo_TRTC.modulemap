@@ -1,0 +1,6 @@
+module Pods_TXLiteAVDemo_TRTC {
+  umbrella header "Pods-TXLiteAVDemo_TRTC-umbrella.h"
+
+  export *
+  module * { export * }
+}

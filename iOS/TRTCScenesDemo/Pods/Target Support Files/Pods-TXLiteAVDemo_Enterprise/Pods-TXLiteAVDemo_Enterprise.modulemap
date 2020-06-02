@@ -1,0 +1,6 @@
+module Pods_TXLiteAVDemo_Enterprise {
+  umbrella header "Pods-TXLiteAVDemo_Enterprise-umbrella.h"
+
+  export *
+  module * { export * }
+}
