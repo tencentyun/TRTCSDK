@@ -5,9 +5,10 @@
 #### 目录结构
 
 ```
-├─ TRTCScenceDemo // TRTC场景化Demo，包括视频通话、语音通话、视频互动直播、语音聊天室示例代码
-├─ TRTCSimpleDemo // TRTC精简版Demo，包含通话模式和直播模式示例代码
-├─ SDK            // TRTCSDK相关
+├─ TRTCScenceDemo // TRTC场景化Demo，包括视频通话、语音通话、视频互动直播、语音聊天室
+├─ TRTCSimpleDemo // TRTC精简化Demo，包含通话模式和直播模式。
+├─ SDK 
+│  ├─ TXLiteAVSDK_TRTC.framework // TRTC依赖的动态库
 ```
 
 #### SDK更新地址
@@ -21,7 +22,7 @@
 
 #### API文档
 
-[实时音视频（TRTC）API文档](http://doc.qcloudtrtc.com/md_introduction_trtc_Android_%E6%A6%82%E8%A7%88.html)
+[实时音视频（TRTC）API文档](http://doc.qcloudtrtc.com/md_introduction_trtc_iOS_mac_%E6%A6%82%E8%A7%88.html)
 
 
 #### TRTC场景化方案

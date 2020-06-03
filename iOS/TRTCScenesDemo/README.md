@@ -1,4 +1,22 @@
 本文档主要介绍如何快速集成实时音视频（TRTC）SDK，运行TRTC场景化Demo，实现多人视频会议、语音聊天室、视频连麦互动直播等。
+
+## 目录结构
+
+```
+├─ Podfile                    //Pod描述文件
+├─ TXLiteAVDemo
+│    ├─ App                   // 主面板，各种场景入口
+│    ├─ AudioSettingKit       // 音效面板，包含BGM播放，变声，混响，变调等效果
+│    ├─ BeautySettingKit      // 美颜面板，包含美颜，滤镜，动效等效果
+│    ├─ Debug                 // 调试相关
+│    ├─ Login                 // 登录相关
+│    ├─ TRTCMeetingDemo       // 多人视频会议，多人开会场景，包含屏幕分享、聊天等特性
+│    ├─ TRTCVoiceRoomDemo     // 语聊房，多人音频聊天场景，注重高音质
+│    ├─ TRTCLiveRoomDemo      // 视频互动直播，美女主播秀场场景，包含连麦、PK、聊天、点赞等特性
+│    ├─ TRTCAudioCallDemo     // 音频通话，展示双人音频通话
+│    ├─ TRTCVideoCallDemo     // 视频通话，展示双人视频通话
+```
+
 ## 功能简介
 
 在这个示例项目中包含了以下功能：
@@ -28,7 +46,7 @@
 3. 创建应用完成后，单击【我已下载，下一步】，可以查看 SDKAppID 和密钥信息。
 
 ### 配置 Demo 工程文件
-1. 使用 Xcode（10.0及以上的版本）打开源码工程`iOS/TRTCScenesDemo/TXLiteAVDemo.xcworkspace`
+1. 使用 Xcode（10.0及以上的版本）打开源码工程`iOS/TRTCScenesDemo/TXLiteAVDemo.xcworkspace`。
 3. 找到并打开`iOS/TRTCScenesDemo/TRTCScenesDemo/debug/GenerateTestUserSig.h`文件。
 4. 设置`GenerateTestUserSig.h`文件中的相关参数：
   <ul><li>SDKAPPID：默认为0，请设置为实际的 SDKAppID。</li>
