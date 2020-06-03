@@ -1,6 +1,0 @@
-module Pods_TXLiteAVDemo_TRTC_AppStore {
-  umbrella header "Pods-TXLiteAVDemo_TRTC_AppStore-umbrella.h"
-
-  export *
-  module * { export * }
-}
