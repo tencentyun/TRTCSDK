@@ -1,6 +1,0 @@
-module Motion {
-  umbrella header "Motion-umbrella.h"
-
-  export *
-  module * { export * }
-}
