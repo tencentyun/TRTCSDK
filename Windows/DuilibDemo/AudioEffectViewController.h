@@ -9,7 +9,7 @@
 using namespace DuiLib;
 #include <string>
 #include "TRTCCloudCallback.h"
-#include "IAudioEffectManager.h"
+#include "ITXAudioEffectManager.h"
 
 
 
@@ -46,8 +46,6 @@ private:
 
     void NotifyAudioEffect(TNotifyUI & msg);
     void NotifyBGMMusic(TNotifyUI & msg);
-    void NotifyBGMReverb(TNotifyUI & msg);
-    void NotifyBGMChanger(TNotifyUI & msg);
     void NotifyBGMSpeed(TNotifyUI & msg);
     void NotifyBGMPitch(TNotifyUI & msg);
     //interface ITXMusicPlayObserver
@@ -74,7 +72,7 @@ private:
     AudioMusicParam* m_bgmMusicParam;
 
     BGM_MusicStatus m_emBGMMusicStatus = BGM_Music_Stop;
-    IAudioEffectManager *m_pAudioEffectMgr = nullptr;
+    ITXAudioEffectManager *m_pAudioEffectMgr = nullptr;
 
     int m_nBGMDurationMS = 0;
 

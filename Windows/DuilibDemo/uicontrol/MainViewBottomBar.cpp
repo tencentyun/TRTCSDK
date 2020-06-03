@@ -469,42 +469,16 @@ void MainViewBottomBar::RefreshVideoDevice()
 
 void MainViewBottomBar::RefreshAudioDevice()
 {
-    std::wstring selectOldDevice = CDataCenter::GetInstance()->m_selectMic;
     bool publish_audio = CDataCenter::GetInstance()->m_localInfo.publish_audio;
     std::vector<TRTCCloudCore::MediaDeviceInfo> vecDevice = TRTCCloudCore::GetInstance()->getMicDevice();
-    std::wstring selectNewDevice = L"Unknow";
-    for (auto info : vecDevice) {
-        if (info._select) {
-            selectNewDevice = info._text; break;
-        }
-    }
-
-    bool bReSelectDevice = false;
     //没有设备变成有设备
-    if (selectOldDevice.compare(L"") == 0 && !publish_audio)
-    {
+    if ( !publish_audio && vecDevice.size() > 0) {
         onClickMuteAudioBtn();
-        bReSelectDevice = true;
     }
-
-    //选择设备被删除了
-    if (selectOldDevice.compare(selectNewDevice) != 0)
-        bReSelectDevice = true;
 
     //有设备变成没设备
-    if (publish_audio && vecDevice.size() <= 0)
-    {
+    if (publish_audio && vecDevice.size() <= 0) {
         onClickMuteAudioBtn();
-        bReSelectDevice = true;
-    }
-    if (bReSelectDevice)
-    {
-        for (auto info : vecDevice)
-        {
-            if (info._select) {
-                TRTCCloudCore::GetInstance()->selectMicDevice(info._text); break;
-            }
-        }
     }
 }
 

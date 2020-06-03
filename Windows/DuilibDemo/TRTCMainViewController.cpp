@@ -307,13 +307,6 @@ void TRTCMainViewController::enterRoom()
         CDataCenter::GetInstance()->m_localInfo.publish_main_video = false;
     }
 
-    if (params.role != TRTCRoleAudience)
-    {
-        TRTCCloudCore::GetInstance()->getTRTCCloud()->startLocalAudio();
-        CDataCenter::GetInstance()->m_localInfo.publish_audio = true;
-    }
-
-
     std::string experimentalAPI = format("{\"api\":\"enableAudioAEC\",\"params\":{\"enable\":%d}}", CDataCenter::GetInstance()->m_bEnableAec);
     TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(experimentalAPI.c_str());
     
@@ -964,8 +957,9 @@ void TRTCMainViewController::onViewBtnClickEvent(int id, std::wstring userId, in
         std::wstring localUserId = UTF82Wide(CDataCenter::GetInstance()->getLocalUserID());
         if (localUserId.compare(userId) == 0)
         {
+            bool publish_main_video = CDataCenter::GetInstance()->m_localInfo.publish_main_video;
             std::vector<TRTCCloudCore::MediaDeviceInfo> deviceInfo = TRTCCloudCore::GetInstance()->getCameraDevice();
-            if (deviceInfo.size() <= 0)
+            if (deviceInfo.size() <= 0 && !publish_main_video)
             {
                 CMsgWnd::ShowMessageBox(GetHWND(), _T("TRTCDuilibDemo"), _T("Error: 未检出到摄像头，请检查本地电脑设备。"), 0xFFF08080);
                 return;
@@ -990,8 +984,10 @@ void TRTCMainViewController::onViewBtnClickEvent(int id, std::wstring userId, in
         std::wstring localUserId = UTF82Wide(CDataCenter::GetInstance()->getLocalUserID());
         if (localUserId.compare(userId) == 0)
         {
+
+            bool publish_audio = CDataCenter::GetInstance()->m_localInfo.publish_audio;
             std::vector<TRTCCloudCore::MediaDeviceInfo> deviceInfo = TRTCCloudCore::GetInstance()->getMicDevice();
-            if (deviceInfo.size() <= 0)
+            if (deviceInfo.size() <= 0 && !publish_audio)
             {
                 CMsgWnd::ShowMessageBox(GetHWND(), _T("TRTCDuilibDemo"), _T("Error: 未检出到麦克风，请检查本地电脑设备。"), 0xFFF08080);
                 return;

@@ -10,6 +10,7 @@
 #include <cstdint>
 #include "GenerateTestUserSig.h"
 #include "utils/TrtcUtil.h"
+#include <assert.h>
 
 TRTCCloudCore* TRTCCloudCore::m_instance = nullptr;
 static std::mutex engine_mex;
@@ -803,98 +804,89 @@ void TRTCCloudCore::removeAllSDKMsgObserver()
 
 std::vector<TRTCCloudCore::MediaDeviceInfo>& TRTCCloudCore::getMicDevice()
 {
-    std::wstring& selectDevice = CDataCenter::GetInstance()->m_selectMic;
-    std::vector<MediaDeviceInfo>& vecDeviceList = m_vecMicDevice;
+    std::vector<MediaDeviceInfo> &vecDeviceList = m_vecMicDevice;
+    std::wstring& select_device =  CDataCenter::GetInstance()->m_selectMic;
     vecDeviceList.clear();
-    ITRTCDeviceCollection * pDevice = m_pCloud->getMicDevicesList();
-    bool bFindSelect = false;
+    ITRTCDeviceInfo* activeMic = m_pCloud->getCurrentMicDevice();
+    select_device = UTF82Wide(activeMic->getDeviceName());
+    activeMic->release();
 
-    for (int i = 0; i < pDevice->getCount(); i++)
-    {
+    bool find_select_device = false;
+    ITRTCDeviceCollection * pDevice = m_pCloud->getMicDevicesList();
+    for (int i = 0; i < pDevice->getCount(); i++) {
         std::wstring name = UTF82Wide(pDevice->getDeviceName(i));
         TRTCCloudCore::MediaDeviceInfo info;
         info._index = i;
         info._text = name;
         info._deviceId = UTF82Wide(pDevice->getDevicePID(i));
         info._type = L"mic";
-        if (info._text.compare(selectDevice.c_str()) == 0)
-        {
-            bFindSelect = true;
+
+        if (info._text.compare(select_device) == 0) {
             info._select = true;
+            find_select_device = true;
         }
         vecDeviceList.push_back(info);
     }
     pDevice->release();
     pDevice = nullptr;
 
-    if (!bFindSelect && vecDeviceList.size() > 0)
-    {
-        ITRTCDeviceInfo* activeMic = m_pCloud->getCurrentMicDevice();
-        selectDevice = UTF82Wide(activeMic->getDeviceName());
-        activeMic->release();
-        for (auto& it : vecDeviceList)
-        {
-            if (it._text.compare(selectDevice.c_str()) == 0)
-                it._select = true;
-        }
-    }
-    else if (!bFindSelect && vecDeviceList.size() <= 0)
-    {
-        selectDevice = L"";
+    
+    if (vecDeviceList.size() <= 0) {
+        select_device = L"";
+    } else {
+        assert(find_select_device);
     }
     return vecDeviceList;
 }
 
 std::vector<TRTCCloudCore::MediaDeviceInfo>& TRTCCloudCore::getSpeakDevice()
 {
-    std::wstring& selectDevice = CDataCenter::GetInstance()->m_selectSpeak;
-    std::vector<MediaDeviceInfo>& vecDeviceList = m_vecSpeakDevice;
+    std::vector<MediaDeviceInfo> &vecDeviceList = m_vecSpeakDevice;
+    std::wstring& select_device =  CDataCenter::GetInstance()->m_selectSpeak;
     vecDeviceList.clear();
 
+    ITRTCDeviceInfo* activeSpeaker = m_pCloud->getCurrentSpeakerDevice();
+    select_device = UTF82Wide(activeSpeaker->getDeviceName());
+    activeSpeaker->release();
+
+    bool find_select_device = false;
     ITRTCDeviceCollection * pDevice = m_pCloud->getSpeakerDevicesList();
-    bool bFindSelect = false;
-    for (int i = 0; i < pDevice->getCount(); i++)
-    {
+    for (int i = 0; i < pDevice->getCount(); i++) {
         std::wstring name = UTF82Wide(pDevice->getDeviceName(i));
         TRTCCloudCore::MediaDeviceInfo info;
         info._index = i;
         info._text = name;
         info._deviceId = UTF82Wide(pDevice->getDevicePID(i));
         info._type = L"speaker";
-        if (info._text.compare(selectDevice.c_str()) == 0)
-        {
-            bFindSelect = true;
+        if (info._text.compare(select_device) == 0) {
             info._select = true;
+            find_select_device = true;
         }
         vecDeviceList.push_back(info);
     }
     pDevice->release();
     pDevice = nullptr;
-    if (!bFindSelect && vecDeviceList.size() > 0)
-    {
-        ITRTCDeviceInfo* activeSpeaker = m_pCloud->getCurrentSpeakerDevice();
-        selectDevice = UTF82Wide(activeSpeaker->getDeviceName());
-        activeSpeaker->release();
-        for (auto& it : vecDeviceList)
-        {
-            if (it._text.compare(selectDevice.c_str()) == 0)
-                it._select = true;
-        }
-    }
-    else if (!bFindSelect && vecDeviceList.size() <= 0)
-    {
-        selectDevice = L"";
+
+    if (vecDeviceList.size() <= 0) {
+        select_device = L"";
+    } else {
+        assert(find_select_device);
     }
     return vecDeviceList;
 }
 
 std::vector<TRTCCloudCore::MediaDeviceInfo>& TRTCCloudCore::getCameraDevice()
 {
-    std::wstring& selectDevice = CDataCenter::GetInstance()->m_selectCamera;
-    std::vector<MediaDeviceInfo>& vecDeviceList = m_vecCameraDevice;
+    std::vector<MediaDeviceInfo> &vecDeviceList = m_vecCameraDevice;
+    std::wstring& select_device =  CDataCenter::GetInstance()->m_selectCamera;
     vecDeviceList.clear();
+
+    ITRTCDeviceInfo* activeCamera = m_pCloud->getCurrentCameraDevice();
+    select_device = UTF82Wide(activeCamera->getDeviceName());
+    activeCamera->release();
+
+    bool find_select_device = false;
     ITRTCDeviceCollection * pDevice = m_pCloud->getCameraDevicesList();
-    bool bFindSelect = false;
     for (int i = 0; i < pDevice->getCount(); i++)
     {
         std::wstring name = UTF82Wide(pDevice->getDeviceName(i));
@@ -903,26 +895,21 @@ std::vector<TRTCCloudCore::MediaDeviceInfo>& TRTCCloudCore::getCameraDevice()
         info._text = name;
         info._deviceId = UTF82Wide(pDevice->getDevicePID(i));
         info._type = L"camera";
-        if (info._text.compare(selectDevice.c_str()) == 0)
-        {
-            bFindSelect = true;
+        if (info._text.compare(select_device) == 0) {
             info._select = true;
+            find_select_device = true;
         }
         vecDeviceList.push_back(info);
     }
     pDevice->release();
     pDevice = nullptr;
 
-    if (!bFindSelect && vecDeviceList.size() > 0)
-    {
-        selectDevice = vecDeviceList[0]._text;
-        vecDeviceList[0]._select = true;
-    }
-    else if (!bFindSelect && vecDeviceList.size() <= 0)
-    {
-        selectDevice = L"";
-    }
-    return vecDeviceList;
+   if (vecDeviceList.size() <= 0) {
+       select_device = L"";
+   } else {
+       assert(find_select_device);
+   }
+   return vecDeviceList;
 }
 
 ITRTCScreenCaptureSourceList* TRTCCloudCore::GetWndList()
@@ -932,116 +919,26 @@ ITRTCScreenCaptureSourceList* TRTCCloudCore::GetWndList()
 
 void TRTCCloudCore::selectMicDevice(std::wstring text)
 {
-    std::wstring& selectDevice = CDataCenter::GetInstance()->m_selectMic;
-    std::vector<MediaDeviceInfo>& vecDeviceList = m_vecMicDevice;
-    if (text.compare(selectDevice) != 0)
-    {
-        for (auto& item : vecDeviceList)
-        {
-            if (item._select)
-                item._select = false;
-        }
-        for (auto& item : vecDeviceList)
-        {
-            if (item._text.compare(text) == 0)
-            {
-                item._select = true;
-                break;
-            }
-        }
-        selectDevice = text;
-    }
-
-    std::wstring deviceId = text;
-    for (auto itr: vecDeviceList)
-    {
-        if (itr._text.compare(text) == 0)
-        {
-            deviceId = itr._deviceId;
-            break;
-        }
-    }
-
     if (m_pCloud)
     {
-        m_pCloud->setCurrentMicDevice(Wide2UTF8(deviceId.c_str()).c_str());
+        m_pCloud->setCurrentMicDevice(Wide2UTF8(text.c_str()).c_str());
         m_pCloud->setCurrentMicDeviceVolume(CDataCenter::GetInstance()->m_micVolume);
     }
 }
 
 void TRTCCloudCore::selectSpeakerDevice(std::wstring text)
 {
-    std::wstring& selectDevice = CDataCenter::GetInstance()->m_selectSpeak;
-    std::vector<MediaDeviceInfo>& vecDeviceList = m_vecSpeakDevice;
-    if (text.compare(selectDevice) != 0)
-    {
-        for (auto& item : vecDeviceList)
-        {
-            if (item._select)
-                item._select = false;
-        }
-        for (auto& item : vecDeviceList)
-        {
-            if (item._text.compare(text) == 0)
-            {
-                item._select = true;
-                break;
-            }
-        }
-        selectDevice = text;
-    }
-
-    std::wstring deviceId = text;
-    for (auto itr : vecDeviceList)
-    {
-        if (itr._text.compare(text) == 0)
-        {
-            deviceId = itr._deviceId;
-            break;
-        }
-    }
-
     if (m_pCloud)
     {
-        m_pCloud->setCurrentSpeakerDevice(Wide2UTF8(deviceId.c_str()).c_str());
+        m_pCloud->setCurrentSpeakerDevice(Wide2UTF8(text.c_str()).c_str());
         m_pCloud->setCurrentSpeakerVolume(CDataCenter::GetInstance()->m_speakerVolume);
     }
 }
 
 void TRTCCloudCore::selectCameraDevice(std::wstring text)
 {
-    std::wstring& selectDevice = CDataCenter::GetInstance()->m_selectCamera;
-    std::vector<MediaDeviceInfo>& vecDeviceList = m_vecCameraDevice;
-    if (text.compare(selectDevice) != 0)
-    {
-        for (auto& item : vecDeviceList)
-        {
-            if (item._select)
-                item._select = false;
-        }
-        for (auto& item : vecDeviceList)
-        {
-            if (item._text.compare(text) == 0)
-            {
-                item._select = true;
-                break;
-            }
-        }
-        selectDevice = text;
-    }
-
-    std::wstring deviceId = text;
-    for (auto itr : vecDeviceList)
-    {
-        if (itr._text.compare(text) == 0)
-        {
-            deviceId = itr._deviceId;
-            break;
-        }
-    }
-
     if (m_pCloud)
-        m_pCloud->setCurrentCameraDevice(Wide2UTF8(deviceId.c_str()).c_str());
+        m_pCloud->setCurrentCameraDevice(Wide2UTF8(text.c_str()).c_str());
 }
 
 void TRTCCloudCore::startPreview(bool bSetting)

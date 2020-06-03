@@ -28,9 +28,6 @@ AudioEffectViewController::AudioEffectViewController()
 
     m_pAudioEffectMgr = TRTCCloudCore::GetInstance()->getTRTCCloud()->getAudioEffectManager();
 
-    CDataCenter::GetInstance()->m_speakerVolume = TRTCCloudCore::GetInstance()->getTRTCCloud()->getCurrentSpeakerVolume();
-
-   
 }
 
 AudioEffectViewController::~AudioEffectViewController()
@@ -114,32 +111,6 @@ void AudioEffectViewController::InitAudioMusicView()
             }
         }
        
-    }
-
-
-    // 初始化Reverb
-    {
-        CComboUI* pReverbCombo = static_cast<CComboUI*>(m_pmUI.FindControl(_T("combo_voice_reverb")));
-        if (pReverbCombo)
-        {
-            pReverbCombo->SelectItem(0);
-        }
-        CLabelUI* pReverbLable = static_cast<CLabelUI*>(m_pmUI.FindControl(_T("lable_voice_reverb")));
-        if (pReverbLable)
-        {
-            
-            pReverbLable->SetVisible(true);
-        }
-    }
-
-    //初始化Changer
-    {
-        CComboUI* pChangerCombo = static_cast<CComboUI*>(m_pmUI.FindControl(_T("combo_voice_changer")));
-        if (pChangerCombo)
-        {
-            pChangerCombo->SelectItem(0);
-            pChangerCombo->SetVisible(false);
-        }
     }
 
     CSliderUI* pSlider = static_cast<CSliderUI*>(m_pmUI.FindControl(_T("slider_progress_bgm")));
@@ -229,8 +200,6 @@ void AudioEffectViewController::Notify(TNotifyUI& msg)
 {
     NotifyAudioEffect(msg);
     NotifyBGMMusic(msg);
-    NotifyBGMReverb(msg);
-    NotifyBGMChanger(msg);
     NotifyBGMSpeed(msg);
     NotifyBGMPitch(msg);
 }
@@ -317,7 +286,7 @@ void AudioEffectViewController::NotifyAudioEffect(TNotifyUI & msg)
                 effect.path= const_cast<char*>(testFileAcc.c_str());
                 effect.isShortFile = true;
                 m_pAudioEffectMgr->startPlayMusic(effect);
-                m_pAudioEffectMgr->setMusicPlayoutVolume(effect.id, 1.0f);
+                m_pAudioEffectMgr->setMusicPlayoutVolume(effect.id, 100);
             }
             else
             {
@@ -369,7 +338,7 @@ void AudioEffectViewController::NotifyAudioEffect(TNotifyUI & msg)
                 effect.path = const_cast<char*>(testFileAcc.c_str());
                 effect.id = 2;
                 effect.isShortFile = true;
-                m_pAudioEffectMgr->setMusicPlayoutVolume(effect.id, 1.0f);
+                m_pAudioEffectMgr->setMusicPlayoutVolume(effect.id, 100);
                 m_pAudioEffectMgr->startPlayMusic(effect);
             }
             else
@@ -423,7 +392,7 @@ void AudioEffectViewController::NotifyAudioEffect(TNotifyUI & msg)
  
                 effect.id = 3;
                 effect.isShortFile = true;
-                m_pAudioEffectMgr->setMusicPlayoutVolume(effect.id, 1.0f);
+                m_pAudioEffectMgr->setMusicPlayoutVolume(effect.id, 100);
                 m_pAudioEffectMgr->startPlayMusic(effect);
             }
             else
@@ -581,7 +550,7 @@ void AudioEffectViewController::NotifyBGMMusic(TNotifyUI & msg)
                 {
                     pLabel->SetText(strTime.c_str());
                 }
-                m_pAudioEffectMgr->setMusicPlayoutVolume(m_bgmMusicParam->id, 1.0);
+                m_pAudioEffectMgr->setMusicPlayoutVolume(m_bgmMusicParam->id, 100);
             }
            
         }
@@ -593,10 +562,9 @@ void AudioEffectViewController::NotifyBGMMusic(TNotifyUI & msg)
         {
             CProgressUI* pSlider = static_cast<CProgressUI*>(m_pmUI.FindControl(_T("slider_bgm_volume")));
             int volume = pSlider->GetValue();
-            
-            float fVolume = (float)volume / AUDIO_VOLUME_CONVERSION_RATE;
            
-            m_pAudioEffectMgr->setMusicVolume(m_bgmMusicParam->id, fVolume);
+            m_pAudioEffectMgr->setMusicPlayoutVolume(m_bgmMusicParam->id, volume);
+            m_pAudioEffectMgr->setMusicPublishVolume(m_bgmMusicParam->id, volume);
            
             {
                 CSliderUI* pSlider = static_cast<CSliderUI*>(m_pmUI.FindControl(_T("slider_bgm_publish_volume")));
@@ -612,20 +580,15 @@ void AudioEffectViewController::NotifyBGMMusic(TNotifyUI & msg)
         {
             CProgressUI* pSlider = static_cast<CProgressUI*>(m_pmUI.FindControl(_T("slider_bgm_playout_volume")));
             int volume = pSlider->GetValue();
-            
 
-            float fVolume = (float)volume / AUDIO_VOLUME_CONVERSION_RATE;
-
-            m_pAudioEffectMgr->setMusicPlayoutVolume(m_bgmMusicParam->id, fVolume);
+            m_pAudioEffectMgr->setMusicPlayoutVolume(m_bgmMusicParam->id, volume);
         }
         else if (msg.pSender->GetName() == _T("slider_bgm_publish_volume"))
         {
             CProgressUI* pSlider = static_cast<CProgressUI*>(m_pmUI.FindControl(_T("slider_bgm_publish_volume")));
             int volume = pSlider->GetValue();
 
-            float fVolume = (float)volume / AUDIO_VOLUME_CONVERSION_RATE;
-
-            m_pAudioEffectMgr->setMusicPublishVolume(m_bgmMusicParam->id, fVolume);
+            m_pAudioEffectMgr->setMusicPublishVolume(m_bgmMusicParam->id, volume);
            
         }
         else if (msg.pSender->GetName() == _T("slider_progress_bgm"))
@@ -637,38 +600,6 @@ void AudioEffectViewController::NotifyBGMMusic(TNotifyUI & msg)
 
             m_pAudioEffectMgr->seekMusicToPosInTime(m_bgmMusicParam->id, nCurMs);
 
-        }
-    }
-}
-
-void AudioEffectViewController::NotifyBGMReverb(TNotifyUI & msg)
-{
-    if (m_pAudioEffectMgr == NULL)
-    {
-        return;
-    }
-    if (msg.sType == _T("itemselect"))
-    {
-        if (msg.pSender->GetName() == _T("combo_voice_reverb"))
-        {
-
-            m_pAudioEffectMgr->setMusicReverbType(m_bgmMusicParam->id, msg.wParam);
-          
-        }
-    }
-}
-
-void AudioEffectViewController::NotifyBGMChanger(TNotifyUI & msg)
-{
-    if (m_pAudioEffectMgr == NULL)
-    {
-        return;
-    }
-    if (msg.sType == _T("itemselect"))
-    {
-        if (msg.pSender->GetName() == _T("combo_voice_changer"))
-        {
-            //目前不支持 屏蔽
         }
     }
 }

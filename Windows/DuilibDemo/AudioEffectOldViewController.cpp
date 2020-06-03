@@ -25,10 +25,6 @@ AudioEffectOldViewController::AudioEffectOldViewController()
     m_audioEffectParam1->publish = false;
     m_audioEffectParam2->publish = false;
     m_audioEffectParam3->publish = false;
-
-    CDataCenter::GetInstance()->m_speakerVolume = TRTCCloudCore::GetInstance()->getTRTCCloud()->getCurrentSpeakerVolume();
-
-
 }
 
 AudioEffectOldViewController::~AudioEffectOldViewController()

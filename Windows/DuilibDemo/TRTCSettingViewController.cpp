@@ -321,7 +321,7 @@ void TRTCSettingViewController::Notify(TNotifyUI & msg)
             {
                 if (TRTCCloudCore::GetInstance()->getTRTCCloud()->getAudioEffectManager())
                 {
-                    TRTCCloudCore::GetInstance()->getTRTCCloud()->getAudioEffectManager()->setVoiceCaptureVolume((float)volume / AUDIO_DEVICE_VOLUME_TICKET);
+                    TRTCCloudCore::GetInstance()->getTRTCCloud()->getAudioEffectManager()->setVoiceCaptureVolume(volume);
                 }
             }
             
@@ -336,18 +336,8 @@ void TRTCSettingViewController::Notify(TNotifyUI & msg)
             pLabelValue->SetText(sText);
             CDataCenter::GetInstance()->m_audioPlayoutVolume = volume;
 
-            if (CDataCenter::GetInstance()->m_bOpenDemoTestConfig)
-            {
-                if (TRTCCloudCore::GetInstance()->getTRTCCloud())
-                    TRTCCloudCore::GetInstance()->getTRTCCloud()->setAudioPlayoutVolume(volume * AUDIO_DEVICE_VOLUME_TICKET / 100);
-            }
-            else
-            {
-                if (TRTCCloudCore::GetInstance()->getTRTCCloud()->getAudioEffectManager())
-                {
-                    TRTCCloudCore::GetInstance()->getTRTCCloud()->getAudioEffectManager()->setAudioPlayoutVolume((float)volume / AUDIO_DEVICE_VOLUME_TICKET);
-                }
-            }
+            if (TRTCCloudCore::GetInstance()->getTRTCCloud())
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->setAudioPlayoutVolume(volume * AUDIO_DEVICE_VOLUME_TICKET / 100);
         }
         if (name.CompareNoCase(_T("slider_beauty_value")) == 0)
         {
@@ -425,6 +415,10 @@ void TRTCSettingViewController::Notify(TNotifyUI & msg)
         }
         else if (name.CompareNoCase(_T("combo_camera")) == 0) 
         {
+            if (is_init_device_combo_list_) {
+                is_init_device_combo_list_ = false;
+                return;
+            }
             CComboUI* pDeviceSender = static_cast<CComboUI*>(msg.pSender);
             if (pDeviceSender)
             {
@@ -440,6 +434,10 @@ void TRTCSettingViewController::Notify(TNotifyUI & msg)
         }
         else if (name.CompareNoCase(_T("combo_speaker_device")) == 0) 
         {
+            if (is_init_device_combo_list_) {
+                is_init_device_combo_list_ = false;
+                return;
+            }
             CComboUI* pDeviceSender = static_cast<CComboUI*>(msg.pSender);
             if (pDeviceSender)
             {
@@ -455,6 +453,10 @@ void TRTCSettingViewController::Notify(TNotifyUI & msg)
         }
         else if (name.CompareNoCase(_T("combo_mic_device")) == 0) 
         {
+            if (is_init_device_combo_list_) {
+                is_init_device_combo_list_ = false;
+                return;
+            }
             CComboUI* pDeviceSender = static_cast<CComboUI*>(msg.pSender);
             if (pDeviceSender)
             {
@@ -1953,9 +1955,6 @@ void TRTCSettingViewController::InitRecordTab()
             pCheckAudioRecordUI->Selected(false);
         }
     }
-
-   
-
 }
 
 void TRTCSettingViewController::UpdateCameraDevice()
@@ -1980,6 +1979,7 @@ void TRTCSettingViewController::UpdateCameraDevice()
         }
         if (selectIndex >= 0)
         {
+            is_init_device_combo_list_ = true;
             pDeviceCombo->SelectItem(selectIndex);
             
             LocalUserInfo info = CDataCenter::GetInstance()->getLocalUserInfo();
@@ -2023,8 +2023,10 @@ void TRTCSettingViewController::UpdateMicDevice()
             }
             pDeviceCombo->Add(pElement);
         }
-        if (selectIndex >= 0)
+        if (selectIndex >= 0) {
+            is_init_device_combo_list_ = true;
             pDeviceCombo->SelectItem(selectIndex);
+        }
     }
 }
 
@@ -2048,8 +2050,10 @@ void TRTCSettingViewController::UpdateSpeakerDevice()
             }
             pDeviceCombo->Add(pElement);
         }
-        if (selectIndex >= 0)
+        if (selectIndex >= 0) {
+            is_init_device_combo_list_ = true;
             pDeviceCombo->SelectItem(selectIndex);
+        }
     }
 }
 

@@ -50,37 +50,6 @@
 					<Slider name="slider_bgm_pitch" enabled="true" width="200" height="19" value="0" min="-10" max="10" style="slider_style"/>
 					<Label name="lable_bgm_pitch" text="" font="2" width="60" height="16" align="left" valign="bottom" padding="10,3,0,0" textcolor="#FF000000"/>
 				</HorizontalLayout>
-				
-				<HorizontalLayout inset="20,0,0,0" childvalign="center" height="30">
-					<Label name="lable_voice_reverb" text="混响设置: " font="2" width="100" align="right" valign="center" textcolor="#FF000000" showhtml="true" visible="false"/>
-					<Combo name="combo_voice_reverb" width="250" height="36" style="voice_combo" dropbox="bordercolor=&quot;#FF1E90FF&quot; bordersize=&quot;1&quot; bkcolor=&quot;#FFFFFFFF&quot;">
-						<ListLabelElement text="关闭混响"/>
-						<ListLabelElement text="KTV"/>
-						<ListLabelElement text="小房间"/>
-						<ListLabelElement text="大会堂"/>
-						<ListLabelElement text="低沉"/>
-						<ListLabelElement text="洪亮"/>
-						<ListLabelElement text="金属声"/>
-						<ListLabelElement text="磁性"/>
-					  </Combo>  
-				</HorizontalLayout>
-				<HorizontalLayout inset="20,0,0,0" childvalign="center" height="30">
-					<Label text="变声设置: " font="2" width="100" align="right" valign="center" textcolor="#FF000000" showhtml="true" visible="false"/>
-					<Combo name="combo_voice_changer" width="250" height="36" style="voice_combo" dropbox="bordercolor=&quot;#FF1E90FF&quot; bordersize=&quot;1&quot; bkcolor=&quot;#FFFFFFFF&quot;">
-						<ListLabelElement text="关闭变声"/>
-						<ListLabelElement text="熊孩子"/>
-						<ListLabelElement text="萝莉"/>
-						<ListLabelElement text="大叔"/>
-						<ListLabelElement text="重金属"/>
-						<ListLabelElement text="感冒"/>
-						<ListLabelElement text="外国人"/>
-						<ListLabelElement text="困兽"/>
-						<ListLabelElement text="死肥宅"/>
-						<ListLabelElement text="强电流"/>
-						<ListLabelElement text="重机械"/>
-						<ListLabelElement text="空灵"/>
-					  </Combo>  
-				</HorizontalLayout>
 			</GroupBox>
 			<GroupBox text="音效" padding="20,0,20,0" childpadding="20" bordercolor="#FF808080" bkcolor="#FFF0F0F0" bordersize="1" height="170">
 					<HorizontalLayout inset="0,6,0,0" childvalign="left" height="24">

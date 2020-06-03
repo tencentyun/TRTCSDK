@@ -108,11 +108,12 @@ public:
     bool m_bStartTestMic = false;
     bool m_bStartTestSpeaker = false;
     bool m_bStartTestNetwork = false;
-
     bool m_bMuteRemotesAudio = false;
     TRTCAudioEffectParam* m_audioEffectParam1;
     TRTCAudioEffectParam* m_audioEffectParam2;
     TRTCAudioEffectParam* m_audioEffectParam3;
+
+    bool is_init_device_combo_list_ = false;
 
     static int m_ref;
     static std::vector<TRTCSettingViewControllerNotify*> vecNotifyList;
