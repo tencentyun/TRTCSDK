@@ -1,58 +1,103 @@
 {
-  "name": "trtc_electron_demo",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "trtc-electron-simple-demo",
+  "version": "0.1.0",
+  "private": true,
+  "main": "main.electron.js",
+  "scripts": {
+    "watch": "vue-cli-service build --watch --trtc_env=development",
+    "build:mac": "vue-cli-service build --trtc_env=production --target_platform=darwin",
+    "build:win": "vue-cli-service build --trtc_env=production --target_platform=win32",
+    "start": "node_modules/.bin/concurrently \"npm run serve\" \"npm run electron \"",
+    "serve": "vue-cli-service serve",
+    "lint": "vue-cli-service lint",
+    "electron": "node_modules/.bin/electron . --trtc_env=development",
+    "compile:mac": "node_modules/.bin/electron-builder --mac --arm64",
+    "compile:win64": "node_modules/.bin/electron-builder --win --x64",
+    "pack:mac": "npm run build:mac && npm run compile:mac",
+    "pack:win64": "npm run build:win && npm run compile:win64"
+  },
   "build": {
-    "appId": "com.tencent.trtc-electron-demo",
+    "asar": false,
+    "appId": "com.tencent.trtc-electron-simple-demo",
+    "icon": "public/trtc-logo.png",
     "directories": {
-      "output": "build"
+      "output": "./bin"
     },
-    "nsis": {
-      "oneClick": false,
-      "allowElevation": true,
-      "allowToChangeInstallationDirectory": true,
-      "createDesktopShortcut": true,
-      "createStartMenuShortcut": true
-    },
-    "extraResources": {
-      "from": "./resources",
-      "to": "./"
-    },
-    "mac": {
-      "hardenedRuntime": false,
-      "gatekeeperAssess": false,
+    "extraFiles": [
+      "node_modules/trtc-electron-sdk/build/Release/trtc_electron_sdk.node"
+    ],
+    "win": {
       "target": [
-        "zip",
-        "dmg"
+        "nsis",
+        "zip"
+      ],
+      "extraFiles": [
+        {
+          "from": "node_modules/trtc-electron-sdk/build/Release/",
+          "to": "./resources",
+          "filter": [
+            "**/*"
+          ]
+        }
       ]
     },
-    "win": {
-      "target": "nsis"
-    }
+    "mac": {
+      "extraFiles": [
+        {
+          "from": "node_modules/trtc-electron-sdk/build/Release/trtc_electron_sdk.node",
+          "to": "./Resources"
+        }
+      ]
+    },
+    "files": [
+      "dist/**/*",
+      "*.js",
+      "!node_modules"
+    ]
   },
-  "scripts": {
-    "start": "electron .",
-    "prod": "webpack --config webpack.config.js",
-    "win32-package": "electron-builder --win --ia32",
-    "win64-package": "electron-builder --win --x64",
-    "mac-package": "electron-builder --mac --arm64"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
-    "electron-store": "^5.0.0",
-    "trtc-electron-sdk": "latest"
+    "axios": "^0.19.2",
+    "bootstrap-icons": "^1.0.0-alpha3",
+    "core-js": "^3.6.4",
+    "trtc-electron-sdk": "latest",
+    "vue": "^2.6.11",
+    "vue-router": "^3.1.6"
   },
   "devDependencies": {
-    "babel-core": "^6.26.3",
-    "babel-loader": "^7.1.5",
-    "electron": "^6.0.10",
-    "electron-builder": "^21.2.0",
-    "node-loader": "^0.6.0",
-    "webpack": "^4.41.2",
-    "webpack-cli": "^3.3.10",
-    "webpack-target-electron-renderer": "^0.4.0"
-  }
+    "@vue/cli-plugin-babel": "~4.2.0",
+    "@vue/cli-plugin-eslint": "~4.2.0",
+    "@vue/cli-service": "~4.2.0",
+    "babel-eslint": "^10.0.3",
+    "bootstrap": "^4.4.1",
+    "bootstrap-vue": "^2.10.0",
+    "concurrently": "^5.2.0",
+    "copy-webpack-plugin": "^5.1.1",
+    "electron": "8.1.1",
+    "electron-builder": "^22.4.1",
+    "electron-node-loader": "^1.2.0",
+    "eslint": "^6.7.2",
+    "eslint-plugin-vue": "^6.1.2",
+    "fs-sync": "^1.0.6",
+    "native-ext-loader": "^2.3.0",
+    "string-replace-webpack-plugin": "^0.1.3",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "parser": "babel-eslint"
+    },
+    "rules": {}
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions"
+  ]
 }
