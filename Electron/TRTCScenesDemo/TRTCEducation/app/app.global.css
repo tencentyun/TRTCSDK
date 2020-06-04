@@ -1,0 +1,325 @@
+body {
+  margin: 0;
+  color: #8A9099;
+  background-color: #212224;
+}
+
+/* 登录、进入教室样式 start */
+.home-container {
+  width: 400px;
+  height: 300px;
+  padding: 30px 50px;
+  margin: 0 auto;
+  margin-top: 100px;
+  position: relative;
+  margin-top: 200px;
+  background-color: #34363B;
+}
+.home-container h3 {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 30px;
+}
+.home-container .button-enter {
+  display: block;
+  width: 400px;
+  color: #DCEBEB;
+  margin-top: 20px;
+}
+.home-container .el-input input {
+  background-color: #e8e8e8;
+}
+/* 登录、进入教室样式 end */
+
+/* 教室样式 start */
+.classRoom .header {
+  position: relative;
+  height : 40px;
+  line-height: 40px;
+  background: #34363B;
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,0.20);
+  border-radius: 4px 4px 0 0;
+  font-size: 12px;
+}
+.classRoom .logo {
+  position: absolute;
+  width: 22px;
+  top: 12px;
+  height: 16px;
+  margin-left: 10px;
+}
+/* 教室-老师模块 start */
+.teacherPage {
+  height: 720px;
+  position: relative;
+}
+.teacherPageContent {
+  width: 730px;
+  margin: 0 auto;
+  margin-top: 30px;
+  position: relative;
+}
+.teacherPage h3 {
+  margin: 0;
+  padding-top: 60px;
+  text-align: center;
+  font-size: 28px;
+  color: #8A9099;
+  font-weight: normal;
+  letter-spacing: 0;
+  line-height: 26px;
+}
+
+.teacherPage p {
+  text-align: center;
+}
+.courseButton {
+  width: 280px;
+  position: absolute;
+  left: 50%;
+  margin-left: -140px;
+  top: 340px;
+}
+#teacherLocalVideo {
+  width: 310px;
+  height: 310px;
+  position: absolute;
+  background: url('./imgs/videoPreview.png');
+}
+#teacherLocalVideo .previewTip {
+  width: 100%;
+  text-align: center;
+  opacity: 0.75;
+  background: #000000;
+  left: 0;
+  bottom: 0;
+  font-size: 12px;
+  height: 24px;
+  line-height: 24px;
+  color: #737882;
+  border-radius: 0 0 2px 2px;
+  position: absolute;
+}
+.teacherCard {
+  width: 200px;
+  height: 150px;
+  background: #34363B;
+  text-align: center;
+  position: absolute;
+  left: 320px;
+}
+.screenDialogBody {
+  text-align: center;
+}
+.screenDialogCard {
+  width: 180px;
+  text-align: center;
+  height: 120px;
+  cursor: pointer;
+  padding: 0;
+  display: inline-block;
+  margin: 10px;
+  padding: 5px;
+  border: 1px solid #e8e8e8;
+}
+.handsList {
+  width: 210px;
+  height: 250px;
+  padding: 10px;
+  overflow-y: auto;
+  position: absolute;
+  top: 420px;
+  right: 75px;
+  opacity: 0.90;
+  font-size: 14px;
+  background: #101112;
+}
+.handsList .userInfo {
+  width: 130px;
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.closeHands {
+  position: absolute;
+  cursor: pointer;
+  right: 10px;
+}
+.handsList ul {
+  padding: 0;
+  list-style-type: none;
+}
+.hands {
+  width: 54px;
+  height: 54px;
+  position: absolute;
+  cursor: pointer;
+  right: 10px;
+  top: 570px;
+  background: #222;
+  text-align: center;
+  box-shadow: 0 2px 10px 0 rgba(0,0,0,0.25);
+  border-radius: 2px;
+}
+.hands img {
+  width: 24px;
+  height: 26px;
+  margin-top: 10px;
+}
+.hands span {
+  font-size: 14px;
+  line-height: 54px;
+}
+.handsTips {
+  width: 120px;
+  height: 54px;
+  line-height: 54px;
+  font-size: 14px;
+  text-align: center;
+  position: absolute;
+  right: 80px;
+  top: 570px;
+  /* opacity: 0.96; */
+  box-shadow: 0 2px 10px 0 rgba(0,0,0,0.25);
+  border-radius: 2px;
+  background: #212224;
+}
+.handsTips::before{
+  position: absolute;
+  content: '';
+  width: 0;
+  height: 0;
+  border-width: 10px 10px;  /*上下、左右的border值*/
+  border-style: solid;
+  transform:rotate(-90deg);
+  right: -20px;
+  top: 50%;
+  margin-top: -10px;
+  border-color: #212224 transparent transparent;/*只设置上面border的颜色，左右和下面都设置为透明，会出现一个倒三角*/
+}
+.teacherCard img {
+  margin-top: 30px;
+}
+.cardButton {
+  margin-top: 20px;
+}
+.screenCard {
+  left: 530px;
+}
+.cameraCard {
+  top: 160px;
+}
+.voiceCard {
+  top: 160px;
+  left: 530px;
+}
+.roomCol {
+  height: 720px;
+  background: #2C2E32
+}
+.roomRight {
+  margin-left: 10px;
+  height: 670px;
+  background: #2C2E32
+}
+.courseNotice {
+  height: 40px;
+  line-height: 40px;
+  font-size: 14px;
+  padding-left: 10px;
+  margin-bottom: 10px;
+  background: #2C2E32
+}
+.classRoom .el-tabs__item {
+  color: #8A9099;
+}
+.classRoom .el-tabs__nav-wrap::after {
+  background-color: #212224;
+}
+/* 教室-老师模块 end */
+
+/* 教室-学生模块 start */
+.studentPage {
+  position: relative;
+}
+.iconButton {
+  width: 54px;
+  height: 285px;
+  position: absolute;
+  right: 10px;
+  top: 160px;
+  background: #212224;
+  text-align: center;
+  box-shadow: 0 2px 10px 0 rgba(0,0,0,0.25);
+  border-radius: 2px;
+  border-radius: 2px;
+  z-index: 10;
+}
+.studentIconButton {
+  top: 200px;
+  height: 120px;
+}
+.iconButton img {
+  width: 35px;
+  display: inline-block;
+  height: 35px;
+  cursor: pointer;
+  margin-top: 15px;
+}
+.courseBegin {
+  height: 700px;
+}
+
+.courseNotBegin {
+  width: 100%;
+  position: absolute;
+  top: 220px;
+  text-align: center;
+}
+#studentScreenVideo {
+  width: 150px;
+  height: 150px;
+  position: absolute;
+}
+#localSub {
+  height: 700px;
+}
+#studentFullVideo {
+  height: 700px;
+}
+.courseVoice {
+  position: absolute;
+  left: 50%;
+  margin-left: -20px;
+  top: 30%;
+}
+.studentCourseVoice {
+  position: absolute;
+  left: 50%;
+  margin-left: -20px;
+  top: 40%;
+}
+.courseScreen {
+  position: relative;
+}
+.courseScreen #screenLocalVideo {
+  width: 200px;
+  height: 200px;
+  margin-bottom: 80px;
+}
+#fullLocalVideo {
+  height: 720px;
+}
+/* 教室-学生模块 end */
+/* 教室样式end */
+.el-radio__inner {
+  background-color: #34363B;;
+  border: 1px solid #8A9099;;
+}
+
+/* 下载的主题缺少样式 */
+.el-dialog--tiny{width:30%}.el-dialog--small{width:50%}.el-dialog--large{width:90%}
+
+/* message样式替换 */
+.el-message{box-shadow:0 2px 4px rgba(0,0,0,.12),0 0 6px rgba(0,0,0,.04);min-width:300px;padding:10px 12px;box-sizing:border-box;border-radius:2px;position:fixed;left:50%;top:20px;-ms-transform:translateX(-50%);transform:translateX(-50%);background-color:#fff;transition:opacity .3s,transform .4s;overflow:hidden}.el-message .el-icon-circle-check{color:#13ce66}.el-message .el-icon-circle-cross{color:#ff4949}.el-message .el-icon-information{color:#50bfff}.el-message .el-icon-warning{color:#f7ba2a}.el-message__group{margin-left:38px;position:relative;height:20px;line-height:20px;display:-ms-flexbox;display:flex;-ms-flex-align:center;align-items:center}.el-message__group p{font-size:14px;margin:0 34px 0 0;white-space:nowrap;color:#8391a5;text-align:justify}.el-message__group.is-with-icon{margin-left:0}.el-message__img{width:40px;height:40px;position:absolute;left:0;top:0}.el-message__icon{vertical-align:middle;margin-right:8px}.el-message__closeBtn{top:3px;right:0;position:absolute;cursor:pointer;color:#bfcbd9;font-size:14px}.el-message__closeBtn:hover{color:#97a8be}.el-message-fade-enter,.el-message-fade-leave-active{opacity:0;-ms-transform:translate(-50%,-100%);transform:translate(-50%,-100%)}

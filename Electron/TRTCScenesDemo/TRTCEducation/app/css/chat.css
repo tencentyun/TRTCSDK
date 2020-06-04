@@ -1,0 +1,64 @@
+
+
+.chat-message-container {
+  position: relative;
+  height: 540px;
+}
+.chat-message-content {
+  height: 450px;
+  overflow-y: auto;
+}
+.chat-message-content .message {
+  margin: 10px;
+  flex-shrink: 0;
+}
+.chat-message-content .message.sent {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.chat-message-content .message.receive {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.chat-message-container .chat-input {
+  position: absolute;
+  bottom: 40px;
+}
+.chat-button {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+.chat-input textarea {
+  background-color: #333;
+  color: white;
+  border: 1px solid #333;
+}
+.chat-input .el-input-group__append {
+  background: rgba(0,0,0,0.30);
+
+}
+.chat-message-content .message .content {
+  display: inline-block;
+  max-width: 260px;
+  padding: 6px 8px;
+  border: 1px solid #dbe2e5;
+  border-radius: 4px;
+  white-space: pre-wrap;
+  word-break: break-all;
+  overflow: hidden;
+  line-height: 20px;
+  background-color: #e8e8e8;
+  font-size: 14px;
+  color: #333;
+  margin-top: 5px;
+  box-sizing: border-box;
+}
+.chat-message-content .message.sent .content {
+  background-color: #e7f6ff;
+}
+.chat-message-content .nickname {
+  font-size: 14px;
+}
