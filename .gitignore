@@ -7,7 +7,7 @@ project/win/sdk/liteav/liteav.VC.VC.opendb
 Win32
 Win64
 *.ipch
-
+.history
 
 # Xcode
 #
