@@ -1,0 +1,58 @@
+{
+  "name": "trtc_electron_demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "build": {
+    "appId": "com.tencent.trtc-electron-demo",
+    "directories": {
+      "output": "build"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    },
+    "extraResources": {
+      "from": "./resources",
+      "to": "./"
+    },
+    "mac": {
+      "hardenedRuntime": false,
+      "gatekeeperAssess": false,
+      "target": [
+        "zip",
+        "dmg"
+      ]
+    },
+    "win": {
+      "target": "nsis"
+    }
+  },
+  "scripts": {
+    "start": "electron .",
+    "prod": "webpack --config webpack.config.js",
+    "win32-package": "electron-builder --win --ia32",
+    "win64-package": "electron-builder --win --x64",
+    "mac-package": "electron-builder --mac --arm64"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "electron-store": "^5.0.0",
+    "trtc-electron-sdk": "latest"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "electron": "^6.0.10",
+    "electron-builder": "^21.2.0",
+    "node-loader": "^0.6.0",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10",
+    "webpack-target-electron-renderer": "^0.4.0"
+  }
+}

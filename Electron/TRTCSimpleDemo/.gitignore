@@ -1,0 +1,17 @@
+/build
+/node_modules
+/package-lock.json
+/dist
+/jsbak
+/html/localConfig.json
+/*.mp4
+/record
+/logs
+*.dmp
+/.vscode
+*.pdb
+*.ipdb
+*.iobj
+*.exp
+*.log
+*.mmap
