@@ -181,7 +181,7 @@ LRESULT AudioEffectOldViewController::HandleMessage(UINT uMsg, WPARAM wParam, LP
         DoPlayBGMComplete(errCode);
     }
     break;
-    case  WM_USER_CMD_OnMusicPlayError:
+    case  WM_USER_CMD_OnMusicPlayBegin:
     {
         int id = wParam;
     }

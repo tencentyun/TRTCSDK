@@ -49,13 +49,12 @@ private:
     void NotifyBGMSpeed(TNotifyUI & msg);
     void NotifyBGMPitch(TNotifyUI & msg);
     //interface ITXMusicPlayObserver
-
-    void onMusicPlayProgress(int id, long curPtsMS, long durationMS) override;
-    void onMusicPlayError(int id, int errCode) override;
-    void onMusicPlayFinish(int id) override;
+    void onStart(int id,int errCode) override;
+    void onPlayProgress(int id,long curPtsMS,long durationMS) override;
+    void onComplete(int id,int errCode) override;
 
     void DoMusicPlayProgress(int id, int nPos);
-    void DoMusicPlayError(int id, int errCode);
+    void DoMusicPlayBegin(int id, int errCode);
     void DoMusicPlayFinish(int id);
     //InitView
     void InitAudioMusicView();

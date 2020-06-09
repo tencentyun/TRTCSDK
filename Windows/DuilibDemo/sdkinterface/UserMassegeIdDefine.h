@@ -41,14 +41,13 @@
 #define WM_USER_CMD_OnRecordProgress   WM_USER_CMD + 67    //录制进度回调
 #define WM_USER_CMD_OnStartPublishinge   WM_USER_CMD + 68    //更新StreamId回调
 #define WM_USER_CMD_OnStopPublishing   WM_USER_CMD + 69    //更新StreamId回调
-#define WM_USER_CMD_OnMusicPlayError   WM_USER_CMD + 70   //播放音乐失败回调
+#define WM_USER_CMD_OnMusicPlayBegin   WM_USER_CMD + 70   //播放音乐开始状态回调
 #define WM_USER_CMD_OnMusicPlayProgress  WM_USER_CMD + 71 //播放音乐进度回调
 #define WM_USER_CMD_OnMusicPlayComplete  WM_USER_CMD + 72  //播放音乐完成回调
 #define WM_USER_CMD_OnCameraDidReady     WM_USER_CMD + 73  //摄像头设备就绪
 #define WM_USER_CMD_OnMicDidReady        WM_USER_CMD + 74  //麦克风设备就绪
 #define WM_USER_CMD_OnTestMicVolume      WM_USER_CMD + 75  //测试麦克风音量
 #define WM_USER_CMD_OnTestSpeakerVolume   WM_USER_CMD + 76  //测试扬声器音量
-#define WM_USER_CMD_OnMusicPlayBegin      WM_USER_CMD + 77  //播放音乐开始回调
 #define WM_USER_CMD_OnFirstAudioFrame     WM_USER_CMD + 78 //开始播放远程用户的首帧音频（本地声音暂不通知）
 //音视频数据消息
 #define WM_USER_MEDIA_DATA WM_USER + 200

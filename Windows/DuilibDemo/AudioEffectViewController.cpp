@@ -173,11 +173,11 @@ LRESULT AudioEffectViewController::HandleMessage(UINT uMsg, WPARAM wParam, LPARA
         DoMusicPlayFinish(id);
     }
     break;
-    case  WM_USER_CMD_OnMusicPlayError:
+    case  WM_USER_CMD_OnMusicPlayBegin:
     {
         int id = wParam;
         int errCode = lParam;
-        DoMusicPlayError(id, errCode);
+        DoMusicPlayBegin(id, errCode);
     }
     break;
     case  WM_USER_CMD_OnMusicPlayProgress:
@@ -207,7 +207,8 @@ CControlUI* AudioEffectViewController::CreateControl(LPCTSTR pstrClass)
 {
     return nullptr;
 }
-void AudioEffectViewController::onMusicPlayProgress(int id, long curPtsMS, long durationMS)
+
+void AudioEffectViewController::onPlayProgress(int id, long curPtsMS, long durationMS)
 {
     if (id == m_bgmMusicParam->id && durationMS != 0)
     {
@@ -216,11 +217,11 @@ void AudioEffectViewController::onMusicPlayProgress(int id, long curPtsMS, long 
         ::PostMessage(GetHWND(), WM_USER_CMD_OnMusicPlayProgress, (WPARAM)id, (LPARAM)nProgressPos);
     }
 }
-void AudioEffectViewController::onMusicPlayError(int id, int errCode)
+void AudioEffectViewController::onStart(int id, int errCode)
 {
-    ::PostMessage(GetHWND(), WM_USER_CMD_OnMusicPlayError, (WPARAM)id, (LPARAM)errCode);
+    ::PostMessage(GetHWND(), WM_USER_CMD_OnMusicPlayBegin, (WPARAM)id, (LPARAM)errCode);
 }
-void AudioEffectViewController::onMusicPlayFinish(int id)
+void AudioEffectViewController::onComplete(int id, int errCode)
 {
     ::PostMessage(GetHWND(), WM_USER_CMD_OnMusicPlayComplete, (WPARAM)id,NULL);
 }
@@ -238,7 +239,7 @@ void AudioEffectViewController::DoMusicPlayProgress(int id, int nPos)
         pLabel->SetText(strTime.c_str());
     }
 }
-void AudioEffectViewController::DoMusicPlayError(int id, int errCode)
+void AudioEffectViewController::DoMusicPlayBegin(int id, int errCode)
 {
     
 }
