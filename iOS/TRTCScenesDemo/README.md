@@ -40,7 +40,7 @@
 >本文提到的生成 UserSig 的方案是在客户端代码中配置 SECRETKEY，该方法中 SECRETKEY 很容易被反编译逆向破解，一旦您的密钥泄露，攻击者就可以盗用您的腾讯云流量，因此**该方法仅适合本地跑通 Demo 和功能调试**。
 >正确的 UserSig 签发方式请参见 [服务端生成 UserSig](https://cloud.tencent.com/document/product/647/17275#Server)。
 
-#### 步骤4：使用 Cocoapods 集成
+#### 步骤4：检查 SDK 是否存在
 - **如果您使用 ZIP 压缩包**
 如果您是直接下载的 zip 压缩包，解压后会发现 SDK 目录下已经包含了对应的 framework，此时您只需要用 XCode 打开 TXLiteAVDemo.xcworkspace 文件，并检查是否有正确引入 SDK 目录下的 framework 即可。
 
