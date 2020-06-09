@@ -31,4 +31,4 @@
 >正确的 UserSig 签发方式请参见 [服务端生成 UserSig](https://cloud.tencent.com/document/product/647/17275#Server)。
 
 #### 步骤4：编译运行
-使用 XCode（11.0及以上的版本）打开源码目录下的 TRTCSimpleDemo.xcodeproj 工程，设置有效的开发者签名，连接 iPhone／iPad 测试设备后，编译并运行 Demo 工程即可。
+使用 XCode（11.0及以上的版本）打开源码目录下的 TRTCSimpleDemo.xcworkspace 工程，设置有效的开发者签名，连接 iPhone／iPad 测试设备后，编译并运行 Demo 工程即可。
