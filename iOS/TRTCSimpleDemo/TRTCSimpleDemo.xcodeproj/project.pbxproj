@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -18,13 +18,15 @@
 		812E14A62412601E00642B19 /* Live.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 812E14A52412601E00642B19 /* Live.storyboard */; };
 		817262A82416C68400265751 /* LivePushViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817262A72416C68400265751 /* LivePushViewController.swift */; };
 		81E3C986241820EA00366606 /* LiveSubVideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E3C985241820EA00366606 /* LiveSubVideoView.swift */; };
+		8AB4CC75885C25710FA89DD4 /* libPods-TRTCSimpleDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EF34C418731E393A9863343E /* libPods-TRTCSimpleDemo.a */; };
 		FD28D3F124162E2B0080B8A0 /* RTCEntranceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD28D3F024162E2B0080B8A0 /* RTCEntranceViewController.swift */; };
 		FD3B3A192423B5B8001720A3 /* GenerateTestUserSig.m in Sources */ = {isa = PBXBuildFile; fileRef = FD3B3A172423B5B8001720A3 /* GenerateTestUserSig.m */; };
+		FD96E07E248DF98800294D1F /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD96E07D248DF98800294D1F /* Accelerate.framework */; };
 		FDB94D0C2417BC6000C2AC28 /* LivePlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDB94D0B2417BC6000C2AC28 /* LivePlayViewController.swift */; };
 		FDCEFF4B241BBDD6000BFA0B /* TXLiteAVSDK_TRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDCEFF4A241BBDD6000BFA0B /* TXLiteAVSDK_TRTC.framework */; };
 		FDCEFF4D241BBDEB000BFA0B /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = FDCEFF4C241BBDEB000BFA0B /* libc++.tbd */; };
 		FDCEFF4F241BBDF1000BFA0B /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = FDCEFF4E241BBDF1000BFA0B /* libiconv.tbd */; };
-		FDCEFFCA241BC28B000BFA0B /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = FDCEFFC9241BC28B000BFA0B /* Alamofire */; };
+		FDD9E0302440840900FD5B5A /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = FDD9E02F2440840900FD5B5A /* libresolv.tbd */; };
 		FDF543BF241A0A2700F21B2A /* LiveRoomManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDF543BE241A0A2700F21B2A /* LiveRoomManager.swift */; };
 /* End PBXBuildFile section */
 
@@ -44,13 +46,18 @@
 		812E14A52412601E00642B19 /* Live.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Live.storyboard; sourceTree = "<group>"; };
 		817262A72416C68400265751 /* LivePushViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LivePushViewController.swift; sourceTree = "<group>"; };
 		81E3C985241820EA00366606 /* LiveSubVideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveSubVideoView.swift; sourceTree = "<group>"; };
+		86D83B858B9CD6F48E284F6B /* Pods-TRTCSimpleDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TRTCSimpleDemo.release.xcconfig"; path = "Target Support Files/Pods-TRTCSimpleDemo/Pods-TRTCSimpleDemo.release.xcconfig"; sourceTree = "<group>"; };
+		D1FFA7F8E251A044AF05C5BB /* Pods-TRTCSimpleDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TRTCSimpleDemo.debug.xcconfig"; path = "Target Support Files/Pods-TRTCSimpleDemo/Pods-TRTCSimpleDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		EF34C418731E393A9863343E /* libPods-TRTCSimpleDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TRTCSimpleDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD28D3F024162E2B0080B8A0 /* RTCEntranceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTCEntranceViewController.swift; sourceTree = "<group>"; };
 		FD3B3A172423B5B8001720A3 /* GenerateTestUserSig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenerateTestUserSig.m; sourceTree = "<group>"; };
 		FD3B3A182423B5B8001720A3 /* GenerateTestUserSig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GenerateTestUserSig.h; sourceTree = "<group>"; };
+		FD96E07D248DF98800294D1F /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		FDB94D0B2417BC6000C2AC28 /* LivePlayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LivePlayViewController.swift; sourceTree = "<group>"; };
 		FDCEFF4A241BBDD6000BFA0B /* TXLiteAVSDK_TRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TXLiteAVSDK_TRTC.framework; path = ../SDK/TXLiteAVSDK_TRTC.framework; sourceTree = "<group>"; };
 		FDCEFF4C241BBDEB000BFA0B /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		FDCEFF4E241BBDF1000BFA0B /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
+		FDD9E02F2440840900FD5B5A /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
 		FDF543BE241A0A2700F21B2A /* LiveRoomManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveRoomManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -59,10 +66,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FDD9E0302440840900FD5B5A /* libresolv.tbd in Frameworks */,
 				FDCEFF4F241BBDF1000BFA0B /* libiconv.tbd in Frameworks */,
-				FDCEFFCA241BC28B000BFA0B /* Alamofire in Frameworks */,
 				FDCEFF4D241BBDEB000BFA0B /* libc++.tbd in Frameworks */,
+				FD96E07E248DF98800294D1F /* Accelerate.framework in Frameworks */,
 				FDCEFF4B241BBDD6000BFA0B /* TXLiteAVSDK_TRTC.framework in Frameworks */,
+				8AB4CC75885C25710FA89DD4 /* libPods-TRTCSimpleDemo.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -80,6 +89,7 @@
 				812E1480241257D200642B19 /* TRTCSimpleDemo */,
 				812E142F2412403400642B19 /* Products */,
 				C2D3A67E7F4AD77B3A644C16 /* Frameworks */,
+				BA489DC2235E3E83FBB67F6A /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -135,12 +145,24 @@
 			path = RTC;
 			sourceTree = "<group>";
 		};
+		BA489DC2235E3E83FBB67F6A /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				D1FFA7F8E251A044AF05C5BB /* Pods-TRTCSimpleDemo.debug.xcconfig */,
+				86D83B858B9CD6F48E284F6B /* Pods-TRTCSimpleDemo.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		C2D3A67E7F4AD77B3A644C16 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				FDD9E02F2440840900FD5B5A /* libresolv.tbd */,
 				FDCEFF4E241BBDF1000BFA0B /* libiconv.tbd */,
 				FDCEFF4C241BBDEB000BFA0B /* libc++.tbd */,
+				FD96E07D248DF98800294D1F /* Accelerate.framework */,
 				FDCEFF4A241BBDD6000BFA0B /* TXLiteAVSDK_TRTC.framework */,
+				EF34C418731E393A9863343E /* libPods-TRTCSimpleDemo.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -161,7 +183,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 812E14422412403600642B19 /* Build configuration list for PBXNativeTarget "TRTCSimpleDemo" */;
 			buildPhases = (
-				FDCEFFCC241BC32A000BFA0B /* Download TRTC SDK */,
+				FB3CDA309A6E7F33FB42C3A0 /* [CP] Check Pods Manifest.lock */,
 				812E142A2412403400642B19 /* Sources */,
 				812E142B2412403400642B19 /* Frameworks */,
 				812E142C2412403400642B19 /* Resources */,
@@ -171,9 +193,6 @@
 			dependencies = (
 			);
 			name = TRTCSimpleDemo;
-			packageProductDependencies = (
-				FDCEFFC9241BC28B000BFA0B /* Alamofire */,
-			);
 			productName = TRTCSimpleDemo;
 			productReference = 812E142E2412403400642B19 /* SimpleDemo.app */;
 			productType = "com.apple.product-type.application";
@@ -203,9 +222,6 @@
 				Base,
 			);
 			mainGroup = 812E14252412403400642B19;
-			packageReferences = (
-				FDCEFFC8241BC28B000BFA0B /* XCRemoteSwiftPackageReference "Alamofire" */,
-			);
 			productRefGroup = 812E142F2412403400642B19 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -231,7 +247,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		FDCEFFCC241BC32A000BFA0B /* Download TRTC SDK */ = {
+		FB3CDA309A6E7F33FB42C3A0 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -239,15 +255,19 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
-			name = "Download TRTC SDK";
+			name = "[CP] Check Pods Manifest.lock";
 			outputFileListPaths = (
 			);
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TRTCSimpleDemo-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ ! -e \"../SDK/TXLiteAVSDK_TRTC.framework\" ]; then\nURL=\"$(cat ../SDK/README.md | grep -o 'http.*zip')\"\necho \"Downloading SDK from $URL\"\ncurl \"$URL\" --output ../SDK/TXLiteAVSDK_TRTC_iOS.zip\ncd ../SDK\nunzip TXLiteAVSDK_TRTC_iOS.zip\nrm -rf __MACOSX\nmv TXLiteAVSDK_TRTC_*/SDK/*.framework .\nrm -rf TXLiteAVSDK_TRTC_*\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -399,9 +419,11 @@
 		};
 		812E14432412403600642B19 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D1FFA7F8E251A044AF05C5BB /* Pods-TRTCSimpleDemo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
@@ -413,18 +435,21 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.tencent.TRTCSimpleDemo;
 				PRODUCT_NAME = SimpleDemo;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "TRTCSimpleDemo/TRTCSimpleDemo-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
 		812E14442412403600642B19 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 86D83B858B9CD6F48E284F6B /* Pods-TRTCSimpleDemo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
@@ -436,8 +461,9 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.tencent.TRTCSimpleDemo;
 				PRODUCT_NAME = SimpleDemo;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "TRTCSimpleDemo/TRTCSimpleDemo-Bridging-Header.h";
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -464,25 +490,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		FDCEFFC8241BC28B000BFA0B /* XCRemoteSwiftPackageReference "Alamofire" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
-			requirement = {
-				kind = exactVersion;
-				version = 4.9.1;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		FDCEFFC9241BC28B000BFA0B /* Alamofire */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = FDCEFFC8241BC28B000BFA0B /* XCRemoteSwiftPackageReference "Alamofire" */;
-			productName = Alamofire;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 812E14262412403400642B19 /* Project object */;
 }
