@@ -46,13 +46,13 @@
 
 - **如果您克隆 Github 仓库**
 如果您是从 Github 仓库上直接 clone 的源代码，会发现 SDK 目录下是空的，并不包含 framework。此时您可以直接在控制台中切换到 `Podfile` 所在目录，并执行如下命令以安装需要的 SDK：
-```
-pod install
-```
-或者使用以下命令更新本地的 SDK 版本：
-```
-pod update
-```
+  ```
+  pod install
+  ```
+  或者使用以下命令更新本地的 SDK 版本：
+  ```
+  pod update
+  ```
 
 #### 步骤5：编译运行
 使用 XCode （10.0 以上的版本，建议使用最新版Xcode） 打开源码目录下的 TXLiteAVDemo.xcworkspace 工程，设置有效的开发者签名，连接 iPhone／iPad 测试设备后，编译并运行 Demo 工程即可。
