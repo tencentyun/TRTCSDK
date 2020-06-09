@@ -1,8 +1,7 @@
 ## 目录结构说明
-
-本目录包含 iOS 版 TRTC 的所有 Demo 源代码，被分成 TRTCSimpleDemo 和 TRTCScenesDemo 两个子目录：
-- TRTCSimpleDemo： 最简单的示例代码，主要演示接口如何调用以及最基本的功能。
-- TRTCScenesDemo：较复杂的场景案例，结合了 TRTC 和 IM 两个 SDK ，所实现的交互也更接近真实产品。
+本目录包含的是多个场景案例的 Demo 源代码，每一个案例都有 model 和 ui 两个文件夹：
+- model 文件夹
+- ui 文件夹
 
 ```
 ├─ TRTCScenesDemo // TRTC场景化Demo，包括视频通话、语音通话、视频互动直播、语音聊天室
@@ -18,31 +17,42 @@
 |  │    ├─ TRTCLiveRoomDemo      // 场景三：互动直播，包含连麦、PK、聊天、点赞等特性
 |  │    ├─ TRTCAudioCallDemo     // 场景四：音频通话，展示双人音频通话，有离线通知能力
 |  │    ├─ TRTCVideoCallDemo     // 场景五：视频通话，展示双人视频通话，有离线通知能力
-|  
-├─ TRTCSimpleDemo // TRTC精简化Demo，包含通话模式和直播模式。
-|  ├─ Live                       // 演示 TRTC 以直播模式运行的示例代码，该模式下有角色的概念
-|  ├─ RTC                        // 演示 TRTC 以通话模式运行的示例代码，该模式下无角色的概念
-|  ├─ Screen                     // 演示 TRTC 如何进行屏幕分享的示例代码
-|  ├─ Debug                      // 包含 GenerateTestUserSig，用于本地生成测试用的 UserSig  
-|
-├─ SDK 
-│  ├─ TXLiteAVSDK_TRTC.framework          // 如果您下载的是精简版 zip 包，解压后将出现此文件夹
-|  ├─ TXLiteAVSDK_Professional.framework  // 如果您下载的是专业版 zip 包，解压后将出现此文件夹
-|  ├─ TXLiteAVSDK_Enterprise.framework    // 如果您下载的是企业版 zip 包，解压后将出现此文件夹
 ```
 
-## SDK 分类和下载
+## 如何跑通Demo
 
-腾讯云 TRTC SDK 基于 LiteAVSDK 统一框架设计和实现，该框架包含直播、点播、短视频、RTC、AI美颜在内的多项功能：
-- 如果您追求最小化体积增量，可以下载 TRTC 精简版：[TXLiteAVSDK_TRTC.framework](https://cloud.tencent.com/document/product/647/32689#TRTC)
-- 如果您需要使用多个功能而不希望打包多个 SDK，可以下载专业版：[TXLiteAVSDK_Professional.framework](https://cloud.tencent.com/document/product/647/32689#Professional)
-- 如果您已经通过腾讯云商务购买了 AI 美颜 License，可以下载企业版：[TXLiteAVSDK_Enterprise.framework](https://cloud.tencent.com/document/product/647/32689#Enterprise)
+#### 步骤1：检查环境要求
+- Xcode 11.0及以上版本
+- 请确保您的项目已设置有效的开发者签名
 
-## 相关文档链接
+#### 步骤2：创建新的应用
+1. 登录实时音视频控制台，选择【开发辅助】>【[快速跑通Demo](https://console.cloud.tencent.com/trtc/quickstart)】。
+2. 单击【立即开始】，输入应用名称，例如`TestTRTC`，单击【创建应用】。
+3. 单击【我已下载】，会看到页面上展示了您的 SDKAppID 和密钥。
 
-- [SDK 的版本更新历史](https://github.com/tencentyun/TRTCSDK/releases)
-- [SDK 的 API 文档](http://doc.qcloudtrtc.com/md_introduction_trtc_iOS_mac_%E6%A6%82%E8%A7%88.html)
-- [SDK 的官方体验 App](https://cloud.tencent.com/document/product/647/17021)
-- [场景方案：互动直播](https://cloud.tencent.com/document/product/647/43181)
-- [场景方案：视频通话](https://cloud.tencent.com/document/product/647/42044)
-- [场景方案：语音通话](https://cloud.tencent.com/document/product/647/42046)
+#### 步骤3：修改工程中的 SDKAppID 和密钥
+1. 打开 Debug 目录下的 [GenerateTestUserSig.h](debug/GenerateTestUserSig.h) 文件。
+2. 配置`GenerateTestUserSig.h`文件中的两个参数：
+  - SDKAPPID：替换该变量值为上一步骤中在页面上看到的 SDKAppID。
+  - SECRETKEY：替换该变量值为上一步骤中在页面上看到的密钥。
+
+>注意：
+>本文提到的生成 UserSig 的方案是在客户端代码中配置 SECRETKEY，该方法中 SECRETKEY 很容易被反编译逆向破解，一旦您的密钥泄露，攻击者就可以盗用您的腾讯云流量，因此**该方法仅适合本地跑通 Demo 和功能调试**。
+>正确的 UserSig 签发方式请参见 [服务端生成 UserSig](https://cloud.tencent.com/document/product/647/17275#Server)。
+
+#### 步骤4：使用 Cocoapods 集成
+- **如果您使用 ZIP 压缩包**
+如果您是直接下载的 zip 压缩包，解压后会发现 SDK 目录下已经包含了对应的 framework，此时您只需要用 XCode 打开 TXLiteAVDemo.xcworkspace 文件，并检查是否有正确引入 SDK 目录下的 framework 即可。
+
+- **如果您克隆 Github 仓库**
+如果您是从 Github 仓库上直接 clone 的源代码，会发现 SDK 目录下是空的，并不包含 framework。此时您可以直接在控制台中切换到 `Podfile` 所在目录，并执行如下命令以安装需要的 SDK：
+```
+pod install
+```
+或者使用以下命令更新本地的 SDK 版本：
+```
+pod update
+```
+
+#### 步骤5：编译运行
+使用 XCode （10.0 以上的版本，建议使用最新版Xcode） 打开源码目录下的 TXLiteAVDemo.xcworkspace 工程，设置有效的开发者签名，连接 iPhone／iPad 测试设备后，编译并运行 Demo 工程即可。
