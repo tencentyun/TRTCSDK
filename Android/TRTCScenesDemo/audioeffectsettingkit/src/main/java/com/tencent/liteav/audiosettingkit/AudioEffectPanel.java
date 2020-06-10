@@ -558,8 +558,12 @@ public class AudioEffectPanel extends FrameLayout {
     private class BGMListener implements TXAudioEffectManager.TXMusicPlayObserver {
 
         @Override
-        public void onMusicPlayProgress(int id, final long curPtsMS, long durationMS) {
-//            Log.d(TAG, "onMusicPlayProgress id " + id + ", curPtsMS = " + curPtsMS + ", durationMS " + durationMS);
+        public void onStart(int i, int i1) {
+        }
+
+        @Override
+        public void onPlayProgress(int id, final long curPtsMS, long durationMS) {
+//            Log.d(TAG, "onPlayProgress id " + id + ", curPtsMS = " + curPtsMS + ", durationMS " + durationMS);
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -569,12 +573,7 @@ public class AudioEffectPanel extends FrameLayout {
         }
 
         @Override
-        public void onMusicPlayError(int id, int errCode) {
-            Log.d(TAG, "onMusicPlayError id " + id + ", errCode = " + errCode);
-        }
-
-        @Override
-        public void onMusicPlayFinish(int id) {
+        public void onComplete(int id, int i1) {
             Log.d(TAG, "onMusicPlayFinish id " + id);
             mHandler.post(new Runnable() {
                 @Override
