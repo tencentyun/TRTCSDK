@@ -1,2 +1,3 @@
 include ':app', ':rtc', ':debug', ':live'
 rootProject.name='TRTCSimpleDemo'
+include ':screen'

@@ -3,5 +3,7 @@
     <string name="main_trtc_title">"腾讯云TRTC"</string>
     <string name="main_item_trtc">"RTC"</string>
     <string name="main_item_live">"Live"</string>
+    <string name="main_item_screen">"Screen"</string>
+
 
 </resources>
