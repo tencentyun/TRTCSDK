@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="gLx-jz-NzQ">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="gLx-jz-NzQ">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -18,7 +18,7 @@
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="heh-H8-5lV">
                                 <rect key="frame" x="32" y="160" width="311" height="45"/>
-                                <color key="backgroundColor" red="0.0" green="0.65098039215686276" blue="0.41960784313725491" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <color key="backgroundColor" red="0.0" green="0.6632348895072937" blue="0.39796972274780273" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="KTq-6M-IL2"/>
                                 </constraints>
@@ -60,17 +60,39 @@
                                     <action selector="onLiveClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ei9-gX-h1e"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pco-uF-BdX">
+                                <rect key="frame" x="32" y="318" width="311" height="45"/>
+                                <color key="backgroundColor" red="0.0" green="0.65098039220000004" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="45" id="t2E-Z4-s5C"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <state key="normal" title="Screen">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="4"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="onScreenClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="MWB-l6-jid"/>
+                                </connections>
+                            </button>
                         </subviews>
-                        <color key="backgroundColor" red="0.14117647058823529" green="0.14117647058823529" blue="0.14117647058823529" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <color key="backgroundColor" red="0.14099999999999999" green="0.14117647058823529" blue="0.14117647058823529" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
                             <constraint firstItem="FTe-wj-JgU" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="32" id="AWF-OU-VA3"/>
+                            <constraint firstItem="Pco-uF-BdX" firstAttribute="top" secondItem="arD-zK-le7" secondAttribute="bottom" constant="33" id="B58-CF-QUj"/>
                             <constraint firstItem="arD-zK-le7" firstAttribute="height" secondItem="heh-H8-5lV" secondAttribute="height" id="B7L-Js-cQQ"/>
                             <constraint firstItem="heh-H8-5lV" firstAttribute="trailing" secondItem="FTe-wj-JgU" secondAttribute="trailing" id="FFn-O7-K8M"/>
                             <constraint firstItem="arD-zK-le7" firstAttribute="trailing" secondItem="heh-H8-5lV" secondAttribute="trailing" id="H5G-Rz-bPT"/>
                             <constraint firstItem="heh-H8-5lV" firstAttribute="leading" secondItem="FTe-wj-JgU" secondAttribute="leading" id="ONa-cL-OFv"/>
                             <constraint firstItem="arD-zK-le7" firstAttribute="top" secondItem="heh-H8-5lV" secondAttribute="bottom" constant="35" id="Uqf-Z8-tcZ"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="FTe-wj-JgU" secondAttribute="trailing" constant="32" id="gdO-Bn-wbl"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Pco-uF-BdX" secondAttribute="trailing" constant="32" id="kBJ-QA-oeZ"/>
                             <constraint firstItem="arD-zK-le7" firstAttribute="leading" secondItem="heh-H8-5lV" secondAttribute="leading" id="lBN-JZ-jTy"/>
+                            <constraint firstItem="Pco-uF-BdX" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="32" id="plP-sf-1yC"/>
                             <constraint firstItem="heh-H8-5lV" firstAttribute="top" secondItem="FTe-wj-JgU" secondAttribute="bottom" constant="44" id="zFF-ku-fPy"/>
                             <constraint firstItem="FTe-wj-JgU" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="36" id="zfU-U5-GV1"/>
                         </constraints>

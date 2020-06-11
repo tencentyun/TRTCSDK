@@ -22,10 +22,20 @@ class MainViewController: UIViewController {
         presentStoryboard("Live")
     }
     
+    @IBAction func onScreenClicked(_ sender: UIButton) {
+        jumpToScreenVC()
+    }
+    
     func presentStoryboard(_ name: String) {
         let storyboard = UIStoryboard.init(name: name, bundle: nil)
         guard let vc = storyboard.instantiateInitialViewController() else { return }
         navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    @objc func jumpToScreenVC() {
+        let screenVC = ScreenViewController()
+        
+        self.navigationController?.pushViewController(screenVC, animated: true)
     }
     
 }
