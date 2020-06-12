@@ -33,9 +33,9 @@ class MainViewController: UIViewController {
     }
     
     @objc func jumpToScreenVC() {
-        let screenVC = ScreenViewController()
+        let SEVC = ScreenEntranceViewController()
         
-        self.navigationController?.pushViewController(screenVC, animated: true)
+        self.navigationController?.pushViewController(SEVC, animated: true)
     }
     
 }
