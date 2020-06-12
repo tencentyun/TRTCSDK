@@ -40,6 +40,8 @@
 		D689A93921CC97F400C7C618 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D689A93721CC97F400C7C618 /* Main.storyboard */; };
 		D689A93C21CC97F400C7C618 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D689A93B21CC97F400C7C618 /* main.m */; };
 		D697C3C122F3164100E80A2A /* GenerateTestUserSig.m in Sources */ = {isa = PBXBuildFile; fileRef = D697C3C022F3164100E80A2A /* GenerateTestUserSig.m */; };
+		FD7773EF2493EC610025AD65 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD7773EE2493EC610025AD65 /* Accelerate.framework */; };
+		FD7773F12493EC690025AD65 /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD7773F02493EC690025AD65 /* AudioUnit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -97,6 +99,8 @@
 		D689A93D21CC97F400C7C618 /* TRTCDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TRTCDemo.entitlements; sourceTree = "<group>"; };
 		D697C3BF22F3164100E80A2A /* GenerateTestUserSig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GenerateTestUserSig.h; sourceTree = "<group>"; };
 		D697C3C022F3164100E80A2A /* GenerateTestUserSig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenerateTestUserSig.m; sourceTree = "<group>"; };
+		FD7773EE2493EC610025AD65 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		FD7773F02493EC690025AD65 /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = System/Library/Frameworks/AudioUnit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +108,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FD7773F12493EC690025AD65 /* AudioUnit.framework in Frameworks */,
+				FD7773EF2493EC610025AD65 /* Accelerate.framework in Frameworks */,
 				A0933EBC232111BA00565F64 /* OpenAL.framework in Frameworks */,
 				12E9F0E12431A07A002C8992 /* TXLiteAVSDK_TRTC_Mac.framework in Frameworks */,
 				A0933EBA232111B400565F64 /* libc++.tbd in Frameworks */,
@@ -254,6 +260,8 @@
 		D689A96621CCADD600C7C618 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				FD7773F02493EC690025AD65 /* AudioUnit.framework */,
+				FD7773EE2493EC610025AD65 /* Accelerate.framework */,
 				A0933EBB232111BA00565F64 /* OpenAL.framework */,
 				A0933EB9232111B400565F64 /* libc++.tbd */,
 				12E9F0E02431A07A002C8992 /* TXLiteAVSDK_TRTC_Mac.framework */,
