@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		F847B9E7AD2A43114D79EFF3 /* libPods-TRTCSimpleDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B6E2ECBAC34385AFE7D71A3 /* libPods-TRTCSimpleDemo.a */; };
+		FD06A98C2493AE56007A25EB /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD06A98B2493AE56007A25EB /* Accelerate.framework */; };
 		FD1986A02445FD2800E0819A /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = FD19869F2445FD2800E0819A /* libresolv.tbd */; };
 		FD3B3A152423B4E8001720A3 /* GenerateTestUserSig.m in Sources */ = {isa = PBXBuildFile; fileRef = FD3B3A132423B4E8001720A3 /* GenerateTestUserSig.m */; };
 		FD57DBEC2445F8F800C44C47 /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD57DBEB2445F8F800C44C47 /* AudioUnit.framework */; };
@@ -32,6 +33,7 @@
 		312EC8FCF5103F915238D3A0 /* Pods-TRTCSimpleDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TRTCSimpleDemo.release.xcconfig"; path = "Target Support Files/Pods-TRTCSimpleDemo/Pods-TRTCSimpleDemo.release.xcconfig"; sourceTree = "<group>"; };
 		9B6E2ECBAC34385AFE7D71A3 /* libPods-TRTCSimpleDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TRTCSimpleDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9EB38867782F5910DC1C0248 /* Pods-TRTCSimpleDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TRTCSimpleDemo.debug.xcconfig"; path = "Target Support Files/Pods-TRTCSimpleDemo/Pods-TRTCSimpleDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		FD06A98B2493AE56007A25EB /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		FD19869F2445FD2800E0819A /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
 		FD3B3A132423B4E8001720A3 /* GenerateTestUserSig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenerateTestUserSig.m; sourceTree = "<group>"; };
 		FD3B3A142423B4E8001720A3 /* GenerateTestUserSig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GenerateTestUserSig.h; sourceTree = "<group>"; };
@@ -66,6 +68,7 @@
 				FD1986A02445FD2800E0819A /* libresolv.tbd in Frameworks */,
 				FDB9D9E32420ED840040A0F4 /* libc++.tbd in Frameworks */,
 				FD57DBEC2445F8F800C44C47 /* AudioUnit.framework in Frameworks */,
+				FD06A98C2493AE56007A25EB /* Accelerate.framework in Frameworks */,
 				FDBE1FE4241F933B00290D0B /* TXLiteAVSDK_TRTC_Mac.framework in Frameworks */,
 				F847B9E7AD2A43114D79EFF3 /* libPods-TRTCSimpleDemo.a in Frameworks */,
 			);
@@ -129,6 +132,7 @@
 		FDBE1FE1241F92FA00290D0B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				FD06A98B2493AE56007A25EB /* Accelerate.framework */,
 				FD19869F2445FD2800E0819A /* libresolv.tbd */,
 				FD57DBEB2445F8F800C44C47 /* AudioUnit.framework */,
 				FDBE1FE7241F941100290D0B /* libiconv.tbd */,
