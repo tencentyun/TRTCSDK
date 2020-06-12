@@ -34,7 +34,7 @@ class SampleHandler: RPBroadcastSampleHandler, TXReplayKitExtDelegate {
         TXReplayKitExt.sharedInstance() .finishBroadcast()
     }
     
-    func boradcastFinished(_ broadcast: TXReplayKitExt, reason: TXReplayKitExtReason) {
+    func broadcastFinished(_ broadcast: TXReplayKitExt, reason: TXReplayKitExtReason) {
         var tip = ""
         switch reason {
         case TXReplayKitExtReason.requestedByMain:
