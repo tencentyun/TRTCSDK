@@ -141,6 +141,7 @@
 		2806909F2490BE6D00FAAE90 /* Screen */ = {
 			isa = PBXGroup;
 			children = (
+				4533717C2491F24400E18040 /* TXReplayKit_Screen */,
 				280690A02490BE6D00FAAE90 /* ScreenEntranceViewController.swift */,
 				280690A12490BE6D00FAAE90 /* ScreenViewController.swift */,
 				28C0A3FB249101F000E50613 /* TRTCBroadcastExtensionLauncher.swift */,
@@ -168,7 +169,6 @@
 				812E1488241257D200642B19 /* Main */,
 				FD3B3A162423B5B8001720A3 /* debug */,
 				812E1480241257D200642B19 /* TRTCSimpleDemo */,
-				4533717C2491F24400E18040 /* TXReplayKit_Screen */,
 				812E142F2412403400642B19 /* Products */,
 				C2D3A67E7F4AD77B3A644C16 /* Frameworks */,
 				BA489DC2235E3E83FBB67F6A /* Pods */,
@@ -447,11 +447,11 @@
 		453371842491F24400E18040 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = TXReplayKit_Screen/TXReplayKit_Screen.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Screen/TXReplayKit_Screen/TXReplayKit_Screen.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 5GHU44CJHG;
-				INFOPLIST_FILE = TXReplayKit_Screen/Info.plist;
+				INFOPLIST_FILE = Screen/TXReplayKit_Screen/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -473,7 +473,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 5GHU44CJHG;
-				INFOPLIST_FILE = TXReplayKit_Screen/Info.plist;
+				INFOPLIST_FILE = Screen/TXReplayKit_Screen/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
