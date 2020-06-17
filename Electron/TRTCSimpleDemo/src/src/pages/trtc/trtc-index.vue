@@ -50,6 +50,7 @@
 
 <script>
 import rand from '../../common/rand';
+import trtcState from '../../common/trtc-state';
 import Log from '../../common/log';
 import TRTCCloud from 'trtc-electron-sdk';
 let logger = new Log('trtcIndex');
@@ -90,6 +91,19 @@ export default {
      * 当点击“开始”按钮时，带着 userId 和 roomId 参数转到 trtcRoom 页面
     */
     enterRoom() {
+       // 没有摄像头，也没有麦克风，安装好设备再试。
+      if (trtcState.isCameraReady() === false && trtcState.isMicReady() === false) {
+        this.warn('找不到可用的摄像头和麦克风。请安装摄像头和麦克风后再试。');
+        return;
+      }
+      // 没有摄像头，但有麦克风，可以音频
+      if (trtcState.isCameraReady() === false) {
+        this.warn('找不到可用的摄像头，其他用户将无法看到您的画面。');
+      }
+      // 有摄像头，没有麦克风，可以视频
+      if (trtcState.isMicReady() === false) {
+        this.warn('找不到可用的麦克风，其他用户将无法听到您的声音。');
+      }
       let path = `/trtc-room/${this.userId}/${this.roomId}/${encodeURIComponent(this.selectedCameraID)}`;
       logger.log('enterRoom: path', path);
       this.$router.push(path);
@@ -100,11 +114,17 @@ export default {
     randomRoomId() {
 				this.roomId = rand(100000);
     },
-    
+    warn(message) {
+      logger.warn(message);
+      this.$bvToast.toast(message, {
+          title: '警告',
+          variant: 'warning',
+          solid: true
+      });
+    }
 
   },
   mounted() {
-      console.warn('created');
       this.getDefaultCamera();
       this.getCameraList();
   }

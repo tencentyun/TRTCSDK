@@ -4,6 +4,7 @@ import App from './app';
 import VueRouter from 'vue-router';
 import mainMenu from './components/main-menu.vue';
 import navBar from './components/nav-bar.vue';
+import trtcStateCheck from './components/trtc-state-check';
 import { BootstrapVue, IconsPlugin, BSidebar , BToast, ToastPlugin, ModalPlugin} from 'bootstrap-vue'
 
 import 'bootstrap/dist/css/bootstrap.css';
@@ -25,6 +26,7 @@ Vue.use(ModalPlugin);
 // 安装自定义组件
 Vue.component('main-menu', mainMenu);
 Vue.component('nav-bar', navBar);
+Vue.component('trtc-state-check', trtcStateCheck);
 Vue.component('b-sidebar', BSidebar);
 Vue.component('b-toast', BToast);
 
