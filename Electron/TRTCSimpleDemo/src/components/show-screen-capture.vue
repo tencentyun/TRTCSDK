@@ -10,13 +10,7 @@
             @click="onChoose">
             <canvas :id="['screen_'+item.sourceId]" @onload="onCanvasLoaded"></canvas>
             <p>
-                <b-button 
-                    variant="link"
-                    @click="onChoose" 
-                    v-bind:data-id="item.sourceId"
-                    v-bind:data-name="item.sourceName"
-                    v-bind:data-type="item.type"
-                > {{item.sourceName.length > 20 ? item.sourceName.slice(0,20)+'...' : item.sourceName }} </b-button>
+                <b-button variant="link"> {{item.sourceName.length > 20 ? item.sourceName.slice(0,20)+'...' : item.sourceName }} </b-button>
             </p>
         </div>
     </div>   
@@ -117,5 +111,8 @@ export default {
 .screen-info:hover {
     background-color: #f2f2f2;
     box-shadow: #333 0 0 10px;
+}
+.screen-info {
+    cursor: pointer;
 }
 </style>

@@ -46,21 +46,23 @@
 
 ```bash
 .
-|---main.electron.js                    // Electron 主文件
-|---package.json                        // 工程配置
-|---vue.config.js                       // vue-cli 工程文件
-|---src                                 // 源代码目录
-| |---pages                             // 
-| | |---trtc                            // 演示 TRTC 以通话模式运行的示例代码，该模式下无角色的概念
-| | |---live                            // 演示 TRTC 以直播模式运行的示例代码，该模式下有角色的概念
-| |---debug                             // 包含 GenerateTestUserSig，用于本地生成测试用的 UserSig  
+|--main.electron.js                      Electron 主文件
+|--package.json                          工程配置
+|--vue.config.js                         vue-cli 工程文件
+|--src                                   源代码目录
+|  |--pages                               
+|  |  |--trtc                            演示 TRTC 以通话模式运行的示例代码，该模式下无角色的概念
+|  |  |--live                            演示 TRTC 以直播模式运行的示例代码，该模式下有角色的概念
+|  |--debug                              包含 GenerateTestUserSig，用于本地生成测试用的 UserSig  
 ```
 
 <span id="step4"> </span>
 
 ### 步骤4：编译运行
 
-1.  安装 Node 最新版本，请参考  [Nodejs 官网](https://nodejs.org/en/download/) 的指引来进行安装。
+#### Windows 平台
+
+1.  安装 Node 最新版本，请参数[Nodejs 官网](https://nodejs.org/en/download/)
 
 2.  启动终端，切换到 项目目录，执行以下命令。
 	

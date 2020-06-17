@@ -3,7 +3,7 @@ function getParam() {
   let param = {
     'BIN_PATH': '',
     'APP_PATH': '',
-    'TRTC_ENV': '',
+    'TRTC_ENV': 'production',
   };
   let tmp = Array.from(process.argv);
   param.BIN_PATH = tmp[0];

@@ -77,6 +77,7 @@ import Log from '../../common/log';
 import TRTCCloud from 'trtc-electron-sdk';
 // 注意：live-room-service 中用到的服务是为了方便向您展示 demo 的功能。真实业务场景中，您需要自行实现这些服务。
 import {createLiveRoom, getLiveRoomList} from '../../common/live-room-service';
+import trtcState from '../../common/trtc-state';
 let logger = new Log('liveIndex');
 const trtcCloud = new TRTCCloud();
 export default {
@@ -141,24 +142,26 @@ export default {
      * - roomId 存在的情况，会以主播的身份进入这个房间；
      */
     createRoom() {
-      let path =`/live-room-anchor/${this.userId}/${this.roomId}/${encodeURIComponent(this.selectedCameraID)}`;
-      logger.log(`createRoom path: ${path}`);
-      if (this.roomIdList.includes(parseInt(this.roomId))) {
-        this.$router.push(path);
+      // 没有摄像头，没有麦克风，安装好设备再试，或者以观众身份进入。
+      if (trtcState.isCameraReady() === false && trtcState.isMicReady() === false) {
+        this.warn('找不到可用的摄像头和麦克风。无法以主播身份创建直播间。请安装好摄像头和麦克风后再试，或者您可以以观众的身份观看其她主播。');
         return;
       }
-      // 在 liveRoomService 中创建一个房间号，方便其其他用户查看
+
+      let path =`/live-room-anchor/${this.userId}/${this.roomId}/${encodeURIComponent(this.selectedCameraID)}`;
+      logger.log(`createRoom path: ${path}`);
+
+        // 在 liveRoomService 中创建一个房间号，方便其其他用户查看
       createLiveRoom(this.roomId)
       .then(({data})=>{
         if (data.errorCode!=0) {
-          this.warn(`createRoom error #${data.errorCode}, ${data.errorMessage}`);
-          return;
+          this.warn(`liveRoomService createRoom error: ${data.errorCode}, ${data.errorMessage}`);
         }
-        this.$router.push(path);
       })
       .catch((error)=>{
-        logger.error('createRoom 错误: ', error);
-          this.$bvToast.toast('createRoom 错误');
+        logger.error('liveRoomService createRoom error: ', error);
+      }).finally(()=>{
+        this.$router.push(path);
       });
     },
 
@@ -169,7 +172,7 @@ export default {
       getLiveRoomList()
       .then(({data})=>{
         if (data.errorCode!=0) {
-          this.warn(`getRoomList 错误 #${data.errorCode}, ${data.errorMessage}`);
+          // this.warn(`getRoomList 错误 #${data.errorCode}, ${data.errorMessage}`);
           return;
         }
         let list = [];
@@ -191,7 +194,7 @@ export default {
         }
       })
       .catch((error)=>{
-          this.warn('getRoomList error');
+          // this.warn('getRoomList error');
           logger.error('getRoomList error: ', error);
       });
     }, 

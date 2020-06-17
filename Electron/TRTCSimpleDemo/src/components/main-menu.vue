@@ -21,8 +21,9 @@ export default {
 .main-menu>ul {
     display: block;
     list-style: none;
-    margin: 30vh auto;
+    margin: 30vh auto 5vh auto;
     width: 50%;
+    padding: 0;
 }
 .main-menu>ul>li {
     margin: 2px 5px;

@@ -47,6 +47,7 @@
 import TRTCCloud from 'trtc-electron-sdk';
 import showScreenCpature from '../../components/show-screen-capture.vue';
 import genTestUserSig from '../../debug/gen-test-user-sig';
+import trtcState from '../../common/trtc-state';
 import Log from '../../common/log';
 const logger = new Log(`trtcRoom`);
 import {
@@ -107,7 +108,7 @@ export default {
     **/
     onEnterRoom(result) {
       if ( result > 0 ) {
-        logger.log(`onEnterRoom，进房成功，使用了 ${result} 秒`);
+        logger.log(`onEnterRoom，进房成功，使用了 ${result} 毫秒`);
         // 显示摄像头，开房麦克风，开始推流
         this.startCameraAndMic();
       } else {
@@ -319,9 +320,9 @@ export default {
      */
     chooseWindowCapture(event) {
       let source = {
-        sourceId: event.target.dataset.id,
-        sourceName: event.target.dataset.name,
-        type: parseInt(event.target.dataset.type),
+        sourceId: event.currentTarget.dataset.id,
+        sourceName: event.currentTarget.dataset.name,
+        type: parseInt(event.currentTarget.dataset.type),
       };
       logger.log('chooseWindowCapture', source);
       this.startScreenShare(source);
@@ -385,11 +386,27 @@ export default {
       trtcCloud.startLocalPreview(view);
       trtcCloud.startLocalAudio();
       trtcCloud.setLocalViewFillMode(TRTCVideoFillMode.TRTCVideoFillMode_Fill);
+    },
+    warn(message) {
+      logger.warn(message);
+      this.$bvToast.toast(message, {
+          title: '警告',
+          variant: 'warning',
+          solid: true
+      });
     }
 
   },
 
   mounted() {
+    // 没有摄像头，有麦克风，可以音频
+    if (trtcState.isCameraReady() === false) {
+      this.warn('找不到可用的摄像头，观众将无法看到您的画面。');
+    }
+    // 有摄像头，没有麦克风，可以视频
+    if (trtcState.isMicReady() === false) {
+      this.warn('找不到可用的麦克风，观众将无法听到您的声音。');
+    }
     // 1. 获取用于承载视频的 HTMLElement；
     this.videoContainer = document.querySelector('#video-container');
     logger.log(`mounted: `, this.$route.params);
@@ -414,6 +431,7 @@ export default {
     mtaH5.reportSDKAppID(this.sdkInfo.sdkAppId);
 
     // 4. 配置基本的事件订阅
+    trtcCloud.on('onStatistics', (statis)=>{logger.log('onStatistics', statis);});
     trtcCloud.on('onEnterRoom', this.onEnterRoom.bind(this));
     trtcCloud.on('onExitRoom', this.onExitRoom.bind(this));
     trtcCloud.on('onUserVideoAvailable', this.onUserVideoAvailable.bind(this));
