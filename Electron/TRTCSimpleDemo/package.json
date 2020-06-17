@@ -13,8 +13,10 @@
     "electron": "node_modules/.bin/electron . --trtc_env=development",
     "compile:mac": "node_modules/.bin/electron-builder --mac --arm64",
     "compile:win64": "node_modules/.bin/electron-builder --win --x64",
+    "compile:win32": "node_modules/.bin/electron-builder --win --ia32",
     "pack:mac": "npm run build:mac && npm run compile:mac",
-    "pack:win64": "npm run build:win && npm run compile:win64"
+    "pack:win64": "npm run build:win && npm run compile:win64",
+    "pack:win32": "npm run build:win && npm run compile:win32"
   },
   "build": {
     "asar": false,

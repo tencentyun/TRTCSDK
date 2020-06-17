@@ -99,7 +99,7 @@ export default {
     **/
     onEnterRoom(result) {
       if ( result > 0 ) {
-        logger.log(`onEnterRoom，进房成功，使用了 ${result} 秒`);
+        logger.log(`onEnterRoom，进房成功，使用了 ${result} 毫秒`);
         this.startNoAnchorCountDown();
       } else {
         this.$bvToast.toast(`进房失败 ${result}`);

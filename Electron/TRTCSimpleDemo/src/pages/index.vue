@@ -1,13 +1,13 @@
 <template>
   <div>
     <main-menu> </main-menu>
+    <trtc-state-check></trtc-state-check>
   </div>
 </template>
 
 <script>
-
 export default {
-
+  
 }
 </script>
 
