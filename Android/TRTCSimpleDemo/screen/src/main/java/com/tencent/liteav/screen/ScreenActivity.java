@@ -1,11 +1,14 @@
 package com.tencent.liteav.screen;
 
 import android.Manifest;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.PixelFormat;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -24,6 +27,7 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.tencent.liteav.TXLiteAVCode;
 import com.tencent.liteav.debug.Constant;
 import com.tencent.liteav.debug.GenerateTestUserSig;
+import com.tencent.liteav.screen.widget.FloatingView;
 import com.tencent.rtmp.ui.TXCloudVideoView;
 import com.tencent.trtc.TRTCCloud;
 import com.tencent.trtc.TRTCCloudDef;
@@ -47,7 +51,10 @@ import static com.tencent.trtc.TRTCCloudDef.TRTC_APP_SCENE_VIDEOCALL;
 public class ScreenActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "ScreenActivity";
+    //主播退出广播字段
+    public static final String EXIT_APP         = "EXIT_APP";
     private static final int REQ_PERMISSION_CODE  = 0x1000;
+    private static final int OVERLAY_PERMISSION_REQ_CODE = 1234;
 
     private TextView                        mTitleText;                 //【控件】页面Title
     private TextView                        mStartScreenTips;           //【控件】开始屏幕共享时提示信息
@@ -62,6 +69,8 @@ public class ScreenActivity extends AppCompatActivity implements View.OnClickLis
     private String                          mRoomId;                    // 房间Id
     private String                          mUserId;                    // 用户Id
     private boolean                         mIsCapturing = false;       // 是否正在屏幕共享
+    //悬浮摄像窗以及悬浮球
+    private FloatingView                    mFloatingView;              // 悬浮球
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +88,19 @@ public class ScreenActivity extends AppCompatActivity implements View.OnClickLis
             initView();
             enterRoom();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mFloatingView.isShown()) {
+            mFloatingView.dismiss();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
 
     private void handleIntent() {
@@ -108,6 +130,12 @@ public class ScreenActivity extends AppCompatActivity implements View.OnClickLis
         mBackButton.setOnClickListener(this);
         mMuteAudio.setOnClickListener(this);
         mStartCapture.setOnClickListener(this);
+
+        //悬浮球界面
+        mFloatingView = new FloatingView(getApplicationContext(), R.layout.view_floating_default);
+        mFloatingView.setPopupWindow(R.layout.screen_popup_layout);
+
+        mFloatingView.setOnPopupItemClickListener(this);
     }
 
     private void enterRoom() {
@@ -136,9 +164,57 @@ public class ScreenActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        requestDrawOverLays();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (mFloatingView.isShown()) {
+            mFloatingView.dismiss();
+        }
         exitRoom();
+    }
+
+
+    /**
+     * /////////////////////////////////////////////////////////////////////////////////
+     * //
+     * //                      浮窗相关
+     * //
+     * /////////////////////////////////////////////////////////////////////////////////
+     */
+
+    public void requestDrawOverLays() {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N && !Settings.canDrawOverlays(ScreenActivity.this)) {
+            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + ScreenActivity.this.getPackageName()));
+            startActivityForResult(intent, OVERLAY_PERMISSION_REQ_CODE);
+        } else {
+            showFloatingView();
+        }
+    }
+
+    private void showFloatingView() {
+        if (!mFloatingView.isShown()) {
+            if ((null != mTRTCCloud)) {
+                mFloatingView.show();
+                mFloatingView.setOnPopupItemClickListener(this);
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == OVERLAY_PERMISSION_REQ_CODE) {
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N && !Settings.canDrawOverlays(ScreenActivity.this)) {
+                Toast.makeText(getApplicationContext(), "请在设置-权限设置里打开悬浮窗权限", Toast.LENGTH_SHORT).show();
+            } else {
+                showFloatingView();
+            }
+        }
     }
 
     /**
@@ -212,6 +288,19 @@ public class ScreenActivity extends AppCompatActivity implements View.OnClickLis
                 stopScreenCapture();
             } else {
                 startScreenCapture();
+            }
+        } else if (id == R.id.btn_return) {
+            //悬浮球返回主界面按钮
+            Toast.makeText(getApplicationContext(), "返回主界面", Toast.LENGTH_SHORT).show();
+            Intent intent = getPackageManager().getLaunchIntentForPackage(getPackageName());
+            if (intent != null) {
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            }
+            try {
+                PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, 0);
+                pendingIntent.send();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
