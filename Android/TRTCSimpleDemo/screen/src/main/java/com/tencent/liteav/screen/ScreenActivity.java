@@ -27,7 +27,6 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.tencent.liteav.TXLiteAVCode;
 import com.tencent.liteav.debug.Constant;
 import com.tencent.liteav.debug.GenerateTestUserSig;
-import com.tencent.liteav.screen.widget.FloatingView;
 import com.tencent.rtmp.ui.TXCloudVideoView;
 import com.tencent.trtc.TRTCCloud;
 import com.tencent.trtc.TRTCCloudDef;
@@ -69,7 +68,6 @@ public class ScreenActivity extends AppCompatActivity implements View.OnClickLis
     private String                          mRoomId;                    // 房间Id
     private String                          mUserId;                    // 用户Id
     private boolean                         mIsCapturing = false;       // 是否正在屏幕共享
-    //悬浮摄像窗以及悬浮球
     private FloatingView                    mFloatingView;              // 悬浮球
 
     @Override
