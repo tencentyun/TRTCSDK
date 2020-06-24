@@ -20,7 +20,7 @@ import android.view.Display;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ImageButton;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -28,7 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blankj.utilcode.util.ToastUtils;
-import com.tencent.liteav.demo.beauty.BeautyPanel;
+import com.tencent.liteav.demo.beauty.view.BeautyPanel;
 import com.tencent.liteav.demo.beauty.BeautyParams;
 import com.tencent.liteav.liveroom.R;
 import com.tencent.liteav.liveroom.model.TRTCLiveRoom;
@@ -46,8 +46,8 @@ import com.tencent.liteav.liveroom.ui.widget.danmaku.TCDanmuMgr;
 import com.tencent.liteav.liveroom.ui.widget.like.TCHeartLayout;
 import com.tencent.liteav.liveroom.ui.widget.video.TCVideoView;
 import com.tencent.liteav.liveroom.ui.widget.video.TCVideoViewMgr;
-import com.tencent.liteav.login.ProfileManager;
-import com.tencent.liteav.login.UserModel;
+import com.tencent.liteav.login.model.ProfileManager;
+import com.tencent.liteav.login.model.UserModel;
 import com.tencent.rtmp.ui.TXCloudVideoView;
 
 import java.nio.charset.StandardCharsets;
@@ -73,90 +73,66 @@ import master.flame.danmaku.controller.IDanmakuView;
  **/
 public class TCAudienceActivity extends AppCompatActivity implements View.OnClickListener, InputTextMsgDialog.OnTextSendListener {
     private static final String TAG               = TCAudienceActivity.class.getSimpleName();
-    //连麦间隔控制
-    private static final long   LINK_MIC_INTERVAL = 3 * 1000;
+
+    private static final long   LINK_MIC_INTERVAL = 3 * 1000;    //连麦间隔控制
 
     private Handler mHandler = new Handler(Looper.getMainLooper());
 
+    private ConstraintLayout            mRootView;              // 当前Windows的Root View
+    private TXCloudVideoView            mVideoViewAnchor;       // 显示大主播视频的View
+    private TXCloudVideoView            mVideoViewPKAnchor;     // 显示PK主播视频的View
+    private Guideline                   mGuideLineVertical;     // ConstraintLayout的垂直参考线
+    private Guideline                   mGuideLineHorizontal;   // ConstraintLayout的水平参考线
+    private TextView                    mTextAnchorLeave;       // 主播不在线时的提示文本
+    private ImageView                   mImageBackground;       // 主播不在线时的背景显示
+    private InputTextMsgDialog          mInputTextMsgDialog;    // 消息输入框
+    private ListView                    mListIMMessage;         // 显示所有消息的列表控件
+    private TCHeartLayout               mHeartLayout;           // 点赞后心形显示心形图案的布局&控制类
+    private Button                      mButtonLinkMic;         // 连麦按钮
+    private Button                      mButtonSwitchCamera;    // 切换摄像头按钮
+    private ImageView                   mImageAnchorAvatar;     // 显示房间主播头像
+    private TextView                    mTextAnchorName;        // 显示房间主播昵称
+    private TextView                    mMemberCount;           // 显示当前观众数量控件
+    private RecyclerView                mRecyclerUserAvatar;    // 显示观众头像的列表控件
+    private AlertDialog                 mDialogError;           // 错误提示的Dialog
+    private IDanmakuView                mDanmuView;             // 负责弹幕的显示
+    private TCDanmuMgr                  mDanmuMgr;              // 弹幕的管理类
+    private TCVideoViewMgr              mVideoViewMgr;          // 连麦时观众的视频窗口管理类
+    private BeautyPanel                 mBeautyControl;         // 美颜的控制面板
+    private RelativeLayout              mPKContainer;
+    private Toast                       mToastNotice;
+    private Timer                       mNoticeTimer;
+    private TCChatMsgListAdapter        mChatMsgListAdapter;    // mListIMMessage的适配器
+    private TCUserAvatarListAdapter     mUserAvatarListAdapter; // mUserAvatarList的适配器
+    private TRTCLiveRoom                mLiveRoom;              // MLVB 组件
+    private TCLikeFrequencyControl      mLikeFrequencyControl;  //点赞频率的控制类
+    private ArrayList<TCChatEntity>     mArrayListChatEntity = new ArrayList<>();   // 消息列表集合
 
-    private TXCloudVideoView mTXCloudVideoView;      // 观看大主播的 View
-    private TRTCLiveRoom     mLiveRoom;              // MLVB 组件
-    private ImageView        mBgImageView;
-
-    // 消息相关
-    private InputTextMsgDialog      mInputTextMsgDialog;    // 消息输入框
-    private ListView                mListViewMsg;           // 消息列表控件
-    private ArrayList<TCChatEntity> mArrayListChatEntity = new ArrayList<>(); // 消息列表集合
-    private TCChatMsgListAdapter    mChatMsgListAdapter;    // 消息列表的Adapter
-
-    //点赞动画
-    private TCHeartLayout mHeartLayout;
-
-    private ImageButton mBtnLinkMic;            // 连麦按钮
-    private ImageButton mBtnSwitchCamera;       // 切换摄像头按钮
-    private ImageView   mIvAvatar;              // 主播头像控件
-    private TextView    mTvPusherName;          // 主播昵称控件
-    private TextView    mMemberCount;           // 当前观众数量控件
-
-    private String mPusherAvatar;          // 主播头像连接地址
-    private long   mCurrentAudienceCount;  // 当前观众数量
-
-    private boolean isEnterRoom  = false;       // 是否正在播放
-    private boolean isUseCdnPlay = false;
-
-    private String  mPusherNickname;        // 主播昵称
-    private String  mPusherId;              // 主播id
-    private boolean mIsPusherEnter = false; // 主播以及进房了
-    private int     mRoomId        = 0;          // 房间id
-    private String  mSelfUserId    = "";           // 我的id
-    private String  mSelfNickname  = "";         // 我的昵称
-    private String  mSelfAvatar    = "";           // 我的头像
-
-    //头像列表控件
-    private RecyclerView            mUserAvatarList;
-    private TCUserAvatarListAdapter mAvatarListAdapter;
-
-    //点赞频率控制
-    private TCFrequeControl mLikeFrequeControl;
-
-    //弹幕
-    private TCDanmuMgr   mDanmuMgr;
-    private IDanmakuView mDanmuView;
-
-    //分享相关
-    private String mCoverUrl = "";
-    private String mTitle    = ""; //标题
-
-    //log相关
-    private boolean mShowLog;
-    private boolean mIsBeingLinkMic = false;                    // 当前是否正在与主播连麦
-
-    // 麦上主播相关
-    private TCVideoViewMgr mVideoViewMgr;                      // 主播对应的视频View管理类
-
-    //美颜
-    private BeautyPanel mBeautyControl;
-
-    private long mLastLinkMicTime;   // 上次发起连麦的时间，用于频率控制
-
-    private AlertDialog mErrorDialog;
-
-    private Guideline        mVGuideLine;
-    private Guideline        mHGuideLine;
-    private TXCloudVideoView mPKVideoView;
-    private RelativeLayout   mPKContainer;
-    private ConstraintLayout mConstraintLayout;
-    private TextView         mAnchorLeaveTv;
-    private int              mCurrentStatus = TRTCLiveRoomDef.ROOM_STATUS_NONE;
-    private Runnable         mGetAudienceRunnable;
+    private boolean     mShowLog;
+    private long        mLastLinkMicTime;            // 上次发起连麦的时间，用于频率控制
+    private long        mCurrentAudienceCount;       // 当前观众数量
+    private boolean     isEnterRoom      = false;    // 表示当前是否已经进房成功
+    private boolean     isUseCDNPlay     = false;    // 表示当前是否是CDN模式
+    private boolean     mIsAnchorEnter   = false;    // 表示主播是否已经进房
+    private boolean     mIsBeingLinkMic  = false;    // 表示当前是否在连麦状态
+    private int         mRoomId          = 0;
+    private int         mCurrentStatus = TRTCLiveRoomDef.ROOM_STATUS_NONE;
+    private String      mAnchorAvatarURL;            // 主播头像连接地址
+    private String      mAnchorNickname;             // 主播昵称
+    private String      mAnchorId;                   // 主播id
+    private String      mSelfUserId      = "";       // 我的id
+    private String      mSelfNickname    = "";       // 我的昵称
+    private String      mSelfAvatar      = "";       // 我的头像
+    private String      mCoverUrl        = "";       // 房间的背景图的URL
+    private Runnable    mGetAudienceRunnable;
 
     //如果一定时间内主播没出现
-    private Runnable mShowPusherLeave = new Runnable() {
+    private Runnable mShowAnchorLeave = new Runnable() {
         @Override
         public void run() {
-            if (mAnchorLeaveTv != null) {
-                mAnchorLeaveTv.setVisibility(mIsPusherEnter ? View.GONE : View.VISIBLE);
-                mBgImageView.setVisibility(mIsPusherEnter ? View.GONE : View.VISIBLE);
+            if (mTextAnchorLeave != null) {
+                mTextAnchorLeave.setVisibility(mIsAnchorEnter ? View.GONE : View.VISIBLE);
+                mImageBackground.setVisibility(mIsAnchorEnter ? View.GONE : View.VISIBLE);
             }
         }
     };
@@ -183,7 +159,7 @@ public class TCAudienceActivity extends AppCompatActivity implements View.OnClic
             int oldStatus = mCurrentStatus;
             mCurrentStatus = roomInfo.roomStatus;
             // 由于CDN模式下是只播放一路画面，所以不需要做画面的设置
-            if (isUseCdnPlay) {
+            if (isUseCDNPlay) {
                 return;
             }
             // 将PK的界面设置成左右两边
@@ -194,35 +170,35 @@ public class TCAudienceActivity extends AppCompatActivity implements View.OnClic
                     && mCurrentStatus != TRTCLiveRoomDef.ROOM_STATUS_PK) {
                 // 上一个状态是PK，需要将界面中的元素恢复
                 TCVideoView videoView = mVideoViewMgr.getPKUserView();
-                mPKVideoView = videoView.getPlayerVideo();
+                mVideoViewPKAnchor = videoView.getPlayerVideo();
                 if (mPKContainer.getChildCount() != 0) {
-                    mPKContainer.removeView(mPKVideoView);
-                    videoView.addView(mPKVideoView);
+                    mPKContainer.removeView(mVideoViewPKAnchor);
+                    videoView.addView(mVideoViewPKAnchor);
                     mVideoViewMgr.clearPKView();
-                    mPKVideoView = null;
+                    mVideoViewPKAnchor = null;
                 }
             } else if (mCurrentStatus == TRTCLiveRoomDef.ROOM_STATUS_PK) {
                 TCVideoView videoView = mVideoViewMgr.getPKUserView();
-                mPKVideoView = videoView.getPlayerVideo();
-                videoView.removeView(mPKVideoView);
-                mPKContainer.addView(mPKVideoView);
+                mVideoViewPKAnchor = videoView.getPlayerVideo();
+                videoView.removeView(mVideoViewPKAnchor);
+                mPKContainer.addView(mVideoViewPKAnchor);
             }
         }
 
         @Override
         public void onRoomDestroy(String roomId) {
-            showErrorAndQuit(0, "房间已解散");
+            showErrorAndQuit(0, getString(R.string.trtcliveroom_warning_room_disband));
         }
 
         @Override
         public void onAnchorEnter(final String userId) {
-            if (userId.equals(mPusherId)) {
+            if (userId.equals(mAnchorId)) {
                 // 如果是大主播的画面
-                mIsPusherEnter = true;
-                mAnchorLeaveTv.setVisibility(View.GONE);
-                mTXCloudVideoView.setVisibility(View.VISIBLE);
-                mBgImageView.setVisibility(View.GONE);
-                mLiveRoom.startPlay(userId, mTXCloudVideoView, new TRTCLiveRoomCallback.ActionCallback() {
+                mIsAnchorEnter = true;
+                mTextAnchorLeave.setVisibility(View.GONE);
+                mVideoViewAnchor.setVisibility(View.VISIBLE);
+                mImageBackground.setVisibility(View.GONE);
+                mLiveRoom.startPlay(userId, mVideoViewAnchor, new TRTCLiveRoomCallback.ActionCallback() {
                     @Override
                     public void onCallback(int code, String msg) {
                         if (code != 0) {
@@ -239,10 +215,10 @@ public class TCAudienceActivity extends AppCompatActivity implements View.OnClic
 
         @Override
         public void onAnchorExit(String userId) {
-            if (userId.equals(mPusherId)) {
-                mTXCloudVideoView.setVisibility(View.GONE);
-                mBgImageView.setVisibility(View.VISIBLE);
-                mAnchorLeaveTv.setVisibility(View.VISIBLE);
+            if (userId.equals(mAnchorId)) {
+                mVideoViewAnchor.setVisibility(View.GONE);
+                mImageBackground.setVisibility(View.VISIBLE);
+                mTextAnchorLeave.setVisibility(View.VISIBLE);
                 mLiveRoom.stopPlay(userId, null);
             } else {
                 // 这里PK也会回收，但是没关系，因为我们有保护
@@ -270,7 +246,7 @@ public class TCAudienceActivity extends AppCompatActivity implements View.OnClic
 
         @Override
         public void onKickoutJoinAnchor() {
-            ToastUtils.showLong("不好意思，您被主播踢开");
+            ToastUtils.showLong(R.string.trtcliveroom_warning_kick_out_by_anchor);
             stopLinkMic();
         }
 
@@ -312,45 +288,45 @@ public class TCAudienceActivity extends AppCompatActivity implements View.OnClic
      * @param errorMsg
      */
     protected void showErrorAndQuit(int errorCode, String errorMsg) {
-        if (mErrorDialog == null) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.LiveRoomDialogTheme)
-                    .setTitle("错误")
+        if (mDialogError == null) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.TRTCLiveRoomDialogTheme)
+                    .setTitle(R.string.trtcliveroom_error)
                     .setMessage(errorMsg)
-                    .setNegativeButton("知道了", new DialogInterface.OnClickListener() {
+                    .setNegativeButton(R.string.trtcliveroom_get_it, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            mErrorDialog.dismiss();
+                            mDialogError.dismiss();
                             exitRoom();
                             finish();
                         }
                     });
 
-            mErrorDialog = builder.create();
+            mDialogError = builder.create();
         }
-        if (mErrorDialog.isShowing()) {
-            mErrorDialog.dismiss();
+        if (mDialogError.isShowing()) {
+            mDialogError.dismiss();
         }
-        mErrorDialog.show();
+        mDialogError.show();
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTheme(R.style.BeautyTheme);
+        setTheme(R.style.TRTCLiveRoomBeautyTheme);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        setContentView(R.layout.liveroom_activity_audience);
+        setContentView(R.layout.trtcliveroom_activity_audience);
 
         Intent intent = getIntent();
-        isUseCdnPlay = intent.getBooleanExtra(TCConstants.USE_CDN_PLAY, false);
+        isUseCDNPlay = intent.getBooleanExtra(TCConstants.USE_CDN_PLAY, false);
         mRoomId = intent.getIntExtra(TCConstants.GROUP_ID, 0);
-        mPusherId = intent.getStringExtra(TCConstants.PUSHER_ID);
-        mPusherNickname = intent.getStringExtra(TCConstants.PUSHER_NAME);
+        mAnchorId = intent.getStringExtra(TCConstants.PUSHER_ID);
+        mAnchorNickname = intent.getStringExtra(TCConstants.PUSHER_NAME);
         mCoverUrl = intent.getStringExtra(TCConstants.COVER_PIC);
-        mPusherAvatar = intent.getStringExtra(TCConstants.PUSHER_AVATAR);
+        mAnchorAvatarURL = intent.getStringExtra(TCConstants.PUSHER_AVATAR);
 
         UserModel userModel = ProfileManager.getInstance().getUserModel();
         mSelfNickname = userModel.userName;
@@ -358,9 +334,9 @@ public class TCAudienceActivity extends AppCompatActivity implements View.OnClic
         mSelfAvatar = userModel.userAvatar;
 
         List<TCVideoView> videoViewList = new ArrayList<>();
-        videoViewList.add((TCVideoView) findViewById(R.id.tcvideoview_1));
-        videoViewList.add((TCVideoView) findViewById(R.id.tcvideoview_2));
-        videoViewList.add((TCVideoView) findViewById(R.id.tcvideoview_3));
+        videoViewList.add((TCVideoView) findViewById(R.id.video_view_link_mic_1));
+        videoViewList.add((TCVideoView) findViewById(R.id.video_view_link_mic_2));
+        videoViewList.add((TCVideoView) findViewById(R.id.video_view_link_mic_3));
         mVideoViewMgr = new TCVideoViewMgr(videoViewList, null);
 
         // 初始化 liveRoom 组件
@@ -369,67 +345,67 @@ public class TCAudienceActivity extends AppCompatActivity implements View.OnClic
 
         initView();
         enterRoom();
-        mHandler.postDelayed(mShowPusherLeave, 3000);
+        mHandler.postDelayed(mShowAnchorLeave, 3000);
     }
 
 
     private void initView() {
-        mTXCloudVideoView = (TXCloudVideoView) findViewById(R.id.anchor_video_view);
-        mTXCloudVideoView.setLogMargin(10, 10, 45, 55);
-        mListViewMsg = (ListView) findViewById(R.id.im_msg_listview);
-        mListViewMsg.setVisibility(View.VISIBLE);
+        mVideoViewAnchor = (TXCloudVideoView) findViewById(R.id.video_view_anchor);
+        mVideoViewAnchor.setLogMargin(10, 10, 45, 55);
+        mListIMMessage = (ListView) findViewById(R.id.lv_im_msg);
+        mListIMMessage.setVisibility(View.VISIBLE);
         mHeartLayout = (TCHeartLayout) findViewById(R.id.heart_layout);
-        mTvPusherName = (TextView) findViewById(R.id.anchor_tv_broadcasting_time);
-        mTvPusherName.setText(TCUtils.getLimitString(mPusherNickname, 10));
+        mTextAnchorName = (TextView) findViewById(R.id.tv_anchor_broadcasting_time);
+        mTextAnchorName.setText(TCUtils.getLimitString(mAnchorNickname, 10));
 
-        findViewById(R.id.anchor_iv_record_ball).setVisibility(View.GONE);
+        findViewById(R.id.iv_anchor_record_ball).setVisibility(View.GONE);
 
-        mUserAvatarList = (RecyclerView) findViewById(R.id.anchor_rv_avatar);
-        mUserAvatarList.setVisibility(View.VISIBLE);
-        mAvatarListAdapter = new TCUserAvatarListAdapter(this, mPusherId);
-        mUserAvatarList.setAdapter(mAvatarListAdapter);
+        mRecyclerUserAvatar = (RecyclerView) findViewById(R.id.rv_audience_avatar);
+        mRecyclerUserAvatar.setVisibility(View.VISIBLE);
+        mUserAvatarListAdapter = new TCUserAvatarListAdapter(this, mAnchorId);
+        mRecyclerUserAvatar.setAdapter(mUserAvatarListAdapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        mUserAvatarList.setLayoutManager(linearLayoutManager);
+        mRecyclerUserAvatar.setLayoutManager(linearLayoutManager);
 
-        mInputTextMsgDialog = new InputTextMsgDialog(this, R.style.InputDialog);
+        mInputTextMsgDialog = new InputTextMsgDialog(this, R.style.TRTCLiveRoomInputDialog);
         mInputTextMsgDialog.setmOnTextSendListener(this);
 
-        mIvAvatar = (ImageView) findViewById(R.id.anchor_iv_head_icon);
+        mImageAnchorAvatar = (ImageView) findViewById(R.id.iv_anchor_head);
 
-        mIvAvatar.setOnClickListener(new View.OnClickListener() {
+        mImageAnchorAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showLog();
             }
         });
 
-        mMemberCount = (TextView) findViewById(R.id.anchor_tv_member_counts);
+        mMemberCount = (TextView) findViewById(R.id.tv_room_member_counts);
 
         mCurrentAudienceCount++;
         mMemberCount.setText(String.format(Locale.CHINA, "%d", mCurrentAudienceCount));
-        mChatMsgListAdapter = new TCChatMsgListAdapter(this, mListViewMsg, mArrayListChatEntity);
-        mListViewMsg.setAdapter(mChatMsgListAdapter);
+        mChatMsgListAdapter = new TCChatMsgListAdapter(this, mListIMMessage, mArrayListChatEntity);
+        mListIMMessage.setAdapter(mChatMsgListAdapter);
 
         mDanmuView = (IDanmakuView) findViewById(R.id.anchor_danmaku_view);
         mDanmuView.setVisibility(View.VISIBLE);
         mDanmuMgr = new TCDanmuMgr(this);
         mDanmuMgr.setDanmakuView(mDanmuView);
 
-        mBgImageView = (ImageView) findViewById(R.id.audience_background);
-        mBgImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        mImageBackground = (ImageView) findViewById(R.id.audience_background);
+        mImageBackground.setScaleType(ImageView.ScaleType.CENTER_CROP);
         TCUtils.showPicWithUrl(TCAudienceActivity.this
-                , mBgImageView, mCoverUrl, R.drawable.bg_cover);
+                , mImageBackground, mCoverUrl, R.drawable.trtcliveroom_bg_cover);
 
-        mBtnLinkMic = (ImageButton) findViewById(R.id.audience_btn_linkmic);
-        mBtnLinkMic.setVisibility(View.VISIBLE);
-        mBtnLinkMic.setOnClickListener(new View.OnClickListener() {
+        mButtonLinkMic = (Button) findViewById(R.id.audience_btn_linkmic);
+        mButtonLinkMic.setVisibility(View.VISIBLE);
+        mButtonLinkMic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!mIsBeingLinkMic) {
                     long curTime = System.currentTimeMillis();
                     if (curTime < mLastLinkMicTime + LINK_MIC_INTERVAL) {
-                        Toast.makeText(getApplicationContext(), "太频繁啦，休息一下！", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), R.string.trtcliveroom_tips_rest, Toast.LENGTH_SHORT).show();
                     } else {
                         mLastLinkMicTime = curTime;
                         startLinkMic();
@@ -440,8 +416,8 @@ public class TCAudienceActivity extends AppCompatActivity implements View.OnClic
             }
         });
 
-        mBtnSwitchCamera = (ImageButton) findViewById(R.id.audience_btn_switch_cam);
-        mBtnSwitchCamera.setOnClickListener(new View.OnClickListener() {
+        mButtonSwitchCamera = (Button) findViewById(R.id.audience_btn_switch_cam);
+        mButtonSwitchCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mIsBeingLinkMic) {
@@ -452,43 +428,39 @@ public class TCAudienceActivity extends AppCompatActivity implements View.OnClic
 
         //美颜功能
         mBeautyControl = (BeautyPanel) findViewById(R.id.beauty_panel);
-        LiveRoomBeautyKit manager = new LiveRoomBeautyKit(mLiveRoom);
-        mBeautyControl.setProxy(manager);
+        LiveRoomBeautyKit liveRoomBeautyKit = new LiveRoomBeautyKit(mLiveRoom);
+        mBeautyControl.setBeautyKit(liveRoomBeautyKit);
 
-        mVGuideLine = (Guideline) findViewById(R.id.gl_v);
-        mHGuideLine = (Guideline) findViewById(R.id.gl_h);
+        mGuideLineVertical = (Guideline) findViewById(R.id.gl_vertical);
+        mGuideLineHorizontal = (Guideline) findViewById(R.id.gl_horizontal);
         mPKContainer = (RelativeLayout) findViewById(R.id.pk_container);
-        mConstraintLayout = (ConstraintLayout) findViewById(R.id.cl_audience);
-        TCUtils.showPicWithUrl(TCAudienceActivity.this, mIvAvatar, mPusherAvatar, R.drawable.bg_cover);
-        mAnchorLeaveTv = (TextView) findViewById(R.id.tv_anchor_leave);
+        mRootView = (ConstraintLayout) findViewById(R.id.root);
+        TCUtils.showPicWithUrl(TCAudienceActivity.this, mImageAnchorAvatar, mAnchorAvatarURL, R.drawable.trtcliveroom_bg_cover);
+        mTextAnchorLeave = (TextView) findViewById(R.id.tv_anchor_leave);
     }
 
     private void setAnchorViewFull(boolean isFull) {
         if (isFull) {
             ConstraintSet set = new ConstraintSet();
-            set.clone(mConstraintLayout);
-            set.connect(mTXCloudVideoView.getId(), ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP);
-            set.connect(mTXCloudVideoView.getId(), ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START);
-            set.connect(mTXCloudVideoView.getId(), ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM);
-            set.connect(mTXCloudVideoView.getId(), ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END);
-            set.applyTo(mConstraintLayout);
+            set.clone(mRootView);
+            set.connect(mVideoViewAnchor.getId(), ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP);
+            set.connect(mVideoViewAnchor.getId(), ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START);
+            set.connect(mVideoViewAnchor.getId(), ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM);
+            set.connect(mVideoViewAnchor.getId(), ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END);
+            set.applyTo(mRootView);
         } else {
             ConstraintSet set = new ConstraintSet();
-            set.clone(mConstraintLayout);
-            set.connect(mTXCloudVideoView.getId(), ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP);
-            set.connect(mTXCloudVideoView.getId(), ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START);
-            set.connect(mTXCloudVideoView.getId(), ConstraintSet.BOTTOM, mHGuideLine.getId(), ConstraintSet.BOTTOM);
-            set.connect(mTXCloudVideoView.getId(), ConstraintSet.END, mVGuideLine.getId(), ConstraintSet.END);
-            set.applyTo(mConstraintLayout);
+            set.clone(mRootView);
+            set.connect(mVideoViewAnchor.getId(), ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP);
+            set.connect(mVideoViewAnchor.getId(), ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START);
+            set.connect(mVideoViewAnchor.getId(), ConstraintSet.BOTTOM, mGuideLineHorizontal.getId(), ConstraintSet.BOTTOM);
+            set.connect(mVideoViewAnchor.getId(), ConstraintSet.END, mGuideLineVertical.getId(), ConstraintSet.END);
+            set.applyTo(mRootView);
         }
     }
 
     /**
-     * /////////////////////////////////////////////////////////////////////////////////
-     * //
-     * //                      生命周期相关
-     * //
-     * /////////////////////////////////////////////////////////////////////////////////
+     * 生命周期相关
      */
     @Override
     protected void onResume() {
@@ -509,8 +481,9 @@ public class TCAudienceActivity extends AppCompatActivity implements View.OnClic
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mLiveRoom.showVideoDebugLog(false);
         mHandler.removeCallbacks(mGetAudienceRunnable);
-        mHandler.removeCallbacks(mShowPusherLeave);
+        mHandler.removeCallbacks(mShowAnchorLeave);
         if (mDanmuMgr != null) {
             mDanmuMgr.destroy();
             mDanmuMgr = null;
@@ -523,11 +496,7 @@ public class TCAudienceActivity extends AppCompatActivity implements View.OnClic
     }
 
     /**
-     * /////////////////////////////////////////////////////////////////////////////////
-     * //
-     * //                      开始和停止播放相关
-     * //
-     * /////////////////////////////////////////////////////////////////////////////////
+     * 生命周期相关
      */
     private void enterRoom() {
         if (isEnterRoom) {
@@ -538,11 +507,11 @@ public class TCAudienceActivity extends AppCompatActivity implements View.OnClic
             public void onCallback(int code, String msg) {
                 if (code == 0) {
                     //进房成功
-                    ToastUtils.showShort("进房成功");
+                    ToastUtils.showShort(R.string.trtcliveroom_tips_enter_room_success);
                     isEnterRoom = true;
                     getAudienceList();
                 } else {
-                    ToastUtils.showLong("进房失败:" + code);
+                    ToastUtils.showLong(R.string.trtcliveroom_tips_enter_room_fail + code);
                     exitRoom();
                     finish();
                 }
@@ -559,7 +528,7 @@ public class TCAudienceActivity extends AppCompatActivity implements View.OnClic
                     public void onCallback(int code, String msg, List<TRTCLiveRoomDef.TRTCLiveUserInfo> list) {
                         if (code == 0) {
                             for (TRTCLiveRoomDef.TRTCLiveUserInfo info : list) {
-                                mAvatarListAdapter.addItem(info);
+                                mUserAvatarListAdapter.addItem(info);
                             }
                             mCurrentAudienceCount += list.size();
                             mMemberCount.setText(String.format(Locale.CHINA, "%d", mCurrentAudienceCount));
@@ -582,31 +551,26 @@ public class TCAudienceActivity extends AppCompatActivity implements View.OnClic
     }
 
     /**
-     * /////////////////////////////////////////////////////////////////////////////////
-     * //
-     * //                      发起和结束连麦
-     * //
-     * /////////////////////////////////////////////////////////////////////////////////
+     * 生命周期相关
      */
     private void startLinkMic() {
         if (!TCUtils.checkRecordPermission(TCAudienceActivity.this)) {
-            showNoticeToast("请先打开摄像头与麦克风权限");
+            showNoticeToast(getString(R.string.trtcliveroom_tips_start_camera_audio));
             return;
         }
 
-        mBtnLinkMic.setEnabled(false);
-        mBtnLinkMic.setBackgroundResource(R.drawable.linkmic_off);
+        mButtonLinkMic.setEnabled(false);
+        mButtonLinkMic.setBackgroundResource(R.drawable.trtcliveroom_linkmic_off);
 
-        showNoticeToast("等待主播接受......");
+        showNoticeToast(getString(R.string.trtcliveroom_wait_anchor_accept));
 
-
-        mLiveRoom.requestJoinAnchor(mSelfUserId + "请求和您连麦", new TRTCLiveRoomCallback.ActionCallback() {
+        mLiveRoom.requestJoinAnchor(getString(R.string.trtcliveroom_request_link_mic_anchor, mSelfUserId), new TRTCLiveRoomCallback.ActionCallback() {
             @Override
             public void onCallback(int code, String msg) {
                 if (code == 0) {
                     // 接受请求
                     hideNoticeToast();
-                    ToastUtils.showShort("主播接受了您的连麦请求，开始连麦");
+                    ToastUtils.showShort(getString(R.string.trtcliveroom_anchor_accept_link_mic));
                     joinPusher();
                     return;
                 }
@@ -615,12 +579,12 @@ public class TCAudienceActivity extends AppCompatActivity implements View.OnClic
                     ToastUtils.showShort(msg);
                 } else {
                     //出现错误
-                    ToastUtils.showShort("连麦请求发生错误，" + msg);
+                    ToastUtils.showShort(getString(R.string.trtcliveroom_error_request_link_mic, msg));
                 }
-                mBtnLinkMic.setEnabled(true);
+                mButtonLinkMic.setEnabled(true);
                 hideNoticeToast();
                 mIsBeingLinkMic = false;
-                mBtnLinkMic.setBackgroundResource(R.drawable.linkmic_on);
+                mButtonLinkMic.setBackgroundResource(R.drawable.trtcliveroom_linkmic_on);
             }
         });
     }
@@ -641,16 +605,16 @@ public class TCAudienceActivity extends AppCompatActivity implements View.OnClic
                         @Override
                         public void onCallback(int code, String msg) {
                             if (code == 0) {
-                                mBtnLinkMic.setEnabled(true);
+                                mButtonLinkMic.setEnabled(true);
                                 mIsBeingLinkMic = true;
-                                if (mBtnSwitchCamera != null) {
-                                    mBtnSwitchCamera.setVisibility(View.VISIBLE);
+                                if (mButtonSwitchCamera != null) {
+                                    mButtonSwitchCamera.setVisibility(View.VISIBLE);
                                 }
                             } else {
                                 stopLinkMic();
-                                mBtnLinkMic.setEnabled(true);
-                                mBtnLinkMic.setBackgroundResource(R.drawable.linkmic_on);
-                                Toast.makeText(TCAudienceActivity.this, "连麦失败：" + msg, Toast.LENGTH_SHORT).show();
+                                mButtonLinkMic.setEnabled(true);
+                                mButtonLinkMic.setBackgroundResource(R.drawable.trtcliveroom_linkmic_on);
+                                Toast.makeText(TCAudienceActivity.this, getString(R.string.trtcliveroom_fail_link_mic, msg), Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
@@ -662,13 +626,13 @@ public class TCAudienceActivity extends AppCompatActivity implements View.OnClic
     private void stopLinkMic() {
         mIsBeingLinkMic = false;
         //启用连麦Button
-        if (mBtnLinkMic != null) {
-            mBtnLinkMic.setEnabled(true);
-            mBtnLinkMic.setBackgroundResource(R.drawable.linkmic_on);
+        if (mButtonLinkMic != null) {
+            mButtonLinkMic.setEnabled(true);
+            mButtonLinkMic.setBackgroundResource(R.drawable.trtcliveroom_linkmic_on);
         }
         //隐藏切换摄像头Button
-        if (mBtnSwitchCamera != null) {
-            mBtnSwitchCamera.setVisibility(View.INVISIBLE);
+        if (mButtonSwitchCamera != null) {
+            mButtonSwitchCamera.setVisibility(View.INVISIBLE);
         }
         // 停止
         mLiveRoom.stopCameraPreview();
@@ -679,21 +643,13 @@ public class TCAudienceActivity extends AppCompatActivity implements View.OnClic
     }
 
     /**
-     *     /////////////////////////////////////////////////////////////////////////////////
-     *     //
-     *     //                      接收到各类的消息的处理
-     *     //
-     *     /////////////////////////////////////////////////////////////////////////////////
-     */
-
-    /**
      * 观众进房消息
      *
      * @param userInfo
      */
     public void handleAudienceJoinMsg(TRTCLiveRoomDef.TRTCLiveUserInfo userInfo) {
         //更新头像列表 返回false表明已存在相同用户，将不会更新数据
-        if (!mAvatarListAdapter.addItem(userInfo)) {
+        if (!mUserAvatarListAdapter.addItem(userInfo)) {
             return;
         }
 
@@ -701,11 +657,11 @@ public class TCAudienceActivity extends AppCompatActivity implements View.OnClic
         mMemberCount.setText(String.format(Locale.CHINA, "%d", mCurrentAudienceCount));
         //左下角显示用户加入消息
         TCChatEntity entity = new TCChatEntity();
-        entity.setSenderName("通知");
+        entity.setSenderName(getString(R.string.trtcliveroom_notification));
         if (TextUtils.isEmpty(userInfo.userName)) {
-            entity.setContent(userInfo.userId + "加入直播");
+            entity.setContent(getString(R.string.trtcliveroom_user_join_live, userInfo.userId));
         } else {
-            entity.setContent(userInfo.userName + "加入直播");
+            entity.setContent(getString(R.string.trtcliveroom_user_join_live, userInfo.userName));
         }
         entity.setType(TCConstants.MEMBER_ENTER);
         notifyMsg(entity);
@@ -725,14 +681,14 @@ public class TCAudienceActivity extends AppCompatActivity implements View.OnClic
 
         mMemberCount.setText(String.format(Locale.CHINA, "%d", mCurrentAudienceCount));
 
-        mAvatarListAdapter.removeItem(userInfo.userId);
+        mUserAvatarListAdapter.removeItem(userInfo.userId);
 
         TCChatEntity entity = new TCChatEntity();
-        entity.setSenderName("通知");
+        entity.setSenderName(getString(R.string.trtcliveroom_notification));
         if (TextUtils.isEmpty(userInfo.userName)) {
-            entity.setContent(userInfo.userId + "退出直播");
+            entity.setContent(getString(R.string.trtcliveroom_user_quit_live, userInfo.userId));
         } else {
-            entity.setContent(userInfo.userName + "退出直播");
+            entity.setContent(getString(R.string.trtcliveroom_user_quit_live, userInfo.userName));
         }
         entity.setType(TCConstants.MEMBER_EXIT);
         notifyMsg(entity);
@@ -746,11 +702,11 @@ public class TCAudienceActivity extends AppCompatActivity implements View.OnClic
     public void handlePraiseMsg(TRTCLiveRoomDef.TRTCLiveUserInfo userInfo) {
         TCChatEntity entity = new TCChatEntity();
 
-        entity.setSenderName("通知");
+        entity.setSenderName(getString(R.string.trtcliveroom_notification));
         if (TextUtils.isEmpty(userInfo.userName)) {
-            entity.setContent(userInfo.userId + "点了个赞");
+            entity.setContent(getString(R.string.trtcliveroom_user_click_like, userInfo.userId));
         } else {
-            entity.setContent(userInfo.userName + "点了个赞");
+            entity.setContent(getString(R.string.trtcliveroom_user_click_like, userInfo.userName));
         }
         if (mHeartLayout != null) {
             mHeartLayout.addFavor();
@@ -809,11 +765,7 @@ public class TCAudienceActivity extends AppCompatActivity implements View.OnClic
     }
 
     /**
-     * /////////////////////////////////////////////////////////////////////////////////
-     * //
-     * //                       点击事件
-     * //
-     * /////////////////////////////////////////////////////////////////////////////////
+     * 点击事件
      */
     @Override
     public void onClick(View v) {
@@ -827,11 +779,11 @@ public class TCAudienceActivity extends AppCompatActivity implements View.OnClic
             }
 
             //点赞发送请求限制
-            if (mLikeFrequeControl == null) {
-                mLikeFrequeControl = new TCFrequeControl();
-                mLikeFrequeControl.init(2, 1);
+            if (mLikeFrequencyControl == null) {
+                mLikeFrequencyControl = new TCLikeFrequencyControl();
+                mLikeFrequencyControl.init(2, 1);
             }
-            if (mLikeFrequeControl.canTrigger()) {
+            if (mLikeFrequencyControl.canTrigger()) {
                 //向ChatRoom发送点赞消息
                 mLiveRoom.sendRoomCustomMsg(String.valueOf(TCConstants.IMCMD_PRAISE), "", null);
             }
@@ -843,24 +795,16 @@ public class TCAudienceActivity extends AppCompatActivity implements View.OnClic
     private void showLog() {
         mShowLog = !mShowLog;
         mLiveRoom.showVideoDebugLog(mShowLog);
-        if (mTXCloudVideoView != null) {
-            mTXCloudVideoView.showLog(mShowLog);
+        if (mVideoViewAnchor != null) {
+            mVideoViewAnchor.showLog(mShowLog);
         }
-        if (mPKVideoView != null) {
-            mPKVideoView.showLog(mShowLog);
+        if (mVideoViewPKAnchor != null) {
+            mVideoViewPKAnchor.showLog(mShowLog);
         }
 
         mVideoViewMgr.showLog(mShowLog);
     }
 
-
-    /**
-     *     /////////////////////////////////////////////////////////////////////////////////
-     *     //
-     *     //                       消息输入与发送相关
-     *     //
-     *     /////////////////////////////////////////////////////////////////////////////////
-     */
 
     /**
      * 发消息弹出框
@@ -890,13 +834,13 @@ public class TCAudienceActivity extends AppCompatActivity implements View.OnClic
         }
         byte[] byte_num = msg.getBytes(StandardCharsets.UTF_8);
         if (byte_num.length > 160) {
-            Toast.makeText(this, "请输入内容", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.trtcliveroom_tips_input_content, Toast.LENGTH_SHORT).show();
             return;
         }
 
         //消息回显
         TCChatEntity entity = new TCChatEntity();
-        entity.setSenderName("我:");
+        entity.setSenderName(getString(R.string.trtcliveroom_me));
         entity.setContent(msg);
         entity.setType(TCConstants.TEXT_TYPE);
         notifyMsg(entity);
@@ -917,9 +861,9 @@ public class TCAudienceActivity extends AppCompatActivity implements View.OnClic
                 @Override
                 public void onCallback(int code, String msg) {
                     if (code == 0) {
-                        ToastUtils.showShort("发送成功");
+                        ToastUtils.showShort(R.string.trtcliveroom_message_send_success);
                     } else {
-                        ToastUtils.showShort("发送消息失败[" + code + "]" + msg);
+                        ToastUtils.showShort(getString(R.string.trtcliveroom_message_send_fail, code, msg));
                     }
                 }
             });
@@ -927,38 +871,28 @@ public class TCAudienceActivity extends AppCompatActivity implements View.OnClic
     }
 
 
-    /**
-     * /////////////////////////////////////////////////////////////////////////////////
-     * //
-     * //                      弹窗消息
-     * //
-     * /////////////////////////////////////////////////////////////////////////////////
-     */
-    private Toast mNoticeToast;
-    private Timer mNoticeTimer;
-
     private void showNoticeToast(String text) {
-        if (mNoticeToast == null) {
-            mNoticeToast = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG);
+        if (mToastNotice == null) {
+            mToastNotice = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG);
         }
 
         if (mNoticeTimer == null) {
             mNoticeTimer = new Timer();
         }
 
-        mNoticeToast.setText(text);
+        mToastNotice.setText(text);
         mNoticeTimer.schedule(new TimerTask() {
             @Override
             public void run() {
-                mNoticeToast.show();
+                mToastNotice.show();
             }
         }, 0, 3000);
     }
 
     private void hideNoticeToast() {
-        if (mNoticeToast != null) {
-            mNoticeToast.cancel();
-            mNoticeToast = null;
+        if (mToastNotice != null) {
+            mToastNotice.cancel();
+            mToastNotice = null;
         }
         if (mNoticeTimer != null) {
             mNoticeTimer.cancel();
@@ -966,13 +900,6 @@ public class TCAudienceActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
-    /**
-     * /////////////////////////////////////////////////////////////////////////////////
-     * //
-     * //                      权限管理
-     * //
-     * /////////////////////////////////////////////////////////////////////////////////
-     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);

@@ -26,16 +26,14 @@ import com.tencent.liteav.liveroom.R;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
-
 /**
  * Module:   TCAbstractPathAnimator
  * <p>
  * Function: 心心飘扬的动画基类
  */
 public abstract class TCAbstractPathAnimator {
-    private final   Random mRandom;
-    protected final Config mConfig;
-
+    private   final   Random mRandom;
+    protected final   Config mConfig;
 
     public TCAbstractPathAnimator(Config config) {
         mConfig = config;
@@ -82,18 +80,18 @@ public abstract class TCAbstractPathAnimator {
         static public Config fromTypeArray(TypedArray typedArray, float x, float y, int pointx, int heartWidth, int heartHeight) {
             Config    config = new Config();
             Resources res    = typedArray.getResources();
-            config.initX = (int) typedArray.getDimension(R.styleable.HeartLayout_initX,
+            config.initX = (int) typedArray.getDimension(R.styleable.TRTCLiveRoomHeartLayout_initX,
                     x);
-            config.initY = (int) typedArray.getDimension(R.styleable.HeartLayout_initY,
+            config.initY = (int) typedArray.getDimension(R.styleable.TRTCLiveRoomHeartLayout_initY,
                     y);
-            config.xRand = (int) typedArray.getDimension(R.styleable.HeartLayout_xRand,
-                    res.getDimensionPixelOffset(R.dimen.heart_anim_bezier_x_rand));
-            config.animLength = (int) typedArray.getDimension(R.styleable.HeartLayout_animLength,
-                    res.getDimensionPixelOffset(R.dimen.heart_anim_length));//动画长度
-            config.animLengthRand = (int) typedArray.getDimension(R.styleable.HeartLayout_animLengthRand,
-                    res.getDimensionPixelOffset(R.dimen.heart_anim_length_rand));
-            config.bezierFactor = typedArray.getInteger(R.styleable.HeartLayout_bezierFactor,
-                    res.getInteger(R.integer.heart_anim_bezier_factor));
+            config.xRand = (int) typedArray.getDimension(R.styleable.TRTCLiveRoomHeartLayout_xRand,
+                    res.getDimensionPixelOffset(R.dimen.trtcliveroom_heart_anim_bezier_x_rand));
+            config.animLength = (int) typedArray.getDimension(R.styleable.TRTCLiveRoomHeartLayout_animLength,
+                    res.getDimensionPixelOffset(R.dimen.trtcliveroom_heart_anim_length));//动画长度
+            config.animLengthRand = (int) typedArray.getDimension(R.styleable.TRTCLiveRoomHeartLayout_animLengthRand,
+                    res.getDimensionPixelOffset(R.dimen.trtcliveroom_heart_anim_length_rand));
+            config.bezierFactor = typedArray.getInteger(R.styleable.TRTCLiveRoomHeartLayout_bezierFactor,
+                    res.getInteger(R.integer.trtcliveroom_heart_anim_bezier_factor));
             config.xPointFactor = pointx;
             //            config.heartWidth = (int) typedArray.getDimension(R.styleable.HeartLayout_heart_width,
             //                    res.getDimensionPixelOffset(R.dimen.heart_size_width));//动画图片宽度
@@ -101,8 +99,8 @@ public abstract class TCAbstractPathAnimator {
             //                    res.getDimensionPixelOffset(R.dimen.heart_size_height));//动画图片高度
             config.heartWidth = heartWidth;
             config.heartHeight = heartHeight;
-            config.animDuration = typedArray.getInteger(R.styleable.HeartLayout_anim_duration,
-                    res.getInteger(R.integer.heart_anim_duration));//持续期
+            config.animDuration = typedArray.getInteger(R.styleable.TRTCLiveRoomHeartLayout_anim_duration,
+                    res.getInteger(R.integer.trtcliveroom_heart_anim_duration));//持续期
             return config;
         }
 

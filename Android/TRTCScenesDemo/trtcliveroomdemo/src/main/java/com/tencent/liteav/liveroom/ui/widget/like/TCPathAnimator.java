@@ -37,14 +37,13 @@ import java.util.concurrent.atomic.AtomicInteger;
  *
  */
 public class TCPathAnimator extends TCAbstractPathAnimator {
-    private final AtomicInteger mCounter = new AtomicInteger(0);
-    private Handler mHandler;
-
-    //路径的缓存
     private final static int MAX_PATH_COUNTS = 10;      //最多生成的路径数目
-    private int mCurrentPathCounts = 0;                 //已经生成的路径数目
-    private HashMap<Integer, Path> mPathVec = null;     //已经生成的路径缓存
-    private final Random mRandom;                       //随机数
+
+    private Handler                 mHandler;
+    private int                     mCurrentPathCounts = 0;     //已经生成的路径数目
+    private HashMap<Integer, Path>  mPathVec = null;            //已经生成的路径缓存
+    private final Random            mRandom;                    //随机数
+    private final AtomicInteger     mCounter = new AtomicInteger(0);
 
     public TCPathAnimator(Config config) {
         super(config);

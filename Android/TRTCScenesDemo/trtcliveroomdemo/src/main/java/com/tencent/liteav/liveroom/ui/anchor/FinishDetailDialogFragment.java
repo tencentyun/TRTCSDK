@@ -17,13 +17,17 @@ import com.tencent.liteav.liveroom.R;
  */
 public class FinishDetailDialogFragment extends DialogFragment {
 
+    private static final String LIVE_TOTAL_TIME      = "live_total_time";       // KEY，表示本场直播的时长
+    private static final String ANCHOR_HEART_COUNT   = "anchor_heart_count";    // KEY，表示本场主播收到赞的数量
+    private static final String TOTAL_AUDIENCE_COUNT = "total_audience_count";  // KEY，表示本场观众的总人数
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        final Dialog mDetailDialog = new Dialog(getActivity(), R.style.liveroom_dialog_fragment);
-        mDetailDialog.setContentView(R.layout.liveroom_dialog_publish_detail);
+        final Dialog mDetailDialog = new Dialog(getActivity(), R.style.TRTCLiveRoomDialogFragment);
+        mDetailDialog.setContentView(R.layout.trtcliveroom_dialog_publish_detail);
         mDetailDialog.setCancelable(false);
 
-        TextView tvCancel = (TextView) mDetailDialog.findViewById(R.id.anchor_btn_cancel);
+        TextView tvCancel = (TextView) mDetailDialog.findViewById(R.id.btn_anchor_cancel);
         tvCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -32,14 +36,14 @@ public class FinishDetailDialogFragment extends DialogFragment {
             }
         });
 
-        TextView tvDetailTime       = (TextView) mDetailDialog.findViewById(R.id.tv_time);
-        TextView tvDetailAdmires    = (TextView) mDetailDialog.findViewById(R.id.tv_admires);
+        TextView tvDetailTime = (TextView) mDetailDialog.findViewById(R.id.tv_time);
+        TextView tvDetailAdmires = (TextView) mDetailDialog.findViewById(R.id.tv_admires);
         TextView tvDetailWatchCount = (TextView) mDetailDialog.findViewById(R.id.tv_members);
 
         //确认则显示观看detail
-        tvDetailTime.setText(getArguments().getString("time"));
-        tvDetailAdmires.setText(getArguments().getString("heartCount"));
-        tvDetailWatchCount.setText(getArguments().getString("totalMemberCount"));
+        tvDetailTime.setText(getArguments().getString(LIVE_TOTAL_TIME));
+        tvDetailAdmires.setText(getArguments().getString(ANCHOR_HEART_COUNT));
+        tvDetailWatchCount.setText(getArguments().getString(TOTAL_AUDIENCE_COUNT));
 
         return mDetailDialog;
     }

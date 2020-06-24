@@ -3,17 +3,16 @@ package com.tencent.liteav.liveroom.ui.liveroomlist;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
 import android.view.View;
-import android.widget.ScrollView;
-import android.widget.TextView;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.blankj.utilcode.constant.PermissionConstants;
 import com.blankj.utilcode.util.PermissionUtils;
@@ -22,76 +21,57 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.tencent.liteav.debug.GenerateTestUserSig;
 import com.tencent.liteav.liveroom.R;
 import com.tencent.liteav.liveroom.ui.common.utils.TCConstants;
-import com.tencent.liteav.login.RoomManager;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import com.tencent.liteav.login.model.RoomManager;
 
 
 /**
- * 用于显示列表页的activity
+ * 用于显示直播间列表的activity
  *
  * @author guanyifeng
  */
 public class LiveRoomListActivity extends AppCompatActivity {
-
     private static final String TAG = LiveRoomListActivity.class.getSimpleName();
-
-    public final Handler uiHandler = new Handler();
-
-    private TextView   titleTextView;
-    private TextView   globalLogTextview;
-    private ScrollView globalLogTextviewContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.liveroom_activity_room_list);
+        RoomManager.getInstance().initSdkAppId(GenerateTestUserSig.SDKAPPID);
+        setContentView(R.layout.trtcliveroom_activity_room_list);
 
+        initNavigationBack();
+        initTitleEvent();
+        initNavigationMenu();
+        initStatusBar();
+        initLiveRoomListFragment();
+
+        requestPermission();
+    }
+
+    private void initNavigationBack() {
         findViewById(R.id.liveroom_back_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
             }
         });
+    }
 
-        titleTextView = ((TextView) findViewById(R.id.liveroom_title_textview));
-        titleTextView.setOnLongClickListener(new View.OnLongClickListener() {
+    private void initTitleEvent() {
+        findViewById(R.id.liveroom_title_textview).setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                switchCdnPlay();
+                switchCDNPlayMode();
                 return false;
             }
         });
+    }
 
-        globalLogTextview = ((TextView) findViewById(R.id.videoroom_global_log_textview));
-        globalLogTextview.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                new AlertDialog.Builder(LiveRoomListActivity.this, R.style.LiveRoomDialogTheme)
-                        .setTitle("Global Log")
-                        .setMessage("清除Log")
-                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        }).setPositiveButton("清除", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        globalLogTextview.setText("");
-                        dialog.dismiss();
-                    }
-                }).show();
-
-                return true;
-            }
-        });
+    private void initNavigationMenu() {
         findViewById(R.id.liveroom_link_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse("https://cloud.tencent.com/document/product/647/35428"));
+                intent.setData(Uri.parse(TCConstants.TRTC_LIVE_ROOM_DOCUMENT_URL));
                 startActivity(intent);
             }
         });
@@ -100,62 +80,22 @@ public class LiveRoomListActivity extends AppCompatActivity {
         if (useCDNFirst) {
             findViewById(R.id.tv_cdn_tag).setVisibility(View.VISIBLE);
         }
-
-        globalLogTextviewContainer = ((ScrollView) findViewById(R.id.videoroom_global_log_container));
-        initPermission();
-        initializeLiveRoom();
     }
 
-    private void switchCdnPlay() {
-        final boolean useCDNFirst = SPUtils.getInstance().getBoolean(TCConstants.USE_CDN_PLAY, false);
-        String  targetStr   = useCDNFirst ? "切换到TRTC模式" : "切换到CDN模式";
-        new AlertDialog.Builder(this)
-                .setMessage(targetStr)
-                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        boolean switchMode = !useCDNFirst;
-                        SPUtils.getInstance().put(TCConstants.USE_CDN_PLAY, switchMode);
-                        ToastUtils.showLong("切换成功，杀掉进程重启后生效");
-                    }
-                })
-                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
-                .create()
-                .show();
+    private void initStatusBar() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Color.TRANSPARENT);
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    private void initializeLiveRoom() {
-        setTitle("视频互动直播");
-        RoomManager.getInstance().initSdkAppId(GenerateTestUserSig.SDKAPPID);
-        showFragment();
-    }
-
-    private void showFragment() {
+    private void initLiveRoomListFragment() {
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
         if (!(fragment instanceof LiveRoomListFragment)) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -165,43 +105,30 @@ public class LiveRoomListActivity extends AppCompatActivity {
         }
     }
 
-    public void showGlobalLog(final boolean enable) {
-        if (uiHandler != null)
-            uiHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    globalLogTextviewContainer.setVisibility(enable ? View.VISIBLE : View.GONE);
-                }
-            });
-    }
-
-    public void printGlobalLog(final String format, final Object... args) {
-        if (uiHandler != null) {
-            uiHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    SimpleDateFormat dataFormat = new SimpleDateFormat("HH:mm:ss");
-                    String           line       = String.format("[%s] %s\n", dataFormat.format(new Date()), String.format(format, args));
-                    globalLogTextview.append(line);
-                    if (globalLogTextviewContainer.getVisibility() != View.GONE) {
-                        globalLogTextviewContainer.fullScroll(ScrollView.FOCUS_DOWN);
+    private void switchCDNPlayMode() {
+        final boolean useCDNFirst = SPUtils.getInstance().getBoolean(TCConstants.USE_CDN_PLAY, false);
+        int targetResId = useCDNFirst ? R.string.trtcliveroom_switch_trtc_mode : R.string.trtcliveroom_switch_cdn_mode;
+        new AlertDialog.Builder(this)
+                .setMessage(targetResId)
+                .setPositiveButton(R.string.trtcliveroom_ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        boolean switchMode = !useCDNFirst;
+                        SPUtils.getInstance().put(TCConstants.USE_CDN_PLAY, switchMode);
+                        ToastUtils.showLong(R.string.trtcliveroom_warning_switched_mode);
                     }
-                }
-            });
-        }
+                })
+                .setNegativeButton(R.string.trtcliveroom_cancle, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .create()
+                .show();
     }
 
-    public void setTitle(final String s) {
-        uiHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                titleTextView.setLinksClickable(false);
-                titleTextView.setText(s);
-            }
-        });
-    }
-
-    private void initPermission() {
+    private void requestPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             PermissionUtils.permission(PermissionConstants.STORAGE, PermissionConstants.MICROPHONE, PermissionConstants.CAMERA)
                     .request();

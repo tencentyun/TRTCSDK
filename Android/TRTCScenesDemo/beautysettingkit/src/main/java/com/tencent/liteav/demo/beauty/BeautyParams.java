@@ -19,7 +19,7 @@ public class BeautyParams {
     // 滑动滤镜索引
     public int mFilterIndex;
     // 滤镜程度
-    public int mFilterMixLevel = 0;
+    public float mFilterMixLevel = 0;
     // 大眼
     public int mBigEyeLevel;
     // 瘦脸

@@ -27,14 +27,14 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.constant.PermissionConstants;
 import com.blankj.utilcode.util.PermissionUtils;
-import com.tencent.liteav.demo.trtcvoiceroom.CreateVoiceRoomActivity;
 import com.tencent.liteav.liveroom.ui.liveroomlist.LiveRoomListActivity;
 
-import com.tencent.liteav.login.LoginActivity;
-import com.tencent.liteav.login.ProfileManager;
+import com.tencent.liteav.login.ui.LoginActivity;
+import com.tencent.liteav.login.model.ProfileManager;
 import com.tencent.liteav.meeting.ui.CreateMeetingActivity;
-import com.tencent.liteav.trtcaudiocalldemo.ui.TRTCAudioCallHistoryActivity;
-import com.tencent.liteav.trtcvideocalldemo.ui.TRTCVideoCallHistoryActivity;
+import com.tencent.liteav.trtcaudiocalldemo.ui.TRTCAudioCallSelectContactActivity;
+import com.tencent.liteav.trtcvideocalldemo.ui.TRTCVideoCallSelectContactActivity;
+import com.tencent.liteav.trtcvoiceroom.ui.list.VoiceRoomListActivity;
 import com.tencent.rtmp.TXLiveBase;
 
 import java.io.File;
@@ -68,7 +68,7 @@ public class TRTCMainActivity extends Activity {
         }
         setContentView(R.layout.activity_trtc_main);
         mTvVersion = (TextView) findViewById(R.id.main_tv_version);
-        mTvVersion.setText("腾讯云 TRTC v" + TXLiveBase.getSDKVersionStr()+"(7.3.100)");
+        mTvVersion.setText("腾讯云 TRTC v" + TXLiveBase.getSDKVersionStr()+"(7.4.260)");
         mMainTitle = (TextView) findViewById(R.id.main_title);
         mMainTitle.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -162,10 +162,10 @@ public class TRTCMainActivity extends Activity {
     private List<TRTCItemEntity> createTRTCItems() {
         List<TRTCItemEntity> list = new ArrayList<>();
         list.add(new TRTCItemEntity("多人视频会议", "语音自动降噪、视频画质超高清，适用于在线会议、远程培训、小班课等场景。", R.drawable.multi_meeting, 0, CreateMeetingActivity.class));
-        list.add(new TRTCItemEntity("语音聊天室", "内含变声、音效、混响、背景音乐等声音玩法，适用于闲聊房、K歌房、开黑房等语聊场景。", R.drawable.voice_chatroom, 0, CreateVoiceRoomActivity.class));
+        list.add(new TRTCItemEntity("语音聊天室", "内含变声、音效、混响、背景音乐等声音玩法，适用于闲聊房、K歌房、开黑房等语聊场景。", R.drawable.voice_chatroom, 0, VoiceRoomListActivity.class));
         list.add(new TRTCItemEntity("视频互动直播", "低延时、十万人高并发的大型互动直播解决方案，观众时延低至800ms，上下麦切换免等待。", R.drawable.live_stream, 0, LiveRoomListActivity.class));
-        list.add(new TRTCItemEntity("语音通话", "48kHz高音质，60%丢包可正常语音通话，领先行业的3A处理，杜绝回声和啸叫。", R.drawable.voice_call, 0, TRTCAudioCallHistoryActivity.class));
-        list.add(new TRTCItemEntity("视频通话", "支持720P/1080P高清画质，50%丢包率可正常视频通话，自带美颜、挂件、抠图等AI特效。", R.drawable.video_call, 0, TRTCVideoCallHistoryActivity.class));
+        list.add(new TRTCItemEntity("语音通话", "48kHz高音质，60%丢包可正常语音通话，领先行业的3A处理，杜绝回声和啸叫。", R.drawable.voice_call, 0, TRTCAudioCallSelectContactActivity.class));
+        list.add(new TRTCItemEntity("视频通话", "支持720P/1080P高清画质，50%丢包率可正常视频通话，自带美颜、挂件、抠图等AI特效。", R.drawable.video_call, 0, TRTCVideoCallSelectContactActivity.class));
         return list;
     }
     private File getLogFile() {

@@ -1,82 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:background="@color/colorActivityBackground">
+    android:background="@drawable/login_bg_main_gradient">
 
-<!--    <LinearLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="30dp"-->
-<!--        android:layout_marginBottom="10dp"-->
-<!--        android:gravity="center">-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/main_title"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginLeft="10dp"-->
-<!--            android:gravity="center"-->
-<!--            android:text="TRTC"-->
-<!--            android:textColor="@color/colorWhite"-->
-<!--            android:textSize="23sp" />-->
-
-<!--    </LinearLayout>-->
-
-    <TextView
+    <com.tencent.liteav.login.ui.view.LoginStatusLayout
+        android:id="@+id/cl_login_status"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
         android:layout_marginTop="30dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="5dp"
-        android:text="用户名"
-        android:textColor="@color/textSecond"
-        android:textSize="@dimen/text_size_large" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/et_userId"
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/cl_edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
-        android:layout_marginEnd="20dp"
-        android:hint="请输入登录的userId"
-        android:inputType="number"
-        android:maxLength="11"
-        android:maxLines="1"
-        android:singleLine="true"
-        android:textSize="@dimen/text_size_large"
-        tools:text="12312" />
-    <TextView
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="30dp"
+        android:background="@color/login_color_btn_disable"
+        android:padding="16dp"
+        app:layout_constraintBottom_toTopOf="@id/tv_login"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <TextView
+            android:id="@+id/tv_phone_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/login_text_user_id"
+            android:textColor="@color/colorWhite"
+            android:textSize="16sp"
+            app:layout_constraintLeft_toLeftOf="@id/cl_edit"
+            app:layout_constraintTop_toTopOf="@id/cl_edit" />
+
+        <EditText
+            android:id="@+id/et_userId"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:hint="@string/login_hint_user_id"
+            android:inputType="number"
+            android:maxLength="11"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textColor="@color/colorWhite"
+            android:textColorHint="@color/login_color_edit_hint"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@id/tv_phone_number"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/tv_phone_number"
+            app:layout_constraintStart_toEndOf="@+id/tv_phone_number" />
+
+
+    </android.support.constraint.ConstraintLayout>
+
+    <Button
         android:id="@+id/tv_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="20dp"
         android:layout_marginRight="20dp"
-        android:background="@drawable/button_border"
-        android:gravity="center"
-        android:padding="10dp"
-        android:text="登录"
+        android:background="@drawable/login_button_border"
+        android:text="@string/login_btn_login"
         android:textColor="@color/colorWhite"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:gravity="center"
-        android:text="本APP用于展示腾讯视频云实时音视频服务的各类功能"
-        android:textColor="#666666"
-        android:textSize="12sp" />
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>

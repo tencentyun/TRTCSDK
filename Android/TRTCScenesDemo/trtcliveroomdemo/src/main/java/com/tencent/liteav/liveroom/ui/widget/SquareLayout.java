@@ -1,4 +1,4 @@
-package com.tencent.liteav.trtcvideodemo.ui.widget;
+package com.tencent.liteav.liveroom.ui.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;

@@ -21,13 +21,11 @@ import java.util.LinkedList;
  */
 public class TCUserAvatarListAdapter extends RecyclerView.Adapter<TCUserAvatarListAdapter.AvatarViewHolder> {
 
-    LinkedList<TRTCLiveRoomDef.TRTCLiveUserInfo> mUserAvatarList;
-    Context                                      mContext;
-    //主播id
-    private              String mPusherId;
-    //最大容纳量
-    private final static int    TOP_STORGE_MEMBER = 50;
+    private final static int TOP_STORGE_MEMBER = 50; //最大容纳量
 
+    private Context mContext;
+    private String  mPusherId;//主播id
+    private LinkedList<TRTCLiveRoomDef.TRTCLiveUserInfo> mUserAvatarList;
 
     public TCUserAvatarListAdapter(Context context, String pusherId) {
         this.mContext = context;
@@ -80,14 +78,14 @@ public class TCUserAvatarListAdapter extends RecyclerView.Adapter<TCUserAvatarLi
     @Override
     public AvatarViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext)
-                .inflate(R.layout.liveroom_item_user_avatar, parent, false);
+                .inflate(R.layout.trtcliveroom_item_user_avatar, parent, false);
 
         final AvatarViewHolder avatarViewHolder = new AvatarViewHolder(view);
         avatarViewHolder.ivAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 TRTCLiveRoomDef.TRTCLiveUserInfo userInfo = mUserAvatarList.get(avatarViewHolder.getAdapterPosition());
-                Toast.makeText(mContext.getApplicationContext(), "当前点击用户： " + userInfo.userId, Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext.getApplicationContext(), mContext.getString(R.string.trtcliveroom_tap_current_user, userInfo.userId), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -98,7 +96,7 @@ public class TCUserAvatarListAdapter extends RecyclerView.Adapter<TCUserAvatarLi
     public void onBindViewHolder(AvatarViewHolder holder, int position) {
         TRTCLiveRoomDef.TRTCLiveUserInfo info = mUserAvatarList.get(position);
         if (info != null) {
-            TCUtils.showPicWithUrl(mContext, holder.ivAvatar, info.userAvatar, R.drawable.bg_cover);
+            TCUtils.showPicWithUrl(mContext, holder.ivAvatar, info.userAvatar, R.drawable.trtcliveroom_bg_cover);
         }
     }
 

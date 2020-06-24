@@ -24,7 +24,6 @@ import com.tencent.liteav.liveroom.ui.common.utils.TCUtils;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.concurrent.ExecutionException;
 
 import master.flame.danmaku.controller.DrawHandler;
 import master.flame.danmaku.controller.IDanmakuView;
@@ -57,32 +56,25 @@ public class TCDanmuMgr {
 
     private static final String TAG = "TCDanmuMgr";
 
-    //弹幕显示的时间(如果是list的话，会 * i)，记得加上mDanmakuView.getCurrentTime()
-    private static final long ADD_DANMU_TIME = 500;
+    private static final long ADD_DANMU_TIME = 500;         //弹幕显示的时间(如果是list的话，会 * i)，记得加上mDanmakuView.getCurrentTime()
 
-    private static final int PINK_COLOR   = 0xffff5a93;//粉红 楼主
-    private static final int ORANGE_COLOR = 0xffff815a;//橙色 我
-    private static final int BLACK_COLOR  = 0xb2000000;//黑色 普通
+    private static final int  PINK_COLOR     = 0xffff5a93;  //粉红 楼主
+    private static final int  ORANGE_COLOR   = 0xffff815a;  //橙色 我
+    private static final int  BLACK_COLOR    = 0xb2000000;  //黑色 普通
 
-    private int   BITMAP_WIDTH    = 23;//头像的大小
-    private int   BITMAP_HEIGHT   = 23;
-    private float DANMU_TEXT_SIZE = 12f;//弹幕字体的大小
-    //    private int   EMOJI_SIZE      = 14;//emoji的大小
+    private Context         mContext;
+    private Handler         mDanmuHandler;
+    private IDanmakuView    mDanmakuView;
+    private DanmakuContext  mDanmakuContext;
+    private HandlerThread   mDanmuThread;
 
-    //这两个用来控制两行弹幕之间的间距
-    private int DANMU_PADDING       = 8;
-    private int DANMU_PADDING_INNER = 7;
-    private int DANMU_RADIUS        = 11;//圆角半径
-
-    private int mMsgColor = 0;
-
-    private Context        mContext;
-    private IDanmakuView   mDanmakuView;
-    private DanmakuContext mDanmakuContext;
-
-    private HandlerThread mDanmuThread;
-    private Handler       mDanmuHandler;
-
+    private int     mBitmapWidth        = 23;    //头像的宽度
+    private int     mBitmapHeight       = 23;    //头像的高度
+    private int     mDanmuPadding       = 8;     //这两个用来控制两行弹幕之间的间距
+    private int     mDanmuPaddingInner  = 7;
+    private int     mDanmuRadius        = 11;    //圆角半径
+    private float   mDanmuTextSize      = 12f;   //弹幕字体的大小
+    private int     mMsgColor           = 0;
 
     public TCDanmuMgr(Context context) {
         this.mContext = context;
@@ -92,7 +84,7 @@ public class TCDanmuMgr {
         mDanmuThread.start();
         mDanmuHandler = new Handler(mDanmuThread.getLooper());
 
-        mMsgColor = mContext.getResources().getColor(R.color.colorLiveRoomAccent);
+        mMsgColor = mContext.getResources().getColor(R.color.trtcliveroom_color_accent);
     }
 
     /**
@@ -179,12 +171,12 @@ public class TCDanmuMgr {
      * 对数值进行转换，适配手机，必须在初始化之前，否则有些数据不会起作用
      */
     private void setSize(Context context) {
-        BITMAP_WIDTH = TCUtils.dp2pxConvertInt(context, BITMAP_HEIGHT);
-        BITMAP_HEIGHT = TCUtils.dp2pxConvertInt(context, BITMAP_HEIGHT);
-        DANMU_PADDING = TCUtils.dp2pxConvertInt(context, DANMU_PADDING);
-        DANMU_PADDING_INNER = TCUtils.dp2pxConvertInt(context, DANMU_PADDING_INNER);
-        DANMU_RADIUS = TCUtils.dp2pxConvertInt(context, DANMU_RADIUS);
-        DANMU_TEXT_SIZE = TCUtils.sp2px(context, DANMU_TEXT_SIZE);
+        mBitmapWidth = TCUtils.dp2pxConvertInt(context, mBitmapHeight);
+        mBitmapHeight = TCUtils.dp2pxConvertInt(context, mBitmapHeight);
+        mDanmuPadding = TCUtils.dp2pxConvertInt(context, mDanmuPadding);
+        mDanmuPaddingInner = TCUtils.dp2pxConvertInt(context, mDanmuPaddingInner);
+        mDanmuRadius = TCUtils.dp2pxConvertInt(context, mDanmuRadius);
+        mDanmuTextSize = TCUtils.sp2px(context, mDanmuTextSize);
     }
 
     /**
@@ -242,7 +234,7 @@ public class TCDanmuMgr {
             //                            top + danmaku.paintHeight - DANMU_PADDING_INNER + 6),//+6 主要是底部被截得太厉害了，+6是增加padding的效果
             //                    DANMU_RADIUS, DANMU_RADIUS, paint);
 
-            NinePatchDrawable bg = (NinePatchDrawable) mContext.getResources().getDrawable(R.drawable.barrage);
+            NinePatchDrawable bg = (NinePatchDrawable) mContext.getResources().getDrawable(R.drawable.trtcliveroom_barrage);
             if (bg != null) {
                 bg.setBounds((int) left + 7, (int) top + 5, (int) danmaku.paintWidth, (int) danmaku.paintHeight);
                 bg.draw(canvas);
@@ -315,32 +307,32 @@ public class TCDanmuMgr {
             return;
         }
         danmaku.userId = 0;
-        danmaku.isGuest = false;//isGuest此处用来判断是赞还是评论
+        danmaku.isGuest = false;    //isGuest此处用来判断是赞还是评论
 
         SpannableStringBuilder spannable;
         Bitmap                 headBitmap = null;
         if (!TextUtils.isEmpty(headUrl)) {
             try {
-                headBitmap = Picasso.get().load(headUrl).centerCrop().resize(BITMAP_WIDTH, BITMAP_HEIGHT)
+                headBitmap = Picasso.get().load(headUrl).centerCrop().resize(mBitmapWidth, mBitmapHeight)
                         .get();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
         if (headBitmap == null) {
-            headBitmap = getDefaultBitmap(R.drawable.bg_cover);
+            headBitmap = getDefaultBitmap(R.drawable.trtcliveroom_bg_cover);
         }
         TCCircleDrawable circleDrawable = new TCCircleDrawable(mContext, headBitmap, danmaku.isGuest);
-        circleDrawable.setBounds(0, 0, BITMAP_WIDTH, BITMAP_HEIGHT);
+        circleDrawable.setBounds(0, 0, mBitmapWidth, mBitmapHeight);
         spannable = createSpannable(circleDrawable, sender, text);
         danmaku.text = spannable;
 
-        danmaku.padding = DANMU_PADDING;
+        danmaku.padding = mDanmuPadding;
         danmaku.priority = 0;  // 1:一定会显示, 一般用于本机发送的弹幕,但会导致行数的限制失效
         danmaku.isLive = false;
         danmaku.setTime(mDanmakuView.getCurrentTime() + ADD_DANMU_TIME);
         //        danmaku.textSize = DANMU_TEXT_SIZE * (mDanmakuContext.getDisplayer().getDensity() - 0.6f);
-        danmaku.textSize = DANMU_TEXT_SIZE;
+        danmaku.textSize = mDanmuTextSize;
         danmaku.textColor = Color.WHITE;
         danmaku.textShadowColor = 0; // 重要：如果有图文混排，最好不要设置描边(设textShadowColor=0)，否则会进行两次复杂的绘制导致运行效率降低
         mDanmakuView.addDanmaku(danmaku);
@@ -353,7 +345,7 @@ public class TCDanmuMgr {
             int    width  = bitmap.getWidth();
             int    height = bitmap.getHeight();
             Matrix matrix = new Matrix();
-            matrix.postScale(((float) BITMAP_WIDTH) / width, ((float) BITMAP_HEIGHT) / height);
+            matrix.postScale(((float) mBitmapWidth) / width, ((float) mBitmapHeight) / height);
             mDefauleBitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
         }
         return mDefauleBitmap;

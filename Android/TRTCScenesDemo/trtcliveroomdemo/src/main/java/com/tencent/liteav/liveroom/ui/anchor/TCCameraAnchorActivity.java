@@ -3,9 +3,7 @@ package com.tencent.liteav.liveroom.ui.anchor;
 import android.animation.ObjectAnimator;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintSet;
@@ -23,7 +21,9 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.tencent.liteav.audiosettingkit.AudioEffectPanel;
-import com.tencent.liteav.demo.beauty.BeautyPanel;
+import com.tencent.liteav.demo.beauty.model.ItemInfo;
+import com.tencent.liteav.demo.beauty.model.TabInfo;
+import com.tencent.liteav.demo.beauty.view.BeautyPanel;
 import com.tencent.liteav.liveroom.R;
 import com.tencent.liteav.liveroom.model.TRTCLiveRoomCallback;
 import com.tencent.liteav.liveroom.model.TRTCLiveRoomDef;
@@ -32,11 +32,13 @@ import com.tencent.liteav.liveroom.ui.common.utils.TCUtils;
 import com.tencent.liteav.liveroom.ui.widget.beauty.LiveRoomBeautyKit;
 import com.tencent.liteav.liveroom.ui.widget.video.TCVideoView;
 import com.tencent.liteav.liveroom.ui.widget.video.TCVideoViewMgr;
+import com.tencent.liteav.login.model.ProfileManager;
 import com.tencent.rtmp.ui.TXCloudVideoView;
-import com.tencent.trtc.TRTCCloud;
 import com.tencent.trtc.TRTCCloudDef;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -49,106 +51,126 @@ import java.util.Locale;
 public class TCCameraAnchorActivity extends TCBaseAnchorActivity implements View.OnClickListener {
     private static final String TAG = TCCameraAnchorActivity.class.getSimpleName();
 
-    private TXCloudVideoView mTXCloudVideoView;      // 主播本地预览的 View
+    private TXCloudVideoView        mTXCloudVideoView;      // 主播本地预览的View
+    private TXCloudVideoView        mVideoViewPKAnchor;     // PK主播的视频显示View
+    private RecyclerView            mRecyclerUserAvatar;    // 显示观众头像的列表控件
+    private ImageView               mImagesAnchorHead;      // 显示房间主播头像
+    private ImageView               mImageRecordBall;       // 表明正在录制的红点球
+    private TextView                mTextBroadcastTime;     // 显示已经开播的时间
+    private TextView                mTextMemberCount;       // 显示当前房间的观众数量
+    private Button                  mButtonPK;              // 发起PK请求的按钮
+    private Guideline               mGuideLineVertical;     // ConstraintLayout的垂直参考线
+    private Guideline               mGuideLineHorizontal;   // ConstraintLayout的水平参考线
+    private AnchorPKSelectView      mViewPKAnchorList;      // 显示可PK主播的列表
+    private AudioEffectPanel        mPanelAudioControl;     // 音效控制面板
+    private BeautyPanel             mPanelBeautyControl;    // 美颜设置的控制类
+    private RelativeLayout          mPKContainer;
+    private RadioButton             mRbNormalQuality;
+    private RadioButton             mRbMusicQuality;
+    private ImageView               mImagePKLayer;
+    private Button                  mButtonExit;            // 结束直播&退出PK
+    private ObjectAnimator          mAnimatorRecordBall;    // 显示录制状态红点的闪烁动画
+    private TCUserAvatarListAdapter mUserAvatarListAdapter; // mUserAvatarList的适配器
+    private TCVideoViewMgr          mVideoViewMgr;          // 主播视频列表的View
 
-    // 观众头像列表控件
-    private RecyclerView            mUserAvatarList;        // 用户头像的列表控件
-    private TCUserAvatarListAdapter mAvatarListAdapter;     // 头像列表的 Adapter
-
-    // 主播信息
-    private ImageView mHeadIcon;              // 主播头像
-    private ImageView mRecordBall;            // 表明正在录制的红点球
-    private TextView  mBroadcastTime;         // 已经开播的时间
-    private TextView  mMemberCount;           // 观众数量
-
-    //UI
-    private Button           mPKButton;
-    private ObjectAnimator   mObjAnim;               // 动画
-    private TXCloudVideoView mPKVideoView;
-    private RelativeLayout   mPKContainer;
-    private RadioButton      mRbNormalQuality;
-    private RadioButton      mRbMusicQuality;
-    private Guideline        mVGuideLine;
-    private Guideline        mHGuideLine;
-
-    private AudioEffectPanel     mAudioCtrl;             // 音效控制面板
-    private AnchorPKSelectView mAnchorPKSelectView; //PK选择
-
-    private BeautyPanel mBeautyControl;          // 美颜设置的控制类
-
-    // log相关
-    private boolean mShowLog;               // 是否打开 log 面板
-
-    private TCVideoViewMgr mVideoViewMgr;   // 主播视频列表的View
-    private List<String>   mAnchorUserIdList = new ArrayList<>(); // 麦上主播对应的String(除了自己)
-    private int            mCurrentStatus    = TRTCLiveRoomDef.ROOM_STATUS_NONE;
-
+    private boolean                 mShowLog;               // 表示是否显示Log面板
+    private List<String>            mAnchorUserIdList  = new ArrayList<>();
+    private int                     mCurrentStatus    = TRTCLiveRoomDef.ROOM_STATUS_NONE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(R.style.BeautyTheme);
+        setTheme(R.style.TRTCLiveRoomBeautyTheme);
         super.onCreate(savedInstanceState);
-        LiveRoomBeautyKit manager = new LiveRoomBeautyKit(mLiveRoom);
-        mBeautyControl.setProxy(manager);
+        LiveRoomBeautyKit liveRoomBeautyKit = new LiveRoomBeautyKit(mLiveRoom);
+        mPanelBeautyControl.setBeautyKit(liveRoomBeautyKit);
         // 清空上次的美颜参数
-        mBeautyControl.clear();
+        mPanelBeautyControl.clear();
         startPreview();
     }
 
     @Override
     public int getLayoutId() {
-        return R.layout.liveroom_activity_anchor;
+        return R.layout.trtcliveroom_activity_anchor;
     }
 
     @Override
     protected void initView() {
         super.initView();
-        mTXCloudVideoView = (TXCloudVideoView) findViewById(R.id.anchor_video_view);
+        mTXCloudVideoView = (TXCloudVideoView) findViewById(R.id.video_view_anchor);
         mTXCloudVideoView.setLogMargin(10, 10, 45, 55);
 
         mPKContainer = (RelativeLayout) findViewById(R.id.pk_container);
+        mImagePKLayer = (ImageView) findViewById(R.id.iv_pk_layer);
 
-        mUserAvatarList = (RecyclerView) findViewById(R.id.anchor_rv_avatar);
-        mAvatarListAdapter = new TCUserAvatarListAdapter(this, mSelfUserId);
-        mUserAvatarList.setAdapter(mAvatarListAdapter);
+        mRecyclerUserAvatar = (RecyclerView) findViewById(R.id.rv_audience_avatar);
+        mUserAvatarListAdapter = new TCUserAvatarListAdapter(this, mSelfUserId);
+        mRecyclerUserAvatar.setAdapter(mUserAvatarListAdapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        mUserAvatarList.setLayoutManager(linearLayoutManager);
+        mRecyclerUserAvatar.setLayoutManager(linearLayoutManager);
 
-        mBroadcastTime = (TextView) findViewById(R.id.anchor_tv_broadcasting_time);
-        mBroadcastTime.setText(String.format(Locale.US, "%s", "00:00:00"));
-        mRecordBall = (ImageView) findViewById(R.id.anchor_iv_record_ball);
+        mTextBroadcastTime = (TextView) findViewById(R.id.tv_anchor_broadcasting_time);
+        mTextBroadcastTime.setText(String.format(Locale.US, "%s", "00:00:00"));
+        mImageRecordBall = (ImageView) findViewById(R.id.iv_anchor_record_ball);
 
-        mHeadIcon = (ImageView) findViewById(R.id.anchor_iv_head_icon);
-        showHeadIcon(mHeadIcon, mSelfAvatar);
+        mButtonExit =  (Button) findViewById(R.id.btn_close);
+        mImagesAnchorHead = (ImageView) findViewById(R.id.iv_anchor_head);
+        showHeadIcon(mImagesAnchorHead, mSelfAvatar);
 
-        mHeadIcon.setOnClickListener(new View.OnClickListener() {
+        mImagesAnchorHead.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showLog();
             }
         });
 
-        mMemberCount = (TextView) findViewById(R.id.anchor_tv_member_counts);
-        mMemberCount.setText("0");
-        mPKButton = (Button) findViewById(R.id.btn_request_pk);
+        mTextMemberCount = (TextView) findViewById(R.id.tv_room_member_counts);
+        mTextMemberCount.setText("0");
+        mButtonPK = (Button) findViewById(R.id.btn_request_pk);
         //AudioEffectPanel
-        mAudioCtrl = (AudioEffectPanel) findViewById(R.id.anchor_audio_panel);
-        mAudioCtrl.setAudioEffectManager(mLiveRoom.getAudioEffectManager());
-        mAudioCtrl.setOnAudioEffectPanelHideListener(new AudioEffectPanel.OnAudioEffectPanelHideListener() {
+        mPanelAudioControl = (AudioEffectPanel) findViewById(R.id.anchor_audio_panel);
+        mPanelAudioControl.setAudioEffectManager(mLiveRoom.getAudioEffectManager());
+        mPanelAudioControl.initPanelDefaultBackground();
+        mPanelAudioControl.setOnAudioEffectPanelHideListener(new AudioEffectPanel.OnAudioEffectPanelHideListener() {
             @Override
             public void onClosePanel() {
-                mLiveAfter.setVisibility(View.VISIBLE);
+                mGroupLiveAfter.setVisibility(View.VISIBLE);
             }
         });
 
-        mBeautyControl = (BeautyPanel) findViewById(R.id.beauty_panel);
+        mPanelBeautyControl = (BeautyPanel) findViewById(R.id.beauty_panel);
+        mPanelBeautyControl.setOnBeautyListener(new BeautyPanel.OnBeautyListener() {
+            @Override
+            public void onTabChange(TabInfo tabInfo, int position) {
+
+            }
+
+            @Override
+            public boolean onClose() {
+                if (mIsEnterRoom) {
+                    mGroupLiveAfter.setVisibility(View.VISIBLE);
+                } else {
+                    mGroupLiveBefore.setVisibility(View.VISIBLE);
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onClick(TabInfo tabInfo, int tabPosition, ItemInfo itemInfo, int itemPosition) {
+                return false;
+            }
+
+            @Override
+            public boolean onLevelChanged(TabInfo tabInfo, int tabPosition, ItemInfo itemInfo, int itemPosition, int beautyLevel) {
+                return false;
+            }
+        });
 
         // 监听踢出的回调
         List<TCVideoView> videoViews = new ArrayList<>();
-        videoViews.add((TCVideoView) findViewById(R.id.tcvideoview_1));
-        videoViews.add((TCVideoView) findViewById(R.id.tcvideoview_2));
-        videoViews.add((TCVideoView) findViewById(R.id.tcvideoview_3));
+        videoViews.add((TCVideoView) findViewById(R.id.video_view_link_mic_1));
+        videoViews.add((TCVideoView) findViewById(R.id.video_view_link_mic_2));
+        videoViews.add((TCVideoView) findViewById(R.id.video_view_link_mic_3));
         mVideoViewMgr = new TCVideoViewMgr(videoViews, new TCVideoView.OnRoomViewListener() {
             @Override
             public void onKickUser(String userID) {
@@ -162,27 +184,33 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity implements View
             }
         });
 
-        mAnchorPKSelectView = (AnchorPKSelectView) findViewById(R.id.anchor_pk_select_view);
-        mAnchorPKSelectView.setSelfRoomId(mRoomId);
-        mAnchorPKSelectView.setOnPKSelectedCallback(new AnchorPKSelectView.onPKSelectedCallback() {
+        mViewPKAnchorList = (AnchorPKSelectView) findViewById(R.id.anchor_pk_select_view);
+        mViewPKAnchorList.setSelfRoomId(mRoomId);
+        mViewPKAnchorList.setOnPKSelectedCallback(new AnchorPKSelectView.onPKSelectedCallback() {
             @Override
             public void onSelected(final TRTCLiveRoomDef.TRTCLiveRoomInfo roomInfo) {
                 // 发起PK请求
-                mAnchorPKSelectView.setVisibility(View.GONE);
+                mViewPKAnchorList.setVisibility(View.GONE);
+                mGroupLiveAfter.setVisibility(View.VISIBLE);
                 mLiveRoom.requestRoomPK(roomInfo.roomId, roomInfo.ownerId, new TRTCLiveRoomCallback.ActionCallback() {
                     @Override
                     public void onCallback(int code, String msg) {
                         if (code == 0) {
-                            ToastUtils.showShort("用户接受");
+                            ToastUtils.showShort(getString(R.string.trtcliveroom_tips_accept_link_mic, roomInfo.ownerName));
                         } else {
-                            ToastUtils.showShort("用户拒绝:" + msg);
+                            ToastUtils.showShort(getString(R.string.trtcliveroom_tips_refuse_link_mic, roomInfo.ownerName));
                         }
                     }
                 });
             }
+
+            @Override
+            public void onCancel() {
+                mGroupLiveAfter.setVisibility(View.VISIBLE);
+            }
         });
-        mVGuideLine = (Guideline) findViewById(R.id.gl_v);
-        mHGuideLine = (Guideline) findViewById(R.id.gl_h);
+        mGuideLineVertical = (Guideline) findViewById(R.id.gl_vertical);
+        mGuideLineHorizontal = (Guideline) findViewById(R.id.gl_horizontal);
         mRbNormalQuality = (RadioButton) findViewById(R.id.rb_live_room_quality_normal);
         mRbMusicQuality = (RadioButton) findViewById(R.id.rb_live_room_quality_music);
     }
@@ -194,21 +222,22 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity implements View
      * @param avatar 头像链接
      */
     private void showHeadIcon(ImageView view, String avatar) {
-        TCUtils.showPicWithUrl(this, view, avatar, R.drawable.bg_cover);
+        TCUtils.showPicWithUrl(this, view, avatar, R.drawable.trtcliveroom_bg_cover);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mLiveRoom.showVideoDebugLog(false);
         if (mMainHandler != null) {
             mMainHandler.removeCallbacksAndMessages(null);
         }
         stopRecordAnimation();
         mVideoViewMgr.recycleVideoView();
         mVideoViewMgr = null;
-        if (mAudioCtrl != null) {
-            mAudioCtrl.unInit();
-            mAudioCtrl = null;
+        if (mPanelAudioControl != null) {
+            mPanelAudioControl.unInit();
+            mPanelAudioControl = null;
         }
     }
 
@@ -219,11 +248,7 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity implements View
     }
 
     /**
-     * /////////////////////////////////////////////////////////////////////////////////
-     * //
-     * //                      开始和停止推流相关
-     * //
-     * /////////////////////////////////////////////////////////////////////////////////
+     * 开始和停止推流相关
      */
 
     @Override
@@ -238,6 +263,7 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity implements View
 
     @Override
     protected void onCreateRoomSuccess() {
+        ProfileManager.getInstance().checkNeedShowSecurityTips(TCCameraAnchorActivity.this);
         startRecordAnimation();
         int audioQuality = TRTCCloudDef.TRTC_AUDIO_QUALITY_DEFAULT;
         if (mRbNormalQuality.isChecked()) {
@@ -261,7 +287,7 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity implements View
 
     @Override
     protected void finishRoom() {
-        mBeautyControl.clear();
+        mPanelBeautyControl.clear();
         mLiveRoom.stopCameraPreview();
         super.finishRoom();
     }
@@ -269,20 +295,20 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity implements View
     private void setAnchorViewFull(boolean isFull) {
         if (isFull) {
             ConstraintSet set = new ConstraintSet();
-            set.clone(mConstraintLayout);
+            set.clone(mRootView);
             set.connect(mTXCloudVideoView.getId(), ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP);
             set.connect(mTXCloudVideoView.getId(), ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START);
             set.connect(mTXCloudVideoView.getId(), ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM);
             set.connect(mTXCloudVideoView.getId(), ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END);
-            set.applyTo(mConstraintLayout);
+            set.applyTo(mRootView);
         } else {
             ConstraintSet set = new ConstraintSet();
-            set.clone(mConstraintLayout);
-            set.connect(mTXCloudVideoView.getId(), ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP);
+            set.clone(mRootView);
+            set.connect(mTXCloudVideoView.getId(), ConstraintSet.TOP, mPKContainer.getId(), ConstraintSet.TOP);
             set.connect(mTXCloudVideoView.getId(), ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START);
-            set.connect(mTXCloudVideoView.getId(), ConstraintSet.BOTTOM, mHGuideLine.getId(), ConstraintSet.BOTTOM);
-            set.connect(mTXCloudVideoView.getId(), ConstraintSet.END, mVGuideLine.getId(), ConstraintSet.END);
-            set.applyTo(mConstraintLayout);
+            set.connect(mTXCloudVideoView.getId(), ConstraintSet.BOTTOM,  mPKContainer.getId(), ConstraintSet.BOTTOM);
+            set.connect(mTXCloudVideoView.getId(), ConstraintSet.END, mGuideLineVertical.getId(), ConstraintSet.END);
+            set.applyTo(mRootView);
         }
     }
 
@@ -309,6 +335,7 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity implements View
 
     @Override
     public void onRoomInfoChange(TRTCLiveRoomDef.TRTCLiveRoomInfo roomInfo) {
+        Log.d(TAG, "onRoomInfoChange");
         super.onRoomInfoChange(roomInfo);
         int oldStatus = mCurrentStatus;
         mCurrentStatus = roomInfo.roomStatus;
@@ -317,23 +344,25 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity implements View
         if (oldStatus == TRTCLiveRoomDef.ROOM_STATUS_PK
                 && mCurrentStatus != TRTCLiveRoomDef.ROOM_STATUS_PK) {
             // 上一个状态是PK，需要将界面中的元素恢复
-            mPKButton.setBackgroundResource(R.drawable.pk_start);
+            mImagePKLayer.setVisibility(View.GONE);
+            mButtonExit.setText(R.string.trtcliveroom_btn_stop_live);
             TCVideoView videoView = mVideoViewMgr.getPKUserView();
-            mPKVideoView = videoView.getPlayerVideo();
+            mVideoViewPKAnchor = videoView.getPlayerVideo();
             if (mPKContainer.getChildCount() != 0) {
-                mPKContainer.removeView(mPKVideoView);
-                videoView.addView(mPKVideoView);
+                mPKContainer.removeView(mVideoViewPKAnchor);
+                videoView.addView(mVideoViewPKAnchor);
                 mVideoViewMgr.clearPKView();
-                mPKVideoView = null;
+                mVideoViewPKAnchor = null;
             }
         } else if (mCurrentStatus == TRTCLiveRoomDef.ROOM_STATUS_PK) {
             // 本次状态是PK，需要将一个PK的view挪到右上角
-            mPKButton.setBackgroundResource(R.drawable.pk_stop);
+            mImagePKLayer.setVisibility(View.VISIBLE);
+            mButtonExit.setText(R.string.trtcliveroom_btn_stop_pk);
             TCVideoView videoView = mVideoViewMgr.getPKUserView();
             videoView.showKickoutBtn(false);
-            mPKVideoView = videoView.getPlayerVideo();
-            videoView.removeView(mPKVideoView);
-            mPKContainer.addView(mPKVideoView);
+            mVideoViewPKAnchor = videoView.getPlayerVideo();
+            videoView.removeView(mVideoViewPKAnchor);
+            mPKContainer.addView(mVideoViewPKAnchor);
         }
     }
 
@@ -348,20 +377,20 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity implements View
     public void onRequestRoomPK(final TRTCLiveRoomDef.TRTCLiveUserInfo userInfo, final int timeout) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this)
                 .setCancelable(true)
-                .setTitle("提示")
-                .setMessage(userInfo.userName + "向您发起PK请求")
-                .setPositiveButton("接受", new DialogInterface.OnClickListener() {
+                .setTitle(R.string.trtcliveroom_tips)
+                .setMessage(getString(R.string.trtcliveroom_request_pk, userInfo.userName))
+                .setPositiveButton(R.string.trtcliveroom_accept, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                         mLiveRoom.responseRoomPK(userInfo.userId, true, "");
                     }
                 })
-                .setNegativeButton("拒绝", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.trtcliveroom_refuse, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        mLiveRoom.responseRoomPK(userInfo.userId, false, "主播拒绝了您的PK请求");
+                        mLiveRoom.responseRoomPK(userInfo.userId, false, getString(R.string.trtcliveroom_anchor_refuse_pk_request));
                     }
                 });
 
@@ -385,26 +414,26 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity implements View
 
     @Override
     public void onQuitRoomPK() {
-        ToastUtils.showShort("onQuitRoomPK:");
+        ToastUtils.showShort(R.string.trtcliveroom_tips_quit_pk);
     }
 
     @Override
     public void onRequestJoinAnchor(final TRTCLiveRoomDef.TRTCLiveUserInfo userInfo, String reason, final int timeout) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this)
                 .setCancelable(true)
-                .setTitle("提示")
-                .setMessage(userInfo.userName + "向您发起连麦请求")
-                .setPositiveButton("接受", new DialogInterface.OnClickListener() {
+                .setTitle(R.string.trtcliveroom_tips)
+                .setMessage(getString(R.string.trtcliveroom_request_link_mic, userInfo.userName))
+                .setPositiveButton(R.string.trtcliveroom_accept, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                         mLiveRoom.responseJoinAnchor(userInfo.userId, true, "");
                     }
                 })
-                .setNegativeButton("拒绝", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.trtcliveroom_refuse, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        mLiveRoom.responseJoinAnchor(userInfo.userId, false, "主播拒绝了您的连麦请求");
+                        mLiveRoom.responseJoinAnchor(userInfo.userId, false, getString(R.string.trtcliveroom_anchor_refuse_link_request));
                         dialog.dismiss();
                     }
                 });
@@ -413,7 +442,7 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity implements View
             @Override
             public void run() {
                 if (mAnchorUserIdList.size() >= 3) {
-                    mLiveRoom.responseJoinAnchor(userInfo.userId, false, "主播端连麦人数超过最大限制");
+                    mLiveRoom.responseJoinAnchor(userInfo.userId, false, getString(R.string.trtcliveroom_warning_link_user_max_limit));
                     return;
                 }
 
@@ -434,135 +463,137 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity implements View
 
 
     /**
-     * /////////////////////////////////////////////////////////////////////////////////
-     * //
-     * //                      成员进退房事件信息处理
-     * //
-     * /////////////////////////////////////////////////////////////////////////////////
+     * 成员进退房事件信息处理
      */
     @Override
     protected void handleMemberJoinMsg(TRTCLiveRoomDef.TRTCLiveUserInfo userInfo) {
         //更新头像列表 返回false表明已存在相同用户，将不会更新数据
-        if (mAvatarListAdapter.addItem(userInfo))
+        if (mUserAvatarListAdapter.addItem(userInfo))
             super.handleMemberJoinMsg(userInfo);
-        mMemberCount.setText(String.format(Locale.CHINA, "%d", mCurrentMemberCount));
+        mTextMemberCount.setText(String.format(Locale.CHINA, "%d", mCurrentMemberCount));
     }
 
     @Override
     protected void handleMemberQuitMsg(TRTCLiveRoomDef.TRTCLiveUserInfo userInfo) {
-        mAvatarListAdapter.removeItem(userInfo.userId);
+        mUserAvatarListAdapter.removeItem(userInfo.userId);
         super.handleMemberQuitMsg(userInfo);
-        mMemberCount.setText(String.format(Locale.CHINA, "%d", mCurrentMemberCount));
+        mTextMemberCount.setText(String.format(Locale.CHINA, "%d", mCurrentMemberCount));
     }
 
 
     /**
-     * /////////////////////////////////////////////////////////////////////////////////
-     * //
-     * //                      音乐控制面板相关
-     * //
-     * /////////////////////////////////////////////////////////////////////////////////
+     * 音乐控制面板相关
      */
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        if (null != mAudioCtrl && mAudioCtrl.getVisibility() != View.GONE && ev.getRawY() < mAudioCtrl.getTop()) {
-            mAudioCtrl.setVisibility(View.GONE);
-            mAudioCtrl.hideAudioPanel();
-            mLiveAfter.setVisibility(View.VISIBLE);
+        if (null != mPanelAudioControl && mPanelAudioControl.getVisibility() != View.GONE && ev.getRawY() < mPanelAudioControl.getTop()) {
+            mPanelAudioControl.setVisibility(View.GONE);
+            mPanelAudioControl.hideAudioPanel();
+            mGroupLiveAfter.setVisibility(View.VISIBLE);
+        }
+
+        if (null != mViewPKAnchorList && mViewPKAnchorList.getVisibility() != View.GONE && ev.getRawY() < mViewPKAnchorList.getTop()) {
+            mViewPKAnchorList.setVisibility(View.GONE);
+            mGroupLiveAfter.setVisibility(View.VISIBLE);
+        }
+
+        if (null != mPanelBeautyControl && mPanelBeautyControl.getVisibility() != View.GONE && ev.getRawY() < mPanelBeautyControl.getTop()) {
+            mPanelBeautyControl.setVisibility(View.GONE);
+            if (mIsEnterRoom) {
+                mGroupLiveAfter.setVisibility(View.VISIBLE);
+            } else {
+                mGroupLiveBefore.setVisibility(View.VISIBLE);
+            }
         }
         return super.dispatchTouchEvent(ev);
     }
 
     /**
-     *     /////////////////////////////////////////////////////////////////////////////////
-     *     //
-     *     //                      界面动画与时长统计
-     *     //
-     *     /////////////////////////////////////////////////////////////////////////////////
-     */
-    /**
      * 开启红点与计时动画
      */
     private void startRecordAnimation() {
-        mObjAnim = ObjectAnimator.ofFloat(mRecordBall, "alpha", 1f, 0f, 1f);
-        mObjAnim.setDuration(1000);
-        mObjAnim.setRepeatCount(-1);
-        mObjAnim.start();
+        mAnimatorRecordBall = ObjectAnimator.ofFloat(mImageRecordBall, "alpha", 1f, 0f, 1f);
+        mAnimatorRecordBall.setDuration(1000);
+        mAnimatorRecordBall.setRepeatCount(-1);
+        mAnimatorRecordBall.start();
     }
 
     /**
      * 关闭红点与计时动画
      */
     private void stopRecordAnimation() {
-        if (null != mObjAnim)
-            mObjAnim.cancel();
+        if (null != mAnimatorRecordBall)
+            mAnimatorRecordBall.cancel();
     }
 
     @Override
     protected void onBroadcasterTimeUpdate(long second) {
         super.onBroadcasterTimeUpdate(second);
-        mBroadcastTime.setText(TCUtils.formattedTime(second));
+        mTextBroadcastTime.setText(TCUtils.formattedTime(second));
     }
 
-    /**
-     * /////////////////////////////////////////////////////////////////////////////////
-     * //
-     * //                      点击事件与调用函数相关
-     * //
-     * /////////////////////////////////////////////////////////////////////////////////
-     */
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if (id == R.id.switch_cam) {
+        if (id == R.id.btn_close) {
+            if (!mIsEnterRoom) {
+                //如果没有进房，直接退出就好了
+                finishRoom();
+                return;
+            }
+            if (mCurrentStatus == TRTCLiveRoomDef.ROOM_STATUS_PK) {
+                stopPK();
+                mButtonExit.setText(R.string.trtcliveroom_btn_stop_live);
+                return;
+            }
+            showExitInfoDialog(getString(R.string.trtcliveroom_warning_anchor_exit_room), false);
+        } else if (id == R.id.btn_switch_camera) {
             if (mLiveRoom != null) {
                 mLiveRoom.switchCamera();
             }
         } else if (id == R.id.btn_request_pk) {
             if (mCurrentStatus == TRTCLiveRoomDef.ROOM_STATUS_PK) {
-                mPKButton.setBackgroundResource(R.drawable.pk_start);
-                stopPK();
                 return;
             }
-            if (mAnchorPKSelectView.isShown()) {
-                mAnchorPKSelectView.setVisibility(View.GONE);
+            if (mViewPKAnchorList.isShown()) {
+                mViewPKAnchorList.setVisibility(View.GONE);
             } else {
-                mAnchorPKSelectView.setVisibility(View.VISIBLE);
-                mBeautyControl.setVisibility(View.GONE);
-                mAudioCtrl.setVisibility(View.GONE);
+                mViewPKAnchorList.setVisibility(View.VISIBLE);
+                mPanelBeautyControl.setVisibility(View.GONE);
+                mPanelAudioControl.setVisibility(View.GONE);
+                mGroupLiveAfter.setVisibility(View.GONE);
             }
         } else if (id == R.id.beauty_btn) {
-            if (mBeautyControl.isShown()) {
-                mBeautyControl.setVisibility(View.GONE);
+            if (mPanelBeautyControl.isShown()) {
+                mPanelBeautyControl.setVisibility(View.GONE);
             } else {
-                mBeautyControl.setVisibility(View.VISIBLE);
-                mAnchorPKSelectView.setVisibility(View.GONE);
-                mAudioCtrl.setVisibility(View.GONE);
+                mPanelBeautyControl.setVisibility(View.VISIBLE);
+                mPanelAudioControl.setVisibility(View.GONE);
+                mGroupLiveAfter.setVisibility(View.GONE);
             }
         } else if (id == R.id.btn_audio_ctrl) {
-            if (mAudioCtrl.isShown()) {
-                mAudioCtrl.setVisibility(View.GONE);
-                mAudioCtrl.hideAudioPanel();
-                mLiveAfter.setVisibility(View.VISIBLE);
+            if (mPanelAudioControl.isShown()) {
+                mPanelAudioControl.setVisibility(View.GONE);
+                mPanelAudioControl.hideAudioPanel();
+                mGroupLiveAfter.setVisibility(View.VISIBLE);
             } else {
-                mAudioCtrl.setVisibility(View.VISIBLE);
-                mAudioCtrl.showAudioPanel();
-                mLiveAfter.setVisibility(View.GONE);
-                mBeautyControl.setVisibility(View.GONE);
-                mAnchorPKSelectView.setVisibility(View.GONE);
+                mPanelAudioControl.setVisibility(View.VISIBLE);
+                mPanelAudioControl.showAudioPanel();
+                mGroupLiveAfter.setVisibility(View.GONE);
+                mPanelBeautyControl.setVisibility(View.GONE);
+                mViewPKAnchorList.setVisibility(View.GONE);
             }
         } else if (id == R.id.btn_switch_cam_before_live) {
             if (mLiveRoom != null) {
                 mLiveRoom.switchCamera();
             }
         } else if (id == R.id.btn_beauty_before_live) {
-            if (mBeautyControl.isShown()) {
-                mBeautyControl.setVisibility(View.GONE);
+            if (mPanelBeautyControl.isShown()) {
+                mPanelBeautyControl.setVisibility(View.GONE);
             } else {
-                mBeautyControl.setVisibility(View.VISIBLE);
-                mAnchorPKSelectView.setVisibility(View.GONE);
-                mAudioCtrl.setVisibility(View.GONE);
+                mPanelBeautyControl.setVisibility(View.VISIBLE);
+                mGroupLiveBefore.setVisibility(View.GONE);
             }
         } else {
             super.onClick(v);
@@ -586,20 +617,13 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity implements View
         if (mTXCloudVideoView != null) {
             mTXCloudVideoView.showLog(mShowLog);
         }
-        if (mPKVideoView != null) {
-            mPKVideoView.showLog(mShowLog);
+        if (mVideoViewPKAnchor != null) {
+            mVideoViewPKAnchor.showLog(mShowLog);
         }
 
         mVideoViewMgr.showLog(mShowLog);
     }
 
-    /**
-     * /////////////////////////////////////////////////////////////////////////////////
-     * //
-     * //                      权限相关
-     * //
-     * /////////////////////////////////////////////////////////////////////////////////
-     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -607,7 +631,7 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity implements View
             case 100:
                 for (int ret : grantResults) {
                     if (ret != PackageManager.PERMISSION_GRANTED) {
-                        showErrorAndQuit(-1314, "获取权限失败");
+                        showErrorAndQuit(-1314, getString(R.string.trtcliveroom_fail_request_permission));
                         return;
                     }
                 }

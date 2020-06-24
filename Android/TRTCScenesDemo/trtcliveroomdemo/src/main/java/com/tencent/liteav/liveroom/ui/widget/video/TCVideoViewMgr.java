@@ -46,7 +46,7 @@ public class TCVideoViewMgr {
 
     public synchronized boolean containUserId(String id) {
         for (TCVideoView item : mVideoViews) {
-            if (item.isUsed && item.mUserId.equals(id)) {
+            if (item.isUsed && item.userId.equals(id)) {
                 return true;
             }
         }
@@ -61,17 +61,17 @@ public class TCVideoViewMgr {
         if (mPKVideoView != null) {
             mPKVideoView.setUsed(true);
             mPKVideoView.showKickoutBtn(false);
-            mPKVideoView.mUserId = id;
+            mPKVideoView.userId = id;
             return mPKVideoView;
         }
 
         for (TCVideoView item : mVideoViews) {
             if (!item.isUsed) {
                 item.setUsed(true);
-                item.mUserId = id;
+                item.userId = id;
                 return item;
             } else {
-                if (item.mUserId != null && item.mUserId.equals(id)) {
+                if (item.userId != null && item.userId.equals(id)) {
                     item.setUsed(true);
                     return item;
                 }
@@ -82,8 +82,8 @@ public class TCVideoViewMgr {
 
     public synchronized void recycleVideoView(String id) {
         for (TCVideoView item : mVideoViews) {
-            if (item.mUserId != null && item.mUserId.equals(id)) {
-                item.mUserId = null;
+            if (item.userId != null && item.userId.equals(id)) {
+                item.userId = null;
                 item.setUsed(false);
             }
         }
@@ -91,7 +91,7 @@ public class TCVideoViewMgr {
 
     public synchronized void recycleVideoView() {
         for (TCVideoView item : mVideoViews) {
-            item.mUserId = null;
+            item.userId = null;
             item.setUsed(false);
         }
     }

@@ -1,17 +1,9 @@
 <resources>
-    <string name="chat_room_title">房间号: %d</string>
-    <string name="chat_room_online_number">在线主播: &lt;font color=\"green\"&gt;%1$d&lt;/font&gt;</string>
-    <string name="voiceroom_bgm_title">背景音乐设置</string>
-    <string name="voiceroom_bgm_local_tag">播放本地音乐</string>
-    <string name="voiceroom_bgm_online_tag">播放网络歌曲</string>
-    <string name="voiceroom_bgm_vol_tag">BGM音量</string>
-    <string name="voiceroom_confirm">确认</string>
-    <string name="voiceroom_bgm_type">BGM:  &lt;font color=\"green\"&gt;%1$s&lt;/font&gt;</string>
-    <string name="voiceroom_voice_changer">变声特效:  &lt;font color=\"green\"&gt;%1$s&lt;/font&gt;</string>
-    <string name="voiceroom_reverb">混响:  &lt;font color=\"green\"&gt;%1$s&lt;/font&gt;</string>
-    <string name="voiceroom_effect_title">播放音效</string>
-    <string name="voiceroom_voice_changer_title">变声设置</string>
-    <string name="voiceroom_more_title">更多设置</string>
-    <string name="voiceroom_mic_vol_tag">MIC音量</string>
-    <string name="voiceroom_reverb_vol_tag">混响设置</string>
+    <string name="trtcvoiceroom_room_title">房间号: %d</string>
+    <string name="trtcvoiceroom_numer_format">%d人在看</string>
+    <string name="trtcvoiceroom_agree">同意</string>
+    <string name="trtcvoiceroom_warning_not_empty">"输入不能为空!"</string>
+    <string name="trtcvoiceroom_send">发送</string>
+    <string name="trtcvoiceroom_already_agree">已同意</string>
+    <string name="trtcvoiceroom_main_title">%1s(%2d)</string>
 </resources>

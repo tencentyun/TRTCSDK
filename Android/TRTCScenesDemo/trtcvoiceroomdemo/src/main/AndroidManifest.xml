@@ -1,18 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.tencent.liteav.demo.trtcvoiceroom">
+    package="com.tencent.liteav.trtcvoiceroom">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application>
-        <activity android:name="com.tencent.liteav.demo.trtcvoiceroom.VoiceRoomMainActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:theme="@style/ChatTheme"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTask"/>
         <activity
-            android:name="com.tencent.liteav.demo.trtcvoiceroom.CreateVoiceRoomActivity"
+            android:name=".ui.room.VoiceRoomAnchorActivity"
             android:configChanges="orientation|keyboardHidden"
+            android:launchMode="singleTop"
+            android:theme="@style/ChatTheme"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.room.VoiceRoomAudienceActivity"
+            android:configChanges="orientation|keyboardHidden"
+
+            android:launchMode="singleTop"
+            android:theme="@style/ChatTheme"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.list.VoiceRoomListActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:launchMode="singleTask"
+            android:theme="@style/ChatTheme"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ui.list.VoiceRoomCreateActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:launchMode="singleTop"
             android:theme="@style/ChatTheme"
             android:screenOrientation="portrait" />
     </application>

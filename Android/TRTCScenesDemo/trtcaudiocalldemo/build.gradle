@@ -33,6 +33,8 @@ dependencies {
     //依赖一个动画库
     compile 'com.wang.avi:library:2.1.3'
     //快速集成圆形image view
+    compile 'de.hdodenhof:circleimageview:3.0.1'
+
     compile 'com.android.support.constraint:constraint-layout:1.1.3'
     compile 'com.squareup.picasso:picasso:2.71828'
     compile 'com.google.android:flexbox:1.0.0'

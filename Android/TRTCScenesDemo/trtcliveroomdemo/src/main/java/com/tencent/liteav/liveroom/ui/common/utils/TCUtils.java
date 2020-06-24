@@ -447,52 +447,52 @@ public class TCUtils {
         Bitmap bmp = null;
         switch (filterType) {
             case FILTERTYPE_biaozhun:
-                bmp = decodeResource(resources, R.drawable.filter_biaozhun);
+                bmp = decodeResource(resources, R.drawable.beauty_filter_biaozhun);
                 break;
             case FILTERTYPE_yinghong:
-                bmp = decodeResource(resources, R.drawable.filter_yinghong);
+                bmp = decodeResource(resources, R.drawable.beauty_filter_yinghong);
                 break;
             case FILTERTYPE_yunshang:
-                bmp = decodeResource(resources, R.drawable.filter_yunshang);
+                bmp = decodeResource(resources, R.drawable.beauty_filter_yunshang);
                 break;
             case FILTERTYPE_chunzhen:
-                bmp = decodeResource(resources, R.drawable.filter_chunzhen);
+                bmp = decodeResource(resources, R.drawable.beauty_filter_chunzhen);
                 break;
             case FILTERTYPE_bailan:
-                bmp = decodeResource(resources, R.drawable.filter_bailan);
+                bmp = decodeResource(resources, R.drawable.beauty_filter_bailan);
                 break;
             case FILTERTYPE_yuanqi:
-                bmp = decodeResource(resources, R.drawable.filter_yuanqi);
+                bmp = decodeResource(resources, R.drawable.beauty_filter_yuanqi);
                 break;
             case FILTERTYPE_chaotuo:
-                bmp = decodeResource(resources, R.drawable.filter_chaotuo);
+                bmp = decodeResource(resources, R.drawable.beauty_filter_chaotuo);
                 break;
             case FILTERTYPE_xiangfen:
-                bmp = decodeResource(resources, R.drawable.filter_xiangfen);
+                bmp = decodeResource(resources, R.drawable.beauty_filter_xiangfen);
                 break;
             case FILTERTYPE_langman:
-                bmp = decodeResource(resources, R.drawable.filter_langman);
+                bmp = decodeResource(resources, R.drawable.beauty_filter_langman);
                 break;
             case FILTERTYPE_qingxin:
-                bmp = decodeResource(resources, R.drawable.filter_qingxin);
+                bmp = decodeResource(resources, R.drawable.beauty_filter_qingxin);
                 break;
             case FILTERTYPE_weimei:
-                bmp = decodeResource(resources, R.drawable.filter_weimei);
+                bmp = decodeResource(resources, R.drawable.beauty_filter_weimei);
                 break;
             case FILTERTYPE_fennen:
-                bmp = decodeResource(resources, R.drawable.filter_fennen);
+                bmp = decodeResource(resources, R.drawable.beauty_filter_fennen);
                 break;
             case FILTERTYPE_huaijiu:
-                bmp = decodeResource(resources, R.drawable.filter_huaijiu);
+                bmp = decodeResource(resources, R.drawable.beauty_filter_huaijiu);
                 break;
             case FILTERTYPE_landiao:
-                bmp = decodeResource(resources, R.drawable.filter_landiao);
+                bmp = decodeResource(resources, R.drawable.beauty_filter_landiao);
                 break;
             case FILTERTYPE_qingliang:
-                bmp = decodeResource(resources, R.drawable.filter_qingliang);
+                bmp = decodeResource(resources, R.drawable.beauty_filter_qingliang);
                 break;
             case FILTERTYPE_rixi:
-                bmp = decodeResource(resources, R.drawable.filter_rixi);
+                bmp = decodeResource(resources, R.drawable.beauty_filter_rixi);
                 break;
             default:
                 bmp = null;

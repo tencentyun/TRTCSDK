@@ -20,11 +20,30 @@
 
         <!-- 【必须】消息收发service -->
 
-        <activity android:name=".SplashActivity">
+        <activity android:name=".SplashActivity" android:launchMode="singleTask"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="liteav" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="com.tencent.liteav.demo"
+                    android:scheme="liteav"/>
             </intent-filter>
         </activity>
 
@@ -60,26 +79,6 @@
         <meta-data
             android:name="BUGLY_ENABLE_DEBUG"
             android:value="true" />
-
-        <receiver android:name="com.tencent.imsdk.session.SessionBroadcastReceiver">
-            <intent-filter>
-                <action android:name="com.tencent.imsdk.session.boot" />
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-                <action android:name="com.tencent.qcloud.qal.TASK_REMOVED" />
-            </intent-filter>
-        </receiver>
-        <service
-            android:name="com.tencent.imsdk.session.remote.SessionService"
-            android:process=":network" />
-        <service
-            android:name="com.tencent.imsdk.session.remote.AssistService"
-            android:process=":network" />
-
-        <service
-            android:name="com.tencent.imsdk.session.remote.KeepAliveJobService"
-            android:permission="android.permission.BIND_JOB_SERVICE"
-            android:process=":network" />
     </application>
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />

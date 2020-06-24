@@ -1,3 +1,25 @@
 <resources>
     <string name="search_call_hint">输入用户名搜索已注册用户</string>
+    <string name="login_search_call_hint">输入手机号搜索已注册用户</string>
+    <string name="login_privacy_text">已同意《<a href="http://privacy.qq.com/">隐私政策</a>》</string>
+    <string name="login_status_login_success">登录成功</string>
+    <string name="login_status_login_fail">登录失败</string>
+    <string name="login_status_logging_in">正在登录</string>
+    <string name="login_title_trtc">腾讯云TRTC</string>
+    <string name="login_title_liteav">腾讯云工具包</string>
+    <string name="login_text_user_id">用户名</string>
+    <string name="login_hint_user_id">请输入登录的userId</string>
+    <string name="login_btn_login">登录</string>
+    <string name="login_tips_auto_login_fail">自动登录失败，请重新获取验证码登录</string>
+    <string name="login_warning_get_sms_frequently">不要频繁获取验证码</string>
+    <string name="login_tips_invalid_phone">请填写正确的手机号</string>
+    <string name="login_tips_sent_sms">验证码已发送</string>
+    <string name="login_get_sms_fail">获取验证码失败:%1$s</string>
+    <string name="login_tips_input_correct_info">请输入UserID</string>
+    <string name="login_tips_register">首次登录请先补充用户信息</string>
+    <string name="login_form_count_time">%1$d秒</string>
+    <string name="login_title_register">注册</string>
+    <string name="login_text_user_name">用户名</string>
+    <string name="login_hint_user_name">请输入用户名</string>
+    <string name="login_tips_user_name">*限中文、数字、字母或下划线，2-20个字</string>
 </resources>

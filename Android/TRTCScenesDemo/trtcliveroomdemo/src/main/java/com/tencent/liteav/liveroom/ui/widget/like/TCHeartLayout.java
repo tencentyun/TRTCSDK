@@ -42,29 +42,30 @@ import java.util.Random;
 public class TCHeartLayout extends RelativeLayout {
 
     private TCAbstractPathAnimator mAnimator;
-    private int                    defStyleAttr = 0;
 
-    private int textHight;
-    private int dHeight;
-    private int dWidth;
-    private int initX;
-    private int pointx;
+    private int mDefStyleAttr = 0;
+    private int mTextHeight;
+    private int mBitmapHeight;
+    private int mBitmapWidth;
+    private int mInitX;
+    private int mPointx;
 
     public TCHeartLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         findViewById(context);
         initHeartDrawable();
-        init(attrs, defStyleAttr);
+        init(attrs, mDefStyleAttr);
     }
 
     private void findViewById(Context context) {
-        LayoutInflater.from(context).inflate(R.layout.liveroom_view_periscope, this);
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.icon_like);
-        dHeight = bitmap.getWidth();
-        dWidth = bitmap.getHeight();
-        textHight = sp2px(getContext(), 20) + dHeight / 2;
+        LayoutInflater.from(context).inflate(R.layout.trtcliveroom_view_periscope, this);
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.trtcliveroom_icon_like_png);
+        mBitmapHeight = bitmap.getWidth();
+        mBitmapWidth = bitmap.getHeight();
+        mTextHeight = sp2px(getContext(), 20) + mBitmapHeight / 2;
 
-        pointx = dWidth;//随机上浮方向的x坐标
+
+        mPointx = mBitmapWidth;//随机上浮方向的x坐标
 
         bitmap.recycle();
     }
@@ -77,18 +78,18 @@ public class TCHeartLayout extends RelativeLayout {
 
     private void init(AttributeSet attrs, int defStyleAttr) {
         final TypedArray a = getContext().obtainStyledAttributes(
-                attrs, R.styleable.HeartLayout, defStyleAttr, 0);
+                attrs, R.styleable.TRTCLiveRoomHeartLayout, defStyleAttr, 0);
 
         //todo:获取确切值
-        initX = 30;
-        if (pointx <= initX && pointx >= 0) {
-            pointx -= 10;
-        } else if (pointx >= -initX && pointx <= 0) {
-            pointx += 10;
-        } else pointx = initX;
+        mInitX = 30;
+        if (mPointx <= mInitX && mPointx >= 0) {
+            mPointx -= 10;
+        } else if (mPointx >= -mInitX && mPointx <= 0) {
+            mPointx += 10;
+        } else mPointx = mInitX;
 
         mAnimator = new TCPathAnimator(
-                TCAbstractPathAnimator.Config.fromTypeArray(a, initX, textHight, pointx, dWidth, dHeight));
+                TCAbstractPathAnimator.Config.fromTypeArray(a, mInitX, mTextHeight, mPointx, mBitmapWidth, mBitmapHeight));
         a.recycle();
     }
 
@@ -108,7 +109,7 @@ public class TCHeartLayout extends RelativeLayout {
         }
     }
 
-    private static int[]            drawableIds = new int[]{R.drawable.heart0, R.drawable.heart1, R.drawable.heart2, R.drawable.heart3, R.drawable.heart4, R.drawable.heart5, R.drawable.heart6, R.drawable.heart7, R.drawable.heart8,};
+    private static int[]            drawableIds = new int[]{R.drawable.trtcliveroom_heart0, R.drawable.trtcliveroom_heart1, R.drawable.trtcliveroom_heart2, R.drawable.trtcliveroom_heart3, R.drawable.trtcliveroom_heart4, R.drawable.trtcliveroom_heart5, R.drawable.trtcliveroom_heart6, R.drawable.trtcliveroom_heart7, R.drawable.trtcliveroom_heart8,};
     private        Random           mRandom     = new Random();
     private static Drawable[]       sDrawables;
     private        Bitmap[]         mHearts;

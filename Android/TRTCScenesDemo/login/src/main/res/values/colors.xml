@@ -7,4 +7,15 @@
     <color name="colorWhite">#ffffff</color>
     <color name="colorShade">#33000000</color>
     <color name="login_button_bg">#00A66b</color>
+    <color name="login_color_blue">#FF006EFD</color>
+    <color name="login_color_bg_gradient_start">#FF050C17</color>
+    <color name="login_color_bg_gradient_end">#FF13294B</color>
+    <color name="login_color_edit_hint">#FF6B82A8</color>
+    <color name="login_color_btn_enable">#FF0062E3</color>
+    <color name="login_color_btn_disable">#FF092650</color>
+    <color name="login_color_head_login_success">#FF11323E</color>
+    <color name="login_color_head_login_fail">#FF3E2A3E</color>
+    <color name="login_color_text_login_success">#FF42BC56</color>
+    <color name="login_color_text_login_fail">#FFE84B40</color>
+    <color name="login_transparent">#00000000</color>
 </resources>

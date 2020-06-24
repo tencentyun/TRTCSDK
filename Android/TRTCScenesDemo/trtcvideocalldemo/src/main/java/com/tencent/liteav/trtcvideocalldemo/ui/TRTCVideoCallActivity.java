@@ -19,8 +19,8 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.CollectionUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.squareup.picasso.Picasso;
-import com.tencent.liteav.login.ProfileManager;
-import com.tencent.liteav.login.UserModel;
+import com.tencent.liteav.login.model.ProfileManager;
+import com.tencent.liteav.login.model.UserModel;
 import com.tencent.liteav.trtcvideocalldemo.R;
 import com.tencent.liteav.trtcvideocalldemo.model.ITRTCVideoCall;
 import com.tencent.liteav.trtcvideocalldemo.model.TRTCVideoCallImpl;
@@ -29,7 +29,9 @@ import com.tencent.liteav.trtcvideocalldemo.ui.videolayout.TRTCVideoLayout;
 import com.tencent.liteav.trtcvideocalldemo.ui.videolayout.TRTCVideoLayoutManager;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,9 +51,6 @@ public class TRTCVideoCallActivity extends AppCompatActivity {
     public static final  String PARAM_OTHER_INVITING_USER = "other_inviting_user_model";
     private static final int    MAX_SHOW_INVITING_USER    = 4;
 
-    /**
-     * 界面元素相关
-     */
     private ImageView              mMuteImg;
     private LinearLayout           mMuteLl;
     private ImageView              mHangupImg;
@@ -64,6 +63,9 @@ public class TRTCVideoCallActivity extends AppCompatActivity {
     private Group                  mInvitingGroup;
     private LinearLayout           mImgContainerLl;
     private TextView               mTimeTv;
+    private ImageView              mSponsorAvatarImg;
+    private TextView               mSponsorUserNameTv;
+    private Group                  mSponsorGroup;
     private Runnable               mTimeRunnable;
     private int                    mTimeCount;
     private Handler                mTimeHandler;
@@ -75,7 +77,7 @@ public class TRTCVideoCallActivity extends AppCompatActivity {
     private UserModel              mSelfModel;
     private List<UserModel>        mCallUserModelList = new ArrayList<>(); // 呼叫方
     private Map<String, UserModel> mCallUserModelMap  = new HashMap<>();
-    private UserModel              mSponsorUserModel; // 被叫方
+    private UserModel              mSponsorUserModel;                      // 被叫方
     private List<UserModel>        mOtherInvitingUserModelList;
     private int                    mCallType;
     private ITRTCVideoCall         mITRTCVideoCall;
@@ -89,7 +91,7 @@ public class TRTCVideoCallActivity extends AppCompatActivity {
         @Override
         public void onError(int code, String msg) {
             //发生了错误，报错并退出该页面
-            ToastUtils.showLong("发送错误[" + code + "]:" + msg);
+            ToastUtils.showLong(getString(R.string.trtcvideocall_toast_call_error_msg, code, msg));
             stopCameraAndFinish();
         }
 
@@ -139,7 +141,7 @@ public class TRTCVideoCallActivity extends AppCompatActivity {
 
                         @Override
                         public void onFailed(int code, String msg) {
-                            ToastUtils.showLong("获取用户" + userId + "的资料失败");
+                            ToastUtils.showLong(getString(R.string.trtcvideocall_toast_get_user_info_fail, userId));
                         }
                     });
                 }
@@ -175,7 +177,7 @@ public class TRTCVideoCallActivity extends AppCompatActivity {
                         UserModel userModel = mCallUserModelMap.remove(userId);
                         if (userModel != null) {
                             mCallUserModelList.remove(userModel);
-                            ToastUtils.showLong(userModel.userName + "拒绝通话");
+                            ToastUtils.showLong(getString(R.string.trtcvideocall_toast_user_reject_call, userModel.userName));
                         }
                     }
                 }
@@ -195,7 +197,7 @@ public class TRTCVideoCallActivity extends AppCompatActivity {
                         UserModel userModel = mCallUserModelMap.remove(userId);
                         if (userModel != null) {
                             mCallUserModelList.remove(userModel);
-                            ToastUtils.showLong(userModel.userName + "无响应");
+                            ToastUtils.showLong(getString(R.string.trtcvideocall_toast_user_not_response, userModel.userName));
                         }
                     }
                 }
@@ -212,7 +214,7 @@ public class TRTCVideoCallActivity extends AppCompatActivity {
                 UserModel userModel = mCallUserModelMap.remove(userId);
                 if (userModel != null) {
                     mCallUserModelList.remove(userModel);
-                    ToastUtils.showLong(userModel.userName + "忙线");
+                    ToastUtils.showLong(getString(R.string.trtcvideocall_toast_user_busy, userModel.userName));
                 }
             }
         }
@@ -220,7 +222,7 @@ public class TRTCVideoCallActivity extends AppCompatActivity {
         @Override
         public void onCallingCancel() {
             if (mSponsorUserModel != null) {
-                ToastUtils.showLong(mSponsorUserModel.userName + " 取消了通话");
+                ToastUtils.showLong(getString(R.string.trtcvideocall_toast_user_cancel_call, mSponsorUserModel.userName));
             }
             stopCameraAndFinish();
         }
@@ -228,7 +230,7 @@ public class TRTCVideoCallActivity extends AppCompatActivity {
         @Override
         public void onCallingTimeout() {
             if (mSponsorUserModel != null) {
-                ToastUtils.showLong(mSponsorUserModel.userName + " 通话超时");
+                ToastUtils.showLong(getString(R.string.trtcvideocall_toast_user_timeout, mSponsorUserModel.userName));
             }
             stopCameraAndFinish();
         }
@@ -270,9 +272,6 @@ public class TRTCVideoCallActivity extends AppCompatActivity {
             }
         }
     };
-    private ImageView             mSponsorAvatarImg;
-    private TextView              mSponsorUserNameTv;
-    private Group                 mSponsorGroup;
 
     /**
      * 主动拨打给某个用户
@@ -309,11 +308,12 @@ public class TRTCVideoCallActivity extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.videocall_activity_online_call);
+        setContentView(R.layout.trtcvideocall_activity_call_main);
 
         initView();
         initData();
         initListener();
+        ProfileManager.getInstance().checkNeedShowSecurityTips(TRTCVideoCallActivity.this);
     }
 
     @Override
@@ -343,7 +343,7 @@ public class TRTCVideoCallActivity extends AppCompatActivity {
                 isMuteMic = !isMuteMic;
                 mITRTCVideoCall.setMicMute(isMuteMic);
                 mMuteImg.setActivated(isMuteMic);
-                ToastUtils.showLong(isMuteMic ? "开启静音" : "关闭静音");
+                ToastUtils.showLong(isMuteMic ? R.string.trtcvideocall_toast_enable_mute : R.string.trtcvideocall_toast_disable_mute);
             }
         });
         mHandsfreeLl.setOnClickListener(new View.OnClickListener() {
@@ -352,7 +352,7 @@ public class TRTCVideoCallActivity extends AppCompatActivity {
                 isHandsFree = !isHandsFree;
                 mITRTCVideoCall.setHandsFree(isHandsFree);
                 mHandsfreeImg.setActivated(isHandsFree);
-                ToastUtils.showLong(isHandsFree ? "使用扬声器" : "使用听筒");
+                ToastUtils.showLong(isHandsFree ? R.string.trtcvideocall_toast_use_speaker : R.string.trtcvideocall_toast_use_handset);
             }
         });
         mMuteImg.setActivated(isMuteMic);
@@ -403,19 +403,19 @@ public class TRTCVideoCallActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        mMuteImg = (ImageView) findViewById(R.id.img_mute);
+        mMuteImg = (ImageView) findViewById(R.id.iv_mute);
         mMuteLl = (LinearLayout) findViewById(R.id.ll_mute);
-        mHangupImg = (ImageView) findViewById(R.id.img_hangup);
+        mHangupImg = (ImageView) findViewById(R.id.iv_hangup);
         mHangupLl = (LinearLayout) findViewById(R.id.ll_hangup);
-        mHandsfreeImg = (ImageView) findViewById(R.id.img_handsfree);
+        mHandsfreeImg = (ImageView) findViewById(R.id.iv_handsfree);
         mHandsfreeLl = (LinearLayout) findViewById(R.id.ll_handsfree);
-        mDialingImg = (ImageView) findViewById(R.id.img_dialing);
+        mDialingImg = (ImageView) findViewById(R.id.iv_dialing);
         mDialingLl = (LinearLayout) findViewById(R.id.ll_dialing);
         mLayoutManagerTrtc = (TRTCVideoLayoutManager) findViewById(R.id.trtc_layout_manager);
         mInvitingGroup = (Group) findViewById(R.id.group_inviting);
         mImgContainerLl = (LinearLayout) findViewById(R.id.ll_img_container);
         mTimeTv = (TextView) findViewById(R.id.tv_time);
-        mSponsorAvatarImg = (ImageView) findViewById(R.id.img_sponsor_avatar);
+        mSponsorAvatarImg = (ImageView) findViewById(R.id.iv_sponsor_avatar);
         mSponsorUserNameTv = (TextView) findViewById(R.id.tv_sponsor_user_name);
         mSponsorGroup = (Group) findViewById(R.id.group_sponsor);
     }
@@ -490,8 +490,8 @@ public class TRTCVideoCallActivity extends AppCompatActivity {
             }
         });
         mDialingLl.setVisibility(View.GONE);
-        mHandsfreeLl.setVisibility(View.GONE);
-        mMuteLl.setVisibility(View.GONE);
+        mHandsfreeLl.setVisibility(View.VISIBLE);
+        mMuteLl.setVisibility(View.VISIBLE);
         //3. 隐藏中间他们也在界面
         hideOtherInvitingUserView();
         //4. sponsor画面也隐藏
@@ -553,7 +553,7 @@ public class TRTCVideoCallActivity extends AppCompatActivity {
     }
 
     private String getShowTime(int count) {
-        return String.format("%02d:%02d", count / 60, count % 60);
+        return getString(R.string.trtcvideocall_called_time_format, count / 60, count % 60);
     }
 
     private void showOtherInvitingUserView() {
@@ -561,8 +561,8 @@ public class TRTCVideoCallActivity extends AppCompatActivity {
             return;
         }
         mInvitingGroup.setVisibility(View.VISIBLE);
-        int squareWidth = getResources().getDimensionPixelOffset(R.dimen.small_image_size);
-        int leftMargin  = getResources().getDimensionPixelOffset(R.dimen.small_image_left_margin);
+        int squareWidth = getResources().getDimensionPixelOffset(R.dimen.trtcvideocall_small_image_size);
+        int leftMargin  = getResources().getDimensionPixelOffset(R.dimen.trtcvideocall_small_image_left_margin);
         for (int index = 0; index < mOtherInvitingUserModelList.size() && index < MAX_SHOW_INVITING_USER; index++) {
             UserModel                 userModel    = mOtherInvitingUserModelList.get(index);
             ImageView                 imageView    = new ImageView(this);

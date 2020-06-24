@@ -38,10 +38,11 @@ import java.util.LinkedList;
  * 7.堆叠布局与宫格布局参数，见{@link Utils} 工具类
  */
 public class TRTCVideoLayoutManager extends RelativeLayout {
+    private final static String TAG        = TRTCVideoLayoutManager.class.getSimpleName();
+
     public static final  int    MODE_FLOAT = 1;  // 前后堆叠模式
     public static final  int    MODE_GRID  = 2;  // 九宫格模式
     public static final  int    MAX_USER   = 9;
-    private final static String TAG        = TRTCVideoLayoutManager.class.getSimpleName();
 
     private LinkedList<TRTCLayoutEntity> mLayoutEntityList;
     private ArrayList<LayoutParams>      mFloatParamList;
@@ -173,7 +174,7 @@ public class TRTCVideoLayoutManager extends RelativeLayout {
 
             @Override
             public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-                if (!layout.isMoveable()) return false;
+                if (!layout.isMoveAble()) return false;
                 ViewGroup.LayoutParams params = layout.getLayoutParams();
                 // 当 TRTCVideoView 的父容器是 RelativeLayout 的时候，可以实现拖动
                 if (params instanceof LayoutParams) {
@@ -295,7 +296,7 @@ public class TRTCVideoLayoutManager extends RelativeLayout {
             int layoutIndex = 1;
             for (int i = 0; i < mLayoutEntityList.size(); i++) {
                 TRTCLayoutEntity entity = mLayoutEntityList.get(i);
-                entity.layout.setMoveable(false);
+                entity.layout.setMoveAble(false);
                 entity.layout.setOnClickListener(null);
                 // 我自己要放在布局的左上角
                 if (entity.userId.equals(mSelfUserId)) {
@@ -330,9 +331,9 @@ public class TRTCVideoLayoutManager extends RelativeLayout {
             LayoutParams     layoutParams = mFloatParamList.get(i);
             entity.layout.setLayoutParams(layoutParams);
             if (i == 0) {
-                entity.layout.setMoveable(false);
+                entity.layout.setMoveAble(false);
             } else {
-                entity.layout.setMoveable(true);
+                entity.layout.setMoveAble(true);
             }
             addFloatViewClickListener(entity);
             bringChildToFront(entity.layout);

@@ -28,8 +28,8 @@ public class TCCircleDrawable extends Drawable {
     private Bitmap  mBitmapHeart;
     private boolean mHasHeart;
 
-    private static final int BLACK_COLOR          = 0xb2000000;//黑色 背景
-    private static final int BLACKGROUDE_ADD_SIZE = 4;//背景比图片多出来的部分
+    private static final int BLACK_COLOR          = 0xb2000000;     //黑色 背景
+    private static final int BLACKGROUDE_ADD_SIZE = 4;              //背景比图片多出来的部分
 
     public TCCircleDrawable(Bitmap bitmap) {
         mBitmap = bitmap;
@@ -58,7 +58,7 @@ public class TCCircleDrawable extends Drawable {
     }
 
     private void setBitmapHeart(Context context) {
-        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_liked);
+        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.trtcliveroom_ic_liked);
         if (bitmap != null) {
             Matrix matrix = new Matrix();
             matrix.postScale(0.8f, 0.8f);

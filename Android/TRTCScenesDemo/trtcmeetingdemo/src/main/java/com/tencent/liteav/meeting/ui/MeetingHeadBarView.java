@@ -72,6 +72,12 @@ public class MeetingHeadBarView extends RelativeLayout {
         }
     }
 
+    public void setHeadsetImg(boolean useSpeaker) {
+        if (mHeadsetImg != null) {
+            mHeadsetImg.setImageResource(useSpeaker ? R.drawable.ic_meeting_speaker : R.drawable.ic_meeting_headset);
+        }
+    }
+
     public void setHeadBarCallback(HeadBarCallback headBarCallback) {
         mHeadBarCallback = headBarCallback;
     }

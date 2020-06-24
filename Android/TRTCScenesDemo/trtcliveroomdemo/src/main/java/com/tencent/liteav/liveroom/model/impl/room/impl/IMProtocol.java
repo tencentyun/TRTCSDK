@@ -1,5 +1,6 @@
 package com.tencent.liteav.liveroom.model.impl.room.impl;
 
+import android.text.TextUtils;
 import android.util.Pair;
 
 import org.json.JSONArray;
@@ -235,7 +236,7 @@ public class IMProtocol {
     }
 
     public static Pair<Integer,List<IMAnchorInfo>> parseGroupInfo(String jsonStr) {
-        if (jsonStr == null) return null;
+        if (TextUtils.isEmpty(jsonStr)) return null;
         try {
             JSONObject jsonObject = new JSONObject(jsonStr);
             int type = jsonObject.getInt("type");
@@ -247,7 +248,7 @@ public class IMProtocol {
                 String uid = jObj.optString("userId");
                 String sid = jObj.optString("streamId");
                 String name = jObj.optString("name");
-                String avatar = jObj.optString("avatar");
+//                String avatar = jObj.optString("avatar");
 
                 IMAnchorInfo info = new IMAnchorInfo();
                 info.userId = uid;

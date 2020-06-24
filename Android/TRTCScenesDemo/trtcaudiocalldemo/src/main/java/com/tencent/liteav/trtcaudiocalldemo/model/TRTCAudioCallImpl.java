@@ -3,7 +3,6 @@ package com.tencent.liteav.trtcaudiocalldemo.model;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.text.TextUtils;
@@ -11,22 +10,17 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
-import com.tencent.imsdk.TIMCallBack;
-import com.tencent.imsdk.TIMConversation;
-import com.tencent.imsdk.TIMConversationType;
-import com.tencent.imsdk.TIMCustomElem;
-import com.tencent.imsdk.TIMElem;
-import com.tencent.imsdk.TIMLogLevel;
-import com.tencent.imsdk.TIMManager;
-import com.tencent.imsdk.TIMMessage;
-import com.tencent.imsdk.TIMMessageListener;
-import com.tencent.imsdk.TIMSdkConfig;
-import com.tencent.imsdk.TIMValueCallBack;
 import com.tencent.imsdk.session.SessionWrapper;
+import com.tencent.imsdk.v2.V2TIMAdvancedMsgListener;
+import com.tencent.imsdk.v2.V2TIMCallback;
+import com.tencent.imsdk.v2.V2TIMManager;
+import com.tencent.imsdk.v2.V2TIMMessage;
+import com.tencent.imsdk.v2.V2TIMSDKConfig;
+import com.tencent.imsdk.v2.V2TIMSDKListener;
+import com.tencent.imsdk.v2.V2TIMSendCallback;
 import com.tencent.trtc.TRTCCloud;
 import com.tencent.trtc.TRTCCloudDef;
 import com.tencent.trtc.TRTCCloudListener;
-
 import java.io.Serializable;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -55,16 +49,13 @@ public class TRTCAudioCallImpl implements ITRTCAudioCall {
      * 底层SDK调用实例
      */
     private        TRTCCloud                  mTRTCCloud;
-    private        TIMManager                 mTIMManager;
-    private        TIMMessageListener         mTIMMessageListener = new TIMMessageListener() {
+    private        V2TIMManager               mV2TIMManager;
+    private        V2TIMAdvancedMsgListener   mTIMMessageListener = new V2TIMAdvancedMsgListener() {
         @Override
-        public boolean onNewMessages(List<TIMMessage> list) {
-            if (isCollectionEmpty(list)) {
-                return false;
+        public void onRecvNewMessage(V2TIMMessage msg) {
+            if (msg == null) {
+                return;
             }
-            Log.d(TAG, "onNewMessages: " + list.size());
-            // 收到新消息，取最新的一条进行判断
-            TIMMessage msg       = list.get(0);
             CallModel  callModel = convert2VideoCallData(msg);
             if (callModel != null && callModel.version
                     == CallModel.JSON_VERSION_4_ANDROID_IOS_TRTC
@@ -75,14 +66,13 @@ public class TRTCAudioCallImpl implements ITRTCAudioCall {
                 if (!checkCallTimeout(msg)) {
                     handleCallModel(callModel, msg);
                 }
-                return true;
             }
-            return false;
         }
     };
     /**
      * 当前IM登录用户名
      */
+    private        boolean                    mIsInitIMSDK;
     private        String                     mCurUserId          = "";
     private        int                        mSdkAppId;
     private        String                     mCurUserSig;
@@ -244,7 +234,7 @@ public class TRTCAudioCallImpl implements ITRTCAudioCall {
 
     public TRTCAudioCallImpl(Context context) {
         mContext = context;
-        mTIMManager = TIMManager.getInstance();
+        mV2TIMManager = V2TIMManager.getInstance();
         mTRTCCloud = TRTCCloud.sharedInstance(context);
         mTRTCInteralListenerManager = new TRTCInteralListenerManager();
         mTimeoutThread = new HandlerThread("timeoutThread");
@@ -279,12 +269,24 @@ public class TRTCAudioCallImpl implements ITRTCAudioCall {
      */
     private void initIM() {
         if (SessionWrapper.isMainProcess(mContext.getApplicationContext())) {
-            TIMSdkConfig config = new TIMSdkConfig(mSdkAppId)
-                    .enableLogPrint(true)
-                    .setLogLevel(TIMLogLevel.DEBUG)
-                    .setLogPath(Environment.getExternalStorageDirectory().getPath() + "/justfortest/");
+
+            V2TIMSDKConfig config = new V2TIMSDKConfig();
+            config.setLogLevel(V2TIMSDKConfig.V2TIM_LOG_DEBUG);
             //初始化 SDK
-            TIMManager.getInstance().init(mContext.getApplicationContext(), config);
+            mIsInitIMSDK = V2TIMManager.getInstance().initSDK(mContext.getApplicationContext(), mSdkAppId, config, new V2TIMSDKListener() {
+                @Override
+                public void onConnecting() {
+                }
+
+                @Override
+                public void onConnectSuccess() {
+                }
+
+                @Override
+                public void onConnectFailed(int code, String error) {
+                    Log.e(TAG, "init im sdk error.");
+                }
+            });
         }
     }
 
@@ -355,9 +357,9 @@ public class TRTCAudioCallImpl implements ITRTCAudioCall {
         }, timeoutTime);
     }
 
-    private void handleCallModel(CallModel callModel, TIMMessage msg) {
+    private void handleCallModel(CallModel callModel, V2TIMMessage msg) {
         String user     = msg.getSender();
-        long   leftTime = TIME_OUT_COUNT - (System.currentTimeMillis() / 1000 - msg.timestamp());
+        long   leftTime = TIME_OUT_COUNT - (System.currentTimeMillis() / 1000 - msg.getTimestamp());
         Log.d(TAG, "handleCallModel: " + callModel + " mCurCallID:" + mCurCallID + " sender:" + msg.getSender());
         switch (callModel.action) {
             case CallModel.VIDEO_CALL_ACTION_DIALING:
@@ -418,8 +420,8 @@ public class TRTCAudioCallImpl implements ITRTCAudioCall {
         }
     }
 
-    private boolean checkCallTimeout(TIMMessage msg) {
-        long timeInterval = (System.currentTimeMillis() / 1000 - msg.timestamp()) * 1000;
+    private boolean checkCallTimeout(V2TIMMessage msg) {
+        long timeInterval = (System.currentTimeMillis() / 1000 - msg.getTimestamp()) * 1000;
         return timeInterval > TIME_OUT_COUNT;
     }
 
@@ -472,7 +474,7 @@ public class TRTCAudioCallImpl implements ITRTCAudioCall {
     @Override
     public void destroy() {
         //必要的清楚逻辑
-        mTIMManager.removeMessageListener(mTIMMessageListener);
+        mV2TIMManager.getMessageManager().removeAdvancedMsgListener(mTIMMessageListener);
         mTimeoutHandler.removeCallbacks(null);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
             mTimeoutThread.quitSafely();
@@ -506,13 +508,13 @@ public class TRTCAudioCallImpl implements ITRTCAudioCall {
         }
         mSdkAppId = sdkAppId;
         //1. 未初始化 IM 先初始化 IM
-        if (!TIMManager.getInstance().isInited()) {
+        if (!mIsInitIMSDK) {
             initIM();
         }
         //2. 需要将监听器添加到IM上
-        mTIMManager.addMessageListener(mTIMMessageListener);
+        mV2TIMManager.getMessageManager().addAdvancedMsgListener(mTIMMessageListener);
 
-        String loginUser = mTIMManager.getLoginUser();
+        String loginUser = mV2TIMManager.getLoginUser();
         if (loginUser != null && loginUser.equals(userId)) {
             Log.d(TAG, "IM已经登录过了：" + loginUser);
             mCurUserId = loginUser;
@@ -523,7 +525,7 @@ public class TRTCAudioCallImpl implements ITRTCAudioCall {
             return;
         }
 
-        mTIMManager.login(userId, userSign, new TIMCallBack() {
+        V2TIMManager.getInstance().login(userId, userSign, new V2TIMCallback() {
             @Override
             public void onError(int i, String s) {
                 if (callback != null) {
@@ -544,7 +546,7 @@ public class TRTCAudioCallImpl implements ITRTCAudioCall {
 
     @Override
     public void logout(final ITRTCAudioCall.ActionCallBack callBack) {
-        mTIMManager.logout(new TIMCallBack() {
+        mV2TIMManager.logout(new V2TIMCallback() {
             @Override
             public void onError(int i, String s) {
                 if (callBack != null) {
@@ -766,64 +768,23 @@ public class TRTCAudioCallImpl implements ITRTCAudioCall {
             return;
         }
 
-        TIMMessage    message = new TIMMessage();
-        TIMCustomElem elem    = new TIMCustomElem();
-        elem.setData(json.getBytes());
-        message.addElement(elem);
-        boolean         isGroup = (!TextUtils.isEmpty(realCallModel.groupId));
-        TIMConversation conversation;
-        if (isGroup) {
-            conversation = mTIMManager.getConversation(TIMConversationType.Group, realCallModel.groupId);
-        } else {
-            conversation = mTIMManager.getConversation(TIMConversationType.C2C, user);
-        }
-        if (conversation != null) {
-            // 设置IM离线消息推送，您可以根据自己的需求进行修改
+        V2TIMMessage message = mV2TIMManager.getMessageManager().createCustomMessage(json.getBytes());
+        mV2TIMManager.getMessageManager().sendMessage(message, user, realCallModel.groupId, V2TIMMessage.V2TIM_PRIORITY_HIGH, false, null, new V2TIMSendCallback<V2TIMMessage>() {
+            @Override
+            public void onProgress(int i) {
 
-            //设置当前消息的离线推送配置
-            //            TIMMessageOfflinePushSettings settings = new TIMMessageOfflinePushSettings();
-            //            settings.setEnabled(true);
-            //            settings.setDescr("您收到语音电话");
-            //            //设置离线推送扩展信息
-            //            JSONObject object = new JSONObject();
-            //            try {
-            //                object.put("level", 15);
-            //                object.put("task", "TASK15");
-            //                settings.setExt(object.toString().getBytes("utf-8"));
-            //            } catch (JSONException e) {
-            //                e.printStackTrace();
-            //            } catch (UnsupportedEncodingException e) {
-            //                e.printStackTrace();
-            //            }
-            //            //
-            //            TIMMessageOfflinePushSettings.AndroidSettings androidSettings = new TIMMessageOfflinePushSettings.AndroidSettings();
-            //            androidSettings.setTitle("收到语音通话");
-            //            //推送自定义通知栏消息，接收方收到消息后单击通知栏消息会给应用回调（针对小米、华为离线推送）
-            //            androidSettings.setNotifyMode(TIMMessageOfflinePushSettings.NotifyMode.Normal);
-            //            //设置 Android 设备收到消息时的提示音，声音文件需要放置到 raw 文件夹
-            //            androidSettings.setSound(Uri.parse("android.resource://" + getPackageName() + "/" +R.raw.hualala));
-            //            settings.setAndroidSettings(androidSettings);
-            //            //设置在 iOS 设备上收到消息时的离线配置
-            //            TIMMessageOfflinePushSettings.IOSSettings iosSettings = new TIMMessageOfflinePushSettings.IOSSettings();
-            //            //开启 Badge 计数
-            //            iosSettings.setBadgeEnabled(true);
-            //            //设置 iOS 设备收到离线消息时的提示音
-            //            iosSettings.setSound("/path/to/sound/file");
-            //
-            //            message.setOfflinePushSettings(settings);
+            }
 
-            conversation.sendMessage(message, new TIMValueCallBack<TIMMessage>() {
-                @Override
-                public void onError(int i, String s) {
-                    Log.e(TAG, "send error: " + s);
-                }
+            @Override
+            public void onError(int i, String s) {
+                Log.e(TAG, "send error: " + s);
+            }
 
-                @Override
-                public void onSuccess(TIMMessage timMessage) {
-                    Log.d(TAG, "send success:" + user + " " + json);
-                }
-            });
-        }
+            @Override
+            public void onSuccess(V2TIMMessage timMessage) {
+                Log.d(TAG, "send success:" + user + " " + json);
+            }
+        });
 
         // 最后需要重新赋值
         if (realCallModel.action != CallModel.VIDEO_CALL_ACTION_REJECT &&
@@ -840,20 +801,17 @@ public class TRTCAudioCallImpl implements ITRTCAudioCall {
         return callModel;
     }
 
-    private static CallModel convert2VideoCallData(TIMMessage msg) {
+    private static CallModel convert2VideoCallData(V2TIMMessage msg) {
         if (msg != null) {
-            TIMElem elem = msg.getElement(0);
-            if (elem instanceof TIMCustomElem) {
-                CallModel data = null;
-                try {
-                    String json = new String(((TIMCustomElem) elem).getData());
-                    Log.d(TAG, "convert2VideoCallData: " + json);
-                    data = new Gson().fromJson(json, CallModel.class);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                return data;
+            CallModel data = null;
+            try {
+                String json = new String(msg.getCustomElem().getData());
+                Log.d(TAG, "convert2VideoCallData json: " + json);
+                data = new Gson().fromJson(json, CallModel.class);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+            return data;
         }
         return null;
     }
@@ -1157,4 +1115,5 @@ public class TRTCAudioCallImpl implements ITRTCAudioCall {
             }
         }
     }
+
 }

@@ -15,7 +15,7 @@
         android:layout_centerVertical="true"
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
-        android:src="@drawable/ic_meeting_handset" />
+        android:src="@drawable/ic_meeting_speaker" />
 
     <ImageView
         android:id="@+id/img_camera_switch"

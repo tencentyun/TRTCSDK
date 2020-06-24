@@ -27,8 +27,8 @@ public class TCCenteredImageSpan extends ImageSpan {
     public int getSize(Paint paint, CharSequence text,
                        int start, int end,
                        Paint.FontMetricsInt fm) {
-        Drawable d = getCachedDrawable();
-        Rect rect = d.getBounds();
+        Drawable drawable = getCachedDrawable();
+        Rect rect = drawable.getBounds();
 
         if (fm != null) {
             Paint.FontMetricsInt pfm = paint.getFontMetricsInt();
@@ -63,17 +63,17 @@ public class TCCenteredImageSpan extends ImageSpan {
     // Redefined locally because it is a private member from DynamicDrawableSpan
     private Drawable getCachedDrawable() {
         WeakReference<Drawable> wr = mDrawableRef;
-        Drawable d = null;
+        Drawable drawable = null;
 
         if (wr != null)
-            d = wr.get();
+            drawable = wr.get();
 
-        if (d == null) {
-            d = getDrawable();
-            mDrawableRef = new WeakReference<>(d);
+        if (drawable == null) {
+            drawable = getDrawable();
+            mDrawableRef = new WeakReference<>(drawable);
         }
 
-        return d;
+        return drawable;
     }
 }
 

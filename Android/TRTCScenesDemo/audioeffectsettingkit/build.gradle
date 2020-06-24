@@ -26,5 +26,5 @@ dependencies {
     compile "com.android.support:appcompat-v7:$rootProject.ext.supportSdkVersion"
     compile "com.android.support:recyclerview-v7:$rootProject.ext.supportSdkVersion"
     implementation 'de.hdodenhof:circleimageview:3.1.0'
-    compile "$rootProject.ext.liteavSdk"
+    compile rootProject.ext.liteavSdk
 }

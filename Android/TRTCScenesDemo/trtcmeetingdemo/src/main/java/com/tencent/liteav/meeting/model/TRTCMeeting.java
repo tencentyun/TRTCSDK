@@ -55,6 +55,7 @@ public abstract class TRTCMeeting {
     public abstract void setDelegateHandler(Handler handler);
 
     /**
+     * 登录
      *
      * @param sdkAppId 您可以在实时音视频控制台 >【[应用管理](https://console.cloud.tencent.com/trtc/app)】> 应用信息中查看 SDKAppID
      * @param userId 当前用户的 ID，字符串类型，只允许包含英文字母（a-z 和 A-Z）、数字（0-9）、连词符（-）和下划线（\_）

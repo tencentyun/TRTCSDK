@@ -23,13 +23,14 @@ import com.tencent.rtmp.ui.TXCloudVideoView;
  */
 public class TCVideoView extends RelativeLayout {
 
-    public String mUserId;
-    boolean isUsed;
     private TXCloudVideoView   mPlayerVideo;
-    private ImageView          mImageviewLoading;
-    private FrameLayout        mBackgroundLoading;
-    private Button             mKickOutBtn;
+    private ImageView          mImageLoading;
+    private FrameLayout        mLayoutBackgroundLoading;
+    private Button             mButtonKickOut;
     private OnRoomViewListener mOnRoomViewListener;
+
+    public String userId;
+    public boolean isUsed;
 
     public TCVideoView(Context context) {
         this(context, null);
@@ -41,17 +42,17 @@ public class TCVideoView extends RelativeLayout {
     }
 
     private void initView(Context context) {
-        inflate(context, R.layout.liveroom_view_tc_video, this);
+        inflate(context, R.layout.trtcliveroom_view_tc_video, this);
         mPlayerVideo = (TXCloudVideoView) findViewById(R.id.video_player);
-        mImageviewLoading = (ImageView) findViewById(R.id.loading_imageview);
-        mBackgroundLoading = (FrameLayout) findViewById(R.id.loading_background);
-        mKickOutBtn = (Button) findViewById(R.id.btn_kick_out);
+        mImageLoading = (ImageView) findViewById(R.id.loading_imageview);
+        mLayoutBackgroundLoading = (FrameLayout) findViewById(R.id.loading_background);
+        mButtonKickOut = (Button) findViewById(R.id.btn_kick_out);
 
-        mKickOutBtn.setOnClickListener(new OnClickListener() {
+        mButtonKickOut.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                mKickOutBtn.setVisibility(View.INVISIBLE);
-                String userId = mUserId;
+                mButtonKickOut.setVisibility(View.INVISIBLE);
+                String userId = TCVideoView.this.userId;
                 if (userId != null && mOnRoomViewListener != null) {
                     mOnRoomViewListener.onKickUser(userId);
                 }
@@ -72,7 +73,7 @@ public class TCVideoView extends RelativeLayout {
     }
 
     public void showKickoutBtn(boolean show) {
-        mKickOutBtn.setVisibility(show ? VISIBLE : INVISIBLE);
+        mButtonKickOut.setVisibility(show ? VISIBLE : INVISIBLE);
     }
 
     public interface OnRoomViewListener {
@@ -80,19 +81,19 @@ public class TCVideoView extends RelativeLayout {
     }
 
     public void startLoading() {
-        mKickOutBtn.setVisibility(View.INVISIBLE);
-        mBackgroundLoading.setVisibility(View.VISIBLE);
-        mImageviewLoading.setVisibility(View.VISIBLE);
-        mImageviewLoading.setImageResource(R.drawable.linkmic_loading);
-        AnimationDrawable ad = (AnimationDrawable) mImageviewLoading.getDrawable();
+        mButtonKickOut.setVisibility(View.INVISIBLE);
+        mLayoutBackgroundLoading.setVisibility(View.VISIBLE);
+        mImageLoading.setVisibility(View.VISIBLE);
+        mImageLoading.setImageResource(R.drawable.trtcliveroom_linkmic_loading);
+        AnimationDrawable ad = (AnimationDrawable) mImageLoading.getDrawable();
         ad.start();
     }
 
     public void stopLoading(boolean showKickoutBtn) {
-        mKickOutBtn.setVisibility(showKickoutBtn ? View.VISIBLE : View.GONE);
-        mBackgroundLoading.setVisibility(View.GONE);
-        mImageviewLoading.setVisibility(View.GONE);
-        AnimationDrawable ad = (AnimationDrawable) mImageviewLoading.getDrawable();
+        mButtonKickOut.setVisibility(showKickoutBtn ? View.VISIBLE : View.GONE);
+        mLayoutBackgroundLoading.setVisibility(View.GONE);
+        mImageLoading.setVisibility(View.GONE);
+        AnimationDrawable ad = (AnimationDrawable) mImageLoading.getDrawable();
         if (ad != null) {
             ad.stop();
         }

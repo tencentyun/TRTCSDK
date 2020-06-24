@@ -4,8 +4,8 @@
 
     <application>
         <activity
-            android:name=".LoginActivity"
-            android:theme="@style/Theme.AppCompat"
+            android:name=".ui.LoginActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
             android:screenOrientation="portrait">
             <intent-filter>
 <!--                <action android:name="android.intent.action.MAIN" />-->

@@ -8,12 +8,13 @@ package com.tencent.liteav.liveroom.ui.common.utils;
  */
 public class TCConstants {
     /**
-     * 常量字符串
+     * 用于请求该分类下的列表
      */
-    //用于请求该分类下的列表
     public static final String TYPE_LIVE_ROOM = "liveRoom";
 
-    //直播端右下角listview显示type
+    /**
+     * 直播端右下角listview显示type
+     */
     public static final int TEXT_TYPE    = 0;
     public static final int MEMBER_ENTER = 1;
     public static final int MEMBER_EXIT  = 2;
@@ -39,5 +40,11 @@ public class TCConstants {
      */
     public static final int IMCMD_PRAISE = 4;   // 点赞消息
     public static final int IMCMD_DANMU  = 5;   // 弹幕消息
+
+    /**
+     * 腾讯云视频互动直播文档URL
+     */
+    public static final String TRTC_LIVE_ROOM_DOCUMENT_URL = "https://cloud.tencent.com/document/product/647/35428";
+
 }
 

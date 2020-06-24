@@ -26,50 +26,52 @@ import com.tencent.liteav.liveroom.R;
  * Function: 观众、主播的弹幕或普通文本的输入框
  */
 public class InputTextMsgDialog extends Dialog {
+    private static final String TAG = InputTextMsgDialog.class.getSimpleName();
+
+    private TextView            mTextConfirm;
+    private EditText            mEditMessage;
+    private RelativeLayout      mRelativeLayout;
+    private LinearLayout        mBarrageArea;
+    private LinearLayout        mConfirmArea;
+    private Context             mContext;
+    private InputMethodManager  mInputMethodManager;
+    private OnTextSendListener  mOnTextSendListener;
+
+    private int     mLastDiff  = 0;
+    private boolean mDanmuOpen = false;
+
     public interface OnTextSendListener {
         void onTextSend(String msg, boolean tanmuOpen);
     }
 
-    private              TextView           confirmBtn;
-    private              LinearLayout       mBarrageArea;
-    private              EditText           messageTextView;
-    private static final String             TAG        = InputTextMsgDialog.class.getSimpleName();
-    private              Context            mContext;
-    private              InputMethodManager imm;
-    private              RelativeLayout     rlDlg;
-    private              int                mLastDiff  = 0;
-    private              LinearLayout       mConfirmArea;
-    private              OnTextSendListener mOnTextSendListener;
-    private              boolean            mDanmuOpen = false;
-
     public InputTextMsgDialog(Context context, int theme) {
         super(context, theme);
         mContext = context;
-        setContentView(R.layout.liveroom_dialog_input_text);
+        setContentView(R.layout.trtcliveroom_dialog_input_text);
 
-        messageTextView = (EditText) findViewById(R.id.et_input_message);
-        messageTextView.setInputType(InputType.TYPE_CLASS_TEXT);
+        mEditMessage = (EditText) findViewById(R.id.et_input_message);
+        mEditMessage.setInputType(InputType.TYPE_CLASS_TEXT);
         //修改下划线颜色
-        messageTextView.getBackground().setColorFilter(context.getResources().getColor(R.color.transparent), PorterDuff.Mode.CLEAR);
+        mEditMessage.getBackground().setColorFilter(context.getResources().getColor(R.color.trtcliveroom_transparent), PorterDuff.Mode.CLEAR);
 
 
-        confirmBtn = (TextView) findViewById(R.id.confrim_btn);
-        imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
-        confirmBtn.setOnClickListener(new View.OnClickListener() {
+        mTextConfirm = (TextView) findViewById(R.id.confrim_btn);
+        mInputMethodManager = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+        mTextConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String msg = messageTextView.getText().toString().trim();
+                String msg = mEditMessage.getText().toString().trim();
                 if (!TextUtils.isEmpty(msg)) {
 
                     mOnTextSendListener.onTextSend(msg, mDanmuOpen);
-                    imm.showSoftInput(messageTextView, InputMethodManager.SHOW_FORCED);
-                    imm.hideSoftInputFromWindow(messageTextView.getWindowToken(), 0);
-                    messageTextView.setText("");
+                    mInputMethodManager.showSoftInput(mEditMessage, InputMethodManager.SHOW_FORCED);
+                    mInputMethodManager.hideSoftInputFromWindow(mEditMessage.getWindowToken(), 0);
+                    mEditMessage.setText("");
                     dismiss();
                 } else {
-                    Toast.makeText(mContext, "input can not be empty!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext, R.string.trtcliveroom_warning_not_empty, Toast.LENGTH_LONG).show();
                 }
-                messageTextView.setText(null);
+                mEditMessage.setText(null);
             }
         });
 
@@ -79,9 +81,9 @@ public class InputTextMsgDialog extends Dialog {
             public void onClick(View view) {
                 mDanmuOpen = !mDanmuOpen;
                 if (mDanmuOpen) {
-                    barrageBtn.setBackgroundResource(R.drawable.barrage_slider_on);
+                    barrageBtn.setBackgroundResource(R.drawable.trtcliveroom_barrage_slider_on);
                 } else {
-                    barrageBtn.setBackgroundResource(R.drawable.barrage_slider_off);
+                    barrageBtn.setBackgroundResource(R.drawable.trtcliveroom_barrage_slider_off);
                 }
             }
         });
@@ -92,28 +94,28 @@ public class InputTextMsgDialog extends Dialog {
             public void onClick(View v) {
                 mDanmuOpen = !mDanmuOpen;
                 if (mDanmuOpen) {
-                    barrageBtn.setBackgroundResource(R.drawable.barrage_slider_on);
+                    barrageBtn.setBackgroundResource(R.drawable.trtcliveroom_barrage_slider_on);
                 } else {
-                    barrageBtn.setBackgroundResource(R.drawable.barrage_slider_off);
+                    barrageBtn.setBackgroundResource(R.drawable.trtcliveroom_barrage_slider_off);
                 }
             }
         });
 
-        messageTextView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        mEditMessage.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 switch (actionId) {
                     case KeyEvent.KEYCODE_ENDCALL:
                     case KeyEvent.KEYCODE_ENTER:
-                        if (messageTextView.getText().length() > 0) {
+                        if (mEditMessage.getText().length() > 0) {
                             //                            mOnTextSendListener.onTextSend("" + messageTextView.getText(), mDanmuOpen);
                             //sendText("" + messageTextView.getText());
                             //imm.showSoftInput(messageTextView, InputMethodManager.SHOW_FORCED);
-                            imm.hideSoftInputFromWindow(messageTextView.getWindowToken(), 0);
+                            mInputMethodManager.hideSoftInputFromWindow(mEditMessage.getWindowToken(), 0);
                             //                            messageTextView.setText("");
                             dismiss();
                         } else {
-                            Toast.makeText(mContext, "input can not be empty!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(mContext, R.string.trtcliveroom_warning_not_empty, Toast.LENGTH_LONG).show();
                         }
                         return true;
                     case KeyEvent.KEYCODE_BACK:
@@ -129,22 +131,22 @@ public class InputTextMsgDialog extends Dialog {
         mConfirmArea.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String msg = messageTextView.getText().toString().trim();
+                String msg = mEditMessage.getText().toString().trim();
                 if (!TextUtils.isEmpty(msg)) {
 
                     mOnTextSendListener.onTextSend(msg, mDanmuOpen);
-                    imm.showSoftInput(messageTextView, InputMethodManager.SHOW_FORCED);
-                    imm.hideSoftInputFromWindow(messageTextView.getWindowToken(), 0);
-                    messageTextView.setText("");
+                    mInputMethodManager.showSoftInput(mEditMessage, InputMethodManager.SHOW_FORCED);
+                    mInputMethodManager.hideSoftInputFromWindow(mEditMessage.getWindowToken(), 0);
+                    mEditMessage.setText("");
                     dismiss();
                 } else {
-                    Toast.makeText(mContext, "input can not be empty!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext, R.string.trtcliveroom_warning_not_empty, Toast.LENGTH_LONG).show();
                 }
-                messageTextView.setText(null);
+                mEditMessage.setText(null);
             }
         });
 
-        messageTextView.setOnKeyListener(new View.OnKeyListener() {
+        mEditMessage.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View view, int i, KeyEvent keyEvent) {
                 Log.d("My test", "onKey " + keyEvent.getCharacters());
@@ -152,8 +154,8 @@ public class InputTextMsgDialog extends Dialog {
             }
         });
 
-        rlDlg = (RelativeLayout) findViewById(R.id.rl_outside_view);
-        rlDlg.setOnClickListener(new View.OnClickListener() {
+        mRelativeLayout = (RelativeLayout) findViewById(R.id.rl_outside_view);
+        mRelativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (v.getId() != R.id.rl_inputdlg_view)
@@ -184,7 +186,7 @@ public class InputTextMsgDialog extends Dialog {
         rldlgview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                imm.hideSoftInputFromWindow(messageTextView.getWindowToken(), 0);
+                mInputMethodManager.hideSoftInputFromWindow(mEditMessage.getWindowToken(), 0);
                 dismiss();
             }
         });

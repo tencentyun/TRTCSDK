@@ -18,11 +18,11 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.CollectionUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.squareup.picasso.Picasso;
-import com.tencent.liteav.login.ProfileManager;
-import com.tencent.liteav.login.UserModel;
+import com.tencent.liteav.login.model.ProfileManager;
+import com.tencent.liteav.login.model.UserModel;
 import com.tencent.liteav.trtcaudiocalldemo.R;
-import com.tencent.liteav.trtcaudiocalldemo.ui.audiolayout.TRTCAudioLayout;
-import com.tencent.liteav.trtcaudiocalldemo.ui.audiolayout.TRTCAudioLayoutManager;
+import com.tencent.liteav.trtcaudiocalldemo.ui.widget.TRTCAudioLayout;
+import com.tencent.liteav.trtcaudiocalldemo.ui.widget.TRTCAudioLayoutManager;
 import com.tencent.liteav.trtcaudiocalldemo.model.ITRTCAudioCall;
 import com.tencent.liteav.trtcaudiocalldemo.model.TRTCAudioCallImpl;
 import com.tencent.liteav.trtcaudiocalldemo.model.TRTCAudioCallListener;
@@ -35,48 +35,41 @@ import java.util.Map;
 
 /**
  * 用于展示语音通话的主界面，通话的接听和拒绝就是在这个界面中完成的。
- *
- * @author guanyifeng
  */
 public class TRTCAudioCallActivity extends AppCompatActivity {
     private static final String TAG = TRTCAudioCallActivity.class.getName();
 
-    public static final int TYPE_BEING_CALLED = 1;
-    public static final int TYPE_CALL         = 2;
 
     public static final  String PARAM_TYPE                = "type";
     public static final  String PARAM_USER                = "user_model";
     public static final  String PARAM_BEINGCALL_USER      = "beingcall_user_model";
     public static final  String PARAM_OTHER_INVITING_USER = "other_inviting_user_model";
+    public static final  int    TYPE_BEING_CALLED         = 1;
+    public static final  int    TYPE_CALL                 = 2;
     private static final int    MAX_SHOW_INVITING_USER    = 2;
 
-    /**
-     * 界面元素相关
-     */
-    private ImageView              mMuteImg;
-    private LinearLayout           mMuteLl;
-    private ImageView              mHangupImg;
-    private LinearLayout           mHangupLl;
-    private ImageView              mHandsfreeImg;
-    private LinearLayout           mHandsfreeLl;
-    private ImageView              mDialingImg;
-    private LinearLayout           mDialingLl;
-    private TRTCAudioLayoutManager mLayoutManagerTrtc;
-    private Group                  mInvitingGroup;
-    private LinearLayout           mImgContainerLl;
-    private TextView               mTimeTv;
+    private ImageView              mImageMute;
+    private ImageView              mImageHangup;
+    private LinearLayout           mLayoutMute;
+    private LinearLayout           mLayoutHangup;
+    private ImageView              mImageHandsFree;
+    private LinearLayout           mLayoutHandsFree;
+    private ImageView              mImageDialing;
+    private LinearLayout           mLayoutDialing;
+    private TRTCAudioLayoutManager mLayoutManagerTRTC;
+    private Group                  mGroupInviting;
+    private LinearLayout           mLayoutImgContainer;
+    private TextView               mTextTime;
+
     private Runnable               mTimeRunnable;
     private int                    mTimeCount;
     private Handler                mTimeHandler;
     private HandlerThread          mTimeHandlerThread;
 
-    /**
-     * 拨号相关成员变量
-     */
     private UserModel              mSelfModel;
     private List<UserModel>        mCallUserModelList = new ArrayList<>(); // 呼叫方
     private Map<String, UserModel> mCallUserModelMap  = new HashMap<>();
-    private UserModel              mSponsorUserModel; // 被叫方
+    private UserModel              mSponsorUserModel;                      // 被叫方
     private List<UserModel>        mOtherInvitingUserModelList;
     private int                    mCallType;
     private ITRTCAudioCall         mITRTCAudioCall;
@@ -90,7 +83,7 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
         @Override
         public void onError(int code, String msg) {
             //发生了错误，报错并退出该页面
-            ToastUtils.showLong("发送错误[" + code + "]:" + msg);
+            ToastUtils.showLong(getString(R.string.trtcaudiocall_toast_call_error_msg, code, msg));
             finish();
         }
 
@@ -108,7 +101,7 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     showCallingView();
-                    TRTCAudioLayout layout = mLayoutManagerTrtc.findAudioCallLayout(userId);
+                    TRTCAudioLayout layout = mLayoutManagerTRTC.findAudioCallLayout(userId);
                     if (layout != null) {
                         layout.stopLoading();
                     } else {
@@ -124,7 +117,7 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
                             @Override
                             public void onFailed(int code, String msg) {
                                 // 获取用户资料失败了，模拟一个用户
-                                ToastUtils.showLong("获取用户" + userId + "的资料失败");
+                                ToastUtils.showLong(getString(R.string.trtcaudiocall_toast_get_user_info_fail, userId));
                                 UserModel model = new UserModel();
                                 model.userId = userId;
                                 model.phone = "";
@@ -146,7 +139,7 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     //1. 回收界面元素
-                    mLayoutManagerTrtc.recyclerAudioCallLayout(userId);
+                    mLayoutManagerTRTC.recyclerAudioCallLayout(userId);
                     //2. 删除用户model
                     UserModel userModel = mCallUserModelMap.remove(userId);
                     if (userModel != null) {
@@ -164,12 +157,12 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
                     if (mCallUserModelMap.containsKey(userId)) {
                         // 进入拒绝环节
                         //1. 回收界面元素
-                        mLayoutManagerTrtc.recyclerAudioCallLayout(userId);
+                        mLayoutManagerTRTC.recyclerAudioCallLayout(userId);
                         //2. 删除用户model
                         UserModel userModel = mCallUserModelMap.remove(userId);
                         if (userModel != null) {
                             mCallUserModelList.remove(userModel);
-                            ToastUtils.showLong(userModel.userName + "拒绝通话");
+                            ToastUtils.showLong(getString(R.string.trtcaudiocall_toast_user_reject_call, userModel.userName));
                         }
                     }
                 }
@@ -184,12 +177,12 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
                     if (mCallUserModelMap.containsKey(userId)) {
                         // 进入无响应环节
                         //1. 回收界面元素
-                        mLayoutManagerTrtc.recyclerAudioCallLayout(userId);
+                        mLayoutManagerTRTC.recyclerAudioCallLayout(userId);
                         //2. 删除用户model
                         UserModel userModel = mCallUserModelMap.remove(userId);
                         if (userModel != null) {
                             mCallUserModelList.remove(userModel);
-                            ToastUtils.showLong(userModel.userName + "无响应");
+                            ToastUtils.showLong(getString(R.string.trtcaudiocall_toast_user_not_response, userModel.userName));
                         }
                     }
                 }
@@ -201,12 +194,12 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
             if (mCallUserModelMap.containsKey(userId)) {
                 // 进入无响应环节
                 //1. 回收界面元素
-                mLayoutManagerTrtc.recyclerAudioCallLayout(userId);
+                mLayoutManagerTRTC.recyclerAudioCallLayout(userId);
                 //2. 删除用户model
                 UserModel userModel = mCallUserModelMap.remove(userId);
                 if (userModel != null) {
                     mCallUserModelList.remove(userModel);
-                    ToastUtils.showLong(userModel.userName + "忙线");
+                    ToastUtils.showLong(getString(R.string.trtcaudiocall_toast_user_busy, userModel.userName));
                 }
             }
         }
@@ -214,7 +207,7 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
         @Override
         public void onCallingCancel() {
             if (mSponsorUserModel != null) {
-                ToastUtils.showLong(mSponsorUserModel.userName + " 取消了通话");
+                ToastUtils.showLong(getString(R.string.trtcaudiocall_toast_user_cancel_call, mSponsorUserModel.userName));
             }
             finish();
         }
@@ -222,7 +215,7 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
         @Override
         public void onCallingTimeout() {
             if (mSponsorUserModel != null) {
-                ToastUtils.showLong(mSponsorUserModel.userName + " 通话超时");
+                ToastUtils.showLong(getString(R.string.trtcaudiocall_toast_user_timeout, mSponsorUserModel.userName));
             }
             finish();
         }
@@ -241,7 +234,7 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
         public void onUserVoiceVolume(Map<String, Integer> volumeMap) {
             for (Map.Entry<String, Integer> entry : volumeMap.entrySet()) {
                 String          userId = entry.getKey();
-                TRTCAudioLayout layout = mLayoutManagerTrtc.findAudioCallLayout(userId);
+                TRTCAudioLayout layout = mLayoutManagerTRTC.findAudioCallLayout(userId);
                 if (layout != null) {
                     layout.setAudioVolume(entry.getValue());
                 }
@@ -284,7 +277,7 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.audiocall_activity_call_main);
+        setContentView(R.layout.trtcaudiocall_activity_call_main);
 
         initView();
         initData();
@@ -307,26 +300,26 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
     }
 
     private void initListener() {
-        mMuteLl.setOnClickListener(new View.OnClickListener() {
+        mLayoutMute.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 isMuteMic = !isMuteMic;
                 mITRTCAudioCall.setMicMute(isMuteMic);
-                mMuteImg.setActivated(isMuteMic);
-                ToastUtils.showLong(isMuteMic ? "开启静音" : "关闭静音");
+                mImageMute.setActivated(isMuteMic);
+                ToastUtils.showLong(isMuteMic ? R.string.trtcaudiocall_toast_enable_mute : R.string.trtcaudiocall_toast_disable_mute);
             }
         });
-        mHandsfreeLl.setOnClickListener(new View.OnClickListener() {
+        mLayoutHandsFree.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 isHandsFree = !isHandsFree;
                 mITRTCAudioCall.setHandsFree(isHandsFree);
-                mHandsfreeImg.setActivated(isHandsFree);
-                ToastUtils.showLong(isHandsFree ? "使用扬声器" : "使用听筒");
+                mImageHandsFree.setActivated(isHandsFree);
+                ToastUtils.showLong(isHandsFree ? R.string.trtcaudiocall_toast_use_speaker : R.string.trtcaudiocall_toast_use_handset);
             }
         });
-        mMuteImg.setActivated(isMuteMic);
-        mHandsfreeImg.setActivated(isHandsFree);
+        mImageMute.setActivated(isMuteMic);
+        mImageHandsFree.setActivated(isHandsFree);
     }
 
     private void initData() {
@@ -373,18 +366,18 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        mMuteImg = (ImageView) findViewById(R.id.img_mute);
-        mMuteLl = (LinearLayout) findViewById(R.id.ll_mute);
-        mHangupImg = (ImageView) findViewById(R.id.img_hangup);
-        mHangupLl = (LinearLayout) findViewById(R.id.ll_hangup);
-        mHandsfreeImg = (ImageView) findViewById(R.id.img_handsfree);
-        mHandsfreeLl = (LinearLayout) findViewById(R.id.ll_handsfree);
-        mDialingImg = (ImageView) findViewById(R.id.img_dialing);
-        mDialingLl = (LinearLayout) findViewById(R.id.ll_dialing);
-        mLayoutManagerTrtc = (TRTCAudioLayoutManager) findViewById(R.id.trtc_layout_manager);
-        mInvitingGroup = (Group) findViewById(R.id.group_inviting);
-        mImgContainerLl = (LinearLayout) findViewById(R.id.ll_img_container);
-        mTimeTv = (TextView) findViewById(R.id.tv_time);
+        mImageMute = (ImageView) findViewById(R.id.img_mute);
+        mLayoutMute = (LinearLayout) findViewById(R.id.ll_mute);
+        mImageHangup = (ImageView) findViewById(R.id.img_hangup);
+        mLayoutHangup = (LinearLayout) findViewById(R.id.ll_hangup);
+        mImageHandsFree = (ImageView) findViewById(R.id.img_handsfree);
+        mLayoutHandsFree = (LinearLayout) findViewById(R.id.ll_handsfree);
+        mImageDialing = (ImageView) findViewById(R.id.img_dialing);
+        mLayoutDialing = (LinearLayout) findViewById(R.id.ll_dialing);
+        mLayoutManagerTRTC = (TRTCAudioLayoutManager) findViewById(R.id.trtc_layout_manager);
+        mGroupInviting = (Group) findViewById(R.id.group_inviting);
+        mLayoutImgContainer = (LinearLayout) findViewById(R.id.ll_img_container);
+        mTextTime = (TextView) findViewById(R.id.tv_time);
     }
 
 
@@ -393,27 +386,27 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
      */
     public void showWaitingResponseView() {
         //1. 展示对方的画面
-        TRTCAudioLayout layout = mLayoutManagerTrtc.allocAudioCallLayout(mSponsorUserModel.userId);
+        TRTCAudioLayout layout = mLayoutManagerTRTC.allocAudioCallLayout(mSponsorUserModel.userId);
         layout.setUserId(mSponsorUserModel.userName);
         Picasso.get().load(mSponsorUserModel.userAvatar).into(layout.getImageView());
         //2. 展示电话对应界面
-        mHangupLl.setVisibility(View.VISIBLE);
-        mDialingLl.setVisibility(View.VISIBLE);
-        mHandsfreeLl.setVisibility(View.GONE);
-        mMuteLl.setVisibility(View.GONE);
+        mLayoutHangup.setVisibility(View.VISIBLE);
+        mLayoutDialing.setVisibility(View.VISIBLE);
+        mLayoutHandsFree.setVisibility(View.GONE);
+        mLayoutMute.setVisibility(View.GONE);
         //3. 设置对应的listener
-        mHangupLl.setOnClickListener(new View.OnClickListener() {
+        mLayoutHangup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mITRTCAudioCall.reject();
                 finish();
             }
         });
-        mDialingLl.setOnClickListener(new View.OnClickListener() {
+        mLayoutDialing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //1.分配自己的画面
-                mLayoutManagerTrtc.setMySelfUserId(mSelfModel.userId);
+                mLayoutManagerTRTC.setMySelfUserId(mSelfModel.userId);
                 addUserToManager(mSelfModel);
                 //2.接听电话
                 mITRTCAudioCall.accept();
@@ -429,7 +422,7 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
      */
     public void showInvitingView() {
         //1. 展示自己的界面
-        mLayoutManagerTrtc.setMySelfUserId(mSelfModel.userId);
+        mLayoutManagerTRTC.setMySelfUserId(mSelfModel.userId);
         addUserToManager(mSelfModel);
         //2. 展示对方的画面
         for (UserModel userModel : mCallUserModelList) {
@@ -437,17 +430,17 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
             layout.startLoading();
         }
         //3. 设置底部栏
-        mHangupLl.setVisibility(View.VISIBLE);
-        mHangupLl.setOnClickListener(new View.OnClickListener() {
+        mLayoutHangup.setVisibility(View.VISIBLE);
+        mLayoutHangup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mITRTCAudioCall.hangup();
                 finish();
             }
         });
-        mDialingLl.setVisibility(View.GONE);
-        mHandsfreeLl.setVisibility(View.GONE);
-        mMuteLl.setVisibility(View.GONE);
+        mLayoutDialing.setVisibility(View.GONE);
+        mLayoutHandsFree.setVisibility(View.GONE);
+        mLayoutMute.setVisibility(View.GONE);
         //4. 隐藏中间他们也在界面
         hideOtherInvitingUserView();
     }
@@ -456,12 +449,12 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
      * 展示通话中的界面
      */
     public void showCallingView() {
-        mHangupLl.setVisibility(View.VISIBLE);
-        mDialingLl.setVisibility(View.GONE);
-        mHandsfreeLl.setVisibility(View.VISIBLE);
-        mMuteLl.setVisibility(View.VISIBLE);
+        mLayoutHangup.setVisibility(View.VISIBLE);
+        mLayoutDialing.setVisibility(View.GONE);
+        mLayoutHandsFree.setVisibility(View.VISIBLE);
+        mLayoutMute.setVisibility(View.VISIBLE);
 
-        mHangupLl.setOnClickListener(new View.OnClickListener() {
+        mLayoutHangup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mITRTCAudioCall.hangup();
@@ -477,17 +470,17 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
             return;
         }
         mTimeCount = 0;
-        mTimeTv.setText(getShowTime(mTimeCount));
+        mTextTime.setText(getShowTime(mTimeCount));
         if (mTimeRunnable == null) {
             mTimeRunnable = new Runnable() {
                 @Override
                 public void run() {
                     mTimeCount++;
-                    if (mTimeTv != null) {
+                    if (mTextTime != null) {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                mTimeTv.setText(getShowTime(mTimeCount));
+                                mTextTime.setText(getShowTime(mTimeCount));
                             }
                         });
                     }
@@ -504,16 +497,16 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
     }
 
     private String getShowTime(int count) {
-        return String.format("%02d:%02d", count / 60, count % 60);
+        return getString(R.string.trtcaudiocall_called_time_format, count / 60, count % 60);
     }
 
     private void showOtherInvitingUserView() {
         if (CollectionUtils.isEmpty(mOtherInvitingUserModelList)) {
             return;
         }
-        mInvitingGroup.setVisibility(View.VISIBLE);
-        int squareWidth = getResources().getDimensionPixelOffset(R.dimen.small_image_size);
-        int leftMargin  = getResources().getDimensionPixelOffset(R.dimen.small_image_left_margin);
+        mGroupInviting.setVisibility(View.VISIBLE);
+        int squareWidth = getResources().getDimensionPixelOffset(R.dimen.trtcaudiocall_small_image_size);
+        int leftMargin  = getResources().getDimensionPixelOffset(R.dimen.trtcaudiocall_small_image_left_margin);
         for (int index = 0; index < mOtherInvitingUserModelList.size() && index < MAX_SHOW_INVITING_USER; index++) {
             UserModel                 userModel    = mOtherInvitingUserModelList.get(index);
             ImageView                 imageView    = new ImageView(this);
@@ -523,16 +516,16 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
             }
             imageView.setLayoutParams(layoutParams);
             Picasso.get().load(userModel.userAvatar).into(imageView);
-            mImgContainerLl.addView(imageView);
+            mLayoutImgContainer.addView(imageView);
         }
     }
 
     private void hideOtherInvitingUserView() {
-        mInvitingGroup.setVisibility(View.GONE);
+        mGroupInviting.setVisibility(View.GONE);
     }
 
     private TRTCAudioLayout addUserToManager(UserModel userModel) {
-        TRTCAudioLayout layout = mLayoutManagerTrtc.allocAudioCallLayout(userModel.userId);
+        TRTCAudioLayout layout = mLayoutManagerTRTC.allocAudioCallLayout(userModel.userId);
         layout.setUserId(userModel.userName);
         Picasso.get().load(userModel.userAvatar).into(layout.getImageView());
         return layout;

@@ -25,14 +25,16 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-//    compile project(':liteav_sdk')
 
+    compile rootProject.ext.liteavSdk
+    compile rootProject.ext.imSdk
+    compile project(':login')
     compile project(':debug')
     compile project(':audioeffectsettingkit')
-    compile "$rootProject.ext.liteavSdk"
+
     //依赖一个utils类
     compile 'com.blankj:utilcode:1.25.9'
-    compile 'com.google.code.gson:gson:2.8.6'
+    compile 'com.google.code.gson:gson:2.3.1'
     //快速集成圆形image view
     compile 'de.hdodenhof:circleimageview:3.0.1'
     compile 'com.android.support.constraint:constraint-layout:1.1.3'

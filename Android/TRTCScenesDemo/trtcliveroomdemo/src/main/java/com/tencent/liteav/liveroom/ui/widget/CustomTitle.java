@@ -19,25 +19,24 @@ import com.tencent.liteav.liveroom.R;
  */
 public class CustomTitle extends RelativeLayout {
 
-    private String  titleText;
-    private boolean canBack;
-    private String  backText;
-    private String  moreText;
+    private String  mTitleText;
+    private String  mBackText;
+    private String  mMoreText;
+    private boolean mCanBack;
 
-    private TextView tvReturn;
-    private TextView tvTitle;
-    private TextView tvMore;
-
+    private TextView mTextBack;
+    private TextView mTextTitle;
+    private TextView mTextMore;
 
     public CustomTitle(Context context, AttributeSet attrs) {
         super(context, attrs);
-        LayoutInflater.from(context).inflate(R.layout.liveroom_view_title, this);
-        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.CustomTitle, 0, 0);
+        LayoutInflater.from(context).inflate(R.layout.trtcliveroom_view_title, this);
+        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.TRTCLiveRoomCustomTitle, 0, 0);
         try {
-            titleText = ta.getString(R.styleable.CustomTitle_titleText);
-            canBack = ta.getBoolean(R.styleable.CustomTitle_canBack, true);
-            backText = ta.getString(R.styleable.CustomTitle_backText);
-            moreText = ta.getString(R.styleable.CustomTitle_moreText);
+            mTitleText = ta.getString(R.styleable.TRTCLiveRoomCustomTitle_titleText);
+            mCanBack = ta.getBoolean(R.styleable.TRTCLiveRoomCustomTitle_canBack, true);
+            mBackText = ta.getString(R.styleable.TRTCLiveRoomCustomTitle_backText);
+            mMoreText = ta.getString(R.styleable.TRTCLiveRoomCustomTitle_moreText);
             setUpView();
         } finally {
             ta.recycle();
@@ -45,19 +44,19 @@ public class CustomTitle extends RelativeLayout {
     }
 
     private void setUpView() {
-        tvReturn = (TextView) findViewById(R.id.menu_return);
-        tvReturn.setTextColor(getResources().getColor(R.color.white));
-        tvTitle = (TextView) findViewById(R.id.title);
-        tvMore = (TextView) findViewById(R.id.menu_more);
+        mTextBack = (TextView) findViewById(R.id.menu_return);
+        mTextBack.setTextColor(getResources().getColor(R.color.trtcliveroom_color_white));
+        mTextTitle = (TextView) findViewById(R.id.title);
+        mTextMore = (TextView) findViewById(R.id.menu_more);
 
 
-        if (!canBack) {
-            tvReturn.setVisibility(View.GONE);
+        if (!mCanBack) {
+            mTextBack.setVisibility(View.GONE);
         }
 
-        tvReturn.setText(backText);
-        tvMore.setText(moreText);
-        tvTitle.setText(titleText);
+        mTextBack.setText(mBackText);
+        mTextMore.setText(mMoreText);
+        mTextTitle.setText(mTitleText);
     }
 
     /**
@@ -66,8 +65,8 @@ public class CustomTitle extends RelativeLayout {
      * @param title 标题
      */
     public void setTitle(String title) {
-        titleText = title;
-        tvTitle.setText(title);
+        mTitleText = title;
+        mTextTitle.setText(title);
     }
 
     /**
@@ -76,8 +75,8 @@ public class CustomTitle extends RelativeLayout {
      * @param title 扩展消息
      */
     public void setMoreText(String title) {
-        moreText = title;
-        tvMore.setText(title);
+        mMoreText = title;
+        mTextMore.setText(title);
     }
 
     /**
@@ -86,8 +85,8 @@ public class CustomTitle extends RelativeLayout {
      * @param strReturn 返回文案
      */
     public void setReturnText(String strReturn) {
-        backText = strReturn;
-        tvReturn.setText(strReturn);
+        mBackText = strReturn;
+        mTextBack.setText(strReturn);
     }
 
     /**
@@ -96,7 +95,7 @@ public class CustomTitle extends RelativeLayout {
      * @param listener 返回消息listener
      */
     public void setReturnListener(OnClickListener listener) {
-        tvReturn.setOnClickListener(listener);
+        mTextBack.setOnClickListener(listener);
     }
 
     /**
@@ -105,8 +104,8 @@ public class CustomTitle extends RelativeLayout {
      * @param listener 扩展事件listener
      */
     public void setMoreListener(OnClickListener listener) {
-        if (!TextUtils.isEmpty(moreText)) {
-            tvMore.setOnClickListener(listener);
+        if (!TextUtils.isEmpty(mMoreText)) {
+            mTextMore.setOnClickListener(listener);
         }
     }
 }

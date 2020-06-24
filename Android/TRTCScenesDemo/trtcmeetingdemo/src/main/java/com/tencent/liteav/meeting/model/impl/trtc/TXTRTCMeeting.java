@@ -596,4 +596,32 @@ public class TXTRTCMeeting extends TRTCCloudListener {
     public String getStreamId() {
         return mStreamId;
     }
+
+    @Override
+    public void onScreenCaptureStarted() {
+        if (mDelegate != null) {
+            mDelegate.onScreenCaptureStarted();
+        }
+    }
+
+    @Override
+    public void onScreenCapturePaused() {
+        if (mDelegate != null) {
+            mDelegate.onScreenCapturePaused();
+        }
+    }
+
+    @Override
+    public void onScreenCaptureResumed() {
+        if (mDelegate != null) {
+            mDelegate.onScreenCaptureResumed();
+        }
+    }
+
+    @Override
+    public void onScreenCaptureStopped(int i) {
+        if (mDelegate != null) {
+            mDelegate.onScreenCaptureStopped(i);
+        }
+    }
 }

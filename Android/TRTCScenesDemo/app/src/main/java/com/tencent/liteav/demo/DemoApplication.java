@@ -9,7 +9,7 @@ import android.support.multidex.MultiDexApplication;
 
 import com.blankj.utilcode.util.ServiceUtils;
 import com.tencent.bugly.crashreport.CrashReport;
-import com.tencent.liteav.login.ProfileManager;
+import com.tencent.liteav.login.model.ProfileManager;
 import com.tencent.rtmp.TXLiveBase;
 
 import java.lang.reflect.Constructor;

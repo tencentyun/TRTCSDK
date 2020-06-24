@@ -1,6 +1,5 @@
 package com.tencent.liteav.liveroom.ui.common.msg;
 
-
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
@@ -25,44 +24,44 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-
 /**
  * Module:   TCChatMsgListAdapter
  * <p>
  * Function: 消息列表的 Adapter。
  */
 public class TCChatMsgListAdapter extends BaseAdapter implements AbsListView.OnScrollListener {
-    private static       String                  TAG        = TCChatMsgListAdapter.class.getSimpleName();
-    private static final int                     ITEM_COUNT = 7;
-    private              List<TCChatEntity>      mList;
-    private              int                     mTotalHeight;
-    private              Context                 mContext;
-    private              ListView                mListView;
-    private              ArrayList<TCChatEntity> mArray     = new ArrayList<>();
+    private static final String TAG = TCChatMsgListAdapter.class.getSimpleName();
+
+    private static final int ITEM_COUNT         = 7;
+    private static final int MAXANIMATORCOUNT   = 8;
+    private static final int MAXLISTVIEWHEIGHT  = 450;
+    private static final int ANIMATORDURING     = 8000;
+    private static final int MAXITEMCOUNT       = 50;
+
+    private Context                  mContext;
+    private ListView                 mListView;
+    private int                      mTotalHeight;
+    private List<TCChatEntity>       mList;
+    private LinkedList<AnimatorSet>  mAnimatorSetList;
+    private LinkedList<AnimatorInfo> mAnimatorInfoList;
+    private ArrayList<TCChatEntity>  mArray     = new ArrayList<>();
+    private boolean                  mScrolling = false;
 
     class AnimatorInfo {
-        long createTime;
+        protected long mCreateTime;
 
         public AnimatorInfo(long uTime) {
-            createTime = uTime;
+            mCreateTime = uTime;
         }
 
         public long getCreateTime() {
-            return createTime;
+            return mCreateTime;
         }
 
         public void setCreateTime(long createTime) {
-            this.createTime = createTime;
+            this.mCreateTime = createTime;
         }
     }
-
-    private static final int                      MAXANIMATORCOUNT  = 8;
-    private static final int                      MAXLISTVIEWHEIGHT = 450;
-    private static final int                      ANIMATORDURING    = 8000;
-    private static final int                      MAXITEMCOUNT      = 50;
-    private              LinkedList<AnimatorSet>  mAnimatorSetList;
-    private              LinkedList<AnimatorInfo> mAnimatorInfoList;
-    private              boolean                  mScrolling        = false;
 
     public TCChatMsgListAdapter(Context context, ListView listview, List<TCChatEntity> objects) {
         this.mContext = context;
@@ -104,22 +103,22 @@ public class TCChatMsgListAdapter extends BaseAdapter implements AbsListView.OnS
 
         switch (idx & 0x7) {
             case 1:
-                return mContext.getResources().getColor(R.color.colorSendName1);
+                return mContext.getResources().getColor(R.color.trtcliveroom_color_send_name1);
             case 2:
-                return mContext.getResources().getColor(R.color.colorSendName2);
+                return mContext.getResources().getColor(R.color.trtcliveroom_color_send_name2);
             case 3:
-                return mContext.getResources().getColor(R.color.colorSendName3);
+                return mContext.getResources().getColor(R.color.trtcliveroom_color_send_name3);
             case 4:
-                return mContext.getResources().getColor(R.color.colorSendName4);
+                return mContext.getResources().getColor(R.color.trtcliveroom_color_send_name4);
             case 5:
-                return mContext.getResources().getColor(R.color.colorSendName5);
+                return mContext.getResources().getColor(R.color.trtcliveroom_color_send_name5);
             case 6:
-                return mContext.getResources().getColor(R.color.colorSendName6);
+                return mContext.getResources().getColor(R.color.trtcliveroom_color_send_name6);
             case 7:
-                return mContext.getResources().getColor(R.color.colorSendName7);
+                return mContext.getResources().getColor(R.color.trtcliveroom_color_send_name7);
             case 0:
             default:
-                return mContext.getResources().getColor(R.color.colorSendName);
+                return mContext.getResources().getColor(R.color.trtcliveroom_color_send_name0);
         }
     }
 
@@ -131,11 +130,11 @@ public class TCChatMsgListAdapter extends BaseAdapter implements AbsListView.OnS
         if (convertView == null) {
             holder = new ViewHolder();
             LayoutInflater layoutInflater = LayoutInflater.from(mContext);
-            convertView = layoutInflater.inflate(R.layout.liveroom_item_msg, null);
+            convertView = layoutInflater.inflate(R.layout.trtcliveroom_item_msg, null);
             holder.sendContext = (TextView) convertView.findViewById(R.id.sendcontext);
-            convertView.setTag(R.id.tag_first, holder);
+            convertView.setTag(R.id.trtcliveroom_tag_first, holder);
         } else {
-            holder = (ViewHolder) convertView.getTag(R.id.tag_first);
+            holder = (ViewHolder) convertView.getTag(R.id.trtcliveroom_tag_first);
         }
 
         TCChatEntity item = mList.get(position);
@@ -143,19 +142,21 @@ public class TCChatMsgListAdapter extends BaseAdapter implements AbsListView.OnS
         //        if (mCreateAnimator && mBLiveAnimator) {
         //            playViewAnimator(convertView, position, item);
         //        }
+        spanString = new SpannableString(item.getSenderName() + "：" + item.getContent());
 
-        spanString = new SpannableString(item.getSenderName() + "  " + item.getContent());
-        if (item.getType() != TCConstants.TEXT_TYPE) {
+        // UI需求：Demo移除字体和颜色的计算
+        /* if (item.getType() != TCConstants.TEXT_TYPE) {
             // 设置名称为粗体
             StyleSpan boldStyle = new StyleSpan(Typeface.BOLD_ITALIC);
             spanString.setSpan(boldStyle, 0, item.getSenderName().length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            holder.sendContext.setTextColor(mContext.getResources().getColor(R.color.colorSendName1));
+            holder.sendContext.setTextColor(mContext.getResources().getColor(R.color.trtcliveroom_color_send_name1));
         } else {
             // 根据名称计算颜色
             spanString.setSpan(new ForegroundColorSpan(calcNameColor(item.getSenderName())),
                     0, item.getSenderName().length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+<<<<<<< HEAD
             holder.sendContext.setTextColor(mContext.getResources().getColor(R.color.white));
-        }
+        }*/
         holder.sendContext.setText(spanString);
         // 设置控件实际宽度以便计算列表项实际高度
         //holder.sendContext.fixViewWidth(mListView.getWidth());
@@ -174,7 +175,7 @@ public class TCChatMsgListAdapter extends BaseAdapter implements AbsListView.OnS
      * @param itemView 当前执行动画View
      */
     private void stopViewAnimator(View itemView) {
-        AnimatorSet aniSet = (AnimatorSet) itemView.getTag(R.id.tag_second);
+        AnimatorSet aniSet = (AnimatorSet) itemView.getTag(R.id.trtcliveroom_tag_second);
         if (null != aniSet) {
             aniSet.cancel();
             mAnimatorSetList.remove(aniSet);
@@ -195,7 +196,7 @@ public class TCChatMsgListAdapter extends BaseAdapter implements AbsListView.OnS
         aniSet.play(animator);
         aniSet.start();
         mAnimatorSetList.add(aniSet);
-        itemView.setTag(R.id.tag_second, aniSet);
+        itemView.setTag(R.id.trtcliveroom_tag_second, aniSet);
     }
 
     /**

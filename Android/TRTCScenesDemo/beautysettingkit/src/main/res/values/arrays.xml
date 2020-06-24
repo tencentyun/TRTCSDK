@@ -41,7 +41,7 @@
         <item>脸型</item>
     </string-array>
 
-    <string-array name="filter_type">
+    <string-array name="beauty_filter_type">
         <item>无</item>
         <item>标准</item>
         <item>樱红</item>
@@ -62,7 +62,7 @@
         <item>日系</item>
     </string-array>
 
-    <string-array name="motion_type">
+    <string-array name="beauty_motion_type">
         <item>无</item>
         <item>Boom</item>
         <item>霓虹鼠</item>
@@ -77,17 +77,17 @@
         <item>小公举</item>
     </string-array>
 
-    <string-array name="koubei">
+    <string-array name="beauty_cutout_background">
         <item>无动效</item>
         <item>AI抠背</item>
     </string-array>
 
-    <string-array name="green_screen">
+    <string-array name="beauty_green_screen">
         <item>无</item>
         <item>Good luck</item>
     </string-array>
 
-    <string-array name="gesture_type">
+    <string-array name="beauty_gesture_type">
         <item>皮卡丘</item>
         <item>流星雨</item>
         <item>控雪</item>
@@ -95,7 +95,7 @@
         <item>瓶盖挑战</item>
     </string-array>
 
-    <string-array name="makeup_type">
+    <string-array name="beauty_makeup_type">
         <item>原宿复古</item>
         <item>樱桃</item>
         <item>海洋</item>

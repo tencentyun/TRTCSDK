@@ -304,16 +304,18 @@ public class TRTCMeetingImpl extends TRTCMeeting implements ITXTRTCMeetingDelega
                 TXRoomService.getInstance().getUserInfo(mUserIdList, new TXUserListCallback() {
                     @Override
                     public void onCallback(int code, String msg, List<TXUserInfo> list) {
-                        for (TXUserInfo info : list) {
-                            String                  userId   = info.userId;
-                            TRTCMeetingDef.UserInfo userInfo = mUserInfoMap.get(userId);
-                            if (userInfo == null) {
-                                userInfo = new TRTCMeetingDef.UserInfo();
-                                mUserInfoMap.put(info.userId, userInfo);
+                        if (list != null) {
+                            for (TXUserInfo info : list) {
+                                String                  userId   = info.userId;
+                                TRTCMeetingDef.UserInfo userInfo = mUserInfoMap.get(userId);
+                                if (userInfo == null) {
+                                    userInfo = new TRTCMeetingDef.UserInfo();
+                                    mUserInfoMap.put(info.userId, userInfo);
+                                }
+                                userInfo.userId = info.userId;
+                                userInfo.userName = info.userName;
+                                userInfo.userAvatar = info.avatarURL;
                             }
-                            userInfo.userId = info.userId;
-                            userInfo.userName = info.userName;
-                            userInfo.userAvatar = info.avatarURL;
                         }
                         if (userListCallback != null) {
                             userListCallback.onCallback(code, msg, new ArrayList<>(mUserInfoMap.values()));
@@ -347,21 +349,24 @@ public class TRTCMeetingImpl extends TRTCMeeting implements ITXTRTCMeetingDelega
                     }
                     return;
                 }
+                list.add(userId);
                 // 不是辅流走这里
                 TXRoomService.getInstance().getUserInfo(list, new TXUserListCallback() {
                     @Override
                     public void onCallback(int code, String msg, List<TXUserInfo> list) {
-                        for (TXUserInfo info : list) {
-                            String                  userId   = info.userId;
-                            TRTCMeetingDef.UserInfo userInfo = mUserInfoMap.get(userId);
-                            if (userInfo == null) {
-                                userInfo = new TRTCMeetingDef.UserInfo();
-                                mUserInfoMap.put(info.userId, userInfo);
+                        if (list != null) {
+                            for (TXUserInfo info : list) {
+                                String                  userId   = info.userId;
+                                TRTCMeetingDef.UserInfo userInfo = mUserInfoMap.get(userId);
+                                if (userInfo == null) {
+                                    userInfo = new TRTCMeetingDef.UserInfo();
+                                    mUserInfoMap.put(info.userId, userInfo);
+                                }
+                                userInfo.userId = info.userId;
+                                userInfo.userName = info.userName;
+                                userInfo.userAvatar = info.avatarURL;
+                                callbackList.add(userInfo);
                             }
-                            userInfo.userId = info.userId;
-                            userInfo.userName = info.userName;
-                            userInfo.userAvatar = info.avatarURL;
-                            callbackList.add(userInfo);
                         }
                         if (userListCallback != null) {
                             userListCallback.onCallback(code, msg, callbackList);
@@ -891,6 +896,54 @@ public class TRTCMeetingImpl extends TRTCMeeting implements ITXTRTCMeetingDelega
     }
 
     @Override
+    public void onScreenCaptureStarted() {
+        runOnDelegateThread(new Runnable() {
+            @Override
+            public void run() {
+                if (mTRTCMeetingDelegate != null) {
+                    mTRTCMeetingDelegate.onScreenCaptureStarted();
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onScreenCapturePaused() {
+        runOnDelegateThread(new Runnable() {
+            @Override
+            public void run() {
+                if (mTRTCMeetingDelegate != null) {
+                    mTRTCMeetingDelegate.onScreenCapturePaused();
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onScreenCaptureResumed() {
+        runOnDelegateThread(new Runnable() {
+            @Override
+            public void run() {
+                if (mTRTCMeetingDelegate != null) {
+                    mTRTCMeetingDelegate.onScreenCaptureResumed();
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onScreenCaptureStopped(final int reason) {
+        runOnDelegateThread(new Runnable() {
+            @Override
+            public void run() {
+                if (mTRTCMeetingDelegate != null) {
+                    mTRTCMeetingDelegate.onScreenCaptureStopped(reason);
+                }
+            }
+        });
+    }
+
+    @Override
     public void onError(final int errorCode, final String errorMsg) {
         runOnDelegateThread(new Runnable() {
             @Override
@@ -919,7 +972,7 @@ public class TRTCMeetingImpl extends TRTCMeeting implements ITXTRTCMeetingDelega
         runOnDelegateThread(new Runnable() {
             @Override
             public void run() {
-                if (mTRTCMeetingDelegate != null) {
+                if (mTRTCMeetingDelegate != null && userVolumes != null) {
                     for (TRTCCloudDef.TRTCVolumeInfo info : userVolumes) {
                         mTRTCMeetingDelegate.onUserVolumeUpdate(info.userId, info.volume);
                     }
@@ -933,6 +986,7 @@ public class TRTCMeetingImpl extends TRTCMeeting implements ITXTRTCMeetingDelega
         runOnDelegateThread(new Runnable() {
             @Override
             public void run() {
+                TXTRTCMeeting.getInstance().exitRoom(null);
                 if (mTRTCMeetingDelegate != null) {
                     mTRTCMeetingDelegate.onRoomDestroy(roomId);
                 }

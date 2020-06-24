@@ -28,8 +28,8 @@ import com.tencent.liteav.liveroom.ui.audience.TCAudienceActivity;
 import com.tencent.liteav.liveroom.ui.common.utils.TCConstants;
 import com.tencent.liteav.liveroom.ui.widget.RoundImageView;
 import com.tencent.liteav.liveroom.ui.widget.SpaceDecoration;
-import com.tencent.liteav.login.ProfileManager;
-import com.tencent.liteav.login.RoomManager;
+import com.tencent.liteav.login.model.ProfileManager;
+import com.tencent.liteav.login.model.RoomManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,48 +41,49 @@ import java.util.List;
  * Function: 直播列表页面，展示房间列表
  */
 public class LiveRoomListFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
-    private static final String TAG = "LiveRoomListFragment";
 
+    private RecyclerView        mRecyclerRoomList;                  //显示当前直播间列表的滑动控件
+    private TextView            mTextRoomListEmpty;                 //显示直播间列表为空时的提示消息
+    private Button              mButtonCreateRoom;                  //用来创建直播间的按钮
+    private SwipeRefreshLayout  mLayoutSwipeRefresh;                //一个滑动刷新的组件，用来更新直播间列表
+    private RoomListAdapter     mRoomListViewAdapter;               //mRecyclerRoomList控件的适配器
 
-    private RoomListAdapter    mRoomListViewAdapter;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
-    private List<RoomInfo>     mRoomInfoList = new ArrayList<>();
-    private String             mSelfUserId;
-    private RecyclerView       mListRv;
-    private TextView           mListviewEmptyTv;
-    private Button             mCreateRoomBtn;
-    private boolean            isUseCdnPlay  = false;
+    private String             mSelfUserId;                         //表示当前登录用户的UserID
+    private boolean            isUseCDNPlay = false;                //用来表示当前是否CDN模式（区别于TRTC模式）
+    private List<RoomInfo>     mRoomInfoList = new ArrayList<>();   //保存从网络侧加载到的直播间信息
 
     public static LiveRoomListFragment newInstance() {
-        Bundle               args     = new Bundle();
+        Bundle args = new Bundle();
         LiveRoomListFragment fragment = new LiveRoomListFragment();
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.liveroom_fragment_room_list, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.trtcliveroom_fragment_room_list, container, false);
         initView(view);
         getRoomList();
         return view;
     }
 
     private void initView(@NonNull final View itemView) {
-        mListRv = (RecyclerView) itemView.findViewById(R.id.rv_list);
-        mListviewEmptyTv = (TextView) itemView.findViewById(R.id.tv_listview_empty);
-        mCreateRoomBtn = (Button) itemView.findViewById(R.id.btn_create_room);
-        mCreateRoomBtn.setOnClickListener(new View.OnClickListener() {
+        mRecyclerRoomList = (RecyclerView) itemView.findViewById(R.id.rv_room_list);
+        mTextRoomListEmpty = (TextView) itemView.findViewById(R.id.tv_list_empty);
+
+        mButtonCreateRoom = (Button) itemView.findViewById(R.id.btn_create_room);
+        mButtonCreateRoom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 createRoom();
             }
         });
-        mSwipeRefreshLayout = (SwipeRefreshLayout) itemView.findViewById(R.id.swipe_refresh_layout_list);
-        mSwipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
+
+        mLayoutSwipeRefresh = (SwipeRefreshLayout) itemView.findViewById(R.id.swipe_refresh_layout_list);
+        mLayoutSwipeRefresh.setColorSchemeResources(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light, android.R.color.holo_orange_light, android.R.color.holo_red_light);
-        mSwipeRefreshLayout.setOnRefreshListener(this);
+        mLayoutSwipeRefresh.setOnRefreshListener(this);
+
         mRoomListViewAdapter = new RoomListAdapter(getContext(), mRoomInfoList,
                 new RoomListAdapter.OnItemClickListener() {
                     @Override
@@ -96,15 +97,15 @@ public class LiveRoomListFragment extends Fragment implements SwipeRefreshLayout
                         }
                     }
                 });
-        mListRv.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        mListRv.setAdapter(mRoomListViewAdapter);
-        mListRv.addItemDecoration(
-                new SpaceDecoration(getResources().getDimensionPixelOffset(R.dimen.large_image_left_margin),
+        mRecyclerRoomList.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        mRecyclerRoomList.setAdapter(mRoomListViewAdapter);
+        mRecyclerRoomList.addItemDecoration(
+                new SpaceDecoration(getResources().getDimensionPixelOffset(R.dimen.trtcliveroom_small_image_left_margin),
                         2));
         mRoomListViewAdapter.notifyDataSetChanged();
 
         mSelfUserId = ProfileManager.getInstance().getUserModel().userId;
-        isUseCdnPlay = SPUtils.getInstance().getBoolean(TCConstants.USE_CDN_PLAY, false);
+        isUseCDNPlay = SPUtils.getInstance().getBoolean(TCConstants.USE_CDN_PLAY, false);
     }
 
     private void createRoom() {
@@ -113,8 +114,8 @@ public class LiveRoomListFragment extends Fragment implements SwipeRefreshLayout
     }
 
     private void refreshView() {
-        mListviewEmptyTv.setVisibility(mRoomInfoList.size() == 0 ? View.VISIBLE : View.GONE);
-        mListRv.setVisibility(mRoomInfoList.size() == 0 ? View.GONE : View.VISIBLE);
+        mTextRoomListEmpty.setVisibility(mRoomInfoList.size() == 0 ? View.VISIBLE : View.GONE);
+        mRecyclerRoomList.setVisibility(mRoomInfoList.size() == 0 ? View.GONE : View.VISIBLE);
         mRoomListViewAdapter.notifyDataSetChanged();
     }
 
@@ -122,7 +123,7 @@ public class LiveRoomListFragment extends Fragment implements SwipeRefreshLayout
         Intent intent = new Intent(getActivity(), TCAudienceActivity.class);
         intent.putExtra(TCConstants.ROOM_TITLE, info.roomName);
         intent.putExtra(TCConstants.GROUP_ID, Integer.valueOf(info.roomId));
-        intent.putExtra(TCConstants.USE_CDN_PLAY, isUseCdnPlay);
+        intent.putExtra(TCConstants.USE_CDN_PLAY, isUseCDNPlay);
         intent.putExtra(TCConstants.PUSHER_ID, info.anchorId);
         intent.putExtra(TCConstants.PUSHER_NAME, info.anchorName);
         intent.putExtra(TCConstants.COVER_PIC, info.coverUrl);
@@ -139,7 +140,7 @@ public class LiveRoomListFragment extends Fragment implements SwipeRefreshLayout
      * 刷新直播列表
      */
     private void getRoomList() {
-        mSwipeRefreshLayout.setRefreshing(true);
+        mLayoutSwipeRefresh.setRefreshing(true);
         // 首先从后台获取 房间列表的id
         RoomManager.getInstance().getRoomList(TCConstants.TYPE_LIVE_ROOM, new RoomManager.GetRoomListCallback() {
             @Override
@@ -176,14 +177,14 @@ public class LiveRoomListFragment extends Fragment implements SwipeRefreshLayout
                 } else {
                     mRoomInfoList.clear();
                 }
-                mSwipeRefreshLayout.setRefreshing(false);
+                mLayoutSwipeRefresh.setRefreshing(false);
                 refreshView();
             }
 
             @Override
             public void onFailed(int code, String msg) {
-                ToastUtils.showShort("请求网络失败 " + msg);
-                mSwipeRefreshLayout.setRefreshing(false);
+                ToastUtils.showShort(getString(R.string.trtcliveroom_request_network_fail, msg));
+                mLayoutSwipeRefresh.setRefreshing(false);
                 refreshView();
             }
         });
@@ -204,25 +205,22 @@ public class LiveRoomListFragment extends Fragment implements SwipeRefreshLayout
     public static class RoomListAdapter extends
             RecyclerView.Adapter<RoomListAdapter.ViewHolder> {
 
-        private static final String TAG = RoomListAdapter.class.getSimpleName();
-
-        private Context             context;
-        private List<RoomInfo>      list;
-        private OnItemClickListener onItemClickListener;
+        private Context              mContext;
+        private List<RoomInfo>       mList;
+        private OnItemClickListener  onItemClickListener;
 
         public RoomListAdapter(Context context, List<RoomInfo> list,
                                OnItemClickListener onItemClickListener) {
-            this.context = context;
-            this.list = list;
+            this.mContext = context;
+            this.mList = list;
             this.onItemClickListener = onItemClickListener;
         }
 
-
         public static class ViewHolder extends RecyclerView.ViewHolder {
-            private RoundImageView mAnchorCoverImg;
-            private TextView       mAnchorNameTv;
-            private TextView       mRoomNameTv;
-            private TextView       mMembersLive;
+            private RoundImageView  mAnchorCoverImg;
+            private TextView        mAnchorNameTv;
+            private TextView        mRoomNameTv;
+            private TextView        mMembersLive;
 
             public ViewHolder(View itemView) {
                 super(itemView);
@@ -236,17 +234,16 @@ public class LiveRoomListFragment extends Fragment implements SwipeRefreshLayout
                 mMembersLive = (TextView) itemView.findViewById(R.id.live_members);
             }
 
-            public void bind(final RoomInfo model,
-                             final OnItemClickListener listener) {
+            public void bind(Context context, final RoomInfo model, final OnItemClickListener listener) {
                 if (model == null) {
                     return;
                 }
                 if (!TextUtils.isEmpty(model.coverUrl)) {
-                    Picasso.get().load(model.coverUrl).placeholder(R.drawable.bg_cover).into(mAnchorCoverImg);
+                    Picasso.get().load(model.coverUrl).placeholder(R.drawable.trtcliveroom_bg_cover).into(mAnchorCoverImg);
                 }
                 mAnchorNameTv.setText(model.anchorName);
                 mRoomNameTv.setText(model.roomName);
-                mMembersLive.setText(String.valueOf(model.audiencesNum));
+                mMembersLive.setText(context.getString(R.string.trtcliveroom_audience_members, model.audiencesNum));
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -258,21 +255,21 @@ public class LiveRoomListFragment extends Fragment implements SwipeRefreshLayout
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            Context        context  = parent.getContext();
+            Context context = parent.getContext();
             LayoutInflater inflater = LayoutInflater.from(context);
-            View           view     = inflater.inflate(R.layout.liveroom_item_room_list, parent, false);
+            View view = inflater.inflate(R.layout.trtcliveroom_item_room_list, parent, false);
             return new ViewHolder(view);
         }
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-            RoomInfo item = list.get(position);
-            holder.bind(item, onItemClickListener);
+            RoomInfo item = mList.get(position);
+            holder.bind(mContext, item, onItemClickListener);
         }
 
         @Override
         public int getItemCount() {
-            return list.size();
+            return mList.size();
         }
 
         public interface OnItemClickListener {

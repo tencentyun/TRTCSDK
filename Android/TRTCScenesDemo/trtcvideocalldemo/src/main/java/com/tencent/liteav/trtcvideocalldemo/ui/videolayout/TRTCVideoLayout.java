@@ -19,12 +19,12 @@ import com.tencent.rtmp.ui.TXCloudVideoView;
  * 此 TRTCVideoLayout 封装了{@link TXCloudVideoView} 以及业务逻辑 UI 控件
  */
 public class TRTCVideoLayout extends RelativeLayout {
-    private boolean          mMoveable;
-    private TXCloudVideoView mTcCloudViewTrtc;
-    private SquareImageView  mHeadImg;
-    private TextView         mUserNameTv;
-    private FrameLayout      mFlNoVideo;
-    private ProgressBar      mAudioPb;
+    private boolean          mMoveAble;
+    private TXCloudVideoView mTCCloudViewTRTC;
+    private SquareImageView  mImageHead;
+    private TextView         mTextUserName;
+    private FrameLayout      mLayoutNoVideo;
+    private ProgressBar      mProgressAudio;
 
 
     public TRTCVideoLayout(Context context) {
@@ -38,53 +38,53 @@ public class TRTCVideoLayout extends RelativeLayout {
     }
 
     public TXCloudVideoView getVideoView() {
-        return mTcCloudViewTrtc;
+        return mTCCloudViewTRTC;
     }
 
     public SquareImageView getHeadImg() {
-        return mHeadImg;
+        return mImageHead;
     }
 
     public TextView getUserNameTv() {
-        return mUserNameTv;
+        return mTextUserName;
     }
 
     public void setVideoAvailable(boolean available) {
         if (available) {
-            mTcCloudViewTrtc.setVisibility(VISIBLE);
-            mFlNoVideo.setVisibility(GONE);
+            mTCCloudViewTRTC.setVisibility(VISIBLE);
+            mLayoutNoVideo.setVisibility(GONE);
         } else {
-            mTcCloudViewTrtc.setVisibility(GONE);
-            mFlNoVideo.setVisibility(VISIBLE);
+            mTCCloudViewTRTC.setVisibility(GONE);
+            mLayoutNoVideo.setVisibility(VISIBLE);
         }
     }
 
     public void setAudioVolumeProgress(int progress) {
-        if (mAudioPb != null) {
-            mAudioPb.setProgress(progress);
+        if (mProgressAudio != null) {
+            mProgressAudio.setProgress(progress);
         }
     }
 
     public void setAudioVolumeProgressBarVisibility(int visibility) {
-        if (mAudioPb != null) {
-            mAudioPb.setVisibility(visibility);
+        if (mProgressAudio != null) {
+            mProgressAudio.setVisibility(visibility);
         }
     }
 
     private void initView() {
-        LayoutInflater.from(getContext()).inflate(R.layout.videocall_item_user_user_layout, this, true);
-        mTcCloudViewTrtc = (TXCloudVideoView) findViewById(R.id.trtc_tc_cloud_view);
-        mHeadImg = (SquareImageView) findViewById(R.id.img_avatar);
-        mUserNameTv = (TextView) findViewById(R.id.tv_user_name);
-        mFlNoVideo = (FrameLayout) findViewById(R.id.fl_no_video);
-        mAudioPb = (ProgressBar) findViewById(R.id.pb_audio);
+        LayoutInflater.from(getContext()).inflate(R.layout.trtcvideocall_layout_user_item, this, true);
+        mTCCloudViewTRTC = (TXCloudVideoView) findViewById(R.id.trtc_tc_cloud_view);
+        mImageHead = (SquareImageView) findViewById(R.id.iv_avatar);
+        mTextUserName = (TextView) findViewById(R.id.tv_user_name);
+        mLayoutNoVideo = (FrameLayout) findViewById(R.id.fl_no_video);
+        mProgressAudio = (ProgressBar) findViewById(R.id.progress_bar_audio);
     }
 
-    public boolean isMoveable() {
-        return mMoveable;
+    public boolean isMoveAble() {
+        return mMoveAble;
     }
 
-    public void setMoveable(boolean enable) {
-        mMoveable = enable;
+    public void setMoveAble(boolean enable) {
+        mMoveAble = enable;
     }
 }

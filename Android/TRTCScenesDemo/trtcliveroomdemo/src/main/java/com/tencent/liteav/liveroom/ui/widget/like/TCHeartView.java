@@ -39,12 +39,14 @@ import com.tencent.liteav.liveroom.R;
  */
 public class TCHeartView extends AppCompatImageView {
 
-    private static final Paint  sPaint            = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);
-    private              int    mHeartResId       = R.drawable.heart0;
-    private              int    mHeartBorderResId = R.drawable.heart1;
-    private static       Bitmap sHeart;
-    private static       Bitmap sHeartBorder;
-    private static final Canvas sCanvas           = new Canvas();
+    private static final Paint sPaint   = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);
+    private static final Canvas sCanvas = new Canvas();
+
+    private static Bitmap       sHeart;
+    private static Bitmap       sHeartBorder;
+
+    private int mHeartResId       = R.drawable.trtcliveroom_heart0;
+    private int mHeartBorderResId = R.drawable.trtcliveroom_heart1;
 
     public TCHeartView(Context context, AttributeSet attrs) {
         super(context, attrs);

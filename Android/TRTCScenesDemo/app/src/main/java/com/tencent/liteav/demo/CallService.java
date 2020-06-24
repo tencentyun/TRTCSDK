@@ -2,25 +2,24 @@ package com.tencent.liteav.demo;
 
 import android.app.Service;
 import android.content.Intent;
-import android.os.Environment;
 import android.os.IBinder;
 import android.util.Log;
 
 import com.blankj.utilcode.util.CollectionUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
-import com.tencent.imsdk.TIMCallBack;
-import com.tencent.imsdk.TIMLogLevel;
-import com.tencent.imsdk.TIMManager;
-import com.tencent.imsdk.TIMSdkConfig;
 import com.tencent.imsdk.session.SessionWrapper;
+import com.tencent.imsdk.v2.V2TIMCallback;
+import com.tencent.imsdk.v2.V2TIMManager;
+import com.tencent.imsdk.v2.V2TIMSDKConfig;
+import com.tencent.imsdk.v2.V2TIMSDKListener;
 import com.tencent.liteav.debug.GenerateTestUserSig;
 import com.tencent.liteav.liveroom.model.TRTCLiveRoom;
 import com.tencent.liteav.liveroom.model.TRTCLiveRoomCallback;
 import com.tencent.liteav.liveroom.model.TRTCLiveRoomDef;
 import com.tencent.liteav.liveroom.ui.common.utils.TCConstants;
-import com.tencent.liteav.login.ProfileManager;
-import com.tencent.liteav.login.UserModel;
+import com.tencent.liteav.login.model.ProfileManager;
+import com.tencent.liteav.login.model.UserModel;
 import com.tencent.liteav.meeting.model.TRTCMeeting;
 import com.tencent.liteav.meeting.model.TRTCMeetingCallback;
 import com.tencent.liteav.trtcaudiocalldemo.model.ITRTCAudioCall;
@@ -31,6 +30,8 @@ import com.tencent.liteav.trtcvideocalldemo.model.ITRTCVideoCall;
 import com.tencent.liteav.trtcvideocalldemo.model.TRTCVideoCallImpl;
 import com.tencent.liteav.trtcvideocalldemo.model.TRTCVideoCallListener;
 import com.tencent.liteav.trtcvideocalldemo.ui.TRTCVideoCallActivity;
+import com.tencent.liteav.trtcvoiceroom.model.TRTCVoiceRoom;
+import com.tencent.liteav.trtcvoiceroom.model.TRTCVoiceRoomCallback;
 
 import java.util.List;
 import java.util.Map;
@@ -230,18 +231,27 @@ public class CallService extends Service {
         // 由于两个模块公用一个IM，所以需要在这里先进行登录，您的App只使用一个model，可以直接调用VideoCall 对应函数
         // 目前 Demo 为了方便您接入，使用的是本地签发 sig 的方式，您的项目上线，务必要保证将签发逻辑转移到服务端，否者会出现 key 被盗用，流量盗用的风险。
         if (SessionWrapper.isMainProcess(this)) {
-            TIMSdkConfig config = new TIMSdkConfig(GenerateTestUserSig.SDKAPPID)
-                    .enableLogPrint(true)
-                    .setLogLevel(TIMLogLevel.DEBUG)
-                    .setLogPath(Environment.getExternalStorageDirectory().getPath() + "/justfortest/");
-            //初始化 SDK
-            TIMManager.getInstance().init(this, config);
+            V2TIMSDKConfig config = new V2TIMSDKConfig();
+            config.setLogLevel(V2TIMSDKConfig.V2TIM_LOG_DEBUG);
+            V2TIMManager.getInstance().initSDK(this, GenerateTestUserSig.SDKAPPID, config, new V2TIMSDKListener() {
+                @Override
+                public void onConnecting() {
+                }
+
+                @Override
+                public void onConnectSuccess() {
+                }
+
+                @Override
+                public void onConnectFailed(int code, String error) {
+                }
+            });
         }
         String userId  = ProfileManager.getInstance().getUserModel().userId;
         String userSig = ProfileManager.getInstance().getUserModel().userSig;
         Log.d("Login", "login: " + userId + " " + userSig);
         // 由于这里提前登陆了，所以会导致上一次的消息收不到，您在APP中单独使用 ITRTCAudioCall.login 不会出现这种问题
-        TIMManager.getInstance().login(userId, userSig, new TIMCallBack() {
+        V2TIMManager.getInstance().login(userId, userSig, new V2TIMCallback() {
             @Override
             public void onError(int i, String s) {
                 // 登录IM失败
@@ -251,11 +261,12 @@ public class CallService extends Service {
             @Override
             public void onSuccess() {
                 //1. 登录IM成功
-                ToastUtils.showLong("登录IM成功");
+                ToastUtils.showLong("登录成功");
                 initAudioCallData();
                 initVideoCallData();
                 initLiveRoom();
                 initMeetingData();
+                initVoiceRoom();
             }
         });
     }
@@ -264,7 +275,7 @@ public class CallService extends Service {
         final UserModel userModel = ProfileManager.getInstance().getUserModel();
         mTRTCLiveRoom = TRTCLiveRoom.sharedInstance(this);
         boolean                            useCDNFirst = SPUtils.getInstance().getBoolean(TCConstants.USE_CDN_PLAY, false);
-        TRTCLiveRoomDef.TRTCLiveRoomConfig config      = new TRTCLiveRoomDef.TRTCLiveRoomConfig(useCDNFirst, "");
+        TRTCLiveRoomDef.TRTCLiveRoomConfig config      = new TRTCLiveRoomDef.TRTCLiveRoomConfig(useCDNFirst, "请替换成您的业务服务器地址");
         mTRTCLiveRoom.login(GenerateTestUserSig.SDKAPPID, userModel.userId, userModel.userSig, config, new TRTCLiveRoomCallback.ActionCallback() {
             @Override
             public void onCallback(int code, String msg) {
@@ -314,6 +325,25 @@ public class CallService extends Service {
         TRTCMeeting.sharedInstance(this).login(GenerateTestUserSig.SDKAPPID, userModel.userId, userModel.userSig, new TRTCMeetingCallback.ActionCallback() {
             @Override
             public void onCallback(int code, String msg) {
+            }
+        });
+    }
+
+    private void initVoiceRoom() {
+        final UserModel     userModel = ProfileManager.getInstance().getUserModel();
+        final TRTCVoiceRoom voiceRoom = TRTCVoiceRoom.sharedInstance(this);
+        voiceRoom.login(GenerateTestUserSig.SDKAPPID, userModel.userId, userModel.userSig, new TRTCVoiceRoomCallback.ActionCallback() {
+            @Override
+            public void onCallback(int code, String msg) {
+                if (code == 0) {
+                    voiceRoom.setSelfProfile(userModel.userName, userModel.userAvatar, new TRTCVoiceRoomCallback.ActionCallback() {
+                        @Override
+                        public void onCallback(int code, String msg) {
+                            if (code == 0) {
+                            }
+                        }
+                    });
+                }
             }
         });
     }

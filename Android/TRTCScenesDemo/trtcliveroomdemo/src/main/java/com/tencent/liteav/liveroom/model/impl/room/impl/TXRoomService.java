@@ -7,34 +7,22 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
 
-import com.tencent.imsdk.TIMCallBack;
-import com.tencent.imsdk.TIMConnListener;
-import com.tencent.imsdk.TIMConversation;
-import com.tencent.imsdk.TIMConversationType;
-import com.tencent.imsdk.TIMCustomElem;
-import com.tencent.imsdk.TIMElem;
-import com.tencent.imsdk.TIMElemType;
-import com.tencent.imsdk.TIMFriendshipManager;
-import com.tencent.imsdk.TIMGroupEventListener;
-import com.tencent.imsdk.TIMGroupManager;
-import com.tencent.imsdk.TIMGroupMemberInfo;
-import com.tencent.imsdk.TIMGroupSystemElem;
-import com.tencent.imsdk.TIMGroupSystemElemType;
-import com.tencent.imsdk.TIMGroupTipsElem;
-import com.tencent.imsdk.TIMGroupTipsType;
-import com.tencent.imsdk.TIMManager;
-import com.tencent.imsdk.TIMMessage;
-import com.tencent.imsdk.TIMMessageListener;
-import com.tencent.imsdk.TIMMessagePriority;
-import com.tencent.imsdk.TIMSdkConfig;
-import com.tencent.imsdk.TIMTextElem;
-import com.tencent.imsdk.TIMUserConfig;
-import com.tencent.imsdk.TIMUserProfile;
-import com.tencent.imsdk.TIMUserStatusListener;
-import com.tencent.imsdk.TIMValueCallBack;
-import com.tencent.imsdk.ext.group.TIMGroupDetailInfo;
-import com.tencent.imsdk.ext.group.TIMGroupDetailInfoResult;
-import com.tencent.liteav.basic.log.TXCLog;
+import com.tencent.imsdk.v2.V2TIMCallback;
+import com.tencent.imsdk.v2.V2TIMGroupChangeInfo;
+import com.tencent.imsdk.v2.V2TIMGroupInfo;
+import com.tencent.imsdk.v2.V2TIMGroupInfoResult;
+import com.tencent.imsdk.v2.V2TIMGroupListener;
+import com.tencent.imsdk.v2.V2TIMGroupMemberFullInfo;
+import com.tencent.imsdk.v2.V2TIMGroupMemberInfo;
+import com.tencent.imsdk.v2.V2TIMGroupMemberInfoResult;
+import com.tencent.imsdk.v2.V2TIMManager;
+import com.tencent.imsdk.v2.V2TIMMessage;
+import com.tencent.imsdk.v2.V2TIMSDKConfig;
+import com.tencent.imsdk.v2.V2TIMSDKListener;
+import com.tencent.imsdk.v2.V2TIMSimpleMsgListener;
+import com.tencent.imsdk.v2.V2TIMUserFullInfo;
+import com.tencent.imsdk.v2.V2TIMUserInfo;
+import com.tencent.imsdk.v2.V2TIMValueCallback;
 import com.tencent.liteav.liveroom.model.TRTCLiveRoomDef;
 import com.tencent.liteav.liveroom.model.impl.base.TRTCLogger;
 import com.tencent.liteav.liveroom.model.impl.base.TXCallback;
@@ -49,46 +37,43 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
-public class TXRoomService implements ITXRoomService, TIMMessageListener, TIMUserStatusListener, TIMConnListener, TIMGroupEventListener {
+public class TXRoomService implements ITXRoomService {
     private static final String TAG = "TXRoomService";
 
     private static final int CODE_ERROR                = -1;
     private static final int CODE_TIMEOUT              = -2;
-    // 发送消息的超时时间
-    private static final int SEND_MSG_TIMEOUT          = 15000;
-    // 处理消息的超时时间
-    private static final int HANDLE_MSG_TIMEOUT        = 10000;
-    // 等待主播进房的超时时间
-    private static final int WAIT_ANCHOR_ENTER_TIMEOUT = 3000;
+    private static final int SEND_MSG_TIMEOUT          = 15000;     // 发送消息的超时时间
+    private static final int HANDLE_MSG_TIMEOUT        = 10000;     // 处理消息的超时时间
+    private static final int WAIT_ANCHOR_ENTER_TIMEOUT = 3000;      // 等待主播进房的超时时间
+    private static final int STATUS_NONE               = 0;
+    private static final int STATUS_REQUEST            = 1;
+    private static final int STATUS_RECEIVED           = 2;
+    private static final int STATUS_WAITING_ANCHOR     = 3;
 
-    private static final int STATUS_NONE           = 0;
-    private static final int STATUS_REQUEST        = 1;
-    private static final int STATUS_RECEIVED       = 2;
-    private static final int STATUS_WAITING_ANCHOR = 3;
-
-    private static TXRoomService          sInstance;
-    private        Context                mContext;
-    private        ITXRoomServiceDelegate mDelegate;
-    private        boolean                mIsInitIMSDK;
-    private        boolean                mIsLogin;
-    private        boolean                mIsEnterRoom;
-    private        List<IMAnchorInfo>     mAnchorList;
-
-    private String       mRoomId;
-    private IMAnchorInfo mMySelfIMInfo;
-    private IMAnchorInfo mOwnerIMInfo;
-    // 房间外部状态，见 TRTCLiveRoomDef
-    private int          mCurrentRoomStatus;
-    private TXRoomInfo   mTXRoomInfo;
-
-    private String                   mPKingRoomId;
-    private IMAnchorInfo             mPKingIMAnchorInfo;
-    private Pair<String, TXCallback> mLinkMicReqPair;
-    private Pair<String, TXCallback> mPKReqPair;
+    private static TXRoomService      sInstance;
+    private Context                   mContext;
+    private ITXRoomServiceDelegate    mDelegate;
+    private boolean                   mIsInitIMSDK;
+    private boolean                   mIsLogin;
+    private boolean                   mIsEnterRoom;
+    private List<IMAnchorInfo>        mAnchorList;
+    private int                       mCurrentRoomStatus;        // 房间外部状态，见 TRTCLiveRoomDef
+    private String                    mRoomId;
+    private String                    mPKingRoomId;
+    private IMAnchorInfo              mMySelfIMInfo;
+    private IMAnchorInfo              mOwnerIMInfo;
+    private IMAnchorInfo              mPKingIMAnchorInfo;
+    private TXRoomInfo                mTXRoomInfo;
+    private LiveRoomSimpleMsgListener mSimpleListener;
+    private LiveRoomGroupListener     mGroupListener;
+    private Pair<String, TXCallback>  mLinkMicReqPair;
+    private Pair<String, TXCallback>  mPKReqPair;
 
     /// 房间内部状态，消息发送流程
     /// 1. 观众主动请求，观众状态变更 STATUS_REQUEST，并且等待 SEND_MSG_TIMEOUT 超时
@@ -116,6 +101,8 @@ public class TXRoomService implements ITXRoomService, TIMMessageListener, TIMUse
         mRoomId = "";
         mCurrentRoomStatus = TRTCLiveRoomDef.ROOM_STATUS_NONE;
         mTimeoutHandler = new Handler(Looper.getMainLooper());
+        mSimpleListener = new LiveRoomSimpleMsgListener();
+        mGroupListener = new LiveRoomGroupListener();
     }
 
     @Override
@@ -137,24 +124,33 @@ public class TXRoomService implements ITXRoomService, TIMMessageListener, TIMUse
     public void login(int sdkAppId, final String userId, String userSign, final TXCallback callback) {
         // 未初始化 IM 先初始化 IM
         if (!mIsInitIMSDK) {
-            TIMUserConfig userConfig = new TIMUserConfig();
-            userConfig.setConnectionListener(this);
-            userConfig.setUserStatusListener(this);
-            userConfig.setGroupEventListener(this);
-            TIMManager.getInstance().setUserConfig(userConfig);
+            V2TIMSDKConfig config = new V2TIMSDKConfig();
+            config.setLogLevel(V2TIMSDKConfig.V2TIM_LOG_DEBUG);
+            mIsInitIMSDK = V2TIMManager.getInstance().initSDK(mContext, sdkAppId, config, new V2TIMSDKListener() {
+                @Override
+                public void onConnecting() {
+                }
 
-            TIMSdkConfig config = new TIMSdkConfig(sdkAppId);
-            mIsInitIMSDK = TIMManager.getInstance().init(mContext, config);
+                @Override
+                public void onConnectSuccess() {
+                }
+
+                @Override
+                public void onConnectFailed(int code, String error) {
+                    TRTCLogger.e(TAG, "init im sdk error.");
+                }
+            });
+
             if (!mIsInitIMSDK) {
-                TRTCLogger.e(TAG, "init im sdk error.");
                 if (callback != null) {
                     callback.onCallback(CODE_ERROR, "init im sdk error.");
                 }
                 return;
             }
         }
+
         // 登陆到 IM
-        String loginedUserId = TIMManager.getInstance().getLoginUser();
+        String loginedUserId = V2TIMManager.getInstance().getLoginUser();
         if (loginedUserId != null && loginedUserId.equals(userId)) {
             // 已经登录过了
             mIsLogin = true;
@@ -172,7 +168,7 @@ public class TXRoomService implements ITXRoomService, TIMMessageListener, TIMUse
             }
             return;
         }
-        TIMManager.getInstance().login(userId, userSign, new TIMCallBack() {
+        V2TIMManager.getInstance().login(userId, userSign, new V2TIMCallback() {
             @Override
             public void onError(int i, String s) {
                 TRTCLogger.e(TAG, "login im fail, code:" + i + " msg:" + s);
@@ -210,7 +206,7 @@ public class TXRoomService implements ITXRoomService, TIMMessageListener, TIMUse
             return;
         }
 
-        TIMManager.getInstance().logout(new TIMCallBack() {
+        V2TIMManager.getInstance().logout(new V2TIMCallback() {
             @Override
             public void onError(int i, String s) {
                 TRTCLogger.e(TAG, "logout fail, code:" + i + " msg:" + s);
@@ -240,10 +236,11 @@ public class TXRoomService implements ITXRoomService, TIMMessageListener, TIMUse
             }
             return;
         }
-        HashMap<String, Object> profileMap = new HashMap<>();
-        profileMap.put(TIMUserProfile.TIM_PROFILE_TYPE_KEY_NICK, userName);
-        profileMap.put(TIMUserProfile.TIM_PROFILE_TYPE_KEY_FACEURL, avatarURL);
-        TIMFriendshipManager.getInstance().modifySelfProfile(profileMap, new TIMCallBack() {
+
+        V2TIMUserFullInfo v2TIMUserFullInfo = new V2TIMUserFullInfo();
+        v2TIMUserFullInfo.setNickname(userName);
+        v2TIMUserFullInfo.setFaceUrl(avatarURL);
+        V2TIMManager.getInstance().setSelfInfo(v2TIMUserFullInfo, new V2TIMCallback() {
             @Override
             public void onError(int code, String desc) {
                 TRTCLogger.e(TAG, "set profile code:" + code + " msg:" + desc);
@@ -256,10 +253,8 @@ public class TXRoomService implements ITXRoomService, TIMMessageListener, TIMUse
             public void onSuccess() {
                 TRTCLogger.i(TAG, "set profile success.");
                 mMySelfIMInfo.name = userName;
-                //                mMySelfIMInfo.avatar = avatarURL;
                 if (isOwner()) {
                     mOwnerIMInfo.name = userName;
-                    //                    mOwnerIMInfo.avatar = avatarURL;
                 }
                 if (callback != null) {
                     callback.onCallback(0, "set profile success.");
@@ -270,6 +265,7 @@ public class TXRoomService implements ITXRoomService, TIMMessageListener, TIMUse
 
     @Override
     public void createRoom(final String roomId, final String roomName, final String coverUrl, final TXCallback callback) {
+        TRTCLogger.e(TAG, "createRoom mIsEnterRoom:" + mIsEnterRoom);
         // 如果已经在一个房间了，则不允许再次进入
         if (isEnterRoom()) {
             TRTCLogger.e(TAG, "you have been in room:" + mRoomId + " can't create another room:" + roomId);
@@ -285,11 +281,9 @@ public class TXRoomService implements ITXRoomService, TIMMessageListener, TIMUse
             }
             return;
         }
-        TIMGroupManager.CreateGroupParam param = new TIMGroupManager.CreateGroupParam("AVChatRoom", roomId);
-        param.setGroupId(roomId);
-        param.setGroupName(roomName);
-        param.setFaceUrl(coverUrl);
-        TIMGroupManager.getInstance().createGroup(param, new TIMValueCallBack<String>() {
+
+        final V2TIMManager imManager = V2TIMManager.getInstance();
+        imManager.createGroup(V2TIMManager.GROUP_TYPE_AVCHATROOM, roomId, roomName, new V2TIMValueCallback<String>() {
             @Override
             public void onError(int code, String s) {
                 String msg = s;
@@ -315,8 +309,10 @@ public class TXRoomService implements ITXRoomService, TIMMessageListener, TIMUse
 
             @Override
             public void onSuccess(String s) {
-                TIMManager.getInstance().addMessageListener(TXRoomService.this);
                 cleanStatus();
+                V2TIMManager.getInstance().addSimpleMsgListener(mSimpleListener);
+                V2TIMManager.getInstance().setGroupListener(mGroupListener);
+                TRTCLogger.d(TAG, "createGroup setGroupListener roomId: " + roomId + " mGroupListener: " + mGroupListener.hashCode());
 
                 mIsEnterRoom = true;
                 mCurrentRoomStatus = TRTCLiveRoomDef.ROOM_STATUS_SINGLE;
@@ -325,7 +321,6 @@ public class TXRoomService implements ITXRoomService, TIMMessageListener, TIMUse
 
                 mOwnerIMInfo.userId = mMySelfIMInfo.userId;
                 mOwnerIMInfo.streamId = mMySelfIMInfo.streamId;
-                //                mOwnerIMInfo.avatar = mMySelfIMInfo.avatar;
                 mOwnerIMInfo.name = mMySelfIMInfo.name;
                 // 组装 RoomInfo 抛给上层
                 mTXRoomInfo.roomStatus = mCurrentRoomStatus;
@@ -354,42 +349,62 @@ public class TXRoomService implements ITXRoomService, TIMMessageListener, TIMUse
 
     @Override
     public void destroyRoom(final TXCallback callback) {
-        // 摧毁房间的时候，需要优先清空群简介，否者有可能开同样的房，观众会有异常。
-        TIMGroupManager.ModifyGroupInfoParam groupInfoParam = new TIMGroupManager.ModifyGroupInfoParam(mRoomId);
-        groupInfoParam.setIntroduction("");
-        TIMGroupManager.getInstance().modifyGroupInfo(groupInfoParam, new TIMCallBack() {
+        // Todo: 此处存疑，待解答：摧毁房间的时候，需要优先清空群简介，否者有可能开同样的房，观众会有异常。
+        List<String> groupList = new ArrayList<>(Arrays.asList(mRoomId));
+        V2TIMManager.getGroupManager().getGroupsInfo(groupList, new V2TIMValueCallback<List<V2TIMGroupInfoResult>>() {
             @Override
             public void onError(int i, String s) {
-                TRTCLogger.e(TAG, "room owner update anchor list into group introduction fail, code: " + i + " msg:" + s);
-                if (callback != null) {
-                    callback.onCallback(i, s);
-                }
+                TRTCLogger.e(TAG, "room owner get group info fail, code: " + i + " msg:" + s);
             }
 
             @Override
-            public void onSuccess() {
-                TRTCLogger.i(TAG, "room owner update anchor list into group introduction success");
-                TIMGroupManager.getInstance().deleteGroup(mRoomId, new TIMCallBack() {
-                    @Override
-                    public void onError(int i, String s) {
-                        TRTCLogger.e(TAG, "destroy room fail, code:" + i + " msg:" + s);
-                        if (callback != null) {
-                            callback.onCallback(i, s);
+            public void onSuccess(List<V2TIMGroupInfoResult> v2TIMGroupInfoResults) {
+                if (v2TIMGroupInfoResults != null && v2TIMGroupInfoResults.size() == 1) {
+                    V2TIMGroupInfoResult v2TIMGroupInfoResult = v2TIMGroupInfoResults.get(0);
+                    V2TIMGroupInfo v2TIMGroupInfo = new V2TIMGroupInfo();
+                    v2TIMGroupInfo.setGroupID(v2TIMGroupInfoResult.getGroupInfo().getGroupID());
+                    v2TIMGroupInfo.setGroupName(v2TIMGroupInfoResult.getGroupInfo().getGroupName());
+                    v2TIMGroupInfo.setFaceUrl(v2TIMGroupInfoResult.getGroupInfo().getFaceUrl());
+                    v2TIMGroupInfo.setGroupType(v2TIMGroupInfoResult.getGroupInfo().getGroupType());
+                    v2TIMGroupInfo.setIntroduction("");
+
+                    V2TIMManager.getGroupManager().setGroupInfo(v2TIMGroupInfo, new V2TIMCallback() {
+                        @Override
+                        public void onError(int code, String desc) {
+                            TRTCLogger.e(TAG, "destroyRoom room owner update anchor list into group introduction fail, code: " + code + " msg:" + desc);
+                            if (callback != null) {
+                                callback.onCallback(code, desc);
+                            }
                         }
-                    }
+                        @Override
+                        public void onSuccess() {
+                            TRTCLogger.i(TAG, "room owner update anchor list into group introduction success");
+                            V2TIMManager.getInstance().dismissGroup(mRoomId, new V2TIMCallback() {
+                                @Override
+                                public void onError(int i, String s) {
+                                    TRTCLogger.e(TAG, "destroy room fail, code:" + i + " msg:" + s);
+                                    if (callback != null) {
+                                        callback.onCallback(i, s);
+                                    }
+                                }
 
-                    @Override
-                    public void onSuccess() {
-                        TIMManager.getInstance().removeMessageListener(TXRoomService.this);
+                                @Override
+                                public void onSuccess() {
+                                    TRTCLogger.d(TAG, "destroyRoom remove GroupListener roomId: " + mRoomId + " mGroupListener: " + mGroupListener.hashCode());
+                                    V2TIMManager.getInstance().removeSimpleMsgListener(mSimpleListener);
+                                    V2TIMManager.getInstance().setGroupListener(null);
 
-                        cleanStatus();
+                                    cleanStatus();
 
-                        TRTCLogger.i(TAG, "destroy room success.");
-                        if (callback != null) {
-                            callback.onCallback(0, "destroy room success.");
+                                    TRTCLogger.i(TAG, "destroy room success.");
+                                    if (callback != null) {
+                                        callback.onCallback(0, "destroy room success.");
+                                    }
+                                }
+                            });
                         }
-                    }
-                });
+                    });
+                }
             }
         });
     }
@@ -404,10 +419,9 @@ public class TXRoomService implements ITXRoomService, TIMMessageListener, TIMUse
             }
             return;
         }
-        List<String> groupList = new ArrayList<>();
-        groupList.add(roomId);
 
-        TIMGroupManager.getInstance().getGroupInfo(groupList, new TIMValueCallBack<List<TIMGroupDetailInfoResult>>() {
+        List<String> groupList = new ArrayList<>(Arrays.asList(roomId));
+        V2TIMManager.getGroupManager().getGroupsInfo(groupList, new V2TIMValueCallback<List<V2TIMGroupInfoResult>>() {
             @Override
             public void onError(int i, String s) {
                 TRTCLogger.e(TAG, "get group info error, enter room fail. code:" + i + " msg:" + s);
@@ -417,16 +431,16 @@ public class TXRoomService implements ITXRoomService, TIMMessageListener, TIMUse
             }
 
             @Override
-            public void onSuccess(List<TIMGroupDetailInfoResult> timGroupDetailInfoResults) {
+            public void onSuccess(List<V2TIMGroupInfoResult> v2TIMGroupInfoResults) {
                 boolean isSuccess = false;
-                if (timGroupDetailInfoResults != null && timGroupDetailInfoResults.size() == 1) {
-                    final TIMGroupDetailInfoResult result = timGroupDetailInfoResults.get(0);
-                    if (result != null) {
-                        final String introduction = result.getGroupIntroduction();
+                if (v2TIMGroupInfoResults != null && v2TIMGroupInfoResults.size() == 1) {
+                    final V2TIMGroupInfoResult v2TIMGroupInfoResult = v2TIMGroupInfoResults.get(0);
+                    if (v2TIMGroupInfoResult != null) {
+                        final String introduction = v2TIMGroupInfoResult.getGroupInfo().getIntroduction();
                         TRTCLogger.i(TAG, "get group info success, info:" + introduction);
                         if (introduction != null) {
                             isSuccess = true;
-                            TIMGroupManager.getInstance().applyJoinGroup(roomId, "", new TIMCallBack() {
+                            V2TIMManager.getInstance().joinGroup(roomId, "", new V2TIMCallback() {
                                 @Override
                                 public void onError(int i, String s) {
                                     // 已经是群成员了，可以继续操作
@@ -442,17 +456,18 @@ public class TXRoomService implements ITXRoomService, TIMMessageListener, TIMUse
 
                                 @Override
                                 public void onSuccess() {
-                                    TIMManager.getInstance().addMessageListener(TXRoomService.this);
                                     cleanStatus();
+                                    V2TIMManager.getInstance().addSimpleMsgListener(mSimpleListener);
+                                    V2TIMManager.getInstance().setGroupListener(mGroupListener);
 
-                                    TRTCLogger.i(TAG, "enter room success.");
+                                    TRTCLogger.i(TAG, "enter room success. roomId: " + roomId) ;
                                     mRoomId = roomId;
                                     mIsEnterRoom = true;
 
                                     mTXRoomInfo.roomId = roomId;
-                                    mTXRoomInfo.roomName = result.getGroupName();
-                                    mTXRoomInfo.coverUrl = result.getFaceUrl();
-                                    mTXRoomInfo.memberCount = (int) result.getMemberNum();
+                                    mTXRoomInfo.roomName = v2TIMGroupInfoResult.getGroupInfo().getGroupName();
+                                    mTXRoomInfo.coverUrl = v2TIMGroupInfoResult.getGroupInfo().getFaceUrl();
+                                    mTXRoomInfo.memberCount = v2TIMGroupInfoResult.getGroupInfo().getMemberCount();
 
                                     // 获取群资料，解析群简介，获取成员列表和当前房间类型
                                     Pair<Integer, List<IMAnchorInfo>> pair = IMProtocol.parseGroupInfo(introduction);
@@ -522,7 +537,7 @@ public class TXRoomService implements ITXRoomService, TIMMessageListener, TIMUse
             }
             return;
         }
-        TIMGroupManager.getInstance().quitGroup(mRoomId, new TIMCallBack() {
+        V2TIMManager.getInstance().quitGroup(mRoomId, new V2TIMCallback() {
             @Override
             public void onError(int i, String s) {
                 TRTCLogger.e(TAG, "exit room fail, code:" + i + " msg:" + s);
@@ -534,7 +549,8 @@ public class TXRoomService implements ITXRoomService, TIMMessageListener, TIMUse
             @Override
             public void onSuccess() {
                 TRTCLogger.i(TAG, "exit room success.");
-                TIMManager.getInstance().removeMessageListener(TXRoomService.this);
+                V2TIMManager.getInstance().removeSimpleMsgListener(mSimpleListener);
+                V2TIMManager.getInstance().setGroupListener(null);
                 cleanStatus();
 
                 if (callback != null) {
@@ -546,8 +562,7 @@ public class TXRoomService implements ITXRoomService, TIMMessageListener, TIMUse
 
     @Override
     public void getRoomInfos(final List<String> roomIds, final TXRoomInfoListCallback callback) {
-        final List<TXRoomInfo> roomInfos = new ArrayList<>();
-        TIMGroupManager.getInstance().getGroupInfo(roomIds, new TIMValueCallBack<List<TIMGroupDetailInfoResult>>() {
+        V2TIMManager.getGroupManager().getGroupsInfo(roomIds, new V2TIMValueCallback<List<V2TIMGroupInfoResult>>() {
             @Override
             public void onError(int i, String s) {
                 if (callback != null) {
@@ -556,20 +571,31 @@ public class TXRoomService implements ITXRoomService, TIMMessageListener, TIMUse
             }
 
             @Override
-            public void onSuccess(List<TIMGroupDetailInfoResult> timGroupDetailInfoResults) {
-                for (String id : roomIds) {
-                    TIMGroupDetailInfo timGroupDetailInfo = TIMGroupManager.getInstance().queryGroupInfo(id);
+            public void onSuccess(List<V2TIMGroupInfoResult> v2TIMGroupInfoResults) {
+                List<TXRoomInfo>            txRoomInfos        = new ArrayList<>();
+                Map<String, V2TIMGroupInfo> groupInfoResultMap = new HashMap<>();
+                // 注意 IM 返回的顺序可能不对，所以需要重新排序
+                for (V2TIMGroupInfoResult result : v2TIMGroupInfoResults) {
+                    V2TIMGroupInfo groupInfo = result.getGroupInfo();
+                    // 防止为空
+                    if (groupInfo == null) {
+                        continue;
+                    }
+                    groupInfoResultMap.put(groupInfo.getGroupID(), groupInfo);
+                }
+                for (String roomId : roomIds) {
+                    V2TIMGroupInfo timGroupDetailInfo = groupInfoResultMap.get(roomId);
                     if (timGroupDetailInfo == null) {
                         continue;
                     }
                     TXRoomInfo txRoomInfo = new TXRoomInfo();
-                    txRoomInfo.roomId = timGroupDetailInfo.getGroupId();
-                    txRoomInfo.ownerId = timGroupDetailInfo.getGroupOwner();
-                    txRoomInfo.memberCount = (int) timGroupDetailInfo.getMemberNum();
+                    txRoomInfo.roomId = timGroupDetailInfo.getGroupID();
+                    txRoomInfo.ownerId = timGroupDetailInfo.getOwner();
+                    txRoomInfo.memberCount = timGroupDetailInfo.getMemberCount();
                     txRoomInfo.coverUrl = timGroupDetailInfo.getFaceUrl();
                     txRoomInfo.roomName = timGroupDetailInfo.getGroupName();
-                    Pair<Integer, List<IMAnchorInfo>> pair =
-                            IMProtocol.parseGroupInfo(timGroupDetailInfo.getGroupIntroduction());
+
+                    Pair<Integer, List<IMAnchorInfo>> pair = IMProtocol.parseGroupInfo(timGroupDetailInfo.getIntroduction());
                     if (pair != null) {
                         List<IMAnchorInfo> list = pair.second;
                         for (IMAnchorInfo anchor : list) {
@@ -580,14 +606,13 @@ public class TXRoomService implements ITXRoomService, TIMMessageListener, TIMUse
                             }
                         }
                     }
-                    roomInfos.add(txRoomInfo);
+                    txRoomInfos.add(txRoomInfo);
                 }
                 if (callback != null) {
-                    callback.onCallback(0, "get room info success", roomInfos);
+                    callback.onCallback(0, "get room info success", txRoomInfos);
                 }
+
             }
-
-
         });
     }
 
@@ -640,47 +665,28 @@ public class TXRoomService implements ITXRoomService, TIMMessageListener, TIMUse
             }
             return;
         }
-        final List<String> memberIds = new ArrayList<>();
-        TIMGroupManager.getInstance().getGroupMembers(mRoomId, new TIMValueCallBack<List<TIMGroupMemberInfo>>() {
-            @Override
-            public void onError(int i, String s) {
-            }
 
-            @Override
-            public void onSuccess(List<TIMGroupMemberInfo> timGroupMemberInfos) {
-                for (TIMGroupMemberInfo info : timGroupMemberInfos) {
-                    memberIds.add(info.getUser());
-                }
-                TIMFriendshipManager.getInstance().getUsersProfile(memberIds, false, new TIMValueCallBack<List<TIMUserProfile>>() {
+        V2TIMManager.getGroupManager().getGroupMemberList(mRoomId, V2TIMGroupMemberFullInfo.V2TIM_GROUP_MEMBER_ROLE_MEMBER, 0,
+                new V2TIMValueCallback<V2TIMGroupMemberInfoResult>() {
                     @Override
-                    public void onError(int i, String s) {
-                        if (callback != null) {
-                            callback.onCallback(i, s, new ArrayList<TXUserInfo>());
-                        }
+                    public void onError(int code, String desc) {
                     }
 
                     @Override
-                    public void onSuccess(List<TIMUserProfile> timUserProfiles) {
+                    public void onSuccess(V2TIMGroupMemberInfoResult v2TIMGroupMemberInfoResult) {
                         List<TXUserInfo> list = new ArrayList<>();
-
-                        if (timUserProfiles != null && timUserProfiles.size() != 0) {
-                            for (int i = 0; i < timUserProfiles.size(); i++) {
-                                TXUserInfo userInfo = new TXUserInfo();
-                                userInfo.userName = timUserProfiles.get(i).getNickName();
-                                userInfo.userId = timUserProfiles.get(i).getIdentifier();
-                                userInfo.avatarURL = timUserProfiles.get(i).getFaceUrl();
-                                list.add(userInfo);
-                            }
+                        for (V2TIMGroupMemberFullInfo info : v2TIMGroupMemberInfoResult.getMemberInfoList()) {
+                            TXUserInfo userInfo = new TXUserInfo();
+                            userInfo.userName = info.getNickName();
+                            userInfo.userId = info.getUserID();
+                            userInfo.avatarURL = info.getFaceUrl();
+                            list.add(userInfo);
                         }
-
                         if (callback != null) {
                             callback.onCallback(0, "success", list);
                         }
                     }
                 });
-            }
-        });
-
     }
 
     @Override
@@ -698,28 +704,28 @@ public class TXRoomService implements ITXRoomService, TIMMessageListener, TIMUse
             }
             return;
         }
-        TIMFriendshipManager.getInstance().getUsersProfile(userList, true, new TIMValueCallBack<List<TIMUserProfile>>() {
+
+        V2TIMManager.getInstance().getUsersInfo(userList, new V2TIMValueCallback<List<V2TIMUserFullInfo>>() {
             @Override
             public void onError(int i, String s) {
+                TRTCLogger.e(TAG, "get user info list fail, code:" + i);
                 if (callback != null) {
-                    callback.onCallback(i, s, new ArrayList<TXUserInfo>());
+                    callback.onCallback(i, s, null);
                 }
             }
 
             @Override
-            public void onSuccess(List<TIMUserProfile> timUserProfiles) {
+            public void onSuccess(List<V2TIMUserFullInfo> v2TIMUserFullInfos) {
                 List<TXUserInfo> list = new ArrayList<>();
-
-                if (timUserProfiles != null && timUserProfiles.size() != 0) {
-                    for (int i = 0; i < timUserProfiles.size(); i++) {
+                if (v2TIMUserFullInfos != null && v2TIMUserFullInfos.size() != 0) {
+                    for (int i = 0; i < v2TIMUserFullInfos.size(); i++) {
                         TXUserInfo userInfo = new TXUserInfo();
-                        userInfo.userName = timUserProfiles.get(i).getNickName();
-                        userInfo.userId = timUserProfiles.get(i).getIdentifier();
-                        userInfo.avatarURL = timUserProfiles.get(i).getFaceUrl();
+                        userInfo.userName = v2TIMUserFullInfos.get(i).getNickName();
+                        userInfo.userId = v2TIMUserFullInfos.get(i).getUserID();
+                        userInfo.avatarURL = v2TIMUserFullInfos.get(i).getFaceUrl();
                         list.add(userInfo);
                     }
                 }
-
                 if (callback != null) {
                     callback.onCallback(0, "success", list);
                 }
@@ -728,7 +734,7 @@ public class TXRoomService implements ITXRoomService, TIMMessageListener, TIMUse
     }
 
     @Override
-    public void sendRoomTextMsg(String msg, TXCallback callback) {
+    public void sendRoomTextMsg(String msg, final TXCallback callback) {
         if (!isEnterRoom()) {
             TRTCLogger.e(TAG, "send room text fail, not enter room yet.");
             if (callback != null) {
@@ -737,21 +743,26 @@ public class TXRoomService implements ITXRoomService, TIMMessageListener, TIMUse
             return;
         }
 
-        TIMCustomElem customElem = new TIMCustomElem();
-        customElem.setData(IMProtocol.getRoomTextMsgHeadJsonStr().getBytes());
+        V2TIMManager.getInstance().sendGroupTextMessage(msg, mRoomId, V2TIMMessage.V2TIM_PRIORITY_LOW, new V2TIMValueCallback<V2TIMMessage>() {
+            @Override
+            public void onError(int i, String s) {
+                TRTCLogger.e(TAG, "message send fail, code: " + i + " msg:" + s);
+                if (callback != null) {
+                    callback.onCallback(i, s);
+                }
+            }
 
-        TIMTextElem textElem = new TIMTextElem();
-        textElem.setText(msg);
-
-        TIMMessage timMessage = new TIMMessage();
-        timMessage.addElement(customElem);
-        timMessage.addElement(textElem);
-        timMessage.setPriority(TIMMessagePriority.Lowest);
-        sendGroupMessage(timMessage, callback);
+            @Override
+            public void onSuccess(V2TIMMessage v2TIMMessage) {
+                if (callback != null) {
+                    callback.onCallback(0, "send group message success.");
+                }
+            }
+        });
     }
 
     @Override
-    public void sendRoomCustomMsg(String cmd, String message, TXCallback callback) {
+    public void sendRoomCustomMsg(String cmd, String message, final TXCallback callback) {
         if (!isEnterRoom()) {
             TRTCLogger.e(TAG, "send room custom msg fail, not enter room yet.");
             if (callback != null) {
@@ -759,13 +770,9 @@ public class TXRoomService implements ITXRoomService, TIMMessageListener, TIMUse
             }
             return;
         }
-        TIMCustomElem customElem = new TIMCustomElem();
-        customElem.setData(IMProtocol.getCusMsgJsonStr(cmd, message).getBytes());
 
-        TIMMessage timMessage = new TIMMessage();
-        timMessage.addElement(customElem);
-        timMessage.setPriority(TIMMessagePriority.Lowest);
-        sendGroupMessage(timMessage, callback);
+        String data = IMProtocol.getCusMsgJsonStr(cmd, message);
+        sendGroupCustomMessage(data, callback, V2TIMMessage.V2TIM_PRIORITY_LOW);
     }
 
     @Override
@@ -802,11 +809,7 @@ public class TXRoomService implements ITXRoomService, TIMMessageListener, TIMUse
         if (!TextUtils.isEmpty(mOwnerIMInfo.userId)) {
             mLinkMicReqPair = new Pair<>(mOwnerIMInfo.userId, callback);
 
-            TIMCustomElem customElem = new TIMCustomElem();
-            customElem.setData(IMProtocol.getJoinReqJsonStr(reason).getBytes());
-            TIMMessage timMessage = new TIMMessage();
-            timMessage.addElement(customElem);
-            sendC2CMessage(mOwnerIMInfo.userId, timMessage, null);
+            sendC2CMessage(mOwnerIMInfo.userId, IMProtocol.getJoinReqJsonStr(reason), null);
             changeRoomStatus(STATUS_REQUEST);
             Runnable runnable = new Runnable() {
                 @Override
@@ -856,11 +859,7 @@ public class TXRoomService implements ITXRoomService, TIMMessageListener, TIMUse
             } else {
                 changeRoomStatus(STATUS_NONE);
             }
-            TIMCustomElem elem = new TIMCustomElem();
-            elem.setData(IMProtocol.getJoinRspJsonStr(agree, reason).getBytes());
-            TIMMessage timMessage = new TIMMessage();
-            timMessage.addElement(elem);
-            sendC2CMessage(userId, timMessage, null);
+            sendC2CMessage(userId, IMProtocol.getJoinRspJsonStr(agree, reason), null);
         } else {
             TRTCLogger.e(TAG, "send join anchor fail, not the room owner, room id:" + mRoomId + " my id:" + mMySelfIMInfo.userId);
         }
@@ -884,13 +883,7 @@ public class TXRoomService implements ITXRoomService, TIMMessageListener, TIMUse
                 return;
             }
 
-            TIMCustomElem elem = new TIMCustomElem();
-            elem.setData(IMProtocol.getKickOutJoinJsonStr().getBytes());
-
-            TIMMessage timMessage = new TIMMessage();
-            timMessage.addElement(elem);
-
-            sendC2CMessage(userId, timMessage, null);
+            sendC2CMessage(userId, IMProtocol.getKickOutJoinJsonStr(), null);
         } else {
             TRTCLogger.e(TAG, "kick out anchor fail, not the room owner, room id:" + mRoomId + " my id:" + mMySelfIMInfo.userId);
             if (callback != null) {
@@ -937,11 +930,7 @@ public class TXRoomService implements ITXRoomService, TIMMessageListener, TIMUse
             mPKingIMAnchorInfo = new IMAnchorInfo();
             mPKingIMAnchorInfo.userId = userId;
             mPKReqPair = new Pair<>(userId, callback);
-            TIMCustomElem customElem = new TIMCustomElem();
-            customElem.setData(IMProtocol.getPKReqJsonStr(mRoomId, mMySelfIMInfo.userId).getBytes());
-            TIMMessage timMessage = new TIMMessage();
-            timMessage.addElement(customElem);
-            sendC2CMessage(userId, timMessage, null);
+            sendC2CMessage(userId, IMProtocol.getPKReqJsonStr(mRoomId, mMySelfIMInfo.userId), null);
             // 将房间状态置为请求pk中
             changeRoomStatus(STATUS_REQUEST);
             if (mTimeoutRunnablePair.second != null) {
@@ -1001,11 +990,7 @@ public class TXRoomService implements ITXRoomService, TIMMessageListener, TIMUse
                 mPKingRoomId = null;
                 changeRoomStatus(STATUS_NONE);
             }
-            TIMCustomElem customElem = new TIMCustomElem();
-            customElem.setData(IMProtocol.getPKRspJsonStr(agree, reason, mMySelfIMInfo.streamId).getBytes());
-            TIMMessage timMessage = new TIMMessage();
-            timMessage.addElement(customElem);
-            sendC2CMessage(userId, timMessage, null);
+            sendC2CMessage(userId, IMProtocol.getPKRspJsonStr(agree, reason, mMySelfIMInfo.streamId), null);
         } else {
             TRTCLogger.e(TAG, "response room pk fail, not the owner of this room, room id:" + mRoomId);
         }
@@ -1043,11 +1028,7 @@ public class TXRoomService implements ITXRoomService, TIMMessageListener, TIMUse
             return;
         }
         if (isOwner()) {
-            TIMCustomElem customElem = new TIMCustomElem();
-            customElem.setData(IMProtocol.getPKRspJsonStr(false, msg, mMySelfIMInfo.streamId).getBytes());
-            TIMMessage timMessage = new TIMMessage();
-            timMessage.addElement(customElem);
-            sendC2CMessage(userId, timMessage, null);
+            sendC2CMessage(userId, IMProtocol.getPKRspJsonStr(false, msg, mMySelfIMInfo.streamId), null);
         }
     }
 
@@ -1057,11 +1038,7 @@ public class TXRoomService implements ITXRoomService, TIMMessageListener, TIMUse
             return;
         }
         if (isOwner()) {
-            TIMCustomElem customElem = new TIMCustomElem();
-            customElem.setData(IMProtocol.getJoinRspJsonStr(false, msg).getBytes());
-            TIMMessage timMessage = new TIMMessage();
-            timMessage.addElement(customElem);
-            sendC2CMessage(userId, timMessage, null);
+            sendC2CMessage(userId, IMProtocol.getJoinRspJsonStr(false, msg), null);
         }
     }
 
@@ -1098,11 +1075,7 @@ public class TXRoomService implements ITXRoomService, TIMMessageListener, TIMUse
                     mTimeoutHandler.removeCallbacks(mTimeoutRunnablePair.second);
                 }
                 updateRoomType(TRTCLiveRoomDef.ROOM_STATUS_SINGLE);
-                TIMCustomElem customElem = new TIMCustomElem();
-                customElem.setData(IMProtocol.getQuitPKJsonStr().getBytes());
-                TIMMessage timMessage = new TIMMessage();
-                timMessage.addElement(customElem);
-                sendC2CMessage(pkingAnchorInfo.userId, timMessage, null);
+                sendC2CMessage(pkingAnchorInfo.userId, IMProtocol.getQuitPKJsonStr(), null);
             } else {
                 TRTCLogger.e(TAG, "quit room pk fail, not in pking, pk room id:" + pkingRoomId + " pk user:" + pkingAnchorInfo);
                 if (callback != null) {
@@ -1202,48 +1175,59 @@ public class TXRoomService implements ITXRoomService, TIMMessageListener, TIMUse
         }
         TRTCLogger.i(TAG, "start update anchor info, type:" + mCurrentRoomStatus + " list:" + mAnchorList.toString());
         // 更新群简介
-        TIMGroupManager.ModifyGroupInfoParam groupInfoParam = new TIMGroupManager.ModifyGroupInfoParam(mRoomId);
-        groupInfoParam.setIntroduction(IMProtocol.getGroupInfoJsonStr(mCurrentRoomStatus, new ArrayList<>(mAnchorList)));
-        TIMGroupManager.getInstance().modifyGroupInfo(groupInfoParam, new TIMCallBack() {
+        List<String> groupList = new ArrayList<>(Arrays.asList(mRoomId));
+        V2TIMManager.getGroupManager().getGroupsInfo(groupList, new V2TIMValueCallback<List<V2TIMGroupInfoResult>>() {
             @Override
             public void onError(int i, String s) {
-                TRTCLogger.e(TAG, "room owner update anchor list into group introduction fail, code: " + i + " msg:" + s);
+                TRTCLogger.e(TAG, "room owner get group info fail, code: " + i + " msg:" + s);
             }
 
             @Override
-            public void onSuccess() {
-                TRTCLogger.i(TAG, "room owner update anchor list into group introduction success");
+            public void onSuccess(List<V2TIMGroupInfoResult> v2TIMGroupInfoResults) {
+                if (v2TIMGroupInfoResults != null && v2TIMGroupInfoResults.size() == 1) {
+                    V2TIMGroupInfoResult v2TIMGroupInfoResult = v2TIMGroupInfoResults.get(0);
+                    V2TIMGroupInfo v2TIMGroupInfo = new V2TIMGroupInfo();
+                    v2TIMGroupInfo.setGroupID(v2TIMGroupInfoResult.getGroupInfo().getGroupID());
+                    v2TIMGroupInfo.setGroupName(v2TIMGroupInfoResult.getGroupInfo().getGroupName());
+                    v2TIMGroupInfo.setFaceUrl(v2TIMGroupInfoResult.getGroupInfo().getFaceUrl());
+                    v2TIMGroupInfo.setGroupType(v2TIMGroupInfoResult.getGroupInfo().getGroupType());
+                    v2TIMGroupInfo.setIntroduction(IMProtocol.getGroupInfoJsonStr(mCurrentRoomStatus, new ArrayList<>(mAnchorList)));
+
+                    V2TIMManager.getGroupManager().setGroupInfo(v2TIMGroupInfo, new V2TIMCallback() {
+                        @Override
+                        public void onError(int code, String desc) {
+                            TRTCLogger.e(TAG, "updateHostAnchorInfo room owner update anchor list into group introduction fail, code: " + code + " msg:" + desc);
+                        }
+                        @Override
+                        public void onSuccess() {
+                            TRTCLogger.i(TAG, "room owner update anchor list into group introduction success");
+                        }
+                    });
+                }
             }
         });
 
         // 发出全员公告
-        String        json       = IMProtocol.getUpdateGroupInfoJsonStr(mCurrentRoomStatus, new ArrayList<>(mAnchorList));
-        TIMMessage    timMessage = new TIMMessage();
-        TIMCustomElem customElem = new TIMCustomElem();
-        customElem.setData(json.getBytes());
-        timMessage.addElement(customElem);
-        timMessage.setPriority(TIMMessagePriority.High);
-        sendGroupMessage(timMessage, null);
+        String json = IMProtocol.getUpdateGroupInfoJsonStr(mCurrentRoomStatus, new ArrayList<>(mAnchorList));
+        sendGroupCustomMessage(json, null, V2TIMMessage.V2TIM_PRIORITY_HIGH);
 
     }
 
-    private void sendGroupMessage(TIMMessage message, final TXCallback callback) {
+    private void sendGroupCustomMessage(String data, final TXCallback callback, int priority) {
         if (!isEnterRoom()) {
             return;
         }
-        TIMConversation conversation = TIMManager.getInstance().getConversation(TIMConversationType.Group, mRoomId);
-        conversation.sendMessage(message, new TIMValueCallBack<TIMMessage>() {
+
+        V2TIMManager.getInstance().sendGroupCustomMessage(data.getBytes(), mRoomId, priority, new V2TIMValueCallback<V2TIMMessage>() {
             @Override
             public void onError(int i, String s) {
-                Log.e(TAG, "send group message fail, code: " + i + " msg:" + s);
                 if (callback != null) {
                     callback.onCallback(i, s);
                 }
             }
 
             @Override
-            public void onSuccess(TIMMessage timMessage) {
-                Log.i(TAG, "send group message success");
+            public void onSuccess(V2TIMMessage v2TIMMessage) {
                 if (callback != null) {
                     callback.onCallback(0, "send group message success.");
                 }
@@ -1251,12 +1235,13 @@ public class TXRoomService implements ITXRoomService, TIMMessageListener, TIMUse
         });
     }
 
-    private void sendC2CMessage(String userId, TIMMessage message, final TXCallback callback) {
+
+    private void sendC2CMessage(String userId, String data, final TXCallback callback) {
         if (!isEnterRoom()) {
             return;
         }
-        TIMConversation conversation = TIMManager.getInstance().getConversation(TIMConversationType.C2C, userId);
-        conversation.sendMessage(message, new TIMValueCallBack<TIMMessage>() {
+
+        V2TIMManager.getInstance().sendC2CCustomMessage(data.getBytes(), userId,  new V2TIMValueCallback<V2TIMMessage>() {
             @Override
             public void onError(int i, String s) {
                 TRTCLogger.e(TAG, "send c2c msg fail, code:" + i + " msg:" + s);
@@ -1266,7 +1251,7 @@ public class TXRoomService implements ITXRoomService, TIMMessageListener, TIMUse
             }
 
             @Override
-            public void onSuccess(TIMMessage message) {
+            public void onSuccess(V2TIMMessage v2TIMMessage) {
                 TRTCLogger.i(TAG, "send c2c msg success.");
                 if (callback != null) {
                     callback.onCallback(0, "send c2c msg success.");
@@ -1275,118 +1260,16 @@ public class TXRoomService implements ITXRoomService, TIMMessageListener, TIMUse
         });
     }
 
+    private void onRecvC2COrGroupCustomMessage(final TXUserInfo txUserInfo, byte[] customData) {
+        final ITXRoomServiceDelegate delegate = mDelegate;
+        String customStr = new String(customData);
 
-    // -------------- im callback -----------------
-    @Override
-    public boolean onNewMessages(List<TIMMessage> list) {
-        for (final TIMMessage timMessage : list) {
-            final TIMConversation conversation = timMessage.getConversation();
-            timMessage.getSenderProfile(new TIMValueCallBack<TIMUserProfile>() {
-                @Override
-                public void onError(int i, String s) {
-                    if (conversation.getType() == TIMConversationType.C2C || conversation.getType() == TIMConversationType.Group) {
-                        onRecvC2COrGroupMessage(timMessage, null);
-                    } else if (conversation.getType() == TIMConversationType.System) {
-                        onRecvSysMessage(timMessage, null);
-                    }
-                }
-
-                @Override
-                public void onSuccess(TIMUserProfile timUserProfile) {
-                    if (conversation.getType() == TIMConversationType.C2C || conversation.getType() == TIMConversationType.Group) {
-                        onRecvC2COrGroupMessage(timMessage, timUserProfile);
-                    } else if (conversation.getType() == TIMConversationType.System) {
-                        onRecvSysMessage(timMessage, timUserProfile);
-                    }
-                }
-            });
-        }
-        return false;
-    }
-
-    private void onRecvGroupMemberMessage(TIMGroupTipsElem timGroupTipsElem) {
-        if (!isEnterRoom()) {
-            return;
-        }
-        final ITXRoomServiceDelegate delegate       = mDelegate;
-        TIMUserProfile               timUserProfile = timGroupTipsElem.getOpUserInfo();
-        TXUserInfo                   userInfo       = new TXUserInfo();
-        userInfo.userName = timUserProfile.getNickName();
-        userInfo.userId = timUserProfile.getIdentifier();
-        userInfo.avatarURL = timUserProfile.getFaceUrl();
-        String userId = userInfo.userId;
-        if (userId == null || userId.equals(mMySelfIMInfo.userId)) {
-            return;
-        }
-        if (timGroupTipsElem.getTipsType() == TIMGroupTipsType.Join) {
-            // 有成员加入
-            if (delegate != null) {
-                delegate.onRoomAudienceEnter(userInfo);
-            }
-        } else if (timGroupTipsElem.getTipsType() == TIMGroupTipsType.Quit) {
-            // 有成员退出
-            if (delegate != null) {
-                delegate.onRoomAudienceExit(userInfo);
-            }
-        }
-    }
-
-    private void onRecvSysMessage(TIMMessage timMessage, TIMUserProfile timUserProfile) {
-        if (timMessage.getElementCount() > 0) {
-            TIMElem     ele     = timMessage.getElement(0);
-            TIMElemType eleType = ele.getType();
-            if (eleType == TIMElemType.GroupSystem) {
-                TIMGroupSystemElem groupSysEle = (TIMGroupSystemElem) ele;
-                if (groupSysEle.getSubtype() == TIMGroupSystemElemType.TIM_GROUP_SYSTEM_DELETE_GROUP_TYPE) {
-                    TXCLog.i(TAG, "recv room destroy msg");
-                    // 这里房主 IM 也会收到消息，但是由于我在 destroyGroup 成功的时候，把消息监听移除了，所以房主是不会走到这里的
-                    // 因此不需要做逻辑拦截。
-
-                    // 如果发现房间已经解散，那么内部退一次房间
-                    exitRoom(new TXCallback() {
-                        @Override
-                        public void onCallback(int code, String msg) {
-                            TRTCLogger.i(TAG, "recv room destroy msg, exit room inner, code:" + code + " msg:" + msg);
-                            // 无论结果是否成功，都清空状态，并且回调出去
-                            cleanStatus();
-                            ITXRoomServiceDelegate delegate = mDelegate;
-                            if (delegate != null) {
-                                String roomId = mRoomId;
-                                delegate.onRoomDestroy(roomId);
-                            }
-                        }
-                    });
-                }
-            }
-        }
-    }
-
-    private void onRecvC2COrGroupMessage(final TIMMessage timMessage, TIMUserProfile timUserProfile) {
-        final ITXRoomServiceDelegate delegate   = mDelegate;
-        String                       customStr  = "";
-        String                       textStr    = "";
-        final TXUserInfo             txUserInfo = new TXUserInfo();
-        txUserInfo.userId = timMessage.getSender();
-        txUserInfo.userName = timMessage.getSenderNickname();
-        if (timUserProfile != null) {
-            txUserInfo.avatarURL = timUserProfile.getFaceUrl();
-        } else {
-            txUserInfo.avatarURL = "";
-        }
-        for (int i = 0; i < timMessage.getElementCount(); i++) {
-            TIMElem timElem = timMessage.getElement(i);
-            if (timElem.getType() == TIMElemType.Custom) {
-                customStr = new String(((TIMCustomElem) timElem).getData());
-            } else if (timElem.getType() == TIMElemType.Text) {
-                textStr = ((TIMTextElem) timElem).getText();
-            }
-        }
-        TRTCLogger.i(TAG, "im msg dump, sender id:" + timMessage.getSender() + " custom:" + customStr + " text:" + textStr);
+        TRTCLogger.i(TAG, "im msg dump, sender id:" +  txUserInfo.userId + " customStr:" + customStr);
         if (!TextUtils.isEmpty(customStr)) {
             // 一定会有自定义消息的头
             try {
                 JSONObject jsonObject = new JSONObject(customStr);
-                String     version    = jsonObject.getString(IMProtocol.Define.KEY_VERSION);
+                String version = jsonObject.getString(IMProtocol.Define.KEY_VERSION);
                 if (!version.equals(IMProtocol.Define.VALUE_PROTOCOL_VERSION)) {
                     TRTCLogger.e(TAG, "protocol version is not match, ignore msg.");
                 }
@@ -1435,14 +1318,14 @@ public class TXRoomService implements ITXRoomService, TIMMessageListener, TIMUse
                         // 收到连麦回包的消息：
                         Pair<Boolean, String> joinRspPair = IMProtocol.parseJoinRspResult(jsonObject);
                         if (joinRspPair != null) {
-                            boolean                  agree       = joinRspPair.first;
-                            String                   rspReason   = joinRspPair.second;
+                            boolean agree = joinRspPair.first;
+                            String rspReason = joinRspPair.second;
                             Pair<String, TXCallback> linkMicPair = mLinkMicReqPair;
                             if (linkMicPair != null) {
-                                String     ownerId  = linkMicPair.first;
+                                String ownerId = linkMicPair.first;
                                 TXCallback callback = linkMicPair.second;
                                 if (!TextUtils.isEmpty(ownerId) && callback != null) {
-                                    if (ownerId.equals(timMessage.getSender())) {
+                                    if (ownerId.equals(txUserInfo.userId)) {
                                         mLinkMicReqPair = null;
                                         // 连麦的时候主播已经在线了，所以不需要等待主播上线，直接将状态置为STATUS_NONE
                                         changeRoomStatus(STATUS_NONE);
@@ -1451,7 +1334,7 @@ public class TXRoomService implements ITXRoomService, TIMMessageListener, TIMUse
                                         }
                                         callback.onCallback(agree ? 0 : -1, agree ? "anchor agree to link mic" : rspReason);
                                     } else {
-                                        TRTCLogger.e(TAG, "recv join rsp, but link mic owner id:" + ownerId + " recv im id:" + timMessage.getSender());
+                                        TRTCLogger.e(TAG, "recv join rsp, but link mic owner id:" + ownerId + " recv im id:" + txUserInfo.userId);
                                     }
                                 } else {
                                     TRTCLogger.e(TAG, "recv join rsp, but link mic pair params is invalid, ownerId:" + ownerId + " callback:" + callback);
@@ -1478,31 +1361,31 @@ public class TXRoomService implements ITXRoomService, TIMMessageListener, TIMUse
                         // 首先检查状态，如果状态不对，立即回复拒绝
                         if (mCurrentRoomStatus == TRTCLiveRoomDef.ROOM_STATUS_LINK_MIC) {
                             TRTCLogger.e(TAG, "received pk msg, but mCurrentRoomStatus is" + mCurrentRoomStatus);
-                            rejectRoomPk(timMessage.getSender(), "主播正在连麦中");
+                            rejectRoomPk(txUserInfo.userId, "主播正在连麦中");
                             return;
                         }
                         if (mCurrentRoomStatus == TRTCLiveRoomDef.ROOM_STATUS_PK) {
                             TRTCLogger.e(TAG, "received pk msg, but mCurrentRoomStatus is" + mCurrentRoomStatus);
-                            rejectRoomPk(timMessage.getSender(), "主播正在PK中");
+                            rejectRoomPk(txUserInfo.userId, "主播正在PK中");
                             return;
                         }
                         if (mInternalStatus != STATUS_NONE) {
                             TRTCLogger.e(TAG, "received pk msg, but roomStatus is" + mInternalStatus);
-                            rejectRoomPk(timMessage.getSender(), "主播正在处理其他消息");
+                            rejectRoomPk(txUserInfo.userId, "主播正在处理其他消息");
                             return;
                         }
                         Pair<String, String> pkReqPair = IMProtocol.parsePKReq(jsonObject);
                         if (pkReqPair != null) {
-                            String fromRoomId   = pkReqPair.first;
+                            String fromRoomId = pkReqPair.first;
                             String fromStreamId = pkReqPair.second;
 
 
                             if (!TextUtils.isEmpty(fromRoomId) && !TextUtils.isEmpty(fromStreamId)) {
                                 mPKingRoomId = fromRoomId;
                                 mPKingIMAnchorInfo = new IMAnchorInfo();
-                                mPKingIMAnchorInfo.name = timMessage.getSenderNickname();
+                                mPKingIMAnchorInfo.name = txUserInfo.userName;
                                 mPKingIMAnchorInfo.streamId = fromStreamId;
-                                mPKingIMAnchorInfo.userId = timMessage.getSender();
+                                mPKingIMAnchorInfo.userId = txUserInfo.userId;
                                 // 改变房间状态
                                 changeRoomStatus(STATUS_RECEIVED);
                                 // 同时增加超时处理
@@ -1521,7 +1404,7 @@ public class TXRoomService implements ITXRoomService, TIMMessageListener, TIMUse
                                         }
                                     }
                                 };
-                                mTimeoutRunnablePair = new Pair<>(timMessage.getSender(), runnable1);
+                                mTimeoutRunnablePair = new Pair<>(txUserInfo.userId, runnable1);
                                 mTimeoutHandler.postDelayed(runnable1, HANDLE_MSG_TIMEOUT);
                                 if (delegate != null) {
                                     // 回调到上层
@@ -1543,16 +1426,16 @@ public class TXRoomService implements ITXRoomService, TIMMessageListener, TIMUse
                         Pair<Boolean, Pair<String, String>> pkRspPair = IMProtocol.parsePKRsp(jsonObject);
                         if (pkRspPair != null) {
                             //accept、reason、streamId
-                            boolean agree    = pkRspPair.first;
-                            String  reason   = pkRspPair.second.first;
-                            String  streamId = pkRspPair.second.second;
+                            boolean agree = pkRspPair.first;
+                            String reason = pkRspPair.second.first;
+                            String streamId = pkRspPair.second.second;
 
                             Pair<String, TXCallback> pkPair = mPKReqPair;
                             if (pkPair != null) {
-                                String     userId   = pkPair.first;
+                                String userId = pkPair.first;
                                 TXCallback callback = pkPair.second;
                                 if (!TextUtils.isEmpty(userId)) {
-                                    if (timMessage.getSender().equals(userId)) {
+                                    if (txUserInfo.userId.equals(userId)) {
                                         mPKReqPair = null;
                                         if (agree) {
                                             changeRoomStatus(STATUS_WAITING_ANCHOR);
@@ -1573,7 +1456,7 @@ public class TXRoomService implements ITXRoomService, TIMMessageListener, TIMUse
                                             callback.onCallback(agree ? 0 : -1, agree ? "agree to pk" : reason);
                                         }
                                     } else {
-                                        TRTCLogger.e(TAG, "recv pk rsp, but pk id:" + userId + " im id:" + timMessage.getSender());
+                                        TRTCLogger.e(TAG, "recv pk rsp, but pk id:" + userId + " im id:" + txUserInfo.userId);
                                     }
                                 } else {
                                     TRTCLogger.e(TAG, "recv pk rsp, but pk pair params is invalid.");
@@ -1586,15 +1469,10 @@ public class TXRoomService implements ITXRoomService, TIMMessageListener, TIMUse
                         }
                         break;
                     case IMProtocol.Define.CODE_QUIT_ROOM_PK:
-                        if (mPKingIMAnchorInfo != null && !timMessage.getSender().equals(mPKingIMAnchorInfo.userId)) {
+                        if (mPKingIMAnchorInfo != null && !txUserInfo.userId.equals(mPKingIMAnchorInfo.userId)) {
                             return;
                         }
                         clearPkStatus();
-                        break;
-                    case IMProtocol.Define.CODE_ROOM_TEXT_MSG:
-                        if (delegate != null) {
-                            delegate.onRoomRecvRoomTextMsg(mRoomId, textStr, txUserInfo);
-                        }
                         break;
                     case IMProtocol.Define.CODE_ROOM_CUSTOM_MSG:
                         Pair<String, String> cusPair = IMProtocol.parseCusMsg(jsonObject);
@@ -1625,7 +1503,7 @@ public class TXRoomService implements ITXRoomService, TIMMessageListener, TIMUse
 
                                 Iterator<IMAnchorInfo> leaveIterator = anchorLeaveList.iterator();
                                 while (leaveIterator.hasNext()) {
-                                    IMAnchorInfo           info          = leaveIterator.next();
+                                    IMAnchorInfo info = leaveIterator.next();
                                     Iterator<IMAnchorInfo> enterIterator = anchorEnterList.iterator();
                                     while (enterIterator.hasNext()) {
                                         IMAnchorInfo info2 = enterIterator.next();
@@ -1674,36 +1552,108 @@ public class TXRoomService implements ITXRoomService, TIMMessageListener, TIMUse
 
     }
 
-    @Override
-    public void onForceOffline() {
-        TRTCLogger.e(TAG, "im force offline");
+
+    private class LiveRoomSimpleMsgListener extends V2TIMSimpleMsgListener {
+
+        public void onRecvC2CTextMessage(String msgID, V2TIMUserInfo sender, String text) {
+        }
+
+        public void onRecvC2CCustomMessage(String msgID, V2TIMUserInfo sender, byte[] customData) {
+            TXUserInfo txUserInfo = new TXUserInfo();
+            txUserInfo.userId = sender.getUserID();
+            txUserInfo.userName = sender.getNickName();
+            txUserInfo.avatarURL = sender.getFaceUrl();
+            onRecvC2COrGroupCustomMessage(txUserInfo, customData);
+        }
+
+        @Override
+        public void onRecvGroupTextMessage(String msgID, String groupID, V2TIMGroupMemberInfo sender, String text) {
+            final TXUserInfo txUserInfo = new TXUserInfo();
+            txUserInfo.userId = sender.getUserID();
+            txUserInfo.userName = sender.getNickName();
+            txUserInfo.avatarURL = sender.getFaceUrl();
+
+            if (mDelegate != null) {
+                mDelegate.onRoomRecvRoomTextMsg(groupID, text, txUserInfo);
+            }
+        }
+
+        @Override
+        public void onRecvGroupCustomMessage(String msgID, String groupID, V2TIMGroupMemberInfo sender, byte[] customData) {
+            TXUserInfo txUserInfo = new TXUserInfo();
+            txUserInfo.userId = sender.getUserID();
+            txUserInfo.userName = sender.getNickName();
+            txUserInfo.avatarURL = sender.getFaceUrl();
+            onRecvC2COrGroupCustomMessage(txUserInfo, customData);
+        }
     }
 
-    @Override
-    public void onUserSigExpired() {
-        TRTCLogger.e(TAG, "im user sign is expired");
+    private class LiveRoomGroupListener extends V2TIMGroupListener {
+        @Override
+        public void onMemberEnter(String groupID, List<V2TIMGroupMemberInfo> memberList) {
+            Log.d(TAG, "onMemberEnter");
+            if (!isEnterRoom()) {
+                return;
+            }
+
+            for (V2TIMGroupMemberInfo timUserProfile : memberList) {
+                TXUserInfo userInfo = new TXUserInfo();
+                userInfo.userName = timUserProfile.getNickName();
+                Log.d(TAG, "onMemberEnter userName: " + userInfo.userName);
+                userInfo.userId = timUserProfile.getUserID();
+                userInfo.avatarURL = timUserProfile.getFaceUrl();
+                if ( TextUtils.isEmpty(userInfo.userId) || userInfo.userId.equals(mMySelfIMInfo.userId)) {
+                    return;
+                }
+                if (mDelegate != null) {
+                    mDelegate.onRoomAudienceEnter(userInfo);
+                }
+            }
+        }
+
+        @Override
+        public void onMemberLeave(String groupID, V2TIMGroupMemberInfo member) {
+            if (!isEnterRoom()) {
+                return;
+            }
+
+            TXUserInfo userInfo = new TXUserInfo();
+            userInfo.userName = member.getNickName();
+            Log.d(TAG, "onMemberLeave userName: " + userInfo.userName);
+            userInfo.userId = member.getUserID();
+            userInfo.avatarURL = member.getFaceUrl();
+            if ( TextUtils.isEmpty(userInfo.userId) || userInfo.userId.equals(mMySelfIMInfo.userId)) {
+                return;
+            }
+            if (mDelegate != null) {
+                mDelegate.onRoomAudienceExit(userInfo);
+            }
+        }
+
+        @Override
+        public void onGroupDismissed(String groupID, V2TIMGroupMemberInfo opUser) {
+            TRTCLogger.i(TAG, "recv room destroy msg");
+            // 如果发现房间已经解散，那么内部退一次房间
+            exitRoom(new TXCallback() {
+                @Override
+                public void onCallback(int code, String msg) {
+                    TRTCLogger.i(TAG, "recv room destroy msg, exit room inner, code:" + code + " msg:" + msg);
+                    // 无论结果是否成功，都清空状态，并且回调出去
+                    cleanStatus();
+                    ITXRoomServiceDelegate delegate = mDelegate;
+                    if (delegate != null) {
+                        String roomId = mRoomId;
+                        delegate.onRoomDestroy(roomId);
+                    }
+                }
+            });
+        }
+
+        @Override
+        public void onGroupInfoChanged(String groupID, List<V2TIMGroupChangeInfo> changeInfos) {
+            super.onGroupInfoChanged(groupID, changeInfos);
+        }
     }
 
-    @Override
-    public void onConnected() {
-        TRTCLogger.i(TAG, "im connected");
-    }
-
-    @Override
-    public void onDisconnected(int i, String s) {
-        TRTCLogger.e(TAG, "im disconnected code:" + i + " msg:" + s);
-    }
-
-    @Override
-    public void onWifiNeedAuth(String s) {
-
-    }
-
-    @Override
-    public void onGroupTipsEvent(TIMGroupTipsElem timGroupTipsElem) {
-        // 收到了系统通知
-        TRTCLogger.i(TAG, "get tips:type:" + timGroupTipsElem.getType() + " op:" + timGroupTipsElem.getOpUser() + " list:" + timGroupTipsElem.getUserList());
-        onRecvGroupMemberMessage(timGroupTipsElem);
-    }
 
 }

@@ -5,22 +5,20 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 public class SpaceDecoration extends RecyclerView.ItemDecoration {
-    private int space;
-    private int colNum;
+    private int mSpace;
+    private int mColNum;
 
     public SpaceDecoration(int space, int colNum) {
-        this.space = space;
-        this.colNum = colNum;
+        this.mSpace = space;
+        this.mColNum = colNum;
     }
 
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-        if (parent.getChildLayoutPosition(view) % colNum == 0) {
-            outRect.right = space;
-            outRect.bottom = space;
+        if (parent.getChildLayoutPosition(view) % mColNum == 0) {
+            outRect.set(mSpace, 0, 0, mSpace);
         } else {
-            outRect.left = space;
-            outRect.bottom = space;
+            outRect.set(mSpace, 0, 0, mSpace);
         }
     }
 }

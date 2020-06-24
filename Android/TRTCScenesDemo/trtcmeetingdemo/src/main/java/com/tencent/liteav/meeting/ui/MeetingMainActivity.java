@@ -19,6 +19,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -30,9 +31,10 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.PermissionUtils;
 import com.blankj.utilcode.util.ToastUtils;
-import com.tencent.liteav.demo.beauty.BeautyPanel;
+import com.tencent.liteav.demo.beauty.view.BeautyPanel;
 import com.tencent.liteav.demo.beauty.BeautyParams;
 import com.tencent.liteav.demo.trtc.R;
+import com.tencent.liteav.login.model.ProfileManager;
 import com.tencent.liteav.meeting.model.TRTCMeeting;
 import com.tencent.liteav.meeting.model.TRTCMeetingCallback;
 import com.tencent.liteav.meeting.model.TRTCMeetingDef;
@@ -44,7 +46,9 @@ import com.tencent.liteav.meeting.ui.widget.page.MeetingPageLayoutManager;
 import com.tencent.liteav.meeting.ui.widget.page.PagerSnapHelper;
 import com.tencent.trtc.TRTCCloudDef;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -135,6 +139,7 @@ public class MeetingMainActivity extends AppCompatActivity implements TRTCMeetin
         initData();
         initView();
         startCreateOrEnterMeeting();
+        ProfileManager.getInstance().checkNeedShowSecurityTips(MeetingMainActivity.this);
     }
 
     @Override
@@ -148,11 +153,20 @@ public class MeetingMainActivity extends AppCompatActivity implements TRTCMeetin
 
     @Override
     protected void onDestroy() {
+        hideFloatingWindow();
         mBeautyControl.clear();
         mTRTCMeeting.setDelegate(null);
         mTRTCMeeting.stopScreenCapture();
         mTRTCMeeting.stopCameraPreview();
         super.onDestroy();
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (null != mBeautyControl && mBeautyControl.getVisibility() != View.GONE && ev.getRawY() < mBeautyControl.getTop()) {
+            mBeautyControl.setVisibility(View.GONE);
+        }
+        return super.dispatchTouchEvent(ev);
     }
 
     private void preExitMeeting() {
@@ -221,6 +235,7 @@ public class MeetingMainActivity extends AppCompatActivity implements TRTCMeetin
         }
         initBeauty();
         mTRTCMeeting.setSpeaker(isUseSpeaker);
+        mMeetingHeadBarView.setHeadsetImg(isUseSpeaker);
         mTRTCMeeting.enableAudioEvaluation(FeatureConfig.getInstance().isAudioVolumeEvaluation());
     }
 
@@ -335,7 +350,7 @@ public class MeetingMainActivity extends AppCompatActivity implements TRTCMeetin
         mMoreImg = (AppCompatImageButton) findViewById(R.id.img_more);
         mMoreImg.setOnClickListener(this);
         mBeautyControl = (BeautyPanel) findViewById(R.id.beauty_panel);
-        mBeautyControl.setProxy(new MeetingRoomBeautyKit(mTRTCMeeting));
+        mBeautyControl.setBeautyKit(new MeetingRoomBeautyKit(mTRTCMeeting));
         mStubRemoteUserView = (ViewStub) findViewById(R.id.view_stub_remote_user);
         mFeatureSettingFragmentDialog = new FeatureSettingFragmentDialog();
         mFeatureSettingFragmentDialog.setTRTCMeeting(mTRTCMeeting);
@@ -348,6 +363,7 @@ public class MeetingMainActivity extends AppCompatActivity implements TRTCMeetin
             public void onHeadSetClick() {
                 isUseSpeaker = !isUseSpeaker;
                 mTRTCMeeting.setSpeaker(isUseSpeaker);
+                mMeetingHeadBarView.setHeadsetImg(isUseSpeaker);
             }
 
             @Override
@@ -617,6 +633,26 @@ public class MeetingMainActivity extends AppCompatActivity implements TRTCMeetin
 
     @Override
     public void onRecvRoomCustomMsg(String cmd, String message, TRTCMeetingDef.UserInfo userInfo) {
+
+    }
+
+    @Override
+    public void onScreenCaptureStarted() {
+
+    }
+
+    @Override
+    public void onScreenCapturePaused() {
+
+    }
+
+    @Override
+    public void onScreenCaptureResumed() {
+
+    }
+
+    @Override
+    public void onScreenCaptureStopped(int reason) {
 
     }
 

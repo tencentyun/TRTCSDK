@@ -4,13 +4,8 @@
 
     <application>
         <activity
-            android:name=".ui.SelectContactActivity"
+            android:name=".ui.TRTCVideoCallSelectContactActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity
-            android:name=".ui.TRTCVideoCallHistoryActivity"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity

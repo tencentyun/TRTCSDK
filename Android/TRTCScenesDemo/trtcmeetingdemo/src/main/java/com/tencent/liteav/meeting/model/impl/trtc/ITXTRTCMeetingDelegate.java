@@ -20,4 +20,12 @@ public interface ITXTRTCMeetingDelegate {
     void onUserVoiceVolume(ArrayList<TRTCCloudDef.TRTCVolumeInfo> userVolumes, int totalVolume);
 
     void onTRTCSubStreamAvailable(String userId, boolean available);
+
+    void onScreenCaptureStarted();
+
+    void onScreenCapturePaused();
+
+    void onScreenCaptureResumed();
+
+    void onScreenCaptureStopped(int reason);
 }

@@ -5,6 +5,11 @@
     android:background="#0D0D0D"
     android:orientation="vertical">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+
     <TextView
         android:id="@+id/main_title"
         android:layout_width="match_parent"
@@ -16,6 +21,15 @@
         android:textColor="#ffffff"
         android:textSize="26dp" />
 
+    <ImageView
+        android:id="@+id/img_logout"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="15dp"
+        android:visibility="gone"
+        android:src="@drawable/ic_head" />
+    </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/main_recycler_view"

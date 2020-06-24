@@ -43,10 +43,10 @@ public class RoundImageView extends ImageView {
     }
 
     private void init(AttributeSet attrs) {
-        TypedArray ta = getContext().obtainStyledAttributes(attrs, R.styleable.RoundImageView);
-        mShape = ta.getInt(R.styleable.RoundImageView_shape, CIRCLE);
-        mCoverColor = ta.getColor(R.styleable.RoundImageView_cover_color, Color.WHITE);
-        mRadius = ta.getDimensionPixelOffset(R.styleable.RoundImageView_radius, (int) TypedValue
+        TypedArray ta = getContext().obtainStyledAttributes(attrs, R.styleable.TRTCLiveRoomRoundImageView);
+        mShape = ta.getInt(R.styleable.TRTCLiveRoomRoundImageView_shape, CIRCLE);
+        mCoverColor = ta.getColor(R.styleable.TRTCLiveRoomRoundImageView_cover_color, Color.WHITE);
+        mRadius = ta.getDimensionPixelOffset(R.styleable.TRTCLiveRoomRoundImageView_radius, (int) TypedValue
                 .applyDimension(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_RADIUS, getResources().getDisplayMetrics()));
         ta.recycle();
 
