@@ -181,17 +181,16 @@
     maskLayer.frame = self.bounds;
     maskLayer.path = maskPath.CGPath;
     self.layer.mask = maskLayer;
-    // 设置背景色
-    self.backgroundColor = self.theme.backgroundColor;
 }
 
 #pragma mark - tabledelegate&&datasource
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     TCMusicSelectedModel *model = self.viewModel.musicSources[indexPath.row];
+    model.action(YES);
     if (self.delegate && [self.delegate respondsToSelector:@selector(didSelectMusic:isSelected:)]) {
         [self.delegate didSelectMusic:model isSelected:self.currentSelect != indexPath.row];
     }
-    model.action(YES);
+    
 //    if (self.currentSelect != indexPath.row) {
 //        if (model.action) {
 //            model.action(YES);

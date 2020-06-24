@@ -44,6 +44,7 @@ extension VideoCallViewController {
         setupControls()
         autoSetUIByState()
         accept.isHidden = (curSponsor == nil)
+        AppUtils.shared.alertUserTips(self)
         TRTCVideoCall.shared.openCamera(frontCamera: true, view: localPreView)
     }
     

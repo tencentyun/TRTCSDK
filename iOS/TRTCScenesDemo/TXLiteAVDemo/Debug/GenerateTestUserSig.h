@@ -33,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
  * 进入腾讯云云通信[控制台](https://console.cloud.tencent.com/avc) 创建应用，即可看到 SDKAppId，
  * 它是腾讯云用于区分客户的唯一标识。
  */
-static const int SDKAPPID = <#0#>;
+static const int SDKAPPID = 0;
 
 /**
  *  签名过期时间，建议不要设置的过短

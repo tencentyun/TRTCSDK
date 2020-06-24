@@ -14,13 +14,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)onStartPlayMusic;
 - (void)onStopPlayerMusic;
+- (void)onCompletePlayMusic;
 - (void)onPlayingWithCurrent:(NSInteger)currentSec total:(NSInteger)totalSec;
+
 
 @end
 
 @interface TCAudioSettingManager : NSObject
 
 @property(nonatomic, weak)id<TCAudioMusicPlayStatusDelegate> delegate;
+
+- (NSInteger)getcurrentMusicTatolDurationInMs;
 
 - (void)setAudioEffectManager:(TXAudioEffectManager *)manager;
 

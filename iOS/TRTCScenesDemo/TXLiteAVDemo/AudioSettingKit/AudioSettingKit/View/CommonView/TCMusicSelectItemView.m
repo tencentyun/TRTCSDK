@@ -26,8 +26,6 @@
 @property (nonatomic, strong) UILabel *musicProgressLabel;
 @property (nonatomic, strong) UIButton *pausButton;
 
-
-
 @end
 
 @implementation TCMusicSelectItemView
@@ -243,6 +241,10 @@
     self.musicProgressLabel.text = progressString;
 }
 
+- (void)completeStatus {
+    self.pausButton.selected = YES;
+}
+
 #pragma mark - 私有方法
 - (void)changePlayingStatus:(BOOL)isPlayingStatus {
     if (_isPlayingStatus == isPlayingStatus) {
@@ -250,23 +252,11 @@
     }
     _isPlayingStatus = isPlayingStatus;
     if (isPlayingStatus) {
-        self.playingStatusContainer.alpha = 0.0;
         self.playingStatusContainer.hidden = NO;
-        [UIView animateWithDuration:0.3 animations:^{
-            self.playingStatusContainer.alpha = 1.0;
-        } completion:^(BOOL finished) {
-            self.selectStatusContainer.alpha = 0.0;
-            self.selectStatusContainer.hidden = YES;
-        }];
+        self.selectStatusContainer.hidden = YES;
     } else {
-        self.selectStatusContainer.alpha = 0.0;
         self.selectStatusContainer.hidden = NO;
-        [UIView animateWithDuration:0.3 animations:^{
-            self.selectStatusContainer.alpha = 1.0;
-        } completion:^(BOOL finished) {
-            self.playingStatusContainer.alpha = 0.0;
-            self.playingStatusContainer.hidden = YES;
-        }];
+        self.playingStatusContainer.hidden = YES;
     }
 }
 

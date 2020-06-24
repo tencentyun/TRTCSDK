@@ -113,7 +113,7 @@
 /// 设置视图样式
 - (void)setupStyle {
     self.selectionStyle = UITableViewCellSelectionStyleNone;
-    self.backgroundColor = self.theme.backgroundColor;
+    self.backgroundColor = UIColor.clearColor;
 }
 
 - (void)setupCellWithModel:(TCMusicSelectedModel *)model {

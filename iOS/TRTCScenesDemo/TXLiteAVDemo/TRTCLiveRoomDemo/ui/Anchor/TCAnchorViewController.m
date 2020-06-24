@@ -206,8 +206,6 @@
     _whitening_level = _logicView.vBeauty.whiteLevel;
     _ruddiness_level = _logicView.vBeauty.ruddyLevel;
 
-    [self startPreview];
-    
     //初始化连麦播放小窗口里的踢人Button
     CGFloat width = self.view.size.width;
     CGFloat height = self.view.size.height;
@@ -217,9 +215,11 @@
         [statusInfoView.btnKickout addTarget:self action:@selector(clickBtnKickout:) forControlEvents:UIControlEventTouchUpInside];
         [statusInfoView.btnKickout setImage:[UIImage imageNamed:@"kickout"] forState:UIControlStateNormal];
         statusInfoView.btnKickout.hidden = YES;
-        [self.view addSubview:statusInfoView.btnKickout];
+        [self->_logicView insertSubview:statusInfoView.btnKickout belowSubview:self->_logicView.vMusicPanel];
         ++index;
     }
+    
+    [self startPreview];
     
     [_logicView triggeValue];
     _curBgmDuration = 0;
@@ -412,6 +412,8 @@
 }
 
 - (void)startPreview{
+    [[AppUtils shared] alertUserTips:self];
+    
     //liveRoom
     if (_liveRoom != nil) {
         [_liveRoom startCameraPreviewWithFrontCamera:YES view:_videoParentView callback:^(NSInteger code, NSString * error) {

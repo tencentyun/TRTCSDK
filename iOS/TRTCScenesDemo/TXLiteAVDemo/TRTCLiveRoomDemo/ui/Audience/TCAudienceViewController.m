@@ -328,6 +328,8 @@ TRTCLiveRoomDelegate>
             //查找空闲的TCSmallPlayer, 开始loading
             for (TCStatusInfoView * statusInfoView in self->_statusInfoViewArray) {
                 if (statusInfoView.userID == nil || statusInfoView.userID.length == 0) {
+                    [[AppUtils shared] alertUserTips:self];
+                    
                     statusInfoView.userID = [[ProfileManager shared] curUserID];
                     [self.liveRoom startCameraPreviewWithFrontCamera:YES view:statusInfoView.videoView callback:^(NSInteger code, NSString * error) {
                         

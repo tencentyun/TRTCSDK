@@ -25,6 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param musicName 音乐名（空字符串代表没有选中）
 - (void)selectMusic:(NSString *)musicName;
 - (void)refreshMusicPlayingProgress:(NSString *)progressString;
+- (void)completeStatus;
 
 @end
 

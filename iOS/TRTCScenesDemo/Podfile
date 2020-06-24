@@ -36,6 +36,9 @@ target 'TXLiteAVDemo_TRTC' do
   common_pods_all
   tx_im
   swift_pods
-  # TRTC版SDK
-  # pod 'TXLiteAVSDK_TRTC', :podspec => 'http://pod-1252463788.cosgz.myqcloud.com/liteavsdkspec/TXLiteAVSDK_TRTC.podspec'
 end
+
+target 'TXReplaykitUpload_TRTC' do
+
+end
+

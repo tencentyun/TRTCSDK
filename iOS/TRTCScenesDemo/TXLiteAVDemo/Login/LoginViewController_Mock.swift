@@ -55,8 +55,9 @@ class LoginViewController: UIViewController {
         tip.textAlignment = .center
         tip.font = UIFont.systemFont(ofSize: 14)
         tip.textColor = UIColor(hex: "525252")
-        let sdkVersion = TRTCCloud.getSDKVersion()
-        tip.text = "腾讯云 TRTC v\(sdkVersion ?? "0.0.1")"
+        let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString")
+        let sdvVersionStr = TXLiveBase.getSDKVersionStr()
+        tip.text = "腾讯云 TRTC v\(version)(\(sdvVersionStr))"
         tip.adjustsFontSizeToFitWidth = true
         return tip
     }()

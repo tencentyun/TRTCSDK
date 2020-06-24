@@ -45,7 +45,7 @@ import UIKit
     }
     
     @objc public func curUserId() -> String {
-        if let user = TIMManager.sharedInstance()?.getLoginUser(), user.count > 0 {
+        if let user = V2TIMManager.sharedInstance()?.getLoginUser(), user.count > 0 {
             return user
         } else {
             return randomStr(len: 5)

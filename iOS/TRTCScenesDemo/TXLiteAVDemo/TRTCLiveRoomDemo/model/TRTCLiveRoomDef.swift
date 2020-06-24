@@ -102,10 +102,11 @@ public class TRTCLiveUserInfo: NSObject {
         ].compactMapValues { $0 }
     }
     
-    convenience init(profile: TIMUserProfile) {
+    convenience init(profile: V2TIMGroupMemberFullInfo) {
         self.init()
-        userId = profile.identifier
-        userName = profile.nickname ?? ""
+        userId = profile.userID
+        userName = profile.nickName ?? ""
         avatarURL = profile.faceURL
+        isOwner = (profile.role == .GROUP_MEMBER_ROLE_SUPER)
     }
 }

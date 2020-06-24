@@ -12,32 +12,23 @@ class TRTCLiveRoomIMAction: NSObject {
     typealias Callback = (_ code: Int, _ message: String?) -> Void
     typealias EnterRoomCallback = (_ members: [TRTCLiveUserInfo], _ customInfo: [String: Any], _ roomInfo: TRTCLiveRoomInfo?) -> Void
     typealias MemberCallback = (_ members: [TRTCLiveUserInfo]) -> Void
-    
-    private static let manager = TIMManager.sharedInstance()!.groupManager()!
-    
-    static func setupSdk(sdkAppId: Int32, userSig: String, messageLister: TIMMessageListener & TIMGroupEventListener) -> Bool {
-        let config = TIMSdkConfig()
-        config.sdkAppId = sdkAppId
-        config.dbPath = NSHomeDirectory() + "/Documents/com_tencent_imsdk_data/"
-        
-        let result = TIMManager.sharedInstance()?.initSdk(config)
-        if result != 0 {
+
+    static func setupSdk(sdkAppId: Int32, userSig: String, messageLister: V2TIMAdvancedMsgListener & V2TIMGroupListener) -> Bool {
+        let result = V2TIMManager.sharedInstance()?.initSDK(sdkAppId, config: nil, listener: nil)
+        if result == false {
             return false
         }
-        TIMManager.sharedInstance()?.add(messageLister)
-        
-        let userConfig = TIMUserConfig()
-        userConfig.groupEventListener = messageLister
-        TIMManager.sharedInstance()?.setUserConfig(userConfig)
+        V2TIMManager.sharedInstance()?.add(messageLister)
+        V2TIMManager.sharedInstance()?.setGroupListener(messageLister)
         return true
     }
     
     static func releaseSdk() {
-        TIMManager.sharedInstance()?.unInit()
+        V2TIMManager.sharedInstance()?.unInitSDK()
     }
     
     static func login(userID: String, userSig: String, callback: Callback?) {
-        if TIMManager.sharedInstance()?.getLoginUser() == userID {
+        if V2TIMManager.sharedInstance()?.getLoginUser() == userID {
            callback?(0, "")
             return
         }
@@ -45,8 +36,7 @@ class TRTCLiveRoomIMAction: NSObject {
         let params = TIMLoginParam()
         params.identifier = userID
         params.userSig = userSig
-        
-        TIMManager.sharedInstance()?.login(params, succ: {
+        V2TIMManager.sharedInstance()?.login(userID, userSig: userSig, succ: {
             callback?(0, "")
         }, fail: { (code, errorDes) in
             callback?(Int(code), errorDes)
@@ -54,7 +44,7 @@ class TRTCLiveRoomIMAction: NSObject {
     }
     
     static func logout(callback: Callback?) {
-        TIMManager.sharedInstance()?.logout({
+        V2TIMManager.sharedInstance()?.logout({
             callback?(0, "")
         }, fail: { (code, errorDes) in
             callback?(Int(code), errorDes)
@@ -62,11 +52,10 @@ class TRTCLiveRoomIMAction: NSObject {
     }
     
     static func setProfile(name: String, avatar: String?, callback: Callback?) {
-        var params = [TIMProfileTypeKey_Nick: name]
-        if let avatar = avatar {
-            params[TIMProfileTypeKey_FaceUrl] = avatar
-        }
-        TIMManager.sharedInstance()?.friendshipManager()?.modifySelfProfile(params, succ: {
+        let info = V2TIMUserFullInfo()
+        info.nickName = name
+        info.faceURL = avatar
+        V2TIMManager.sharedInstance()?.setSelfInfo(info, succ: {
             callback?(0, "")
         }, fail: { (code, message) in
             callback?(Int(code), message)
@@ -77,45 +66,44 @@ class TRTCLiveRoomIMAction: NSObject {
                            roomParam: TRTCCreateRoomParam,
                            success: EnterRoomCallback?,
                            error: Callback?) {
-        manager.createGroup("AVChatRoom", groupId: roomID, groupName: roomParam.roomName, succ: { (groupID) in
+        V2TIMManager.sharedInstance()?.createGroup("AVChatRoom", groupID: roomID, groupName: roomParam.roomName, succ: { (groupID) in
             success?([], [:], nil)
-            manager.modifyGroupFaceUrl(roomID, url: roomParam.coverUrl, succ: {
-                
-            }) { (code, error) in
-                
-            }
+            let info = V2TIMGroupInfo()
+            info.groupID = roomID
+            info.faceURL = roomParam.coverUrl
+            V2TIMManager.sharedInstance()?.setGroupInfo(info, succ: nil, fail: nil)
         }, fail: { (code, message) in
             // 房间是自己已经创建的
             if (code == ERR_SVR_GROUP_GROUPID_IN_USED_FOR_SUPER.rawValue) {
-                getAllMembers(roomID: roomID, success: { members in
-                    success?(members, [:], nil)
-                    // TODO: 这里获取房间状态一直失败
-//                    if let info = manager.queryGroupInfo(roomID),
-//                        let customInfo = info.introduction.toJson()
-//                    {
-//                        success?(members, customInfo)
-//                    } else {
-//                        print("[TEST] - error: failed to query group info")
-//                    }
-                }, error: error)
-                manager.modifyGroupFaceUrl(roomID, url: roomParam.coverUrl, succ: {
-                    
-                }) { (code, error) in
-                    
-                }
-                manager.modifyGroupName(roomID, groupName: roomParam.roomName, succ: {
-                    
-                }) { (code, error) in
-                    
-                }
+                V2TIMManager.sharedInstance()?.joinGroup(roomID, msg: nil, succ: {
+                    getAllMembers(roomID: roomID, success: { members in
+                            success?(members, [:], nil)
+                                        // TODO: 这里获取房间状态一直失败
+                    //                    if let info = manager.queryGroupInfo(roomID),
+                    //                        let customInfo = info.introduction.toJson()
+                    //                    {
+                    //                        success?(members, customInfo)
+                    //                    } else {
+                    //                        print("[TEST] - error: failed to query group info")
+                    //                    }
+                        }, error: error)
+                        let info = V2TIMGroupInfo()
+                        info.groupID = roomID
+                        info.faceURL = roomParam.coverUrl
+                        info.groupName = roomParam.roomName
+                        V2TIMManager.sharedInstance()?.setGroupInfo(info, succ: nil, fail: nil)
+                }, fail: { (code, message) in
+                    error?(Int(code), message)
+                })
             } else {
                 error?(Int(code), message)
             }
+            
         })
     }
     
     static func destroyRoom(roomID: String, callback: Callback?) {
-        manager.deleteGroup(roomID, succ: {
+        V2TIMManager.sharedInstance()?.dismissGroup(roomID, succ: {
             callback?(0, "")
         }, fail: { (code, message) in
             callback?(Int(code), message)
@@ -125,36 +113,42 @@ class TRTCLiveRoomIMAction: NSObject {
     static func enterRoom(roomID: String,
                           success: EnterRoomCallback?,
                           error: Callback?) {
-        manager.joinGroup(roomID, msg: "", succ: {
+        V2TIMManager.sharedInstance()?.joinGroup(roomID, msg: "", succ: {
             getAllMembers(roomID: roomID, success: { members in
-                if let info = manager.queryGroupInfo(roomID),
-                    let customInfo = info.introduction.toJson()
-                {
-                    var roomInfo: TRTCLiveRoomInfo? = nil
-                    if let users = customInfo["list"] as? [[String: Any]],
-                        let owner = users.first,
-                        let type = customInfo["type"] as? Int
+                V2TIMManager.sharedInstance()?.getGroupsInfo([roomID], succ: { (infoList: [V2TIMGroupInfoResult]?) in
+                    let infoResult = infoList?.first
+                    if let info = infoResult?.info,
+                        let customInfo = info.introduction.toJson()
                     {
-                        roomInfo = TRTCLiveRoomInfo(roomId: String(roomID),
-                                                            roomName: "",
-                                                            coverUrl: "",
-                                                            ownerId: (owner["userId"] as? String) ?? "",
-                                                            ownerName: (owner["name"] as? String) ?? "",
-                                                            streamUrl: owner["streamId"] as? String,
-                                                            memberCount: 0,
-                                                            roomStatus: TRTCLiveRoomLiveStatus(rawValue: type) ?? .single)
-                    }
-                    TRTCLiveRoomIMAction.getRoomInfo(roomIds: [String(roomID)], success: { [roomInfo] (rooms) in //更新信息
-                        roomInfo?.roomName = rooms.first?.roomName ?? ""
-                        roomInfo?.coverUrl = rooms.first?.coverUrl ?? ""
-                        success?(members, customInfo, roomInfo)
-                    }) { [roomInfo] (code, error) in
-                        success?(members, customInfo, roomInfo)
+                        var roomInfo: TRTCLiveRoomInfo? = nil
+                        if let users = customInfo["list"] as? [[String: Any]],
+                            let owner = users.first,
+                            let type = customInfo["type"] as? Int
+                        {
+                            roomInfo = TRTCLiveRoomInfo(roomId: String(roomID),
+                                                                roomName: "",
+                                                                coverUrl: "",
+                                                                ownerId: (owner["userId"] as? String) ?? "",
+                                                                ownerName: (owner["name"] as? String) ?? "",
+                                                                streamUrl: owner["streamId"] as? String,
+                                                                memberCount: 0,
+                                                                roomStatus: TRTCLiveRoomLiveStatus(rawValue: type) ?? .single)
+                        }
+                        TRTCLiveRoomIMAction.getRoomInfo(roomIds: [String(roomID)], success: { [roomInfo] (rooms) in //更新信息
+                            roomInfo?.roomName = rooms.first?.roomName ?? ""
+                            roomInfo?.coverUrl = rooms.first?.coverUrl ?? ""
+                            success?(members, customInfo, roomInfo)
+                        }) { [roomInfo] (code, error) in
+                            success?(members, customInfo, roomInfo)
+                        }
+                        
+                    } else {
+                        print("[TEST] - error: failed to query group info")
                     }
                     
-                } else {
-                    print("[TEST] - error: failed to query group info")
-                }
+                }, fail: { (code, message) in
+                    error?(Int(code), message)
+                })
             }, error: error)
         }, fail: { (code, message) in
             error?(Int(code), message)
@@ -162,7 +156,7 @@ class TRTCLiveRoomIMAction: NSObject {
     }
     
     static func exitRoom(roomID: String, callback: Callback?) {
-        manager.quitGroup(roomID, succ: {
+        V2TIMManager.sharedInstance().quitGroup(roomID, succ: {
             callback?(0, "")
         }, fail: { (code, message) in
             callback?(Int(code), message)
@@ -172,66 +166,42 @@ class TRTCLiveRoomIMAction: NSObject {
     static func getRoomInfo(roomIds: [String],
                             success: (([TRTCLiveRoomInfo]) -> Void)?,
                             error: Callback?) {
-        manager.getGroupInfo(roomIds, succ: { infos in
-            guard let infos = infos as? [TIMGroupInfoResult] else {
+        V2TIMManager.sharedInstance()?.getGroupsInfo(roomIds, succ: { (infos) in
+            guard let infos = infos else {
                 error?(-1, "无法获取房间信息")
                 return
             }
-            let roomInfos = infos.compactMap({ info -> TRTCLiveRoomInfo? in
-                if let roomInfo = info.introduction.toJson(),
+            let roomInfos = infos.compactMap({ infoResult -> TRTCLiveRoomInfo? in
+                if  let info = infoResult.info,
+                    let roomInfo = info.introduction.toJson(),
                     let users = roomInfo["list"] as? [[String: Any]],
                     let owner = users.first,
                     let type = roomInfo["type"] as? Int
                 {
-                    return TRTCLiveRoomInfo(roomId: info.group,
+                    return TRTCLiveRoomInfo(roomId: info.groupID,
                                             roomName: info.groupName,
                                             coverUrl: info.faceURL,
                                             ownerId: info.owner,
                                             ownerName: (owner["name"] as? String) ?? "",
                                             streamUrl: owner["streamId"] as? String,
-                                            memberCount: Int(info.memberNum),
+                                            memberCount: Int(info.memberCount),
                                             roomStatus: TRTCLiveRoomLiveStatus(rawValue: type) ?? .single)
                 }
                 return nil
             })
             success?(roomInfos)
-        }) { (code, message) in
-            error?(Int(code), message)
-        }
-    }
-    
-    static func getAllMembers(roomID: String,
-                              success: MemberCallback?,
-                              error: Callback?) {
-        manager.getGroupMembers(roomID, succ: { members in
-            guard let members = members as? [TIMGroupMemberInfo] else {
-                success?([])
-                return
-            }
-            guard let owner = members.first(where: { $0.role == TIMGroupMemberRole.GROUP_MEMBER_ROLE_SUPER }) else {
-                assert(false)
-                return
-            }
-            getMembers(userIdList: members.map{ $0.member }, success: { users in
-                if let user = users.first(where: { $0.userId == owner.member }) {
-                    user.isOwner = true
-                }
-                success?(users)
-            }, error: error)
         }, fail: { (code, message) in
             error?(Int(code), message)
         })
     }
     
-    static func getMembers(userIdList: [String], success: (([TRTCLiveUserInfo]) -> Void)?, error: Callback?) {
-        TIMManager.sharedInstance()?.friendshipManager()?.getUsersProfile(
-            userIdList,
-            forceUpdate: false,
-            succ: { userProfiles in
-                success?(userProfiles?.map { TRTCLiveUserInfo(profile: $0) } ?? [])
-            },
-            fail: { (code, message) in
-                error?(Int(code), message)
+    static func getAllMembers(roomID: String,
+                              success: MemberCallback?,
+                              error: Callback?) {
+        V2TIMManager.sharedInstance()?.getGroupMemberList(roomID, filter: V2TIMGroupMemberFilter.GROUP_MEMBER_FILTER_ALL, nextSeq: 0, succ: { (nextSeq, infoList: [V2TIMGroupMemberFullInfo]?) in
+            success?(infoList?.map { TRTCLiveUserInfo(profile: $0) } ?? [])
+        }, fail: { (code, message) in
+            error?(Int(code), message)
         })
     }
 }
@@ -308,7 +278,7 @@ extension TRTCLiveRoomIMAction {
             "action": TRTCLiveRoomIMActionType.roomTextMsg.rawValue,
             "version": trtcLiveRoomProtocolVersion
         ]
-        sendMessage(data: data, convType: .group(roomID, text: message, priority: .MSG_PRIORITY_LOWEST), callback: callback)
+        sendMessage(data: data, convType: .group(roomID, text: message, priority: .PRIORITY_LOW), callback: callback)
     }
     
     static func sendRoomCustomMsg(roomID: String, command: String, message: String, callback: Callback?) {
@@ -318,7 +288,7 @@ extension TRTCLiveRoomIMAction {
             "message": message,
             "version": trtcLiveRoomProtocolVersion
         ]
-        sendMessage(data: data, convType: .group(roomID, text: nil, priority: .MSG_PRIORITY_LOWEST), callback: callback)
+        sendMessage(data: data, convType: .group(roomID, text: nil, priority: .PRIORITY_LOW), callback: callback)
     }
     
     static func updateGroupInfo(roomID: String, groupInfo: [String: Any], callback: Callback?) {
@@ -326,9 +296,12 @@ extension TRTCLiveRoomIMAction {
         data["version"] = trtcLiveRoomProtocolVersion
         let groupInfo = data.toJsonString()
         print("[TEST] - updateGroupInfo: \(groupInfo), size:\(groupInfo.count)")
-        TIMManager.sharedInstance()?.groupManager()?.modifyGroupIntroduction(roomID, introduction: groupInfo, succ: {
+        let info = V2TIMGroupInfo()
+        info.groupID = roomID
+        info.introduction = groupInfo
+        V2TIMManager.sharedInstance()?.setGroupInfo(info, succ: {
             data["action"] = TRTCLiveRoomIMActionType.updateGroupInfo.rawValue
-            sendMessage(data: data, convType: .group(roomID, text: nil, priority: .MSG_PRIORITY_HIGH), callback: callback)
+            sendMessage(data: data, convType: .group(roomID, text: nil, priority: .PRIORITY_HIGH), callback: callback)
         }, fail: { (code, message) in
             callback?(Int(code), message)
         })
@@ -339,49 +312,40 @@ extension TRTCLiveRoomIMAction {
 private extension TRTCLiveRoomIMAction {
     enum ConvType {
         case user(_ userID: String)
-        case group(_ groupID: String, text: String?, priority: TIMMessagePriority )
+        case group(_ groupID: String, text: String?, priority: V2TIMMessagePriority )
     }
     
     static func sendMessage(data: [String: Any], convType: ConvType, callback: Callback?) {
-        guard let conv = conversation(of: convType) else {
-            callback?(-1, "")
-            return
-        }
         guard let jsonData = try? JSONSerialization.data(withJSONObject: data, options: []) else {
             callback?(-1, "")
             return
         }
-        
-        let message = TIMMessage()
-        
-        let customElement = TIMCustomElem()
-        customElement.data = jsonData
-        message.add(customElement)
-        
+        print(data)
+        var message = V2TIMMessage()
         if case .group(_, let messageText, _) = convType, let text = messageText {
-            let textElement = TIMTextElem()
-            textElement.text = text
-            message.add(textElement)
+            if let msg = V2TIMManager.sharedInstance()?.createTextMessage(text) {
+                message = msg
+            }
+        } else {
+            if let msg = V2TIMManager.sharedInstance()?.createCustomMessage(jsonData) {
+                message = msg
+            }
         }
-        
-        if case .group(_, _,let priority) = convType {
-            message.setPriority(priority)
-        }
-        
-        conv.send(message, succ: {
-            callback?(0, "Send successfully")
-        }) { (code, error) in
-            debugPrint("send message error \(code) \(error ?? "")")
-            callback?(-1, "")
-        }
-    }
-    
-    static func conversation(of convType: ConvType) -> TIMConversation? {
         switch convType {
         case .user(let userID):
-            return TIMManager.sharedInstance()?.getConversation(.C2C, receiver: userID)
-        case .group(let groupID, _, _):
-            return TIMManager.sharedInstance()?.getConversation(.GROUP, receiver: groupID)
+            V2TIMManager.sharedInstance()?.send(message, receiver:userID , groupID: nil, priority: .PRIORITY_NORMAL, onlineUserOnly: false, offlinePushInfo: nil, progress: nil, succ: {
+                callback?(0, "Send successfully")
+            }, fail: { (code, error) in
+                debugPrint("send message error \(code) \(error ?? "")")
+                callback?(-1, "")
+            })
+        case .group(let groupID, _, let priority):
+            V2TIMManager.sharedInstance()?.send(message, receiver:nil , groupID: groupID, priority: priority, onlineUserOnly: false, offlinePushInfo: nil, progress: nil, succ: {
+                callback?(0, "Send successfully")
+            }, fail: { (code, error) in
+                debugPrint("send message error \(code) \(error ?? "")")
+                callback?(-1, "")
+            })
         }
     }
 }

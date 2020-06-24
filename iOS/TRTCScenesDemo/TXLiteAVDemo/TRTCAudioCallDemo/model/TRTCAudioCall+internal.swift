@@ -162,25 +162,23 @@ extension TRTCAudioCall {
             return
         }
         
-        let msg = TIMMessage.init()
-        let elem = TIMCustomElem.init()
-        elem.data = data
-        msg.add(elem)
-        
+        let msg = V2TIMManager.sharedInstance()?.createCustomMessage(data)
+        let pushInfo = V2TIMOfflinePushInfo()
         if realModel.action == .dialing {
-            let offlineInfo = TIMOfflinePushInfo.init()
-            offlineInfo.desc = "您收到了一个语音通话请求"
-            msg.setOfflinePushInfo(offlineInfo)
+            pushInfo.desc = "您收到了一个语音通话请求"
+            pushInfo.iOSSound = "00.caf"
         }
-        
-        let conv = isGroup ? TIMManager.sharedInstance()?.getConversation(.GROUP, receiver: realModel.groupid ?? "") :
-            TIMManager.sharedInstance()?.getConversation(.C2C, receiver: user)
-        conv?.send(msg, succ: {
-            
-        }, fail: { [weak self] (code, error) in
-            self?.delegate?.onError?(code: code, msg: error)
-            debugPrint("send message error \(code) \(error ?? "")")
-        })
+        if isGroup {
+            V2TIMManager.sharedInstance()?.send(msg, receiver: nil, groupID: realModel.groupid ?? "", priority: .PRIORITY_NORMAL, onlineUserOnly: false, offlinePushInfo: pushInfo, progress: nil, succ: nil, fail: { [weak self] (code, error) in
+                self?.delegate?.onError?(code: code, msg: error)
+                debugPrint("send message error \(code) \(error ?? "")")
+            })
+        } else {
+            V2TIMManager.sharedInstance()?.send(msg, receiver: user, groupID: nil, priority: .PRIORITY_NORMAL, onlineUserOnly: false, offlinePushInfo: pushInfo, progress: nil, succ: nil, fail: { [weak self] (code, error) in
+                self?.delegate?.onError?(code: code, msg: error)
+                debugPrint("send message error \(code) \(error ?? "")")
+            })
+        }
         debugPrint("📳 send msg to \(user): call_id:\(realModel.callid), room_id:\(realModel.roomid), action:\(realModel.action.debug)")
     }
     

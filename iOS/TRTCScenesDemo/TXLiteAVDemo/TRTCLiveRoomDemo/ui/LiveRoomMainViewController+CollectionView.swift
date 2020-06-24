@@ -56,7 +56,8 @@ class LiveRoomCollectionViewCell: UICollectionViewCell {
             make.bottom.trailing.equalTo(-5)
         }
 
-        coverImg.sd_setImage(with: URL(string: model.coverUrl), completed: nil)
+        coverImg.sd_setImage(with: URL(string: model.coverUrl.count > 0
+            ? model.coverUrl : "https://imgcache.qq.com/qcloud/public/static//avatar0_100.20191230.png"), completed: nil)
         
         nameLabel.snp.remakeConstraints { (make) in
             make.leading.equalTo(coverImg).offset(2)

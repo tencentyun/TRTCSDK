@@ -9,49 +9,28 @@
 import UIKit
 
 
-extension TRTCLiveRoomImpl: TIMMessageListener {
-    public func onNewMessage(_ msgs: [Any]!) {
-        guard let messages = msgs as? [TIMMessage] else { return }
-        messages.forEach { message in
-            handleNewMessage(message)
-        }
-    }
-    
-    private func handleNewMessage(_ message: TIMMessage) {
-        if let groupSystemElem = message.getElem(0) as? TIMGroupSystemElem {
-            self.handleGroupSystemMessage(groupSystemElem)
-        } else if let profileElem = message.getElem(0) as? TIMProfileSystemElem {
-            self.handleProfileMessage(profileElem)
-        } else if let customElem = message.getElem(0) as? TIMCustomElem,
-            let data = customElem.data,
-            let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
-            let action = TRTCLiveRoomIMActionType(rawValue: (json["action"] as? Int) ?? 0),
-            let version = (json["version"] as? String)
-        {
-            if version != trtcLiveRoomProtocolVersion { //考虑兼容性问题
-                
-            }
-            message.getSenderProfile { [weak self] (senderProfile) in
-                if let sender = senderProfile {
-                    self?.handleActionMessage(action, message: message, json: json, sender: sender)
-                } else {
-                    let sender = TIMUserProfile()
-                    sender.identifier = message.sender()
-                    self?.handleActionMessage(action, message: message, json: json, sender: sender)
+extension TRTCLiveRoomImpl: V2TIMAdvancedMsgListener {
+    public func onRecvNewMessage(_ msg: V2TIMMessage!) {
+        if msg.elemType == .ELEM_TYPE_CUSTOM {
+            if  let elem = msg.customElem,
+                let data = elem.data,
+                let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                let action = TRTCLiveRoomIMActionType(rawValue: (json["action"] as? Int) ?? 0),
+                let version = (json["version"] as? String)
+            {
+                if version != trtcLiveRoomProtocolVersion { //考虑兼容性问题
+                    
                 }
+                handleActionMessage(action, elem:elem, message: msg, json: json)
+            }
+        } else if msg.elemType == .ELEM_TYPE_TEXT {
+            if let elem = msg.textElem {
+                handleActionMessage(.roomTextMsg, elem:elem, message: msg, json: ["":""])
             }
         }
     }
     
-    private func handleGroupSystemMessage(_ element: TIMGroupSystemElem) {
-        if element.type == .DELETE_GROUP_TYPE {
-            handleRoomDismissed(isOwnerDeleted: true)
-        } else if element.type == .CANCEL_ADMIN_TYPE {
-            handleRoomDismissed(isOwnerDeleted: false)
-        }
-    }
-    
-    private func handleProfileMessage(_ element: TIMProfileSystemElem) {
+//  private func handleProfileMessage(_ element: TIMProfileSystemElem) {
         // TODO: 目前IM的逻辑是群成员修改个人资料后，群主收不到更新的消息
 //        guard let userId = element.fromUser else {
 //            return
@@ -61,23 +40,31 @@ extension TRTCLiveRoomImpl: TIMMessageListener {
 //                self.memberManager.updateProfile(user.userId, name: user.userName, avatar: user.avatarURL)
 //            }
 //        }, error: nil)
-    }
+//   }
     
-    private func handleActionMessage(_ action: TRTCLiveRoomIMActionType, message: TIMMessage, json: [String: Any], sender: TIMUserProfile) {
+    private func handleActionMessage(_ action: TRTCLiveRoomIMActionType, elem:V2TIMElem, message: V2TIMMessage, json: [String: Any]) {
         print("[TEST] - New message: \(action.rawValue), data: \(json)")
         
         // 判断消息是否超时，发送到接收间隔超过10秒被认为超时
-        guard let sendTime = message.timestamp(), sendTime.timeIntervalSinceNow > -10 else {
+        guard let sendTime = message.timestamp, sendTime.timeIntervalSinceNow > -10 else {
             return
         }
         
-        guard let userID = sender.identifier else {
+        guard let userID = message.sender else {
             return
         }
-        let liveUser = TRTCLiveUserInfo(profile: sender)
+
+        let liveUser = TRTCLiveUserInfo()
+        liveUser.userId = userID;
+        liveUser.userName = message.nickName;
+        liveUser.avatarURL = message.faceURL;
         
         if memberManager.anchors[liveUser.userId] == nil { //非主播 更新观众列表
-            memberManager.addAudience(liveUser)
+            if action != .respondRoomPK {
+                // 如果是响应PK的观众进房，则不属于观众列表
+                memberManager.addAudience(liveUser)
+            }
+            
         }
         
         switch action {
@@ -154,7 +141,7 @@ extension TRTCLiveRoomImpl: TIMMessageListener {
             clearPKState()
             
         case .roomTextMsg:
-            if let textElem = message.getElem(1) as? TIMTextElem, let text = textElem.text {
+            if let textElem = elem as? V2TIMTextElem, let text = textElem.text {
                 delegate?.trtcLiveRoom?(self, onRecvRoomTextMsg: text, fromUser: liveUser)
             }
             
@@ -178,26 +165,46 @@ extension TRTCLiveRoomImpl: TIMMessageListener {
     }
 }
 
-extension TRTCLiveRoomImpl: TIMGroupEventListener {
-    public func onGroupTipsEvent(_ elem: TIMGroupTipsElem!) {
-        if elem.type == .INVITE {
-            TRTCLiveRoomIMAction.getMembers(userIdList: [elem.opUser], success: { users in
-                if let user = users.first {
-                    self.memberManager.addAudience(user)
-                }
-            }) { (code, message) in
-                print("[TEST] - Get new member info failed: \(code), \(message ?? "")")
-            }
-        } else if elem.type == .QUIT_GRP {
-            memberManager.removeMember(elem.opUser)
-        } else if elem.type == .INFO_CHANGE { //type change
-            if let info = elem.groupChangeList.first,
-                let customInfo = info.value.toJson(),
-                let roomStatus = customInfo["type"] as? Int,
-                let theStatus = TRTCLiveRoomLiveStatus(rawValue: roomStatus)
-            {
-                status = theStatus
-            }
+extension TRTCLiveRoomImpl: V2TIMGroupListener {
+    public func onMemberInvited(_ groupID: String!, opUser: V2TIMGroupMemberInfo!, memberList: [V2TIMGroupMemberInfo]!) {
+        for memberInfo in memberList {
+            let user = TRTCLiveUserInfo()
+            user.userId = memberInfo.userID
+            user.userName = memberInfo.nickName
+            user.avatarURL = memberInfo.faceURL
+            self.memberManager.addAudience(user)
         }
+    }
+    
+    public func onMemberLeave(_ groupID: String!, member: V2TIMGroupMemberInfo!) {
+        memberManager.removeMember(member.userID)
+    }
+    
+    public func onMemberEnter(_ groupID: String!, memberList: [V2TIMGroupMemberInfo]!) {
+        for memberInfo in memberList {
+            let user = TRTCLiveUserInfo()
+            user.userId = memberInfo.userID
+            user.userName = memberInfo.nickName
+            user.avatarURL = memberInfo.faceURL
+            self.memberManager.addAudience(user)
+        }
+    }
+    
+    public func onGroupInfoChanged(_ groupID: String!, changeInfoList: [V2TIMGroupChangeInfo]!) {
+        if let info = changeInfoList.first,
+            let customInfo = info.value.toJson(),
+            let roomStatus = customInfo["type"] as? Int,
+            let theStatus = TRTCLiveRoomLiveStatus(rawValue: roomStatus)
+        {
+            status = theStatus
+        }
+    }
+    
+    public func onGroupDismissed(_ groupID: String!, opUser: V2TIMGroupMemberInfo!) {
+        handleRoomDismissed(isOwnerDeleted: true)
+    }
+    
+    public func onRevokeAdministrator(_ groupID: String!, opUser: V2TIMGroupMemberInfo!, memberList: [V2TIMGroupMemberInfo]!) {
+        handleRoomDismissed(isOwnerDeleted: true)
     }
 }

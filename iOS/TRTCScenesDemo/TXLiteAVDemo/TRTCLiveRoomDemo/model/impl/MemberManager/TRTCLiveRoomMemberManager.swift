@@ -62,9 +62,10 @@ extension TRTCLiveRoomMemberManager: TRTCLiveRoomMemberProtocol {
         if let anchor = anchors[userId] {
             anchors[userId] = nil
             delegate?.memberManager(self, onUserLeave: anchor, isAnchor: true)
-            if let audience = allMembers.first(where: { $0.userId == userId }) {
-                delegate?.memberManager(self, onUserEnter: audience, isAnchor: false)
-            }
+            // 主播离开变为观众时，不需要通知观众进入，否则会有重复通知。
+//            if let audience = allMembers.first(where: { $0.userId == userId }) {
+//                delegate?.memberManager(self, onUserEnter: audience, isAnchor: false)
+//            }
             delegate?.memberManager(self, onChangeAnchorList: anchorDataList)
         }
     }
@@ -115,14 +116,14 @@ extension TRTCLiveRoomMemberManager: TRTCLiveRoomMemberProtocol {
                 anchors[user.userId] = user
             } else {
                 anchors[user.userId] = user
-                delegate?.memberManager(self, onUserLeave: user, isAnchor: false)
-                delegate?.memberManager(self, onUserEnter: user, isAnchor: true)
+//                delegate?.memberManager(self, onUserLeave: user, isAnchor: false)
+//                delegate?.memberManager(self, onUserEnter: user, isAnchor: true)
             }
         } else {
             user.streamId = nil
             anchors[userId] = nil
-            delegate?.memberManager(self, onUserLeave: user, isAnchor: true)
-            delegate?.memberManager(self, onUserEnter: user, isAnchor: false)
+//            delegate?.memberManager(self, onUserLeave: user, isAnchor: true)
+//            delegate?.memberManager(self, onUserEnter: user, isAnchor: false)
         }
         delegate?.memberManager(self, onChangeAnchorList: anchorDataList)
     }

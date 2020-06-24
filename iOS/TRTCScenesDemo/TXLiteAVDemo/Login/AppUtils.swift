@@ -43,4 +43,9 @@ class AppUtils: NSObject {
     @objc func showLoginController() {
         appDelegate.showLoginController()
     }
+    
+    @objc func alertUserTips(_ vc: UIViewController) {
+        // 提醒用户不要用Demo App来做违法的事情
+        // 外发代码不需要提示
+    }
 }

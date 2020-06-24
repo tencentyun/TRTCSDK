@@ -7,7 +7,6 @@
 //
 
 #import "TCAudioSettingManager.h"
-#import "TRTCCloud.h"
 #import "TXAudioEffectManager.h"
 
 @interface TCAudioSettingManager (){
@@ -15,10 +14,18 @@
 }
 
 @property (nonatomic, strong)TXAudioEffectManager *manager;
+@property (nonatomic, strong)NSString *currentMusicPath;
 
 @end
 
 @implementation TCAudioSettingManager
+
+- (NSInteger)getcurrentMusicTatolDurationInMs{
+    if (self.currentMusicPath == nil) {
+        return 0;
+    }
+    return [self.manager getMusicDurationInMS:self.currentMusicPath];
+}
 
 - (void)setAudioEffectManager:(TXAudioEffectManager *)manager {
     self.manager = manager;
@@ -61,24 +68,36 @@
         [self.manager stopPlayMusic:_bgmID];
         _bgmID = bgmID;
     }
+    self.currentMusicPath = path;
     TXAudioMusicParam *params = [[TXAudioMusicParam alloc] init];
     params.ID   = _bgmID;
     params.path = path;
+    params.loopCount == 0;
+    __weak typeof(self) weakSelf = self;
     [self.manager startPlayMusic:params onStart:^(NSInteger errCode) {
         // 开始
-        if (self.delegate && [self.delegate respondsToSelector:@selector(onStartPlayMusic)]) {
-            [self.delegate onStartPlayMusic];
-        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (weakSelf.delegate && [weakSelf.delegate respondsToSelector:@selector(onStartPlayMusic)]) {
+                [weakSelf.delegate onStartPlayMusic];
+            }
+        });
+        
     } onProgress:^(NSInteger progressMs, NSInteger durationMs) {
-        // 进度
-        if (self.delegate && [self.delegate respondsToSelector:@selector(onPlayingWithCurrent:total:)]) {
-            [self.delegate onPlayingWithCurrent:progressMs / 1000 total: durationMs / 1000];
-        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            // 进度
+            if (weakSelf.delegate && [self.delegate respondsToSelector:@selector(onPlayingWithCurrent:total:)]) {
+                [weakSelf.delegate onPlayingWithCurrent:progressMs / 1000 total: durationMs / 1000];
+            }
+        });
     } onComplete:^(NSInteger errCode) {
-       // 结束
-        if (self.delegate && [self.delegate respondsToSelector:@selector(onStartPlayMusic)]) {
-            [self.delegate onStopPlayerMusic];
-        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            // 播完了，清空bgmID
+            __strong typeof(weakSelf) strongSelf = weakSelf;
+            strongSelf->_bgmID = 0;
+            if (weakSelf.delegate && [self.delegate respondsToSelector:@selector(onCompletePlayMusic)]) {
+                [weakSelf.delegate onCompletePlayMusic];
+            }
+        });
     }];
 }
 
@@ -86,8 +105,11 @@
     if (_bgmID != 0) {
         [self.manager stopPlayMusic:_bgmID];
         _bgmID = 0;
+        self.currentMusicPath = nil;
+        if (self.delegate && [self.delegate respondsToSelector:@selector(onStartPlayMusic)]) {
+            [self.delegate onStopPlayerMusic];
+        }
     }
-    
 }
 
 - (void)pausePlay {
@@ -103,6 +125,7 @@
 }
 
 - (void)clearStates {
+    self.currentMusicPath = nil;
     if (_bgmID != 0) {
         [self setBGMPitch:0];
         [self stopPlay];

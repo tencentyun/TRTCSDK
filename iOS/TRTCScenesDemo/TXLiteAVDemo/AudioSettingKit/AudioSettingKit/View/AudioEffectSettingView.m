@@ -60,27 +60,33 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 
 @implementation AudioEffectSettingView
 
-- (instancetype)initWithType:(AudioEffectSettingViewType)type {
+- (instancetype)initWithType:(AudioEffectSettingViewType)type theme:(TCASKitTheme *)theme {
     self = [super initWithFrame:CGRectZero];
     if (self) {
+        self->_theme = theme;
         self->_currentType = type;
         CGFloat bottom_height = IS_IPhoneXSeries ? 34 : 0;
         self.frame = CGRectMake(0, [UIScreen mainScreen].bounds.size.height - 526 - bottom_height, [UIScreen mainScreen].bounds.size.width, 526 + bottom_height);
+        [self createViewModel];
         [self setupInitStyle];
         [self bindInteraction];
-        [self createViewModel];
     }
     return self;
+}
+
+- (instancetype)initWithType:(AudioEffectSettingViewType)type {
+    return [self initWithType:type theme:nil];
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
+        [self createViewModel];
         self->_currentType = AudioEffectSettingViewCustom;
+        [self createViewModel];
         [self setupInitStyle];
         [self bindInteraction];
-        [self createViewModel];
     }
     return self;
 }
@@ -89,10 +95,11 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 {
     self = [super initWithCoder:coder];
     if (self) {
+        [self createViewModel];
         self->_currentType = AudioEffectSettingViewCustom;
         [self setupInitStyle];
         [self bindInteraction];
-        [self createViewModel];
+        
     }
     return self;
 }
@@ -100,6 +107,7 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 - (void)setupInitStyle {
     self.hidden = YES;
     self.alpha = 0.0;
+    [self initBackgroundColor];
 }
 
 - (void)createViewModel {
@@ -119,6 +127,9 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
         self.alpha = 1.0;
         self.hidden = NO;
     }];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(onEffectViewHidden:)]) {
+        [self.delegate onEffectViewHidden:NO];
+    }
 }
 
 - (void)hide {
@@ -135,10 +146,21 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
         self.alpha = 0.0;
         self.hidden = YES;
     }];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(onEffectViewHidden:)]) {
+        [self.delegate onEffectViewHidden:YES];
+    }
 }
 
-- (void)setAudioEffectManager:(TXAudioEffectManager *)manager{
+- (void)setAudioEffectManager:(TXAudioEffectManager *)manager {
     [self.viewModel setAudioEffectManager:manager];
+}
+
+- (void)stopPlay {
+    [self.viewModel stopPlay];
+}
+
+- (void)recoveryVoiceSetting {
+    [self.viewModel recoveryVoiceSetting];
 }
 
 
@@ -284,6 +306,12 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
     return _musiceSelectView;
 }
 
+- (void)setBackgroundColor:(UIColor *)backgroundColor {
+    [super setBackgroundColor:UIColor.clearColor];
+    self.mainContainer.backgroundColor = backgroundColor;
+    self.musiceSelectView.backgroundColor = backgroundColor;
+}
+
 #pragma mark - 视图生命周期
 - (void)didMoveToWindow {
     [super didMoveToWindow];
@@ -423,6 +451,9 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
     maskLayer.frame = self.bounds;
     maskLayer.path = maskPath.CGPath;
     self.layer.mask = maskLayer;
+}
+
+- (void)initBackgroundColor{
     // 设置背景色
     self.backgroundColor = UIColor.clearColor;
     self.mainContainer.backgroundColor = self.theme.backgroundColor;
@@ -450,15 +481,6 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
     [self.musicSelectItemView selectMusic:music.musicName];
     self.currentMusic = music;
     [self.musiceSelectView hide];
-//    if (isSelected) {
-//        // 展示选择的音乐
-//        
-//    } else {
-//        // 展示音乐选择
-//        [self.musicSelectItemView selectMusic:@""];
-//        self.currentMusic = nil;
-//        [self.musiceSelectView hide];
-//    }
 }
 
 - (void)slideItemView:(TCSlideItemView *)view slideValueDidChanged:(CGFloat)value {
@@ -486,11 +508,19 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
     [self.musicSelectItemView refreshMusicPlayingProgress:[NSString stringWithFormat:@"%@/%@", currentStr, totalString]];
 }
 
+- (void)onStopPlayerMusic {
+    [self.musicSelectItemView selectMusic:@""];
+}
+
+- (void)onCompletePlayMusic {
+    [self.musicSelectItemView completeStatus];
+}
+
 - (NSString *)switchSecondToTimeStr:(NSInteger)secondNum {
     NSInteger min = secondNum / 60;
-    NSString *minString = min > 9 ? [NSString stringWithFormat:@"%ld", min] : [NSString stringWithFormat:@"0%d", min];
+    NSString *minString = min > 9 ? [NSString stringWithFormat:@"%ld", min] : [NSString stringWithFormat:@"0%ld", (long)min];
     NSInteger sec = secondNum % 60;
-    NSString *secondString = sec > 9 ? [NSString stringWithFormat:@"%ld", sec] : [NSString stringWithFormat:@"0%d", sec];
+    NSString *secondString = sec > 9 ? [NSString stringWithFormat:@"%ld", sec] : [NSString stringWithFormat:@"0%ld", (long)sec];
     return [NSString stringWithFormat:@"%@:%@", minString, secondString];
 }
 @end

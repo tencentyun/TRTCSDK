@@ -16,6 +16,18 @@
 @property (nonatomic, strong) TCASKitTheme *theme;
 @property (nonatomic, strong) TCAudioSettingManager* manager;
 
+@property (nonatomic, assign) NSInteger currentReverb;
+@property (nonatomic, assign) NSInteger currentChangerType;
+
+@property (nonatomic, assign) BOOL isPlaying;
+@property (nonatomic, assign) BOOL isPlayComplete;
+
+@property (nonatomic, strong) NSString* currentMusicPath;
+@property (nonatomic, assign) NSInteger bgmID;
+
+@property (nonatomic, assign) NSInteger currentMusicVolum;
+@property (nonatomic, assign) CGFloat currentPitchVolum;
+
 @end
 
 @implementation AudioEffectSettingViewModel
@@ -25,6 +37,8 @@
     self = [super init];
     if (self) {
         self.theme = [[TCASKitTheme alloc] init];
+        self.currentMusicVolum = 100;
+        self.currentPitchVolum = 0;
         [self createDataSource];
     }
     return self;
@@ -69,6 +83,7 @@
         model.selectedIcon = [self.theme imageNamed:selectedIconName];
         model.action = ^{
             [self.manager setVoiceChangerTypeWithValue:index];
+            self.currentChangerType = index;
         };
         if (model.icon) {
             [result addObject:model];
@@ -98,6 +113,7 @@
         model.selectedIcon = [self.theme imageNamed:selectedIconName];
         model.action = ^{
             [self.manager setReverbTypeWithValue:index];
+            self.currentReverb = index;
         };
         if (model.icon) {
             [result addObject:model];
@@ -146,7 +162,12 @@
     return result;
 }
 
+- (NSInteger)getcurrentMusicTatolDurationInMs {
+    return [self.manager getcurrentMusicTatolDurationInMs];
+}
+
 - (void)setMusicVolum:(NSInteger)volum {
+    self.currentMusicVolum = volum;
     [self.manager setBGMVolume:volum];
 }
 
@@ -155,6 +176,7 @@
 }
 
 - (void)setPitchVolum:(CGFloat)volum {
+    self.currentPitchVolum = volum;
     [self.manager setBGMPitch:volum];
 }
 
@@ -162,26 +184,44 @@
 /// @param path 音乐路径
 /// @param bgmID 音乐ID
 - (void)playMusicWithPath:(NSString *)path bgmID:(NSInteger)bgmID {
+    self.currentMusicPath = path;
+    self.bgmID = bgmID;
     [self.manager playMusicWithPath:path bgmID:bgmID];
+    [self.manager setBGMVolume:self.currentMusicVolum];
+    [self.manager setBGMPitch:self.currentPitchVolum];
 }
 
 - (void)stopPlay {
+    self.isPlaying = NO;
     [self.manager stopPlay];
 }
 
 - (void)pausePlay {
+    self.isPlaying = NO;
     [self.manager pausePlay];
 }
 
 - (void)resumePlay {
-    [self.manager resumePlay];
+    if (self.isPlayComplete) {
+        if (self.currentMusicPath != nil && self.bgmID != -1) {
+            [self.manager playMusicWithPath:self.currentMusicPath bgmID:self.bgmID];
+        }
+    } else {
+        self.isPlaying = YES;
+        [self.manager resumePlay];
+    }
+   
 }
 
 - (void)resetStatus {
+    self.isPlaying = NO;
+    self.isPlayComplete = YES;
     [self.manager clearStates];
 }
 
 -(void)onStartPlayMusic {
+    self.isPlaying = YES;
+    self.isPlayComplete = NO;
     if (self.delegate && [self.delegate respondsToSelector:@selector(onStartPlayMusic)]) {
         [self.delegate onStartPlayMusic];
     }
@@ -194,9 +234,26 @@
 }
 
 - (void)onStopPlayerMusic {
+    self.currentMusicPath = nil;
+    self.bgmID = -1;
+    self.isPlaying = NO;
+    self.isPlayComplete = YES;
     if (self.delegate && [self.delegate respondsToSelector:@selector(onStopPlayerMusic)]) {
         [self.delegate onStopPlayerMusic];
     }
+}
+
+- (void)onCompletePlayMusic {
+    self.isPlaying = NO;
+    self.isPlayComplete = YES;
+    if (self.delegate && [self.delegate respondsToSelector:@selector(onCompletePlayMusic)]) {
+        [self.delegate onCompletePlayMusic];
+    }
+}
+
+- (void)recoveryVoiceSetting {
+    [self.manager setReverbTypeWithValue:self.currentReverb];
+    [self.manager setVoiceChangerTypeWithValue:self.currentChangerType];
 }
 
 @end

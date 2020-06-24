@@ -9,10 +9,14 @@
 
 
 /* TXLiteAVDemo_Bridging_Header_h */
+#ifdef TRTC
+#import "PortalViewController.h"
+#endif
+
 #ifdef ENABLE_TRTC
 #import "TCAnchorViewController.h"
 #import "TCAudienceViewController.h"
-#import "PortalViewController.h"
+#import "TRTCMeeting.h"
 #endif
 #import "AppDelegate.h"
 #import <SDWebImage/SDWebImage.h>

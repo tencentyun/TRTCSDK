@@ -40,9 +40,10 @@
 
 #if !defined(UGC) && !defined(PLAYER)
 #import "TXLiteAVDemo-Swift.h"
+#import <ImSDK/ImSDK.h>
 #endif
 
-#if defined(ENTERPRISE) || defined(PROFESSIONAL) || defined(SMART)
+#if defined(ENTERPRISE) || defined(PROFESSIONAL) || defined(SMART) || defined(TRTC)
 #import "Replaykit2Define.h"
 #endif
 
@@ -67,7 +68,12 @@ NSString *helpUrlDb[] = {
     [Help_TRTC] = @"https://cloud.tencent.com/document/product/647/32221",
     };
     
+#if !defined(PLAYER) && !defined(UGC)
+@interface AppDelegate () <UNUserNotificationCenterDelegate, V2TIMAPNSListener>
+#else
 @interface AppDelegate () <UNUserNotificationCenterDelegate>
+#endif
+
 #ifndef TRTC
 @property (nonatomic, strong) MainViewController* mainViewController;
 #else
@@ -182,6 +188,11 @@ NSString *helpUrlDb[] = {
 #ifndef ENABLE_TRTC
     [[AFNetworkReachabilityManager sharedManager] startMonitoring];
 #endif
+
+#if !defined(PLAYER) && !defined(UGC)
+    // 自定义 APP 未读数
+    [[V2TIMManager sharedInstance] setAPNSListener:self];
+#endif
     //For ReplayKit2. 使用 UNUserNotificationCenter 来管理通知
     if ([UIDevice currentDevice].systemVersion.floatValue >= 11.0) {
         UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
@@ -230,22 +241,6 @@ NSString *helpUrlDb[] = {
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-    __block UIBackgroundTaskIdentifier bgTaskID = UIBackgroundTaskInvalid;
-    bgTaskID = [application beginBackgroundTaskWithExpirationHandler:^{
-        [application endBackgroundTask:UIBackgroundTaskInvalid];
-        bgTaskID = UIBackgroundTaskInvalid;
-    }];
-    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
-#ifdef ENABLE_TRTC
-    // do background
-    TIMBackgroundParam* param = [[TIMBackgroundParam alloc] init];
-    param.c2cUnread = 0;
-    [[TIMManager sharedInstance] doBackground:param succ:^{
-        
-    } fail:^(int code, NSString *msg) {
-        
-    }];
-#endif
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
@@ -254,14 +249,6 @@ NSString *helpUrlDb[] = {
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
-#ifdef ENABLE_TRTC
-    [[TIMManager sharedInstance] doForeground:^{
-        
-    } fail:^(int code, NSString *msg) {
-        
-    }];
-#endif
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
@@ -280,6 +267,7 @@ NSString *helpUrlDb[] = {
 - (void)registNotificaiton {
     UIUserNotificationSettings* settings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge categories:nil];
     [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+    [[UIApplication sharedApplication] registerForRemoteNotifications];
 }
 
 #pragma mark - 登录跳转方法
@@ -298,4 +286,8 @@ NSString *helpUrlDb[] = {
 #endif
 }
 
+#pragma mark - 推送设置回调
+- (uint32_t)onSetAPPUnreadCount {
+    return 0;
+}
 @end

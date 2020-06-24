@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)onStartPlayMusic;
 - (void)onStopPlayerMusic;
+- (void)onCompletePlayMusic;
 - (void)onPlayingWithCurrent:(NSInteger)currentSec total:(NSInteger)totalSec;
 
 @end
@@ -29,6 +30,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSArray<TCAudioScrollMenuCellModel *> *reverberationSources;
 
 @property (nonatomic, strong) NSArray<TCMusicSelectedModel *> *musicSources;
+
+- (NSInteger)getcurrentMusicTatolDurationInMs;
 
 - (void)setAudioEffectManager:(TXAudioEffectManager *)manager;
 
@@ -50,6 +53,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)resumePlay;
 
 - (void)resetStatus;
+
+- (void)recoveryVoiceSetting; // 恢复音效设置
 
 @end
 

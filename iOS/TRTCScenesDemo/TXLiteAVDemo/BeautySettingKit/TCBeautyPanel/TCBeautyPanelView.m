@@ -259,7 +259,13 @@ static  TCBeautyPanelItem * makeMenuItem(NSString *title, UIImage *icon, id targ
         TCFilterIdentifier defaultFilterIdentifier = _filters[defaultFilterIndex].identifier;
         UIImage *lutImage = [self filterImageByMenuOptionIndex:defaultFilterIndex+1];
         [performer setFilter:lutImage];
-        [performer setFilterConcentration:self.filterValueDic[defaultFilterIdentifier].floatValue/10.0];
+        
+        // v7.2后的版本使用 setFilterStrength
+        if ([self.actionPerformer respondsToSelector:@selector(setFilterStrength:)]) {
+            [performer setFilterStrength:self.filterValueDic[defaultFilterIdentifier].floatValue/10.0];
+        } else if([self.actionPerformer respondsToSelector:@selector(setFilterConcentration:)]){
+            [performer setFilterConcentration:self.filterValueDic[defaultFilterIdentifier].floatValue/10.0];
+        }
 
         // 重置各高级美颜选项，瘦脸大脸等
         NSArray<TCBeautyPanelItem *> *beautySettingItems = _optionsContainer[PanelMenuIndexBeauty];
@@ -561,9 +567,14 @@ static  TCBeautyPanelItem * makeMenuItem(NSString *title, UIImage *icon, id targ
     [self setSliderValue:slider.value];
     NSInteger menuIndex = _menu.menuIndex;
     if(menuIndex == PanelMenuIndexFilter) {
+        if (_menu.optionIndex <= 0) { return; }
+        
         NSString *filterID = _filters[_menu.optionIndex-1].identifier;
         self.filterValueDic[filterID] = @(value);
-        if([self.actionPerformer respondsToSelector:@selector(setFilterConcentration:)]){
+        // v7.2后的版本使用 setFilterStrength
+        if ([self.actionPerformer respondsToSelector:@selector(setFilterStrength:)]) {
+            [self.actionPerformer setFilterStrength:value / 10.f];
+        } else if([self.actionPerformer respondsToSelector:@selector(setFilterConcentration:)]){
             [self.actionPerformer setFilterConcentration:value / 10.f];
         }
     } else if(menuIndex == PanelMenuIndexBeauty) {

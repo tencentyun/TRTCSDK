@@ -434,14 +434,6 @@
     [_vMusicPanel alignParentTopWithMargin:self.height-_vMusicPanel.height];
     [_vMusicPanel alignParentLeftWithMargin:0];
     
-//    [_vBGMPanel sizeWith:CGSizeMake(self.width, 20)];
-//    [_vBGMPanel alignParentTopWithMargin:0];
-//    [_vBGMPanel alignParentLeftWithMargin:0];
-    
-//    [_vAudioEffectPanel sizeWith:CGSizeMake(self.width, 268)];
-//    [_vAudioEffectPanel layoutBelow:_vBGMPanel];
-//    [_vAudioEffectPanel alignParentLeftWithMargin:0];
-    
     //BMG layout
     [_btnSelectBGM sizeWith:CGSizeMake(50, 20)];
     [_btnSelectBGM alignParentTopWithMargin:10];

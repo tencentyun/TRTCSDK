@@ -32,6 +32,7 @@ PODS:
     - BlocksKit/DynamicDelegate
   - Bugly (2.5.2)
   - CWStatusBarNotification (2.3.5)
+  - HandyJSON (5.0.1)
   - Masonry (1.1.0)
   - Material (3.1.8):
     - Material/Core (= 3.1.8)
@@ -72,8 +73,9 @@ PODS:
     - AFNetworking
     - Masonry
     - SDWebImage
+  - SwiftyJSON (4.3.0)
   - Toast-Swift (5.0.1)
-  - TXIMSDK_iOS (4.7.2)
+  - TXIMSDK_iOS (4.8.50)
 
 DEPENDENCIES:
   - AFNetworking
@@ -81,6 +83,7 @@ DEPENDENCIES:
   - BlocksKit (~> 2.2.5)
   - Bugly
   - CWStatusBarNotification (~> 2.3.5)
+  - HandyJSON (~> 5.0.1)
   - Masonry
   - Material
   - MBProgressHUD (~> 1.2.0)
@@ -95,8 +98,9 @@ DEPENDENCIES:
   - SuperPlayer/Player (from `./TXLiteAVDemo/SuperPlayerKit/SuperPlayer.podspec`)
   - SuperPlayer/Professional (from `./TXLiteAVDemo/SuperPlayerKit/SuperPlayer.podspec`)
   - SuperPlayer/UGC (from `./TXLiteAVDemo/SuperPlayerKit/SuperPlayer.podspec`)
+  - SwiftyJSON (~> 4.0)
   - Toast-Swift
-  - TXIMSDK_iOS
+  - TXIMSDK_iOS (= 4.8.50)
 
 SPEC REPOS:
   trunk:
@@ -105,6 +109,7 @@ SPEC REPOS:
     - BlocksKit
     - Bugly
     - CWStatusBarNotification
+    - HandyJSON
     - Masonry
     - Material
     - MBProgressHUD
@@ -117,6 +122,7 @@ SPEC REPOS:
     - RxSwift
     - SDWebImage
     - SnapKit
+    - SwiftyJSON
     - Toast-Swift
     - TXIMSDK_iOS
 
@@ -130,6 +136,7 @@ SPEC CHECKSUMS:
   BlocksKit: 7f422b971407001178d181a43b99014ea2591fe6
   Bugly: dbac48b55ad469a97cc4321045cd50df8f63d44f
   CWStatusBarNotification: 3d2738b25c3207f60cc50201388d3c96182545ff
+  HandyJSON: d45b8415c501e3affc59ca9762c1197ff0feb646
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   Material: a2a3f400a3b549d53ef89e56c58c4535b29db387
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
@@ -143,9 +150,10 @@ SPEC CHECKSUMS:
   SDWebImage: 7edb9c3ea661e77a66661f7f044de8c1b55d1120
   SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
   SuperPlayer: 3f49af712410a59c42c2c9bfcacd33e3a0e3e5ab
+  SwiftyJSON: 6faa0040f8b59dead0ee07436cbf76b73c08fd08
   Toast-Swift: 9b6a70f28b3bf0b96c40d46c0c4b9d6639846711
-  TXIMSDK_iOS: 0d3c292920c96ba08b6fa8efde65c7488eb436a7
+  TXIMSDK_iOS: ae26f78e028e01beed47127ea6bde03c11156208
 
-PODFILE CHECKSUM: 864cb4007fd7d2f11e578d2aad2824fe0309eff3
+PODFILE CHECKSUM: bc7ae6341f637f2058f4840c1a67f65ac52d02ea
 
 COCOAPODS: 1.9.1

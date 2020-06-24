@@ -15,11 +15,21 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setFilter:(nullable UIImage*)filterImage;
 
 /**
- * 设置滤镜强度
+ * 设置滤镜强度（v7.2后的版本请使用 setFilterStrength）
  *
  * @param level 滤镜强度, 从0到1，越大滤镜效果越明显，默认值为0.5。
  */
 - (void)setFilterConcentration:(float)level;
+
+/**
+ * 设置滤镜浓度
+ *
+ * 在美女秀场等应用场景里，滤镜浓度的要求会比较高，以便更加突显主播的差异。
+ * 我们默认的滤镜浓度是0.5，如果您觉得滤镜效果不明显，可以使用下面的接口进行调节。
+ *
+ * @param strength 从0到1，越大滤镜效果越明显，默认值为0.5。
+ */
+- (void)setFilterStrength:(float)strength;
 
 /** 设置绿幕文件（增值版本有效，普通版本设置此参数无效）[仅限企业版Pro]
  *

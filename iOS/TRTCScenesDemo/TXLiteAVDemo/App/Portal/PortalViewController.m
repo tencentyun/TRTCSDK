@@ -4,13 +4,12 @@
 
 #import "ColorMacro.h"
 #import "MainMenuCell.h"
-#import "TRTCNewViewController.h"
 #import "TXLiteAVDemo-Swift.h"
 
 #if DEBUG
-#define SdkBusiId (0)
+#define SdkBusiId (18069)
 #else
-#define SdkBusiId (0)
+#define SdkBusiId (18070)
 #endif
 
 
@@ -44,6 +43,7 @@
 @property (nonatomic, strong) AudioCallMainViewController *audioCallVC;
 
 @property (nonatomic, strong) TRTCLiveRoomImpl *liveRoom;
+@property (nonatomic, strong) TRTCVoiceRoomImp *voiceRoom;
 
 @property (nonatomic, strong) NSArray<MainMenuItem *> *mainMenuItems;
 
@@ -71,7 +71,7 @@
     [TRTCAudioCall shared].delegate = _audioCallVC;
     
     _liveRoom = [[TRTCLiveRoomImpl alloc] init];
-    
+    _voiceRoom = [TRTCVoiceRoomImp shared];
     __weak __typeof(self) wSelf = self;
     self.mainMenuItems = @[
         [[MainMenuItem alloc] initWithIcon:[UIImage imageNamed:@"MenuMeeting"]
@@ -114,7 +114,7 @@
     NSString *userID = [[ProfileManager shared] curUserID];
     NSString *userSig = [GenerateTestUserSig genTestUserSig:userID];
     
-    if (![[[TIMManager sharedInstance] getLoginUser] isEqual:userID]) {
+    if (![[[V2TIMManager sharedInstance] getLoginUser] isEqual:userID]) {
         [[ProfileManager shared] IMLoginWithUserSig:userSig success:^{
             [self makeToastWithMessage:@"登录IM成功"];
             [[TRTCAudioCall shared] loginWithSdkAppID:SDKAPPID user:userID userSig:userSig success:^{
@@ -139,11 +139,22 @@
             [self.liveRoom loginWithSdkAppID:SDKAPPID userID:userID userSig:userSig config:config callback:^(NSInteger code, NSString * error) {
                 
             }];
-            
+            [self.voiceRoom loginWithSdkAppID:SDKAPPID userId:userID userSig:userSig callback:^(int32_t code, NSString * _Nonnull message) {
+                NSLog(@"login voiceroom success.");
+            }];
             LoginResultModel *curUser = [[ProfileManager shared] curUserModel];
             [self.liveRoom setSelfProfileWithName:curUser.name avatarURL:curUser.avatar callback:^(NSInteger code, NSString * error) {
                 
             }];
+            
+            [[TRTCMeeting sharedInstance] login:SDKAPPID userId:userID userSig:userSig callback:^(NSInteger code, NSString *message) {
+               
+            }];
+            [self.voiceRoom setSelfProfileWithUserName:curUser.name avatarURL:curUser.avatar callback:^(int32_t code, NSString * _Nonnull message) {
+                NSLog(@"voiceroom: set self profile success.");
+
+            }];
+            
         } failed:^(NSString * error) {
             [self makeToastWithMessage:@"登录IM失败"];
         }];
@@ -164,14 +175,12 @@
 }
 
 - (void)gotoMeetingView {
-    TRTCNewViewController *vc = [[TRTCNewViewController alloc] init];
-    [vc setAppScene:TRTCAppSceneVideoCall];
-     [self.navigationController pushViewController:vc animated:YES];
+    TRTCMeetingNewViewController *vc = [[TRTCMeetingNewViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)gotoVoiceRoomView {
-    UIStoryboard *stroyBoard = [UIStoryboard storyboardWithName:@"TRTCVoiceRoom" bundle:nil];
-    UIViewController *vc = [stroyBoard instantiateViewControllerWithIdentifier:@"CreateTRTCVoiceRoomViewController"];
+    UIViewController* vc = [[[TRTCVoiceRoomDependencyContainer alloc] init] makeEntranceViewController];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -183,7 +192,7 @@
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         [[ProfileManager shared] removeLoginCache];
         [[AppUtils shared] showLoginController];
-        [[TIMManager sharedInstance] logout:^{
+        [[V2TIMManager sharedInstance] logout:^{
             
         } fail:^(int code, NSString *msg) {
             
