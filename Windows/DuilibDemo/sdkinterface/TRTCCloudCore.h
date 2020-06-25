@@ -12,6 +12,8 @@ struct DashboardInfo
     std::string userId;
     std::string buffer;   
 };
+typedef ITRTCCloud* (__cdecl *GetTRTCShareInstance)();
+typedef void(__cdecl *DestroyTRTCShareInstance)();
 
 class TRTCCloudCore 
     : public ITRTCCloudCallback
@@ -31,7 +33,7 @@ public:
     }MediaDeviceInfo;
 
     static TRTCCloudCore* GetInstance();
-    void Destory();
+    static void Destory();
     TRTCCloudCore();
     ~TRTCCloudCore();
 public:
@@ -138,6 +140,7 @@ public:
 
 protected:
     void setPresetLayoutConfig(TRTCTranscodingConfig & config);
+    std::string GetPathNoExt(std::string path);
 private:
     static TRTCCloudCore* m_instance;
     std::string m_localUserId;
@@ -174,5 +177,10 @@ private:
 
     std::thread* custom_audio_thread_ = nullptr;
     std::thread* custom_video_thread_ = nullptr;
+
+private:
+    HMODULE trtc_module_;
+    GetTRTCShareInstance getTRTCShareInstance_ = nullptr;
+    DestroyTRTCShareInstance destroyTRTCShareInstance_ = nullptr;
 };
 

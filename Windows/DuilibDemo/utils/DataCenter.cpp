@@ -60,6 +60,8 @@ CDataCenter::CDataCenter()
     info16.init(900, 400, 1600);
     VideoResBitrateTable& info17 = m_videoConfigMap[TRTCVideoResolution_1280_720];
     info17.init(1250, 500, 2000);     
+    VideoResBitrateTable& info18 = m_videoConfigMap[TRTCVideoResolution_1920_1080];
+    info18.init(2000, 1000, 3000);
 
     m_sceneParams = TRTCAppSceneVideoCall;
 }

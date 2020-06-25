@@ -186,11 +186,7 @@ void TRTCLoginViewController::onBtnEnterRoom()
         info._userId = Wide2UTF8(strUserId);
     }
 
-#ifdef _WIN64
     info._userSig = GenerateTestUserSig::instance().genTestUserSig(info._userId);
-#else
-    info._userSig = GenerateTestUserSig::instance().genTestUserSig(info._userId);
-#endif
 
     if (info._userSig == "")
     {

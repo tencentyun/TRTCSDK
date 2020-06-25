@@ -115,7 +115,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*l
     CPaintManagerUI::MessageLoop();
     ::CoUninitialize();
 
-    TRTCCloudCore::GetInstance()->Destory();
+    TRTCCloudCore::Destory();
 
     LINFO(L"WinMain:: App quit end");
     return 0;

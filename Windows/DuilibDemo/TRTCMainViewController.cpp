@@ -204,7 +204,9 @@ void TRTCMainViewController::enterRoom()
     TRTCCloudCore::GetInstance()->getTRTCCloud()->setDefaultStreamRecvMode(\
         CDataCenter::GetInstance()->m_bAutoRecvAudio, CDataCenter::GetInstance()->m_bAutoRecvVideo);
 
-    TRTCCloudCore::GetInstance()->getTRTCCloud()->setAudioQuality(CDataCenter::GetInstance()->audio_quality_);
+    if (CDataCenter::GetInstance()->audio_quality_ != TRTCAudioQualityUnSelect ) {
+        TRTCCloudCore::GetInstance()->getTRTCCloud()->setAudioQuality((TRTCAudioQuality)CDataCenter::GetInstance()->audio_quality_);
+    }
 
     //进入房间
     LocalUserInfo& info = CDataCenter::GetInstance()->getLocalUserInfo();
@@ -1116,31 +1118,16 @@ void TRTCMainViewController::onRemoteAudioSubscribeChange(std::wstring userId, i
 void TRTCMainViewController::exitRoom()
 {
     LocalUserInfo info = CDataCenter::GetInstance()->getLocalUserInfo();
-    bool bExit = false;
-    if (info._bEnterRoom == false)
-    {
-        LINFO(L"exitRoom info._bEnterRoom = false");
-        bExit = true;
-    }
-    else
-    {
-        if (MSGID_OK == CMsgWnd::MessageBox(m_hWnd, _T("TRTCDuilibDemo"), _T("您确定要退出房间吗？")))
-        {
-            bExit = true;
-            LINFO(L"exitRoom info._bEnterRoom = true");
-        }
-    }
-    if (bExit)
-    {
-        m_pVideoViewLayout->deleteVideoView(UTF82Wide(info._userId), TRTCVideoStreamType::TRTCVideoStreamTypeBig);
-        TRTCCloudCore::GetInstance()->PreUninit();
-        m_pMainViewBottomBar->UnInitBottomUI();
-        m_pVideoViewLayout->unInitRenderUI();
-        m_pUserListController->UnInitUserListUI();
-        TXLiveAvVideoView::clearAllLogText();
-        ShowWindow(false);
-        TRTCCloudCore::GetInstance()->getTRTCCloud()->exitRoom();
-    }
+
+    m_pVideoViewLayout->deleteVideoView(UTF82Wide(info._userId),TRTCVideoStreamType::TRTCVideoStreamTypeBig);
+    TRTCCloudCore::GetInstance()->PreUninit();
+    m_pMainViewBottomBar->UnInitBottomUI();
+    m_pVideoViewLayout->unInitRenderUI();
+    m_pUserListController->UnInitUserListUI();
+    TXLiveAvVideoView::clearAllLogText();
+    ShowWindow(false);
+    TRTCCloudCore::GetInstance()->getTRTCCloud()->exitRoom();
+
     if (info._bEnterRoom == false)
     {
         onExitRoom(0);

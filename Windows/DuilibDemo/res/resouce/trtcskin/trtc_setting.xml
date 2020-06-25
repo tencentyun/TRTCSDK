@@ -147,6 +147,7 @@
 								<ListLabelElement text="640x360"/>
 								<ListLabelElement text="960x540"/>
 								<ListLabelElement text="1280x720"/>
+								<ListLabelElement text="1920x1080"/>
 							  </Combo>  
 						</HorizontalLayout>
 						<HorizontalLayout inset="8,0,0,0" childvalign="center" height="30">
@@ -241,13 +242,13 @@
 						<Option name="check_system_audio_mix" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
 					</HorizontalLayout>
 				</GroupBox>
-				<GroupBox text="采集" padding="20,0,20,0" childpadding="20" bordercolor="#FF808080" bkcolor="#FFF0F0F0" bordersize="1" height="100">
+				<GroupBox text="采集选项" padding="20,0,20,0" childpadding="20" bordercolor="#FF808080" bkcolor="#FFF0F0F0" bordersize="1" height="100">
 					<HorizontalLayout inset="5,0,0,0" height="40">
-						<Label text="采样率: " font="2" width="100" align="right" valign="center" textcolor="#FF000000" showhtml="true"/>
-							<Combo name="combo_audio_quality" width="120" height="36" style="devicecombo" dropbox="bordercolor=&quot;#FF1E90FF&quot; bordersize=&quot;1&quot; bkcolor=&quot;#FFFFFFFF&quot;">
-								<ListLabelElement text="流畅音质"/>
-								<ListLabelElement text="默认音质"/>
-								<ListLabelElement text="高音质"/>
+						<Label text="音质: " font="2" width="100" align="right" valign="center" textcolor="#FF000000" showhtml="true"/>
+							<Combo name="combo_audio_quality" width="200" height="36" style="devicecombo" dropbox="bordercolor=&quot;#FF1E90FF&quot; bordersize=&quot;1&quot; bkcolor=&quot;#FFFFFFFF&quot;">
+								<ListLabelElement text="语音（16K 单声道）"/>
+								<ListLabelElement text="默认（48K 单声道）"/>
+								<ListLabelElement text="音乐（128K 双声道）"/>
 							</Combo>						
 					</HorizontalLayout>
 				</GroupBox>

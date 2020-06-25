@@ -38,16 +38,51 @@ void TRTCCloudCore::Destory()
 }
 TRTCCloudCore::TRTCCloudCore()
 {
-    if (m_pCloud == nullptr)
-    {
-        m_pCloud = getTRTCShareInstance();
+    trtc_module_ = nullptr;
+    if (trtc_module_ != nullptr) return;
+
+    HMODULE hmodule = NULL;
+    GetModuleHandleEx(
+        GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
+        L"TRTCModule", &hmodule);
+
+    char module_path[MAX_PATH] = { 0 };
+    ::GetModuleFileNameA(hmodule, module_path, _countof(module_path));
+
+    std::string module_dir = GetPathNoExt(module_path);
+    if (module_dir.length() == 0) {
+        LINFO(L"TRTC GetModule Path Error");
+        return;
     }
-}
+
+    std::string module_full_path = module_dir + "liteav.dll";
+
+    trtc_module_ =
+        ::LoadLibraryExA(module_full_path.c_str(), NULL, LOAD_WITH_ALTERED_SEARCH_PATH);
+
+    if (trtc_module_ == NULL) {
+        DWORD dw_ret = GetLastError();
+        LINFO(L"TRTC Load liteav.dll Fail ErrorCode[0x%04X]", dw_ret);
+        return;
+    }
+    else{
+
+        getTRTCShareInstance_ = (GetTRTCShareInstance)::GetProcAddress(trtc_module_, "getTRTCShareInstance");
+
+        destroyTRTCShareInstance_ = (DestroyTRTCShareInstance)::GetProcAddress(trtc_module_, "destroyTRTCShareInstance");
+
+        m_pCloud = getTRTCShareInstance();
+    }}
 
 TRTCCloudCore::~TRTCCloudCore()
 {
-    destroyTRTCShareInstance();
+    destroyTRTCShareInstance_();
     m_pCloud = nullptr;
+    getTRTCShareInstance_ = nullptr;
+    destroyTRTCShareInstance_ = nullptr;
+
+    if (trtc_module_)
+        FreeLibrary(trtc_module_);
 }
 
 void TRTCCloudCore::Init()
@@ -833,8 +868,6 @@ std::vector<TRTCCloudCore::MediaDeviceInfo>& TRTCCloudCore::getMicDevice()
     
     if (vecDeviceList.size() <= 0) {
         select_device = L"";
-    } else {
-        assert(find_select_device);
     }
     return vecDeviceList;
 }
@@ -869,8 +902,6 @@ std::vector<TRTCCloudCore::MediaDeviceInfo>& TRTCCloudCore::getSpeakDevice()
 
     if (vecDeviceList.size() <= 0) {
         select_device = L"";
-    } else {
-        assert(find_select_device);
     }
     return vecDeviceList;
 }
@@ -906,9 +937,8 @@ std::vector<TRTCCloudCore::MediaDeviceInfo>& TRTCCloudCore::getCameraDevice()
 
    if (vecDeviceList.size() <= 0) {
        select_device = L"";
-   } else {
-       assert(find_select_device);
    }
+
    return vecDeviceList;
 }
 
@@ -1657,4 +1687,16 @@ void TRTCCloudCore::startGreenScreen(const std::string &path)
 void TRTCCloudCore::stopGreenScreen()
 {
     
+}
+std::string TRTCCloudCore::GetPathNoExt(std::string path) {
+    std::string str_ret;
+    if (path.length() > 0) {
+        size_t uPos = 0;
+        for (size_t u = 0; u < path.size() - 1; u++) {
+            if (path.c_str()[u] == '\\') uPos = u;
+        }
+
+        str_ret = path.substr(0, uPos + 1);
+    }
+    return str_ret;
 }

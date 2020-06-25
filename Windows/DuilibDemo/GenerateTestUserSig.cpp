@@ -369,8 +369,8 @@ std::string GenerateTestUserSig::genTestUserSig(std::string userId) const
 {
     uint32_t currTime = (uint32_t)time(NULL);
 
-
-    GenerateTestUserSigImpl impl(SDKAPPID, SECRETKEY, currTime, EXPIRETIME);
+    std::string secretkey = SECRETKEY;
+    GenerateTestUserSigImpl impl(SDKAPPID, secretkey, currTime, EXPIRETIME);
 
     return impl.genTestUserSig(userId);
 }
