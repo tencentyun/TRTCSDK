@@ -1,6 +1,7 @@
 #include "TrtcUtil.h"
 #include <time.h>
 #include <windows.h>
+#include <cmath>
 #include "TRTCCloudDef.h"
 
 std::string TrtcUtil::genRandomNumString(int length)
