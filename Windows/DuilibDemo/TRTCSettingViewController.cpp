@@ -179,6 +179,7 @@ void TRTCSettingViewController::Notify(TNotifyUI & msg)
             //直播场景和视频通话场景默认码率值不一样。
             updateVideoBitrateUi();
             updateRoleUi();
+            UpdateAudioQualityUi();
         }
         if (name.CompareNoCase(_T("scene_call")) == 0) {
             CDataCenter::GetInstance()->m_sceneParams = TRTCAppSceneVideoCall;
@@ -190,6 +191,7 @@ void TRTCSettingViewController::Notify(TNotifyUI & msg)
             //直播场景和视频通话场景默认码率值不一样。
             updateVideoBitrateUi();
             updateRoleUi();
+            UpdateAudioQualityUi();
             LocalUserInfo& _loginInfo = CDataCenter::GetInstance()->getLocalUserInfo();
             if (_loginInfo._bEnterRoom&& is_init_windows_finished)
             {
@@ -200,6 +202,7 @@ void TRTCSettingViewController::Notify(TNotifyUI & msg)
             CDataCenter::GetInstance()->m_sceneParams = TRTCAppSceneVoiceChatRoom;
             //直播场景和视频通话场景默认码率值不一样。
             updateRoleUi();
+            UpdateAudioQualityUi();
         }
         if(name.CompareNoCase(_T("audio_scene_call")) == 0) {
             CDataCenter::GetInstance()->m_sceneParams = TRTCAppSceneAudioCall;
@@ -210,6 +213,7 @@ void TRTCSettingViewController::Notify(TNotifyUI & msg)
             }
             //直播场景和视频通话场景默认码率值不一样。
             updateRoleUi();
+            UpdateAudioQualityUi();
             LocalUserInfo& _loginInfo = CDataCenter::GetInstance()->getLocalUserInfo();
             if (_loginInfo._bEnterRoom&& is_init_windows_finished)
             {
@@ -1636,23 +1640,28 @@ void TRTCSettingViewController::InitAudioTab()
     m_pProgressTestNetwork = static_cast<CProgressUI*>(m_pmUI.FindControl(_T("progress_testnetwork")));
 
     CComboUI* audio_quality_combo = static_cast<CComboUI*>(m_pmUI.FindControl(_T("combo_audio_quality")));
-    if (audio_quality_combo) {
+    if (audio_quality_combo && CDataCenter::GetInstance()->audio_quality_ != TRTCAudioQualityUnSelect) {
         is_init_audio_quality_combo = true;
         if (CDataCenter::GetInstance()->audio_quality_ == TRTCAudioQualitySpeech) { 
             audio_quality_combo->SelectItem(0);
         }
-        else if (CDataCenter::GetInstance()->audio_quality_ == TRTCAudioQualityDefault) {
+        else if (CDataCenter::GetInstance()->audio_quality_ == TRTCAudioQualityDefault)
+        {
             audio_quality_combo->SelectItem(1);
         }
-        else if (CDataCenter::GetInstance()->audio_quality_ == TRTCAudioQualityMusic) { 
+        else if (CDataCenter::GetInstance()->audio_quality_ == TRTCAudioQualityMusic)
+        {
             audio_quality_combo->SelectItem(2);
         }
-        else {
-            audio_quality_combo->SelectItem(1);
-        }
-       
-        if (CDataCenter::GetInstance()->m_bIsEnteredRoom == true) {
-            audio_quality_combo->SetEnabled(false);
+        else
+        {
+            if (CDataCenter::GetInstance()->m_sceneParams == TRTCAppSceneVideoCall ||
+                CDataCenter::GetInstance()->m_sceneParams ==  TRTCAppSceneAudioCall) { 
+                audio_quality_combo->SelectItem(0);
+            }
+            else {
+                audio_quality_combo->SelectItem(1);
+            }
         }
     }
 
@@ -2190,6 +2199,27 @@ void TRTCSettingViewController::updateRoleUi()
             {
                 pRoleAnchor->Selected(true);
             }
+        }
+    }
+}
+
+void TRTCSettingViewController::UpdateAudioQualityUi()
+{
+    if (CDataCenter::GetInstance()->m_sceneParams == TRTCAppSceneVideoCall ||
+        CDataCenter::GetInstance()->m_sceneParams ==  TRTCAppSceneAudioCall) {
+        CComboUI* audio_quality_combo = static_cast<CComboUI*>(m_pmUI.FindControl(_T("combo_audio_quality")));
+        if (CDataCenter::GetInstance()->audio_quality_ == TRTCAudioQualityUnSelect && audio_quality_combo) {
+            is_init_audio_quality_combo = true;
+            audio_quality_combo->SelectItem(0);
+        }
+    }
+    else
+    {
+        CComboUI* audio_quality_combo = static_cast<CComboUI*>(m_pmUI.FindControl(_T("combo_audio_quality")));
+        if (CDataCenter::GetInstance()->audio_quality_ == TRTCAudioQualityUnSelect && audio_quality_combo)
+        {
+            is_init_audio_quality_combo = true;
+            audio_quality_combo->SelectItem(1);
         }
     }
 }

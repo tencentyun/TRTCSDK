@@ -93,6 +93,7 @@ private:
     void stopAllTestSetting();
 private:
     void updateRoleUi();
+    void UpdateAudioQualityUi();
     void updateVideoBitrateUi();
     bool isCustomUploaderStreamIdValid(const std::string &streamId);
 public:
