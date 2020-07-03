@@ -13,6 +13,8 @@ def swift_pods
   pod 'Toast-Swift'
   pod 'Material'
   pod 'NVActivityIndicatorView'
+  pod 'SwiftyJSON'
+  pod 'HandyJSON'
 end
 
 def common_pods_all
