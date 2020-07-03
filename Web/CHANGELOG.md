@@ -6,6 +6,17 @@
   - patch：补丁号，如有功能改善或缺陷修复则该字段递增。
 - 我们建议您及时更新到最新版本以便获得更好的产品稳定性及在线支持！
 
+## 4.5.0 (2020-7-2)
+
+**Feature**
+
+- createStream 接口增加 screenAudio 参数
+
+**Bug Fixes**
+
+- 修复 Android 浏览器中回声消除不起作用的问题
+- 修复 getTransportStats 接口返回的 rtt 值为 NAN 的问题
+
 ## 4.4.0 (2020-5-28)
 
 **Feature**
