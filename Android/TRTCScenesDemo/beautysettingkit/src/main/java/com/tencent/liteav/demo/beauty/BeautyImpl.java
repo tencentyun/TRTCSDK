@@ -66,18 +66,18 @@ public class BeautyImpl implements Beauty {
     }
 
     @Override
-    public void setSpecialRatio(float specialRatio) {
-        mBeautyParams.mFilterMixLevel = specialRatio;
+    public void setFilterStrength(float strength) {
+        mBeautyParams.mFilterMixLevel = strength;
         if (mBeautyKit != null) {
-            mBeautyKit.setSpecialRatio(specialRatio);
+            mBeautyKit.setFilterStrength(strength);
         }
     }
 
     @Override
-    public void setGreenScreenFile(String path, boolean isLoop) {
+    public void setGreenScreenFile(String path) {
         mBeautyParams.mGreenFile = path;
         if (mBeautyKit != null) {
-            mBeautyKit.setGreenScreenFile(path, true);
+            mBeautyKit.setGreenScreenFile(path);
         }
     }
 
@@ -321,8 +321,8 @@ public class BeautyImpl implements Beauty {
         mBeautyParams = new BeautyParams();
         if (mBeautyKit != null) {
             mBeautyKit.setFilter(mBeautyParams.mFilterBmp, mBeautyParams.mFilterIndex);
-            mBeautyKit.setSpecialRatio(mBeautyParams.mFilterMixLevel);
-            mBeautyKit.setGreenScreenFile(mBeautyParams.mGreenFile, true);
+            mBeautyKit.setFilterStrength(mBeautyParams.mFilterMixLevel);
+            mBeautyKit.setGreenScreenFile(mBeautyParams.mGreenFile);
             mBeautyKit.setBeautyStyle(mBeautyParams.mBeautyStyle);
             mBeautyKit.setBeautyLevel(mBeautyParams.mBeautyLevel);
             mBeautyKit.setWhitenessLevel(mBeautyParams.mWhiteLevel);
@@ -420,7 +420,7 @@ public class BeautyImpl implements Beauty {
                 if (itemInfo.getItemType() == BeautyConstants.ITEM_TYPE_GREEN_GOOD_LUCK) {
                     file = "green_1.mp4";
                 }
-                setGreenScreenFile(file, true);
+                setGreenScreenFile(file);
                 break;
             default:
                 break;
@@ -432,13 +432,13 @@ public class BeautyImpl implements Beauty {
         int level = itemInfo.getItemLevel();
         switch (itemType) {
             case BeautyConstants.ITEM_TYPE_BEAUTY_SMOOTH:           // 光滑
-                setBeautyStyleAndLevel(1, level);
+                setBeautyStyleAndLevel(0, level);
                 break;
             case BeautyConstants.ITEM_TYPE_BEAUTY_NATURAL:          // 自然
-                setBeautyStyleAndLevel(2, level);
+                setBeautyStyleAndLevel(1, level);
                 break;
             case BeautyConstants.ITEM_TYPE_BEAUTY_PITU:             // 天天p图
-                setBeautyStyleAndLevel(3, level);
+                setBeautyStyleAndLevel(2, level);
                 break;
             case BeautyConstants.ITEM_TYPE_BEAUTY_WHITE:            // 美白
                 setWhitenessLevel(level);
@@ -511,7 +511,7 @@ public class BeautyImpl implements Beauty {
         mBeautyParams.mFilterBmp = bitmap;
         mBeautyParams.mFilterIndex = position;
         setFilter(bitmap, position);
-        setSpecialRatio(itemInfo.getItemLevel());
+        setFilterStrength(itemInfo.getItemLevel());
     }
 
     private void setMaterialEffects(@NonNull final TabInfo tabInfo, @NonNull final ItemInfo itemInfo) {

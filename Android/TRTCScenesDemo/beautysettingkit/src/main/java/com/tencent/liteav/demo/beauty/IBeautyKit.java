@@ -15,22 +15,19 @@ public interface IBeautyKit {
     /**
      * 设置滤镜效果程度
      *
-     * @param specialRatio : 从0到1，越大滤镜效果越明显，默认取值0.5
+     * @param strength : 从0到1，越大滤镜效果越明显，默认取值0.5
      */
-    void setSpecialRatio(float specialRatio);
+    void setFilterStrength(float strength);
 
     /**
-     * 设置绿幕文件 [仅支持企业版Pro]
-     * <p>目前图片支持jpg/png，视频支持mp4/3gp等Android系统支持的格式
-     * API要求18
+     * 设置绿幕文件（企业版有效，其它版本设置此参数无效）[API >= 18]
+     * <p>
+     * 此处的绿幕功能并非智能抠背，它需要被拍摄者的背后有一块绿色的幕布来辅助产生特效。
      *
-     * @param path   ：绿幕文件位置，支持两种方式：
-     *               1.资源文件放在assets目录，path直接取文件名
-     *               2.path取文件绝对路径
-     * @param isLoop ：图片文件忽略，视频文件设置是否循环播放
+     * @param path 视频文件路径。支持 MP4；null 表示关闭特效。
      */
     @TargetApi(18)
-    void setGreenScreenFile(String path, boolean isLoop);
+    void setGreenScreenFile(String path);
 
     /**
      * 设置美颜类型

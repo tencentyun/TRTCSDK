@@ -70,4 +70,6 @@ public class BeautyParams {
     public String mMotionTmplPath;
     // 绿幕
     public String mGreenFile;
+    // 滤镜效果程度
+    public int mFilterStrength;
 }

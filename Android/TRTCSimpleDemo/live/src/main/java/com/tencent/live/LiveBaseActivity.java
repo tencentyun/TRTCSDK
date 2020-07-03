@@ -54,6 +54,7 @@ public abstract class LiveBaseActivity extends AppCompatActivity implements View
     protected int                             mGrantedCount = 0;          // 权限个数计数，获取Android系统权限
     protected int                             mRoleType;                  // 房间角色类型
     protected int                             mLogLevel = 0;              // 日志等级
+    protected int                             mRoomUserCount = 0;         // 房间里人数（除去自己）
     protected String                          mRoomId;                    // 房间Id
     protected String                          mUserId;                    // 用户Id
     protected String                          mMainRoleAnchorId;          // 大主播Id（Demo中为演示和roomId相同）
@@ -122,7 +123,9 @@ public abstract class LiveBaseActivity extends AppCompatActivity implements View
     protected void onDestroy() {
         super.onDestroy();
         exitRoom();
-        mLiveRoomManager.destoryLiveRoom(mRoomId);
+        if (mRoomUserCount == 0) {
+            mLiveRoomManager.destoryLiveRoom(mRoomId);
+        }
         //销毁 trtc 实例
         if (mTRTCCloud != null) {
             mTRTCCloud.setListener(null);
@@ -149,6 +152,16 @@ public abstract class LiveBaseActivity extends AppCompatActivity implements View
         public TRTCCloudImplListener(LiveBaseActivity activity) {
             super();
             mContext = new WeakReference<>(activity);
+        }
+
+        @Override
+        public void onRemoteUserEnterRoom(String userId) {
+            mRoomUserCount ++;
+        }
+
+        @Override
+        public void onRemoteUserLeaveRoom(String userId, int reason) {
+            mRoomUserCount --;
         }
 
         @Override

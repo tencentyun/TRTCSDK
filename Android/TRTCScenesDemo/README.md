@@ -39,8 +39,7 @@
 ### 申请 SDKAPPID 和 SECRETKEY
 1. 登录实时音视频控制台，选择【开发辅助】>【[快速跑通Demo](https://console.cloud.tencent.com/trtc/quickstart)】。
 2. 单击【立即开始】，输入您的应用名称，例如`TestTRTC`，单击【创建应用】。
-
-![](https://main.qcloudimg.com/raw/169391f6711857dca6ed8cfce7b391bd.png)
+<img src="https://main.qcloudimg.com/raw/169391f6711857dca6ed8cfce7b391bd.png" width="650" height="295"/>
 3. 创建应用完成后，单击【我已下载，下一步】，可以查看 SDKAppID 和密钥信息。
 
 ### 配置 Demo 工程文件
@@ -49,9 +48,7 @@
 3. 设置`GenerateTestUserSig.java`文件中的相关参数：
   <ul><li>SDKAPPID：默认为 PLACEHOLDER ，请设置为实际的 SDKAppID。</li>
   <li>SECRETKEY：默认为空字符串，请设置为实际的密钥信息。</li></ul>
-
- ![](https://main.qcloudimg.com/raw/8fb309ce8c378dd3ad2c0099c57795a5.png)
-
+  <img src="https://main.qcloudimg.com/raw/8fb309ce8c378dd3ad2c0099c57795a5.png" width="650" height="295"/>
 4. 返回实时音视频控制台，单击【粘贴完成，下一步】。
 5. 单击【关闭指引，进入控制台管理应用】。
 
@@ -162,8 +159,7 @@ TRTC SDK 6.6 版本（2019年08月）开始启用新的签名算法 HMAC-SHA256�
 
 #### 2. 两台手机同时运行 Demo，为什么看不到彼此的画面？
 请确保两台手机在运行 Demo 时使用的是不同的 UserID，TRTC 不支持同一个 UserID （除非 SDKAppID 不同）在两个终端同时使用。
-
-![](https://main.qcloudimg.com/raw/c7b1589e1a637cf502c6728f3c3c4f99.png)
+<img src="https://main.qcloudimg.com/raw/c7b1589e1a637cf502c6728f3c3c4f99.png" width="600" height="434"/>
 
 #### 3. 防火墙有什么限制？
 由于 SDK 使用 UDP 协议进行音视频传输，所以在对 UDP 有拦截的办公网络下无法使用。如遇到类似问题，请参考 [应对公司防火墙限制](https://cloud.tencent.com/document/product/647/34399) 排查并解决。

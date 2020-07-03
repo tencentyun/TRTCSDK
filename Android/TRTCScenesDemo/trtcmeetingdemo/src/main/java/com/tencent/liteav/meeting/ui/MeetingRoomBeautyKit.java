@@ -21,15 +21,17 @@ public class MeetingRoomBeautyKit implements IBeautyKit {
     }
 
     @Override
-    public void setSpecialRatio(float specialRatio) {
-        if (mTRTCMeeting != null)
-            mTRTCMeeting.getBeautyManager().setFilterStrength(specialRatio / 10.0f);
+    public void setFilterStrength(float strength) {
+        if (mTRTCMeeting != null) {
+            mTRTCMeeting.getBeautyManager().setFilterStrength(strength / 10.0f);
+        }
     }
 
     @Override
-    public void setGreenScreenFile(String path, boolean isLoop) {
-        if (mTRTCMeeting != null)
+    public void setGreenScreenFile(String path) {
+        if (mTRTCMeeting != null) {
             mTRTCMeeting.getBeautyManager().setGreenScreenFile(path);
+        }
     }
 
     @Override
