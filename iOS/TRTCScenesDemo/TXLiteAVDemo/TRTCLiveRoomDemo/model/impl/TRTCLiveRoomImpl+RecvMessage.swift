@@ -56,8 +56,8 @@ extension TRTCLiveRoomImpl: V2TIMAdvancedMsgListener {
 
         let liveUser = TRTCLiveUserInfo()
         liveUser.userId = userID;
-        liveUser.userName = message.nickName;
-        liveUser.avatarURL = message.faceURL;
+        liveUser.userName = message.nickName ?? "";
+        liveUser.avatarURL = message.faceURL ?? "";
         
         if memberManager.anchors[liveUser.userId] == nil { //非主播 更新观众列表
             if action != .respondRoomPK {
@@ -170,8 +170,8 @@ extension TRTCLiveRoomImpl: V2TIMGroupListener {
         for memberInfo in memberList {
             let user = TRTCLiveUserInfo()
             user.userId = memberInfo.userID
-            user.userName = memberInfo.nickName
-            user.avatarURL = memberInfo.faceURL
+            user.userName = memberInfo.nickName ?? ""
+            user.avatarURL = memberInfo.faceURL ?? ""
             self.memberManager.addAudience(user)
         }
     }
@@ -184,8 +184,8 @@ extension TRTCLiveRoomImpl: V2TIMGroupListener {
         for memberInfo in memberList {
             let user = TRTCLiveUserInfo()
             user.userId = memberInfo.userID
-            user.userName = memberInfo.nickName
-            user.avatarURL = memberInfo.faceURL
+            user.userName = memberInfo.nickName ?? ""
+            user.avatarURL = memberInfo.faceURL ?? ""
             self.memberManager.addAudience(user)
         }
     }

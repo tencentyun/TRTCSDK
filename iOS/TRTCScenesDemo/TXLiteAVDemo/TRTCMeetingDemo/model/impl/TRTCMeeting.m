@@ -222,6 +222,8 @@ typedef void (^block)(TRTCMeeting *self);
 - (void)enterRTCRoomInternal {
     [[TRTCCloud sharedInstance] setDelegate:self];
     
+    [self setVideoEncoderParamInternal];
+    
     self.streamId = [NSString stringWithFormat:@"%u_%u_%@_main", self.sdkAppId, self.roomId, self.userId];
     
     TRTCParams *params = [[TRTCParams alloc] init];
@@ -309,6 +311,9 @@ typedef void (^block)(TRTCMeeting *self);
         NSString *realUserId = [self->_substreamMap valueForKey:userId];
         if (realUserId) {
             [[TRTCCloud sharedInstance] startRemoteSubStreamView:realUserId view:view];
+            // 辅流的话需要设置自适应渲染，以及旋转90度（因为电脑端的屏幕分享画面太大了）
+            [[TRTCCloud sharedInstance] setRemoteSubStreamViewFillMode:realUserId mode:TRTCVideoFillMode_Fit];
+            [[TRTCCloud sharedInstance] setRemoteSubStreamViewRotation:realUserId rotation:TRTCVideoRotation_90];
         } else {
             [[TRTCCloud sharedInstance] startRemoteView:userId view:view];
         }

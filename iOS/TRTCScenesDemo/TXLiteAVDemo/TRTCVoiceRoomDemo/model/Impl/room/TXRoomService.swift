@@ -93,11 +93,7 @@ public class TXRoomService: NSObject {
         imManager.getUsersInfo(userIds, succ: { [weak self] (infos: [V2TIMUserFullInfo]?) in
             guard let `self` = self else { return }
             guard let userFullInfos = infos else { return }
-            if userFullInfos.count > 0 {
-                self.selfUserName = userFullInfos[0].nickName
-            } else {
-                self.selfUserName = "";
-            }
+            self.selfUserName = userFullInfos.first?.nickName ?? ""
         }) { (code, error) in
             
         }
@@ -455,7 +451,7 @@ public class TXRoomService: NSObject {
             let userInfos = memberInfos.map { (info) -> TXUserInfo in
                 let userInfo =  TXUserInfo.init()
                 userInfo.userId = info.userID
-                userInfo.userName = info.nickName
+                userInfo.userName = info.nickName ?? ""
                 userInfo.avatarURL = info.faceURL
                 return userInfo
             }
@@ -697,8 +693,8 @@ extension TXRoomService: V2TIMSimpleMsgListener {
         }
         let userInfo = TXUserInfo.init()
         userInfo.userId = info.userID
-        userInfo.avatarURL = info.faceURL
-        userInfo.userName = info.nickName
+        userInfo.avatarURL = info.faceURL ?? ""
+        userInfo.userName = info.nickName ?? ""
         self.delegate?.onRoomRecvRoomTextMsg(roomID: roomId, message: text, userInfo: userInfo)
     }
     
@@ -725,8 +721,8 @@ extension TXRoomService: V2TIMSimpleMsgListener {
                     let cusPair = IMJsonHandle.poarseCusMsg(jsonObj: jsonObject)
                     let userInfo = TXUserInfo.init()
                     userInfo.userId = info.userID
-                    userInfo.avatarURL = info.faceURL
-                    userInfo.userName = info.nickName
+                    userInfo.avatarURL = info.faceURL ?? ""
+                    userInfo.userName = info.nickName ?? ""
                     self.delegate?.onRoomRecvRoomCustomMsg(roomID: roomId, cmd: cusPair.cmd, message: cusPair.message, userInfo: userInfo)
                 case IMJsonHandle.Define.CODE_ROOM_DESTROY:
                     exitRoom(callback: nil)
@@ -753,8 +749,8 @@ extension TXRoomService: V2TIMGroupListener {
             list.forEach { (v2TIMGroupMemberInfo) in
                 let userInfo = TXUserInfo.init()
                 userInfo.userId = v2TIMGroupMemberInfo.userID
-                userInfo.avatarURL = v2TIMGroupMemberInfo.faceURL
-                userInfo.userName = v2TIMGroupMemberInfo.nickName
+                userInfo.avatarURL = v2TIMGroupMemberInfo.faceURL ?? ""
+                userInfo.userName = v2TIMGroupMemberInfo.nickName ?? ""
                 self.delegate?.onRoomAudienceEnter(userInfo: userInfo)
             }
         }
@@ -767,8 +763,8 @@ extension TXRoomService: V2TIMGroupListener {
         if let v2TIMGroupMemberInfo = member {
             let userInfo = TXUserInfo.init()
             userInfo.userId = v2TIMGroupMemberInfo.userID
-            userInfo.avatarURL = v2TIMGroupMemberInfo.faceURL
-            userInfo.userName = v2TIMGroupMemberInfo.nickName
+            userInfo.avatarURL = v2TIMGroupMemberInfo.faceURL ?? ""
+            userInfo.userName = v2TIMGroupMemberInfo.nickName ?? ""
             self.delegate?.onRoomAudienceLeave(userInfo: userInfo)
         }
     }

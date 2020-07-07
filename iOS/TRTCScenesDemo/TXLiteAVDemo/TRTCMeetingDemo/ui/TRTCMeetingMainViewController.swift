@@ -186,6 +186,9 @@ class TRTCMeetingMainViewController: UIViewController, TRTCMeetingDelegate,
         
         // 使用默认的美颜参数
         beautyPannel.resetAndApplyValues()
+        
+        // 开启镜像
+        TRTCMeeting.sharedInstance().setLocalViewMirror(TRTCLocalVideoMirrorType.enable)
     }
     
     func createOrEnterMeeting() {

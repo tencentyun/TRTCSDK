@@ -8,6 +8,26 @@
 
 import UIKit
 
+class TRTCMeetingBitrateTable : NSObject {
+    var resolutionName: String = ""
+    var resolution: Int = 0
+    var defaultBitrate: Float = 0
+    var minBitrate: Float = 0
+    var maxBitrate: Float = 0
+    var stepBitrate: Float = 0
+    
+    init(resolutionName: String, resolution: Int, defaultBitrate: Float, minBitrate: Float, maxBitrate: Float, stepBitrate: Float) {
+        super.init()
+        
+        self.resolutionName = resolutionName
+        self.resolution = resolution
+        self.defaultBitrate = defaultBitrate
+        self.minBitrate = minBitrate
+        self.maxBitrate = maxBitrate
+        self.stepBitrate = stepBitrate
+    }
+}
+
 class TRTCMeetingMoreViewVideoVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
     let TAG_RESOLUTION = 100
     let TAG_FPS = 200
@@ -55,30 +75,37 @@ class TRTCMeetingMoreViewVideoVC: UIViewController, UIPickerViewDelegate, UIPick
     lazy var mirrorSwich: UISwitch = {
         let swich = UISwitch(frame: CGRect(x: UIScreen.main.bounds.size.width / 7.0*5.5, y: 177, width: 50, height: 23))
         swich.onTintColor = .blue
+        swich.isOn = true // 默认是开启镜像的
         swich.addTarget(self, action: #selector(mirrorSwitchChanged), for: .valueChanged)
         return swich
     }()
 
-    // 码率和帧率
-    var bitrateArray = [Int]()
+    // 帧率
     let frameArray = ["15", "20"]
     
-    // 创建分辨率, resolutionIndexArray 为对应分辨率的索引，详见定义：TRTCVideoResolution
-    let resolutionIndexArray = [Int](arrayLiteral: 3, 104, 56, 7, 108, 62, 110, 112, 114)
-    let resolutionArray = ["160 * 160", "180 * 320", "240 * 320", "480 * 480", "360 * 640", "480 * 640", "540 * 960", "720 * 1280", "1080 * 1920"]
-    
+    // 创建码表, resolution 的值详见：TRTCVideoResolution
+    let bitrateTable = [TRTCMeetingBitrateTable](
+        arrayLiteral:
+        TRTCMeetingBitrateTable(resolutionName: "160 * 160", resolution: 3, defaultBitrate: 300, minBitrate: 40, maxBitrate: 300, stepBitrate: 10),
+        TRTCMeetingBitrateTable(resolutionName: "180 * 320", resolution: 104, defaultBitrate: 350, minBitrate: 80, maxBitrate: 350, stepBitrate: 10),
+        TRTCMeetingBitrateTable(resolutionName: "240 * 320", resolution: 56, defaultBitrate: 400, minBitrate: 100, maxBitrate: 400, stepBitrate: 10),
+        TRTCMeetingBitrateTable(resolutionName: "480 * 480", resolution: 7, defaultBitrate: 750, minBitrate: 200, maxBitrate: 1000, stepBitrate: 10),
+        TRTCMeetingBitrateTable(resolutionName: "360 * 640", resolution: 108, defaultBitrate: 900, minBitrate: 200, maxBitrate: 1000, stepBitrate: 10),
+        TRTCMeetingBitrateTable(resolutionName: "480 * 640", resolution: 62, defaultBitrate: 1000, minBitrate: 250, maxBitrate: 1000, stepBitrate: 50),
+        TRTCMeetingBitrateTable(resolutionName: "540 * 960", resolution: 110, defaultBitrate: 1350, minBitrate: 400, maxBitrate: 1600, stepBitrate: 50),
+        TRTCMeetingBitrateTable(resolutionName: "720 * 1280", resolution: 112, defaultBitrate: 1850, minBitrate: 500, maxBitrate: 2000, stepBitrate: 50),
+        TRTCMeetingBitrateTable(resolutionName: "1080 * 1920", resolution: 114, defaultBitrate: 1900, minBitrate: 800, maxBitrate: 3000, stepBitrate: 50)
+    )
+    var bitrateIndex = 6 // 默认540 * 960
     
     // 码率SliderView
     lazy var bitrateSlider: UISlider = {
-        // 设定值400～1600
-        for index in 0...24 {
-            bitrateArray.append(index * 50 + 400)
-        }
+        let slider = UISlider(frame: CGRect(x: UIScreen.main.bounds.size.width / 7.0*2.5 - 8, y: 136, width: UIScreen.main.bounds.size.width / 2.0*0.8, height: 10))
         
-        let slider = UISlider(frame: CGRect(x: UIScreen.main.bounds.size.width / 7.0*2.5, y: 136, width: UIScreen.main.bounds.size.width / 2.0*0.8, height: 10))
-        slider.minimumValue = 400
-        slider.maximumValue = 1600
-        slider.value = 1000
+        let item = bitrateTable[bitrateIndex]
+        slider.minimumValue = item.minBitrate / item.stepBitrate
+        slider.maximumValue = item.maxBitrate / item.stepBitrate
+        slider.value = item.defaultBitrate / item.stepBitrate
         slider.addTarget(self, action: #selector(bitrateSliderChanged), for: .valueChanged)
         
         return slider
@@ -90,27 +117,23 @@ class TRTCMeetingMoreViewVideoVC: UIViewController, UIPickerViewDelegate, UIPick
         label.textAlignment = NSTextAlignment.left
         label.textColor = .white
         label.font = UIFont.systemFont(ofSize: 18)
+        label.text = String(Int(bitrateTable[bitrateIndex].defaultBitrate)) + "kbps"
         return label
     }()
     
     // 本地镜像开关切换函数
     @objc func mirrorSwitchChanged(_ sw: UISwitch) {
         if (sw.isOn) {
-            let mirrorOpen = TRTCLocalVideoMirrorType(rawValue: 2)!
-            TRTCMeeting.sharedInstance().setLocalViewMirror(mirrorOpen);
+            TRTCMeeting.sharedInstance().setLocalViewMirror(TRTCLocalVideoMirrorType.enable);
         } else {
-            let mirrorClose = TRTCLocalVideoMirrorType(rawValue: 1)!
-            TRTCMeeting.sharedInstance().setLocalViewMirror(mirrorClose);
+            TRTCMeeting.sharedInstance().setLocalViewMirror(TRTCLocalVideoMirrorType.disable);
         }
     }
     
     
     // 滑动条拖动函数
     @objc func bitrateSliderChanged(_ slider: UISlider) {
-        let value = bitrateArray[(Int(slider.value) - 400) / 50]
-        bitrateShowLabel.text = String(value) + "kbps"
-        
-        TRTCMeeting.sharedInstance().setVideoBitrate(Int32(value))
+        updateBitrate(bitrate: Int(slider.value * bitrateTable[bitrateIndex].stepBitrate))
     }
 
     
@@ -138,7 +161,7 @@ class TRTCMeetingMoreViewVideoVC: UIViewController, UIPickerViewDelegate, UIPick
         resolutionTextField.inputView = pickerViewResolution
         
         // 设置textField预设内容
-        resolutionTextField.text = resolutionArray[6]
+        resolutionTextField.text = bitrateTable[bitrateIndex].resolutionName
         
         resolutionTextField.backgroundColor = .clear
         resolutionTextField.textAlignment = .left
@@ -203,21 +226,20 @@ class TRTCMeetingMoreViewVideoVC: UIViewController, UIPickerViewDelegate, UIPick
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        if pickerView.tag == 100 {
-            return resolutionArray.count
+        if pickerView.tag == TAG_RESOLUTION {
+            return bitrateTable.count
         }
-        else if pickerView.tag == 200 {
+        else if pickerView.tag == TAG_FPS {
             return frameArray.count
         }
         return 1
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        
-        if pickerView.tag == 100 {
-            return resolutionArray[row]
+        if pickerView.tag == TAG_RESOLUTION {
+            return bitrateTable[row].resolutionName
         }
-        else if pickerView.tag == 200 {
+        else if pickerView.tag == TAG_FPS {
             return frameArray[row]
         }
         return ""
@@ -225,27 +247,44 @@ class TRTCMeetingMoreViewVideoVC: UIViewController, UIPickerViewDelegate, UIPick
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if pickerView.tag == TAG_RESOLUTION {
-            let myTextField = self.view.viewWithTag(100) as? UITextField
-            myTextField?.text = resolutionArray[row]
             print("分辨率选择完毕")
-            
-            let resolution = TRTCVideoResolution(rawValue: resolutionIndexArray[row])!
-            TRTCMeeting.sharedInstance().setVideoResolution(resolution)
+            updateResolution(index: row)
             
         } else if pickerView.tag == TAG_FPS {
-            let myTextField = self.view.viewWithTag(200) as? UITextField
-            myTextField?.text = frameArray[row]
             print("帧率选择完毕")
-            
-
-            TRTCMeeting.sharedInstance().setVideoFps(Int32((myTextField?.text)!)!)
-            print(Int32((myTextField?.text)!)!)
+            updateFps(index: row)
         }
+    }
+    
+    func updateResolution(index: Int) {
+        bitrateIndex = index
+        
+        let item = bitrateTable[bitrateIndex]
+        
+        // 更新分辨率
+        resolutionTextField.text = item.resolutionName
+        let resolution = TRTCVideoResolution(rawValue: item.resolution)!
+        TRTCMeeting.sharedInstance().setVideoResolution(resolution)
+        
+        // 设置码率进度条 && 更新码率
+        bitrateSlider.minimumValue = item.minBitrate / item.stepBitrate
+        bitrateSlider.maximumValue = item.maxBitrate / item.stepBitrate
+        bitrateSlider.value = item.defaultBitrate / item.stepBitrate
+        updateBitrate(bitrate: Int(item.defaultBitrate))
+    }
+    
+    func updateFps(index: Int) {
+        fpsTextField.text = frameArray[index]
+        TRTCMeeting.sharedInstance().setVideoFps(Int32(frameArray[index])!)
+    }
+    
+    func updateBitrate(bitrate: Int) {
+        bitrateShowLabel.text = String(bitrate) + "kbps"
+        TRTCMeeting.sharedInstance().setVideoBitrate(Int32(bitrate))
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        bitrateShowLabel.text = String(bitrateArray[(Int(bitrateSlider.value) - 400) / 50]) + "kbps"
     }
     
     //点击空白处隐藏编辑状态

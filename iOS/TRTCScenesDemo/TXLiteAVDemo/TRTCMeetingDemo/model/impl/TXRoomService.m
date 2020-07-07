@@ -410,7 +410,6 @@ static TXRoomService *_sharedInstance = nil;
         userInfo.avatarURL = info.faceURL;
         userInfo.userId = info.userID;
         userInfo.userName = info.nickName;
-        
         [self.delegate onRoomRecvRoomTextMsg:self.mRoomId message:text userInfo:userInfo];
     }
 }

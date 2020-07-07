@@ -30,6 +30,7 @@ class TRTCVoiceRoomSeatView: UIView {
         super.init(frame: frame)
         bindInteraction()
         stateChange()
+        setupStyle()
     }
     
     required init?(coder: NSCoder) {
@@ -87,6 +88,10 @@ class TRTCVoiceRoomSeatView: UIView {
         activateConstraints() // 生成约束（此时有可能拿不到父视图正确的frame）
     }
 
+    func setupStyle() {
+        backgroundColor = .clear
+    }
+    
     func constructViewHierarchy() {
         /// 此方法内只做add子视图操作
         addSubview(avatarImageView)
