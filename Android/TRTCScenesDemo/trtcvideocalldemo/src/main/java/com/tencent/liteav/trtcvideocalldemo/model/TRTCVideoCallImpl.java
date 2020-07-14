@@ -392,14 +392,6 @@ public class TRTCVideoCallImpl implements ITRTCVideoCall {
                     }
                 }
                 break;
-            case CallModel.VIDEO_CALL_ACTION_HANGUP:
-                if (mCurCallID.equals(callModel.callId)) {
-                    stopCall();
-                    if (mTRTCInteralListenerManager != null) {
-                        mTRTCInteralListenerManager.onCallEnd();
-                    }
-                }
-                break;
             case CallModel.VIDEO_CALL_ACTION_REJECT:
                 if (mCurCallID.equals(callModel.callId)) {
                     mCurInvitedList.remove(user);
