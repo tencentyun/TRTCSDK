@@ -8,8 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		1DC7F349A2B6380DCA056281 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
+		1E946B7E77D390ED88A493CC /* LoginViewController+UI_Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A5F0E9DEB5EA596636A3CF /* LoginViewController+UI_Mock.swift */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		1EA0A986FB03B486F983DE95 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
-		1FAC064252CEBB33E81BD2C9 /* AppUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A70CCE776C990CAF79A58D56 /* AppUtils.swift */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		3BDE0E749D94050D15D5E615 /* LoginViewController_Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5014C39034034DDAB90AC37 /* LoginViewController_Mock.swift */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		40091E661F4FCBB9009B882D /* UIButton+Glossy.m in Sources */ = {isa = PBXBuildFile; fileRef = 40F8534B1EE8FCDF00EE47D7 /* UIButton+Glossy.m */; };
 		40091E6B1F4FCBB9009B882D /* ScanQRController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 40F853561EE8FCDF00EE47D7 /* ScanQRController.mm */; };
 		40091E6F1F4FCBB9009B882D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 40F853261EE8FC8400EE47D7 /* AppDelegate.m */; };
@@ -866,7 +867,6 @@
 		45F21F82244714E8006B8B4D /* TRTCAudioCall.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 45F21F81244714E8006B8B4D /* TRTCAudioCall.storyboard */; };
 		45F3B3A1232A239D00666F7C /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40F855361EE8FDAD00EE47D7 /* AssetsLibrary.framework */; };
 		4B6BFC9AAE7FC00699D73AA8 /* libPods-TXLiteAVDemo_TRTC_AppStore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A256AF019D8E84B3B797494C /* libPods-TXLiteAVDemo_TRTC_AppStore.a */; };
-		4E614FE3FDAC343EF617E6A2 /* ProfileViewController+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9FF100DD360E29957DD9EA8 /* ProfileViewController+UI.swift */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		51A289FB230FB95800B9B73F /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51A289F8230FB93A00B9B73F /* OpenAL.framework */; };
 		51A289FC230FB96000B9B73F /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51A289F8230FB93A00B9B73F /* OpenAL.framework */; };
 		51CE9F98231944BE00B620BD /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51A289F8230FB93A00B9B73F /* OpenAL.framework */; };
@@ -1001,7 +1001,7 @@
 		6AAEC2C52497807200B57D86 /* TXMeetingPair.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AAEC2672497807200B57D86 /* TXMeetingPair.m */; };
 		6AAEC2C62497807200B57D86 /* TXMeetingPair.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AAEC2672497807200B57D86 /* TXMeetingPair.m */; };
 		6AAEC3A52499F93300B57D86 /* TXLiteAVSDK_ReplayKitExt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AAEC38A2499E08100B57D86 /* TXLiteAVSDK_ReplayKitExt.framework */; };
-		70E7365E0080AA2E8DD55F6D /* CommonUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67E13F501F220EE854E2B74 /* CommonUtils.swift */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		72777A6D4DDE10CDD3C7A90F /* AppUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72C3AB166F13E61385889F36 /* AppUtils.swift */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		7B107D8F4C4B5BF9184EC193 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
 		910E179F2080A27500178D86 /* TXMoviePlayerNetApi.m in Sources */ = {isa = PBXBuildFile; fileRef = 910E179E2080A27500178D86 /* TXMoviePlayerNetApi.m */; };
 		910E17A02080A27500178D86 /* TXMoviePlayerNetApi.m in Sources */ = {isa = PBXBuildFile; fileRef = 910E179E2080A27500178D86 /* TXMoviePlayerNetApi.m */; };
@@ -1033,7 +1033,6 @@
 		91F87A801FF4A101001644B1 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 91F87A7E1FF4A0FC001644B1 /* libsqlite3.tbd */; };
 		91F87A811FF4A109001644B1 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 91F87A7E1FF4A0FC001644B1 /* libsqlite3.tbd */; };
 		944B0A98D288A86246E2C14B /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
-		9B452442AFE8C43AAAEBD4FD /* LoginViewController_Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8078A1E14F1104B33D0310D /* LoginViewController_Mock.swift */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		A035040820D20A01007E61C6 /* QRCode.m in Sources */ = {isa = PBXBuildFile; fileRef = A035040720D20A01007E61C6 /* QRCode.m */; };
 		A035040920D20A01007E61C6 /* QRCode.m in Sources */ = {isa = PBXBuildFile; fileRef = A035040720D20A01007E61C6 /* QRCode.m */; };
 		A035040A20D20A01007E61C6 /* QRCode.m in Sources */ = {isa = PBXBuildFile; fileRef = A035040720D20A01007E61C6 /* QRCode.m */; };
@@ -1094,9 +1093,9 @@
 		A0FFAD94213791B70087FF45 /* TVCHttpMessageURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = A0FFAD93213791B70087FF45 /* TVCHttpMessageURLProtocol.m */; };
 		A0FFAD96213791B70087FF45 /* TVCHttpMessageURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = A0FFAD93213791B70087FF45 /* TVCHttpMessageURLProtocol.m */; };
 		A0FFAD99213791B70087FF45 /* TVCHttpMessageURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = A0FFAD93213791B70087FF45 /* TVCHttpMessageURLProtocol.m */; };
+		A73B743F86C2132935F62F8C /* CommonUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3C4FFAEECB5B78C75E5808 /* CommonUtils.swift */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		AD46F8122E371DDC340EC797 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 508DEE89962FCB80A5D0D740 /* ProfileViewController.swift */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		BD32F8A6AF7CC2FF9A53096E /* libPods-TXLiteAVDemo_TRTC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A32AD4BB38080AB19D3659FC /* libPods-TXLiteAVDemo_TRTC.a */; };
-		C4A770919B3406AD893BAD77 /* ProfileManager_Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22533BDA79B4ED7A791E27D8 /* ProfileManager_Mock.swift */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		C934A92B43EFF7458BBF8E4B /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF0198E0296AAD6E6F557177 /* ProfileViewController.swift */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		CE01F53E206DDE060056D693 /* VideoCompressPreviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE01F53D206DDE060056D693 /* VideoCompressPreviewController.m */; };
 		CE01F53F206DDE060056D693 /* VideoCompressPreviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE01F53D206DDE060056D693 /* VideoCompressPreviewController.m */; };
 		CE01F541206DDE060056D693 /* VideoCompressPreviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE01F53D206DDE060056D693 /* VideoCompressPreviewController.m */; };
@@ -1238,8 +1237,9 @@
 		D6E5D1C320B7B62000812B2F /* ScreenPushViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D6E5D1C220B7B62000812B2F /* ScreenPushViewController.m */; };
 		D6E5D1C420B7B62000812B2F /* ScreenPushViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D6E5D1C220B7B62000812B2F /* ScreenPushViewController.m */; };
 		D6E5D1C520B7B62000812B2F /* ScreenPushViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D6E5D1C220B7B62000812B2F /* ScreenPushViewController.m */; };
+		E44D18B774C75EF44A2CE590 /* ProfileManager_Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BEF8ED393498CCB18DC720D /* ProfileManager_Mock.swift */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		EF69648B8809D6DEA1B7139D /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
-		F0C6C939DEA52326453A4F4D /* LoginViewController+UI_Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68DA4CD1220DAFDD97846652 /* LoginViewController+UI_Mock.swift */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		F14DFF63B2DC73855C2ED2FC /* ProfileViewController+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78E46FD200BED25737C50F3 /* ProfileViewController+UI.swift */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		FDD4BF2B24A1F8AE0015388B /* VideoEditor.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FDD4BF2824A1F8AD0015388B /* VideoEditor.xcassets */; };
 		FDD4BF2C24A1F8AE0015388B /* VideoEditor.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FDD4BF2824A1F8AD0015388B /* VideoEditor.xcassets */; };
 		FDD4BF2D24A1F8AE0015388B /* VideoEditor.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FDD4BF2824A1F8AD0015388B /* VideoEditor.xcassets */; };
@@ -1492,7 +1492,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		22533BDA79B4ED7A791E27D8 /* ProfileManager_Mock.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ProfileManager_Mock.swift; sourceTree = "<group>"; };
+		15A5F0E9DEB5EA596636A3CF /* LoginViewController+UI_Mock.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "LoginViewController+UI_Mock.swift"; sourceTree = "<group>"; };
+		2E3C4FFAEECB5B78C75E5808 /* CommonUtils.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CommonUtils.swift; sourceTree = "<group>"; };
 		4004FF601EC7FB44D81E5934 /* Pods-TXReplaykitUpload_TRTC.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TXReplaykitUpload_TRTC.release.xcconfig"; path = "Target Support Files/Pods-TXReplaykitUpload_TRTC/Pods-TXReplaykitUpload_TRTC.release.xcconfig"; sourceTree = "<group>"; };
 		401A9B3D247FCC7600C0763B /* AudioEffectSettingKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = AudioEffectSettingKit.xcodeproj; sourceTree = "<group>"; };
 		402A00DD2450552E0037A219 /* TXLiteAVDemo-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TXLiteAVDemo-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -1742,11 +1743,11 @@
 		45E74D9A23B22BCD00C22B31 /* ThemeConfigurator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ThemeConfigurator.m; sourceTree = "<group>"; };
 		45F21F81244714E8006B8B4D /* TRTCAudioCall.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = TRTCAudioCall.storyboard; sourceTree = "<group>"; };
 		4B4B291177070EC8D226E1E2 /* Pods-TXLiteAVDemo_TRTC_AppStore.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TXLiteAVDemo_TRTC_AppStore.release.xcconfig"; path = "Target Support Files/Pods-TXLiteAVDemo_TRTC_AppStore/Pods-TXLiteAVDemo_TRTC_AppStore.release.xcconfig"; sourceTree = "<group>"; };
+		508DEE89962FCB80A5D0D740 /* ProfileViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		51A289F8230FB93A00B9B73F /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
 		51A4AD391F1F8AE300B4A806 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		5BD8B4F3BB859A4568C43B7D /* Pods-TXLiteAVDemo_TRTC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TXLiteAVDemo_TRTC.debug.xcconfig"; path = "Target Support Files/Pods-TXLiteAVDemo_TRTC/Pods-TXLiteAVDemo_TRTC.debug.xcconfig"; sourceTree = "<group>"; };
 		5F28DD5C7D1447D301DA8208 /* Pods-TXReplaykitUpload_TRTC_AppStore.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TXReplaykitUpload_TRTC_AppStore.debug.xcconfig"; path = "Target Support Files/Pods-TXReplaykitUpload_TRTC_AppStore/Pods-TXReplaykitUpload_TRTC_AppStore.debug.xcconfig"; sourceTree = "<group>"; };
-		68DA4CD1220DAFDD97846652 /* LoginViewController+UI_Mock.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "LoginViewController+UI_Mock.swift"; sourceTree = "<group>"; };
 		6A03ED3F1FD13DFB00F2F063 /* UIViewController+BackButtonHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+BackButtonHandler.m"; sourceTree = "<group>"; };
 		6A03ED401FD13DFB00F2F063 /* UIViewController+BackButtonHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+BackButtonHandler.h"; sourceTree = "<group>"; };
 		6A1C108A2281A674005D7BD9 /* PushLogView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PushLogView.h; sourceTree = "<group>"; };
@@ -1792,7 +1793,9 @@
 		6AAEC2692497807200B57D86 /* IMProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMProtocol.h; sourceTree = "<group>"; };
 		6AAEC26A2497807200B57D86 /* TRTCMeetingDef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCMeetingDef.h; sourceTree = "<group>"; };
 		6AAEC38A2499E08100B57D86 /* TXLiteAVSDK_ReplayKitExt.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TXLiteAVSDK_ReplayKitExt.framework; sourceTree = "<group>"; };
+		72C3AB166F13E61385889F36 /* AppUtils.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppUtils.swift; sourceTree = "<group>"; };
 		78833A06B3E3C43A9C3CD304 /* Pods-TXReplaykitUpload_TRTC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TXReplaykitUpload_TRTC.debug.xcconfig"; path = "Target Support Files/Pods-TXReplaykitUpload_TRTC/Pods-TXReplaykitUpload_TRTC.debug.xcconfig"; sourceTree = "<group>"; };
+		7BEF8ED393498CCB18DC720D /* ProfileManager_Mock.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ProfileManager_Mock.swift; sourceTree = "<group>"; };
 		910E179D2080A27500178D86 /* TXMoviePlayerNetApi.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXMoviePlayerNetApi.h; sourceTree = "<group>"; };
 		910E179E2080A27500178D86 /* TXMoviePlayerNetApi.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TXMoviePlayerNetApi.m; sourceTree = "<group>"; };
 		910E17A52080A2EB00178D86 /* TXMoviePlayerNetDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXMoviePlayerNetDelegate.h; sourceTree = "<group>"; };
@@ -1851,7 +1854,8 @@
 		A0FFAD93213791B70087FF45 /* TVCHttpMessageURLProtocol.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TVCHttpMessageURLProtocol.m; sourceTree = "<group>"; };
 		A256AF019D8E84B3B797494C /* libPods-TXLiteAVDemo_TRTC_AppStore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TXLiteAVDemo_TRTC_AppStore.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A32AD4BB38080AB19D3659FC /* libPods-TXLiteAVDemo_TRTC.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TXLiteAVDemo_TRTC.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		A70CCE776C990CAF79A58D56 /* AppUtils.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppUtils.swift; sourceTree = "<group>"; };
+		A78E46FD200BED25737C50F3 /* ProfileViewController+UI.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "ProfileViewController+UI.swift"; sourceTree = "<group>"; };
+		C5014C39034034DDAB90AC37 /* LoginViewController_Mock.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LoginViewController_Mock.swift; sourceTree = "<group>"; };
 		CE01F53C206DDE060056D693 /* VideoCompressPreviewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoCompressPreviewController.h; sourceTree = "<group>"; };
 		CE01F53D206DDE060056D693 /* VideoCompressPreviewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoCompressPreviewController.m; sourceTree = "<group>"; };
 		CE45D2971F15C527003506D1 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
@@ -1894,7 +1898,6 @@
 		D61B48491FB59EF0002F0C6C /* TCHttpUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TCHttpUtil.h; sourceTree = "<group>"; };
 		D61B484A1FB59EF0002F0C6C /* TCHttpUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TCHttpUtil.m; sourceTree = "<group>"; };
 		D650607A20EE145F00C8BC44 /* libc.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libc.tbd; path = usr/lib/libc.tbd; sourceTree = SDKROOT; };
-		D67E13F501F220EE854E2B74 /* CommonUtils.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CommonUtils.swift; sourceTree = "<group>"; };
 		D6BEF6442040179600CBE2BD /* VideoPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoPreviewViewController.h; sourceTree = "<group>"; };
 		D6BEF6452040179600CBE2BD /* VideoPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoPreviewViewController.m; sourceTree = "<group>"; };
 		D6BEF68420401BD800CBE2BD /* VideoPreview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoPreview.h; sourceTree = "<group>"; };
@@ -1916,10 +1919,7 @@
 		D6E5D1C020B7B61F00812B2F /* ReplayKit2Define.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplayKit2Define.h; sourceTree = "<group>"; };
 		D6E5D1C120B7B62000812B2F /* ScreenPushViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScreenPushViewController.h; sourceTree = "<group>"; };
 		D6E5D1C220B7B62000812B2F /* ScreenPushViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScreenPushViewController.m; sourceTree = "<group>"; };
-		D9FF100DD360E29957DD9EA8 /* ProfileViewController+UI.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "ProfileViewController+UI.swift"; sourceTree = "<group>"; };
-		DF0198E0296AAD6E6F557177 /* ProfileViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		E0D8BC526E0FAB3AC4FA5FB4 /* Pods-TXLiteAVDemo_TRTC_AppStore.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TXLiteAVDemo_TRTC_AppStore.debug.xcconfig"; path = "Target Support Files/Pods-TXLiteAVDemo_TRTC_AppStore/Pods-TXLiteAVDemo_TRTC_AppStore.debug.xcconfig"; sourceTree = "<group>"; };
-		E8078A1E14F1104B33D0310D /* LoginViewController_Mock.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LoginViewController_Mock.swift; sourceTree = "<group>"; };
 		E95CAD575C1A00021285A090 /* Pods-TXLiteAVDemo_TRTC.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TXLiteAVDemo_TRTC.release.xcconfig"; path = "Target Support Files/Pods-TXLiteAVDemo_TRTC/Pods-TXLiteAVDemo_TRTC.release.xcconfig"; sourceTree = "<group>"; };
 		FC847F58E175350391991E4C /* Pods-TXReplaykitUpload_TRTC_AppStore.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TXReplaykitUpload_TRTC_AppStore.release.xcconfig"; path = "Target Support Files/Pods-TXReplaykitUpload_TRTC_AppStore/Pods-TXReplaykitUpload_TRTC_AppStore.release.xcconfig"; sourceTree = "<group>"; };
 		FDD4BF2824A1F8AD0015388B /* VideoEditor.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = VideoEditor.xcassets; sourceTree = "<group>"; };
@@ -2547,7 +2547,7 @@
 				4090F614246ADBBF00EA72A0 /* TRTCMeetingDemo */,
 				40F8531D1EE8FC1E00EE47D7 /* Supporting Files */,
 				40AA533424458EC800303EF7 /* BeautySettingKit */,
-				A55ED0482F13FF8D4F665761 /* Login */,
+				AAFBD6E501E2EE61422E19E9 /* Login */,
 			);
 			path = TXLiteAVDemo;
 			sourceTree = "<group>";
@@ -2814,16 +2814,16 @@
 			path = include;
 			sourceTree = "<group>";
 		};
-		A55ED0482F13FF8D4F665761 /* Login */ = {
+		AAFBD6E501E2EE61422E19E9 /* Login */ = {
 			isa = PBXGroup;
 			children = (
-				E8078A1E14F1104B33D0310D /* LoginViewController_Mock.swift */,
-				22533BDA79B4ED7A791E27D8 /* ProfileManager_Mock.swift */,
-				68DA4CD1220DAFDD97846652 /* LoginViewController+UI_Mock.swift */,
-				A70CCE776C990CAF79A58D56 /* AppUtils.swift */,
-				D67E13F501F220EE854E2B74 /* CommonUtils.swift */,
-				DF0198E0296AAD6E6F557177 /* ProfileViewController.swift */,
-				D9FF100DD360E29957DD9EA8 /* ProfileViewController+UI.swift */,
+				C5014C39034034DDAB90AC37 /* LoginViewController_Mock.swift */,
+				7BEF8ED393498CCB18DC720D /* ProfileManager_Mock.swift */,
+				15A5F0E9DEB5EA596636A3CF /* LoginViewController+UI_Mock.swift */,
+				72C3AB166F13E61385889F36 /* AppUtils.swift */,
+				2E3C4FFAEECB5B78C75E5808 /* CommonUtils.swift */,
+				508DEE89962FCB80A5D0D740 /* ProfileViewController.swift */,
+				A78E46FD200BED25737C50F3 /* ProfileViewController+UI.swift */,
 			);
 			name = Login;
 			path = TXLiteAVDemo/Login;
@@ -3362,13 +3362,13 @@
 				40B3F96E2446E6C6000C37A3 /* VideoCallUtils.swift in Sources */,
 				40B3F99E2446E6C6000C37A3 /* LiveRoomMainViewController.swift in Sources */,
 				40B3F9762446E6C6000C37A3 /* AudioSelectContactViewController.swift in Sources */,
-				9B452442AFE8C43AAAEBD4FD /* LoginViewController_Mock.swift in Sources */,
-				C4A770919B3406AD893BAD77 /* ProfileManager_Mock.swift in Sources */,
-				F0C6C939DEA52326453A4F4D /* LoginViewController+UI_Mock.swift in Sources */,
-				1FAC064252CEBB33E81BD2C9 /* AppUtils.swift in Sources */,
-				70E7365E0080AA2E8DD55F6D /* CommonUtils.swift in Sources */,
-				C934A92B43EFF7458BBF8E4B /* ProfileViewController.swift in Sources */,
-				4E614FE3FDAC343EF617E6A2 /* ProfileViewController+UI.swift in Sources */,
+				3BDE0E749D94050D15D5E615 /* LoginViewController_Mock.swift in Sources */,
+				E44D18B774C75EF44A2CE590 /* ProfileManager_Mock.swift in Sources */,
+				1E946B7E77D390ED88A493CC /* LoginViewController+UI_Mock.swift in Sources */,
+				72777A6D4DDE10CDD3C7A90F /* AppUtils.swift in Sources */,
+				A73B743F86C2132935F62F8C /* CommonUtils.swift in Sources */,
+				AD46F8122E371DDC340EC797 /* ProfileViewController.swift in Sources */,
+				F14DFF63B2DC73855C2ED2FC /* ProfileViewController+UI.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
