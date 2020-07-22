@@ -1,12 +1,13 @@
 package com.tencent.trtcsimpledemo;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.tencent.custom.CustomEntranceActivity;
 import com.tencent.liteav.screen.ScreenEntranceActivity;
 import com.tencent.live.LiveRoomListActivity;
 import com.tencent.rtc.RTCEntranceActivity;
@@ -23,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 findViewById(R.id.launch_view).setVisibility(View.GONE);
             }
-        },1000);
+        }, 1000);
         findViewById(R.id.bt_rtc).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -42,6 +43,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, ScreenEntranceActivity.class);
+                startActivity(intent);
+            }
+        });
+        findViewById(R.id.bt_custom_capture).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, CustomEntranceActivity.class);
                 startActivity(intent);
             }
         });

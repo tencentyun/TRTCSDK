@@ -1,3 +1,3 @@
-include ':app', ':rtc', ':debug', ':live'
+include ':app', ':rtc', ':debug', ':live', ':customcapture'
 rootProject.name='TRTCSimpleDemo'
 include ':screen'

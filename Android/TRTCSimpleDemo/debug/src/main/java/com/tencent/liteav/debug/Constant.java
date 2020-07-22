@@ -5,6 +5,7 @@ public class Constant {
     public static final String ROOM_ID = "room_id";
     public static final String USER_ID = "user_id";
     public static final String ROLE_TYPE = "role_type";
+    public static final String CUSTOM_VIDEO = "custom_video";
 
     // 美颜风格.三种美颜风格：0 ：光滑  1：自然  2：朦胧
     public static final int BEAUTY_STYLE_SMOOTH              = 0;
@@ -20,6 +21,5 @@ public class Constant {
     // 直播场景：大主播：默认 540*960, 15fps，1200kbps
     public static final int LIVE_540_960_VIDEO_BITRATE       = 1200;
     public static final int LIVE_720_1280_VIDEO_BITRATE      = 1500;
-
 
 }

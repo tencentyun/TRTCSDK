@@ -4,6 +4,7 @@
     <string name="main_item_trtc">"RTC"</string>
     <string name="main_item_live">"Live"</string>
     <string name="main_item_screen">"Screen"</string>
+    <string name="main_item_custom_capture">自定义采集</string>
 
 
 </resources>
