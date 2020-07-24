@@ -14,6 +14,23 @@
 		4533717E2491F24400E18040 /* SampleHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4533717D2491F24400E18040 /* SampleHandler.swift */; };
 		453371822491F24400E18040 /* TXReplayKit_Screen.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 4533717A2491F24400E18040 /* TXReplayKit_Screen.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		453371862491F35100E18040 /* TXLiteAVSDK_ReplayKitExt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28C0A3D42490CAB000E50613 /* TXLiteAVSDK_ReplayKitExt.framework */; };
+		7B8256BF24C6CA1F00C6282D /* QBImagePicker.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7B8256A424C6CA1F00C6282D /* QBImagePicker.strings */; };
+		7B8256C024C6CA1F00C6282D /* QBVideoIconView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B8256AB24C6CA1F00C6282D /* QBVideoIconView.m */; };
+		7B8256C124C6CA1F00C6282D /* QBVideoIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B8256AC24C6CA1F00C6282D /* QBVideoIndicatorView.m */; };
+		7B8256C224C6CA1F00C6282D /* QBAlbumCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B8256B324C6CA1F00C6282D /* QBAlbumCell.m */; };
+		7B8256C324C6CA1F00C6282D /* QBImagePicker.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7B8256B424C6CA1F00C6282D /* QBImagePicker.storyboard */; };
+		7B8256C424C6CA1F00C6282D /* QBAlbumsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B8256B624C6CA1F00C6282D /* QBAlbumsViewController.m */; };
+		7B8256C524C6CA1F00C6282D /* QBAssetsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B8256B824C6CA1F00C6282D /* QBAssetsViewController.m */; };
+		7B8256C624C6CA1F00C6282D /* QBImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B8256B924C6CA1F00C6282D /* QBImagePickerController.m */; };
+		7B8256C724C6CA1F00C6282D /* QBCheckmarkView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B8256BB24C6CA1F00C6282D /* QBCheckmarkView.m */; };
+		7B8256C824C6CA1F00C6282D /* QBSlomoIconView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B8256BD24C6CA1F00C6282D /* QBSlomoIconView.m */; };
+		7B8256C924C6CA1F00C6282D /* QBAssetCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B8256BE24C6CA1F00C6282D /* QBAssetCell.m */; };
+		7B85656E24C816FF004D4553 /* TCMediaFileReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B85656824C816FF004D4553 /* TCMediaFileReader.m */; };
+		7B85656F24C816FF004D4553 /* TestRenderVideoFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B85656924C816FF004D4553 /* TestRenderVideoFrame.m */; };
+		7B85657024C816FF004D4553 /* TestSendCustomVideoData.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B85656C24C816FF004D4553 /* TestSendCustomVideoData.m */; };
+		7B85657424C8170E004D4553 /* CustomCapture.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7B85657124C8170E004D4553 /* CustomCapture.storyboard */; };
+		7B85657524C8170E004D4553 /* CustomEntranceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B85657224C8170E004D4553 /* CustomEntranceViewController.swift */; };
+		7B85657624C8170E004D4553 /* CustomCaptureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B85657324C8170E004D4553 /* CustomCaptureViewController.swift */; };
 		812E148E241257D200642B19 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 812E1481241257D200642B19 /* Assets.xcassets */; };
 		812E148F241257D200642B19 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 812E1482241257D200642B19 /* LaunchScreen.storyboard */; };
 		812E1490241257D200642B19 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812E1484241257D200642B19 /* AppDelegate.swift */; };
@@ -82,6 +99,41 @@
 		4533717D2491F24400E18040 /* SampleHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleHandler.swift; sourceTree = "<group>"; };
 		4533717F2491F24400E18040 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4533718724920C3C00E18040 /* TXReplayKit_Screen.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TXReplayKit_Screen.entitlements; sourceTree = "<group>"; };
+		7B8256A524C6CA1F00C6282D /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/QBImagePicker.strings; sourceTree = "<group>"; };
+		7B8256A624C6CA1F00C6282D /* QBImagePickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBImagePickerController.h; sourceTree = "<group>"; };
+		7B8256A724C6CA1F00C6282D /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/QBImagePicker.strings"; sourceTree = "<group>"; };
+		7B8256A824C6CA1F00C6282D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/QBImagePicker.strings; sourceTree = "<group>"; };
+		7B8256A924C6CA1F00C6282D /* QBAssetsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBAssetsViewController.h; sourceTree = "<group>"; };
+		7B8256AA24C6CA1F00C6282D /* QBAlbumsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBAlbumsViewController.h; sourceTree = "<group>"; };
+		7B8256AB24C6CA1F00C6282D /* QBVideoIconView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBVideoIconView.m; sourceTree = "<group>"; };
+		7B8256AC24C6CA1F00C6282D /* QBVideoIndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBVideoIndicatorView.m; sourceTree = "<group>"; };
+		7B8256AD24C6CA1F00C6282D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/QBImagePicker.strings; sourceTree = "<group>"; };
+		7B8256AE24C6CA1F00C6282D /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/QBImagePicker.strings; sourceTree = "<group>"; };
+		7B8256AF24C6CA1F00C6282D /* QBCheckmarkView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBCheckmarkView.h; sourceTree = "<group>"; };
+		7B8256B024C6CA1F00C6282D /* QBImagePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBImagePicker.h; sourceTree = "<group>"; };
+		7B8256B124C6CA1F00C6282D /* QBAssetCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBAssetCell.h; sourceTree = "<group>"; };
+		7B8256B224C6CA1F00C6282D /* QBSlomoIconView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBSlomoIconView.h; sourceTree = "<group>"; };
+		7B8256B324C6CA1F00C6282D /* QBAlbumCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBAlbumCell.m; sourceTree = "<group>"; };
+		7B8256B424C6CA1F00C6282D /* QBImagePicker.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = QBImagePicker.storyboard; sourceTree = "<group>"; };
+		7B8256B524C6CA1F00C6282D /* QBVideoIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBVideoIndicatorView.h; sourceTree = "<group>"; };
+		7B8256B624C6CA1F00C6282D /* QBAlbumsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBAlbumsViewController.m; sourceTree = "<group>"; };
+		7B8256B724C6CA1F00C6282D /* QBVideoIconView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBVideoIconView.h; sourceTree = "<group>"; };
+		7B8256B824C6CA1F00C6282D /* QBAssetsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBAssetsViewController.m; sourceTree = "<group>"; };
+		7B8256B924C6CA1F00C6282D /* QBImagePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBImagePickerController.m; sourceTree = "<group>"; };
+		7B8256BA24C6CA1F00C6282D /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/QBImagePicker.strings; sourceTree = "<group>"; };
+		7B8256BB24C6CA1F00C6282D /* QBCheckmarkView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBCheckmarkView.m; sourceTree = "<group>"; };
+		7B8256BC24C6CA1F00C6282D /* QBAlbumCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBAlbumCell.h; sourceTree = "<group>"; };
+		7B8256BD24C6CA1F00C6282D /* QBSlomoIconView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBSlomoIconView.m; sourceTree = "<group>"; };
+		7B8256BE24C6CA1F00C6282D /* QBAssetCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBAssetCell.m; sourceTree = "<group>"; };
+		7B85656824C816FF004D4553 /* TCMediaFileReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCMediaFileReader.m; sourceTree = "<group>"; };
+		7B85656924C816FF004D4553 /* TestRenderVideoFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestRenderVideoFrame.m; sourceTree = "<group>"; };
+		7B85656A24C816FF004D4553 /* TestSendCustomVideoData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestSendCustomVideoData.h; sourceTree = "<group>"; };
+		7B85656B24C816FF004D4553 /* TCMediaFileReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCMediaFileReader.h; sourceTree = "<group>"; };
+		7B85656C24C816FF004D4553 /* TestSendCustomVideoData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestSendCustomVideoData.m; sourceTree = "<group>"; };
+		7B85656D24C816FF004D4553 /* TestRenderVideoFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestRenderVideoFrame.h; sourceTree = "<group>"; };
+		7B85657124C8170E004D4553 /* CustomCapture.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CustomCapture.storyboard; sourceTree = "<group>"; };
+		7B85657224C8170E004D4553 /* CustomEntranceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomEntranceViewController.swift; sourceTree = "<group>"; };
+		7B85657324C8170E004D4553 /* CustomCaptureViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCaptureViewController.swift; sourceTree = "<group>"; };
 		812E142E2412403400642B19 /* SimpleDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		812E1481241257D200642B19 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		812E1483241257D200642B19 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -159,13 +211,76 @@
 			path = TXReplayKit_Screen;
 			sourceTree = "<group>";
 		};
+		7B8256A224C6C9BE00C6282D /* LocalVideoTest */ = {
+			isa = PBXGroup;
+			children = (
+				7B8256CC24C6D7A500C6282D /* testCustomVideo */,
+				7B8256A324C6CA1F00C6282D /* QBImagePicker */,
+			);
+			path = LocalVideoTest;
+			sourceTree = "<group>";
+		};
+		7B8256A324C6CA1F00C6282D /* QBImagePicker */ = {
+			isa = PBXGroup;
+			children = (
+				7B8256A424C6CA1F00C6282D /* QBImagePicker.strings */,
+				7B8256A624C6CA1F00C6282D /* QBImagePickerController.h */,
+				7B8256A924C6CA1F00C6282D /* QBAssetsViewController.h */,
+				7B8256AA24C6CA1F00C6282D /* QBAlbumsViewController.h */,
+				7B8256AB24C6CA1F00C6282D /* QBVideoIconView.m */,
+				7B8256AC24C6CA1F00C6282D /* QBVideoIndicatorView.m */,
+				7B8256AF24C6CA1F00C6282D /* QBCheckmarkView.h */,
+				7B8256B024C6CA1F00C6282D /* QBImagePicker.h */,
+				7B8256B124C6CA1F00C6282D /* QBAssetCell.h */,
+				7B8256B224C6CA1F00C6282D /* QBSlomoIconView.h */,
+				7B8256B324C6CA1F00C6282D /* QBAlbumCell.m */,
+				7B8256B424C6CA1F00C6282D /* QBImagePicker.storyboard */,
+				7B8256B524C6CA1F00C6282D /* QBVideoIndicatorView.h */,
+				7B8256B624C6CA1F00C6282D /* QBAlbumsViewController.m */,
+				7B8256B724C6CA1F00C6282D /* QBVideoIconView.h */,
+				7B8256B824C6CA1F00C6282D /* QBAssetsViewController.m */,
+				7B8256B924C6CA1F00C6282D /* QBImagePickerController.m */,
+				7B8256BB24C6CA1F00C6282D /* QBCheckmarkView.m */,
+				7B8256BC24C6CA1F00C6282D /* QBAlbumCell.h */,
+				7B8256BD24C6CA1F00C6282D /* QBSlomoIconView.m */,
+				7B8256BE24C6CA1F00C6282D /* QBAssetCell.m */,
+			);
+			path = QBImagePicker;
+			sourceTree = "<group>";
+		};
+		7B85656624C8167E004D4553 /* CustomCapture */ = {
+			isa = PBXGroup;
+			children = (
+				7B8256A324C6CA1F00C6282D /* QBImagePicker */,
+				7B85656724C816FF004D4553 /* testCustomVideo */,
+				7B85657124C8170E004D4553 /* CustomCapture.storyboard */,
+				7B85657224C8170E004D4553 /* CustomEntranceViewController.swift */,
+				7B85657324C8170E004D4553 /* CustomCaptureViewController.swift */,
+			);
+			path = CustomCapture;
+			sourceTree = "<group>";
+		};
+		7B85656724C816FF004D4553 /* testCustomVideo */ = {
+			isa = PBXGroup;
+			children = (
+				7B85656824C816FF004D4553 /* TCMediaFileReader.m */,
+				7B85656924C816FF004D4553 /* TestRenderVideoFrame.m */,
+				7B85656A24C816FF004D4553 /* TestSendCustomVideoData.h */,
+				7B85656B24C816FF004D4553 /* TCMediaFileReader.h */,
+				7B85656C24C816FF004D4553 /* TestSendCustomVideoData.m */,
+				7B85656D24C816FF004D4553 /* TestRenderVideoFrame.h */,
+			);
+			path = testCustomVideo;
+			sourceTree = "<group>";
+		};
 		812E14252412403400642B19 = {
 			isa = PBXGroup;
 			children = (
 				812E1487241257D200642B19 /* README.md */,
-				812E148D241257D200642B19 /* RTC */,
+				7B85656624C8167E004D4553 /* CustomCapture */,
 				812E1486241257D200642B19 /* Live */,
 				2806909F2490BE6D00FAAE90 /* Screen */,
+				812E148D241257D200642B19 /* RTC */,
 				812E1488241257D200642B19 /* Main */,
 				FD3B3A162423B5B8001720A3 /* debug */,
 				812E1480241257D200642B19 /* TRTCSimpleDemo */,
@@ -334,6 +449,11 @@
 			knownRegions = (
 				en,
 				Base,
+				de,
+				"zh-Hans",
+				ja,
+				es,
+				pl,
 			);
 			mainGroup = 812E14252412403400642B19;
 			productRefGroup = 812E142F2412403400642B19 /* Products */;
@@ -360,8 +480,11 @@
 			files = (
 				812E148E241257D200642B19 /* Assets.xcassets in Resources */,
 				812E1495241257D200642B19 /* Main.storyboard in Resources */,
+				7B8256BF24C6CA1F00C6282D /* QBImagePicker.strings in Resources */,
+				7B8256C324C6CA1F00C6282D /* QBImagePicker.storyboard in Resources */,
 				812E14A62412601E00642B19 /* Live.storyboard in Resources */,
 				812E149B241258AA00642B19 /* RTC.storyboard in Resources */,
+				7B85657424C8170E004D4553 /* CustomCapture.storyboard in Resources */,
 				812E148F241257D200642B19 /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -407,17 +530,31 @@
 			buildActionMask = 2147483647;
 			files = (
 				FD28D3F124162E2B0080B8A0 /* RTCEntranceViewController.swift in Sources */,
+				7B85656F24C816FF004D4553 /* TestRenderVideoFrame.m in Sources */,
 				812E1490241257D200642B19 /* AppDelegate.swift in Sources */,
+				7B85657524C8170E004D4553 /* CustomEntranceViewController.swift in Sources */,
+				7B8256C024C6CA1F00C6282D /* QBVideoIconView.m in Sources */,
+				7B8256C724C6CA1F00C6282D /* QBCheckmarkView.m in Sources */,
+				7B85657024C816FF004D4553 /* TestSendCustomVideoData.m in Sources */,
 				812E14992412589100642B19 /* RTCViewController.swift in Sources */,
 				28C0A3FC249101F000E50613 /* TRTCBroadcastExtensionLauncher.swift in Sources */,
 				FD3B3A192423B5B8001720A3 /* GenerateTestUserSig.m in Sources */,
 				280690A22490BE6D00FAAE90 /* ScreenEntranceViewController.swift in Sources */,
+				7B85657624C8170E004D4553 /* CustomCaptureViewController.swift in Sources */,
+				7B8256C424C6CA1F00C6282D /* QBAlbumsViewController.m in Sources */,
+				7B8256C924C6CA1F00C6282D /* QBAssetCell.m in Sources */,
 				812E14972412585600642B19 /* MainViewController.swift in Sources */,
 				812E14A424125B6000642B19 /* LiveViewController.swift in Sources */,
+				7B8256C824C6CA1F00C6282D /* QBSlomoIconView.m in Sources */,
 				817262A82416C68400265751 /* LivePushViewController.swift in Sources */,
+				7B8256C624C6CA1F00C6282D /* QBImagePickerController.m in Sources */,
+				7B8256C124C6CA1F00C6282D /* QBVideoIndicatorView.m in Sources */,
 				280690A32490BE6D00FAAE90 /* ScreenViewController.swift in Sources */,
+				7B85656E24C816FF004D4553 /* TCMediaFileReader.m in Sources */,
+				7B8256C224C6CA1F00C6282D /* QBAlbumCell.m in Sources */,
 				FDB94D0C2417BC6000C2AC28 /* LivePlayViewController.swift in Sources */,
 				FDF543BF241A0A2700F21B2A /* LiveRoomManager.swift in Sources */,
+				7B8256C524C6CA1F00C6282D /* QBAssetsViewController.m in Sources */,
 				81E3C986241820EA00366606 /* LiveSubVideoView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -433,6 +570,19 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		7B8256A424C6CA1F00C6282D /* QBImagePicker.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				7B8256A524C6CA1F00C6282D /* de */,
+				7B8256A724C6CA1F00C6282D /* zh-Hans */,
+				7B8256A824C6CA1F00C6282D /* ja */,
+				7B8256AD24C6CA1F00C6282D /* en */,
+				7B8256AE24C6CA1F00C6282D /* es */,
+				7B8256BA24C6CA1F00C6282D /* pl */,
+			);
+			name = QBImagePicker.strings;
+			sourceTree = "<group>";
+		};
 		812E1482241257D200642B19 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

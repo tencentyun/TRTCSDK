@@ -1,5 +1,5 @@
 //
-//  RTCViewController.swift
+//  CustomCaptureViewController.swift
 //  TRTCSimpleDemo
 //
 //  Copyright © 2020 Tencent. All rights reserved.
@@ -8,35 +8,28 @@
 import TXLiteAVSDK_TRTC
 import UIKit
 
-let MAX_REMOTE_USER_NUM = 6
+let MAX_REMOTE_USER_NUM_CC = 6
 
-/**
- * RTC视频通话的主页面
- *
- * 包含如下简单功能：
- * - 进入/退出视频通话房间
- * - 切换前置/后置摄像头
- * - 打开/关闭摄像头
- * - 打开/关闭麦克风
- * - 显示房间内其他用户的视频画面（当前示例最多可显示6个其他用户的视频画面）
- */
-class RTCViewController: UIViewController {
+/// 使用本地视频通话。
+class CustomCaptureViewController: UIViewController {
     
     @IBOutlet var remoteVideoViews: [UIView]!
-    @IBOutlet var localVideoView: UIView!
+    @IBOutlet var localVideoView: UIImageView!
     @IBOutlet var roomIdLabel: UILabel!
-    @IBOutlet weak var switchCameraBtn: UIButton!
-    @IBOutlet weak var openCloseCameraBtn: UIButton!
-    @IBOutlet weak var audioBtn: UIButton!
-    @IBOutlet weak var debugBtn: UIButton!
     
     var roomId: UInt32?
     var userId: String?
     
-    /// 从摄像头采样
-    private var isFrontCamera: Bool = true
     private lazy var remoteUids = NSMutableOrderedSet.init(capacity: MAX_REMOTE_USER_NUM)
-        
+    
+    /// 从本地视频采样
+    public var localVideoAsset: AVAsset?
+    private lazy var videoCaptureTester:TestSendCustomVideoData = {
+        let videoCapture = TestSendCustomVideoData.init(trtcCloud: self.trtcCloud, mediaAsset: self.localVideoAsset ?? AVAsset())
+        return videoCapture
+    }()
+    private lazy var renderTester:TestRenderVideoFrame = TestRenderVideoFrame()
+    
     private lazy var trtcCloud: TRTCCloud = {
         let instance: TRTCCloud = TRTCCloud.sharedInstance()
         ///设置TRTCCloud的回调接口
@@ -87,10 +80,15 @@ class RTCViewController: UIViewController {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
         
-        /// 开启麦克风采集
-        trtcCloud.startLocalAudio()
-        /// 开启摄像头采集
-        trtcCloud.startLocalPreview(isFrontCamera, view: localVideoView)
+        if let _ = localVideoAsset {
+            /// 设置使用自定义视频
+            _ = videoCaptureTester //初始化
+            trtcCloud.enableCustomVideoCapture(true)
+            trtcCloud.enableCustomAudioCapture(true)
+            trtcCloud.setLocalVideoRenderDelegate(renderTester, pixelFormat: ._NV12, bufferType: .pixelBuffer)
+            renderTester.addUser(nil, videoView: localVideoView)
+            videoCaptureTester.start()
+        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -106,43 +104,9 @@ class RTCViewController: UIViewController {
         trtcCloud.exitRoom()
         navigationController?.popViewController(animated: true)
     }
-    
-    @IBAction func onVideoCaptureClicked(_ sender: UIButton) {
-        if sender.isSelected { /// 开启摄像头采集
-            trtcCloud.startLocalPreview(isFrontCamera, view: localVideoView)
-        } else { /// 关闭摄像头采集
-            trtcCloud.stopLocalPreview()
-        }
-        sender.isSelected = !sender.isSelected
-    }
-    
-    @IBAction func onMicCaptureClicked(_ sender: UIButton) {
-        if sender.isSelected { /// 开启麦克风采集
-            trtcCloud.startLocalAudio()
-        } else { /// 关闭麦克风采集
-            trtcCloud.stopLocalAudio()
-        }
-        sender.isSelected = !sender.isSelected
-    }
-    
-    @IBAction func onSwitchCameraClicked(_ sender: UIButton) {
-        /// 切换前置/后置摄像头
-        trtcCloud.switchCamera()
-        isFrontCamera = sender.isSelected
-        sender.isSelected = !sender.isSelected
-    }
-    
-    @IBAction func onDashboardClicked(_ sender: UIButton) {
-        /// 显示调试信息
-        sender.tag += 1
-        if sender.tag > 2 {
-            sender.tag = 0
-        }
-        trtcCloud.showDebugView(sender.tag)
-    }
 }
 
-extension RTCViewController: TRTCCloudDelegate {
+extension CustomCaptureViewController: TRTCCloudDelegate {
     /**
      * 当前视频通话房间里的其他用户开启/关闭摄像头时会收到这个回调
      * 此时可以根据这个用户的视频available状态来 “显示或者关闭” Ta的视频画面

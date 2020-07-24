@@ -3,3 +3,6 @@
 //
 
 #import "GenerateTestUserSig.h"
+#import "QBImagePickerController.h"
+#import "TestSendCustomVideoData.h"
+#import "TestRenderVideoFrame.h"

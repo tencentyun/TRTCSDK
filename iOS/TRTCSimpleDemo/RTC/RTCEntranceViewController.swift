@@ -32,16 +32,14 @@ class RTCEntranceViewController: UIViewController {
         navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let segueId = segue.identifier else {
+    @IBAction func onEnterRoom(_ sender: UIButton) {
+        let storyboard = UIStoryboard.init(name: "RTC", bundle: nil);
+        guard let rtcVC = storyboard.instantiateViewController(withIdentifier: "RTCViewController") as? RTCViewController else {
             return
         }
-        /// 设置 roomId 和 userId，切换到视频通话主界面 RTCViewController
-        if "enterRTCRoom" == segueId {
-            let rtcVC = segue.destination as? RTCViewController
-            rtcVC?.roomId = UInt32(roomIdTextField.text ?? "1256732")
-            rtcVC?.userId = userIdTextField.text ?? "\(UInt32(CACurrentMediaTime() * 1000))"
-        }
+        rtcVC.roomId = UInt32(roomIdTextField.text ?? "1256732")
+        rtcVC.userId = userIdTextField.text ?? "\(UInt32(CACurrentMediaTime() * 1000))"
+        self.navigationController?.pushViewController(rtcVC, animated: true)
     }
     
     /// 隐藏键盘
