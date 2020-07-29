@@ -6,6 +6,19 @@
   - patch：补丁号，如有功能改善或缺陷修复则该字段递增。
 - 我们建议您及时更新到最新版本以便获得更好的产品稳定性及在线支持！
 
+## 4.6.1 (2020-7-28)
+
+**Improvement**
+
+- [TRTC.isScreenShareSupported](https://trtc-1252463788.file.myqcloud.com/web/docs/TRTC.html#.isScreenShareSupported) Safari 不支持屏幕分享
+- 完善 subscribe & unsubscribe 接口的参数校验逻辑
+- 增加网络质量日志
+
+**Bug Fixes**
+
+- 修复当未授权媒体设备，且 TRTC.createStream 接口传入的设备 ID 为空串时，SDK 报 OverconstrainedError 的问题
+- 修复上行 peerConnection 断开时没有打印日志的问题
+
 ## 4.6.0 (2020-7-16)
 
 **Feature**
