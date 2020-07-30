@@ -92,6 +92,9 @@ public class AudioEffectPanel extends FrameLayout {
 
     private int     mBGMVolume = 100;
 
+    private int mVoiceChangerPosition = 0;
+    private int mVoiceReverbPosition = 0;
+
     public AudioEffectPanel(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
@@ -227,13 +230,9 @@ public class AudioEffectPanel extends FrameLayout {
                 if (mAudioEffectManager != null) {
                     mAudioEffectManager.setVoiceChangerType(translateChangerType(type));
                 }
-                for (int i = 0 ; i <  mChangerItemEntityList.size(); i++) {
-                    if (position == i) {
-                        mChangerItemEntityList.get(i).mIsSelected = true;
-                    } else {
-                        mChangerItemEntityList.get(i).mIsSelected = false;
-                    }
-                }
+                mChangerItemEntityList.get(position).mIsSelected = true;
+                mChangerItemEntityList.get(mVoiceChangerPosition).mIsSelected = false;
+                mVoiceChangerPosition = position;
                 mChangerRVAdapter.notifyDataSetChanged();
             }
         });
@@ -250,13 +249,9 @@ public class AudioEffectPanel extends FrameLayout {
                 if (mAudioEffectManager != null) {
                     mAudioEffectManager.setVoiceReverbType(translateReverbType(type));
                 }
-                for (int i = 0 ; i <  mReverbItemEntityList.size(); i++) {
-                    if (position == i) {
-                        mReverbItemEntityList.get(i).mIsSelected = true;
-                    } else {
-                        mReverbItemEntityList.get(i).mIsSelected = false;
-                    }
-                }
+                mReverbItemEntityList.get(position).mIsSelected = true;
+                mReverbItemEntityList.get(mVoiceReverbPosition).mIsSelected = false;
+                mVoiceReverbPosition = position;
                 mReverbRVAdapter.notifyDataSetChanged();
             }
         });
@@ -621,6 +616,64 @@ public class AudioEffectPanel extends FrameLayout {
 
     public void setAudioEffectManager(TXAudioEffectManager audioEffectManager) {
         mAudioEffectManager = audioEffectManager;
+    }
+
+    public void reset() {
+        mAudioEffectManager.stopPlayMusic(mBGMId);
+        mBGMId = -1;
+        mIsPlaying = false;
+        mIsPlayEnd = false;
+
+        mSbMicVolume.setProgress(100);
+        mTvMicVolume.setText("100");
+
+        mBGMVolume = 100;
+        mSbBGMVolume.setProgress(mBGMVolume);
+        mTvBGMVolume.setText(mBGMVolume + "");
+
+        mPitch = 0;
+        mSbPitchLevel.setProgress(50);
+        mTvPitchLevel.setText("50");
+
+        mBtnSelectedSong.setVisibility(View.VISIBLE);
+        mTvBGM.setVisibility(View.VISIBLE);
+        mTvActor.setVisibility(View.GONE);
+        mTvActor.setText("");
+        mTvStartTime.setVisibility(GONE);
+        mTvTotalTime.setVisibility(GONE);
+        mImgbtnBGMPlay.setVisibility(GONE);
+
+        mChangerItemEntityList.get(mVoiceChangerPosition).mIsSelected = false;
+        mChangerRVAdapter.notifyDataSetChanged();
+        mVoiceChangerPosition = 0;
+
+        mReverbItemEntityList.get(mVoiceReverbPosition).mIsSelected = false;
+        mReverbRVAdapter.notifyDataSetChanged();
+        mVoiceReverbPosition = 0;
+
+        if (mAudioEffectManager != null) {
+            Log.d(TAG, "select changer type1 " + translateChangerType(mVoiceChangerPosition));
+            mAudioEffectManager.setVoiceChangerType(translateChangerType(mVoiceChangerPosition));
+            mAudioEffectManager.setVoiceReverbType(translateReverbType(mVoiceReverbPosition));
+        }
+    }
+
+    public void pauseBGM() {
+        if (!mIsPlaying) {
+            return;
+        }
+        mAudioEffectManager.pausePlayMusic(mBGMId);
+        mImgbtnBGMPlay.setImageResource(R.drawable.audio_effect_setting_bgm_play);
+        mIsPlaying = false;
+    }
+
+    public void resumeBGM() {
+        Log.i(TAG, "resumeBGM: mIsPlayEnd -> " + mIsPlayEnd + ", mIsPlaying -> " + mIsPlaying);
+        if (!mIsPlayEnd && !mIsPlaying) {
+            mAudioEffectManager.resumePlayMusic(mBGMId);
+            mImgbtnBGMPlay.setImageResource(R.drawable.audio_effect_setting_bgm_pause);
+            mIsPlaying = true;
+        }
     }
 
     private void handleBGM(int position, final BGMItemEntity model) {

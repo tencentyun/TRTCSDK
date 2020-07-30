@@ -3,7 +3,6 @@
 buildscript {
 
     repositories {
-//        maven { url "https://mirrors.tencent.com/nexus/repository/maven-public/" }
         jcenter()
         google()
     }
@@ -23,7 +22,6 @@ allprojects {
             dirs project(':app').file('libs')
         }
 
-//        maven { url "https://mirrors.tencent.com/nexus/repository/maven-public/" }
         jcenter()
         google()
     }
@@ -34,10 +32,10 @@ task clean(type: Delete) {
 }
 
 ext {
-    compileSdkVersion = 25
+    compileSdkVersion = 26
     buildToolsVersion = "28.0.3"
-    supportSdkVersion = "25.4.0"
-    minSdkVersion = 16
+    supportSdkVersion = "26.0.1"
+    minSdkVersion = 19
     targetSdkVersion = 26
     liteavSdk="com.tencent.liteav:LiteAVSDK_TRTC:latest.release"
     imSdk = 'com.tencent.imsdk:imsdk:4.8.50'

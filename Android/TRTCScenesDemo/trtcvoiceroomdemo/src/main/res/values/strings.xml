@@ -1,9 +1,9 @@
 <resources>
-    <string name="trtcvoiceroom_room_title">房间号: %d</string>
-    <string name="trtcvoiceroom_numer_format">%d人在看</string>
+    <string name="trtcvoiceroom_room_title" formatted="false">房间号: %d</string>
+    <string name="trtcvoiceroom_numer_format" formatted="false" >%d人在看</string>
     <string name="trtcvoiceroom_agree">同意</string>
     <string name="trtcvoiceroom_warning_not_empty">"输入不能为空!"</string>
     <string name="trtcvoiceroom_send">发送</string>
     <string name="trtcvoiceroom_already_agree">已同意</string>
-    <string name="trtcvoiceroom_main_title">%1s(%2d)</string>
+    <string name="trtcvoiceroom_main_title" formatted="false">%1s(%2d)</string>
 </resources>

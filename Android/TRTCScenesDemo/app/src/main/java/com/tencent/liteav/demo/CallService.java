@@ -1,12 +1,19 @@
 package com.tencent.liteav.demo;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.IBinder;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.blankj.utilcode.util.CollectionUtils;
 import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.ServiceUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.tencent.imsdk.session.SessionWrapper;
 import com.tencent.imsdk.v2.V2TIMCallback;
@@ -37,6 +44,8 @@ import java.util.List;
 import java.util.Map;
 
 public class CallService extends Service {
+    private static final int NOTIFICATION_ID = 1001;
+
     private ITRTCAudioCall        mITRTCAudioCall;
     private TRTCAudioCallListener mTRTCAudioCallListener = new TRTCAudioCallListener() {
         // <editor-fold  desc="音频监听代码">
@@ -221,13 +230,31 @@ public class CallService extends Service {
     //视频直播
     private TRTCLiveRoom          mTRTCLiveRoom;
 
+    public static void start(Context context) {
+        if (ServiceUtils.isServiceRunning(CallService.class)) {
+            return;
+        }
+        Intent starter = new Intent(context, CallService.class);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            context.startForegroundService(starter);
+        } else {
+            context.startService(starter);
+        }
+    }
 
-    public CallService() {
+    public static void stop(Context context) {
+        Intent intent = new Intent(context, CallService.class);
+        context.stopService(intent);
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
+        // 获取服务通知
+        Notification notification = createForegroundNotification();
+        //将服务置于启动状态 ,NOTIFICATION_ID指的是创建的通知的ID
+        startForeground(NOTIFICATION_ID, notification);
+
         // 由于两个模块公用一个IM，所以需要在这里先进行登录，您的App只使用一个model，可以直接调用VideoCall 对应函数
         // 目前 Demo 为了方便您接入，使用的是本地签发 sig 的方式，您的项目上线，务必要保证将签发逻辑转移到服务端，否者会出现 key 被盗用，流量盗用的风险。
         if (SessionWrapper.isMainProcess(this)) {
@@ -271,6 +298,42 @@ public class CallService extends Service {
         });
     }
 
+    private Notification createForegroundNotification() {
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        // 唯一的通知通道的id.
+        String notificationChannelId = "notification_channel_id_01";
+
+        // Android8.0以上的系统，新建消息通道
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            //用户可见的通道名称
+            String channelName = "TRTC Foreground Service Notification";
+            //通道的重要程度
+            int                 importance          = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel notificationChannel = new NotificationChannel(notificationChannelId, channelName, importance);
+            notificationChannel.setDescription("Channel description");
+            //震动
+            notificationChannel.setVibrationPattern(new long[]{0, 1000, 500, 1000});
+            notificationChannel.enableVibration(true);
+            if (notificationManager != null) {
+                notificationManager.createNotificationChannel(notificationChannel);
+            }
+        }
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, notificationChannelId);
+        //通知小图标
+        builder.setSmallIcon(R.drawable.ic_launcher);
+        //通知标题
+        builder.setContentTitle(getString(R.string.app_name));
+        //通知内容
+        builder.setContentText(getString(R.string.working));
+        //设定通知显示的时间
+        builder.setWhen(System.currentTimeMillis());
+
+        //创建通知并返回
+        return builder.build();
+    }
+
     private void initLiveRoom() {
         final UserModel userModel = ProfileManager.getInstance().getUserModel();
         mTRTCLiveRoom = TRTCLiveRoom.sharedInstance(this);
@@ -293,10 +356,12 @@ public class CallService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mITRTCAudioCall.removeListener(mTRTCAudioCallListener);
-        TRTCAudioCallImpl.destroySharedInstance();
-        mITRTCVideoCall.removeListener(mTRTCVideoCallListener);
-        TRTCVideoCallImpl.destroySharedInstance();
+        if (mITRTCAudioCall != null) {
+            mITRTCAudioCall.removeListener(mTRTCAudioCallListener);
+        }
+        if (mITRTCVideoCall != null) {
+            mITRTCVideoCall.removeListener(mTRTCVideoCallListener);
+        }
     }
 
     private void initAudioCallData() {

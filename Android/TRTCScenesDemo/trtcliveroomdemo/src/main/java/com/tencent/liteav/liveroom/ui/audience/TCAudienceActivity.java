@@ -41,7 +41,6 @@ import com.tencent.liteav.liveroom.ui.common.msg.TCChatMsgListAdapter;
 import com.tencent.liteav.liveroom.ui.common.utils.TCConstants;
 import com.tencent.liteav.liveroom.ui.common.utils.TCUtils;
 import com.tencent.liteav.liveroom.ui.widget.InputTextMsgDialog;
-import com.tencent.liteav.liveroom.ui.widget.beauty.LiveRoomBeautyKit;
 import com.tencent.liteav.liveroom.ui.widget.danmaku.TCDanmuMgr;
 import com.tencent.liteav.liveroom.ui.widget.like.TCHeartLayout;
 import com.tencent.liteav.liveroom.ui.widget.video.TCVideoView;
@@ -428,8 +427,7 @@ public class TCAudienceActivity extends AppCompatActivity implements View.OnClic
 
         //美颜功能
         mBeautyControl = (BeautyPanel) findViewById(R.id.beauty_panel);
-        LiveRoomBeautyKit liveRoomBeautyKit = new LiveRoomBeautyKit(mLiveRoom);
-        mBeautyControl.setBeautyKit(liveRoomBeautyKit);
+        mBeautyControl.setBeautyManager(mLiveRoom.getBeautyManager());
 
         mGuideLineVertical = (Guideline) findViewById(R.id.gl_vertical);
         mGuideLineHorizontal = (Guideline) findViewById(R.id.gl_horizontal);
@@ -511,7 +509,7 @@ public class TCAudienceActivity extends AppCompatActivity implements View.OnClic
                     isEnterRoom = true;
                     getAudienceList();
                 } else {
-                    ToastUtils.showLong(R.string.trtcliveroom_tips_enter_room_fail + code);
+                    ToastUtils.showLong(getString(R.string.trtcliveroom_tips_enter_room_fail, code));
                     exitRoom();
                     finish();
                 }

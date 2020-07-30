@@ -154,11 +154,8 @@ public class GenerateTestUserSig {
             hmac.init(keySpec);
             byte[] byteSig = hmac.doFinal(contentToBeSigned.getBytes("UTF-8"));
             return new String(Base64.encode(byteSig, Base64.NO_WRAP));
-        } catch (UnsupportedEncodingException e) {
-            return "";
-        } catch (NoSuchAlgorithmException e) {
-            return "";
-        } catch (InvalidKeyException e) {
+        } catch (Exception e) {
+            e.printStackTrace();
             return "";
         }
     }

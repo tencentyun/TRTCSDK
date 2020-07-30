@@ -29,16 +29,13 @@ import com.tencent.liteav.liveroom.model.TRTCLiveRoomCallback;
 import com.tencent.liteav.liveroom.model.TRTCLiveRoomDef;
 import com.tencent.liteav.liveroom.ui.common.adapter.TCUserAvatarListAdapter;
 import com.tencent.liteav.liveroom.ui.common.utils.TCUtils;
-import com.tencent.liteav.liveroom.ui.widget.beauty.LiveRoomBeautyKit;
 import com.tencent.liteav.liveroom.ui.widget.video.TCVideoView;
 import com.tencent.liteav.liveroom.ui.widget.video.TCVideoViewMgr;
 import com.tencent.liteav.login.model.ProfileManager;
 import com.tencent.rtmp.ui.TXCloudVideoView;
 import com.tencent.trtc.TRTCCloudDef;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -81,8 +78,7 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity implements View
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.TRTCLiveRoomBeautyTheme);
         super.onCreate(savedInstanceState);
-        LiveRoomBeautyKit liveRoomBeautyKit = new LiveRoomBeautyKit(mLiveRoom);
-        mPanelBeautyControl.setBeautyKit(liveRoomBeautyKit);
+        mPanelBeautyControl.setBeautyManager(mLiveRoom.getBeautyManager());
         // 清空上次的美颜参数
         mPanelBeautyControl.clear();
         startPreview();

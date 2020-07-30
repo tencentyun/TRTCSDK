@@ -33,11 +33,11 @@ dependencies {
     compile project(':beautysettingkit')
     compile project(':audioeffectsettingkit')
 
-    compile 'com.google.code.gson:gson:2.8.6'
+    compile 'com.google.code.gson:gson:2.3.1'
     //依赖一个utils类
     compile 'com.blankj:utilcode:1.25.9'
     //快速集成圆形image view
-    compile 'de.hdodenhof:circleimageview:3.0.1'
+    compile 'de.hdodenhof:circleimageview:3.1.0'
     //弹幕功能
 //    compile 'com.github.ctiao:dfm:0.4.4'
     compile 'com.github.ctiao:DanmakuFlameMaster:0.5.3'

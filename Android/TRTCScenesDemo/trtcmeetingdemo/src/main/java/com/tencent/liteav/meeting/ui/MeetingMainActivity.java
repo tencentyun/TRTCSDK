@@ -46,9 +46,7 @@ import com.tencent.liteav.meeting.ui.widget.page.MeetingPageLayoutManager;
 import com.tencent.liteav.meeting.ui.widget.page.PagerSnapHelper;
 import com.tencent.trtc.TRTCCloudDef;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -350,7 +348,7 @@ public class MeetingMainActivity extends AppCompatActivity implements TRTCMeetin
         mMoreImg = (AppCompatImageButton) findViewById(R.id.img_more);
         mMoreImg.setOnClickListener(this);
         mBeautyControl = (BeautyPanel) findViewById(R.id.beauty_panel);
-        mBeautyControl.setBeautyKit(new MeetingRoomBeautyKit(mTRTCMeeting));
+        mBeautyControl.setBeautyManager(mTRTCMeeting.getBeautyManager());
         mStubRemoteUserView = (ViewStub) findViewById(R.id.view_stub_remote_user);
         mFeatureSettingFragmentDialog = new FeatureSettingFragmentDialog();
         mFeatureSettingFragmentDialog.setTRTCMeeting(mTRTCMeeting);

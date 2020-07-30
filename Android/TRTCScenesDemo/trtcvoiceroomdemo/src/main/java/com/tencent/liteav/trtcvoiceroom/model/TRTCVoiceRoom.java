@@ -107,7 +107,7 @@ public abstract class TRTCVoiceRoom {
     /**
      * 进入房间（观众调用）
      *
-     * 观众观看直播的正常调用流程如下：
+     * 观众进房收听的正常调用流程如下：
      * 1.【观众】向您的服务端获取最新的语音聊天室列表，可能包含多个直播间的 roomId 和房间信息。
      * 2. 观众选择一个语音聊天室，调用`enterRoom`并传入房间号即可进入该房间。
      * 3. 进房后会收到组件的`onRoomInfoChange`房间属性变化事件通知，此时可以记录房间属性并做相应改变，例如 UI 展示房间名、记录上麦是否需要请求主播同意等。
@@ -191,6 +191,9 @@ public abstract class TRTCVoiceRoom {
     /**
      * 静音/解禁对应麦位的麦克风(主播调用)
      *
+     * 房间内所有成员会收到`onSeatListChange`和`onSeatMute`的事件通知。
+     * 对应 seatIndex 座位上的主播，会自动调用 muteAudio 进行静音/解禁
+     *
      * @param seatIndex 麦位序号
      * @param isMute   true:静音 fasle:解除静音
      * @param callback 操作回调
@@ -199,6 +202,8 @@ public abstract class TRTCVoiceRoom {
 
     /**
      * 封禁/解禁某个麦位(主播调用)
+     *
+     * 房间内所有成员会收到`onSeatListChange`和`onSeatClose`的事件通知。
      *
      * @param seatIndex 麦位序号
      * @param isClose   true:封禁 fasle:解除封禁

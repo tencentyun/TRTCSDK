@@ -36,7 +36,7 @@ dependencies {
     compile 'com.blankj:utilcode:1.25.9'
     compile 'com.google.code.gson:gson:2.3.1'
     //快速集成圆形image view
-    compile 'de.hdodenhof:circleimageview:3.0.1'
+    compile 'de.hdodenhof:circleimageview:3.1.0'
     compile 'com.android.support.constraint:constraint-layout:1.1.3'
     compile "com.android.support:design:$rootProject.ext.supportSdkVersion"
     compile "com.android.support:appcompat-v7:$rootProject.ext.supportSdkVersion"

@@ -64,8 +64,8 @@
     <color name="default_bg">#aa000000</color>
     <!--special color-->
     <!--MainActivity item被选中的颜色-->
-    <color name="main_item_selected_color">#555555</color>
-    <color name="main_item_unselected_color">#2A2A2A</color>
+    <color name="main_item_selected_color">#FF173370</color>
+    <color name="main_item_unselected_color">#ff0D2C5B</color>
     <color name="main_item_divide_color">#0d0d0d</color>
 
     <color name="super_vod_vtt_bg">#7E000000</color>

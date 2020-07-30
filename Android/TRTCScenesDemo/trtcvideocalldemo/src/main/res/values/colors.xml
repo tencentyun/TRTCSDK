@@ -8,4 +8,8 @@
     <color name="trtcvideocall_color_white">#FFFFFFFF</color>
     <color name="trtcvideocall_color_shade">#33000000</color>
     <color name="trtcvideocall_color_background">#FF444444</color>
+    <color name="trtcvideocall_color_bg_cl_search">#FF092650</color>
+    <color name="trtcvideocall_color_bg_gradient_start">#FF050C17</color>
+    <color name="trtcvideocall_color_bg_gradient_end">#FF13294B</color>
+    <color name="trtcvideocall_color_edit_hint">#FF6B82A8</color>
 </resources>

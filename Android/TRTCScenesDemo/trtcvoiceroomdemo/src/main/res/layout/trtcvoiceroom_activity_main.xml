@@ -91,7 +91,7 @@
         android:layout_width="wrap_content"
         android:layout_height="1px"
         android:layout_marginBottom="5dp"
-        app:layout_constraintBottom_toTopOf="@id/btn_msg"
+        app:layout_constraintBottom_toTopOf="@+id/btn_msg"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 

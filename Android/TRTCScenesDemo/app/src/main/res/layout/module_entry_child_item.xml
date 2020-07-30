@@ -10,7 +10,7 @@
         android:layout_height="55dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:background="#2A2A2A"
+        android:background="#ff122755"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -26,8 +26,8 @@
             android:textSize="16dp" />
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="6dp"
+            android:layout_height="10dp"
             android:layout_gravity="center_vertical"
             android:layout_marginRight="25dp"
             android:background="@drawable/arrow"
@@ -40,6 +40,5 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:background="@color/main_item_divide_color" />
+        android:layout_marginRight="15dp" />
 </LinearLayout>

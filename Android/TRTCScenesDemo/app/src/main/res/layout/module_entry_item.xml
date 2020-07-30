@@ -25,8 +25,8 @@
 
     <ImageView
         android:id="@+id/icon_iv"
-        android:layout_width="32dp"
-        android:layout_height="24dp"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
         android:src="@drawable/push" />

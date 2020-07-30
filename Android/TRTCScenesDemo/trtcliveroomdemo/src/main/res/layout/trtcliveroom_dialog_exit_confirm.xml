@@ -52,7 +52,7 @@
             app:layout_constraintBottom_toBottomOf="@id/cl_button_panel"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintLeft_toLeftOf="@id/cl_button_panel"
-            app:layout_constraintRight_toLeftOf="@id/btn_positive" />
+            app:layout_constraintRight_toLeftOf="@+id/btn_positive" />
 
         <Button
             android:id="@+id/btn_positive"

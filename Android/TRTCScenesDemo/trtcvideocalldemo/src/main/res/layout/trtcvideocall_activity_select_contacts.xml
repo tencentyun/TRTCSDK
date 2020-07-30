@@ -81,13 +81,39 @@
 
         <ImageView
             android:id="@+id/iv_clear_search"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/trtcvideocall_icon_clear_search"
+            app:layout_constraintRight_toRightOf="@+id/iv_border"
+            app:layout_constraintTop_toTopOf="@id/cl_edit"
+            app:layout_constraintBottom_toBottomOf="@id/cl_edit" />
+
+        <ImageView
+            android:id="@+id/iv_border"
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@color/trtcvideocall_color_edit_hint"
+            app:layout_constraintTop_toTopOf="@id/cl_edit"
+            app:layout_constraintBottom_toBottomOf="@id/cl_edit"
+            app:layout_constraintRight_toLeftOf="@+id/tv_search"
+            />
+
+        <TextView
+            android:id="@+id/tv_search"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="2dp"
-            android:background="@drawable/trtcvideocall_icon_clear_search"
-            android:visibility="gone"
-            app:layout_constraintRight_toRightOf="@id/cl_edit"
-            app:layout_constraintTop_toTopOf="@id/cl_edit" />
+            android:layout_marginRight="5dp"
+            android:textSize="16sp"
+            android:background="@android:color/transparent"
+            android:textColor="@color/trtcvideocall_color_white"
+            android:text="@string/trtcvideocall_search"
+            app:layout_constraintTop_toTopOf="@id/cl_edit"
+            app:layout_constraintBottom_toBottomOf="@id/cl_edit"
+            app:layout_constraintRight_toRightOf="@id/cl_edit"/>
 
     </android.support.constraint.ConstraintLayout>
 

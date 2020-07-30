@@ -44,6 +44,7 @@ public class TRTCAudioCallSelectContactActivity extends BaseActivity {
     private Button                  mButtonComplete;                //导航栏中的完成按钮
     private Toolbar                 mNavigationBar;                 //导航栏，主要负责监听导航栏返回按钮
     private EditText                mEditSearchUser;                //输入手机号码的编辑文本框
+    private TextView                mTextSearchUser;                //开始搜索用户的按钮
     private RecyclerView            mRecyclerRecentSearch;          //显示最近搜索过的联系人列表控件
     private RecyclerView            mRecyclerSelectedContacts;      //显示当前选中联系人的列表控件
     private ConstraintLayout        mLayoutTips;                    //显示搜索提示信息
@@ -78,6 +79,7 @@ public class TRTCAudioCallSelectContactActivity extends BaseActivity {
         initNavigationBar();
         initCompleteText();
         initSearchUserEdit();
+        initSearchUserText();
         initRecentSearchRecycler();
         initSelectedContactsRecycler();
         initClearSearchImage();
@@ -160,6 +162,17 @@ public class TRTCAudioCallSelectContactActivity extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
+            }
+        });
+    }
+
+    private void initSearchUserText() {
+        mTextSearchUser = (TextView) findViewById(R.id.tv_search);
+
+        mTextSearchUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchContactsByPhone(mEditSearchUser.getText().toString());
             }
         });
     }

@@ -12,7 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.tencent.liteav.demo.beauty.IBeautyKit;
+import com.tencent.liteav.beauty.TXBeautyManager;
 import com.tencent.liteav.demo.beauty.R;
 import com.tencent.liteav.demo.beauty.Beauty;
 import com.tencent.liteav.demo.beauty.BeautyImpl;
@@ -28,7 +28,6 @@ import com.tencent.liteav.demo.beauty.utils.ResourceUtils;
  * 美颜面板控件 View
  *
  * -引用，在 xml 中引用该布局，设置其大小
- * -在 Java 文件设置功能实现类，实现类需实现 IBeautyKit 接口
  * -外部可通过 getDefaultBeautyInfo 获取默认美颜面板的属性
  * -外部可通过 setBeautyInfo 设置美颜面板内部属性
  * -外部可通过 setOnBeautyListener 监听美颜面板的行为动作
@@ -141,6 +140,10 @@ public class BeautyPanel extends FrameLayout implements SeekBar.OnSeekBarChangeL
         mOnBeautyListener = onBeautyListener;
     }
 
+    public void setOnFilterChangeListener(Beauty.OnFilterChangeListener listener) {
+        mBeauty.setOnFilterChangeListener(listener);
+    }
+
     public int getFilterProgress(int index) {
         return mBeauty.getFilterProgress(mBeautyInfo, index);
     }
@@ -149,8 +152,8 @@ public class BeautyPanel extends FrameLayout implements SeekBar.OnSeekBarChangeL
         return mBeauty.getDefaultBeauty();
     }
 
-    public void setBeautyKit(IBeautyKit beautyKit) {
-        mBeauty.setBeautyBik(beautyKit);
+    public void setBeautyManager(TXBeautyManager beautyManager) {
+        mBeauty.setBeautyManager(beautyManager);
     }
 
     public void setMotionTmplEnable(boolean enable) {

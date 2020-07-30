@@ -11,7 +11,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
@@ -28,9 +27,8 @@ import android.widget.TextView;
 import com.blankj.utilcode.constant.PermissionConstants;
 import com.blankj.utilcode.util.PermissionUtils;
 import com.tencent.liteav.liveroom.ui.liveroomlist.LiveRoomListActivity;
-
-import com.tencent.liteav.login.ui.LoginActivity;
 import com.tencent.liteav.login.model.ProfileManager;
+import com.tencent.liteav.login.ui.LoginActivity;
 import com.tencent.liteav.meeting.ui.CreateMeetingActivity;
 import com.tencent.liteav.trtcaudiocalldemo.ui.TRTCAudioCallSelectContactActivity;
 import com.tencent.liteav.trtcvideocalldemo.ui.TRTCVideoCallSelectContactActivity;
@@ -58,6 +56,7 @@ public class TRTCMainActivity extends Activity {
     private TRTCRecyclerViewAdapter mTRTCRecyclerViewAdapter;
     private ImageView               mLogoutImg;
     private AlertDialog             mAlertDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +67,7 @@ public class TRTCMainActivity extends Activity {
         }
         setContentView(R.layout.activity_trtc_main);
         mTvVersion = (TextView) findViewById(R.id.main_tv_version);
-        mTvVersion.setText("腾讯云 TRTC v" + TXLiveBase.getSDKVersionStr()+"(7.4.291)");
+        mTvVersion.setText("腾讯云 TRTC v" + TXLiveBase.getSDKVersionStr()+"(7.5.423)");
         mMainTitle = (TextView) findViewById(R.id.main_title);
         mMainTitle.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -113,14 +112,40 @@ public class TRTCMainActivity extends Activity {
         interceptHyperLink((TextView) findViewById(R.id.tv_privacy));
         initPermission();
     }
-    private void stopService() {
-        Intent intent = new Intent(this, CallService.class);
-        stopService(intent);
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        CallService.start(this);
     }
+
+    @Override
+    public void onBackPressed() {
+        //退出登录
+        AlertDialog alertDialog = new AlertDialog.Builder(this, R.style.common_alert_dialog)
+                .setMessage("确定要退出APP吗？")
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        CallService.stop(TRTCMainActivity.this);
+                        finish();
+                    }
+                })
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .create();
+        alertDialog.show();
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
     }
+
     private void showLogoutDialog() {
         if (mAlertDialog == null) {
             mAlertDialog = new AlertDialog.Builder(this, R.style.common_alert_dialog)
@@ -132,10 +157,11 @@ public class TRTCMainActivity extends Activity {
                             ProfileManager.getInstance().logout(new ProfileManager.ActionCallback() {
                                 @Override
                                 public void onSuccess() {
-                                    stopService();
+                                    CallService.stop(TRTCMainActivity.this);
                                     // 退出登录
                                     startLoginActivity();
                                 }
+
                                 @Override
                                 public void onFailed(int code, String msg) {
                                 }
@@ -154,11 +180,13 @@ public class TRTCMainActivity extends Activity {
             mAlertDialog.show();
         }
     }
+
     private void startLoginActivity() {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finish();
     }
+
     private List<TRTCItemEntity> createTRTCItems() {
         List<TRTCItemEntity> list = new ArrayList<>();
         list.add(new TRTCItemEntity("多人视频会议", "语音自动降噪、视频画质超高清，适用于在线会议、远程培训、小班课等场景。", R.drawable.multi_meeting, 0, CreateMeetingActivity.class));
@@ -168,6 +196,7 @@ public class TRTCMainActivity extends Activity {
         list.add(new TRTCItemEntity("视频通话", "支持720P/1080P高清画质，50%丢包率可正常视频通话，自带美颜、挂件、抠图等AI特效。", R.drawable.video_call, 0, TRTCVideoCallSelectContactActivity.class));
         return list;
     }
+
     private File getLogFile() {
         String       path      = getExternalFilesDir(null).getAbsolutePath() + "/log/tencent/liteav";
         List<String> logs      = new ArrayList<>();
@@ -186,12 +215,14 @@ public class TRTCMainActivity extends Activity {
         String zipPath = path + "/liteavLog.zip";
         return zip(logs, zipPath);
     }
+
     private void initPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             PermissionUtils.permission(PermissionConstants.STORAGE, PermissionConstants.MICROPHONE, PermissionConstants.CAMERA)
                     .request();
         }
     }
+
     private File zip(List<String> files, String zipFileName) {
         File zipFile = new File(zipFileName);
         zipFile.deleteOnExit();
@@ -233,6 +264,7 @@ public class TRTCMainActivity extends Activity {
         }
         return zipFile;
     }
+
     /**
      * 用于跳转隐私协议
      *
@@ -342,10 +374,10 @@ public class TRTCMainActivity extends Activity {
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            Context        context  = parent.getContext();
-            LayoutInflater inflater = LayoutInflater.from(context);
-            View view = inflater.inflate(R.layout.module_trtc_entry_item, parent, false);
-            ViewHolder viewHolder = new ViewHolder(view);
+            Context        context    = parent.getContext();
+            LayoutInflater inflater   = LayoutInflater.from(context);
+            View           view       = inflater.inflate(R.layout.module_trtc_entry_item, parent, false);
+            ViewHolder     viewHolder = new ViewHolder(view);
             return viewHolder;
         }
 

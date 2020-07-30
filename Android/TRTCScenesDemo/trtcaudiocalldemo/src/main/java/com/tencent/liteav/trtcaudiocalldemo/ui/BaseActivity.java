@@ -10,12 +10,15 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
-public class BaseActivity extends AppCompatActivity {
+import com.blankj.utilcode.constant.PermissionConstants;
+import com.blankj.utilcode.util.PermissionUtils;
 
+public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initStatusBar();
+        initPermission();
     }
 
     private void initStatusBar() {
@@ -28,6 +31,13 @@ public class BaseActivity extends AppCompatActivity {
             window.setStatusBarColor(Color.TRANSPARENT);
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }
+    }
+
+    private void initPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            PermissionUtils.permission(PermissionConstants.STORAGE, PermissionConstants.MICROPHONE, PermissionConstants.CAMERA)
+                    .request();
         }
     }
 }

@@ -15,4 +15,5 @@
     <string name="str_user_id_tips">输入用户名</string>
 
     <string name="main_privacy_text" translatable="false">点击查看<a href="http://privacy.qq.com/">隐私政策</a></string>
+    <string name="working">正在运行中</string>
 </resources>

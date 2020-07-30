@@ -312,7 +312,9 @@ public class VoiceRoomAudienceActivity extends VoiceRoomBaseActivity {
         if (user.userId.equals(mSelfUserId)) {
             mCurrentRole = TRTCCloudDef.TRTCRoleAudience;
             mSelfSeatIndex = -1;
-            mAnchorAudioPanel.stopPlay();
+            if (mAnchorAudioPanel != null) {
+                mAnchorAudioPanel.stopPlay();
+            }
             refreshView();
         }
     }

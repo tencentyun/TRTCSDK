@@ -52,14 +52,14 @@ public interface TRTCVoiceRoomDelegate {
 
     /**
      * 主播禁麦
-     * @param index  静音的麦位
+     * @param index  操作的麦位
      * @param isMute 是否静音
      */
     void onSeatMute(int index, boolean isMute);
 
     /**
      * 主播封麦
-     * @param index  静音的麦位
+     * @param index  操作的麦位
      * @param isClose 是否封禁麦位
      */
     void onSeatClose(int index, boolean isClose);

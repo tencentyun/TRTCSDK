@@ -12,6 +12,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.widget.Toast;
 
+import com.tencent.liteav.beauty.TXBeautyManager;
 import com.tencent.liteav.demo.beauty.constant.BeautyConstants;
 import com.tencent.liteav.demo.beauty.download.DownloadListener;
 import com.tencent.liteav.demo.beauty.download.MaterialDownloader;
@@ -29,9 +30,10 @@ public class BeautyImpl implements Beauty {
 
     private static final String TAG = "BeautyImpl";
 
-    private Context         mContext;
-    private BeautyParams    mBeautyParams;
-    private IBeautyKit      mBeautyKit;
+    private Context                mContext;
+    private BeautyParams           mBeautyParams;
+    private TXBeautyManager        mBeautyManager;
+    private OnFilterChangeListener mOnFilterChangeListener;
 
     public BeautyImpl(@NonNull Context context) {
         mContext = context;
@@ -39,8 +41,8 @@ public class BeautyImpl implements Beauty {
     }
 
     @Override
-    public void setBeautyBik(@NonNull IBeautyKit beautyBik) {
-        mBeautyKit = beautyBik;
+    public void setBeautyManager(@NonNull TXBeautyManager beautyManager) {
+        mBeautyManager = beautyManager;
     }
 
     @Override
@@ -50,244 +52,346 @@ public class BeautyImpl implements Beauty {
 
     @Override
     public void setBeautyStyleAndLevel(int style, int level) {
-        if (mBeautyKit != null) {
+        if (mBeautyManager != null) {
             setBeautyStyle(style);
             setBeautyLevel(level);
         }
     }
 
-    @Override
-    public void setFilter(Bitmap filterImage, int index) {
+    /**
+     * 设置指定素材滤镜特效
+     *
+     * @param filterImage 指定素材，即颜色查找表图片。必须使用 png 格式
+     * @param index
+     */
+    private void setFilter(Bitmap filterImage, int index) {
         mBeautyParams.mFilterBmp = filterImage;
         mBeautyParams.mFilterIndex = index;
-        if (mBeautyKit != null) {
-            mBeautyKit.setFilter(filterImage, index);
+        if (mBeautyManager != null) {
+            mBeautyManager.setFilter(filterImage);
+            if (mOnFilterChangeListener != null) {
+                mOnFilterChangeListener.onChanged(filterImage, index);
+            }
         }
     }
 
-    @Override
-    public void setFilterStrength(float strength) {
+    /**
+     * 设置滤镜浓度
+     *
+     * @param strength 从0到1，越大滤镜效果越明显，默认值为0.5
+     */
+    private void setFilterStrength(float strength) {
         mBeautyParams.mFilterMixLevel = strength;
-        if (mBeautyKit != null) {
-            mBeautyKit.setFilterStrength(strength);
+        if (mBeautyManager != null) {
+            mBeautyManager.setFilterStrength(strength);
         }
     }
 
-    @Override
-    public void setGreenScreenFile(String path) {
+    /**
+     * 设置绿幕文件
+     *
+     * @param path 视频文件路径。支持 MP4；null 表示关闭特效
+     */
+    private void setGreenScreenFile(String path) {
         mBeautyParams.mGreenFile = path;
-        if (mBeautyKit != null) {
-            mBeautyKit.setGreenScreenFile(path);
+        if (mBeautyManager != null) {
+            mBeautyManager.setGreenScreenFile(path);
         }
     }
 
-    @Override
-    public void setBeautyStyle(int beautyStyle) {
-        if (beautyStyle >= 3) {
+    /**
+     * 设置美颜类型
+     *
+     * @param beautyStyle 美颜风格.三种美颜风格：0 ：光滑 1：自然 2：朦胧
+     */
+    private void setBeautyStyle(int beautyStyle) {
+        if (beautyStyle >= 3 || beautyStyle < 0) {
             return;
         }
         mBeautyParams.mBeautyStyle = beautyStyle;
-        if (mBeautyKit != null) {
-            mBeautyKit.setBeautyStyle(beautyStyle);
+        if (mBeautyManager != null) {
+            mBeautyManager.setBeautyStyle(beautyStyle);
         }
     }
 
-    @Override
-    public void setBeautyLevel(int beautyLevel) {
+    /**
+     * 设置美颜级别
+     *
+     * @param beautyLevel 美颜级别，取值范围0 - 9； 0表示关闭，1 - 9值越大，效果越明显
+     */
+    private void setBeautyLevel(int beautyLevel) {
         mBeautyParams.mBeautyLevel = beautyLevel;
-        if (mBeautyKit != null) {
-            mBeautyKit.setBeautyLevel(beautyLevel);
+        if (mBeautyManager != null) {
+            mBeautyManager.setBeautyLevel(beautyLevel);
         }
     }
 
-    @Override
-    public void setWhitenessLevel(int whitenessLevel) {
+    /**
+     * 设置美白级别
+     *
+     * @param whitenessLevel 美白级别，取值范围0 - 9； 0表示关闭，1 - 9值越大，效果越明显
+     */
+    private void setWhitenessLevel(int whitenessLevel) {
         mBeautyParams.mWhiteLevel = whitenessLevel;
-        if (mBeautyKit != null) {
-            mBeautyKit.setWhitenessLevel(whitenessLevel);
+        if (mBeautyManager != null) {
+            mBeautyManager.setWhitenessLevel(whitenessLevel);
         }
     }
 
-    @Override
-    public void setRuddyLevel(int ruddyLevel) {
+    /**
+     * 设置红润级别
+     *
+     * @param ruddyLevel 红润级别，取值范围0 - 9； 0表示关闭，1 - 9值越大，效果越明显
+     */
+    private void setRuddyLevel(int ruddyLevel) {
         mBeautyParams.mRuddyLevel = ruddyLevel;
-        if (mBeautyKit != null) {
-            mBeautyKit.setRuddyLevel(ruddyLevel);
+        if (mBeautyManager != null) {
+            mBeautyManager.setRuddyLevel(ruddyLevel);
         }
     }
 
-    @Override
-    public void setEyeScaleLevel(int eyeScaleLevel) {
+    /**
+     * 设置大眼级别
+     *
+     * @param eyeScaleLevel 大眼级别，取值范围0 - 9； 0表示关闭，1 - 9值越大，效果越明显
+     */
+    private void setEyeScaleLevel(int eyeScaleLevel) {
         mBeautyParams.mBigEyeLevel = eyeScaleLevel;
-        if (mBeautyKit != null) {
-            mBeautyKit.setEyeScaleLevel(eyeScaleLevel);
+        if (mBeautyManager != null) {
+            mBeautyManager.setEyeScaleLevel(eyeScaleLevel);
         }
     }
 
-    @Override
-    public void setFaceSlimLevel(int faceSlimLevel) {
+    /**
+     * 设置瘦脸级别
+     *
+     * @param faceSlimLevel 瘦脸级别，取值范围0 - 9； 0表示关闭，1 - 9值越大，效果越明显
+     */
+    private void setFaceSlimLevel(int faceSlimLevel) {
         mBeautyParams.mFaceSlimLevel = faceSlimLevel;
-        if (mBeautyKit != null) {
-            mBeautyKit.setFaceSlimLevel(faceSlimLevel);
+        if (mBeautyManager != null) {
+            mBeautyManager.setFaceSlimLevel(faceSlimLevel);
         }
     }
 
-    @Override
-    public void setFaceVLevel(int faceVLevel) {
+    /**
+     * 设置 V 脸级别
+     *
+     * @param faceVLevel V脸级别，取值范围0 - 9； 0表示关闭，1 - 9值越大，效果越明显
+     */
+    private void setFaceVLevel(int faceVLevel) {
         mBeautyParams.mFaceVLevel = faceVLevel;
-        if (mBeautyKit != null) {
-            mBeautyKit.setFaceVLevel(faceVLevel);
+        if (mBeautyManager != null) {
+            mBeautyManager.setFaceVLevel(faceVLevel);
         }
     }
 
-    @Override
-    public void setChinLevel(int chinLevel) {
+    /**
+     * 设置下巴拉伸或收缩
+     *
+     * @param chinLevel 下巴拉伸或收缩级别，取值范围 -9 - 9；0 表示关闭，小于0表示收缩，大于0表示拉伸
+     */
+    private void setChinLevel(int chinLevel) {
         mBeautyParams.mChinSlimLevel = chinLevel;
-        if (mBeautyKit != null) {
-            mBeautyKit.setChinLevel(chinLevel);
+        if (mBeautyManager != null) {
+            mBeautyManager.setChinLevel(chinLevel);
         }
     }
 
-    @Override
-    public void setFaceShortLevel(int faceShortLevel) {
+    /**
+     * 设置短脸级别
+     *
+     * @param faceShortLevel 短脸级别，取值范围0 - 9； 0表示关闭，1 - 9值越大，效果越明显
+     */
+    private void setFaceShortLevel(int faceShortLevel) {
         mBeautyParams.mFaceShortLevel = faceShortLevel;
-        if (mBeautyKit != null) {
-            mBeautyKit.setFaceShortLevel(faceShortLevel);
+        if (mBeautyManager != null) {
+            mBeautyManager.setFaceShortLevel(faceShortLevel);
         }
     }
 
-    @Override
-    public void setNoseSlimLevel(int noseSlimLevel) {
+    /**
+     * 设置瘦鼻级别
+     *
+     * @param noseSlimLevel 瘦鼻级别，取值范围0 - 9； 0表示关闭，1 - 9值越大，效果越明显
+     */
+    private void setNoseSlimLevel(int noseSlimLevel) {
         mBeautyParams.mNoseSlimLevel = noseSlimLevel;
-        if (mBeautyKit != null) {
-            mBeautyKit.setNoseSlimLevel(noseSlimLevel);
+        if (mBeautyManager != null) {
+            mBeautyManager.setNoseSlimLevel(noseSlimLevel);
         }
     }
 
-    @Override
-    public void setEyeLightenLevel(int eyeLightenLevel) {
+    /**
+     * 设置亮眼
+     *
+     * @param eyeLightenLevel 亮眼级别，取值范围0 - 9； 0表示关闭，1 - 9值越大，效果越明显
+     */
+    private void setEyeLightenLevel(int eyeLightenLevel) {
         mBeautyParams.mEyeLightenLevel = eyeLightenLevel;
-        if (mBeautyKit != null) {
-            mBeautyKit.setEyeLightenLevel(eyeLightenLevel);
+        if (mBeautyManager != null) {
+            mBeautyManager.setEyeLightenLevel(eyeLightenLevel);
         }
     }
 
-    @Override
-    public void setToothWhitenLevel(int toothWhitenLevel) {
+    /**
+     * 设置白牙
+     *
+     * @param toothWhitenLevel 亮眼级别，取值范围0 - 9； 0表示关闭，1 - 9值越大，效果越明显
+     */
+    private void setToothWhitenLevel(int toothWhitenLevel) {
         mBeautyParams.mToothWhitenLevel = toothWhitenLevel;
-        if (mBeautyKit != null) {
-            mBeautyKit.setToothWhitenLevel(toothWhitenLevel);
+        if (mBeautyManager != null) {
+            mBeautyManager.setToothWhitenLevel(toothWhitenLevel);
         }
     }
 
-    @Override
-    public void setWrinkleRemoveLevel(int wrinkleRemoveLevel) {
+    /**
+     * 设置祛皱
+     *
+     * @param wrinkleRemoveLevel 祛皱级别，取值范围0 - 9； 0表示关闭，1 - 9值越大，效果越明显
+     */
+    private void setWrinkleRemoveLevel(int wrinkleRemoveLevel) {
         mBeautyParams.mWrinkleRemoveLevel = wrinkleRemoveLevel;
-        if (mBeautyKit != null) {
-            mBeautyKit.setWrinkleRemoveLevel(wrinkleRemoveLevel);
+        if (mBeautyManager != null) {
+            mBeautyManager.setWrinkleRemoveLevel(wrinkleRemoveLevel);
         }
     }
 
-    @Override
-    public void setPounchRemoveLevel(int pounchRemoveLevel) {
+    /**
+     * 设置祛眼袋
+     *
+     * @param pounchRemoveLevel 祛眼袋级别，取值范围0 - 9； 0表示关闭，1 - 9值越大，效果越明显
+     */
+    private void setPounchRemoveLevel(int pounchRemoveLevel) {
         mBeautyParams.mPounchRemoveLevel = pounchRemoveLevel;
-        if (mBeautyKit != null) {
-            mBeautyKit.setPounchRemoveLevel(pounchRemoveLevel);
+        if (mBeautyManager != null) {
+            mBeautyManager.setPounchRemoveLevel(pounchRemoveLevel);
         }
     }
 
-    @Override
-    public void setSmileLinesRemoveLevel(int smileLinesRemoveLevel) {
+    /**
+     * 设置祛法令纹
+     *
+     * @param smileLinesRemoveLevel 祛法令纹级别，取值范围0 - 9； 0表示关闭，1 - 9值越大，效果越明显
+     */
+    private void setSmileLinesRemoveLevel(int smileLinesRemoveLevel) {
         mBeautyParams.mSmileLinesRemoveLevel = smileLinesRemoveLevel;
-        if (mBeautyKit != null) {
-            mBeautyKit.setSmileLinesRemoveLevel(smileLinesRemoveLevel);
+        if (mBeautyManager != null) {
+            mBeautyManager.setSmileLinesRemoveLevel(smileLinesRemoveLevel);
         }
     }
 
-    @Override
-    public void setForeheadLevel(int foreheadLevel) {
+    /**
+     * 设置发际线
+     *
+     * @param foreheadLevel 发际线级别，取值范围0 - 9； 0表示关闭，1 - 9值越大，效果越明显
+     */
+    private void setForeheadLevel(int foreheadLevel) {
         mBeautyParams.mForeheadLevel = foreheadLevel;
-        if (mBeautyKit != null) {
-            mBeautyKit.setForeheadLevel(foreheadLevel);
+        if (mBeautyManager != null) {
+            mBeautyManager.setForeheadLevel(foreheadLevel);
         }
     }
 
-    @Override
-    public void setEyeDistanceLevel(int eyeDistanceLevel) {
+    /**
+     * 设置眼距
+     *
+     * @param eyeDistanceLevel 眼距级别，取值范围0 - 9； 0表示关闭，1 - 9值越大，效果越明显
+     */
+    private void setEyeDistanceLevel(int eyeDistanceLevel) {
         mBeautyParams.mEyeDistanceLevel = eyeDistanceLevel;
-        if (mBeautyKit != null) {
-            mBeautyKit.setEyeDistanceLevel(eyeDistanceLevel);
+        if (mBeautyManager != null) {
+            mBeautyManager.setEyeDistanceLevel(eyeDistanceLevel);
         }
     }
 
-    @Override
-    public void setEyeAngleLevel(int eyeAngleLevel) {
+    /**
+     * 设置眼角
+     *
+     * @param eyeAngleLevel 眼角级别，取值范围0 - 9； 0表示关闭，1 - 9值越大，效果越明显
+     */
+    private void setEyeAngleLevel(int eyeAngleLevel) {
         mBeautyParams.mEyeAngleLevel = eyeAngleLevel;
-        if (mBeautyKit != null) {
-            mBeautyKit.setEyeAngleLevel(eyeAngleLevel);
+        if (mBeautyManager != null) {
+            mBeautyManager.setEyeAngleLevel(eyeAngleLevel);
         }
     }
 
-    @Override
-    public void setMouthShapeLevel(int mouthShapeLevel) {
+    /**
+     * 设置嘴型
+     *
+     * @param mouthShapeLevel 嘴型级别，取值范围0 - 9； 0表示关闭，1 - 9值越大，效果越明显
+     */
+    private void setMouthShapeLevel(int mouthShapeLevel) {
         mBeautyParams.mMouthShapeLevel = mouthShapeLevel;
-        if (mBeautyKit != null) {
-            mBeautyKit.setMouthShapeLevel(mouthShapeLevel);
+        if (mBeautyManager != null) {
+            mBeautyManager.setMouthShapeLevel(mouthShapeLevel);
         }
     }
 
-    @Override
-    public void setNoseWingLevel(int noseWingLevel) {
+    private void setNoseWingLevel(int noseWingLevel) {
         mBeautyParams.mNoseWingLevel = noseWingLevel;
-        if (mBeautyKit != null) {
-            mBeautyKit.setNoseWingLevel(noseWingLevel);
+        if (mBeautyManager != null) {
+            mBeautyManager.setNoseWingLevel(noseWingLevel);
         }
     }
 
-    @Override
-    public void setNosePositionLevel(int nosePositionLevel) {
+    /**
+     * 设置鼻翼
+     *
+     * @param nosePositionLevel 鼻翼级别，取值范围0 - 9； 0表示关闭，1 - 9值越大，效果越明显
+     */
+    private void setNosePositionLevel(int nosePositionLevel) {
         mBeautyParams.mNosePositionLevel = nosePositionLevel;
-        if (mBeautyKit != null) {
-            mBeautyKit.setNosePositionLevel(nosePositionLevel);
+        if (mBeautyManager != null) {
+            mBeautyManager.setNosePositionLevel(nosePositionLevel);
         }
     }
 
-    @Override
-    public void setLipsThicknessLevel(int lipsThicknessLevel) {
+    /**
+     * 设置嘴唇厚度
+     *
+     * @param lipsThicknessLevel 嘴唇厚度级别，取值范围0 - 9； 0表示关闭，1 - 9值越大，效果越明显
+     */
+    private void setLipsThicknessLevel(int lipsThicknessLevel) {
         mBeautyParams.mMouthShapeLevel = lipsThicknessLevel;
-        if (mBeautyKit != null) {
-            mBeautyKit.setLipsThicknessLevel(lipsThicknessLevel);
+        if (mBeautyManager != null) {
+            mBeautyManager.setLipsThicknessLevel(lipsThicknessLevel);
         }
     }
 
-    @Override
-    public void setFaceBeautyLevel(int faceBeautyLevel) {
+    /**
+     * 设置脸型
+     *
+     * @param faceBeautyLevel 脸型级别，取值范围0 - 9； 0表示关闭，1 - 9值越大，效果越明显
+     */
+    private void setFaceBeautyLevel(int faceBeautyLevel) {
         mBeautyParams.mFaceBeautyLevel = faceBeautyLevel;
-        if (mBeautyKit != null) {
-            mBeautyKit.setFaceBeautyLevel(faceBeautyLevel);
+        if (mBeautyManager != null) {
+            mBeautyManager.setFaceBeautyLevel(faceBeautyLevel);
         }
     }
 
-    @Override
-    public void setMotionTmpl(String tmplPath) {
+    /**
+     * 选择使用哪一款 AI 动效挂件
+     *
+     * @param tmplPath
+     */
+    private void setMotionTmpl(String tmplPath) {
         mBeautyParams.mMotionTmplPath = tmplPath;
-        if (mBeautyKit != null) {
-            mBeautyKit.setMotionTmpl(tmplPath);
+        if (mBeautyManager != null) {
+            mBeautyManager.setMotionTmpl(tmplPath);
         }
-    }
-
-    @Override
-    public void setMotionMute(boolean motionMute) {
-
     }
 
     @Override
     public void setMotionTmplEnable(boolean enable) {
-        if (mBeautyKit != null) {
+        if (mBeautyManager != null) {
             if (enable) {
-                mBeautyKit.setMotionTmpl(null);
+                mBeautyManager.setMotionTmpl(null);
             } else {
-                mBeautyKit.setMotionTmpl(mBeautyParams.mMotionTmplPath);
+                mBeautyManager.setMotionTmpl(mBeautyParams.mMotionTmplPath);
             }
         }
     }
@@ -312,6 +416,11 @@ public class BeautyImpl implements Beauty {
         }
     }
 
+    @Override
+    public void setOnFilterChangeListener(OnFilterChangeListener listener) {
+        mOnFilterChangeListener = listener;
+    }
+
     /**
      * 清空美颜配置，如果SDK是新创建的则不需要最后清理，如果SDK是单例，需要调用此方法清空上次设置的美颜参数<br/>
      * 示例：TXUGCRecord是单例，需要调用，TXLivePusher每次创建新的，不需要调用
@@ -319,34 +428,34 @@ public class BeautyImpl implements Beauty {
     @Override
     public void clear() {
         mBeautyParams = new BeautyParams();
-        if (mBeautyKit != null) {
-            mBeautyKit.setFilter(mBeautyParams.mFilterBmp, mBeautyParams.mFilterIndex);
-            mBeautyKit.setFilterStrength(mBeautyParams.mFilterMixLevel);
-            mBeautyKit.setGreenScreenFile(mBeautyParams.mGreenFile);
-            mBeautyKit.setBeautyStyle(mBeautyParams.mBeautyStyle);
-            mBeautyKit.setBeautyLevel(mBeautyParams.mBeautyLevel);
-            mBeautyKit.setWhitenessLevel(mBeautyParams.mWhiteLevel);
-            mBeautyKit.setRuddyLevel(mBeautyParams.mRuddyLevel);
-            mBeautyKit.setEyeScaleLevel(mBeautyParams.mBigEyeLevel);
-            mBeautyKit.setFaceSlimLevel(mBeautyParams.mFaceSlimLevel);
-            mBeautyKit.setFaceVLevel(mBeautyParams.mFaceVLevel);
-            mBeautyKit.setChinLevel(mBeautyParams.mChinSlimLevel);
-            mBeautyKit.setFaceShortLevel(mBeautyParams.mFaceShortLevel);
-            mBeautyKit.setNoseSlimLevel(mBeautyParams.mNoseSlimLevel);
-            mBeautyKit.setEyeLightenLevel(mBeautyParams.mEyeLightenLevel);
-            mBeautyKit.setToothWhitenLevel(mBeautyParams.mToothWhitenLevel);
-            mBeautyKit.setWrinkleRemoveLevel(mBeautyParams.mWrinkleRemoveLevel);
-            mBeautyKit.setPounchRemoveLevel(mBeautyParams.mPounchRemoveLevel);
-            mBeautyKit.setSmileLinesRemoveLevel(mBeautyParams.mSmileLinesRemoveLevel);
-            mBeautyKit.setForeheadLevel(mBeautyParams.mForeheadLevel);
-            mBeautyKit.setEyeDistanceLevel(mBeautyParams.mEyeDistanceLevel);
-            mBeautyKit.setEyeAngleLevel(mBeautyParams.mEyeAngleLevel);
-            mBeautyKit.setMouthShapeLevel(mBeautyParams.mMouthShapeLevel);
-            mBeautyKit.setNoseWingLevel(mBeautyParams.mNoseWingLevel);
-            mBeautyKit.setNosePositionLevel(mBeautyParams.mNosePositionLevel);
-            mBeautyKit.setLipsThicknessLevel(mBeautyParams.mLipsThicknessLevel);
-            mBeautyKit.setFaceBeautyLevel(mBeautyParams.mFaceBeautyLevel);
-            mBeautyKit.setMotionTmpl(mBeautyParams.mMotionTmplPath);
+        if (mBeautyManager != null) {
+            mBeautyManager.setFilter(mBeautyParams.mFilterBmp);
+            mBeautyManager.setFilterStrength(mBeautyParams.mFilterMixLevel);
+            mBeautyManager.setGreenScreenFile(mBeautyParams.mGreenFile);
+            mBeautyManager.setBeautyStyle(mBeautyParams.mBeautyStyle);
+            mBeautyManager.setBeautyLevel(mBeautyParams.mBeautyLevel);
+            mBeautyManager.setWhitenessLevel(mBeautyParams.mWhiteLevel);
+            mBeautyManager.setRuddyLevel(mBeautyParams.mRuddyLevel);
+            mBeautyManager.setEyeScaleLevel(mBeautyParams.mBigEyeLevel);
+            mBeautyManager.setFaceSlimLevel(mBeautyParams.mFaceSlimLevel);
+            mBeautyManager.setFaceVLevel(mBeautyParams.mFaceVLevel);
+            mBeautyManager.setChinLevel(mBeautyParams.mChinSlimLevel);
+            mBeautyManager.setFaceShortLevel(mBeautyParams.mFaceShortLevel);
+            mBeautyManager.setNoseSlimLevel(mBeautyParams.mNoseSlimLevel);
+            mBeautyManager.setEyeLightenLevel(mBeautyParams.mEyeLightenLevel);
+            mBeautyManager.setToothWhitenLevel(mBeautyParams.mToothWhitenLevel);
+            mBeautyManager.setWrinkleRemoveLevel(mBeautyParams.mWrinkleRemoveLevel);
+            mBeautyManager.setPounchRemoveLevel(mBeautyParams.mPounchRemoveLevel);
+            mBeautyManager.setSmileLinesRemoveLevel(mBeautyParams.mSmileLinesRemoveLevel);
+            mBeautyManager.setForeheadLevel(mBeautyParams.mForeheadLevel);
+            mBeautyManager.setEyeDistanceLevel(mBeautyParams.mEyeDistanceLevel);
+            mBeautyManager.setEyeAngleLevel(mBeautyParams.mEyeAngleLevel);
+            mBeautyManager.setMouthShapeLevel(mBeautyParams.mMouthShapeLevel);
+            mBeautyManager.setNoseWingLevel(mBeautyParams.mNoseWingLevel);
+            mBeautyManager.setNosePositionLevel(mBeautyParams.mNosePositionLevel);
+            mBeautyManager.setLipsThicknessLevel(mBeautyParams.mLipsThicknessLevel);
+            mBeautyManager.setFaceBeautyLevel(mBeautyParams.mFaceBeautyLevel);
+            mBeautyManager.setMotionTmpl(mBeautyParams.mMotionTmplPath);
         }
     }
 
@@ -511,7 +620,7 @@ public class BeautyImpl implements Beauty {
         mBeautyParams.mFilterBmp = bitmap;
         mBeautyParams.mFilterIndex = position;
         setFilter(bitmap, position);
-        setFilterStrength(itemInfo.getItemLevel());
+        setFilterStrength(itemInfo.getItemLevel() / 10.0f);
     }
 
     private void setMaterialEffects(@NonNull final TabInfo tabInfo, @NonNull final ItemInfo itemInfo) {

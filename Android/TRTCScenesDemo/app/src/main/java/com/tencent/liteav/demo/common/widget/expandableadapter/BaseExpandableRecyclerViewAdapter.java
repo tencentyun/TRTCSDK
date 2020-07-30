@@ -19,7 +19,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.security.acl.Group;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -41,18 +40,18 @@ public abstract class BaseExpandableRecyclerViewAdapter
 
     private static final Object EXPAND_PAYLOAD = new Object();
 
-    private static final int TYPE_EMPTY = ViewProducer.VIEW_TYPE_EMPTY;
+    private static final int TYPE_EMPTY  = ViewProducer.VIEW_TYPE_EMPTY;
     private static final int TYPE_HEADER = ViewProducer.VIEW_TYPE_HEADER;
-    private static final int TYPE_GROUP = ViewProducer.VIEW_TYPE_EMPTY >> 2;
-    private static final int TYPE_CHILD = ViewProducer.VIEW_TYPE_EMPTY >> 3;
-    private static final int TYPE_MASK = TYPE_GROUP | TYPE_CHILD | TYPE_EMPTY | TYPE_HEADER;
+    private static final int TYPE_GROUP  = ViewProducer.VIEW_TYPE_EMPTY >> 2;
+    private static final int TYPE_CHILD  = ViewProducer.VIEW_TYPE_EMPTY >> 3;
+    private static final int TYPE_MASK   = TYPE_GROUP | TYPE_CHILD | TYPE_EMPTY | TYPE_HEADER;
 
-    private Set<GroupBean> mExpandGroupSet;
-    private Map<GroupBean, BaseGroupViewHolder> mGroupBeanVideoHolder;
+    private Set<GroupBean>                                              mExpandGroupSet;
+    private Map<GroupBean, BaseGroupViewHolder>                         mGroupBeanVideoHolder;
     private ExpandableRecyclerViewOnClickListener<GroupBean, ChildBean> mListener;
 
-    private boolean mIsEmpty;
-    private boolean mShowHeaderViewWhenEmpty;
+    private boolean      mIsEmpty;
+    private boolean      mShowHeaderViewWhenEmpty;
     private ViewProducer mEmptyViewProducer;
     private ViewProducer mHeaderViewProducer;
 
@@ -208,7 +207,7 @@ public abstract class BaseExpandableRecyclerViewAdapter
         Iterator<GroupBean> iter = mExpandGroupSet.iterator();
         while (iter.hasNext()) {
             GroupBean groupBean = iter.next();
-            final int position = getAdapterPosition(getGroupIndex(groupBean));
+            final int position  = getAdapterPosition(getGroupIndex(groupBean));
             notifyItemRangeRemoved(position + 1, groupBean.getChildCount());
             notifyItemChanged(position, EXPAND_PAYLOAD);
             iter.remove();
@@ -276,7 +275,7 @@ public abstract class BaseExpandableRecyclerViewAdapter
         if (position == 0 && mHeaderViewProducer != null) {
             return TYPE_HEADER;
         }
-        int[] coord = translateToDoubleIndex(position);
+        int[]     coord     = translateToDoubleIndex(position);
         GroupBean groupBean = getGroupItem(coord[0]);
         if (coord[1] < 0) {
             int groupType = getGroupType(groupBean);
@@ -431,9 +430,9 @@ public abstract class BaseExpandableRecyclerViewAdapter
         if (mHeaderViewProducer != null) {
             adapterPosition--;
         }
-        final int[] result = new int[]{-1, -1};
-        final int groupCount = getGroupCount();
-        int adaptePositionCursor = 0;
+        final int[] result               = new int[]{-1, -1};
+        final int   groupCount           = getGroupCount();
+        int         adaptePositionCursor = 0;
         for (int groupCursor = 0; groupCursor < groupCount; groupCursor++) {
             if (adaptePositionCursor == adapterPosition) {
                 result[0] = groupCursor;
@@ -443,7 +442,7 @@ public abstract class BaseExpandableRecyclerViewAdapter
             GroupBean groupBean = getGroupItem(groupCursor);
             if (mExpandGroupSet.contains(groupBean)) {
                 final int childCount = groupBean.getChildCount();
-                final int offset = adapterPosition - adaptePositionCursor;
+                final int offset     = adapterPosition - adaptePositionCursor;
                 if (childCount >= offset) {
                     result[0] = groupCursor;
                     result[1] = offset - 1;
