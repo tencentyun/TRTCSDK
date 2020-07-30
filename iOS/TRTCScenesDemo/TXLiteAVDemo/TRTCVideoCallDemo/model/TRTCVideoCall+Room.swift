@@ -21,7 +21,7 @@ extension TRTCVideoCall: TRTCCloudDelegate {
         param.sdkAppId = UInt32(SDKAPPID)
         param.userId = VideoCallUtils.shared.curUserId()
         param.roomId = curRoomID
-        param.userSig = GenerateTestUserSig.genTestUserSig(param.userId)
+        param.userSig = ProfileManager.shared.curUserSig()
         param.privateMapKey = ""
         
         //编码设置

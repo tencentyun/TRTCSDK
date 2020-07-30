@@ -68,24 +68,20 @@ class AudioCallViewController: UIViewController {
         return stack
     }()
     
+    let colors = [UIColor(red: 19.0 / 255.0, green: 41.0 / 255.0,
+                          blue: 75.0 / 255.0, alpha: 1).cgColor,
+                  UIColor(red: 5.0 / 255.0, green: 12.0 / 255.0,
+                          blue: 23.0 / 255.0, alpha: 1).cgColor]
+    
+    let gradientLayer: CAGradientLayer = {
+        let layer = CAGradientLayer()
+        layer.startPoint = CGPoint(x: 0, y: 0)
+        layer.endPoint = CGPoint(x: 1, y: 1)
+        return layer
+    }()
+    
     lazy var OnInviteePanel: UIView = {
         let panel = UIView()
-        view.addSubview(panel)
-        let label = UILabel()
-        label.textColor = UIColor(hex: "#a4a4a4")
-        label.text = "他们也在"
-        label.textAlignment = .center
-        panel.addSubview(label)
-        label.snp.makeConstraints { (make) in
-            make.leading.trailing.equalTo(view)
-            make.top.equalTo(panel)
-            make.height.equalTo(36)
-        }
-        panel.addSubview(OninviteeStackView)
-        OninviteeStackView.snp.makeConstraints { (make) in
-            make.leading.trailing.bottom.equalTo(panel)
-            make.top.equalTo(label.snp.bottom)
-        }
         return panel
     }()
     
@@ -125,7 +121,7 @@ class AudioCallViewController: UIViewController {
         user.showsVerticalScrollIndicator = false
         user.showsHorizontalScrollIndicator = false
         user.contentMode = .scaleToFill
-        user.backgroundColor = .appBackGround
+        user.backgroundColor = .clear
         user.dataSource = self
         user.delegate = self
         return user

@@ -10,15 +10,19 @@ import UIKit
 
 class TRTCCreateVoiceRoomViewController: UIViewController {
     // 依赖管理者
-    let dependencyContainer: TRTCVoiceRoomDependencyContainer
+    let dependencyContainer: TRTCVoiceRoomEnteryControl
     
-    init(dependencyContainer: TRTCVoiceRoomDependencyContainer) {
+    init(dependencyContainer: TRTCVoiceRoomEnteryControl) {
         self.dependencyContainer = dependencyContainer
         super.init(nibName: nil, bundle: nil)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        TRTCLog.out("deinit \(type(of: self))")
     }
     
     override func viewDidLoad() {

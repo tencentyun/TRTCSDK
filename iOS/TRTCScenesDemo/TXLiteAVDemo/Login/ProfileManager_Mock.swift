@@ -26,12 +26,14 @@ let loginBaseUrl = "https://xxx.com/release/"
     @objc var name: String
     @objc var avatar: String
     @objc var userId: String
+    @objc var userSig: String = ""
     
     public init(userID: String) {
         userId = userID
         token = userID
         phone = userID
         name = userID
+        userSig = GenerateTestUserSig.genTestUserSig(userID)
         avatar = "https://imgcache.qq.com/qcloud/public/static//avatar1_100.20191230.png"
         super.init()
     }
@@ -323,5 +325,9 @@ let loginBaseUrl = "https://xxx.com/release/"
     @objc public func removeLoginCache() {
         let tokenKey = "com.tencent.trtcScences.demo"
         UserDefaults.standard.set(nil, forKey: tokenKey)
+    }
+    
+    @objc public func curUserSig() -> String {
+           return curUserModel?.userSig ?? ""
     }
 }

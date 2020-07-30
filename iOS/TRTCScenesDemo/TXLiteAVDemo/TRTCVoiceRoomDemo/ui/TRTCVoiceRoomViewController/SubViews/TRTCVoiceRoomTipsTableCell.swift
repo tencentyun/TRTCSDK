@@ -113,8 +113,10 @@ class TRTCVoiceRoomTipsTableCell: UITableViewCell {
         contentLabel.text = info
         contentLabel.sizeToFit()
         self.acceptAction = action
-        guard contentLabel.superview != nil else { return }
-        if action != nil {
+    }
+    
+    func updateCell() {
+        if self.acceptAction != nil {
             acceptButton.isHidden = false
             // 重新布局
             contentLabel.snp.remakeConstraints { (make) in

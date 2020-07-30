@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "免提_已开启.png",
+      "filename" : "ic_handsfree_on.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "免提_已开启@2x.png",
+      "filename" : "ic_handsfree_on@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "免提_已开启@3x.png",
+      "filename" : "ic_handsfree_on@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

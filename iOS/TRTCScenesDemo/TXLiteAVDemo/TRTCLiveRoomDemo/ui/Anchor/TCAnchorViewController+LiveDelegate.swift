@@ -11,11 +11,8 @@ import Foundation
 let maxLinkMicCount = 3
 
 extension TCAnchorViewController: TRTCLiveRoomDelegate {
-    public func trtcLiveRoom(_ trtcLiveRoom: TRTCLiveRoomImpl, onError code: Int, message: String?) {
-        
-    }
     
-    public func trtcLiveRoom(_ trtcLiveRoom: TRTCLiveRoomImpl, onRecvRoomTextMsg message: String, fromUser user: TRTCLiveUserInfo) {
+    public func trtcLiveRoom(_ trtcLiveRoom: TRTCLiveRoom, onRecvRoomTextMsg message: String, fromUser user: TRTCLiveUserInfo) {
         let info = IMUserAble()
         info.imUserId = user.userId
         info.imUserName = user.userName
@@ -24,7 +21,7 @@ extension TCAnchorViewController: TRTCLiveRoomDelegate {
         logicView.handleIMMessage(info, msgText: message)
     }
     
-    public func trtcLiveRoom(_ trtcLiveRoom: TRTCLiveRoomImpl, onRecvRoomCustomMsg command: String, message: String, fromUser user: TRTCLiveUserInfo) {
+    public func trtcLiveRoom(_ trtcLiveRoom: TRTCLiveRoom, onRecvRoomCustomMsg command: String, message: String, fromUser user: TRTCLiveUserInfo) {
         let info = IMUserAble()
         info.imUserId = user.userId
         info.imUserName = user.userName
@@ -33,25 +30,25 @@ extension TCAnchorViewController: TRTCLiveRoomDelegate {
         logicView.handleIMMessage(info, msgText: message)
     }
     
-    public func trtcLiveRoom(_ trtcLiveRoom: TRTCLiveRoomImpl, onAnchorEnter userID: String) {
+    public func trtcLiveRoom(_ trtcLiveRoom: TRTCLiveRoom, onAnchorEnter userID: String) {
          onAnchorEnter(userID)
     }
     
-    public func trtcLiveRoom(_ trtcLiveRoom: TRTCLiveRoomImpl, onAnchorExit userID: String) {
+    public func trtcLiveRoom(_ trtcLiveRoom: TRTCLiveRoom, onAnchorExit userID: String) {
         onAnchorExit(userID)
     }
     
-    public func trtcLiveRoom(_ trtcLiveRoom: TRTCLiveRoomImpl, onRequestJoinAnchor user: TRTCLiveUserInfo, reason: String?, timeout: Double) {
+    public func trtcLiveRoom(_ trtcLiveRoom: TRTCLiveRoom, onRequestJoinAnchor user: TRTCLiveUserInfo, reason: String?, timeout: Double) {
         //linkMic
         onRequestJoinAnchor(user, reason: reason, timeout: timeout)
     }
     
-    public func trtcLiveRoom(_ trtcLiveRoom: TRTCLiveRoomImpl, onRequestRoomPK user: TRTCLiveUserInfo, timeout: Double) {
+    public func trtcLiveRoom(_ trtcLiveRoom: TRTCLiveRoom, onRequestRoomPK user: TRTCLiveUserInfo, timeout: Double) {
         //PK
         onRequestRoomPK(user, timeout: timeout)
     }
     
-    public func trtcLiveRoom(_ trtcLiveRoom: TRTCLiveRoomImpl, onAudienceEnter user: TRTCLiveUserInfo) {
+    public func trtcLiveRoom(_ trtcLiveRoom: TRTCLiveRoom, onAudienceEnter user: TRTCLiveUserInfo) {
         let info = IMUserAble()
         info.imUserId = user.userId
         info.imUserName = user.userName
@@ -60,7 +57,7 @@ extension TCAnchorViewController: TRTCLiveRoomDelegate {
         logicView.handleIMMessage(info, msgText: "")
     }
     
-    public func trtcLiveRoom(_ trtcLiveRoom: TRTCLiveRoomImpl, onAudienceExit user: TRTCLiveUserInfo) {
+    public func trtcLiveRoom(_ trtcLiveRoom: TRTCLiveRoom, onAudienceExit user: TRTCLiveUserInfo) {
         let info = IMUserAble()
         info.imUserId = user.userId
         info.imUserName = user.userName
@@ -69,14 +66,14 @@ extension TCAnchorViewController: TRTCLiveRoomDelegate {
         logicView.handleIMMessage(info, msgText: "")
     }
     
-    public func trtcLiveRoomOnQuitRoomPK(_ trtcLiveRoom: TRTCLiveRoomImpl) {
+    public func trtcLiveRoomOnQuitRoomPK(_ trtcLiveRoom: TRTCLiveRoom) {
         self.curPkRoom = nil
         TCUtil.toastTip("对方主播已结束PK", parentView: view)
         linkFrameRestore()
     }
     
-    public func trtcLiveRoom(_ trtcLiveRoom: TRTCLiveRoomImpl, onRoomInfoChange info: TRTCLiveRoomInfo) {
-        self.roomStatus = info.roomStatus.rawValue
+    public func trtcLiveRoom(_ trtcLiveRoom: TRTCLiveRoom, onRoomInfoChange info: TRTCLiveRoomInfo) {
+        self.roomStatus = Int(info.roomStatus.rawValue)
         if info.roomStatus == .single || info.roomStatus == .linkMic {
             self.curPkRoom = nil
             UIView.animate(withDuration: 0.1) {

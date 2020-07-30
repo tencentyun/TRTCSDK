@@ -39,11 +39,11 @@
 @property (nonatomic,   weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic,   weak) IBOutlet UILabel *versionLabel;
 
-@property (nonatomic, strong) VideoCallMainViewController *videoCallVC;
-@property (nonatomic, strong) AudioCallMainViewController *audioCallVC;
+@property (nonatomic, strong) VideoSelectContactViewController *videoCallVC;
+@property (nonatomic, strong) AudioSelectContactViewController *audioCallVC;
 
-@property (nonatomic, strong) TRTCLiveRoomImpl *liveRoom;
-@property (nonatomic, strong) TRTCVoiceRoomImp *voiceRoom;
+@property (nonatomic, strong) TRTCLiveRoom *liveRoom;
+@property (nonatomic, strong) TRTCVoiceRoom *voiceRoom;
 
 @property (nonatomic, strong) NSArray<MainMenuItem *> *mainMenuItems;
 
@@ -62,16 +62,16 @@
     gradientLayer.frame = self.view.bounds;
     [self.view.layer insertSublayer:gradientLayer atIndex:0];
     
-    _videoCallVC = [[VideoCallMainViewController alloc] init];
-    _audioCallVC = [[AudioCallMainViewController alloc] init];
+    _videoCallVC = [[VideoSelectContactViewController alloc] init];
+    _audioCallVC = [[AudioSelectContactViewController alloc] init];
     [[TRTCVideoCall shared] setup];
     [TRTCVideoCall shared].delegate = _videoCallVC;
     
     [[TRTCAudioCall shared] setup];
     [TRTCAudioCall shared].delegate = _audioCallVC;
     
-    _liveRoom = [[TRTCLiveRoomImpl alloc] init];
-    _voiceRoom = [TRTCVoiceRoomImp shared];
+    _liveRoom = [[TRTCLiveRoom alloc] init];
+    _voiceRoom = [TRTCVoiceRoom sharedInstance];
     __weak __typeof(self) wSelf = self;
     self.mainMenuItems = @[
         [[MainMenuItem alloc] initWithIcon:[UIImage imageNamed:@"MenuMeeting"]
@@ -112,7 +112,7 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     NSString *userID = [[ProfileManager shared] curUserID];
-    NSString *userSig = [GenerateTestUserSig genTestUserSig:userID];
+    NSString *userSig = [[ProfileManager shared] curUserSig];
     
     if (![[[V2TIMManager sharedInstance] getLoginUser] isEqual:userID]) {
         [[ProfileManager shared] IMLoginWithUserSig:userSig success:^{
@@ -121,38 +121,9 @@
             } failed:^(NSInteger code, NSString *error) {
                 
             }];
-            
             [[TRTCVideoCall shared] loginWithSdkAppID:SDKAPPID user:userID userSig:userSig success:^{
             } failed:^(NSInteger code, NSString *error) {
                 
-            }];
-            TRTCLiveRoomConfig *config = [[TRTCLiveRoomConfig alloc] init];
-            
-            if ([[NSUserDefaults standardUserDefaults] objectForKey:@"liveRoomConfig_useCDNFirst"] != nil) {
-                config.useCDNFirst = [[[NSUserDefaults standardUserDefaults] objectForKey:@"liveRoomConfig_useCDNFirst"] boolValue];
-            }
-            
-            if (config.useCDNFirst && [[NSUserDefaults standardUserDefaults] objectForKey:@"liveRoomConfig_cndPlayDomain"] != nil) {
-                config.cdnPlayDomain = [[NSUserDefaults standardUserDefaults] objectForKey:@"liveRoomConfig_cndPlayDomain"];
-            }
-            
-            [self.liveRoom loginWithSdkAppID:SDKAPPID userID:userID userSig:userSig config:config callback:^(NSInteger code, NSString * error) {
-                
-            }];
-            [self.voiceRoom loginWithSdkAppID:SDKAPPID userId:userID userSig:userSig callback:^(int32_t code, NSString * _Nonnull message) {
-                NSLog(@"login voiceroom success.");
-            }];
-            LoginResultModel *curUser = [[ProfileManager shared] curUserModel];
-            [self.liveRoom setSelfProfileWithName:curUser.name avatarURL:curUser.avatar callback:^(NSInteger code, NSString * error) {
-                
-            }];
-            
-            [[TRTCMeeting sharedInstance] login:SDKAPPID userId:userID userSig:userSig callback:^(NSInteger code, NSString *message) {
-               
-            }];
-            [self.voiceRoom setSelfProfileWithUserName:curUser.name avatarURL:curUser.avatar callback:^(int32_t code, NSString * _Nonnull message) {
-                NSLog(@"voiceroom: set self profile success.");
-
             }];
             
         } failed:^(NSString * error) {
@@ -166,6 +137,22 @@
 }
 
 - (void)gotoLiveView {
+    NSString *userID = [[ProfileManager shared] curUserID];
+    NSString *userSig = [[ProfileManager shared] curUserSig];
+    TRTCLiveRoomConfig *config = [[TRTCLiveRoomConfig alloc] init];
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"liveRoomConfig_useCDNFirst"] != nil) {
+        config.useCDNFirst = [[[NSUserDefaults standardUserDefaults] objectForKey:@"liveRoomConfig_useCDNFirst"] boolValue];
+    }
+    if (config.useCDNFirst && [[NSUserDefaults standardUserDefaults] objectForKey:@"liveRoomConfig_cndPlayDomain"] != nil) {
+        config.cdnPlayDomain = [[NSUserDefaults standardUserDefaults] objectForKey:@"liveRoomConfig_cndPlayDomain"];
+    }
+    [self.liveRoom loginWithSdkAppID:SDKAPPID userID:userID userSig:userSig config:config callback:^(int code, NSString * error) {
+        
+    }];
+    LoginResultModel *curUser = [[ProfileManager shared] curUserModel];
+    [self.liveRoom setSelfProfileWithName:curUser.name avatarURL:curUser.avatar callback:^(int code, NSString * error) {
+        
+    }];
     LiveRoomMainViewController *vc = [[LiveRoomMainViewController alloc] initWithLiveRoom:_liveRoom];
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -175,12 +162,28 @@
 }
 
 - (void)gotoMeetingView {
+    NSString *userID = [[ProfileManager shared] curUserID];
+    NSString *userSig = [[ProfileManager shared] curUserSig];
+    [[TRTCMeeting sharedInstance] login:SDKAPPID userId:userID userSig:userSig callback:^(NSInteger code, NSString *message) {
+       
+    }];
     TRTCMeetingNewViewController *vc = [[TRTCMeetingNewViewController alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)gotoVoiceRoomView {
-    UIViewController* vc = [[[TRTCVoiceRoomDependencyContainer alloc] init] makeEntranceViewController];
+    NSString *userID = [[ProfileManager shared] curUserID];
+    NSString *userSig = [[ProfileManager shared] curUserSig];
+    [self.voiceRoom login:SDKAPPID userId:userID userSig:userSig callback:^(int32_t code, NSString * _Nonnull message) {
+        NSLog(@"login voiceroom success.");
+    }];
+    LoginResultModel *curUser = [[ProfileManager shared] curUserModel];
+    [self.voiceRoom setSelfProfile:curUser.name avatarURL:curUser.avatar callback:^(int32_t code, NSString * _Nonnull message) {
+        NSLog(@"voiceroom: set self profile success.");
+
+    }];
+    TRTCVoiceRoomEnteryControl* container = [[TRTCVoiceRoomEnteryControl alloc] initWithSdkAppId:SDKAPPID userId:userID];
+    UIViewController* vc = [container makeEntranceViewController];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

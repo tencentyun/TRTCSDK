@@ -13,10 +13,10 @@ enum VoiceRoomRole {
     case audience // 观众
 }
 
-enum VoiceRoomToneQuality {
-    case music
+enum VoiceRoomToneQuality: Int {
+    case speech = 1
     case defaultQuality
-    case speech
+    case music
 }
 
 protocol TRTCCreateVoiceRoomViewResponder: class {
@@ -24,11 +24,11 @@ protocol TRTCCreateVoiceRoomViewResponder: class {
 }
 
 class TRTCCreateVoiceRoomViewModel {
-    private let dependencyContainer: TRTCVoiceRoomDependencyContainer
+    private let dependencyContainer: TRTCVoiceRoomEnteryControl
     
-    weak var viewResponder: TRTCCreateVoiceRoomViewResponder?
+    public weak var viewResponder: TRTCCreateVoiceRoomViewResponder?
     
-    var voiceRoom: TRTCVoiceRoomImp {
+    var voiceRoom: TRTCVoiceRoom {
         return dependencyContainer.getVoiceRoom()
     }
     
@@ -39,12 +39,16 @@ class TRTCCreateVoiceRoomViewModel {
     
     /// 初始化方法
     /// - Parameter container: 依赖管理容器，负责VoiceRoom模块的依赖管理
-    init(container: TRTCVoiceRoomDependencyContainer) {
+    init(container: TRTCVoiceRoomEnteryControl) {
         self.dependencyContainer = container
     }
     
+    deinit {
+        TRTCLog.out("deinit \(type(of: self))")
+    }
+    
     func createRoom() {
-        let userId = ProfileManager.shared.curUserID() ?? voiceRoom.userId
+        let userId = ProfileManager.shared.curUserID() ?? dependencyContainer.userId
         let coverAvatar = ProfileManager.shared.curUserModel?.avatar ?? ""
         let roomId = getRoomId()
         let roomInfo = VoiceRoomInfo.init(roomID: roomId, ownerId: userId, memberCount: 7)
@@ -52,12 +56,12 @@ class TRTCCreateVoiceRoomViewModel {
         roomInfo.coverUrl = coverAvatar
         roomInfo.roomName = roomName
         roomInfo.needRequest = needRequest
-        let vc = self.dependencyContainer.makeVoiceRoomViewController(roomInfo:roomInfo, role: .anchor)
+        let vc = self.dependencyContainer.makeVoiceRoomViewController(roomInfo:roomInfo, role: .anchor, toneQuality: self.toneQuality)
         viewResponder?.push(viewController: vc)
     }
     
     func getRoomId() -> Int {
-        let userId = ProfileManager.shared.curUserID() ?? voiceRoom.userId
+        let userId = ProfileManager.shared.curUserID() ?? dependencyContainer.userId
         let result = "\(userId)_voice_room".hash & 0x7FFFFFFF
         TRTCLog.out("hashValue:room id:\(result), userId: \(userId)")
         return result

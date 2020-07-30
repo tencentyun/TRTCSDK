@@ -26,7 +26,6 @@ class VideoRenderView: UIView {
     
     lazy var cellImgView: UIImageView = {
         let img = UIImageView()
-        addSubview(img)
         return img
     }()
     
@@ -37,7 +36,6 @@ class VideoRenderView: UIView {
         user.textAlignment = .center
         user.font = UIFont.systemFont(ofSize: 11)
         user.numberOfLines = 2
-        addSubview(user)
         return user
     }()
     
@@ -45,6 +43,8 @@ class VideoRenderView: UIView {
         backgroundColor = .darkGray
         let noModel = model.userId.count == 0
         if !noModel {
+            
+            self.addSubview(cellImgView)
             cellImgView.snp.remakeConstraints { (make) in
                 make.width.height.equalTo(40)
                 make.centerX.equalTo(self)
@@ -52,6 +52,7 @@ class VideoRenderView: UIView {
             }
             cellImgView.sd_setImage(with: URL(string: UserModel.avatarUrl), completed: nil)
             
+            self.addSubview(cellUserLabel)
             cellUserLabel.snp.remakeConstraints { (make) in
                 make.leading.trailing.equalTo(self)
                 make.height.equalTo(22)
@@ -113,7 +114,6 @@ class VideoCallViewController: UIViewController {
     lazy var sponsorPanel: UIView = {
        let panel = UIView()
         panel.backgroundColor = .clear
-        view.addSubview(panel)
         return panel
     }()
     

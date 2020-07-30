@@ -63,7 +63,7 @@ extension TRTCMeetingMemberViewController {
         
         // 解除全体静音按钮
         unmuteAllAudioButton.setTitle("解除全体静音", for: .normal)
-        unmuteAllAudioButton.backgroundColor = UIColor(hex: "#0062E3")
+        unmuteAllAudioButton.backgroundColor = .buttonBackColor
         unmuteAllAudioButton.layer.cornerRadius = 4.0
         view.addSubview(unmuteAllAudioButton)
         unmuteAllAudioButton.snp.makeConstraints { (make) in

@@ -8,7 +8,7 @@
 #import "TCMsgModel.h"
 #import "TCMsgListTableView.h"
 
-@class TRTCLiveRoomImpl;
+@class TRTCLiveRoom;
 
 @protocol TCAudienceToolbarDelegate <NSObject>
 - (void)closeVC:(BOOL)popViewController;
@@ -41,7 +41,7 @@
 @property (nonatomic, retain)  UIView             *cover;
 @property (nonatomic, retain)  UITextView         *statusView;
 @property (nonatomic, retain)  UITextView         *logViewEvt;
-@property (nonatomic, weak) TRTCLiveRoomImpl      *liveRoom;
+@property (nonatomic, weak) TRTCLiveRoom      *liveRoom;
 
 - (instancetype)initWithFrame:(CGRect)frame liveInfo:(TRTCLiveRoomInfo *)liveInfo withLinkMic:(BOOL)linkmic;
 

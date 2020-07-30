@@ -17,7 +17,11 @@
 #import "TCAnchorViewController.h"
 #import "TCAudienceViewController.h"
 #import "TRTCMeeting.h"
+#import "TRTCVoiceRoomDef.h"
+#import "TRTCVoiceRoom.h"
+#import "TRTCLiveRoom.h"
 #endif
+
 #import "AppDelegate.h"
 #import <SDWebImage/SDWebImage.h>
 #import <MJRefresh/MJRefresh.h>

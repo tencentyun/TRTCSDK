@@ -8,8 +8,7 @@
 
 import Foundation
 
-extension AudioCallViewController: UICollectionViewDelegate, UICollectionViewDataSource,
-                                   UICollectionViewDelegateFlowLayout {
+extension AudioCallViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func resetWithUserList(users: [AudioCallUserModel], isInit: Bool = false) {
         resetUserList()

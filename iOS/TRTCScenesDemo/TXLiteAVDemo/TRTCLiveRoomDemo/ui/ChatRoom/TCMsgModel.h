@@ -55,12 +55,12 @@ typedef NS_ENUM(NSInteger, TCMsgModelType) {
  */
 @interface TCMsgModel : NSObject
 @property (nonatomic, assign) TCMsgModelType msgType;      //消息类型
-@property (nonatomic, retain) NSString *userId;            //用户Id
-@property (nonatomic, retain) NSString *userName;          //用户名字
-@property (nonatomic, retain) NSString *userMsg;           //用户发的消息
-@property (nonatomic, retain) NSString *userHeadImageUrl;  //用户头像url
+@property (nonatomic, copy) NSString *userId;            //用户Id
+@property (nonatomic, copy) NSString *userName;          //用户名字
+@property (nonatomic, copy) NSString *userMsg;           //用户发的消息
+@property (nonatomic, copy) NSString *userHeadImageUrl;  //用户头像url
 @property (nonatomic, assign) NSInteger msgHeight;         //消息高度
-@property (nonatomic, retain) NSAttributedString* msgAttribText;
+@property (nonatomic, copy) NSAttributedString* msgAttribText;
 @end
 
 

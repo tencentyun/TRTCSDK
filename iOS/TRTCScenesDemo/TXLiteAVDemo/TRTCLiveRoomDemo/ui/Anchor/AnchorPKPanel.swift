@@ -11,15 +11,23 @@ import Foundation
 @objc class AnchorPKCell: UITableViewCell {
     lazy var coverImg: UIImageView = {
        let img = UIImageView()
-        addSubview(img)
-        img.layer.cornerRadius = 6
+        img.layer.cornerRadius = 20
         img.layer.masksToBounds = true
         return img
     }()
     
+    lazy var inviteLabel: UILabel = {
+        let label = UILabel()
+        label.text = "邀请"
+        label.textAlignment = NSTextAlignment.center
+        label.isUserInteractionEnabled = true
+        label.textColor = .white
+        label.backgroundColor = .buttonBackColor
+        return label
+    }()
+    
     lazy var infoLabel: UILabel = {
         let label = UILabel()
-        addSubview(label)
         label.textColor = .white
         label.font = UIFont.systemFont(ofSize: 13)
         return label
@@ -36,20 +44,38 @@ import Foundation
     }
     
     func config(model: TRTCLiveRoomInfo) {
-        coverImg.snp.remakeConstraints { (make) in
-            make.top.leading.equalTo(5)
-            make.bottom.equalTo(-5)
-            make.width.equalTo(50)
-        }
-
-        coverImg.sd_setImage(with: URL(string: model.coverUrl), completed: nil)
         
+        self.addSubview(coverImg)
+        coverImg.snp.remakeConstraints { (make) in
+            make.top.leading.equalTo(10)
+            make.left.equalTo(20)
+            make.bottom.equalTo(-10)
+            make.width.equalTo(40)
+        }
+        
+        self.addSubview(inviteLabel)
+        inviteLabel.snp.remakeConstraints { (make) in
+            make.top.equalTo(15)
+            make.bottom.equalTo(-15)
+            make.right.equalTo(-20)
+            make.width.equalTo(75)
+        }
+        
+        if model.coverUrl == "" {
+            coverImg.sd_setImage(with: URL(string:sdWebImgPlaceHolderStr()), completed: nil)
+        } else {
+            coverImg.sd_setImage(with: URL(string: model.coverUrl), completed: nil)
+        }
+        
+        self.addSubview(infoLabel)
         infoLabel.snp.remakeConstraints { (make) in
             make.leading.equalTo(coverImg.snp.trailing).offset(5)
             make.top.equalTo(5)
             make.bottom.trailing.equalTo(-5)
         }
-        infoLabel.text = "房间名:\(model.roomName) 主播:\(model.ownerName)"
+        infoLabel.text = "\(model.ownerName)\n\(model.roomName)"
+        infoLabel.font = UIFont.systemFont(ofSize: 15)
+        infoLabel.numberOfLines = 2
     }
 }
 
@@ -61,9 +87,8 @@ import Foundation
     @objc var pkWithRoom: ((TRTCLiveRoomInfo)->Void)? = nil
     @objc var shouldHidden: (()->Void)? = nil
     lazy var anchorTable: UITableView = {
-        let table = UITableView(frame: .zero, style: .grouped)
+        let table = UITableView(frame: .zero, style: .plain)
         table.register(AnchorPKCell.classForCoder(), forCellReuseIdentifier: "AnchorPKCell")
-        addSubview(table)
         table.delegate = self
         table.dataSource = self
         table.separatorColor = UIColor.clear
@@ -72,10 +97,11 @@ import Foundation
     }()
     
     override func didMoveToSuperview() {
-        anchorTable.backgroundColor = UIColor(white: 0.2, alpha: 0.5)
+        anchorTable.backgroundColor = .pannelBackColor
+        self.addSubview(anchorTable)
         anchorTable.snp.remakeConstraints { (make) in
             make.leading.top.width.equalTo(self)
-            make.height.equalTo(288)
+            make.height.equalTo(self)
         }
     }
     
@@ -91,13 +117,16 @@ import Foundation
         
         RoomManager.shared.getRoomList(sdkAppID: SDKAPPID, success: { [weak self] (ids) in
             let uintIDs = ids.compactMap {
-                UInt32($0)
+                Int($0)
             }
             if uintIDs.count == 0 {
                 self?.endLoading()
                 return
             }
-            self?.liveRoom?.getRoomInfos(roomIDs: uintIDs, callback: { (code, error, infos) in
+            let numberIds = uintIDs.map { (value) -> NSNumber in
+                return NSNumber.init(value: value)
+            }
+            self?.liveRoom?.getRoomInfos(roomIDs: numberIds, callback: { (code, error, infos) in
                 DispatchQueue.main.async {
                     self?.roomInfos = infos.filter {
                         $0.ownerId != ProfileManager.shared.curUserID()
@@ -114,10 +143,7 @@ import Foundation
     //MARK: - tableview dataSource
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if roomInfos.count > 0 {
-            return 5.0
-        }
-        return 24
+        return 40
     }
     
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
@@ -173,6 +199,32 @@ import Foundation
                 }
             }
         }
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerLabel = UILabel()
+        headerLabel.frame = CGRect(x: 0, y: 40, width: tableView.bounds.size.width, height: 50)
+        headerLabel.textAlignment = NSTextAlignment.center
+        headerLabel.text = "PK邀请"
+        headerLabel.textColor = .white
+        headerLabel.backgroundColor = .pannelBackColor
+        headerLabel.isUserInteractionEnabled = true
+        
+        let cancel = UIButton(frame: CGRect(x: self.bounds.size.width * 4.0 / 5.0, y: 0, width: self.bounds.size.width / 5.0, height: 40))
+        cancel.setTitle("取消", for: UIControl.State.normal)
+        cancel.backgroundColor = .clear
+        cancel.addTarget(self, action: #selector(hiddenPanel), for: UIControl.Event.touchUpInside)
+        headerLabel.addSubview(cancel)
+        return headerLabel
+    }
+    
+    @objc func hiddenPanel() {
+        isHidden = true
+        if let hidden = shouldHidden {
+            hidden()
+        }
+        //将PK按钮还原
+        NotificationCenter.default.post(name: NSNotification.Name("ChangePKToStopNotificationKey"), object: nil)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

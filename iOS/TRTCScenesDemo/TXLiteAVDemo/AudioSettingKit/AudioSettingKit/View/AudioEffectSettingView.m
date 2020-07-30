@@ -66,7 +66,10 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
         self->_theme = theme;
         self->_currentType = type;
         CGFloat bottom_height = IS_IPhoneXSeries ? 34 : 0;
-        self.frame = CGRectMake(0, [UIScreen mainScreen].bounds.size.height - 526 - bottom_height, [UIScreen mainScreen].bounds.size.width, 526 + bottom_height);
+        self.frame = CGRectMake(0,
+                                [UIScreen mainScreen].bounds.size.height - 526 - bottom_height,
+                                [UIScreen mainScreen].bounds.size.width,
+                                526 + bottom_height);
         [self createViewModel];
         [self setupInitStyle];
         [self bindInteraction];

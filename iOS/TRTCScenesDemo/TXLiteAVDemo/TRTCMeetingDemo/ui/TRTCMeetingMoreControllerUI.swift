@@ -46,7 +46,7 @@ final class TRTCMeetingMoreControllerUI: TRTCMeetingMoreViewController {
         super.viewDidLoad()
         view.layer.masksToBounds = true
         view.layer.cornerRadius = 10
-        view.backgroundColor = UIColor(hex: "#13233F")
+        view.backgroundColor = .pannelBackColor
         view.addSubview(setLabel)
         view.addSubview(self.segView)
     }

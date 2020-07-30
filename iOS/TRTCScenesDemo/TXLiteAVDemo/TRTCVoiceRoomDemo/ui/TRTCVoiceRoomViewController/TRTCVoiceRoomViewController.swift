@@ -42,7 +42,7 @@ public class TRTCVoiceRoomViewController: UIViewController {
         if model.roomType == .audience {
             model.enterRoom()
         } else {
-            model.createRoom()
+            model.createRoom(toneQuality: toneQuality.rawValue)
         }
     }
     
@@ -62,7 +62,7 @@ public class TRTCVoiceRoomViewController: UIViewController {
     }
     
     deinit {
-        TRTCLog.out("deinit voice room vc")
+        TRTCLog.out("deinit \(type(of: self))")
     }
     
     /// 取消

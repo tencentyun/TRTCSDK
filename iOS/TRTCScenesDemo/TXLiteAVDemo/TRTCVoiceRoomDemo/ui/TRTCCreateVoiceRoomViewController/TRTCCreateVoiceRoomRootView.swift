@@ -27,6 +27,9 @@ class TRTCCreateVoiceRoomRootView: UIView {
         bindInteraction()
     }
     
+    deinit {
+        TRTCLog.out("deinit \(type(of: self))")
+    }
     
     let backgroundLayer: CALayer = {
         // fillCode
@@ -64,10 +67,9 @@ class TRTCCreateVoiceRoomRootView: UIView {
     
     let roomNameInputTextFiled: UITextField = {
         let textField = UITextField.init(frame: .zero)
-        textField.attributedPlaceholder = NSAttributedString.init(string: "请输入房间主题", attributes: [.font: UIFont.systemFont(ofSize: 16.0), .foregroundColor: UIColor.init(0x6B82A8)])
+        textField.attributedPlaceholder = NSAttributedString.init(string: "请输入房间主题", attributes: [.font: UIFont.systemFont(ofSize: 16.0), .foregroundColor: UIColor.placeholderBackColor])
         textField.textColor = UIColor.init(0xEBF4FF)
         textField.font = UIFont.systemFont(ofSize: 16.0)
-//        textField.keyboardType = .numberPad
         return textField
     }()
 
@@ -90,7 +92,7 @@ class TRTCCreateVoiceRoomRootView: UIView {
     
     let userNameTextFiled: UITextField = {
         let textField = UITextField.init(frame: .zero)
-        textField.attributedPlaceholder = NSAttributedString.init(string: "请输入昵称", attributes: [.font: UIFont.systemFont(ofSize: 16.0), .foregroundColor: UIColor.init(0x6B82A8)])
+        textField.attributedPlaceholder = NSAttributedString.init(string: "请输入昵称", attributes: [.font: UIFont.systemFont(ofSize: 16.0), .foregroundColor: UIColor.placeholderBackColor])
         textField.textColor = UIColor.init(0xEBF4FF)
         textField.font = UIFont.systemFont(ofSize: 16.0)
         return textField
@@ -116,39 +118,9 @@ class TRTCCreateVoiceRoomRootView: UIView {
     let roleSwitchButton: UISwitch = {
         let roleSwitchButton = UISwitch.init()
         roleSwitchButton.isOn = true // 默认同意
-        roleSwitchButton.onTintColor = UIColor.init(0x0062E3)
+        roleSwitchButton.onTintColor = .buttonBackColor
         return roleSwitchButton
     }()
-    
-//    let roleMasterButton: UIButton = {
-//        let button = UIButton.init(type: .custom)
-//        button.setTitle("需要房主同意", for: .normal)
-//        button.titleLabel?.font = UIFont.systemFont(ofSize: 16.0)
-//        button.titleLabel?.adjustsFontSizeToFitWidth = true
-//        button.setImage(UIImage.init(named: "voiceroom_oval"), for: .normal)
-//        button.setImage(UIImage.init(named: "voiceroom_selected"), for: .selected)
-//        button.contentHorizontalAlignment = .left
-//        button.contentEdgeInsets = UIEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 0)
-//        button.imageEdgeInsets = UIEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 5)
-//        button.titleEdgeInsets = UIEdgeInsets.init(top: 0, left: 5, bottom: 0, right: 0)
-//        button.imageView?.contentMode = .scaleAspectFit
-//        return button
-//    }()
-//
-//    let roleCustomButton: UIButton = {
-//        let button = UIButton.init(type: .custom)
-//        button.setTitle("无需房主同意", for: .normal)
-//        button.titleLabel?.font = UIFont.systemFont(ofSize: 16.0)
-//        button.setImage(UIImage.init(named: "voiceroom_oval"), for: .normal)
-//        button.setImage(UIImage.init(named: "voiceroom_selected"), for: .selected)
-//        button.contentHorizontalAlignment = .right
-//        button.titleLabel?.adjustsFontSizeToFitWidth = true
-//        button.contentEdgeInsets = UIEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 0)
-//        button.imageEdgeInsets = UIEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 5)
-//        button.titleEdgeInsets = UIEdgeInsets.init(top: 0, left: 5, bottom: 0, right: 0)
-//        button.imageView?.contentMode = .scaleAspectFit
-//        return button
-//    }()
     
     let toneQualityLabel: UILabel = {
         let label = UILabel.init(frame: .zero)
@@ -215,8 +187,8 @@ class TRTCCreateVoiceRoomRootView: UIView {
         button.setTitleColor(UIColor.init(0x56749E), for: .disabled)
         button.setTitleColor(UIColor.init(0xFFFFFF), for: .normal)
         button.setTitle("创建聊天室", for: .normal)
-        button.setBackgroundImage(UIColor.init(0x092650).trans2Image(), for: .disabled)
-        button.setBackgroundImage(UIColor.init(0x0062E3).trans2Image(), for: .normal)
+        button.setBackgroundImage(UIColor.inputImageBackColor.trans2Image(), for: .disabled)
+        button.setBackgroundImage(UIColor.buttonBackColor.trans2Image(), for: .normal)
         return button
     }()
     
@@ -224,7 +196,7 @@ class TRTCCreateVoiceRoomRootView: UIView {
         let label = UILabel.init(frame: .zero)
         label.text = "若房间号不存在将自动创建并加入该房间"
         label.font = UIFont.systemFont(ofSize: 16.0)
-        label.textColor = UIColor.init(0x6B82A8)
+        label.textColor = .placeholderBackColor
         label.textAlignment = .center
         label.adjustsFontSizeToFitWidth = true
         return label
@@ -283,7 +255,6 @@ class TRTCCreateVoiceRoomRootView: UIView {
         roleSwitchButton.addTarget(self, action: #selector(roleAction(_:)), for: .touchUpInside)
         heightQualityButton.addTarget(self, action: #selector(qulityAction(_:)), for: .touchUpInside)
         mediumQualityButton.addTarget(self, action: #selector(qulityAction(_:)), for: .touchUpInside)
-//        lowQualityButton.addTarget(self, action: #selector(qulityAction(_:)), for: .touchUpInside)
         enterRoomButton.addTarget(self, action: #selector(enterRoomAction(_:)), for: .touchUpInside)
     }
     

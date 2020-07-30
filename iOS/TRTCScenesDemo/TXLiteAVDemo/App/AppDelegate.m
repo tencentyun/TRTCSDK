@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import <Bugly/Bugly.h>
+#import "TXLaunchMoviePlayProtocol.h"
 
 #ifdef ENABLE_TRTC
 #ifdef ENABLE_PLAY
@@ -48,7 +49,7 @@
 #endif
 
 
-#define BUGLY_APP_ID @"18a2342254"
+#define BUGLY_APP_ID @"0"
 
 NSString *helpUrlDb[] = {
     [Help_MLVBLiveRoom] = @"https://cloud.tencent.com/document/product/454/14606",
@@ -79,6 +80,8 @@ NSString *helpUrlDb[] = {
 #else
 @property (nonatomic, strong) PortalViewController* portalVC;
 #endif
+@property (nonatomic, strong) NSDictionary *launchInfo; //从其他应用打开
+@property (nonatomic, assign) BOOL didLaunched;
 @end
 
 
@@ -113,6 +116,7 @@ NSString *helpUrlDb[] = {
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    self.didLaunched = YES;
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"remove_cache_preference"]) {
         NSFileManager *fm = [NSFileManager defaultManager];
         NSString *documentPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
@@ -133,7 +137,8 @@ NSString *helpUrlDb[] = {
 #if DEBUG
     config.debugMode = YES;
 #endif
-    config.version = version;
+    NSString *appVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+    config.version = appVersion;
     config.channel = @"LiteAV Demo";
     
     [Bugly startWithAppId:BUGLY_APP_ID config:config];
@@ -205,9 +210,84 @@ NSString *helpUrlDb[] = {
                                   // Enable or disable features based on authorization.
                               }];
     }
-
+    if (!self.didLaunched && [(NSString *)self.launchInfo[@"protocol"] isEqualToString:@"v4vodplay"]) {
+        self.didLaunched = YES;
+        [self playVideoFromLaunchInfo:self.launchInfo];
+    }
     return YES;
 }
+
+#pragma mark - 从其他应用拉起
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
+    NSMutableDictionary *params = [self getParamsFromURL:url.query].mutableCopy;
+    self.launchInfo = params.copy;
+    if (self.didLaunched) {
+        [self playVideoFromLaunchInfo:self.launchInfo];
+    }
+    return YES;
+}
+
+- (NSDictionary *)getParamsFromURL:(NSString *)queryStr {
+    NSArray *paramPairs = [queryStr componentsSeparatedByString:@"&"];
+    if ([paramPairs count] == 0) {
+        return @{};
+    }
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithCapacity:10];
+    for (NSString *str in paramPairs) {
+        NSArray *pairs = [str componentsSeparatedByString:@"="];
+        if ([pairs count] == 2) {
+            [params setValue:pairs[1] forKey:pairs[0]];
+        }
+    }
+    return params.copy;
+}
+
+#pragma mark - 扫码拉起APP播放视频
+- (void)playVideoFromLaunchInfo:(NSDictionary *)launchInfo {
+    __weak UINavigationController *rootVC = (UINavigationController *)self.window.rootViewController;
+    if (launchInfo && [rootVC isKindOfClass:[UINavigationController class]]) {
+        if ([self findClass:NSClassFromString(@"LoginViewController") InNav:rootVC]) {
+            //登录流程，等待，这里不作处理，登录成功后showPortalConroller中主动调用这个函数
+        } else if ([self findClass:NSClassFromString(@"MoviePlayerViewController") InNav:rootVC]) {
+            ///已有播放器
+            id<TXLaunchMoviePlayProtocol> vc =
+            (id<TXLaunchMoviePlayProtocol>)[self findVCWith:NSClassFromString(@"MoviePlayerViewController") InNav:rootVC];
+            __weak __typeof(self) weakSelf = self;
+            [vc startPlayVideoFromLaunchInfo:self.launchInfo complete:^(BOOL succ){
+                weakSelf.launchInfo = nil;
+            }];
+        } else {
+            id vc = [[NSClassFromString(@"MoviePlayerViewController") alloc] init];
+            if (vc) {
+                __weak __typeof(self) weakSelf = self;
+                [(id<TXLaunchMoviePlayProtocol>)vc startPlayVideoFromLaunchInfo:self.launchInfo complete:^(BOOL succ){
+                    weakSelf.launchInfo = nil;
+                    if (succ) {
+                        [rootVC pushViewController:vc animated:NO];
+                    }
+                }];
+            } else {
+                NSLog(@"当前版本不包含超级播放器，无法播放视频");
+            }
+        }
+    }
+}
+
+- (UIViewController *)findVCWith:(Class)aclass InNav:(UINavigationController *)nav {
+    for (UIViewController *vc in nav.viewControllers) {
+        if ([vc isKindOfClass: aclass]) {
+            return vc;
+        }
+    }
+    return nil;
+}
+
+- (BOOL)findClass:(Class)aclass InNav:(UINavigationController *)nav {
+    UIViewController *vc = [self findVCWith:aclass InNav:nav];
+    return vc != nil;
+}
+
+#pragma mark -
 
 -(void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler{
     #if defined(ENTERPRISE) || defined(PROFESSIONAL) || defined(SMART)
@@ -272,11 +352,14 @@ NSString *helpUrlDb[] = {
 
 #pragma mark - 登录跳转方法
 - (void)showPortalConroller {
+    UINavigationController *nav = nil;
 #ifdef TRTC
-    self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:self.portalVC];
+    nav = [[UINavigationController alloc] initWithRootViewController:self.portalVC];
 #else
-    self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:self.mainViewController];
+    nav = [[UINavigationController alloc] initWithRootViewController:self.mainViewController];
 #endif
+    self.window.rootViewController = nav;
+    [self playVideoFromLaunchInfo:self.launchInfo];
 }
 
 - (void)showLoginController {

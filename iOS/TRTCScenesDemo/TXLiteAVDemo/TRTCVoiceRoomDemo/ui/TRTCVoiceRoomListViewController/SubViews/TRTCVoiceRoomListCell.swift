@@ -48,7 +48,6 @@ class TRTCVoiceRoomListCell: UICollectionViewCell {
     
     func setCell(model: VoiceRoomInfo) {
         let imageURL = URL.init(string: model.coverUrl)
-//        let imageName = "voiceroom_cover\(Int.random(in: 1...3))"
         let imageName = "voiceroom_cover1"
         self.coverImageView.sd_setImage(with:imageURL, placeholderImage:UIImage.init(named: imageName) ,completed: nil)
         self.anchorNameLabel.text = model.ownerName

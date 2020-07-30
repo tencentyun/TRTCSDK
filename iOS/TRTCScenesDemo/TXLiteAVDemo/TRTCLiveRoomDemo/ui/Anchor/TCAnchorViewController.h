@@ -10,14 +10,14 @@
 #import "MediaPlayer/MediaPlayer.h"
 #import "TCUtil.h"
 
-@class TRTCLiveRoomImpl;
+@class TRTCLiveRoom;
 @class TRTCLiveRoomInfo;
 
 @interface TCAnchorViewController : UIViewController<UITextFieldDelegate>
 - (instancetype) init;
 @property (nonatomic, strong) UIView                *videoParentView;
 @property (nonatomic, strong)  TCAnchorToolbarView  *logicView;
-@property (nonatomic, strong)  TRTCLiveRoomImpl     *liveRoom;
+@property (nonatomic, strong)  TRTCLiveRoom     *liveRoom;
 @property (nonatomic, strong)  TRTCLiveRoomInfo     *liveInfo;
 @property (nonatomic, assign)  BOOL log_switch;
 @property (nonatomic, strong)  NSMutableSet         *setLinkMemeber;

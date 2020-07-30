@@ -140,12 +140,11 @@
 }
 
 - (void)onAppWillEnterForeground:(UIApplication*)app {
-    [[self.liveRoom getCustomAudioEffectManager] resumeBgm];
+//    [[self.liveRoom getAudioEffectManager] stopPlayMusic:];
 }
 
 - (void)onAppDidEnterBackGround:(UIApplication*)app {
     // 暂停背景音乐
-    [[self.liveRoom getCustomAudioEffectManager] pauseBgm];
     [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
     }];
 }
@@ -163,26 +162,18 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    UIColor* bgColor = [UIColor appBackGround];
-    [self.view setBackgroundColor:bgColor];
     [self setupToast];
     
     //加载背景图
-    UIImage *backImage = [UIImage imageNamed:@"avatar0_100"];
-    UIImage *clipImage = nil;
-    if (backImage) {
-        CGFloat backImageNewHeight = self.view.height;
-        CGFloat backImageNewWidth = backImageNewHeight * backImage.size.width / backImage.size.height;
-        UIImage *gsImage = [TCUtil gsImage:backImage withGsNumber:10];
-        UIImage *scaleImage = [TCUtil scaleImage:gsImage scaleToSize:CGSizeMake(backImageNewWidth, backImageNewHeight)];
-        clipImage = [TCUtil clipImage:scaleImage inRect:CGRectMake((backImageNewWidth - self.view.width)/2, (backImageNewHeight - self.view.height)/2, self.view.width, self.view.height)];
-    }
-    UIImageView *backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.frame];
-    backgroundImageView.image = clipImage;
-    backgroundImageView.contentMode = UIViewContentModeScaleToFill;
-    backgroundImageView.backgroundColor = [UIColor appBackGround];
-    [self.view addSubview:backgroundImageView];
+    NSArray *colors = [NSArray arrayWithObjects:
+                       (__bridge id)[UIColor colorWithRed:19.0 / 255.0 green:41.0 / 255.0 blue:75.0 / 255.0 alpha:1].CGColor,
+                       (__bridge id)[UIColor colorWithRed:5.0 / 255.0 green:12.0 / 255.0 blue:23.0 / 255.0 alpha:1].CGColor, nil];
+    CAGradientLayer *gradientLayer = [CAGradientLayer layer];
+    gradientLayer.colors = colors;
+    gradientLayer.startPoint = CGPointMake(0, 0);
+    gradientLayer.endPoint = CGPointMake(1, 1);
+    gradientLayer.frame = self.view.bounds;
+    [self.view.layer insertSublayer:gradientLayer atIndex:0];
     
     //视频画面的父view
     _videoParentView = [[UIView alloc] initWithFrame:self.view.frame];
@@ -257,7 +248,7 @@
     
     //美颜开关按钮
     _beautyBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_beautyBtn setImage:[UIImage imageNamed:@"beauty"] forState:UIControlStateNormal];
+    [_beautyBtn setImage:[UIImage imageNamed:@"meeting_beauty"] forState:UIControlStateNormal];
     [self.view addSubview:_beautyBtn];
     [_beautyBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(_publishBtn);
@@ -416,7 +407,7 @@
     
     //liveRoom
     if (_liveRoom != nil) {
-        [_liveRoom startCameraPreviewWithFrontCamera:YES view:_videoParentView callback:^(NSInteger code, NSString * error) {
+        [_liveRoom startCameraPreviewWithFrontCamera:YES view:_videoParentView callback:^(int code, NSString * error) {
             if (code == 0) {
                 [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
             }
@@ -448,7 +439,7 @@
             } else {
                 [self.liveRoom setAudioQuality:3];
             }
-            [self.liveRoom startPublishWithStreamID:streamID callback:^(NSInteger code, NSString * error) {
+            [self.liveRoom startPublishWithStreamID:streamID callback:^(int code, NSString * error) {
                 NSLog(@"%ld",(long)code);
             }];
         } else {
@@ -471,10 +462,10 @@
    [[NSNotificationCenter defaultCenter] removeObserver:self];
    NSString *roomID = _liveInfo.roomId;
    [_liveRoom stopCameraPreview];
-   [_liveRoom stopPublishWithCallback:^(NSInteger code, NSString * error) {
+   [_liveRoom stopPublish:^(int code, NSString * error) {
        
    }];
-   [_liveRoom destroyRoomWithCallback:^(NSInteger code, NSString * error) {
+   [_liveRoom destroyRoom:^(int code, NSString * error) {
        [[RoomManager shared] destroyRoomWithSdkAppID:SDKAPPID roomID:roomID success:^{
            
        } failed:^(int32_t code, NSString * error) {
@@ -487,31 +478,29 @@
 }
 
 - (void)onAnchorEnter:(NSString *)userID {
-    if (userID == _liveInfo.ownerId) {
+    if ([userID isEqualToString:_liveInfo.ownerId]) {
         return;
     }
-    
     if (userID == nil || userID.length == 0) {
         return;
     }
     BOOL isPKMode = (_curPkRoom != nil && [userID isEqualToString:_curPkRoom.ownerId]);
     if(isPKMode) {
          _isPKEnter = YES;
-        [_logicView.btnPK setBackgroundImage:[UIImage imageNamed:@"pk_stop"] forState:UIControlStateNormal];
+        [_logicView.btnPK setBackgroundImage:[UIImage imageNamed:@"pk_start"] forState:UIControlStateNormal];
     }
-
     for (TCStatusInfoView * statusInfoView in _statusInfoViewArray) {
         if ([userID isEqualToString:statusInfoView.userID]) {
             if ([statusInfoView pending]) {
                 statusInfoView.pending = NO;
                 __weak __typeof(self) weakSelf = self;
-                [self.liveRoom startPlayWithUserID:userID view:statusInfoView.videoView callback:^(NSInteger code, NSString * error) {
+                [self.liveRoom startPlayWithUserID:userID view:statusInfoView.videoView callback:^(int code, NSString * error) {
                     [statusInfoView stopLoading];
                     if (code == 0) {
                          [statusInfoView.btnKickout setHidden:isPKMode];
                     } else {
                         if (!isPKMode) {
-                            [weakSelf.liveRoom kickoutJoinAnchorWithUserID:userID callback:^(NSInteger code, NSString * error) {
+                            [weakSelf.liveRoom kickoutJoinAnchor:userID callback:^(int code, NSString * error) {
                                 
                             }];
                             [weakSelf onAnchorExit:userID];
@@ -529,12 +518,14 @@
     if (userID == _liveInfo.ownerId) {
         return;
     }
+    //将PK按钮还原
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"ChangePKToStopNotificationKey" object:nil];
     
     TCStatusInfoView * statusInfoView = [self getStatusInfoViewFrom:userID];
     if (statusInfoView) {
         [statusInfoView stopLoading];
         [statusInfoView stopPlay];
-        [self.liveRoom stopPlayWithUserID:statusInfoView.userID callback:^(NSInteger code, NSString * error) {
+        [self.liveRoom stopPlayWithUserID:statusInfoView.userID callback:^(int code, NSString * error) {
             
         }];
         [statusInfoView emptyPlayInfo];
@@ -551,21 +542,21 @@
 - (void)onRequestJoinAnchor:(TRTCLiveUserInfo *)user reason:(NSString *)reason timeout: (double)timeout {
     if ([_setLinkMemeber count] >= MAX_LINKMIC_MEMBER_SUPPORT) {
         [TCUtil toastTip:@"连麦请求拒绝，主播端连麦人数超过最大限制" parentView:self.view];
-        [self.liveRoom responseJoinAnchorWithUserID:user.userId agree:NO reason:@"主播端连麦人数超过最大限制"];
+        [self.liveRoom responseJoinAnchor:user.userId agree:NO reason:@"主播端连麦人数超过最大限制"];
     }
     else if (_userIdRequest.length > 0) {
         if (![_userIdRequest isEqualToString:user.userId]) {
             [TCUtil toastTip:@"连麦请求拒绝，主播正在处理其它人的连麦请求" parentView:self.view];
-            [self.liveRoom responseJoinAnchorWithUserID:user.userId agree:NO reason:@"请稍后，主播正在处理其它人的连麦请求"];
+            [self.liveRoom responseJoinAnchor:user.userId agree:NO reason:@"请稍后，主播正在处理其它人的连麦请求"];
         }
     } else if (_curPkRoom != nil) {
         [TCUtil toastTip:@"连麦请求拒绝，正在进行PK操作" parentView:self.view];
-        [self.liveRoom responseJoinAnchorWithUserID:user.userId agree:NO reason:@"请稍后，主播正在进行PK"];
+        [self.liveRoom responseJoinAnchor:user.userId agree:NO reason:@"请稍后，主播正在进行PK"];
     }
     else {
         TCStatusInfoView * statusInfoView = [self getStatusInfoViewFrom:user.userId];
         if (statusInfoView){
-            [self.liveRoom kickoutJoinAnchorWithUserID:user.userId callback:^(NSInteger code, NSString * error) {
+            [self.liveRoom kickoutJoinAnchor:user.userId callback:^(int code, NSString * error) {
                 
             }];
             [_setLinkMemeber removeObject:statusInfoView.userID];
@@ -588,11 +579,11 @@
     if (_userIdRequest != nil && _userIdRequest.length > 0) {
         if (buttonIndex == 0) {
             //拒绝连麦
-            [self.liveRoom responseJoinAnchorWithUserID:curRequest.userId agree:NO reason:@"主播拒绝了您的连麦请求"];
+            [self.liveRoom responseJoinAnchor:curRequest.userId agree:NO reason:@"主播拒绝了您的连麦请求"];
         }
         else if (buttonIndex == 1) {
             //接受连麦
-            [self.liveRoom responseJoinAnchorWithUserID:curRequest.userId agree:YES reason:@""];
+            [self.liveRoom responseJoinAnchor:curRequest.userId agree:YES reason:@""];
             //查找空闲的TCLinkMicSmallPlayer, 开始loading
             for (TCStatusInfoView * statusInfoView in _statusInfoViewArray) {
                 if (statusInfoView.userID == nil || statusInfoView.userID.length == 0) {
@@ -619,7 +610,7 @@
     if (userID) {
         TCStatusInfoView* statusInfoView = [self getStatusInfoViewFrom:userID];
         if (statusInfoView && statusInfoView.pending == YES){
-            [self.liveRoom kickoutJoinAnchorWithUserID:statusInfoView.userID callback:^(NSInteger code, NSString * error) {
+            [self.liveRoom kickoutJoinAnchor:statusInfoView.userID callback:^(int code, NSString * error) {
                 
             }];
             [_setLinkMemeber removeObject:userID];
@@ -678,10 +669,10 @@
 - (void)clickBtnKickout:(UIButton *)btn {
     for (TCStatusInfoView* statusInfoView in _statusInfoViewArray) {
         if (statusInfoView.btnKickout == btn) {
-            [self.liveRoom stopPlayWithUserID:statusInfoView.userID callback:^(NSInteger code, NSString * error) {
+            [self.liveRoom stopPlayWithUserID:statusInfoView.userID callback:^(int code, NSString * error) {
                 
             }];
-            [self.liveRoom kickoutJoinAnchorWithUserID:statusInfoView.userID callback:^(NSInteger code, NSString * error) {
+            [self.liveRoom kickoutJoinAnchor:statusInfoView.userID callback:^(int code, NSString * error) {
                 
             }];
             [_setLinkMemeber removeObject:statusInfoView.userID];
@@ -707,6 +698,8 @@
     }];
     UIAlertAction *ok = [UIAlertAction actionWithTitle:@"接受" style:(UIAlertActionStyleDefault) handler:^(UIAlertAction * _Nonnull action) {
         [weakSelf.liveRoom responseRoomPKWithUserID:user.userId agree:YES reason:@""];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"PKNotificationKey" object:nil];
+        //添加PK view
     }];
     [alert addAction:reject];
     [alert addAction:ok];
@@ -723,7 +716,7 @@
 }
 
 - (void)QuitPK {
-    [self.liveRoom quitRoomPKWithCallback:^(NSInteger code, NSString * error) {
+    [self.liveRoom quitRoomPK:^(int code, NSString * error) {
         
     }];
     [UIView animateWithDuration:0.1 animations:^{
@@ -745,7 +738,7 @@
     [self setPreviewUIHidden:YES];
     for (TCStatusInfoView* statusInfoView in _statusInfoViewArray) {
         if (statusInfoView.userID.length > 0 && [_setLinkMemeber containsObject:statusInfoView.userID]) {
-            [self.liveRoom kickoutJoinAnchorWithUserID:statusInfoView.userID callback:^(NSInteger code, NSString * error) {
+            [self.liveRoom kickoutJoinAnchor:statusInfoView.userID callback:^(int code, NSString * error) {
                 
             }];
         }
@@ -784,8 +777,6 @@
     [_logicView.vMusicPanel hide];
     _logicView.vPKPanel.hidden = YES;
     
-    //手动聚焦
-//    CGPoint touchLocation = [gestureRecognizer locationInView:_videoParentView];
 }
 
 - (void)clickCamera:(UIButton *)button {
@@ -805,7 +796,7 @@
 
 - (void)clickPK:(UIButton *)button {
     if (_isPKEnter) {
-        [self QuitPK];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"PKNotificationKey" object:nil];
     } else {
         _logicView.vPKPanel.hidden = NO;
         [_logicView.vPKPanel loadRoomsInfo];
@@ -827,6 +818,9 @@
         }
         if (accept) {
             [TCUtil toastTip:[NSString stringWithFormat:@"%@已接受您的PK请求",room.ownerName] parentView:self.view];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"PKNotificationKey" object:nil];
+            //添加PK view
+            
         } else {
             if (error.length > 0) {
                 [TCUtil toastTip: error parentView:self.view];
@@ -862,7 +856,6 @@
 
 - (void)clickMusicClose:(UIButton *)button {
     [_logicView.vMusicPanel hide];
-    [[self.liveRoom getCustomAudioEffectManager] stopBgm];
     _curBgmDuration = 0;
 }
 
@@ -881,18 +874,11 @@
         _face_level = obj.value;
     } else if (obj.tag == 4) {// 背景音乐音量
         _bgmVolume = obj.value/obj.maximumValue;
-        if (_curBgmDuration != 0) {
-            [[self.liveRoom getCustomAudioEffectManager] setBGMVolumeWithVolume:(_bgmVolume * 100)];
-        }
     } else if (obj.tag == 5) { // 麦克风音量
         _micVolume = obj.value/obj.maximumValue;
-        [[self.liveRoom getCustomAudioEffectManager] setMicVolumeWithVolume:(_micVolume * 100)];
     } else if (obj.tag == 6) { // bgm seek
         _bgmPosition = obj.value/obj.maximumValue;
         if (_curBgmDuration != 0) {
-            if ([[self.liveRoom getCustomAudioEffectManager] setBGMPositionWithPos:_curBgmDuration * _bgmPosition] != 0) {
-                NSLog(@"error");
-            }
         }
     }
 }
@@ -902,11 +888,9 @@
 }
 
 - (void)selectEffect:(NSInteger)index {
-    [[self.liveRoom getCustomAudioEffectManager] setReverbTypeWithReverbType:index];
 }
 
 - (void)selectEffect2:(NSInteger)index {
-    [[self.liveRoom getCustomAudioEffectManager] setVoiceChangerTypeWithVoiceChangerType:index];
 }
 
 #pragma mark -
@@ -937,7 +921,6 @@
     if (mediaPicker.editing) {
         mediaPicker.editing = NO;
         dispatch_async(dispatch_get_main_queue(), ^{
-            [[self.liveRoom getCustomAudioEffectManager] stopBgm];
             [self saveAssetURLToFile: url];
         });
         
@@ -985,21 +968,6 @@
                     if (self == nil) {
                         return;
                     }
-                    [[self.liveRoom getCustomAudioEffectManager] playBgm:exportFile progress:^(NSInteger progressMs, NSInteger duration) {
-                        __strong __typeof(weakSelf) self = weakSelf;
-                        if (self == nil) {
-                            return;
-                        }
-                        self->_curBgmDuration = duration;
-                    } completion:^(NSInteger code, NSString * message) {
-                        __strong __typeof(weakSelf) self = weakSelf;
-                                           if (self == nil) {
-                                               return;
-                                           }
-                        self->_curBgmDuration = 0;
-                    }];
-                    [[self.liveRoom getCustomAudioEffectManager] setBGMVolumeWithVolume:(self->_bgmVolume * 100)];
-                    [[self.liveRoom getCustomAudioEffectManager] setMicVolumeWithVolume:(self->_micVolume * 100)];
                 });
                 break;
             }
@@ -1019,7 +987,7 @@
             [statusInfoView.videoView setFrame:statusInfoView.linkFrame];
         }
     }
-    [self.liveRoom stopPlayWithUserID:_curPkRoom.ownerId callback:^(NSInteger code, NSString * error) {
+    [self.liveRoom stopPlayWithUserID:_curPkRoom.ownerId callback:^(int code, NSString * error) {
         
     }];
     self.curPkRoom = nil;

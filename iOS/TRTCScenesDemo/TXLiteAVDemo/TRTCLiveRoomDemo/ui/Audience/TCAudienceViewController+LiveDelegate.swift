@@ -10,6 +10,26 @@ import Foundation
 import Toast_Swift
 
 extension TCAudienceViewController: TRTCLiveRoomDelegate {
+    public func trtcLiveRoom(_ trtcLiveRoom: TRTCLiveRoom, onAudienceEnter userID: String) {
+    
+    }
+    
+    public func trtcLiveRoom(_ trtcLiveRoom: TRTCLiveRoom, onAudienceExit userID: String) {
+        
+    }
+    
+    public func trtcLiveRoom(_ trtcLiveRoom: TRTCLiveRoom, onDebugLog log: String) {
+        
+    }
+    
+    public func trtcLiveRoom(_ trtcLiveRoom: TRTCLiveRoom, onError code: Int, message: String) {
+        
+    }
+    
+    public func trtcLiveRoom(_ trtcLiveRoom: TRTCLiveRoom, onWarning code: Int, message: String) {
+        
+    }
+    
     @objc func setupToast() {
         ToastManager.shared.position = .center
     }
@@ -18,11 +38,9 @@ extension TCAudienceViewController: TRTCLiveRoomDelegate {
         view.makeToast(message)
     }
     
-    public func trtcLiveRoom(_ trtcLiveRoom: TRTCLiveRoomImpl, onError code: Int, message: String?) {
-        
-    }
     
-    @objc public func trtcLiveRoom(_ trtcLiveRoom: TRTCLiveRoomImpl, onRecvRoomTextMsg message: String, fromUser user: TRTCLiveUserInfo) {
+    
+    @objc public func trtcLiveRoom(_ trtcLiveRoom: TRTCLiveRoom, onRecvRoomTextMsg message: String, fromUser user: TRTCLiveUserInfo) {
         let info = IMUserAble()
         info.imUserId = user.userId
         info.imUserName = user.userName
@@ -31,7 +49,7 @@ extension TCAudienceViewController: TRTCLiveRoomDelegate {
         logicView.handleIMMessage(info, msgText: message)
     }
     
-    @objc public func trtcLiveRoom(_ trtcLiveRoom: TRTCLiveRoomImpl, onRecvRoomCustomMsg command: String, message: String, fromUser user: TRTCLiveUserInfo) {
+    @objc public func trtcLiveRoom(_ trtcLiveRoom: TRTCLiveRoom, onRecvRoomCustomMsg command: String, message: String, fromUser user: TRTCLiveUserInfo) {
         let info = IMUserAble()
         info.imUserId = user.userId
         info.imUserName = user.userName
@@ -40,7 +58,7 @@ extension TCAudienceViewController: TRTCLiveRoomDelegate {
         logicView.handleIMMessage(info, msgText: message)
     }
     
-    public func trtcLiveRoom(_ trtcLiveRoom: TRTCLiveRoomImpl, onAnchorEnter userID: String) {
+    public func trtcLiveRoom(_ trtcLiveRoom: TRTCLiveRoom, onAnchorEnter userID: String) {
         if userID == liveInfo.ownerId {
             isOwnerEnter = true
             liveRoom.startPlay(userID: userID, view: videoParentView) { (code, error) in
@@ -51,11 +69,11 @@ extension TCAudienceViewController: TRTCLiveRoomDelegate {
         }
     }
     
-    public func trtcLiveRoom(_ trtcLiveRoom: TRTCLiveRoomImpl, onAnchorExit userID: String) {
+    public func trtcLiveRoom(_ trtcLiveRoom: TRTCLiveRoom, onAnchorExit userID: String) {
         onAnchorExit(userID)
     }
     
-    public func trtcLiveRoom(_ trtcLiveRoom: TRTCLiveRoomImpl, onAudienceEnter user: TRTCLiveUserInfo) {
+    public func trtcLiveRoom(_ trtcLiveRoom: TRTCLiveRoom, onAudienceEnter user: TRTCLiveUserInfo) {
         let info = IMUserAble()
         info.imUserId = user.userId
         info.imUserName = user.userName
@@ -64,7 +82,7 @@ extension TCAudienceViewController: TRTCLiveRoomDelegate {
         logicView.handleIMMessage(info, msgText: "")
     }
     
-    public func trtcLiveRoom(_ trtcLiveRoom: TRTCLiveRoomImpl, onAudienceExit user: TRTCLiveUserInfo) {
+    public func trtcLiveRoom(_ trtcLiveRoom: TRTCLiveRoom, onAudienceExit user: TRTCLiveUserInfo) {
         let info = IMUserAble()
         info.imUserId = user.userId
         info.imUserName = user.userName
@@ -73,12 +91,12 @@ extension TCAudienceViewController: TRTCLiveRoomDelegate {
         logicView.handleIMMessage(info, msgText: "")
     }
     
-    public func trtcLiveRoom(_ trtcLiveRoom: TRTCLiveRoomImpl, onRoomInfoChange info: TRTCLiveRoomInfo) {
+    public func trtcLiveRoom(_ trtcLiveRoom: TRTCLiveRoom, onRoomInfoChange info: TRTCLiveRoomInfo) {
         let isCdnMode = ((UserDefaults.standard.object(forKey: "liveRoomConfig_useCDNFirst") as? Bool) ?? false)
         if isCdnMode {
             return
         }
-        self.roomStatus = info.roomStatus.rawValue
+        self.roomStatus = Int(info.roomStatus.rawValue)
         if info.roomStatus == .single || info.roomStatus == .linkMic {
             UIView.animate(withDuration: 0.1) {
                 self.videoParentView.frame = self.view.frame
@@ -92,11 +110,11 @@ extension TCAudienceViewController: TRTCLiveRoomDelegate {
         }
     }
     
-    public func trtcLiveRoomOnKickoutJoinAnchor(_ trtcLiveRoom: TRTCLiveRoomImpl) {
+    public func trtcLiveRoomOnKickoutJoinAnchor(_ trtcLiveRoom: TRTCLiveRoom) {
         onKickoutJoinAnchor()
     }
     
-    public func trtcLiveRoom(_ trtcLiveRoom: TRTCLiveRoomImpl, onRoomDestroy roomID: String) {
+    public func trtcLiveRoom(_ trtcLiveRoom: TRTCLiveRoom, onRoomDestroy roomID: String) {
         onLiveEnd()
     }
 }

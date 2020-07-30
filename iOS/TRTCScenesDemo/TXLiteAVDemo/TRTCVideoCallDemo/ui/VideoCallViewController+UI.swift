@@ -145,8 +145,8 @@ extension VideoCallViewController {
             mute.snp.remakeConstraints { (make) in
                 make.centerX.equalTo(view).offset(-120)
                 make.bottom.equalTo(view).offset(-32)
-                make.width.equalTo(50)
-                make.height.equalTo(50)
+                make.width.equalTo(60)
+                make.height.equalTo(60)
             }
         }
         
@@ -163,8 +163,8 @@ extension VideoCallViewController {
             handsfree.snp.remakeConstraints { (make) in
                 make.centerX.equalTo(view).offset(120)
                 make.bottom.equalTo(view).offset(-32)
-                make.width.equalTo(50)
-                make.height.equalTo(50)
+                make.width.equalTo(60)
+                make.height.equalTo(60)
             }
         }
         
@@ -194,31 +194,31 @@ extension VideoCallViewController {
             hangup.snp.remakeConstraints { (make) in
                 make.centerX.equalTo(view)
                 make.bottom.equalTo(view).offset(-32)
-                make.width.equalTo(50)
-                make.height.equalTo(50)
+                make.width.equalTo(60)
+                make.height.equalTo(60)
             }
             break
         case .onInvitee:
             hangup.snp.remakeConstraints { (make) in
                 make.centerX.equalTo(view).offset(-80)
                 make.bottom.equalTo(view).offset(-32)
-                make.width.equalTo(50)
-                make.height.equalTo(50)
+                make.width.equalTo(60)
+                make.height.equalTo(60)
             }
             
             accept.snp.remakeConstraints { (make) in
                 make.centerX.equalTo(view).offset(80)
                 make.bottom.equalTo(view).offset(-32)
-                make.width.equalTo(50)
-                make.height.equalTo(50)
+                make.width.equalTo(60)
+                make.height.equalTo(60)
             }
             break
         case .calling:
             hangup.snp.remakeConstraints { (make) in
                 make.centerX.equalTo(view)
                 make.bottom.equalTo(view).offset(-32)
-                make.width.equalTo(50)
-                make.height.equalTo(50)
+                make.width.equalTo(60)
+                make.height.equalTo(60)
             }
             startGCDTimer()
             break

@@ -11,14 +11,16 @@ import Foundation
 class VideoSelectUserCollectionViewCell: UICollectionViewCell {
     lazy var userImg: UIImageView = {
        let img = UIImageView()
-        addSubview(img)
         return img
     }()
     
     func config(model: UserModel) {
+        self.addSubview(userImg)
         userImg.snp.remakeConstraints { (make) in
             make.edges.equalTo(self)
         }
+        userImg.layer.masksToBounds = true
+        userImg.layer.cornerRadius = 22
         userImg.sd_setImage(with: URL(string: model.avatar), completed: nil)
     }
 }

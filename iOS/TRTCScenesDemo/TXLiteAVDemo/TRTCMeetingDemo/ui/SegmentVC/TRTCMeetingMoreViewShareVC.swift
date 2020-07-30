@@ -29,7 +29,7 @@ class TRTCMeetingMoreViewShareVC: UIViewController {
         let button = UIButton(frame: CGRect(x: UIScreen.main.bounds.size.width / 5.0*2, y: UIScreen.main.bounds.size.height / 3.0*0.7, width: UIScreen.main.bounds.size.width / 5.0, height: 30))
         
         button .setTitle("分享", for: .normal)
-        button.backgroundColor = UIColor(hex: "0062E3")
+        button.backgroundColor = .buttonBackColor
         button.titleLabel?.textColor = .white
         button.contentHorizontalAlignment = .center
         button.layer.masksToBounds = true

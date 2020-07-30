@@ -35,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  * @param file 绿幕文件路径
  */
-- (void)setGreenScreenFile:(nullable NSURL *)file;
+- (void)setGreenScreenFile:(nullable NSString *)file;
 
 // 以下为 TXBeautyManager 方法
 /**

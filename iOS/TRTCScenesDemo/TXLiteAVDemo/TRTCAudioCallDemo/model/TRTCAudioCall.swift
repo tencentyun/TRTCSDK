@@ -45,7 +45,7 @@ import Foundation
                 isRespSponsor = false
                 isInRoom = false
             }
-            debugPrint("📳 isOnCalling : \(isOnCalling)")
+            debugPrint("log: isOnCalling : \(isOnCalling)")
         }
     }
     

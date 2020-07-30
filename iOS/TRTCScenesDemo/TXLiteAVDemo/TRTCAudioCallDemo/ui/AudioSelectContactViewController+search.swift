@@ -23,6 +23,9 @@ extension AudioSelectContactViewController: UITextFieldDelegate, UISearchBarDele
             //show recent table
             shouldShowSearchResult = false
         }
+        if (searchBar.text?.count ?? 0) > 11 {
+            searchBar.text = (searchBar.text as NSString?)?.substring(to: 11)
+        }
     }
     
     func searchUser(input: String)  {
@@ -31,6 +34,8 @@ extension AudioSelectContactViewController: UITextFieldDelegate, UISearchBarDele
             self.saveRecentContacts(users: [user])
             self.searchResult = user
             self.shouldShowSearchResult = true
+            self.selectTable.reloadData()
+            NotificationCenter.default.post(name: NSNotification.Name("HiddenNoSearchAudioNotificationKey"), object: nil)
         }) { [weak self] (error) in
             guard let self = self else {return}
             self.searchResult = nil

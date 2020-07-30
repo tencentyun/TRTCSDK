@@ -62,7 +62,13 @@ class TRTCVoiceRoomTipsView: UIView {
     
     func refreshList() {
         tipsTableView.reloadData()
-        tipsTableView.scrollToRow(at: IndexPath.init(row: viewModel.msgEntityList.count - 1, section: 0), at: .bottom, animated: true)
+//        tipsTableView
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.tipsTableView.scrollToRow(at: IndexPath.init(row: self.viewModel.msgEntityList.count - 1, section: 0),
+                                           at: .bottom,
+                                           animated: true)
+        }
     }
 }
 
@@ -97,7 +103,11 @@ extension TRTCVoiceRoomTipsView: UITableViewDataSource {
         return cell
     }
     
-    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if let tipsCell = cell as? TRTCVoiceRoomTipsTableCell {
+            tipsCell.updateCell()
+        }
+    }
 }
 
 /// MARK: - internationalization string

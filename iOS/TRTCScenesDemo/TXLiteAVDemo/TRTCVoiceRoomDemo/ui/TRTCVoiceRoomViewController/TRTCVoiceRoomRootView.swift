@@ -109,7 +109,7 @@ class TRTCVoiceRoomRootView: UIView {
     
     func constructViewHierarchy() {
         /// 此方法内只做add子视图操作
-        backgroundLayer.frame = self.bounds;
+        backgroundLayer.frame = bounds;
         layer.insertSublayer(backgroundLayer, at: 0)
         addSubview(masterContainer)
         masterContainer.addSubview(masterSeatView)
@@ -278,7 +278,7 @@ extension TRTCVoiceRoomRootView: TRTCVoiceRoomViewResponder {
     }
     
     func showAlert(info: (title: String, message: String), sureAction: @escaping () -> Void, cancelAction: (() -> Void)?) {
-        if let alert = self.alertController {
+        if let alert = alertController {
             alert.dismiss(animated: false) { [weak self] in
                 guard let `self` = self else { return }
                 self.alertController = nil

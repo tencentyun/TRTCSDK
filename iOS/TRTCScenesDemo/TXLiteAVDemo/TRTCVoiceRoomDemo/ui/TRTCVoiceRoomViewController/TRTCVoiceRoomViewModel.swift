@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol TRTCVoiceRoomViewResponder {
+protocol TRTCVoiceRoomViewResponder: class {
     func showToast(message: String)
     func popToPrevious()
     func switchView(type: VoiceRoomViewType)
@@ -26,16 +26,14 @@ protocol TRTCVoiceRoomViewResponder {
     func recoveryVoiceSetting() // 恢复音效设置
 }
 
-class TRTCVoiceRoomViewModel {
-    private let dependencyContainer: TRTCVoiceRoomDependencyContainer
+class TRTCVoiceRoomViewModel: NSObject {
+    private let dependencyContainer: TRTCVoiceRoomEnteryControl
     private(set) var roomType: VoiceRoomViewType {
         didSet {
             roleChange(viewType: roomType)
         }
     }
-    public var viewResponder: TRTCVoiceRoomViewResponder?
-    
-    var toneQuality: VoiceRoomToneQuality = .music
+    public weak var viewResponder: TRTCVoiceRoomViewResponder?
     
     // 防止多次退房
     private var isExitingRoom: Bool = false
@@ -69,25 +67,30 @@ class TRTCVoiceRoomViewModel {
     
     /// 初始化方法
     /// - Parameter container: 依赖管理容器，负责VoiceRoom模块的依赖管理
-    init(container: TRTCVoiceRoomDependencyContainer, roomInfo: VoiceRoomInfo, roomType: VoiceRoomViewType) {
+    init(container: TRTCVoiceRoomEnteryControl, roomInfo: VoiceRoomInfo, roomType: VoiceRoomViewType) {
         self.dependencyContainer = container
         self.roomType = roomType
         self.roomInfo = roomInfo
+        super.init()
         voiceRoom.setDelegate(delegate: self)
         roleChange(viewType: self.roomType)
         initAnchorListData()
     }
     
-    private var voiceRoom: TRTCVoiceRoomImp {
-        return TRTCVoiceRoomImp.shared()
+    deinit {
+        TRTCLog.out("deinit \(type(of: self))")
+    }
+    
+    private var voiceRoom: TRTCVoiceRoom {
+        return dependencyContainer.getVoiceRoom()
     }
     
     func exitRoom() {
         guard !isExitingRoom else { return }
-        self.viewResponder?.popToPrevious()
+        viewResponder?.popToPrevious()
         isExitingRoom = true
-        if voiceRoom.userId == roomInfo.ownerId && roomType == .anchor {
-            voiceRoomManager.destroyRoom(sdkAppID: voiceRoom.mSDKAppID, roomID: "\(roomInfo.roomID)", success: {
+        if dependencyContainer.userId == roomInfo.ownerId && roomType == .anchor {
+            voiceRoomManager.destroyRoom(sdkAppID: dependencyContainer.mSDKAppID, roomID: "\(roomInfo.roomID)", success: {
                 TRTCLog.out("---销毁房间成功")
             }) { (code, message) in
                 TRTCLog.out("---销毁房间失败")
@@ -98,7 +101,7 @@ class TRTCVoiceRoomViewModel {
             }
             return
         }
-        self.voiceRoom.exitRoom { [weak self] (code, message) in
+        voiceRoom.exitRoom { [weak self] (code, message) in
             guard let `self` = self else { return }
             self.isExitingRoom = false
         }
@@ -149,7 +152,7 @@ class TRTCVoiceRoomViewModel {
             viewResponder?.showToast(message: "麦位列表还未初始化哦！")
             return
         }
-        if roomType == .audience || voiceRoom.userId != roomInfo.ownerId {
+        if roomType == .audience || dependencyContainer.userId != roomInfo.ownerId {
             audienceClickItem(model: model)
         } else {
             anchorClickItem(model: model)
@@ -157,6 +160,7 @@ class TRTCVoiceRoomViewModel {
     }
     
     public func enterRoom() {
+        
         voiceRoom.enterRoom(roomID: roomInfo.roomID) { [weak self] (code, message) in
             guard let `self` = self else { return }
             if code == 0 {
@@ -168,11 +172,12 @@ class TRTCVoiceRoomViewModel {
         }
     }
     
-    public func createRoom() {
+    public func createRoom(toneQuality: Int = 0) {
         var coverUrl = roomInfo.coverUrl
         if !coverUrl.hasPrefix("http") {
             coverUrl = ProfileManager.shared.curUserModel?.avatar ?? ""
         }
+        voiceRoom.setAuidoQuality(quality: toneQuality)
         voiceRoom.setSelfProfile(userName: roomInfo.ownerName, avatarURL: coverUrl) { [weak self] (code, message) in
             guard let `self` = self else { return }
             TRTCLog.out("setSelfProfile\(code)\(message)")
@@ -196,7 +201,7 @@ class TRTCVoiceRoomViewModel {
             return
         }
         // 消息回显示
-        let entity = MsgEntity.init(userId: voiceRoom.userId, userName: "我", content: message, invitedId: "", type: MsgEntity.TYPE_NORMAL)
+        let entity = MsgEntity.init(userId: dependencyContainer.userId, userName: "我", content: message, invitedId: "", type: MsgEntity.TYPE_NORMAL)
         notifyMsg(entity: entity)
         voiceRoom.sendRoomTextMsg(message: message) { [weak self] (code, message) in
             guard let `self` = self else { return }
@@ -226,17 +231,7 @@ extension TRTCVoiceRoomViewModel {
             let seatInfo = VoiceRoomSeatInfo.init()
             param.seatInfoList.append(seatInfo)
         }
-        var quity: TRTCAudioQuality =  .music
-        switch toneQuality {
-        case .defaultQuality:
-            quity = .default
-        case .speech:
-            quity = .speech
-        default:
-            quity = .music
-        }
-        TRTCCloud.sharedInstance()?.setAudioQuality(quity)
-        voiceRoom.createRoom(roomID: roomInfo.roomID, roomParam: param) { [weak self] (code, message) in
+        voiceRoom.createRoom(roomID: Int32(roomInfo.roomID), roomParam: param) { [weak self] (code, message) in
             guard let `self` = self else { return }
             if code == 0 {
                 self.viewResponder?.changeRoom(title: "\(self.roomInfo.roomName)(\(self.roomInfo.roomID))")
@@ -244,7 +239,8 @@ extension TRTCVoiceRoomViewModel {
                 self.getAudienceList()
             } else {
                 self.viewResponder?.showToast(message: "进入房间失败")
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+                    guard let `self` = self else { return }
                     self.viewResponder?.popToPrevious()
                 }
             }
@@ -308,7 +304,7 @@ extension TRTCVoiceRoomViewModel {
                     self.clickSeat(model: model)
                 }
             }
-            model.isOwner = self.voiceRoom.userId == self.roomInfo.ownerId
+            model.isOwner = dependencyContainer.userId == roomInfo.ownerId
             model.isClosed = false
             model.isUsed = false
             anchorSeatList.append(model)
@@ -321,7 +317,7 @@ extension TRTCVoiceRoomViewModel {
             return
         }
         if model.isUsed {
-            if voiceRoom.userId == model.seatUser?.userId ?? "" {
+            if dependencyContainer.userId == model.seatUser?.userId ?? "" {
                 // 点击自己的头像，弹出下麦对话框
                 viewResponder?.showActionSheet(actionTitles: ["下麦"], actions: { [weak self] (index) in
                     guard let `self` = self else { return }
@@ -383,8 +379,8 @@ extension TRTCVoiceRoomViewModel {
     }
     
     private func onAnchorSeatSelected(seatIndex: Int) {
-        self.viewResponder?.audiceneList(show: true)
-        self.currentInvitateSeatIndex = seatIndex
+        viewResponder?.audiceneList(show: true)
+        currentInvitateSeatIndex = seatIndex
     }
     
     private func sendInvitation(userInfo: VoiceRoomUserInfo) {
@@ -405,16 +401,16 @@ extension TRTCVoiceRoomViewModel {
                                                     }
         }
         mPickSeatInvitationDic[inviteId] = seatInvitation
-        self.viewResponder?.audiceneList(show: false)
+        viewResponder?.audiceneList(show: false)
     }
     
     private func acceptTakeSeatInviattion(userInfo: VoiceRoomUserInfo) {
         // 接受
-        guard let inviteID = self.mTakeSeatInvitationDic[userInfo.userId] else {
-            self.viewResponder?.showToast(message: "该请求已过期")
+        guard let inviteID = mTakeSeatInvitationDic[userInfo.userId] else {
+            viewResponder?.showToast(message: "该请求已过期")
             return
         }
-        self.voiceRoom.acceptInvitation(identifier: inviteID) { [weak self] (code, message) in
+        voiceRoom.acceptInvitation(identifier: inviteID) { [weak self] (code, message) in
             guard let `self` = self else { return }
             if code == 0 {
                 // 接受请求成功，刷新外部对话列表
@@ -482,16 +478,18 @@ extension TRTCVoiceRoomViewModel {
     
     private func recvPickSeat(identifier: String, cmd: String, content: String) {
         guard let seatIndex = Int.init(content) else { return }
-        self.viewResponder?.showAlert(info: (title: "提示", message: "主播邀请你上\(seatIndex)号麦"), sureAction: { [weak self] in
+        viewResponder?.showAlert(info: (title: "提示", message: "主播邀请你上\(seatIndex)号麦"), sureAction: { [weak self] in
             guard let `self` = self else { return }
-            self.voiceRoom.acceptInvitation(identifier: identifier) { (code, message) in
+            self.voiceRoom.acceptInvitation(identifier: identifier) { [weak self] (code, message) in
+                guard let `self` = self else { return }
                 if code != 0 {
                     self.viewResponder?.showToast(message: "接受请求失败")
                 }
             }
         }, cancelAction: { [weak self] in
             guard let `self` = self else { return }
-            self.voiceRoom.rejectInvitation(identifier: identifier) { (code, message) in
+            self.voiceRoom.rejectInvitation(identifier: identifier) { [weak self] (code, message) in
+                guard let `self` = self else { return }
                 self.viewResponder?.showToast(message: "您已经拒绝上麦申请")
             }
         })
@@ -499,12 +497,12 @@ extension TRTCVoiceRoomViewModel {
     
     private func recvTakeSeat(identifier: String, inviter: String, content: String) {
         // 收到新的邀请后，更新列表,其他的信息
-        if let index = self.msgEntityList.firstIndex(where: { (msg) -> Bool in
+        if let index = msgEntityList.firstIndex(where: { (msg) -> Bool in
             return msg.userId == inviter && msg.type == MsgEntity.TYPE_WAIT_AGREE
         }) {
-            var msg = self.msgEntityList[index]
+            var msg = msgEntityList[index]
             msg.type = MsgEntity.TYPE_AGREED
-            self.msgEntityList[index] = msg
+            msgEntityList[index] = msg
         }
         // 显示到通知栏
         let audinece = memberAudienceDic[inviter]
@@ -512,7 +510,7 @@ extension TRTCVoiceRoomViewModel {
         let content = "申请上\(seatIndex)号麦"
         let msgEntity = MsgEntity.init(userId: inviter, userName: audinece?.userInfo.userName ?? inviter, content: content, invitedId: identifier, type: MsgEntity.TYPE_WAIT_AGREE)
         msgEntityList.append(msgEntity)
-        self.viewResponder?.refreshMsgView()
+        viewResponder?.refreshMsgView()
         if var audienceModel = audinece {
             audienceModel.type = AudienceInfoModel.TYPE_WAIT_AGREE
             memberAudienceDic[audienceModel.userInfo.userId] = audienceModel
@@ -521,7 +519,7 @@ extension TRTCVoiceRoomViewModel {
             }) {
                 memberAudienceList[index] = audienceModel
             }
-            self.viewResponder?.audienceListRefresh()
+            viewResponder?.audienceListRefresh()
         }
         mTakeSeatInvitationDic[inviter] = identifier
     }
@@ -539,27 +537,27 @@ extension TRTCVoiceRoomViewModel {
     
     private func showNotifyMsg(messsage: String) {
         let msgEntity = MsgEntity.init(userId: "", userName: "", content: messsage, invitedId: "", type: MsgEntity.TYPE_NORMAL)
-        if self.msgEntityList.count > 1000 {
-            self.msgEntityList.removeSubrange(0...99)
+        if msgEntityList.count > 1000 {
+            msgEntityList.removeSubrange(0...99)
         }
-        self.msgEntityList.append(msgEntity)
-        self.viewResponder?.refreshMsgView()
+        msgEntityList.append(msgEntity)
+        viewResponder?.refreshMsgView()
     }
     
     private func changeAudience(status: Int, user: VoiceRoomUserInfo) {
         guard [AudienceInfoModel.TYPE_IDEL, AudienceInfoModel.TYPE_IN_SEAT, AudienceInfoModel.TYPE_WAIT_AGREE].contains(status) else { return }
-        if voiceRoom.userId == roomInfo.ownerId && roomType == .anchor {
+        if dependencyContainer.userId == roomInfo.ownerId && roomType == .anchor {
             let audience = memberAudienceDic[user.userId]
             if var audienceModel = audience {
                 if audienceModel.type == status { return }
                 audienceModel.type = status
-                self.memberAudienceDic[audienceModel.userInfo.userId] = audienceModel
-                if let index = self.memberAudienceList.firstIndex(where: { (model) -> Bool in
+                memberAudienceDic[audienceModel.userInfo.userId] = audienceModel
+                if let index = memberAudienceList.firstIndex(where: { (model) -> Bool in
                     return model.userInfo.userId == audienceModel.userInfo.userId
                 }) {
-                    self.memberAudienceList[index] = audienceModel
+                    memberAudienceList[index] = audienceModel
                 }
-                self.viewResponder?.audienceListRefresh()
+                viewResponder?.audienceListRefresh()
             }
         }
     }
@@ -586,6 +584,10 @@ extension TRTCVoiceRoomViewModel: TRTCVoiceRoomDelegate {
     }
     
     func onRoomInfoChange(roomInfo: VoiceRoomInfo) {
+        // 值为-1表示该接口没有返回数量信息
+        if roomInfo.memberCount == -1 {
+            roomInfo.memberCount = self.roomInfo.memberCount
+        }
         self.roomInfo = roomInfo
         viewResponder?.changeRoom(title: "\(roomInfo.roomName)(\(roomInfo.roomID))")
     }
@@ -607,9 +609,9 @@ extension TRTCVoiceRoomViewModel: TRTCVoiceRoomDelegate {
             anchorSeatInfo.isUsed = seatInfo.status == 1
             anchorSeatInfo.isClosed = seatInfo.status == 2
             anchorSeatInfo.seatIndex = seatIndex
-            anchorSeatInfo.isOwner = roomInfo.ownerId == voiceRoom.userId
+            anchorSeatInfo.isOwner = roomInfo.ownerId == dependencyContainer.userId
             if seatIndex == 0 {
-                anchorSeatInfo.seatUser = self.masterAnchor?.seatUser
+                anchorSeatInfo.seatUser = masterAnchor?.seatUser
                 masterAnchor = anchorSeatInfo
             } else {
                 let listIndex = seatIndex - 1
@@ -663,9 +665,10 @@ extension TRTCVoiceRoomViewModel: TRTCVoiceRoomDelegate {
             return;
         }
         showNotifyMsg(messsage: "\(user.userName)上\(index)号麦")
-        if user.userId == voiceRoom.userId {
+        if user.userId == dependencyContainer.userId {
             roomType = .anchor
             mSelfSeatIndex = index
+            viewResponder?.recoveryVoiceSetting() // 自己上麦，恢复音效设置
         }
         changeAudience(status: AudienceInfoModel.TYPE_IN_SEAT, user: user)
     }
@@ -676,7 +679,7 @@ extension TRTCVoiceRoomViewModel: TRTCVoiceRoomDelegate {
             return;
         }
         showNotifyMsg(messsage: "\(user.userName)下\(index)号麦")
-        if user.userId == voiceRoom.userId {
+        if user.userId == dependencyContainer.userId {
             roomType = .audience
             mSelfSeatIndex = -1
             // 自己下麦，停止音效播放
@@ -704,7 +707,7 @@ extension TRTCVoiceRoomViewModel: TRTCVoiceRoomDelegate {
     func onAudienceEnter(userInfo: VoiceRoomUserInfo) {
         showNotifyMsg(messsage: "\(userInfo.userName)进房")
         // 主播端(房主)
-        if roomType == .anchor && roomInfo.ownerId == voiceRoom.userId {
+        if roomType == .anchor && roomInfo.ownerId == dependencyContainer.userId {
             let memberEntityModel = AudienceInfoModel.init(type: 0, userInfo: userInfo) { [weak self] (index) in
                 guard let `self` = self else { return }
                 if index == 0 {
@@ -717,7 +720,7 @@ extension TRTCVoiceRoomViewModel: TRTCVoiceRoomDelegate {
             if !memberAudienceDic.keys.contains(userInfo.userId) {
                 memberAudienceDic[userInfo.userId] = memberEntityModel
                 memberAudienceList.append(memberEntityModel)
-                self.viewResponder?.audienceListRefresh()
+                viewResponder?.audienceListRefresh()
             }
         }
     }
@@ -725,12 +728,12 @@ extension TRTCVoiceRoomViewModel: TRTCVoiceRoomDelegate {
     func onAudienceExit(userInfo: VoiceRoomUserInfo) {
         showNotifyMsg(messsage: "\(userInfo.userName)退房")
         // 主播端(房主)
-        if roomType == .anchor && roomInfo.ownerId == voiceRoom.userId {
+        if roomType == .anchor && roomInfo.ownerId == dependencyContainer.userId {
             memberAudienceList.removeAll { (model) -> Bool in
                 return model.userInfo.userId == userInfo.userId
             }
             memberAudienceDic.removeValue(forKey: userInfo.userId)
-            self.viewResponder?.refreshAnchorInfos()
+            viewResponder?.refreshAnchorInfos()
         }
         
     }
@@ -759,7 +762,7 @@ extension TRTCVoiceRoomViewModel: TRTCVoiceRoomDelegate {
                 recvPickSeat(identifier: identifier, cmd: cmd, content: content)
             }
         }
-        if roomType == .anchor && roomInfo.ownerId == voiceRoom.userId {
+        if roomType == .anchor && roomInfo.ownerId == dependencyContainer.userId {
             if cmd == VoiceRoomConstants.CMD_REQUEST_TAKE_SEAT {
                 recvTakeSeat(identifier: identifier, inviter: inviter, content: content)
             }
@@ -787,7 +790,7 @@ extension TRTCVoiceRoomViewModel: TRTCVoiceRoomDelegate {
                 }
             }
         }
-        if roomType == .anchor && roomInfo.ownerId == voiceRoom.userId {
+        if roomType == .anchor && roomInfo.ownerId == dependencyContainer.userId {
             guard let seatInvitation = mPickSeatInvitationDic.removeValue(forKey: identifier) else {
                 return
             }
@@ -797,7 +800,8 @@ extension TRTCVoiceRoomViewModel: TRTCVoiceRoomDelegate {
                 return
             }
             if !seatModel.isUsed {
-                voiceRoom.pickSeat(seatIndex: seatInvitation.seatIndex, userId: seatInvitation.inviteUserId) { (code, message) in
+                voiceRoom.pickSeat(seatIndex: seatInvitation.seatIndex, userId: seatInvitation.inviteUserId) { [weak self] (code, message) in
+                    guard let `self` = self else { return }
                     if code == 0 {
                         self.viewResponder?.showToast(message: "抱\(invitee)上麦成功")
                     }
@@ -810,7 +814,7 @@ extension TRTCVoiceRoomViewModel: TRTCVoiceRoomDelegate {
     func onInviteeRejected(identifier: String, invitee: String) {
         if let seatInvitation = mPickSeatInvitationDic.removeValue(forKey: identifier) {
             guard let audience = memberAudienceDic[seatInvitation.inviteUserId] else { return }
-            self.viewResponder?.showToast(message: "\(audience.userInfo.userName)拒绝上麦")
+            viewResponder?.showToast(message: "\(audience.userInfo.userName)拒绝上麦")
             changeAudience(status: AudienceInfoModel.TYPE_IDEL, user: audience.userInfo)
         }
         

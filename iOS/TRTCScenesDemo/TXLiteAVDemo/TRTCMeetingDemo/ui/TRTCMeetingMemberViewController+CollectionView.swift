@@ -21,7 +21,6 @@ class MeetingMemberCell: UICollectionViewCell {
     
     lazy var avatarImageView: UIImageView = {
         let img = UIImageView()
-        addSubview(img)
         return img
     }()
     
@@ -32,14 +31,11 @@ class MeetingMemberCell: UICollectionViewCell {
         label.textAlignment = .left
         label.font = UIFont.systemFont(ofSize: 16)
         label.numberOfLines = 1
-        addSubview(label)
         return label
     }()
     
     lazy var muteAudioButton: UIButton = {
         let button = UIButton()
-        addSubview(button)
-        
         button.rx.controlEvent(.touchUpInside).subscribe(onNext: { [weak self] in
             guard let self = self else {return}
             
@@ -53,8 +49,6 @@ class MeetingMemberCell: UICollectionViewCell {
     
     lazy var muteVideoButton: UIButton = {
         let button = UIButton()
-        addSubview(button)
-        
         button.rx.controlEvent(.touchUpInside).subscribe(onNext: { [weak self] in
             guard let self = self else {return}
             
@@ -73,6 +67,7 @@ class MeetingMemberCell: UICollectionViewCell {
         }
         
         // 头像图标
+        self.addSubview(avatarImageView)
         avatarImageView.sd_setImage(with: URL(string: model.avatarURL), placeholderImage: UIImage(named: "default_user"), options: [], completed: nil)
         avatarImageView.snp.remakeConstraints { (make) in
             make.width.height.equalTo(40)
@@ -83,6 +78,7 @@ class MeetingMemberCell: UICollectionViewCell {
         avatarImageView.layer.masksToBounds = true
         
         // 用户ID_label
+        self.addSubview(userLabel)
         userLabel.text = model.userName
         userLabel.snp.remakeConstraints { (make) in
             make.width.equalTo(100)
@@ -92,6 +88,7 @@ class MeetingMemberCell: UICollectionViewCell {
         }
         
         // 静音按钮
+        self.addSubview(muteAudioButton)
         muteAudioButton.setImage(UIImage(named: model.isMuteAudio ? "meeting_mic_close" : "meeting_mic_open"), for: .normal)
         muteAudioButton.snp.remakeConstraints { (make) in
             make.width.height.equalTo(40)
@@ -100,6 +97,7 @@ class MeetingMemberCell: UICollectionViewCell {
         }
         
         // 禁画按钮
+        self.addSubview(muteVideoButton)
         muteVideoButton.setImage(UIImage(named: model.isMuteVideo ? "meeting_camera_close" : "meeting_camera_open"), for: .normal)
         muteVideoButton.snp.remakeConstraints { (make) in
             make.width.height.equalTo(40)

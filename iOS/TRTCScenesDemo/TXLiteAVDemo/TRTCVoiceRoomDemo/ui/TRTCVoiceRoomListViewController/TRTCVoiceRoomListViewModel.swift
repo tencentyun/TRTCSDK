@@ -18,14 +18,13 @@ protocol TRTCVoiceRoomListViewResponder: class {
 }
 
 class TRTCVoiceRoomListViewModel {
-    private let dependencyContainer: TRTCVoiceRoomDependencyContainer
+    private let dependencyContainer: TRTCVoiceRoomEnteryControl
     weak var viewResponder: TRTCVoiceRoomListViewResponder?
-    
     private var voiceRoomManager: TRTCVoiceRoomManager {
         return TRTCVoiceRoomManager.shared
     }
     
-    private var voiceRoom: TRTCVoiceRoomImp {
+    private var voiceRoom: TRTCVoiceRoom {
         return dependencyContainer.getVoiceRoom()
     }
     // 视图相关属性
@@ -33,29 +32,38 @@ class TRTCVoiceRoomListViewModel {
     
     /// 初始化方法
     /// - Parameter container: 依赖管理容器，负责VoiceRoom模块的依赖管理
-    init(container: TRTCVoiceRoomDependencyContainer) {
+    init(container: TRTCVoiceRoomEnteryControl) {
         self.dependencyContainer = container
     }
     
     func makeCreateViewController() -> UIViewController {
-        return dependencyContainer.meakCreateVoiceRoomViewController()
+        return dependencyContainer.makeCreateVoiceRoomViewController()
+    }
+    
+    deinit {
+        TRTCLog.out("deinit \(type(of: self))")
     }
     
     @objc
     func getRoomList() {
-        guard voiceRoom.mSDKAppID != 0 else {
+        guard dependencyContainer.mSDKAppID != 0 else {
             viewResponder?.showToast(message: "APPID 不正确")
             return
         }
-        voiceRoomManager.getRoomList(sdkAppID: voiceRoom.mSDKAppID, success: { [weak self] (roomIds: [String]) in
+        voiceRoomManager.getRoomList(sdkAppID: dependencyContainer.mSDKAppID, success: { [weak self] (roomIds: [String]) in
             guard let `self` = self else { return }
             let roomIdsInt = roomIds.compactMap {
                 Int($0)
             }
             if roomIdsInt.count == 0 {
+                self.roomList = []
+                self.viewResponder?.refreshList()
                 self.viewResponder?.showToast(message: "当前暂无内容哦~")
+                self.viewResponder?.stopListRefreshing()
+                return;
             }
-            self.voiceRoom.getRoomInfoList(roomIdList: roomIdsInt) { (code, message, roomInfos: [VoiceRoomInfo]) in
+            self.voiceRoom.getRoomInfoList(roomIdList: roomIdsInt.map{ NSNumber.init(value: $0) }) { [weak self] (code, message, roomInfos: [VoiceRoomInfo])  in
+                guard let self = self else { return }
                 self.viewResponder?.stopListRefreshing()
                 if code == 0 {
                     if roomInfos.count == 0 {
@@ -67,17 +75,19 @@ class TRTCVoiceRoomListViewModel {
                     TRTCLog.out("get room list failed. code\(code), message:\(message)")
                     self.viewResponder?.showToast(message: "获取房间列表失败")
                 }
+                self.viewResponder?.stopListRefreshing()
             }
         }) { [weak self] (code, message) in
             guard let `self` = self else { return }
             TRTCLog.out("error: get room list fail. code: \(code), message:\(message)")
             self.viewResponder?.showToast(message: "获取列表失败")
+            self.viewResponder?.stopListRefreshing()
         }
     }
     
     func clickRoomItem(index: Int) {
         let roomInfo = self.roomList[index]
-        if voiceRoom.userId == roomInfo.ownerId {
+        if dependencyContainer.userId == roomInfo.ownerId {
             // 开始进入已经存在的房间
             startEnterExistRoom(info: roomInfo)
         } else {

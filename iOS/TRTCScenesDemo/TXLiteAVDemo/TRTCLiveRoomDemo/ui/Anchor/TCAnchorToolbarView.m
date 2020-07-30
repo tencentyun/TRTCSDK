@@ -28,9 +28,11 @@
     TCMsgBarrageView *_bulletViewTwo;
 
     TRTCLiveRoomInfo            *_liveInfo;
+    UIView                *_clearView;
     UIView                *_msgInputView;
     UITextField           *_msgInputFeild;
     UIButton              *_closeBtn;
+    UIImageView           *_pkView;
     CGPoint               _touchBeginLocation;
     BOOL                  _bulletBtnIsOn;
     
@@ -124,10 +126,10 @@
     CGFloat audience_width = self.width - 25 - _topView.right;
     _audienceTableView = [[TCAudienceListTableView alloc] initWithFrame:CGRectMake(_topView.right + 10 +audience_width / 2 - IMAGE_SIZE / 2 ,_topView.center.y -  audience_width / 2, _topView.height, audience_width) style:UITableViewStyleGrouped liveInfo:_liveInfo];
     _audienceTableView.transform = CGAffineTransformMakeRotation(- M_PI/2);
-    [self addSubview:_audienceTableView];
+    [self insertSubview:_audienceTableView atIndex:0];
 }
 
-- (void)setLiveRoom:(TRTCLiveRoomImpl *)liveRoom {
+- (void)setLiveRoom:(TRTCLiveRoom *)liveRoom {
     _liveRoom = liveRoom;
     _vPKPanel.liveRoom = _liveRoom;
     [_vMusicPanel setAudioEffectManager:[liveRoom getAudioEffectManager]];
@@ -149,7 +151,7 @@
     
     //聊天
     _btnChat = [UIButton buttonWithType:UIButtonTypeCustom];
-    _btnChat.center = CGPointMake(first_icon_center_x, icon_center_y);
+    _btnChat.center = CGPointMake(first_icon_center_x + icon_size / 2.0, icon_center_y);
     _btnChat.bounds = CGRectMake(0, 0, icon_size, icon_size);
     [_btnChat setBackgroundImage:[UIImage imageNamed:@"comment"] forState:UIControlStateNormal];
     [_btnChat addTarget:self action:@selector(clickChat:) forControlEvents:UIControlEventTouchUpInside];
@@ -157,7 +159,7 @@
     
     //前置后置摄像头切换
     _btnCamera = [UIButton buttonWithType:UIButtonTypeCustom];
-    _btnCamera.center = CGPointMake(first_icon_center_x + icon_center_interval, icon_center_y);
+    _btnCamera.center = CGPointMake(first_icon_center_x + icon_center_interval*1.4, icon_center_y);
     _btnCamera.bounds = CGRectMake(0, 0, icon_size, icon_size);
     [_btnCamera setImage:[UIImage imageNamed:@"camera"] forState:UIControlStateNormal];
     [_btnCamera addTarget:self action:@selector(clickCamera:) forControlEvents:UIControlEventTouchUpInside];
@@ -165,36 +167,55 @@
     
     //PK按钮
     _btnPK = [UIButton buttonWithType:UIButtonTypeCustom];
-    _btnPK.center = CGPointMake(first_icon_center_x + icon_center_interval*2, icon_center_y);
-    _btnPK.bounds = CGRectMake(0, 0, icon_size + 2, icon_size + 2);
+    _btnPK.center = CGPointMake(first_icon_center_x + icon_center_interval*2.5, icon_center_y);
+    _btnPK.bounds = CGRectMake(0, 0, icon_size, icon_size);
     [_btnPK setBackgroundImage:[UIImage imageNamed:@"pk_start"] forState:UIControlStateNormal];
     [_btnPK addTarget:self action:@selector(clickPK:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_btnPK];
     
     //美颜开关按钮
     _btnBeauty = [UIButton buttonWithType:UIButtonTypeCustom];
-    _btnBeauty.center = CGPointMake(first_icon_center_x + icon_center_interval*3, icon_center_y);
+    _btnBeauty.center = CGPointMake(first_icon_center_x + icon_center_interval*3.5, icon_center_y);
     _btnBeauty.bounds = CGRectMake(0, 0, icon_size, icon_size);
-    [_btnBeauty setImage:[UIImage imageNamed:@"beauty"] forState:UIControlStateNormal];
+    [_btnBeauty setImage:[UIImage imageNamed:@"meeting_beauty"] forState:UIControlStateNormal];
     [_btnBeauty addTarget:self action:@selector(clickBeauty:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_btnBeauty];
     
     //音乐按钮
     _btnMusic = [UIButton buttonWithType:UIButtonTypeCustom];
-    _btnMusic.center = CGPointMake(first_icon_center_x + icon_center_interval*4, icon_center_y);
+    _btnMusic.center = CGPointMake(first_icon_center_x + icon_center_interval*4.5, icon_center_y);
     _btnMusic.bounds = CGRectMake(0, 0, icon_size, icon_size);
     [_btnMusic setImage:[UIImage imageNamed:@"music_icon"] forState:UIControlStateNormal];
     [_btnMusic addTarget:self action:@selector(clickMusic:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_btnMusic];
     
-    //退出VC
+    //pk view
+    _pkView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PK"]];
+    _pkView.frame = CGRectMake(
+                               UIScreen.mainScreen.bounds.size.width / 2.0 - 25,
+                               UIScreen.mainScreen.bounds.size.height / 2.0 - 25,
+                               50, 25);
+    _pkView.hidden = YES;
+    [self addSubview:_pkView];
+    
+    //退出VC 停止直播
     _closeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    _closeBtn.center = CGPointMake(first_icon_center_x + icon_center_interval*5, icon_center_y);
-
-    _closeBtn.bounds = CGRectMake(0, 0, icon_size, icon_size);
-    [_closeBtn setImage:[UIImage imageNamed:@"close"] forState:UIControlStateNormal];
+    _closeBtn.frame = CGRectMake(icon_center_interval * 4.3,
+                                 [[UIApplication sharedApplication] statusBarFrame].size.height + 5,
+                                 icon_size * 2.7, icon_size * 0.8);
+    [_closeBtn setTitle:@"停止直播" forState:UIControlStateNormal];
+    _closeBtn.layer.cornerRadius = 5.0;
+    _closeBtn.layer.masksToBounds = YES;
+    _closeBtn.backgroundColor = [UIColor redColor];
+    [_closeBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    _closeBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
     [_closeBtn addTarget:self action:@selector(closeVC) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_closeBtn];
+    [self bringSubviewToFront:_closeBtn];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeButtonStopPK) name:@"PKNotificationKey" object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeButtonText) name:@"ChangePKToStopNotificationKey" object:nil];
 
     //弹幕
     _msgTableView = [[TCMsgListTableView alloc] initWithFrame:CGRectMake(15, _btnChat.top - MSG_TABLEVIEW_HEIGHT - MSG_TABLEVIEW_BOTTOM_SPACE, MSG_TABLEVIEW_WIDTH, MSG_TABLEVIEW_HEIGHT) style:UITableViewStyleGrouped];
@@ -423,9 +444,6 @@
     [_vBGMPanel addSubview:_btnSelectBGM];
     [_vBGMPanel addSubview:_btnStopBGM];
     
-//    [_vMusicPanel addSubview:_vAudioEffectPanel];
-//    [_vMusicPanel addSubview:_vBGMPanel];
-    
     [self addSubview:_vMusicPanel];
     
     //***
@@ -502,6 +520,27 @@
     
     [self addSubview:_vBeauty]; // log挡住了美颜
     [self setButtonHidden:YES];
+}
+
+- (void)changeButtonStopPK {
+    _closeBtn.hidden = NO;
+    _pkView.hidden = NO;
+    [_closeBtn setTitle:@"结束PK" forState:UIControlStateNormal];
+    [_closeBtn removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+    [_closeBtn addTarget:self action:@selector(quitRoomPKAction:) forControlEvents:UIControlEventTouchUpInside];
+}
+
+- (void)quitRoomPKAction:(UIButton *)sender{
+    [self.liveRoom quitRoomPK:^(int code, NSString * error) {
+        
+    }];
+    [_closeBtn addTarget:self action:@selector(closeVC) forControlEvents:UIControlEventTouchUpInside];
+}
+
+- (void)changeButtonText {
+    _closeBtn.hidden = NO;
+    _pkView.hidden = YES;
+    [_closeBtn setTitle:@"停止直播" forState:UIControlStateNormal];
 }
 
 - (void)selectBeauty:(UIButton *)button {
@@ -688,8 +727,7 @@
     
     //比例
     CABasicAnimation *scaleAnim = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
-    //        int scale = arc4random() % 5 + 5;
-    scaleAnim.fromValue = [NSNumber numberWithFloat:.0];//[NSNumber numberWithFloat:((float)scale / 10)];
+    scaleAnim.fromValue = [NSNumber numberWithFloat:.0];
     scaleAnim.toValue = [NSNumber numberWithFloat:1];
     scaleAnim.removedOnCompletion = NO;
     scaleAnim.fillMode = kCAFillModeForwards;
@@ -762,10 +800,20 @@
             if (alertView == _closeAlert) {
                 // 直播过程中退出时展示统计信息
                 __weak __typeof(self) weakSelf = self;
-                _resultView = [[TCPushShowResultView alloc] initWithFrame:self.bounds resultData:_topView backHomepage:^{
+                _resultView = [[TCPushShowResultView alloc] initWithFrame:CGRectMake(
+                                                                                     UIScreen.mainScreen.bounds.size.width / 4.0,
+                                                                                     UIScreen.mainScreen.bounds.size.height / 3.0,
+                                                                                     UIScreen.mainScreen.bounds.size.width / 2.0,
+                                                                                     222)
+                                                               resultData:_topView backHomepage:^{
                     [weakSelf.delegate closeVC];
                 }];
+                
+                _clearView = [[UIView alloc] initWithFrame:self.bounds];
+                _clearView.backgroundColor = [UIColor blackColor];
+                _clearView.alpha = 0.3;
             }
+            [self addSubview:_clearView];
             [self addSubview:_resultView];
         }
     }
@@ -822,6 +870,7 @@
 }
 
 - (void)clickPK:(UIButton *)button {
+    _closeBtn.hidden = true;
     if (self.delegate) [self.delegate clickPK:button];
 }
 
@@ -943,12 +992,12 @@
     
     if (_bulletBtnIsOn) {
         msgModel.msgType  = TCMsgModelType_DanmaMsg;
-        [_liveRoom sendRoomCustomMsgWithCommand:[@(TCMsgModelType_DanmaMsg) stringValue] message:textMsg callback:^(NSInteger code, NSString * error) {
+        [_liveRoom sendRoomCustomMsgWithCommand:[@(TCMsgModelType_DanmaMsg) stringValue] message:textMsg callback:^(int code, NSString * error) {
             
         }];
     }else{
         msgModel.msgType = TCMsgModelType_NormalMsg;
-        [_liveRoom sendRoomTextMsgWithMessage:textMsg callback:^(NSInteger code, NSString * error) {
+        [_liveRoom sendRoomTextMsg:textMsg callback:^(int code, NSString * error) {
             
         }];
     }
@@ -981,6 +1030,7 @@
     
     if (_vPKPanel.isHidden == NO) {
         _vPKPanel.hidden = YES;
+        _closeBtn.hidden = NO;
         [self addGestureRecognizer:_tap];
     }
     
@@ -991,13 +1041,6 @@
 }
 
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-//    UITouch *touch = [[event allTouches] anyObject];
-//    CGPoint location = [touch locationInView:self];
-//
-//    if (!_isTouchMusicPanel) {
-//        [self endMove:location.x - _touchBeginLocation.x];
-//    }
-//    _isTouchMusicPanel = NO;
 }
 
 - (void)endMove:(CGFloat)moveX {
@@ -1054,6 +1097,7 @@
     UILabel  *_praiseLabel;
     UILabel  *_praiseTipLabel;
     UIButton *_backBtn;
+    UILabel  *_line;
     
     ShowResultComplete _backHomepage;
     TCShowLiveTopView *_resultData;
@@ -1078,62 +1122,65 @@
 
     _titleLabel = [[UILabel alloc] init];
     _titleLabel.textAlignment = NSTextAlignmentCenter;
-    _titleLabel.font = [UIFont boldSystemFontOfSize:24];
-    [_titleLabel setTextColor:[UIColor colorWithRed:10/255.0 green:204/255.0 blue:172/255.0 alpha:1]];
+    _titleLabel.font = [UIFont boldSystemFontOfSize:15];
+    _titleLabel.textColor = [UIColor whiteColor];
     [_titleLabel setText:@"直播结束啦!"];
     [self addSubview:_titleLabel];
     
     
     _durationLabel = [[UILabel alloc] init];
     _durationLabel.textAlignment = NSTextAlignmentCenter;
-    _durationLabel.font = [UIFont boldSystemFontOfSize:20];
+    _durationLabel.font = [UIFont boldSystemFontOfSize:15];
     _durationLabel.textColor = [UIColor whiteColor];
     [_durationLabel setText:[NSString stringWithFormat:@"%02d:%02d:%02d", hour, min, sec]];
     [self addSubview:_durationLabel];
     
     _durationTipLabel = [[UILabel alloc] init];
     _durationTipLabel.textAlignment = NSTextAlignmentCenter;
-    _durationTipLabel.font = [UIFont boldSystemFontOfSize:14];
-    _durationTipLabel.textColor = [UIColor whiteColor];
+    _durationTipLabel.font = [UIFont boldSystemFontOfSize:12];
+    _durationTipLabel.textColor = [UIColor grayColor];
     [_durationTipLabel setText:[NSString stringWithFormat:@"直播时长"]];
     [self addSubview:_durationTipLabel];
     
     
     _viewerCountLabel = [[UILabel alloc] init];
     _viewerCountLabel.textAlignment = NSTextAlignmentCenter;
-    _viewerCountLabel.font = [UIFont boldSystemFontOfSize:20];
+    _viewerCountLabel.font = [UIFont boldSystemFontOfSize:12];
     _viewerCountLabel.textColor = [UIColor whiteColor];
     [_viewerCountLabel setText:[NSString stringWithFormat:@"%ld", [_resultData getTotalViewerCount]]];
     [self addSubview:_viewerCountLabel];
     
     _viewerCountTipLabel = [[UILabel alloc] init];
     _viewerCountTipLabel.textAlignment = NSTextAlignmentCenter;
-    _viewerCountTipLabel.font = [UIFont boldSystemFontOfSize:14];
-    _viewerCountTipLabel.textColor = [UIColor whiteColor];
+    _viewerCountTipLabel.font = [UIFont boldSystemFontOfSize:12];
+    _viewerCountTipLabel.textColor = [UIColor grayColor];
     [_viewerCountTipLabel setText:[NSString stringWithFormat:@"观看人数"]];
     [self addSubview:_viewerCountTipLabel];
     
     
     _praiseLabel = [[UILabel alloc] init];
     _praiseLabel.textAlignment = NSTextAlignmentCenter;
-    _praiseLabel.font = [UIFont boldSystemFontOfSize:20];
+    _praiseLabel.font = [UIFont boldSystemFontOfSize:12];
     _praiseLabel.textColor = [UIColor whiteColor];
     [_praiseLabel setText:[NSString stringWithFormat:@"%ld\n", [_resultData getLikeCount]]];
     [self addSubview:_praiseLabel];
     
     _praiseTipLabel = [[UILabel alloc] init];
     _praiseTipLabel.textAlignment = NSTextAlignmentCenter;
-    _praiseTipLabel.font = [UIFont boldSystemFontOfSize:14];
-    _praiseTipLabel.textColor = [UIColor whiteColor];
+    _praiseTipLabel.font = [UIFont boldSystemFontOfSize:12];
+    _praiseTipLabel.textColor = [UIColor grayColor];
     [_praiseTipLabel setText:[NSString stringWithFormat:@"获赞数量"]];
     [self addSubview:_praiseTipLabel];
     
+    _line = [[UILabel alloc] init];
+    _line.backgroundColor = [UIColor grayColor];
+    [self addSubview:_line];
     
     _backBtn = [[UIButton alloc] init];
-    [_backBtn setBackgroundImage:[UIImage imageNamed:@"btn_back_to_main"] forState:UIControlStateNormal];
+    _backBtn.backgroundColor = [UIColor clearColor];
     _backBtn.titleLabel.font = [UIFont systemFontOfSize:16];
-    [_backBtn setTitle:@"返回首页" forState:UIControlStateNormal];
-    [_backBtn setTitleColor:[UIColor colorWithRed:10/255.0 green:204/255.0 blue:172/255.0 alpha:1] forState:UIControlStateNormal];
+    [_backBtn setTitle:@"返回" forState:UIControlStateNormal];
+    [_backBtn setTitleColor:[UIColor flatBlueColor] forState:UIControlStateNormal];
     [self addSubview:_backBtn];
     
     [self relayout];
@@ -1143,28 +1190,33 @@
     CGRect rect = self.bounds;
     
     [_titleLabel sizeWith:CGSizeMake(rect.size.width, 24)];
-    [_titleLabel alignParentTopWithMargin:125];
+    [_titleLabel alignParentTopWithMargin:20];
     
     [_durationLabel sizeWith:CGSizeMake(rect.size.width, 15)];
-    [_durationLabel layoutBelow:_titleLabel margin:55];
+    [_durationLabel layoutBelow:_titleLabel margin:20];
+    
     [_durationTipLabel sizeWith:CGSizeMake(rect.size.width, 14)];
     [_durationTipLabel layoutBelow:_durationLabel margin:7];
     
-    [_viewerCountLabel sizeWith:CGSizeMake(rect.size.width, 15)];
-    [_viewerCountLabel layoutBelow:_durationTipLabel margin:35];
-    [_viewerCountTipLabel sizeWith:CGSizeMake(rect.size.width, 14)];
+    _viewerCountLabel.frame = CGRectMake(rect.size.width/4.0 - 10, 0, rect.size.width/4.0, 15);
+    [_viewerCountLabel layoutBelow:_durationTipLabel margin:20];
+    _viewerCountTipLabel.frame = CGRectMake(rect.size.width/5.5, 0, rect.size.width/3.5, 15);
     [_viewerCountTipLabel layoutBelow:_viewerCountLabel margin:7];
     
-    [_praiseLabel sizeWith:CGSizeMake(rect.size.width, 15)];
-    [_praiseLabel layoutBelow:_viewerCountTipLabel margin:35];
-    [_praiseTipLabel sizeWith:CGSizeMake(rect.size.width, 14)];
+    _praiseLabel.frame = CGRectMake(rect.size.width/2.0 + 10, 0, rect.size.width/4.0, 15);
+    [_praiseLabel layoutBelow:_durationTipLabel margin:20];
+    _praiseTipLabel.frame = CGRectMake(rect.size.width/1.88, 0, rect.size.width/3.5, 15);
     [_praiseTipLabel layoutBelow:_praiseLabel margin:7];
     
-    [_backBtn sizeWith:CGSizeMake(225, 35)];
-    [_backBtn layoutParentHorizontalCenter];
-    [_backBtn layoutBelow:_praiseTipLabel margin:52.5];
     
-    [self setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.9]];
+    [_backBtn sizeWith:CGSizeMake(rect.size.width, 35)];
+    [_backBtn layoutParentHorizontalCenter];
+    [_backBtn layoutBelow:_praiseTipLabel margin:30];
+    
+    [_line sizeWith:CGSizeMake(rect.size.width, 0.5)];
+    [_line layoutBelow:_praiseTipLabel margin:30];
+    
+    [self setBackgroundColor:[UIColor colorWithRed:19/255.0 green:35/255.0 blue:63/255.0 alpha:1.0]];
 }
 
 - (void)clickBackBtn {

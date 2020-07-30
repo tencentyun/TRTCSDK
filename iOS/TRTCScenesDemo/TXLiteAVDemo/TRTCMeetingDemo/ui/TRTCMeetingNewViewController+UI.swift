@@ -241,7 +241,7 @@ extension TRTCMeetingNewViewController {
 
         let enterBtn = UIButton()
         enterBtn.setTitle("进入会议", for: .normal)
-        enterBtn.setBackgroundImage(UIColor.init(0x0062E3).trans2Image(), for: .normal)
+        enterBtn.setBackgroundImage(UIColor.buttonBackColor.trans2Image(), for: .normal)
         enterBtn.layer.cornerRadius = 6
         enterBtn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 19)
         enterBtn.setTitleColor(.white, for: .normal)
@@ -382,6 +382,7 @@ extension TRTCMeetingNewViewController {
         let avatar = ProfileManager.shared.curUserModel?.avatar
         TRTCMeeting.sharedInstance().setSelfProfile(userName, avatarURL: avatar ?? "") { (code, msg) in
             print("setSelfProfile" + "\(code)" + msg!)
+            ProfileManager.shared.curUserModel?.name = userName
         }
         
         // 保存当前的配置

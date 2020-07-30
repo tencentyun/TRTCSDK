@@ -44,7 +44,7 @@ public class TRTCVideoCall: NSObject,
                 isRespSponsor = false
                 isInRoom = false
             }
-            debugPrint("📳 isOnCalling : \(isOnCalling)")
+            debugPrint("log: isOnCalling : \(isOnCalling)")
         }
     }
     /// 当前通话的唯一ID |

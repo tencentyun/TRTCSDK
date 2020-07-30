@@ -47,8 +47,6 @@ TRTCLiveRoomDelegate>
     BOOL                  _rotate;
     BOOL                 _isErrorAlert; //是否已经弹出了错误提示框，用于保证在同时收到多个错误通知时，只弹一个错误提示框
     
-//    BOOL                _isResetVideoRecord;
-    
     //link mic
     BOOL                    _isBeingLinkMic;
     BOOL                    _isWaitingResponse;
@@ -218,7 +216,7 @@ TRTCLiveRoomDelegate>
             [_btnLinkMic addTarget:self action:@selector(clickBtnLinkMic:) forControlEvents:UIControlEventTouchUpInside];
             [_logicView addSubview:_btnLinkMic];
             [_btnLinkMic mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.centerX.equalTo(self->_logicView.closeBtn).offset(-icon_center_interval*2);
+                make.centerX.equalTo(self->_logicView.closeBtn).offset(-icon_center_interval*2.5);
                 make.centerY.equalTo(self->_logicView.closeBtn);
                 make.width.height.equalTo(@(icon_size));
             }];
@@ -251,7 +249,7 @@ TRTCLiveRoomDelegate>
 - (void)initRoomLogic {
     _liveRoom.delegate = self;
     __weak __typeof(self) wself = self;
-    [_liveRoom enterRoomWithRoomID:[_liveInfo.roomId intValue] callback:^(NSInteger code, NSString * error) {
+    [_liveRoom enterRoomWithRoomID:[_liveInfo.roomId intValue] callback:^(int code, NSString * error) {
         __strong __typeof(wself) self = wself;
         if (self == nil) {
             return ;
@@ -260,7 +258,7 @@ TRTCLiveRoomDelegate>
             __block BOOL isGetList = NO;
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 //获取成员列表
-                [self.liveRoom getAudienceListWithCallback:^(NSInteger code, NSString * error, NSArray<TRTCLiveUserInfo *> * users) {
+                [self.liveRoom getAudienceList:^(int code, NSString * error, NSArray<TRTCLiveUserInfo *> * users) {
                     isGetList = (code == 0);
                     [self->_logicView initAudienceList:users];
                 }];
@@ -271,7 +269,7 @@ TRTCLiveRoomDelegate>
                     return;
                 }
                 //获取成员列表
-                [self.liveRoom getAudienceListWithCallback:^(NSInteger code, NSString * error, NSArray<TRTCLiveUserInfo *> * users) {
+                [self.liveRoom getAudienceList:^(int code, NSString * error, NSArray<TRTCLiveUserInfo *> * users) {
                     [self->_logicView initAudienceList:users];
                 }];
             });
@@ -306,7 +304,7 @@ TRTCLiveRoomDelegate>
     
     [self showWaitingNotice:@"等待主播接受"];
     
-    [self.liveRoom requestJoinAnchorWithReason:@"" responseCallback:^(BOOL agreed, NSString * reason) {
+    [self.liveRoom requestJoinAnchor:@"" responseCallback:^(BOOL agreed, NSString * reason) {
         __strong __typeof(wself) self = wself;
         if (self == nil) {
             return ;
@@ -331,11 +329,11 @@ TRTCLiveRoomDelegate>
                     [[AppUtils shared] alertUserTips:self];
                     
                     statusInfoView.userID = [[ProfileManager shared] curUserID];
-                    [self.liveRoom startCameraPreviewWithFrontCamera:YES view:statusInfoView.videoView callback:^(NSInteger code, NSString * error) {
+                    [self.liveRoom startCameraPreviewWithFrontCamera:YES view:statusInfoView.videoView callback:^(int code, NSString * error) {
                         
                     }];
                     NSString *streamID = [NSString stringWithFormat:@"%@_stream",[[ProfileManager shared] curUserID]];
-                    [self.liveRoom startPublishWithStreamID:streamID callback:^(NSInteger code, NSString * error) {
+                    [self.liveRoom startPublishWithStreamID:streamID callback:^(int code, NSString * error) {
                         
                     }];
                     break;
@@ -360,19 +358,17 @@ TRTCLiveRoomDelegate>
         [statusInfoView stopLoading];
         [statusInfoView stopPlay];
         if (statusInfoView.userID.length) {
-            [self.liveRoom stopPlayWithUserID:statusInfoView.userID callback:^(NSInteger code, NSString * error) {
+            [self.liveRoom stopPlayWithUserID:statusInfoView.userID callback:^(int code, NSString * error) {
                 
             }];
         }
         [statusInfoView emptyPlayInfo];
     }
-    //    //结束连麦，允许录制小视频
-    //    [self.logicView.btnRecord setEnabled:YES];
 }
 
 - (void)stopLocalPreview {
     if (_isBeingLinkMic == YES) {
-        [self.liveRoom stopPublishWithCallback:^(NSInteger code, NSString * error) {
+        [self.liveRoom stopPublish:^(int code, NSString * error) {
             
         }];
         
@@ -557,9 +553,9 @@ TRTCLiveRoomDelegate>
             statusInfoView.userID = userID;
             [statusInfoView startLoading];
             __weak __typeof(self) weakSelf = self;
-            [self.liveRoom startPlayWithUserID:userID view:statusInfoView.videoView callback:^(NSInteger code, NSString * error) {
+            [self.liveRoom startPlayWithUserID:userID view:statusInfoView.videoView callback:^(int code, NSString * error) {
                 if (code == 0) {
-                     [statusInfoView stopLoading];
+                    [statusInfoView stopLoading];
                 } else {
                     [weakSelf onAnchorExit:userID];
                 }
@@ -574,9 +570,9 @@ TRTCLiveRoomDelegate>
         
 }
 
-- (void)onAnchorExit: (NSString *)userID {
-    if (userID == _liveInfo.ownerId) {
-        [self.liveRoom stopPlayWithUserID:userID callback:^(NSInteger code, NSString * error) {
+- (void)onAnchorExit:(NSString *)userID {
+    if ([userID isEqualToString:_liveInfo.ownerId]) {
+        [self.liveRoom stopPlayWithUserID:userID callback:^(int code, NSString * error) {
             
         }];
         self.isOwnerEnter = NO;
@@ -587,7 +583,7 @@ TRTCLiveRoomDelegate>
     if (![statusInfoView.userID isEqualToString:[[ProfileManager shared] curUserID]]) {
         [statusInfoView stopLoading];
         [statusInfoView stopPlay];
-        [self.liveRoom stopPlayWithUserID:statusInfoView.userID callback:^(NSInteger code, NSString * error) {
+        [self.liveRoom stopPlayWithUserID:statusInfoView.userID callback:^(int code, NSString * error) {
             
         }];
         [statusInfoView emptyPlayInfo];
@@ -678,7 +674,7 @@ TRTCLiveRoomDelegate>
     }
     [self.liveRoom showVideoDebugLog:NO];
     if (self.liveRoom) {
-        [self.liveRoom exitRoomWithCallback:^(NSInteger code, NSString * error) {
+        [self.liveRoom exitRoom:^(int code, NSString * error) {
             NSLog(@"exitRoom: errCode[%ld] errMsg[%@]", (long)code, error);
         }];
     }

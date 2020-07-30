@@ -28,7 +28,7 @@ extension TCAnchorViewController {
                                                 streamUrl: ProfileManager.shared.curUserModel?.avatar ?? "",
                                                 memberCount: 0, roomStatus: .single)
                 self.liveInfo = roomInfo
-                callback?(code, error)
+                callback?(Int(code), error)
             })
         }
         

@@ -19,7 +19,7 @@ extension TRTCAudioCall {
                 }
                 TRTCCloud.sharedInstance().delegate = self
                 if model.version == audioCallVersion, let user = msg.sender {
-                    debugPrint("📳 on call msg: sender:\(user) call_id:\(model.callid), room_id:\(model.roomid), action:\(model.action.debug)")
+                    debugPrint("log: on call msg: sender:\(user) call_id:\(model.callid), room_id:\(model.roomid), action:\(model.action.debug)")
                     let timeCheck = checkCallTimeOut(msg: msg)
                     if !timeCheck.0 {
                         handleCallModel(user: user, model: model, leftTime: max(0, timeOut - timeCheck.1))

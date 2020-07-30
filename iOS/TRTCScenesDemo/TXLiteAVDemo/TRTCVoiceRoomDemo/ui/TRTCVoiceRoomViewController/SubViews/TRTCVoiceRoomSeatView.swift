@@ -46,8 +46,6 @@ class TRTCVoiceRoomSeatView: UIView {
         let width = self.frame.width
         avatarImageView.layer.cornerRadius = width / 2.0
         avatarImageView.layer.masksToBounds = true
-//        muteImageView.layer.cornerRadius = width / 2.0
-//        muteImageView.layer.masksToBounds = true
     }
     
     let avatarImageView: UIImageView = {
@@ -159,7 +157,7 @@ extension TRTCVoiceRoomSeatView {
     private func toEmptyStates(isMaster: Bool) {
         let fontSize: CGFloat = isMaster ? 18.0 : 14.0
         nameLabel.font = UIFont.systemFont(ofSize: fontSize)
-        nameLabel.textColor = UIColor.init(0x6B82A8)
+        nameLabel.textColor = .placeholderBackColor
     }
     
     private func toFullStates(isMaster: Bool) {

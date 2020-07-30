@@ -10,7 +10,7 @@
 #import "V8HorizontalPickerView.h"
 #import <TCBeautyPanel/TCBeautyPanel.h>
 #import <AudioEffectSettingKit/AudioEffectSettingKit.h>
-@class TRTCLiveRoomImpl;
+@class TRTCLiveRoom;
 @class TRTCLiveRoomInfo;
 @class AnchorPKPanel;
 
@@ -56,13 +56,13 @@
 @property (nonatomic, retain) TCBeautyPanel *vBeauty;
 @property (nonatomic, retain) AudioEffectSettingView  *vMusicPanel;
 @property (nonatomic, retain) AnchorPKPanel     *vPKPanel;
-@property (nonatomic, weak) TRTCLiveRoomImpl *liveRoom;
+@property (nonatomic, weak) TRTCLiveRoom *liveRoom;
 @property (nonatomic, assign) BOOL           isPreview;
 
 - (void)setButtonHidden:(BOOL)buttonHidden;
 - (void)setLiveInfo:(TRTCLiveRoomInfo *)liveInfo;
 
-- (void)setLiveRoom:(TRTCLiveRoomImpl *)liveRoom;
+- (void)setLiveRoom:(TRTCLiveRoom *)liveRoom;
 
 - (void)enableMix:(BOOL)enable;
 

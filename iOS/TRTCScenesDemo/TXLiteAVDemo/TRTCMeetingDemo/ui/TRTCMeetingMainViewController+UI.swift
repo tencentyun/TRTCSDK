@@ -104,7 +104,7 @@ extension TRTCMeetingMainViewController {
                 (action: UIAlertAction!) -> Void in
                 print("退房成功退房成功退房成功退房成功退房成功退房成功\n\n\n\n\n\n")
                 TRTCMeeting.sharedInstance().leave { (code, msg) in
-                    debugPrint("📳 exitMeeting: code \(code), msg: \(String(describing: msg))")
+                    debugPrint("log: exitMeeting: code \(code), msg: \(String(describing: msg))")
                 }
                 self.navigationController?.popViewController(animated: true)
             })

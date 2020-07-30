@@ -16,8 +16,8 @@
 - (void)stopPlay;
 
 @property (nonatomic, assign) BOOL                      pending;
-@property (nonatomic, strong) NSString*                 userID;
-@property (nonatomic, strong) NSString*                 playUrl;
+@property (nonatomic, copy) NSString*                 userID;
+@property (nonatomic, copy) NSString*                 playUrl;
 @property (nonatomic, strong) UIView*                   videoView;
 @property (nonatomic, strong) UIButton*                 btnKickout;
 @property (nonatomic, assign) CGRect                    linkFrame;

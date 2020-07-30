@@ -104,7 +104,7 @@ class TRTCMeetingMoreViewAudioVC: UIViewController {
         button .setTitle("开始录制", for: .normal)
         button.tag = 0
         button.titleLabel?.font = UIFont.systemFont(ofSize: 15)
-        button.backgroundColor = UIColor(hex: "0062E3")
+        button.backgroundColor = .buttonBackColor
         button.titleLabel?.textColor = .white
         button.contentHorizontalAlignment = .center
         button .addTarget(self, action: #selector(stopRecording), for: .touchUpInside)

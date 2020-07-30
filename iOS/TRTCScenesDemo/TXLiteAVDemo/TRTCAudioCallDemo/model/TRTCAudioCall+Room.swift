@@ -15,7 +15,7 @@ extension TRTCAudioCall: TRTCCloudDelegate {
         param.sdkAppId = UInt32(SDKAPPID)
         param.userId = AudioCallUtils.shared.curUserId()
         param.roomId = curRoomID
-        param.userSig = GenerateTestUserSig.genTestUserSig(param.userId)
+        param.userSig = ProfileManager.shared.curUserSig()
         param.privateMapKey = ""
         TRTCCloud.sharedInstance().delegate = self
         TRTCCloud.sharedInstance()?.setAudioQuality(.speech)

@@ -19,7 +19,6 @@ class TRTCVoiceRoomListRootView: UIView {
     init(frame: CGRect = .zero, viewModel: TRTCVoiceRoomListViewModel) {
         self.viewModel = viewModel
         super.init(frame: frame)
-        bindInteraction()
     }
     
     required init?(coder: NSCoder) {
@@ -28,7 +27,7 @@ class TRTCVoiceRoomListRootView: UIView {
     
     let loading = NVActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 100, height: 60),
                                           type: .ballRotate,
-                                          color: .init(0x0d2c5b))
+                                          color: .searchBarBackColor)
     
     let backgroundLayer: CALayer = {
         // fillCode
@@ -70,6 +69,7 @@ class TRTCVoiceRoomListRootView: UIView {
         isViewReady = true
         constructViewHierarchy() // 视图层级布局
         activateConstraints() // 生成约束（此时有可能拿不到父视图正确的frame）
+        bindInteraction()
     }
 
     func constructViewHierarchy() {

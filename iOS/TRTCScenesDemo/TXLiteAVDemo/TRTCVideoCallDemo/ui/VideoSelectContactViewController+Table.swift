@@ -12,42 +12,47 @@ class VideoSelectUserTableViewCell: UITableViewCell {
     
     lazy var selectedMark: UIImageView = {
         let img = UIImageView()
-        addSubview(img)
         return img
     }()
     
     lazy var userImg: UIImageView = {
        let img = UIImageView()
-        addSubview(img)
         return img
     }()
     
     lazy var nameLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
-        label.backgroundColor = .appBackGround
-        addSubview(label)
+        label.backgroundColor = .clear
         return label
     }()
     
     func config(model: UserModel, selected: Bool = false) {
-        backgroundColor = .appBackGround
+        backgroundColor = .clear
+        
+        self.addSubview(selectedMark)
         selectedMark.snp.remakeConstraints { (make) in
-            make.leading.equalTo(12)
+            make.leading.equalTo(20)
             make.centerY.equalTo(self)
-            make.width.height.equalTo(12)
+            make.width.height.equalTo(16)
         }
+        
+        self.addSubview(userImg)
         userImg.snp.remakeConstraints { (make) in
             make.leading.equalTo(selectedMark.snp.trailing).offset(12)
-            make.width.height.equalTo(32)
+            make.width.height.equalTo(50)
             make.centerY.equalTo(self)
         }
+        
+        self.addSubview(nameLabel)
         nameLabel.snp.remakeConstraints { (make) in
             make.leading.equalTo(userImg.snp.trailing).offset(12)
             make.trailing.top.bottom.equalTo(self)
         }
         userImg.sd_setImage(with: URL(string: model.avatar), completed: nil)
-        selectedMark.image = UIImage(named: selected ? "ic_selected" : "ic_unselect")
+        userImg.layer.masksToBounds = true
+        userImg.layer.cornerRadius = 25
+        selectedMark.image = UIImage(named: selected ? "ic_meeting_select_on" : "ic_unselect")
         nameLabel.text = model.name
     }
 }
@@ -87,7 +92,7 @@ extension VideoSelectContactViewController: UITableViewDelegate, UITableViewData
     }
     
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        view.tintColor = .appBackGround
+        view.tintColor = .clear
         let header = view as! UITableViewHeaderFooterView
         header.textLabel?.textColor = UIColor.white
     }
@@ -100,7 +105,7 @@ extension VideoSelectContactViewController: UITableViewDelegate, UITableViewData
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 44
+        return 60
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {

@@ -13,9 +13,20 @@ import Toast_Swift
 
 extension AudioCallViewController {
     func setupUI() {
+        
+        view.addSubview(OnInviteePanel)
+        OnInviteePanel.addSubview(OninviteeStackView)
+        OninviteeStackView.snp.makeConstraints { (make) in
+            make.leading.trailing.bottom.equalTo(OnInviteePanel)
+            make.top.equalTo(OnInviteePanel.snp.bottom)
+        }
+        
         ToastManager.shared.position = .bottom
-        view.backgroundColor = .appBackGround
         var topPadding: CGFloat = 0
+        
+        gradientLayer.colors = colors.compactMap{ $0 }
+        gradientLayer.frame = view.bounds
+        view.layer.insertSublayer(gradientLayer, at: 0)
         
         if #available(iOS 11.0, *) {
             let window = UIApplication.shared.keyWindow
@@ -122,31 +133,31 @@ extension AudioCallViewController {
             hangup.snp.remakeConstraints { (make) in
                 make.centerX.equalTo(view)
                 make.bottom.equalTo(view).offset(-32)
-                make.width.equalTo(50)
-                make.height.equalTo(50)
+                make.width.equalTo(80)
+                make.height.equalTo(80)
             }
             break
         case .onInvitee:
             hangup.snp.remakeConstraints { (make) in
                 make.centerX.equalTo(view).offset(-80)
                 make.bottom.equalTo(view).offset(-32)
-                make.width.equalTo(50)
-                make.height.equalTo(50)
+                make.width.equalTo(80)
+                make.height.equalTo(80)
             }
             
             accept.snp.remakeConstraints { (make) in
                 make.centerX.equalTo(view).offset(80)
                 make.bottom.equalTo(view).offset(-32)
-                make.width.equalTo(50)
-                make.height.equalTo(50)
+                make.width.equalTo(80)
+                make.height.equalTo(80)
             }
             break
         case .calling:
             hangup.snp.remakeConstraints { (make) in
                 make.centerX.equalTo(view)
                 make.bottom.equalTo(view).offset(-32)
-                make.width.equalTo(50)
-                make.height.equalTo(50)
+                make.width.equalTo(60)
+                make.height.equalTo(60)
             }
             startGCDTimer()
             break

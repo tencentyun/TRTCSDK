@@ -10,13 +10,25 @@ import Foundation
 import Toast_Swift
 
 class LiveRoomMainViewController: UIViewController {
-    weak var liveRoom: TRTCLiveRoomImpl?
+    weak var liveRoom: TRTCLiveRoom?
     var roomInfos: [TRTCLiveRoomInfo] = []
     
-    @objc public init(liveRoom: TRTCLiveRoomImpl) {
+    @objc public init(liveRoom: TRTCLiveRoom) {
         self.liveRoom = liveRoom
         super.init(nibName: nil, bundle: nil)
     }
+    
+    let colors = [UIColor(red: 19.0 / 255.0, green: 41.0 / 255.0,
+                          blue: 75.0 / 255.0, alpha: 1).cgColor,
+                  UIColor(red: 5.0 / 255.0, green: 12.0 / 255.0,
+                          blue: 23.0 / 255.0, alpha: 1).cgColor]
+    
+    let gradientLayer: CAGradientLayer = {
+        let layer = CAGradientLayer()
+        layer.startPoint = CGPoint(x: 0, y: 0)
+        layer.endPoint = CGPoint(x: 1, y: 1)
+        return layer
+    }()
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -29,7 +41,7 @@ class LiveRoomMainViewController: UIViewController {
         layout.scrollDirection = .vertical
         let collection = UICollectionView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: view.frame.size.width),
                                      collectionViewLayout: layout)
-        collection.backgroundColor = .appBackGround
+        collection.backgroundColor = .clear
         collection.register(LiveRoomCollectionViewCell.classForCoder(),
                        forCellWithReuseIdentifier: "LiveRoomCollectionViewCell")
         if #available(iOS 10.0, *) {
@@ -41,9 +53,7 @@ class LiveRoomMainViewController: UIViewController {
         collection.showsVerticalScrollIndicator = true
         collection.showsHorizontalScrollIndicator = false
         collection.contentMode = .scaleToFill
-        collection.backgroundColor = .appBackGround
         collection.isScrollEnabled = true
-        view.addSubview(collection)
         collection.delegate = self
         collection.dataSource = self
         let header = MJRefreshStateHeader(refreshingTarget: self, refreshingAction: #selector(loadRoomsInfo))
@@ -57,17 +67,13 @@ class LiveRoomMainViewController: UIViewController {
     
     lazy var createRoomBtn: UIButton = {
         let btn = UIButton()
-        btn.backgroundColor = .appTint
-        btn.setTitle("新建直播间", for: .normal)
-        btn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 19)
-        btn.setTitleColor(.white, for: .normal)
-        btn.layer.cornerRadius = 6
-        view.addSubview(btn)
+        btn.setImage(UIImage(named: "createLivingRoom"), for: .normal)
         return btn
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        initNavigationItemTitleView()
         setupUI()
         liveRoom?.setSelfProfile(name: ProfileManager.shared.curUserModel?.name ?? "", avatarURL: ProfileManager.shared.curUserModel?.avatar ?? "", callback: { (code, error) in
         })
@@ -82,19 +88,11 @@ class LiveRoomMainViewController: UIViewController {
         super.viewWillAppear(animated)
         loadRoomsInfo()
         TRTCCloud.sharedInstance()?.delegate = liveRoom
+        navigationController?.setNavigationBarHidden(false, animated: false)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: false)
-    }
-    
-    override func didMove(toParent parent: UIViewController?) {
-        super.didMove(toParent: parent)
-
-        if parent != nil && self.navigationItem.titleView == nil {
-            initNavigationItemTitleView()
-        }
     }
 
     private func initNavigationItemTitleView() {
@@ -111,9 +109,21 @@ class LiveRoomMainViewController: UIViewController {
         titleView.isUserInteractionEnabled = true
         titleView.addGestureRecognizer(recognizer)
         let isCdnMode = ((UserDefaults.standard.object(forKey: "liveRoomConfig_useCDNFirst") as? Bool) ?? false)
+        let rightCDN = UIBarButtonItem()
         if isCdnMode {
-            let rightItem = UIBarButtonItem(title: "CDN模式", style: .done, target: nil, action: nil)
-            navigationItem.rightBarButtonItem = rightItem
+            rightCDN.title = "CDN模式"
+        } else {
+            rightCDN.title = ""
+        }
+        
+        let rightItem = UIBarButtonItem.init(image: UIImage.init(named: "help_small"), style: .plain, target: self, action: #selector(connectWeb))
+        navigationItem.rightBarButtonItems = [rightItem, rightCDN]
+        
+    }
+    
+    @objc func connectWeb() {
+        if let url = URL(string: "https://cloud.tencent.com/document/product/647/35428") {
+            UIApplication.shared.openURL(url)
         }
     }
 

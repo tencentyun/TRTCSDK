@@ -169,14 +169,20 @@ class CenterSegmentView: UIView {
         self.pageBlock?(sender.tag)
         self.seleBtn.titleLabel?.font = self.selectFont
         self.seleBtn.isSelected = true
-    
+        if sender.tag != 0 {
+            controllers.first?.view.endEditing(true)
+        }
         self.segmentScrollV.setContentOffset(CGPoint(x: CGFloat(sender.tag) * self.frame.size.width, y: 0), animated: true)
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "SelectVC"), object: sender, userInfo: nil)
     }
 }
 extension CenterSegmentView:UIScrollViewDelegate {
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        let btn = self.segmentView.viewWithTag(Int(self.segmentScrollV.contentOffset.x / self.frame.size.width))
+        let tag = Int(self.segmentScrollV.contentOffset.x / self.frame.size.width)
+        if tag != 0 {
+            controllers.first?.view.endEditing(true)
+        }
+        let btn = self.segmentView.viewWithTag(tag)
         self.seleBtn.isSelected = false
         self.seleBtn.titleLabel?.font = self.normalFont
         if let button = btn {

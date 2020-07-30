@@ -17,7 +17,6 @@ class MeetingRenderView: UIView {
 
     lazy var avatarImageView: UIImageView = {
         let img = UIImageView()
-        addSubview(img)
         return img
     }()
     
@@ -28,13 +27,11 @@ class MeetingRenderView: UIView {
         user.textAlignment = .center
         user.font = UIFont.systemFont(ofSize: 15)
         user.numberOfLines = 2
-        addSubview(user)
         return user
     }()
     
     lazy var signalImageView: UIImageView = {
         let img = UIImageView()
-        addSubview(img)
         return img
     }()
     
@@ -44,18 +41,18 @@ class MeetingRenderView: UIView {
         progressView.transform = CGAffineTransform(scaleX: 1.0, y: 2.5)
         progressView.layer.masksToBounds = true
         progressView.layer.cornerRadius = 1
-        addSubview(progressView)
         return progressView
     }()
     
     func configModel(model: MeetingAttendeeModel) {
-        backgroundColor = UIColor(hex: "0D2C5B")
+        backgroundColor = .searchBarBackColor
 
         if model.userId.count == 0 {
             return
         }
         
         // 头像
+        self.addSubview(avatarImageView)
         avatarImageView.sd_setImage(with: URL(string: attendeeModel.avatarURL), placeholderImage: UIImage(named: "default_user"), options: [], completed: nil)
         avatarImageView.snp.remakeConstraints { (make) in
             make.width.height.equalTo(50)
@@ -68,6 +65,7 @@ class MeetingRenderView: UIView {
         refreshVideo(isVideoAvailable: model.isVideoAvailable)
         
         // 用户名
+        self.addSubview(userLabel)
         userLabel.textAlignment = .left
         userLabel.text = attendeeModel.userName
         userLabel.snp.remakeConstraints { (make) in
@@ -77,6 +75,7 @@ class MeetingRenderView: UIView {
         }
         
         // 网络信号
+        self.addSubview(signalImageView)
         signalImageView.snp.remakeConstraints { (make) in
             make.height.equalTo(20)
             make.leading.equalTo(userLabel.snp.trailing).offset(10)
@@ -85,6 +84,7 @@ class MeetingRenderView: UIView {
         refreshSignalView()
         
         // 音量进度条
+        self.addSubview(volumeProgressView)
         volumeProgressView.snp.remakeConstraints { (make) in
             make.width.equalTo(self)
             make.height.equalTo(2)

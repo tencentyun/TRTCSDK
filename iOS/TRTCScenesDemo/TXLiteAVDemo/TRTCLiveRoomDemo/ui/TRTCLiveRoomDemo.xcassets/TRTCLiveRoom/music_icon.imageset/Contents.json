@@ -1,15 +1,17 @@
 {
   "images" : [
     {
+      "filename" : "music_icon.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "音乐-normal@2x.png",
+      "filename" : "music_icon@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "music_icon@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

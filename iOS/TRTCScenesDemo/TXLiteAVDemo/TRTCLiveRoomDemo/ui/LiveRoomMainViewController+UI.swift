@@ -12,7 +12,9 @@ import Toast_Swift
 extension LiveRoomMainViewController {
     func setupUI() {
         ToastManager.shared.position = .bottom
-        view.backgroundColor = .appBackGround
+        gradientLayer.colors = colors.compactMap{ $0 }
+        gradientLayer.frame = view.bounds
+        view.layer.insertSublayer(gradientLayer, at: 0)
 
         var topPadding: CGFloat = 0
         
@@ -22,17 +24,18 @@ extension LiveRoomMainViewController {
         }
         topPadding = max(44, topPadding)
         
+        self.view.addSubview(roomsCollection)
         roomsCollection.snp.makeConstraints { (make) in
             make.leading.trailing.equalTo(view)
-            make.top.equalTo(topPadding + 10)
-            make.bottom.equalTo(-100)
+            make.top.equalTo(topPadding + UIScreen.main.bounds.size.height * 27.0/667)
+            make.bottom.equalTo(0)
         }
         
+        self.view.addSubview(createRoomBtn)
         createRoomBtn.snp.makeConstraints { (make) in
-            make.bottom.equalTo(-30)
-            make.leading.equalTo(32)
+            make.bottom.equalTo(-40)
             make.trailing.equalTo(-32)
-            make.height.equalTo(50)
+            make.width.height.equalTo(60)
         }
         createRoomBtn.addTarget(self, action: #selector(createRoom), for: .touchUpInside)
     }
@@ -41,6 +44,8 @@ extension LiveRoomMainViewController {
         RoomManager.shared.getRoomList(sdkAppID: SDKAPPID, success: { [weak self] (ids) in
             let uintIDs = ids.compactMap {
                 UInt32($0)
+            }.map { (value) -> NSNumber in
+                return NSNumber.init(value: value)
             }
             if uintIDs.count == 0 {
                 self?.roomsCollection.mj_header?.endRefreshing()

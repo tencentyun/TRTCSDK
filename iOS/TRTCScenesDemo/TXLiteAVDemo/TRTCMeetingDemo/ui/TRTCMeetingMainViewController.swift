@@ -95,7 +95,7 @@ class TRTCMeetingMainViewController: UIViewController, TRTCMeetingDelegate,
             // Fallback on earlier versions
         }
         collection.contentMode = .scaleToFill
-        collection.backgroundColor = UIColor(hex: "13233F")
+        collection.backgroundColor = .pannelBackColor
         collection.dataSource = self
         collection.delegate = self
         
@@ -236,7 +236,7 @@ class TRTCMeetingMainViewController: UIViewController, TRTCMeetingDelegate,
     }
  
     func onUserEnterRoom(_ userId: String) {
-        debugPrint("📳 onUserEnterRoom userId: \(String(describing: userId))")
+        debugPrint("log: onUserEnterRoom userId: \(String(describing: userId))")
         let userModel = MeetingAttendeeModel()
         userModel.userId = userId
         userModel.userName = userId  // 先默认用userId，getUserInfo可能返回失败
@@ -255,15 +255,14 @@ class TRTCMeetingMainViewController: UIViewController, TRTCMeetingDelegate,
             guard let self = self else {return}
             if code == 0 && userInfoList?.count ?? 0 > 0 {
                 let userInfo = userInfoList![0];
-                userModel.userName = userInfo.userName
-                userModel.avatarURL = userInfo.avatarURL
+                userModel.userName = userInfo.userName ?? userId // 如果没拿到用户名，则用UserID代替
+                userModel.avatarURL = userInfo.avatarURL ?? ""
                 
                 // 通知列表更新UI
                 NotificationCenter.default.post(name: refreshUserListNotification, object: self.attendeeList)
             }
+            self.reloadData()
         }
-        
-        reloadData()
     }
     
     func onUserVolumeUpdate(_ userId: String, volume: Int) {
@@ -273,7 +272,7 @@ class TRTCMeetingMainViewController: UIViewController, TRTCMeetingDelegate,
     }
     
     func onUserLeaveRoom(_ userId: String) {
-        debugPrint("📳 onUserLeaveRoom userId: \(String(describing: userId))")
+        debugPrint("log: onUserLeaveRoom userId: \(String(describing: userId))")
         
         let renderView = getRenderView(userId: userId)
         renderView?.removeFromSuperview()
@@ -290,7 +289,7 @@ class TRTCMeetingMainViewController: UIViewController, TRTCMeetingDelegate,
     }
     
     func onUserVideoAvailable(_ userId: String, available: Bool) {
-        debugPrint("📳 onUserVideoAvailable userId: \(String(describing: userId)), available: \(available)")
+        debugPrint("log: onUserVideoAvailable userId: \(String(describing: userId)), available: \(available)")
         let renderView = getRenderView(userId: userId)
         if available && renderView != nil {
             TRTCMeeting.sharedInstance().startRemoteView(userId, view: renderView!) { (code, message) in
@@ -305,7 +304,7 @@ class TRTCMeetingMainViewController: UIViewController, TRTCMeetingDelegate,
     }
     
     func onUserAudioAvailable(_ userId: String, available: Bool) {
-        debugPrint("📳 onUserAudioAvailable userId: \(String(describing: userId)), available: \(available)")
+        debugPrint("log: onUserAudioAvailable userId: \(String(describing: userId)), available: \(available)")
         getRenderView(userId: userId)?.refreshAudio(isAudioAvailable: available)
     }
     
@@ -319,30 +318,30 @@ class TRTCMeetingMainViewController: UIViewController, TRTCMeetingDelegate,
     }
     
     func onRecvRoomTextMsg(_ message: String?, userInfo: TRTCMeetingUserInfo) {
-        debugPrint("📳 onRecvRoomTextMsg: \(String(describing: message)) from userId: \(String(describing: userInfo.userId))")
+        debugPrint("log: onRecvRoomTextMsg: \(String(describing: message)) from userId: \(String(describing: userInfo.userId))")
     }
     
     func onRecvRoomCustomMsg(_ cmd: String?, message: String?, userInfo: TRTCMeetingUserInfo) {
-        debugPrint("📳 onRecvRoomCustomMsg: \(String(describing: cmd)) message:\(String(describing: message)) from userId: \(String(describing: userInfo.userId))")
+        debugPrint("log: onRecvRoomCustomMsg: \(String(describing: cmd)) message:\(String(describing: message)) from userId: \(String(describing: userInfo.userId))")
     }
     
     func onScreenCaptureStarted() {
-        debugPrint("📳 onScreenCaptureStarted")
+        debugPrint("log: onScreenCaptureStarted")
         self.view.makeToast("屏幕分享开始")
     }
     
     func onScreenCapturePaused(_ reason: Int32) {
-        debugPrint("📳 onScreenCapturePaused: " + "\(reason)")
+        debugPrint("log: onScreenCapturePaused: " + "\(reason)")
         self.view.makeToast("屏幕分享暂停")
     }
     
     func onScreenCaptureResumed(_ reason: Int32) {
-        debugPrint("📳 onScreenCaptureResumed: " + "\(reason)")
+        debugPrint("log: onScreenCaptureResumed: " + "\(reason)")
         self.view.makeToast("屏幕分享恢复")
     }
     
     func onScreenCaptureStoped(_ reason: Int32) {
-        debugPrint("📳 onScreenCaptureStoped: " + "\(reason)")
+        debugPrint("log: onScreenCaptureStoped: " + "\(reason)")
         
         // 恢复摄像头采集
         if self.isOpenCamera {

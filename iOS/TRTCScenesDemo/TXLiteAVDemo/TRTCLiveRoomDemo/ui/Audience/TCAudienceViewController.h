@@ -11,7 +11,7 @@
 #define FULL_SCREEN_PLAY_VIDEO_VIEW     10000
 
 @class TRTCLiveRoomInfo;
-@class TRTCLiveRoomImpl;
+@class TRTCLiveRoom;
 @class UserModel;
 
 @interface TCAudienceViewController : UIViewController
@@ -20,7 +20,7 @@
 @property (nonatomic, copy)   videoIsReadyBlock   videoIsReady;
 @property (nonatomic, copy)  void(^onPlayError)(void);
 @property (nonatomic, retain) TCAudienceToolbarView *logicView;
-@property (nonatomic, retain) TRTCLiveRoomImpl* liveRoom;
+@property (nonatomic, retain) TRTCLiveRoom* liveRoom;
 @property (nonatomic, assign) BOOL  log_switch;
 @property (nonatomic, strong) UIView  *videoParentView;
 @property (nonatomic, assign) NSInteger  roomStatus;

@@ -30,36 +30,31 @@ class AudioCallUserCell: UICollectionViewCell {
         let load = NVActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 100, height: 60),
                                               type: .ballBeat,
                                               color: .white)
-        addSubview(load)
         return load
     }()
 
     lazy var cellImgView: UIImageView = {
         let img = UIImageView()
-        addSubview(img)
         return img
     }()
     
     lazy var cellUserLabel: UILabel = {
        let user = UILabel()
         user.textColor = .white
-        user.backgroundColor = UIColor.black.withAlphaComponent(0.4)
+        user.backgroundColor = .clear
         user.textAlignment = .center
-        addSubview(user)
         return user
     }()
     
     lazy var volumeProgress: UIProgressView = {
         let volume = UIProgressView()
         volume.backgroundColor = .clear
-        addSubview(volume)
         return volume
     }()
     
     lazy var dimBk: UIView = {
         let dim = UIView()
         dim.backgroundColor = UIColor.black.withAlphaComponent(0.4)
-        addSubview(dim)
         dim.isHidden = true
         return dim
     }()
@@ -71,21 +66,31 @@ class AudioCallUserCell: UICollectionViewCell {
     }
     
     func configModel(model: AudioCallUserModel) {
+        
+        self.addSubview(cellImgView)
         cellImgView.snp.remakeConstraints { (make) in
             make.width.height.equalTo(self.snp.height)
             make.centerX.centerY.equalTo(self)
         }
+        
+        self.addSubview(cellUserLabel)
         cellUserLabel.snp.remakeConstraints { (make) in
             make.bottom.leading.trailing.equalTo(cellImgView)
             make.height.equalTo(24)
         }
+        
+        self.addSubview(volumeProgress)
         volumeProgress.snp.remakeConstraints { (make) in
             make.bottom.leading.trailing.equalTo(cellImgView)
             make.height.equalTo(4)
         }
+        
+        self.addSubview(dimBk)
         dimBk.snp.remakeConstraints { (make) in
             make.edges.equalTo(cellImgView)
         }
+        
+        self.addSubview(loading)
         loading.snp.remakeConstraints { (make) in
             make.center.equalTo(cellImgView)
             make.width.equalTo(44)

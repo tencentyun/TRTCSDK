@@ -10,16 +10,16 @@ import Foundation
 
 @objc class BeautyPerformer: NSObject, TCBeautyPanelActionPerformer {
     func setFilterConcentration(_ level: Float) {
-        liveRoom.setFilterConcentration(concentration: level)
+//        liveRoom.setFilterConcentration(concentration: level)
     }
 
     func setGreenScreenFile(_ file: URL?) {
-        liveRoom.setGreenScreenFile(file: file)
+//        liveRoom.setGreenScreenFile(file: file)
     }
     
-    @objc var liveRoom: TRTCLiveRoomImpl
+    @objc var liveRoom: TRTCLiveRoom
     
-    @objc init(liveRoom: TRTCLiveRoomImpl) {
+    @objc init(liveRoom: TRTCLiveRoom) {
         self.liveRoom = liveRoom
         super.init()
     }

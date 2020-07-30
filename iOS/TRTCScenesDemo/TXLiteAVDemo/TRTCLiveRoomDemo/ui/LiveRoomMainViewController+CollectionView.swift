@@ -11,7 +11,6 @@ import Foundation
 class LiveRoomCollectionViewCell: UICollectionViewCell {
     lazy var coverImg: UIImageView = {
        let img = UIImageView()
-        addSubview(img)
         img.layer.cornerRadius = 6
         img.layer.masksToBounds = true
         return img
@@ -19,7 +18,6 @@ class LiveRoomCollectionViewCell: UICollectionViewCell {
     
     lazy var nameLabel: UILabel = {
         let label = UILabel()
-        addSubview(label)
         label.textColor = .white
         label.font = UIFont.systemFont(ofSize: 13)
         return label
@@ -27,7 +25,6 @@ class LiveRoomCollectionViewCell: UICollectionViewCell {
     
     lazy var ownerLabel: UILabel = {
         let label = UILabel()
-        addSubview(label)
         label.textColor = .white
         label.font = UIFont.systemFont(ofSize: 13)
         return label
@@ -35,7 +32,6 @@ class LiveRoomCollectionViewCell: UICollectionViewCell {
     
     lazy var memberCountLabel: UILabel = {
         let label = UILabel()
-        addSubview(label)
         label.textColor = .white
         label.font = UIFont.systemFont(ofSize: 11)
         label.textAlignment = .right
@@ -44,21 +40,25 @@ class LiveRoomCollectionViewCell: UICollectionViewCell {
     
     lazy var memberImage: UIImageView = {
        let image = UIImageView()
-        addSubview(image)
         image.image = UIImage(named: "")
         return image
     }()
     
     func config(model: TRTCLiveRoomInfo) {
-        backgroundColor = .appBackGround
+        backgroundColor = .clear
+        
+        self.addSubview(memberImage)
+        
+        self.addSubview(coverImg)
         coverImg.snp.remakeConstraints { (make) in
             make.top.leading.equalTo(5)
             make.bottom.trailing.equalTo(-5)
         }
 
         coverImg.sd_setImage(with: URL(string: model.coverUrl.count > 0
-            ? model.coverUrl : "https://imgcache.qq.com/qcloud/public/static//avatar0_100.20191230.png"), completed: nil)
+            ? model.coverUrl : sdWebImgPlaceHolderStr()), completed: nil)
         
+        self.addSubview(nameLabel)
         nameLabel.snp.remakeConstraints { (make) in
             make.leading.equalTo(coverImg).offset(2)
             make.bottom.equalTo(coverImg).offset(-8)
@@ -67,6 +67,7 @@ class LiveRoomCollectionViewCell: UICollectionViewCell {
         }
         nameLabel.text = model.roomName
         
+        self.addSubview(ownerLabel)
         ownerLabel.snp.remakeConstraints { (make) in
             make.leading.equalTo(coverImg).offset(2)
             make.bottom.equalTo(nameLabel.snp.top).offset(-4)
@@ -75,6 +76,7 @@ class LiveRoomCollectionViewCell: UICollectionViewCell {
         }
         ownerLabel.text = model.ownerName
         
+        self.addSubview(memberCountLabel)
         memberCountLabel.snp.remakeConstraints { (make) in
             make.trailing.equalTo(-6)
             make.bottom.equalTo(coverImg).offset(-9)

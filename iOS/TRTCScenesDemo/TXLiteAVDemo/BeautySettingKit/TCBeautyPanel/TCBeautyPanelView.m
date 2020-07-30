@@ -608,7 +608,8 @@ static  TCBeautyPanelItem * makeMenuItem(NSString *title, UIImage *icon, id targ
             [self.actionPerformer setGreenScreenFile:nil];
         }
         if (index == 1) {
-            [self.actionPerformer setGreenScreenFile:[_theme goodLuckVideoFileURL]];
+            NSURL* url = [_theme goodLuckVideoFileURL];
+            [self.actionPerformer setGreenScreenFile:url.path];
         }
     }
 }

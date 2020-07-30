@@ -122,7 +122,7 @@ extension TRTCVideoCall {
                 checkAutoHangUp()
             }
         default:
-            debugPrint("📳 👻 WTF ????")
+            debugPrint("log: WTF ????")
         }
     }
     
@@ -179,7 +179,7 @@ extension TRTCVideoCall {
                 debugPrint("send message error \(code) \(error ?? "")")
             })
         }
-        debugPrint("📳 send msg to \(user): call_id:\(realModel.callid), room_id:\(realModel.roomid), action:\(realModel.action.debug)")
+        debugPrint("log: send msg to \(user): call_id:\(realModel.callid), room_id:\(realModel.roomid), action:\(realModel.action.debug)")
     }
     
     func generateModel(action: VideoCallAction) -> VideoCallModel {

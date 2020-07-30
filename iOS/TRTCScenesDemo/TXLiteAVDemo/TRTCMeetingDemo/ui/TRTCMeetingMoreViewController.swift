@@ -27,7 +27,6 @@ public class TRTCMeetingMoreViewController: UIViewController, PresentBottomVCPro
     
     public override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-//        NotificationCenter.default.removeObserver(self, name: NSNotification.Name("ShouldHidePresentBottom"), object: nil)
     }
     
     @objc func presentBottomShouldHide() {

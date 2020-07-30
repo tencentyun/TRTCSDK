@@ -24,7 +24,7 @@ class TRTCAudienceListView: UIView {
     
     let container: UIView = {
         let view = UIView.init(frame: .zero)
-        view.backgroundColor = UIColor.init(0x13233F)
+        view.backgroundColor = .pannelBackColor
         return view
     }()
     

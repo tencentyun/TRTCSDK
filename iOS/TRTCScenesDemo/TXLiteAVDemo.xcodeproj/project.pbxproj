@@ -8,9 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		1DC7F349A2B6380DCA056281 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
-		1E946B7E77D390ED88A493CC /* LoginViewController+UI_Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A5F0E9DEB5EA596636A3CF /* LoginViewController+UI_Mock.swift */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		1EA0A986FB03B486F983DE95 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
-		3BDE0E749D94050D15D5E615 /* LoginViewController_Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5014C39034034DDAB90AC37 /* LoginViewController_Mock.swift */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		2840D91C24B8562200723FBC /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2840D91B24B8562200723FBC /* AudioToolbox.framework */; };
+		2840D92924B85E2A00723FBC /* SDWebImagePlaceholderImageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2840D92824B85E2A00723FBC /* SDWebImagePlaceholderImageManager.swift */; };
+		2840D92A24B85E2A00723FBC /* SDWebImagePlaceholderImageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2840D92824B85E2A00723FBC /* SDWebImagePlaceholderImageManager.swift */; };
+		2840D92E24B8801800723FBC /* SDWebImagePlaceholderImageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2840D92824B85E2A00723FBC /* SDWebImagePlaceholderImageManager.swift */; };
+		2840D93124B880EF00723FBC /* SDWebImagePlaceholderImageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2840D92824B85E2A00723FBC /* SDWebImagePlaceholderImageManager.swift */; };
+		285FB46824BEA52F00FFB2BC /* TXVoiceRoomService.m in Sources */ = {isa = PBXBuildFile; fileRef = 4046B13924B36AD700F27349 /* TXVoiceRoomService.m */; };
+		3FF489A77E59AF2228F16973 /* LoginViewController_Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA9A3E941501E35F938DE28 /* LoginViewController_Mock.swift */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		40091E661F4FCBB9009B882D /* UIButton+Glossy.m in Sources */ = {isa = PBXBuildFile; fileRef = 40F8534B1EE8FCDF00EE47D7 /* UIButton+Glossy.m */; };
 		40091E6B1F4FCBB9009B882D /* ScanQRController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 40F853561EE8FCDF00EE47D7 /* ScanQRController.mm */; };
 		40091E6F1F4FCBB9009B882D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 40F853261EE8FC8400EE47D7 /* AppDelegate.m */; };
@@ -156,46 +161,10 @@
 		402A010424506F740037A219 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 402A010024506F740037A219 /* main.m */; };
 		402A010524506F740037A219 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 402A010024506F740037A219 /* main.m */; };
 		402A010624506F740037A219 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 402A010024506F740037A219 /* main.m */; };
-		4040CC352497C79400CA4FAA /* TRTCVoiceRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040CC0A2497C79300CA4FAA /* TRTCVoiceRoom.swift */; };
-		4040CC362497C79400CA4FAA /* TRTCVoiceRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040CC0A2497C79300CA4FAA /* TRTCVoiceRoom.swift */; };
-		4040CC372497C79400CA4FAA /* TRTCVoiceRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040CC0A2497C79300CA4FAA /* TRTCVoiceRoom.swift */; };
-		4040CC382497C79400CA4FAA /* TRTCVoiceRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040CC0A2497C79300CA4FAA /* TRTCVoiceRoom.swift */; };
-		4040CC392497C79400CA4FAA /* IMJsonHandle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040CC0C2497C79300CA4FAA /* IMJsonHandle.swift */; };
-		4040CC3A2497C79400CA4FAA /* IMJsonHandle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040CC0C2497C79300CA4FAA /* IMJsonHandle.swift */; };
-		4040CC3B2497C79400CA4FAA /* IMJsonHandle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040CC0C2497C79300CA4FAA /* IMJsonHandle.swift */; };
-		4040CC3C2497C79400CA4FAA /* IMJsonHandle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040CC0C2497C79300CA4FAA /* IMJsonHandle.swift */; };
-		4040CC3D2497C79400CA4FAA /* ITXRoomServiceDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040CC0D2497C79300CA4FAA /* ITXRoomServiceDelegate.swift */; };
-		4040CC3E2497C79400CA4FAA /* ITXRoomServiceDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040CC0D2497C79300CA4FAA /* ITXRoomServiceDelegate.swift */; };
-		4040CC3F2497C79400CA4FAA /* ITXRoomServiceDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040CC0D2497C79300CA4FAA /* ITXRoomServiceDelegate.swift */; };
-		4040CC402497C79400CA4FAA /* ITXRoomServiceDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040CC0D2497C79300CA4FAA /* ITXRoomServiceDelegate.swift */; };
-		4040CC412497C79400CA4FAA /* TXRoomService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040CC0E2497C79300CA4FAA /* TXRoomService.swift */; };
-		4040CC422497C79400CA4FAA /* TXRoomService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040CC0E2497C79300CA4FAA /* TXRoomService.swift */; };
-		4040CC432497C79400CA4FAA /* TXRoomService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040CC0E2497C79300CA4FAA /* TXRoomService.swift */; };
-		4040CC442497C79400CA4FAA /* TXRoomService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040CC0E2497C79300CA4FAA /* TXRoomService.swift */; };
-		4040CC452497C79400CA4FAA /* VoiceRoomTRTCService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040CC102497C79300CA4FAA /* VoiceRoomTRTCService.swift */; };
-		4040CC462497C79400CA4FAA /* VoiceRoomTRTCService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040CC102497C79300CA4FAA /* VoiceRoomTRTCService.swift */; };
-		4040CC472497C79400CA4FAA /* VoiceRoomTRTCService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040CC102497C79300CA4FAA /* VoiceRoomTRTCService.swift */; };
-		4040CC482497C79400CA4FAA /* VoiceRoomTRTCService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040CC102497C79300CA4FAA /* VoiceRoomTRTCService.swift */; };
-		4040CC492497C79400CA4FAA /* TRTCVoiceRoomDef.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040CC112497C79300CA4FAA /* TRTCVoiceRoomDef.swift */; };
-		4040CC4A2497C79400CA4FAA /* TRTCVoiceRoomDef.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040CC112497C79300CA4FAA /* TRTCVoiceRoomDef.swift */; };
-		4040CC4B2497C79400CA4FAA /* TRTCVoiceRoomDef.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040CC112497C79300CA4FAA /* TRTCVoiceRoomDef.swift */; };
-		4040CC4C2497C79400CA4FAA /* TRTCVoiceRoomDef.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040CC112497C79300CA4FAA /* TRTCVoiceRoomDef.swift */; };
 		4040CC4D2497C79400CA4FAA /* TRTCVoiceRoomManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040CC122497C79300CA4FAA /* TRTCVoiceRoomManager.swift */; };
 		4040CC4E2497C79400CA4FAA /* TRTCVoiceRoomManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040CC122497C79300CA4FAA /* TRTCVoiceRoomManager.swift */; };
 		4040CC4F2497C79400CA4FAA /* TRTCVoiceRoomManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040CC122497C79300CA4FAA /* TRTCVoiceRoomManager.swift */; };
 		4040CC502497C79400CA4FAA /* TRTCVoiceRoomManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040CC122497C79300CA4FAA /* TRTCVoiceRoomManager.swift */; };
-		4040CC512497C79400CA4FAA /* TRTCVoiceRoomImp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040CC132497C79300CA4FAA /* TRTCVoiceRoomImp.swift */; };
-		4040CC522497C79400CA4FAA /* TRTCVoiceRoomImp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040CC132497C79300CA4FAA /* TRTCVoiceRoomImp.swift */; };
-		4040CC532497C79400CA4FAA /* TRTCVoiceRoomImp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040CC132497C79300CA4FAA /* TRTCVoiceRoomImp.swift */; };
-		4040CC542497C79400CA4FAA /* TRTCVoiceRoomImp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040CC132497C79300CA4FAA /* TRTCVoiceRoomImp.swift */; };
-		4040CC552497C79400CA4FAA /* TXBaseDef.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040CC152497C79300CA4FAA /* TXBaseDef.swift */; };
-		4040CC562497C79400CA4FAA /* TXBaseDef.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040CC152497C79300CA4FAA /* TXBaseDef.swift */; };
-		4040CC572497C79400CA4FAA /* TXBaseDef.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040CC152497C79300CA4FAA /* TXBaseDef.swift */; };
-		4040CC582497C79400CA4FAA /* TXBaseDef.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040CC152497C79300CA4FAA /* TXBaseDef.swift */; };
-		4040CC592497C79400CA4FAA /* TRTCLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040CC162497C79300CA4FAA /* TRTCLog.swift */; };
-		4040CC5A2497C79400CA4FAA /* TRTCLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040CC162497C79300CA4FAA /* TRTCLog.swift */; };
-		4040CC5B2497C79400CA4FAA /* TRTCLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040CC162497C79300CA4FAA /* TRTCLog.swift */; };
-		4040CC5C2497C79400CA4FAA /* TRTCLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040CC162497C79300CA4FAA /* TRTCLog.swift */; };
 		4040CC5D2497C79400CA4FAA /* TRTCVoiceRoomAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4040CC182497C79300CA4FAA /* TRTCVoiceRoomAssets.xcassets */; };
 		4040CC5E2497C79400CA4FAA /* TRTCVoiceRoomAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4040CC182497C79300CA4FAA /* TRTCVoiceRoomAssets.xcassets */; };
 		4040CC5F2497C79400CA4FAA /* TRTCVoiceRoomAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4040CC182497C79300CA4FAA /* TRTCVoiceRoomAssets.xcassets */; };
@@ -216,10 +185,10 @@
 		4040CC6E2497C79400CA4FAA /* TRTCVoiceRoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040CC1E2497C79300CA4FAA /* TRTCVoiceRoomViewModel.swift */; };
 		4040CC6F2497C79400CA4FAA /* TRTCVoiceRoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040CC1E2497C79300CA4FAA /* TRTCVoiceRoomViewModel.swift */; };
 		4040CC702497C79400CA4FAA /* TRTCVoiceRoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040CC1E2497C79300CA4FAA /* TRTCVoiceRoomViewModel.swift */; };
-		4040CC752497C79400CA4FAA /* TRTCVoiceRoomEnteryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040CC202497C79300CA4FAA /* TRTCVoiceRoomEnteryController.swift */; };
-		4040CC762497C79400CA4FAA /* TRTCVoiceRoomEnteryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040CC202497C79300CA4FAA /* TRTCVoiceRoomEnteryController.swift */; };
-		4040CC772497C79400CA4FAA /* TRTCVoiceRoomEnteryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040CC202497C79300CA4FAA /* TRTCVoiceRoomEnteryController.swift */; };
-		4040CC782497C79400CA4FAA /* TRTCVoiceRoomEnteryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040CC202497C79300CA4FAA /* TRTCVoiceRoomEnteryController.swift */; };
+		4040CC752497C79400CA4FAA /* TRTCVoiceRoomEnteryControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040CC202497C79300CA4FAA /* TRTCVoiceRoomEnteryControl.swift */; };
+		4040CC762497C79400CA4FAA /* TRTCVoiceRoomEnteryControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040CC202497C79300CA4FAA /* TRTCVoiceRoomEnteryControl.swift */; };
+		4040CC772497C79400CA4FAA /* TRTCVoiceRoomEnteryControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040CC202497C79300CA4FAA /* TRTCVoiceRoomEnteryControl.swift */; };
+		4040CC782497C79400CA4FAA /* TRTCVoiceRoomEnteryControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040CC202497C79300CA4FAA /* TRTCVoiceRoomEnteryControl.swift */; };
 		4040CC792497C79400CA4FAA /* UIColor+hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040CC222497C79300CA4FAA /* UIColor+hex.swift */; };
 		4040CC7A2497C79400CA4FAA /* UIColor+hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040CC222497C79300CA4FAA /* UIColor+hex.swift */; };
 		4040CC7B2497C79400CA4FAA /* UIColor+hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040CC222497C79300CA4FAA /* UIColor+hex.swift */; };
@@ -287,6 +256,33 @@
 		4041832B2455853000DD70AB /* V8HorizontalPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 404183282455853000DD70AB /* V8HorizontalPickerView.m */; };
 		4041832C2455854100DD70AB /* V8HorizontalPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 404183282455853000DD70AB /* V8HorizontalPickerView.m */; };
 		4041832D2455854200DD70AB /* V8HorizontalPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 404183282455853000DD70AB /* V8HorizontalPickerView.m */; };
+		4046B14824B36AD700F27349 /* VoiceRoomTRTCService.m in Sources */ = {isa = PBXBuildFile; fileRef = 4046B13524B36AD700F27349 /* VoiceRoomTRTCService.m */; };
+		4046B14924B36AD700F27349 /* VoiceRoomTRTCService.m in Sources */ = {isa = PBXBuildFile; fileRef = 4046B13524B36AD700F27349 /* VoiceRoomTRTCService.m */; };
+		4046B14A24B36AD700F27349 /* VoiceRoomTRTCService.m in Sources */ = {isa = PBXBuildFile; fileRef = 4046B13524B36AD700F27349 /* VoiceRoomTRTCService.m */; };
+		4046B14B24B36AD700F27349 /* VoiceRoomTRTCService.m in Sources */ = {isa = PBXBuildFile; fileRef = 4046B13524B36AD700F27349 /* VoiceRoomTRTCService.m */; };
+		4046B14C24B36AD700F27349 /* TRTCVoiceRoomDef.m in Sources */ = {isa = PBXBuildFile; fileRef = 4046B13624B36AD700F27349 /* TRTCVoiceRoomDef.m */; };
+		4046B14D24B36AD700F27349 /* TRTCVoiceRoomDef.m in Sources */ = {isa = PBXBuildFile; fileRef = 4046B13624B36AD700F27349 /* TRTCVoiceRoomDef.m */; };
+		4046B14E24B36AD700F27349 /* TRTCVoiceRoomDef.m in Sources */ = {isa = PBXBuildFile; fileRef = 4046B13624B36AD700F27349 /* TRTCVoiceRoomDef.m */; };
+		4046B14F24B36AD700F27349 /* TRTCVoiceRoomDef.m in Sources */ = {isa = PBXBuildFile; fileRef = 4046B13624B36AD700F27349 /* TRTCVoiceRoomDef.m */; };
+		4046B15024B36AD700F27349 /* TXVoiceRoomService.m in Sources */ = {isa = PBXBuildFile; fileRef = 4046B13924B36AD700F27349 /* TXVoiceRoomService.m */; };
+		4046B15124B36AD700F27349 /* TXVoiceRoomService.m in Sources */ = {isa = PBXBuildFile; fileRef = 4046B13924B36AD700F27349 /* TXVoiceRoomService.m */; };
+		4046B15224B36AD700F27349 /* TXVoiceRoomService.m in Sources */ = {isa = PBXBuildFile; fileRef = 4046B13924B36AD700F27349 /* TXVoiceRoomService.m */; };
+		4046B15424B36AD700F27349 /* TXVoiceRoomIMJsonHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 4046B13A24B36AD700F27349 /* TXVoiceRoomIMJsonHandle.m */; };
+		4046B15524B36AD700F27349 /* TXVoiceRoomIMJsonHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 4046B13A24B36AD700F27349 /* TXVoiceRoomIMJsonHandle.m */; };
+		4046B15624B36AD700F27349 /* TXVoiceRoomIMJsonHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 4046B13A24B36AD700F27349 /* TXVoiceRoomIMJsonHandle.m */; };
+		4046B15724B36AD700F27349 /* TXVoiceRoomIMJsonHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 4046B13A24B36AD700F27349 /* TXVoiceRoomIMJsonHandle.m */; };
+		4046B15824B36AD700F27349 /* TXBaseDef.m in Sources */ = {isa = PBXBuildFile; fileRef = 4046B13E24B36AD700F27349 /* TXBaseDef.m */; };
+		4046B15924B36AD700F27349 /* TXBaseDef.m in Sources */ = {isa = PBXBuildFile; fileRef = 4046B13E24B36AD700F27349 /* TXBaseDef.m */; };
+		4046B15A24B36AD700F27349 /* TXBaseDef.m in Sources */ = {isa = PBXBuildFile; fileRef = 4046B13E24B36AD700F27349 /* TXBaseDef.m */; };
+		4046B15B24B36AD700F27349 /* TXBaseDef.m in Sources */ = {isa = PBXBuildFile; fileRef = 4046B13E24B36AD700F27349 /* TXBaseDef.m */; };
+		4046B15C24B36AD700F27349 /* TRTCVoiceRoom.m in Sources */ = {isa = PBXBuildFile; fileRef = 4046B14124B36AD700F27349 /* TRTCVoiceRoom.m */; };
+		4046B15D24B36AD700F27349 /* TRTCVoiceRoom.m in Sources */ = {isa = PBXBuildFile; fileRef = 4046B14124B36AD700F27349 /* TRTCVoiceRoom.m */; };
+		4046B15E24B36AD700F27349 /* TRTCVoiceRoom.m in Sources */ = {isa = PBXBuildFile; fileRef = 4046B14124B36AD700F27349 /* TRTCVoiceRoom.m */; };
+		4046B15F24B36AD700F27349 /* TRTCVoiceRoom.m in Sources */ = {isa = PBXBuildFile; fileRef = 4046B14124B36AD700F27349 /* TRTCVoiceRoom.m */; };
+		4046B16124B36C0A00F27349 /* TRTCLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4046B16024B36C0A00F27349 /* TRTCLog.swift */; };
+		4046B16224B36C0A00F27349 /* TRTCLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4046B16024B36C0A00F27349 /* TRTCLog.swift */; };
+		4046B16324B36C0A00F27349 /* TRTCLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4046B16024B36C0A00F27349 /* TRTCLog.swift */; };
+		4046B16424B36C0A00F27349 /* TRTCLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4046B16024B36C0A00F27349 /* TRTCLog.swift */; };
 		40495B3F2459466A00AF53CB /* LoginViewController+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40495B392459466900AF53CB /* LoginViewController+UI.swift */; };
 		40495B402459466A00AF53CB /* LoginViewController+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40495B392459466900AF53CB /* LoginViewController+UI.swift */; };
 		40495B412459466A00AF53CB /* LoginViewController+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40495B392459466900AF53CB /* LoginViewController+UI.swift */; };
@@ -379,14 +375,11 @@
 		40AC7238246D35A300FAF33D /* TRTCVideoCall+model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8DA2446E6C5000C37A3 /* TRTCVideoCall+model.swift */; };
 		40AC7239246D35A300FAF33D /* TCPlaceHolderTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F92D2446E6C6000C37A3 /* TCPlaceHolderTextView.m */; };
 		40AC723B246D35A300FAF33D /* TCMsgListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9342446E6C6000C37A3 /* TCMsgListCell.m */; };
-		40AC723C246D35A300FAF33D /* AudioCallMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8E22446E6C5000C37A3 /* AudioCallMainViewController.swift */; };
 		40AC723D246D35A300FAF33D /* ProfileViewController+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40495B3C2459466900AF53CB /* ProfileViewController+UI.swift */; };
 		40AC723E246D35A300FAF33D /* AudioSelectContactViewController+Table.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8E82446E6C5000C37A3 /* AudioSelectContactViewController+Table.swift */; };
-		40AC723F246D35A300FAF33D /* TRTCLiveRoomMemberManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9552446E6C6000C37A3 /* TRTCLiveRoomMemberManager.swift */; };
 		40AC7240246D35A300FAF33D /* V8HorizontalPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 404183282455853000DD70AB /* V8HorizontalPickerView.m */; };
 		40AC7241246D35A300FAF33D /* TRTCAudioCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8F02446E6C5000C37A3 /* TRTCAudioCall.swift */; };
 		40AC7243246D35A300FAF33D /* MainMenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F78E246AE23B00EA72A0 /* MainMenuCell.m */; };
-		40AC7244246D35A300FAF33D /* TRTCAudioEffectManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F95C2446E6C6000C37A3 /* TRTCAudioEffectManager.swift */; };
 		40AC7246246D35A300FAF33D /* UIButton+Glossy.m in Sources */ = {isa = PBXBuildFile; fileRef = 40F8534B1EE8FCDF00EE47D7 /* UIButton+Glossy.m */; };
 		40AC724A246D35A300FAF33D /* PortalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4090F78A246AE23B00EA72A0 /* PortalViewController.m */; };
 		40AC724C246D35A300FAF33D /* TCMsgModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F93A2446E6C6000C37A3 /* TCMsgModel.m */; };
@@ -402,7 +395,6 @@
 		40AC7259246D35A300FAF33D /* TRTCAudioCall+OnNewMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8F32446E6C5000C37A3 /* TRTCAudioCall+OnNewMessage.swift */; };
 		40AC725D246D35A300FAF33D /* LiveRoomMainViewController+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F94C2446E6C6000C37A3 /* LiveRoomMainViewController+UI.swift */; };
 		40AC725F246D35A300FAF33D /* TCLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9DA2446EF11000C37A3 /* TCLog.m */; };
-		40AC7260246D35A300FAF33D /* TRTCCloudAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9532446E6C6000C37A3 /* TRTCCloudAction.swift */; };
 		40AC7261246D35A300FAF33D /* TRTCVideoCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8D82446E6C5000C37A3 /* TRTCVideoCall.swift */; };
 		40AC7264246D35A300FAF33D /* VideoSelectContactViewController+CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8D02446E6C5000C37A3 /* VideoSelectContactViewController+CollectionView.swift */; };
 		40AC7265246D35A300FAF33D /* AudioCallUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8E12446E6C5000C37A3 /* AudioCallUserCell.swift */; };
@@ -412,20 +404,16 @@
 		40AC726C246D35A300FAF33D /* TCUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9DD2446EF11000C37A3 /* TCUtil.m */; };
 		40AC726D246D35A300FAF33D /* TRTCAudioCallDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8EE2446E6C5000C37A3 /* TRTCAudioCallDelegate.swift */; };
 		40AC726E246D35A300FAF33D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 40F853261EE8FC8400EE47D7 /* AppDelegate.m */; };
-		40AC7271246D35A300FAF33D /* TRTCLiveRoomImpl+RecvMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9502446E6C6000C37A3 /* TRTCLiveRoomImpl+RecvMessage.swift */; };
 		40AC7273246D35A300FAF33D /* TRTCAudioCall+model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8F12446E6C5000C37A3 /* TRTCAudioCall+model.swift */; };
-		40AC7276246D35A300FAF33D /* TRTCLiveRoomDef.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F95B2446E6C6000C37A3 /* TRTCLiveRoomDef.swift */; };
 		40AC7278246D35A300FAF33D /* VideoSelectContactViewController+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8C92446E6C5000C37A3 /* VideoSelectContactViewController+UI.swift */; };
 		40AC727A246D35A300FAF33D /* VideoSelectContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8CA2446E6C5000C37A3 /* VideoSelectContactViewController.swift */; };
 		40AC727B246D35A300FAF33D /* BuildFile in Sources */ = {isa = PBXBuildFile; };
 		40AC727D246D35A300FAF33D /* BeautyPerformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9442446E6C6000C37A3 /* BeautyPerformer.swift */; };
-		40AC7282246D35A300FAF33D /* RoomManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9572446E6C6000C37A3 /* RoomManager.swift */; };
 		40AC7283246D35A300FAF33D /* UIView+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 40F8534F1EE8FCDF00EE47D7 /* UIView+Additions.m */; };
 		40AC7286246D35A300FAF33D /* BuildFile in Sources */ = {isa = PBXBuildFile; };
 		40AC7287246D35A300FAF33D /* BuildFile in Sources */ = {isa = PBXBuildFile; };
 		40AC7288246D35A300FAF33D /* BuildFile in Sources */ = {isa = PBXBuildFile; };
 		40AC7289246D35A300FAF33D /* TCAudienceToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F94A2446E6C6000C37A3 /* TCAudienceToolbarView.m */; };
-		40AC728B246D35A300FAF33D /* VideoCallMainViewController+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8C72446E6C5000C37A3 /* VideoCallMainViewController+UI.swift */; };
 		40AC728D246D35A300FAF33D /* TCAnchorToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9432446E6C6000C37A3 /* TCAnchorToolbarView.m */; };
 		40AC728F246D35A300FAF33D /* NSString+Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 40F853471EE8FCDF00EE47D7 /* NSString+Common.m */; };
 		40AC7291246D35A300FAF33D /* VideoSelectContactViewController+file.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8CE2446E6C5000C37A3 /* VideoSelectContactViewController+file.swift */; };
@@ -433,12 +421,10 @@
 		40AC7294246D35A300FAF33D /* TCAnchorViewController+LiveDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9452446E6C6000C37A3 /* TCAnchorViewController+LiveDelegate.swift */; };
 		40AC7295246D35A300FAF33D /* AudioCallViewController+Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8E92446E6C5000C37A3 /* AudioCallViewController+Data.swift */; };
 		40AC7296246D35A300FAF33D /* LoginViewController+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40495B392459466900AF53CB /* LoginViewController+UI.swift */; };
-		40AC7297246D35A300FAF33D /* TRTCLiveRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F94E2446E6C6000C37A3 /* TRTCLiveRoom.swift */; };
 		40AC729A246D35A300FAF33D /* TRTCVideoCall+Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8D92446E6C5000C37A3 /* TRTCVideoCall+Room.swift */; };
 		40AC729B246D35A300FAF33D /* TCAudienceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9482446E6C6000C37A3 /* TCAudienceViewController.m */; };
 		40AC729D246D35A300FAF33D /* LiveRoomMainViewController+CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F93C2446E6C6000C37A3 /* LiveRoomMainViewController+CollectionView.swift */; };
 		40AC729F246D35A300FAF33D /* TRTCVideoCall+OnNewMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8D42446E6C5000C37A3 /* TRTCVideoCall+OnNewMessage.swift */; };
-		40AC72A0246D35A300FAF33D /* TRTCLiveRoomIMActionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F95A2446E6C6000C37A3 /* TRTCLiveRoomIMActionType.swift */; };
 		40AC72A1246D35A300FAF33D /* VideoCallViewController+Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8CC2446E6C5000C37A3 /* VideoCallViewController+Data.swift */; };
 		40AC72A2246D35A300FAF33D /* VideoSelectContactViewController+search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8CB2446E6C5000C37A3 /* VideoSelectContactViewController+search.swift */; };
 		40AC72A3246D35A300FAF33D /* AnchorPKPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9412446E6C6000C37A3 /* AnchorPKPanel.swift */; };
@@ -446,11 +432,9 @@
 		40AC72A6246D35A300FAF33D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 402A010024506F740037A219 /* main.m */; };
 		40AC72AB246D35A300FAF33D /* TCAudienceViewController+LiveDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9492446E6C6000C37A3 /* TCAudienceViewController+LiveDelegate.swift */; };
 		40AC72AD246D35A300FAF33D /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40495B3B2459466900AF53CB /* ProfileViewController.swift */; };
-		40AC72AE246D35A300FAF33D /* TRTCLiveRoomIMAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9592446E6C6000C37A3 /* TRTCLiveRoomIMAction.swift */; };
 		40AC72B0246D35A300FAF33D /* VideoCallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8CD2446E6C5000C37A3 /* VideoCallViewController.swift */; };
 		40AC72B1246D35A300FAF33D /* TCMsgBarrageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9392446E6C6000C37A3 /* TCMsgBarrageView.m */; };
 		40AC72B2246D35A300FAF33D /* TCStatusInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9292446E6C6000C37A3 /* TCStatusInfoView.m */; };
-		40AC72B3246D35A300FAF33D /* TRTCCustomAudioEffectManagerImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9512446E6C6000C37A3 /* TRTCCustomAudioEffectManagerImpl.swift */; };
 		40AC72B5246D35A300FAF33D /* VideoCallUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8C62446E6C5000C37A3 /* VideoCallUserCell.swift */; };
 		40AC72B6246D35A300FAF33D /* AudioSelectContactViewController+file.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8EA2446E6C5000C37A3 /* AudioSelectContactViewController+file.swift */; };
 		40AC72B7246D35A300FAF33D /* CommonUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9DC2446EF11000C37A3 /* CommonUtils.swift */; };
@@ -461,8 +445,6 @@
 		40AC72BC246D35A300FAF33D /* BuildFile in Sources */ = {isa = PBXBuildFile; };
 		40AC72BD246D35A300FAF33D /* BuildFile in Sources */ = {isa = PBXBuildFile; };
 		40AC72BE246D35A300FAF33D /* BuildFile in Sources */ = {isa = PBXBuildFile; };
-		40AC72C0246D35A300FAF33D /* TRTCLiveRoomMemberProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9562446E6C6000C37A3 /* TRTCLiveRoomMemberProtocol.swift */; };
-		40AC72C1246D35A300FAF33D /* VideoCallMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8C82446E6C5000C37A3 /* VideoCallMainViewController.swift */; };
 		40AC72C4246D35A300FAF33D /* UIView+CustomAutoLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 40F853511EE8FCDF00EE47D7 /* UIView+CustomAutoLayout.m */; };
 		40AC72C5246D35A300FAF33D /* TRTCAudioCall+Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8F22446E6C5000C37A3 /* TRTCAudioCall+Room.swift */; };
 		40AC72C6246D35A300FAF33D /* UIViewController+BackButtonHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A03ED3F1FD13DFB00F2F063 /* UIViewController+BackButtonHandler.m */; };
@@ -479,14 +461,11 @@
 		40AC72D5246D35A300FAF33D /* BuildFile in Sources */ = {isa = PBXBuildFile; };
 		40AC72D7246D35A300FAF33D /* BuildFile in Sources */ = {isa = PBXBuildFile; };
 		40AC72D8246D35A300FAF33D /* BuildFile in Sources */ = {isa = PBXBuildFile; };
-		40AC72DA246D35A300FAF33D /* TRTCLiveRoomImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9522446E6C6000C37A3 /* TRTCLiveRoomImpl.swift */; };
 		40AC72DB246D35A300FAF33D /* NSData+Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 40F853431EE8FCDF00EE47D7 /* NSData+Common.m */; };
 		40AC72DC246D35A300FAF33D /* TRTCAudioCall+internal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8ED2446E6C5000C37A3 /* TRTCAudioCall+internal.swift */; };
-		40AC72DE246D35A300FAF33D /* AudioCallMainViewController+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8E42446E6C5000C37A3 /* AudioCallMainViewController+UI.swift */; };
 		40AC72DF246D35A300FAF33D /* ProfileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40495B3E2459466900AF53CB /* ProfileManager.swift */; };
 		40AC72E1246D35A300FAF33D /* GenerateTestUserSig.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8DC2446E6C5000C37A3 /* GenerateTestUserSig.m */; };
 		40AC72E2246D35A300FAF33D /* UIImage+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 40F8534D1EE8FCDF00EE47D7 /* UIImage+Additions.m */; };
-		40AC72E4246D35A300FAF33D /* TRTCLiveRoomDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F95D2446E6C6000C37A3 /* TRTCLiveRoomDelegate.swift */; };
 		40AC72E5246D35A300FAF33D /* VideoCallUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8D72446E6C5000C37A3 /* VideoCallUtils.swift */; };
 		40AC72E6246D35A300FAF33D /* LiveRoomMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9272446E6C6000C37A3 /* LiveRoomMainViewController.swift */; };
 		40AC72E8246D35A300FAF33D /* BuildFile in Sources */ = {isa = PBXBuildFile; };
@@ -508,12 +487,8 @@
 		40AC72F9246D35A300FAF33D /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40F8553A1EE8FDBF00EE47D7 /* Accelerate.framework */; };
 		40AC72FB246D35A300FAF33D /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40F855381EE8FDB600EE47D7 /* Security.framework */; };
 		40AC72FC246D35A300FAF33D /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40F855361EE8FDAD00EE47D7 /* AssetsLibrary.framework */; };
-		40AC72FF246D35A300FAF33D /* BuildFile in Resources */ = {isa = PBXBuildFile; };
 		40AC7301246D35A300FAF33D /* TCBeautyPanelResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 40AA536724458EC800303EF7 /* TCBeautyPanelResources.bundle */; };
 		40AC7302246D35A300FAF33D /* Portal.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4090F78C246AE23B00EA72A0 /* Portal.storyboard */; };
-		40AC7307246D35A300FAF33D /* BuildFile in Resources */ = {isa = PBXBuildFile; };
-		40AC730B246D35A300FAF33D /* BuildFile in Resources */ = {isa = PBXBuildFile; };
-		40AC730C246D35A300FAF33D /* BuildFile in Resources */ = {isa = PBXBuildFile; };
 		40AC730F246D35A300FAF33D /* FilterResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CE7C6E4A1FC2C5320095663F /* FilterResource.bundle */; };
 		40AC7311246D35A300FAF33D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 40F853311EE8FC9B00EE47D7 /* LaunchScreen.storyboard */; };
 		40AC7313246D35A300FAF33D /* TRTCAuidoCall.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 40A7CFD3245FC09300E792A5 /* TRTCAuidoCall.xcassets */; };
@@ -558,8 +533,6 @@
 		40B3F6CA2446E518000C37A3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 40F853221EE8FC7300EE47D7 /* Assets.xcassets */; };
 		40B3F6CC2446E518000C37A3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 40F853331EE8FC9B00EE47D7 /* Main.storyboard */; };
 		40B3F95E2446E6C6000C37A3 /* VideoCallUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8C62446E6C5000C37A3 /* VideoCallUserCell.swift */; };
-		40B3F95F2446E6C6000C37A3 /* VideoCallMainViewController+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8C72446E6C5000C37A3 /* VideoCallMainViewController+UI.swift */; };
-		40B3F9602446E6C6000C37A3 /* VideoCallMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8C82446E6C5000C37A3 /* VideoCallMainViewController.swift */; };
 		40B3F9612446E6C6000C37A3 /* VideoSelectContactViewController+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8C92446E6C5000C37A3 /* VideoSelectContactViewController+UI.swift */; };
 		40B3F9622446E6C6000C37A3 /* VideoSelectContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8CA2446E6C5000C37A3 /* VideoSelectContactViewController.swift */; };
 		40B3F9632446E6C6000C37A3 /* VideoSelectContactViewController+search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8CB2446E6C5000C37A3 /* VideoSelectContactViewController+search.swift */; };
@@ -580,9 +553,7 @@
 		40B3F9722446E6C6000C37A3 /* GenerateTestUserSig.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8DC2446E6C5000C37A3 /* GenerateTestUserSig.m */; };
 		40B3F9732446E6C6000C37A3 /* AudioCallViewController+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8E02446E6C5000C37A3 /* AudioCallViewController+UI.swift */; };
 		40B3F9742446E6C6000C37A3 /* AudioCallUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8E12446E6C5000C37A3 /* AudioCallUserCell.swift */; };
-		40B3F9752446E6C6000C37A3 /* AudioCallMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8E22446E6C5000C37A3 /* AudioCallMainViewController.swift */; };
 		40B3F9762446E6C6000C37A3 /* AudioSelectContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8E32446E6C5000C37A3 /* AudioSelectContactViewController.swift */; };
-		40B3F9772446E6C6000C37A3 /* AudioCallMainViewController+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8E42446E6C5000C37A3 /* AudioCallMainViewController+UI.swift */; };
 		40B3F9782446E6C6000C37A3 /* AudioCallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8E52446E6C5000C37A3 /* AudioCallViewController.swift */; };
 		40B3F9792446E6C6000C37A3 /* AudioSelectContactViewController+CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8E62446E6C5000C37A3 /* AudioSelectContactViewController+CollectionView.swift */; };
 		40B3F97A2446E6C6000C37A3 /* AudioSelectContactViewController+search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8E72446E6C5000C37A3 /* AudioSelectContactViewController+search.swift */; };
@@ -616,19 +587,6 @@
 		40B3F9AE2446E6C6000C37A3 /* TCAudienceViewController+LiveDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9492446E6C6000C37A3 /* TCAudienceViewController+LiveDelegate.swift */; };
 		40B3F9AF2446E6C6000C37A3 /* TCAudienceToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F94A2446E6C6000C37A3 /* TCAudienceToolbarView.m */; };
 		40B3F9B02446E6C6000C37A3 /* LiveRoomMainViewController+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F94C2446E6C6000C37A3 /* LiveRoomMainViewController+UI.swift */; };
-		40B3F9B12446E6C6000C37A3 /* TRTCLiveRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F94E2446E6C6000C37A3 /* TRTCLiveRoom.swift */; };
-		40B3F9B22446E6C6000C37A3 /* TRTCLiveRoomImpl+RecvMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9502446E6C6000C37A3 /* TRTCLiveRoomImpl+RecvMessage.swift */; };
-		40B3F9B32446E6C6000C37A3 /* TRTCCustomAudioEffectManagerImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9512446E6C6000C37A3 /* TRTCCustomAudioEffectManagerImpl.swift */; };
-		40B3F9B42446E6C6000C37A3 /* TRTCLiveRoomImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9522446E6C6000C37A3 /* TRTCLiveRoomImpl.swift */; };
-		40B3F9B52446E6C6000C37A3 /* TRTCCloudAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9532446E6C6000C37A3 /* TRTCCloudAction.swift */; };
-		40B3F9B62446E6C6000C37A3 /* TRTCLiveRoomMemberManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9552446E6C6000C37A3 /* TRTCLiveRoomMemberManager.swift */; };
-		40B3F9B72446E6C7000C37A3 /* TRTCLiveRoomMemberProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9562446E6C6000C37A3 /* TRTCLiveRoomMemberProtocol.swift */; };
-		40B3F9B82446E6C7000C37A3 /* RoomManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9572446E6C6000C37A3 /* RoomManager.swift */; };
-		40B3F9B92446E6C7000C37A3 /* TRTCLiveRoomIMAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9592446E6C6000C37A3 /* TRTCLiveRoomIMAction.swift */; };
-		40B3F9BA2446E6C7000C37A3 /* TRTCLiveRoomIMActionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F95A2446E6C6000C37A3 /* TRTCLiveRoomIMActionType.swift */; };
-		40B3F9BB2446E6C7000C37A3 /* TRTCLiveRoomDef.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F95B2446E6C6000C37A3 /* TRTCLiveRoomDef.swift */; };
-		40B3F9BC2446E6C7000C37A3 /* TRTCAudioEffectManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F95C2446E6C6000C37A3 /* TRTCAudioEffectManager.swift */; };
-		40B3F9BD2446E6C7000C37A3 /* TRTCLiveRoomDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F95D2446E6C6000C37A3 /* TRTCLiveRoomDelegate.swift */; };
 		40B3F9DF2446EF11000C37A3 /* TCLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9DA2446EF11000C37A3 /* TCLog.m */; };
 		40B3F9E22446EF11000C37A3 /* TCUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9DD2446EF11000C37A3 /* TCUtil.m */; };
 		40B3F9FF2447042C000C37A3 /* HUDHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9FD2447042B000C37A3 /* HUDHelper.m */; };
@@ -644,9 +602,7 @@
 		40C0BD51244848D300931313 /* GenerateTestUserSig.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8DC2446E6C5000C37A3 /* GenerateTestUserSig.m */; };
 		40C0BD5724484A1700931313 /* AudioCallViewController+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8E02446E6C5000C37A3 /* AudioCallViewController+UI.swift */; };
 		40C0BD5824484A1700931313 /* AudioCallUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8E12446E6C5000C37A3 /* AudioCallUserCell.swift */; };
-		40C0BD5924484A1700931313 /* AudioCallMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8E22446E6C5000C37A3 /* AudioCallMainViewController.swift */; };
 		40C0BD5A24484A1700931313 /* AudioSelectContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8E32446E6C5000C37A3 /* AudioSelectContactViewController.swift */; };
-		40C0BD5B24484A1700931313 /* AudioCallMainViewController+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8E42446E6C5000C37A3 /* AudioCallMainViewController+UI.swift */; };
 		40C0BD5C24484A1700931313 /* AudioCallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8E52446E6C5000C37A3 /* AudioCallViewController.swift */; };
 		40C0BD5D24484A1700931313 /* AudioSelectContactViewController+CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8E62446E6C5000C37A3 /* AudioSelectContactViewController+CollectionView.swift */; };
 		40C0BD5E24484A1700931313 /* AudioSelectContactViewController+search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8E72446E6C5000C37A3 /* AudioSelectContactViewController+search.swift */; };
@@ -680,22 +636,7 @@
 		40C0BD7A24484A1700931313 /* TCAudienceViewController+LiveDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9492446E6C6000C37A3 /* TCAudienceViewController+LiveDelegate.swift */; };
 		40C0BD7B24484A1700931313 /* TCAudienceToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F94A2446E6C6000C37A3 /* TCAudienceToolbarView.m */; };
 		40C0BD7C24484A1700931313 /* LiveRoomMainViewController+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F94C2446E6C6000C37A3 /* LiveRoomMainViewController+UI.swift */; };
-		40C0BD7D24484A1700931313 /* TRTCLiveRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F94E2446E6C6000C37A3 /* TRTCLiveRoom.swift */; };
-		40C0BD7E24484A1700931313 /* TRTCLiveRoomImpl+RecvMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9502446E6C6000C37A3 /* TRTCLiveRoomImpl+RecvMessage.swift */; };
-		40C0BD7F24484A1700931313 /* TRTCCustomAudioEffectManagerImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9512446E6C6000C37A3 /* TRTCCustomAudioEffectManagerImpl.swift */; };
-		40C0BD8024484A1700931313 /* TRTCLiveRoomImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9522446E6C6000C37A3 /* TRTCLiveRoomImpl.swift */; };
-		40C0BD8124484A1700931313 /* TRTCCloudAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9532446E6C6000C37A3 /* TRTCCloudAction.swift */; };
-		40C0BD8224484A1700931313 /* TRTCLiveRoomMemberManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9552446E6C6000C37A3 /* TRTCLiveRoomMemberManager.swift */; };
-		40C0BD8324484A1700931313 /* TRTCLiveRoomMemberProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9562446E6C6000C37A3 /* TRTCLiveRoomMemberProtocol.swift */; };
-		40C0BD8424484A1700931313 /* RoomManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9572446E6C6000C37A3 /* RoomManager.swift */; };
-		40C0BD8524484A1700931313 /* TRTCLiveRoomIMAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9592446E6C6000C37A3 /* TRTCLiveRoomIMAction.swift */; };
-		40C0BD8624484A1700931313 /* TRTCLiveRoomIMActionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F95A2446E6C6000C37A3 /* TRTCLiveRoomIMActionType.swift */; };
-		40C0BD8724484A1700931313 /* TRTCLiveRoomDef.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F95B2446E6C6000C37A3 /* TRTCLiveRoomDef.swift */; };
-		40C0BD8824484A1700931313 /* TRTCAudioEffectManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F95C2446E6C6000C37A3 /* TRTCAudioEffectManager.swift */; };
-		40C0BD8924484A1700931313 /* TRTCLiveRoomDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F95D2446E6C6000C37A3 /* TRTCLiveRoomDelegate.swift */; };
 		40C0BD8A24484BD300931313 /* VideoCallUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8C62446E6C5000C37A3 /* VideoCallUserCell.swift */; };
-		40C0BD8B24484BD300931313 /* VideoCallMainViewController+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8C72446E6C5000C37A3 /* VideoCallMainViewController+UI.swift */; };
-		40C0BD8C24484BD300931313 /* VideoCallMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8C82446E6C5000C37A3 /* VideoCallMainViewController.swift */; };
 		40C0BD8D24484BD300931313 /* VideoSelectContactViewController+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8C92446E6C5000C37A3 /* VideoSelectContactViewController+UI.swift */; };
 		40C0BD8E24484BD300931313 /* VideoSelectContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8CA2446E6C5000C37A3 /* VideoSelectContactViewController.swift */; };
 		40C0BD8F24484BD300931313 /* VideoSelectContactViewController+search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8CB2446E6C5000C37A3 /* VideoSelectContactViewController+search.swift */; };
@@ -726,9 +667,7 @@
 		40C0BDBF2448539500931313 /* GenerateTestUserSig.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8DC2446E6C5000C37A3 /* GenerateTestUserSig.m */; };
 		40C0BDC0244853FE00931313 /* AudioCallViewController+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8E02446E6C5000C37A3 /* AudioCallViewController+UI.swift */; };
 		40C0BDC1244853FE00931313 /* AudioCallUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8E12446E6C5000C37A3 /* AudioCallUserCell.swift */; };
-		40C0BDC2244853FE00931313 /* AudioCallMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8E22446E6C5000C37A3 /* AudioCallMainViewController.swift */; };
 		40C0BDC3244853FE00931313 /* AudioSelectContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8E32446E6C5000C37A3 /* AudioSelectContactViewController.swift */; };
-		40C0BDC4244853FE00931313 /* AudioCallMainViewController+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8E42446E6C5000C37A3 /* AudioCallMainViewController+UI.swift */; };
 		40C0BDC5244853FE00931313 /* AudioCallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8E52446E6C5000C37A3 /* AudioCallViewController.swift */; };
 		40C0BDC6244853FE00931313 /* AudioSelectContactViewController+CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8E62446E6C5000C37A3 /* AudioSelectContactViewController+CollectionView.swift */; };
 		40C0BDC7244853FE00931313 /* AudioSelectContactViewController+search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8E72446E6C5000C37A3 /* AudioSelectContactViewController+search.swift */; };
@@ -762,22 +701,7 @@
 		40C0BDE3244853FF00931313 /* TCAudienceViewController+LiveDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9492446E6C6000C37A3 /* TCAudienceViewController+LiveDelegate.swift */; };
 		40C0BDE4244853FF00931313 /* TCAudienceToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F94A2446E6C6000C37A3 /* TCAudienceToolbarView.m */; };
 		40C0BDE5244853FF00931313 /* LiveRoomMainViewController+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F94C2446E6C6000C37A3 /* LiveRoomMainViewController+UI.swift */; };
-		40C0BDE6244853FF00931313 /* TRTCLiveRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F94E2446E6C6000C37A3 /* TRTCLiveRoom.swift */; };
-		40C0BDE7244853FF00931313 /* TRTCLiveRoomImpl+RecvMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9502446E6C6000C37A3 /* TRTCLiveRoomImpl+RecvMessage.swift */; };
-		40C0BDE8244853FF00931313 /* TRTCCustomAudioEffectManagerImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9512446E6C6000C37A3 /* TRTCCustomAudioEffectManagerImpl.swift */; };
-		40C0BDE9244853FF00931313 /* TRTCLiveRoomImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9522446E6C6000C37A3 /* TRTCLiveRoomImpl.swift */; };
-		40C0BDEA244853FF00931313 /* TRTCCloudAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9532446E6C6000C37A3 /* TRTCCloudAction.swift */; };
-		40C0BDEB244853FF00931313 /* TRTCLiveRoomMemberManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9552446E6C6000C37A3 /* TRTCLiveRoomMemberManager.swift */; };
-		40C0BDEC244853FF00931313 /* TRTCLiveRoomMemberProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9562446E6C6000C37A3 /* TRTCLiveRoomMemberProtocol.swift */; };
-		40C0BDED244853FF00931313 /* RoomManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9572446E6C6000C37A3 /* RoomManager.swift */; };
-		40C0BDEE244853FF00931313 /* TRTCLiveRoomIMAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9592446E6C6000C37A3 /* TRTCLiveRoomIMAction.swift */; };
-		40C0BDEF244853FF00931313 /* TRTCLiveRoomIMActionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F95A2446E6C6000C37A3 /* TRTCLiveRoomIMActionType.swift */; };
-		40C0BDF0244853FF00931313 /* TRTCLiveRoomDef.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F95B2446E6C6000C37A3 /* TRTCLiveRoomDef.swift */; };
-		40C0BDF1244853FF00931313 /* TRTCAudioEffectManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F95C2446E6C6000C37A3 /* TRTCAudioEffectManager.swift */; };
-		40C0BDF2244853FF00931313 /* TRTCLiveRoomDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F95D2446E6C6000C37A3 /* TRTCLiveRoomDelegate.swift */; };
 		40C0BDF3244853FF00931313 /* VideoCallUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8C62446E6C5000C37A3 /* VideoCallUserCell.swift */; };
-		40C0BDF4244853FF00931313 /* VideoCallMainViewController+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8C72446E6C5000C37A3 /* VideoCallMainViewController+UI.swift */; };
-		40C0BDF5244853FF00931313 /* VideoCallMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8C82446E6C5000C37A3 /* VideoCallMainViewController.swift */; };
 		40C0BDF6244853FF00931313 /* VideoSelectContactViewController+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8C92446E6C5000C37A3 /* VideoSelectContactViewController+UI.swift */; };
 		40C0BDF7244853FF00931313 /* VideoSelectContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8CA2446E6C5000C37A3 /* VideoSelectContactViewController.swift */; };
 		40C0BDF82448553E00931313 /* VideoSelectContactViewController+search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8CB2446E6C5000C37A3 /* VideoSelectContactViewController+search.swift */; };
@@ -814,6 +738,34 @@
 		40E25FCE2480C797005EB543 /* Portal+Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40E25FCC2480C796005EB543 /* Portal+Swift.swift */; };
 		40E25FCF2480C797005EB543 /* Portal+Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40E25FCC2480C796005EB543 /* Portal+Swift.swift */; };
 		40E8146424A0F905007C4113 /* TRTCMeetingMoreViewShareVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AAEC25B2497807100B57D86 /* TRTCMeetingMoreViewShareVC.swift */; };
+		40EF362F24BC3FD0006AA4BB /* TRTCCloudAnction.m in Sources */ = {isa = PBXBuildFile; fileRef = 40EF361F24BC3FCD006AA4BB /* TRTCCloudAnction.m */; };
+		40EF363024BC3FD0006AA4BB /* TRTCCloudAnction.m in Sources */ = {isa = PBXBuildFile; fileRef = 40EF361F24BC3FCD006AA4BB /* TRTCCloudAnction.m */; };
+		40EF363124BC3FD0006AA4BB /* TRTCCloudAnction.m in Sources */ = {isa = PBXBuildFile; fileRef = 40EF361F24BC3FCD006AA4BB /* TRTCCloudAnction.m */; };
+		40EF363224BC3FD0006AA4BB /* TRTCCloudAnction.m in Sources */ = {isa = PBXBuildFile; fileRef = 40EF361F24BC3FCD006AA4BB /* TRTCCloudAnction.m */; };
+		40EF363324BC3FD0006AA4BB /* TRTCLiveRoomIMAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 40EF362224BC3FCD006AA4BB /* TRTCLiveRoomIMAction.m */; };
+		40EF363424BC3FD0006AA4BB /* TRTCLiveRoomIMAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 40EF362224BC3FCD006AA4BB /* TRTCLiveRoomIMAction.m */; };
+		40EF363524BC3FD0006AA4BB /* TRTCLiveRoomIMAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 40EF362224BC3FCD006AA4BB /* TRTCLiveRoomIMAction.m */; };
+		40EF363624BC3FD0006AA4BB /* TRTCLiveRoomIMAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 40EF362224BC3FCD006AA4BB /* TRTCLiveRoomIMAction.m */; };
+		40EF363724BC3FD0006AA4BB /* TRTCLiveRoomMemberManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 40EF362424BC3FCD006AA4BB /* TRTCLiveRoomMemberManager.m */; };
+		40EF363824BC3FD0006AA4BB /* TRTCLiveRoomMemberManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 40EF362424BC3FCD006AA4BB /* TRTCLiveRoomMemberManager.m */; };
+		40EF363924BC3FD0006AA4BB /* TRTCLiveRoomMemberManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 40EF362424BC3FCD006AA4BB /* TRTCLiveRoomMemberManager.m */; };
+		40EF363A24BC3FD0006AA4BB /* TRTCLiveRoomMemberManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 40EF362424BC3FCD006AA4BB /* TRTCLiveRoomMemberManager.m */; };
+		40EF363B24BC3FD0006AA4BB /* TRTCLiveRoomModelDef.m in Sources */ = {isa = PBXBuildFile; fileRef = 40EF362824BC3FCD006AA4BB /* TRTCLiveRoomModelDef.m */; };
+		40EF363C24BC3FD0006AA4BB /* TRTCLiveRoomModelDef.m in Sources */ = {isa = PBXBuildFile; fileRef = 40EF362824BC3FCD006AA4BB /* TRTCLiveRoomModelDef.m */; };
+		40EF363D24BC3FD0006AA4BB /* TRTCLiveRoomModelDef.m in Sources */ = {isa = PBXBuildFile; fileRef = 40EF362824BC3FCD006AA4BB /* TRTCLiveRoomModelDef.m */; };
+		40EF363E24BC3FD0006AA4BB /* TRTCLiveRoomModelDef.m in Sources */ = {isa = PBXBuildFile; fileRef = 40EF362824BC3FCD006AA4BB /* TRTCLiveRoomModelDef.m */; };
+		40EF363F24BC3FD0006AA4BB /* TRTCLiveRoomDef.m in Sources */ = {isa = PBXBuildFile; fileRef = 40EF362B24BC3FCE006AA4BB /* TRTCLiveRoomDef.m */; };
+		40EF364024BC3FD0006AA4BB /* TRTCLiveRoomDef.m in Sources */ = {isa = PBXBuildFile; fileRef = 40EF362B24BC3FCE006AA4BB /* TRTCLiveRoomDef.m */; };
+		40EF364124BC3FD0006AA4BB /* TRTCLiveRoomDef.m in Sources */ = {isa = PBXBuildFile; fileRef = 40EF362B24BC3FCE006AA4BB /* TRTCLiveRoomDef.m */; };
+		40EF364224BC3FD0006AA4BB /* TRTCLiveRoomDef.m in Sources */ = {isa = PBXBuildFile; fileRef = 40EF362B24BC3FCE006AA4BB /* TRTCLiveRoomDef.m */; };
+		40EF364324BC3FD0006AA4BB /* TRTCLiveRoom.m in Sources */ = {isa = PBXBuildFile; fileRef = 40EF362E24BC3FD0006AA4BB /* TRTCLiveRoom.m */; };
+		40EF364424BC3FD0006AA4BB /* TRTCLiveRoom.m in Sources */ = {isa = PBXBuildFile; fileRef = 40EF362E24BC3FD0006AA4BB /* TRTCLiveRoom.m */; };
+		40EF364524BC3FD0006AA4BB /* TRTCLiveRoom.m in Sources */ = {isa = PBXBuildFile; fileRef = 40EF362E24BC3FD0006AA4BB /* TRTCLiveRoom.m */; };
+		40EF364624BC3FD0006AA4BB /* TRTCLiveRoom.m in Sources */ = {isa = PBXBuildFile; fileRef = 40EF362E24BC3FD0006AA4BB /* TRTCLiveRoom.m */; };
+		40EF364A24BC4134006AA4BB /* RoomManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EF364924BC4134006AA4BB /* RoomManager.swift */; };
+		40EF364B24BC4134006AA4BB /* RoomManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EF364924BC4134006AA4BB /* RoomManager.swift */; };
+		40EF364C24BC4134006AA4BB /* RoomManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EF364924BC4134006AA4BB /* RoomManager.swift */; };
+		40EF364D24BC4134006AA4BB /* RoomManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EF364924BC4134006AA4BB /* RoomManager.swift */; };
 		4509E5D322816E8D001FF14A /* LiveRoomAccPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4509E5D222816E8D001FF14A /* LiveRoomAccPlayerView.m */; };
 		4509E5D422816E8D001FF14A /* LiveRoomAccPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4509E5D222816E8D001FF14A /* LiveRoomAccPlayerView.m */; };
 		4509E5D522816E8D001FF14A /* LiveRoomAccPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4509E5D222816E8D001FF14A /* LiveRoomAccPlayerView.m */; };
@@ -867,9 +819,12 @@
 		45F21F82244714E8006B8B4D /* TRTCAudioCall.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 45F21F81244714E8006B8B4D /* TRTCAudioCall.storyboard */; };
 		45F3B3A1232A239D00666F7C /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40F855361EE8FDAD00EE47D7 /* AssetsLibrary.framework */; };
 		4B6BFC9AAE7FC00699D73AA8 /* libPods-TXLiteAVDemo_TRTC_AppStore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A256AF019D8E84B3B797494C /* libPods-TXLiteAVDemo_TRTC_AppStore.a */; };
+		4EF994C9863E1CAD52CCDB62 /* AppUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D3A700B7C2BC352F619BF91 /* AppUtils.swift */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		51A289FB230FB95800B9B73F /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51A289F8230FB93A00B9B73F /* OpenAL.framework */; };
 		51A289FC230FB96000B9B73F /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51A289F8230FB93A00B9B73F /* OpenAL.framework */; };
 		51CE9F98231944BE00B620BD /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51A289F8230FB93A00B9B73F /* OpenAL.framework */; };
+		521D91ED750497F2D1CEC9F5 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB673926F7D3FA3816266BAF /* ProfileViewController.swift */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		583B15E1C1D2C97E06587029 /* ProfileViewController+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A3401A0A70EAA0C5A8B9AD6 /* ProfileViewController+UI.swift */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		6A03ED411FD13DFB00F2F063 /* UIViewController+BackButtonHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A03ED3F1FD13DFB00F2F063 /* UIViewController+BackButtonHandler.m */; };
 		6A03ED421FD13E0C00F2F063 /* UIViewController+BackButtonHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A03ED3F1FD13DFB00F2F063 /* UIViewController+BackButtonHandler.m */; };
 		6A03ED431FD13E0C00F2F063 /* UIViewController+BackButtonHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A03ED3F1FD13DFB00F2F063 /* UIViewController+BackButtonHandler.m */; };
@@ -1001,7 +956,7 @@
 		6AAEC2C52497807200B57D86 /* TXMeetingPair.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AAEC2672497807200B57D86 /* TXMeetingPair.m */; };
 		6AAEC2C62497807200B57D86 /* TXMeetingPair.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AAEC2672497807200B57D86 /* TXMeetingPair.m */; };
 		6AAEC3A52499F93300B57D86 /* TXLiteAVSDK_ReplayKitExt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AAEC38A2499E08100B57D86 /* TXLiteAVSDK_ReplayKitExt.framework */; };
-		72777A6D4DDE10CDD3C7A90F /* AppUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72C3AB166F13E61385889F36 /* AppUtils.swift */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		6DD87F420FDF73A43EB25E6E /* ProfileManager_Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0556BA9162741F1E88460BBD /* ProfileManager_Mock.swift */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		7B107D8F4C4B5BF9184EC193 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
 		910E179F2080A27500178D86 /* TXMoviePlayerNetApi.m in Sources */ = {isa = PBXBuildFile; fileRef = 910E179E2080A27500178D86 /* TXMoviePlayerNetApi.m */; };
 		910E17A02080A27500178D86 /* TXMoviePlayerNetApi.m in Sources */ = {isa = PBXBuildFile; fileRef = 910E179E2080A27500178D86 /* TXMoviePlayerNetApi.m */; };
@@ -1093,9 +1048,9 @@
 		A0FFAD94213791B70087FF45 /* TVCHttpMessageURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = A0FFAD93213791B70087FF45 /* TVCHttpMessageURLProtocol.m */; };
 		A0FFAD96213791B70087FF45 /* TVCHttpMessageURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = A0FFAD93213791B70087FF45 /* TVCHttpMessageURLProtocol.m */; };
 		A0FFAD99213791B70087FF45 /* TVCHttpMessageURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = A0FFAD93213791B70087FF45 /* TVCHttpMessageURLProtocol.m */; };
-		A73B743F86C2132935F62F8C /* CommonUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3C4FFAEECB5B78C75E5808 /* CommonUtils.swift */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		AD46F8122E371DDC340EC797 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 508DEE89962FCB80A5D0D740 /* ProfileViewController.swift */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		B6D0A691EF53EBE1B580BA26 /* LoginViewController+UI_Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF748DF8B1A43B1DD2D0B9D /* LoginViewController+UI_Mock.swift */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		BD32F8A6AF7CC2FF9A53096E /* libPods-TXLiteAVDemo_TRTC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A32AD4BB38080AB19D3659FC /* libPods-TXLiteAVDemo_TRTC.a */; };
+		BDC3ADE9EBB68CEC52C347C4 /* CommonUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0591FC034009D4D582AF2534 /* CommonUtils.swift */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		CE01F53E206DDE060056D693 /* VideoCompressPreviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE01F53D206DDE060056D693 /* VideoCompressPreviewController.m */; };
 		CE01F53F206DDE060056D693 /* VideoCompressPreviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE01F53D206DDE060056D693 /* VideoCompressPreviewController.m */; };
 		CE01F541206DDE060056D693 /* VideoCompressPreviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE01F53D206DDE060056D693 /* VideoCompressPreviewController.m */; };
@@ -1237,9 +1192,7 @@
 		D6E5D1C320B7B62000812B2F /* ScreenPushViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D6E5D1C220B7B62000812B2F /* ScreenPushViewController.m */; };
 		D6E5D1C420B7B62000812B2F /* ScreenPushViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D6E5D1C220B7B62000812B2F /* ScreenPushViewController.m */; };
 		D6E5D1C520B7B62000812B2F /* ScreenPushViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D6E5D1C220B7B62000812B2F /* ScreenPushViewController.m */; };
-		E44D18B774C75EF44A2CE590 /* ProfileManager_Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BEF8ED393498CCB18DC720D /* ProfileManager_Mock.swift */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		EF69648B8809D6DEA1B7139D /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
-		F14DFF63B2DC73855C2ED2FC /* ProfileViewController+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78E46FD200BED25737C50F3 /* ProfileViewController+UI.swift */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		FDD4BF2B24A1F8AE0015388B /* VideoEditor.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FDD4BF2824A1F8AD0015388B /* VideoEditor.xcassets */; };
 		FDD4BF2C24A1F8AE0015388B /* VideoEditor.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FDD4BF2824A1F8AD0015388B /* VideoEditor.xcassets */; };
 		FDD4BF2D24A1F8AE0015388B /* VideoEditor.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FDD4BF2824A1F8AD0015388B /* VideoEditor.xcassets */; };
@@ -1492,8 +1445,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		15A5F0E9DEB5EA596636A3CF /* LoginViewController+UI_Mock.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "LoginViewController+UI_Mock.swift"; sourceTree = "<group>"; };
-		2E3C4FFAEECB5B78C75E5808 /* CommonUtils.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CommonUtils.swift; sourceTree = "<group>"; };
+		0556BA9162741F1E88460BBD /* ProfileManager_Mock.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ProfileManager_Mock.swift; sourceTree = "<group>"; };
+		0591FC034009D4D582AF2534 /* CommonUtils.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CommonUtils.swift; sourceTree = "<group>"; };
+		1BA9A3E941501E35F938DE28 /* LoginViewController_Mock.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LoginViewController_Mock.swift; sourceTree = "<group>"; };
+		2840D91B24B8562200723FBC /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		2840D92824B85E2A00723FBC /* SDWebImagePlaceholderImageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDWebImagePlaceholderImageManager.swift; sourceTree = "<group>"; };
 		4004FF601EC7FB44D81E5934 /* Pods-TXReplaykitUpload_TRTC.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TXReplaykitUpload_TRTC.release.xcconfig"; path = "Target Support Files/Pods-TXReplaykitUpload_TRTC/Pods-TXReplaykitUpload_TRTC.release.xcconfig"; sourceTree = "<group>"; };
 		401A9B3D247FCC7600C0763B /* AudioEffectSettingKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = AudioEffectSettingKit.xcodeproj; sourceTree = "<group>"; };
 		402A00DD2450552E0037A219 /* TXLiteAVDemo-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TXLiteAVDemo-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -1504,22 +1460,13 @@
 		402A010024506F740037A219 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = App/main.m; sourceTree = "<group>"; };
 		402A010724506F9C0037A219 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = App/Info.plist; sourceTree = "<group>"; };
 		40407ACA1F3035CA006C7301 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		4040CC0A2497C79300CA4FAA /* TRTCVoiceRoom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCVoiceRoom.swift; sourceTree = "<group>"; };
-		4040CC0C2497C79300CA4FAA /* IMJsonHandle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMJsonHandle.swift; sourceTree = "<group>"; };
-		4040CC0D2497C79300CA4FAA /* ITXRoomServiceDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ITXRoomServiceDelegate.swift; sourceTree = "<group>"; };
-		4040CC0E2497C79300CA4FAA /* TXRoomService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TXRoomService.swift; sourceTree = "<group>"; };
-		4040CC102497C79300CA4FAA /* VoiceRoomTRTCService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VoiceRoomTRTCService.swift; sourceTree = "<group>"; };
-		4040CC112497C79300CA4FAA /* TRTCVoiceRoomDef.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCVoiceRoomDef.swift; sourceTree = "<group>"; };
 		4040CC122497C79300CA4FAA /* TRTCVoiceRoomManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCVoiceRoomManager.swift; sourceTree = "<group>"; };
-		4040CC132497C79300CA4FAA /* TRTCVoiceRoomImp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCVoiceRoomImp.swift; sourceTree = "<group>"; };
-		4040CC152497C79300CA4FAA /* TXBaseDef.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TXBaseDef.swift; sourceTree = "<group>"; };
-		4040CC162497C79300CA4FAA /* TRTCLog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCLog.swift; sourceTree = "<group>"; };
 		4040CC182497C79300CA4FAA /* TRTCVoiceRoomAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = TRTCVoiceRoomAssets.xcassets; sourceTree = "<group>"; };
 		4040CC1B2497C79300CA4FAA /* TRTCCreateVoiceRoomViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCCreateVoiceRoomViewModel.swift; sourceTree = "<group>"; };
 		4040CC1C2497C79300CA4FAA /* TRTCVoiceRoomVIewDataDef.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCVoiceRoomVIewDataDef.swift; sourceTree = "<group>"; };
 		4040CC1D2497C79300CA4FAA /* TRTCVoiceRoomListViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCVoiceRoomListViewModel.swift; sourceTree = "<group>"; };
 		4040CC1E2497C79300CA4FAA /* TRTCVoiceRoomViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCVoiceRoomViewModel.swift; sourceTree = "<group>"; };
-		4040CC202497C79300CA4FAA /* TRTCVoiceRoomEnteryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCVoiceRoomEnteryController.swift; sourceTree = "<group>"; };
+		4040CC202497C79300CA4FAA /* TRTCVoiceRoomEnteryControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCVoiceRoomEnteryControl.swift; sourceTree = "<group>"; };
 		4040CC222497C79300CA4FAA /* UIColor+hex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+hex.swift"; sourceTree = "<group>"; };
 		4040CC242497C79300CA4FAA /* TRTCVoiceRoomMainMenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCVoiceRoomMainMenuView.swift; sourceTree = "<group>"; };
 		4040CC252497C79300CA4FAA /* TRTCVoiceRoomSeatCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCVoiceRoomSeatCell.swift; sourceTree = "<group>"; };
@@ -1539,6 +1486,20 @@
 		404183282455853000DD70AB /* V8HorizontalPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = V8HorizontalPickerView.m; sourceTree = "<group>"; };
 		404183292455853000DD70AB /* V8HorizontalPickerViewProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = V8HorizontalPickerViewProtocol.h; sourceTree = "<group>"; };
 		4041832A2455853000DD70AB /* V8HorizontalPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = V8HorizontalPickerView.h; sourceTree = "<group>"; };
+		4046B13424B36AD700F27349 /* VoiceRoomTRTCService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VoiceRoomTRTCService.h; sourceTree = "<group>"; };
+		4046B13524B36AD700F27349 /* VoiceRoomTRTCService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VoiceRoomTRTCService.m; sourceTree = "<group>"; };
+		4046B13624B36AD700F27349 /* TRTCVoiceRoomDef.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCVoiceRoomDef.m; sourceTree = "<group>"; };
+		4046B13824B36AD700F27349 /* TXVoiceRoomIMJsonHandle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXVoiceRoomIMJsonHandle.h; sourceTree = "<group>"; };
+		4046B13924B36AD700F27349 /* TXVoiceRoomService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TXVoiceRoomService.m; sourceTree = "<group>"; };
+		4046B13A24B36AD700F27349 /* TXVoiceRoomIMJsonHandle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TXVoiceRoomIMJsonHandle.m; sourceTree = "<group>"; };
+		4046B13B24B36AD700F27349 /* TXVoiceRoomService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXVoiceRoomService.h; sourceTree = "<group>"; };
+		4046B13E24B36AD700F27349 /* TXBaseDef.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TXBaseDef.m; sourceTree = "<group>"; };
+		4046B13F24B36AD700F27349 /* TXVoiceRoomCommonDef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXVoiceRoomCommonDef.h; sourceTree = "<group>"; };
+		4046B14024B36AD700F27349 /* TXBaseDef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXBaseDef.h; sourceTree = "<group>"; };
+		4046B14124B36AD700F27349 /* TRTCVoiceRoom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCVoiceRoom.m; sourceTree = "<group>"; };
+		4046B14224B36AD700F27349 /* TRTCVoiceRoom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCVoiceRoom.h; sourceTree = "<group>"; };
+		4046B14324B36AD700F27349 /* TRTCVoiceRoomDef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCVoiceRoomDef.h; sourceTree = "<group>"; };
+		4046B16024B36C0A00F27349 /* TRTCLog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCLog.swift; sourceTree = "<group>"; };
 		40495B392459466900AF53CB /* LoginViewController+UI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LoginViewController+UI.swift"; sourceTree = "<group>"; };
 		40495B3A2459466900AF53CB /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		40495B3B2459466900AF53CB /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
@@ -1558,6 +1519,7 @@
 		4053395D2466460600A6B478 /* ScanQRController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ScanQRController.mm; sourceTree = "<group>"; };
 		4065C98724570E31002C0A38 /* libmtasdk.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libmtasdk.a; sourceTree = "<group>"; };
 		4071CF702444477A000B7707 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
+		4072566824B55D5000DD44EF /* TRTCVoiceRoomDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TRTCVoiceRoomDelegate.h; sourceTree = "<group>"; };
 		4074E61B249F057F006C591F /* libPods-TXReplaykitUpload_TRTC.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libPods-TXReplaykitUpload_TRTC.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4074E61D249F0594006C591F /* libPods-TXReplaykitUpload_TRTC_AppStore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libPods-TXReplaykitUpload_TRTC_AppStore.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		40802A272484BBBE008151C1 /* AudioEffectSettingKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AudioEffectSettingKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1577,8 +1539,6 @@
 		40AC7322246D35A300FAF33D /* TXLiteAVDemo_TRTC_AppStore.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TXLiteAVDemo_TRTC_AppStore.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		40B3F6D22446E518000C37A3 /* TXLiteAVDemo_TRTC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TXLiteAVDemo_TRTC.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		40B3F8C62446E6C5000C37A3 /* VideoCallUserCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoCallUserCell.swift; sourceTree = "<group>"; };
-		40B3F8C72446E6C5000C37A3 /* VideoCallMainViewController+UI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VideoCallMainViewController+UI.swift"; sourceTree = "<group>"; };
-		40B3F8C82446E6C5000C37A3 /* VideoCallMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoCallMainViewController.swift; sourceTree = "<group>"; };
 		40B3F8C92446E6C5000C37A3 /* VideoSelectContactViewController+UI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VideoSelectContactViewController+UI.swift"; sourceTree = "<group>"; };
 		40B3F8CA2446E6C5000C37A3 /* VideoSelectContactViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoSelectContactViewController.swift; sourceTree = "<group>"; };
 		40B3F8CB2446E6C5000C37A3 /* VideoSelectContactViewController+search.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VideoSelectContactViewController+search.swift"; sourceTree = "<group>"; };
@@ -1600,9 +1560,7 @@
 		40B3F8DD2446E6C5000C37A3 /* GenerateTestUserSig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GenerateTestUserSig.h; sourceTree = "<group>"; };
 		40B3F8E02446E6C5000C37A3 /* AudioCallViewController+UI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AudioCallViewController+UI.swift"; sourceTree = "<group>"; };
 		40B3F8E12446E6C5000C37A3 /* AudioCallUserCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioCallUserCell.swift; sourceTree = "<group>"; };
-		40B3F8E22446E6C5000C37A3 /* AudioCallMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioCallMainViewController.swift; sourceTree = "<group>"; };
 		40B3F8E32446E6C5000C37A3 /* AudioSelectContactViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioSelectContactViewController.swift; sourceTree = "<group>"; };
-		40B3F8E42446E6C5000C37A3 /* AudioCallMainViewController+UI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AudioCallMainViewController+UI.swift"; sourceTree = "<group>"; };
 		40B3F8E52446E6C5000C37A3 /* AudioCallViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioCallViewController.swift; sourceTree = "<group>"; };
 		40B3F8E62446E6C5000C37A3 /* AudioSelectContactViewController+CollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AudioSelectContactViewController+CollectionView.swift"; sourceTree = "<group>"; };
 		40B3F8E72446E6C5000C37A3 /* AudioSelectContactViewController+search.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AudioSelectContactViewController+search.swift"; sourceTree = "<group>"; };
@@ -1646,19 +1604,6 @@
 		40B3F94A2446E6C6000C37A3 /* TCAudienceToolbarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCAudienceToolbarView.m; sourceTree = "<group>"; };
 		40B3F94B2446E6C6000C37A3 /* TCAudienceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCAudienceViewController.h; sourceTree = "<group>"; };
 		40B3F94C2446E6C6000C37A3 /* LiveRoomMainViewController+UI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LiveRoomMainViewController+UI.swift"; sourceTree = "<group>"; };
-		40B3F94E2446E6C6000C37A3 /* TRTCLiveRoom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCLiveRoom.swift; sourceTree = "<group>"; };
-		40B3F9502446E6C6000C37A3 /* TRTCLiveRoomImpl+RecvMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TRTCLiveRoomImpl+RecvMessage.swift"; sourceTree = "<group>"; };
-		40B3F9512446E6C6000C37A3 /* TRTCCustomAudioEffectManagerImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCCustomAudioEffectManagerImpl.swift; sourceTree = "<group>"; };
-		40B3F9522446E6C6000C37A3 /* TRTCLiveRoomImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCLiveRoomImpl.swift; sourceTree = "<group>"; };
-		40B3F9532446E6C6000C37A3 /* TRTCCloudAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCCloudAction.swift; sourceTree = "<group>"; };
-		40B3F9552446E6C6000C37A3 /* TRTCLiveRoomMemberManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCLiveRoomMemberManager.swift; sourceTree = "<group>"; };
-		40B3F9562446E6C6000C37A3 /* TRTCLiveRoomMemberProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCLiveRoomMemberProtocol.swift; sourceTree = "<group>"; };
-		40B3F9572446E6C6000C37A3 /* RoomManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomManager.swift; sourceTree = "<group>"; };
-		40B3F9592446E6C6000C37A3 /* TRTCLiveRoomIMAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCLiveRoomIMAction.swift; sourceTree = "<group>"; };
-		40B3F95A2446E6C6000C37A3 /* TRTCLiveRoomIMActionType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCLiveRoomIMActionType.swift; sourceTree = "<group>"; };
-		40B3F95B2446E6C6000C37A3 /* TRTCLiveRoomDef.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCLiveRoomDef.swift; sourceTree = "<group>"; };
-		40B3F95C2446E6C6000C37A3 /* TRTCAudioEffectManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCAudioEffectManager.swift; sourceTree = "<group>"; };
-		40B3F95D2446E6C6000C37A3 /* TRTCLiveRoomDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCLiveRoomDelegate.swift; sourceTree = "<group>"; };
 		40B3F9D92446EF11000C37A3 /* TCUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCUtil.h; sourceTree = "<group>"; };
 		40B3F9DA2446EF11000C37A3 /* TCLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCLog.m; sourceTree = "<group>"; };
 		40B3F9DB2446EF11000C37A3 /* AppUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppUtils.swift; sourceTree = "<group>"; };
@@ -1670,6 +1615,21 @@
 		40B3FA002447056D000C37A3 /* UIColor+MLPFlatColors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+MLPFlatColors.m"; sourceTree = "<group>"; };
 		40B3FA012447056D000C37A3 /* UIColor+MLPFlatColors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+MLPFlatColors.h"; sourceTree = "<group>"; };
 		40E25FCC2480C796005EB543 /* Portal+Swift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Portal+Swift.swift"; sourceTree = "<group>"; };
+		40EF361E24BC3FCD006AA4BB /* TRTCCloudAnction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCCloudAnction.h; sourceTree = "<group>"; };
+		40EF361F24BC3FCD006AA4BB /* TRTCCloudAnction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCCloudAnction.m; sourceTree = "<group>"; };
+		40EF362124BC3FCD006AA4BB /* TRTCLiveRoomIMAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCLiveRoomIMAction.h; sourceTree = "<group>"; };
+		40EF362224BC3FCD006AA4BB /* TRTCLiveRoomIMAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCLiveRoomIMAction.m; sourceTree = "<group>"; };
+		40EF362424BC3FCD006AA4BB /* TRTCLiveRoomMemberManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCLiveRoomMemberManager.m; sourceTree = "<group>"; };
+		40EF362524BC3FCD006AA4BB /* TRTCLiveRoomMemberManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCLiveRoomMemberManager.h; sourceTree = "<group>"; };
+		40EF362724BC3FCD006AA4BB /* TRTCLiveRoomModelDef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCLiveRoomModelDef.h; sourceTree = "<group>"; };
+		40EF362824BC3FCD006AA4BB /* TRTCLiveRoomModelDef.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCLiveRoomModelDef.m; sourceTree = "<group>"; };
+		40EF362924BC3FCD006AA4BB /* TXLiveRoomCommonDef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXLiveRoomCommonDef.h; sourceTree = "<group>"; };
+		40EF362A24BC3FCE006AA4BB /* TRTCLiveRoomDef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCLiveRoomDef.h; sourceTree = "<group>"; };
+		40EF362B24BC3FCE006AA4BB /* TRTCLiveRoomDef.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCLiveRoomDef.m; sourceTree = "<group>"; };
+		40EF362C24BC3FCF006AA4BB /* TRTCLiveRoomDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCLiveRoomDelegate.h; sourceTree = "<group>"; };
+		40EF362D24BC3FCF006AA4BB /* TRTCLiveRoom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCLiveRoom.h; sourceTree = "<group>"; };
+		40EF362E24BC3FD0006AA4BB /* TRTCLiveRoom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCLiveRoom.m; sourceTree = "<group>"; };
+		40EF364924BC4134006AA4BB /* RoomManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomManager.swift; sourceTree = "<group>"; };
 		40F853221EE8FC7300EE47D7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		40F853251EE8FC8400EE47D7 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		40F853261EE8FC8400EE47D7 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -1742,11 +1702,12 @@
 		45E74D9923B22BCD00C22B31 /* ThemeConfigurator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ThemeConfigurator.h; sourceTree = "<group>"; };
 		45E74D9A23B22BCD00C22B31 /* ThemeConfigurator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ThemeConfigurator.m; sourceTree = "<group>"; };
 		45F21F81244714E8006B8B4D /* TRTCAudioCall.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = TRTCAudioCall.storyboard; sourceTree = "<group>"; };
+		4A3401A0A70EAA0C5A8B9AD6 /* ProfileViewController+UI.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "ProfileViewController+UI.swift"; sourceTree = "<group>"; };
 		4B4B291177070EC8D226E1E2 /* Pods-TXLiteAVDemo_TRTC_AppStore.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TXLiteAVDemo_TRTC_AppStore.release.xcconfig"; path = "Target Support Files/Pods-TXLiteAVDemo_TRTC_AppStore/Pods-TXLiteAVDemo_TRTC_AppStore.release.xcconfig"; sourceTree = "<group>"; };
-		508DEE89962FCB80A5D0D740 /* ProfileViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		51A289F8230FB93A00B9B73F /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
 		51A4AD391F1F8AE300B4A806 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		5BD8B4F3BB859A4568C43B7D /* Pods-TXLiteAVDemo_TRTC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TXLiteAVDemo_TRTC.debug.xcconfig"; path = "Target Support Files/Pods-TXLiteAVDemo_TRTC/Pods-TXLiteAVDemo_TRTC.debug.xcconfig"; sourceTree = "<group>"; };
+		5BF748DF8B1A43B1DD2D0B9D /* LoginViewController+UI_Mock.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "LoginViewController+UI_Mock.swift"; sourceTree = "<group>"; };
 		5F28DD5C7D1447D301DA8208 /* Pods-TXReplaykitUpload_TRTC_AppStore.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TXReplaykitUpload_TRTC_AppStore.debug.xcconfig"; path = "Target Support Files/Pods-TXReplaykitUpload_TRTC_AppStore/Pods-TXReplaykitUpload_TRTC_AppStore.debug.xcconfig"; sourceTree = "<group>"; };
 		6A03ED3F1FD13DFB00F2F063 /* UIViewController+BackButtonHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+BackButtonHandler.m"; sourceTree = "<group>"; };
 		6A03ED401FD13DFB00F2F063 /* UIViewController+BackButtonHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+BackButtonHandler.h"; sourceTree = "<group>"; };
@@ -1793,9 +1754,9 @@
 		6AAEC2692497807200B57D86 /* IMProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMProtocol.h; sourceTree = "<group>"; };
 		6AAEC26A2497807200B57D86 /* TRTCMeetingDef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCMeetingDef.h; sourceTree = "<group>"; };
 		6AAEC38A2499E08100B57D86 /* TXLiteAVSDK_ReplayKitExt.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TXLiteAVSDK_ReplayKitExt.framework; sourceTree = "<group>"; };
-		72C3AB166F13E61385889F36 /* AppUtils.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppUtils.swift; sourceTree = "<group>"; };
+		6D3A700B7C2BC352F619BF91 /* AppUtils.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppUtils.swift; sourceTree = "<group>"; };
 		78833A06B3E3C43A9C3CD304 /* Pods-TXReplaykitUpload_TRTC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TXReplaykitUpload_TRTC.debug.xcconfig"; path = "Target Support Files/Pods-TXReplaykitUpload_TRTC/Pods-TXReplaykitUpload_TRTC.debug.xcconfig"; sourceTree = "<group>"; };
-		7BEF8ED393498CCB18DC720D /* ProfileManager_Mock.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ProfileManager_Mock.swift; sourceTree = "<group>"; };
+		7B4C917A24B4B0C80095C041 /* TXLaunchMoviePlayProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXLaunchMoviePlayProtocol.h; sourceTree = "<group>"; };
 		910E179D2080A27500178D86 /* TXMoviePlayerNetApi.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXMoviePlayerNetApi.h; sourceTree = "<group>"; };
 		910E179E2080A27500178D86 /* TXMoviePlayerNetApi.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TXMoviePlayerNetApi.m; sourceTree = "<group>"; };
 		910E17A52080A2EB00178D86 /* TXMoviePlayerNetDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXMoviePlayerNetDelegate.h; sourceTree = "<group>"; };
@@ -1854,8 +1815,6 @@
 		A0FFAD93213791B70087FF45 /* TVCHttpMessageURLProtocol.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TVCHttpMessageURLProtocol.m; sourceTree = "<group>"; };
 		A256AF019D8E84B3B797494C /* libPods-TXLiteAVDemo_TRTC_AppStore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TXLiteAVDemo_TRTC_AppStore.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A32AD4BB38080AB19D3659FC /* libPods-TXLiteAVDemo_TRTC.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TXLiteAVDemo_TRTC.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		A78E46FD200BED25737C50F3 /* ProfileViewController+UI.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "ProfileViewController+UI.swift"; sourceTree = "<group>"; };
-		C5014C39034034DDAB90AC37 /* LoginViewController_Mock.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LoginViewController_Mock.swift; sourceTree = "<group>"; };
 		CE01F53C206DDE060056D693 /* VideoCompressPreviewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoCompressPreviewController.h; sourceTree = "<group>"; };
 		CE01F53D206DDE060056D693 /* VideoCompressPreviewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoCompressPreviewController.m; sourceTree = "<group>"; };
 		CE45D2971F15C527003506D1 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
@@ -1921,6 +1880,7 @@
 		D6E5D1C220B7B62000812B2F /* ScreenPushViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScreenPushViewController.m; sourceTree = "<group>"; };
 		E0D8BC526E0FAB3AC4FA5FB4 /* Pods-TXLiteAVDemo_TRTC_AppStore.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TXLiteAVDemo_TRTC_AppStore.debug.xcconfig"; path = "Target Support Files/Pods-TXLiteAVDemo_TRTC_AppStore/Pods-TXLiteAVDemo_TRTC_AppStore.debug.xcconfig"; sourceTree = "<group>"; };
 		E95CAD575C1A00021285A090 /* Pods-TXLiteAVDemo_TRTC.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TXLiteAVDemo_TRTC.release.xcconfig"; path = "Target Support Files/Pods-TXLiteAVDemo_TRTC/Pods-TXLiteAVDemo_TRTC.release.xcconfig"; sourceTree = "<group>"; };
+		EB673926F7D3FA3816266BAF /* ProfileViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		FC847F58E175350391991E4C /* Pods-TXReplaykitUpload_TRTC_AppStore.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TXReplaykitUpload_TRTC_AppStore.release.xcconfig"; path = "Target Support Files/Pods-TXReplaykitUpload_TRTC_AppStore/Pods-TXReplaykitUpload_TRTC_AppStore.release.xcconfig"; sourceTree = "<group>"; };
 		FDD4BF2824A1F8AD0015388B /* VideoEditor.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = VideoEditor.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1941,6 +1901,7 @@
 				40B3F6B62446E518000C37A3 /* libc++.tbd in Frameworks */,
 				40B3F6B72446E518000C37A3 /* libresolv.tbd in Frameworks */,
 				40B3F6B82446E518000C37A3 /* SystemConfiguration.framework in Frameworks */,
+				2840D91C24B8562200723FBC /* AudioToolbox.framework in Frameworks */,
 				40B3F6B92446E518000C37A3 /* CoreTelephony.framework in Frameworks */,
 				40B3F6BA2446E518000C37A3 /* VideoToolbox.framework in Frameworks */,
 				40B3F6BB2446E518000C37A3 /* CoreMedia.framework in Frameworks */,
@@ -1987,58 +1948,10 @@
 			name = BridgeHeader;
 			sourceTree = "<group>";
 		};
-		402CCDAD2498990F00573C2C /* Impl */ = {
-			isa = PBXGroup;
-			children = (
-				4040CC142497C79300CA4FAA /* base */,
-				4040CC0B2497C79300CA4FAA /* room */,
-				4040CC0F2497C79300CA4FAA /* trtc */,
-				4040CC132497C79300CA4FAA /* TRTCVoiceRoomImp.swift */,
-			);
-			path = Impl;
-			sourceTree = "<group>";
-		};
-		4040CC082497C79300CA4FAA /* model */ = {
-			isa = PBXGroup;
-			children = (
-				4040CC0A2497C79300CA4FAA /* TRTCVoiceRoom.swift */,
-				4040CC112497C79300CA4FAA /* TRTCVoiceRoomDef.swift */,
-				402CCDAD2498990F00573C2C /* Impl */,
-			);
-			path = model;
-			sourceTree = "<group>";
-		};
-		4040CC0B2497C79300CA4FAA /* room */ = {
-			isa = PBXGroup;
-			children = (
-				4040CC0C2497C79300CA4FAA /* IMJsonHandle.swift */,
-				4040CC0D2497C79300CA4FAA /* ITXRoomServiceDelegate.swift */,
-				4040CC0E2497C79300CA4FAA /* TXRoomService.swift */,
-			);
-			path = room;
-			sourceTree = "<group>";
-		};
-		4040CC0F2497C79300CA4FAA /* trtc */ = {
-			isa = PBXGroup;
-			children = (
-				4040CC102497C79300CA4FAA /* VoiceRoomTRTCService.swift */,
-			);
-			path = trtc;
-			sourceTree = "<group>";
-		};
-		4040CC142497C79300CA4FAA /* base */ = {
-			isa = PBXGroup;
-			children = (
-				4040CC152497C79300CA4FAA /* TXBaseDef.swift */,
-				4040CC162497C79300CA4FAA /* TRTCLog.swift */,
-			);
-			path = base;
-			sourceTree = "<group>";
-		};
 		4040CC192497C79300CA4FAA /* ui */ = {
 			isa = PBXGroup;
 			children = (
-				4040CC202497C79300CA4FAA /* TRTCVoiceRoomEnteryController.swift */,
+				4040CC202497C79300CA4FAA /* TRTCVoiceRoomEnteryControl.swift */,
 				4040CC182497C79300CA4FAA /* TRTCVoiceRoomAssets.xcassets */,
 				4040CC1A2497C79300CA4FAA /* NetworkRoomManager */,
 				4040CC212497C79300CA4FAA /* UIColor+Extensions */,
@@ -2060,6 +1973,7 @@
 		4040CC212497C79300CA4FAA /* UIColor+Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				4046B16024B36C0A00F27349 /* TRTCLog.swift */,
 				4040CC222497C79300CA4FAA /* UIColor+hex.swift */,
 			);
 			path = "UIColor+Extensions";
@@ -2106,6 +2020,59 @@
 				4041832A2455853000DD70AB /* V8HorizontalPickerView.h */,
 			);
 			path = V8HorizontalPickerView;
+			sourceTree = "<group>";
+		};
+		4046B13024B36AD700F27349 /* model */ = {
+			isa = PBXGroup;
+			children = (
+				4046B13124B36AD700F27349 /* Impl */,
+				4046B14224B36AD700F27349 /* TRTCVoiceRoom.h */,
+				4072566824B55D5000DD44EF /* TRTCVoiceRoomDelegate.h */,
+				4046B14324B36AD700F27349 /* TRTCVoiceRoomDef.h */,
+			);
+			path = model;
+			sourceTree = "<group>";
+		};
+		4046B13124B36AD700F27349 /* Impl */ = {
+			isa = PBXGroup;
+			children = (
+				4046B14124B36AD700F27349 /* TRTCVoiceRoom.m */,
+				4046B13624B36AD700F27349 /* TRTCVoiceRoomDef.m */,
+				4046B13324B36AD700F27349 /* trtc */,
+				4046B13724B36AD700F27349 /* voiceroom */,
+				4046B13D24B36AD700F27349 /* base */,
+			);
+			path = Impl;
+			sourceTree = "<group>";
+		};
+		4046B13324B36AD700F27349 /* trtc */ = {
+			isa = PBXGroup;
+			children = (
+				4046B13424B36AD700F27349 /* VoiceRoomTRTCService.h */,
+				4046B13524B36AD700F27349 /* VoiceRoomTRTCService.m */,
+			);
+			path = trtc;
+			sourceTree = "<group>";
+		};
+		4046B13724B36AD700F27349 /* voiceroom */ = {
+			isa = PBXGroup;
+			children = (
+				4046B13824B36AD700F27349 /* TXVoiceRoomIMJsonHandle.h */,
+				4046B13924B36AD700F27349 /* TXVoiceRoomService.m */,
+				4046B13A24B36AD700F27349 /* TXVoiceRoomIMJsonHandle.m */,
+				4046B13B24B36AD700F27349 /* TXVoiceRoomService.h */,
+			);
+			path = voiceroom;
+			sourceTree = "<group>";
+		};
+		4046B13D24B36AD700F27349 /* base */ = {
+			isa = PBXGroup;
+			children = (
+				4046B13E24B36AD700F27349 /* TXBaseDef.m */,
+				4046B13F24B36AD700F27349 /* TXVoiceRoomCommonDef.h */,
+				4046B14024B36AD700F27349 /* TXBaseDef.h */,
+			);
+			path = base;
 			sourceTree = "<group>";
 		};
 		4051D606249C523E00A53E28 /* SubViews */ = {
@@ -2208,10 +2175,10 @@
 			isa = PBXGroup;
 			children = (
 				40E25FCC2480C796005EB543 /* Portal+Swift.swift */,
+				4090F78D246AE23B00EA72A0 /* PortalViewController.h */,
 				4090F78A246AE23B00EA72A0 /* PortalViewController.m */,
 				4090F78B246AE23B00EA72A0 /* MainMenuCell.h */,
 				4090F78C246AE23B00EA72A0 /* Portal.storyboard */,
-				4090F78D246AE23B00EA72A0 /* PortalViewController.h */,
 				4090F78E246AE23B00EA72A0 /* MainMenuCell.m */,
 				4090F78F246AE23B00EA72A0 /* ColorMacro.h */,
 				4090F793246AE25A00EA72A0 /* TRTCPortalAssets.xcassets */,
@@ -2258,8 +2225,6 @@
 			isa = PBXGroup;
 			children = (
 				40B3F8C62446E6C5000C37A3 /* VideoCallUserCell.swift */,
-				40B3F8C72446E6C5000C37A3 /* VideoCallMainViewController+UI.swift */,
-				40B3F8C82446E6C5000C37A3 /* VideoCallMainViewController.swift */,
 				40B3F8C92446E6C5000C37A3 /* VideoSelectContactViewController+UI.swift */,
 				40B3F8CA2446E6C5000C37A3 /* VideoSelectContactViewController.swift */,
 				40B3F8CB2446E6C5000C37A3 /* VideoSelectContactViewController+search.swift */,
@@ -2313,9 +2278,7 @@
 				45F21F81244714E8006B8B4D /* TRTCAudioCall.storyboard */,
 				40B3F8E02446E6C5000C37A3 /* AudioCallViewController+UI.swift */,
 				40B3F8E12446E6C5000C37A3 /* AudioCallUserCell.swift */,
-				40B3F8E22446E6C5000C37A3 /* AudioCallMainViewController.swift */,
 				40B3F8E32446E6C5000C37A3 /* AudioSelectContactViewController.swift */,
-				40B3F8E42446E6C5000C37A3 /* AudioCallMainViewController+UI.swift */,
 				40B3F8E52446E6C5000C37A3 /* AudioCallViewController.swift */,
 				40B3F8E62446E6C5000C37A3 /* AudioSelectContactViewController+CollectionView.swift */,
 				40B3F8E72446E6C5000C37A3 /* AudioSelectContactViewController+search.swift */,
@@ -2345,7 +2308,7 @@
 		40B3F8F52446E6C5000C37A3 /* TRTCVoiceRoomDemo */ = {
 			isa = PBXGroup;
 			children = (
-				4040CC082497C79300CA4FAA /* model */,
+				4046B13024B36AD700F27349 /* model */,
 				4040CC192497C79300CA4FAA /* ui */,
 			);
 			path = TRTCVoiceRoomDemo;
@@ -2363,6 +2326,7 @@
 		40B3F9262446E6C6000C37A3 /* ui */ = {
 			isa = PBXGroup;
 			children = (
+				40EF364824BC4103006AA4BB /* RoomNetWorkManager */,
 				40A7CFD7245FC0CF00E792A5 /* TRTCLiveRoomDemo.xcassets */,
 				404183272455853000DD70AB /* V8HorizontalPickerView */,
 				40B3F9272446E6C6000C37A3 /* LiveRoomMainViewController.swift */,
@@ -2373,6 +2337,7 @@
 				40B3F93D2446E6C6000C37A3 /* Anchor */,
 				40B3F9462446E6C6000C37A3 /* Audience */,
 				40B3F94C2446E6C6000C37A3 /* LiveRoomMainViewController+UI.swift */,
+				2840D92824B85E2A00723FBC /* SDWebImagePlaceholderImageManager.swift */,
 			);
 			path = ui;
 			sourceTree = "<group>";
@@ -2448,45 +2413,12 @@
 		40B3F94D2446E6C6000C37A3 /* model */ = {
 			isa = PBXGroup;
 			children = (
-				40B3F94E2446E6C6000C37A3 /* TRTCLiveRoom.swift */,
-				40B3F94F2446E6C6000C37A3 /* impl */,
-				40B3F95B2446E6C6000C37A3 /* TRTCLiveRoomDef.swift */,
-				40B3F95C2446E6C6000C37A3 /* TRTCAudioEffectManager.swift */,
-				40B3F95D2446E6C6000C37A3 /* TRTCLiveRoomDelegate.swift */,
+				40EF361D24BC3FCD006AA4BB /* Impl */,
+				40EF362D24BC3FCF006AA4BB /* TRTCLiveRoom.h */,
+				40EF362A24BC3FCE006AA4BB /* TRTCLiveRoomDef.h */,
+				40EF362C24BC3FCF006AA4BB /* TRTCLiveRoomDelegate.h */,
 			);
 			path = model;
-			sourceTree = "<group>";
-		};
-		40B3F94F2446E6C6000C37A3 /* impl */ = {
-			isa = PBXGroup;
-			children = (
-				40B3F9502446E6C6000C37A3 /* TRTCLiveRoomImpl+RecvMessage.swift */,
-				40B3F9512446E6C6000C37A3 /* TRTCCustomAudioEffectManagerImpl.swift */,
-				40B3F9522446E6C6000C37A3 /* TRTCLiveRoomImpl.swift */,
-				40B3F9532446E6C6000C37A3 /* TRTCCloudAction.swift */,
-				40B3F9542446E6C6000C37A3 /* MemberManager */,
-				40B3F9572446E6C6000C37A3 /* RoomManager.swift */,
-				40B3F9582446E6C6000C37A3 /* IM */,
-			);
-			path = impl;
-			sourceTree = "<group>";
-		};
-		40B3F9542446E6C6000C37A3 /* MemberManager */ = {
-			isa = PBXGroup;
-			children = (
-				40B3F9552446E6C6000C37A3 /* TRTCLiveRoomMemberManager.swift */,
-				40B3F9562446E6C6000C37A3 /* TRTCLiveRoomMemberProtocol.swift */,
-			);
-			path = MemberManager;
-			sourceTree = "<group>";
-		};
-		40B3F9582446E6C6000C37A3 /* IM */ = {
-			isa = PBXGroup;
-			children = (
-				40B3F9592446E6C6000C37A3 /* TRTCLiveRoomIMAction.swift */,
-				40B3F95A2446E6C6000C37A3 /* TRTCLiveRoomIMActionType.swift */,
-			);
-			path = IM;
 			sourceTree = "<group>";
 		};
 		40B3F9D82446EF11000C37A3 /* CommonUtils */ = {
@@ -2508,6 +2440,64 @@
 				40B5C6872484BBE500D3A718 /* AudioEffectSettingKitResources.bundle */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		40EF361D24BC3FCD006AA4BB /* Impl */ = {
+			isa = PBXGroup;
+			children = (
+				40EF362E24BC3FD0006AA4BB /* TRTCLiveRoom.m */,
+				40EF362B24BC3FCE006AA4BB /* TRTCLiveRoomDef.m */,
+				40EF364724BC3FD7006AA4BB /* trtc */,
+				40EF362024BC3FCD006AA4BB /* IM */,
+				40EF362324BC3FCD006AA4BB /* MemberMnager */,
+				40EF362624BC3FCD006AA4BB /* Base */,
+			);
+			path = Impl;
+			sourceTree = "<group>";
+		};
+		40EF362024BC3FCD006AA4BB /* IM */ = {
+			isa = PBXGroup;
+			children = (
+				40EF362124BC3FCD006AA4BB /* TRTCLiveRoomIMAction.h */,
+				40EF362224BC3FCD006AA4BB /* TRTCLiveRoomIMAction.m */,
+			);
+			path = IM;
+			sourceTree = "<group>";
+		};
+		40EF362324BC3FCD006AA4BB /* MemberMnager */ = {
+			isa = PBXGroup;
+			children = (
+				40EF362424BC3FCD006AA4BB /* TRTCLiveRoomMemberManager.m */,
+				40EF362524BC3FCD006AA4BB /* TRTCLiveRoomMemberManager.h */,
+			);
+			path = MemberMnager;
+			sourceTree = "<group>";
+		};
+		40EF362624BC3FCD006AA4BB /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				40EF362724BC3FCD006AA4BB /* TRTCLiveRoomModelDef.h */,
+				40EF362824BC3FCD006AA4BB /* TRTCLiveRoomModelDef.m */,
+				40EF362924BC3FCD006AA4BB /* TXLiveRoomCommonDef.h */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		40EF364724BC3FD7006AA4BB /* trtc */ = {
+			isa = PBXGroup;
+			children = (
+				40EF361E24BC3FCD006AA4BB /* TRTCCloudAnction.h */,
+				40EF361F24BC3FCD006AA4BB /* TRTCCloudAnction.m */,
+			);
+			path = trtc;
+			sourceTree = "<group>";
+		};
+		40EF364824BC4103006AA4BB /* RoomNetWorkManager */ = {
+			isa = PBXGroup;
+			children = (
+				40EF364924BC4134006AA4BB /* RoomManager.swift */,
+			);
+			path = RoomNetWorkManager;
 			sourceTree = "<group>";
 		};
 		40F852FA1EE8FB3800EE47D7 = {
@@ -2547,7 +2537,7 @@
 				4090F614246ADBBF00EA72A0 /* TRTCMeetingDemo */,
 				40F8531D1EE8FC1E00EE47D7 /* Supporting Files */,
 				40AA533424458EC800303EF7 /* BeautySettingKit */,
-				AAFBD6E501E2EE61422E19E9 /* Login */,
+				E5F945BC242BB1A9E8654424 /* Login */,
 			);
 			path = TXLiteAVDemo;
 			sourceTree = "<group>";
@@ -2635,6 +2625,7 @@
 		40F854FF1EE8FD2F00EE47D7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2840D91B24B8562200723FBC /* AudioToolbox.framework */,
 				4074E61D249F0594006C591F /* libPods-TXReplaykitUpload_TRTC_AppStore.a */,
 				4074E61B249F057F006C591F /* libPods-TXReplaykitUpload_TRTC.a */,
 				40802A272484BBBE008151C1 /* AudioEffectSettingKit.framework */,
@@ -2814,21 +2805,6 @@
 			path = include;
 			sourceTree = "<group>";
 		};
-		AAFBD6E501E2EE61422E19E9 /* Login */ = {
-			isa = PBXGroup;
-			children = (
-				C5014C39034034DDAB90AC37 /* LoginViewController_Mock.swift */,
-				7BEF8ED393498CCB18DC720D /* ProfileManager_Mock.swift */,
-				15A5F0E9DEB5EA596636A3CF /* LoginViewController+UI_Mock.swift */,
-				72C3AB166F13E61385889F36 /* AppUtils.swift */,
-				2E3C4FFAEECB5B78C75E5808 /* CommonUtils.swift */,
-				508DEE89962FCB80A5D0D740 /* ProfileViewController.swift */,
-				A78E46FD200BED25737C50F3 /* ProfileViewController+UI.swift */,
-			);
-			name = Login;
-			path = TXLiteAVDemo/Login;
-			sourceTree = SOURCE_ROOT;
-		};
 		D61B48481FB59E9B002F0C6C /* TCHttpUtil */ = {
 			isa = PBXGroup;
 			children = (
@@ -2861,6 +2837,21 @@
 			);
 			path = Pods;
 			sourceTree = "<group>";
+		};
+		E5F945BC242BB1A9E8654424 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				1BA9A3E941501E35F938DE28 /* LoginViewController_Mock.swift */,
+				0556BA9162741F1E88460BBD /* ProfileManager_Mock.swift */,
+				5BF748DF8B1A43B1DD2D0B9D /* LoginViewController+UI_Mock.swift */,
+				6D3A700B7C2BC352F619BF91 /* AppUtils.swift */,
+				0591FC034009D4D582AF2534 /* CommonUtils.swift */,
+				EB673926F7D3FA3816266BAF /* ProfileViewController.swift */,
+				4A3401A0A70EAA0C5A8B9AD6 /* ProfileViewController+UI.swift */,
+			);
+			name = Login;
+			path = TXLiteAVDemo/Login;
+			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 
@@ -3218,17 +3209,16 @@
 				40B3F9712446E6C6000C37A3 /* TRTCVideoCall+model.swift in Sources */,
 				40B3F9A02446E6C6000C37A3 /* TCPlaceHolderTextView.m in Sources */,
 				4040CC832497C79400CA4FAA /* TRTCVoiceRoomSeatCell.swift in Sources */,
+				40EF363D24BC3FD0006AA4BB /* TRTCLiveRoomModelDef.m in Sources */,
 				40B3F9A22446E6C6000C37A3 /* TCMsgListCell.m in Sources */,
-				40B3F9752446E6C6000C37A3 /* AudioCallMainViewController.swift in Sources */,
 				6AAEC2B92497807200B57D86 /* TRTCMeeting.m in Sources */,
+				40EF364124BC3FD0006AA4BB /* TRTCLiveRoomDef.m in Sources */,
+				4046B15A24B36AD700F27349 /* TXBaseDef.m in Sources */,
 				6AAEC2B12497807200B57D86 /* TRTCMeetingMemberViewController.swift in Sources */,
 				40B3F97B2446E6C6000C37A3 /* AudioSelectContactViewController+Table.swift in Sources */,
-				40B3F9B62446E6C6000C37A3 /* TRTCLiveRoomMemberManager.swift in Sources */,
-				4040CC4B2497C79400CA4FAA /* TRTCVoiceRoomDef.swift in Sources */,
 				4041832B2455853000DD70AB /* V8HorizontalPickerView.m in Sources */,
 				40B3F9822446E6C6000C37A3 /* TRTCAudioCall.swift in Sources */,
 				4090F792246AE23B00EA72A0 /* MainMenuCell.m in Sources */,
-				40B3F9BC2446E6C7000C37A3 /* TRTCAudioEffectManager.swift in Sources */,
 				40B3F66A2446E518000C37A3 /* UIButton+Glossy.m in Sources */,
 				4090F790246AE23B00EA72A0 /* PortalViewController.m in Sources */,
 				40B3F9A42446E6C6000C37A3 /* TCMsgModel.m in Sources */,
@@ -3244,48 +3234,46 @@
 				40B3F9852446E6C6000C37A3 /* TRTCAudioCall+OnNewMessage.swift in Sources */,
 				40B3F9B02446E6C6000C37A3 /* LiveRoomMainViewController+UI.swift in Sources */,
 				40B3F9DF2446EF11000C37A3 /* TCLog.m in Sources */,
-				40B3F9B52446E6C6000C37A3 /* TRTCCloudAction.swift in Sources */,
 				40B3F96F2446E6C6000C37A3 /* TRTCVideoCall.swift in Sources */,
+				40EF363124BC3FD0006AA4BB /* TRTCCloudAnction.m in Sources */,
 				4040CCA72497C79400CA4FAA /* TRTCVoiceRoomListViewController.swift in Sources */,
 				4040CC972497C79400CA4FAA /* TRTCVoiceRoomTipsTableCell.swift in Sources */,
-				4040CC432497C79400CA4FAA /* TXRoomService.swift in Sources */,
 				40B3F9682446E6C6000C37A3 /* VideoSelectContactViewController+CollectionView.swift in Sources */,
 				40B3F9742446E6C6000C37A3 /* AudioCallUserCell.swift in Sources */,
 				40B3F9782446E6C6000C37A3 /* AudioCallViewController.swift in Sources */,
 				40B3F9672446E6C6000C37A3 /* VideoCallViewController+UI.swift in Sources */,
-				4040CC572497C79400CA4FAA /* TXBaseDef.swift in Sources */,
 				40B3F9692446E6C6000C37A3 /* VideoSelectContactViewController+Table.swift in Sources */,
 				40B3F9E22446EF11000C37A3 /* TCUtil.m in Sources */,
 				40B3F9802446E6C6000C37A3 /* TRTCAudioCallDelegate.swift in Sources */,
 				4040CC932497C79400CA4FAA /* TRTCAudienceTableViewCell.swift in Sources */,
 				40B3F6762446E518000C37A3 /* AppDelegate.m in Sources */,
-				40B3F9B22446E6C6000C37A3 /* TRTCLiveRoomImpl+RecvMessage.swift in Sources */,
 				40B3F9832446E6C6000C37A3 /* TRTCAudioCall+model.swift in Sources */,
+				2840D92A24B85E2A00723FBC /* SDWebImagePlaceholderImageManager.swift in Sources */,
 				6AAEC28D2497807200B57D86 /* TRTCMeetingMoreViewVideoVC.swift in Sources */,
-				40B3F9BB2446E6C7000C37A3 /* TRTCLiveRoomDef.swift in Sources */,
 				6AAEC2812497807200B57D86 /* TRTCBroadcastExtensionLauncher.swift in Sources */,
 				40B3F9612446E6C6000C37A3 /* VideoSelectContactViewController+UI.swift in Sources */,
 				40B3F9622446E6C6000C37A3 /* VideoSelectContactViewController.swift in Sources */,
 				6AAEC2C12497807200B57D86 /* IMProtocol.m in Sources */,
 				40B3F9AB2446E6C6000C37A3 /* BeautyPerformer.swift in Sources */,
 				6AAEC2AD2497807200B57D86 /* TRTCMeetingMoreViewAudioVC.swift in Sources */,
+				4046B16324B36C0A00F27349 /* TRTCLog.swift in Sources */,
+				4046B14E24B36AD700F27349 /* TRTCVoiceRoomDef.m in Sources */,
 				6AAEC2792497807200B57D86 /* TRTCMeetingConst.swift in Sources */,
 				40B3F9AB2446E6C6000C37A3 /* BeautyPerformer.swift in Sources */,
 				4040CC9B2497C79400CA4FAA /* TRTCVoiceRoomMsgInputView.swift in Sources */,
-				40B3F9B82446E6C7000C37A3 /* RoomManager.swift in Sources */,
 				40B3F6812446E518000C37A3 /* UIView+Additions.m in Sources */,
 				4040CC7B2497C79400CA4FAA /* UIColor+hex.swift in Sources */,
-				4040CC532497C79400CA4FAA /* TRTCVoiceRoomImp.swift in Sources */,
 				40B3F9AF2446E6C6000C37A3 /* TCAudienceToolbarView.m in Sources */,
-				40B3F95F2446E6C6000C37A3 /* VideoCallMainViewController+UI.swift in Sources */,
-				4040CC3F2497C79400CA4FAA /* ITXRoomServiceDelegate.swift in Sources */,
 				40B3F9AA2446E6C6000C37A3 /* TCAnchorToolbarView.m in Sources */,
 				4040CCAF2497C79400CA4FAA /* TRTCVoiceRoomListCell.swift in Sources */,
 				40B3F6852446E518000C37A3 /* NSString+Common.m in Sources */,
 				6AAEC2A12497807200B57D86 /* TRTCMeetingNewViewController+UI.swift in Sources */,
 				6AAEC27D2497807200B57D86 /* TRTCMeetingMainViewController+CollectionView.swift in Sources */,
 				6AAEC2992497807200B57D86 /* TRTCMeetingMoreControllerUI.swift in Sources */,
+				4046B15224B36AD700F27349 /* TXVoiceRoomService.m in Sources */,
 				40B3F9662446E6C6000C37A3 /* VideoSelectContactViewController+file.swift in Sources */,
+				40EF363524BC3FD0006AA4BB /* TRTCLiveRoomIMAction.m in Sources */,
+				4046B15624B36AD700F27349 /* TXVoiceRoomIMJsonHandle.m in Sources */,
 				4040CC8B2497C79400CA4FAA /* TRTCVoiceRoomSeatView.swift in Sources */,
 				4040CCB72497C79400CA4FAA /* TRTCCreateVoiceRoomRootView.swift in Sources */,
 				40B3F9AC2446E6C6000C37A3 /* TCAnchorViewController+LiveDelegate.swift in Sources */,
@@ -3293,25 +3281,25 @@
 				6AAEC2B52497807200B57D86 /* TXRoomService.m in Sources */,
 				6AAEC2712497807200B57D86 /* TRTCMeetingNewViewController.swift in Sources */,
 				40B3F97C2446E6C6000C37A3 /* AudioCallViewController+Data.swift in Sources */,
+				40EF364C24BC4134006AA4BB /* RoomManager.swift in Sources */,
+				4046B15E24B36AD700F27349 /* TRTCVoiceRoom.m in Sources */,
 				6AAEC2892497807200B57D86 /* TRTCMeetingMemberViewController+CollectionView.swift in Sources */,
-				40B3F9B12446E6C6000C37A3 /* TRTCLiveRoom.swift in Sources */,
 				40B3F9702446E6C6000C37A3 /* TRTCVideoCall+Room.swift in Sources */,
 				4040CC632497C79400CA4FAA /* TRTCCreateVoiceRoomViewModel.swift in Sources */,
 				40B3F9AD2446E6C6000C37A3 /* TCAudienceViewController.m in Sources */,
 				40B3F9A62446E6C6000C37A3 /* LiveRoomMainViewController+CollectionView.swift in Sources */,
 				40B3F96B2446E6C6000C37A3 /* TRTCVideoCall+OnNewMessage.swift in Sources */,
-				40B3F9BA2446E6C7000C37A3 /* TRTCLiveRoomIMActionType.swift in Sources */,
 				40B3F9642446E6C6000C37A3 /* VideoCallViewController+Data.swift in Sources */,
 				40B3F9632446E6C6000C37A3 /* VideoSelectContactViewController+search.swift in Sources */,
 				40B3F9A92446E6C6000C37A3 /* AnchorPKPanel.swift in Sources */,
+				4046B14A24B36AD700F27349 /* VoiceRoomTRTCService.m in Sources */,
 				40B3F97E2446E6C6000C37A3 /* AudioSelectContactViewController+UI.swift in Sources */,
 				402A010624506F740037A219 /* main.m in Sources */,
 				40B3F9AE2446E6C6000C37A3 /* TCAudienceViewController+LiveDelegate.swift in Sources */,
-				40B3F9B92446E6C7000C37A3 /* TRTCLiveRoomIMAction.swift in Sources */,
+				40EF364524BC3FD0006AA4BB /* TRTCLiveRoom.m in Sources */,
 				40B3F9652446E6C6000C37A3 /* VideoCallViewController.swift in Sources */,
 				40B3F9A32446E6C6000C37A3 /* TCMsgBarrageView.m in Sources */,
 				40B3F99F2446E6C6000C37A3 /* TCStatusInfoView.m in Sources */,
-				40B3F9B32446E6C6000C37A3 /* TRTCCustomAudioEffectManagerImpl.swift in Sources */,
 				6AAEC2912497807200B57D86 /* TRTCMeetingMemberController+UI.swift in Sources */,
 				4040CC872497C79400CA4FAA /* TRTCVoiceRoomViewController.swift in Sources */,
 				40B3F95E2446E6C6000C37A3 /* VideoCallUserCell.swift in Sources */,
@@ -3324,16 +3312,11 @@
 				6AAEC2852497807200B57D86 /* TRTCMeetingMainViewController+UI.swift in Sources */,
 				6AAEC2C52497807200B57D86 /* TXMeetingPair.m in Sources */,
 				4040CC6B2497C79400CA4FAA /* TRTCVoiceRoomListViewModel.swift in Sources */,
-				4040CC472497C79400CA4FAA /* VoiceRoomTRTCService.swift in Sources */,
 				4040CC8F2497C79400CA4FAA /* TRTCVoiceRoomTipsView.swift in Sources */,
-				40B3F9B72446E6C7000C37A3 /* TRTCLiveRoomMemberProtocol.swift in Sources */,
-				40B3F9602446E6C6000C37A3 /* VideoCallMainViewController.swift in Sources */,
-				4040CC372497C79400CA4FAA /* TRTCVoiceRoom.swift in Sources */,
 				40B3F6912446E518000C37A3 /* UIView+CustomAutoLayout.m in Sources */,
 				40B3F9842446E6C6000C37A3 /* TRTCAudioCall+Room.swift in Sources */,
 				40B3F6922446E518000C37A3 /* UIViewController+BackButtonHandler.m in Sources */,
 				4040CC4F2497C79400CA4FAA /* TRTCVoiceRoomManager.swift in Sources */,
-				4040CC3B2497C79400CA4FAA /* IMJsonHandle.swift in Sources */,
 				40B3F6942446E518000C37A3 /* AppLogMgr.m in Sources */,
 				40B3F9732446E6C6000C37A3 /* AudioCallViewController+UI.swift in Sources */,
 				6AAEC2A92497807200B57D86 /* TRTCMeetingMoreViewController.swift in Sources */,
@@ -3347,28 +3330,25 @@
 				4040CC7F2497C79400CA4FAA /* TRTCVoiceRoomMainMenuView.swift in Sources */,
 				40B3F96C2446E6C6000C37A3 /* TRTCVideoCallDelegate.swift in Sources */,
 				6AAEC2BD2497807200B57D86 /* TRTCMeetingDef.m in Sources */,
-				4040CC772497C79400CA4FAA /* TRTCVoiceRoomEnteryController.swift in Sources */,
+				4040CC772497C79400CA4FAA /* TRTCVoiceRoomEnteryControl.swift in Sources */,
+				40EF363924BC3FD0006AA4BB /* TRTCLiveRoomMemberManager.m in Sources */,
 				40B3F9792446E6C6000C37A3 /* AudioSelectContactViewController+CollectionView.swift in Sources */,
-				4040CC5B2497C79400CA4FAA /* TRTCLog.swift in Sources */,
-				40B3F9B42446E6C6000C37A3 /* TRTCLiveRoomImpl.swift in Sources */,
 				40B3F69F2446E518000C37A3 /* NSData+Common.m in Sources */,
 				40B3F97F2446E6C6000C37A3 /* TRTCAudioCall+internal.swift in Sources */,
-				40B3F9772446E6C6000C37A3 /* AudioCallMainViewController+UI.swift in Sources */,
 				4040CC9F2497C79400CA4FAA /* TRTCVoiceRoomRootView.swift in Sources */,
 				40B3F9722446E6C6000C37A3 /* GenerateTestUserSig.m in Sources */,
 				40B3F6AA2446E518000C37A3 /* UIImage+Additions.m in Sources */,
-				40B3F9BD2446E6C7000C37A3 /* TRTCLiveRoomDelegate.swift in Sources */,
 				6AAEC2752497807200B57D86 /* CenterSegmentView.swift in Sources */,
 				40B3F96E2446E6C6000C37A3 /* VideoCallUtils.swift in Sources */,
 				40B3F99E2446E6C6000C37A3 /* LiveRoomMainViewController.swift in Sources */,
 				40B3F9762446E6C6000C37A3 /* AudioSelectContactViewController.swift in Sources */,
-				3BDE0E749D94050D15D5E615 /* LoginViewController_Mock.swift in Sources */,
-				E44D18B774C75EF44A2CE590 /* ProfileManager_Mock.swift in Sources */,
-				1E946B7E77D390ED88A493CC /* LoginViewController+UI_Mock.swift in Sources */,
-				72777A6D4DDE10CDD3C7A90F /* AppUtils.swift in Sources */,
-				A73B743F86C2132935F62F8C /* CommonUtils.swift in Sources */,
-				AD46F8122E371DDC340EC797 /* ProfileViewController.swift in Sources */,
-				F14DFF63B2DC73855C2ED2FC /* ProfileViewController+UI.swift in Sources */,
+				3FF489A77E59AF2228F16973 /* LoginViewController_Mock.swift in Sources */,
+				6DD87F420FDF73A43EB25E6E /* ProfileManager_Mock.swift in Sources */,
+				B6D0A691EF53EBE1B580BA26 /* LoginViewController+UI_Mock.swift in Sources */,
+				4EF994C9863E1CAD52CCDB62 /* AppUtils.swift in Sources */,
+				BDC3ADE9EBB68CEC52C347C4 /* CommonUtils.swift in Sources */,
+				521D91ED750497F2D1CEC9F5 /* ProfileViewController.swift in Sources */,
+				583B15E1C1D2C97E06587029 /* ProfileViewController+UI.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3483,15 +3463,17 @@
 					"$(PROJECT_DIR)/TXLiteAVDemo/VideoUpload/COSSDK",
 					"$(PROJECT_DIR)/TXLiteAVDemo/UGCVideoUploadDemo/VideoUpload/COSSDK",
 				);
-				MARKETING_VERSION = 7.2.1;
+				MARKETING_VERSION = 7.5.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Alamofire/Alamofire.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/HandyJSON/HandyJSON.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Material/Material.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Motion/Motion.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/NVActivityIndicatorView/NVActivityIndicatorView.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/RxCocoa/RxCocoa.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/RxRelay/RxRelay.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/RxSwift/RxSwift.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/SnapKit/SnapKit.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/SwiftyJSON/SwiftyJSON.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Toast-Swift/Toast_Swift.modulemap\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tencent.fx.rtmpdemo2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Wildcard Dev";
 				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/TXLiteAVDemo/App/TXLiteAVDemo-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "TXLiteAVDemo-Swift.h";
 				SWIFT_VERSION = 5.0;
@@ -3559,14 +3541,16 @@
 					"$(PROJECT_DIR)/TXLiteAVDemo/VideoUpload/COSSDK",
 					"$(PROJECT_DIR)/TXLiteAVDemo/UGCVideoUploadDemo/VideoUpload/COSSDK",
 				);
-				MARKETING_VERSION = 7.2.1;
+				MARKETING_VERSION = 7.5.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Alamofire/Alamofire.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/HandyJSON/HandyJSON.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Material/Material.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Motion/Motion.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/NVActivityIndicatorView/NVActivityIndicatorView.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/RxCocoa/RxCocoa.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/RxRelay/RxRelay.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/RxSwift/RxSwift.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/SnapKit/SnapKit.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/SwiftyJSON/SwiftyJSON.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Toast-Swift/Toast_Swift.modulemap\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tencent.fx.rtmpdemo2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = com.tencent.fx.rtmpdemo2_Production_SignProvision;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/TXLiteAVDemo/App/TXLiteAVDemo-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "TXLiteAVDemo-Swift.h";
 				SWIFT_VERSION = 5.0;
@@ -3625,10 +3609,12 @@
 					"$(inherited)",
 					"-ObjC",
 				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Alamofire/Alamofire.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/HandyJSON/HandyJSON.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Material/Material.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Motion/Motion.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/NVActivityIndicatorView/NVActivityIndicatorView.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/RxCocoa/RxCocoa.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/RxRelay/RxRelay.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/RxSwift/RxSwift.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/SnapKit/SnapKit.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/SwiftyJSON/SwiftyJSON.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Toast-Swift/Toast_Swift.modulemap\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tencent.fx.rtmpdemo2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Wildcard Dev";
 				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/TXLiteAVDemo/App/TXLiteAVDemo-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "TXLiteAVDemo-Swift.h";
 				SWIFT_VERSION = 5.0;
@@ -3691,6 +3677,7 @@
 					"$(inherited)",
 					"-ObjC",
 				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Alamofire/Alamofire.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/HandyJSON/HandyJSON.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Material/Material.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Motion/Motion.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/NVActivityIndicatorView/NVActivityIndicatorView.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/RxCocoa/RxCocoa.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/RxRelay/RxRelay.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/RxSwift/RxSwift.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/SnapKit/SnapKit.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/SwiftyJSON/SwiftyJSON.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Toast-Swift/Toast_Swift.modulemap\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tencent.fx.rtmpdemo2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = com.tencent.fx.rtmpdemo2_Production_SignProvision;
@@ -4167,7 +4154,7 @@
 				INFOPLIST_FILE = "TXLiteAVDemo/App/TRTC-Appstore-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 7.4.269;
+				MARKETING_VERSION = 7.4.278;
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tencent.trtcScenesDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -4225,7 +4212,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_GENERATE_MAP_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 7.4.269;
+				MARKETING_VERSION = 7.4.278;
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tencent.mrtc;
 				PRODUCT_NAME = "$(TARGET_NAME)";

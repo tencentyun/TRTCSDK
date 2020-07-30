@@ -111,7 +111,7 @@
     float first_icon_center_x = startSpace + icon_size/2;
     
     _btnChat = [UIButton buttonWithType:UIButtonTypeCustom];
-    _btnChat.center = CGPointMake(first_icon_center_x, icon_center_y);
+    _btnChat.center = CGPointMake(first_icon_center_x + icon_size / 2.0, icon_center_y);
     _btnChat.bounds = CGRectMake(0, 0, icon_size, icon_size);
     [_btnChat setBackgroundImage:[UIImage imageNamed:@"comment"] forState:UIControlStateNormal];
     [_btnChat addTarget:self action:@selector(clickChat:) forControlEvents:UIControlEventTouchUpInside];
@@ -119,7 +119,7 @@
     
     [_closeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self->_btnChat.mas_centerY);
-        make.right.equalTo(self).offset(-15);
+        make.right.equalTo(self).offset(-icon_center_interval*0.7);
         make.width.height.equalTo(@(icon_size));
     }];
     
@@ -132,7 +132,7 @@
     [self addSubview:_likeBtn];
     [_likeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self->_closeBtn.mas_centerY);
-        make.centerX.equalTo(self->_closeBtn).offset(-icon_center_interval);
+        make.centerX.equalTo(self->_closeBtn).offset(-icon_center_interval*1.2);
         make.width.height.equalTo(@(icon_size));
     }];
     
@@ -256,7 +256,7 @@
 }
 
 - (void)clickLike:(UIButton *)button {
-    [_liveRoom sendRoomCustomMsgWithCommand:[@(TCMsgModelType_Praise) stringValue] message:@"" callback:^(NSInteger code, NSString * error) {
+    [_liveRoom sendRoomCustomMsgWithCommand:[@(TCMsgModelType_Praise) stringValue] message:@"" callback:^(int code, NSString * error) {
         
     }];
     [_topView onUserSendLikeMessage];
@@ -544,12 +544,12 @@
     
     if (_bulletBtnIsOn) {
         msgModel.msgType  = TCMsgModelType_DanmaMsg;
-        [_liveRoom sendRoomCustomMsgWithCommand:[@(TCMsgModelType_DanmaMsg) stringValue] message:textMsg callback:^(NSInteger code, NSString * error) {
+        [_liveRoom sendRoomCustomMsgWithCommand:[@(TCMsgModelType_DanmaMsg) stringValue] message:textMsg callback:^(int code, NSString * error) {
             
         }];
     }else{
         msgModel.msgType = TCMsgModelType_NormalMsg;
-        [_liveRoom sendRoomTextMsgWithMessage:textMsg callback:^(NSInteger code, NSString * error) {
+        [_liveRoom sendRoomTextMsg:textMsg callback:^(int code, NSString * error) {
             
         }];
     }

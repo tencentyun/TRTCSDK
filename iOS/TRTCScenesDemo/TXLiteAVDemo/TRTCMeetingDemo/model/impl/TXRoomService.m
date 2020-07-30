@@ -235,7 +235,6 @@ static TXRoomService *_sharedInstance = nil;
 
 - (void)enterRoom:(NSString *)roomId callback:(TXCallback)callback {
     [V2TIMManager.sharedInstance joinGroup:roomId msg:@"" succ:^{
-        
         NSArray *groupArray = [[NSArray alloc] initWithObjects:roomId, nil];
         [V2TIMManager.sharedInstance getGroupsInfo:groupArray succ:^(NSArray<V2TIMGroupInfoResult *> *groupResultList) {
             V2TIMGroupInfoResult *result = [groupResultList objectAtIndex:0];
