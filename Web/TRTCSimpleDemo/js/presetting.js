@@ -1,3 +1,4 @@
+/* global $ setBtnClickFuc genTestUserSig */
 // preset before starting RTC
 class Presetting {
   init() {

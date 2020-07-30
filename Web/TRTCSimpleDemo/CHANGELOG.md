@@ -6,6 +6,122 @@
   - patch：补丁号，如有功能改善或缺陷修复则该字段递增。
 - 我们建议您及时更新到最新版本以便获得更好的产品稳定性及在线支持！
 
+## 4.6.6 (2020-10-23)
+
+**Improvement**
+
+- 优化上行 peerConnection 重连逻辑
+- 优化下行 peerConnection 重连逻辑
+- 优化 TRTC.checkSystemRequirements 检测逻辑
+- 支持 Safari 屏幕分享，参考：[屏幕分享使用教程](https://trtc-1252463788.file.myqcloud.com/web/docs/tutorial-06-advanced-screencast.html)
+
+**Bug Fixed**
+
+- 修复因自动播放策略限制，手动恢复音频播放后，getAudioLevel 值为0的问题
+
+## 4.6.5（2020-10-14）
+
+**Improvement**
+
+- 优化 WebSocket 信令通道重连逻辑，提升连接稳定性
+- 优化日志输出逻辑
+
+**Bug Fixed**
+
+- Chrome 重新订阅后，getAudioLevel 接口返回值为0的问题
+- Safari 重新订阅后，播放无声的问题
+- 使用 replaceTrack 替换上行音频轨道后，getLocalVideoStats 接口返回 undefined 的问题
+- 移动设备通话过程中，切换网络类型，偶现 WebSocket 连接断开的问题
+
+## 4.6.4（2020-9-24）
+
+**Improvement**
+
+- 退房后停止网络质量统计
+
+**Bug Fixed**
+
+- 修复 Chrome 56 进房报错的问题
+- 修复移动端推旁路出现画面旋转的问题
+- 修复纯音频推流时云端录制异常的问题
+- 修复因分辨率不一致导致摄像头拔出后，自动恢复推流失败的问题
+
+## 4.6.3 (2020-8-28)
+
+**Improvement**
+
+- 优化兼容性检测逻辑
+- 优化日志上报逻辑
+- 优化上行码率控制逻辑
+
+## 4.6.2 (2020-8-14)
+
+**Improvement**
+
+- 优化上行码率调控逻辑
+- 优化 switchRole 参数校验逻辑
+- 优化上行网络质量计算逻辑
+- 优化错误提示信息
+- 检测当前推流采集设备变更时，自动恢复推流状态
+
+**Bug Fixes**
+
+- 修复 unpublish 成功后，立即重新 publish 失败报错的问题
+
+## 4.6.1 (2020-7-28)
+
+**Improvement**
+
+- [TRTC.isScreenShareSupported](https://trtc-1252463788.file.myqcloud.com/web/docs/TRTC.html#.isScreenShareSupported) Safari 不支持屏幕分享
+- 完善 subscribe & unsubscribe 接口的参数校验逻辑
+- 增加网络质量日志
+
+**Bug Fixes**
+
+- 修复当未授权媒体设备，且 TRTC.createStream 接口传入的设备 ID 为空串时，SDK 报 OverconstrainedError 的问题
+- 修复上行 peerConnection 断开时没有打印日志的问题
+
+## 4.6.0 (2020-7-16)
+
+**Feature**
+
+- 增加 NETWORK_QUALITY 事件
+
+## 4.5.0 (2020-7-2)
+
+**Feature**
+
+- createStream 接口增加 screenAudio 参数
+
+**Bug Fixes**
+
+- 修复 Android 浏览器中回声消除不起作用的问题
+- 修复 getTransportStats 接口返回的 rtt 值为 NAN 的问题
+
+## 4.4.0 (2020-5-28)
+
+**Feature**
+
+- 支持 Chrome >= 74 屏幕分享采集系统（windows）或者当前 Tab 页面（Mac）的声音
+  
+## 4.3.14 (2020-4-29)
+
+**Bug Fixes**
+
+- 修复小程序音频 muted unmute 事件。
+
+## 4.3.13 (2020-4-13)
+
+**Improvement**
+
+- 优化浏览器可用性检测
+  
+## 4.3.12 (2020-4-13)
+
+**Bug Fixes**
+
+- 修复一个潜在的RTCPeerConnection状态变化异常
+  
 ## 4.3.11 (2020-3-28)
 
 **Improvement**

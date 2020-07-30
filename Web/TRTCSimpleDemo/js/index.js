@@ -1,5 +1,8 @@
+/* eslint-disable no-global-assign */
+/* global $ TRTC Presetting deviceTestingInit cameraId micId */
 const presetting = new Presetting();
 presetting.init();
+deviceTestingInit();
 
 // check if browser is compatible with TRTC
 TRTC.checkSystemRequirements().then(result => {

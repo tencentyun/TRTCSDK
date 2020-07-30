@@ -1,3 +1,4 @@
+/* global $ TRTC */
 class ShareClient {
   constructor(options) {
     this.sdkAppId_ = options.sdkAppId;
@@ -13,7 +14,12 @@ class ShareClient {
       mode: 'rtc',
       sdkAppId: this.sdkAppId_,
       userId: this.userId_,
-      userSig: this.userSig_
+      userSig: this.userSig_,
+      /**
+       * disable receivers to avoid receiving remote streams as we only want to
+       * publish the screen stream
+       */
+      disableReceiver: true
     });
 
     this.client_.setDefaultMuteRemoteStreams(true);
@@ -113,7 +119,6 @@ class ShareClient {
     });
     // fired when a remote stream has been subscribed
     this.client_.on('stream-subscribed', evt => {
-      const uid = evt.userId;
       const remoteStream = evt.stream;
       const id = remoteStream.getId();
       remoteStream.on('player-state-changed', event => {
@@ -138,7 +143,7 @@ class ShareClient {
           ' hasVideo: ' +
           remoteStream.hasVideo() +
           ' uid: ' +
-          uid
+          remoteStream.getUserId()
       );
     });
 
