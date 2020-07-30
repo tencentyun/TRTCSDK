@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.1082
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TRTCCSharpDemo", "TRTCCSharpDemo.csproj", "{5B322C83-1267-4F23-AC4D-BA5F98145A2D}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ManageLiteAV", "..\ManageLiteAV\ManageLiteAV.vcxproj", "{D90D8642-1485-4EED-A228-B43118DFC28F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,8 +29,21 @@ Global
 		{5B322C83-1267-4F23-AC4D-BA5F98145A2D}.Release|x64.Build.0 = Release|x64
 		{5B322C83-1267-4F23-AC4D-BA5F98145A2D}.Release|x86.ActiveCfg = Release|x86
 		{5B322C83-1267-4F23-AC4D-BA5F98145A2D}.Release|x86.Build.0 = Release|x86
+		{D90D8642-1485-4EED-A228-B43118DFC28F}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{D90D8642-1485-4EED-A228-B43118DFC28F}.Debug|x64.ActiveCfg = Debug|x64
+		{D90D8642-1485-4EED-A228-B43118DFC28F}.Debug|x64.Build.0 = Debug|x64
+		{D90D8642-1485-4EED-A228-B43118DFC28F}.Debug|x86.ActiveCfg = Debug|Win32
+		{D90D8642-1485-4EED-A228-B43118DFC28F}.Debug|x86.Build.0 = Debug|Win32
+		{D90D8642-1485-4EED-A228-B43118DFC28F}.Release|Any CPU.ActiveCfg = Release|Win32
+		{D90D8642-1485-4EED-A228-B43118DFC28F}.Release|x64.ActiveCfg = Release|x64
+		{D90D8642-1485-4EED-A228-B43118DFC28F}.Release|x64.Build.0 = Release|x64
+		{D90D8642-1485-4EED-A228-B43118DFC28F}.Release|x86.ActiveCfg = Release|Win32
+		{D90D8642-1485-4EED-A228-B43118DFC28F}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {74C58094-93D5-4C8E-9DD4-34FB573D1E33}
 	EndGlobalSection
 EndGlobal

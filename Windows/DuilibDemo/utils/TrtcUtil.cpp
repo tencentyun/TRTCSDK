@@ -189,3 +189,17 @@ std::wstring TrtcUtil::convertMSToTime(long lCurMS, long lDurationMS)
 
     return strTime;
 }
+
+std::map<int,std::string> TrtcUtil::split(char * str, const char * pattern)
+{
+    std::map<int,std::string> resultMap;
+    char* tmpStr = strtok(str, pattern);
+    int num = 0;
+    while (tmpStr != NULL)
+    {
+        resultMap[num] = (std::string(tmpStr));
+        tmpStr = strtok(NULL, pattern);
+        num++;
+    }
+    return resultMap;
+}

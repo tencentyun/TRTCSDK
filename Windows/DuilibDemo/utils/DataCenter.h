@@ -8,6 +8,11 @@
 class CConfigMgr;
 
 #define TRTCAudioQualityUnSelect 0
+enum LivePlayerSourceType
+{
+    TRTC_RTC,
+    TRTC_CDN
+};
 
 typedef struct RemoteUserInfo
 {
@@ -169,13 +174,14 @@ public: //trtc
     bool m_bStartSystemVoice = false;
 
     int audio_quality_ = TRTCAudioQualityUnSelect;
-
+    LivePlayerSourceType m_emLivePlayerSourceType = TRTC_RTC;
 public: 
     //远端用户信息
     RemoteUserInfoList m_remoteUser;
     void addRemoteUser(std::string userId, bool bClear = true);
     void removeRemoteUser(std::string userId);
     RemoteUserInfo* FindRemoteUser(std::string userId);
+    std::string GetCdnUrl(const std::string & strUserId);
 public:
     CConfigMgr* m_pConfigMgr;
 

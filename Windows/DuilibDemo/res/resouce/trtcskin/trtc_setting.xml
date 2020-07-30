@@ -27,9 +27,9 @@
 		<VerticalLayout>
 		<TabLayout name="tab_switch">
 			<!--normal setting page-->
-			<VerticalLayout name="normal_tab_layout" childpadding="10">
+			<VerticalLayout name="normal_tab_layout" childpadding="10" vscrollbar="true">
 				<HorizontalLayout height="10"/>
-					<GroupBox name="normal_groupbox" text="场景设置" padding="20,0,20,0" childpadding="15" bordercolor="#FF808080" bkcolor="#FFF8F8F8" bordersize="1" height="344">
+					<GroupBox name="normal_groupbox" text="场景设置" padding="20,0,20,0" childpadding="15" bordercolor="#FF808080" bkcolor="#FFF8F8F8" bordersize="1" height="390">
 						<HorizontalLayout childvalign="left" height="24">
 							<HorizontalLayout childvalign="left" inset="8,8,0,0" childpadding="10">
 							  <Label text="视频场景: " font="2" width="100" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,0"/>
@@ -55,6 +55,15 @@
 							  <Option name="role_anchor" group="rolestyle" text="主播    " style="radio_style" width="0" autocalcwidth="true"/>
 							  <VerticalLayout width="26"/>
 							  <Option name="role_audience" group="rolestyle" text="观众    " style="radio_style" width="0" autocalcwidth="true"/>
+							</HorizontalLayout>
+						</HorizontalLayout>
+						<HorizontalLayout  childvalign="left" height="24" visible="false" name="livetype">
+							<HorizontalLayout childvalign="left" inset="8,8,0,0" childpadding="10">
+							  <Label name="source_type" text="数据来源: " font="2" width="100" align="right"  valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,0"/>
+							  <VerticalLayout width="20"/>
+							  <Option name="trtc_rtc" group="sourcestyle"  text="RTC    " style="radio_style" width="0" autocalcwidth="true"/>
+							  <VerticalLayout width="26"/>
+							  <Option name="trtc_cdn" group="sourcestyle"  text="CDN    " style="radio_style" width="0" autocalcwidth="true"/>
 							</HorizontalLayout>
 						</HorizontalLayout>
 						<HorizontalLayout childvalign="left" height="24">
@@ -313,7 +322,7 @@
 			<!--mix setting page-->
 			<VerticalLayout name="mix_tab_layout" childpadding="10">
 				<VerticalLayout height="20"/>
-				<GroupBox text="云端混流" padding="20,0,20,0" childpadding="20" bordercolor="#FF808080" bkcolor="#FFF0F0F0" bordersize="1" height="150">
+				<GroupBox text="云端混流" padding="20,0,20,0" childpadding="20" bordercolor="#FF808080" bkcolor="#FFF0F0F0" bordersize="1" height="170">
 				<HorizontalLayout inset="28,0,0,0" childvalign="left" height="30">
 					<Label text="开启云端混流（转码）" font="2" width="130" align="left" valign="center" textcolor="#FF000000" showhtml="true" padding="0,6,0,1"/>
 					<VerticalLayout width="20"/>
@@ -327,6 +336,14 @@
 					<Option name="mix_temp_pure_audio" group="mixtemptyle" text="纯音频" style="radio_style" width="0" autocalcwidth="true"/>
 					<Option name="mix_temp_preset" group="mixtemptyle" text="预设" style="radio_style" width="0" autocalcwidth="true"/>
 					<Option name="mix_temp_screen_share" group="mixtemptyle" text="录屏演示" style="radio_style" width="0" autocalcwidth="true"/>
+				</HorizontalLayout>
+				<HorizontalLayout inset="28,0,0,0" visible="false" name="custom_mixid_container" childvalign="left" height="24">
+					<Label text="自定义混流ID" font="2" width="100" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,3,0,1"/>
+					<VerticalLayout width="10"/>
+					<Edit name="edit_mix_streamid" text="" height="24" font="2" align="center" textpadding="20,0,20,0" tipvalue="输入StreamID" tipvaluecolor="#FF808080" tipvaluealign="center" normalimage="res='login/edit_normal.png' corner='6,6,6,6'" focusedimage="res='login/edit_focus.png' corner='6,6,6,6'"/>
+					<VerticalLayout width="20"/>
+					<Button name="btn_update_mix_streamid" text="更新" textcolor="#FF000000" textpadding="6,0,6,0" style="btn_style" width="60" height="30" />
+					<VerticalLayout width="20"/>
 				</HorizontalLayout>
 				</GroupBox>
 			</VerticalLayout>

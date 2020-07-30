@@ -169,7 +169,21 @@ namespace TRTCCSharpDemo
             for (uint i = 0; i < mScreenList.getCount(); i++)
             {
                 TRTCScreenCaptureSourceInfo info = mScreenList.getSourceInfo(i);
-                if (this.screenListView.SelectedItems[0].Text.Equals(mScreenList.getSourceInfo(i).sourceName))
+
+                string name = this.screenListView.SelectedItems[0].Text;
+
+                if (this.screenListView.SelectedItems[0].Text.Equals("显示器-1"))
+                    name = "Screen1";
+                else if (this.screenListView.SelectedItems[0].Text.Equals("显示器-2"))
+                    name = "Screen2";
+                else if (this.screenListView.SelectedItems[0].Text.Equals("显示器-3"))
+                    name = "Screen3";
+                else if (this.screenListView.SelectedItems[0].Text.Equals("显示器-4"))
+                    name = "Screen4";
+                else if (this.screenListView.SelectedItems[0].Text.Equals("显示器-5"))
+                    name = "Screen5";
+
+                if (name.Equals(mScreenList.getSourceInfo(i).sourceName))
                 {
                     sourceinfo = info;
                     break;

@@ -38,6 +38,8 @@ public: //overwrite
 public: 
     void exitRoom();
     void enterRoom();
+    //切换观看模式
+    void switchLivePlayerMode(LivePlayerSourceType emLivePlayerSourceType);
 public:
     //消息响应函数：
     void onEnterRoom(int result);     //进房成功响应
@@ -63,6 +65,7 @@ private:
     void onLocalAudioPublishChange(std::wstring userId, int streamType);
     void onRemoteVideoSubscribeChange(std::wstring userId, int streamType);
     void onRemoteAudioSubscribeChange(std::wstring userId, int streamType);
+    void InternalEnterRoom();
     //void updateMixTranscodingConfig();      //更新混流信息
 public:
     CPaintManagerUI& getPaintManagerUI();

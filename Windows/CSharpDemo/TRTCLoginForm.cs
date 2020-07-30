@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
-using System.IO;
+using TRTCCSharpDemo.Common;
 using ManageLiteAV;
 
 /// <summary>
@@ -46,7 +46,7 @@ namespace TRTCCSharpDemo
             this.userTextBox.Text = DataManager.GetInstance().userId;
             this.roomTextBox.Text = DataManager.GetInstance().roomId.ToString();
 
-            if (IsTestEnv())
+            if (Util.IsTestEnv())
             {
                 this.formalEnvRadioBtn.Visible = true;
                 this.testEnvRadioBtn.Visible = true;
@@ -201,10 +201,6 @@ namespace TRTCCSharpDemo
         /// <summary>
         /// 主要用于本地调试环境时，存在该文件时启动测试功能
         /// </summary>
-        private bool IsTestEnv()
-        {
-            string path = Environment.CurrentDirectory + "\\ShowTestEnv.txt";
-            return File.Exists(path);
-        }
+        
     }
 }

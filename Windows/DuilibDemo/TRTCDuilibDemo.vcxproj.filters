@@ -118,6 +118,9 @@
     </ClCompile>
     <ClCompile Include="AudioEffectViewController.cpp" />
     <ClCompile Include="AudioEffectOldViewController.cpp" />
+    <ClCompile Include="utils\BugReport.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -239,6 +242,12 @@
     </ClInclude>
     <ClInclude Include="AudioEffectViewController.h" />
     <ClInclude Include="AudioEffectOldViewController.h" />
+    <ClInclude Include="utils\BugReport.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\crash_agent.h">
+      <Filter>utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="res">

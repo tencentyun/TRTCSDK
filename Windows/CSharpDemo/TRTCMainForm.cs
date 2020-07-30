@@ -25,7 +25,7 @@ using System.Runtime.InteropServices;
 
 namespace TRTCCSharpDemo
 {
-    public partial class TRTCMainForm : Form, ITRTCCloudCallback, ITRTCLogCallback
+    public partial class TRTCMainForm : Form, ITRTCCloudCallback, ITRTCLogCallback,ITRTCAudioFrameCallback
     {
         private ITRTCCloud mTRTCCloud;
 
@@ -38,7 +38,6 @@ namespace TRTCCSharpDemo
         private string mUserId;          // 本地用户 Id
         private uint mRoomId;            // 房间 Id
 
-        private bool mIsEnterSuccess;    // 是否进房成功
         private bool mIsSetScreenSuccess;   // 是否设置屏幕参数成功
 
         private List<UserVideoMeta> mMixStreamVideoMeta;   //混流信息
@@ -56,11 +55,13 @@ namespace TRTCCSharpDemo
         // 窗口实例
         private TRTCLoginForm mLoginForm;
         private TRTCSettingForm mSettingForm;
+        private VedioSettingForm mVedioSettingForm;
+        private AudioSettingForm mAudioSettingForm;
+        private OtherSettingForm mOtherSettingForm;
         private TRTCBeautyForm mBeautyForm;
-        private TRTCDeviceTestForm mDeviceTestForm;
-        private TRTCCustomCaptureForm mCustomCaptureForm;
+        private AudioEffectOldForm mAudioEffectOldForm;
+        private AudioEffectForm mAudioEffectForm;
         private TRTCConnectionForm mConnectionForm;
-        private TRTCDeviceForm mDeviceForm;
         private ToastForm mToastForm;
 
         // 检查是否第一次退出房间
@@ -134,7 +135,7 @@ namespace TRTCCSharpDemo
             TXLiteAVVideoView videoView = new TXLiteAVVideoView();
             videoView.RegEngine(userId, streamType, mTRTCCloud, local);
             videoView.SetRenderMode(DataManager.GetInstance().videoFillMode);
-            videoView.Size = new Size(320, 290);
+            videoView.Size = new Size(parent.Width, parent.Height);
             parent.Controls.Add(videoView);
             string key = String.Format("{0}_{1}", userId, streamType);
             mVideoViews.Add(key, videoView);
@@ -169,10 +170,6 @@ namespace TRTCCSharpDemo
                 mCameraVideoHandle = this.localVideoPanel.Handle;
             else if (mRenderMode == 2)
                 mCameraVideoHandle = IntPtr.Zero;
-
-            // 注意：系统混音功能暂时不支持64位系统
-            if (Util.IsSys64bit())
-                this.systemAudioCheckBox.Visible = false;
         }
 
         /// <summary>
@@ -183,14 +180,12 @@ namespace TRTCCSharpDemo
             // 判断是否开启本地和远程镜像，用户可以单独分开使用
             if (DataManager.GetInstance().isLocalVideoMirror && DataManager.GetInstance().isRemoteVideoMirror)
             {
-                this.mirrorCheckBox.Checked = true;
-                OnMirrorCheckBoxClick(null, null);
+                Mirror(true);
             }
             // 判断是否开启音量提示功能
             if (DataManager.GetInstance().isShowVolume)
             {
-                this.voiceCheckBox.Checked = true;
-                OnVoiceCheckBoxClick(null, null);
+                VoicePrompt(true);
             }
             // 判断是否开启远端混流功能
             if (DataManager.GetInstance().isMixTranscoding)
@@ -303,7 +298,7 @@ namespace TRTCCSharpDemo
             mTRTCCloud.setLocalViewMirror(DataManager.GetInstance().isLocalVideoMirror);
             mTRTCCloud.setLocalViewRotation(DataManager.GetInstance().videoRotation);
             mTRTCCloud.setVideoEncoderMirror(DataManager.GetInstance().isRemoteVideoMirror);
-
+            mTRTCCloud.setAudioQuality(DataManager.GetInstance().AudioQuality);
             // 设置美颜
             if (DataManager.GetInstance().isOpenBeauty)
                 mTRTCCloud.setBeautyStyle(DataManager.GetInstance().beautyStyle, DataManager.GetInstance().beauty,
@@ -387,7 +382,7 @@ namespace TRTCCSharpDemo
                     if (result >= 0)
                     {
                         // 进房成功
-                        mIsEnterSuccess = true;
+                        DataManager.GetInstance().enterRoom = true;
                         // 确保 SDK 内部的音频和视频采集是开启的。
                         mTRTCCloud.muteLocalVideo(false);
                         mTRTCCloud.muteLocalAudio(false);
@@ -397,7 +392,7 @@ namespace TRTCCSharpDemo
                     else
                     {
                         // 进房失败
-                        mIsEnterSuccess = false;
+                        DataManager.GetInstance().enterRoom = false;
                         ShowMessage("进房失败，请重试");
                     }
                 }));
@@ -466,7 +461,7 @@ namespace TRTCCSharpDemo
         /// </summary>
         public void onExitRoom(int reason)
         {
-            mIsEnterSuccess = false;
+            DataManager.GetInstance().enterRoom = false;
             this.Close();
         }
 
@@ -476,7 +471,7 @@ namespace TRTCCSharpDemo
         private void Uninit()
         {
             // 如果开启了自定义采集和渲染，则关闭功能，清理资源
-            if (this.customCaptureCheckBox.Checked)
+            if (DataManager.GetInstance().isLocalVideoMirror && DataManager.GetInstance().isRemoteVideoMirror)
             {
                 mTRTCCloud.enableCustomVideoCapture(false);
                 mTRTCCloud.enableCustomAudioCapture(false);
@@ -507,12 +502,7 @@ namespace TRTCCSharpDemo
             mMixStreamVideoMeta.Clear();
             mRemoteUsers.Clear();
             mPKUsers.Clear();
-            // 注意：系统混音功能暂时不支持64位系统
-            if (!Util.IsSys64bit())
-            {
-                if (this.systemAudioCheckBox.Checked)
-                    mTRTCCloud.stopSystemAudioLoopback();
-            }
+           
             if (this.screenShareCheckBox.Checked)
             {
                 mTRTCCloud.stopScreenCapture();
@@ -530,6 +520,7 @@ namespace TRTCCSharpDemo
         public void onUserAudioAvailable(string userId, bool available)
         {
             Log.I(String.Format("onUserAudioAvailable : userId = {0}, available = {1}", userId, available));
+            mTRTCCloud.setAudioFrameCallback(this);
         }
 
         /// <summary>
@@ -808,7 +799,7 @@ namespace TRTCCSharpDemo
                                     break;
                                 }
                             }
-                            if (this.voiceCheckBox.Checked)
+                            if (DataManager.GetInstance().isShowVolume)
                                 SetRemoteVoiceVisable(pos, true);
                         }
                     }
@@ -827,7 +818,7 @@ namespace TRTCCSharpDemo
                                     RemoveCustomVideoView(panel, userId, TRTCVideoStreamType.TRTCVideoStreamTypeBig);
                             }
                             // 关闭远端音量提示
-                            if (this.voiceCheckBox.Checked)
+                            if (DataManager.GetInstance().isShowVolume)
                                 SetRemoteVoiceVisable(pos, false);
                             RemoveVideoMeta(userId, TRTCVideoStreamType.TRTCVideoStreamTypeBig);
                             UpdateMixTranCodeInfo();
@@ -897,21 +888,23 @@ namespace TRTCCSharpDemo
             mIsFirstExitRoom = true;
             if (mBeautyForm != null)
                 mBeautyForm.Close();
-            if (mDeviceTestForm != null)
-                mDeviceTestForm.Close();
+            if (mAudioEffectOldForm != null)
+                mAudioEffectOldForm.Close();
+            if (mAudioEffectForm != null)
+                mAudioEffectForm.Close();
             if (mSettingForm != null)
                 mSettingForm.Close();
+            if (mVedioSettingForm != null)
+                mVedioSettingForm.Close();
+            if (mAudioSettingForm != null)
+                mAudioSettingForm.Close();
+            if (mOtherSettingForm != null)
+                mOtherSettingForm.Close();
             if (mConnectionForm != null)
                 mConnectionForm.Close();
-            if (mCustomCaptureForm != null)
-                mCustomCaptureForm.Close();
-            if (mDeviceTestForm != null)
-                mDeviceTestForm.Close();
-            if (mDeviceForm != null)
-                mDeviceForm.Close();
             Uninit();
             // 如果进房成功，需要正常退房再关闭窗口，防止资源未清理和释放完毕
-            if (mIsEnterSuccess)
+            if (DataManager.GetInstance().enterRoom)
                 mTRTCCloud.exitRoom();
             else
                 onExitRoom(0);
@@ -930,10 +923,18 @@ namespace TRTCCSharpDemo
         /// <summary>
         /// 打开仪表盘信息（自定义渲染下由于不是使用真窗口渲染，所以暂时无法显示仪表盘信息）
         /// </summary>
-        private void OnLogLabelClick(object sender, EventArgs e)
+        private void OnLogCheckBoxClick(object sender, EventArgs e)
         {
             mLogLevel++;
             int style = mLogLevel % 3;
+            if(style > 0)
+            {
+                this.logCheckBox.Checked = true;
+            }
+            else
+            {
+                this.logCheckBox.Checked = false;
+            }
             if (mTRTCCloud != null)
             {
                 mTRTCCloud.showDebugView(style);
@@ -1022,7 +1023,7 @@ namespace TRTCCSharpDemo
 
         private void OnScreenShareCheckBoxClick(object sender, EventArgs e)
         {
-            if (!mIsEnterSuccess)
+            if (!DataManager.GetInstance().enterRoom)
             {
                 ShowMessage("进房失败，请重试");
                 this.screenShareCheckBox.Checked = false;
@@ -1233,7 +1234,7 @@ namespace TRTCCSharpDemo
 
         private void OnMuteAudioCheckBoxClick(object sender, EventArgs e)
         {
-            if (!mIsEnterSuccess)
+            if (!DataManager.GetInstance().enterRoom)
             {
                 ShowMessage("进房失败，请重试");
                 this.muteAudioCheckBox.Checked = false;
@@ -1253,7 +1254,7 @@ namespace TRTCCSharpDemo
 
         private void OnMuteVideoCheckBoxClick(object sender, EventArgs e)
         {
-            if (!mIsEnterSuccess)
+            if (!DataManager.GetInstance().enterRoom)
             {
                 ShowMessage("进房失败，请重试");
                 this.muteVideoCheckBox.Checked = false;
@@ -1279,10 +1280,10 @@ namespace TRTCCSharpDemo
             }
         }
 
-        private void OnMirrorCheckBoxClick(object sender, EventArgs e)
+        private void Mirror(bool isMirror)
         {
             // 这里同时同步本地和远端的镜像模式，用户可自行拆分功能
-            if (this.mirrorCheckBox.Checked)
+            if (isMirror)
             {
                 DataManager.GetInstance().isLocalVideoMirror = true;
                 DataManager.GetInstance().isRemoteVideoMirror = true;
@@ -1298,12 +1299,6 @@ namespace TRTCCSharpDemo
             }
         }
 
-        private void OnDeviceLabelClick(object sender, EventArgs e)
-        {
-            if (mDeviceForm == null)
-                mDeviceForm = new TRTCDeviceForm(this);
-            mDeviceForm.ShowDialog();
-        }
 
         private void OnShareUrlLabelClick(object sender, EventArgs e)
         {
@@ -1323,16 +1318,28 @@ namespace TRTCCSharpDemo
             ShowMessage("播放地址：（已复制到剪切板）\n" + shareUrl);
         }
 
-        private void OnTestDeviceLabelClick(object sender, EventArgs e)
+        private void OnBgmCheckBoxClick(object sender, EventArgs e)
         {
-            if (mDeviceTestForm == null)
-                mDeviceTestForm = new TRTCDeviceTestForm();
-            mDeviceTestForm.ShowDialog();
+            if(Util.IsTestEnv())
+            {
+                if (mAudioEffectOldForm == null)
+                    mAudioEffectOldForm = new AudioEffectOldForm();
+                mAudioEffectOldForm.ShowDialog();
+                this.bgmCheckBox.Checked = false;
+            }
+            else
+            {
+                if (mAudioEffectForm == null)
+                    mAudioEffectForm = new AudioEffectForm();
+                mAudioEffectForm.ShowDialog();
+                this.bgmCheckBox.Checked = false;
+            }
+           
         }
 
         private void OnBeautyLabelClick(object sender, EventArgs e)
         {
-            if (!mIsEnterSuccess)
+            if (!DataManager.GetInstance().enterRoom)
             {
                 ShowMessage("进房失败，请重试");
                 return;
@@ -1340,51 +1347,6 @@ namespace TRTCCSharpDemo
             if (mBeautyForm == null)
                 mBeautyForm = new TRTCBeautyForm();
             mBeautyForm.ShowDialog();
-        }
-
-        private void OnSystemAudioCheckBoxClick(object sender, EventArgs e)
-        {
-            // 注意：系统混音功能暂时不支持64位系统
-            if (Util.IsSys64bit()) return;
-            if (!mIsEnterSuccess)
-            {
-                ShowMessage("进房失败，请重试");
-                this.systemAudioCheckBox.Checked = false;
-                return;
-            }
-            if (this.systemAudioCheckBox.Checked)
-            {
-                // 这里直接采集操作系统的播放声音，如需采集个别软件的声音请填写对应 exe 的路径。
-                mTRTCCloud.startSystemAudioLoopback(null);
-            }
-            else
-            {
-                mTRTCCloud.stopSystemAudioLoopback();
-            }
-        }
-
-        private void OnCustomCaptureCheckBoxClick(object sender, EventArgs e)
-        {
-            if (!mIsEnterSuccess)
-            {
-                ShowMessage("进房失败，请重试");
-                this.customCaptureCheckBox.Checked = false;
-                return;
-            }
-            if (this.customCaptureCheckBox.Checked)
-            {
-                if (mCustomCaptureForm == null)
-                    mCustomCaptureForm = new TRTCCustomCaptureForm(this);
-                mCustomCaptureForm.ShowDialog();
-            }
-            else
-            {
-                if (mCustomCaptureForm != null)
-                {
-                    mCustomCaptureForm.Close();
-                    mCustomCaptureForm = null;
-                }
-            }
         }
 
         /// <summary>
@@ -1440,9 +1402,9 @@ namespace TRTCCSharpDemo
                 this.remoteVoiceProgressBar5.Value = volume;
         }
 
-        private void OnVoiceCheckBoxClick(object sender, EventArgs e)
+        public void VoicePrompt(bool bIsPrompt)
         {
-            if (this.voiceCheckBox.Checked)
+            if (bIsPrompt)
             {
                 // 开启音量提示
                 DataManager.GetInstance().isShowVolume = true;
@@ -1550,8 +1512,9 @@ namespace TRTCCSharpDemo
                 {
                     RefreshSpeakerDevice(deviceId, state);
                 }
-                if (mDeviceForm != null)
-                    mDeviceForm.OnDeviceChange(deviceId, type, state);
+                if (mAudioSettingForm != null)
+                    mAudioSettingForm.OnDeviceChange(deviceId, type, state);
+
             }));
         }
 
@@ -1688,7 +1651,7 @@ namespace TRTCCSharpDemo
 
         private void OnConnectRoomCheckBoxClick(object sender, EventArgs e)
         {
-            if (!mIsEnterSuccess)
+            if (!DataManager.GetInstance().enterRoom)
             {
                 ShowMessage("进房失败，请重试");
                 return;
@@ -1752,8 +1715,8 @@ namespace TRTCCSharpDemo
             if (this.IsHandleCreated)
                 this.BeginInvoke(new Action(() =>
                 {
-                    if (mDeviceTestForm != null)
-                        mDeviceTestForm.OnPlayBGMComplete(errCode);
+                    if (mAudioEffectOldForm != null)
+                        mAudioEffectOldForm.OnPlayBGMComplete(errCode);
                 }));
         }
 
@@ -1815,8 +1778,8 @@ namespace TRTCCSharpDemo
             if (this.IsHandleCreated)
                 this.BeginInvoke(new Action(() =>
                 {
-                    if (mDeviceTestForm != null)
-                        mDeviceTestForm.onAudioEffectFinished(effectId, code);
+                    if (mAudioEffectOldForm != null)
+                        mAudioEffectOldForm.onAudioEffectFinished(effectId, code);
                 }));
         }
 
@@ -1887,8 +1850,8 @@ namespace TRTCCSharpDemo
             if (this.IsHandleCreated)
                 this.BeginInvoke(new Action(() =>
                 {
-                    if (mDeviceTestForm != null)
-                        mDeviceTestForm.OnTestMicVolume(volume);
+                    if (mAudioSettingForm != null)
+                        mAudioSettingForm.OnTestMicVolume(volume);
                 }));
         }
 
@@ -1900,8 +1863,8 @@ namespace TRTCCSharpDemo
             if (this.IsHandleCreated)
                 this.BeginInvoke(new Action(() =>
                 {
-                    if (mDeviceTestForm != null)
-                        mDeviceTestForm.OnTestSpeakerVolume(volume);
+                    if (mAudioSettingForm != null)
+                        mAudioSettingForm.OnTestSpeakerVolume(volume);
                 }));
         }
 
@@ -1912,7 +1875,7 @@ namespace TRTCCSharpDemo
             {
                 if (mTRTCCloud != null)
                 {
-                    mTRTCCloud.startScreenCapture(IntPtr.Zero);
+                    mTRTCCloud.startScreenCapture(IntPtr.Zero, TRTCVideoStreamType.TRTCVideoStreamTypeSub, null);
                     this.Invoke(new Action(() =>
                     {
                         if (mToastForm == null)
@@ -1933,8 +1896,8 @@ namespace TRTCCSharpDemo
         /// </summary>
         private void OnAudioTimerEvent(object sender, ElapsedEventArgs e)
         {
-            if (mCustomCaptureForm != null && mTRTCCloud != null)
-                mCustomCaptureForm.SendCustomAudioFrame();
+            if (mOtherSettingForm != null && mTRTCCloud != null)
+                mOtherSettingForm.SendCustomAudioFrame();
         }
 
         /// <summary>
@@ -1942,8 +1905,8 @@ namespace TRTCCSharpDemo
         /// </summary>
         public void OnVideoTimerEvent(object sender, ElapsedEventArgs e)
         {
-            if (mCustomCaptureForm != null && mTRTCCloud != null)
-                mCustomCaptureForm.SendCustomVideoFrame();
+            if (mOtherSettingForm != null && mTRTCCloud != null)
+                mOtherSettingForm.SendCustomVideoFrame();
         }
 
         public void OnCustomCaptureAudioCallback(bool stop)
@@ -1990,9 +1953,40 @@ namespace TRTCCSharpDemo
             }
         }
 
-        public void OnCustomCaptureEnabled(bool enabled)
+        public void onCapturedAudioFrame(TRTCAudioFrame frame)
         {
-            this.customCaptureCheckBox.Checked = enabled;
+            //throw new NotImplementedException();
+        }
+
+        public void onPlayAudioFrame(TRTCAudioFrame frame, string userId)
+        {
+            Log.I(String.Format("onPlayAudioFrame : userId = {0}", userId));
+        }
+
+        public void onMixedPlayAudioFrame(TRTCAudioFrame frame)
+        {
+            //throw new NotImplementedException();
+        }
+
+        private void vedioSettingLabel_Click(object sender, EventArgs e)
+        {
+            if (mVedioSettingForm == null)
+                mVedioSettingForm = new VedioSettingForm(this);
+            mVedioSettingForm.ShowDialog();
+        }
+
+        private void audioSettingLabel_Click(object sender, EventArgs e)
+        {
+            if (mAudioSettingForm == null)
+                mAudioSettingForm = new AudioSettingForm(this);
+            mAudioSettingForm.ShowDialog();
+        }
+
+        private void otherSettingLabel_Click(object sender, EventArgs e)
+        {
+            if (mOtherSettingForm == null)
+                mOtherSettingForm = new OtherSettingForm(this);
+            mOtherSettingForm.ShowDialog();
         }
     }
 }

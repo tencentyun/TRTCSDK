@@ -62,3 +62,4 @@
 #define WM_USER_SET_SHOW_VOICEVOLUME        WM_USER_UI_MSG_ID + 2    //是否显示音量值
 #define WM_USER_VIEW_BTN_CLICK              WM_USER_UI_MSG_ID + 3    //View的按钮被点击了。
 #define WM_USER_CMD_RoleChange              WM_USER_UI_MSG_ID + 6     //用户角色变化了
+#define WM_USER_CMD_LiveTypeChange          WM_USER_UI_MSG_ID + 7     //观众进房直播数据源变化了

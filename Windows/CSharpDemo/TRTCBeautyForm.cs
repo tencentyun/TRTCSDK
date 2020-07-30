@@ -151,12 +151,12 @@ namespace TRTCCSharpDemo
 
         private void OnConfirmBtnClick(object sender, EventArgs e)
         {
-            this.Hide();
+            this.Close();
         }
 
         private void OnExitPicBoxClick(object sender, EventArgs e)
         {
-            this.Hide();
+            this.Close();
         }
     }
 }

@@ -122,6 +122,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AudioEffectForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AudioEffectForm.Designer.cs">
+      <DependentUpon>AudioEffectForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AudioSettingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AudioSettingForm.Designer.cs">
+      <DependentUpon>AudioSettingForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Common\Log.cs" />
     <Compile Include="Common\Util.cs" />
     <Compile Include="DataManager.cs" />
@@ -130,6 +142,12 @@
     </Compile>
     <Compile Include="MessageForm.designer.cs">
       <DependentUpon>MessageForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OtherSettingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OtherSettingForm.Designer.cs">
+      <DependentUpon>OtherSettingForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -158,23 +176,11 @@
     <Compile Include="TRTCConnectionForm.Designer.cs">
       <DependentUpon>TRTCConnectionForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="TRTCCustomCaptureForm.cs">
+    <Compile Include="AudioEffectOldForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TRTCCustomCaptureForm.designer.cs">
-      <DependentUpon>TRTCCustomCaptureForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="TRTCDeviceForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TRTCDeviceForm.designer.cs">
-      <DependentUpon>TRTCDeviceForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="TRTCDeviceTestForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TRTCDeviceTestForm.Designer.cs">
-      <DependentUpon>TRTCDeviceTestForm.cs</DependentUpon>
+    <Compile Include="AudioEffectOldForm.Designer.cs">
+      <DependentUpon>AudioEffectOldForm.cs</DependentUpon>
     </Compile>
     <Compile Include="TRTCLoginForm.cs">
       <SubType>Form</SubType>
@@ -203,6 +209,21 @@
     <Compile Include="TXLiteAVVideoView.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="VedioSettingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VedioSettingForm.Designer.cs">
+      <DependentUpon>VedioSettingForm.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="AudioEffectForm.resx">
+      <DependentUpon>AudioEffectForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AudioSettingForm.resx">
+      <DependentUpon>AudioSettingForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OtherSettingForm.resx">
+      <DependentUpon>OtherSettingForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MessageForm.resx">
       <DependentUpon>MessageForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -220,14 +241,8 @@
     <EmbeddedResource Include="TRTCConnectionForm.resx">
       <DependentUpon>TRTCConnectionForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TRTCCustomCaptureForm.resx">
-      <DependentUpon>TRTCCustomCaptureForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TRTCDeviceForm.resx">
-      <DependentUpon>TRTCDeviceForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TRTCDeviceTestForm.resx">
-      <DependentUpon>TRTCDeviceTestForm.cs</DependentUpon>
+    <EmbeddedResource Include="AudioEffectOldForm.resx">
+      <DependentUpon>AudioEffectOldForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TRTCLoginForm.resx">
       <DependentUpon>TRTCLoginForm.cs</DependentUpon>
@@ -240,6 +255,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="TRTCSettingForm.resx">
       <DependentUpon>TRTCSettingForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VedioSettingForm.resx">
+      <DependentUpon>VedioSettingForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -281,6 +299,18 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\trtcres\BGM.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\trtcres\clap.aac">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\trtcres\gift_sent.aac">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\trtcres\on_mic.aac">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\trtcskin\close_white.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

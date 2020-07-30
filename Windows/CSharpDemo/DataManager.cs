@@ -34,6 +34,7 @@ namespace TRTCCSharpDemo
         public const string INI_KEY_AUDIO_SPEAKER_VOLUME  = "INI_KEY_AUDIO_SPEAKER_VOLUME";
         public const string INI_KEY_AUDIO_SAMPLERATE      = "INI_KEY_AUDIO_SAMPLERATE";
         public const string INI_KEY_AUDIO_CHANNEL         = "INI_KEY_AUDIO_CHANNEL";
+        public const string INI_KEY_AUDIO_QUALITY         = "INI_KEY_AUDIO_QUALITY";
         // 美颜
         public const string INI_KEY_BEAUTY_OPEN           = "INI_KEY_BEAUTY_OPEN";
         public const string INI_KEY_BEAUTY_STYLE          = "INI_KEY_BEAUTY_STYLE";
@@ -135,11 +136,13 @@ namespace TRTCCSharpDemo
                 this.videoEncParams.resMode = TRTCVideoResolutionMode.TRTCVideoResolutionModeLandscape;
             else
                 this.videoEncParams.resMode = (TRTCVideoResolutionMode)int.Parse(param);
+
             param = storage.GetValue(INI_ROOT_KEY, INI_KEY_VIDEO_QUALITY);
             if (string.IsNullOrEmpty(param))
                 this.qosParams.preference = TRTCVideoQosPreference.TRTCVideoQosPreferenceClear;
             else 
                 this.qosParams.preference = (TRTCVideoQosPreference)int.Parse(param);
+
             param = storage.GetValue(INI_ROOT_KEY, INI_KEY_VIDEO_QUALITY_CONTROL);
             if (string.IsNullOrEmpty(param))
                 this.qosParams.controlMode = TRTCQosControlMode.TRTCQosControlModeServer;
@@ -223,6 +226,14 @@ namespace TRTCCSharpDemo
             else
                 this.isShowVolume = bool.Parse(param);
 
+
+            param = storage.GetValue(INI_ROOT_KEY, INI_KEY_AUDIO_QUALITY);
+            if (string.IsNullOrEmpty(param))
+                this.AudioQuality = TRTCAudioQuality.TRTCAudioQualityDefault;
+            else
+                this.AudioQuality = (TRTCAudioQuality)int.Parse(param);
+
+
             // 测试参数配置
             param = storage.GetValue(INI_ROOT_KEY, INI_KEY_SET_NETENV_STYLE);
             if (string.IsNullOrEmpty(param))
@@ -241,6 +252,7 @@ namespace TRTCCSharpDemo
                 this.isMixTranscoding = false;
             else
                 this.isMixTranscoding = bool.Parse(param);
+
         }
 
         public void Uninit()
@@ -276,6 +288,7 @@ namespace TRTCCSharpDemo
             storage.SetValue(INI_ROOT_KEY, INI_KEY_AUDIO_MIC_VOLUME, micVolume.ToString());
             storage.SetValue(INI_ROOT_KEY, INI_KEY_AUDIO_SPEAKER_VOLUME, speakerVolume.ToString());
             storage.SetValue(INI_ROOT_KEY, INI_KEY_SHOW_AUDIO_VOLUME, isShowVolume.ToString());
+            storage.SetValue(INI_ROOT_KEY, INI_KEY_AUDIO_QUALITY, ((int)AudioQuality).ToString());
 
             storage.SetValue(INI_ROOT_KEY, INI_KEY_SET_NETENV_STYLE, testEnv.ToString());
             storage.SetValue(INI_ROOT_KEY, INI_KEY_ROOMCALL_STYLE, pureAudioStyle.ToString());
@@ -308,6 +321,8 @@ namespace TRTCCSharpDemo
 
         // 该字段只作用于直播模式
         public TRTCRoleType roleType { get; set; }
+
+        public bool enterRoom { get; set; }
         #endregion
 
         #region 视频相关
@@ -338,6 +353,7 @@ namespace TRTCCSharpDemo
         public uint speakerVolume { get; set; }
 
         public bool isShowVolume { get; set; }
+        public TRTCAudioQuality AudioQuality { get; set; }
         #endregion
 
         #region 美颜相关

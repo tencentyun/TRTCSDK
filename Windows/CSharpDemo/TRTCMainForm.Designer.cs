@@ -31,15 +31,16 @@ namespace TRTCCSharpDemo
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TRTCMainForm));
             this.panel1 = new System.Windows.Forms.Panel();
+            this.otherSettingLabel = new System.Windows.Forms.Label();
+            this.vedioSettingLabel = new System.Windows.Forms.Label();
+            this.audioSettingLabel = new System.Windows.Forms.Label();
             this.beautyLabel = new System.Windows.Forms.Label();
-            this.testDeviceLabel = new System.Windows.Forms.Label();
-            this.deviceLabel = new System.Windows.Forms.Label();
-            this.logLabel = new System.Windows.Forms.Label();
             this.settingLabel = new System.Windows.Forms.Label();
             this.exitLabel = new System.Windows.Forms.Label();
             this.userLabel = new System.Windows.Forms.Label();
             this.roomLabel = new System.Windows.Forms.Label();
             this.logoPictureBox = new System.Windows.Forms.PictureBox();
+            this.logLabel = new System.Windows.Forms.Label();
             this.localUserLabel = new System.Windows.Forms.Label();
             this.remoteUserLabel1 = new System.Windows.Forms.Label();
             this.remoteUserLabel2 = new System.Windows.Forms.Label();
@@ -62,16 +63,14 @@ namespace TRTCCSharpDemo
             this.remoteVoiceProgressBar4 = new System.Windows.Forms.ProgressBar();
             this.remoteUserLabel5 = new System.Windows.Forms.Label();
             this.remoteVideoPanel5 = new System.Windows.Forms.Panel();
-            this.remoteVoiceProgressBar5 = new System.Windows.Forms.ProgressBar();
             this.remoteInfoLabel5 = new System.Windows.Forms.Label();
+            this.remoteVoiceProgressBar5 = new System.Windows.Forms.ProgressBar();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.voiceCheckBox = new System.Windows.Forms.CheckBox();
-            this.customCaptureCheckBox = new System.Windows.Forms.CheckBox();
+            this.bgmCheckBox = new System.Windows.Forms.CheckBox();
+            this.logCheckBox = new System.Windows.Forms.CheckBox();
             this.connectRoomCheckBox = new System.Windows.Forms.CheckBox();
-            this.systemAudioCheckBox = new System.Windows.Forms.CheckBox();
             this.shareUrlLabel = new System.Windows.Forms.Label();
             this.mixTransCodingCheckBox = new System.Windows.Forms.CheckBox();
-            this.mirrorCheckBox = new System.Windows.Forms.CheckBox();
             this.muteAudioCheckBox = new System.Windows.Forms.CheckBox();
             this.muteVideoCheckBox = new System.Windows.Forms.CheckBox();
             this.screenShareCheckBox = new System.Windows.Forms.CheckBox();
@@ -89,10 +88,10 @@ namespace TRTCCSharpDemo
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(38)))), ((int)(((byte)(38)))));
+            this.panel1.Controls.Add(this.otherSettingLabel);
+            this.panel1.Controls.Add(this.vedioSettingLabel);
+            this.panel1.Controls.Add(this.audioSettingLabel);
             this.panel1.Controls.Add(this.beautyLabel);
-            this.panel1.Controls.Add(this.testDeviceLabel);
-            this.panel1.Controls.Add(this.deviceLabel);
-            this.panel1.Controls.Add(this.logLabel);
             this.panel1.Controls.Add(this.settingLabel);
             this.panel1.Controls.Add(this.exitLabel);
             this.panel1.Controls.Add(this.userLabel);
@@ -107,6 +106,48 @@ namespace TRTCCSharpDemo
             this.panel1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.OnFormMouseMove);
             this.panel1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.OnFormMouseUp);
             // 
+            // otherSettingLabel
+            // 
+            this.otherSettingLabel.AutoSize = true;
+            this.otherSettingLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(38)))), ((int)(((byte)(38)))));
+            this.otherSettingLabel.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.otherSettingLabel.Font = new System.Drawing.Font("微软雅黑", 11F);
+            this.otherSettingLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(187)))), ((int)(((byte)(187)))));
+            this.otherSettingLabel.Location = new System.Drawing.Point(990, 16);
+            this.otherSettingLabel.Name = "otherSettingLabel";
+            this.otherSettingLabel.Size = new System.Drawing.Size(69, 20);
+            this.otherSettingLabel.TabIndex = 12;
+            this.otherSettingLabel.Text = "其他设置";
+            this.otherSettingLabel.Click += new System.EventHandler(this.otherSettingLabel_Click);
+            // 
+            // vedioSettingLabel
+            // 
+            this.vedioSettingLabel.AutoSize = true;
+            this.vedioSettingLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(38)))), ((int)(((byte)(38)))));
+            this.vedioSettingLabel.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.vedioSettingLabel.Font = new System.Drawing.Font("微软雅黑", 11F);
+            this.vedioSettingLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(187)))), ((int)(((byte)(187)))));
+            this.vedioSettingLabel.Location = new System.Drawing.Point(756, 16);
+            this.vedioSettingLabel.Name = "vedioSettingLabel";
+            this.vedioSettingLabel.Size = new System.Drawing.Size(69, 20);
+            this.vedioSettingLabel.TabIndex = 11;
+            this.vedioSettingLabel.Text = "视频设置";
+            this.vedioSettingLabel.Click += new System.EventHandler(this.vedioSettingLabel_Click);
+            // 
+            // audioSettingLabel
+            // 
+            this.audioSettingLabel.AutoSize = true;
+            this.audioSettingLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(38)))), ((int)(((byte)(38)))));
+            this.audioSettingLabel.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.audioSettingLabel.Font = new System.Drawing.Font("微软雅黑", 11F);
+            this.audioSettingLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(187)))), ((int)(((byte)(187)))));
+            this.audioSettingLabel.Location = new System.Drawing.Point(831, 16);
+            this.audioSettingLabel.Name = "audioSettingLabel";
+            this.audioSettingLabel.Size = new System.Drawing.Size(69, 20);
+            this.audioSettingLabel.TabIndex = 10;
+            this.audioSettingLabel.Text = "声音设置";
+            this.audioSettingLabel.Click += new System.EventHandler(this.audioSettingLabel_Click);
+            // 
             // beautyLabel
             // 
             this.beautyLabel.AutoSize = true;
@@ -114,54 +155,12 @@ namespace TRTCCSharpDemo
             this.beautyLabel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.beautyLabel.Font = new System.Drawing.Font("微软雅黑", 11F);
             this.beautyLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(187)))), ((int)(((byte)(187)))));
-            this.beautyLabel.Location = new System.Drawing.Point(746, 16);
+            this.beautyLabel.Location = new System.Drawing.Point(670, 16);
             this.beautyLabel.Name = "beautyLabel";
             this.beautyLabel.Size = new System.Drawing.Size(69, 20);
             this.beautyLabel.TabIndex = 9;
             this.beautyLabel.Text = "美颜设置";
             this.beautyLabel.Click += new System.EventHandler(this.OnBeautyLabelClick);
-            // 
-            // testDeviceLabel
-            // 
-            this.testDeviceLabel.AutoSize = true;
-            this.testDeviceLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(38)))), ((int)(((byte)(38)))));
-            this.testDeviceLabel.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.testDeviceLabel.Font = new System.Drawing.Font("微软雅黑", 11F);
-            this.testDeviceLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(187)))), ((int)(((byte)(187)))));
-            this.testDeviceLabel.Location = new System.Drawing.Point(828, 16);
-            this.testDeviceLabel.Name = "testDeviceLabel";
-            this.testDeviceLabel.Size = new System.Drawing.Size(69, 20);
-            this.testDeviceLabel.TabIndex = 8;
-            this.testDeviceLabel.Text = "设备测试";
-            this.testDeviceLabel.Click += new System.EventHandler(this.OnTestDeviceLabelClick);
-            // 
-            // deviceLabel
-            // 
-            this.deviceLabel.AutoSize = true;
-            this.deviceLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(38)))), ((int)(((byte)(38)))));
-            this.deviceLabel.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.deviceLabel.Font = new System.Drawing.Font("微软雅黑", 11F);
-            this.deviceLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(187)))), ((int)(((byte)(187)))));
-            this.deviceLabel.Location = new System.Drawing.Point(911, 16);
-            this.deviceLabel.Name = "deviceLabel";
-            this.deviceLabel.Size = new System.Drawing.Size(69, 20);
-            this.deviceLabel.TabIndex = 7;
-            this.deviceLabel.Text = "设备设置";
-            this.deviceLabel.Click += new System.EventHandler(this.OnDeviceLabelClick);
-            // 
-            // logLabel
-            // 
-            this.logLabel.AutoSize = true;
-            this.logLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(38)))), ((int)(((byte)(38)))));
-            this.logLabel.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.logLabel.Font = new System.Drawing.Font("微软雅黑", 11F);
-            this.logLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(187)))), ((int)(((byte)(187)))));
-            this.logLabel.Location = new System.Drawing.Point(676, 16);
-            this.logLabel.Name = "logLabel";
-            this.logLabel.Size = new System.Drawing.Size(54, 20);
-            this.logLabel.TabIndex = 6;
-            this.logLabel.Text = "仪表盘";
-            this.logLabel.Click += new System.EventHandler(this.OnLogLabelClick);
             // 
             // settingLabel
             // 
@@ -170,7 +169,7 @@ namespace TRTCCSharpDemo
             this.settingLabel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.settingLabel.Font = new System.Drawing.Font("微软雅黑", 11F);
             this.settingLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(187)))), ((int)(((byte)(187)))));
-            this.settingLabel.Location = new System.Drawing.Point(993, 16);
+            this.settingLabel.Location = new System.Drawing.Point(906, 16);
             this.settingLabel.Name = "settingLabel";
             this.settingLabel.Size = new System.Drawing.Size(69, 20);
             this.settingLabel.TabIndex = 5;
@@ -230,6 +229,13 @@ namespace TRTCCSharpDemo
             this.logoPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.logoPictureBox.TabIndex = 0;
             this.logoPictureBox.TabStop = false;
+            // 
+            // logLabel
+            // 
+            this.logLabel.Location = new System.Drawing.Point(0, 0);
+            this.logLabel.Name = "logLabel";
+            this.logLabel.Size = new System.Drawing.Size(100, 23);
+            this.logLabel.TabIndex = 17;
             // 
             // localUserLabel
             // 
@@ -460,16 +466,6 @@ namespace TRTCCSharpDemo
             this.remoteVideoPanel5.Size = new System.Drawing.Size(319, 289);
             this.remoteVideoPanel5.TabIndex = 13;
             // 
-            // remoteVoiceProgressBar5
-            // 
-            this.remoteVoiceProgressBar5.ForeColor = System.Drawing.Color.Green;
-            this.remoteVoiceProgressBar5.Location = new System.Drawing.Point(779, 716);
-            this.remoteVoiceProgressBar5.Margin = new System.Windows.Forms.Padding(0);
-            this.remoteVoiceProgressBar5.Name = "remoteVoiceProgressBar5";
-            this.remoteVoiceProgressBar5.Size = new System.Drawing.Size(320, 6);
-            this.remoteVoiceProgressBar5.TabIndex = 20;
-            this.remoteVoiceProgressBar5.Visible = false;
-            // 
             // remoteInfoLabel5
             // 
             this.remoteInfoLabel5.BackColor = System.Drawing.Color.Gainsboro;
@@ -483,75 +479,71 @@ namespace TRTCCSharpDemo
             this.remoteInfoLabel5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.remoteInfoLabel5.Visible = false;
             // 
+            // remoteVoiceProgressBar5
+            // 
+            this.remoteVoiceProgressBar5.ForeColor = System.Drawing.Color.Green;
+            this.remoteVoiceProgressBar5.Location = new System.Drawing.Point(779, 716);
+            this.remoteVoiceProgressBar5.Margin = new System.Windows.Forms.Padding(0);
+            this.remoteVoiceProgressBar5.Name = "remoteVoiceProgressBar5";
+            this.remoteVoiceProgressBar5.Size = new System.Drawing.Size(320, 6);
+            this.remoteVoiceProgressBar5.TabIndex = 20;
+            this.remoteVoiceProgressBar5.Visible = false;
+            // 
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(38)))), ((int)(((byte)(38)))));
-            this.panel2.Controls.Add(this.voiceCheckBox);
-            this.panel2.Controls.Add(this.customCaptureCheckBox);
+            this.panel2.Controls.Add(this.bgmCheckBox);
+            this.panel2.Controls.Add(this.logCheckBox);
             this.panel2.Controls.Add(this.connectRoomCheckBox);
-            this.panel2.Controls.Add(this.systemAudioCheckBox);
             this.panel2.Controls.Add(this.shareUrlLabel);
             this.panel2.Controls.Add(this.mixTransCodingCheckBox);
-            this.panel2.Controls.Add(this.mirrorCheckBox);
             this.panel2.Controls.Add(this.muteAudioCheckBox);
             this.panel2.Controls.Add(this.muteVideoCheckBox);
             this.panel2.Controls.Add(this.screenShareCheckBox);
+            this.panel2.Controls.Add(this.logLabel);
             this.panel2.Location = new System.Drawing.Point(0, 731);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(1127, 45);
             this.panel2.TabIndex = 14;
             // 
-            // voiceCheckBox
+            // bgmCheckBox
             // 
-            this.voiceCheckBox.AutoSize = true;
-            this.voiceCheckBox.Font = new System.Drawing.Font("微软雅黑", 11F);
-            this.voiceCheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(187)))), ((int)(((byte)(187)))));
-            this.voiceCheckBox.Location = new System.Drawing.Point(321, 11);
-            this.voiceCheckBox.Name = "voiceCheckBox";
-            this.voiceCheckBox.Size = new System.Drawing.Size(118, 24);
-            this.voiceCheckBox.TabIndex = 16;
-            this.voiceCheckBox.Text = "开启音量提示";
-            this.voiceCheckBox.UseVisualStyleBackColor = true;
-            this.voiceCheckBox.Click += new System.EventHandler(this.OnVoiceCheckBoxClick);
+            this.bgmCheckBox.AutoSize = true;
+            this.bgmCheckBox.Font = new System.Drawing.Font("微软雅黑", 11F);
+            this.bgmCheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(187)))), ((int)(((byte)(187)))));
+            this.bgmCheckBox.Location = new System.Drawing.Point(208, 12);
+            this.bgmCheckBox.Name = "bgmCheckBox";
+            this.bgmCheckBox.Size = new System.Drawing.Size(88, 24);
+            this.bgmCheckBox.TabIndex = 16;
+            this.bgmCheckBox.Text = "背景音乐";
+            this.bgmCheckBox.UseVisualStyleBackColor = true;
+            this.bgmCheckBox.Click += new System.EventHandler(this.OnBgmCheckBoxClick);
             // 
-            // customCaptureCheckBox
+            // logCheckBox
             // 
-            this.customCaptureCheckBox.AutoSize = true;
-            this.customCaptureCheckBox.Font = new System.Drawing.Font("微软雅黑", 11F);
-            this.customCaptureCheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(187)))), ((int)(((byte)(187)))));
-            this.customCaptureCheckBox.Location = new System.Drawing.Point(656, 11);
-            this.customCaptureCheckBox.Name = "customCaptureCheckBox";
-            this.customCaptureCheckBox.Size = new System.Drawing.Size(103, 24);
-            this.customCaptureCheckBox.TabIndex = 15;
-            this.customCaptureCheckBox.Text = "自定义采集";
-            this.customCaptureCheckBox.UseVisualStyleBackColor = true;
-            this.customCaptureCheckBox.Click += new System.EventHandler(this.OnCustomCaptureCheckBoxClick);
+            this.logCheckBox.AutoSize = true;
+            this.logCheckBox.Font = new System.Drawing.Font("微软雅黑", 11F);
+            this.logCheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(187)))), ((int)(((byte)(187)))));
+            this.logCheckBox.Location = new System.Drawing.Point(513, 11);
+            this.logCheckBox.Name = "logCheckBox";
+            this.logCheckBox.Size = new System.Drawing.Size(73, 24);
+            this.logCheckBox.TabIndex = 15;
+            this.logCheckBox.Text = "仪表盘";
+            this.logCheckBox.UseVisualStyleBackColor = true;
+            this.logCheckBox.Click += new System.EventHandler(this.OnLogCheckBoxClick);
             // 
             // connectRoomCheckBox
             // 
             this.connectRoomCheckBox.AutoSize = true;
             this.connectRoomCheckBox.Font = new System.Drawing.Font("微软雅黑", 11F);
             this.connectRoomCheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(187)))), ((int)(((byte)(187)))));
-            this.connectRoomCheckBox.Location = new System.Drawing.Point(552, 11);
+            this.connectRoomCheckBox.Location = new System.Drawing.Point(410, 12);
             this.connectRoomCheckBox.Name = "connectRoomCheckBox";
             this.connectRoomCheckBox.Size = new System.Drawing.Size(88, 24);
             this.connectRoomCheckBox.TabIndex = 14;
             this.connectRoomCheckBox.Text = "跨房通话";
             this.connectRoomCheckBox.UseVisualStyleBackColor = true;
             this.connectRoomCheckBox.Click += new System.EventHandler(this.OnConnectRoomCheckBoxClick);
-            // 
-            // systemAudioCheckBox
-            // 
-            this.systemAudioCheckBox.AutoSize = true;
-            this.systemAudioCheckBox.Font = new System.Drawing.Font("微软雅黑", 11F);
-            this.systemAudioCheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(187)))), ((int)(((byte)(187)))));
-            this.systemAudioCheckBox.Location = new System.Drawing.Point(775, 11);
-            this.systemAudioCheckBox.Name = "systemAudioCheckBox";
-            this.systemAudioCheckBox.Size = new System.Drawing.Size(88, 24);
-            this.systemAudioCheckBox.TabIndex = 13;
-            this.systemAudioCheckBox.Text = "系统混音";
-            this.systemAudioCheckBox.UseVisualStyleBackColor = true;
-            this.systemAudioCheckBox.Click += new System.EventHandler(this.OnSystemAudioCheckBoxClick);
             // 
             // shareUrlLabel
             // 
@@ -560,7 +552,7 @@ namespace TRTCCSharpDemo
             this.shareUrlLabel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.shareUrlLabel.Font = new System.Drawing.Font("微软雅黑", 11F, System.Drawing.FontStyle.Bold);
             this.shareUrlLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(187)))), ((int)(((byte)(187)))));
-            this.shareUrlLabel.Location = new System.Drawing.Point(1008, 10);
+            this.shareUrlLabel.Location = new System.Drawing.Point(731, 10);
             this.shareUrlLabel.Name = "shareUrlLabel";
             this.shareUrlLabel.Size = new System.Drawing.Size(105, 25);
             this.shareUrlLabel.TabIndex = 8;
@@ -573,26 +565,13 @@ namespace TRTCCSharpDemo
             this.mixTransCodingCheckBox.AutoSize = true;
             this.mixTransCodingCheckBox.Font = new System.Drawing.Font("微软雅黑", 11F);
             this.mixTransCodingCheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(187)))), ((int)(((byte)(187)))));
-            this.mixTransCodingCheckBox.Location = new System.Drawing.Point(880, 11);
+            this.mixTransCodingCheckBox.Location = new System.Drawing.Point(607, 12);
             this.mixTransCodingCheckBox.Name = "mixTransCodingCheckBox";
             this.mixTransCodingCheckBox.Size = new System.Drawing.Size(118, 24);
             this.mixTransCodingCheckBox.TabIndex = 12;
             this.mixTransCodingCheckBox.Text = "云端画面混合";
             this.mixTransCodingCheckBox.UseVisualStyleBackColor = true;
             this.mixTransCodingCheckBox.Click += new System.EventHandler(this.OnMixTransCodingCheckBoxClick);
-            // 
-            // mirrorCheckBox
-            // 
-            this.mirrorCheckBox.AutoSize = true;
-            this.mirrorCheckBox.Font = new System.Drawing.Font("微软雅黑", 11F);
-            this.mirrorCheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(187)))), ((int)(((byte)(187)))));
-            this.mirrorCheckBox.Location = new System.Drawing.Point(219, 11);
-            this.mirrorCheckBox.Name = "mirrorCheckBox";
-            this.mirrorCheckBox.Size = new System.Drawing.Size(88, 24);
-            this.mirrorCheckBox.TabIndex = 11;
-            this.mirrorCheckBox.Text = "开启镜像";
-            this.mirrorCheckBox.UseVisualStyleBackColor = true;
-            this.mirrorCheckBox.Click += new System.EventHandler(this.OnMirrorCheckBoxClick);
             // 
             // muteAudioCheckBox
             // 
@@ -625,7 +604,7 @@ namespace TRTCCSharpDemo
             this.screenShareCheckBox.AutoSize = true;
             this.screenShareCheckBox.Font = new System.Drawing.Font("微软雅黑", 11F);
             this.screenShareCheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(187)))), ((int)(((byte)(187)))));
-            this.screenShareCheckBox.Location = new System.Drawing.Point(451, 11);
+            this.screenShareCheckBox.Location = new System.Drawing.Point(302, 12);
             this.screenShareCheckBox.Name = "screenShareCheckBox";
             this.screenShareCheckBox.Size = new System.Drawing.Size(88, 24);
             this.screenShareCheckBox.TabIndex = 8;
@@ -635,8 +614,8 @@ namespace TRTCCSharpDemo
             // 
             // TRTCMainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(1127, 776);
             this.Controls.Add(this.remoteVoiceProgressBar5);
@@ -718,21 +697,20 @@ namespace TRTCCSharpDemo
         private System.Windows.Forms.Label localInfoLabel;
         private System.Windows.Forms.CheckBox muteVideoCheckBox;
         private System.Windows.Forms.CheckBox muteAudioCheckBox;
-        private System.Windows.Forms.CheckBox mirrorCheckBox;
-        private System.Windows.Forms.Label deviceLabel;
         private System.Windows.Forms.CheckBox mixTransCodingCheckBox;
         private System.Windows.Forms.Label shareUrlLabel;
-        private System.Windows.Forms.Label testDeviceLabel;
         private System.Windows.Forms.Label beautyLabel;
-        private System.Windows.Forms.CheckBox systemAudioCheckBox;
         private System.Windows.Forms.CheckBox connectRoomCheckBox;
-        private System.Windows.Forms.CheckBox customCaptureCheckBox;
         private System.Windows.Forms.ProgressBar localVoiceProgressBar;
         private System.Windows.Forms.ProgressBar remoteVoiceProgressBar1;
         private System.Windows.Forms.ProgressBar remoteVoiceProgressBar2;
         private System.Windows.Forms.ProgressBar remoteVoiceProgressBar3;
         private System.Windows.Forms.ProgressBar remoteVoiceProgressBar5;
         private System.Windows.Forms.ProgressBar remoteVoiceProgressBar4;
-        private System.Windows.Forms.CheckBox voiceCheckBox;
+        private System.Windows.Forms.Label otherSettingLabel;
+        private System.Windows.Forms.Label vedioSettingLabel;
+        private System.Windows.Forms.Label audioSettingLabel;
+        private System.Windows.Forms.CheckBox bgmCheckBox;
+        private System.Windows.Forms.CheckBox logCheckBox;
     }
 }

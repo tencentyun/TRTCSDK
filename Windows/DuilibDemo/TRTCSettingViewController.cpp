@@ -222,6 +222,10 @@ void TRTCSettingViewController::Notify(TNotifyUI & msg)
         }
         if (name.CompareNoCase(_T("role_anchor")) == 0) {
             CDataCenter::GetInstance()->m_roleType = TRTCRoleAnchor;
+            CHorizontalLayoutUI* pHLayout = static_cast<CHorizontalLayoutUI*>(m_pmUI.FindControl(_T("livetype")));
+            pHLayout->SetVisible(false);
+
+
             if (CDataCenter::GetInstance()->m_localInfo._bEnterRoom)
             {
                 TRTCCloudCore::GetInstance()->getTRTCCloud()->switchRole(CDataCenter::GetInstance()->m_roleType);
@@ -234,17 +238,66 @@ void TRTCSettingViewController::Notify(TNotifyUI & msg)
         }
         if (name.CompareNoCase(_T("role_audience")) == 0) {
             CDataCenter::GetInstance()->m_roleType = TRTCRoleAudience;
+            LocalUserInfo& _loginInfo = CDataCenter::GetInstance()->getLocalUserInfo();
+            if (_loginInfo._bEnterRoom)
+            {
+                CHorizontalLayoutUI* pHLayout = static_cast<CHorizontalLayoutUI*>(m_pmUI.FindControl(_T("livetype")));
+                pHLayout->SetVisible(true);
+
+                if (CDataCenter::GetInstance()->m_emLivePlayerSourceType == TRTC_RTC)
+                {
+                    COptionUI* pRTC = static_cast<COptionUI*>(m_pmUI.FindControl(_T("trtc_rtc")));
+                    pRTC->Selected(true);
+                }
+                else
+                {
+                    COptionUI* pCDN = static_cast<COptionUI*>(m_pmUI.FindControl(_T("trtc_cdn")));
+                    pCDN->Selected(true);
+                }
+            }
+           
             if (CDataCenter::GetInstance()->m_localInfo._bEnterRoom)
             {
                 TRTCCloudCore::GetInstance()->getTRTCCloud()->switchRole(CDataCenter::GetInstance()->m_roleType);
             }
-            LocalUserInfo& _loginInfo = CDataCenter::GetInstance()->getLocalUserInfo();
+
             if (_loginInfo._bEnterRoom&& is_init_windows_finished)
             {
                 ::PostMessage(m_parentHwnd, WM_USER_CMD_RoleChange, (WPARAM)CDataCenter::GetInstance()->m_roleType, 0);
             }
         }
-        
+        if (name.CompareNoCase(_T("trtc_rtc")) == 0) {
+           
+            LocalUserInfo& _loginInfo = CDataCenter::GetInstance()->getLocalUserInfo();
+            if (_loginInfo._bEnterRoom&& is_init_windows_finished)
+            {
+                COptionUI* pSceneCall = static_cast<COptionUI*>(m_pmUI.FindControl(_T("scene_call")));
+                pSceneCall->SetEnabled(true);
+                COptionUI* pAudioSceneCall = static_cast<COptionUI*>(m_pmUI.FindControl(_T("audio_scene_call")));
+                pAudioSceneCall->SetEnabled(true);
+                COptionUI* pAudioSceneLive = static_cast<COptionUI*>(m_pmUI.FindControl(_T("audio_scene_live")));
+                pAudioSceneLive->SetEnabled(true);
+                COptionUI* pRoleAnchor = static_cast<COptionUI*>(m_pmUI.FindControl(_T("role_anchor")));
+                pRoleAnchor->SetEnabled(true);
+                ::PostMessage(m_parentHwnd, WM_USER_CMD_LiveTypeChange, (WPARAM)TRTC_RTC, 0);
+            }
+        }
+        if (name.CompareNoCase(_T("trtc_cdn")) == 0) {
+         
+            LocalUserInfo& _loginInfo = CDataCenter::GetInstance()->getLocalUserInfo();
+            if (_loginInfo._bEnterRoom&& is_init_windows_finished)
+            {
+                COptionUI* pSceneCall = static_cast<COptionUI*>(m_pmUI.FindControl(_T("scene_call")));
+                pSceneCall->SetEnabled(false);
+                COptionUI* pAudioSceneCall = static_cast<COptionUI*>(m_pmUI.FindControl(_T("audio_scene_call")));
+                pAudioSceneCall->SetEnabled(false);
+                COptionUI* pAudioSceneLive = static_cast<COptionUI*>(m_pmUI.FindControl(_T("audio_scene_live")));
+                pAudioSceneLive->SetEnabled(false);
+                COptionUI* pRoleAnchor = static_cast<COptionUI*>(m_pmUI.FindControl(_T("role_anchor")));
+                pRoleAnchor->SetEnabled(false);
+                ::PostMessage(m_parentHwnd, WM_USER_CMD_LiveTypeChange, (WPARAM)TRTC_CDN, 0);
+            }
+        }
         if (name.CompareNoCase(_T("mix_temp_manual")) == 0) {
             CDataCenter::GetInstance()->m_mixTemplateID = TRTCTranscodingConfigMode_Manual;
         }
@@ -998,7 +1051,7 @@ void TRTCSettingViewController::NotifyMixTab(TNotifyUI & msg)
                 return;
             }
 
-            std::string  sourceStr = format("%d_%s_main",info._roomId,info._userId.c_str());
+            std::string  sourceStr = format("%d_%s_main",info._roomId,info._userId.c_str()); 
             //http ://3891.liveplay.myqcloud.com/live/3891_12acca9a50faeaf9f92c9c202eb9bb2d.flv
 
             BYTE fingerPrintStableMD5[MD5_RESULT_LEN] ={0};
@@ -1015,19 +1068,15 @@ void TRTCSettingViewController::NotifyMixTab(TNotifyUI & msg)
             std::transform(strMd5.begin(),strMd5.end(),strMd5.begin(),::tolower);
             std::string strStreamId = format("%d_%s",GenerateTestUserSig::BIZID, strMd5.c_str());
 
-            if(CDataCenter::GetInstance()->m_strCustomStreamId.empty() == false)
-            {
+            if(CDataCenter::GetInstance()->m_strCustomStreamId.empty() == false) {
                 strStreamId = CDataCenter::GetInstance()->m_strCustomStreamId;
             }
 
-            RemoteUserInfoList& remoteMetaInfo = CDataCenter::GetInstance()->m_remoteUser;
-            LocalUserInfo& localMetaInfo = CDataCenter::GetInstance()->getLocalUserInfo();
-            if(remoteMetaInfo.size() > 0 || localMetaInfo.publish_sub_video || (remoteMetaInfo.size() == 0 && CDataCenter::GetInstance()->m_bOpenAudioAndCanvasMix))
-            {
-                if (CDataCenter::GetInstance()->m_strMixStreamId.empty() == false)
-                    strStreamId = CDataCenter::GetInstance()->m_strMixStreamId;
+            if (CDataCenter::GetInstance()->m_strMixStreamId.empty() == false) {
+                strStreamId = CDataCenter::GetInstance()->m_strMixStreamId;
             }
-            std::wstring wstrStreamId = UTF82Wide(strStreamId);
+
+            std::wstring wstrStreamId = UTF82Wide(strStreamId); 
             std::wstring wstrUrl = format(L"播放地址: http://%d.liveplay.myqcloud.com/live/%s.flv 已经复制到剪切板",GenerateTestUserSig::BIZID,wstrStreamId.c_str());
             CMsgWnd::ShowMessageBox(GetHWND(),_T("TRTCDuilibDemo"),wstrUrl.c_str(),0xFFF08080);
 
@@ -1043,7 +1092,29 @@ void TRTCSettingViewController::NotifyMixTab(TNotifyUI & msg)
             ::EmptyClipboard(); // 清空剪贴板
             ::SetClipboardData(CF_TEXT,hGlobalMemory); // 将内存中的数据放置到剪贴板
             ::CloseClipboard(); // 关闭剪贴板
-        } 
+        }
+        else if(msg.pSender->GetName() == _T("btn_update_mix_streamid"))
+        {
+            CEditUI* pEdit = static_cast<CEditUI*>(m_pmUI.FindControl(_T("edit_mix_streamid")));
+            if(pEdit != nullptr)
+            {
+                std::wstring strId = pEdit->GetText();
+                if(!(strId.compare(L"") == 0))
+                {
+                    CDataCenter::GetInstance()->m_strMixStreamId = Wide2UTF8(strId);
+                } 
+                else
+                {
+                    CDataCenter::GetInstance()->m_strMixStreamId = "";
+                }
+                if(isCustomUploaderStreamIdValid(CDataCenter::GetInstance()->m_strMixStreamId) == false)
+                {
+                    CDataCenter::GetInstance()->m_strMixStreamId = "";
+                    MessageBox(0,L"valid stream id, must in a~z A~Z 0~9",L"error update",0);
+                }
+                TRTCCloudCore::GetInstance()->updateMixTranCodeInfo();
+            }
+        }
     }
 }
 
@@ -1920,12 +1991,11 @@ void TRTCSettingViewController::InitMixTab()
             pCdnMixVideo->Selected(true);
     }
 
-
     if(CDataCenter::GetInstance()->m_bOpenDemoTestConfig)
     {
-        COptionUI* pMixTab = static_cast<COptionUI*>(m_pmUI.FindControl(_T("mix_tab")));
-        if(pMixTab)
-            pMixTab->SetVisible(true);
+        CHorizontalLayoutUI* customMixId = static_cast<CHorizontalLayoutUI*>(m_pmUI.FindControl(_T("custom_mixid_container")));
+        if (customMixId)
+            customMixId->SetVisible(true);
     }
 }
 
@@ -2034,6 +2104,7 @@ void TRTCSettingViewController::UpdateCameraDevice()
 
             m_pVideoView->SetPause(false);
             TRTCCloudCore::GetInstance()->startPreview(true);
+            
             m_bStartLocalPreview = true;
         }
         else
@@ -2178,10 +2249,31 @@ void TRTCSettingViewController::updateRoleUi()
             if (roleType == TRTCRoleAnchor)
             {
                 pRoleAnchor->Selected(true);
+
+                CHorizontalLayoutUI* pHLayout = static_cast<CHorizontalLayoutUI*>(m_pmUI.FindControl(_T("livetype")));
+                pHLayout->SetVisible(false);
             }
             if (roleType == TRTCRoleAudience)
             {
                 pRoleAudience->Selected(true);
+                LocalUserInfo& _loginInfo = CDataCenter::GetInstance()->getLocalUserInfo();
+                if (_loginInfo._bEnterRoom&& is_init_windows_finished)
+                {
+                    CHorizontalLayoutUI* pHLayout = static_cast<CHorizontalLayoutUI*>(m_pmUI.FindControl(_T("livetype")));
+                    pHLayout->SetVisible(true);
+
+                    if (CDataCenter::GetInstance()->m_emLivePlayerSourceType == TRTC_RTC)
+                    {
+                        COptionUI* pRTC = static_cast<COptionUI*>(m_pmUI.FindControl(_T("trtc_rtc")));
+                        pRTC->Selected(true);
+                    }
+                    else
+                    {
+                        COptionUI* pCDN = static_cast<COptionUI*>(m_pmUI.FindControl(_T("trtc_cdn")));
+                        pCDN->Selected(true);
+                    }
+                }
+              
             }
         }
     }
@@ -2194,6 +2286,9 @@ void TRTCSettingViewController::updateRoleUi()
 
             pRoleAnchor->Selected(false);
             pRoleAudience->Selected(false);
+
+            CHorizontalLayoutUI* pHLayout = static_cast<CHorizontalLayoutUI*>(m_pmUI.FindControl(_T("livetype")));
+            pHLayout->SetVisible(false);
 
             if (roleType == TRTCRoleAnchor)
             {

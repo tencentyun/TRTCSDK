@@ -77,7 +77,7 @@ namespace TRTCCSharpDemo
         {
             this.infoLabel.Text = "";
             mMainForm.OnConnectionFormClose();
-            this.Hide();
+            this.Close();
         }
 
         private void OnConnectBtnClick(object sender, EventArgs e)

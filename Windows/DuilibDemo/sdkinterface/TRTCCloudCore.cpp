@@ -71,15 +71,27 @@ TRTCCloudCore::TRTCCloudCore()
 
         destroyTRTCShareInstance_ = (DestroyTRTCShareInstance)::GetProcAddress(trtc_module_, "destroyTRTCShareInstance");
 
+        createTXLivePlayer_ = (CreateTXLivePlayer)::GetProcAddress(trtc_module_, "createTXLivePlayer");
+
+        destroyTXLivePlayer_ = (DestroyTXLivePlayer)::GetProcAddress(trtc_module_, "destroyTXLivePlayer");
+
+        m_pLivePlayer = createTXLivePlayer();
         m_pCloud = getTRTCShareInstance();
     }}
 
 TRTCCloudCore::~TRTCCloudCore()
 {
+    destroyTXLivePlayer_(&m_pLivePlayer);
+    m_pLivePlayer = nullptr;
+    createTXLivePlayer_ = nullptr;
+    destroyTXLivePlayer_ = nullptr;
+
+
     destroyTRTCShareInstance_();
     m_pCloud = nullptr;
     getTRTCShareInstance_ = nullptr;
     destroyTRTCShareInstance_ = nullptr;
+  
 
     if (trtc_module_)
         FreeLibrary(trtc_module_);
@@ -133,6 +145,16 @@ void TRTCCloudCore::PreUninit()
 ITRTCCloud * TRTCCloudCore::getTRTCCloud()
 {
     return m_pCloud;
+}
+
+ITRTCCloudCallback * TRTCCloudCore::GetITRTCCloudCallback()
+{
+    return this;
+}
+
+ITXLivePlayer * TRTCCloudCore::getTXLivePlayer()
+{
+    return m_pLivePlayer;
 }
 
 void TRTCCloudCore::onError(TXLiteAVError errCode, const char* errMsg, void* arg)
@@ -988,7 +1010,10 @@ void TRTCCloudCore::startPreview(bool bSetting)
     if (bSetting)
     {
         if (!m_bStartLocalPreview)
+        {
             m_pCloud->startCameraDeviceTest(NULL);
+        }
+           
         m_bStartCameraTest = true;
     }
     else
@@ -1012,7 +1037,7 @@ void TRTCCloudCore::stopPreview(bool bSetting)
         {
             //设置中心还在打开预览
             m_pCloud->stopLocalPreview();
-            m_pCloud->startCameraDeviceTest(NULL);
+            m_pCloud->stopCameraDeviceTest();
         }
         else
         {
@@ -1357,12 +1382,10 @@ void TRTCCloudCore::updateMixTranCodeInfo()
         }
     }
     config.backgroundColor = 0x696969;
-    /*
-    if (CDataCenter::GetInstance()->m_strMixStreamId.empty() == false)
-    {
+    
+    if (!CDataCenter::GetInstance()->m_strMixStreamId.empty()) {
         config.streamId = CDataCenter::GetInstance()->m_strMixStreamId.c_str();
     }
-    */
 
     if (m_pCloud)
     {

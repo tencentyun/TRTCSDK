@@ -6,6 +6,8 @@
 #include <string>
 #include <mutex>
 #include "ITXLiteAVLocalRecord.h"
+#include "Live/ITXLivePlayer.h"
+#include "Live/TXLiveEventDef.h"
 struct DashboardInfo
 {
     int streamType = -1;
@@ -14,6 +16,9 @@ struct DashboardInfo
 };
 typedef ITRTCCloud* (__cdecl *GetTRTCShareInstance)();
 typedef void(__cdecl *DestroyTRTCShareInstance)();
+
+typedef ITXLivePlayer* (__cdecl *CreateTXLivePlayer)();
+typedef void(__cdecl *DestroyTXLivePlayer)(ITXLivePlayer** pTXlivePlayer);
 
 class TRTCCloudCore 
     : public ITRTCCloudCallback
@@ -41,6 +46,9 @@ public:
     void Uninit();
     void PreUninit();
     ITRTCCloud * getTRTCCloud();
+    ITRTCCloudCallback* GetITRTCCloudCallback();
+
+    ITXLivePlayer* getTXLivePlayer();
 public: 
     //interface ITRTCCloudCallback
     virtual void onError(TXLiteAVError errCode, const char* errMsg, void* arg);
@@ -153,6 +161,7 @@ private:
     std::mutex m_mutexMsgFilter;
     ITRTCCloud* m_pCloud = nullptr;
     ITXVodPlayer* m_pVodPlayer = nullptr;
+    ITXLivePlayer* m_pLivePlayer = nullptr;
     bool m_bStartLocalPreview = false;
     bool m_bStartCameraTest = false;
     bool m_bFirstUpdateDevice = false;
@@ -182,5 +191,9 @@ private:
     HMODULE trtc_module_;
     GetTRTCShareInstance getTRTCShareInstance_ = nullptr;
     DestroyTRTCShareInstance destroyTRTCShareInstance_ = nullptr;
+
+    CreateTXLivePlayer createTXLivePlayer_ = nullptr;
+    DestroyTXLivePlayer destroyTXLivePlayer_ = nullptr;
+
 };
 

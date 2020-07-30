@@ -3,7 +3,7 @@
 	<Font id="0" name="微软雅黑" size="15" default="true"/>
 	<Font id="1" name="微软雅黑" size="13" />
 	<Style name="radio_style" shared="true" value="align=&quot;left&quot; valign=&quot;vcenter&quot; height=&quot;17&quot; textcolor=&quot;#FF000000&quot; hottextcolor=&quot;#FF000000&quot; textpadding=&quot;20,0,6,0&quot; stateimage=&quot;res='setting/radio_normal.png' dest='0,0,17,17'&quot; statecount=&quot;2&quot; selectedstateimage=&quot;res='setting/radio_selected.png' dest='0,0,17,17'&quot; selectedstatecount=&quot;2&quot;" />
-	<Style name="btnstyle_login" shared="true" value="normalimage=&quot;res='login/btn_normal.png' corner='2,2,2,2'&quot; hotimage=&quot;res='login/btn_hover.png' corner='2,2,2,2'&quot; pushedimage=&quot;res='login/btn_hover.png' corner='2,2,2,2'&quot; width=&quot;108&quot; height=&quot;23&quot; tooltip=&quot;登录&quot;" />
+	<Style name="btnstyle_login" shared="true" value="normalimage=&quot;res='login/btn_normal.png' corner='2,2,2,2'&quot; hotimage=&quot;res='login/btn_hover.png' corner='2,2,2,2'&quot; pushedimage=&quot;res='login/btn_hover.png' corner='2,2,2,2'&quot; width=&quot;108&quot; height=&quot;23&quot;" />
 	<Style name="devicecombo" shared="true" value="font=&quot;2&quot; normalimage=&quot;file='setting/combo_noraml.png' corner='4,4,30,4'&quot; hotimage=&quot;file='setting/combo_hover.png' corner='4,4,30,4'&quot; pushedimage=&quot;file='setting/combo_hover.png' corner='4,4,30,4'&quot; itemselectedbkcolor=&quot;#FF1E90FF&quot; itemtextpadding=&quot;10,6,10,0&quot; textpadding=&quot;10,0,35,0&quot;"/>
 	<VerticalLayout  bkcolor="#FFFFFFFF" inset="20,0,20,0" childalign="center">
 		<VerticalLayout height="20"/>

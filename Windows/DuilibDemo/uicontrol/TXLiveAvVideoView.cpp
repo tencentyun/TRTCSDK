@@ -17,6 +17,7 @@
 #include "libyuv.h"
 #include <time.h>
 #include "util/log.h"
+#include "Live/TXLiveEventDef.h"
 //#include "common/Base.h"
 
 static CCriticalSection g_viewMgrCS;
@@ -138,7 +139,31 @@ CTXLiveAvVideoViewMgr* getShareViewMgrInstance()
     return &uniqueInstance;
 }
 
+class CDNLivePlayerViewMgr :public ITXLivePlayerCallback
+{
+    virtual void onEventCallback(int eventId, const int paramCount, const char **paramKeys, const char **paramValues, void *pUserData)
+    {
+        
+    }
+    virtual void onVideoDecodeCallback(char* data, unsigned int length, int width, int height, TXEOutputVideoFormat format, void *pUserData)
+    {
+        TXLiveAvVideoView* viewPtr = (TXLiveAvVideoView*)pUserData;
 
+       viewPtr->AppendVideoFrame((unsigned char *)data, length, width, height, TRTCVideoPixelFormat_I420, LiteAVVideoRotation0);
+
+
+    }
+    virtual void onAudioDecodeCallback(unsigned char * pcm, unsigned int length, unsigned int sampleRate, unsigned int channel, unsigned long long timestamp, void *pUserData)
+    {
+        LINFO(L"onEventCallback");
+    }
+};
+
+CDNLivePlayerViewMgr* getCDNLivePlayerViewMgr()
+{
+    static CDNLivePlayerViewMgr uniqueInstance;
+    return &uniqueInstance;
+}
 //////////////////////////////////////////////////////////////////////////TXLiveAvVideoView
 std::multimap<std::pair<std::string, TRTCVideoStreamType>, std::vector<std::wstring>> TXLiveAvVideoView::g_mapEventLogText;
 std::multimap<std::pair<std::string, TRTCVideoStreamType>, std::wstring> TXLiveAvVideoView::g_mapDashboardLogText;
@@ -320,6 +345,11 @@ void TXLiveAvVideoView::GetVideoResolution(int & width, int & height)
 UINT TXLiveAvVideoView::GetPaintMsgID()
 {
     return m_nDefineMsg;
+}
+
+std::string TXLiveAvVideoView::getUserId()
+{
+    return m_userId;
 }
 
 void TXLiveAvVideoView::switchViewDashboardStyle(ViewDashboardStyleEnum style)
@@ -829,16 +859,13 @@ bool TXLiveAvVideoView::DoPaintText(HDC hDC, const RECT& rcText, const RECT& rcL
     if (dashboardText.compare(L"") != 0 && g_nStyleDashboard > EViewDashboardNoVisible)
     {
         int fontSize = GetLogFontSize(rcLog);
-        int rcWidth = 300;
-        if (fontSize > 10)
-            rcWidth = 500;
         Gdiplus::FontFamily fontFamily(L"微软雅黑");
         Gdiplus::Font font(&fontFamily, fontSize, Gdiplus::FontStyleRegular, Gdiplus::UnitPixel);
         StringFormat stringformat;
         stringformat.SetAlignment(Gdiplus::StringAlignmentNear);
         stringformat.SetLineAlignment(Gdiplus::StringAlignmentNear);
         Gdiplus::SolidBrush brush(Color(255, 235, 10, 60));
-        guard.DrawString(dashboardText.c_str(), -1, &font, Gdiplus::RectF(rcLog.left + 5, rcLog.top + 5, rcWidth, rcLog.bottom - rcLog.top), &stringformat, &brush);
+        guard.DrawString(dashboardText.c_str(), -1, &font, Gdiplus::RectF(rcLog.left + 5, rcLog.top + 5, rcLog.right - rcLog.left, rcLog.bottom - rcLog.top), &stringformat, &brush);
     }
 
     std::wstring eventText = L"";

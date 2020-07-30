@@ -35,8 +35,9 @@ protected:
 };
 
 class CTXLiveAvVideoViewMgr;
+class CDNLivePlayerViewMgr;
 extern  CTXLiveAvVideoViewMgr* getShareViewMgrInstance();
-
+extern  CDNLivePlayerViewMgr* getCDNLivePlayerViewMgr();
 class TXLiveAvVideoView : public CControlUI, public IMessageFilterUI
 {
     DECLARE_DUICONTROL(TXLiveAvVideoView)
@@ -105,17 +106,20 @@ public:
     static std::multimap<std::pair<std::string, TRTCVideoStreamType>, std::vector<std::wstring>> g_mapEventLogText;
     static std::multimap<std::pair<std::string, TRTCVideoStreamType>, std::wstring> g_mapDashboardLogText;
     static ViewDashboardStyleEnum g_nStyleDashboard;     //0 关闭， 1打开， 2暂定
-
+     //* 支持rbga数据处理，如需自定义数据，需重载此函数。
+    virtual bool AppendVideoFrame(unsigned char * data, uint32_t length, uint32_t width, uint32_t height, TRTCVideoPixelFormat videoFormat, TRTCVideoRotation rotation);
 public:
     void GetVideoResolution(int& width, int& height);
     UINT GetPaintMsgID();
+    std::string getUserId();
+
+    HWND getWnd() { return m_hWnd; }
 protected:
     //IMessageFilterUI
     virtual LRESULT MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, bool& bHandled);
     //CControlUI
     virtual bool DoPaint(HDC hDC, const RECT& rcPaint, CControlUI* pStopControl = NULL);
-    //* 支持rbga数据处理，如需自定义数据，需重载此函数。
-    virtual bool AppendVideoFrame(unsigned char * data, uint32_t length, uint32_t width, uint32_t height, TRTCVideoPixelFormat videoFormat, TRTCVideoRotation rotation);
+   
     virtual void DoEvent(TEventUI& event);
 
 protected:

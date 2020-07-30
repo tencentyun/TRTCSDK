@@ -85,6 +85,7 @@ public:
     };
     
     VideoCanvasAttribute& getVideoCanvasAttribute() { return m_canvasAttribute; };
+    TXLiveAvVideoView * getLiveAvVideoView() { return m_pLiveAvView; }
     static void switchCanvasAttribute(VideoCanvasContainer *viewA, VideoCanvasContainer *viewB);
     void copyCanvasAttribute(VideoCanvasContainer *view);
     TRTCVideoStreamType getVideoStreamType() { return m_streamType; };
@@ -157,6 +158,10 @@ public:
     int  dispatchPKVideoView(std::wstring userId, TRTCVideoStreamType type, uint32_t roomId);
     bool deleteVideoView(std::wstring userId, TRTCVideoStreamType type);
     bool IsRemoteViewShow(std::wstring userId, TRTCVideoStreamType type);
+    //全部隐藏
+    void HideAllVideoViewExceptMain();
+    //全部恢复
+    void RestoreAllVideoView();
 public:
     bool muteAudio(std::wstring userId, TRTCVideoStreamType type, bool bMute);
     bool muteVideo(std::wstring userId, TRTCVideoStreamType type, bool bMute);
@@ -166,6 +171,7 @@ public:
     void updateSize();
     void changeLectureviewVisable();
     bool turnPage(bool forward, bool isDel = false);
+    VideoRenderInfo *GetMainRenderView();
 protected:
     void InsertIntoAllView(VideoRenderInfo& info);
     int  dispatchVideoView(std::wstring userId, TRTCVideoStreamType type, bool bPKUser, int roomId);
@@ -174,7 +180,7 @@ protected:
     VideoRenderInfo *FindIdleRenderView(bool& bFind);
     VideoRenderInfo *FindFitMainRenderView(bool& bFind);   //寻找符合主窗口渲染的视频对象。
     VideoRenderInfo *FindRenderView(std::wstring userId, TRTCVideoStreamType type, bool label, bool& bFind);   //
-    VideoRenderInfo *GetMainRenderView();
+    
     void AdjustViewDispatch(std::map<std::wstring, VideoRenderInfo>& mapView, int delCnt);//主要是把按 1 2 3 4 5 次序从新排位视频
     bool SwapVideoView(std::wstring userIdA, std::wstring userIdB, TRTCVideoStreamType typeA, TRTCVideoStreamType typeB);
 public:

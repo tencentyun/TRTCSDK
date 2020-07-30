@@ -4,6 +4,11 @@
 #include "TrtcUtil.h"
 #include "util/Base.h"
 #include <mutex>
+#include "util/md5.h"
+#include <strstream>
+#include <iostream>
+#include <iomanip>
+#include "GenerateTestUserSig.h"
 //////////////////////////////////////////////////////////////////////////CDataCenter
 
 static std::shared_ptr<CDataCenter> s_pInstance;
@@ -390,6 +395,19 @@ RemoteUserInfo* CDataCenter::FindRemoteUser(std::string userId)
         return &iter->second;
     }
     return nullptr;
+}
+
+std::string CDataCenter::GetCdnUrl(const std::string & strUserId)
+{
+    if (m_localInfo._bEnterRoom == false)
+    {
+        return "";
+    }
+    std::string  strMixStreamId = format("%d_%d_%s_main", GenerateTestUserSig::SDKAPPID, m_localInfo._roomId, strUserId.c_str());
+
+    std::string strUrl = format("http://%d.liveplay.myqcloud.com/live/%s.flv", GenerateTestUserSig::BIZID, strMixStreamId.c_str());
+
+    return strUrl;
 }
 
 void CDataCenter::addRemoteUser(std::string userId, bool bClear)

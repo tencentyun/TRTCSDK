@@ -10,7 +10,8 @@
 #include <windows.h>
 #include <TlHelp32.h>
 #include "util/log.h"
-
+#include "utils/TrtcUtil.h"
+#include "Utils/BugReport.h"
 LPBYTE g_lpResourceZIPBuffer = NULL;
 void InitResource()
 {
@@ -97,7 +98,25 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*l
 #ifdef _DEBUG
     //::MessageBoxW(NULL, NULL, NULL, MB_OK);   // 方便附加调试
 #endif // DEBUG
-    CrashDump dump;
+
+    bool load_crash_monitor = false;
+    BugReport * crash_report = new BugReport();
+    CrashDump* crash_dump = nullptr ; 
+    //先尝试加载crash上报模块。
+    if (crash_report->LoadCrashMonitor()) {
+        const char* str_sdk_version = TRTCCloudCore::GetInstance()->getTRTCCloud()->getSDKVersion();
+        std::map<int, std::string> version_map = TrtcUtil::split(const_cast<char *>(str_sdk_version), ".");
+        if (version_map.size() >= 4) {
+            load_crash_monitor = crash_report->InitCrashMonitor(stoi(version_map[0].c_str()), stoi(version_map[1].c_str()), stoi(version_map[3].c_str()));
+        }
+    }
+
+    //如果加载crash上报模块失败，则加载本地crash捕获模块。
+    if (!load_crash_monitor) {
+        delete crash_report;
+        crash_report = nullptr;
+        crash_dump = new CrashDump();
+    }
 
     CPaintManagerUI::SetInstance(hInstance);
     InitResource();
@@ -116,6 +135,11 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*l
     ::CoUninitialize();
 
     TRTCCloudCore::Destory();
+
+    if (crash_dump) {
+        delete crash_dump;
+        crash_dump = nullptr;
+    }
 
     LINFO(L"WinMain:: App quit end");
     return 0;

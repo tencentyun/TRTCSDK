@@ -6,7 +6,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
-
+using System.IO;
 namespace TRTCCSharpDemo.Common
 {
     class Util
@@ -48,6 +48,31 @@ namespace TRTCCSharpDemo.Common
                 sb.Append(b.ToString("x2"));
             }
             return sb.ToString();
+        }
+
+        public static bool IsTestEnv()
+        {
+            string path = Environment.CurrentDirectory + "\\ShowTestEnv.txt";
+            return File.Exists(path);
+        }
+
+        public static string ConvertMSToTime(int lCurMS, int lDurationMS)
+        {
+            string strTime = "00:00/00:00";
+
+            int nTotalDurationSecond = lDurationMS / 1000;
+            int nDurationMinute = nTotalDurationSecond / 60;
+            int nDurationSecond = nTotalDurationSecond % 60;
+
+            int nTotalCurSecond = lCurMS / 1000;
+            int nCurMinute = nTotalCurSecond / 60;
+            int nCurSecond = nTotalCurSecond % 60;
+
+            string format = "{0:00}:{1:00}/{2:00}:{3:00}";
+
+            strTime = string.Format(format, nCurMinute, nCurSecond, nDurationMinute, nDurationSecond);
+
+            return strTime;
         }
     }
 }

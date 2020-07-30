@@ -945,6 +945,38 @@ bool TRTCVideoViewLayout::IsRemoteViewShow(std::wstring userId, TRTCVideoStreamT
     return bFind;
 }
 
+void TRTCVideoViewLayout::HideAllVideoViewExceptMain()
+{
+    for (auto &itr : m_mapLectureView)
+    {
+        if (itr.second._viewLayout->isMainView())
+        {
+            continue;
+        }
+        itr.second._viewLayout->SetVisible(false);
+           
+    }
+    lecture_change_remote_visible->SetVisible(false);
+    m_pForward->SetVisible(false);
+    m_pBackword->SetVisible(false);
+}
+
+void TRTCVideoViewLayout::RestoreAllVideoView()
+{
+    for (auto &itr : m_mapLectureView)
+    {
+        if (itr.second._viewLayout->getUserId() == L"")
+        {
+            continue;
+        }
+       
+        itr.second._viewLayout->SetVisible(true);
+    }
+    lecture_change_remote_visible->SetVisible(true);
+    m_pForward->SetVisible(true);
+    m_pBackword->SetVisible(true);
+}
+
 bool TRTCVideoViewLayout::SwapVideoView(std::wstring userIdA, std::wstring userIdB, TRTCVideoStreamType typeA, TRTCVideoStreamType typeB)
 {
     // A-待切换到主窗口的窗口

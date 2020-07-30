@@ -31,7 +31,6 @@ namespace TRTCCSharpDemo
         /// </summary>
         private void InitializeComponent()
         {
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TRTCScreenForm));
             this.panel1 = new System.Windows.Forms.Panel();
             this.exitPicBox = new System.Windows.Forms.PictureBox();
@@ -116,6 +115,7 @@ namespace TRTCCSharpDemo
             this.screenListView.BackColor = System.Drawing.Color.Gainsboro;
             this.screenListView.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.screenListView.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.screenListView.HideSelection = false;
             this.screenListView.Location = new System.Drawing.Point(0, 49);
             this.screenListView.Name = "screenListView";
             this.screenListView.Size = new System.Drawing.Size(517, 344);
@@ -124,8 +124,8 @@ namespace TRTCCSharpDemo
             // 
             // TRTCScreenForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.Gainsboro;
             this.ClientSize = new System.Drawing.Size(517, 452);
             this.Controls.Add(this.screenListView);
