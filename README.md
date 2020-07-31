@@ -14,20 +14,31 @@
 | Electron | [下载](http://liteavsdk-1252463788.cosgz.myqcloud.com/TXLiteAVSDK_TRTC_Electron_latest.zip) | [DOC](https://cloud.tencent.com/document/product/647/38548) | [DOC](https://cloud.tencent.com/document/product/647/38549) |[API](https://cloud.tencent.com/document/product/647/38551) |
 | 微信小程序 | [下载](http://liteavsdk-1252463788.cosgz.myqcloud.com/TRTC_WXMini_latest.zip) | [DOC](https://cloud.tencent.com/document/product/647/32399) | [DOC](https://cloud.tencent.com/document/product/647/32183) |[API](https://cloud.tencent.com/document/product/647/17018) |
 
-## 最新版本 7.4 @ 2020.06.24
-1. 优化 Windows 平台的回声抵消（AEC）效果，以避免在开启系统声音回采（startSystemAudioLoopback）后出现的回声问题。
-2. 优化各平台版本下 SPEECH 音质模式下，语音通话延时比预期偏高的问题。
-3. 增强 Windows 平台的摄像头采集的设备兼容性。
-4. 增强 Windows 平台的音频设备（麦克风和扬声器）的设备兼容性。
-5. 修复 Windows 摄像头采集在部分分辨率下视野变小的问题。
-6. 优化进房流程的策略，提升全平台的进房成功率。
-7. iOS 版本支持 AirPlay 投屏（旧版本使用通话音量无法投屏）。
-8. 修复 iOS 偶现硬解失败并无法恢复后所导致的黑屏的问题。
-9. 修复 Android 版本横竖屏切换时本地画面闪一下的问题。
-10. 修复部分 Android 手机发送自定义视频无法正常编码的问题。
-11. 修复音频处理时偶发的一处数据包处理崩溃。
-12. 修复 Windows 版本 onPlayAudioFrame 回调的UserID不正确的问题。
-13. 耳返支持音量设置。
+## 最新版本 7.5 @ 2020.07.31
+TRTC 7.5 版本在如下方面做了改进和优化：
+- 降低了端到端的连麦延时，7.5 版本的端到端通话和连麦延时在 7.4 版本的基础上缩短了 40%。
+- 降低了移动端的耳返延时，并支持对耳返设置变声和混响等音效。
+
+TRTC 7.5 版本的全部改动点包括：
+- 全平台：优化播放端网络抖动评估算法，降低播放延迟
+- 全平台：修复在一个函数中连续调用 playBGM 和 pauseBGM 后播放不生效的问题
+- 全平台：修复偶现退房之后还能收到 onEnterRoom 回调的问题
+- 全平台：支持对双栈 IPV6 和 IPV6 only 的支持
+- 全平台：新增进多房间拉流能力，用于支持超级小班课
+- 全平台：云端 MCU 混流支持设置背景图片（由于监管需要，图片必须先通过 TRTC 控制台进行上传）
+- 全平台：云端 MCU 混流支持 A+B=>C 和 A+B=>A 两种模式
+- 全平台：实时状态回调 onStatistics 增加播放缓冲时长字段 jitterBufferDelay
+- Windows：修复屏幕分享高亮描边在高DPI情况下位置不对的问题
+- Windows：修复窗口采集时，目标窗口最小化后高亮描边残留的问题
+- Windows：优化采用竖屏分辨率推流时在部分摄像头上帧率极低的问题
+- Windows：修复win7下屏幕分享鼠标闪烁的问题
+- Windows：socks5代理支持用户名密码校验
+- Android：降低 Android SDK 的端到端连麦通话延时
+- Android：进一步优化耳返时延
+- Android：优化播放view动态切换时画面黑屏的问题
+- Android：修复部分机型对超低分辨率编码失败无法恢复的问题
+- iOS：进一步优化耳返时延
+- iOS：优化麦克风设备的打开成功率
 
 ## Demo 体验地址
 
