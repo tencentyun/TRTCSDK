@@ -8,7 +8,6 @@
 
 #import "AppDelegate.h"
 #import <Bugly/Bugly.h>
-#import "TXLaunchMoviePlayProtocol.h"
 
 #ifdef ENABLE_TRTC
 #ifdef ENABLE_PLAY
@@ -48,6 +47,9 @@
 #import "Replaykit2Define.h"
 #endif
 
+#if defined(PLAYER) || defined(PROFESSIONAL) || defined(ENTERPRISE)
+#import "TXLaunchMoviePlayProtocol.h"
+#endif
 
 #define BUGLY_APP_ID @"0"
 
@@ -244,6 +246,7 @@ NSString *helpUrlDb[] = {
 
 #pragma mark - 扫码拉起APP播放视频
 - (void)playVideoFromLaunchInfo:(NSDictionary *)launchInfo {
+    #if defined(PLAYER) || defined(PROFESSIONAL) || defined(ENTERPRISE)
     __weak UINavigationController *rootVC = (UINavigationController *)self.window.rootViewController;
     if (launchInfo && [rootVC isKindOfClass:[UINavigationController class]]) {
         if ([self findClass:NSClassFromString(@"LoginViewController") InNav:rootVC]) {
@@ -271,6 +274,7 @@ NSString *helpUrlDb[] = {
             }
         }
     }
+    #endif
 }
 
 - (UIViewController *)findVCWith:(Class)aclass InNav:(UINavigationController *)nav {

@@ -32,8 +32,32 @@ extension UIColor {
         return UIColor(hex: "#00A66B") ?? UIColor(red: 54.0 / 255.0, green: 134.0 / 255.0, blue: 246.0 / 255.0, alpha: 1.0)
     }
     
+    @objc static var searchBarBackColor: UIColor {
+        return UIColor(hex: "#0D2C5B") ?? UIColor(red: 13.0 / 255.0, green: 44.0 / 255.0, blue: 91.0 / 255.0, alpha: 1.0)
+    }
+    
+    @objc static var placeholderBackColor: UIColor {
+        return UIColor(hex: "#6B82A8") ?? UIColor(red: 107.0 / 255.0, green: 130.0 / 255.0, blue: 168.0 / 255.0, alpha: 1.0)
+    }
+    
+    @objc static var pannelBackColor: UIColor {
+        return UIColor(hex: "#13233F") ?? UIColor(red: 19.0 / 255.0, green: 35.0 / 255.0, blue: 63.0 / 255.0, alpha: 1.0)
+    }
+    
+    @objc static var buttonBackColor: UIColor {
+        return UIColor(hex: "#0062E3") ?? UIColor(red: 0.12, green: 0.23, blue: 0.4, alpha: 1.0)
+    }
+    
+    @objc static var verifyCodeBackColor: UIColor {
+        return UIColor(hex: "#006EFD") ?? UIColor(red: 0.0, green: 110.0 / 255.0, blue: 253.0 / 255.0, alpha: 1.0)
+    }
+    
     @objc static var appBackGround: UIColor {
         return UIColor(hex: "#242424") ?? .black
+    }
+    
+    @objc static var inputImageBackColor: UIColor {
+        return UIColor(hex: "#092650") ?? UIColor(red: 9.0 / 255.0, green: 38.0 / 255.0, blue: 80.0 / 255.0, alpha: 1.0)
     }
 
     // MARK: - Initialization
@@ -86,3 +110,4 @@ extension String {
         return nil
     }
 }
+
