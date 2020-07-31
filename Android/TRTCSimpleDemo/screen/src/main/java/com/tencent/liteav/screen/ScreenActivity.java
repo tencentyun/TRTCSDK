@@ -91,7 +91,7 @@ public class ScreenActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onResume() {
         super.onResume();
-        if (mFloatingView.isShown()) {
+        if (mFloatingView != null && mFloatingView.isShown()) {
             mFloatingView.dismiss();
         }
     }
@@ -170,7 +170,7 @@ public class ScreenActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mFloatingView.isShown()) {
+        if (mFloatingView != null && mFloatingView.isShown()) {
             mFloatingView.dismiss();
         }
         exitRoom();
@@ -195,7 +195,7 @@ public class ScreenActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void showFloatingView() {
-        if (!mFloatingView.isShown()) {
+        if (mFloatingView != null && !mFloatingView.isShown()) {
             if ((null != mTRTCCloud)) {
                 mFloatingView.show();
                 mFloatingView.setOnPopupItemClickListener(this);

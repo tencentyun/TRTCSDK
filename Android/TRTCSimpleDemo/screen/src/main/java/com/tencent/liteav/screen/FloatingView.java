@@ -72,7 +72,9 @@ public class FloatingView extends FrameLayout implements GestureDetector.OnGestu
         //TYPE_TOAST仅适用于4.4+系统，假如要支持更低版本使用TYPE_SYSTEM_ALERT(需要在manifest中声明权限)
         //7.1（包含）及以上系统对TYPE_TOAST做了限制
         int type = WindowManager.LayoutParams.TYPE_TOAST;
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
+        } else if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N) {
             type = WindowManager.LayoutParams.TYPE_PHONE;
         }
         mLayoutParams = new WindowManager.LayoutParams(type);
