@@ -88,6 +88,7 @@ public class AudioEffectPanel extends FrameLayout {
     private int     mBGMId     = -1;
     private float   mPitch     = 0;
     private boolean mIsPlaying = false;
+    private boolean mIsPause   = false;
     private boolean mIsPlayEnd = false;
 
     private int     mBGMVolume = 100;
@@ -356,6 +357,7 @@ public class AudioEffectPanel extends FrameLayout {
             mHandler.removeCallbacksAndMessages(null);
         }
         mIsPlaying = false;
+        mIsPause = false;
         mIsPlayEnd = false;
         mBGMPlayListenr = null;
     }
@@ -622,6 +624,7 @@ public class AudioEffectPanel extends FrameLayout {
         mAudioEffectManager.stopPlayMusic(mBGMId);
         mBGMId = -1;
         mIsPlaying = false;
+        mIsPause = false;
         mIsPlayEnd = false;
 
         mSbMicVolume.setProgress(100);
@@ -669,7 +672,7 @@ public class AudioEffectPanel extends FrameLayout {
 
     public void resumeBGM() {
         Log.i(TAG, "resumeBGM: mIsPlayEnd -> " + mIsPlayEnd + ", mIsPlaying -> " + mIsPlaying);
-        if (!mIsPlayEnd && !mIsPlaying) {
+        if (!mIsPlayEnd && !mIsPlaying && !mIsPause) {
             mAudioEffectManager.resumePlayMusic(mBGMId);
             mImgbtnBGMPlay.setImageResource(R.drawable.audio_effect_setting_bgm_pause);
             mIsPlaying = true;
@@ -712,6 +715,7 @@ public class AudioEffectPanel extends FrameLayout {
         mBGMPlayListenr = new BGMListener();
         mAudioEffectManager.setMusicObserver(mBGMId, mBGMPlayListenr);
         mIsPlaying = true;
+        mIsPause = false;
 
         mImgbtnBGMPlay.setOnClickListener(new OnClickListener() {
             @Override
@@ -721,15 +725,17 @@ public class AudioEffectPanel extends FrameLayout {
                     mImgbtnBGMPlay.setImageResource(R.drawable.audio_effect_setting_bgm_pause);
                     mIsPlayEnd = false;
                     mIsPlaying = true;
-                    return;
+                    mIsPause = false;
                 } else if (mIsPlaying) {
                     mAudioEffectManager.pausePlayMusic(mBGMId);
                     mImgbtnBGMPlay.setImageResource(R.drawable.audio_effect_setting_bgm_play);
                     mIsPlaying = false;
+                    mIsPause = true;
                 } else {
                     mAudioEffectManager.resumePlayMusic(mBGMId);
                     mImgbtnBGMPlay.setImageResource(R.drawable.audio_effect_setting_bgm_pause);
                     mIsPlaying = true;
+                    mIsPause = false;
                 }
             }
         });

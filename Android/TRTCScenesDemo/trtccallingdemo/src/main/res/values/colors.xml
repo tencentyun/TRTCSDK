@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="trtccalling_color_btn_enable">#FF0062E3</color>
+    <color name="trtccalling_color_btn_disable">#FF08326B</color>
+    <color name="trtccalling_color_text_tips">#FF6B82A8</color>
+    <color name="trtccalling_color_primary">#FF016EFF</color>
+    <color name="trtccalling_text_second">#FF737373</color>
+    <color name="trtccalling_color_white">#FFFFFFFF</color>
+    <color name="trtccalling_color_shade">#33000000</color>
+    <color name="trtccalling_color_background">#FF444444</color>
+    <color name="trtccalling_color_bg_cl_search">#FF092650</color>
+    <color name="ttrtccalling_color_bg_gradient_start">#FF050C17</color>
+    <color name="trtccalling_color_bg_gradient_end">#FF13294B</color>
+    <color name="trtccalling_color_edit_hint">#FF6B82A8</color>
+    <color name="trtccalling_color_head_background">#FF555555</color>
+</resources>

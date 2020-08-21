@@ -8,8 +8,8 @@ android {
         applicationId "com.tencent.trtc"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 7
-        versionName "7.5.428"
+        versionCode 9
+        versionName "7.6.506"
 
         multiDexEnabled true
         ndk {
@@ -46,8 +46,7 @@ dependencies {
 
     compile project(':trtcliveroomdemo')
     compile project(':trtcvoiceroomdemo')
-    compile project(':trtcaudiocalldemo')
-    compile project(':trtcvideocalldemo')
+    compile project(':trtccallingdemo')
     compile project(':trtcmeetingdemo')
     compile project(':login')
 

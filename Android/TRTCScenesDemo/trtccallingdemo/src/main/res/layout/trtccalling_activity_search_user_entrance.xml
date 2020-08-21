@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/trtccalling_bg_main_gradient"
+    android:orientation="vertical"
+    tools:context=".ui.TRTCCallingEntranceActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:layout_marginTop="20dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/trtccalling_ic_back">
+
+        <TextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:singleLine="true"
+            android:text="@string/trtccalling_title_video_call"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/trtccalling_text_size_large" />
+
+    </android.support.v7.widget.Toolbar>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/cl_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="20dp"
+        android:background="@color/login_color_btn_disable"
+        android:padding="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+        <ImageView
+            android:id="@+id/iv_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/trtccalling_icon_search"
+            app:layout_constraintLeft_toLeftOf="@id/cl_edit"
+            app:layout_constraintTop_toTopOf="@id/cl_edit" />
+
+        <EditText
+            android:id="@+id/et_search_user"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="11dp"
+            android:background="@null"
+            android:hint="@string/trtccalling_search_call_hint"
+            android:imeOptions="actionSearch"
+            android:inputType="number"
+            android:maxLength="11"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textColor="@color/colorWhite"
+            android:textColorHint="@color/login_color_edit_hint"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@id/cl_edit"
+            app:layout_constraintLeft_toRightOf="@id/iv_search" />
+
+        <ImageView
+            android:id="@+id/iv_clear_search"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_marginRight="10dp"
+            android:visibility="gone"
+            android:background="@drawable/trtccalling_icon_clear_search"
+            app:layout_constraintBottom_toBottomOf="@id/cl_edit"
+            app:layout_constraintRight_toRightOf="@+id/iv_border"
+            app:layout_constraintTop_toTopOf="@id/cl_edit" />
+
+        <ImageView
+            android:id="@+id/iv_border"
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="5dp"
+            android:background="@color/trtccalling_color_edit_hint"
+            app:layout_constraintBottom_toBottomOf="@id/cl_edit"
+            app:layout_constraintRight_toLeftOf="@+id/tv_search"
+            app:layout_constraintTop_toTopOf="@id/cl_edit" />
+
+        <TextView
+            android:id="@+id/tv_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:background="@android:color/transparent"
+            android:text="@string/trtccalling_search"
+            android:textColor="@color/trtccalling_color_white"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@id/cl_edit"
+            app:layout_constraintRight_toRightOf="@id/cl_edit"
+            app:layout_constraintTop_toTopOf="@id/cl_edit" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/tv_self_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="@string/trtccalling_self_phone"
+        android:textColor="@color/trtccalling_color_text_tips"
+        android:textSize="14sp"
+        app:layout_constraintLeft_toLeftOf="@id/cl_edit"
+        app:layout_constraintTop_toBottomOf="@id/cl_edit" />
+
+    <LinearLayout
+        android:id="@+id/ll_contract"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:gravity="center_vertical"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/cl_edit"
+        app:layout_constraintStart_toStartOf="@+id/cl_edit"
+        app:layout_constraintTop_toBottomOf="@+id/tv_self_phone"
+        tools:visibility="visible">
+
+        <ImageView
+            android:id="@+id/img_avatar"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/trtccalling_ic_avatar" />
+
+        <TextView
+            android:id="@+id/tv_user_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_weight="1"
+            android:textColor="@color/trtccalling_color_white"
+            android:textSize="@dimen/trtccalling_text_size_large"
+            tools:text="@string/trtccalling_contact_default_name" />
+
+        <Button
+            android:id="@+id/btn_start_call"
+            android:layout_width="52dp"
+            android:layout_height="26dp"
+            android:background="@drawable/trtccalling_bg_button_border"
+            android:text="@string/trtccalling_start_call"
+            android:textColor="@color/colorWhite" />
+    </LinearLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/cl_tips"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="120dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cl_edit">
+
+        <ImageView
+            android:id="@+id/iv_contacts_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/trtccalling_icon_contacts_search"
+            app:layout_constraintBottom_toBottomOf="@id/cl_tips"
+            app:layout_constraintLeft_toLeftOf="@id/cl_tips"
+            app:layout_constraintRight_toRightOf="@id/cl_tips"
+            app:layout_constraintTop_toTopOf="@id/cl_tips" />
+
+        <TextView
+            android:id="@+id/tv_contacts_tips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="11dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/trtccalling_tips_search"
+            android:textColor="@color/trtccalling_color_text_tips"
+            android:textSize="14sp"
+            app:layout_constraintLeft_toLeftOf="@id/cl_tips"
+            app:layout_constraintRight_toRightOf="@id/cl_tips"
+            app:layout_constraintTop_toBottomOf="@id/iv_contacts_search" />
+
+    </android.support.constraint.ConstraintLayout>
+
+
+</android.support.constraint.ConstraintLayout>
