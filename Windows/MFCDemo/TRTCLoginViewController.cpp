@@ -186,6 +186,7 @@ LRESULT TRTCLoginViewController::OnMsgMainViewClose(WPARAM wParam, LPARAM lParam
 {
     if (m_pTRTCMainViewController != nullptr)
     {
+        m_pTRTCMainViewController->DestroyWindow();
         delete m_pTRTCMainViewController;
         m_pTRTCMainViewController = nullptr;
     }

@@ -1,4 +1,6 @@
 ﻿
+using System;
+
 namespace TRTCCSharpDemo
 {
     partial class TRTCMainForm
@@ -66,6 +68,8 @@ namespace TRTCCSharpDemo
             this.remoteInfoLabel5 = new System.Windows.Forms.Label();
             this.remoteVoiceProgressBar5 = new System.Windows.Forms.ProgressBar();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.startLocalAudioCheckBox = new System.Windows.Forms.CheckBox();
+            this.startLocalPreviewCheckBox = new System.Windows.Forms.CheckBox();
             this.bgmCheckBox = new System.Windows.Forms.CheckBox();
             this.logCheckBox = new System.Windows.Forms.CheckBox();
             this.connectRoomCheckBox = new System.Windows.Forms.CheckBox();
@@ -492,6 +496,8 @@ namespace TRTCCSharpDemo
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(38)))), ((int)(((byte)(38)))));
+            this.panel2.Controls.Add(this.startLocalAudioCheckBox);
+            this.panel2.Controls.Add(this.startLocalPreviewCheckBox);
             this.panel2.Controls.Add(this.bgmCheckBox);
             this.panel2.Controls.Add(this.logCheckBox);
             this.panel2.Controls.Add(this.connectRoomCheckBox);
@@ -506,12 +512,38 @@ namespace TRTCCSharpDemo
             this.panel2.Size = new System.Drawing.Size(1127, 45);
             this.panel2.TabIndex = 14;
             // 
+            // startLocalAudioCheckBox
+            // 
+            this.startLocalAudioCheckBox.AutoSize = true;
+            this.startLocalAudioCheckBox.Font = new System.Drawing.Font("微软雅黑", 11F);
+            this.startLocalAudioCheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(187)))), ((int)(((byte)(187)))));
+            this.startLocalAudioCheckBox.Location = new System.Drawing.Point(101, 12);
+            this.startLocalAudioCheckBox.Name = "startLocalAudioCheckBox";
+            this.startLocalAudioCheckBox.Size = new System.Drawing.Size(88, 24);
+            this.startLocalAudioCheckBox.TabIndex = 19;
+            this.startLocalAudioCheckBox.Text = "采集音频";
+            this.startLocalAudioCheckBox.UseVisualStyleBackColor = true;
+            this.startLocalAudioCheckBox.Click += new System.EventHandler(this.OnStartLocalAudioClick);
+            // 
+            // startLocalPreviewCheckBox
+            // 
+            this.startLocalPreviewCheckBox.AutoSize = true;
+            this.startLocalPreviewCheckBox.Font = new System.Drawing.Font("微软雅黑", 11F);
+            this.startLocalPreviewCheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(187)))), ((int)(((byte)(187)))));
+            this.startLocalPreviewCheckBox.Location = new System.Drawing.Point(7, 12);
+            this.startLocalPreviewCheckBox.Name = "startLocalPreviewCheckBox";
+            this.startLocalPreviewCheckBox.Size = new System.Drawing.Size(88, 24);
+            this.startLocalPreviewCheckBox.TabIndex = 18;
+            this.startLocalPreviewCheckBox.Text = "采集视频";
+            this.startLocalPreviewCheckBox.UseVisualStyleBackColor = true;
+            this.startLocalPreviewCheckBox.Click += new System.EventHandler(this.OnStartLocalPreviewClick);
+            // 
             // bgmCheckBox
             // 
             this.bgmCheckBox.AutoSize = true;
             this.bgmCheckBox.Font = new System.Drawing.Font("微软雅黑", 11F);
             this.bgmCheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(187)))), ((int)(((byte)(187)))));
-            this.bgmCheckBox.Location = new System.Drawing.Point(208, 12);
+            this.bgmCheckBox.Location = new System.Drawing.Point(405, 12);
             this.bgmCheckBox.Name = "bgmCheckBox";
             this.bgmCheckBox.Size = new System.Drawing.Size(88, 24);
             this.bgmCheckBox.TabIndex = 16;
@@ -524,7 +556,7 @@ namespace TRTCCSharpDemo
             this.logCheckBox.AutoSize = true;
             this.logCheckBox.Font = new System.Drawing.Font("微软雅黑", 11F);
             this.logCheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(187)))), ((int)(((byte)(187)))));
-            this.logCheckBox.Location = new System.Drawing.Point(513, 11);
+            this.logCheckBox.Location = new System.Drawing.Point(722, 12);
             this.logCheckBox.Name = "logCheckBox";
             this.logCheckBox.Size = new System.Drawing.Size(73, 24);
             this.logCheckBox.TabIndex = 15;
@@ -537,7 +569,7 @@ namespace TRTCCSharpDemo
             this.connectRoomCheckBox.AutoSize = true;
             this.connectRoomCheckBox.Font = new System.Drawing.Font("微软雅黑", 11F);
             this.connectRoomCheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(187)))), ((int)(((byte)(187)))));
-            this.connectRoomCheckBox.Location = new System.Drawing.Point(410, 12);
+            this.connectRoomCheckBox.Location = new System.Drawing.Point(617, 12);
             this.connectRoomCheckBox.Name = "connectRoomCheckBox";
             this.connectRoomCheckBox.Size = new System.Drawing.Size(88, 24);
             this.connectRoomCheckBox.TabIndex = 14;
@@ -552,7 +584,7 @@ namespace TRTCCSharpDemo
             this.shareUrlLabel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.shareUrlLabel.Font = new System.Drawing.Font("微软雅黑", 11F, System.Drawing.FontStyle.Bold);
             this.shareUrlLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(187)))), ((int)(((byte)(187)))));
-            this.shareUrlLabel.Location = new System.Drawing.Point(731, 10);
+            this.shareUrlLabel.Location = new System.Drawing.Point(936, 10);
             this.shareUrlLabel.Name = "shareUrlLabel";
             this.shareUrlLabel.Size = new System.Drawing.Size(105, 25);
             this.shareUrlLabel.TabIndex = 8;
@@ -565,7 +597,7 @@ namespace TRTCCSharpDemo
             this.mixTransCodingCheckBox.AutoSize = true;
             this.mixTransCodingCheckBox.Font = new System.Drawing.Font("微软雅黑", 11F);
             this.mixTransCodingCheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(187)))), ((int)(((byte)(187)))));
-            this.mixTransCodingCheckBox.Location = new System.Drawing.Point(607, 12);
+            this.mixTransCodingCheckBox.Location = new System.Drawing.Point(812, 12);
             this.mixTransCodingCheckBox.Name = "mixTransCodingCheckBox";
             this.mixTransCodingCheckBox.Size = new System.Drawing.Size(118, 24);
             this.mixTransCodingCheckBox.TabIndex = 12;
@@ -578,7 +610,7 @@ namespace TRTCCSharpDemo
             this.muteAudioCheckBox.AutoSize = true;
             this.muteAudioCheckBox.Font = new System.Drawing.Font("微软雅黑", 11F);
             this.muteAudioCheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(187)))), ((int)(((byte)(187)))));
-            this.muteAudioCheckBox.Location = new System.Drawing.Point(119, 11);
+            this.muteAudioCheckBox.Location = new System.Drawing.Point(301, 12);
             this.muteAudioCheckBox.Name = "muteAudioCheckBox";
             this.muteAudioCheckBox.Size = new System.Drawing.Size(88, 24);
             this.muteAudioCheckBox.TabIndex = 10;
@@ -591,7 +623,7 @@ namespace TRTCCSharpDemo
             this.muteVideoCheckBox.AutoSize = true;
             this.muteVideoCheckBox.Font = new System.Drawing.Font("微软雅黑", 11F);
             this.muteVideoCheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(187)))), ((int)(((byte)(187)))));
-            this.muteVideoCheckBox.Location = new System.Drawing.Point(16, 11);
+            this.muteVideoCheckBox.Location = new System.Drawing.Point(195, 12);
             this.muteVideoCheckBox.Name = "muteVideoCheckBox";
             this.muteVideoCheckBox.Size = new System.Drawing.Size(88, 24);
             this.muteVideoCheckBox.TabIndex = 9;
@@ -604,7 +636,7 @@ namespace TRTCCSharpDemo
             this.screenShareCheckBox.AutoSize = true;
             this.screenShareCheckBox.Font = new System.Drawing.Font("微软雅黑", 11F);
             this.screenShareCheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(187)))), ((int)(((byte)(187)))));
-            this.screenShareCheckBox.Location = new System.Drawing.Point(302, 12);
+            this.screenShareCheckBox.Location = new System.Drawing.Point(509, 12);
             this.screenShareCheckBox.Name = "screenShareCheckBox";
             this.screenShareCheckBox.Size = new System.Drawing.Size(88, 24);
             this.screenShareCheckBox.TabIndex = 8;
@@ -712,5 +744,7 @@ namespace TRTCCSharpDemo
         private System.Windows.Forms.Label audioSettingLabel;
         private System.Windows.Forms.CheckBox bgmCheckBox;
         private System.Windows.Forms.CheckBox logCheckBox;
+        private System.Windows.Forms.CheckBox startLocalAudioCheckBox;
+        private System.Windows.Forms.CheckBox startLocalPreviewCheckBox;
     }
 }

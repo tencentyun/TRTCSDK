@@ -450,26 +450,21 @@ LRESULT TXLiveAvVideoView::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lPara
 bool TXLiveAvVideoView::DoPaint(HDC hDC, const RECT & rcPaint, CControlUI * pStopControl)
 {
     nCntPaint++;
-    if (m_bPause)
-    {
+    if (m_bPause) {
         CControlUI::DoPaint(hDC, rcPaint, pStopControl);
         DoPaintText(hDC, m_rcItem, m_rcItem, false);
         return true;
     }
 
     bool bNeedDrawFrame = true;
-    int width = 0, height = 0;
     {
-        width = m_argbSrcFrame.width;
-        height = m_argbSrcFrame.height;
-        if (m_argbSrcFrame.frameBuf == nullptr)
-        {
+        CCSGuard guard(m_viewCs);
+        if (m_argbSrcFrame.frameBuf == nullptr) {
             bNeedDrawFrame = false;
         }
     }
 
-    if (bNeedDrawFrame == false)
-    {
+    if (bNeedDrawFrame == false) {
         CControlUI::DoPaint(hDC, rcPaint, pStopControl);
         DoPaintText(hDC, m_rcItem, m_rcItem, false);
         return true;
@@ -477,42 +472,39 @@ bool TXLiveAvVideoView::DoPaint(HDC hDC, const RECT & rcPaint, CControlUI * pSto
 
     //超过过一定时间没渲染数据了
     DWORD curTicket = ::GetTickCount();
-    if (dwLastAppendFrameTicket > 0 && curTicket - dwLastAppendFrameTicket > 3000)
-    {
+    if (dwLastAppendFrameTicket > 0 && curTicket - dwLastAppendFrameTicket > 3000) {
         CControlUI::DoPaint(hDC, rcPaint, pStopControl);
         DoPaintText(hDC, m_rcItem, m_rcItem, false);
         return true;
     }
-   
+
     clock_t begin_t = clock();
 
     //处理选择
     int w_rotation = 0, h_rotation = 0;
     {
         CCSGuard guard(m_viewCs);
-        if (m_argbSrcFrame.frameBuf == nullptr)
-            return true;
+        if (m_argbSrcFrame.frameBuf == nullptr) return true;
 
-        resetBuffer(width, height, m_argbRotationFrame.width, m_argbRotationFrame.height, &m_argbRotationFrame.frameBuf);
+        resetBuffer(m_argbSrcFrame.width, m_argbSrcFrame.height, m_argbRotationFrame.width,
+                    m_argbRotationFrame.height, &m_argbRotationFrame.frameBuf);
         libyuv::RotationMode mode = (libyuv::RotationMode)getRotationAngle(m_argbSrcFrame.rotation);
         w_rotation = m_argbRotationFrame.width;
         h_rotation = m_argbRotationFrame.height;
-        if (mode == libyuv::kRotate90 || mode == libyuv::kRotate270)
-        {
+        if (mode == libyuv::kRotate90 || mode == libyuv::kRotate270) {
             int temp = w_rotation;
             w_rotation = h_rotation;
             h_rotation = temp;
 
-            //ARGBRotate 做了XMirror，如果是90/270度旋转，需要调整
+            // ARGBRotate 做了XMirror，如果是90/270度旋转，需要调整
             mode = (libyuv::RotationMode)((mode + 180) % 360);
         }
-        int src_stride_argb = width * 4;
+        int src_stride_argb = m_argbSrcFrame.width * 4;
         int dst_stride_argb = w_rotation * 4;
 
-        libyuv::ARGBRotate(m_argbSrcFrame.frameBuf, src_stride_argb,
-            m_argbRotationFrame.frameBuf, dst_stride_argb, width, -height, mode);
+        libyuv::ARGBRotate(m_argbSrcFrame.frameBuf, src_stride_argb, m_argbRotationFrame.frameBuf,
+                           dst_stride_argb, m_argbSrcFrame.width, -m_argbSrcFrame.height, mode);
     }
-
     RECT rcImage = { 0 };
     if (EVideoRenderModeFill == m_renderMode)
     {

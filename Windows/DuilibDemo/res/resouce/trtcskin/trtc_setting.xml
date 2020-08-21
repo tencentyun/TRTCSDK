@@ -187,6 +187,26 @@
 			<!--Audio setting page-->
 			<VerticalLayout name="Audio_tab_layout" childpadding="10" vscrollbar="true">
 				<HorizontalLayout height="10"/>
+				<GroupBox text="麦克风设置" padding="20,0,20,0" childpadding="20" bordercolor="#FF808080" bkcolor="#FFF0F0F0" bordersize="1" height="175">
+					<HorizontalLayout inset="20,0,0,0" childvalign="center" height="40">
+						<Label text="麦克风: " font="2" width="100" align="right" valign="center" textcolor="#FF000000" showhtml="true"/>
+						<Combo name="combo_mic_device" width="250" height="36" style="devicecombo" dropbox="bordercolor=&quot;#FF1E90FF&quot; bordersize=&quot;1&quot; bkcolor=&quot;#FFFFFFFF&quot;">
+						</Combo>  
+					</HorizontalLayout>
+					<HorizontalLayout inset="20,0,0,0" childvalign="center" height="20">
+						<Label text="音量: " font="2" width="100" align="right" valign="center" textcolor="#FF000000" height="20"/>
+						<Slider name="slider_mic_volume" enabled="true" width="200" height="19" value="45" min="0" max="100" style="slider_style"/>
+						<Label name="lable_mic_volume" text="19%" font="2" width="60" height="16" align="left" valign="bottom" padding="10,3,0,0" textcolor="#FF000000"/>
+					</HorizontalLayout>
+					<HorizontalLayout inset="2,0,0,0" childvalign="center" height="30" childpadding="10">
+						<Button name="btn_testmic" text="麦克风测试" textcolor="#FF000000" textpadding="6,0,6,0" style="btn_style" width="108" height="30" />
+						<Progress name="progress_testmic" padding="0,5,0,0"  height="18" width="250" bkimage="file='setting/progress_back.png' corner='5,4,4,5' dest='0,0,250,18'" foreimage="file='setting/progress_fore.png' corner='5,4,4,5' dest='0,0,250,18" min="0" max="100" value="0"/>  
+					</HorizontalLayout>
+					<HorizontalLayout inset="20,0,0,0" height="20" visible="false">
+						<Label text="静音: " font="2" width="100" align="right" valign="center" textcolor="#FF000000" height="20"/>
+						<Option name="check_mic_mute" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
+					</HorizontalLayout>
+				</GroupBox>
 				<GroupBox text="扬声器设置" padding="20,0,20,0" childpadding="20" bordercolor="#FF808080" bkcolor="#FFF0F0F0" bordersize="1" height="175">
 					<HorizontalLayout inset="20,0,0,0" childvalign="center" height="40">
 						<Label text="扬声器: " font="2" width="100" align="right" valign="center" textcolor="#FF000000" showhtml="true"/>
@@ -202,21 +222,9 @@
 						<Button name="btn_testspeaker" text="扬声器测试" textcolor="#FF000000" textpadding="6,0,6,0" style="btn_style" width="108" height="30" />
 						<Progress name="progress_testspeaker" padding="0,5,0,0"  height="18" width="250" bkimage="file='setting/progress_back.png' corner='5,4,4,5' dest='0,0,250,18'" foreimage="file='setting/progress_fore.png' corner='5,4,4,5' dest='0,0,250,18" min="0" max="100" value="0"/>  
 					</HorizontalLayout>
-				</GroupBox>
-				<GroupBox text="麦克风设置" padding="20,0,20,0" childpadding="20" bordercolor="#FF808080" bkcolor="#FFF0F0F0" bordersize="1" height="175">
-					<HorizontalLayout inset="20,0,0,0" childvalign="center" height="40">
-						<Label text="麦克风: " font="2" width="100" align="right" valign="center" textcolor="#FF000000" showhtml="true"/>
-						<Combo name="combo_mic_device" width="250" height="36" style="devicecombo" dropbox="bordercolor=&quot;#FF1E90FF&quot; bordersize=&quot;1&quot; bkcolor=&quot;#FFFFFFFF&quot;">
-						</Combo>  
-					</HorizontalLayout>
-					<HorizontalLayout inset="20,0,0,0" childvalign="center" height="20">
-						<Label text="音量: " font="2" width="100" align="right" valign="center" textcolor="#FF000000" height="20"/>
-						<Slider name="slider_mic_volume" enabled="true" width="200" height="19" value="45" min="0" max="100" style="slider_style"/>
-						<Label name="lable_mic_volume" text="19%" font="2" width="60" height="16" align="left" valign="bottom" padding="10,3,0,0" textcolor="#FF000000"/>
-					</HorizontalLayout>
-					<HorizontalLayout inset="2,0,0,0" childvalign="center" height="30" childpadding="10">
-						<Button name="btn_testmic" text="麦克风测试" textcolor="#FF000000" textpadding="6,0,6,0" style="btn_style" width="108" height="30" />
-						<Progress name="progress_testmic" padding="0,5,0,0"  height="18" width="250" bkimage="file='setting/progress_back.png' corner='5,4,4,5' dest='0,0,250,18'" foreimage="file='setting/progress_fore.png' corner='5,4,4,5' dest='0,0,250,18" min="0" max="100" value="0"/>  
+					<HorizontalLayout inset="20,0,0,0" height="20" visible="false">
+						<Label text="静音: " font="2" width="100" align="right" valign="center" textcolor="#FF000000" height="20"/>
+						<Option name="check_speaker_mute" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
 					</HorizontalLayout>
 				</GroupBox>
 				<GroupBox text="软件音量设置" padding="20,0,20,0" childpadding="20" bordercolor="#FF808080" bkcolor="#FFF0F0F0" bordersize="1" height="100">

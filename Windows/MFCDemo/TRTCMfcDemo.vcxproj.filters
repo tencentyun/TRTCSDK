@@ -103,6 +103,9 @@
     <ClInclude Include="Common\zlib\zutil.h">
       <Filter>Common\zlib</Filter>
     </ClInclude>
+    <ClInclude Include="crashdump.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TRTCLoginViewController.cpp">
@@ -182,6 +185,9 @@
     </ClCompile>
     <ClCompile Include="Common\zlib\zutil.c">
       <Filter>Common\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="crashdump.cpp">
+      <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

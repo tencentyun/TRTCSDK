@@ -169,6 +169,7 @@ void TRTCMainViewController::enterRoom()
     TRTCCloudCore::GetInstance()->regSDKMsgObserver(WM_USER_CMD_MemberEnter, GetHWND());
     TRTCCloudCore::GetInstance()->regSDKMsgObserver(WM_USER_CMD_MemberExit, GetHWND());
     TRTCCloudCore::GetInstance()->regSDKMsgObserver(WM_USER_CMD_Error, GetHWND());
+    TRTCCloudCore::GetInstance()->regSDKMsgObserver(WM_USER_CMD_Warning, GetHWND());
     TRTCCloudCore::GetInstance()->regSDKMsgObserver(WM_USER_CMD_Dashboard, GetHWND());
     TRTCCloudCore::GetInstance()->regSDKMsgObserver(WM_USER_CMD_DeviceChange, GetHWND());
     TRTCCloudCore::GetInstance()->regSDKMsgObserver(WM_USER_CMD_SDKEventMsg, GetHWND());
@@ -552,6 +553,14 @@ LRESULT TRTCMainViewController::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM l
         onError(errCode, *errMsg);
         delete errMsg;
         errMsg = nullptr;
+    }
+    else if (uMsg == WM_USER_CMD_Warning)
+    {
+        std::string * warningMsg = (std::string *)lParam;
+        int warningCode = wParam;
+        onError(warningCode, *warningMsg);
+        delete warningMsg;
+        warningMsg = nullptr;
     }
     else if (uMsg == WM_USER_CMD_Dashboard)
     {
@@ -954,9 +963,19 @@ void TRTCMainViewController::onError(int errCode, std::string errMsg)
     }
     else
     {
-
         CDuiString strFormat;
         strFormat.Format(L"%sError[err:%d,msg:%s]", Log::_GetDateTimeString().c_str(), errCode, UTF82Wide(errMsg).c_str());
+        TXLiveAvVideoView::appendEventLogText(info._userId, TRTCVideoStreamTypeBig, strFormat.GetData(), true);
+    }
+}
+
+void TRTCMainViewController::onWarning(int warningCode, std::string warningMsg)
+{
+    LocalUserInfo info = CDataCenter::GetInstance()->getLocalUserInfo();
+    if (warningCode == WARNING_SPEAKER_DEVICE_EMPTY || warningCode == WARNING_MICROPHONE_DEVICE_EMPTY || warningCode == WARNING_CAMERA_DEVICE_EMPTY)
+    {
+        CDuiString strFormat;
+        strFormat.Format(L"%sWarning[warning:%d,msg:%s]", Log::_GetDateTimeString().c_str(), warningCode, UTF82Wide(warningMsg).c_str());
         TXLiveAvVideoView::appendEventLogText(info._userId, TRTCVideoStreamTypeBig, strFormat.GetData(), true);
     }
 }

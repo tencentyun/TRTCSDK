@@ -50,6 +50,7 @@ public:
     void onVideoAvailable(std::string userId, bool available);      //远端主路视频状态切换通知。
     void onAudioAvailable(std::string userId, bool available);      //远端音频主路状态切换通知。
     void onError(int errCode, std::string errMsg);                  //SDK错误码事件通知。
+    void onWarning(int warningCode, std::string warningMsg);        //SDK警告吗事件通知。
     void onDashBoardData(int streamType, std::string userId, std::string data); //仪表盘数据
     void onSDKEventData(int streamType, std::string userId, std::string data);  //SDK事件通知
     void onUserVoiceVolume(std::string userId, uint32_t volume);                //用户音量

@@ -267,7 +267,7 @@ namespace TRTCCSharpDemo
                 if (mCameraDeviceList.getDeviceName(i).Equals(this.cameraDeviceComboBox.Text))
                 {
                     mTRTCCloud.setCurrentCameraDevice(mCameraDeviceList.getDevicePID(i));
-                    mMainForm.OnCameraDeviceChange(mCameraDeviceList.getDeviceName(i));
+                    mMainForm.OnCameraDeviceChange(mCameraDeviceList.getDevicePID(i));
                 }
             }
         }

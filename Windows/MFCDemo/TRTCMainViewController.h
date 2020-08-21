@@ -47,7 +47,7 @@ protected:
     CFont newFont;
     HICON m_hIcon;
     int m_roomId = 0;
-    std::map<int, std::string> m_remoteUserInfo;
+    std::map<int, std::string> view_info_;
     TRTCSettingViewController *m_pTRTCSettingViewController = nullptr;
     // 生成的消息映射函数
     int m_showDebugView = 0;
@@ -60,9 +60,9 @@ protected:
     virtual void onUserEnter(const char* userId);
     virtual void onUserExit(const char* userId, int reason);
 private:
-    int FindIdleRemoteVideoView();
-    int FindOccupyRemoteVideoView(std::string userId);
-    void UpdateRemoteViewInfo(int id, std::string userId);
+    int FindIdleVideoView();
+    int FindOccupyVideoView(std::string userId);
+    void UpdateVideoViewInfo(int id, std::string userId);
 public:
     static ITRTCCloud* g_cloud;
     afx_msg void OnClose();
@@ -71,6 +71,7 @@ public:
     afx_msg void OnBnClickedExitRoom();
     afx_msg void OnBnClickedSetting();
     afx_msg void OnBnClickedLog();
+    afx_msg void OnBnClickedSwapRenderView();
 
     std::string m_userId;
 };

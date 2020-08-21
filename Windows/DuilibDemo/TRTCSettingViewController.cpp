@@ -837,7 +837,25 @@ void TRTCSettingViewController::NotifyAudioTab(TNotifyUI & msg)
 {
     if (msg.sType == _T("click"))
     {
-        if (msg.pSender->GetName() == _T("check_btn_aec"))
+        if (msg.pSender->GetName() == _T("check_mic_mute")) {
+            COptionUI* pOpenSender = static_cast<COptionUI*>(msg.pSender);
+            if (pOpenSender->IsSelected() == false) { //事件值是反的
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->setCurrentMicDeviceMute(true);
+            }
+            else {
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->setCurrentMicDeviceMute(false);
+            }
+        }
+        else if (msg.pSender->GetName() == _T("check_speaker_mute")) {
+            COptionUI* pOpenSender = static_cast<COptionUI*>(msg.pSender);
+            if (pOpenSender->IsSelected() == false) { //事件值是反的
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->setCurrentSpeakerDeviceMute(true);
+            }
+            else {
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->setCurrentSpeakerDeviceMute(false);
+            }
+        }
+        else if (msg.pSender->GetName() == _T("check_btn_aec"))
         {
             COptionUI* pOpenSender = static_cast<COptionUI*>(msg.pSender);
             if (pOpenSender->IsSelected() == false) //事件值是反的
@@ -854,7 +872,7 @@ void TRTCSettingViewController::NotifyAudioTab(TNotifyUI & msg)
                 TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
             }
         }
-        if (msg.pSender->GetName() == _T("check_btn_ans"))
+        else if (msg.pSender->GetName() == _T("check_btn_ans"))
         {
             COptionUI* pOpenSender = static_cast<COptionUI*>(msg.pSender);
             if (pOpenSender->IsSelected() == false) //事件值是反的
@@ -871,7 +889,7 @@ void TRTCSettingViewController::NotifyAudioTab(TNotifyUI & msg)
                 TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
             }
         }
-        if (msg.pSender->GetName() == _T("check_btn_agc"))
+        else if (msg.pSender->GetName() == _T("check_btn_agc"))
         {
             COptionUI* pOpenSender = static_cast<COptionUI*>(msg.pSender);
             if (pOpenSender->IsSelected() == false) //事件值是反的
@@ -888,8 +906,7 @@ void TRTCSettingViewController::NotifyAudioTab(TNotifyUI & msg)
                 TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
             }
         }
-        
-        if(msg.pSender->GetName() == _T("check_system_audio_mix"))
+        else if(msg.pSender->GetName() == _T("check_system_audio_mix"))
         {
 
             COptionUI* pTestSystemVoice = static_cast<COptionUI*>(msg.pSender);
@@ -1655,8 +1672,14 @@ void TRTCSettingViewController::InitAudioTab()
             sText.Format(_T("%d%%"), nVolume);
             pLabelValue->SetText(sText);
         }
-        if (TRTCCloudCore::GetInstance()->getTRTCCloud())
+        if (TRTCCloudCore::GetInstance()->getTRTCCloud()) {
             TRTCCloudCore::GetInstance()->getTRTCCloud()->setCurrentSpeakerVolume(nVolume * AUDIO_DEVICE_VOLUME_TICKET / 100);
+
+            bool mute = TRTCCloudCore::GetInstance()->getTRTCCloud()->getCurrentSpeakerDeviceMute();
+            COptionUI* pCheckMute = static_cast<COptionUI*>(m_pmUI.FindControl(_T("check_speaker_mute")));
+            if (pCheckMute)
+                pCheckMute->Selected(mute);
+        }
     }
     {
         uint32_t nVolume = CDataCenter::GetInstance()->m_micVolume;
@@ -1671,8 +1694,14 @@ void TRTCSettingViewController::InitAudioTab()
             sText.Format(_T("%d%%"), nVolume);
             pLabelValue->SetText(sText);
         }
-        if (TRTCCloudCore::GetInstance()->getTRTCCloud())
+        if (TRTCCloudCore::GetInstance()->getTRTCCloud()) {
             TRTCCloudCore::GetInstance()->getTRTCCloud()->setCurrentMicDeviceVolume(nVolume * AUDIO_DEVICE_VOLUME_TICKET / 100);
+
+            bool mute = TRTCCloudCore::GetInstance()->getTRTCCloud()->getCurrentMicDeviceMute();
+            COptionUI* pCheckMute = static_cast<COptionUI*>(m_pmUI.FindControl(_T("check_mic_mute")));
+            if (pCheckMute)
+                pCheckMute->Selected(mute);
+        }
     }
 
     {
@@ -1759,7 +1788,6 @@ void TRTCSettingViewController::InitAudioTab()
         if (CDataCenter::GetInstance()->m_bStartSystemVoice)
         {
             pCheckSystemAudioMix->Selected(true);
-            TRTCCloudCore::GetInstance()->getTRTCCloud()->startSystemAudioLoopback();
         }
         else
             pCheckSystemAudioMix->Selected(false);

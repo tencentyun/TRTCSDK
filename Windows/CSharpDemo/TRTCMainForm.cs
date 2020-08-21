@@ -386,6 +386,8 @@ namespace TRTCCSharpDemo
                         // 确保 SDK 内部的音频和视频采集是开启的。
                         mTRTCCloud.muteLocalVideo(false);
                         mTRTCCloud.muteLocalAudio(false);
+                        this.startLocalPreviewCheckBox.Checked = true;
+                        this.startLocalAudioCheckBox.Checked = true;
                         // 更新混流信息
                         UpdateMixTranCodeInfo();
                     }
@@ -408,7 +410,7 @@ namespace TRTCCSharpDemo
             if (cameraList.getCount() > 0)
             {
                 ITRTCDeviceInfo camera = mTRTCCloud.getCurrentCameraDevice();
-                mCurCameraDevice = camera.getDeviceName();
+                mCurCameraDevice = camera.getDevicePID();
             }
             cameraList.release();
             ITRTCDeviceCollection micList = mTRTCCloud.getMicDevicesList();
@@ -416,7 +418,7 @@ namespace TRTCCSharpDemo
             if (micList.getCount() > 0)
             {
                 ITRTCDeviceInfo mic = mTRTCCloud.getCurrentMicDevice();
-                mCurMicDevice = mic.getDeviceName();
+                mCurMicDevice = mic.getDevicePID();
             }
             micList.release();
             ITRTCDeviceCollection speakerList = mTRTCCloud.getSpeakerDevicesList();
@@ -424,7 +426,7 @@ namespace TRTCCSharpDemo
             if (speakerList.getCount() > 0)
             {
                 ITRTCDeviceInfo speaker = mTRTCCloud.getCurrentSpeakerDevice();
-                mCurSpeakerDevice = speaker.getDeviceName();
+                mCurSpeakerDevice = speaker.getDevicePID();
             }
             speakerList.release();
         }
@@ -444,11 +446,11 @@ namespace TRTCCSharpDemo
             }
             else if (errCode == TXLiteAVError.ERR_MIC_START_FAIL)
             {
-                ShowMessage("Error: 未检出到麦克风，请检查本地电脑设备。");
+                ShowMessage("Error: 麦克风打开失败，请检查本地电脑设备。");
             }
             else if (errCode == TXLiteAVError.ERR_CAMERA_START_FAIL)
             {
-                ShowMessage("Error: 未检出到摄像头，请检查本地电脑设备。");
+                ShowMessage("Error: 摄像头打开失败，请检查本地电脑设备。");
             }
             else
             {
@@ -1232,6 +1234,51 @@ namespace TRTCCSharpDemo
             mTRTCCloud.setMixTranscodingConfig(config);
         }
 
+        private void OnStartLocalAudioClick(object sender, EventArgs e)
+        {
+            if (!DataManager.GetInstance().enterRoom)
+            {
+                ShowMessage("进房失败，请重试");
+                this.startLocalAudioCheckBox.Checked = false;
+                return;
+            }
+            
+            if (this.startLocalAudioCheckBox.Checked)
+            {
+                mTRTCCloud.startLocalAudio();
+            }
+            else
+            {
+                mTRTCCloud.stopLocalAudio();
+            }
+        }
+
+        private void OnStartLocalPreviewClick(object sender, EventArgs e)
+        {
+            if (!DataManager.GetInstance().enterRoom)
+            {
+                ShowMessage("进房失败，请重试");
+                this.startLocalPreviewCheckBox.Checked = false;
+                return;
+            }
+            if (DataManager.GetInstance().pureAudioStyle)
+            {
+                ShowMessage("Error: 纯音频场景，无法打开视频，请退房重新选择模式");
+                this.startLocalPreviewCheckBox.Checked = false;
+                return;
+            }
+            if (this.startLocalPreviewCheckBox.Checked)
+            {
+                StartLocalVideo();
+                this.localInfoLabel.Visible = false;
+            }
+            else
+            {
+                this.localInfoLabel.Visible = true;
+                mTRTCCloud.stopLocalPreview();
+            }
+        }
+
         private void OnMuteAudioCheckBoxClick(object sender, EventArgs e)
         {
             if (!DataManager.GetInstance().enterRoom)
@@ -1435,6 +1482,19 @@ namespace TRTCCSharpDemo
         public void onWarning(TXLiteAVWarning warningCode, string warningMsg, IntPtr arg)
         {
             Log.I(String.Format("warningCode : {0}, warningMsg : {1}", warningCode, warningMsg));
+
+            if (warningCode == TXLiteAVWarning.WARNING_MICROPHONE_DEVICE_EMPTY)
+            {
+                ShowMessage("Error: 未检出到麦克风，请检查本地电脑设备。");
+            }
+            else if (warningCode == TXLiteAVWarning.WARNING_CAMERA_DEVICE_EMPTY)
+            {
+                ShowMessage("Error: 未检出到摄像头，请检查本地电脑设备。");
+            }
+            else if (warningCode == TXLiteAVWarning.WARNING_SPEAKER_DEVICE_EMPTY)
+            {
+                ShowMessage("Error: 未检出到扬声器，请检查本地电脑设备。");
+            }
         }
 
         public void onCameraDidReady()
@@ -1442,7 +1502,7 @@ namespace TRTCCSharpDemo
             Log.I(String.Format("onCameraDidReady"));
             // 实时获取当前使用的摄像头设备信息
             if (mTRTCCloud != null)
-                mCurCameraDevice = mTRTCCloud.getCurrentCameraDevice().getDeviceName();
+                mCurCameraDevice = mTRTCCloud.getCurrentCameraDevice().getDevicePID();
         }
 
         public void onMicDidReady()
@@ -1450,7 +1510,7 @@ namespace TRTCCSharpDemo
             Log.I(String.Format("onMicDidReady"));
             // 实时获取当前使用的麦克风设备信息
             if (mTRTCCloud != null)
-            mCurMicDevice = mTRTCCloud.getCurrentMicDevice().getDeviceName();
+            mCurMicDevice = mTRTCCloud.getCurrentMicDevice().getDevicePID();
         }
 
         public void onConnectionLost()
@@ -1497,28 +1557,22 @@ namespace TRTCCSharpDemo
         public void onDeviceChange(string deviceId, TRTCDeviceType type, TRTCDeviceState state)
         {
             // 实时监控本地设备的拔插
+            // SDK 内部已支持摄像头、麦克风以及扬声器拔插时判断是否需要自动打开或切换，外部无需做处理
             Log.I(String.Format("onDeviceChange : deviceId = {0}, type = {1}, state = {2}", deviceId, type, state));
             this.BeginInvoke(new Action(() =>
             {
                 if (type == TRTCDeviceType.TRTCDeviceTypeCamera)
                 {
-                    RefreshCameraDevice(deviceId, state);
+                    if (mVedioSettingForm != null)
+                        mVedioSettingForm.OnDeviceChange(deviceId, type, state);
                 }
-                else if (type == TRTCDeviceType.TRTCDeviceTypeMic)
+                else if (type == TRTCDeviceType.TRTCDeviceTypeMic || type == TRTCDeviceType.TRTCDeviceTypeSpeaker)
                 {
-                    RefreshMicDevice(deviceId, state);
+                    if (mAudioSettingForm != null)
+                        mAudioSettingForm.OnDeviceChange(deviceId, type, state);
                 }
-                else if (type == TRTCDeviceType.TRTCDeviceTypeSpeaker)
-                {
-                    RefreshSpeakerDevice(deviceId, state);
-                }
-                if (mAudioSettingForm != null)
-                    mAudioSettingForm.OnDeviceChange(deviceId, type, state);
-
             }));
         }
-
-        
 
         /// <summary>
         /// 实时更新本地设备摄像头的设备信息
@@ -1556,8 +1610,7 @@ namespace TRTCCSharpDemo
                 if (collection.getCount() > 0)
                 {
                     mTRTCCloud.setCurrentCameraDevice(collection.getDevicePID(0));
-                    mTRTCCloud.startLocalPreview(mCameraVideoHandle);
-                    mCurCameraDevice = collection.getDeviceName(0);
+                    mCurCameraDevice = collection.getDevicePID(0);
                 }
             }
             collection.release();
@@ -1601,7 +1654,7 @@ namespace TRTCCSharpDemo
                     mTRTCCloud.setCurrentMicDevice(collection.getDevicePID(0));
                     mTRTCCloud.startLocalAudio();
                     mTRTCCloud.muteLocalAudio(false);
-                    mCurMicDevice = collection.getDeviceName(0);
+                    mCurMicDevice = collection.getDevicePID(0);
                 }
             }
             collection.release();
@@ -1643,7 +1696,7 @@ namespace TRTCCSharpDemo
                 if (collection.getCount() > 0)
                 {
                     mTRTCCloud.setCurrentSpeakerDevice(collection.getDevicePID(0));
-                    mCurSpeakerDevice = collection.getDeviceName(0);
+                    mCurSpeakerDevice = collection.getDevicePID(0);
                 }
             }
             collection.release();

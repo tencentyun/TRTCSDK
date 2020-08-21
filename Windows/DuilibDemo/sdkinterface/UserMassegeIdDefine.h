@@ -49,6 +49,7 @@
 #define WM_USER_CMD_OnTestMicVolume      WM_USER_CMD + 75  //测试麦克风音量
 #define WM_USER_CMD_OnTestSpeakerVolume   WM_USER_CMD + 76  //测试扬声器音量
 #define WM_USER_CMD_OnFirstAudioFrame     WM_USER_CMD + 78 //开始播放远程用户的首帧音频（本地声音暂不通知）
+#define WM_USER_CMD_Warning               WM_USER_CMD + 79 //出现警告
 //音视频数据消息
 #define WM_USER_MEDIA_DATA WM_USER + 200
 

@@ -154,7 +154,7 @@
             this.BGMPitchTrackBar.TickFrequency = 0;
             this.BGMPitchTrackBar.TickStyle = System.Windows.Forms.TickStyle.None;
             this.BGMPitchTrackBar.Value = 500;
-            this.BGMPitchTrackBar.MouseClick += new System.Windows.Forms.MouseEventHandler(this.bgmPitchTrackBar_Scroll);
+            this.BGMPitchTrackBar.Scroll += new System.EventHandler(this.bgmPitchTrackBar_Scroll);
             // 
             // BGMSpeedTrackBar
             // 
@@ -168,7 +168,7 @@
             this.BGMSpeedTrackBar.TickFrequency = 0;
             this.BGMSpeedTrackBar.TickStyle = System.Windows.Forms.TickStyle.None;
             this.BGMSpeedTrackBar.Value = 500;
-            this.BGMSpeedTrackBar.MouseClick += new System.Windows.Forms.MouseEventHandler(this.bgmSpeedTrackBar_Scroll);
+            this.BGMSpeedTrackBar.Scroll += new System.EventHandler(this.bgmSpeedTrackBar_Scroll);
             // 
             // label6
             // 
@@ -232,7 +232,7 @@
             this.RemoteVolumTrackBar.TickFrequency = 0;
             this.RemoteVolumTrackBar.TickStyle = System.Windows.Forms.TickStyle.None;
             this.RemoteVolumTrackBar.Value = 500;
-            this.RemoteVolumTrackBar.MouseClick += new System.Windows.Forms.MouseEventHandler(this.RemoteVolumTrackBar_Scroll);
+            this.RemoteVolumTrackBar.Scroll += new System.EventHandler(this.RemoteVolumTrackBar_Scroll);
             // 
             // LocalVolumTrackBar
             // 
@@ -246,7 +246,7 @@
             this.LocalVolumTrackBar.TickFrequency = 0;
             this.LocalVolumTrackBar.TickStyle = System.Windows.Forms.TickStyle.None;
             this.LocalVolumTrackBar.Value = 500;
-            this.LocalVolumTrackBar.MouseClick += new System.Windows.Forms.MouseEventHandler(this.LocalVolumTrackBar_Scroll);
+            this.LocalVolumTrackBar.Scroll += new System.EventHandler(this.LocalVolumTrackBar_Scroll);
             // 
             // BGMVolumTrackBar
             // 
@@ -260,7 +260,7 @@
             this.BGMVolumTrackBar.TickFrequency = 0;
             this.BGMVolumTrackBar.TickStyle = System.Windows.Forms.TickStyle.None;
             this.BGMVolumTrackBar.Value = 500;
-            this.BGMVolumTrackBar.MouseClick += new System.Windows.Forms.MouseEventHandler(this.BGMVolumTrackBar_Scroll);
+            this.BGMVolumTrackBar.Scroll += new System.EventHandler(this.BGMVolumTrackBar_Scroll);
             // 
             // bgmTimeLabel
             // 

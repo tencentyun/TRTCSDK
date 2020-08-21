@@ -194,7 +194,7 @@ namespace TRTCCSharpDemo
                 if (mMicDeviceList.getDeviceName(i).Equals(this.micDeviceComboBox.Text))
                 {
                     mTRTCCloud.setCurrentMicDevice(mMicDeviceList.getDevicePID(i));
-                    mMainForm.OnMicDeviceChange(mMicDeviceList.getDeviceName(i));
+                    mMainForm.OnMicDeviceChange(mMicDeviceList.getDevicePID(i));
                 }
             }
         }
@@ -214,7 +214,7 @@ namespace TRTCCSharpDemo
                 if (mSpeakerDeviceList.getDeviceName(i).Equals(this.speakerDeviceComboBox.Text))
                 {
                     mTRTCCloud.setCurrentSpeakerDevice(mSpeakerDeviceList.getDevicePID(i));
-                    mMainForm.OnSpeakerDeviceChange(mSpeakerDeviceList.getDeviceName(i));
+                    mMainForm.OnSpeakerDeviceChange(mSpeakerDeviceList.getDevicePID(i));
                 }
             }
         }

@@ -175,6 +175,16 @@ void TRTCCloudCore::onError(TXLiteAVError errCode, const char* errMsg, void* arg
 void TRTCCloudCore::onWarning(TXLiteAVWarning warningCode, const char* warningMsg, void* arg)
 {
     LINFO(L"onWarning errorCode[%d], errorInfo[%s]\n", warningCode, UTF82Wide(warningMsg).c_str());
+    for (auto& itr : m_mapSDKMsgFilter)
+    {
+        if (itr.first == WM_USER_CMD_Warning && itr.second != nullptr)
+        {
+            std::string * str = new std::string();
+            if (warningMsg != nullptr)
+                *str = warningMsg;
+            ::PostMessage(itr.second, WM_USER_CMD_Warning, (WPARAM)warningCode, (LPARAM)str);
+        }
+    }
 }
 
 void TRTCCloudCore::onEnterRoom(int result)
@@ -1327,6 +1337,9 @@ void TRTCCloudCore::updateMixTranCodeInfo()
         {
             if(it.second.user_id == m_localUserId)
                 continue;
+            if(index >= mixUsersArraySize)
+                continue;
+
             int left = 20,top = 40;
             int right = 240 + left,bottom = 240 + top;
 
