@@ -15,6 +15,7 @@ class TRTCVoiceRoomListRootView: UIView {
     private var isViewReady: Bool = false
     let viewModel: TRTCVoiceRoomListViewModel
     weak var rootViewController: UIViewController?
+    var scrollviewBaseContentOffsetY:CGFloat = 0.0
     
     init(frame: CGRect = .zero, viewModel: TRTCVoiceRoomListViewModel) {
         self.viewModel = viewModel
@@ -126,9 +127,27 @@ class TRTCVoiceRoomListRootView: UIView {
 }
 
 extension TRTCVoiceRoomListRootView: UICollectionViewDelegate {
+    public func updateBaseCollectionOffsetY() -> Void {
+        scrollviewBaseContentOffsetY = roomListCollection.contentOffset.y
+    }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         // 检查是否是自己的房间
         viewModel.clickRoomItem(index: indexPath.row)
+        collectionView.panGestureRecognizer.isEnabled = true
+    }
+    func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
+        if fabsf(Float(collectionView.contentOffset.y - scrollviewBaseContentOffsetY)) <= 0.001 &&
+            !collectionView.isDragging &&
+            !collectionView.isDecelerating {
+            //bugfix 7P下拉刷新后，collectionCell无法选中
+            collectionView.panGestureRecognizer.isEnabled = false
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.1) {
+                collectionView.panGestureRecognizer.isEnabled = true
+            }
+        }
     }
 }
 

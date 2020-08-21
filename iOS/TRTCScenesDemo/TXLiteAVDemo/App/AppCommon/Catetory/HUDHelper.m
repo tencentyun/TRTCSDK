@@ -8,7 +8,6 @@
 
 #import "HUDHelper.h"
 #import "NSString+Common.h"
-#import <BlocksKit/UIAlertView+BlocksKit.h>
 #import "TXLiteAVDemo-Swift.h"
 
 @implementation HUDHelper
@@ -32,32 +31,15 @@ static HUDHelper *_instance = nil;
 {
     [HUDHelper alert:msg cancel:@"确定"];
 }
-+ (void)alert:(NSString *)msg action:(CommonVoidBlock)action
-{
-    [HUDHelper alert:msg cancel:@"确定" action:action];
-}
+
 + (void)alert:(NSString *)msg cancel:(NSString *)cancel
 {
     [HUDHelper alertTitle:@"提示" message:msg cancel:cancel];
 }
-+ (void)alert:(NSString *)msg cancel:(NSString *)cancel action:(CommonVoidBlock)action
-{
-    [HUDHelper alertTitle:@"提示" message:msg cancel:cancel action:action];
-}
+
 + (void)alertTitle:(NSString *)title message:(NSString *)msg cancel:(NSString *)cancel
 {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:msg delegate:nil cancelButtonTitle:cancel otherButtonTitles:nil, nil];
-    [alert show];
-}
-
-+ (void)alertTitle:(NSString *)title message:(NSString *)msg cancel:(NSString *)cancel action:(CommonVoidBlock)action
-{
-    UIAlertView *alert = [UIAlertView bk_showAlertViewWithTitle:title message:msg cancelButtonTitle:cancel otherButtonTitles:nil handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
-        if (action)
-        {
-            action();
-        }
-    }];
     [alert show];
 }
 

@@ -4,9 +4,8 @@
  * Function: 实用函数
  */
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 #import "TCLog.h"
-#import <BlocksKit/UIAlertView+BlocksKit.h>
 
 
 #define IPHONE_X \

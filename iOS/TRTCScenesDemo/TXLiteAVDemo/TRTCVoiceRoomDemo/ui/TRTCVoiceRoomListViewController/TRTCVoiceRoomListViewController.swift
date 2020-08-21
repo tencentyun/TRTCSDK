@@ -44,6 +44,10 @@ public class TRTCVoiceRoomListViewController: UIViewController {
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         viewModel?.getRoomList() // 调整房间列表的刷新时机
+        guard let rootView = self.view as? TRTCVoiceRoomListRootView else {
+            return
+        }
+        rootView.updateBaseCollectionOffsetY()
     }
 
 

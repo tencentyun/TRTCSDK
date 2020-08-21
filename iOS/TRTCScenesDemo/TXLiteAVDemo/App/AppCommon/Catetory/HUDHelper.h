@@ -19,11 +19,8 @@ typedef void (^CommonVoidBlock)(void);
 + (HUDHelper *)sharedInstance;
 
 + (void)alert:(NSString *)msg;
-+ (void)alert:(NSString *)msg action:(CommonVoidBlock)action;
 + (void)alert:(NSString *)msg cancel:(NSString *)cancel;
-+ (void)alert:(NSString *)msg cancel:(NSString *)cancel action:(CommonVoidBlock)action;
 + (void)alertTitle:(NSString *)title message:(NSString *)msg cancel:(NSString *)cancel;
-+ (void)alertTitle:(NSString *)title message:(NSString *)msg cancel:(NSString *)cancel action:(CommonVoidBlock)action;
 
 // 网络请求
 - (MBProgressHUD *)loading;

@@ -17,9 +17,9 @@
 	<key>CFBundlePackageType</key>
 	<string>XPC!</string>
 	<key>CFBundleShortVersionString</key>
-	<string>7.5.424</string>
+	<string>7.6.504</string>
 	<key>CFBundleVersion</key>
-	<string>424</string>
+	<string>504</string>
 	<key>NSExtension</key>
 	<dict>
 		<key>NSExtensionPointIdentifier</key>

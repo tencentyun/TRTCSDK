@@ -2,6 +2,7 @@
 #import "PortalViewController.h"
 #import <TRTCCloudDef.h>
 
+#import "AppDelegate.h"
 #import "ColorMacro.h"
 #import "MainMenuCell.h"
 #import "TXLiteAVDemo-Swift.h"
@@ -39,8 +40,7 @@
 @property (nonatomic,   weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic,   weak) IBOutlet UILabel *versionLabel;
 
-@property (nonatomic, strong) VideoSelectContactViewController *videoCallVC;
-@property (nonatomic, strong) AudioSelectContactViewController *audioCallVC;
+@property (nonatomic, strong) TRTCCallingContactViewController *videoCallVC;
 
 @property (nonatomic, strong) TRTCLiveRoom *liveRoom;
 @property (nonatomic, strong) TRTCVoiceRoom *voiceRoom;
@@ -62,14 +62,9 @@
     gradientLayer.frame = self.view.bounds;
     [self.view.layer insertSublayer:gradientLayer atIndex:0];
     
-    _videoCallVC = [[VideoSelectContactViewController alloc] init];
-    _audioCallVC = [[AudioSelectContactViewController alloc] init];
-    [[TRTCVideoCall shared] setup];
-    [TRTCVideoCall shared].delegate = _videoCallVC;
-    
-    [[TRTCAudioCall shared] setup];
-    [TRTCAudioCall shared].delegate = _audioCallVC;
-    
+    _videoCallVC = [[TRTCCallingContactViewController alloc] init];
+    [[TRTCCalling shareInstance] addDelegate:_videoCallVC];
+
     _liveRoom = [[TRTCLiveRoom alloc] init];
     _voiceRoom = [TRTCVoiceRoom sharedInstance];
     __weak __typeof(self) wSelf = self;
@@ -99,11 +94,6 @@
     self.versionLabel.text = [NSString stringWithFormat:@"腾讯云 TRTC v%@(%@)", [TRTCCloud getSDKVersion], version];
 }
 
-- (void)dealloc {
-    [[TRTCVideoCall shared] destroy];
-    [[TRTCAudioCall shared] destroy];
-}
-
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self setupToast];
@@ -115,25 +105,19 @@
     NSString *userSig = [[ProfileManager shared] curUserSig];
     
     if (![[[V2TIMManager sharedInstance] getLoginUser] isEqual:userID]) {
+        [TRTCCalling shareInstance].imBusinessID = SdkBusiId;
+        [TRTCCalling shareInstance].deviceToken = [AppUtils shared].appDelegate.deviceToken;
         [[ProfileManager shared] IMLoginWithUserSig:userSig success:^{
             [self makeToastWithMessage:@"登录IM成功"];
-            [[TRTCAudioCall shared] loginWithSdkAppID:SDKAPPID user:userID userSig:userSig success:^{
-            } failed:^(NSInteger code, NSString *error) {
-                
+            [[TRTCCalling shareInstance] login:SDKAPPID user:userID userSig:userSig success:^{
+                NSLog(@"Audio call login success.");
+            } failed:^(int code, NSString *error) {
+                NSLog(@"Audio call login failed.");
             }];
-            [[TRTCVideoCall shared] loginWithSdkAppID:SDKAPPID user:userID userSig:userSig success:^{
-            } failed:^(NSInteger code, NSString *error) {
-                
-            }];
-            
         } failed:^(NSString * error) {
             [self makeToastWithMessage:@"登录IM失败"];
         }];
     }
-}
-
-- (void)gotoVideoCallView {
-    [self.navigationController pushViewController:self.videoCallVC animated:YES];
 }
 
 - (void)gotoLiveView {
@@ -157,8 +141,16 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+- (void)gotoVideoCallView {
+    self.videoCallVC.callType = CallType_Video;
+    self.videoCallVC.title = @"视频通话";
+    [self.navigationController pushViewController:self.videoCallVC animated:YES];
+}
+
 - (void)gotoAudioCallView {
-    [self.navigationController pushViewController:self.audioCallVC animated:YES];
+    self.videoCallVC.callType = CallType_Audio;
+    self.videoCallVC.title = @"语音通话";
+    [self.navigationController pushViewController:self.videoCallVC animated:YES];
 }
 
 - (void)gotoMeetingView {

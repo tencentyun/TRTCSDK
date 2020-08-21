@@ -20,6 +20,7 @@
 #import "TRTCVoiceRoomDef.h"
 #import "TRTCVoiceRoom.h"
 #import "TRTCLiveRoom.h"
+#import "TRTCCalling.h"
 #endif
 
 #import "AppDelegate.h"

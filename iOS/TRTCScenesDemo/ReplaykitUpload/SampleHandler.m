@@ -230,8 +230,8 @@ static void onDarwinReplayKit2ResolutionChange(CFNotificationCenterRef center,
 
 - (void)handleReplayKit2ResolutionChangeNotification:(NSNotification*)noti
 {
-    NSString *s_resolution = [self _getConfigForKey:kReplayKit2ResolutionKey fromConfig:noti.userInfo];
-    if (s_resolution.length == 0) {
+    NSString *resolution = [self _getConfigForKey:kReplayKit2ResolutionKey fromConfig:noti.userInfo];
+    if (resolution.length == 0) {
         return;
     }
 //    [self sendLocalNotificationToHostAppWithTitle:@"腾讯云录屏推流" msg:s_resolution userInfo:nil];
@@ -245,6 +245,7 @@ static void onDarwinReplayKit2ResolutionChange(CFNotificationCenterRef center,
 //
 //    }
 //    return;
+    s_resolution = resolution;
     [self setCustomRotationAndResolution:s_landScape?kReplayKit2Lanscape:kReplayKit2Portrait resolution:s_resolution];
 }
 

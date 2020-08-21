@@ -159,12 +159,12 @@ class TRTCVoiceRoomViewModel: NSObject {
         }
     }
     
-    public func enterRoom() {
-        
+    public func enterRoom(toneQuality: Int = VoiceRoomToneQuality.music.rawValue) {
         voiceRoom.enterRoom(roomID: roomInfo.roomID) { [weak self] (code, message) in
             guard let `self` = self else { return }
             if code == 0 {
                 self.viewResponder?.showToast(message: "进房成功")
+                self.voiceRoom.setAuidoQuality(quality: toneQuality)
             } else {
                 self.viewResponder?.showToast(message: "进房失败")
                 self.viewResponder?.popToPrevious()

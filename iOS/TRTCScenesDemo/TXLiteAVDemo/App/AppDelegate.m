@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import <Bugly/Bugly.h>
 
+
 #ifdef ENABLE_TRTC
 #ifdef ENABLE_PLAY
 #import "TRTCCloud.h"
@@ -246,7 +247,7 @@ NSString *helpUrlDb[] = {
 
 #pragma mark - 扫码拉起APP播放视频
 - (void)playVideoFromLaunchInfo:(NSDictionary *)launchInfo {
-    #if defined(PLAYER) || defined(PROFESSIONAL) || defined(ENTERPRISE)
+#if defined(PLAYER) || defined(PROFESSIONAL) || defined(ENTERPRISE)
     __weak UINavigationController *rootVC = (UINavigationController *)self.window.rootViewController;
     if (launchInfo && [rootVC isKindOfClass:[UINavigationController class]]) {
         if ([self findClass:NSClassFromString(@"LoginViewController") InNav:rootVC]) {
@@ -274,7 +275,7 @@ NSString *helpUrlDb[] = {
             }
         }
     }
-    #endif
+#endif
 }
 
 - (UIViewController *)findVCWith:(Class)aclass InNav:(UINavigationController *)nav {

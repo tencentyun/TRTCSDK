@@ -465,6 +465,17 @@ TRTCLiveRoomDelegate>
     }
 }
 
+- (void)showAlertWithTitle:(NSString *)title sureAction:(void(^)(void))callback {
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:nil preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *sureAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        if (callback) {
+            callback();
+        }
+    }];
+    [alertController addAction:sureAction];
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+
 #pragma mark - liveroom listener
 - (void)onDebugLog:(NSString *)msg {
     NSLog(@"onDebugMsg:%@", msg);
@@ -473,8 +484,9 @@ TRTCLiveRoomDelegate>
 - (void)onRoomDestroy:(NSString *)roomID {
     dispatch_async(dispatch_get_main_queue(), ^{
         NSLog(@"onRoomDestroy, roomID:%@", roomID);
-        [UIAlertView bk_showAlertViewWithTitle:@"大主播关闭直播间" message:nil cancelButtonTitle:@"确定" otherButtonTitles:nil handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
-            [self closeVCWithRefresh:YES popViewController:YES];
+        __weak __typeof(self) weakSelf = self;
+        [self showAlertWithTitle:@"大主播关闭直播间" sureAction:^{
+            [weakSelf closeVCWithRefresh:YES popViewController:YES];
         }];
     });
 }
@@ -484,8 +496,9 @@ TRTCLiveRoomDelegate>
         NSLog(@"onError:%d, %@", errCode, errMsg);
         if(errCode != 0){
             if (self->_isInVC) {
-                [UIAlertView bk_showAlertViewWithTitle:errMsg message:nil cancelButtonTitle:@"确定" otherButtonTitles:nil handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
-                    [self closeVCWithRefresh:YES popViewController:YES];
+                __weak __typeof(self) weakSelf = self;
+                [self showAlertWithTitle:@"大主播关闭直播间" sureAction:^{
+                    [weakSelf closeVCWithRefresh:YES popViewController:YES];
                 }];
             }else{
                 self->_errorCode = errCode;
@@ -744,8 +757,9 @@ TRTCLiveRoomDelegate>
     [self closeVC:NO];
     if (!_isErrorAlert) {
         _isErrorAlert = YES;
-        [HUDHelper alert:@"直播已结束" cancel:@"确定" action:^{
-            [self.navigationController popViewControllerAnimated:YES];
+        __weak __typeof(self) weakSelf = self;
+        [self showAlertWithTitle:@"直播已结束" sureAction:^{
+            [weakSelf.navigationController popViewControllerAnimated:YES];
         }];
     }
 }
