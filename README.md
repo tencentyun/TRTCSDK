@@ -14,31 +14,30 @@
 | Electron | [下载](http://liteavsdk-1252463788.cosgz.myqcloud.com/TXLiteAVSDK_TRTC_Electron_latest.zip) | [DOC](https://cloud.tencent.com/document/product/647/38548) | [DOC](https://cloud.tencent.com/document/product/647/38549) |[API](https://cloud.tencent.com/document/product/647/38551) |
 | 微信小程序 | [下载](http://liteavsdk-1252463788.cosgz.myqcloud.com/TRTC_WXMini_latest.zip) | [DOC](https://cloud.tencent.com/document/product/647/32399) | [DOC](https://cloud.tencent.com/document/product/647/32183) |[API](https://cloud.tencent.com/document/product/647/17018) |
 
-## 最新版本 7.5 @ 2020.07.31
-TRTC 7.5 版本在如下方面做了改进和优化：
-- 降低了端到端的连麦延时，7.5 版本的端到端通话和连麦延时在 7.4 版本的基础上缩短了 40%。
-- 降低了移动端的耳返延时，并支持对耳返设置变声和混响等音效。
+## 最新版本 7.6 @ 2020.08.21
+TRTC 7.6 版本主要改进了 Windows 和 Mac 端的 SDK 稳定性，并优化了很多已知的无声和黑屏 BUG，全部升级点包括如下：
+- 全平台：优化 enterRoom 的协议策略，提升加入房间的速度，并提高成功率。
+- 全平台：优化同时订阅超多路音频时的总体性能消耗和卡顿问题。
+- 全平台：修复在不退房的情况下进入同一个房间时，SDK 不触发 onEnterRoom 回的 BUG。
+- 全平台：修复几种可能导致黑屏的偶现内部 BUG 的问题。
+- 全平台：修复提前调用 startRemoteSubStreamView 无法正常显示屏幕分享画面的问题。
+- Windows：新增 [updateLocalView](http://doc.qcloudtrtc.com/group__ITRTCCloud__cplusplus.html#ae5211a2739df8d8ec6017559b3aa0299) 和 [updateRemoteView](http://doc.qcloudtrtc.com/group__ITRTCCloud__cplusplus.html#a8c8247cbc679ea144ffb393b6b940c9e) 接口，用于优化实时调整 HWND 类型的渲染窗口时的体验。
+- Windows：新增 [getCurrentMicDeviceMute](http://doc.qcloudtrtc.com/group__ITRTCCloud__cplusplus.html#a8a8badf62eee1021f9315f11df0f597f) 接口用于获取当前 Windows PC 是否被设置为静音。
+- Windows：新增[setCurrentMicDeviceMute](http://doc.qcloudtrtc.com/group__ITRTCCloud__cplusplus.html#a8a8badf62eee1021f9315f11df0f597f) 接口用于将当前 Windows PC 设置为全局静音。
+- Windows：修复已知的几处句柄及GDI泄露。
+- Windows：修复多个已知的 Crash 问题。
+- Windows 修复摄像头和麦克风拔掉后重新插入不会自动开启设备的问题。
+- Mac：新增 [updateLocalView](http://doc.qcloudtrtc.com/group__TRTCCloud__ios.html#abf20f249b4b43fff64f944b4aefe54cb) 和 [updateRemoteView](http://doc.qcloudtrtc.com/group__TRTCCloud__ios.html#aa27f954e6301fb57a143b27429b63d87) 接口，用于优化实时调整 View 渲染区域时的体验。
+- Mac：新增 [getCurrentMicDeviceMute](http://doc.qcloudtrtc.com/group__TRTCCloud__ios.html#a6ba78519e9c98c1eecd365154882d53f) 接口用于获取当前 Mac 电脑是否被设置为静音。
+- Mac：新增[setCurrentMicDeviceMute](http://doc.qcloudtrtc.com/group__TRTCCloud__ios.html#a88569e62fe75b7ea98cc012169f22bfe) 接口用于将当前 Mac 电脑设置为全局静音。
+- Mac：屏幕分享开始支持分享指定窗口的指定区域。
+- iOS: 新增 [updateLocalView](http://doc.qcloudtrtc.com/group__TRTCCloud__ios.html#abf20f249b4b43fff64f944b4aefe54cb) 和 [updateRemoteView](http://doc.qcloudtrtc.com/group__TRTCCloud__ios.html#aa27f954e6301fb57a143b27429b63d87) 接口，用于优化实时调整 View 渲染区域时的体验。
+- iOS：修复在 iOS10 上背景音乐接口在传入特定规则的文件路径时会崩溃的 BUG。
+- iOS: 为 TRTCCloudDelegate 增加了 [onCapturedRawAudioFrame](http://doc.qcloudtrtc.com/group__TRTCCloudDelegate__ios.html#aeaeaf9e7091c75e1a072d576a57d7f5c) 回调，并修改了其他几个回调函数的名称，依次修改为 [onLocalProcessedAudioFrame](http://doc.qcloudtrtc.com/group__TRTCCloudDelegate__ios.html#a73a3e7de3c5c340957f119bb0f8744b0)、[onRemoteUserAudioFrame](http://doc.qcloudtrtc.com/group__TRTCCloudDelegate__ios.html#aa392c17c27bae1505f148bf541b7746a)和 [onMixedPlayAudioFrame](http://doc.qcloudtrtc.com/group__TRTCCloudDelegate__ios.html#a5a8a0bf6f8d02c33b2fe01c6175dfd4e)。
+- Android：修复频繁快速的 enterRoom 和 exitRoom 后偶先的无声问题。
+- Android：修复偶现的录屏推流黑屏的问题。
+- Android：为 TRTCCloudListener 增加了 [onCapturedRawAudioFrame](http://doc.qcloudtrtc.com/group__TRTCCloudListener__android.html#abffd560f5b2b2322ea3980bc5a91d22e) 回调，并修改了其他几个回调函数的名称，依次修改为 [onLocalProcessedAudioFrame](http://doc.qcloudtrtc.com/group__TRTCCloudListener__android.html#a62c526c6c30a66671260bdf0c5c64e46)、[onRemoteUserAudioFrame](http://doc.qcloudtrtc.com/group__TRTCCloudListener__android.html#a4af98a7d668c150ea8e99e3085505902)和 [onMixedPlayAudioFrame](http://doc.qcloudtrtc.com/group__TRTCCloudListener__android.html#a580e94224357c38adf6ed883ab3321f7)。
 
-TRTC 7.5 版本的全部改动点包括：
-- 全平台：优化播放端网络抖动评估算法，降低播放延迟
-- 全平台：修复在一个函数中连续调用 playBGM 和 pauseBGM 后播放不生效的问题
-- 全平台：修复偶现退房之后还能收到 onEnterRoom 回调的问题
-- 全平台：支持对双栈 IPV6 和 IPV6 only 的支持
-- 全平台：新增进多房间拉流能力，用于支持超级小班课
-- 全平台：云端 MCU 混流支持设置背景图片（由于监管需要，图片必须先通过 TRTC 控制台进行上传）
-- 全平台：云端 MCU 混流支持 A+B=>C 和 A+B=>A 两种模式
-- 全平台：实时状态回调 onStatistics 增加播放缓冲时长字段 jitterBufferDelay
-- Windows：修复屏幕分享高亮描边在高DPI情况下位置不对的问题
-- Windows：修复窗口采集时，目标窗口最小化后高亮描边残留的问题
-- Windows：优化采用竖屏分辨率推流时在部分摄像头上帧率极低的问题
-- Windows：修复win7下屏幕分享鼠标闪烁的问题
-- Windows：socks5代理支持用户名密码校验
-- Android：降低 Android SDK 的端到端连麦通话延时
-- Android：进一步优化耳返时延
-- Android：优化播放view动态切换时画面黑屏的问题
-- Android：修复部分机型对超低分辨率编码失败无法恢复的问题
-- iOS：进一步优化耳返时延
-- iOS：优化麦克风设备的打开成功率
 
 ## Demo 体验地址
 
