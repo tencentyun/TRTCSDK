@@ -59,6 +59,269 @@
                         <!-- 选择麦克风 -->
                         <div id="mic-option" style="display: none"></div>
                     </div>
+                    <!-- 设备检测按钮 -->
+                    <div id="device-testing-btn" class="device-testing-btn">
+                        <div class="device-icon">
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#icon-shebei"></use>
+                            </svg>
+                        </div>
+                        设备检测
+                    </div>
+                    <div id="device-connect-list" class="device-connect-list" style="display: none;">
+                        <div id="connect-camera" class="connect icon-normal">
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#icon-shiping-xue"></use>
+                            </svg>
+                        </div>
+                        <div id="connect-voice"  class="connect icon-normal">
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#icon-shengyin"></use>
+                            </svg>
+                        </div>
+                        <div id="connect-mic" class="connect icon-normal">
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#icon-maikefeng-xue"></use>
+                            </svg>
+                        </div>
+                        <div id="connect-network" class="connect icon-normal">
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#icon-wangluo"></use>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+         <!-- 设备检测界面弹窗 -->
+         <div id="device-testing-root" style="display: none;">
+            <!-- 设备检测卡片 -->
+            <div class="device-testing-card">
+                <!-- 设备检测准备界面 -->
+                <div id="device-testing-prepare" class="device-testing-prepare">
+                    <div class="testing-title">设备连接</div>
+                    <div class="testing-prepare-info">设备检测前请务必给当前页面开放摄像头，麦克风权限哦~</div>
+                    <div class="device-display">
+                        <div id="device-camera" class="device icon-normal">
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#icon-shiping-xue"></use>
+                            </svg>
+                        </div>
+                        <div id="device-voice"  class="device icon-normal">
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#icon-shengyin"></use>
+                            </svg>
+                        </div>
+                        <div id="device-mic" class="device icon-normal">
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#icon-maikefeng-xue"></use>
+                            </svg>
+                        </div>
+                        <div id="device-network" class="device icon-normal">
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#icon-wangluo"></use>
+                            </svg>
+                        </div>
+                    </div>
+                    <div id="device-loading" class="loading-background">
+                        <div class="device-loading"></div>
+                    </div>
+                    <!-- 连接结果提示 -->
+                    <div class="connect-info">
+                        <!-- 连接结果 -->
+                        <div id="connect-info"></div>
+                        <!-- 错误icon及错误解决指引 -->
+                        <div id="connect-attention-container" class="connect-attention-container" style="display: none;">
+                            <div id="connect-attention-icon" class="connect-attention-icon">
+                                <svg class="icon" aria-hidden="true">
+                                    <use xlink:href="#icon-warn"></use>
+                                </svg>
+                            </div>
+                            <div id="connect-attention-info" class="connect-attention-info" style="display: none;">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 设备连接页面button -->
+                    <div class="testing-btn-display">
+                        <div id="start-test-btn" class="test-btn start-test start-gray">开始检测</div>
+                        <div id="connect-again-btn" class="test-btn connect-again" style="display: none;">重新连接</div>
+                    </div>
+                </div>
+                <!-- 设备检测tab页 -->
+                <div id="device-testing" class="device-testing" style="display: none;">
+                    <div class="device-testing-title">
+                        <div id="camera-testing" class="testing icon-gray">
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#icon-shiping-xue"></use>
+                            </svg>
+                        </div>
+                        <div id="voice-testing" class="testing icon-gray">
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#icon-shengyin"></use>
+                            </svg>
+                        </div>
+                        <div id="mic-testing" class="testing icon-gray">
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#icon-maikefeng-xue"></use>
+                            </svg>
+                        </div>
+                        <div id="network-testing" class="testing icon-gray">
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#icon-wangluo"></use>
+                            </svg>
+                        </div>
+                    </div>
+                    <!-- 设备检测-摄像头检测 -->
+                    <div id="camera-testing-body" class="testing-body" style="display: none;">
+                        <div class="device-list camera-device-list">
+                            <div class="select-title" style="display: block;">摄像头选择</div>
+                            <div class="select-list" style="display: block;">
+                                <select name="select" id="camera-select" class="device-select"></select>
+                            </div>
+                        </div>
+                        <div id="camera-video" class="camera-video"></div>
+                        <div class="testing-info-container">
+                            <div class="testing-info">是否可以清楚的看到自己？</div>
+                            <div class="button-list">
+                                <div id="camera-fail" class="fail-button">看不到</div>
+                                <div id="camera-success" class="success-button">可以看到</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 设备检测-播放器检测 -->
+                    <div id="voice-testing-body" class="testing-body" style="display: none;">
+                        <div class="device-list camera-device-list">
+                            <div class="select-title" style="display: block;">扬声器选择</div>
+                            <div class="select-list" style="display: block;">
+                                <select name="select" id="voice-select" class="device-select"></select>
+                            </div>
+                        </div>
+                        <div class="audio-control">
+                            <div class="audio-control-info">请调高设备音量, 点击播放下面的音频试试～</div>
+                            <audio id="audio-player" src="https://trtc-1252463788.cos.ap-guangzhou.myqcloud.com/web/assets/bgm-test.mp3" controls></audio>
+                        </div>
+                        <div class="testing-info-container">
+                            <div class="testing-info">是否可以听到声音？</div>
+                            <div class="button-list">
+                                <div id="voice-fail" class="fail-button">听不到</div>
+                                <div id="voice-success" class="success-button">可以听到</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 设备检测-麦克风检测 -->
+                    <div id="mic-testing-body" class="testing-body" style="display: none;">
+                        <div class="device-list camera-device-list">
+                            <div class="select-title" style="display: block;">麦克风选择</div>
+                            <div class="select-list" style="display: block;">
+                                <select name="select" id="mic-select" class="device-select"></select>
+                            </div>
+                        </div>
+                        <div class="mic-testing-container">
+                            <div class="mic-testing-info">对着麦克风说'哈喽'试试～</div>
+                            <div id="mic-bar-container" class="mic-bar-container"></div>
+                            <div id="audio-container"></div>
+                        </div>
+                        <div class="testing-info-container">
+                            <div class="testing-info">是否可以看到音量图标跳动？</div>
+                            <div class="button-list">
+                                <div id="mic-fail" class="fail-button">看不到</div>
+                                <div id="mic-success" class="success-button">可以看到</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 设备检测-硬件及网速检测 -->
+                    <div id="network-testing-body" class="testing-body" style="display: none;">
+                        <div class="testing-index-list">
+                            <div class="testing-index-group">
+                                <div class="testing-index">操作系统</div>
+                                <div id="system"></div>
+                            </div>
+                            <div class="testing-index-group">
+                                <div class="testing-index">浏览器版本</div>
+                                <div id="browser"></div>
+                            </div>
+                            <!-- <div class="testing-index-group">
+                                <div class="testing-index">IP地址</div>
+                                <div id="ip"></div>
+                            </div> -->
+                            <div class="testing-index-group">
+                                <div class="testing-index">屏幕共享能力</div>
+                                <div id="screen-share"></div>
+                            </div>
+                            <div class="testing-index-group">
+                                <div class="testing-index">网络质量</div>
+                                <div id="uplink-network" class="network-loading"></div>
+                            </div>
+                        </div>
+                        <div class="testing-footer">
+                            <div id="testing-report-btn" class="test-btn">查看检测报告</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 设备检测报告 -->
+                <div id="device-testing-report" class="device-testing-report" style="display: none;">
+                    <div class="testing-title">检测报告</div>
+                    <!-- 检测报告内容 -->
+                    <div class="device-report-list">
+                        <!-- 摄像头报告信息 -->
+                        <div class="device-report camera-report">
+                            <div class="device-info">
+                                <div class="report-icon">
+                                    <svg class="icon" aria-hidden="true">
+                                        <use xlink:href="#icon-shiping-xue"></use>
+                                    </svg>
+                                </div>
+                                <div id="camera-name" class="device-name"></div>
+                            </div>
+                            <div id="camera-testing-result" class="camera-testing-result"></div>
+                        </div>
+                        <!-- 扬声器报告信息 -->
+                        <div id="voice-report" class="device-report voice-report">
+                            <div class="device-info">
+                                <div class="report-icon">
+                                    <svg class="icon" aria-hidden="true">
+                                        <use xlink:href="#icon-shengyin"></use>
+                                    </svg>
+                                </div>
+                                <div id="voice-name" class="device-name"></div>
+                            </div>
+                            <div id="voice-testing-result" class="voice-testing-result"></div>
+                        </div>
+                        <!-- 麦克风报告信息 -->
+                        <div class="device-report mic-report">
+                            <div class="device-info">
+                                <div class="report-icon">
+                                    <svg class="icon" aria-hidden="true">
+                                        <use xlink:href="#icon-maikefeng-xue"></use>
+                                    </svg>
+                                </div>
+                                <div id="mic-name" class="device-name"></div>
+                            </div>
+                            <div id="mic-testing-result" class="mic-testing-result"></div>
+                        </div>
+                        <!-- 网络报告信息 -->
+                        <div class="device-report network-report">
+                            <div class="device-info">
+                                <div class="report-icon">
+                                    <svg class="icon" aria-hidden="true">
+                                        <use xlink:href="#icon-wangluo"></use>
+                                    </svg>
+                                </div>
+                                <div id="network-name" class="device-name"></div>
+                            </div>
+                            <div id="network-testing-result" class="network-testing-result"></div>
+                        </div>
+                    </div>
+                    <div class="device-report-footer">
+                        <div id="testing-again" class="device-report-btn testing-agin">重新检测</div>
+                        <div id="testing-finish" class="device-report-btn testing-finish">完成检测</div>
+                    </div>
+                </div>
+                <!-- 设备检测关闭按钮 -->
+                <div id="device-testing-close-btn" class="device-testing-close-btn">
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-baseline-close-px"></use>
+                    </svg>
                 </div>
             </div>
         </div>
@@ -154,11 +417,13 @@
     </script>
     <script src="./js/lib-generate-test-usersig.min.js"></script>
     <script src="./js/debug/GenerateTestUserSig.js"></script>
+    <script src="./js/iconfont.js"></script>
     <script src="./js/trtc.js"></script>
     <script src="./js/common.js"></script>
     <script src="./js/rtc-client.js"></script>
     <script src="./js/share-client.js"></script>
     <script src="./js/presetting.js"></script>
+    <script src="./js/device-testing.js"></script>
     <script src="./js/index.js"></script>
     
 </body>

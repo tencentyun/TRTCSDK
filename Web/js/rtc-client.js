@@ -1,3 +1,4 @@
+/* global $ TRTC getCameraId getMicrophoneId resetView isHidden shareUserId addMemberView removeView addVideoView */
 class RtcClient {
   constructor(options) {
     this.sdkAppId_ = options.sdkAppId;
@@ -279,13 +280,13 @@ class RtcClient {
       }
       console.log(
         'type: ' +
-        remoteStream.getType() +
-        ' stream-updated hasAudio: ' +
-        remoteStream.hasAudio() +
-        ' hasVideo: ' +
-        remoteStream.hasVideo() +
-        ' uid: ' +
-        uid
+          remoteStream.getType() +
+          ' stream-updated hasAudio: ' +
+          remoteStream.hasAudio() +
+          ' hasVideo: ' +
+          remoteStream.hasVideo() +
+          ' uid: ' +
+          uid
       );
     });
 
