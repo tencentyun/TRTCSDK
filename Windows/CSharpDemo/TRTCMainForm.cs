@@ -280,6 +280,9 @@ namespace TRTCCSharpDemo
             // 设置连接环境
             setNetEnv(DataManager.GetInstance().testEnv);
 
+            // 关闭 SDK 内部无权限提示弹窗，无权限警告码会通过 onWarning 抛出
+            // mTRTCCloud.callExperimentalAPI("{\"api\":\"enablePopupTips\",\"params\" :{\"enable\":false}}");
+
             // 用户进房
             mTRTCCloud.enterRoom(ref trtcParams, DataManager.GetInstance().appScene);
 
@@ -444,13 +447,10 @@ namespace TRTCCSharpDemo
             {
                 ShowMessage("Error: 屏幕分享发起失败，是否当前已经有人发起了共享！");
             }
-            else if (errCode == TXLiteAVError.ERR_MIC_START_FAIL)
+            else if (errCode == TXLiteAVError.ERR_MIC_START_FAIL || errCode == TXLiteAVError.ERR_CAMERA_START_FAIL ||
+                errCode == TXLiteAVError.ERR_SPEAKER_START_FAIL)
             {
-                ShowMessage("Error: 麦克风打开失败，请检查本地电脑设备。");
-            }
-            else if (errCode == TXLiteAVError.ERR_CAMERA_START_FAIL)
-            {
-                ShowMessage("Error: 摄像头打开失败，请检查本地电脑设备。");
+                ShowMessage("Error: 请检查本地电脑设备。");
             }
             else
             {
@@ -1274,8 +1274,8 @@ namespace TRTCCSharpDemo
             }
             else
             {
+                StopLocalVideo();
                 this.localInfoLabel.Visible = true;
-                mTRTCCloud.stopLocalPreview();
             }
         }
 
@@ -1485,15 +1485,15 @@ namespace TRTCCSharpDemo
 
             if (warningCode == TXLiteAVWarning.WARNING_MICROPHONE_DEVICE_EMPTY)
             {
-                ShowMessage("Error: 未检出到麦克风，请检查本地电脑设备。");
+                ShowMessage("Warning: 未检出到麦克风，请检查本地电脑设备。");
             }
             else if (warningCode == TXLiteAVWarning.WARNING_CAMERA_DEVICE_EMPTY)
             {
-                ShowMessage("Error: 未检出到摄像头，请检查本地电脑设备。");
+                ShowMessage("Warning: 未检出到摄像头，请检查本地电脑设备。");
             }
             else if (warningCode == TXLiteAVWarning.WARNING_SPEAKER_DEVICE_EMPTY)
             {
-                ShowMessage("Error: 未检出到扬声器，请检查本地电脑设备。");
+                ShowMessage("Warning: 未检出到扬声器，请检查本地电脑设备。");
             }
         }
 

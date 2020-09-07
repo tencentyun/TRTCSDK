@@ -14,7 +14,6 @@ namespace TRTCCSharpDemo
         public MessageForm()
         {
             InitializeComponent();
-            StartPosition = FormStartPosition.CenterParent;
         }
 
         public void setText(string title, int delayCloseMs = 0)

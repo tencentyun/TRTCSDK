@@ -211,6 +211,9 @@ void TRTCMainViewController::enterRoom()
     }
 	InternalEnterRoom();
 
+    // 关闭 SDK 内部无权限提示弹窗，无权限警告码会通过 onWarning 抛出
+    //TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI("{\"api\":\"enablePopupTips\",\"params\" :{\"enable\":false}}");
+
     //进入房间
     LocalUserInfo& info = CDataCenter::GetInstance()->getLocalUserInfo();
     //此处为了sdk本地视频回调时，userid = "",做的特殊处理
@@ -558,7 +561,7 @@ LRESULT TRTCMainViewController::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM l
     {
         std::string * warningMsg = (std::string *)lParam;
         int warningCode = wParam;
-        onError(warningCode, *warningMsg);
+        onWarning(warningCode, *warningMsg);
         delete warningMsg;
         warningMsg = nullptr;
     }
@@ -961,7 +964,12 @@ void TRTCMainViewController::onError(int errCode, std::string errMsg)
     {
         CMsgWnd::ShowMessageBox(GetHWND(), _T("TRTCDuilibDemo"), _T("Error: 屏幕分享发起失败，是否当前已经有人发起了共享！"), 0xFFF08080);
     }
-    else
+    else if (errCode == ERR_CAMERA_START_FAIL || errCode == ERR_CAMERA_OCCUPY ||
+        errCode == ERR_MIC_START_FAIL || errCode == ERR_MIC_OCCUPY || errCode == ERR_SPEAKER_START_FAIL)
+    {
+        CMsgWnd::ShowMessageBox(GetHWND(), _T("TRTCDuilibDemo"), _T("Error: 请检查本地设备。"), 0xFFF08080);
+    }
+    else 
     {
         CDuiString strFormat;
         strFormat.Format(L"%sError[err:%d,msg:%s]", Log::_GetDateTimeString().c_str(), errCode, UTF82Wide(errMsg).c_str());
