@@ -18,6 +18,7 @@ import com.tencent.liteav.demo.beauty.Beauty;
 import com.tencent.liteav.demo.beauty.BeautyImpl;
 import com.tencent.liteav.demo.beauty.adapter.ItemAdapter;
 import com.tencent.liteav.demo.beauty.adapter.TabAdapter;
+import com.tencent.liteav.demo.beauty.constant.BeautyConstants;
 import com.tencent.liteav.demo.beauty.model.BeautyInfo;
 import com.tencent.liteav.demo.beauty.model.ItemInfo;
 import com.tencent.liteav.demo.beauty.model.TabInfo;
@@ -154,6 +155,9 @@ public class BeautyPanel extends FrameLayout implements SeekBar.OnSeekBarChangeL
 
     public void setBeautyManager(TXBeautyManager beautyManager) {
         mBeauty.setBeautyManager(beautyManager);
+        // 滤镜默认选中白皙
+        setCurrentFilterIndex(3);
+        setCurrentBeautyIndex(2);
     }
 
     public void setMotionTmplEnable(boolean enable) {
@@ -166,6 +170,10 @@ public class BeautyPanel extends FrameLayout implements SeekBar.OnSeekBarChangeL
 
     public void setCurrentFilterIndex(int index) {
         mBeauty.setCurrentFilterIndex(mBeautyInfo, index);
+    }
+
+    public void setCurrentBeautyIndex(int index) {
+        mBeauty.setCurrentBeautyIndex(mBeautyInfo, index);
     }
 
     public ItemInfo getFilterItemInfo(int index) {
@@ -237,7 +245,15 @@ public class BeautyPanel extends FrameLayout implements SeekBar.OnSeekBarChangeL
     private void createItemList(@NonNull final TabInfo tabInfo, @NonNull final int tabPosition) {
         setBeautyTitle(tabInfo.getTabName());
         ItemAdapter itemAdapter = new ItemAdapter(mContext);
-        itemAdapter.setData(tabInfo);
+        if (tabInfo.getTabType() == BeautyConstants.TAB_TYPE_FILTER) {
+            // 滤镜默认选中白皙
+            itemAdapter.setData(tabInfo, 3);
+        } else if(tabInfo.getTabType() == BeautyConstants.TAB_TYPE_BEAUTY) {
+            // 美颜默认选中P图
+            itemAdapter.setData(tabInfo, 2);
+        } else {
+            itemAdapter.setData(tabInfo);
+        }
         mScrollItemView.setAdapter(itemAdapter);
         mScrollItemView.setClicked(mCurrentItemPosition[tabPosition]);
         itemAdapter.setOnItemClickListener(new ItemAdapter.OnItemClickListener() {

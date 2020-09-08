@@ -44,6 +44,8 @@
     <string-array name="beauty_filter_type">
         <item>无</item>
         <item>标准</item>
+        <item>自然</item>
+        <item>白皙</item>
         <item>樱红</item>
         <item>云裳</item>
         <item>纯真</item>

@@ -417,6 +417,16 @@ public class BeautyImpl implements Beauty {
     }
 
     @Override
+    public void setCurrentBeautyIndex(@NonNull BeautyInfo beautyInfo, int index) {
+        for (TabInfo tabInfo : beautyInfo.getBeautyTabList()) {
+            if (tabInfo.getTabType() == BeautyConstants.TAB_TYPE_BEAUTY) {
+                ItemInfo itemInfo = tabInfo.getTabItemList().get(index);
+                dispatchBeautyEffects(itemInfo);
+            }
+        }
+    }
+
+    @Override
     public void setOnFilterChangeListener(OnFilterChangeListener listener) {
         mOnFilterChangeListener = listener;
     }
@@ -714,6 +724,12 @@ public class BeautyImpl implements Beauty {
                 break;
             case BeautyConstants.ITEM_TYPE_FILTER_STANDARD:
                 resId = R.drawable.beauty_filter_biaozhun;
+                break;
+            case BeautyConstants.ITEM_TYPE_FILTER_ZIRAN:
+                resId = R.drawable.beauty_filter_ziran;
+                break;
+            case BeautyConstants.ITEM_TYPE_FILTER_BAIXI:
+                resId = R.drawable.beauty_filter_baixi;
                 break;
             case BeautyConstants.ITEM_TYPE_FILTER_CHEERY:
                 resId = R.drawable.beauty_filter_yinghong;

@@ -273,10 +273,27 @@
           "item_level": 4,
           "item_icon_normal": "@beauty_biaozhun",
           "item_icon_select": "@beauty_biaozhun"
-        },
-        {
+        },{
           "item_id": 3,
           "item_type": 20203,
+          "item_name": "@beauty_panel_filter_ziran",
+          "item_material_url": "",
+          "item_level": 5,
+          "item_icon_normal": "@beauty_ziran",
+          "item_icon_select": "@beauty_ziran"
+        },
+        {
+          "item_id": 4,
+          "item_type": 20204,
+          "item_name": "@beauty_panel_filter_baixi",
+          "item_material_url": "",
+          "item_level": 5,
+          "item_icon_normal": "@beauty_baixi",
+          "item_icon_select": "@beauty_baixi"
+        },
+        {
+          "item_id": 5,
+          "item_type": 20205,
           "item_name": "@beauty_panel_filter_cheery",
           "item_material_url": "",
           "item_level": 8,
@@ -284,8 +301,8 @@
           "item_icon_select": "@beauty_yinghong"
         },
         {
-          "item_id": 4,
-          "item_type": 20204,
+          "item_id": 6,
+          "item_type": 20206,
           "item_name": "@beauty_panel_filter_cloud",
           "item_material_url": "",
           "item_level": 8,
@@ -293,8 +310,8 @@
           "item_icon_select": "@beauty_yunshang"
         },
         {
-          "item_id": 5,
-          "item_type": 20205,
+          "item_id": 7,
+          "item_type": 20207,
           "item_name": "@beauty_panel_filter_pure",
           "item_material_url": "",
           "item_level": 8,
@@ -302,8 +319,8 @@
           "item_icon_select": "@beauty_chunzhen"
         },
         {
-          "item_id": 6,
-          "item_type": 20206,
+          "item_id": 8,
+          "item_type": 20208,
           "item_name": "@beauty_panel_filter_orchid",
           "item_material_url": "",
           "item_level": 9,
@@ -311,8 +328,8 @@
           "item_icon_select": "@beauty_bailan"
         },
         {
-          "item_id": 7,
-          "item_type": 20207,
+          "item_id": 9,
+          "item_type": 20209,
           "item_name": "@beauty_panel_filter_vitality",
           "item_material_url": "",
           "item_level": 8,
@@ -320,8 +337,8 @@
           "item_icon_select": "@beauty_yuanqi"
         },
         {
-          "item_id": 8,
-          "item_type": 20208,
+          "item_id": 10,
+          "item_type": 20210,
           "item_name": "@beauty_panel_filter_super",
           "item_material_url": "",
           "item_level": 9,
@@ -329,8 +346,8 @@
           "item_icon_select": "@beauty_chaotuo"
         },
         {
-          "item_id": 9,
-          "item_type": 20209,
+          "item_id": 11,
+          "item_type": 20211,
           "item_name": "@beauty_panel_filter_fragrance",
           "item_material_url": "",
           "item_level": 5,
@@ -338,8 +355,8 @@
           "item_icon_select": "@beauty_xiangfen"
         },
         {
-          "item_id": 10,
-          "item_type": 20210,
+          "item_id": 12,
+          "item_type": 20212,
           "item_name": "@beauty_panel_filter_white",
           "item_material_url": "",
           "item_level": 5,
@@ -347,8 +364,8 @@
           "item_icon_select": "@beauty_fwhite"
         },
         {
-          "item_id": 11,
-          "item_type": 20211,
+          "item_id": 13,
+          "item_type": 20213,
           "item_name": "@beauty_panel_filter_romantic",
           "item_material_url": "",
           "item_level": 5,
@@ -356,8 +373,8 @@
           "item_icon_select": "@beauty_langman"
         },
         {
-          "item_id": 12,
-          "item_type": 20212,
+          "item_id": 14,
+          "item_type": 20214,
           "item_name": "@beauty_panel_filter_fresh",
           "item_material_url": "",
           "item_level": 5,
@@ -365,8 +382,8 @@
           "item_icon_select": "@beauty_qingxin"
         },
         {
-          "item_id": 13,
-          "item_type": 20213,
+          "item_id": 15,
+          "item_type": 20215,
           "item_name": "@beauty_panel_filter_beautiful",
           "item_material_url": "",
           "item_level": 5,
@@ -374,8 +391,8 @@
           "item_icon_select": "@beauty_weimei"
         },
         {
-          "item_id": 14,
-          "item_type": 20214,
+          "item_id": 16,
+          "item_type": 20216,
           "item_name": "@beauty_panel_filter_pink",
           "item_material_url": "",
           "item_level": 5,
@@ -383,8 +400,8 @@
           "item_icon_select": "@beauty_fennen"
         },
         {
-          "item_id": 15,
-          "item_type": 20215,
+          "item_id": 17,
+          "item_type": 20217,
           "item_name": "@beauty_panel_filter_reminiscence",
           "item_material_url": "",
           "item_level": 5,
@@ -392,8 +409,8 @@
           "item_icon_select": "@beauty_huaijiu"
         },
         {
-          "item_id": 16,
-          "item_type": 20216,
+          "item_id": 18,
+          "item_type": 20218,
           "item_name": "@beauty_panel_filter_blues",
           "item_material_url": "",
           "item_level": 5,
@@ -401,8 +418,8 @@
           "item_icon_select": "@beauty_landiao"
         },
         {
-          "item_id": 17,
-          "item_type": 20217,
+          "item_id": 19,
+          "item_type": 20219,
           "item_name": "@beauty_panel_filter_cool",
           "item_material_url": "",
           "item_level": 5,
@@ -410,8 +427,8 @@
           "item_icon_select": "@beauty_qingliang"
         },
         {
-          "item_id": 18,
-          "item_type": 20218,
+          "item_id": 20,
+          "item_type": 20220,
           "item_name": "@beauty_panel_filter_Japanese",
           "item_material_url": "",
           "item_level": 5,

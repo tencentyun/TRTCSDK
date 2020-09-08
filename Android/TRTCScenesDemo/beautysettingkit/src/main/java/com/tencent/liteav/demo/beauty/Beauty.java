@@ -17,6 +17,7 @@ public interface Beauty {
     void setMotionTmplEnable(boolean enable);
     void fillingMaterialPath(@NonNull BeautyInfo beautyInfo);
     void setCurrentFilterIndex(@NonNull BeautyInfo beautyInfo, @IntRange(from = 0) int index);
+    void setCurrentBeautyIndex(@NonNull BeautyInfo beautyInfo, @IntRange(from = 0) int index);
     void setOnFilterChangeListener(OnFilterChangeListener listener);
     void clear();
     int getFilterProgress(@NonNull BeautyInfo beautyInfo, @IntRange(from = 0) int index);

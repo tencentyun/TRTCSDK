@@ -37,22 +37,24 @@ public class BeautyConstants {
 
     public static final int ITEM_TYPE_FILTER_FACE_SHAPE             = 20201;    // 无特效
     public static final int ITEM_TYPE_FILTER_STANDARD               = 20202;    // 标准
-    public static final int ITEM_TYPE_FILTER_CHEERY                 = 20203;    // 樱红
-    public static final int ITEM_TYPE_FILTER_CLOUD                  = 20204;    // 云裳
-    public static final int ITEM_TYPE_FILTER_PURE                   = 20205;    // 纯真
-    public static final int ITEM_TYPE_FILTER_ORCHID                 = 20206;    // 白兰
-    public static final int ITEM_TYPE_FILTER_VITALITY               = 20207;    // 元气
-    public static final int ITEM_TYPE_FILTER_SUPER                  = 20208;    // 超脱
-    public static final int ITEM_TYPE_FILTER_FRAGRANCE              = 20209;    // 香氛
-    public static final int ITEM_TYPE_FILTER_WHITE                  = 20210;    // 美白
-    public static final int ITEM_TYPE_FILTER_ROMANTIC               = 20211;    // 浪漫
-    public static final int ITEM_TYPE_FILTER_FRESH                  = 20212;    // 清新
-    public static final int ITEM_TYPE_FILTER_BEAUTIFUL              = 20213;    // 唯美
-    public static final int ITEM_TYPE_FILTER_PINK                   = 20214;    // 粉嫩
-    public static final int ITEM_TYPE_FILTER_REMINISCENCE           = 20215;    // 怀旧
-    public static final int ITEM_TYPE_FILTER_BLUES                  = 20216;    // 蓝调
-    public static final int ITEM_TYPE_FILTER_COOL                   = 20217;    // 清凉
-    public static final int ITEM_TYPE_FILTER_JAPANESE               = 20218;    // 日系
+    public static final int ITEM_TYPE_FILTER_ZIRAN                  = 20203;    // 自然
+    public static final int ITEM_TYPE_FILTER_BAIXI                  = 20204;    // 白皙
+    public static final int ITEM_TYPE_FILTER_CHEERY                 = 20205;    // 樱红
+    public static final int ITEM_TYPE_FILTER_CLOUD                  = 20206;    // 云裳
+    public static final int ITEM_TYPE_FILTER_PURE                   = 20207;    // 纯真
+    public static final int ITEM_TYPE_FILTER_ORCHID                 = 20208;    // 白兰
+    public static final int ITEM_TYPE_FILTER_VITALITY               = 20209;    // 元气
+    public static final int ITEM_TYPE_FILTER_SUPER                  = 20210;    // 超脱
+    public static final int ITEM_TYPE_FILTER_FRAGRANCE              = 20211;    // 香氛
+    public static final int ITEM_TYPE_FILTER_WHITE                  = 20212;    // 美白
+    public static final int ITEM_TYPE_FILTER_ROMANTIC               = 20213;    // 浪漫
+    public static final int ITEM_TYPE_FILTER_FRESH                  = 20214;    // 清新
+    public static final int ITEM_TYPE_FILTER_BEAUTIFUL              = 20215;    // 唯美
+    public static final int ITEM_TYPE_FILTER_PINK                   = 20216;    // 粉嫩
+    public static final int ITEM_TYPE_FILTER_REMINISCENCE           = 20217;    // 怀旧
+    public static final int ITEM_TYPE_FILTER_BLUES                  = 20218;    // 蓝调
+    public static final int ITEM_TYPE_FILTER_COOL                   = 20219;    // 清凉
+    public static final int ITEM_TYPE_FILTER_JAPANESE               = 20220;    // 日系
 
 
     public static final int ITEM_TYPE_MOTION_NONE                   = 20301;    // 动效，无特效

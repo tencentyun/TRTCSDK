@@ -45,6 +45,8 @@
     <string name="beauty_panel_faceshape">脸型</string>
 
     <string name="beauty_panel_filter_standard">标准</string>
+    <string name="beauty_panel_filter_ziran">自然</string>
+    <string name="beauty_panel_filter_baixi">白皙</string>
     <string name="beauty_panel_filter_cheery">樱红</string>
     <string name="beauty_panel_filter_cloud">云裳</string>
     <string name="beauty_panel_filter_pure">纯真</string>

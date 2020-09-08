@@ -67,7 +67,7 @@ public class TRTCMainActivity extends Activity {
         }
         setContentView(R.layout.activity_trtc_main);
         mTvVersion = (TextView) findViewById(R.id.main_tv_version);
-        mTvVersion.setText("腾讯云 TRTC v" + TXLiveBase.getSDKVersionStr()+"(7.6.506)");
+        mTvVersion.setText("腾讯云 TRTC v" + TXLiveBase.getSDKVersionStr()+"(7.7.554)");
         mMainTitle = (TextView) findViewById(R.id.main_title);
         mMainTitle.setOnLongClickListener(new View.OnLongClickListener() {
             @Override

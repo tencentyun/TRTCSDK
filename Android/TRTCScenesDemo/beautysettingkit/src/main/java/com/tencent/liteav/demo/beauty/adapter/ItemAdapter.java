@@ -38,7 +38,12 @@ public class ItemAdapter extends BaseAdapter {
     }
 
     public void setData(TabInfo tabInfo) {
+        setData(tabInfo, 0);
+    }
+
+    public void setData(TabInfo tabInfo, int defaultIndex) {
         mTabInfo = tabInfo;
+        mSelectPos = defaultIndex;
         if (mItemInfoList == null) {
             mItemInfoList = new ArrayList<>();
         }
@@ -106,10 +111,10 @@ public class ItemAdapter extends BaseAdapter {
             public void onClick(View v) {
                 if (mItemClickListener != null) {
                     mItemClickListener.onItemClick(itemInfo, position);
-                }
-                if (mSelectPos != position) {
-                    mSelectPos = position;
-                    notifyDataSetChanged();
+                    if (mSelectPos != position) {
+                        mSelectPos = position;
+                        notifyDataSetChanged();
+                    }
                 }
             }
         });
