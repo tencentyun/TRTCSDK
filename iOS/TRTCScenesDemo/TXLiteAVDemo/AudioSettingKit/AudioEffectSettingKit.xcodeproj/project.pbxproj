@@ -71,7 +71,7 @@
 		40E25FB6248029F8005EB543 /* ASNSLayoutConstraint+MASDebugAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 40E25F9D248029F8005EB543 /* ASNSLayoutConstraint+MASDebugAdditions.m */; };
 		40E25FB924803F68005EB543 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 401A9A47247FB78F00C0763B /* libc++.tbd */; };
 		40E25FBE24804490005EB543 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
-		62EA83148741932439B9EE89 /* TXLiteAVSDK_TRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 221323F014AC92CDCD9FBFF4 /* TXLiteAVSDK_TRTC.framework */; };
+		A668BA16A85F09CB28985054 /* TXLiteAVSDK_TRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9D02A246E66223AC9ABA3A8 /* TXLiteAVSDK_TRTC.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -105,7 +105,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		221323F014AC92CDCD9FBFF4 /* TXLiteAVSDK_TRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TXLiteAVSDK_TRTC.framework; path = ../../../SDK/TXLiteAVSDK_TRTC.framework; sourceTree = "<group>"; };
 		401A9A40247FACAF00C0763B /* TCAudioSettingManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TCAudioSettingManager.h; sourceTree = "<group>"; };
 		401A9A41247FACAF00C0763B /* TCAudioSettingManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TCAudioSettingManager.m; sourceTree = "<group>"; };
 		401A9A47247FB78F00C0763B /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
@@ -178,6 +177,7 @@
 		40E25F9B248029F8005EB543 /* ASMASLayoutConstraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASMASLayoutConstraint.h; sourceTree = "<group>"; };
 		40E25F9C248029F8005EB543 /* ASViewController+MASAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ASViewController+MASAdditions.h"; sourceTree = "<group>"; };
 		40E25F9D248029F8005EB543 /* ASNSLayoutConstraint+MASDebugAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ASNSLayoutConstraint+MASDebugAdditions.m"; sourceTree = "<group>"; };
+		C9D02A246E66223AC9ABA3A8 /* TXLiteAVSDK_TRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TXLiteAVSDK_TRTC.framework; path = ../../../SDK/TXLiteAVSDK_TRTC.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -189,7 +189,7 @@
 				40E25FBE24804490005EB543 /* BuildFile in Frameworks */,
 				40E25FB924803F68005EB543 /* libc++.tbd in Frameworks */,
 				40D08707249C9D460055F9A6 /* AssetsLibrary.framework in Frameworks */,
-				62EA83148741932439B9EE89 /* TXLiteAVSDK_TRTC.framework in Frameworks */,
+				A668BA16A85F09CB28985054 /* TXLiteAVSDK_TRTC.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -271,7 +271,7 @@
 				40D08706249C9D460055F9A6 /* AssetsLibrary.framework */,
 				40D08703249C9C130055F9A6 /* Accelerate.framework */,
 				401A9A47247FB78F00C0763B /* libc++.tbd */,
-				221323F014AC92CDCD9FBFF4 /* TXLiteAVSDK_TRTC.framework */,
+				C9D02A246E66223AC9ABA3A8 /* TXLiteAVSDK_TRTC.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

@@ -34,11 +34,15 @@
 
 @end
 
-@interface PortalViewController ()<UICollectionViewDelegate, UICollectionViewDataSource>
+@interface PortalViewController ()<UICollectionViewDelegate, UICollectionViewDataSource,
+UIPickerViewDataSource, UIPickerViewDelegate> {
+    UIPickerView *  _logPickerView;
+    UIView *        _logUploadView;
+}
 
-
-@property (nonatomic,   weak) IBOutlet UICollectionView *collectionView;
-@property (nonatomic,   weak) IBOutlet UILabel *versionLabel;
+@property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
+@property (nonatomic, weak) IBOutlet UILabel *versionLabel;
+@property (nonatomic, weak) IBOutlet UILabel *titleLabel;
 
 @property (nonatomic, strong) TRTCCallingContactViewController *videoCallVC;
 
@@ -46,6 +50,8 @@
 @property (nonatomic, strong) TRTCVoiceRoom *voiceRoom;
 
 @property (nonatomic, strong) NSArray<MainMenuItem *> *mainMenuItems;
+
+@property (nonatomic, strong) NSMutableArray *logFilesArray;
 
 @end
 
@@ -92,6 +98,16 @@
     ];
     NSString *version = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
     self.versionLabel.text = [NSString stringWithFormat:@"腾讯云 TRTC v%@(%@)", [TRTCCloud getSDKVersion], version];
+    
+    UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
+    [self.titleLabel addGestureRecognizer:tapGesture];
+    
+    UILongPressGestureRecognizer* pressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)]; //提取SDK日志暗号!
+    pressGesture.minimumPressDuration = 2.0;
+    pressGesture.numberOfTouchesRequired = 1;
+    [self.titleLabel addGestureRecognizer:pressGesture];
+    self.titleLabel.userInteractionEnabled = YES;
+    [self setUpLogViews];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -197,6 +213,92 @@
     [alert addAction:okAction];
     [self presentViewController:alert animated:YES completion:nil];
 }
+
+#pragma mark - 日志获取
+- (void)setUpLogViews {
+    _logUploadView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height / 2, self.view.bounds.size.width, self.view.bounds.size.height / 2)];
+    _logUploadView.backgroundColor = [UIColor whiteColor];
+    _logUploadView.hidden = YES;
+    UIButton* uploadButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    uploadButton.center = CGPointMake(self.view.bounds.size.width / 2, _logUploadView.frame.size.height * 0.9);
+    uploadButton.bounds = CGRectMake(0, 0, self.view.bounds.size.width / 3, _logUploadView.frame.size.height * 0.2);
+    [uploadButton setTitle:@"分享上传日志" forState:UIControlStateNormal];
+    [uploadButton addTarget:self action:@selector(onSharedUploadLog:) forControlEvents:UIControlEventTouchUpInside];
+    [_logUploadView addSubview:uploadButton];
+
+    _logPickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, _logUploadView.frame.size.height * 0.8)];
+    _logPickerView.dataSource = self;
+    _logPickerView.delegate = self;
+    [_logUploadView addSubview:_logPickerView];
+    [self.view addSubview:_logUploadView];
+}
+
+- (void)handleLongPress:(UILongPressGestureRecognizer *)pressRecognizer {
+    if (pressRecognizer.state == UIGestureRecognizerStateBegan) {
+        NSLog(@"long Press");
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *logDoc = [NSString stringWithFormat:@"%@%@", paths[0], @"/log"];
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        NSArray* fileArray = [fileManager contentsOfDirectoryAtPath:logDoc error:nil];
+        fileArray = [fileArray sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+            NSString* file1 = (NSString*)obj1;
+            NSString* file2 = (NSString*)obj2;
+            return [file1 compare:file2] == NSOrderedDescending;
+        }];
+        self.logFilesArray = [NSMutableArray new];
+        for (NSString* logName in fileArray) {
+            if ([logName hasSuffix:@"xlog"]) {
+                [self.logFilesArray addObject:logName];
+            }
+        }
+        
+        _logUploadView.alpha = 0.1;
+        UIView *logUploadView = _logUploadView;
+        [UIView animateWithDuration:0.5 animations:^{
+            logUploadView.hidden = NO;
+            logUploadView.alpha = 1;
+        }];
+        [_logPickerView reloadAllComponents];
+    }
+}
+
+- (IBAction)onSharedUploadLog:(UIButton *)sender {
+    NSInteger row = [_logPickerView selectedRowInComponent:0];
+    if (row < self.logFilesArray.count) {
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *logDoc = [NSString stringWithFormat:@"%@%@", paths[0], @"/log"];
+        NSString* logPath = [logDoc stringByAppendingPathComponent:self.logFilesArray[row]];
+        NSURL *shareobj = [NSURL fileURLWithPath:logPath];
+        UIActivityViewController *activityView = [[UIActivityViewController alloc] initWithActivityItems:@[shareobj] applicationActivities:nil];
+        UIView *logUploadView = _logUploadView;
+        [self presentViewController:activityView animated:YES completion:^{
+            logUploadView.hidden = YES;
+        }];
+    }
+}
+
+- (void)handleTap:(UITapGestureRecognizer*)tapRecognizer {
+    if (!_logUploadView.hidden) {
+        _logUploadView.hidden = YES;
+    }
+}
+
+#pragma mark - UIPickerViewDatasource & UIPickerViewDelegate
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
+    return 1;
+}
+
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
+    return self.logFilesArray.count;
+}
+
+- (NSString*)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
+    if (row < self.logFilesArray.count) {
+        return (NSString*)self.logFilesArray[row];
+    }
+    return nil;
+}
+
 
 #pragma mark - UICollectionViewDelegate
 

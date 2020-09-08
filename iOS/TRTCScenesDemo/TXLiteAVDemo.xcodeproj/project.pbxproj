@@ -15,7 +15,7 @@
 		2840D92E24B8801800723FBC /* SDWebImagePlaceholderImageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2840D92824B85E2A00723FBC /* SDWebImagePlaceholderImageManager.swift */; };
 		2840D93124B880EF00723FBC /* SDWebImagePlaceholderImageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2840D92824B85E2A00723FBC /* SDWebImagePlaceholderImageManager.swift */; };
 		285FB46824BEA52F00FFB2BC /* TXVoiceRoomService.m in Sources */ = {isa = PBXBuildFile; fileRef = 4046B13924B36AD700F27349 /* TXVoiceRoomService.m */; };
-		3B3DCEA352B5CB1FEAB3CA4C /* AppUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11375821D1EEB091F4EA7C6C /* AppUtils.swift */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		3CB859538C35AAD5932C8C3B /* AppUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1FCBADEF32FFAAF0A3CBD2 /* AppUtils.swift */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		40091E661F4FCBB9009B882D /* UIButton+Glossy.m in Sources */ = {isa = PBXBuildFile; fileRef = 40F8534B1EE8FCDF00EE47D7 /* UIButton+Glossy.m */; };
 		40091E6B1F4FCBB9009B882D /* ScanQRController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 40F853561EE8FCDF00EE47D7 /* ScanQRController.mm */; };
 		40091E6F1F4FCBB9009B882D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 40F853261EE8FC8400EE47D7 /* AppDelegate.m */; };
@@ -655,6 +655,7 @@
 		40EF364B24BC4134006AA4BB /* RoomManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EF364924BC4134006AA4BB /* RoomManager.swift */; };
 		40EF364C24BC4134006AA4BB /* RoomManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EF364924BC4134006AA4BB /* RoomManager.swift */; };
 		40EF364D24BC4134006AA4BB /* RoomManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EF364924BC4134006AA4BB /* RoomManager.swift */; };
+		4129C685D15CA52C2FAD7DC4 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EB070228DB2D6A008E6EE0 /* ProfileViewController.swift */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		4509E5D322816E8D001FF14A /* LiveRoomAccPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4509E5D222816E8D001FF14A /* LiveRoomAccPlayerView.m */; };
 		4509E5D422816E8D001FF14A /* LiveRoomAccPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4509E5D222816E8D001FF14A /* LiveRoomAccPlayerView.m */; };
 		4509E5D522816E8D001FF14A /* LiveRoomAccPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4509E5D222816E8D001FF14A /* LiveRoomAccPlayerView.m */; };
@@ -710,6 +711,7 @@
 		51A289FB230FB95800B9B73F /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51A289F8230FB93A00B9B73F /* OpenAL.framework */; };
 		51A289FC230FB96000B9B73F /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51A289F8230FB93A00B9B73F /* OpenAL.framework */; };
 		51CE9F98231944BE00B620BD /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51A289F8230FB93A00B9B73F /* OpenAL.framework */; };
+		6676BE05932880A44613255E /* LoginViewController+UI_Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C256B5E98153E7D1FD2701B7 /* LoginViewController+UI_Mock.swift */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		6A03ED411FD13DFB00F2F063 /* UIViewController+BackButtonHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A03ED3F1FD13DFB00F2F063 /* UIViewController+BackButtonHandler.m */; };
 		6A03ED421FD13E0C00F2F063 /* UIViewController+BackButtonHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A03ED3F1FD13DFB00F2F063 /* UIViewController+BackButtonHandler.m */; };
 		6A03ED431FD13E0C00F2F063 /* UIViewController+BackButtonHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A03ED3F1FD13DFB00F2F063 /* UIViewController+BackButtonHandler.m */; };
@@ -842,7 +844,6 @@
 		6AAEC2C62497807200B57D86 /* TXMeetingPair.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AAEC2672497807200B57D86 /* TXMeetingPair.m */; };
 		6AAEC3A52499F93300B57D86 /* TXLiteAVSDK_ReplayKitExt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AAEC38A2499E08100B57D86 /* TXLiteAVSDK_ReplayKitExt.framework */; };
 		7B107D8F4C4B5BF9184EC193 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
-		87CCA2DD8405BF10DA27C7B5 /* ProfileManager_Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B430B6740920679D1721FFD /* ProfileManager_Mock.swift */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		910E179F2080A27500178D86 /* TXMoviePlayerNetApi.m in Sources */ = {isa = PBXBuildFile; fileRef = 910E179E2080A27500178D86 /* TXMoviePlayerNetApi.m */; };
 		910E17A02080A27500178D86 /* TXMoviePlayerNetApi.m in Sources */ = {isa = PBXBuildFile; fileRef = 910E179E2080A27500178D86 /* TXMoviePlayerNetApi.m */; };
 		910E17A22080A27500178D86 /* TXMoviePlayerNetApi.m in Sources */ = {isa = PBXBuildFile; fileRef = 910E179E2080A27500178D86 /* TXMoviePlayerNetApi.m */; };
@@ -930,14 +931,12 @@
 		A0BEE9DF211AE89300D63544 /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 40F855481EE8FDF100EE47D7 /* libresolv.tbd */; };
 		A0BEE9E0211AE89300D63544 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CE45D2971F15C527003506D1 /* libc++.tbd */; };
 		A0BEE9E2211AE89300D63544 /* ReplayKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91D47F3920B6B13C0072AC0B /* ReplayKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		A0D8D76F821374CE4D7DEF4C /* CommonUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC2CE13ED3D75DC3A2BC445 /* CommonUtils.swift */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		A0FFAD94213791B70087FF45 /* TVCHttpMessageURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = A0FFAD93213791B70087FF45 /* TVCHttpMessageURLProtocol.m */; };
 		A0FFAD96213791B70087FF45 /* TVCHttpMessageURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = A0FFAD93213791B70087FF45 /* TVCHttpMessageURLProtocol.m */; };
 		A0FFAD99213791B70087FF45 /* TVCHttpMessageURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = A0FFAD93213791B70087FF45 /* TVCHttpMessageURLProtocol.m */; };
-		A5EE2464E260A773E517800E /* CommonUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F2FEC3082173B8406D16EB5 /* CommonUtils.swift */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		A7E4CFC2078272BFAD28AE04 /* ProfileViewController+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = F443824F0DEBC4B32EE21CA4 /* ProfileViewController+UI.swift */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		B9FD7DE5980256B4E89B4ACA /* LoginViewController+UI_Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB0AD035A9FA28D0FA26910 /* LoginViewController+UI_Mock.swift */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		BD32F8A6AF7CC2FF9A53096E /* libPods-TXLiteAVDemo_TRTC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A32AD4BB38080AB19D3659FC /* libPods-TXLiteAVDemo_TRTC.a */; };
-		C46C7521E5798DCA7763A014 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E0A9105C7FC7134A1C30D12 /* ProfileViewController.swift */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		CCC3742220816AA64C8F7B9F /* ProfileViewController+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF0563C48EF7D2B4F79F53A /* ProfileViewController+UI.swift */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		CE01F53E206DDE060056D693 /* VideoCompressPreviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE01F53D206DDE060056D693 /* VideoCompressPreviewController.m */; };
 		CE01F53F206DDE060056D693 /* VideoCompressPreviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE01F53D206DDE060056D693 /* VideoCompressPreviewController.m */; };
 		CE01F541206DDE060056D693 /* VideoCompressPreviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE01F53D206DDE060056D693 /* VideoCompressPreviewController.m */; };
@@ -1079,7 +1078,8 @@
 		D6E5D1C320B7B62000812B2F /* ScreenPushViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D6E5D1C220B7B62000812B2F /* ScreenPushViewController.m */; };
 		D6E5D1C420B7B62000812B2F /* ScreenPushViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D6E5D1C220B7B62000812B2F /* ScreenPushViewController.m */; };
 		D6E5D1C520B7B62000812B2F /* ScreenPushViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D6E5D1C220B7B62000812B2F /* ScreenPushViewController.m */; };
-		D9015030747DC724BCE8E72C /* LoginViewController_Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06302BB7251860BEB6BF1646 /* LoginViewController_Mock.swift */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DD950F38C898C758AC030FE1 /* LoginViewController_Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F15974CAA46DCB846A7DFE9 /* LoginViewController_Mock.swift */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		E4861FBDB2CFFE01E23C98A4 /* ProfileManager_Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3EE95F2106D9253A4EF3E1 /* ProfileManager_Mock.swift */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		EF69648B8809D6DEA1B7139D /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
 		FDD4BF2B24A1F8AE0015388B /* VideoEditor.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FDD4BF2824A1F8AD0015388B /* VideoEditor.xcassets */; };
 		FDD4BF2C24A1F8AE0015388B /* VideoEditor.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FDD4BF2824A1F8AD0015388B /* VideoEditor.xcassets */; };
@@ -1333,12 +1333,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		06302BB7251860BEB6BF1646 /* LoginViewController_Mock.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LoginViewController_Mock.swift; sourceTree = "<group>"; };
-		11375821D1EEB091F4EA7C6C /* AppUtils.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppUtils.swift; sourceTree = "<group>"; };
-		1B430B6740920679D1721FFD /* ProfileManager_Mock.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ProfileManager_Mock.swift; sourceTree = "<group>"; };
 		2840D91B24B8562200723FBC /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		2840D92824B85E2A00723FBC /* SDWebImagePlaceholderImageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDWebImagePlaceholderImageManager.swift; sourceTree = "<group>"; };
-		3E0A9105C7FC7134A1C30D12 /* ProfileViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		4004FF601EC7FB44D81E5934 /* Pods-TXReplaykitUpload_TRTC.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TXReplaykitUpload_TRTC.release.xcconfig"; path = "Target Support Files/Pods-TXReplaykitUpload_TRTC/Pods-TXReplaykitUpload_TRTC.release.xcconfig"; sourceTree = "<group>"; };
 		4011CC0E24E4DDB600C543D7 /* TRTCCallingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCCallingCell.swift; sourceTree = "<group>"; };
 		4011CC0F24E4DDB600C543D7 /* CallUserModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallUserModel.swift; sourceTree = "<group>"; };
@@ -1410,6 +1406,7 @@
 		40495B3C2459466900AF53CB /* ProfileViewController+UI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ProfileViewController+UI.swift"; sourceTree = "<group>"; };
 		40495B3E2459466900AF53CB /* ProfileManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileManager.swift; sourceTree = "<group>"; };
 		40495B9E2459713400AF53CB /* TXLiteAVDemo_TRTCRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TXLiteAVDemo_TRTCRelease.entitlements; sourceTree = "<group>"; };
+		4050CD6224F1E06200079E81 /* TRTCCallingDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TRTCCallingDelegate.h; sourceTree = "<group>"; };
 		4053391C24654CEF00A6B478 /* TCHttpUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCHttpUtil.m; sourceTree = "<group>"; };
 		4053391D24654CEF00A6B478 /* TCHttpUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCHttpUtil.h; sourceTree = "<group>"; };
 		4053391F24654CEF00A6B478 /* SmallButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SmallButton.m; sourceTree = "<group>"; };
@@ -1569,7 +1566,6 @@
 		45E74D9923B22BCD00C22B31 /* ThemeConfigurator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ThemeConfigurator.h; sourceTree = "<group>"; };
 		45E74D9A23B22BCD00C22B31 /* ThemeConfigurator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ThemeConfigurator.m; sourceTree = "<group>"; };
 		4B4B291177070EC8D226E1E2 /* Pods-TXLiteAVDemo_TRTC_AppStore.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TXLiteAVDemo_TRTC_AppStore.release.xcconfig"; path = "Target Support Files/Pods-TXLiteAVDemo_TRTC_AppStore/Pods-TXLiteAVDemo_TRTC_AppStore.release.xcconfig"; sourceTree = "<group>"; };
-		4FB0AD035A9FA28D0FA26910 /* LoginViewController+UI_Mock.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "LoginViewController+UI_Mock.swift"; sourceTree = "<group>"; };
 		51A289F8230FB93A00B9B73F /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
 		51A4AD391F1F8AE300B4A806 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		5BD8B4F3BB859A4568C43B7D /* Pods-TXLiteAVDemo_TRTC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TXLiteAVDemo_TRTC.debug.xcconfig"; path = "Target Support Files/Pods-TXLiteAVDemo_TRTC/Pods-TXLiteAVDemo_TRTC.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1619,9 +1615,11 @@
 		6AAEC2692497807200B57D86 /* IMProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMProtocol.h; sourceTree = "<group>"; };
 		6AAEC26A2497807200B57D86 /* TRTCMeetingDef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCMeetingDef.h; sourceTree = "<group>"; };
 		6AAEC38A2499E08100B57D86 /* TXLiteAVSDK_ReplayKitExt.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TXLiteAVSDK_ReplayKitExt.framework; sourceTree = "<group>"; };
-		6F2FEC3082173B8406D16EB5 /* CommonUtils.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CommonUtils.swift; sourceTree = "<group>"; };
+		6CC2CE13ED3D75DC3A2BC445 /* CommonUtils.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CommonUtils.swift; sourceTree = "<group>"; };
 		78833A06B3E3C43A9C3CD304 /* Pods-TXReplaykitUpload_TRTC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TXReplaykitUpload_TRTC.debug.xcconfig"; path = "Target Support Files/Pods-TXReplaykitUpload_TRTC/Pods-TXReplaykitUpload_TRTC.debug.xcconfig"; sourceTree = "<group>"; };
 		7B4C917A24B4B0C80095C041 /* TXLaunchMoviePlayProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXLaunchMoviePlayProtocol.h; sourceTree = "<group>"; };
+		8AF0563C48EF7D2B4F79F53A /* ProfileViewController+UI.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "ProfileViewController+UI.swift"; sourceTree = "<group>"; };
+		8F15974CAA46DCB846A7DFE9 /* LoginViewController_Mock.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LoginViewController_Mock.swift; sourceTree = "<group>"; };
 		910E179D2080A27500178D86 /* TXMoviePlayerNetApi.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXMoviePlayerNetApi.h; sourceTree = "<group>"; };
 		910E179E2080A27500178D86 /* TXMoviePlayerNetApi.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TXMoviePlayerNetApi.m; sourceTree = "<group>"; };
 		910E17A52080A2EB00178D86 /* TXMoviePlayerNetDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXMoviePlayerNetDelegate.h; sourceTree = "<group>"; };
@@ -1642,6 +1640,7 @@
 		91EEB3492060AF6C00BD01DB /* DownloadViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DownloadViewController.h; sourceTree = "<group>"; };
 		91EEB34A2060AF6C00BD01DB /* DownloadViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DownloadViewController.m; sourceTree = "<group>"; };
 		91F87A7E1FF4A0FC001644B1 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
+		93EB070228DB2D6A008E6EE0 /* ProfileViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		A035040620D20A01007E61C6 /* QRCode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QRCode.h; sourceTree = "<group>"; };
 		A035040720D20A01007E61C6 /* QRCode.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QRCode.m; sourceTree = "<group>"; };
 		A035042E20D24F99007E61C6 /* AddressBarController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddressBarController.h; sourceTree = "<group>"; };
@@ -1680,6 +1679,8 @@
 		A0FFAD93213791B70087FF45 /* TVCHttpMessageURLProtocol.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TVCHttpMessageURLProtocol.m; sourceTree = "<group>"; };
 		A256AF019D8E84B3B797494C /* libPods-TXLiteAVDemo_TRTC_AppStore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TXLiteAVDemo_TRTC_AppStore.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A32AD4BB38080AB19D3659FC /* libPods-TXLiteAVDemo_TRTC.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TXLiteAVDemo_TRTC.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BC3EE95F2106D9253A4EF3E1 /* ProfileManager_Mock.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ProfileManager_Mock.swift; sourceTree = "<group>"; };
+		C256B5E98153E7D1FD2701B7 /* LoginViewController+UI_Mock.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "LoginViewController+UI_Mock.swift"; sourceTree = "<group>"; };
 		CE01F53C206DDE060056D693 /* VideoCompressPreviewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoCompressPreviewController.h; sourceTree = "<group>"; };
 		CE01F53D206DDE060056D693 /* VideoCompressPreviewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoCompressPreviewController.m; sourceTree = "<group>"; };
 		CE45D2971F15C527003506D1 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
@@ -1745,7 +1746,7 @@
 		D6E5D1C220B7B62000812B2F /* ScreenPushViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScreenPushViewController.m; sourceTree = "<group>"; };
 		E0D8BC526E0FAB3AC4FA5FB4 /* Pods-TXLiteAVDemo_TRTC_AppStore.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TXLiteAVDemo_TRTC_AppStore.debug.xcconfig"; path = "Target Support Files/Pods-TXLiteAVDemo_TRTC_AppStore/Pods-TXLiteAVDemo_TRTC_AppStore.debug.xcconfig"; sourceTree = "<group>"; };
 		E95CAD575C1A00021285A090 /* Pods-TXLiteAVDemo_TRTC.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TXLiteAVDemo_TRTC.release.xcconfig"; path = "Target Support Files/Pods-TXLiteAVDemo_TRTC/Pods-TXLiteAVDemo_TRTC.release.xcconfig"; sourceTree = "<group>"; };
-		F443824F0DEBC4B32EE21CA4 /* ProfileViewController+UI.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "ProfileViewController+UI.swift"; sourceTree = "<group>"; };
+		EB1FCBADEF32FFAAF0A3CBD2 /* AppUtils.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppUtils.swift; sourceTree = "<group>"; };
 		FC847F58E175350391991E4C /* Pods-TXReplaykitUpload_TRTC_AppStore.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TXReplaykitUpload_TRTC_AppStore.release.xcconfig"; path = "Target Support Files/Pods-TXReplaykitUpload_TRTC_AppStore/Pods-TXReplaykitUpload_TRTC_AppStore.release.xcconfig"; sourceTree = "<group>"; };
 		FDD4BF2824A1F8AD0015388B /* VideoEditor.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = VideoEditor.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1809,10 +1810,9 @@
 		4011CC0D24E4DDB600C543D7 /* ui */ = {
 			isa = PBXGroup;
 			children = (
-				4011CC0E24E4DDB600C543D7 /* TRTCCallingCell.swift */,
-				4011CC0F24E4DDB600C543D7 /* CallUserModel.swift */,
-				4011CC1024E4DDB600C543D7 /* TRTCAudioCallViewController.swift */,
-				4011CC1124E4DDB600C543D7 /* TRTCVideoCallViewController.swift */,
+				40C8DD0224F1759000EBBD53 /* Views */,
+				40C8DD0124F1757900EBBD53 /* AudioCall */,
+				40C8DCFE24F1754800EBBD53 /* VideoCall */,
 				4011CC1224E4DDB600C543D7 /* TRTCCallingContactViewController.swift */,
 				4011CC1324E4DDB600C543D7 /* TRTCCalling.xcassets */,
 			);
@@ -1824,6 +1824,7 @@
 			children = (
 				4011CC1524E4DDB600C543D7 /* Impl */,
 				4011CC1E24E4DDB600C543D7 /* TRTCCalling.h */,
+				4050CD6224F1E06200079E81 /* TRTCCallingDelegate.h */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -2269,6 +2270,31 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		40C8DCFE24F1754800EBBD53 /* VideoCall */ = {
+			isa = PBXGroup;
+			children = (
+				4011CC1124E4DDB600C543D7 /* TRTCVideoCallViewController.swift */,
+			);
+			path = VideoCall;
+			sourceTree = "<group>";
+		};
+		40C8DD0124F1757900EBBD53 /* AudioCall */ = {
+			isa = PBXGroup;
+			children = (
+				4011CC1024E4DDB600C543D7 /* TRTCAudioCallViewController.swift */,
+			);
+			path = AudioCall;
+			sourceTree = "<group>";
+		};
+		40C8DD0224F1759000EBBD53 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				4011CC0F24E4DDB600C543D7 /* CallUserModel.swift */,
+				4011CC0E24E4DDB600C543D7 /* TRTCCallingCell.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		40EF361D24BC3FCD006AA4BB /* Impl */ = {
 			isa = PBXGroup;
 			children = (
@@ -2363,7 +2389,7 @@
 				4090F614246ADBBF00EA72A0 /* TRTCMeetingDemo */,
 				40F8531D1EE8FC1E00EE47D7 /* Supporting Files */,
 				40AA533424458EC800303EF7 /* BeautySettingKit */,
-				D38A0E5EDDE86846C0CAE76F /* Login */,
+				49B14E39D3748385AAA392CF /* Login */,
 			);
 			path = TXLiteAVDemo;
 			sourceTree = "<group>";
@@ -2492,6 +2518,21 @@
 			name = SDK;
 			path = ../SDK;
 			sourceTree = "<group>";
+		};
+		49B14E39D3748385AAA392CF /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				8F15974CAA46DCB846A7DFE9 /* LoginViewController_Mock.swift */,
+				BC3EE95F2106D9253A4EF3E1 /* ProfileManager_Mock.swift */,
+				C256B5E98153E7D1FD2701B7 /* LoginViewController+UI_Mock.swift */,
+				EB1FCBADEF32FFAAF0A3CBD2 /* AppUtils.swift */,
+				6CC2CE13ED3D75DC3A2BC445 /* CommonUtils.swift */,
+				93EB070228DB2D6A008E6EE0 /* ProfileViewController.swift */,
+				8AF0563C48EF7D2B4F79F53A /* ProfileViewController+UI.swift */,
+			);
+			name = Login;
+			path = TXLiteAVDemo/Login;
+			sourceTree = SOURCE_ROOT;
 		};
 		6AAEC24D2497807100B57D86 /* ui */ = {
 			isa = PBXGroup;
@@ -2630,21 +2671,6 @@
 			);
 			path = include;
 			sourceTree = "<group>";
-		};
-		D38A0E5EDDE86846C0CAE76F /* Login */ = {
-			isa = PBXGroup;
-			children = (
-				06302BB7251860BEB6BF1646 /* LoginViewController_Mock.swift */,
-				1B430B6740920679D1721FFD /* ProfileManager_Mock.swift */,
-				4FB0AD035A9FA28D0FA26910 /* LoginViewController+UI_Mock.swift */,
-				11375821D1EEB091F4EA7C6C /* AppUtils.swift */,
-				6F2FEC3082173B8406D16EB5 /* CommonUtils.swift */,
-				3E0A9105C7FC7134A1C30D12 /* ProfileViewController.swift */,
-				F443824F0DEBC4B32EE21CA4 /* ProfileViewController+UI.swift */,
-			);
-			name = Login;
-			path = TXLiteAVDemo/Login;
-			sourceTree = SOURCE_ROOT;
 		};
 		D61B48481FB59E9B002F0C6C /* TCHttpUtil */ = {
 			isa = PBXGroup;
@@ -3140,13 +3166,13 @@
 				4011CC3124E4DDB600C543D7 /* TRTCCallingContactViewController.swift in Sources */,
 				6AAEC2752497807200B57D86 /* CenterSegmentView.swift in Sources */,
 				40B3F99E2446E6C6000C37A3 /* LiveRoomMainViewController.swift in Sources */,
-				D9015030747DC724BCE8E72C /* LoginViewController_Mock.swift in Sources */,
-				87CCA2DD8405BF10DA27C7B5 /* ProfileManager_Mock.swift in Sources */,
-				B9FD7DE5980256B4E89B4ACA /* LoginViewController+UI_Mock.swift in Sources */,
-				3B3DCEA352B5CB1FEAB3CA4C /* AppUtils.swift in Sources */,
-				A5EE2464E260A773E517800E /* CommonUtils.swift in Sources */,
-				C46C7521E5798DCA7763A014 /* ProfileViewController.swift in Sources */,
-				A7E4CFC2078272BFAD28AE04 /* ProfileViewController+UI.swift in Sources */,
+				DD950F38C898C758AC030FE1 /* LoginViewController_Mock.swift in Sources */,
+				E4861FBDB2CFFE01E23C98A4 /* ProfileManager_Mock.swift in Sources */,
+				6676BE05932880A44613255E /* LoginViewController+UI_Mock.swift in Sources */,
+				3CB859538C35AAD5932C8C3B /* AppUtils.swift in Sources */,
+				A0D8D76F821374CE4D7DEF4C /* CommonUtils.swift in Sources */,
+				4129C685D15CA52C2FAD7DC4 /* ProfileViewController.swift in Sources */,
+				CCC3742220816AA64C8F7B9F /* ProfileViewController+UI.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

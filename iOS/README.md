@@ -1,5 +1,6 @@
 ## 目录结构说明
 
+
 本目录包含 iOS 版 TRTC 的所有 Demo 源代码，被分成 TRTCSimpleDemo 和 TRTCScenesDemo 两个子目录：
 - TRTCSimpleDemo： 最简单的示例代码，主要演示接口如何调用以及最基本的功能。
 - TRTCScenesDemo：较复杂的场景案例，结合了 TRTC 和 IM 两个 SDK ，所实现的交互也更接近真实产品。
