@@ -14,29 +14,27 @@
 | Electron | [下载](http://liteavsdk-1252463788.cosgz.myqcloud.com/TXLiteAVSDK_TRTC_Electron_latest.zip) | [DOC](https://cloud.tencent.com/document/product/647/38548) | [DOC](https://cloud.tencent.com/document/product/647/38549) |[API](https://cloud.tencent.com/document/product/647/38551) |
 | 微信小程序 | [下载](http://liteavsdk-1252463788.cosgz.myqcloud.com/TRTC_WXMini_latest.zip) | [DOC](https://cloud.tencent.com/document/product/647/32399) | [DOC](https://cloud.tencent.com/document/product/647/32183) |[API](https://cloud.tencent.com/document/product/647/17018) |
 
-## 最新版本 7.6 @ 2020.08.21
-TRTC 7.6 版本主要改进了 Windows 和 Mac 端的 SDK 稳定性，并优化了很多已知的无声和黑屏 BUG，全部升级点包括如下：
-- 全平台：优化 enterRoom 的协议策略，提升加入房间的速度，并提高成功率。
-- 全平台：优化同时订阅超多路音频时的总体性能消耗和卡顿问题。
-- 全平台：修复在不退房的情况下进入同一个房间时，SDK 不触发 onEnterRoom 回的 BUG。
-- 全平台：修复几种可能导致黑屏的偶现内部 BUG 的问题。
-- 全平台：修复提前调用 startRemoteSubStreamView 无法正常显示屏幕分享画面的问题。
-- Windows：新增 [updateLocalView](http://doc.qcloudtrtc.com/group__ITRTCCloud__cplusplus.html#ae5211a2739df8d8ec6017559b3aa0299) 和 [updateRemoteView](http://doc.qcloudtrtc.com/group__ITRTCCloud__cplusplus.html#a8c8247cbc679ea144ffb393b6b940c9e) 接口，用于优化实时调整 HWND 类型的渲染窗口时的体验。
-- Windows：新增 [getCurrentMicDeviceMute](http://doc.qcloudtrtc.com/group__ITRTCCloud__cplusplus.html#a8a8badf62eee1021f9315f11df0f597f) 接口用于获取当前 Windows PC 是否被设置为静音。
-- Windows：新增[setCurrentMicDeviceMute](http://doc.qcloudtrtc.com/group__ITRTCCloud__cplusplus.html#a8a8badf62eee1021f9315f11df0f597f) 接口用于将当前 Windows PC 设置为全局静音。
-- Windows：修复已知的几处句柄及GDI泄露。
-- Windows：修复多个已知的 Crash 问题。
-- Windows 修复摄像头和麦克风拔掉后重新插入不会自动开启设备的问题。
-- Mac：新增 [updateLocalView](http://doc.qcloudtrtc.com/group__TRTCCloud__ios.html#abf20f249b4b43fff64f944b4aefe54cb) 和 [updateRemoteView](http://doc.qcloudtrtc.com/group__TRTCCloud__ios.html#aa27f954e6301fb57a143b27429b63d87) 接口，用于优化实时调整 View 渲染区域时的体验。
-- Mac：新增 [getCurrentMicDeviceMute](http://doc.qcloudtrtc.com/group__TRTCCloud__ios.html#a6ba78519e9c98c1eecd365154882d53f) 接口用于获取当前 Mac 电脑是否被设置为静音。
-- Mac：新增[setCurrentMicDeviceMute](http://doc.qcloudtrtc.com/group__TRTCCloud__ios.html#a88569e62fe75b7ea98cc012169f22bfe) 接口用于将当前 Mac 电脑设置为全局静音。
-- Mac：屏幕分享开始支持分享指定窗口的指定区域。
-- iOS: 新增 [updateLocalView](http://doc.qcloudtrtc.com/group__TRTCCloud__ios.html#abf20f249b4b43fff64f944b4aefe54cb) 和 [updateRemoteView](http://doc.qcloudtrtc.com/group__TRTCCloud__ios.html#aa27f954e6301fb57a143b27429b63d87) 接口，用于优化实时调整 View 渲染区域时的体验。
-- iOS：修复在 iOS10 上背景音乐接口在传入特定规则的文件路径时会崩溃的 BUG。
-- iOS: 为 TRTCCloudDelegate 增加了 [onCapturedRawAudioFrame](http://doc.qcloudtrtc.com/group__TRTCCloudDelegate__ios.html#aeaeaf9e7091c75e1a072d576a57d7f5c) 回调，并修改了其他几个回调函数的名称，依次修改为 [onLocalProcessedAudioFrame](http://doc.qcloudtrtc.com/group__TRTCCloudDelegate__ios.html#a73a3e7de3c5c340957f119bb0f8744b0)、[onRemoteUserAudioFrame](http://doc.qcloudtrtc.com/group__TRTCCloudDelegate__ios.html#aa392c17c27bae1505f148bf541b7746a)和 [onMixedPlayAudioFrame](http://doc.qcloudtrtc.com/group__TRTCCloudDelegate__ios.html#a5a8a0bf6f8d02c33b2fe01c6175dfd4e)。
-- Android：修复频繁快速的 enterRoom 和 exitRoom 后偶先的无声问题。
-- Android：修复偶现的录屏推流黑屏的问题。
-- Android：为 TRTCCloudListener 增加了 [onCapturedRawAudioFrame](http://doc.qcloudtrtc.com/group__TRTCCloudListener__android.html#abffd560f5b2b2322ea3980bc5a91d22e) 回调，并修改了其他几个回调函数的名称，依次修改为 [onLocalProcessedAudioFrame](http://doc.qcloudtrtc.com/group__TRTCCloudListener__android.html#a62c526c6c30a66671260bdf0c5c64e46)、[onRemoteUserAudioFrame](http://doc.qcloudtrtc.com/group__TRTCCloudListener__android.html#a4af98a7d668c150ea8e99e3085505902)和 [onMixedPlayAudioFrame](http://doc.qcloudtrtc.com/group__TRTCCloudListener__android.html#a580e94224357c38adf6ed883ab3321f7)。
+## Version 7.7 @ 2020.09.08
+**优化**
+- 全平台：优化辅路（也就是屏幕分享）的秒开速度。
+- iOS & Android：优化 Audio 模块的性能，提升首帧的采集延迟，新版本可以更快的获得首个音频帧。
+- iOS & Android：优化点播播放器（VodPlayer）和 TRTC 同时使用时的音量大小和音质表现。
+- iOS：优化内部线程模型，提升在 30 路以上并发播放的场景中的运行稳定性。
+- iOS & Android：增加对 wav 音频格式的背景音乐和音效文件的支持。
+- Windows：优化在某些低端摄像头下 CPU 使用率过高的问题。
+- Windows：优化对多款 USB 摄像头和麦克风的兼容性，提升设备的打开成功率。
+- Windows：优化摄像头和麦克风设备的选择策略，避免由于摄像头或麦克风在使用中插拔导致的采集异常问题。
+
+**修复**
+- 全平台：修复弱网情况下调用 muteLocalVideo 和 muteLocalAudio 接口时会偶现播放异常的 BUG。
+- iOS：修复播放音效在低端 iPhone 或 iPad 上可能会失败的 BUG。
+- iOS：修复iPad Pro 屏幕分享出的画面出现变形拉伸的问题。
+- iOS：修复 App 内屏幕贡献在用户拒绝权限之后，还会持续弹出几次屏幕录制权限申请提示的问题。
+- Windows：解决笔记本或者台式机在长时间休眠后，退房 [onExitRoom](http://doc.qcloudtrtc.com/group__ITRTCCloudCallback__cplusplus.html#a0a45883a23a200b0e9ea38fdde1da4bd) 事件通知不会回调的问题。
+- Windows：修复在 Music 音质模式下，开启系统混音 [stopSystemAudioLoopback](http://doc.qcloudtrtc.com/group__ITRTCCloud__cplusplus.html#aab0258238e4414c386657151d01ffb23) 后会导致漏回声的问题。
+- Windows：修复在快速调用 enterRoom 和 exitRoom 进退房的情况下，偶现的播放端无声的 BUG。
+- Windows：修复手动接收模式（即 [setDefaultStreamRecvMode(false，false)](http://doc.qcloudtrtc.com/group__ITRTCCloud__cplusplus.html#a7a0238314fc1e1f49803c0b22c1019d5) ）下会重复收到 onUserVideoAvailable 事件回调的问题。
+- Windows：修复 SDK 对 Visual Stuido 2010 项目的编译兼容性问题。
 
 
 ## Demo 体验地址
