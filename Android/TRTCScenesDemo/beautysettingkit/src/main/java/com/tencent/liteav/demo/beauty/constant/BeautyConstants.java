@@ -36,9 +36,9 @@ public class BeautyConstants {
     public static final int ITEM_TYPE_BEAUTY_FACE_SHAPE             = 20124;    // 脸型
 
     public static final int ITEM_TYPE_FILTER_FACE_SHAPE             = 20201;    // 无特效
-    public static final int ITEM_TYPE_FILTER_STANDARD               = 20202;    // 标准
-    public static final int ITEM_TYPE_FILTER_ZIRAN                  = 20203;    // 自然
-    public static final int ITEM_TYPE_FILTER_BAIXI                  = 20204;    // 白皙
+    public static final int ITEM_TYPE_FILTER_BAIXI                  = 20202;    // 白皙
+    public static final int ITEM_TYPE_FILTER_STANDARD               = 20203;    // 标准
+    public static final int ITEM_TYPE_FILTER_ZIRAN                  = 20204;    // 自然
     public static final int ITEM_TYPE_FILTER_CHEERY                 = 20205;    // 樱红
     public static final int ITEM_TYPE_FILTER_CLOUD                  = 20206;    // 云裳
     public static final int ITEM_TYPE_FILTER_PURE                   = 20207;    // 纯真

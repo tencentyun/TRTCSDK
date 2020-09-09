@@ -155,8 +155,9 @@ public class BeautyPanel extends FrameLayout implements SeekBar.OnSeekBarChangeL
 
     public void setBeautyManager(TXBeautyManager beautyManager) {
         mBeauty.setBeautyManager(beautyManager);
+        clear();
         // 滤镜默认选中白皙
-        setCurrentFilterIndex(3);
+        setCurrentFilterIndex(1);
         setCurrentBeautyIndex(2);
     }
 
@@ -169,10 +170,14 @@ public class BeautyPanel extends FrameLayout implements SeekBar.OnSeekBarChangeL
     }
 
     public void setCurrentFilterIndex(int index) {
+        mCurrentTabPosition = 1;
+        mCurrentItemPosition[mCurrentTabPosition] = index;
         mBeauty.setCurrentFilterIndex(mBeautyInfo, index);
     }
 
     public void setCurrentBeautyIndex(int index) {
+        mCurrentTabPosition = 0;
+        mCurrentItemPosition[mCurrentTabPosition] = index;
         mBeauty.setCurrentBeautyIndex(mBeautyInfo, index);
     }
 
@@ -247,7 +252,7 @@ public class BeautyPanel extends FrameLayout implements SeekBar.OnSeekBarChangeL
         ItemAdapter itemAdapter = new ItemAdapter(mContext);
         if (tabInfo.getTabType() == BeautyConstants.TAB_TYPE_FILTER) {
             // 滤镜默认选中白皙
-            itemAdapter.setData(tabInfo, 3);
+            itemAdapter.setData(tabInfo, 1);
         } else if(tabInfo.getTabType() == BeautyConstants.TAB_TYPE_BEAUTY) {
             // 美颜默认选中P图
             itemAdapter.setData(tabInfo, 2);

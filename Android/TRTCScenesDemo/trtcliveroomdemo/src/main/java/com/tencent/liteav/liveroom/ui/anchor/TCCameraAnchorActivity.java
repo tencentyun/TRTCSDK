@@ -79,8 +79,6 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity implements View
         setTheme(R.style.TRTCLiveRoomBeautyTheme);
         super.onCreate(savedInstanceState);
         mPanelBeautyControl.setBeautyManager(mLiveRoom.getBeautyManager());
-        // 清空上次的美颜参数
-        mPanelBeautyControl.clear();
         startPreview();
     }
 

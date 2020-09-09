@@ -268,28 +268,28 @@
         {
           "item_id": 2,
           "item_type": 20202,
+          "item_name": "@beauty_panel_filter_baixi",
+          "item_material_url": "",
+          "item_level": 5,
+          "item_icon_normal": "@beauty_baixi",
+          "item_icon_select": "@beauty_baixi"
+        },
+        {
+          "item_id": 3,
+          "item_type": 20203,
           "item_name": "@beauty_panel_filter_standard",
           "item_material_url": "",
           "item_level": 4,
           "item_icon_normal": "@beauty_biaozhun",
           "item_icon_select": "@beauty_biaozhun"
         },{
-          "item_id": 3,
-          "item_type": 20203,
+          "item_id": 4,
+          "item_type": 20204,
           "item_name": "@beauty_panel_filter_ziran",
           "item_material_url": "",
           "item_level": 5,
           "item_icon_normal": "@beauty_ziran",
           "item_icon_select": "@beauty_ziran"
-        },
-        {
-          "item_id": 4,
-          "item_type": 20204,
-          "item_name": "@beauty_panel_filter_baixi",
-          "item_material_url": "",
-          "item_level": 5,
-          "item_icon_normal": "@beauty_baixi",
-          "item_icon_select": "@beauty_baixi"
         },
         {
           "item_id": 5,
