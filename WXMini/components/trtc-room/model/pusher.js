@@ -20,13 +20,19 @@ class Pusher {
   reset() {
     console.log('Pusher reset', this.pusherContext)
     if (this.pusherContext) {
-      console.log('Pusher pusherContext.stop()')
-      this.pusherContext.stop()
+      // 2020/09/23 安卓端华为小米机型发现，安卓原生返回键，退房失败。
+      // 会触发detached生命周期，调用到该方法，puhserContext.stop()调用不成功，但是清空url后，客户端调用的退房方法就会不生效
+      // 这里做出改动，只有stop调用成功后，才会清空url，保持组件卸载流程的完整性，调用不成功的情况将由微信客户端兜底清除
+      this.pusherContext.stop({
+        success: () => {
+          console.log('Pusher pusherContext.stop()')
+          Object.assign(this, DEFAULT_PUSHER_CONFIG, {
+            isVisible: true,
+          })
+        },
+      })
       this.pusherContext = null
     }
-    Object.assign(this, DEFAULT_PUSHER_CONFIG, {
-      isVisible: true,
-    })
   }
 }
 
