@@ -15,6 +15,8 @@ public:
 
     TRTCScreenCaptureSourceInfo getSelectWnd() const;
 
+    RECT getRect() const;
+
 protected:
     virtual CDuiString GetSkinFile() override;
     virtual LPCTSTR GetWindowClassName(void) const override;
@@ -26,6 +28,8 @@ protected:
 
     void _onSelChanged(TNotifyUI& msg);
 
+    void _onTextChanged(TNotifyUI& msg);
+
     void _cleanShareSelectItems();
 
 private:
@@ -33,6 +37,8 @@ private:
 
     HWND m_hSelectWnd = NULL;
     std::vector<ShareSelectItem*>    m_vecShareSelectItem;
+
+    RECT m_rect;
 
     static size_t ms_nLastSelectedIndex;
 };

@@ -221,7 +221,8 @@ void MainViewBottomBar::Notify(TNotifyUI& msg)
                 if (pBtn){
                     TRTCScreenCaptureSourceInfo info{};
                     info.type = TRTCScreenCaptureSourceTypeUnknown;
-                    OpenScreenBtnEvent(info);
+                    RECT rect;
+                    OpenScreenBtnEvent(info, rect);
                 }
             }
             else {
@@ -232,9 +233,10 @@ void MainViewBottomBar::Notify(TNotifyUI& msg)
                 if (nRet == IDOK)
                 {
                     TRTCScreenCaptureSourceInfo info = uiShareSelect.getSelectWnd();
+                    RECT rect = uiShareSelect.getRect();
                     CButtonUI* pBtn = static_cast<CButtonUI*>(msg.pSender);
                     if (pBtn)
-                        OpenScreenBtnEvent(info);
+                        OpenScreenBtnEvent(info, rect);
                 }
             }        
         }
@@ -658,22 +660,22 @@ void MainViewBottomBar::onClickMuteAudioBtn()
     ::PostMessage(m_pMainWnd->GetHWND(), WM_USER_VIEW_BTN_CLICK, (WPARAM)msg, 0);
 }
 
-void MainViewBottomBar::OpenScreenBtnEvent(const TRTCScreenCaptureSourceInfo &source)
+void MainViewBottomBar::OpenScreenBtnEvent(TRTCScreenCaptureSourceInfo &source, RECT & rect) 
 {
     LINFO(L"OpenScreenBtnEvent, m_bStartScreenShare:%d", CDataCenter::GetInstance()->m_localInfo.publish_sub_video);
     if (CDataCenter::GetInstance()->m_localInfo.publish_sub_video)
     {        
         TRTCCloudCore::GetInstance()->stopScreen();
         CDataCenter::GetInstance()->m_localInfo.publish_sub_video = false;
-        if (CDataCenter::GetInstance()->m_mixTemplateID <= TRTCTranscodingConfigMode_Manual) TRTCCloudCore::GetInstance()->updateMixTranCodeInfo();
+        if (CDataCenter::GetInstance()->m_mixTemplateID <= TRTCTranscodingConfigMode_Manual) 
+            TRTCCloudCore::GetInstance()->updateMixTranCodeInfo();
+        if (CDataCenter::GetInstance()->m_bPublishScreenInBigStream && TRTCCloudCore::GetInstance()->IsStartPreview()) {
+            TRTCCloudCore::GetInstance()->stopPreview();
+            TRTCCloudCore::GetInstance()->startPreview();
+        }
     }
     else
     {
-        RECT rect;
-        rect.bottom = 0;
-        rect.left = 0;
-        rect.right = 0;
-        rect.top = 0;
         TRTCCloudCore::GetInstance()->selectScreenCaptureTarget(source, rect);
         if (CDataCenter::GetInstance()->m_bPublishScreenInBigStream) {
             TRTCCloudCore::GetInstance()->startScreenCapture(nullptr, TRTCVideoStreamTypeBig, nullptr);

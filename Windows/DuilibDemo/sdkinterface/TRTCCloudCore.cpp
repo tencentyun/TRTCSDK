@@ -114,7 +114,6 @@ void TRTCCloudCore::Init()
 void TRTCCloudCore::Uninit()
 {
     m_bStartLocalPreview = false;
-    m_bStartCameraTest = false;
 
     removeAllSDKMsgObserver();
     m_pCloud->removeCallback(this);
@@ -1003,59 +1002,24 @@ void TRTCCloudCore::selectCameraDevice(std::wstring text)
         m_pCloud->setCurrentCameraDevice(Wide2UTF8(text.c_str()).c_str());
 }
 
-void TRTCCloudCore::startPreview(bool bSetting)
-{
-    if (m_pCloud == nullptr)
-        return;
+void TRTCCloudCore::startPreview() {
+    if (m_pCloud == nullptr) return;
 
-    //防重入
-    if (m_bStartCameraTest && bSetting)
-        return; 
-    if (m_bStartLocalPreview && !bSetting)
-        return;
+    if (m_bStartLocalPreview) return;
 
-    //判断是否还需要打开设备
-
-
-    if (bSetting)
-    {
-        if (!m_bStartLocalPreview)
-        {
-            m_pCloud->startCameraDeviceTest(NULL);
-        }
-           
-        m_bStartCameraTest = true;
-    }
-    else
-    {
-        m_pCloud->startLocalPreview(NULL);
-        m_bStartLocalPreview = true;
-    }
+    m_pCloud->startLocalPreview(NULL);
+    m_bStartLocalPreview = true;
 }
 
-void TRTCCloudCore::stopPreview(bool bSetting)
-{
-    if (bSetting)
-    {
-        if (!m_bStartLocalPreview)
-            m_pCloud->stopCameraDeviceTest();
-        m_bStartCameraTest = false;
-    }
-    else
-    {
-        if (m_bStartCameraTest)
-        {
-            //设置中心还在打开预览
-            m_pCloud->stopLocalPreview();
-            m_pCloud->stopCameraDeviceTest();
-        }
-        else
-        {
-             m_pCloud->stopLocalPreview();
-        }
-        m_bStartLocalPreview = false;
-    }
+void TRTCCloudCore::stopPreview() {
+    if (!m_bStartLocalPreview) return;
 
+    m_bStartLocalPreview = false;
+    m_pCloud->stopLocalPreview();
+}
+
+bool TRTCCloudCore::IsStartPreview() {
+    return m_bStartLocalPreview;
 }
 
 void TRTCCloudCore::startScreen(HWND rendHwnd)

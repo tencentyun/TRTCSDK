@@ -119,8 +119,9 @@ public:
     void selectSpeakerDevice(std::wstring text);
     void selectCameraDevice(std::wstring text);
     //此处要添加引用计数，支持多处渲染
-    void startPreview(bool bSetting = false);
-    void stopPreview(bool bSetting = false);
+    void startPreview();
+    void stopPreview();
+    bool IsStartPreview();
     void startScreen(HWND rendHwnd);
     void startScreenCapture(HWND rendHwnd, TRTCVideoStreamType streamType, TRTCVideoEncParam* params);
     void stopScreen();
@@ -163,7 +164,6 @@ private:
     ITXVodPlayer* m_pVodPlayer = nullptr;
     ITXLivePlayer* m_pLivePlayer = nullptr;
     bool m_bStartLocalPreview = false;
-    bool m_bStartCameraTest = false;
     bool m_bFirstUpdateDevice = false;
 
     //云端混流功能

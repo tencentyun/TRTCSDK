@@ -1117,7 +1117,8 @@ void TRTCMainViewController::onLocalVideoPublishChange(std::wstring userId, int 
     {
         TRTCScreenCaptureSourceInfo info{};
         info.type = TRTCScreenCaptureSourceTypeUnknown;
-        m_pMainViewBottomBar->OpenScreenBtnEvent(info);
+        RECT rect;
+        m_pMainViewBottomBar->OpenScreenBtnEvent(info, rect);
     }
 }
 
@@ -1258,6 +1259,7 @@ void TRTCMainViewController::onUpdateRoleChange()
     {
         TRTCScreenCaptureSourceInfo info{ };
         info.type = TRTCScreenCaptureSourceTypeUnknown;
-        m_pMainViewBottomBar->OpenScreenBtnEvent(info);
+        RECT rect;
+        m_pMainViewBottomBar->OpenScreenBtnEvent(info, rect);
     }
 }

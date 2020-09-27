@@ -271,62 +271,7 @@
 				</GroupBox>
 				<HorizontalLayout/>
 			</VerticalLayout>
-			<!--other setting page-->
-			<VerticalLayout name="other_tab_layout" childpadding="10">
-				<VerticalLayout height="20"/>
-				
-				<HorizontalLayout inset="28,6,0,0" childvalign="left" height="24">
-					<Label text="本地画面镜像" font="2" width="118" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,1"/>
-					<VerticalLayout width="80"/>
-					<Option name="check_local_mirror" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
-				</HorizontalLayout>
-				<HorizontalLayout inset="28,6,0,0" childvalign="left" height="24">
-					<Label text="开启音量提示" font="2" width="118" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,1"/>
-					<VerticalLayout width="80"/>
-					<Option name="check_voice_volume" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
-				</HorizontalLayout>
-				<HorizontalLayout inset="28,0,0,0" childvalign="left" height="24">
-					<Label text="开启自定义采集音频" font="2" width="118" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,3,0,1"/>
-					<VerticalLayout width="80"/>
-					<Option name="check_custom_audio" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true" padding="0,3,0,0"/>
-					<VerticalLayout width="20"/>
-					<Combo name="combo_audio_pcmfile" width="130" height="24" style="devicecombo" dropbox="bordercolor=&quot;#FF1E90FF&quot; bordersize=&quot;1&quot; bkcolor=&quot;#FFFFFFFF&quot;">
-						<ListLabelElement text="48_1_audio.pcm"/>
-						<ListLabelElement text="16_1_audio.pcm"/>
-					</Combo>
-				</HorizontalLayout>
-				<HorizontalLayout inset="28,0,0,0" childvalign="left" height="24">
-					<Label text="开启自定义采集视频" font="2" width="118" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,3,0,1"/>
-					<VerticalLayout width="80"/>
-					<Option name="check_custom_video" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true" padding="0,3,0,0"/>
-					<VerticalLayout width="20"/>
-					<Combo name="combo_video_yuvfile" width="130" height="24" style="devicecombo" dropbox="bordercolor=&quot;#FF1E90FF&quot; bordersize=&quot;1&quot; bkcolor=&quot;#FFFFFFFF&quot;">
-						<ListLabelElement text="320×240_video.yuv"/>
-					</Combo>  
-				</HorizontalLayout>
-				<HorizontalLayout inset="28,6,0,0" childvalign="left" height="24">
-					<Label text="开启本地视频" font="2" width="118" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,1"/>
-					<VerticalLayout width="80"/>
-					<Option name="check_localvideo_open"  text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
-				</HorizontalLayout>
-				<HorizontalLayout inset="28,6,0,0" childvalign="left" height="24">
-					<Label text="开启本地音频" font="2" width="118" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,1"/>
-					<VerticalLayout width="80"/>
-					<Option name="check_localaudio_open"  text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
-				</HorizontalLayout>
-				<HorizontalLayout inset="28,0,0,0" childvalign="left" height="24" visible="false">
-					<Label text="Socks5代理IP" font="2" width="118" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,3,0,1"/>
-					<VerticalLayout width="80"/>
-					<Edit name="edit_ip" text="" height="24" font="2" align="center" textpadding="20,0,20,0" tipvalue="输入代理IP" tipvaluecolor="#FF808080" tipvaluealign="center" normalimage="res='login/edit_normal.png' corner='6,6,6,6'" focusedimage="res='login/edit_focus.png' corner='6,6,6,6'"/>
-					<VerticalLayout width="72"/>
-				</HorizontalLayout>
-				<HorizontalLayout inset="28,0,0,0" childvalign="left" height="24" visible="false">
-					<Label text="Socks5代理Port" font="2" width="118" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,3,0,1"/>
-					<VerticalLayout width="80"/>
-					<Edit name="edit_port" text="" height="24" font="2" align="center" numberonly="true" textpadding="20,0,20,0" tipvalue="输入代理PORT" tipvaluecolor="#FF808080" tipvaluealign="center" normalimage="res='login/edit_normal.png' corner='6,6,6,6'" focusedimage="res='login/edit_focus.png' corner='6,6,6,6'"/>
-					<VerticalLayout width="72"/>
-				</HorizontalLayout>
-			</VerticalLayout>
+			
 			<!--mix setting page-->
 			<VerticalLayout name="mix_tab_layout" childpadding="10">
 				<VerticalLayout height="20"/>
@@ -356,6 +301,7 @@
 				</GroupBox>
 			</VerticalLayout>
 			
+			<!--record setting page-->
 			<VerticalLayout name="record_tab_layout" childpadding="10">
 			<VerticalLayout height="20"/>
 			<GroupBox text="本地AV录制" padding="20,0,20,0" childpadding="20" bordercolor="#FF808080" bkcolor="#FFF0F0F0" bordersize="1" height="300">
@@ -415,6 +361,84 @@
 			</GroupBox>
 			</VerticalLayout>
 			
+			<!--other setting page-->
+			<VerticalLayout name="other_tab_layout" childpadding="10">
+				<VerticalLayout height="20"/>
+				
+				<HorizontalLayout inset="28,6,0,0" childvalign="left" height="24">
+					<Label text="本地画面镜像" font="2" width="118" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,1"/>
+					<VerticalLayout width="80"/>
+					<Option name="check_local_mirror" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
+				</HorizontalLayout>
+				<HorizontalLayout inset="28,6,0,0" childvalign="left" height="24">
+					<Label text="开启音量提示" font="2" width="118" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,1"/>
+					<VerticalLayout width="80"/>
+					<Option name="check_voice_volume" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
+				</HorizontalLayout>
+				<HorizontalLayout inset="28,0,0,0" childvalign="left" height="24">
+					<Label text="开启自定义采集音频" font="2" width="118" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,3,0,1"/>
+					<VerticalLayout width="80"/>
+					<Option name="check_custom_audio" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true" padding="0,3,0,0"/>
+					<VerticalLayout width="20"/>
+					<Combo name="combo_audio_pcmfile" width="130" height="24" style="devicecombo" dropbox="bordercolor=&quot;#FF1E90FF&quot; bordersize=&quot;1&quot; bkcolor=&quot;#FFFFFFFF&quot;">
+						<ListLabelElement text="48_1_audio.pcm"/>
+						<ListLabelElement text="16_1_audio.pcm"/>
+					</Combo>
+				</HorizontalLayout>
+				<HorizontalLayout inset="28,0,0,0" childvalign="left" height="24">
+					<Label text="开启自定义采集视频" font="2" width="118" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,3,0,1"/>
+					<VerticalLayout width="80"/>
+					<Option name="check_custom_video" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true" padding="0,3,0,0"/>
+					<VerticalLayout width="20"/>
+					<Combo name="combo_video_yuvfile" width="130" height="24" style="devicecombo" dropbox="bordercolor=&quot;#FF1E90FF&quot; bordersize=&quot;1&quot; bkcolor=&quot;#FFFFFFFF&quot;">
+						<ListLabelElement text="320×240_video.yuv"/>
+					</Combo>  
+				</HorizontalLayout>
+				<HorizontalLayout inset="28,6,0,0" childvalign="left" height="24">
+					<Label text="开启本地视频" font="2" width="118" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,1"/>
+					<VerticalLayout width="80"/>
+					<Option name="check_localvideo_open"  text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
+				</HorizontalLayout>
+				<HorizontalLayout inset="28,6,0,0" childvalign="left" height="24">
+					<Label text="开启本地音频" font="2" width="118" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,1"/>
+					<VerticalLayout width="80"/>
+					<Option name="check_localaudio_open"  text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
+				</HorizontalLayout>
+				<HorizontalLayout inset="28,0,0,0" childvalign="left" height="24" visible="false">
+					<Label text="Socks5代理IP" font="2" width="118" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,3,0,1"/>
+					<VerticalLayout width="80"/>
+					<Edit name="edit_ip" text="" height="24" font="2" align="center" textpadding="20,0,20,0" tipvalue="输入代理IP" tipvaluecolor="#FF808080" tipvaluealign="center" normalimage="res='login/edit_normal.png' corner='6,6,6,6'" focusedimage="res='login/edit_focus.png' corner='6,6,6,6'"/>
+					<VerticalLayout width="72"/>
+				</HorizontalLayout>
+				<HorizontalLayout inset="28,0,0,0" childvalign="left" height="24" visible="false">
+					<Label text="Socks5代理Port" font="2" width="118" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,3,0,1"/>
+					<VerticalLayout width="80"/>
+					<Edit name="edit_port" text="" height="24" font="2" align="center" numberonly="true" textpadding="20,0,20,0" tipvalue="输入代理PORT" tipvaluecolor="#FF808080" tipvaluealign="center" normalimage="res='login/edit_normal.png' corner='6,6,6,6'" focusedimage="res='login/edit_focus.png' corner='6,6,6,6'"/>
+					<VerticalLayout width="72"/>
+				</HorizontalLayout>
+				<HorizontalLayout inset="0,0,0,0" childvalign="left" height="24">
+					<Label text="添加过滤窗口" font="2" width="110" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,3,0,1"/>
+					<VerticalLayout width="10"/>
+					<Edit name="edit_add_excluded_wnd" text="" height="24" font="2" align="center" textpadding="20,0,20,0" tipvalue="8715442" tipvaluecolor="#FF808080" tipvaluealign="center" normalimage="res='login/edit_normal.png' corner='6,6,6,6'" focusedimage="res='login/edit_focus.png' corner='6,6,6,6'"/>
+					<VerticalLayout width="10"/>
+					<Button name="btn_add_excluded_wnd" text="添加" textcolor="#FF000000" textpadding="6,0,6,0" style="btn_style" width="60" height="30" />
+					<VerticalLayout width="10"/>
+				</HorizontalLayout>
+				<HorizontalLayout inset="0,0,0,0" childvalign="left" height="24">
+					<Label text="移除过滤窗口" font="2" width="110" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,3,0,1"/>
+					<VerticalLayout width="10"/>
+					<Edit name="edit_del_excluded_wnd" text="" height="24" font="2" align="center" textpadding="20,0,20,0" tipvalue="8715442" tipvaluecolor="#FF808080" tipvaluealign="center" normalimage="res='login/edit_normal.png' corner='6,6,6,6'" focusedimage="res='login/edit_focus.png' corner='6,6,6,6'"/>
+					<VerticalLayout width="10"/>
+					<Button name="btn_del_excluded_wnd" text="移除" textcolor="#FF000000" textpadding="6,0,6,0" style="btn_style" width="60" height="30" />
+					<VerticalLayout width="10"/>
+				</HorizontalLayout>
+				<HorizontalLayout inset="0,0,0,0" childvalign="left" height="24">
+					<Label text="移除过滤窗口" font="2" width="130" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,3,0,1"/>
+					<VerticalLayout width="10"/>
+					<Button name="btn_del_all_excluded_wnd" text="移除所有" textcolor="#FF000000" textpadding="6,0,6,0" style="btn_style" width="100" height="30" />
+					<VerticalLayout width="10"/>
+				</HorizontalLayout>
+			</VerticalLayout>
 		</TabLayout>
 		</VerticalLayout>
 	</HorizontalLayout>

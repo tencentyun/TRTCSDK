@@ -140,9 +140,9 @@ void TRTCSettingViewController::Notify(TNotifyUI & msg)
         if (name.CompareNoCase(_T("normal_tab")) == 0) pTabSwitch->SelectItem(0);
         if (name.CompareNoCase(_T("video_tab")) == 0) pTabSwitch->SelectItem(1);
         if (name.CompareNoCase(_T("audio_tab")) == 0) pTabSwitch->SelectItem(2);
-        if (name.CompareNoCase(_T("other_tab")) == 0) pTabSwitch->SelectItem(3);
-        if (name.CompareNoCase(_T("mix_tab")) == 0) pTabSwitch->SelectItem(4);
-        if (name.CompareNoCase(_T("record_tab")) == 0) pTabSwitch->SelectItem(5);
+        if (name.CompareNoCase(_T("mix_tab")) == 0) pTabSwitch->SelectItem(3);
+        if (name.CompareNoCase(_T("record_tab")) == 0) pTabSwitch->SelectItem(4);
+        if (name.CompareNoCase(_T("other_tab")) == 0) pTabSwitch->SelectItem(5);
         if (name.CompareNoCase(_T("qos_smooth")) == 0) {  
             CDataCenter::GetInstance()->m_qosParams.preference = TRTCVideoQosPreferenceSmooth;
 
@@ -626,7 +626,7 @@ void TRTCSettingViewController::Notify(TNotifyUI & msg)
             {
 
                 RemoteUserInfoList& userMap = CDataCenter::GetInstance()->m_remoteUser;
-                for (auto it : userMap)
+                for (auto it : userMap) 
                 {
                     std::string api = format("{\"api\":\"muteRemoteAudioInSpeaker\",\"params\":{\"userID\":\"%s\", \"enable\":%d}}", it.first.c_str(), true);
                     TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
@@ -1031,6 +1031,23 @@ void TRTCSettingViewController::NotifyOtherTab(TNotifyUI & msg)
                 CDataCenter::GetInstance()->m_bMuteLocalAudio = true;
                 TRTCCloudCore::GetInstance()->getTRTCCloud()->muteLocalAudio(true);
             }
+        } 
+        else if (msg.pSender->GetName() == _T("btn_add_excluded_wnd")) {
+            CEditUI* edit_ui = static_cast<CEditUI*>(m_pmUI.FindControl(_T("edit_add_excluded_wnd")));
+            if (edit_ui != nullptr) {
+                wstring str_text = edit_ui->GetText();
+                uint32_t hwnd = _wtoi64(str_text.c_str());
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->addExcludedShareWindow((HWND)hwnd);
+            }
+        } else if (msg.pSender->GetName() == _T("btn_del_excluded_wnd")) {
+            CEditUI* edit_ui = static_cast<CEditUI*>(m_pmUI.FindControl(_T("edit_del_excluded_wnd")));
+            if (edit_ui != nullptr) {
+                wstring str_text = edit_ui->GetText();
+                uint32_t hwnd = _wtoi64(str_text.c_str());
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->removeExcludedShareWindow((HWND)hwnd);
+            }
+        } else if (msg.pSender->GetName() == _T("btn_del_all_excluded_wnd")) {
+            TRTCCloudCore::GetInstance()->getTRTCCloud()->removeAllExcludedShareWindow();
         }
     }
 
@@ -2102,13 +2119,11 @@ void TRTCSettingViewController::UpdateCameraDevice()
 {
     //初始化视频设备 
     CComboUI* pDeviceCombo = static_cast<CComboUI*>(m_pmUI.FindControl(_T("combo_camera")));
-    if (pDeviceCombo)
-    {
+    if (pDeviceCombo) {
         pDeviceCombo->RemoveAll();
         std::vector<TRTCCloudCore::MediaDeviceInfo> vecDeviceList = TRTCCloudCore::GetInstance()->getCameraDevice();
         int selectIndex = -1, cnt = -1;
-        for (auto info : vecDeviceList)
-        {
+        for (auto info : vecDeviceList) {
             cnt++;
             CListLabelElementUI* pElement = new CListLabelElementUI;
             pElement->SetText(info._text.c_str());
@@ -2118,26 +2133,21 @@ void TRTCSettingViewController::UpdateCameraDevice()
             }
             pDeviceCombo->Add(pElement);
         }
-        if (selectIndex >= 0)
-        {
-            is_init_device_combo_list_ = true;
+        if (selectIndex >= 0) {
             pDeviceCombo->SelectItem(selectIndex);
-            
+
             LocalUserInfo info = CDataCenter::GetInstance()->getLocalUserInfo();
-            if (m_pVideoView->IsViewOccupy() == false)
-            {
-                m_pVideoView->SetRenderInfo(info._userId, TRTCVideoStreamType::TRTCVideoStreamTypeBig, true);
+            if (m_pVideoView->IsViewOccupy() == false) {
+                m_pVideoView->SetRenderInfo("camera-test", TRTCVideoStreamType::TRTCVideoStreamTypeBig, false);
                 m_pVideoView->SetRenderMode(TXLiveAvVideoView::EVideoRenderModeFit);
             }
 
             m_pVideoView->SetPause(false);
-            TRTCCloudCore::GetInstance()->startPreview(true);
-            
+            TRTCCloudCore::GetInstance()->getTRTCCloud()->startCameraDeviceTest((ITRTCVideoRenderCallback*)getShareViewMgrInstance());
             m_bStartLocalPreview = true;
         }
-        else
-        {
-            TRTCCloudCore::GetInstance()->stopPreview(true);
+        else {
+            TRTCCloudCore::GetInstance()->getTRTCCloud()->stopCameraDeviceTest();
             m_bStartLocalPreview = false;
             m_pVideoView->SetPause(true);
             m_pVideoView->NeedUpdate();
@@ -2215,9 +2225,8 @@ void TRTCSettingViewController::ResetBeautyConfig()
 
 void TRTCSettingViewController::stopAllTestSetting()
 {
-
     if (m_bStartLocalPreview)
-        TRTCCloudCore::GetInstance()->stopPreview(true);
+        TRTCCloudCore::GetInstance()->getTRTCCloud()->stopCameraDeviceTest();
     if (m_bStartTestMic)
         TRTCCloudCore::GetInstance()->getTRTCCloud()->stopMicDeviceTest();
     if (m_bStartTestSpeaker)

@@ -39,7 +39,7 @@ public:
     void onClickMuteVideoBtn();
     void onClickMuteAudioBtn();
 
-    void OpenScreenBtnEvent(const TRTCScreenCaptureSourceInfo &source);
+    void OpenScreenBtnEvent(TRTCScreenCaptureSourceInfo &source, RECT & rect);
 
     bool onPKUserLeaveRoom(std::string userId);
     bool onPKUserEnterRoom(std::string userId, uint32_t& roomId);

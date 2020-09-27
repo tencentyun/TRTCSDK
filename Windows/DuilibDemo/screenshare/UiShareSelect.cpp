@@ -6,6 +6,7 @@ DUI_BEGIN_MESSAGE_MAP(UiShareSelect, WindowImplBase)
 DUI_ON_CLICK_CTRNAME(_T("closebtn"), _onBtnClose)
 DUI_ON_CLICK_CTRNAME(_T("btnConfirm"), _onBtnConfirm)
 DUI_ON_MSGTYPE(DUI_MSGTYPE_SELECTCHANGED, _onSelChanged)
+DUI_ON_MSGTYPE(DUI_MSGTYPE_TEXTCHANGED, _onTextChanged)
 DUI_END_MESSAGE_MAP()
 
 size_t UiShareSelect::ms_nLastSelectedIndex = 0;
@@ -42,6 +43,11 @@ void UiShareSelect::centerToDesktop()
 TRTCScreenCaptureSourceInfo UiShareSelect::getSelectWnd() const
 {
     return m_vecShareSelectItem[ms_nLastSelectedIndex]->getWndInfo();
+}
+
+RECT UiShareSelect::getRect() const 
+{
+    return m_rect;
 }
 
 CDuiString UiShareSelect::GetSkinFile()
@@ -105,6 +111,20 @@ void UiShareSelect::_onSelChanged(TNotifyUI& msg)
         {
             m_vecShareSelectItem[i]->select(false);
         }
+    }
+}
+
+void UiShareSelect::_onTextChanged(TNotifyUI & msg)
+{
+    CEditUI* edit_rect_left = static_cast<CEditUI*>(m_pm.FindControl(_T("edit_rect_left__wnd")));
+    CEditUI* edit_rect_right = static_cast<CEditUI*>(m_pm.FindControl(_T("edit_rect_right__wnd")));
+    CEditUI* edit_rect_top = static_cast<CEditUI*>(m_pm.FindControl(_T("edit_rect_top__wnd")));
+    CEditUI* edit_rect_bottom = static_cast<CEditUI*>(m_pm.FindControl(_T("edit_rect_bottom__wnd")));
+    if (edit_rect_left && edit_rect_right && edit_rect_top && edit_rect_bottom) {
+        m_rect.left = _wtoi(edit_rect_left->GetText());
+        m_rect.right = _wtoi(edit_rect_right->GetText());
+        m_rect.top = _wtoi(edit_rect_top->GetText());
+        m_rect.bottom = _wtoi(edit_rect_bottom->GetText());
     }
 }
 

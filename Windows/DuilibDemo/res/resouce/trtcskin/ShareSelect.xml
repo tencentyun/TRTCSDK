@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Window size="480,400" caption="0,0,0,32">
+<Window size="480,450" caption="0,0,0,32">
   <Font id="0" name="微软雅黑" size="15" bold="false" default="false" />
   <Style name="btn_style" shared="true" value="normalimage=&quot;res='login/btn_normal.png' corner='2,2,2,2'&quot; hotimage=&quot;res='login/btn_hover.png' corner='2,2,2,2'&quot; pushedimage=&quot;res='login/btn_hover.png' corner='2,2,2,2'&quot; width=&quot;102&quot; height=&quot;27&quot; " />
   <Default name="VScrollBar" value="width=&quot;2&quot; "/>
@@ -14,8 +14,26 @@
     <TileLayout name="layoutBody" columns="3" childpadding="4" vscrollbar="true" inset="5,0,0,0">
     </TileLayout>
 
+	<HorizontalLayout height="50" childalign="center" inset="0,10,0,0">
+	  <Label text="Left" font="2" align="right" valign="center" width="40" textcolor="#FF000000" showhtml="true" padding="0,3,0,1"/>
+	  <VerticalLayout width="5"/>
+	  <Edit name="edit_rect_left__wnd" text="0" height="24" font="2" align="center" textpadding="10,0,10,0" tipvalue="8715442" tipvaluecolor="#FF808080" tipvaluealign="center" normalimage="res='login/edit_normal.png' corner='6,6,6,6'" focusedimage="res='login/edit_focus.png' corner='6,6,6,6'"/>
+	  <VerticalLayout width="10"/>
+	  <Label text="Right" font="2" align="right" valign="center" width="40" textcolor="#FF000000" showhtml="true" padding="0,3,0,1"/>
+	  <VerticalLayout width="5"/>
+	  <Edit name="edit_rect_right__wnd" text="0" height="24" font="2" align="center" textpadding="10,0,10,0" tipvalue="8715442" tipvaluecolor="#FF808080" tipvaluealign="center" normalimage="res='login/edit_normal.png' corner='6,6,6,6'" focusedimage="res='login/edit_focus.png' corner='6,6,6,6'"/>
+	  <VerticalLayout width="10"/>
+	  <Label text="Top" font="2" align="right" valign="center" width="40" textcolor="#FF000000" showhtml="true" padding="0,3,0,1"/>
+	  <VerticalLayout width="5"/>
+	  <Edit name="edit_rect_top__wnd" text="0" height="24" font="2" align="center" textpadding="10,0,10,0" tipvalue="8715442" tipvaluecolor="#FF808080" tipvaluealign="center" normalimage="res='login/edit_normal.png' corner='6,6,6,6'" focusedimage="res='login/edit_focus.png' corner='6,6,6,6'"/>
+	  <VerticalLayout width="10"/>
+	  <Label text="Bottom" font="2" align="right" valign="center" width="40" textcolor="#FF000000" showhtml="true" padding="0,3,0,1"/>
+	  <VerticalLayout width="5"/>
+	  <Edit name="edit_rect_bottom__wnd" text="0" height="24" font="2" align="center" textpadding="10,0,10,0" tipvalue="8715442" tipvaluecolor="#FF808080" tipvaluealign="center" normalimage="res='login/edit_normal.png' corner='6,6,6,6'" focusedimage="res='login/edit_focus.png' corner='6,6,6,6'"/>
+	  <VerticalLayout width="10"/>
+	</HorizontalLayout>
     <HorizontalLayout height="50" childalign="center" inset="0,10,0,0">
-		<VerticalLayout width="185"/>
+	  <VerticalLayout width="185"/>
       <Button name="btnConfirm" text="选择窗口" textcolor="#FF000000" textpadding="6,0,6,0" style="btn_style" width="110" height="28"/>
     </HorizontalLayout>
   </VerticalLayout>
