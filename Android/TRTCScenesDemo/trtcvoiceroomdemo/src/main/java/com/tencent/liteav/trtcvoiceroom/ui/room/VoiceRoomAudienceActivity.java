@@ -313,7 +313,7 @@ public class VoiceRoomAudienceActivity extends VoiceRoomBaseActivity {
             mCurrentRole = TRTCCloudDef.TRTCRoleAudience;
             mSelfSeatIndex = -1;
             if (mAnchorAudioPanel != null) {
-                mAnchorAudioPanel.stopPlay();
+                mAnchorAudioPanel.reset();
             }
             refreshView();
         }

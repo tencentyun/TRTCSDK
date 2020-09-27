@@ -170,14 +170,12 @@ public class BeautyPanel extends FrameLayout implements SeekBar.OnSeekBarChangeL
     }
 
     public void setCurrentFilterIndex(int index) {
-        mCurrentTabPosition = 1;
-        mCurrentItemPosition[mCurrentTabPosition] = index;
+        mCurrentItemPosition[1] = index;
         mBeauty.setCurrentFilterIndex(mBeautyInfo, index);
     }
 
     public void setCurrentBeautyIndex(int index) {
-        mCurrentTabPosition = 0;
-        mCurrentItemPosition[mCurrentTabPosition] = index;
+        mCurrentItemPosition[0] = index;
         mBeauty.setCurrentBeautyIndex(mBeautyInfo, index);
     }
 
@@ -252,10 +250,10 @@ public class BeautyPanel extends FrameLayout implements SeekBar.OnSeekBarChangeL
         ItemAdapter itemAdapter = new ItemAdapter(mContext);
         if (tabInfo.getTabType() == BeautyConstants.TAB_TYPE_FILTER) {
             // 滤镜默认选中白皙
-            itemAdapter.setData(tabInfo, 1);
+            itemAdapter.setData(tabInfo, mCurrentItemPosition[1]);
         } else if(tabInfo.getTabType() == BeautyConstants.TAB_TYPE_BEAUTY) {
             // 美颜默认选中P图
-            itemAdapter.setData(tabInfo, 2);
+            itemAdapter.setData(tabInfo, mCurrentItemPosition[0]);
         } else {
             itemAdapter.setData(tabInfo);
         }
