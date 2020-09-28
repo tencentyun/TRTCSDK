@@ -71,7 +71,7 @@ UIPickerViewDataSource, UIPickerViewDelegate> {
     _videoCallVC = [[TRTCCallingContactViewController alloc] init];
     [[TRTCCalling shareInstance] addDelegate:_videoCallVC];
 
-    _liveRoom = [[TRTCLiveRoom alloc] init];
+    _liveRoom = [TRTCLiveRoom shareInstance];
     _voiceRoom = [TRTCVoiceRoom sharedInstance];
     __weak __typeof(self) wSelf = self;
     self.mainMenuItems = @[

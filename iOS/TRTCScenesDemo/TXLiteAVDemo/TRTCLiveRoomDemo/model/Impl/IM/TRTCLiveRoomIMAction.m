@@ -128,6 +128,10 @@ typedef NS_ENUM(NSUInteger, ConvType) {
                     errorCallback(code, desc ?: @"joinGroup failed.");
                 }
             }];
+        } else {
+            if (errorCallback) {
+                errorCallback(code, desc ?: @"joinGroup failed.");
+            }
         }
     }];
 }

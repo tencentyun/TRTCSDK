@@ -190,9 +190,9 @@ static  TCBeautyPanelItem * makeMenuItem(NSString *title, UIImage *icon, id targ
 - (void)resetAndApplyValues
 {
     // 默认值配置
-    const BeautyMenuItem defaultBeautyStyle = BeautyMenuItemNature;
-    self.beautyStyle = TCBeautyStyleNature;
-    const TCFilterIdentifier defaultFilterIdentifier = TCFilterIdentifierNormal;
+    const BeautyMenuItem defaultBeautyStyle = BeautyMenuItemPiTu;
+    self.beautyStyle = BeautyMenuItemPiTu;
+    const TCFilterIdentifier defaultFilterIdentifier = TCFilterIdentifierBaiXi;
     // index = 0 为关闭
     NSUInteger defaultFilterIndex = [_filters indexOfObjectPassingTest:
                                      ^BOOL(TCFilter * _Nonnull obj,
@@ -203,7 +203,9 @@ static  TCBeautyPanelItem * makeMenuItem(NSString *title, UIImage *icon, id targ
     // 滤镜
     NSDictionary *defaultFilterValue = @{
                                      TCFilterIdentifierNone :@(0)
+                                     ,TCFilterIdentifierBaiXi :@(5)
                                     ,TCFilterIdentifierNormal :@(5)
+                                     ,TCFilterIdentifierZiRan :@(5)
                                     ,TCFilterIdentifierYinghong :@(8)
                                     ,TCFilterIdentifierYunshang :@(8)
                                     ,TCFilterIdentifierChunzhen :@(7)
@@ -232,8 +234,8 @@ static  TCBeautyPanelItem * makeMenuItem(NSString *title, UIImage *icon, id targ
 #ifndef UGC_SMART
     [self.beautyLevelDic setObject:@(DefaultBeautyLevel) forKey:@(BeautyMenuItemPiTu)];
 #endif
-    [self.beautyLevelDic setObject:@(DefaultWhitnessLevel) forKey:@(BeautyMenuItemWhite)];
-    [self.beautyLevelDic setObject:@(0) forKey:@(BeautyMenuItemRed)];
+//    [self.beautyLevelDic setObject:@(DefaultWhitnessLevel) forKey:@(BeautyMenuItemWhite)];
+//    [self.beautyLevelDic setObject:@(0) forKey:@(BeautyMenuItemRed)];
 
     NSInteger beautyValue = [self.beautyLevelDic[@(defaultBeautyStyle)] integerValue];
     [self setSliderValue:beautyValue];

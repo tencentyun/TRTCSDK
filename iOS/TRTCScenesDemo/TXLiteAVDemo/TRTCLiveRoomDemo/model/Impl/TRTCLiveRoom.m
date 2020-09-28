@@ -66,6 +66,15 @@ static double trtcLiveCheckStatusTimeOut = 3;
 
 @implementation TRTCLiveRoom
 
++ (instancetype)shareInstance {
+    static TRTCLiveRoom *instance = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        instance = [[TRTCLiveRoom alloc] init];
+    });
+    return instance;
+}
+
 - (instancetype)init
 {
     self = [super init];
@@ -1176,7 +1185,13 @@ static double trtcLiveCheckStatusTimeOut = 3;
 }
 
 - (void)onGroupInfoChanged:(NSString *)groupID changeInfoList:(NSArray<V2TIMGroupChangeInfo *> *)changeInfoList {
-    V2TIMGroupChangeInfo *info = [changeInfoList firstObject];
+    __block V2TIMGroupChangeInfo *info = nil;
+    [changeInfoList enumerateObjectsUsingBlock:^(V2TIMGroupChangeInfo * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if (obj.type == V2TIM_GROUP_INFO_CHANGE_TYPE_INTRODUCTION) {
+            info = obj;
+            *stop = YES;
+        }
+    }];
     if (info) {
         NSDictionary *customInfo = [info.value mj_JSONObject];
         NSNumber *roomStatus = customInfo[@"type"];

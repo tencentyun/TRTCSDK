@@ -7,7 +7,9 @@ NS_ASSUME_NONNULL_BEGIN
 typedef NSString * TCFilterIdentifier NS_STRING_ENUM;
 
 extern TCFilterIdentifier const TCFilterIdentifierNone;
+extern TCFilterIdentifier const TCFilterIdentifierBaiXi;
 extern TCFilterIdentifier const TCFilterIdentifierNormal;
+extern TCFilterIdentifier const TCFilterIdentifierZiRan;
 extern TCFilterIdentifier const TCFilterIdentifierYinghong;
 extern TCFilterIdentifier const TCFilterIdentifierYunshang;
 extern TCFilterIdentifier const TCFilterIdentifierChunzhen;

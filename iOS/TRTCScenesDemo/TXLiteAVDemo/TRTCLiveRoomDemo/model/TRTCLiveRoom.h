@@ -19,6 +19,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property(nonatomic, weak)id<TRTCLiveRoomDelegate> delegate;
 
+/// 初始化TRTCLiveRoom单例
++ (instancetype)shareInstance;
+
+- (instancetype)init NS_UNAVAILABLE;
++ (instancetype)new NS_UNAVAILABLE;
+
 #pragma mark - 登录登出相关
 
 //////////////////////////////////////////////////////////

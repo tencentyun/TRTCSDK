@@ -628,8 +628,8 @@
 
 
 - (void)showLikeHeart {
-    int x = (_btnMusic.frame.origin.x + _closeBtn.frame.origin.x) / 2;
-    CGRect rect = CGRectMake(x, _closeBtn.frame.origin.y, _closeBtn.frame.size.width, _closeBtn.frame.size.height);
+    int x = (_btnMusic.frame.origin.x + _btnBeauty.frame.origin.x) / 2;
+    CGRect rect = CGRectMake(x, _btnMusic.frame.origin.y, _btnBeauty.frame.size.width, _btnBeauty.frame.size.height);
     [self showLikeHeartStartRect:rect];
 }
 

@@ -3,7 +3,9 @@
 #import "TCFilter.h"
 
 TCFilterIdentifier const TCFilterIdentifierNone      = @"";
+TCFilterIdentifier const TCFilterIdentifierBaiXi     = @"baixi";
 TCFilterIdentifier const TCFilterIdentifierNormal    = @"normal";
+TCFilterIdentifier const TCFilterIdentifierZiRan     = @"ziran";
 TCFilterIdentifier const TCFilterIdentifierYinghong  = @"yinghong";
 TCFilterIdentifier const TCFilterIdentifierYunshang  = @"yunshang";
 TCFilterIdentifier const TCFilterIdentifierChunzhen  = @"chunzhen";
@@ -57,7 +59,9 @@ TCFilterIdentifier const TCFilterIdentifierRixi      = @"rixi";
         NSFileManager *manager = [[NSFileManager alloc] init];
         if ([manager fileExistsAtPath:path]) {
             NSArray<TCFilterIdentifier> *availableFilters = @[
+                TCFilterIdentifierBaiXi,
                 TCFilterIdentifierNormal,
+                TCFilterIdentifierZiRan,
                 TCFilterIdentifierYinghong,
                 TCFilterIdentifierYunshang,
                 TCFilterIdentifierChunzhen,
