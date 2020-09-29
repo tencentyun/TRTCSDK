@@ -38,21 +38,20 @@ class CallingSelectUserTableViewCell: UITableViewCell {
         super.didMoveToWindow()
         guard !isViewReady else { return }
         isViewReady = true
-        
-        addSubview(userImg)
+        contentView.addSubview(userImg)
         userImg.snp.remakeConstraints { (make) in
             make.leading.equalToSuperview().offset(20)
             make.width.height.equalTo(50)
             make.centerY.equalTo(self)
         }
         
-        addSubview(nameLabel)
+        contentView.addSubview(nameLabel)
         nameLabel.snp.remakeConstraints { (make) in
             make.leading.equalTo(userImg.snp.trailing).offset(12)
             make.trailing.top.bottom.equalTo(self)
         }
         
-        addSubview(callButton)
+        contentView.addSubview(callButton)
         callButton.snp.makeConstraints { (make) in
             make.centerY.equalToSuperview()
             make.width.equalTo(60)

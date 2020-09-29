@@ -209,7 +209,6 @@
     NSDictionary *param = [self check:data];
     
     if (param) {
-        [TRTCCloud sharedInstance].delegate = self;
         CallModel *model = [[CallModel alloc] init];
         model.callid = inviteID;
         model.groupid = groupID;
@@ -233,6 +232,7 @@
 }
 
 -(void)onInviteeAccepted:(NSString *)inviteID invitee:(NSString *)invitee data:(NSString *)data {
+    [TRTCCloud sharedInstance].delegate = self;
     NSDictionary *param = [self check:data];
     if (param) {
         CallModel *model = [[CallModel alloc] init];

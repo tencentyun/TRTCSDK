@@ -589,6 +589,9 @@ static double trtcLiveCheckStatusTimeOut = 3;
     if (!roomID) {
         return;
     }
+    if ([TRTCCloud sharedInstance].delegate != self) {
+        [TRTCCloud sharedInstance].delegate = self;
+    }
     if ([self.joinAnchorInfo.userId isEqualToString:userID]) {
         self.joinAnchorInfo.isResponsed = YES;
         NSString *uuid = self.joinAnchorInfo.uuid;
@@ -708,6 +711,9 @@ static double trtcLiveCheckStatusTimeOut = 3;
     NSString *streamId = [self checkIsPublishing:nil];
     if (!streamId) {
         return;
+    }
+    if ([TRTCCloud sharedInstance].delegate != self) {
+        [TRTCCloud sharedInstance].delegate = self;
     }
     if ([self.pkAnchorInfo.userId isEqualToString:userID]) {
         self.pkAnchorInfo.isResponsed = YES;
@@ -1151,7 +1157,7 @@ static double trtcLiveCheckStatusTimeOut = 3;
         }
             break;
         case TRTCLiveRoomIMActionTypeUnknown:
-            NSAssert(NO, @"未知命令");
+            NSLog(@"收到了其他消息");
             break;
         default:
             TRTCLog(@"!!!!!!!! 未知消息type");
@@ -1294,8 +1300,14 @@ static double trtcLiveCheckStatusTimeOut = 3;
         }];
     }
     // 将播放流进行切换
-    BOOL usesCDN = self.configCdn && !isLinkMic;
-    [self.trtcAction togglePlay:usesCDN];
+    if (self.configCdn) {
+        BOOL usesCDN = !isLinkMic;
+        [self.trtcAction togglePlay:usesCDN];
+    }
+    
+    if (!isLinkMic) {
+        [self.trtcAction switchRole:TRTCRoleAudience];
+    }
 }
 
 - (void)handleRoomPKRequestFromUser:(TRTCLiveUserInfo *)user roomId:(NSString *)roomId streamId:(NSString *)streamId {

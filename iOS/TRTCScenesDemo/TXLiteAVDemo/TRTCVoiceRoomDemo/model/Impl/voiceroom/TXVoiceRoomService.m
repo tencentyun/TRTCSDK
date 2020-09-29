@@ -933,6 +933,9 @@
 
 - (void)initImListener {
     [self.imManager setGroupListener:self];
+    // 设置前先remove下，防止在单例的情况下重复设置
+    [self.imManager removeSignalingListener:self];
+    [self.imManager removeSimpleMsgListener:self];
     [self.imManager addSignalingListener:self];
     [self.imManager addSimpleMsgListener:self];
 }

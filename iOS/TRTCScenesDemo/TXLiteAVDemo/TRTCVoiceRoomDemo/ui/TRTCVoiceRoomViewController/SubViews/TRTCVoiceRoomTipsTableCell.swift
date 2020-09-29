@@ -74,7 +74,7 @@ class TRTCVoiceRoomTipsTableCell: UITableViewCell {
 
     func constructViewHierarchy() {
         /// 此方法内只做add子视图操作
-        addSubview(containerView)
+        contentView.addSubview(containerView)
         containerView.addSubview(contentLabel)
         containerView.addSubview(acceptButton)
     }

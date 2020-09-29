@@ -56,10 +56,12 @@ class TRTCVoiceRoomListViewModel {
                 Int($0)
             }
             if roomIdsInt.count == 0 {
-                self.roomList = []
-                self.viewResponder?.refreshList()
-                self.viewResponder?.showToast(message: "当前暂无内容哦~")
-                self.viewResponder?.stopListRefreshing()
+                DispatchQueue.main.async {
+                    self.roomList = []
+                    self.viewResponder?.refreshList()
+                    self.viewResponder?.showToast(message: "当前暂无内容哦~")
+                    self.viewResponder?.stopListRefreshing()
+                }
                 return;
             }
             self.voiceRoom.getRoomInfoList(roomIdList: roomIdsInt.map{ NSNumber.init(value: $0) }) { [weak self] (code, message, roomInfos: [VoiceRoomInfo])  in
@@ -69,8 +71,10 @@ class TRTCVoiceRoomListViewModel {
                     if roomInfos.count == 0 {
                         self.viewResponder?.showToast(message: "当前暂无内容哦")
                     }
-                    self.roomList = roomInfos
-                    self.viewResponder?.refreshList()
+                    DispatchQueue.main.async {
+                        self.roomList = roomInfos
+                        self.viewResponder?.refreshList()
+                    }
                 } else {
                     TRTCLog.out("get room list failed. code\(code), message:\(message)")
                     self.viewResponder?.showToast(message: "获取房间列表失败")
