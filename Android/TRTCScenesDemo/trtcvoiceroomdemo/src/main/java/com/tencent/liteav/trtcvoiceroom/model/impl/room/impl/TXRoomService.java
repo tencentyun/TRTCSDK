@@ -1039,7 +1039,7 @@ public class TXRoomService extends V2TIMSDKListener {
             if (!groupID.equals(mRoomId)) {
                 return;
             }
-            String customStr = "";
+            String customStr = new String(customData);
             if (!TextUtils.isEmpty(customStr)) {
                 // 一定会有自定义消息的头
                 try {
