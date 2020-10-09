@@ -14,27 +14,41 @@
 | Electron | [下载](http://liteavsdk-1252463788.cosgz.myqcloud.com/TXLiteAVSDK_TRTC_Electron_latest.zip) | [DOC](https://cloud.tencent.com/document/product/647/38548) | [DOC](https://cloud.tencent.com/document/product/647/38549) |[API](https://cloud.tencent.com/document/product/647/38551) |
 | 微信小程序 | [下载](http://liteavsdk-1252463788.cosgz.myqcloud.com/TRTC_WXMini_latest.zip) | [DOC](https://cloud.tencent.com/document/product/647/32399) | [DOC](https://cloud.tencent.com/document/product/647/32183) |[API](https://cloud.tencent.com/document/product/647/17018) |
 
-## Version 7.7 @ 2020.09.08
-**优化**
-- 全平台：优化辅路（也就是屏幕分享）的秒开速度。
-- iOS & Android：优化 Audio 模块的性能，提升首帧的采集延迟，新版本可以更快的获得首个音频帧。
-- iOS & Android：优化点播播放器（VodPlayer）和 TRTC 同时使用时的音量大小和音质表现。
-- iOS：优化内部线程模型，提升在 30 路以上并发播放的场景中的运行稳定性。
-- iOS & Android：增加对 wav 音频格式的背景音乐和音效文件的支持。
-- Windows：优化在某些低端摄像头下 CPU 使用率过高的问题。
-- Windows：优化对多款 USB 摄像头和麦克风的兼容性，提升设备的打开成功率。
-- Windows：优化摄像头和麦克风设备的选择策略，避免由于摄像头或麦克风在使用中插拔导致的采集异常问题。
+## Version 7.8 @ 2020.09.29
 
-**修复**
-- 全平台：修复弱网情况下调用 muteLocalVideo 和 muteLocalAudio 接口时会偶现播放异常的 BUG。
-- iOS：修复播放音效在低端 iPhone 或 iPad 上可能会失败的 BUG。
-- iOS：修复iPad Pro 屏幕分享出的画面出现变形拉伸的问题。
-- iOS：修复 App 内屏幕贡献在用户拒绝权限之后，还会持续弹出几次屏幕录制权限申请提示的问题。
-- Windows：解决笔记本或者台式机在长时间休眠后，退房 [onExitRoom](http://doc.qcloudtrtc.com/group__ITRTCCloudCallback__cplusplus.html#a0a45883a23a200b0e9ea38fdde1da4bd) 事件通知不会回调的问题。
-- Windows：修复在 Music 音质模式下，开启系统混音 [stopSystemAudioLoopback](http://doc.qcloudtrtc.com/group__ITRTCCloud__cplusplus.html#aab0258238e4414c386657151d01ffb23) 后会导致漏回声的问题。
-- Windows：修复在快速调用 enterRoom 和 exitRoom 进退房的情况下，偶现的播放端无声的 BUG。
-- Windows：修复手动接收模式（即 [setDefaultStreamRecvMode(false，false)](http://doc.qcloudtrtc.com/group__ITRTCCloud__cplusplus.html#a7a0238314fc1e1f49803c0b22c1019d5) ）下会重复收到 onUserVideoAvailable 事件回调的问题。
-- Windows：修复 SDK 对 Visual Stuido 2010 项目的编译兼容性问题。
+- iOS：修复 iPhone SE 播放声音小的问题
+- iOS：支持垫片推流，使用方法见 TRTCCloud.setVideoMuteImage
+- iOS：修复子房间 (TRTCCloud.createSubCloud) 调用 muteRemoteAudio 触发 crash 的问题
+- iOS：修复偶现渲染 crash
+- iOS：修复前后台切换时在部分 iPad 视频渲染偶现卡死主线程的问题
+- iOS：支持 VODPlayer 和 trtc 一起使用，并且支持回声消除
+- iOS：修复已知内存泄露
+- iOS：修复 iOS14 提示“查找并连接本地网络上的设备”的问题
+
+- Mac：修复 getCurrentCameraDevice 始终返回 nil 的问题
+- Mac：新增系统音量变化回调，详见：TRTCCloudDelegate.onAudioDevicePlayoutVolumeChanged
+- Mac：解决部分USB摄像头无法打开的问题
+- Mac：支持垫片推流，使用方法见 TRTCCloud.setVideoMuteImage
+- Mac：修复屏幕分享指定区域面积为0时的 crash
+
+- Android：优化声音路由策略：戴耳机时，声音只从耳机播放
+- Android：支持垫片推流，使用方法见 TRTCCloud.setVideoMuteImage
+- Android：支持部分系统下采用低延迟采集播放，降低 Android 系统通话延迟
+- Android：修复未配置 READ_PHONE_STATE 权限时，Android5.0 设备 crash 的问题
+- Android：修复蓝牙耳机断开再连上之后音频采集和播放异常的问题
+- Android：支持 VODPlayer 和 trtc 一起使用，并且支持回声消除
+- Android：修复已知crash
+
+- Windows：兼容虚拟摄像头 e2eSoft Vacm
+- Windows：新增支持跨屏指定区域进行屏幕分享
+- Windows：支持同时调用 startLocalPreview 和 startCameraDeviceTest
+- Windows：支持屏幕分享走主路的同时，调用 startLocalPreview 开启本地预览
+- Windows：新增窗口分享支持过滤指定窗口进行抗遮挡，详见：TRTCCloud.addExcludedShareWindow & TRTCCloud.removeExcludedShareWindow
+- Windows：新增系统音量变化回调，详见：ITRTCCloudCallback.onAudioDevicePlayoutVolumeChanged
+- Windows：降低因SDK内部播放缓冲引发音频延迟较大的问题
+- Windows：优化音频启动逻辑，在仅播放的情况下不占用麦克风
+- Windows：修复64位 SDK 多次开关屏幕分享会 crash 的问题
+- Windows：修复部分系统使用 OpenGL 会 crash 的问题
 
 
 ## Demo 体验地址
