@@ -15,41 +15,44 @@
 | 微信小程序 | [下载](http://liteavsdk-1252463788.cosgz.myqcloud.com/TRTC_WXMini_latest.zip) | [DOC](https://cloud.tencent.com/document/product/647/32399) | [DOC](https://cloud.tencent.com/document/product/647/32183) |[API](https://cloud.tencent.com/document/product/647/17018) |
 
 ## Version 7.8 @ 2020.09.29
+**欢迎加入**
+如果您对音视频技术感兴趣，请戳 [腾讯云 RTC 终端研发工程师](https://careers.tencent.com/jobdesc.html?postId=1297858141983088640) 加入我们：
+- 北京、上海、深圳均有岗位，欢迎加入
+- 需要有一定的 C++ 经验积累，这款产品的内核都是 C++ 语言实现的
+- 团队技术氛围浓厚，培训体系完善，产品线多样，有经验丰富的“老司机”手把手帮你入门音视频技术
 
-- iOS：修复 iPhone SE 播放声音小的问题
-- iOS：支持垫片推流，使用方法见 TRTCCloud.setVideoMuteImage
-- iOS：修复子房间 (TRTCCloud.createSubCloud) 调用 muteRemoteAudio 触发 crash 的问题
-- iOS：修复偶现渲染 crash
-- iOS：修复前后台切换时在部分 iPad 视频渲染偶现卡死主线程的问题
-- iOS：支持 VODPlayer 和 trtc 一起使用，并且支持回声消除
-- iOS：修复已知内存泄露
-- iOS：修复 iOS14 提示“查找并连接本地网络上的设备”的问题
-
-- Mac：修复 getCurrentCameraDevice 始终返回 nil 的问题
+**功能新增**
+- iOS/Android/Mac：支持垫片推流，使用方法见 TRTCCloud.setVideoMuteImage
+- iOS/Android：支持 VODPlayer 和 trtc 一起使用，并且支持回声消除
 - Mac：新增系统音量变化回调，详见：TRTCCloudDelegate.onAudioDevicePlayoutVolumeChanged
-- Mac：解决部分USB摄像头无法打开的问题
-- Mac：支持垫片推流，使用方法见 TRTCCloud.setVideoMuteImage
-- Mac：修复屏幕分享指定区域面积为0时的 crash
-
-- Android：优化声音路由策略：戴耳机时，声音只从耳机播放
-- Android：支持垫片推流，使用方法见 TRTCCloud.setVideoMuteImage
-- Android：支持部分系统下采用低延迟采集播放，降低 Android 系统通话延迟
-- Android：修复未配置 READ_PHONE_STATE 权限时，Android5.0 设备 crash 的问题
-- Android：修复蓝牙耳机断开再连上之后音频采集和播放异常的问题
-- Android：支持 VODPlayer 和 trtc 一起使用，并且支持回声消除
-- Android：修复已知crash
-
-- Windows：兼容虚拟摄像头 e2eSoft Vacm
-- Windows：新增支持跨屏指定区域进行屏幕分享
+- Windows：新增系统音量变化回调，详见：ITRTCCloudCallback.onAudioDevicePlayoutVolumeChanged
 - Windows：支持同时调用 startLocalPreview 和 startCameraDeviceTest
 - Windows：支持屏幕分享走主路的同时，调用 startLocalPreview 开启本地预览
-- Windows：新增窗口分享支持过滤指定窗口进行抗遮挡，详见：TRTCCloud.addExcludedShareWindow & TRTCCloud.removeExcludedShareWindow
-- Windows：新增系统音量变化回调，详见：ITRTCCloudCallback.onAudioDevicePlayoutVolumeChanged
-- Windows：降低因SDK内部播放缓冲引发音频延迟较大的问题
-- Windows：优化音频启动逻辑，在仅播放的情况下不占用麦克风
-- Windows：修复64位 SDK 多次开关屏幕分享会 crash 的问题
-- Windows：修复部分系统使用 OpenGL 会 crash 的问题
+- Windows：新增支持跨屏指定区域进行屏幕分享
+- Windows：屏幕分享支持过滤掉指定窗口，比如把微信或者QQ从屏幕中扣除掉，详见：TRTCCloud.addExcludedShareWindow & TRTCCloud.removeExcludedShareWindow
 
+**质量优化**
+- iOS：优化 iPhone SE 播放声音小的问题
+- Android：优化声音路由策略：戴耳机时，声音只从耳机播放
+- Android：支持部分系统下采用低延迟采集播放，降低 Android 系统通话延迟
+- Mac：提升USB摄像头设备兼容性
+- Windows：兼容虚拟摄像头 e2eSoft Vacm
+- Windows：降低音频播放延迟，提升互通效果
+- Windows：优化音频启动逻辑，在仅播放的情况下不占用麦克风
+
+**问题修复**
+- iOS：修复偶现渲染 crash
+- iOS：修复子房间 (TRTCCloud.createSubCloud) 调用 muteRemoteAudio 触发 crash 的问题
+- iOS：修复前后台切换时在部分 iPad 视频渲染偶现卡死主线程的问题
+- iOS：修复已知内存泄露
+- iOS：修复 iOS14 提示“查找并连接本地网络上的设备”的问题
+- Android：修复未配置 READ_PHONE_STATE 权限时，Android5.0 设备 crash 的问题
+- Android：修复蓝牙耳机断开再连上之后音频采集和播放异常的问题
+- Android：修复已知crash
+- Mac：修复 getCurrentCameraDevice 始终返回 nil 的问题
+- Mac：修复屏幕分享指定区域面积为0时的 crash
+- Windows：修复64位 SDK 多次开关屏幕分享偶现 crash 的问题
+- Windows：修复部分系统使用 OpenGL 会 crash 的问题
 
 ## Demo 体验地址
 
