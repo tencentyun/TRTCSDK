@@ -238,8 +238,6 @@ public class TRTCCallingImpl extends TRTCCalling {
     }
 
     private void processInvite(String inviteID, String inviter, String groupID, List<String> inviteeList, String data) {
-        // 收到来电，开始监听 trtc 的消息
-        mTRTCCloud.setListener(mTRTCCloudListener);
         CallModel callModel = new CallModel();
         callModel.callId = inviteID;
         callModel.groupId = groupID;
@@ -575,8 +573,6 @@ public class TRTCCallingImpl extends TRTCCalling {
      * @param groupId    群组通话的group id，如果是C2C需要传 ""
      */
     private void internalCall(final List<String> userIdList, int type, String groupId) {
-        // 主动拨打电话，开始监听trtc的消息
-        mTRTCCloud.setListener(mTRTCCloudListener);
         final boolean isGroupCall = !TextUtils.isEmpty(groupId);
         if (!isOnCalling) {
             // 首次拨打电话，生成id，并进入trtc房间
@@ -689,6 +685,8 @@ public class TRTCCallingImpl extends TRTCCalling {
         mTRTCCloud.enableAudioVolumeEvaluation(300);
         mTRTCCloud.setAudioRoute(TRTCCloudDef.TRTC_AUDIO_ROUTE_SPEAKER);
         mTRTCCloud.startLocalAudio();
+        // 收到来电，开始监听 trtc 的消息
+        mTRTCCloud.setListener(mTRTCCloudListener);
         mTRTCCloud.enterRoom(TRTCParams, mCurCallType == TRTCCalling.TYPE_VIDEO_CALL ? TRTCCloudDef.TRTC_APP_SCENE_VIDEOCALL : TRTCCloudDef.TRTC_APP_SCENE_AUDIOCALL);
     }
 

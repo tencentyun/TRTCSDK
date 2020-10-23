@@ -148,9 +148,10 @@ public class TXTRTCLiveRoom extends TRTCCloudListener implements ITRTCTXLiveRoom
         } else if (mOriginRole == TRTCCloudDef.TRTCRoleAnchor) {
             // 大主播的时候切换分辨率
             TRTCCloudDef.TRTCVideoEncParam param = new TRTCCloudDef.TRTCVideoEncParam();
-            param.videoResolution = TRTCCloudDef.TRTC_VIDEO_RESOLUTION_960_540;
-            param.videoBitrate = 1200;
+            param.videoResolution = TRTCCloudDef.TRTC_VIDEO_RESOLUTION_1280_720;
+            param.videoBitrate = 1800;
             param.videoFps = 15;
+            param.enableAdjustRes = true;
             param.videoResolutionMode = TRTCCloudDef.TRTC_VIDEO_RESOLUTION_MODE_PORTRAIT;
             mTRTCCloud.setVideoEncoderParam(param);
         }

@@ -581,6 +581,16 @@ public class TRTCMeetingImpl extends TRTCMeeting implements ITXTRTCMeetingDelega
     }
 
     @Override
+    public void setNetworkQosParam(final TRTCCloudDef.TRTCNetworkQosParam qosParam) {
+        runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                TXTRTCMeeting.getInstance().setNetworkQosParam(qosParam);
+            }
+        });
+    }
+
+    @Override
     public void startMicrophone() {
         runOnMainThread(new Runnable() {
             @Override

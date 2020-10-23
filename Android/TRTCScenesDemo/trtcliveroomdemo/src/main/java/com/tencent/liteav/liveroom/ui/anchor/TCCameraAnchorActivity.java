@@ -230,6 +230,7 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity implements View
         mVideoViewMgr.recycleVideoView();
         mVideoViewMgr = null;
         if (mPanelAudioControl != null) {
+            mPanelAudioControl.reset();
             mPanelAudioControl.unInit();
             mPanelAudioControl = null;
         }

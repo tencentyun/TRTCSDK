@@ -21,6 +21,7 @@
       "tab_item_level_value_size": 14,
       "tab_item_level_progress_drawable": "@beauty_progress_drawable",
       "tab_item_level_progress_thumb": "@beauty_thumb",
+      "tab_item_list_default_selected_index": 2,
       "tab_item_list": [
         {
           "item_id": 1,
@@ -255,6 +256,7 @@
       "tab_item_level_value_size": 14,
       "tab_item_level_progress_drawable": "@beauty_progress_drawable",
       "tab_item_level_progress_thumb": "@beauty_thumb",
+      "tab_item_list_default_selected_index": 1,
       "tab_item_list": [
         {
           "item_id": 1,

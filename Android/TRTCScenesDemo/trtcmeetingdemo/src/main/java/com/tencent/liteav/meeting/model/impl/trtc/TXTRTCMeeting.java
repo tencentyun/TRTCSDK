@@ -113,7 +113,7 @@ public class TXTRTCMeeting extends TRTCCloudListener {
             return;
         }
         mTRTCCloud.setListener(this);
-        mTRTCCloud.enterRoom(mTRTCParams, TRTCCloudDef.TRTC_APP_SCENE_LIVE);
+        mTRTCCloud.enterRoom(mTRTCParams, TRTCCloudDef.TRTC_APP_SCENE_VIDEOCALL);
     }
 
 
@@ -122,6 +122,7 @@ public class TXTRTCMeeting extends TRTCCloudListener {
         param.videoResolution = mMeetingConfig.resolution;
         param.videoBitrate = mMeetingConfig.bitrate;
         param.videoFps = mMeetingConfig.fps;
+        param.enableAdjustRes = true;
         param.videoResolutionMode = TRTCCloudDef.TRTC_VIDEO_RESOLUTION_MODE_PORTRAIT;
         mTRTCCloud.setVideoEncoderParam(param);
     }
@@ -555,6 +556,10 @@ public class TXTRTCMeeting extends TRTCCloudListener {
 
     public void setLocalViewMirror(int type) {
         mTRTCCloud.setLocalViewMirror(type);
+    }
+
+    public void setNetworkQosParam(TRTCCloudDef.TRTCNetworkQosParam qosParam) {
+        mTRTCCloud.setNetworkQosParam(qosParam);
     }
 
     public void setAudioQuality(int quality) {

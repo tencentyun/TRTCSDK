@@ -50,15 +50,11 @@ public class VideoSettingFragment extends BaseSettingFragment {
     private void initData() {
         boolean isVideoCall = mAppScene == TRTCCloudDef.TRTC_APP_SCENE_VIDEOCALL;
         paramArray = new ArrayList<>();
-        paramArray.add(new TRTCSettingBitrateTable(TRTCCloudDef.TRTC_VIDEO_RESOLUTION_160_160, isVideoCall ? 250 : 300, 40, 300, 10));
         paramArray.add(new TRTCSettingBitrateTable(TRTCCloudDef.TRTC_VIDEO_RESOLUTION_320_180, isVideoCall ? 350 : 350, 80, 350, 10));
-        paramArray.add(new TRTCSettingBitrateTable(TRTCCloudDef.TRTC_VIDEO_RESOLUTION_320_240, isVideoCall ? 400 : 400, 100, 400, 10));
-        paramArray.add(new TRTCSettingBitrateTable(TRTCCloudDef.TRTC_VIDEO_RESOLUTION_480_480, isVideoCall ? 500 : 750, 200, 1000, 10));
+        paramArray.add(new TRTCSettingBitrateTable(TRTCCloudDef.TRTC_VIDEO_RESOLUTION_480_270, isVideoCall ? 500 : 750, 200, 1000, 10));
         paramArray.add(new TRTCSettingBitrateTable(TRTCCloudDef.TRTC_VIDEO_RESOLUTION_640_360, isVideoCall ? 600 : 900, 200, 1000, 10));
-        paramArray.add(new TRTCSettingBitrateTable(TRTCCloudDef.TRTC_VIDEO_RESOLUTION_640_480, isVideoCall ? 700 : 1000, 250, 1000, 50));
         paramArray.add(new TRTCSettingBitrateTable(TRTCCloudDef.TRTC_VIDEO_RESOLUTION_960_540, isVideoCall ? 900 : 1350, 400, 1600, 50));
         paramArray.add(new TRTCSettingBitrateTable(TRTCCloudDef.TRTC_VIDEO_RESOLUTION_1280_720, isVideoCall ? 1250 : 1850, 500, 2000, 50));
-        paramArray.add(new TRTCSettingBitrateTable(114, isVideoCall ? 1900 : 1900, 800, 3000, 50));
     }
 
     @Override

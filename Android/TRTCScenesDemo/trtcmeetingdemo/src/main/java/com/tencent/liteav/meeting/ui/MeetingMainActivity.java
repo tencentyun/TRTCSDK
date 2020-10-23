@@ -31,8 +31,8 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.PermissionUtils;
 import com.blankj.utilcode.util.ToastUtils;
-import com.tencent.liteav.demo.beauty.view.BeautyPanel;
 import com.tencent.liteav.demo.beauty.BeautyParams;
+import com.tencent.liteav.demo.beauty.view.BeautyPanel;
 import com.tencent.liteav.demo.trtc.R;
 import com.tencent.liteav.login.model.ProfileManager;
 import com.tencent.liteav.meeting.model.TRTCMeeting;
@@ -44,6 +44,7 @@ import com.tencent.liteav.meeting.ui.widget.feature.FeatureConfig;
 import com.tencent.liteav.meeting.ui.widget.feature.FeatureSettingFragmentDialog;
 import com.tencent.liteav.meeting.ui.widget.page.MeetingPageLayoutManager;
 import com.tencent.liteav.meeting.ui.widget.page.PagerSnapHelper;
+import com.tencent.trtc.TRTCCloud;
 import com.tencent.trtc.TRTCCloudDef;
 
 import java.util.ArrayList;
@@ -63,6 +64,7 @@ public class MeetingMainActivity extends AppCompatActivity implements TRTCMeetin
     public static final String KEY_OPEN_CAMERA   = "open_camera";
     public static final String KEY_OPEN_AUDIO    = "open_audio";
     public static final String KEY_AUDIO_QUALITY = "audio_quality";
+    public static final String KEY_VIDEO_QUALITY = "video_quality";
     //    public static final  String TYPE_CREATE     = "create";
     //    private static final String KEY_ENTER_TYPE  = "start_type";
     //    private static final String TYPE_ENTER      = "enter";
@@ -73,6 +75,7 @@ public class MeetingMainActivity extends AppCompatActivity implements TRTCMeetin
     private boolean                   mOpenCamera;
     private boolean                   mOpenAudio;
     private int                       mAudioQuality;
+    private int                       mVideoQuality;
     private String                    mUserName;
     private boolean                   isCreating            = false;
     private boolean                   mIsUserEnterMuteAudio = false; //后续人员进入都进入静音模式
@@ -103,6 +106,7 @@ public class MeetingMainActivity extends AppCompatActivity implements TRTCMeetin
     private View                         mFloatingWindow;
     private List<MemberEntity>           mVisibleVideoStreams;
     private String                       mShowUserId = "";
+    private boolean                      isScreenCapture;
     private Handler                      mHandler    = new Handler();
 
 
@@ -113,7 +117,8 @@ public class MeetingMainActivity extends AppCompatActivity implements TRTCMeetin
                                  String userAvatar,
                                  boolean openCamera,
                                  boolean openAudio,
-                                 int audioQuality) {
+                                 int audioQuality,
+                                 int videoQuality) {
         Intent starter = new Intent(context, MeetingMainActivity.class);
         starter.putExtra(KEY_ROOM_ID, roomId);
         starter.putExtra(KEY_USER_ID, userId);
@@ -122,6 +127,7 @@ public class MeetingMainActivity extends AppCompatActivity implements TRTCMeetin
         starter.putExtra(KEY_OPEN_CAMERA, openCamera);
         starter.putExtra(KEY_OPEN_AUDIO, openAudio);
         starter.putExtra(KEY_AUDIO_QUALITY, audioQuality);
+        starter.putExtra(KEY_VIDEO_QUALITY, videoQuality);
         context.startActivity(starter);
     }
 
@@ -194,6 +200,7 @@ public class MeetingMainActivity extends AppCompatActivity implements TRTCMeetin
                     isCreating = true;
                     ToastUtils.showLong("会议创建成功");
                     mMeetingHeadBarView.setTitle(String.valueOf(mRoomId));
+                    changeResolution();
                     return;
                 }
                 isCreating = false;
@@ -206,6 +213,7 @@ public class MeetingMainActivity extends AppCompatActivity implements TRTCMeetin
                             ToastUtils.showShort(msg);
                             finish();
                         }
+                        changeResolution();
                         mMeetingHeadBarView.setTitle(String.valueOf(mRoomId));
                     }
                 });
@@ -258,10 +266,11 @@ public class MeetingMainActivity extends AppCompatActivity implements TRTCMeetin
         mOpenCamera = starter.getBooleanExtra(KEY_OPEN_CAMERA, true);
         mOpenAudio = starter.getBooleanExtra(KEY_OPEN_AUDIO, true);
         mAudioQuality = starter.getIntExtra(KEY_AUDIO_QUALITY, TRTCCloudDef.TRTC_AUDIO_QUALITY_DEFAULT);
+        mVideoQuality = starter.getIntExtra(KEY_VIDEO_QUALITY, CreateMeetingActivity.VIDEO_QUALITY_FAST);
 
         //创建自己的 MemberEntity
-        MemberEntity            entity           = new MemberEntity();
-        MeetingVideoView        meetingVideoView = new MeetingVideoView(this);
+        MemberEntity     entity           = new MemberEntity();
+        MeetingVideoView meetingVideoView = new MeetingVideoView(this);
         meetingVideoView.setSelfView(true);
         meetingVideoView.setMeetingUserId(mUserId);
         meetingVideoView.setListener(mMeetingViewClick);
@@ -564,6 +573,7 @@ public class MeetingMainActivity extends AppCompatActivity implements TRTCMeetin
         entity.setAudioAvailable(false);
         entity.setShowAudioEvaluation(FeatureConfig.getInstance().isAudioVolumeEvaluation());
         addMemberEntity(entity);
+        changeResolution();
         mMemberListAdapter.notifyItemInserted(insertIndex);
         if (mRemoteUserView != null) {
             mRemoteUserView.notifyDataSetChanged();
@@ -581,6 +591,44 @@ public class MeetingMainActivity extends AppCompatActivity implements TRTCMeetin
         });
     }
 
+    private void changeResolution() {
+        if (isScreenCapture) {
+            return;
+        }
+        if (mVideoQuality == CreateMeetingActivity.VIDEO_QUALITY_HD) {
+            TRTCCloudDef.TRTCNetworkQosParam qosParam = new TRTCCloudDef.TRTCNetworkQosParam();
+            qosParam.preference = TRTCCloudDef.TRTC_VIDEO_QOS_PREFERENCE_CLEAR;
+            mTRTCMeeting.setNetworkQosParam(qosParam);
+            if (mMemberEntityList.size() <= 2) {
+                mTRTCMeeting.setVideoResolution(TRTCCloudDef.TRTC_VIDEO_RESOLUTION_960_540);
+                mTRTCMeeting.setVideoFps(15);
+                mTRTCMeeting.setVideoBitrate(1300);
+            } else if (mMemberEntityList.size() < 4) {
+                mTRTCMeeting.setVideoResolution(TRTCCloudDef.TRTC_VIDEO_RESOLUTION_640_360);
+                mTRTCMeeting.setVideoFps(15);
+                mTRTCMeeting.setVideoBitrate(800);
+            } else {
+                mTRTCMeeting.setVideoResolution(TRTCCloudDef.TRTC_VIDEO_RESOLUTION_480_270);
+                mTRTCMeeting.setVideoFps(15);
+                mTRTCMeeting.setVideoBitrate(400);
+            }
+        } else {
+            TRTCCloudDef.TRTCNetworkQosParam qosParam = new TRTCCloudDef.TRTCNetworkQosParam();
+            qosParam.preference = TRTCCloudDef.TRTC_VIDEO_QOS_PREFERENCE_SMOOTH;
+            mTRTCMeeting.setNetworkQosParam(qosParam);
+            if (mMemberEntityList.size() < 5) {
+                // 包括自己，一共四个人，选择360p分辨率
+                mTRTCMeeting.setVideoResolution(TRTCCloudDef.TRTC_VIDEO_RESOLUTION_640_360);
+                mTRTCMeeting.setVideoFps(15);
+                mTRTCMeeting.setVideoBitrate(700);
+            } else {
+                mTRTCMeeting.setVideoResolution(TRTCCloudDef.TRTC_VIDEO_RESOLUTION_480_270);
+                mTRTCMeeting.setVideoFps(15);
+                mTRTCMeeting.setVideoBitrate(350);
+            }
+        }
+    }
+
     @Override
     public void onUserLeaveRoom(String userId) {
         if (mShowUserId.equals(userId)) {
@@ -589,6 +637,7 @@ public class MeetingMainActivity extends AppCompatActivity implements TRTCMeetin
             mContainerFl.setVisibility(View.GONE);
         }
         int index = removeMemberEntity(userId);
+        changeResolution();
         if (index >= 0) {
             mMemberListAdapter.notifyItemRemoved(index);
         }
@@ -636,7 +685,7 @@ public class MeetingMainActivity extends AppCompatActivity implements TRTCMeetin
 
     @Override
     public void onScreenCaptureStarted() {
-
+        isScreenCapture = true;
     }
 
     @Override
@@ -651,7 +700,8 @@ public class MeetingMainActivity extends AppCompatActivity implements TRTCMeetin
 
     @Override
     public void onScreenCaptureStopped(int reason) {
-
+        isScreenCapture = false;
+        changeResolution();
     }
 
     @Override
@@ -736,7 +786,7 @@ public class MeetingMainActivity extends AppCompatActivity implements TRTCMeetin
         encParams.videoResolutionMode = TRTCCloudDef.TRTC_VIDEO_RESOLUTION_MODE_PORTRAIT;
         encParams.videoFps = 10;
         encParams.enableAdjustRes = false;
-        encParams.videoBitrate = 1200;
+        encParams.videoBitrate = 1500;
 
         TRTCCloudDef.TRTCScreenShareParams params = new TRTCCloudDef.TRTCScreenShareParams();
         mTRTCMeeting.stopCameraPreview();

@@ -124,9 +124,10 @@ public class BeautyPanel extends FrameLayout implements SeekBar.OnSeekBarChangeL
      */
     public void setBeautyInfo(@NonNull BeautyInfo beautyInfo) {
         mBeautyInfo = beautyInfo;
-        int tabSize = beautyInfo.getBeautyTabList().size();
-        mCurrentItemPosition = new int[tabSize];
-        mCurrentItemInfo = new ItemInfo[tabSize];
+
+        //根据配置文件选择默认选中项
+        setCurrentBeautyInfo(beautyInfo);
+
         mBeauty.fillingMaterialPath(beautyInfo);
         setBackground(ResourceUtils.getLinearDrawable(ResourceUtils.getColor(beautyInfo.getBeautyBg())));
         refresh();
@@ -156,9 +157,11 @@ public class BeautyPanel extends FrameLayout implements SeekBar.OnSeekBarChangeL
     public void setBeautyManager(TXBeautyManager beautyManager) {
         mBeauty.setBeautyManager(beautyManager);
         clear();
-        // 滤镜默认选中白皙
-        setCurrentFilterIndex(1);
-        setCurrentBeautyIndex(2);
+
+        if (mBeautyInfo != null) {
+            //根据配置文件选择默认选中项
+            setCurrentBeautyInfo(mBeautyInfo);
+        }
     }
 
     public void setMotionTmplEnable(boolean enable) {
@@ -221,6 +224,19 @@ public class BeautyPanel extends FrameLayout implements SeekBar.OnSeekBarChangeL
         setBeautyInfo(getDefaultBeautyInfo());
     }
 
+    private void setCurrentBeautyInfo(@NonNull BeautyInfo beautyInfo) {
+        int tabSize = beautyInfo.getBeautyTabList().size();
+        mCurrentItemPosition = new int[tabSize];
+        mCurrentItemInfo = new ItemInfo[tabSize];
+
+        for (int i = 0; i < tabSize; i++) {
+            TabInfo tabInfo = beautyInfo.getBeautyTabList().get(i);
+            mCurrentItemPosition[i] = tabInfo.getTabItemListDefaultSelectedIndex();
+            mCurrentItemInfo[i] = tabInfo.getTabItemList().get(tabInfo.getTabItemListDefaultSelectedIndex());
+            mBeauty.setBeautySpecialEffects(tabInfo, i, mCurrentItemInfo[i], mCurrentItemPosition[i]);
+        }
+    }
+
     private void refresh() {
         createTabList();
     }
@@ -248,15 +264,7 @@ public class BeautyPanel extends FrameLayout implements SeekBar.OnSeekBarChangeL
     private void createItemList(@NonNull final TabInfo tabInfo, @NonNull final int tabPosition) {
         setBeautyTitle(tabInfo.getTabName());
         ItemAdapter itemAdapter = new ItemAdapter(mContext);
-        if (tabInfo.getTabType() == BeautyConstants.TAB_TYPE_FILTER) {
-            // 滤镜默认选中白皙
-            itemAdapter.setData(tabInfo, mCurrentItemPosition[1]);
-        } else if(tabInfo.getTabType() == BeautyConstants.TAB_TYPE_BEAUTY) {
-            // 美颜默认选中P图
-            itemAdapter.setData(tabInfo, mCurrentItemPosition[0]);
-        } else {
-            itemAdapter.setData(tabInfo);
-        }
+        itemAdapter.setData(tabInfo, mCurrentItemPosition[tabPosition]);
         mScrollItemView.setAdapter(itemAdapter);
         mScrollItemView.setClicked(mCurrentItemPosition[tabPosition]);
         itemAdapter.setOnItemClickListener(new ItemAdapter.OnItemClickListener() {

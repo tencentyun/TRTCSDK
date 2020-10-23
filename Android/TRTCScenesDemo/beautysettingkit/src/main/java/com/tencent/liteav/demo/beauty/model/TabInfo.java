@@ -25,6 +25,8 @@ public class TabInfo {
     private String tab_item_level_progress_drawable;// string, 进度条背景颜色
     private String tab_item_level_progress_thumb;   // string, 进度条 bar 颜色
 
+    private int tab_item_list_default_selected_index;       // int, 默认选中的item
+
     private List<ItemInfo> tab_item_list;
 
     public long getTabId() {
@@ -83,6 +85,10 @@ public class TabInfo {
         return tab_item_level_progress_thumb;
     }
 
+    public int getTabItemListDefaultSelectedIndex() {
+        return tab_item_list_default_selected_index;
+    }
+
     public List<ItemInfo> getTabItemList() {
         return tab_item_list;
     }
@@ -103,6 +109,7 @@ public class TabInfo {
                 ", tab_item_level_value_size=" + tab_item_level_value_size +
                 ", tab_item_level_progress_drawable='" + tab_item_level_progress_drawable + '\'' +
                 ", tab_item_level_progress_thumb='" + tab_item_level_progress_thumb + '\'' +
+                ", tab_item_list_default_selected_index='" + tab_item_list_default_selected_index + '\'' +
                 ", tab_item_list=" + tab_item_list +
                 '}';
     }

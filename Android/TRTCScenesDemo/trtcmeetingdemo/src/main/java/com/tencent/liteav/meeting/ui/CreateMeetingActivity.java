@@ -32,7 +32,10 @@ import java.util.ArrayList;
  * @author guanyifeng
  */
 public class CreateMeetingActivity extends AppCompatActivity {
-    private TextView                   mTitleMain;
+    public static final int VIDEO_QUALITY_HD    = 1;
+    public static final int VIDEO_QUALITY_FAST = 0;
+
+    private TextView mTitleMain;
     private Toolbar                    mToolbar;
     private EditText                   mRoomIdEt;
     private EditText                   mUserNameEt;
@@ -41,8 +44,11 @@ public class CreateMeetingActivity extends AppCompatActivity {
     private RadioButton                mVoiceRb;
     private RadioButton                mNormalRb;
     private RadioButton                mMusicRb;
+    private RadioButton                mVideoFastRb;
+    private RadioButton                mVideoHDRb;
     private ArrayList<BaseSettingItem> mSettingItemList;
 
+    private int     mVideoQuality;
     private int     mAudioQuality;
     private boolean mOpenCamera;
     private boolean mOpenAudio;
@@ -113,7 +119,14 @@ public class CreateMeetingActivity extends AppCompatActivity {
         } else {
             mAudioQuality = TRTCCloudDef.TRTC_AUDIO_QUALITY_SPEECH;
         }
-        MeetingMainActivity.enterRoom(this, tempRoomId, userId, userName, userAvatar, mOpenCamera, mOpenAudio, mAudioQuality);
+
+        if (mVideoHDRb.isChecked()) {
+            mVideoQuality = VIDEO_QUALITY_HD;
+        } else {
+            mVideoQuality = VIDEO_QUALITY_FAST;
+        }
+
+        MeetingMainActivity.enterRoom(this, tempRoomId, userId, userName, userAvatar, mOpenCamera, mOpenAudio, mAudioQuality, mVideoQuality);
     }
 
     private void initView() {
@@ -153,10 +166,14 @@ public class CreateMeetingActivity extends AppCompatActivity {
         mVoiceRb = (RadioButton) findViewById(R.id.rb_voice);
         mNormalRb = (RadioButton) findViewById(R.id.rb_normal);
         mMusicRb = (RadioButton) findViewById(R.id.rb_music);
+        mVideoFastRb = findViewById(R.id.rb_video_fast);
+        mVideoHDRb = findViewById(R.id.rb_video_hd);
 
         setStyle(mVoiceRb);
         setStyle(mNormalRb);
         setStyle(mMusicRb);
+        setStyle(mVideoFastRb);
+        setStyle(mVideoHDRb);
     }
 
     private void setStyle(RadioButton rb) {

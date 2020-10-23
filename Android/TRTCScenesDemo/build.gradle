@@ -21,7 +21,6 @@ allprojects {
             dirs 'libs'
             dirs project(':app').file('libs')
         }
-
         jcenter()
         google()
     }

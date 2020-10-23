@@ -6,4 +6,7 @@
     <string name="meeting_rb_normal">标准</string>
     <string name="meeting_rb_music">音乐</string>
     <string name="meeting_tv_audio_quality">音质选择</string>
+    <string name="meeting_rb_video_fast">流畅</string>
+    <string name="meeting_rb_video_hd">清晰</string>
+    <string name="meeting_tv_video_quality">画质选择</string>
 </resources>

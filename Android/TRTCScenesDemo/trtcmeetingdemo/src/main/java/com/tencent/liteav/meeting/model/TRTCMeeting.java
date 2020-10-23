@@ -234,6 +234,12 @@ public abstract class TRTCMeeting {
      */
     public abstract void setLocalViewMirror(int type);
 
+    /**
+     * 设置网络qos参数
+     * @param qosParam
+     */
+    public abstract void setNetworkQosParam(TRTCCloudDef.TRTCNetworkQosParam qosParam);
+
     //////////////////////////////////////////////////////////
     //
     //                 本地音频操作接口
