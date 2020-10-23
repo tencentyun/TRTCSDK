@@ -187,6 +187,61 @@
 			<!--Audio setting page-->
 			<VerticalLayout name="Audio_tab_layout" childpadding="10" vscrollbar="true">
 				<HorizontalLayout height="10"/>
+				<GroupBox name="audio_groupbox" text="" padding="20,0,20,0" childpadding="20" bordercolor="#FF808080" bkcolor="#FFF0F0F0" bordersize="1" height="160">
+					<HorizontalLayout inset="0,6,0,0" childvalign="left" height="24" name="layout_system_audio_mix">
+						<Label text="禁止Demo设置3A" font="2" width="118" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,1"/>
+						<VerticalLayout width="20"/>
+						<Option name="check_btn_3a_config" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
+					</HorizontalLayout>
+					<HorizontalLayout inset="0,6,0,0" childvalign="left" height="24" name="layout_system_audio_mix">
+						<Label text="启动回声消除" font="2" width="118" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,1"/>
+						<VerticalLayout width="20"/>
+						<Option name="check_btn_aec" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
+						<VerticalLayout width="20"/>
+						<Label text="启动采集降噪" font="2" width="118" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,1"/>
+						<VerticalLayout width="20"/>
+						<Option name="check_btn_ans" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
+					</HorizontalLayout>
+						<HorizontalLayout inset="0,6,0,0" childvalign="left" height="24" name="layout_system_audio_mix">
+						<Label text="启动自动增益" font="2" width="118" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,1"/>
+						<VerticalLayout width="20"/>
+						<Option name="check_btn_agc" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
+						<VerticalLayout width="20"/>
+						<Label text="启动系统混音" font="2" width="118" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,1"/>
+						<VerticalLayout width="20"/>
+						<Option name="check_system_audio_mix" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
+					</HorizontalLayout>
+					<HorizontalLayout name="ace_layout" inset="20,0,0,0" childvalign="center" height="20" visible="false">
+						<Label text="人声AEC强度: " font="2" width="100" align="right" valign="center" textcolor="#FF000000" height="20"/>
+						<Slider name="slider_aec" enabled="true" width="200" height="19" value="3" min="0" max="3" style="slider_style"/>
+						<Label name="lable_aec" text="100" font="2" width="60" height="16" align="left" valign="bottom" padding="10,3,0,0" textcolor="#FF000000"/>
+					</HorizontalLayout>
+					<HorizontalLayout name="agc_layout" inset="20,0,0,0" childvalign="center" height="20" visible="false">
+						<Label text="人声AGC强度: " font="2" width="100" align="right" valign="center" textcolor="#FF000000" height="20"/>
+						<Slider name="slider_agc" enabled="true" width="200" height="50" value="5" min="0" max="6" style="slider_style"/>
+						<Label name="lable_agc" text="60" font="2" width="60" height="16" align="left" valign="bottom" padding="10,3,0,0" textcolor="#FF000000"/>
+					</HorizontalLayout>
+					<HorizontalLayout name="ans_layout" inset="20,0,0,0" childvalign="center" height="20" visible="false">
+						<Label text="人声ANS强度: " font="2" width="100" align="right" valign="center" textcolor="#FF000000" height="20"/>
+						<Slider name="slider_ans" enabled="true" width="200" height="50" value="6" min="0" max="5" style="slider_style"/>
+						<Label name="lable_ans" text="100" font="2" width="60" height="16" align="left" valign="bottom" padding="10,3,0,0" textcolor="#FF000000"/>
+					</HorizontalLayout>
+					<HorizontalLayout name="hook_aec_layout" inset="20,0,0,0" childvalign="center" height="20" visible="false">
+						<Label text="系统AEC强度: " font="2" width="100" align="right" valign="center" textcolor="#FF000000" height="20"/>
+						<Slider name="slider_hook_aec" enabled="true" width="200" height="50" value="3" min="0" max="3" style="slider_style"/>
+						<Label name="lable_hook_aec" text="100" font="2" width="60" height="16" align="left" valign="bottom" padding="10,3,0,0" textcolor="#FF000000"/>
+					</HorizontalLayout>
+				</GroupBox>
+				<GroupBox text="音质选项" padding="20,0,20,0" childpadding="20" bordercolor="#FF808080" bkcolor="#FFF0F0F0" bordersize="1" height="100">
+					<HorizontalLayout inset="4,0,0,0" childvalign="center" height="40">
+						<Label text="音质（重进房生效）: " font="2" width="200" align="right" valign="center" textcolor="#FF000000" showhtml="true"/>
+						<Combo name="combo_audio_quality" width="170" height="36" style="devicecombo" dropbox="bordercolor=&quot;#FF1E90FF&quot; bordersize=&quot;1&quot; bkcolor=&quot;#FFFFFFFF&quot;">
+							<ListLabelElement text="语音（16K 单声道）"/>
+							<ListLabelElement text="默认（48K 单声道）"/>
+							<ListLabelElement text="音乐（128K 双声道）"/>
+						</Combo>						
+					</HorizontalLayout>
+				</GroupBox>
 				<GroupBox text="麦克风设置" padding="20,0,20,0" childpadding="20" bordercolor="#FF808080" bkcolor="#FFF0F0F0" bordersize="1" height="175">
 					<HorizontalLayout inset="20,0,0,0" childvalign="center" height="40">
 						<Label text="麦克风: " font="2" width="100" align="right" valign="center" textcolor="#FF000000" showhtml="true"/>
@@ -227,7 +282,7 @@
 						<Option name="check_speaker_mute" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
 					</HorizontalLayout>
 				</GroupBox>
-				<GroupBox text="软件音量设置" padding="20,0,20,0" childpadding="20" bordercolor="#FF808080" bkcolor="#FFF0F0F0" bordersize="1" height="100">
+				<GroupBox text="软件音量设置" name ="app_voice_groupbox" padding="20,0,20,0" childpadding="20" bordercolor="#FF808080" bkcolor="#FFF0F0F0" bordersize="1" height="120">
 					<HorizontalLayout inset="20,0,0,0" childvalign="center" height="20">
 						<Label text="APP采集音量: " font="2" width="100" align="right" valign="center" textcolor="#FF000000" height="20"/>
 						<Slider name="slider_app_capture_volume" enabled="true" width="200" height="19" value="45" min="0" max="100" style="slider_style"/>
@@ -237,36 +292,6 @@
 						<Label text="APP播放音量: " font="2" width="100" align="right" valign="center" textcolor="#FF000000" height="20"/>
 						<Slider name="slider_app_playout_volume" enabled="true" width="200" height="19" value="45" min="0" max="100" style="slider_style"/>
 						<Label name="lable_app_playout_volume" text="19%" font="2" width="60" height="16" align="left" valign="bottom" padding="10,3,0,0" textcolor="#FF000000"/>
-					</HorizontalLayout>
-				</GroupBox>
-				<GroupBox text="" padding="20,0,20,0" childpadding="20" bordercolor="#FF808080" bkcolor="#FFF0F0F0" bordersize="1" height="120">
-					<HorizontalLayout inset="0,6,0,0" childvalign="left" height="24" name="layout_system_audio_mix">
-						<Label text="启动回声消除" font="2" width="118" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,1"/>
-						<VerticalLayout width="20"/>
-						<Option name="check_btn_aec" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
-						<VerticalLayout width="20"/>
-						<Label text="启动采集降噪" font="2" width="118" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,1"/>
-						<VerticalLayout width="20"/>
-						<Option name="check_btn_ans" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
-					</HorizontalLayout>
-						<HorizontalLayout inset="0,6,0,0" childvalign="left" height="24" name="layout_system_audio_mix">
-						<Label text="启动自动增益" font="2" width="118" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,1"/>
-						<VerticalLayout width="20"/>
-						<Option name="check_btn_agc" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
-						<VerticalLayout width="20"/>
-						<Label text="启动系统混音" font="2" width="118" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,1"/>
-						<VerticalLayout width="20"/>
-						<Option name="check_system_audio_mix" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
-					</HorizontalLayout>
-				</GroupBox>
-				<GroupBox text="采集选项" padding="20,0,20,0" childpadding="20" bordercolor="#FF808080" bkcolor="#FFF0F0F0" bordersize="1" height="100">
-					<HorizontalLayout inset="5,0,0,0" height="40">
-						<Label text="音质（重进房生效）: " font="2" width="200" align="right" valign="center" textcolor="#FF000000" showhtml="true"/>
-							<Combo name="combo_audio_quality" width="200" height="36" style="devicecombo" dropbox="bordercolor=&quot;#FF1E90FF&quot; bordersize=&quot;1&quot; bkcolor=&quot;#FFFFFFFF&quot;">
-								<ListLabelElement text="语音（16K 单声道）"/>
-								<ListLabelElement text="默认（48K 单声道）"/>
-								<ListLabelElement text="音乐（128K 双声道）"/>
-							</Combo>						
 					</HorizontalLayout>
 				</GroupBox>
 				<HorizontalLayout/>
@@ -393,6 +418,11 @@
 					<Combo name="combo_video_yuvfile" width="130" height="24" style="devicecombo" dropbox="bordercolor=&quot;#FF1E90FF&quot; bordersize=&quot;1&quot; bkcolor=&quot;#FFFFFFFF&quot;">
 						<ListLabelElement text="320×240_video.yuv"/>
 					</Combo>  
+				</HorizontalLayout>
+				<HorizontalLayout inset="28,0,0,0" childvalign="left" height="24">
+					<Label text="由主路进行屏幕分享" font="2" width="118" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,3,0,1"/>
+					<VerticalLayout width="80"/>
+					<Option name="check_use_main_stream" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true" padding="0,3,0,0"/>
 				</HorizontalLayout>
 				<HorizontalLayout inset="28,6,0,0" childvalign="left" height="24">
 					<Label text="开启本地视频" font="2" width="118" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,1"/>

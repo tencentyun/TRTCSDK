@@ -13,12 +13,13 @@
 		<VerticalLayout height="25"/>
 		<Edit name="edit_nameid" height="44" maxchar="20" font="0" align="center" textpadding="20,0,20,0" tipvalue="输入用户ID" tipvaluecolor="#FF808080" tipvaluealign="center" normalimage="res='login/edit_normal.png' corner='6,6,6,6'" focusedimage="res='login/edit_focus.png' corner='6,6,6,6'"/>
 		<VerticalLayout height="10"/>
+	    <Edit name="edit_cryptkey" height="44" visible="false" maxchar="20" font="0" align="center" textpadding="20,0,20,0" tipvalue="输入密码" tipvaluecolor="#FF808080" tipvaluealign="center" normalimage="res='login/edit_normal.png' corner='6,6,6,6'" focusedimage="res='login/edit_focus.png' corner='6,6,6,6'"/>
+		<VerticalLayout height="6"/>
 		<HorizontalLayout name="test_netenv_container" childalign="center" visible="false"  height="26" childpadding="10" inset="40,0,0,0">
 		    <Option name="test_netenv" group="netenvstyle" text="测试环境" style="radio_style" width="0" autocalcwidth="true"/>
 			<Option name="pretest_netenv" group="netenvstyle" text="体验环境" style="radio_style" width="0" autocalcwidth="true"/>
 		    <Option name="product_netenv" group="netenvstyle" text="正式环境" style="radio_style" width="0" autocalcwidth="true"/>
 		</HorizontalLayout>
-
 		<VerticalLayout height="30" inset="20,0,20,0" childalign="center">
 			<Label name="label_loginstatus" text="" font="0" align="center" valign="center" textcolor="#FFFF7256" showhtml="true"/>
 		</VerticalLayout>

@@ -83,7 +83,29 @@ void AudioEffectViewController::subRef()
 
 void AudioEffectViewController::InitAudioMusicView()
 {
-    
+    //初始化背景音乐列表
+    CComboUI* pMusicCombo = static_cast<CComboUI*>(m_pmUI.FindControl(_T("combo_test_music")));
+    if (pMusicCombo) {
+        CListLabelElementUI* pElement1 = new CListLabelElementUI;
+        pElement1->SetText(L"测试音乐1");
+        pElement1->SetName(L"http://dldir1.qq.com/hudongzhibo/LiteAV/demomusic/testmusic1.mp3"); 
+
+        pMusicCombo->Add(pElement1); 
+
+        CListLabelElementUI* pElement2 = new CListLabelElementUI;
+        pElement2->SetText(L"测试音乐2");
+        pElement2->SetName(L"http://dldir1.qq.com/hudongzhibo/LiteAV/demomusic/testmusic2.mp3");
+
+        pMusicCombo->Add(pElement2); 
+
+        CListLabelElementUI* pElement3 = new CListLabelElementUI;
+        pElement3->SetText(L"测试音乐3");
+        pElement3->SetName(L"http://dldir1.qq.com/hudongzhibo/LiteAV/demomusic/testmusic3.mp3");
+
+        pMusicCombo->Add(pElement3); 
+
+        pMusicCombo->SelectItem(0);
+    }
     //以MIC采集播放的声音作为  背景，本地，远端的声音
     {
        
@@ -446,33 +468,45 @@ void AudioEffectViewController::NotifyBGMMusic(TNotifyUI & msg)
     {
         if (msg.pSender->GetName() == _T("btn_start_bgm"))
         {
-           
             COptionUI* pTestSender = static_cast<COptionUI*>(msg.pSender);
             if (m_emBGMMusicStatus == BGM_Music_Stop)
             {
-                pTestSender->SetNormalImage(L"music/bgm_pause.png");
-                std::wstring testFileMp3 = TrtcUtil::getAppDirectory() + L"trtcres/BGM.mp3";
-                std::string testBGMFile = Wide2UTF8(testFileMp3);
+                CComboUI* pMusicCombo =
+                    static_cast<CComboUI*>(m_pmUI.FindControl(_T("combo_test_music")));
+                if (pMusicCombo) {
+                    int nIndex = pMusicCombo->GetCurSel();
+                    CListLabelElementUI* pListElement =
+                        static_cast<CListLabelElementUI*>(pMusicCombo->GetItemAt(nIndex));
+                    if (pListElement) {
+                        CDuiString wsMusic = pListElement->GetName();
 
-                m_nBGMDurationMS = m_pAudioEffectMgr->getMusicDurationInMS(const_cast<char*>(testBGMFile.c_str()));
-                wstring strBGMTime = TrtcUtil::convertMSToTime(0, m_nBGMDurationMS);
+                        CButtonUI* pPlayButtom =
+                            static_cast<CButtonUI*>(m_pmUI.FindControl(_T("btn_start_bgm")));
+                        pPlayButtom->SetNormalImage(L"music/bgm_pause.png");
 
-                CLabelUI* pLabel = static_cast<CLabelUI*>(m_pmUI.FindControl(_T("label_time_bgm")));
-                if (pLabel)
-                {
-                    pLabel->SetText(strBGMTime.c_str());
-                }
+                        m_nBGMDurationMS = m_pAudioEffectMgr->getMusicDurationInMS(
+                            const_cast<char*>(Wide2UTF8(wsMusic.GetData()).c_str()));
+                        wstring strBGMTime = TrtcUtil::convertMSToTime(0, m_nBGMDurationMS);
 
-                m_bgmMusicParam->id = 4;
-                m_bgmMusicParam->path = const_cast<char*>(testBGMFile.c_str());
-                m_bgmMusicParam->publish = true;
+                        CLabelUI* pLabel =
+                            static_cast<CLabelUI*>(m_pmUI.FindControl(_T("label_time_bgm")));
+                        if (pLabel) {
+                            pLabel->SetText(strBGMTime.c_str());
+                        }
+                        string musicPath = Wide2UTF8(pListElement->GetName().GetData());
+                        m_bgmMusicParam->id = 4;
+                        m_bgmMusicParam->path = const_cast<char*>(musicPath.c_str());
+                        m_bgmMusicParam->publish = true;
 
-                m_pAudioEffectMgr->startPlayMusic(*m_bgmMusicParam);
-                m_pAudioEffectMgr->setMusicObserver(4, this);
+                        m_pAudioEffectMgr->startPlayMusic(*m_bgmMusicParam);
+                        m_pAudioEffectMgr->setMusicObserver(4, this);
 
-                m_emBGMMusicStatus = BGM_Music_Play;
-                CSliderUI* pSlider = static_cast<CSliderUI*>(m_pmUI.FindControl(_T("slider_progress_bgm")));
-                if (pSlider)  pSlider->SetEnabled(true);
+                        m_emBGMMusicStatus = BGM_Music_Play;
+                        CSliderUI* pSlider =
+                            static_cast<CSliderUI*>(m_pmUI.FindControl(_T("slider_progress_bgm")));
+                        if (pSlider) pSlider->SetEnabled(true);
+                     }
+                 }
             }
             else if(m_emBGMMusicStatus == BGM_Music_Play)
             {
@@ -559,8 +593,8 @@ void AudioEffectViewController::NotifyBGMMusic(TNotifyUI & msg)
    
     else if (msg.sType == _T("valuechanged"))
     {
-        if (msg.pSender->GetName() == _T("slider_bgm_volume"))
-        {
+        
+        if (msg.pSender->GetName() == _T("slider_bgm_volume")) {
             CProgressUI* pSlider = static_cast<CProgressUI*>(m_pmUI.FindControl(_T("slider_bgm_volume")));
             int volume = pSlider->GetValue();
            
@@ -601,6 +635,47 @@ void AudioEffectViewController::NotifyBGMMusic(TNotifyUI & msg)
 
             m_pAudioEffectMgr->seekMusicToPosInTime(m_bgmMusicParam->id, nCurMs);
 
+        }
+    } 
+    else if (msg.sType == _T("itemselect"))
+    {
+        if (msg.pSender->GetName() == _T("combo_test_music") && m_emBGMMusicStatus == BGM_Music_Play) {
+
+            CComboUI* pMusicSender = static_cast<CComboUI*>(msg.pSender);
+            if (pMusicSender) {
+                int nIndex = pMusicSender->GetCurSel();
+                CListLabelElementUI* pListElement =
+                    static_cast<CListLabelElementUI*>(pMusicSender->GetItemAt(nIndex));
+                if (pListElement) {
+                    CDuiString wsMusic = pListElement->GetName();
+
+                    CButtonUI* pPlayButtom =
+                        static_cast<CButtonUI*>(m_pmUI.FindControl(_T("btn_start_bgm")));
+                    pPlayButtom->SetNormalImage(L"music/bgm_pause.png");
+
+                    m_nBGMDurationMS = m_pAudioEffectMgr->getMusicDurationInMS(
+                        const_cast<char*>(Wide2UTF8(wsMusic.GetData()).c_str()));
+                    wstring strBGMTime = TrtcUtil::convertMSToTime(0, m_nBGMDurationMS);
+
+                    CLabelUI* pLabel =
+                        static_cast<CLabelUI*>(m_pmUI.FindControl(_T("label_time_bgm")));
+                    if (pLabel) {
+                        pLabel->SetText(strBGMTime.c_str());
+                    }
+                    string musicPath = Wide2UTF8(pListElement->GetName().GetData());
+                    m_bgmMusicParam->id = 4;
+                    m_bgmMusicParam->path = const_cast<char*>(musicPath.c_str());
+                    m_bgmMusicParam->publish = true;
+
+                    m_pAudioEffectMgr->startPlayMusic(*m_bgmMusicParam);
+                    m_pAudioEffectMgr->setMusicObserver(4, this);
+
+                    m_emBGMMusicStatus = BGM_Music_Play;
+                    CSliderUI* pSlider =
+                        static_cast<CSliderUI*>(m_pmUI.FindControl(_T("slider_progress_bgm")));
+                    if (pSlider) pSlider->SetEnabled(true);
+                }
+            }
         }
     }
 }

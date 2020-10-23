@@ -17,6 +17,8 @@ public:
 
     RECT getRect() const;
 
+    TRTCScreenCaptureProperty getProperty() const;
+
 protected:
     virtual CDuiString GetSkinFile() override;
     virtual LPCTSTR GetWindowClassName(void) const override;
@@ -39,6 +41,8 @@ private:
     std::vector<ShareSelectItem*>    m_vecShareSelectItem;
 
     RECT m_rect;
+
+    TRTCScreenCaptureProperty m_screen_property;
 
     static size_t ms_nLastSelectedIndex;
 };

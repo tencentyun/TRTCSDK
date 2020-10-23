@@ -152,6 +152,7 @@ void TRTCMainViewController::onEnterRoom(int result)
             CWnd *pRemoteVideoView = GetDlgItem(viewId);
             HWND hwnd = pRemoteVideoView->GetSafeHwnd();
             getTRTCCloud()->setLocalViewFillMode(TRTCVideoFillMode_Fit);
+            getTRTCCloud()->setLocalVideoRenderCallback(TRTCVideoPixelFormat_BGRA32, TRTCVideoBufferType_Buffer, this);
             getTRTCCloud()->startLocalPreview(hwnd);
             getTRTCCloud()->startLocalAudio();
         }
@@ -167,6 +168,7 @@ void TRTCMainViewController::onEnterRoom(int result)
 
 void TRTCMainViewController::onExitRoom(int reason)
 {
+    getTRTCCloud()->setLocalVideoRenderCallback(TRTCVideoPixelFormat_Unknown, TRTCVideoBufferType_Buffer, nullptr);
     getTRTCCloud()->removeCallback(this);
     getTRTCCloud()->stopLocalPreview();
     getTRTCCloud()->stopAllRemoteView();
@@ -910,6 +912,9 @@ void TRTCMainViewController::enterRoom(TRTCParams& params)
     {
         getTRTCCloud()->setPriorRemoteVideoStreamType(TRTCVideoStreamTypeSmall);
     }
+
+    getTRTCCloud()->callExperimentalAPI("{\"api\":\"setCustomRenderMode\",\"params\" :{\"mode\":1}}");
+
 
     getTRTCCloud()->enterRoom(params, TRTCStorageConfigMgr::GetInstance()->appScene);
     std::string userId(params.userId);

@@ -854,61 +854,71 @@ void TRTCSettingViewController::NotifyAudioTab(TNotifyUI & msg)
             else {
                 TRTCCloudCore::GetInstance()->getTRTCCloud()->setCurrentSpeakerDeviceMute(false);
             }
-        }
-        else if (msg.pSender->GetName() == _T("check_btn_aec"))
-        {
+        } else if (msg.pSender->GetName() == _T("check_btn_3a_config")) {
             COptionUI* pOpenSender = static_cast<COptionUI*>(msg.pSender);
-            if (pOpenSender->IsSelected() == false) //事件值是反的
-            {
+            if (pOpenSender->IsSelected() == false) {
+                CDataCenter::GetInstance()->user_default_3a_config_ = true;
+            } else {
+                CDataCenter::GetInstance()->user_default_3a_config_ = false;
+            }
+        }
+        else if (msg.pSender->GetName() == _T("check_btn_aec")) {
+            COptionUI* pOpenSender = static_cast<COptionUI*>(msg.pSender);
+            if (pOpenSender->IsSelected() == false) {
                 CDataCenter::GetInstance()->m_bEnableAec = true;
-                std::string api = format("{\"api\":\"enableAudioAEC\",\"params\":{\"enable\":%d}}", CDataCenter::GetInstance()->m_bEnableAec);
-                TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
+                if (!CDataCenter::GetInstance()->user_default_3a_config_) {
+                    std::string api =
+                        format("{\"api\":\"enableAudioAEC\",\"params\":{\"enable\":%d}}",
+                               CDataCenter::GetInstance()->m_bEnableAec);
+                    TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
+                }
 
             }
-            else
-            {
+            else {
                 CDataCenter::GetInstance()->m_bEnableAec = false;
-                std::string api = format("{\"api\":\"enableAudioAEC\",\"params\":{\"enable\":%d}}", CDataCenter::GetInstance()->m_bEnableAec);
-                TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
+                if (!CDataCenter::GetInstance()->user_default_3a_config_) {
+                    std::string api = format("{\"api\":\"enableAudioAEC\",\"params\":{\"enable\":%d}}", CDataCenter::GetInstance()->m_bEnableAec);
+                    TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
+                }
             }
         }
-        else if (msg.pSender->GetName() == _T("check_btn_ans"))
-        {
+        else if (msg.pSender->GetName() == _T("check_btn_ans")) {
             COptionUI* pOpenSender = static_cast<COptionUI*>(msg.pSender);
-            if (pOpenSender->IsSelected() == false) //事件值是反的
-            {
+            if (pOpenSender->IsSelected() == false) {
                 CDataCenter::GetInstance()->m_bEnableAns = true;
-                std::string api = format("{\"api\":\"enableAudioANS\",\"params\":{\"enable\":%d}}", CDataCenter::GetInstance()->m_bEnableAns);
-                TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
+                if (!CDataCenter::GetInstance()->user_default_3a_config_) {
+                    std::string api = format("{\"api\":\"enableAudioANS\",\"params\":{\"enable\":%d}}", CDataCenter::GetInstance()->m_bEnableAns);
+                    TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
+                }
 
             }
-            else
-            {
+            else {
                 CDataCenter::GetInstance()->m_bEnableAns = false;
-                std::string api = format("{\"api\":\"enableAudioANS\",\"params\":{\"enable\":%d}}", CDataCenter::GetInstance()->m_bEnableAns);
-                TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
+                if (!CDataCenter::GetInstance()->user_default_3a_config_) {
+                    std::string api = format("{\"api\":\"enableAudioANS\",\"params\":{\"enable\":%d}}", CDataCenter::GetInstance()->m_bEnableAns);
+                    TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
+                }
             }
         }
-        else if (msg.pSender->GetName() == _T("check_btn_agc"))
-        {
+        else if (msg.pSender->GetName() == _T("check_btn_agc")) {
             COptionUI* pOpenSender = static_cast<COptionUI*>(msg.pSender);
-            if (pOpenSender->IsSelected() == false) //事件值是反的
-            {
+            if (pOpenSender->IsSelected() == false) {
                 CDataCenter::GetInstance()->m_bEnableAgc = true;
-                std::string api = format("{\"api\":\"enableAudioAGC\",\"params\":{\"enable\":%d}}", CDataCenter::GetInstance()->m_bEnableAgc);
-                TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
-
+                if (!CDataCenter::GetInstance()->user_default_3a_config_) {
+                    std::string api = format("{\"api\":\"enableAudioAGC\",\"params\":{\"enable\":%d}}", CDataCenter::GetInstance()->m_bEnableAgc);
+                    TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
+                }
             }
-            else
-            {
+            else {
                 CDataCenter::GetInstance()->m_bEnableAgc = false;
-                std::string api = format("{\"api\":\"enableAudioAGC\",\"params\":{\"enable\":%d}}", CDataCenter::GetInstance()->m_bEnableAgc);
-                TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
+                if (!CDataCenter::GetInstance()->user_default_3a_config_) {
+                    std::string api = format("{\"api\":\"enableAudioAGC\",\"params\":{\"enable\":%d}}", CDataCenter::GetInstance()->m_bEnableAgc);
+                    TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
+                }
             }
         }
         else if(msg.pSender->GetName() == _T("check_system_audio_mix"))
         {
-
             COptionUI* pTestSystemVoice = static_cast<COptionUI*>(msg.pSender);
             if(pTestSystemVoice->IsSelected() == false) //事件值是反的
             {
@@ -924,6 +934,125 @@ void TRTCSettingViewController::NotifyAudioTab(TNotifyUI & msg)
     }
     else if (msg.sType == _T("valuechanged"))
     {
+        if (msg.pSender->GetName() == _T("slider_aec"))
+        {
+            CProgressUI* pSlider =
+                static_cast<CProgressUI*>(m_pmUI.FindControl(_T("slider_aec")));
+            CLabelUI* pLabelValue =
+                static_cast<CLabelUI*>(m_pmUI.FindControl(_T("lable_aec")));
+            CDuiString sText;
+            int level = pSlider->GetValue();
+            if (level == 0) {
+                level = 0;
+            } else if (level == 1) {
+                level = 30;
+            } else if (level == 2) {
+                level = 60;
+            } else if (level == 3) {
+                level = 100;
+            }
+            sText.Format(_T("%d%"), level);
+            pLabelValue->SetText(sText);
+            if (!CDataCenter::GetInstance()->user_default_3a_config_) {
+                std::string api = format("{\"api\":\"enableAudioAEC\",\"params\":{\"enable\":%d,\"level\":%d}}",
+                    CDataCenter::GetInstance()->m_bEnableAec, level);
+
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
+            }
+        } 
+        else if (msg.pSender->GetName() == _T("slider_hook_aec"))
+        {
+            CProgressUI* pSlider = static_cast<CProgressUI*>(m_pmUI.FindControl(_T("slider_hook_aec")));
+            CLabelUI* pLabelValue = static_cast<CLabelUI*>(m_pmUI.FindControl(_T("lable_hook_aec")));
+            CDuiString sText;
+            int level = pSlider->GetValue();
+            bool enable_hook_aec = true;
+            if (level == 0) 
+            {
+                enable_hook_aec = false;
+                level = 0;
+            }
+            else if (level == 1) 
+            {
+                level = 30;
+            } 
+            else if (level == 2) 
+            {
+                level = 60;
+            } 
+            else if (level == 3) {
+                level = 100;
+            }
+            sText.Format(_T("%d%"), level);
+            pLabelValue->SetText(sText);
+            std::string api =
+                format("{\"api\":\"enableSystemLoopbackAudioAEC\",\"params\":{\"enable\":%d,\"level\":%d}}",enable_hook_aec,level);
+
+            TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
+        }
+        else if (msg.pSender->GetName() == _T("slider_agc")) {
+            CProgressUI* pSlider = static_cast<CProgressUI*>(m_pmUI.FindControl(_T("slider_agc")));
+            CLabelUI* pLabelValue = static_cast<CLabelUI*>(m_pmUI.FindControl(_T("lable_agc")));
+            CDuiString sText;
+            int level = pSlider->GetValue();
+            if (level == 0) {
+                level = 0;
+            } else if (level == 1) {
+                level = 10;
+            } else if (level == 2) {
+                level = 20;
+            } else if (level == 3) {
+                level = 40;
+            } else if (level == 4) {
+                level = 60;
+            } else if (level == 5) {
+                level = 80;
+            } else if (level == 6) {
+                level = 100;
+            }
+            sText.Format(_T("%d%"), level);
+            pLabelValue->SetText(sText);
+            if (!CDataCenter::GetInstance()->user_default_3a_config_) {
+                std::string api =
+                    format("{\"api\":\"enableAudioAGC\",\"params\":{\"enable\":%d,\"level\":%d}}",
+                        CDataCenter::GetInstance()->m_bEnableAgc, level);
+
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
+            }
+        } 
+         else if (msg.pSender->GetName() == _T("slider_ans")) {
+            CProgressUI* pSlider = static_cast<CProgressUI*>(m_pmUI.FindControl(_T("slider_ans")));
+            CLabelUI* pLabelValue = static_cast<CLabelUI*>(m_pmUI.FindControl(_T("lable_ans")));
+            CDuiString sText;
+            int level = pSlider->GetValue();
+            if (level == 0) {
+                level = 0;
+            } 
+            else if (level == 1) {
+                level = 20;
+            } 
+            else if (level == 2) {
+                level = 40;
+            } 
+            else if (level == 3) {
+                level = 60;
+            } 
+            else if (level == 4) {
+                level = 80;
+            }
+            else if (level == 5) {
+                level = 100;
+            }
+            sText.Format(_T("%d%"), level);
+            pLabelValue->SetText(sText);
+            if (!CDataCenter::GetInstance()->user_default_3a_config_) {
+                std::string api =
+                    format("{\"api\":\"enableAudioANS\",\"params\":{\"enable\":%d,\"level\":%d}}",
+                        CDataCenter::GetInstance()->m_bEnableAns, level);
+
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
+            }
+        } 
     }
 }
 
@@ -1783,13 +1912,18 @@ void TRTCSettingViewController::InitAudioTab()
     }
 
     //音频 3A 开关
+    COptionUI* pCheck3AConfig = static_cast<COptionUI*>(m_pmUI.FindControl(_T("check_btn_3a_config")));
     COptionUI* pCheckAec = static_cast<COptionUI*>(m_pmUI.FindControl(_T("check_btn_aec")));
     COptionUI* pCheckAns = static_cast<COptionUI*>(m_pmUI.FindControl(_T("check_btn_ans")));
     COptionUI* pCheckAgc = static_cast<COptionUI*>(m_pmUI.FindControl(_T("check_btn_agc")));
     COptionUI* pCheckSystemAudioMix = static_cast<COptionUI*>(m_pmUI.FindControl(_T("check_system_audio_mix")));
 
-    if (pCheckAec && pCheckAns && pCheckAgc && pCheckSystemAudioMix)
+    if (pCheckAec && pCheckAns && pCheckAgc && pCheckSystemAudioMix && pCheck3AConfig)
     {
+        if (CDataCenter::GetInstance()->user_default_3a_config_)
+            pCheck3AConfig->Selected(true);
+        else
+            pCheck3AConfig->Selected(false);
         if (CDataCenter::GetInstance()->m_bEnableAec)
             pCheckAec->Selected(true);
         else
@@ -1810,7 +1944,36 @@ void TRTCSettingViewController::InitAudioTab()
             pCheckSystemAudioMix->Selected(false);
     }
 
-    
+     if (CDataCenter::GetInstance()->m_bOpenDemoTestConfig) {
+
+         CHorizontalLayoutUI* aec_layout = 
+             static_cast<CHorizontalLayoutUI*>(m_pmUI.FindControl(_T("ace_layout")));
+         if (aec_layout) {
+             aec_layout->SetVisible(true);
+         }
+
+          CHorizontalLayoutUI* hook_aec_layout = 
+              static_cast<CHorizontalLayoutUI*>(m_pmUI.FindControl(_T("hook_aec_layout")));
+         if (hook_aec_layout) {
+              hook_aec_layout->SetVisible(true);
+         }
+         CHorizontalLayoutUI* agc_layout =
+             static_cast<CHorizontalLayoutUI*>(m_pmUI.FindControl(_T("agc_layout")));
+         if (agc_layout) {
+             agc_layout->SetVisible(true);
+         }
+         CHorizontalLayoutUI* ans_layout =
+             static_cast<CHorizontalLayoutUI*>(m_pmUI.FindControl(_T("ans_layout")));
+         if (ans_layout) {
+             ans_layout->SetVisible(true);
+         }
+
+         CGroupBoxUI* auido_groupbox =
+             static_cast<CGroupBoxUI*>(m_pmUI.FindControl(_T("audio_groupbox")));
+         if (auido_groupbox) {
+             auido_groupbox->SetFixedHeight(320);
+         }
+     }
 }
 
 void TRTCSettingViewController::InitVideoTab()
@@ -2046,8 +2209,6 @@ void TRTCSettingViewController::InitMixTab()
 
 void TRTCSettingViewController::InitRecordTab()
 {
-   
-    
    COptionUI* pCheckUI = static_cast<COptionUI*>(m_pmUI.FindControl(_T("check_start_record")));
     if(pCheckUI)
     {

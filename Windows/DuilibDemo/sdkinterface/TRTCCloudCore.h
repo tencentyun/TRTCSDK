@@ -129,7 +129,7 @@ public:
     void stopMedia();
     void startGreenScreen(const std::string &path);
     void stopGreenScreen();
-    void selectScreenCaptureTarget(const TRTCScreenCaptureSourceInfo &source, const RECT& captureRect);
+    void selectScreenCaptureTarget(const TRTCScreenCaptureSourceInfo &source, const RECT& captureRect, const TRTCScreenCaptureProperty & property);
     void showDashboardStyle(int logStyle);
 
     void connectOtherRoom(std::string userId, uint32_t roomId);

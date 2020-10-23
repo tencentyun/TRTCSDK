@@ -121,6 +121,9 @@
     <ClCompile Include="utils\BugReport.cpp">
       <Filter>utils</Filter>
     </ClCompile>
+    <ClCompile Include="sdkinterface\TRTCCustomerCrypt.cpp">
+      <Filter>sdkinterface</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -247,6 +250,9 @@
     </ClInclude>
     <ClInclude Include="utils\crash_agent.h">
       <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="sdkinterface\TRTCCustomerCrypt.h">
+      <Filter>sdkinterface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

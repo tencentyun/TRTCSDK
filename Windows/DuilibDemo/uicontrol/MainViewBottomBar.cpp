@@ -222,7 +222,8 @@ void MainViewBottomBar::Notify(TNotifyUI& msg)
                     TRTCScreenCaptureSourceInfo info{};
                     info.type = TRTCScreenCaptureSourceTypeUnknown;
                     RECT rect;
-                    OpenScreenBtnEvent(info, rect);
+                    TRTCScreenCaptureProperty property;
+                    OpenScreenBtnEvent(info, rect, property);
                 }
             }
             else {
@@ -234,9 +235,10 @@ void MainViewBottomBar::Notify(TNotifyUI& msg)
                 {
                     TRTCScreenCaptureSourceInfo info = uiShareSelect.getSelectWnd();
                     RECT rect = uiShareSelect.getRect();
+                    TRTCScreenCaptureProperty property = uiShareSelect.getProperty();
                     CButtonUI* pBtn = static_cast<CButtonUI*>(msg.pSender);
                     if (pBtn)
-                        OpenScreenBtnEvent(info, rect);
+                        OpenScreenBtnEvent(info, rect, property);
                 }
             }        
         }
@@ -440,32 +442,16 @@ void MainViewBottomBar::RefreshVideoDevice()
         }
     }
 
-    bool bReSelectDevice = false;
     //没有设备变成有设备
     if (selectOldDevice.compare(L"") == 0 && !publish_main_video)
     {
         onClickMuteVideoBtn();
-        bReSelectDevice = true;
     }
-
-    //选择设备被删除了
-    if (selectOldDevice.compare(selectNewDevice) != 0)
-        bReSelectDevice = true;
 
     //有设备变成没设备
     if (publish_main_video && vecDevice.size() <= 0)
     {
         onClickMuteVideoBtn();
-        bReSelectDevice = true;
-    }
-    if (bReSelectDevice)
-    {
-        for (auto info : vecDevice)
-        {
-            if (info._select) {
-                TRTCCloudCore::GetInstance()->selectCameraDevice(info._text); break;
-            }
-        }
     }
 }
 
@@ -660,7 +646,7 @@ void MainViewBottomBar::onClickMuteAudioBtn()
     ::PostMessage(m_pMainWnd->GetHWND(), WM_USER_VIEW_BTN_CLICK, (WPARAM)msg, 0);
 }
 
-void MainViewBottomBar::OpenScreenBtnEvent(TRTCScreenCaptureSourceInfo &source, RECT & rect) 
+void MainViewBottomBar::OpenScreenBtnEvent(TRTCScreenCaptureSourceInfo &source, RECT & rect, TRTCScreenCaptureProperty & property) 
 {
     LINFO(L"OpenScreenBtnEvent, m_bStartScreenShare:%d", CDataCenter::GetInstance()->m_localInfo.publish_sub_video);
     if (CDataCenter::GetInstance()->m_localInfo.publish_sub_video)
@@ -676,7 +662,7 @@ void MainViewBottomBar::OpenScreenBtnEvent(TRTCScreenCaptureSourceInfo &source, 
     }
     else
     {
-        TRTCCloudCore::GetInstance()->selectScreenCaptureTarget(source, rect);
+        TRTCCloudCore::GetInstance()->selectScreenCaptureTarget(source, rect, property);
         if (CDataCenter::GetInstance()->m_bPublishScreenInBigStream) {
             TRTCCloudCore::GetInstance()->startScreenCapture(nullptr, TRTCVideoStreamTypeBig, nullptr);
         }

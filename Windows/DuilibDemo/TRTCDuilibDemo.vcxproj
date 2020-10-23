@@ -253,6 +253,7 @@ xcopy /E /Y "$(ProjectDir)res\resouce" "$(OutDir)"</Command>
     <ClCompile Include="screenshare\TRTCScreenShareToolWnd.cpp" />
     <ClCompile Include="screenshare\UiShareSelect.cpp" />
     <ClCompile Include="sdkinterface\TRTCCloudCore.cpp" />
+    <ClCompile Include="sdkinterface\TRTCCustomerCrypt.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -303,6 +304,7 @@ xcopy /E /Y "$(ProjectDir)res\resouce" "$(OutDir)"</Command>
     <ClInclude Include="screenshare\TRTCScreenShareToolWnd.h" />
     <ClInclude Include="screenshare\UiShareSelect.h" />
     <ClInclude Include="sdkinterface\TRTCCloudCore.h" />
+    <ClInclude Include="sdkinterface\TRTCCustomerCrypt.h" />
     <ClInclude Include="sdkinterface\UserMassegeIdDefine.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TRTCLoginViewController.h" />

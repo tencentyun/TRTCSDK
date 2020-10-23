@@ -26,6 +26,7 @@ class TRTCSettingViewController;
 class TRTCMainViewController
     : public CDialogEx
     , public ITRTCCloudCallback
+    , public ITRTCVideoRenderCallback
 {
     // ππ‘Ï
 public:

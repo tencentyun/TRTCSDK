@@ -196,7 +196,8 @@ namespace TRTCCSharpDemo
                 right = 0,
                 bottom = 0
             };
-            mTRTCCloud.selectScreenCaptureTarget(ref sourceinfo, ref rect, true, true);
+            TRTCScreenCaptureProperty property = new TRTCScreenCaptureProperty();
+            mTRTCCloud.selectScreenCaptureTarget(ref sourceinfo, ref rect, ref property);
             mMainForm.OnSetScreenParamsCallback(true);
             this.Close();
         }

@@ -17,7 +17,11 @@
 		<VerticalLayout childpadding="10">
 		<HorizontalLayout height="10"/>
 			<GroupBox name="BGM_groupbox"text="BGM" padding="20,0,20,0" childpadding="20" bordercolor="#FF808080" bkcolor="#FFF0F0F0" bordersize="1" height="350">
-
+				<HorizontalLayout inset="20,0,0,0" childvalign="center" height="40">
+					<Label text="测试音乐: " font="2" width="100" align="right" valign="center" textcolor="#FF000000" showhtml="true"/>
+					<Combo name="combo_test_music" width="250" height="36" style="voice_combo" dropbox="bordercolor=&quot;#FF1E90FF&quot; bordersize=&quot;1&quot; bkcolor=&quot;#FFFFFFFF&quot;">
+					</Combo>  
+			    </HorizontalLayout>
 				<HorizontalLayout inset="20,0,0,0" height="20">
 					<Button name="btn_start_bgm"   padding="40,0,10,0"  normalimage="file='music/bgm_start.png' corner='2,2,2,2'" width="20" height="20" />
 					<Button name="btn_stop_bgm"   padding="5,0,5,0"  normalimage="file='music/bgm_stop.png' corner='2,2,2,2'" width="20" height="20" />

@@ -50,6 +50,11 @@ RECT UiShareSelect::getRect() const
     return m_rect;
 }
 
+TRTCScreenCaptureProperty UiShareSelect::getProperty() const
+{
+    return m_screen_property;
+}
+
 CDuiString UiShareSelect::GetSkinFile()
 {
     return _T("ShareSelect.xml");
@@ -68,6 +73,15 @@ void UiShareSelect::InitWindow()
     pLayout->RemoveAll();
     _cleanShareSelectItems();
 
+    COptionUI* check_cap_mouse = static_cast<COptionUI*>(m_pm.FindControl(_T("check_cap_mouse")));
+    COptionUI* check_cap_highlight = static_cast<COptionUI*>(m_pm.FindControl(_T("check_cap_highlight")));
+    COptionUI* check_high_performance = static_cast<COptionUI*>(m_pm.FindControl(_T("check_high_performance")));
+    if (check_cap_mouse && check_cap_highlight && check_high_performance) {
+        check_cap_mouse->Selected(true);
+        check_cap_highlight->Selected(true);
+        check_high_performance->Selected(true);
+    }
+
     ITRTCScreenCaptureSourceList* wndInfoList = TRTCCloudCore::GetInstance()->GetWndList();
 
     ms_nLastSelectedIndex = 0;
@@ -85,6 +99,7 @@ void UiShareSelect::InitWindow()
         m_vecShareSelectItem.push_back(pItem);
     }
     wndInfoList->release();
+
 }
 
 void UiShareSelect::_onBtnClose(TNotifyUI& msg)
@@ -99,6 +114,16 @@ void UiShareSelect::_onBtnConfirm(TNotifyUI& msg)
 
 void UiShareSelect::_onSelChanged(TNotifyUI& msg)
 {
+    COptionUI* pOpenSender = static_cast<COptionUI*>(msg.pSender);
+    if (msg.pSender->GetName() == _T("check_cap_mouse")) {
+        m_screen_property.enableCaptureMouse = pOpenSender->IsSelected();
+    }
+    else if (msg.pSender->GetName() == _T("check_cap_highlight")) {
+        m_screen_property.enableHighLight = pOpenSender->IsSelected();
+    }
+    else if (msg.pSender->GetName() == _T("check_high_performance")) {
+        m_screen_property.enableHighPerformance = pOpenSender->IsSelected();
+    }
     for (size_t i = 0; i < m_vecShareSelectItem.size(); ++i)
     {
         if (m_vecShareSelectItem[i]->checkSelect(msg.pSender))
@@ -125,6 +150,15 @@ void UiShareSelect::_onTextChanged(TNotifyUI & msg)
         m_rect.right = _wtoi(edit_rect_right->GetText());
         m_rect.top = _wtoi(edit_rect_top->GetText());
         m_rect.bottom = _wtoi(edit_rect_bottom->GetText());
+    }
+
+    CEditUI* edit_highlight_color = static_cast<CEditUI*>(m_pm.FindControl(_T("edit_highlight_color")));
+    CEditUI* edit_highlight_width = static_cast<CEditUI*>(m_pm.FindControl(_T("edit_highlight_width")));
+    if (edit_highlight_color) {
+        m_screen_property.highLightColor = _wtoi(edit_highlight_color->GetText());
+    }
+    if (edit_highlight_width) {
+        m_screen_property.highLightWidth = _wtoi(edit_highlight_width->GetText());
     }
 }
 

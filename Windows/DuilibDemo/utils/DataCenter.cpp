@@ -131,15 +131,18 @@ void CDataCenter::Init()
     else
         m_localInfo._userId = Wide2UTF8(id);
 
+    m_localInfo._roomId = rand();
+
     //音视频参数配置
     std::wstring strParam;
     bool bRet = false;
-    bRet = m_pConfigMgr->GetValue(INI_ROOT_KEY, INI_KEY_VIDEO_BITRATE, strParam);
-    if (bRet)
-        m_videoEncParams.videoBitrate = _wtoi(strParam.c_str());
-    else
-        m_videoEncParams.videoBitrate = 550;
 
+
+    bRet = m_pConfigMgr->GetValue(INI_ROOT_KEY, INI_KEY_AUDIO_QUALITY, strParam);
+    if (bRet) {
+        audio_quality_ = (TRTCAudioQuality)_wtoi(strParam.c_str());
+    }
+        
     bRet = m_pConfigMgr->GetValue(INI_ROOT_KEY, INI_KEY_VIDEO_RESOLUTION, strParam);
     if (bRet)
         m_videoEncParams.videoResolution = (TRTCVideoResolution)_wtoi(strParam.c_str());
@@ -314,6 +317,8 @@ void CDataCenter::WriteEngineConfig()
 
     //音视频参数配置
     DuiLib::CDuiString strFormat;
+    strFormat.Format(L"%d", audio_quality_);
+    m_pConfigMgr->SetValue(INI_ROOT_KEY, INI_KEY_AUDIO_QUALITY, strFormat.GetData());
     strFormat.Format(L"%d", m_videoEncParams.videoBitrate);
     m_pConfigMgr->SetValue(INI_ROOT_KEY, INI_KEY_VIDEO_BITRATE, strFormat.GetData());
     strFormat.Format(L"%d", m_videoEncParams.videoResolution);

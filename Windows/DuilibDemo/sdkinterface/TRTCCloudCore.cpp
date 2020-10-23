@@ -1053,9 +1053,9 @@ void TRTCCloudCore::stopMedia()
     //m_pCloud->setSubStreamDataSource(nullptr, nullptr);
 }
 
-void TRTCCloudCore::selectScreenCaptureTarget(const TRTCScreenCaptureSourceInfo &source, const RECT & captureRect)
+void TRTCCloudCore::selectScreenCaptureTarget(const TRTCScreenCaptureSourceInfo &source, const RECT & captureRect, const TRTCScreenCaptureProperty & property)
 {
-    m_pCloud->selectScreenCaptureTarget(source, captureRect);
+    m_pCloud->selectScreenCaptureTarget(source, captureRect, property);
 }
 
 void TRTCCloudCore::showDashboardStyle(int logStyle)

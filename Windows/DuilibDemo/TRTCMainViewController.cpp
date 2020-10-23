@@ -26,6 +26,7 @@
 #include "utils/TrtcUtil.h"
 #include "ITXLiteAVNetworkProxy.h"
 #include "userlist/UserListController.h"
+#include "TRTCCustomerCrypt.h"
 
 //////////////////////////////////////////////////////////////////////////TXLiveAvVideoView
 //duilib要实现一些特殊的功能，需要集成布局，做成最基础布局。   
@@ -300,16 +301,6 @@ void TRTCMainViewController::enterRoom()
         TRTCCloudCore::GetInstance()->getTRTCCloud()->startLocalAudio();
         CDataCenter::GetInstance()->m_localInfo.publish_audio = true;
     }
-
-
-    std::string experimentalAPI = format("{\"api\":\"enableAudioAEC\",\"params\":{\"enable\":%d}}", CDataCenter::GetInstance()->m_bEnableAec);
-    TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(experimentalAPI.c_str());
-    
-    experimentalAPI = format("{\"api\":\"enableAudioANS\",\"params\":{\"enable\":%d}}", CDataCenter::GetInstance()->m_bEnableAns);
-    TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(experimentalAPI.c_str());
-
-    experimentalAPI = format("{\"api\":\"enableAudioAGC\",\"params\":{\"enable\":%d}}", CDataCenter::GetInstance()->m_bEnableAgc);
-    TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(experimentalAPI.c_str());
 
     std::wstring sceneType = L"视频通话";
     if (CDataCenter::GetInstance()->m_sceneParams == TRTCAppSceneLIVE)
@@ -1118,7 +1109,8 @@ void TRTCMainViewController::onLocalVideoPublishChange(std::wstring userId, int 
         TRTCScreenCaptureSourceInfo info{};
         info.type = TRTCScreenCaptureSourceTypeUnknown;
         RECT rect;
-        m_pMainViewBottomBar->OpenScreenBtnEvent(info, rect);
+        TRTCScreenCaptureProperty property;
+        m_pMainViewBottomBar->OpenScreenBtnEvent(info, rect, property);
     }
 }
 
@@ -1219,7 +1211,7 @@ void TRTCMainViewController::InternalEnterRoom()
         CDataCenter::GetInstance()->m_strCustomStreamId = format("%d_%d_%s_main", GenerateTestUserSig::SDKAPPID, info._roomId, info._userId.c_str());
     params.streamId = CDataCenter::GetInstance()->m_strCustomStreamId.c_str();
 
-
+    TRTCCloudCore::GetInstance()->getTRTCCloud()->setEncodedDataProcessingListener(TRTCCustomerCrypt::getEncodedDataProcessingListener());
     TRTCCloudCore::GetInstance()->getTRTCCloud()->enterRoom(params, CDataCenter::GetInstance()->m_sceneParams);
 
     
@@ -1260,6 +1252,7 @@ void TRTCMainViewController::onUpdateRoleChange()
         TRTCScreenCaptureSourceInfo info{ };
         info.type = TRTCScreenCaptureSourceTypeUnknown;
         RECT rect;
-        m_pMainViewBottomBar->OpenScreenBtnEvent(info, rect);
+        TRTCScreenCaptureProperty property;
+        m_pMainViewBottomBar->OpenScreenBtnEvent(info, rect, property);
     }
 }

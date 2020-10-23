@@ -162,7 +162,7 @@ void TRTCShareScreenToolMgr::createToolWnd(std::string userId)
 
 void TRTCShareScreenToolMgr::destroyToolWnd()
 {
-    if (TRTCShareScreenToolWnd::getRef() > 0)
+    if (_pView && TRTCShareScreenToolWnd::getRef() > 0)
         _pView->Close(ID_CLOSE_WINDOW_NO_QUIT_MSGLOOP);
     _pView = nullptr;
 }

@@ -18,6 +18,7 @@
 #include "TRTCMainViewController.h"
 #include "TRTCSettingViewController.h"
 #include "GenerateTestUserSig.h"
+#include "TRTCCustomerCrypt.h"
 #include "util/Base.h"
 #include "util/log.h"
 #include "json/json.h"
@@ -113,7 +114,7 @@ void TRTCLoginViewController::InitLoginView()
         RECT rc = { 0 };
         if (::GetClientRect(m_hWnd, &rc))
         {
-            rc.bottom += 36;
+            rc.bottom += (36 + 50);
             if (!::AdjustWindowRectEx(&rc, GetWindowStyle(m_hWnd), (!(GetWindowStyle(m_hWnd) & WS_CHILD) && (::GetMenu(m_hWnd) != NULL)), GetWindowExStyle(m_hWnd))) return;
             ::SetWindowPos(m_hWnd, NULL, rc.left, rc.right, rc.right - rc.left, rc.bottom - rc.top, SWP_NOZORDER | SWP_NOMOVE | SWP_NOACTIVATE);
         }
@@ -127,6 +128,9 @@ void TRTCLoginViewController::InitLoginView()
         CHorizontalLayoutUI* pTestModeContainer = static_cast<CHorizontalLayoutUI*>(m_pmUI.FindControl(_T("test_mode_container")));
         if (pTestModeContainer)
             pTestModeContainer->SetVisible(true);
+        CEditUI* pCryptKeyContainer =
+            static_cast<CEditUI*>(m_pmUI.FindControl(_T("edit_cryptkey")));
+        if (pCryptKeyContainer) pCryptKeyContainer->SetVisible(true);
     }
 }
 
@@ -158,6 +162,17 @@ void TRTCLoginViewController::onBtnEnterRoom()
         CMsgWnd::ShowMessageBox(GetHWND(), _T("TRTCDuilibDemo"), _T("Error: 请先在 TRTCGetUserIDAndUserSig::TXCloudAccountInfo 填写 sdkappid 信息"), 0xFFF08080);
         return;
     }
+
+    CEditUI* pEditEnctyptKey = static_cast<CEditUI*>(m_pmUI.FindControl(_T("edit_cryptKey")));
+    if (pEditEnctyptKey != nullptr)
+    {
+        std::wstring wstrKey = pEditEnctyptKey->GetText();
+        TRTCCustomerCrypt::setEncryptKey(Wide2UTF8(wstrKey));
+    }
+    else {
+        TRTCCustomerCrypt::setEncryptKey("");
+    }
+
 
     CEditUI* pEditRoomID = static_cast<CEditUI*>(m_pmUI.FindControl(_T("edit_roomid")));
     LocalUserInfo& info = CDataCenter::GetInstance()->getLocalUserInfo();
