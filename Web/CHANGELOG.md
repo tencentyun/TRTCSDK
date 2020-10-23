@@ -6,6 +6,19 @@
   - patch：补丁号，如有功能改善或缺陷修复则该字段递增。
 - 我们建议您及时更新到最新版本以便获得更好的产品稳定性及在线支持！
 
+## 4.6.6 (2020-10-23)
+
+**Improvement**
+
+- 优化上行 peerConnection 重连逻辑
+- 优化下行 peerConnection 重连逻辑
+- 优化 TRTC.checkSystemRequirements 检测逻辑
+- 支持 Safari 屏幕分享，参考：[屏幕分享使用教程](https://trtc-1252463788.file.myqcloud.com/web/docs/tutorial-06-advanced-screencast.html)
+
+**Bug Fixed**
+
+- 修复因自动播放策略限制，手动恢复音频播放后，getAudioLevel 值为0的问题
+
 ## 4.6.5（2020-10-14）
 
 **Improvement**
