@@ -26,6 +26,7 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.constant.PermissionConstants;
 import com.blankj.utilcode.util.PermissionUtils;
+import com.tencent.bugly.beta.Beta;
 import com.tencent.liteav.liveroom.ui.liveroomlist.LiveRoomListActivity;
 import com.tencent.liteav.login.model.ProfileManager;
 import com.tencent.liteav.login.ui.LoginActivity;
@@ -67,7 +68,7 @@ public class TRTCMainActivity extends Activity {
         }
         setContentView(R.layout.activity_trtc_main);
         mTvVersion = (TextView) findViewById(R.id.main_tv_version);
-        mTvVersion.setText("腾讯云 TRTC v" + TXLiveBase.getSDKVersionStr()+"(7.9.607)");
+        mTvVersion.setText("腾讯云 TRTC v" + TXLiveBase.getSDKVersionStr()+"(8.1.624)");
         mMainTitle = (TextView) findViewById(R.id.main_title);
         mMainTitle.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -111,6 +112,7 @@ public class TRTCMainActivity extends Activity {
         });
         interceptHyperLink((TextView) findViewById(R.id.tv_privacy));
         initPermission();
+        Beta.checkUpgrade();
     }
 
     @Override

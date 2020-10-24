@@ -81,6 +81,7 @@ public abstract class TCBaseAnchorActivity extends Activity implements TRTCLiveR
     protected TRTCLiveRoom      mLiveRoom;                 // 组件类
     protected Group             mGroupLiveBefore;               //开播前的所有控件
     protected Group             mGroupLiveAfter;                //开播后需要显示的控件
+    protected Group             mGroupLiveAfterToolbar;         //开播后需要显示的toolbar
     private ImageView           mImageLiveRoomCover;
     private EditText            mEditLiveRoomName;
     private Button              mButtonStartRoom;
@@ -158,6 +159,7 @@ public abstract class TCBaseAnchorActivity extends Activity implements TRTCLiveR
 
         mGroupLiveBefore = (Group) findViewById(R.id.before_live);
         mGroupLiveAfter = (Group) findViewById(R.id.after_live);
+        mGroupLiveAfterToolbar = (Group) findViewById(R.id.after_live_toolbar);
         mImageLiveRoomCover = (ImageView) findViewById(R.id.img_live_room_cover);
         mEditLiveRoomName = (EditText) findViewById(R.id.et_live_room_name);
         mButtonSwitchCamBeforeLive = (Button) findViewById(R.id.btn_switch_cam_before_live);
@@ -167,6 +169,7 @@ public abstract class TCBaseAnchorActivity extends Activity implements TRTCLiveR
         mToolbar = findViewById(R.id.tool_bar_view);
         mGroupLiveBefore.setVisibility(View.VISIBLE);
         mGroupLiveAfter.setVisibility(View.GONE);
+        mGroupLiveAfterToolbar.setVisibility(View.GONE);
 
         mButtonStartRoom.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -307,6 +310,7 @@ public abstract class TCBaseAnchorActivity extends Activity implements TRTCLiveR
                     //创建成功, 更新UI界面
                     mGroupLiveBefore.setVisibility(View.GONE);
                     mGroupLiveAfter.setVisibility(View.VISIBLE);
+                    mGroupLiveAfterToolbar.setVisibility(View.VISIBLE);
                     freshToolView();
                     startTimer();
                     onCreateRoomSuccess();

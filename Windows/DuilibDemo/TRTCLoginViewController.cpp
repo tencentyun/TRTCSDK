@@ -163,7 +163,7 @@ void TRTCLoginViewController::onBtnEnterRoom()
         return;
     }
 
-    CEditUI* pEditEnctyptKey = static_cast<CEditUI*>(m_pmUI.FindControl(_T("edit_cryptKey")));
+    CEditUI* pEditEnctyptKey = static_cast<CEditUI*>(m_pmUI.FindControl(_T("edit_cryptkey")));
     if (pEditEnctyptKey != nullptr)
     {
         std::wstring wstrKey = pEditEnctyptKey->GetText();

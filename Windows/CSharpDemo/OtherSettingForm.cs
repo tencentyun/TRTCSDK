@@ -328,15 +328,15 @@ namespace TRTCCSharpDemo
                 DataManager.GetInstance().isLocalVideoMirror = true;
                 DataManager.GetInstance().isRemoteVideoMirror = true;
                 mTRTCCloud.setVideoEncoderMirror(true);
-                mTRTCCloud.setLocalViewMirror(true);
             }
             else
             {
                 DataManager.GetInstance().isLocalVideoMirror = false;
                 DataManager.GetInstance().isRemoteVideoMirror = false;
                 mTRTCCloud.setVideoEncoderMirror(false);
-                mTRTCCloud.setLocalViewMirror(false);
             }
+            TRTCRenderParams renderParams = DataManager.GetInstance().GetRenderParams();
+            mTRTCCloud.setLocalRenderParams(ref renderParams);
         }
         private void ShowMessage(string text, int delay = 0)
         {
@@ -384,6 +384,74 @@ namespace TRTCCSharpDemo
                 // 关闭音效测试
                 this.audioRecordBtn.Text = "开启录音";
                 mTRTCCloud.stopAudioRecording();
+            }
+        }
+
+        private void switchRoomBtn_Click(object sender, EventArgs e)
+        {
+            string roomId = this.roomIdTextBox.Text;
+            string strRoomId = this.strRoomIdTextBox.Text;
+            if (String.IsNullOrEmpty(roomId) && String.IsNullOrEmpty(strRoomId))
+            {
+                MessageForm msgBox = new MessageForm();
+                msgBox.setText("切换房间号不能为空！");
+                msgBox.setCancelBtn(false);
+                msgBox.ShowDialog();
+                return;
+            }
+            uint room = 0;
+            if (!String.IsNullOrEmpty(roomId) && !uint.TryParse(roomId, out room))
+            {
+                ShowMessage(String.Format("目前支持的最大房间号为{0}", uint.MaxValue));
+                return;
+            }
+
+            DataManager.GetInstance().roomId = room;
+            DataManager.GetInstance().strRoomId = strRoomId;
+            string userSig = GenerateTestUserSig.GetInstance().GenTestUserSig(DataManager.GetInstance().userId);
+
+            TRTCSwitchRoomConfig config = new TRTCSwitchRoomConfig();
+            config.roomId = room;
+            config.strRoomId = strRoomId;
+            config.userSig = userSig;
+            mTRTCCloud.switchRoom(ref config);
+        }
+
+        private void removeAllWindowsBtn_Click(object sender, EventArgs e)
+        {
+            string hwnd_str = this.addHwndTextBox.Text;
+            if (string.IsNullOrEmpty(hwnd_str))
+            {
+                ShowMessage("移除的过滤窗口句柄不能为空！");
+                return;
+            }
+            uint hwnd = Convert.ToUInt32(hwnd_str, 16);
+            mTRTCCloud.removeExcludedShareWindow((IntPtr)hwnd);
+        }
+
+        private void addHwndBtn_Click(object sender, EventArgs e)
+        {
+            string hwnd_str = this.addHwndTextBox.Text;
+            if (string.IsNullOrEmpty(hwnd_str))
+            {
+                ShowMessage("添加的过滤窗口句柄不能为空！");
+                return;
+            }
+            uint hwnd = Convert.ToUInt32(hwnd_str, 16);
+            mTRTCCloud.addExcludedShareWindow((IntPtr)hwnd);
+        }
+
+        private void removeHwndBtn_Click(object sender, EventArgs e)
+        {
+            mTRTCCloud.removeAllExcludedShareWindow();
+        }
+
+        private void OnRoomTextBoxKeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar != '\b')
+            {
+                if (e.KeyChar < 48 || e.KeyChar > 57)
+                    e.Handled = true;
             }
         }
     }

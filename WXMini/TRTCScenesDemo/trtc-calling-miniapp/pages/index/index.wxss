@@ -1,0 +1,68 @@
+.container {
+  background-image: url(https://mc.qcloudimg.com/static/img/7da57e0050d308e2e1b1e31afbc42929/bg.png);
+  background-color: #333;
+  background-repeat:no-repeat;
+  background-size: cover;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.container .title{
+  color: #FFFFFF;
+  padding-top: 65rpx;
+  padding-bottom: 40rpx;
+  line-height: 60rpx;
+}
+.tips {
+  color: #ffffff;
+  font-size: 12px;
+  text-align: center;
+}
+.guide-box {
+  display: flex;
+  flex-wrap: wrap;
+  text-align: center;
+  padding: 100rpx 5vw;
+}
+.single-box {
+  width: 35vw;
+  height: 33vw;
+  background-color: rgba(0, 0, 0, 0.55);
+  text-align: center;
+  vertical-align: top;
+  margin: 5vw ;
+  margin-bottom: 60rpx;
+}
+.icon {
+  display: block;
+  width: 72rpx;
+  height: 72rpx;
+  margin: 20px auto 0;
+}
+.label {
+  display: block;
+  margin-top: 10px;
+  color: #CFE4FF;
+  font-size: 28rpx;
+}
+.desc {
+  display: block;
+  margin-top: 2px;
+  color: #CFE4FF;
+  font-size: 28rpx;
+  white-space: nowrap;
+}
+.logo-box {
+  position: absolute;
+  width: 100vw;
+  bottom: 36rpx;
+  text-align: center;
+}
+.logo {
+  width: 160rpx;
+  height: 44rpx;
+}

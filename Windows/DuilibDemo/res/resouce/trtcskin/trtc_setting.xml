@@ -400,6 +400,11 @@
 					<VerticalLayout width="80"/>
 					<Option name="check_voice_volume" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
 				</HorizontalLayout>
+				<HorizontalLayout inset="28,6,0,0" childvalign="left" height="24">
+					<Label text="开启黑帧推流" font="2" width="118" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,1"/>
+					<VerticalLayout width="80"/>
+					<Option name="check_black_push" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
+				</HorizontalLayout>
 				<HorizontalLayout inset="28,0,0,0" childvalign="left" height="24">
 					<Label text="开启自定义采集音频" font="2" width="118" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,3,0,1"/>
 					<VerticalLayout width="80"/>
@@ -434,6 +439,20 @@
 					<VerticalLayout width="80"/>
 					<Option name="check_localaudio_open"  text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
 				</HorizontalLayout>
+				<HorizontalLayout inset="0,0,0,0" childvalign="left" height="24">
+					<Label text="切换房间号(int)" font="2" width="110" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,3,0,1"/>
+					<VerticalLayout width="10"/>
+					<Edit name="edit_switch_room_id" text="" height="24" font="2" align="center" textpadding="20,0,20,0" tipvalue="8715442" tipvaluecolor="#FF808080" tipvaluealign="center" normalimage="res='login/edit_normal.png' corner='6,6,6,6'" focusedimage="res='login/edit_focus.png' corner='6,6,6,6'"/>
+					<VerticalLayout width="10"/>
+				</HorizontalLayout>
+				<HorizontalLayout inset="0,0,0,0" childvalign="left" height="24">
+					<Label text="切换房间号(string)" font="2" width="110" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,3,0,1"/>
+					<VerticalLayout width="10"/>
+					<Edit name="edit_switch_str_room_id" text="" height="24" font="2" align="center" textpadding="20,0,20,0" tipvalue="8715442" tipvaluecolor="#FF808080" tipvaluealign="center" normalimage="res='login/edit_normal.png' corner='6,6,6,6'" focusedimage="res='login/edit_focus.png' corner='6,6,6,6'"/>
+					<VerticalLayout width="10"/>
+					<Button name="btn_switch_room" text="切换" textcolor="#FF000000" textpadding="6,0,6,0" style="btn_style" width="60" height="30" />
+					<VerticalLayout width="10"/>
+				</HorizontalLayout>
 				<HorizontalLayout inset="28,0,0,0" childvalign="left" height="24" visible="false">
 					<Label text="Socks5代理IP" font="2" width="118" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,3,0,1"/>
 					<VerticalLayout width="80"/>
@@ -466,6 +485,12 @@
 					<Label text="移除过滤窗口" font="2" width="130" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,3,0,1"/>
 					<VerticalLayout width="10"/>
 					<Button name="btn_del_all_excluded_wnd" text="移除所有" textcolor="#FF000000" textpadding="6,0,6,0" style="btn_style" width="100" height="30" />
+					<VerticalLayout width="10"/>
+				</HorizontalLayout>
+				<HorizontalLayout inset="0,0,0,0" childvalign="left" height="24">
+					<Label text="发送SEI信息" font="2" width="130" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,3,0,1"/>
+					<VerticalLayout width="10"/>
+					<Button name="btn_send_sei" text="发送" textcolor="#FF000000" textpadding="6,0,6,0" style="btn_style" width="100" height="30" />
 					<VerticalLayout width="10"/>
 				</HorizontalLayout>
 			</VerticalLayout>

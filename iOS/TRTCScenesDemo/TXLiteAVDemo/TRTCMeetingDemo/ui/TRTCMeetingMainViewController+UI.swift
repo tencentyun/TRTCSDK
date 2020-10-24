@@ -50,6 +50,10 @@ extension TRTCMeetingMainViewController {
         roomIdLabel.text = String(startConfig.roomId)
         roomIdLabel.font = UIFont.systemFont(ofSize: 18)
         roomIdLabel.textColor = .white
+        roomIdLabel.isUserInteractionEnabled = true
+        
+        
+        roomIdLabel.addGestureRecognizer(longGesture)
         backView.addSubview(roomIdLabel)
         
         // 扬声器切换
@@ -256,8 +260,10 @@ extension TRTCMeetingMainViewController {
                 // 屏幕分享
                 let params = TRTCVideoEncParam()
                 params.videoResolution = TRTCVideoResolution._1280_720
+                params.resMode = TRTCVideoResolutionMode.portrait
                 params.videoFps = 10
-                params.videoBitrate = 1800
+                params.enableAdjustRes = false
+                params.videoBitrate = 1500
                 TRTCMeeting.sharedInstance().startScreenCapture(params)
                 TRTCBroadcastExtensionLauncher.launch()
             } else {
@@ -315,6 +321,20 @@ extension TRTCMeetingMainViewController {
             
         } else {
             TRTCMeeting.sharedInstance().stopCameraPreview()
+        }
+    }
+    
+    @objc func showlogView(gesture: UILongPressGestureRecognizer) {
+        if gesture.state != UIGestureRecognizer.State.began {
+            return
+        }
+        if !self.isLogViewShow {
+            TRTCCloud.sharedInstance()?.setDebugViewMargin(selfUserId, margin: TXEdgeInsets.init(top: 70, left: 10, bottom: 30, right: 10))
+            TRTCCloud.sharedInstance()?.showDebugView(2) // 显示全量版的Log视图
+            self.isLogViewShow = true
+        } else {
+            TRTCCloud.sharedInstance()?.showDebugView(0) // 显示全量版的Log视图
+            self.isLogViewShow = false
         }
     }
 }

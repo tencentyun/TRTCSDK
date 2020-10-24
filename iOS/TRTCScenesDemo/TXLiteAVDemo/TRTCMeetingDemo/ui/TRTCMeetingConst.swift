@@ -14,6 +14,7 @@ let TRTCMeetingUserNameKey = "TRTCMeetingUserNameKey"
 let TRTCMeetingOpenCameraKey = "TRTCMeetingOpenCameraKey"
 let TRTCMeetingOpenMicKey = "TRTCMeetingOpenMicKey"
 let TRTCMeetingAudioQualityKey = "TRTCMeetingAudioQualityKey"
+let TRTCMeetingVideoQualityKey = "TRTCMeetingVideoQualityKey"
 
 
 // 通知

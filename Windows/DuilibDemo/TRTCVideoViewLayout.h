@@ -67,14 +67,13 @@ public:
         bool _bMuteVideo = false;
         bool _bPKUser = false;
         uint32_t _pkRoomId;
-        TRTCVideoRotation _viewRotation = TRTCVideoRotation0;  //旋转角度
-        TRTCVideoFillMode _vidwFillMode = TRTCVideoFillMode_Fit;
+        TRTCRenderParams renderParams;
         uint32_t _volume = 0;          //
         uint32_t _netSignalQuality = 1;          //
         VideoCanvasAttribute() {};
         void clean() {
-            _viewRotation = TRTCVideoRotation0;
-            _vidwFillMode = TRTCVideoFillMode_Fit;
+            renderParams.rotation = TRTCVideoRotation0;
+            renderParams.fillMode = TRTCVideoFillMode_Fit;
             _volume = 0;
             _bMuteAudio = false;
             _bMuteVideo = false;
@@ -116,7 +115,7 @@ private:
 private:
     bool m_bMainView = false;
     UINT m_nTimerID = 0;
-    bool m_bRegMsgFilter = nullptr;
+    bool m_bRegMsgFilter = false;
     int m_viewwidth = 0;
     int m_viewheight = 0;
 };

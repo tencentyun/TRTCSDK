@@ -4,6 +4,7 @@
 #include <string>
 #include <memory>
 #include "TRTCCloudDef.h"
+#include "TXLiteAVBase.h"
 
 class CConfigMgr;
 
@@ -33,6 +34,7 @@ public:
     std::string _userId = "test_trtc_01";
     std::string _pwd = "12345678";
     int _roomId = 1222222;
+    std::string strRoomId = "";
     std::string _userSig;
     bool _bEnterRoom = false;
     bool publish_audio = false;
@@ -93,6 +95,8 @@ public:
     VideoResBitrateTable getVideoConfigInfo(int resolution);
     bool getAudioAvaliable(std::string userId);
     bool getVideoAvaliable(std::string userId, TRTCVideoStreamType type);
+    TRTCRenderParams getLocalRenderParams();
+    TRTCVideoStreamType getRemoteVideoStreamType();
 public:
     void WriteEngineConfig();
     BeautyConfig& GetBeautyConfig();
@@ -131,6 +135,7 @@ public: //trtc
     bool m_bLocalVideoMirror = false;      //本地镜像
     bool m_bRemoteVideoMirror = false;     //暂不支持
     bool m_bShowAudioVolume =   true;      //开启音量提示
+    bool m_bBlackFramePush = false;        //开启黑帧推流
 
     bool m_bCustomAudioCapture = false;    //自定义采集音频
     bool m_bCustomVideoCapture = false;    //自定义采集视频

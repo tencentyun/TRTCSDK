@@ -9,22 +9,13 @@
 /* Begin PBXBuildFile section */
 		401A9A42247FACAF00C0763B /* TCAudioSettingManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 401A9A40247FACAF00C0763B /* TCAudioSettingManager.h */; };
 		401A9A43247FACAF00C0763B /* TCAudioSettingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 401A9A41247FACAF00C0763B /* TCAudioSettingManager.m */; };
-		401A9A48247FB78F00C0763B /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 401A9A47247FB78F00C0763B /* libc++.tbd */; };
 		40AF719F247D036200EBB371 /* AudioEffectSettingKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 40AF719D247D036200EBB371 /* AudioEffectSettingKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		40AF71AD247D03E700EBB371 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40AF71AC247D03E700EBB371 /* AppDelegate.swift */; };
-		40AF71AF247D03E700EBB371 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40AF71AE247D03E700EBB371 /* SceneDelegate.swift */; };
-		40AF71B1247D03E700EBB371 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40AF71B0247D03E700EBB371 /* ViewController.swift */; };
-		40AF71B4247D03E700EBB371 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 40AF71B2247D03E700EBB371 /* Main.storyboard */; };
-		40AF71B6247D03EA00EBB371 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 40AF71B5247D03EA00EBB371 /* Assets.xcassets */; };
-		40AF71B9247D03EA00EBB371 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 40AF71B7247D03EA00EBB371 /* LaunchScreen.storyboard */; };
-		40AF71BF247D040200EBB371 /* AudioEffectSettingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40AF719A247D036200EBB371 /* AudioEffectSettingKit.framework */; };
 		40AF71D4247D09DB00EBB371 /* AudioEffectSettingView.h in Headers */ = {isa = PBXBuildFile; fileRef = 40AF71D2247D09DB00EBB371 /* AudioEffectSettingView.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		40AF71D5247D09DB00EBB371 /* AudioEffectSettingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 40AF71D3247D09DB00EBB371 /* AudioEffectSettingView.m */; };
 		40AF7210247D154C00EBB371 /* TCASKitTheme.h in Headers */ = {isa = PBXBuildFile; fileRef = 40AF720E247D154C00EBB371 /* TCASKitTheme.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		40AF7211247D154C00EBB371 /* TCASKitTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 40AF720F247D154C00EBB371 /* TCASKitTheme.m */; };
-		40AF7214247D157400EBB371 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 40AF7216247D157400EBB371 /* Localizable.strings */; platformFilter = ios; };
+		40AF7214247D157400EBB371 /* AudioSettingPanelLocalizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 40AF7216247D157400EBB371 /* AudioSettingPanelLocalizable.strings */; platformFilter = ios; };
 		40AF7222247DFE9800EBB371 /* TCCommonTool.h in Headers */ = {isa = PBXBuildFile; fileRef = 40AF7221247DFDEB00EBB371 /* TCCommonTool.h */; };
-		40AF722B247E02E100EBB371 /* AudioEffectSettingKitResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 40AF71C9247D08F700EBB371 /* AudioEffectSettingKitResources.bundle */; };
 		40AF7230247E068300EBB371 /* TCMusicSelectItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 40AF722D247E039C00EBB371 /* TCMusicSelectItemView.m */; };
 		40AF7233247E0CE500EBB371 /* TCSlideItemView.h in Headers */ = {isa = PBXBuildFile; fileRef = 40AF7231247E0CE400EBB371 /* TCSlideItemView.h */; };
 		40AF7234247E0CE500EBB371 /* TCSlideItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 40AF7232247E0CE400EBB371 /* TCSlideItemView.m */; };
@@ -71,38 +62,8 @@
 		40E25FB6248029F8005EB543 /* ASNSLayoutConstraint+MASDebugAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 40E25F9D248029F8005EB543 /* ASNSLayoutConstraint+MASDebugAdditions.m */; };
 		40E25FB924803F68005EB543 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 401A9A47247FB78F00C0763B /* libc++.tbd */; };
 		40E25FBE24804490005EB543 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
-		D70D329FD460F6FDA92712FA /* TXLiteAVSDK_TRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B53E944AF2AEDEE4D64F19 /* TXLiteAVSDK_TRTC.framework */; };
+		9FC0B986FEFC8E597A265684 /* TXLiteAVSDK_TRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1270C17E130EF094F80A26B /* TXLiteAVSDK_TRTC.framework */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		40AF71C1247D040200EBB371 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 40AF7191247D036200EBB371 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 40AF7199247D036200EBB371;
-			remoteInfo = AudioSettingKit;
-		};
-		40AF7228247E02CC00EBB371 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 40AF7191247D036200EBB371 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 40AF71C8247D08F700EBB371;
-			remoteInfo = TCAudioSettingKitResources;
-		};
-/* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		40AF71C3247D040200EBB371 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		401A9A40247FACAF00C0763B /* TCAudioSettingManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TCAudioSettingManager.h; sourceTree = "<group>"; };
@@ -111,14 +72,6 @@
 		40AF719A247D036200EBB371 /* AudioEffectSettingKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AudioEffectSettingKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		40AF719D247D036200EBB371 /* AudioEffectSettingKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AudioEffectSettingKit.h; sourceTree = "<group>"; };
 		40AF719E247D036200EBB371 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		40AF71AA247D03E700EBB371 /* AudioEffectSettingKitExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AudioEffectSettingKitExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		40AF71AC247D03E700EBB371 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		40AF71AE247D03E700EBB371 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		40AF71B0247D03E700EBB371 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		40AF71B3247D03E700EBB371 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		40AF71B5247D03EA00EBB371 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		40AF71B8247D03EA00EBB371 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		40AF71BA247D03EB00EBB371 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		40AF71C4247D07E900EBB371 /* AudioEffectSettingKit.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = AudioEffectSettingKit.modulemap; sourceTree = "<group>"; };
 		40AF71C9247D08F700EBB371 /* AudioEffectSettingKitResources.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AudioEffectSettingKitResources.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		40AF71CB247D08F700EBB371 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -127,8 +80,8 @@
 		40AF71F2247D0E5B00EBB371 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		40AF720E247D154C00EBB371 /* TCASKitTheme.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TCASKitTheme.h; sourceTree = "<group>"; };
 		40AF720F247D154C00EBB371 /* TCASKitTheme.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TCASKitTheme.m; sourceTree = "<group>"; };
-		40AF7215247D157400EBB371 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
-		40AF7217247D15B700EBB371 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		40AF7215247D157400EBB371 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/AudioSettingPanelLocalizable.strings; sourceTree = "<group>"; };
+		40AF7217247D15B700EBB371 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/AudioSettingPanelLocalizable.strings"; sourceTree = "<group>"; };
 		40AF7221247DFDEB00EBB371 /* TCCommonTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TCCommonTool.h; sourceTree = "<group>"; };
 		40AF722C247E039C00EBB371 /* TCMusicSelectItemView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TCMusicSelectItemView.h; sourceTree = "<group>"; };
 		40AF722D247E039C00EBB371 /* TCMusicSelectItemView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TCMusicSelectItemView.m; sourceTree = "<group>"; };
@@ -177,7 +130,7 @@
 		40E25F9B248029F8005EB543 /* ASMASLayoutConstraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASMASLayoutConstraint.h; sourceTree = "<group>"; };
 		40E25F9C248029F8005EB543 /* ASViewController+MASAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ASViewController+MASAdditions.h"; sourceTree = "<group>"; };
 		40E25F9D248029F8005EB543 /* ASNSLayoutConstraint+MASDebugAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ASNSLayoutConstraint+MASDebugAdditions.m"; sourceTree = "<group>"; };
-		A6B53E944AF2AEDEE4D64F19 /* TXLiteAVSDK_TRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TXLiteAVSDK_TRTC.framework; path = ../../../SDK/TXLiteAVSDK_TRTC.framework; sourceTree = "<group>"; };
+		E1270C17E130EF094F80A26B /* TXLiteAVSDK_TRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TXLiteAVSDK_TRTC.framework; path = ../../../SDK/TXLiteAVSDK_TRTC.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -189,16 +142,7 @@
 				40E25FBE24804490005EB543 /* BuildFile in Frameworks */,
 				40E25FB924803F68005EB543 /* libc++.tbd in Frameworks */,
 				40D08707249C9D460055F9A6 /* AssetsLibrary.framework in Frameworks */,
-				D70D329FD460F6FDA92712FA /* TXLiteAVSDK_TRTC.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		40AF71A7247D03E700EBB371 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				401A9A48247FB78F00C0763B /* libc++.tbd in Frameworks */,
-				40AF71BF247D040200EBB371 /* AudioEffectSettingKit.framework in Frameworks */,
+				9FC0B986FEFC8E597A265684 /* TXLiteAVSDK_TRTC.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -209,7 +153,6 @@
 			isa = PBXGroup;
 			children = (
 				40AF719C247D036200EBB371 /* AudioSettingKit */,
-				40AF71AB247D03E700EBB371 /* AudioSettingKitExample */,
 				40AF71BE247D040200EBB371 /* Frameworks */,
 				40AF719B247D036200EBB371 /* Products */,
 				40AF71A5247D03B500EBB371 /* Resource */,
@@ -221,7 +164,6 @@
 			isa = PBXGroup;
 			children = (
 				40AF719A247D036200EBB371 /* AudioEffectSettingKit.framework */,
-				40AF71AA247D03E700EBB371 /* AudioEffectSettingKitExample.app */,
 				40AF71C9247D08F700EBB371 /* AudioEffectSettingKitResources.bundle */,
 			);
 			name = Products;
@@ -245,24 +187,10 @@
 		40AF71A5247D03B500EBB371 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
-				40AF7216247D157400EBB371 /* Localizable.strings */,
+				40AF7216247D157400EBB371 /* AudioSettingPanelLocalizable.strings */,
 				40AF7248247E40EE00EBB371 /* TCAudioSettingKit.xcassets */,
 			);
 			path = Resource;
-			sourceTree = "<group>";
-		};
-		40AF71AB247D03E700EBB371 /* AudioSettingKitExample */ = {
-			isa = PBXGroup;
-			children = (
-				40AF71AC247D03E700EBB371 /* AppDelegate.swift */,
-				40AF71AE247D03E700EBB371 /* SceneDelegate.swift */,
-				40AF71B0247D03E700EBB371 /* ViewController.swift */,
-				40AF71B2247D03E700EBB371 /* Main.storyboard */,
-				40AF71B5247D03EA00EBB371 /* Assets.xcassets */,
-				40AF71B7247D03EA00EBB371 /* LaunchScreen.storyboard */,
-				40AF71BA247D03EB00EBB371 /* Info.plist */,
-			);
-			path = AudioSettingKitExample;
 			sourceTree = "<group>";
 		};
 		40AF71BE247D040200EBB371 /* Frameworks */ = {
@@ -271,7 +199,7 @@
 				40D08706249C9D460055F9A6 /* AssetsLibrary.framework */,
 				40D08703249C9C130055F9A6 /* Accelerate.framework */,
 				401A9A47247FB78F00C0763B /* libc++.tbd */,
-				A6B53E944AF2AEDEE4D64F19 /* TXLiteAVSDK_TRTC.framework */,
+				E1270C17E130EF094F80A26B /* TXLiteAVSDK_TRTC.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -461,26 +389,6 @@
 			productReference = 40AF719A247D036200EBB371 /* AudioEffectSettingKit.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		40AF71A9247D03E700EBB371 /* AudioEffectSettingKitExample */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 40AF71BB247D03EB00EBB371 /* Build configuration list for PBXNativeTarget "AudioEffectSettingKitExample" */;
-			buildPhases = (
-				40AF71A6247D03E700EBB371 /* Sources */,
-				40AF71A7247D03E700EBB371 /* Frameworks */,
-				40AF71A8247D03E700EBB371 /* Resources */,
-				40AF71C3247D040200EBB371 /* Embed Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				40AF7229247E02CC00EBB371 /* PBXTargetDependency */,
-				40AF71C2247D040200EBB371 /* PBXTargetDependency */,
-			);
-			name = AudioEffectSettingKitExample;
-			productName = AudioSettingKitExample;
-			productReference = 40AF71AA247D03E700EBB371 /* AudioEffectSettingKitExample.app */;
-			productType = "com.apple.product-type.application";
-		};
 		40AF71C8247D08F700EBB371 /* AudioEffectSettingKitResources */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 40AF71CC247D08F700EBB371 /* Build configuration list for PBXNativeTarget "AudioEffectSettingKitResources" */;
@@ -509,9 +417,6 @@
 					40AF7199247D036200EBB371 = {
 						CreatedOnToolsVersion = 11.4.1;
 					};
-					40AF71A9247D03E700EBB371 = {
-						CreatedOnToolsVersion = 11.4.1;
-					};
 					40AF71C8247D08F700EBB371 = {
 						CreatedOnToolsVersion = 11.4.1;
 					};
@@ -532,7 +437,6 @@
 			projectRoot = "";
 			targets = (
 				40AF7199247D036200EBB371 /* AudioEffectSettingKit */,
-				40AF71A9247D03E700EBB371 /* AudioEffectSettingKitExample */,
 				40AF71C8247D08F700EBB371 /* AudioEffectSettingKitResources */,
 			);
 		};
@@ -546,22 +450,11 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		40AF71A8247D03E700EBB371 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				40AF722B247E02E100EBB371 /* AudioEffectSettingKitResources.bundle in Resources */,
-				40AF71B9247D03EA00EBB371 /* LaunchScreen.storyboard in Resources */,
-				40AF71B6247D03EA00EBB371 /* Assets.xcassets in Resources */,
-				40AF71B4247D03E700EBB371 /* Main.storyboard in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		40AF71C7247D08F700EBB371 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				40AF7214247D157400EBB371 /* Localizable.strings in Resources */,
+				40AF7214247D157400EBB371 /* AudioSettingPanelLocalizable.strings in Resources */,
 				40AF7249247E40EE00EBB371 /* TCAudioSettingKit.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -598,55 +491,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		40AF71A6247D03E700EBB371 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				40AF71B1247D03E700EBB371 /* ViewController.swift in Sources */,
-				40AF71AD247D03E700EBB371 /* AppDelegate.swift in Sources */,
-				40AF71AF247D03E700EBB371 /* SceneDelegate.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXTargetDependency section */
-		40AF71C2247D040200EBB371 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 40AF7199247D036200EBB371 /* AudioEffectSettingKit */;
-			targetProxy = 40AF71C1247D040200EBB371 /* PBXContainerItemProxy */;
-		};
-		40AF7229247E02CC00EBB371 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 40AF71C8247D08F700EBB371 /* AudioEffectSettingKitResources */;
-			targetProxy = 40AF7228247E02CC00EBB371 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
-
 /* Begin PBXVariantGroup section */
-		40AF71B2247D03E700EBB371 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				40AF71B3247D03E700EBB371 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		40AF71B7247D03EA00EBB371 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				40AF71B8247D03EA00EBB371 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-		40AF7216247D157400EBB371 /* Localizable.strings */ = {
+		40AF7216247D157400EBB371 /* AudioSettingPanelLocalizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
 				40AF7215247D157400EBB371 /* en */,
 				40AF7217247D15B700EBB371 /* zh-Hans */,
 			);
-			name = Localizable.strings;
+			name = AudioSettingPanelLocalizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -851,50 +705,6 @@
 			};
 			name = Release;
 		};
-		40AF71BC247D03EB00EBB371 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = F8A3GH6Q4W;
-				ENABLE_BITCODE = NO;
-				FRAMEWORK_SEARCH_PATHS = "${SRCROOT}/../../../SDK/";
-				INFOPLIST_FILE = AudioSettingKitExample/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.tencent.AudioSettingKitExample;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		40AF71BD247D03EB00EBB371 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = F8A3GH6Q4W;
-				ENABLE_BITCODE = NO;
-				FRAMEWORK_SEARCH_PATHS = "${SRCROOT}/../../../SDK/";
-				INFOPLIST_FILE = AudioSettingKitExample/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.tencent.AudioSettingKitExample;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
 		40AF71CD247D08F700EBB371 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -958,15 +768,6 @@
 			buildConfigurations = (
 				40AF71A3247D036200EBB371 /* Debug */,
 				40AF71A4247D036200EBB371 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		40AF71BB247D03EB00EBB371 /* Build configuration list for PBXNativeTarget "AudioEffectSettingKitExample" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				40AF71BC247D03EB00EBB371 /* Debug */,
-				40AF71BD247D03EB00EBB371 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

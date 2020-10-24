@@ -319,6 +319,8 @@ namespace TRTCCSharpDemo
 
         public uint roomId { get; set; }
 
+        public string strRoomId { get; set; }
+
         // 该字段只作用于直播模式
         public TRTCRoleType roleType { get; set; }
 
@@ -333,18 +335,28 @@ namespace TRTCCSharpDemo
         public TRTCAppScene appScene { get; set; }
 
         public TRTCVideoFillMode videoFillMode { get; set; }
-
+        public TRTCVideoRotation videoRotation { get; set; }
+        public bool isLocalVideoMirror { get; set; }
 
         public bool pushSmallVideo { get; set; }
         public bool playSmallVideo { get; set; }
 
-        public TRTCVideoRotation videoRotation { get; set; }
-
-        public bool isLocalVideoMirror { get; set; }
 
         public bool isRemoteVideoMirror { get; set; }
 
         public bool isMixTranscoding { get; set; }
+
+        public TRTCRenderParams GetRenderParams()
+        {
+            TRTCRenderParams renderParams = new TRTCRenderParams
+            {
+                fillMode = videoFillMode,
+                mirrorType = isLocalVideoMirror ?
+                    TRTCVideoMirrorType.TRTCVideoMirrorType_Enable : TRTCVideoMirrorType.TRTCVideoMirrorType_Disable,
+                rotation = videoRotation
+            };
+            return renderParams;
+        }
         #endregion
 
         #region 音频相关

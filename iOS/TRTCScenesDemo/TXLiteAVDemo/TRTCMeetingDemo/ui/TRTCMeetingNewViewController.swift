@@ -22,6 +22,10 @@ class TRTCMeetingNewViewController: UIViewController {
     let musicQualityButton = UIButton()
     var audioQuality: Int = 1
     
+    let distinctVideoButton = UIButton()
+    let fluencyVideoButton = UIButton()
+    var videoQuality: Int = 1 // 1 流畅, 2清晰
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()

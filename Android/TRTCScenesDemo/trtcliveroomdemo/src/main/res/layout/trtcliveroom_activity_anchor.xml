@@ -53,7 +53,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:constraint_referenced_ids="anchor_danmaku_view,layout_live_pusher_info,rv_audience_avatar,lv_im_msg,video_view_link_mic_1,video_view_link_mic_2,video_view_link_mic_3,btn_audio_ctrl,btn_request_pk,btn_message_input,btn_close,btn_switch_camera,beauty_btn" />
+        app:constraint_referenced_ids="anchor_danmaku_view,rv_audience_avatar,lv_im_msg,video_view_link_mic_1,video_view_link_mic_2,video_view_link_mic_3,btn_audio_ctrl,btn_request_pk,btn_message_input,btn_switch_camera,beauty_btn" />
+
+    <android.support.constraint.Group
+        android:id="@+id/after_live_toolbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="layout_live_pusher_info,btn_close"/>
 
     <RelativeLayout
         android:id="@+id/pk_container"

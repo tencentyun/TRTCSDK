@@ -230,6 +230,13 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setLocalViewMirror:(TRTCLocalVideoMirrorType)type;
 
 
+/**
+ * 设置网络qos参数
+ *
+ * @param qosParam 网络流控相关参数
+ */
+- (void)setNetworkQosParam:(TRTCNetworkQosParam *)qosParam;
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 //                 本地音频操作接口

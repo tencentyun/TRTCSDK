@@ -389,7 +389,7 @@
                 return @{
                     @"userName": @"name",
                     @"userId": @"userId",
-                    @"streamId" : @"streameId"
+                    @"streamId" : @"streamId"
                 };
             }];
             return @[[user mj_keyValuesWithKeys:@[@"userName", @"userId", @"streamId"]]];

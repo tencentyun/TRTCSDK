@@ -1,0 +1,45 @@
+<view class="container">
+  <TRTCCalling id="TRTCCalling-component" class="trtc-calling {{callingFlag ? '' : 'hidden'}}" config="{{config}}" pusherAvatar="{{pusherAvatar}}" remoteAvatar="{{invitee.avatar || inviter.avatar}}"></TRTCCalling>
+  <view wx:if="{{incomingCallFlag}}" class="incoming-call">
+    <image src="../Resources/avatar1_100.png" />
+    <view class="tips">{{invitation.inviter}}</view>
+    <view class="tips" >{{'邀请你' + (invitation.type === 1 ? '语音' : '视频') + '通话'}}</view>
+    <view class="btn-operate">
+      <view class="call-operate" style="background-color: red" bindtap="handleOnReject">
+        <image src="../Resources/hangup.png" />
+      </view>
+      <view class="call-operate" style="background-color: #07c160" bindtap="handleOnAccept">
+        <image src="../Resources/hangup.png" style="transform: rotate(-135deg); "/>
+      </view>
+    </view>
+  </view>
+  <view wx:if="{{inviteCallFlag}}" class="invite-call">
+    <image src="../Resources/avatar1_100.png" />
+    <view class="tips" >{{'等待' + invitee.userID + '接受邀请'}}</view>
+    <view class="btn-operate">
+      <view class="call-operate" style="background-color: red" bindtap="handleOnCancel">
+        <image src="../Resources/hangup.png" />
+      </view>
+    </view>
+  </view>
+  <view class="trtc-calling-index">
+    <view class="trtc-calling-index-title">
+      <image class="btn-goback" src="../Resources/back.png" bind:tap="onBack" />
+      <view class="trtc-calling-index-title title">视频通话</view>
+    </view>
+    <view class="trtc-calling-index-search">
+      <view class="search">
+        <input class="input-search-user" value="{{userIDToSearch}}" type="number" bindinput="userIDToSearchInput" placeholder="搜索用户ID" />
+        <view class="btn-search" bindtap="searchUser" >搜索</view>
+      </view> 
+      <view class="search-result" wx:if="{{searchResultShow}}">
+        <view class="title-number">您的userID是：{{config.userID}}</view>
+        <view wx:if="{{invitee.userID}}" class="user-to-call">
+          <view class="userinfo-userid">{{invitee.userID}}</view>
+          <view class="btn-userinfo-call" bindtap="call">呼叫</view>
+        </view>
+        <view wx:else>未查询到此用户</view>
+      </view>
+    </view>
+  </view>
+</view>

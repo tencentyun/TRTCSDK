@@ -136,6 +136,7 @@
     _logicView.delegate = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
+    [TRTCCloud destroySharedIntance]; // 直播结束的时候销毁实例
     NSLog(@"dealloc anchorVC");
 }
 

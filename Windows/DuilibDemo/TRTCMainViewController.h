@@ -59,6 +59,7 @@ public:
     void onUpdateRoleChange();                                                  //主播切观众时。
     void onSendFirstLocalVideoFrame(int streamType);
     void onSendFirstLocalAudioFrame();
+    void onSwitchRoom(int errCode, std::string errMsg);
 private:
     void CheckLocalUiStatus();
     void onViewBtnClickEvent(int id, std::wstring userId, int streamType);

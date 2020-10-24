@@ -163,10 +163,13 @@ static int trtcLivePlayTimeOut = 5;
 - (void)setupVideoParam:(BOOL)isOwner {
     TRTCVideoEncParam *videoParam = [[TRTCVideoEncParam alloc] init];
     if (isOwner) {
-        videoParam.videoResolution = TRTCVideoResolution_960_540;
-        videoParam.videoBitrate = 1200;
+        // 大主播
+        videoParam.videoResolution = TRTCVideoResolution_1280_720;
+        videoParam.videoBitrate = 1800;
         videoParam.videoFps = 15;
+        videoParam.enableAdjustRes = YES;
     } else {
+        // 小主播
         videoParam.videoResolution = TRTCVideoResolution_480_270;
         videoParam.videoBitrate = 400;
         videoParam.videoFps = 15;

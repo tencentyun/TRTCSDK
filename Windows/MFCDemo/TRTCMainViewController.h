@@ -18,6 +18,7 @@
 #include <functional>
 #include <map>
 
+#pragma warning(disable : 4996)
 
 ITRTCCloud* getTRTCCloud();
 void destroyTRTCCloud();

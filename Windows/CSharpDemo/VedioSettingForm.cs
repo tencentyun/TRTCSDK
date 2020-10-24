@@ -15,6 +15,7 @@ namespace TRTCCSharpDemo
         private TRTCVideoEncParam mEncParam;
         private ITRTCDeviceCollection mCameraDeviceList;
         private ITRTCCloud mTRTCCloud;
+        private ITXDeviceManager mDeviceManager;
         private ITRTCDeviceInfo mCameraDevice;
         private TRTCMainForm mMainForm;
         public VedioSettingForm(TRTCMainForm mainform)
@@ -23,6 +24,7 @@ namespace TRTCCSharpDemo
             this.Disposed += new EventHandler(OnDisposed);
 
             this.mTRTCCloud = DataManager.GetInstance().trtcCloud;
+            this.mDeviceManager = mTRTCCloud.getDeviceManager();
 
             this.resolutionComboBox.Items.Add("120 x 120");
             this.resolutionComboBox.Items.Add("160 x 160");
@@ -89,7 +91,7 @@ namespace TRTCCSharpDemo
         #endregion
         public void OnDeviceChange(string deviceId, TRTCDeviceType type, TRTCDeviceState state)
         {
-            if (type == TRTCDeviceType.TRTCDeviceTypeCamera)
+            if (type == TRTCDeviceType.TXMediaDeviceTypeCamera)
             {
                 RefreshCameraDeviceList();
             }
@@ -104,6 +106,7 @@ namespace TRTCCSharpDemo
             mCameraDeviceList = null;
 
             mTRTCCloud = null;
+            mDeviceManager = null;
         }
         private void OnLoad(object sender, EventArgs e)
         {
@@ -181,16 +184,16 @@ namespace TRTCCSharpDemo
 
         private void RefreshCameraDeviceList()
         {
-            if (mTRTCCloud == null) return;
+            if (mDeviceManager == null) return;
             this.cameraDeviceComboBox.Items.Clear();
-            mCameraDeviceList = mTRTCCloud.getCameraDevicesList();
+            mCameraDeviceList = mDeviceManager.getDevicesList(TRTCDeviceType.TXMediaDeviceTypeCamera);
             if (mCameraDeviceList.getCount() <= 0)
             {
                 this.cameraDeviceComboBox.Items.Add("");
                 this.cameraDeviceComboBox.SelectionStart = this.cameraDeviceComboBox.Text.Length;
                 return;
             }
-            mCameraDevice = mTRTCCloud.getCurrentCameraDevice();
+            mCameraDevice = mDeviceManager.getCurrentDevice(TRTCDeviceType.TXMediaDeviceTypeCamera);
             for (uint i = 0; i < mCameraDeviceList.getCount(); i++)
             {
                 this.cameraDeviceComboBox.Items.Add(mCameraDeviceList.getDeviceName(i));
@@ -266,7 +269,7 @@ namespace TRTCCSharpDemo
             {
                 if (mCameraDeviceList.getDeviceName(i).Equals(this.cameraDeviceComboBox.Text))
                 {
-                    mTRTCCloud.setCurrentCameraDevice(mCameraDeviceList.getDevicePID(i));
+                    mDeviceManager.setCurrentDevice(TRTCDeviceType.TXMediaDeviceTypeCamera, mCameraDeviceList.getDevicePID(i));
                     mMainForm.OnCameraDeviceChange(mCameraDeviceList.getDevicePID(i));
                 }
             }

@@ -217,6 +217,13 @@ NSString *helpUrlDb[] = {
         self.didLaunched = YES;
         [self playVideoFromLaunchInfo:self.launchInfo];
     }
+    
+#if defined(TRTC) || defined(TRTC_APPSTORE)
+    NSString *appStoreID = @"1400663224";
+#else
+    NSString *appStoreID = @"1152295397";
+#endif
+    [self checkStoreVersion:appStoreID];
     return YES;
 }
 
@@ -377,5 +384,64 @@ NSString *helpUrlDb[] = {
 #pragma mark - 推送设置回调
 - (uint32_t)onSetAPPUnreadCount {
     return 0;
+}
+
+#pragma mark - 检测商店版本
+- (void)checkStoreVersion:(NSString *)appID {
+    NSString *url = [NSString stringWithFormat:@"https://itunes.apple.com/cn/lookup?id=%@", appID];
+    NSURLRequest * request = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
+    NSURLSession *session = [NSURLSession sharedSession];
+    __weak __typeof(self) wself = self;
+    NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        NSError *err;
+        if (!data || data.length == 0) {
+            NSLog(@"====== 没有商店信息 ======");
+            return;
+        }
+        NSDictionary *remoteDic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:&err];
+        if (err) {
+            NSLog(@"====== 没有商店信息 ======");
+            return;
+        }
+        NSArray *array = [remoteDic objectForKey:@"results"];
+        if (array.count < 1) {
+            return;
+        }
+        NSDictionary *appInfo = [array firstObject];
+        NSString *appStoreVersion = [appInfo objectForKey:@"version"];
+        NSLog(@"====== 商店应用版本信息：%@ ======", appStoreVersion);
+        BOOL result = [wself compareVersion:appStoreVersion];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (result) {
+                [wself showUpdateAlertController:appID];
+            }
+        });
+    }];
+    [task resume];
+}
+
+- (BOOL)compareVersion:(NSString *)appStoreVersion {
+    NSDictionary *infoDic = [[NSBundle mainBundle] infoDictionary];
+    NSString *currentVersion = [infoDic objectForKey:@"CFBundleShortVersionString"];
+    NSLog(@"====== 当前Demo版本号为：%@ ======", currentVersion);
+    return [appStoreVersion compare:currentVersion options:NSNumericSearch] == NSOrderedDescending;
+}
+
+- (void)showUpdateAlertController:(NSString *)appID {
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"有新版本发布啦~" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *sureAction = [UIAlertAction actionWithTitle:@"现在更新" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self openAppStore:appID];
+    }];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"稍后再说" style:UIAlertActionStyleCancel handler:nil];
+    [alertController addAction:sureAction];
+    [alertController addAction:cancelAction];
+    if (self.window.rootViewController) {
+        [self.window.rootViewController presentViewController:alertController animated:YES completion:nil];
+    }
+}
+
+- (void)openAppStore:(NSString *)appID {
+    NSURL*url = [NSURL URLWithString:[NSString stringWithFormat:@"https://itunes.apple.com/us/app/id%@?ls=1&mt=8",appID]];
+    [[UIApplication sharedApplication] openURL:url];
 }
 @end

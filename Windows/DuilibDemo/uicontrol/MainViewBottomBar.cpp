@@ -398,7 +398,6 @@ LRESULT MainViewBottomBar::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lPara
             pBtn->SetForeImage(L"dest='24,4,50,30' source='0,0,26,26' res='bottom/screen_share_normal.png'");
             pBtn->SetText(L"启动分享");
         }
-        TRTCCloudCore::GetInstance()->stopScreen();
         TRTCShareScreenToolMgr::GetInstance()->destroyToolWnd();
 
         CDataCenter::GetInstance()->m_localInfo.publish_sub_video = false;
