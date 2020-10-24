@@ -234,7 +234,7 @@ typedef void (^block)(TRTCMeeting *self);
     params.role = TRTCRoleAnchor; // 主播角色
     params.streamId = self.streamId;
     
-    [[TRTCCloud sharedInstance] enterRoom:params appScene:TRTCAppSceneLIVE];
+    [[TRTCCloud sharedInstance] enterRoom:params appScene:TRTCAppSceneVideoCall];
 }
 
 - (void)leaveMeeting:(TRTCMeetingCallback)callback {
@@ -425,6 +425,10 @@ typedef void (^block)(TRTCMeeting *self);
     [[TRTCCloud sharedInstance] setLocalViewMirror:type];
 }
 
+- (void)setNetworkQosParam:(TRTCNetworkQosParam *)qosParam {
+    [[TRTCCloud sharedInstance] setNetworkQosParam:qosParam];
+}
+
 - (void)startMicrophone {
     [[TRTCCloud sharedInstance] startLocalAudio];
 }
@@ -531,7 +535,7 @@ typedef void (^block)(TRTCMeeting *self);
     param.videoBitrate = _videoBitrate;
     param.videoFps = _videoFPS;
     param.resMode = TRTCVideoResolutionModePortrait;
-    
+    param.enableAdjustRes = YES;
     [[TRTCCloud sharedInstance] setVideoEncoderParam:param];
 }
 

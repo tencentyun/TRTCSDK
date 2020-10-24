@@ -86,17 +86,13 @@ class TRTCMeetingMoreViewVideoVC: UIViewController, UIPickerViewDelegate, UIPick
     // 创建码表, resolution 的值详见：TRTCVideoResolution
     let bitrateTable = [TRTCMeetingBitrateTable](
         arrayLiteral:
-        TRTCMeetingBitrateTable(resolutionName: "160 * 160", resolution: 3, defaultBitrate: 300, minBitrate: 40, maxBitrate: 300, stepBitrate: 10),
-        TRTCMeetingBitrateTable(resolutionName: "180 * 320", resolution: 104, defaultBitrate: 350, minBitrate: 80, maxBitrate: 350, stepBitrate: 10),
-        TRTCMeetingBitrateTable(resolutionName: "240 * 320", resolution: 56, defaultBitrate: 400, minBitrate: 100, maxBitrate: 400, stepBitrate: 10),
-        TRTCMeetingBitrateTable(resolutionName: "480 * 480", resolution: 7, defaultBitrate: 750, minBitrate: 200, maxBitrate: 1000, stepBitrate: 10),
-        TRTCMeetingBitrateTable(resolutionName: "360 * 640", resolution: 108, defaultBitrate: 900, minBitrate: 200, maxBitrate: 1000, stepBitrate: 10),
-        TRTCMeetingBitrateTable(resolutionName: "480 * 640", resolution: 62, defaultBitrate: 1000, minBitrate: 250, maxBitrate: 1000, stepBitrate: 50),
-        TRTCMeetingBitrateTable(resolutionName: "540 * 960", resolution: 110, defaultBitrate: 1350, minBitrate: 400, maxBitrate: 1600, stepBitrate: 50),
-        TRTCMeetingBitrateTable(resolutionName: "720 * 1280", resolution: 112, defaultBitrate: 1850, minBitrate: 500, maxBitrate: 2000, stepBitrate: 50),
-        TRTCMeetingBitrateTable(resolutionName: "1080 * 1920", resolution: 114, defaultBitrate: 1900, minBitrate: 800, maxBitrate: 3000, stepBitrate: 50)
+        TRTCMeetingBitrateTable(resolutionName: "180 * 320", resolution:TRTCVideoResolution._320_180.rawValue, defaultBitrate: 350, minBitrate: 80, maxBitrate: 350, stepBitrate: 10),
+        TRTCMeetingBitrateTable(resolutionName: "270 * 480", resolution: TRTCVideoResolution._480_270.rawValue, defaultBitrate: 500, minBitrate: 200, maxBitrate: 1000, stepBitrate: 10),
+        TRTCMeetingBitrateTable(resolutionName: "360 * 640", resolution: TRTCVideoResolution._640_360.rawValue, defaultBitrate: 600, minBitrate: 200, maxBitrate: 1000, stepBitrate: 10),
+        TRTCMeetingBitrateTable(resolutionName: "540 * 960", resolution: TRTCVideoResolution._960_540.rawValue, defaultBitrate: 900, minBitrate: 400, maxBitrate: 1600, stepBitrate: 50),
+        TRTCMeetingBitrateTable(resolutionName: "720 * 1280", resolution: TRTCVideoResolution._1280_720.rawValue, defaultBitrate: 1250, minBitrate: 500, maxBitrate: 2000, stepBitrate: 50)
     )
-    var bitrateIndex = 6 // 默认540 * 960
+    var bitrateIndex = 3 // 默认540 * 960
     
     // 码率SliderView
     lazy var bitrateSlider: UISlider = {

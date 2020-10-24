@@ -15,6 +15,7 @@ struct TRTCMeetingStartConfig {
     var isVideoOn: Bool = true
     var isAudioOn: Bool = true
     var audioQuality: Int = 0
+    var videoQuality: Int = 1 // 1 流畅 2 清晰
 }
 
 class MeetingAttendeeModel: TRTCMeetingUserInfo {
@@ -55,6 +56,11 @@ class TRTCMeetingMainViewController: UIViewController, TRTCMeetingDelegate,
     
     // 房间号label
     let roomIdLabel = UILabel()
+    lazy var longGesture: UILongPressGestureRecognizer = {
+        let gesture = UILongPressGestureRecognizer.init(target: self, action: #selector(showlogView(gesture:)))
+        gesture.minimumPressDuration = 3
+        return gesture
+    }()
     
     // 底部按钮
     var beautyPannel = TCBeautyPanel()
@@ -65,6 +71,9 @@ class TRTCMeetingMainViewController: UIViewController, TRTCMeetingDelegate,
     let shareScreen = UIButton()
     let moreSettingButton = UIButton()
     let moreSettingVC = TRTCMeetingMoreControllerUI()
+    
+    // 标记是否显示Log视图
+    var isLogViewShow: Bool = false
     
     var topPadding: CGFloat = {
         if #available(iOS 11.0, *) {
@@ -98,7 +107,7 @@ class TRTCMeetingMainViewController: UIViewController, TRTCMeetingDelegate,
         collection.backgroundColor = .pannelBackColor
         collection.dataSource = self
         collection.delegate = self
-        
+
         return collection
     }()
     
@@ -148,6 +157,7 @@ class TRTCMeetingMainViewController: UIViewController, TRTCMeetingDelegate,
     }
     
     deinit {
+        beautyPannel.resetAndApplyValues() // 销毁时重置美颜参数
         UIApplication.shared.isIdleTimerDisabled = false
         debugPrint("deinit \(self)")
     }
@@ -189,6 +199,9 @@ class TRTCMeetingMainViewController: UIViewController, TRTCMeetingDelegate,
         
         // 开启镜像
         TRTCMeeting.sharedInstance().setLocalViewMirror(TRTCLocalVideoMirrorType.enable)
+        
+        // 设置视频采集参数
+        changeResolution()
     }
     
     func createOrEnterMeeting() {
@@ -210,6 +223,53 @@ class TRTCMeetingMainViewController: UIViewController, TRTCMeetingDelegate,
                     self.view.makeToast("会议进入失败：" + msg!)
                 }
             }
+        }
+    }
+    
+    func changeResolution() {
+        guard !isScreenPushing else {
+            return
+        }
+        // 流畅设置
+        func fluencySetting(memeberCount: Int) {
+            let qosParam = TRTCNetworkQosParam.init()
+            qosParam.preference = TRTCVideoQosPreference.smooth
+            TRTCMeeting.sharedInstance().setNetworkQosParam(qosParam)
+            if memeberCount < 5 {
+                TRTCMeeting.sharedInstance().setVideoResolution(TRTCVideoResolution._640_360)
+                TRTCMeeting.sharedInstance().setVideoFps(15)
+                TRTCMeeting.sharedInstance().setVideoBitrate(700)
+            } else {
+                TRTCMeeting.sharedInstance().setVideoResolution(TRTCVideoResolution._480_270)
+                TRTCMeeting.sharedInstance().setVideoFps(15)
+                TRTCMeeting.sharedInstance().setVideoBitrate(350)
+            }
+        }
+        // 清晰设置
+        func distinctSetting(memberCount: Int) {
+            let qosParam = TRTCNetworkQosParam.init()
+            qosParam.preference = TRTCVideoQosPreference.clear
+            TRTCMeeting.sharedInstance().setNetworkQosParam(qosParam)
+            if memberCount <= 2 {
+                TRTCMeeting.sharedInstance().setVideoResolution(TRTCVideoResolution._960_540)
+                TRTCMeeting.sharedInstance().setVideoFps(15)
+                TRTCMeeting.sharedInstance().setVideoBitrate(1300)
+            } else if memberCount >= 3 && memberCount <= 4 {
+                TRTCMeeting.sharedInstance().setVideoResolution(TRTCVideoResolution._640_360)
+                TRTCMeeting.sharedInstance().setVideoFps(15)
+                TRTCMeeting.sharedInstance().setVideoBitrate(800)
+            } else if memberCount > 4 {
+                TRTCMeeting.sharedInstance().setVideoResolution(TRTCVideoResolution._480_270)
+                TRTCMeeting.sharedInstance().setVideoFps(15)
+                TRTCMeeting.sharedInstance().setVideoBitrate(400)
+            }
+        }
+        if startConfig.videoQuality == 1 {
+            // 流畅
+            fluencySetting(memeberCount: attendeeList.count)
+        } else {
+            // 清晰
+            distinctSetting(memberCount: attendeeList.count)
         }
     }
     
@@ -245,7 +305,7 @@ class TRTCMeetingMainViewController: UIViewController, TRTCMeetingDelegate,
         userModel.isAudioAvailable = false
         userModel.isVideoAvailable = false
         attendeeList.append(userModel)
-        
+        changeResolution()
         let renderView = MeetingRenderView()
         renderView.attendeeModel = userModel
         renderViews.append(renderView)
@@ -283,7 +343,7 @@ class TRTCMeetingMainViewController: UIViewController, TRTCMeetingDelegate,
         attendeeList = attendeeList.filter{ (model) -> Bool in
             model.userId != userId
         }
-        
+        changeResolution()
         NotificationCenter.default.post(name: refreshUserListNotification, object: attendeeList)
         reloadData()
     }
@@ -327,6 +387,9 @@ class TRTCMeetingMainViewController: UIViewController, TRTCMeetingDelegate,
     
     func onScreenCaptureStarted() {
         debugPrint("log: onScreenCaptureStarted")
+        if !self.isScreenPushing {
+            self.isScreenPushing = true
+        }
         self.view.makeToast("屏幕分享开始")
     }
     
@@ -352,6 +415,7 @@ class TRTCMeetingMainViewController: UIViewController, TRTCMeetingDelegate,
             if #available(iOS 11.0, *) {
                 TRTCMeeting.sharedInstance().stopScreenCapture()
             }
+            changeResolution()
         }
     }
     

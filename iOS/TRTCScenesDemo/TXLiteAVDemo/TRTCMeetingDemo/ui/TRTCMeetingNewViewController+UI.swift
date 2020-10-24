@@ -238,6 +238,70 @@ extension TRTCMeetingNewViewController {
             make.width.equalTo(40)
         }
         
+        // 画质选择
+        let videoQualityLabel = UILabel()
+        view.addSubview(videoQualityLabel)
+        videoQualityLabel.backgroundColor = .clear
+        videoQualityLabel.textColor = UIColor(rgb: 0xebf4ff)
+        videoQualityLabel.font = UIFont.systemFont(ofSize: 16)
+        videoQualityLabel.text = "画质选择"
+        videoQualityLabel.snp.makeConstraints { (make) in
+            make.top.equalTo(speechQualityLabel.snp.bottom).offset(34)
+            make.leading.equalTo(openMicTip)
+            make.width.equalTo(100)
+            make.height.equalTo(24)
+        }
+        
+        // 流畅
+        view.addSubview(fluencyVideoButton)
+        fluencyVideoButton.setImage(UIImage(named: "meeting_select_off"), for: .normal)
+        fluencyVideoButton.setImage(UIImage(named: "meeting_select_on"), for: .selected)
+        fluencyVideoButton.tag = 10
+        fluencyVideoButton.isSelected = true // 默认流畅
+        fluencyVideoButton.addTarget(self, action: #selector(selectVideoQuality(button:)), for: .touchUpInside)
+        fluencyVideoButton.snp.makeConstraints { (make) in
+            make.top.equalTo(videoQualityLabel.snp.bottom).offset(16)
+            make.leading.equalTo(inputPanel.snp.leading).offset(16)
+            make.height.equalTo(20)
+            make.width.equalTo(20)
+        }
+        
+        let fluencyVideoLabel = UILabel()
+        fluencyVideoLabel.text = "流畅"
+        fluencyVideoLabel.textColor = UIColor(rgb: 0xebf4ff)
+        view.addSubview(fluencyVideoLabel)
+        fluencyVideoLabel.snp.makeConstraints { (make) in
+            make.top.equalTo(fluencyVideoButton)
+            make.leading.equalTo(fluencyVideoButton.snp.trailing).offset(5)
+            make.height.equalTo(20)
+            make.width.equalTo(40)
+        }
+        
+        // 清晰
+        view.addSubview(distinctVideoButton)
+        distinctVideoButton.setImage(UIImage(named: "meeting_select_off"), for: .normal)
+        distinctVideoButton.setImage(UIImage(named: "meeting_select_on"), for: .selected)
+        distinctVideoButton.tag = 11
+        distinctVideoButton.addTarget(self, action: #selector(selectVideoQuality(button:)), for: .touchUpInside)
+        distinctVideoButton.snp.makeConstraints { (make) in
+            make.top.equalTo(fluencyVideoButton)
+            make.leading.equalTo(inputPanel.snp.trailing).offset(32).multipliedBy(1/3.0)
+            make.height.equalTo(20)
+            make.width.equalTo(20)
+        }
+        
+        let distinctVideoLabel = UILabel()
+        distinctVideoLabel.text = "清晰"
+        distinctVideoLabel.textColor = UIColor(rgb: 0xebf4ff)
+        view.addSubview(distinctVideoLabel)
+        distinctVideoLabel.snp.makeConstraints { (make) in
+            make.top.equalTo(distinctVideoButton)
+            make.leading.equalTo(distinctVideoButton.snp.trailing).offset(5)
+            make.height.equalTo(20)
+            make.width.equalTo(40)
+        }
+        
+        
 
         let enterBtn = UIButton()
         enterBtn.setTitle("进入会议", for: .normal)
@@ -247,7 +311,7 @@ extension TRTCMeetingNewViewController {
         enterBtn.setTitleColor(.white, for: .normal)
         view.addSubview(enterBtn)
         enterBtn.snp.makeConstraints { (make) in
-            make.top.equalTo(speechQualityButton.snp.bottom).offset(30)
+            make.top.equalTo(distinctVideoButton.snp.bottom).offset(30)
             make.leading.equalTo(32)
             make.trailing.equalTo(-32)
             make.height.equalTo(50)
@@ -284,6 +348,11 @@ extension TRTCMeetingNewViewController {
         
         if let audioQuality = UserDefaults.standard.object(forKey: TRTCMeetingAudioQualityKey) as? Int {
             setAudioQuality(audioQuality: audioQuality)
+        }
+        
+        if let videoQuality = UserDefaults.standard.object(forKey: TRTCMeetingVideoQualityKey) as? Int {
+            // 初始化设置视频质量参数
+            setVideoQuality(videoQuality: videoQuality)
         }
     }
     
@@ -342,6 +411,28 @@ extension TRTCMeetingNewViewController {
         }
     }
     
+    // 初始化设置
+    func setVideoQuality(videoQuality: Int) {
+        self.videoQuality = videoQuality
+        fluencyVideoButton.isSelected = videoQuality == 1 // 流畅
+        distinctVideoButton.isSelected = videoQuality != 1 // 清晰
+    }
+    
+    @objc
+    func selectVideoQuality(button: UIButton) {
+        if button.isSelected {
+            return
+        }
+        button.isSelected = true
+        if button == distinctVideoButton {
+            fluencyVideoButton.isSelected = false
+            videoQuality = 2 // 设置为清晰
+        } else if button == fluencyVideoButton {
+            distinctVideoButton.isSelected = false
+            videoQuality = 1 // 设置为流畅
+        }
+    }
+    
     func autoCheck() -> (Bool, UInt32, String) {
         if (roomInput.text?.count ?? 0) <= 0 {
             view.makeToast("请输入会议号")
@@ -391,13 +482,14 @@ extension TRTCMeetingNewViewController {
         UserDefaults.standard.set(self.openCameraSwitch.isOn, forKey: TRTCMeetingOpenCameraKey)
         UserDefaults.standard.set(self.openMicSwitch.isOn, forKey: TRTCMeetingOpenMicKey)
         UserDefaults.standard.set(self.audioQuality, forKey: TRTCMeetingAudioQualityKey)
-        
+        UserDefaults.standard.set(self.videoQuality, forKey: TRTCMeetingVideoQualityKey)
         // 进入房间主界面
         var config = TRTCMeetingStartConfig()
         config.roomId = UInt32(roomInput.text ?? "0") ?? 0
         config.isVideoOn = self.openCameraSwitch.isOn
         config.isAudioOn = self.openMicSwitch.isOn
         config.audioQuality = audioQuality
+        config.videoQuality = videoQuality
         
         let vc = TRTCMeetingMainViewController(config: config)
         self.navigationController?.pushViewController(vc, animated: true)

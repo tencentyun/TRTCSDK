@@ -50,7 +50,7 @@ alpha:1.0]
 }
 
 - (NSString *)localizedString:(NSString *)key {
-    return [self.resourceBundle localizedStringForKey:key value:@"" table:nil];
+    return [self.resourceBundle localizedStringForKey:key value:@"" table:@"AudioSettingPanelLocalizable"];
 }
 
 - (UIFont *)themeFontWithSize:(CGFloat)size {
