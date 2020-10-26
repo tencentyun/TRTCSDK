@@ -1,0 +1,12 @@
+<view class="container">
+<view class="box">
+  <view class="input-box">
+     <input type="text" maxlength="20" placeholder="请输入userID" bindinput='bindInputUserID' placeholder-style="color:#ffffff;opacity: 0.55;"/> 
+     <div class='codeBtn'></div>
+  </view>
+  <view class='login'>
+      <button class='loginBtn' bindtap='login'>登录</button>
+  </view>
+  </view>
+</view>
+<cover-image class='close' style="top:{{(headerHeight + statusBarHeight) - 34}}rpx" src="/pages/Resources/back.png" bindtap="onBack"></cover-image>

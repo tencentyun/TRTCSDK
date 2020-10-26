@@ -1,0 +1,75 @@
+.container {
+  background-image: url(https://mc.qcloudimg.com/static/img/7da57e0050d308e2e1b1e31afbc42929/bg.png);
+  background-color: #333;
+  background-repeat:no-repeat;
+  background-size: cover;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+.box{
+  height: 80vh;
+  width: 60vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.input-box {
+  background-color: transparent;
+  color: #ffffff;
+  padding: 2vw 0 2vw 1vw;
+  border-bottom: 1px solid #577785;
+  margin: 20rpx 0 20rpx 20rpx;
+  display: flex;
+  box-sizing: border-box;
+  width: 80vw;
+  position: relative;
+  align-items: center;
+  font-size: 20rpx;
+}
+input{
+  display: flex;
+  font-size: 20px; 
+  width: 60vw;
+}
+
+.login {
+  display: flex;
+  width: 100vw;
+  text-align: center;
+  bottom: 5vh;
+  margin:70rpx
+}
+.login button{
+  width: 80%;
+  background-color: #006eff;
+  border-radius: 50px;
+  color:white
+}
+.codeBtn{
+  float: right;
+  height: 60rpx;
+  min-height: 60rpx;
+  line-height: 60rpx;
+  font-size: 12px;
+  font-weight: normal;
+  padding: 0 10rpx;
+  
+}
+.btn{
+  width:180rpx;
+  color: #006eff;
+  background-color: white;
+  align-items: center;
+}
+.close {
+  position:absolute;
+  padding-left:5vw;
+  padding-right:5vw;
+  width:50rpx;
+  height:60rpx;
+}
