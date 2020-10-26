@@ -1,0 +1,18 @@
+{
+  "pages": [
+    "pages/login/login",
+    "pages/index/index",
+    "pages/audioCall/audioCall",
+    "pages/videoCall/videoCall"
+  ],
+  "window": {
+    "backgroundColor": "#888",
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#000",
+    "navigationBarTitleText": "腾讯视频云",
+    "navigationBarTextStyle": "white",
+    "navigationStyle": "custom"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}
