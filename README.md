@@ -14,45 +14,41 @@
 | Electron | [下载](http://liteavsdk-1252463788.cosgz.myqcloud.com/TXLiteAVSDK_TRTC_Electron_latest.zip) | [DOC](https://cloud.tencent.com/document/product/647/38548) | [DOC](https://cloud.tencent.com/document/product/647/38549) |[API](https://cloud.tencent.com/document/product/647/38551) |
 | 微信小程序 | [下载](http://liteavsdk-1252463788.cosgz.myqcloud.com/TRTC_WXMini_latest.zip) | [DOC](https://cloud.tencent.com/document/product/647/32399) | [DOC](https://cloud.tencent.com/document/product/647/32183) |[API](https://cloud.tencent.com/document/product/647/17018) |
 
-## Version 7.8 @ 2020.09.29
+## Version 7.9 @ 2020.10.27
 **欢迎加入**
-如果您对音视频技术感兴趣，请戳 [腾讯云 RTC 终端研发工程师](https://careers.tencent.com/jobdesc.html?postId=1297858141983088640) 加入我们：
-- 北京、上海、深圳均有岗位，欢迎加入
-- 需要有一定的 C++ 经验积累，这款产品的内核都是 C++ 语言实现的
-- 团队技术氛围浓厚，培训体系完善，产品线多样，有经验丰富的“老司机”手把手帮你入门音视频技术
+
+团队技术氛围浓厚，培训体系完善，产品线多样，有经验丰富的“老司机”手把手帮你入门音视频技术。<br>
+北京、上海、深圳、广州均有岗位，如果您对音视频技术感兴趣，欢迎加入我们 [腾讯云 TRTC 研发团队](https://careers.tencent.com/jobdesc.html?postId=1297858141983088640) 。
 
 **功能新增**
-- iOS/Android/Mac：支持垫片推流，使用方法见 TRTCCloud.setVideoMuteImage
-- iOS/Android：支持 VODPlayer 和 trtc 一起使用，并且支持回声消除
-- Mac：新增系统音量变化回调，详见：TRTCCloudDelegate.onAudioDevicePlayoutVolumeChanged
-- Windows：新增系统音量变化回调，详见：ITRTCCloudCallback.onAudioDevicePlayoutVolumeChanged
-- Windows：支持同时调用 startLocalPreview 和 startCameraDeviceTest
-- Windows：支持屏幕分享走主路的同时，调用 startLocalPreview 开启本地预览
-- Windows：新增支持跨屏指定区域进行屏幕分享
-- Windows：屏幕分享支持过滤掉指定窗口，比如把微信或者QQ从屏幕中扣除掉，详见：TRTCCloud.addExcludedShareWindow & TRTCCloud.removeExcludedShareWindow
+- Mac：屏幕分享支持过滤选定的窗口，用户可以将自己不希望分享出去的窗口排除掉，从而更好地保护用户的隐私。
+- Windows：屏幕分享支持设置“正在分享”提示边框的描边颜色以及边框宽度。
+- Windows：屏幕分享在分享整个桌面时支持开启高性能模式。
+- 全平台：支持自定义加密：您可以对编码后的音视频数据通过暴露的 C 接口进行二次处理。
+- 全平台：在 `TRTCRemoteStatistics` 中新增音频卡顿信息回调 `audioTotalBlockTime` 和 `audioBlockRate`。
 
 **质量优化**
-- iOS：优化 iPhone SE 播放声音小的问题
-- Android：优化声音路由策略：戴耳机时，声音只从耳机播放
-- Android：支持部分系统下采用低延迟采集播放，降低 Android 系统通话延迟
-- Mac：提升USB摄像头设备兼容性
-- Windows：兼容虚拟摄像头 e2eSoft Vacm
-- Windows：降低音频播放延迟，提升互通效果
-- Windows：优化音频启动逻辑，在仅播放的情况下不占用麦克风
+- iOS：优化了音频模块的启动速度，让首个音频帧可以更快地采集并发送出去。
+- Windows：优化系统回采的回声消除算法，让开启系统回采（SystemLoopback）时有更好的回声消除能力。
+- Windows：优化屏幕分享功能中的窗口采集抗遮挡能力，支持设置过滤窗口。
+- Android：针对大部分 Android 机型进行了耳返效果的优化，使耳返延迟降低到一个更舒适的水平。
+- Android：针对 Music 模式（在 startLocalAudio 时指定）下的点对点延迟进行了进一步的优化。
+- 全平台：在手动订阅模式下，优化了观众和主播角色互切时的声音流畅度。
+- 全平台：优化了音视频通话中的弱网抗性，在较差的网络下也能有更优质的音频流畅度。
+- 全平台：修复部分偶现的崩溃问题，提升 SDK 的稳定性。
 
 **问题修复**
-- iOS：修复偶现渲染 crash
-- iOS：修复子房间 (TRTCCloud.createSubCloud) 调用 muteRemoteAudio 触发 crash 的问题
-- iOS：修复前后台切换时在部分 iPad 视频渲染偶现卡死主线程的问题
-- iOS：修复已知内存泄露
-- iOS：修复 iOS14 提示“查找并连接本地网络上的设备”的问题
-- Android：修复未配置 READ_PHONE_STATE 权限时，Android5.0 设备 crash 的问题
-- Android：修复蓝牙耳机断开再连上之后音频采集和播放异常的问题
-- Android：修复已知crash
-- Mac：修复 getCurrentCameraDevice 始终返回 nil 的问题
-- Mac：修复屏幕分享指定区域面积为0时的 crash
-- Windows：修复64位 SDK 多次开关屏幕分享偶现 crash 的问题
-- Windows：修复部分系统使用 OpenGL 会 crash 的问题
+- iOS：修复部分场景下偶现的视频画面不渲染问题。
+- iOS：修复用户在戴耳机并且是 Default 音质下偶现的杂音问题。
+- iOS：修复部分已知的内存泄露问题。
+- iOS：修复偶现的 replaykit 扩展录屏结束后的 crash 问题。
+- iOS：解决模拟器环境下的编译问题。
+- Android：修复部分手机在 App 长时间切到后台，之后又再次切回前台时偶现的音画不同步问题。
+- Android：修复切后台后没有释放麦克风的问题。
+- Android：修复 SDK 内部部分 OpenGL 资源未及时释放的问题。
+- Windows：修复个别场景下偶现的杂音问题。
+
+更早期的版本更新历史请点击 [More](https://cloud.tencent.com/document/product/647/46907)...
 
 ## Demo 体验地址
 
