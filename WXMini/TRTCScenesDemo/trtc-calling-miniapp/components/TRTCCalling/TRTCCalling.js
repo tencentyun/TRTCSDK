@@ -5,6 +5,8 @@ import MTA from 'libs/mta_analysis.js'
 import { EVENT, TRTC_EVENT } from './common/constants.js'
 import UserController from './controller/user-controller'
 
+const app = getApp()
+
 const TAG_NAME = 'TRTCCalling-Component'
 // 组件旨在跨终端维护一个通话状态管理机，以事件发布机制驱动上层进行管理，并通过API调用进行状态变更。
 // 组件设计思路将UI和状态管理分离。您可以通过修改`template`文件夹下的文件，适配您的业务场景，
@@ -15,7 +17,7 @@ Component({
     config: {
       type: Object,
       value: {
-        sdkAppID: '',
+        sdkAppID: app.globalData.sdkAppID,
         userID: '',
         userSig: '',
         type: 0,
@@ -798,7 +800,7 @@ Component({
     created: function() {
       // 在组件实例刚刚被创建时执行
       console.log(TAG_NAME, 'created', ENV)
-      this.tsignaling = new TSignaling({ SDKAppID: 1400188366 })
+      this.tsignaling = new TSignaling({ SDKAppID: this.data.config.sdkAppID })
       wx.setKeepScreenOn({
         keepScreenOn: true,
       })
