@@ -155,7 +155,6 @@ Page({
 
   onLoad: function() {
     const Signature = genTestUserSig(app.globalData.userID)
-    this.data.config.sdkAppID = Signature.sdkAppID
     this.data.config.userID = app.globalData.userID
     this.data.config.userSig = Signature.userSig
     this.setData({
