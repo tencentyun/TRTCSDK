@@ -40,6 +40,7 @@ typedef NS_ENUM(NSUInteger, ConvType) {
 + (BOOL)setupSDKWithSDKAppID:(int)sdkAppId userSig:(NSString *)userSig messageLister:(id<V2TIMAdvancedMsgListener,V2TIMGroupListener>)listener {
     BOOL reslut = [[V2TIMManager sharedInstance] initSDK:sdkAppId config:nil listener:nil];
     if (reslut) {
+        [[V2TIMManager sharedInstance] removeAdvancedMsgListener:listener]; //  添加前先移除，避免重复初始化导致收到重复消息
         [[V2TIMManager sharedInstance] addAdvancedMsgListener:listener];
         [[V2TIMManager sharedInstance] setGroupListener:listener];
     }

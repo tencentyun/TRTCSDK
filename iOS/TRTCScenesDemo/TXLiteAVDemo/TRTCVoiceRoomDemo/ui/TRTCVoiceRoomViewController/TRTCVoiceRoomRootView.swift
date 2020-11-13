@@ -93,8 +93,6 @@ class TRTCVoiceRoomRootView: UIView {
     
     deinit {
         TRTCLog.out("reset audio settings")
-        audioEffectView.resetAudioSetting()
-        TRTCCloud.destroySharedIntance()
     }
     
     // MARK: - 视图生命周期

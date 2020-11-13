@@ -51,6 +51,12 @@ public class TRTCVoiceRoomViewController: UIViewController {
         viewModel?.refreshView()
     }
     
+    public override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        guard let rootView = self.view as? TRTCVoiceRoomRootView else { return }
+        rootView.audioEffectView.resetAudioSetting()
+    }
+    
     public override func loadView() {
         // Reload view in this function
         let viewModel = viewModelFactory.makeVoiceRoomViewModel(roomInfo: roomInfo, roomType: role)
