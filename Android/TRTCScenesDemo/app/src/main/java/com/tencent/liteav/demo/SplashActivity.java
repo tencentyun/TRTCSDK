@@ -59,7 +59,7 @@ public class SplashActivity extends Activity {
         Intent intent = new Intent("com.tencent.liteav.action.WED_DATA");
         intent.setData(data);
         if (Build.VERSION.SDK_INT >= 26) {
-            ComponentName componentName = new ComponentName(getPackageName(), "com.tencent.liteav.demo.player.reveiver.WebDataReceiver");
+            ComponentName componentName = new ComponentName(getPackageName(), "com.tencent.liteav.demo.player.expand.webdata.reveiver.WebDataReceiver");
             intent.setComponent(componentName);
         }
         Log.d(TAG, "navigationWebData: intent -> " + intent);

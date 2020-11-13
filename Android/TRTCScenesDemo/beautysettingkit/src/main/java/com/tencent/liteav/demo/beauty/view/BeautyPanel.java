@@ -57,11 +57,21 @@ public class BeautyPanel extends FrameLayout implements SeekBar.OnSeekBarChangeL
     private int                     mCurrentTabPosition = 0;
     private int[]                   mCurrentItemPosition;
 
-    public interface OnBeautyListener {
-        void onTabChange(TabInfo tabInfo, int position);
-        boolean onClose();
-        boolean onClick(TabInfo tabInfo, int tabPosition, ItemInfo itemInfo, int itemPosition);
-        boolean onLevelChanged(TabInfo tabInfo, int tabPosition, ItemInfo itemInfo, int itemPosition, int beautyLevel);
+    public abstract static class OnBeautyListener {
+        public void onTabChange(TabInfo tabInfo, int position) {
+        }
+
+        public boolean onClose() {
+            return true;
+        }
+
+        public boolean onClick(TabInfo tabInfo, int tabPosition, ItemInfo itemInfo, int itemPosition) {
+            return false;
+        }
+
+        public boolean onLevelChanged(TabInfo tabInfo, int tabPosition, ItemInfo itemInfo, int itemPosition, int beautyLevel) {
+            return false;
+        }
     }
 
     public BeautyPanel(@NonNull Context context) {
