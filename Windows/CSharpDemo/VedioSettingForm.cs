@@ -89,7 +89,7 @@ namespace TRTCCSharpDemo
         #endregion
         public void OnDeviceChange(string deviceId, TRTCDeviceType type, TRTCDeviceState state)
         {
-            if (type == TRTCDeviceType.TRTCDeviceTypeCamera)
+            if (type == TRTCDeviceType.TXMediaDeviceTypeCamera)
             {
                 RefreshCameraDeviceList();
             }

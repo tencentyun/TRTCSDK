@@ -245,11 +245,11 @@ void VideoCanvasContainer::resetViewUIStatus(std::wstring userId, TRTCVideoStrea
     {
         if (VideoCanvasContainer::localUserId.compare(m_userId) == 0)
         {
-            TRTCCloudCore::GetInstance()->getTRTCCloud()->setLocalViewRotation(m_canvasAttribute._viewRotation);
-            TRTCCloudCore::GetInstance()->getTRTCCloud()->setVideoEncoderRotation(m_canvasAttribute._viewRotation);
+            TRTCCloudCore::GetInstance()->getTRTCCloud()->setLocalRenderParams(m_canvasAttribute.renderParams);
+            TRTCCloudCore::GetInstance()->getTRTCCloud()->setVideoEncoderRotation(m_canvasAttribute.renderParams.rotation);
         }
         else
-            TRTCCloudCore::GetInstance()->getTRTCCloud()->setRemoteViewRotation(Wide2UTF8(m_userId).c_str(), m_canvasAttribute._viewRotation);
+            TRTCCloudCore::GetInstance()->getTRTCCloud()->setRemoteRenderParams(Wide2UTF8(m_userId).c_str(), TRTCVideoStreamTypeBig, m_canvasAttribute.renderParams);
 
         if (m_streamType != TRTCVideoStreamTypeBig)
             m_pBtnRotation->SetVisible(false);
@@ -259,7 +259,7 @@ void VideoCanvasContainer::resetViewUIStatus(std::wstring userId, TRTCVideoStrea
 
     if (m_pBtnRenderMode)
     {
-        if (m_canvasAttribute._vidwFillMode == TRTCVideoFillMode_Fit)
+        if (m_canvasAttribute.renderParams.fillMode == TRTCVideoFillMode_Fit)
         {
             m_pBtnRenderMode->SetNormalImage(L"videoview/render_fill.png");
         }
@@ -273,16 +273,13 @@ void VideoCanvasContainer::resetViewUIStatus(std::wstring userId, TRTCVideoStrea
 
         if (m_pLiveAvView)
         {
-            m_pLiveAvView->SetRenderMode((TXLiveAvVideoView::ViewRenderModeEnum)m_canvasAttribute._vidwFillMode);
+            m_pLiveAvView->SetRenderMode((TXLiveAvVideoView::ViewRenderModeEnum)m_canvasAttribute.renderParams.fillMode);
         }
         if (VideoCanvasContainer::localUserId.compare(m_userId) == 0 && m_streamType != TRTCVideoStreamTypeSub)
-            TRTCCloudCore::GetInstance()->getTRTCCloud()->setLocalViewFillMode(m_canvasAttribute._vidwFillMode);
+            TRTCCloudCore::GetInstance()->getTRTCCloud()->setLocalRenderParams(m_canvasAttribute.renderParams);
         else
         {
-            if (m_streamType == TRTCVideoStreamTypeSub)
-                TRTCCloudCore::GetInstance()->getTRTCCloud()->setRemoteSubStreamViewFillMode(Wide2UTF8(m_userId).c_str(), m_canvasAttribute._vidwFillMode);
-            else
-                TRTCCloudCore::GetInstance()->getTRTCCloud()->setRemoteViewFillMode(Wide2UTF8(m_userId).c_str(), m_canvasAttribute._vidwFillMode);
+            TRTCCloudCore::GetInstance()->getTRTCCloud()->setRemoteRenderParams(Wide2UTF8(m_userId).c_str(), m_streamType, m_canvasAttribute.renderParams);
         }
     }
 
@@ -514,46 +511,46 @@ void VideoCanvasContainer::Notify(TNotifyUI & msg)
     {
         if (msg.pSender == m_pBtnRotation)
         {
-            if (m_canvasAttribute._viewRotation == TRTCVideoRotation0)
-                m_canvasAttribute._viewRotation = TRTCVideoRotation90;
-            else if (m_canvasAttribute._viewRotation == TRTCVideoRotation90)
-                m_canvasAttribute._viewRotation = TRTCVideoRotation180;
-            else if (m_canvasAttribute._viewRotation == TRTCVideoRotation180)
-                m_canvasAttribute._viewRotation = TRTCVideoRotation270;
-            else if (m_canvasAttribute._viewRotation == TRTCVideoRotation270)
-                m_canvasAttribute._viewRotation = TRTCVideoRotation0;
+            if (m_canvasAttribute.renderParams.rotation == TRTCVideoRotation0)
+                m_canvasAttribute.renderParams.rotation = TRTCVideoRotation90;
+            else if (m_canvasAttribute.renderParams.rotation == TRTCVideoRotation90)
+                m_canvasAttribute.renderParams.rotation = TRTCVideoRotation180;
+            else if (m_canvasAttribute.renderParams.rotation == TRTCVideoRotation180)
+                m_canvasAttribute.renderParams.rotation = TRTCVideoRotation270;
+            else if (m_canvasAttribute.renderParams.rotation == TRTCVideoRotation270)
+                m_canvasAttribute.renderParams.rotation = TRTCVideoRotation0;
 
             if (VideoCanvasContainer::localUserId.compare(m_userId) == 0)
             {
-                TRTCCloudCore::GetInstance()->getTRTCCloud()->setLocalViewRotation(m_canvasAttribute._viewRotation);
-                TRTCCloudCore::GetInstance()->getTRTCCloud()->setVideoEncoderRotation(m_canvasAttribute._viewRotation);
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->setLocalRenderParams(m_canvasAttribute.renderParams);
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->setVideoEncoderRotation(m_canvasAttribute.renderParams.rotation);
             }
             else
-                TRTCCloudCore::GetInstance()->getTRTCCloud()->setRemoteViewRotation(Wide2UTF8(m_userId).c_str(), m_canvasAttribute._viewRotation);
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->setRemoteRenderParams(Wide2UTF8(m_userId).c_str(), TRTCVideoStreamTypeBig, m_canvasAttribute.renderParams);
             return;
         }
 
         if (msg.pSender == m_pBtnRenderMode)
         {
-            if (m_canvasAttribute._vidwFillMode == TRTCVideoFillMode_Fit)
+            if (m_canvasAttribute.renderParams.fillMode == TRTCVideoFillMode_Fit)
             {
-                m_canvasAttribute._vidwFillMode = TRTCVideoFillMode_Fill;
+                m_canvasAttribute.renderParams.fillMode = TRTCVideoFillMode_Fill;
                 m_pBtnRenderMode->SetNormalImage(L"videoview/render_fit.png");
             }
             else
             {
-                m_canvasAttribute._vidwFillMode = TRTCVideoFillMode_Fit;
+                m_canvasAttribute.renderParams.fillMode = TRTCVideoFillMode_Fit;
                 m_pBtnRenderMode->SetNormalImage(L"videoview/render_fill.png");
             }
 
             if (m_pLiveAvView)
             {
-                m_pLiveAvView->SetRenderMode((TXLiveAvVideoView::ViewRenderModeEnum)m_canvasAttribute._vidwFillMode);
+                m_pLiveAvView->SetRenderMode((TXLiveAvVideoView::ViewRenderModeEnum)m_canvasAttribute.renderParams.fillMode);
             }
             if (VideoCanvasContainer::localUserId.compare(m_userId) == 0)
-                TRTCCloudCore::GetInstance()->getTRTCCloud()->setLocalViewFillMode(m_canvasAttribute._vidwFillMode);
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->setLocalRenderParams(m_canvasAttribute.renderParams);
             else
-                TRTCCloudCore::GetInstance()->getTRTCCloud()->setRemoteViewFillMode(Wide2UTF8(m_userId).c_str(), m_canvasAttribute._vidwFillMode);
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->setRemoteRenderParams(Wide2UTF8(m_userId).c_str(), TRTCVideoStreamTypeBig, m_canvasAttribute.renderParams);
             return;
         }
 
@@ -1331,11 +1328,11 @@ void TRTCVideoViewLayout::changeLectureviewVisable()
             }
             if (itr.second._viewLayout->getVideoStreamType() == TRTCVideoStreamTypeSub)
             {
-                TRTCCloudCore::GetInstance()->getTRTCCloud()->startRemoteSubStreamView(Wide2UTF8(itr.second._userId).c_str(), nullptr);
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->startRemoteView(Wide2UTF8(itr.second._userId).c_str(), TRTCVideoStreamTypeSub, nullptr);
             }
             else if (!itr.second._isLable)
             {
-                TRTCCloudCore::GetInstance()->getTRTCCloud()->startRemoteView(Wide2UTF8(itr.second._userId).c_str(), NULL);
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->startRemoteView(Wide2UTF8(itr.second._userId).c_str(), CDataCenter::GetInstance()->getRemoteVideoStreamType(), NULL);
             }
         }
 
@@ -1353,11 +1350,11 @@ void TRTCVideoViewLayout::changeLectureviewVisable()
             }
             if (itr.second._viewLayout->getVideoStreamType() == TRTCVideoStreamTypeSub)
             {
-                TRTCCloudCore::GetInstance()->getTRTCCloud()->stopRemoteSubStreamView(Wide2UTF8(itr.second._userId).c_str());
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->stopRemoteView(Wide2UTF8(itr.second._userId).c_str(), TRTCVideoStreamTypeSub);
             }
             else
             {
-                TRTCCloudCore::GetInstance()->getTRTCCloud()->stopRemoteView(Wide2UTF8(itr.second._userId).c_str());
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->stopRemoteView(Wide2UTF8(itr.second._userId).c_str(), TRTCVideoStreamTypeBig);
             }
         }
         lecture_change_remote_visible->SetForeImage(L"source='0,0,16,32' res='videoview/lecture.png'");
@@ -1400,11 +1397,11 @@ bool TRTCVideoViewLayout::turnPage(bool forward, bool adjustCurrent)
         {
             if (itr1.second._streamType == TRTCVideoStreamTypeSub)
             {
-                TRTCCloudCore::GetInstance()->getTRTCCloud()->stopRemoteSubStreamView(Wide2UTF8(itr1.second._userId).c_str());
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->stopRemoteView(Wide2UTF8(itr1.second._userId).c_str(), TRTCVideoStreamTypeSub);
             }
             else
             {
-                TRTCCloudCore::GetInstance()->getTRTCCloud()->stopRemoteView(Wide2UTF8(itr1.second._userId).c_str());
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->stopRemoteView(Wide2UTF8(itr1.second._userId).c_str(), TRTCVideoStreamTypeBig);
             }
 
             itr1.second._userId = L"";
@@ -1453,11 +1450,11 @@ bool TRTCVideoViewLayout::turnPage(bool forward, bool adjustCurrent)
 
                 if (itr2.second._streamType == TRTCVideoStreamTypeSub)
                 {
-                    TRTCCloudCore::GetInstance()->getTRTCCloud()->startRemoteSubStreamView(Wide2UTF8(itr2.second._userId).c_str(), NULL);
+                    TRTCCloudCore::GetInstance()->getTRTCCloud()->startRemoteView(Wide2UTF8(itr2.second._userId).c_str(), TRTCVideoStreamTypeSub, NULL);
                 }
                 else
                 {
-                    TRTCCloudCore::GetInstance()->getTRTCCloud()->startRemoteView(Wide2UTF8(itr2.second._userId).c_str(), NULL);
+                    TRTCCloudCore::GetInstance()->getTRTCCloud()->startRemoteView(Wide2UTF8(itr2.second._userId).c_str(), CDataCenter::GetInstance()->getRemoteVideoStreamType(), NULL);
                 }
                 break;
             }

@@ -131,7 +131,7 @@ void CDataCenter::Init()
     else
         m_localInfo._userId = Wide2UTF8(id);
 
-    m_localInfo._roomId = rand();
+    m_localInfo._roomId = std::stoi(TrtcUtil::genRandomNumString(6));
 
     //音视频参数配置
     std::wstring strParam;
@@ -481,4 +481,22 @@ bool CDataCenter::getVideoAvaliable(std::string userId, TRTCVideoStreamType type
         }
     }
     return false;
+}
+
+TRTCRenderParams CDataCenter::getLocalRenderParams() {
+    TRTCRenderParams param;
+    if (m_bLocalVideoMirror) {
+        param.mirrorType = TRTCVideoMirrorType_Enable;
+    } else {
+        param.mirrorType = TRTCVideoMirrorType_Disable;
+    }
+    return param;
+}
+
+TRTCVideoStreamType CDataCenter::getRemoteVideoStreamType() {
+    TRTCVideoStreamType type = TRTCVideoStreamTypeBig;
+    if (m_bPlaySmallVideo) {
+        type = TRTCVideoStreamTypeSmall;
+    }
+    return type;
 }

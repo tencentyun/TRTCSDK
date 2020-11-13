@@ -50,6 +50,7 @@
 #define WM_USER_CMD_OnTestSpeakerVolume   WM_USER_CMD + 76  //测试扬声器音量
 #define WM_USER_CMD_OnFirstAudioFrame     WM_USER_CMD + 78 //开始播放远程用户的首帧音频（本地声音暂不通知）
 #define WM_USER_CMD_Warning               WM_USER_CMD + 79 //出现警告
+#define WM_USER_CMD_SwitchRoom            WM_USER_CMD + 80 //切换房间
 //音视频数据消息
 #define WM_USER_MEDIA_DATA WM_USER + 200
 

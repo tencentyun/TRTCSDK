@@ -1561,12 +1561,12 @@ namespace TRTCCSharpDemo
             Log.I(String.Format("onDeviceChange : deviceId = {0}, type = {1}, state = {2}", deviceId, type, state));
             this.BeginInvoke(new Action(() =>
             {
-                if (type == TRTCDeviceType.TRTCDeviceTypeCamera)
+                if (type == TRTCDeviceType.TXMediaDeviceTypeCamera)
                 {
                     if (mVedioSettingForm != null)
                         mVedioSettingForm.OnDeviceChange(deviceId, type, state);
                 }
-                else if (type == TRTCDeviceType.TRTCDeviceTypeMic || type == TRTCDeviceType.TRTCDeviceTypeSpeaker)
+                else if (type == TRTCDeviceType.TXMediaDeviceTypeMic || type == TRTCDeviceType.TXMediaDeviceTypeSpeaker)
                 {
                     if (mAudioSettingForm != null)
                         mAudioSettingForm.OnDeviceChange(deviceId, type, state);

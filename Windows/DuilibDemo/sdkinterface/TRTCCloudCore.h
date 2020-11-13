@@ -46,6 +46,7 @@ public:
     void Uninit();
     void PreUninit();
     ITRTCCloud * getTRTCCloud();
+    ITXDeviceManager * getDeviceManager();
     ITRTCCloudCallback* GetITRTCCloudCallback();
 
     ITXLivePlayer* getTXLivePlayer();
@@ -58,6 +59,7 @@ public:
     virtual void onRemoteUserEnterRoom(const char* userId);
     virtual void onRemoteUserLeaveRoom(const char* userId, int reason);
     virtual void onUserAudioAvailable(const char* userId, bool available);
+    virtual void onSwitchRoom(TXLiteAVError errCode, const char* errMsg);
     virtual void onFirstAudioFrame(const char* userId);
     virtual void onUserVoiceVolume(TRTCVolumeInfo* userVolumes, uint32_t userVolumesCount, uint32_t totalVolume);
     virtual void onUserSubStreamAvailable(const char* userId, bool available);
@@ -163,6 +165,7 @@ private:
     ITRTCCloud* m_pCloud = nullptr;
     ITXVodPlayer* m_pVodPlayer = nullptr;
     ITXLivePlayer* m_pLivePlayer = nullptr;
+    ITXDeviceManager* m_pDeviceManager = nullptr;
     bool m_bStartLocalPreview = false;
     bool m_bFirstUpdateDevice = false;
 

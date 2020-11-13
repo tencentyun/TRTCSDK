@@ -29,9 +29,6 @@ namespace TRTCCSharpDemo
 
             mTRTCCloud = DataManager.GetInstance().trtcCloud;
 
-            if (Util.IsSys64bit())
-                this.systemAudioCheckBox.Visible = false;
-
             mMainForm = mainform;
         }
         private void OnDisposed(object sender, EventArgs e)
@@ -47,12 +44,9 @@ namespace TRTCCSharpDemo
                 mTRTCCloud.stopSpeakerDeviceTest();
             }
 
-            // 注意：系统混音功能暂时不支持64位系统
-            if (!Util.IsSys64bit())
-            {
-                if (this.systemAudioCheckBox.Checked)
-                    mTRTCCloud.stopSystemAudioLoopback();
-            }
+            if (this.systemAudioCheckBox.Checked)
+                mTRTCCloud.stopSystemAudioLoopback();
+
             if (mMicDevice != null)
                 mMicDevice.release();
             if (mSpeakerDevice != null)
@@ -177,11 +171,11 @@ namespace TRTCCSharpDemo
         }
         public void OnDeviceChange(string deviceId, TRTCDeviceType type, TRTCDeviceState state)
         {
-            if (type == TRTCDeviceType.TRTCDeviceTypeMic)
+            if (type == TRTCDeviceType.TXMediaDeviceTypeMic)
             {
                 RefreshMicDeviceList();
             }
-            else if (type == TRTCDeviceType.TRTCDeviceTypeSpeaker)
+            else if (type == TRTCDeviceType.TXMediaDeviceTypeSpeaker)
             {
                 RefreshSpeakerList();
             }
@@ -302,9 +296,6 @@ namespace TRTCCSharpDemo
         }
         private void OnSystemAudioCheckBoxClick(object sender, EventArgs e)
         {
-            // 注意：系统混音功能暂时不支持64位系统
-            if (Util.IsSys64bit()) return;
-            
             if (this.systemAudioCheckBox.Checked)
             {
                 // 这里直接采集操作系统的播放声音，如需采集个别软件的声音请填写对应 exe 的路径。

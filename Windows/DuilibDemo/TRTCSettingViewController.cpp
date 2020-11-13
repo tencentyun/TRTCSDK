@@ -27,7 +27,7 @@
 #include "UiShareSelect.h"
 
 #define AUDIO_DEVICE_VOLUME_TICKET 100
-#define AUDIO_VOLUME_TICKET 100
+#define AUDIO_VOLUME_TICKET 150
 #define BGM_PROGRESS_TICHET 100
 int TRTCSettingViewController::m_ref = 0;
 std::vector<TRTCSettingViewControllerNotify*> TRTCSettingViewController::vecNotifyList;
@@ -49,7 +49,7 @@ TRTCSettingViewController::TRTCSettingViewController(SettingTagEnum tagType, HWN
     m_audioEffectParam2->publish = false;
     m_audioEffectParam3->publish = false;
 
-    CDataCenter::GetInstance()->m_speakerVolume = TRTCCloudCore::GetInstance()->getTRTCCloud()->getCurrentSpeakerVolume();
+    CDataCenter::GetInstance()->m_speakerVolume = TRTCCloudCore::GetInstance()->getDeviceManager()->getCurrentDeviceVolume(TRTCDeviceTypeSpeaker);
 
     is_init_windows_finished = false;
 }
@@ -364,7 +364,7 @@ void TRTCSettingViewController::Notify(TNotifyUI & msg)
             pLabelValue->SetText(sText);
             CDataCenter::GetInstance()->m_speakerVolume = volume;
             if (TRTCCloudCore::GetInstance()->getTRTCCloud())
-                TRTCCloudCore::GetInstance()->getTRTCCloud()->setCurrentSpeakerVolume(volume * AUDIO_DEVICE_VOLUME_TICKET / 100);
+                TRTCCloudCore::GetInstance()->getDeviceManager()->setCurrentDeviceVolume(TRTCDeviceTypeSpeaker, volume * AUDIO_DEVICE_VOLUME_TICKET / 100);
         }
         if (name.CompareNoCase(_T("slider_mic_volume")) == 0)
         {
@@ -376,7 +376,7 @@ void TRTCSettingViewController::Notify(TNotifyUI & msg)
             pLabelValue->SetText(sText);
             CDataCenter::GetInstance()->m_micVolume = volume;
             if (TRTCCloudCore::GetInstance()->getTRTCCloud())
-                TRTCCloudCore::GetInstance()->getTRTCCloud()->setCurrentMicDeviceVolume(volume * AUDIO_DEVICE_VOLUME_TICKET / 100);
+                TRTCCloudCore::GetInstance()->getDeviceManager()->setCurrentDeviceVolume(TRTCDeviceTypeMic, volume * AUDIO_DEVICE_VOLUME_TICKET / 100);
         }
         if(name.CompareNoCase(_T("slider_app_capture_volume")) == 0)
         {
@@ -390,7 +390,7 @@ void TRTCSettingViewController::Notify(TNotifyUI & msg)
             if (CDataCenter::GetInstance()->m_bOpenDemoTestConfig)
             {
                 if (TRTCCloudCore::GetInstance()->getTRTCCloud())
-                    TRTCCloudCore::GetInstance()->getTRTCCloud()->setAudioCaptureVolume(volume * AUDIO_DEVICE_VOLUME_TICKET / 100);
+                    TRTCCloudCore::GetInstance()->getTRTCCloud()->setAudioCaptureVolume(volume * AUDIO_VOLUME_TICKET / 100);
             }
             else
             {
@@ -412,7 +412,7 @@ void TRTCSettingViewController::Notify(TNotifyUI & msg)
             CDataCenter::GetInstance()->m_audioPlayoutVolume = volume;
 
             if (TRTCCloudCore::GetInstance()->getTRTCCloud())
-                TRTCCloudCore::GetInstance()->getTRTCCloud()->setAudioPlayoutVolume(volume * AUDIO_DEVICE_VOLUME_TICKET / 100);
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->setAudioPlayoutVolume(volume * AUDIO_VOLUME_TICKET / 100);
         }
         if (name.CompareNoCase(_T("slider_beauty_value")) == 0)
         {
@@ -575,7 +575,7 @@ void TRTCSettingViewController::Notify(TNotifyUI & msg)
                 std::wstring testFileMp3 = TrtcUtil::getAppDirectory() + L"trtcres/testspeak.mp3";
                 if (TRTCCloudCore::GetInstance()->getTRTCCloud())
                 {
-                    TRTCCloudCore::GetInstance()->getTRTCCloud()->startSpeakerDeviceTest(Wide2UTF8(testFileMp3).c_str());
+                    TRTCCloudCore::GetInstance()->getDeviceManager()->startSpeakerDeviceTest(Wide2UTF8(testFileMp3).c_str());
                     //TRTCCloudCore::GetInstance()->getTRTCCloud()->playBGM(Wide2UTF8(testFileMp3).c_str());
                 }
 
@@ -586,7 +586,7 @@ void TRTCSettingViewController::Notify(TNotifyUI & msg)
                 pTestSender->SetText(_T("扬声器测试"));
                 if (TRTCCloudCore::GetInstance()->getTRTCCloud())
                 {
-                    TRTCCloudCore::GetInstance()->getTRTCCloud()->stopSpeakerDeviceTest();
+                    TRTCCloudCore::GetInstance()->getDeviceManager()->stopSpeakerDeviceTest();
                     //TRTCCloudCore::GetInstance()->getTRTCCloud()->stopBGM();
                 }
 
@@ -601,16 +601,16 @@ void TRTCSettingViewController::Notify(TNotifyUI & msg)
             if (pTestSender && pTestSender->GetText() == _T("麦克风测试"))
             {
                 if (TRTCCloudCore::GetInstance()->getTRTCCloud())
-                    TRTCCloudCore::GetInstance()->getTRTCCloud()->startMicDeviceTest(200);
+                    TRTCCloudCore::GetInstance()->getDeviceManager()->startMicDeviceTest(200);
 
-                int ret = TRTCCloudCore::GetInstance()->getTRTCCloud()->getCurrentMicDeviceVolume();
+                int ret = TRTCCloudCore::GetInstance()->getDeviceManager()->getCurrentDeviceVolume(TRTCDeviceTypeMic);
                 pTestSender->SetText(_T("停止"));
                 m_bStartTestMic = true;
             }
             else
             {
                 if (TRTCCloudCore::GetInstance()->getTRTCCloud())
-                    TRTCCloudCore::GetInstance()->getTRTCCloud()->stopMicDeviceTest();
+                    TRTCCloudCore::GetInstance()->getDeviceManager()->stopMicDeviceTest();
 
                 if (m_pProgressTestMic)
                     m_pProgressTestMic->SetValue(0);
@@ -840,19 +840,19 @@ void TRTCSettingViewController::NotifyAudioTab(TNotifyUI & msg)
         if (msg.pSender->GetName() == _T("check_mic_mute")) {
             COptionUI* pOpenSender = static_cast<COptionUI*>(msg.pSender);
             if (pOpenSender->IsSelected() == false) { //事件值是反的
-                TRTCCloudCore::GetInstance()->getTRTCCloud()->setCurrentMicDeviceMute(true);
+                TRTCCloudCore::GetInstance()->getDeviceManager()->setCurrentDeviceMute(TRTCDeviceTypeMic, true);
             }
             else {
-                TRTCCloudCore::GetInstance()->getTRTCCloud()->setCurrentMicDeviceMute(false);
+                TRTCCloudCore::GetInstance()->getDeviceManager()->setCurrentDeviceMute(TRTCDeviceTypeMic, false);
             }
         }
         else if (msg.pSender->GetName() == _T("check_speaker_mute")) {
             COptionUI* pOpenSender = static_cast<COptionUI*>(msg.pSender);
             if (pOpenSender->IsSelected() == false) { //事件值是反的
-                TRTCCloudCore::GetInstance()->getTRTCCloud()->setCurrentSpeakerDeviceMute(true);
+                TRTCCloudCore::GetInstance()->getDeviceManager()->setCurrentDeviceMute(TRTCDeviceTypeSpeaker, true);
             }
             else {
-                TRTCCloudCore::GetInstance()->getTRTCCloud()->setCurrentSpeakerDeviceMute(false);
+                TRTCCloudCore::GetInstance()->getDeviceManager()->setCurrentDeviceMute(TRTCDeviceTypeSpeaker, false);
             }
         } else if (msg.pSender->GetName() == _T("check_btn_3a_config")) {
             COptionUI* pOpenSender = static_cast<COptionUI*>(msg.pSender);
@@ -1088,13 +1088,13 @@ void TRTCSettingViewController::NotifyOtherTab(TNotifyUI & msg)
             if (pOpenSender->IsSelected() == false) //事件值是反的
             {
                 CDataCenter::GetInstance()->m_bLocalVideoMirror = true;
-                TRTCCloudCore::GetInstance()->getTRTCCloud()->setLocalViewMirror(CDataCenter::GetInstance()->m_bLocalVideoMirror);
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->setLocalRenderParams(CDataCenter::GetInstance()->getLocalRenderParams());
                 TRTCCloudCore::GetInstance()->getTRTCCloud()->setVideoEncoderMirror(CDataCenter::GetInstance()->m_bLocalVideoMirror);
             }
             else
             {
                 CDataCenter::GetInstance()->m_bLocalVideoMirror = false;
-                TRTCCloudCore::GetInstance()->getTRTCCloud()->setLocalViewMirror(CDataCenter::GetInstance()->m_bLocalVideoMirror);
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->setLocalRenderParams(CDataCenter::GetInstance()->getLocalRenderParams());
                 TRTCCloudCore::GetInstance()->getTRTCCloud()->setVideoEncoderMirror(CDataCenter::GetInstance()->m_bLocalVideoMirror);
             }
         }
@@ -1165,18 +1165,38 @@ void TRTCSettingViewController::NotifyOtherTab(TNotifyUI & msg)
             CEditUI* edit_ui = static_cast<CEditUI*>(m_pmUI.FindControl(_T("edit_add_excluded_wnd")));
             if (edit_ui != nullptr) {
                 wstring str_text = edit_ui->GetText();
-                uint32_t hwnd = _wtoi64(str_text.c_str());
+                uint32_t hwnd = (uint32_t)std::strtoul(Wide2UTF8(str_text).c_str(), nullptr, 16);
                 TRTCCloudCore::GetInstance()->getTRTCCloud()->addExcludedShareWindow((HWND)hwnd);
             }
         } else if (msg.pSender->GetName() == _T("btn_del_excluded_wnd")) {
             CEditUI* edit_ui = static_cast<CEditUI*>(m_pmUI.FindControl(_T("edit_del_excluded_wnd")));
             if (edit_ui != nullptr) {
                 wstring str_text = edit_ui->GetText();
-                uint32_t hwnd = _wtoi64(str_text.c_str());
+                uint32_t hwnd = (uint32_t)std::strtoul(Wide2UTF8(str_text).c_str(), nullptr, 16);
                 TRTCCloudCore::GetInstance()->getTRTCCloud()->removeExcludedShareWindow((HWND)hwnd);
             }
         } else if (msg.pSender->GetName() == _T("btn_del_all_excluded_wnd")) {
             TRTCCloudCore::GetInstance()->getTRTCCloud()->removeAllExcludedShareWindow();
+        } else if (msg.pSender->GetName() == _T("btn_switch_room")) {
+            TRTCSwitchRoomConfig config;
+            int32_t roomId = 0;
+            std::string str_room_id;
+            CEditUI* edit_ui = static_cast<CEditUI*>(m_pmUI.FindControl(_T("edit_switch_room_id")));
+            if (edit_ui != nullptr) {
+                wstring str_text = edit_ui->GetText();
+                roomId = atoi(Wide2UTF8(str_text.c_str()).c_str());
+                CDataCenter::GetInstance()->getLocalUserInfo()._roomId = roomId;
+            }
+            CEditUI* edit_ui_str = static_cast<CEditUI*>(m_pmUI.FindControl(_T("edit_switch_str_room_id")));
+            if (edit_ui_str != nullptr) {
+                wstring str_text_room_id = edit_ui_str->GetText();
+                str_room_id = Wide2UTF8(str_text_room_id.c_str());
+                CDataCenter::GetInstance()->getLocalUserInfo().strRoomId = str_room_id;
+            }
+            config.roomId = roomId;
+            config.strRoomId = str_room_id.c_str();
+            config.userSig = CDataCenter::GetInstance()->getLocalUserInfo()._userSig.c_str();
+            TRTCCloudCore::GetInstance()->getTRTCCloud()->switchRoom(config);
         }
     }
 
@@ -1819,9 +1839,9 @@ void TRTCSettingViewController::InitAudioTab()
             pLabelValue->SetText(sText);
         }
         if (TRTCCloudCore::GetInstance()->getTRTCCloud()) {
-            TRTCCloudCore::GetInstance()->getTRTCCloud()->setCurrentSpeakerVolume(nVolume * AUDIO_DEVICE_VOLUME_TICKET / 100);
+            TRTCCloudCore::GetInstance()->getDeviceManager()->setCurrentDeviceVolume(TRTCDeviceTypeSpeaker, nVolume * AUDIO_DEVICE_VOLUME_TICKET / 100);
 
-            bool mute = TRTCCloudCore::GetInstance()->getTRTCCloud()->getCurrentSpeakerDeviceMute();
+            bool mute = TRTCCloudCore::GetInstance()->getDeviceManager()->getCurrentDeviceMute(TRTCDeviceTypeSpeaker);
             COptionUI* pCheckMute = static_cast<COptionUI*>(m_pmUI.FindControl(_T("check_speaker_mute")));
             if (pCheckMute)
                 pCheckMute->Selected(mute);
@@ -1841,9 +1861,9 @@ void TRTCSettingViewController::InitAudioTab()
             pLabelValue->SetText(sText);
         }
         if (TRTCCloudCore::GetInstance()->getTRTCCloud()) {
-            TRTCCloudCore::GetInstance()->getTRTCCloud()->setCurrentMicDeviceVolume(nVolume * AUDIO_DEVICE_VOLUME_TICKET / 100);
+            TRTCCloudCore::GetInstance()->getDeviceManager()->setCurrentDeviceVolume(TRTCDeviceTypeMic, nVolume * AUDIO_DEVICE_VOLUME_TICKET / 100);
 
-            bool mute = TRTCCloudCore::GetInstance()->getTRTCCloud()->getCurrentMicDeviceMute();
+            bool mute = TRTCCloudCore::GetInstance()->getDeviceManager()->getCurrentDeviceMute(TRTCDeviceTypeMic);
             COptionUI* pCheckMute = static_cast<COptionUI*>(m_pmUI.FindControl(_T("check_mic_mute")));
             if (pCheckMute)
                 pCheckMute->Selected(mute);
@@ -2304,11 +2324,11 @@ void TRTCSettingViewController::UpdateCameraDevice()
             }
 
             m_pVideoView->SetPause(false);
-            TRTCCloudCore::GetInstance()->getTRTCCloud()->startCameraDeviceTest((ITRTCVideoRenderCallback*)getShareViewMgrInstance());
+            TRTCCloudCore::GetInstance()->getDeviceManager()->startCameraDeviceTest((ITRTCVideoRenderCallback*)getShareViewMgrInstance());
             m_bStartLocalPreview = true;
         }
         else {
-            TRTCCloudCore::GetInstance()->getTRTCCloud()->stopCameraDeviceTest();
+            TRTCCloudCore::GetInstance()->getDeviceManager()->stopCameraDeviceTest();
             m_bStartLocalPreview = false;
             m_pVideoView->SetPause(true);
             m_pVideoView->NeedUpdate();
@@ -2387,11 +2407,11 @@ void TRTCSettingViewController::ResetBeautyConfig()
 void TRTCSettingViewController::stopAllTestSetting()
 {
     if (m_bStartLocalPreview)
-        TRTCCloudCore::GetInstance()->getTRTCCloud()->stopCameraDeviceTest();
+        TRTCCloudCore::GetInstance()->getDeviceManager()->stopCameraDeviceTest();
     if (m_bStartTestMic)
-        TRTCCloudCore::GetInstance()->getTRTCCloud()->stopMicDeviceTest();
+        TRTCCloudCore::GetInstance()->getDeviceManager()->stopMicDeviceTest();
     if (m_bStartTestSpeaker)
-        TRTCCloudCore::GetInstance()->getTRTCCloud()->stopSpeakerDeviceTest();
+        TRTCCloudCore::GetInstance()->getDeviceManager()->stopSpeakerDeviceTest();
     if (m_bStartTestNetwork)
         TRTCCloudCore::GetInstance()->getTRTCCloud()->stopSpeedTest();
 
