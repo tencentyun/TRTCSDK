@@ -10,6 +10,8 @@
 		280690A22490BE6D00FAAE90 /* ScreenEntranceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 280690A02490BE6D00FAAE90 /* ScreenEntranceViewController.swift */; };
 		280690A32490BE6D00FAAE90 /* ScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 280690A12490BE6D00FAAE90 /* ScreenViewController.swift */; };
 		28C0A3FC249101F000E50613 /* TRTCBroadcastExtensionLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C0A3FB249101F000E50613 /* TRTCBroadcastExtensionLauncher.swift */; };
+		40B03C4B2562A3DC001BD297 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD96E07D248DF98800294D1F /* Accelerate.framework */; };
+		40B03C4E2562A3E7001BD297 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40B03C4D2562A3E7001BD297 /* VideoToolbox.framework */; };
 		4533717B2491F24400E18040 /* ReplayKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 280690A92490C04D00FAAE90 /* ReplayKit.framework */; };
 		4533717E2491F24400E18040 /* SampleHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4533717D2491F24400E18040 /* SampleHandler.swift */; };
 		453371822491F24400E18040 /* TXReplayKit_Screen.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 4533717A2491F24400E18040 /* TXReplayKit_Screen.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -95,6 +97,7 @@
 		280690B82490C1AE00FAAE90 /* SimpleDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SimpleDemo.entitlements; sourceTree = "<group>"; };
 		28C0A3D42490CAB000E50613 /* TXLiteAVSDK_ReplayKitExt.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TXLiteAVSDK_ReplayKitExt.framework; path = ../SDK/TXLiteAVSDK_ReplayKitExt.framework; sourceTree = "<group>"; };
 		28C0A3FB249101F000E50613 /* TRTCBroadcastExtensionLauncher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TRTCBroadcastExtensionLauncher.swift; sourceTree = "<group>"; };
+		40B03C4D2562A3E7001BD297 /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = System/Library/Frameworks/VideoToolbox.framework; sourceTree = SDKROOT; };
 		4533717A2491F24400E18040 /* TXReplayKit_Screen.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TXReplayKit_Screen.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		4533717D2491F24400E18040 /* SampleHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleHandler.swift; sourceTree = "<group>"; };
 		4533717F2491F24400E18040 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -169,6 +172,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				40B03C4E2562A3E7001BD297 /* VideoToolbox.framework in Frameworks */,
+				40B03C4B2562A3DC001BD297 /* Accelerate.framework in Frameworks */,
 				453371862491F35100E18040 /* TXLiteAVSDK_ReplayKitExt.framework in Frameworks */,
 				4533717B2491F24400E18040 /* ReplayKit.framework in Frameworks */,
 			);
@@ -209,15 +214,6 @@
 				4533717F2491F24400E18040 /* Info.plist */,
 			);
 			path = TXReplayKit_Screen;
-			sourceTree = "<group>";
-		};
-		7B8256A224C6C9BE00C6282D /* LocalVideoTest */ = {
-			isa = PBXGroup;
-			children = (
-				7B8256CC24C6D7A500C6282D /* testCustomVideo */,
-				7B8256A324C6CA1F00C6282D /* QBImagePicker */,
-			);
-			path = LocalVideoTest;
 			sourceTree = "<group>";
 		};
 		7B8256A324C6CA1F00C6282D /* QBImagePicker */ = {
@@ -356,6 +352,7 @@
 		C2D3A67E7F4AD77B3A644C16 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				40B03C4D2562A3E7001BD297 /* VideoToolbox.framework */,
 				28C0A3D42490CAB000E50613 /* TXLiteAVSDK_ReplayKitExt.framework */,
 				FDD9E02F2440840900FD5B5A /* libresolv.tbd */,
 				FDCEFF4E241BBDF1000BFA0B /* libiconv.tbd */,
