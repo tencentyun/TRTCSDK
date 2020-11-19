@@ -2,54 +2,54 @@
 /*
  * Module:   GenerateTestUserSig
  *
- * Function: 用于生成测试用的 UserSig，UserSig 是腾讯云为其云服务设计的一种安全保护签名。
- *           其计算方法是对 SDKAppID、UserID 和 EXPIRETIME 进行加密，加密算法为 HMAC-SHA256。
+ * Function：テスト用のUserSigを生成するために使用され、UserSigはTencent Cloudがクラウドサービスのために設計したセキュリティ保護署名の一種です。
+ * 計算方法はSDKAppID、UserID、EXPIRETIMEを暗号化し、暗号化アルゴリズムはHMAC-SHA256です。
  *
- * Attention: 请不要将如下代码发布到您的线上正式版本的 App 中，原因如下：
+ * 注意：以下の理由により、オンライン公式版のアプリに以下のコードを投稿しないでください。
  *
- *            本文件中的代码虽然能够正确计算出 UserSig，但仅适合快速调通 SDK 的基本功能，不适合线上产品，
- *            这是因为客户端代码中的 SECRETKEY 很容易被反编译逆向破解，尤其是 Web 端的代码被破解的难度几乎为零。
- *            一旦您的密钥泄露，攻击者就可以计算出正确的 UserSig 来盗用您的腾讯云流量。
+ * このドキュメントに記載されているコードは、UserSigを正しく計算することができますが、SDKの基本的な機能のクイックチューンナップにのみ適しており、オンライン製品のためのものではありません。
+ * これは、クライアント側のコードに含まれるSECRETKEYは、逆コンパイルやリバースエンジニアリングが容易であり、特にWeb側では、コードを解読することの難易度がほぼゼロに近いためです。
+ * 鍵が漏洩すると、攻撃者は正しいUserSigを計算してTencent Cloudのトラフィックを盗むことができます。
  *
- *            正确的做法是将 UserSig 的计算代码和加密密钥放在您的业务服务器上，然后由 App 按需向您的服务器获取实时算出的 UserSig。
- *            由于破解服务器的成本要高于破解客户端 App，所以服务器计算的方案能够更好地保护您的加密密钥。
+ * 正しいアプローチは、UserSigの計算コードと暗号化キーをビジネスサーバーに置き、アプリがリアルタイムで計算されたUserSigをサーバーからオンデマンドで取得することです。
+ * サーバーをクラックすることは、クライアントアプリをクラックするよりもコストがかかるため、サーバーコンピューティングソリューションは暗号化キーをより確実に保護します。
  *
- * Reference：https://cloud.tencent.com/document/product/647/17275#Server
+ * 引用元: https://cloud.tencent.com/document/product/647/17275#Server
  */
 function genTestUserSig(userID) {
   /**
-   * 腾讯云 SDKAppId，需要替换为您自己账号下的 SDKAppId。
+   * テンセントクラウドのSDKAppIdは、ご自身のアカウントでSDKAppIdに置き換える必要があります。
    *
-   * 进入腾讯云实时音视频[控制台](https://console.cloud.tencent.com/rav ) 创建应用，即可看到 SDKAppId，
-   * 它是腾讯云用于区分客户的唯一标识。
+   * Tencent Cloud Real-time Audio and Video [console](https://console.cloud.tencent.com/rav )を入力してアプリケーションを作成すると、SDKAppIdが表示されます。
+   * テンセントクラウドが顧客を区別するために使用する固有の識別子です。
    */
   const SDKAPPID = 0;
 
   /**
-   * 签名过期时间，建议不要设置的过短
+   * 署名の有効期限は、あまり短く設定することは推奨されません。
    * <p>
-   * 时间单位：秒
-   * 默认时间：7 x 24 x 60 x 60 = 604800 = 7 天
+   * 時間単位：秒
+   * デフォルト時間：7×24×60×60＝604800＝7日
    */
   const EXPIRETIME = 604800;
 
-  /**
-   * 计算签名用的加密密钥，获取步骤如下：
+  /*
+   * 署名の暗号化キーを計算するには、以下のようにします。
    *
-   * step1. 进入腾讯云实时音视频[控制台](https://console.cloud.tencent.com/rav )，如果还没有应用就创建一个，
-   * step2. 单击“应用配置”进入基础配置页面，并进一步找到“帐号体系集成”部分。
-   * step3. 点击“查看密钥”按钮，就可以看到计算 UserSig 使用的加密的密钥了，请将其拷贝并复制到如下的变量中
+   * ステップ1. Tencent Cloud Real-time Audio and Video [console](https://console.cloud.tencent.com/rav )を入力し、まだ適用していない場合は作成してください。
+   * ステップ2. 「設定を適用する」をクリックして基本設定ページに入り、さらに「アカウントシステムの統合」セクションを検索します。
+   * ステップ3. 「鍵を見る」ボタンをクリックすると、UserSig で使用されている暗号化を計算するために使用された鍵が表示されます。
    *
-   * 注意：该方案仅适用于调试Demo，正式上线前请将 UserSig 计算代码和密钥迁移到您的后台服务器上，以避免加密密钥泄露导致的流量盗用。
-   * 文档：https://cloud.tencent.com/document/product/647/17275#Server
+   * 暗号化キーの漏洩によるトラフィックの盗難を防ぐため、本番前にUserSigの計算コードとキーをバックエンドサーバーに移行してください。
+   * ドキュメンテーション: https://cloud.tencent.com/document/product/647/17275#Server
    */
   const SECRETKEY = '';
 
-  // a soft reminder to guide developer to configure sdkAppId/secretKey
+  // sdkAppId/secretKeyを設定する際の注意点を説明。
   if (SDKAPPID === '' || SECRETKEY === '') {
     alert(
-      '请先配置好您的账号信息： SDKAPPID 及 SECRETKEY ' +
-        '\r\n\r\nPlease configure your SDKAPPID/SECRETKEY in js/debug/GenerateTestUserSig.js'
+      'まずはアカウント情報の設定をお願いします： SDKAPPID と SECRETKEY ' +
+        '\r\n\r\njs/debug/GenerateTestUserSig.js で SDKAPPID/SECRETKEY を設定してください'
     );
   }
   const generator = new LibGenerateTestUserSig(SDKAPPID, SECRETKEY, EXPIRETIME);
