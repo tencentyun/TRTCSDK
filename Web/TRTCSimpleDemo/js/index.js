@@ -1,15 +1,12 @@
 /* eslint-disable no-global-assign */
-/* global $ TRTC Presetting deviceTestingInit cameraId micId */
+/* global $ TRTC Presetting deviceTestingInit cameraId micId rtcDetection*/
+
+// presetting of login card
 const presetting = new Presetting();
 presetting.init();
-deviceTestingInit();
 
-// check if browser is compatible with TRTC
-TRTC.checkSystemRequirements().then(result => {
-  if (!result) {
-    alert('您的浏览器不兼容此应用！\n建议下载最新版Chrome浏览器');
-    window.location.href = 'http://www.google.cn/chrome/';
-  }
+rtcDetection().then(detectionResult => {
+  detectionResult && deviceTestingInit();
 });
 
 // setup logging stuffs

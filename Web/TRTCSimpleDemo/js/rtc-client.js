@@ -1,10 +1,11 @@
-/* global $ TRTC getCameraId getMicrophoneId resetView isHidden shareUserId addMemberView removeView addVideoView */
+/* global $ TRTC getCameraId getMicrophoneId resetView isHidden shareUserId addMemberView removeView addVideoView setAnimationFrame clearAnimationFrame*/
 class RtcClient {
   constructor(options) {
     this.sdkAppId_ = options.sdkAppId;
     this.userId_ = options.userId;
     this.userSig_ = options.userSig;
     this.roomId_ = options.roomId;
+    this.privateMapKey_ = options.privateMapKey;
 
     this.isJoined_ = false;
     this.isPublished_ = false;
@@ -13,6 +14,8 @@ class RtcClient {
     this.localStream_ = null;
     this.remoteStreams_ = [];
     this.members_ = new Map();
+    this.volumeIntervalMap_ = new Map();
+    this.volumeLevelMap_ = new Map();
 
     // create a client for RtcClient
     this.client_ = TRTC.createClient({
@@ -92,6 +95,8 @@ class RtcClient {
         $('#mask_' + this.members_.get(state.userId).getId()).show();
       }
     }
+    // 监听自己的声音大小
+    this.setVolumeInterval(this.localStream_);
   }
 
   async leave() {
@@ -105,10 +110,14 @@ class RtcClient {
     // leave the room
     await this.client_.leave();
 
+    // 停止音量的监听及量化
+    this.clearVolumeInterval();
+
     this.localStream_.stop();
     this.localStream_.close();
     this.localStream_ = null;
     this.isJoined_ = false;
+    this.volumeLevelMap_.clear();
     resetView();
   }
 
@@ -147,10 +156,12 @@ class RtcClient {
 
   muteLocalAudio() {
     this.localStream_.muteAudio();
+    this.deleteVolumeInterval(this.userId_);
   }
 
   unmuteLocalAudio() {
     this.localStream_.unmuteAudio();
+    this.setVolumeInterval(this.localStream_);
   }
 
   muteLocalVideo() {
@@ -243,8 +254,17 @@ class RtcClient {
         }
       });
       addVideoView(id);
-      // objectFit 为播放的填充模式，详细参考：https://trtc-1252463788.file.myqcloud.com/web/docs/Stream.html#play
-      remoteStream.play(id, { objectFit: 'contain' });
+      if (remoteStream.userId_ && remoteStream.userId_.indexOf('share_') > -1) {
+        remoteStream.play(id, { objectFit: 'contain' }).then(() => {
+          // Firefox，当video的controls设置为true的时候，video-box无法监听到click事件
+          // if (getBrowser().browser === 'Firefox') {
+          //   return;
+          // }
+          remoteStream.videoPlayer_.element_.controls = true;
+        });
+      } else {
+        remoteStream.play(id);
+      }
       //添加“摄像头未打开”遮罩
       let mask = $('#mask_main').clone();
       mask.attr('id', 'mask_' + id);
@@ -267,6 +287,8 @@ class RtcClient {
         return stream.getId() !== id;
       });
       removeView(id);
+      // 删除对声音大小的监听
+      this.deleteVolumeInterval(remoteStream.getUserId());
       console.log(`stream-removed ID: ${id}  type: ${remoteStream.getType()}`);
     });
 
@@ -295,12 +317,14 @@ class RtcClient {
       $('#' + evt.userId)
         .find('.member-audio-btn')
         .attr('src', 'img/mic-off.png');
+      this.deleteVolumeInterval(evt.userId);
     });
     this.client_.on('unmute-audio', evt => {
       console.log(evt.userId + ' unmute audio');
       $('#' + evt.userId)
         .find('.member-audio-btn')
         .attr('src', 'img/mic-on.png');
+      this.setVolumeInterval(this.remoteStreams_.find(stream => stream.getUserId() === evt.userId));
     });
     this.client_.on('mute-video', evt => {
       console.log(evt.userId + ' mute video');
@@ -337,5 +361,50 @@ class RtcClient {
         return uid;
       }
     }
+  }
+
+  // 监听用户的声音大小，每次浏览器刷新时渲染一次
+  setVolumeInterval(stream) {
+    if (!stream) return;
+    let streamUserId = stream.getUserId();
+    let volumeLevelInterval = setAnimationFrame(() => {
+      const level = stream.getAudioLevel();
+      // 获取到的音量大小和上一次记录的音量大小不同时进行更新渲染
+      if (level !== this.volumeLevelMap_.get(streamUserId)) {
+        // console.log(`user ${streamUserId} is speaking ${level}`, Date.now());
+        this.volumeLevelMap_.set(streamUserId, level);
+        let containerId = streamUserId === this.userId_ ? 'member-me' : streamUserId;
+        if (level > 0.01) {
+          $(`#${containerId}`)
+            .find('.volume-level')
+            .css('height', `${level * 100 * 4}%`);
+        } else {
+          $(`#${containerId}`)
+            .find('.volume-level')
+            .css('height', `0%`);
+        }
+      }
+    });
+    this.volumeIntervalMap_.set(streamUserId, volumeLevelInterval);
+  }
+
+  // 清空监听用户的声音大小
+  deleteVolumeInterval(userId) {
+    let volumeLevelInterval = this.volumeIntervalMap_.get(userId);
+    volumeLevelInterval && clearAnimationFrame(volumeLevelInterval);
+    this.volumeIntervalMap_.delete(userId);
+
+    let containerId = userId === this.userId_ ? 'member-me' : userId;
+    $(`#${containerId}`)
+      .find('.volume-level')
+      .css('height', `0%`);
+  }
+
+  // 用户离开房间时，清空对所有用户的音量监听
+  clearVolumeInterval() {
+    this.volumeIntervalMap_.forEach(volumeInterval => {
+      volumeInterval && clearAnimationFrame(volumeInterval);
+    });
+    this.volumeIntervalMap_.clear();
   }
 }

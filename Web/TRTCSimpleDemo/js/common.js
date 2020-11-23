@@ -102,7 +102,6 @@ function setBtnClickFuc() {
   $('#video-btn').on('click', () => {
     if (isCamOn) {
       $('#video-btn').attr('src', './img/big-camera-off.png');
-      $('#video-btn').attr('title', '打开摄像头');
       $('#member-me')
         .find('.member-video-btn')
         .attr('src', 'img/camera-off.png');
@@ -110,7 +109,6 @@ function setBtnClickFuc() {
       muteVideo();
     } else {
       $('#video-btn').attr('src', './img/big-camera-on.png');
-      $('#video-btn').attr('title', '关闭摄像头');
       $('#member-me')
         .find('.member-video-btn')
         .attr('src', 'img/camera-on.png');
@@ -122,7 +120,6 @@ function setBtnClickFuc() {
   $('#mic-btn').on('click', () => {
     if (isMicOn) {
       $('#mic-btn').attr('src', './img/big-mic-off.png');
-      $('#mic-btn').attr('title', '打开麦克风');
       $('#member-me')
         .find('.member-audio-btn')
         .attr('src', 'img/mic-off.png');
@@ -130,7 +127,6 @@ function setBtnClickFuc() {
       muteAudio();
     } else {
       $('#mic-btn').attr('src', './img/big-mic-on.png');
-      $('#mic-btn').attr('title', '关闭麦克风');
       $('#member-me')
         .find('.member-audio-btn')
         .attr('src', 'img/mic-on.png');
@@ -177,13 +173,15 @@ function setBtnClickFuc() {
       .first()
       .css('grid-area', '1/1/3/4');
     //chromeM71以下会自动暂停，手动唤醒
-    if (getBroswer().broswer == 'Chrome' && getBroswer().version < '72') {
+    if (getBrowser().browser == 'Chrome' && getBrowser().version < '72') {
       rtc.resumeStreams();
     }
   });
 
   //chrome60以下不支持popover，防止error
-  if (getBroswer().broswer == 'Chrome' && getBroswer().version < '60') return;
+  if (getBrowser().browser == 'Chrome' && getBrowser().version < '60') return;
+  if (getBrowser().browser === 'Firefox' && getBrowser().version < '56') return;
+  if (getBrowser().browser === 'Edge' && getBrowser().version < '80') return;
   //开启popover
   $(function() {
     $('[data-toggle="popover"]').popover();
@@ -223,14 +221,14 @@ function setBtnClickFuc() {
 
   //popover事件
   $('#camera').on('show.bs.popover', () => {
-    $('#camera').attr('src', './img/camera-on.png');
+    $('#camera').attr('src', './img/camera-popover.png');
   });
   $('#camera').on('hide.bs.popover', () => {
     $('#camera').attr('src', './img/camera.png');
   });
 
   $('#microphone').on('show.bs.popover', () => {
-    $('#microphone').attr('src', './img/mic-on.png');
+    $('#microphone').attr('src', './img/mic-popover.png');
   });
   $('#microphone').on('hide.bs.popover', () => {
     $('#microphone').attr('src', './img/mic.png');
@@ -268,7 +266,7 @@ function addVideoView(id, isLocal = false) {
       .first()
       .css('grid-area', '1/1/3/4');
     //chromeM71以下会自动暂停，手动唤醒
-    if (getBroswer().broswer == 'Chrome' && getBroswer().version < '72') {
+    if (getBrowser().browser == 'Chrome' && getBrowser().version < '72') {
       rtc.resumeStreams();
     }
   });
@@ -382,7 +380,7 @@ function resetView() {
   }
 }
 
-function getBroswer() {
+function getBrowser() {
   var sys = {};
   var ua = navigator.userAgent.toLowerCase();
   var s;
@@ -394,6 +392,10 @@ function getBroswer() {
     ? (sys.ie = s[1])
     : (s = ua.match(/firefox\/([\d.]+)/))
     ? (sys.firefox = s[1])
+    : (s = ua.match(/tbs\/([\d]+)/))
+    ? (sys.tbs = s[1])
+    : (s = ua.match(/xweb\/([\d]+)/))
+    ? (sys.xweb = s[1])
     : (s = ua.match(/chrome\/([\d.]+)/))
     ? (sys.chrome = s[1])
     : (s = ua.match(/opera.([\d.]+)/))
@@ -402,14 +404,16 @@ function getBroswer() {
     ? (sys.safari = s[1])
     : 0;
 
-  if (sys.edge) return { broswer: 'Edge', version: sys.edge };
-  if (sys.ie) return { broswer: 'IE', version: sys.ie };
-  if (sys.firefox) return { broswer: 'Firefox', version: sys.firefox };
-  if (sys.chrome) return { broswer: 'Chrome', version: sys.chrome };
-  if (sys.opera) return { broswer: 'Opera', version: sys.opera };
-  if (sys.safari) return { broswer: 'Safari', version: sys.safari };
+  if (sys.xweb) return { browser: 'webView XWEB', version: '' };
+  if (sys.tbs) return { browser: 'webView TBS', version: '' };
+  if (sys.edge) return { browser: 'Edge', version: sys.edge };
+  if (sys.ie) return { browser: 'IE', version: sys.ie };
+  if (sys.firefox) return { browser: 'Firefox', version: sys.firefox };
+  if (sys.chrome) return { browser: 'Chrome', version: sys.chrome };
+  if (sys.opera) return { browser: 'Opera', version: sys.opera };
+  if (sys.safari) return { browser: 'Safari', version: sys.safari };
 
-  return { broswer: '', version: '0' };
+  return { browser: '', version: '0' };
 }
 
 function isHidden() {
@@ -495,7 +499,10 @@ let isMobile = {
     if (isMobile.Windows()) {
       osName = 'Windows';
     }
-    return osName;
+    return {
+      osName,
+      type: 'mobile'
+    };
   }
 };
 function detectDesktopOS() {
@@ -648,7 +655,8 @@ function detectDesktopOS() {
       break;
   }
   return {
-    osName: os + osVersion
+    osName: os + osVersion,
+    type: 'desktop'
   };
 }
 function getOS() {
@@ -657,4 +665,20 @@ function getOS() {
   } else {
     return detectDesktopOS();
   }
+}
+//使用requestAnimationFrame重写setInterval，进行性能优化
+function setAnimationFrame(render) {
+  // 计时器ID
+  let timer = {};
+  function animeLoop() {
+    render();
+    timer.id = requestAnimationFrame(animeLoop);
+  }
+  animeLoop();
+  return timer;
+}
+
+// 清除AnimationFrame
+function clearAnimationFrame(timer) {
+  cancelAnimationFrame(timer.id);
 }

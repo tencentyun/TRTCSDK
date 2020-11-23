@@ -30,6 +30,12 @@ div{
 .col-div{
     flex-direction: column;
 }
+#__vconsole{
+    font-size: 16px !important;
+}
+#__vconsole div{
+    display: block;
+}
 #root{
     width: 100%;
     height: 100%;
@@ -167,8 +173,11 @@ div{
     position: relative;
     display: block;
 }
-.device-testing-prepare,.device-testing,.device-testing-report{
+.device-testing-prepare,.device-testing-report{
     display: block;
+}
+.device-testing{
+    flex-wrap: wrap;
 }
 .testing-title{
     font-size: 34px;
@@ -205,7 +214,7 @@ div{
 .device:not(:first-child){
     margin-left: 60px;
 }
-.device:not(:first-child).safari{
+.device:not(:first-child).noVoiceDevice{
     margin-left: 100px;
 }
 .device::before{
@@ -340,10 +349,10 @@ div{
     left: -80px;
     background: #bfbfbf;
 }
-.testing:not(:first-child).safari{
+.testing:not(:first-child).noVoiceDevice{
     margin-left: 150px;
 }
-.testing:not(:first-child).safari::before{
+.testing:not(:first-child).noVoiceDevice::before{
     width: 130px;
     left: -140px;
 }
@@ -355,11 +364,13 @@ div{
 }
 .testing-body{
     width: 100%;
-    display: block;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 .device-list{
-    margin-left: 140px;
-    margin-top: 30px;
+    margin: 30px auto 0;
+    width: 100%;
+    justify-content: center;
 }
 .device-select{
     width: 260px;
@@ -367,6 +378,7 @@ div{
     margin-left: 20px;
     padding: 0 10px;
     border-radius: 4px;
+    -webkit-appearance: menulist-button;
 }
 .camera-video{
     width: 300px;
@@ -418,10 +430,9 @@ div{
 }
 .mic-testing-container{
     display: block;
-    margin-top: 30px;
+    margin: 30px auto 0;
 }
 .mic-testing-info{
-    margin-left: 140px;
     color: #bbbbbb;
     font-size: 14px;
 }
@@ -443,6 +454,7 @@ div{
 }
 .testing-index-list{
     margin-top: 40px;
+    width: 100%;
     display: block;
 }
 .testing-index-group{
@@ -490,6 +502,9 @@ div{
     margin: 20px auto 0;
     justify-content: space-between;
 }
+.device-info{
+    width: 85%;
+}
 .report-icon{
     width: 24px;
     height: 24px;
@@ -527,4 +542,66 @@ div{
     background: #006EFF;
     color: #fff;
     margin-left: 60px;
+}
+#remind-info-container{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.8);
+}
+.webview-remind{
+    display: none;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.webview-remind-img{
+    position: absolute;
+    top: 10px;
+    right: 45px;
+    width: 140px;
+}
+.webview-remind-info{
+    position: absolute;
+    top: 150px;
+    right: 20px;
+    width: 360px;
+    flex-wrap: wrap;
+    font-size: 30px;
+    color: #ffffff;
+}
+.browser-remind{
+    display: none;
+    flex-wrap: wrap;
+    padding: 24px 20px 40px;
+    min-width: 300px;
+    max-width: 480px;
+    width: 40%;
+    min-height: 90px;
+    border-radius: 10px; 
+    background-color: #f0f0f0;
+}
+.remind-info{
+    margin-top: 26px;
+    padding: 0 10px;
+    font-size: 18px;
+    line-height: 34px;
+}
+@media only screen and (max-width: 680px) {
+    .browser-remind{
+        width: 80%;
+    }
+    .remind-info{
+        font-size: 22px;
+        line-height: 40px;
+    }
+}
+@media only screen and (min-width: 680px) and (max-width: 1000px) {
+    .browser-remind{
+        width: 60%;
+    }
 }
