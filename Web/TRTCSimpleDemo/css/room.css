@@ -85,7 +85,9 @@ video{
     font-size: 14px; 
     color: #888888; 
     z-index: 9; 
-    justify-content: center
+    justify-content: center;
+    top: 0;
+    left: 0;
 }
 div[id^=player] {
     background-color: #d8d8d8 !important;

@@ -1,7 +1,7 @@
 /**
  * 设备检测demo
  */
-/* global $ TRTC presetting getOS getBroswer cameraId micId */
+/* global $ TRTC presetting getOS getBrowser cameraId micId */
 
 // 用于记录检测结果，生成检测报告
 let hasCameraDevice = false,
@@ -30,7 +30,7 @@ const deviceFailAttention =
   '3. 检查浏览器设置，允许网页访问摄像头及麦克风<br>' +
   '4. 检查摄像头/麦克风是否正确连接并开启<br>' +
   '5. 尝试重新连接摄像头/麦克风<br>' +
-  '6. 尝试重启电脑后重新检测';
+  '6. 尝试重启设备后重新检测';
 const networkFailAttention =
   '1. 请检查设备是否联网<br>' + '2. 请刷新网页后再次检测<br>' + '3. 请尝试更换网络后再次检测';
 
@@ -54,25 +54,30 @@ const pageCallbackConfig = {
 };
 
 // 判断是否为safari浏览器
-let isSafari = /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent);
-hideVoiceForSafari();
+const isSafari =
+  /Safari/.test(navigator.userAgent) &&
+  !/Chrome/.test(navigator.userAgent) &&
+  !/CriOS/.test(navigator.userAgent) &&
+  !/FxiOS/.test(navigator.userAgent) &&
+  !/EdgiOS/.test(navigator.userAgent);
+const isFirefox = /Firefox/i.test(navigator.userAgent);
+
+// safari和firefox浏览器上检测不到扬声器设备
+const noVoiceDevice = isSafari || isFirefox;
+noVoiceDevice && hideVoiceTesting();
 /**
- * safari浏览器中隐藏扬声器相关检测
+ * safari和firefox浏览器中隐藏扬声器相关检测
  */
-function hideVoiceForSafari() {
-  if (!isSafari) return;
+function hideVoiceTesting() {
   $('#connect-voice').hide();
   $('#device-voice').hide();
   $('#voice-testing').hide();
   $('#voice-report').hide();
-  $('#device-mic').addClass('safari');
-  $('#device-network').addClass('safari');
-  $('#mic-testing').addClass('safari');
-  $('#network-testing').addClass('safari');
+  $('#device-mic').addClass('noVoiceDevice');
+  $('#device-network').addClass('noVoiceDevice');
+  $('#mic-testing').addClass('noVoiceDevice');
+  $('#network-testing').addClass('noVoiceDevice');
 }
-
-// 是否是本地路径打开
-let isFilePath = location.href.indexOf('file://') > -1;
 
 /**
  * 设备检测初始化
@@ -102,8 +107,8 @@ async function deviceTestingInit() {
     cameraTestingResult.statusResult = $(this).attr('id') === 'camera-success';
     $('#camera-testing-body').hide();
     localStream.close();
-    // safari浏览器跳过扬声器检测
-    isSafari ? startMicTesting() : startVoiceTesting();
+    // safari和firefox浏览器跳过扬声器检测
+    noVoiceDevice ? startMicTesting() : startVoiceTesting();
   });
   // 播放器检测失败/成功
   $('#voice-fail, #voice-success').on('click', function() {
@@ -228,10 +233,9 @@ async function deviceTestingInit() {
  * 获取设备信息及网络连接信息
  */
 async function getDevicesInfo() {
+  let cameraList = await TRTC.getCameras();
   let micList = await TRTC.getMicrophones();
   let voiceList = await TRTC.getSpeakers();
-  let cameraList = await TRTC.getCameras();
-  let index = isFilePath ? 'label' : 'deviceId';
   if (cameraList.length > 0) {
     hasCameraDevice = true;
   }
@@ -239,25 +243,46 @@ async function getDevicesInfo() {
     hasMicAndVoiceDevice = true;
   }
   cameraList.forEach(camera => {
-    if (camera[index].length > 0) {
+    if (camera.deviceId.length > 0) {
       hasCameraConnect = true;
     }
   });
   micList.forEach(mic => {
-    if (mic[index].length > 0) {
+    if (mic.deviceId.length > 0) {
       hasMicConnect = true;
     }
   });
-  if (isSafari) {
+  if (noVoiceDevice) {
     hasVoiceConnect = true;
   } else {
     voiceList.forEach(voice => {
-      if (voice[index].length > 0) {
+      if (voice.deviceId.length > 0) {
         hasVoiceConnect = true;
       }
     });
   }
-  hasNetworkConnect = !!navigator.onLine;
+  hasNetworkConnect = await isOnline();
+}
+
+/**
+ * 判断是否有网络连接
+ */
+function isOnline() {
+  return new Promise(resolve => {
+    try {
+      let xhr = new XMLHttpRequest();
+      xhr.onload = function() {
+        resolve(true);
+      };
+      xhr.onerror = function() {
+        resolve(false);
+      };
+      xhr.open('GET', 'data/mock.json', true);
+      xhr.send();
+    } catch (err) {
+      // console.log(err);
+    }
+  });
 }
 
 /**
@@ -449,7 +474,7 @@ function getDevicesList() {
  */
 async function updateCameraDeviceList() {
   let cameraDevices = await TRTC.getCameras();
-  cameraDevices.filter(camera => camera.deviceId !== 'default');
+  // cameraDevices.filter(camera => camera.deviceId !== 'default');
   $('#camera-select').empty();
   cameraDevices.forEach(camera => {
     let option = $('<option></option>');
@@ -502,7 +527,7 @@ async function startCameraTesting() {
 async function updateVoiceDeviceList() {
   // 获取扬声器设备并展示在界面中
   let voiceDevices = await TRTC.getSpeakers();
-  voiceDevices = voiceDevices.filter(voice => voice.deviceId !== 'default');
+  // voiceDevices = voiceDevices.filter(voice => voice.deviceId !== 'default');
   $('#voice-select').empty();
   voiceDevices.forEach(voice => {
     let option = $('<option></option>');
@@ -545,7 +570,14 @@ async function startVoiceTesting() {
 async function updateMicDeviceList() {
   // 展示麦克风设备选择
   let micDevices = await TRTC.getMicrophones();
-  micDevices = micDevices.filter(mic => mic.deviceId !== 'default');
+  // micDevices = micDevices.filter(mic => mic.deviceId !== 'default');
+
+  let isAndroid = getOS().type === 'mobile' && getOS().osName === 'Android';
+  // 如果是安卓设备，不允许切换麦克风(切换麦克风存在获取不到音量的情况)
+  if (isAndroid) {
+    micDevices = [].concat(micDevices[0]);
+  }
+
   $('#mic-select').empty();
   micDevices.forEach(mic => {
     let option = $('<option></option>');
@@ -558,12 +590,12 @@ async function updateMicDeviceList() {
   let cacheMicDevice = micDevices.filter(
     mic => mic.deviceId === localStorage.getItem('txy_webRTC_micId')
   );
-  if (cacheMicDevice.length > 0) {
-    $('#mic-select').val(localStorage.getItem('txy_webRTC_micId'));
-    micTestingResult.device = cacheMicDevice[0];
-  } else {
+  if (isAndroid || cacheMicDevice.length === 0) {
     $('#mic-select').val(micDevices[0].deviceId);
     micTestingResult.device = micDevices[0];
+  } else {
+    $('#mic-select').val(localStorage.getItem('txy_webRTC_micId'));
+    micTestingResult.device = cacheMicDevice[0];
   }
 }
 
@@ -643,9 +675,9 @@ async function startNetworkTesting() {
 
   // 获取浏览器及版本信息
   $('#browser').empty();
-  let browser = getBroswer();
+  let browser = getBrowser();
   $('<div></div>')
-    .text(`${browser.broswer} ${browser.version}`)
+    .text(`${browser.browser} ${browser.version}`)
     .appendTo('#browser');
 
   // 获取ip地址信息
@@ -715,8 +747,8 @@ function showTestingReport() {
       .css('color', 'red');
   }
 
-  // 扬声器检测结果(safari浏览器不显示扬声器检测结果)
-  if (!isSafari) {
+  // 扬声器检测结果(safari和firefox浏览器不显示扬声器检测结果)
+  if (!noVoiceDevice) {
     $('#voice-name').text(voiceTestingResult.device.label);
     if (voiceTestingResult.statusResult) {
       $('#voice-testing-result')
