@@ -8,6 +8,18 @@
 
 > 版本升级注意事项请参见：[升级指引](https://trtc-1252463788.file.myqcloud.com/web/docs/tutorial-14-update-guideline.html)
 
+## 4.7.1 (2020-11-26)
+
+**Improvement**
+
+- 优化媒体设备变更时（例如：接口松动、设备插拔等）的自动恢复采集逻辑
+- 新增错误码：[DEVICE_AUTO_RECOVER_FAILED](https://trtc-1252463788.file.myqcloud.com/web/docs/module-ErrorCode.html#.DEVICE_AUTO_RECOVER_FAILED)，可用于设备恢复失败时进行提示
+
+**Bug Fixed**
+
+- 修复 Native 进房，Web 观看偶现黑屏问题
+- 修复 Native 推摄像头+屏幕分享，Web 重复订阅、取消订阅，屏幕分享流消失的问题
+
 ## 4.7.0 (2020-11-20)
 
 **Feature**
