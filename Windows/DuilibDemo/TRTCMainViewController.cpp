@@ -294,7 +294,9 @@ void TRTCMainViewController::enterRoom()
     }
     else
     {
-        TRTCCloudCore::GetInstance()->getTRTCCloud()->muteLocalVideo(true);
+        if (!CDataCenter::GetInstance()->m_bBlackFramePush) {
+            TRTCCloudCore::GetInstance()->getTRTCCloud()->muteLocalVideo(true);
+        }
         CDataCenter::GetInstance()->m_localInfo.publish_main_video = false;
     }
 
@@ -428,7 +430,9 @@ void TRTCMainViewController::CheckLocalUiStatus()
         m_pVideoViewLayout->muteVideo(UTF82Wide(_loginInfo._userId), TRTCVideoStreamTypeBig, !_loginInfo.publish_main_video);
         m_pMainViewBottomBar->muteLocalVideoBtn(!_loginInfo.publish_main_video);
         TRTCCloudCore::GetInstance()->stopPreview();
-        TRTCCloudCore::GetInstance()->getTRTCCloud()->muteLocalVideo(true);
+        if (!CDataCenter::GetInstance()->m_bBlackFramePush) {
+            TRTCCloudCore::GetInstance()->getTRTCCloud()->muteLocalVideo(true);
+        }
         m_pVideoViewLayout->deleteVideoView(UTF82Wide(_loginInfo._userId), TRTCVideoStreamType::TRTCVideoStreamTypeBig);
 
         m_pUserListController->RemoveUser(_loginInfo._userId);
@@ -439,7 +443,9 @@ void TRTCMainViewController::CheckLocalUiStatus()
         m_pVideoViewLayout->muteVideo(UTF82Wide(_loginInfo._userId),TRTCVideoStreamTypeBig,!_loginInfo.publish_main_video);
         m_pMainViewBottomBar->muteLocalVideoBtn(!_loginInfo.publish_main_video);
         TRTCCloudCore::GetInstance()->startPreview();
-        TRTCCloudCore::GetInstance()->getTRTCCloud()->muteLocalVideo(false);
+        if (!CDataCenter::GetInstance()->m_bBlackFramePush) {
+            TRTCCloudCore::GetInstance()->getTRTCCloud()->muteLocalVideo(false);
+        }
         m_pVideoViewLayout->dispatchVideoView(UTF82Wide(_loginInfo._userId), TRTCVideoStreamType::TRTCVideoStreamTypeBig);
         m_pUserListController->AddUser(_loginInfo._userId);
     }
@@ -759,7 +765,9 @@ void TRTCMainViewController::onEnterRoom(int result)
             bAudioSenceStyle = true;
 
         if (bAudioSenceStyle == false)
-            TRTCCloudCore::GetInstance()->getTRTCCloud()->muteLocalVideo(false);
+            if (!CDataCenter::GetInstance()->m_bBlackFramePush) {
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->muteLocalVideo(false);
+            }
         TRTCCloudCore::GetInstance()->getTRTCCloud()->muteLocalAudio(false);
 
         LocalUserInfo& info = CDataCenter::GetInstance()->getLocalUserInfo();
@@ -1128,7 +1136,9 @@ void TRTCMainViewController::onLocalVideoPublishChange(std::wstring userId, int 
             m_pVideoViewLayout->muteVideo(userId, (TRTCVideoStreamType)streamType, !_loginInfo.publish_main_video);
             m_pMainViewBottomBar->muteLocalVideoBtn(!_loginInfo.publish_main_video);
             TRTCCloudCore::GetInstance()->stopPreview();
-            TRTCCloudCore::GetInstance()->getTRTCCloud()->muteLocalVideo(true);
+            if (!CDataCenter::GetInstance()->m_bBlackFramePush) {
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->muteLocalVideo(true);
+            }
            // m_pVideoViewLayout->deleteVideoView(UTF82Wide(_loginInfo._userId), TRTCVideoStreamType::TRTCVideoStreamTypeBig);
         }
         else
@@ -1140,7 +1150,10 @@ void TRTCMainViewController::onLocalVideoPublishChange(std::wstring userId, int 
 
             m_pUserListController->AddUser(Wide2UTF8(userId));
             TRTCCloudCore::GetInstance()->startPreview();
-            TRTCCloudCore::GetInstance()->getTRTCCloud()->muteLocalVideo(false);
+
+            if (!CDataCenter::GetInstance()->m_bBlackFramePush) {
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->muteLocalVideo(false);
+            }
         }
         m_pUserListController->UpdateUserInfo(_loginInfo);
     }

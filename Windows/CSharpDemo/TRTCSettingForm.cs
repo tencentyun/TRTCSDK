@@ -130,7 +130,7 @@ namespace TRTCCSharpDemo
                 mTRTCCloud.enableSmallVideoStream(enable, ref param);
             }
             bool playSmallVideo = DataManager.GetInstance().playSmallVideo;
-            if(playSmallVideo != mPlaySmallVideo)
+            if (playSmallVideo != mPlaySmallVideo)
             {
                 if (mPlaySmallVideo)
                     mTRTCCloud.setPriorRemoteVideoStreamType(TRTCVideoStreamType.TRTCVideoStreamTypeSmall);

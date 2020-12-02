@@ -56,6 +56,8 @@ TRTCSettingViewController::TRTCSettingViewController(SettingTagEnum tagType, HWN
 
 TRTCSettingViewController::~TRTCSettingViewController()
 {
+    ::KillTimer(GetHWND(), m_send_sei_timer);
+
     TRTCCloudCore::GetInstance()->getTRTCCloud()->removeCallback(this);
 
     TRTCCloudCore::GetInstance()->removeSDKMsgObserverByHwnd(GetHWND());
@@ -1098,6 +1100,16 @@ void TRTCSettingViewController::NotifyOtherTab(TNotifyUI & msg)
                 TRTCCloudCore::GetInstance()->getTRTCCloud()->setVideoEncoderMirror(CDataCenter::GetInstance()->m_bLocalVideoMirror);
             }
         }
+        else if (msg.pSender->GetName() == _T("check_black_push")) {
+            COptionUI* pOpenSender = static_cast<COptionUI*>(msg.pSender);
+            if (pOpenSender->IsSelected() == false) {  //事件值是反的
+                CDataCenter::GetInstance()->m_bBlackFramePush = true;
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI("{\"api\":\"enableBlackStream\",\"params\" :{\"enable\":true}}");
+            } else {
+                CDataCenter::GetInstance()->m_bBlackFramePush = false;
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI("{\"api\":\"enableBlackStream\",\"params\" :{\"enable\":false}}");
+            }
+        }
         else if (msg.pSender->GetName() == _T("check_remote_mirror"))
         {
             COptionUI* pOpenSender = static_cast<COptionUI*>(msg.pSender);
@@ -1139,12 +1151,16 @@ void TRTCSettingViewController::NotifyOtherTab(TNotifyUI & msg)
             if (pOpenSender->IsSelected() == false)
             {
                 CDataCenter::GetInstance()->m_bMuteLocalVideo = false;
-                TRTCCloudCore::GetInstance()->getTRTCCloud()->muteLocalVideo(false);
+                if (!CDataCenter::GetInstance()->m_bBlackFramePush) {
+                    TRTCCloudCore::GetInstance()->getTRTCCloud()->muteLocalVideo(false);
+                }
             }
             else
             {
                 CDataCenter::GetInstance()->m_bMuteLocalVideo = true;
-                TRTCCloudCore::GetInstance()->getTRTCCloud()->muteLocalVideo(true);
+                if (!CDataCenter::GetInstance()->m_bBlackFramePush) {
+                    TRTCCloudCore::GetInstance()->getTRTCCloud()->muteLocalVideo(true);
+                }
             }
         }
         else if (msg.pSender->GetName() == _T("check_localaudio_open"))
@@ -1197,6 +1213,9 @@ void TRTCSettingViewController::NotifyOtherTab(TNotifyUI & msg)
             config.strRoomId = str_room_id.c_str();
             config.userSig = CDataCenter::GetInstance()->getLocalUserInfo()._userSig.c_str();
             TRTCCloudCore::GetInstance()->getTRTCCloud()->switchRoom(config);
+        } else if (msg.pSender->GetName() == _T("btn_send_sei")) {
+            ::KillTimer(GetHWND(), m_send_sei_timer);
+            ::SetTimer(GetHWND(), m_send_sei_timer, 500, NULL);
         }
     }
 
@@ -1622,6 +1641,7 @@ void TRTCSettingViewController::InitWindow()
     TRTCCloudCore::GetInstance()->regSDKMsgObserver(WM_USER_CMD_OnRecordProgress, GetHWND());
     TRTCCloudCore::GetInstance()->regSDKMsgObserver(WM_USER_CMD_OnRecordError, GetHWND());
     TRTCCloudCore::GetInstance()->regSDKMsgObserver(WM_USER_CMD_OnRecordComplete, GetHWND());
+
     SetIcon(IDR_MAINFRAME);
 
     InitNormalTab();
@@ -2128,7 +2148,13 @@ void TRTCSettingViewController::InitOtherTab()
         if (CDataCenter::GetInstance()->m_bLocalVideoMirror)
             pLoacalMirror->Selected(true);
     }
-
+    COptionUI* pBlackPush = static_cast<COptionUI*>(m_pmUI.FindControl(_T("check_black_push")));
+    if (pBlackPush)
+    {
+        pBlackPush->Selected(false);
+        if (CDataCenter::GetInstance()->m_bBlackFramePush)
+            pBlackPush->Selected(true);
+    }
     COptionUI* pShowAudioVolume = static_cast<COptionUI*>(m_pmUI.FindControl(_T("check_voice_volume")));
     if (pShowAudioVolume)
     {
@@ -2609,14 +2635,18 @@ LRESULT TRTCSettingViewController::HandleMessage(UINT uMsg, WPARAM wParam, LPARA
     {
         if (!::IsIconic(*this)) return (wParam == 0) ? TRUE : FALSE;
     }
-    /*
-    else if (uMsg == WM_TIMER)    
+    else if (uMsg == WM_TIMER)
     {
-        BOOL bRet = OnTimer(uMsg, wParam, lParam); 
-        if (bRet)
-            return bRet;
+        SYSTEMTIME sys;
+        GetLocalTime(&sys);
+        char tmp[64] = {NULL};
+        sprintf(tmp, "%4d-%02d-%02d %02d:%02d:%02d ms:%03d", sys.wYear, sys.wMonth, sys.wDay,
+                sys.wHour, sys.wMinute, sys.wSecond, sys.wMilliseconds);
+        std::string time(tmp);
+        TRTCCloudCore::GetInstance()->getTRTCCloud()->sendSEIMsg((uint8_t*)time.c_str(),
+                                                                 time.size(),
+                                                                 1);
     }
-    */
     else if (uMsg == WM_USER_CMD_DeviceChange)
     {
         TRTCDeviceType type = (TRTCDeviceType)wParam;

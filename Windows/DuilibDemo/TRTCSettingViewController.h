@@ -49,6 +49,7 @@ public: //overwrite
     virtual UINT GetClassStyle() const { return /*UI_CLASSSTYLE_FRAME |*/ CS_DBLCLKS; };
     virtual void OnFinalMessage(HWND hWnd);
     virtual LRESULT HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam);
+
 public: //cb
     virtual void Notify(TNotifyUI& msg);
     virtual void NotifyAudioTab(TNotifyUI& msg);
@@ -104,6 +105,7 @@ public:
     CProgressUI* m_pProgressTestMic = nullptr;
     CProgressUI* m_pProgressTestNetwork = nullptr;
     HWND m_parentHwnd = nullptr;
+    int m_send_sei_timer = 100;
 
     bool m_bStartLocalPreview = false;
     bool m_bStartTestMic = false;

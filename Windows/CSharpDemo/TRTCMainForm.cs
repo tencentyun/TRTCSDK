@@ -28,6 +28,7 @@ namespace TRTCCSharpDemo
     public partial class TRTCMainForm : Form, ITRTCCloudCallback, ITRTCLogCallback,ITRTCAudioFrameCallback
     {
         private ITRTCCloud mTRTCCloud;
+        private ITXDeviceManager mDeviceManager;
 
         // 渲染模式：
         // 1 为真窗口渲染（通过窗口句柄传入 SDK），2 为自定义渲染（使用 TXLiteAVVideoView 渲染）
@@ -88,6 +89,7 @@ namespace TRTCCSharpDemo
             // 初始化数据。
             mLoginForm = loginForm;
             mTRTCCloud = DataManager.GetInstance().trtcCloud;
+            mDeviceManager = mTRTCCloud.getDeviceManager();
             mMixStreamVideoMeta = new List<UserVideoMeta>();
             mRemoteUsers = new List<RemoteUserInfo>();
             mPKUsers = new List<PKUserInfo>();
@@ -162,6 +164,7 @@ namespace TRTCCSharpDemo
             mTRTCCloud.removeCallback(this);
             mTRTCCloud.setLogCallback(null);
             mTRTCCloud = null;
+            mDeviceManager = null;
         }
 
         private void OnFormLoad(object sender, EventArgs e)
@@ -263,6 +266,7 @@ namespace TRTCCSharpDemo
             trtcParams.sdkAppId = GenerateTestUserSig.SDKAPPID;
             trtcParams.roomId = DataManager.GetInstance().roomId;
             trtcParams.userId = DataManager.GetInstance().userId;
+            trtcParams.strRoomId = DataManager.GetInstance().strRoomId;
             trtcParams.userSig = GenerateTestUserSig.GetInstance().GenTestUserSig(DataManager.GetInstance().userId);
             // 如果您有进房权限保护的需求，则参考文档{https://cloud.tencent.com/document/product/647/32240}完成该功能。
             // 在有权限进房的用户中的下面字段中添加在服务器获取到的privateMapKey。
@@ -280,9 +284,6 @@ namespace TRTCCSharpDemo
             // 设置连接环境
             setNetEnv(DataManager.GetInstance().testEnv);
 
-            // 关闭 SDK 内部无权限提示弹窗，无权限警告码会通过 onWarning 抛出
-            // mTRTCCloud.callExperimentalAPI("{\"api\":\"enablePopupTips\",\"params\" :{\"enable\":false}}");
-
             // 用户进房
             mTRTCCloud.enterRoom(ref trtcParams, DataManager.GetInstance().appScene);
 
@@ -297,11 +298,9 @@ namespace TRTCCSharpDemo
             TRTCNetworkQosParam qosParams = DataManager.GetInstance().qosParams;      // 网络流控相关参数设置
             mTRTCCloud.setVideoEncoderParam(ref encParams);
             mTRTCCloud.setNetworkQosParam(ref qosParams);
-            mTRTCCloud.setLocalViewFillMode(DataManager.GetInstance().videoFillMode);
-            mTRTCCloud.setLocalViewMirror(DataManager.GetInstance().isLocalVideoMirror);
-            mTRTCCloud.setLocalViewRotation(DataManager.GetInstance().videoRotation);
+            TRTCRenderParams renderParams = DataManager.GetInstance().GetRenderParams();
+            mTRTCCloud.setLocalRenderParams(ref renderParams);
             mTRTCCloud.setVideoEncoderMirror(DataManager.GetInstance().isRemoteVideoMirror);
-            mTRTCCloud.setAudioQuality(DataManager.GetInstance().AudioQuality);
             // 设置美颜
             if (DataManager.GetInstance().isOpenBeauty)
                 mTRTCCloud.setBeautyStyle(DataManager.GetInstance().beautyStyle, DataManager.GetInstance().beauty,
@@ -317,10 +316,6 @@ namespace TRTCCSharpDemo
                     videoResolution = TRTCVideoResolution.TRTCVideoResolution_320_240
                 };
                 mTRTCCloud.enableSmallVideoStream(true, ref param);
-            }
-            if (DataManager.GetInstance().playSmallVideo)
-            {
-                mTRTCCloud.setPriorRemoteVideoStreamType(TRTCVideoStreamType.TRTCVideoStreamTypeSmall);
             }
             // 房间信息
             mUserId = trtcParams.userId;
@@ -344,7 +339,7 @@ namespace TRTCCSharpDemo
             }
             // 如果不是观众角色进房，则打开本地摄像头采集和预览
             if (trtcParams.role != TRTCRoleType.TRTCRoleAudience)
-                mTRTCCloud.startLocalAudio();
+                mTRTCCloud.startLocalAudio(DataManager.GetInstance().AudioQuality);
 
             InitLocalDevice();
             InitLocalConfig();
@@ -408,31 +403,33 @@ namespace TRTCCSharpDemo
         /// </summary>
         private void InitLocalDevice()
         {
-            ITRTCDeviceCollection cameraList = mTRTCCloud.getCameraDevicesList();
+            ITRTCDeviceCollection cameraList = mDeviceManager.getDevicesList(TRTCDeviceType.TXMediaDeviceTypeCamera);
             mCurCameraDevice = "";
             if (cameraList.getCount() > 0)
             {
-                ITRTCDeviceInfo camera = mTRTCCloud.getCurrentCameraDevice();
+                ITRTCDeviceInfo camera = mDeviceManager.getCurrentDevice(TRTCDeviceType.TXMediaDeviceTypeCamera);
                 mCurCameraDevice = camera.getDevicePID();
             }
             cameraList.release();
-            ITRTCDeviceCollection micList = mTRTCCloud.getMicDevicesList();
+            ITRTCDeviceCollection micList = mDeviceManager.getDevicesList(TRTCDeviceType.TXMediaDeviceTypeMic);
             mCurMicDevice = "";
             if (micList.getCount() > 0)
             {
-                ITRTCDeviceInfo mic = mTRTCCloud.getCurrentMicDevice();
+                ITRTCDeviceInfo mic = mDeviceManager.getCurrentDevice(TRTCDeviceType.TXMediaDeviceTypeMic);
                 mCurMicDevice = mic.getDevicePID();
             }
             micList.release();
-            ITRTCDeviceCollection speakerList = mTRTCCloud.getSpeakerDevicesList();
+            ITRTCDeviceCollection speakerList = mDeviceManager.getDevicesList(TRTCDeviceType.TXMediaDeviceTypeSpeaker);
             mCurSpeakerDevice = "";
             if (speakerList.getCount() > 0)
             {
-                ITRTCDeviceInfo speaker = mTRTCCloud.getCurrentSpeakerDevice();
+                ITRTCDeviceInfo speaker = mDeviceManager.getCurrentDevice(TRTCDeviceType.TXMediaDeviceTypeSpeaker);
                 mCurSpeakerDevice = speaker.getDevicePID();
             }
             speakerList.release();
         }
+
+        
 
         /// <summary>
         /// 回调 SDK 中抛出的错误信息，一般抛出错误就不应该继续使用，而是排查错误。
@@ -725,13 +722,14 @@ namespace TRTCCSharpDemo
                             if (mRenderMode == 1)
                             {
                                 IntPtr ptr = GetHandleAndSetUserId(pos, userId, true);
-                                mTRTCCloud.setRemoteSubStreamViewFillMode(userId, DataManager.GetInstance().videoFillMode);
-                                mTRTCCloud.startRemoteSubStreamView(userId, ptr);
+                                TRTCRenderParams renderParams = DataManager.GetInstance().GetRenderParams();
+                                mTRTCCloud.setRemoteRenderParams(userId, TRTCVideoStreamType.TRTCVideoStreamTypeSub, ref renderParams);
+                                mTRTCCloud.startRemoteView(userId, TRTCVideoStreamType.TRTCVideoStreamTypeSub, ptr);
                             }
                             else if (mRenderMode == 2)
                             {
                                 Panel panel = GetPanelAndSetUserId(pos, userId, true, true);
-                                mTRTCCloud.startRemoteSubStreamView(userId, IntPtr.Zero);
+                                mTRTCCloud.startRemoteView(userId, TRTCVideoStreamType.TRTCVideoStreamTypeSub, IntPtr.Zero);
                                 if (panel != null)
                                     AddCustomVideoView(panel, userId, TRTCVideoStreamType.TRTCVideoStreamTypeSub);
                             }
@@ -743,7 +741,7 @@ namespace TRTCCSharpDemo
                         int pos = FindOccupyRemoteVideoPosition(userId + "(屏幕分享)", true);
                         if (pos != -1)
                         {
-                            mTRTCCloud.stopRemoteSubStreamView(userId);
+                            mTRTCCloud.stopRemoteView(userId, TRTCVideoStreamType.TRTCVideoStreamTypeSub);
                             if (mRenderMode == 2)
                             {
                                 Panel panel = GetPanelAndSetUserId(pos, userId, false, true);
@@ -779,16 +777,20 @@ namespace TRTCCSharpDemo
                         if (pos != -1)
                         {
                             SetVisableInfoView(pos, false);
+                            TRTCVideoStreamType streamType = DataManager.GetInstance().playSmallVideo ?
+                                    TRTCVideoStreamType.TRTCVideoStreamTypeSmall : TRTCVideoStreamType.TRTCVideoStreamTypeBig;
                             if (mRenderMode == 1)
                             {
                                 IntPtr ptr = GetHandleAndSetUserId(pos, userId, false);
-                                mTRTCCloud.setRemoteViewFillMode(userId, DataManager.GetInstance().videoFillMode);
-                                mTRTCCloud.startRemoteView(userId, ptr);
+                                TRTCRenderParams renderParams = DataManager.GetInstance().GetRenderParams();
+                                mTRTCCloud.setRemoteRenderParams(userId, TRTCVideoStreamType.TRTCVideoStreamTypeBig, ref renderParams);
+                                
+                                mTRTCCloud.startRemoteView(userId, streamType, ptr);
                             }
                             else if (mRenderMode == 2)
                             {
                                 Panel panel = GetPanelAndSetUserId(pos, userId);
-                                mTRTCCloud.startRemoteView(userId, IntPtr.Zero);
+                                mTRTCCloud.startRemoteView(userId, streamType, IntPtr.Zero);
                                 if (panel != null)
                                     AddCustomVideoView(panel, userId, TRTCVideoStreamType.TRTCVideoStreamTypeBig);
                             }
@@ -812,7 +814,7 @@ namespace TRTCCSharpDemo
                         if (pos != -1)
                         {
                             SetVisableInfoView(pos, true);
-                            mTRTCCloud.stopRemoteView(userId);
+                            mTRTCCloud.stopRemoteView(userId, TRTCVideoStreamType.TRTCVideoStreamTypeBig);
                             if (mRenderMode == 2)
                             {
                                 Panel panel = GetPanelAndSetUserId(pos, userId, false, false);
@@ -1245,7 +1247,7 @@ namespace TRTCCSharpDemo
             
             if (this.startLocalAudioCheckBox.Checked)
             {
-                mTRTCCloud.startLocalAudio();
+                mTRTCCloud.startLocalAudio(DataManager.GetInstance().AudioQuality);
             }
             else
             {
@@ -1335,15 +1337,15 @@ namespace TRTCCSharpDemo
                 DataManager.GetInstance().isLocalVideoMirror = true;
                 DataManager.GetInstance().isRemoteVideoMirror = true;
                 mTRTCCloud.setVideoEncoderMirror(true);
-                mTRTCCloud.setLocalViewMirror(true);
             }
             else
             {
                 DataManager.GetInstance().isLocalVideoMirror = false;
                 DataManager.GetInstance().isRemoteVideoMirror = false;
                 mTRTCCloud.setVideoEncoderMirror(false);
-                mTRTCCloud.setLocalViewMirror(false);
             }
+            TRTCRenderParams renderParams = DataManager.GetInstance().GetRenderParams();
+            mTRTCCloud.setLocalRenderParams(ref renderParams);
         }
 
 
@@ -1502,7 +1504,7 @@ namespace TRTCCSharpDemo
             Log.I(String.Format("onCameraDidReady"));
             // 实时获取当前使用的摄像头设备信息
             if (mTRTCCloud != null)
-                mCurCameraDevice = mTRTCCloud.getCurrentCameraDevice().getDevicePID();
+                mCurCameraDevice = mDeviceManager.getCurrentDevice(TRTCDeviceType.TXMediaDeviceTypeCamera).getDevicePID();
         }
 
         public void onMicDidReady()
@@ -1510,7 +1512,7 @@ namespace TRTCCSharpDemo
             Log.I(String.Format("onMicDidReady"));
             // 实时获取当前使用的麦克风设备信息
             if (mTRTCCloud != null)
-            mCurMicDevice = mTRTCCloud.getCurrentMicDevice().getDevicePID();
+            mCurMicDevice = mDeviceManager.getCurrentDevice(TRTCDeviceType.TXMediaDeviceTypeMic).getDevicePID();
         }
 
         public void onConnectionLost()
@@ -1572,134 +1574,6 @@ namespace TRTCCSharpDemo
                         mAudioSettingForm.OnDeviceChange(deviceId, type, state);
                 }
             }));
-        }
-
-        /// <summary>
-        /// 实时更新本地设备摄像头的设备信息
-        /// </summary>
-        private void RefreshCameraDevice(string deviceId, TRTCDeviceState state)
-        {
-            bool reSelectDevice = false;
-            ITRTCDeviceCollection collection = mTRTCCloud.getCameraDevicesList();
-            if (state == TRTCDeviceState.TRTCDeviceStateRemove)
-            {
-                // 选择设备被移除了，此时可能还有其他设备
-                if (mCurCameraDevice.Equals(deviceId))
-                {
-                    reSelectDevice = true;
-                }
-                // 有设备变成没设备
-                if (!string.IsNullOrEmpty(mCurCameraDevice) && collection.getCount() <= 0)
-                {
-                    mCurCameraDevice = "";
-                    return;
-                }
-            }
-            else if (state == TRTCDeviceState.TRTCDeviceStateAdd)
-            {
-                // 没有设备变成有设备
-                if (string.IsNullOrEmpty(mCurCameraDevice))
-                {
-                    reSelectDevice = true;
-                }
-            }
-
-            if (reSelectDevice)
-            {
-                // 选择第一个设备为当前使用设备
-                if (collection.getCount() > 0)
-                {
-                    mTRTCCloud.setCurrentCameraDevice(collection.getDevicePID(0));
-                    mCurCameraDevice = collection.getDevicePID(0);
-                }
-            }
-            collection.release();
-        }
-
-        /// <summary>
-        /// 实时更新本地设备麦克风的设备信息
-        /// </summary>
-        private void RefreshMicDevice(string deviceId, TRTCDeviceState state)
-        {
-            bool reSelectDevice = false;
-            ITRTCDeviceCollection collection = mTRTCCloud.getMicDevicesList();
-            if (state == TRTCDeviceState.TRTCDeviceStateRemove)
-            {
-                // 选择设备被移除了，此时可能还有其他设备
-                if (mCurMicDevice.Equals(deviceId))
-                {
-                    reSelectDevice = true;
-                }
-                // 有设备变成没设备
-                if (!string.IsNullOrEmpty(mCurMicDevice) && collection.getCount() <= 0)
-                {
-                    mCurMicDevice = "";
-                    return;
-                }
-            }
-            else if (state == TRTCDeviceState.TRTCDeviceStateAdd)
-            {
-                // 没有设备变成有设备
-                if (string.IsNullOrEmpty(mCurMicDevice))
-                {
-                    reSelectDevice = true;
-                }
-            }
-
-            if (reSelectDevice)
-            {
-                // 选择第一个设备为当前使用设备
-                if (collection.getCount() > 0)
-                {
-                    mTRTCCloud.setCurrentMicDevice(collection.getDevicePID(0));
-                    mTRTCCloud.startLocalAudio();
-                    mTRTCCloud.muteLocalAudio(false);
-                    mCurMicDevice = collection.getDevicePID(0);
-                }
-            }
-            collection.release();
-        }
-
-        /// <summary>
-        /// 实时更新本地设备扬声器的设备信息
-        /// </summary>
-        private void RefreshSpeakerDevice(string deviceId, TRTCDeviceState state)
-        {
-            bool reSelectDevice = false;
-            ITRTCDeviceCollection collection = mTRTCCloud.getSpeakerDevicesList();
-            if (state == TRTCDeviceState.TRTCDeviceStateRemove)
-            {
-                // 选择设备被移除了，此时可能还有其他设备
-                if (mCurSpeakerDevice.Equals(deviceId))
-                {
-                    reSelectDevice = true;
-                }
-                // 有设备变成没设备
-                if (!string.IsNullOrEmpty(mCurSpeakerDevice) && collection.getCount() <= 0)
-                {
-                    mCurSpeakerDevice = "";
-                    return;
-                }
-            }
-            else if (state == TRTCDeviceState.TRTCDeviceStateAdd)
-            {
-                // 没有设备变成有设备
-                if (string.IsNullOrEmpty(mCurSpeakerDevice))
-                {
-                    reSelectDevice = true;
-                }
-            }
-
-            if (reSelectDevice)
-            {
-                // 选择第一个设备为当前使用设备
-                if (collection.getCount() > 0)
-                {
-                    mTRTCCloud.setCurrentSpeakerDevice(collection.getDevicePID(0));
-                    mCurSpeakerDevice = collection.getDevicePID(0);
-                }
-            }
-            collection.release();
         }
 
         private void OnConnectRoomCheckBoxClick(object sender, EventArgs e)
@@ -1972,7 +1846,7 @@ namespace TRTCCSharpDemo
             else
             {
                 // 关闭自定义采集音频，开启本地采集音频
-                mTRTCCloud.startLocalAudio();
+                mTRTCCloud.startLocalAudio(DataManager.GetInstance().AudioQuality);
                 if (this.muteAudioCheckBox.Checked)
                     mTRTCCloud.muteLocalAudio(true);
                 else
@@ -2019,6 +1893,20 @@ namespace TRTCCSharpDemo
         public void onMixedPlayAudioFrame(TRTCAudioFrame frame)
         {
             //throw new NotImplementedException();
+        }
+        public void onSwitchRoom(TXLiteAVError errCode, string errMsg)
+        {
+            Log.I(String.Format("onSwitchRoom : errCode = {0}, errMsg = {1}", errCode, errMsg));
+        }
+
+        public void onAudioDeviceCaptureVolumeChanged(uint volume, bool muted)
+        {
+            Log.I(String.Format("onAudioDeviceCaptureVolumeChanged : volume = {0}, muted = {1}", volume, muted));
+        }
+
+        public void onAudioDevicePlayoutVolumeChanged(uint volume, bool muted)
+        {
+            Log.I(String.Format("onAudioDevicePlayoutVolumeChanged : volume = {0}, muted = {1}", volume, muted));
         }
 
         private void vedioSettingLabel_Click(object sender, EventArgs e)
