@@ -14,47 +14,31 @@
 | Electron | [下载](http://liteavsdk-1252463788.cosgz.myqcloud.com/TXLiteAVSDK_TRTC_Electron_latest.zip) | [DOC](https://cloud.tencent.com/document/product/647/38548) | [DOC](https://cloud.tencent.com/document/product/647/38549) |[API](https://cloud.tencent.com/document/product/647/38551) |
 | 微信小程序 | [下载](http://liteavsdk-1252463788.cosgz.myqcloud.com/TRTC_WXMini_latest.zip) | [DOC](https://cloud.tencent.com/document/product/647/32399) | [DOC](https://cloud.tencent.com/document/product/647/32183) |[API](https://cloud.tencent.com/document/product/647/17018) |
 
-## Version 8.0 @ 2020.11.13
+## Version 8.1 @ 2020.12.03
 
 **欢迎加入**
 
 团队技术氛围浓厚，培训体系完善，产品线多样，有经验丰富的“老司机”手把手帮你入门音视频技术。<br>
 北京、上海、深圳、广州均有岗位，如果您对音视频技术感兴趣，欢迎加入我们 [腾讯云 TRTC 研发团队](https://careers.tencent.com/jobdesc.html?postId=1297858141983088640) 。
 
-
 **功能新增**
-- 全平台 新增C++统一API，请参见 cpp_interface/ITRTCCloud.h
-- 全平台 支持字符串房间号，请参见 TRTCParams.strRoomId
-- 全平台 新增 TXDeviceManager 设备管理类
-- 全平台 新增 API TRTCCloud.switchRoom，支持不停止采集，直接切换房间
-- 全平台 新增 API TRTCCloud.startRemoteView 开始渲染远端视频画面
-- 全平台 新增 API TRTCCloud.stopRemoteView 停止渲染远端视频画面
-- 全平台 新增 API TRTCCloud.getDeviceManager 获取设备管理类 
-- 全平台 新增 API TRTCCloud.startLocalAudio 开启本地音频的采集和上行
-- 全平台 新增 API TRTCCloud.setRemoteRenderParams 设置远端图像的渲染配置
-- 全平台 新增 API TRTCCloud.setLocalRenderParams 设置本地图像的渲染配置
-
+- 全平台 onStatistics 回调中增加远端视频卡顿相关信息
+- 全平台支持通过音量调节接口实现声音的增益效果（使用前请联系技术支持）
+- iOS/Android 新增 setLocalVideoProcessListener 接口，能更好地支持第三方美颜集成
 
 **质量优化**
-- Android 优化软硬解切换逻辑
-- Windows 优化 System loopback 音频采集音质及回声消除效果
-- Windows 优化音频设备选择逻辑，降低无声率
-- Windows 优化双讲剪切效果
-- 全平台 优化手动接收模式切换角色时的秒开效果
-- 全平台 优化音频接收逻辑，提升音频效果
-- 全平台 优化 sendCustomCmdMsg 可靠性
+- 全平台优化戴耳机时的声音流畅度，提高声音音质
+- Android 优化双讲剪切效果
 
 **问题修复**
-- iOS 修复 muteLocalVideo 调用导致本地视频渲染暂停的问题
-- iOS 修复在前后台切换时偶现调用系统组件可能导致卡死的问题
-- iOS 修复开启音效时，耳返音频断断续续的问题
-- Android 修复切通话音量播音效的时候电话打断，音效不会停止播放的问题
-- Android 修复偶现音频采集启动失败的问题
-- Windows 修复偶现本地视频渲染黑屏的问题
-- Windows 修复进程退出时可能crash的问题
-- Windows 优化蓝牙耳机支持，修复蓝牙耳机无声问题
-- Windows 修复屏幕分享结束时抢焦点的问题
-- 全平台 修复状态回调丢包率统计异常问题
+- iOS 修复强杀时 crash 问题
+- Android 修复自定义美颜高 fps 偶现视频帧异常的问题
+- Windows 修复高 DPI 下屏幕分享 crash 问题
+- Mac 修复 M1 偶现的渲染 crash 问题
+- 修复其他已知的偶现 crash 问题
+
+**其他**
+Windows C# 同步升级至最新版 API
 
 
 更早期的版本更新历史请点击 [More](https://cloud.tencent.com/document/product/647/46907)...
