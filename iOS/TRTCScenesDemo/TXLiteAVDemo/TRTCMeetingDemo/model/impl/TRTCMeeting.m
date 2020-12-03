@@ -543,6 +543,8 @@ typedef void (^block)(TRTCMeeting *self);
 
 - (void)updateMixConfig {
     if ([_userInfoList count] == 0) {
+        // 不需要混流
+        [[TRTCCloud sharedInstance] setMixTranscodingConfig:nil];
         return;
     }
     
@@ -559,7 +561,6 @@ typedef void (^block)(TRTCMeeting *self);
     
     if ([mixUserList count] == 0) {
         [[TRTCCloud sharedInstance] setMixTranscodingConfig:nil];
-        
     } else {
         int videoWidth = 544;
         int videoHeight = 960;
@@ -690,11 +691,9 @@ typedef void (^block)(TRTCMeeting *self);
 - (void)onRemoteUserLeaveRoom:(NSString *)userId reason:(NSInteger)reason {
     [self asyncRun:^(TRTCMeeting *self) {
         [self->_userInfoList removeObjectForKey:userId];
-        
         if (self->_getLiveUrl) {
             [self updateMixConfig];
         }
-        
         if (self->_delegate && [self->_delegate respondsToSelector:@selector(onUserLeaveRoom:)]) {
             [self asyncRunOnDelegateQueue:^{
                 [self->_delegate onUserLeaveRoom:userId];
@@ -708,7 +707,6 @@ typedef void (^block)(TRTCMeeting *self);
         TRTCMeetingUserInfo *userInfo = [self->_userInfoList valueForKey:userId];
         if (userInfo) {
             userInfo.isVideoAvailable = available;
-            
             if (self->_delegate && [self->_delegate respondsToSelector:@selector(onUserVideoAvailable:available:)]) {
                 [self asyncRunOnDelegateQueue:^{
                     [self->_delegate onUserVideoAvailable:userId available:available];
