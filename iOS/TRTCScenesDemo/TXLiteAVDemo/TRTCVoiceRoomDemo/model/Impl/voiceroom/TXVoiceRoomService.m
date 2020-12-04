@@ -333,7 +333,7 @@
     }
     if (seatIndex >=0 && seatIndex < self.seatInfoList.count) {
         TXSeatInfo* info = self.seatInfoList[seatIndex];
-        if (self.selfUserId != info.user) {
+        if (![self.selfUserId isEqualToString:info.user]) {
             callback(-1, @"not in the seat");
             return;
         }
