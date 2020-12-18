@@ -67,7 +67,32 @@ class RtcClient {
         this.localStream_.on('player-state-changed', event => {
           console.log(`local stream ${event.type} player is ${event.state}`);
         });
+      } catch (e) {
+        console.error('failed to initialize local stream - ' + e);
+        switch (e.name) {
+          case 'NotReadableError':
+            alert(
+              '暂时无法访问摄像头/麦克风，请确保系统允许当前浏览器访问摄像头/麦克风，并且没有其他应用占用摄像头/麦克风'
+            );
+            return;
+          case 'NotAllowedError':
+            if (e.message === 'Permission denied by system') {
+              alert('请确保系统允许当前浏览器访问摄像头/麦克风');
+            } else {
+              console.log('User refused to share the screen');
+            }
+            return;
+          case 'NotFoundError':
+            alert(
+              '浏览器获取不到摄像头/麦克风设备，请检查设备连接并且确保系统允许当前浏览器访问摄像头/麦克风'
+            );
+            return;
+          default:
+            return;
+        }
+      }
 
+      try {
         // publish the local stream
         await this.publish();
 
@@ -75,7 +100,7 @@ class RtcClient {
         $('#main-video-btns').show();
         $('#mask_main').appendTo($('#player_' + this.localStream_.getId()));
       } catch (e) {
-        console.error('failed to initialize local stream - ' + e);
+        console.error('failed to publish local stream - ', e);
       }
     } catch (e) {
       console.error('join room failed! ' + e);

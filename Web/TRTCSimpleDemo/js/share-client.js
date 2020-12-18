@@ -57,15 +57,22 @@ class ShareClient {
         $('#screen-btn').attr('src', './img/screen-off.png');
       });
     } catch (e) {
-      // 用户拒绝授予屏幕分享的权限, 导致屏幕分享失败
-      if (e.name === 'NotAllowedError') {
-        console.log('User refused to share the screen');
-      } else {
-        console.error('ShareClient failed to initialize local stream - ' + e);
-      }
+      console.error('fail to initialize share stream -', e);
       $('#screen-btn').attr('src', 'img/screen-off.png');
-      // 屏幕分享流初始化失败，停止后续进房发布流程
-      return;
+      switch (e.name) {
+        case 'NotReadableError':
+          alert('屏幕分享失败，请确保系统允许当前浏览器获取屏幕内容');
+          return;
+        case 'NotAllowedError':
+          if (e.message === 'Permission denied by system') {
+            alert('屏幕分享失败，请确保系统允许当前浏览器获取屏幕内容');
+          } else {
+            console.log('User refused to share the screen');
+          }
+          return;
+        default:
+          return;
+      }
     }
 
     try {

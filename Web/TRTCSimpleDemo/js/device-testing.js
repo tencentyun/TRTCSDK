@@ -4,8 +4,11 @@
 /* global $ TRTC presetting getOS getBrowser cameraId micId */
 
 // 用于记录检测结果，生成检测报告
+// has---Device 是否检测到当前系统有---设备
+// has---Connect 是否检测到当前浏览器有---连接
 let hasCameraDevice = false,
-  hasMicAndVoiceDevice = false,
+  hasMicDevice = false,
+  hasVoiceDevice = false,
   hasCameraConnect,
   hasVoiceConnect,
   hasMicConnect,
@@ -27,10 +30,11 @@ let networkQualityNum = 0;
 const deviceFailAttention =
   '1. 若浏览器弹出提示，请选择“允许”<br>' +
   '2. 若杀毒软件弹出提示，请选择“允许”<br>' +
-  '3. 检查浏览器设置，允许网页访问摄像头及麦克风<br>' +
-  '4. 检查摄像头/麦克风是否正确连接并开启<br>' +
-  '5. 尝试重新连接摄像头/麦克风<br>' +
-  '6. 尝试重启设备后重新检测';
+  '3. 检查系统设置，允许浏览器访问摄像头及麦克风<br>' +
+  '4. 检查浏览器设置，允许网页访问摄像头及麦克风<br>' +
+  '5. 检查摄像头/麦克风是否正确连接并开启<br>' +
+  '6. 尝试重新连接摄像头/麦克风<br>' +
+  '7. 尝试重启设备后重新检测';
 const networkFailAttention =
   '1. 请检查设备是否联网<br>' + '2. 请刷新网页后再次检测<br>' + '3. 请尝试更换网络后再次检测';
 
@@ -52,6 +56,8 @@ const pageCallbackConfig = {
   'mic-testing-body': 'startMicTesting',
   'network-testing-body': 'startNetworkTesting'
 };
+
+const isFileProtocol = location.protocol === 'file:';
 
 // 判断是否为safari浏览器
 const isSafari =
@@ -236,12 +242,11 @@ async function getDevicesInfo() {
   let cameraList = await TRTC.getCameras();
   let micList = await TRTC.getMicrophones();
   let voiceList = await TRTC.getSpeakers();
-  if (cameraList.length > 0) {
-    hasCameraDevice = true;
-  }
-  if (micList.length > 0) {
-    hasMicAndVoiceDevice = true;
-  }
+
+  hasCameraDevice = cameraList.length > 0;
+  hasMicDevice = micList.length > 0;
+  hasVoiceDevice = voiceList.length > 0;
+
   cameraList.forEach(camera => {
     if (camera.deviceId.length > 0) {
       hasCameraConnect = true;
@@ -252,16 +257,16 @@ async function getDevicesInfo() {
       hasMicConnect = true;
     }
   });
+  // 如果是无法进行扬声器检测的浏览器，设置为true
   if (noVoiceDevice) {
+    hasVoiceDevice = true;
     hasVoiceConnect = true;
   } else {
-    voiceList.forEach(voice => {
-      if (voice.deviceId.length > 0) {
-        hasVoiceConnect = true;
-      }
-    });
+    hasVoiceConnect = voiceList.length > 0;
   }
-  hasNetworkConnect = await isOnline();
+  // 本地打开使用 navigator.onLine 的结果，https打开使用 isOnline() 的检测结果
+  // CORS policy: Cross origin requests are only supported for protocol schemes: http, data, chrome, chrome-extension, chrome-untrusted, https;
+  hasNetworkConnect = isFileProtocol ? navigator.onLine : await isOnline();
 }
 
 /**
@@ -311,26 +316,65 @@ function deviceDialogInit() {
     };
     showDeviceStatus();
 
-    if (!(hasCameraConnect && hasVoiceConnect && hasMicConnect)) {
+    if (!(hasCameraConnect && hasMicConnect)) {
       navigator.mediaDevices
-        .getUserMedia({ video: hasCameraDevice, audio: hasMicAndVoiceDevice })
-        .then(async () => {
-          // 重新获取设备信息
-          await getDevicesInfo();
+        .getUserMedia({ video: hasCameraDevice, audio: hasMicDevice })
+        .then(() => {
+          if (hasCameraDevice) hasCameraConnect = true;
+          if (hasMicDevice) hasMicConnect = true;
           // 更新首页popover的option list
           getDevicesList();
           // 展示连接结果
           showDeviceStatus();
         })
-        .catch(err => {});
+        .catch(err => {
+          console.log('getUserMedia err', err.name, err.message);
+          handleGetUserMediaError(err);
+        });
     }
   }
 }
 
 /**
+ * 返回设备连接信息
+ */
+function getDeviceConnectInfo() {
+  let connectInfo = '连接出错，请重试';
+  // 第一步：浏览器未检测到摄像头/麦克风/扬声器设备的提示
+  if (!(hasCameraDevice && hasMicDevice && hasVoiceDevice)) {
+    connectInfo = `未检测到${hasCameraDevice ? '' : '【摄像头】'}${
+      hasVoiceDevice ? '' : '【扬声器】'
+    }${hasMicDevice ? '' : '【麦克风】'}设备，请检查设备连接`;
+    return connectInfo;
+  }
+  // 第二步：浏览器未拿到摄像头/麦克风权限的提示
+  if (!(hasCameraConnect && hasMicConnect)) {
+    connectInfo = hasNetworkConnect
+      ? '请允许浏览器及网页访问摄像头/麦克风设备'
+      : '请允许浏览器及网页访问摄像头/麦克风设备，并检查网络连接';
+    // 显示设备连接失败引导
+    $('#connect-attention-container').show();
+    $('#connect-attention-info').html(deviceFailAttention);
+    return connectInfo;
+  }
+  // 第三步：浏览器检测未连接网络的提示
+  if (!hasNetworkConnect) {
+    connectInfo = '网络连接失败，请检查网络连接';
+    // 显示设备连接失败引导
+    $('#connect-attention-container').show();
+    $('#connect-attention-info').html(networkFailAttention);
+    return connectInfo;
+  }
+  return connectInfo;
+}
+
+/**
  * 弹窗-设备连接检查
  */
-function startDeviceConnect() {
+async function startDeviceConnect() {
+  // 重新获取连接信息
+  await getDevicesInfo();
+
   // 显示设备检测弹窗
   $('#device-testing-root').show();
   // 设备检测弹窗-设备连接页
@@ -378,32 +422,11 @@ function startDeviceConnect() {
         .removeClass('connect-success connect-fail')
         .addClass(`${hasNetworkConnect ? 'connect-success' : 'connect-fail'}`);
 
-      if (!(hasCameraConnect && hasVoiceConnect && hasMicConnect)) {
-        let connectInfo = hasNetworkConnect
-          ? '设备连接失败，请允许网页访问摄像头及麦克风'
-          : '设备及网络连接失败，请允许网页访问摄像头及麦克风并检查网络连接';
-        $('#connect-info')
-          .text(connectInfo)
-          .css('color', 'red');
-        // 显示设备连接失败引导
-        $('#connect-attention-container').show();
-        $('#connect-attention-info').html(deviceFailAttention);
-        // 切换按钮状态
-        $('#start-test-btn').hide();
-        $('#connect-again-btn').show();
-      }
-      if (hasCameraConnect && hasVoiceConnect && hasMicConnect && !hasNetworkConnect) {
-        $('#connect-info')
-          .text('网络连接失败，请检查网络连接')
-          .css('color', 'red');
-        // 显示网络连接失败引导
-        $('#connect-attention-container').show();
-        $('#connect-attention-info').html(networkFailAttention);
-        // 切换按钮状态
-        $('#start-test-btn').hide();
-        $('#connect-again-btn').show();
-      }
-      if (hasCameraConnect && hasVoiceConnect && hasMicConnect && hasNetworkConnect) {
+      let connectInfo = '';
+      // 设备检测结果（包括麦克风检测，摄像头检测，扬声器检测，网络检测）
+      const connectResult =
+        hasCameraConnect && hasVoiceConnect && hasMicConnect && hasNetworkConnect;
+      if (connectResult) {
         $('#connect-info')
           .text('设备及网络连接成功，请开始设备检测')
           .css('color', '#32CD32');
@@ -411,25 +434,35 @@ function startDeviceConnect() {
         $('#start-test-btn')
           .removeClass('start-gray')
           .show();
+      } else {
+        // 有设备或者网络连接不成功，展示连接失败提示
+        connectInfo = getDeviceConnectInfo();
+        $('#connect-info')
+          .text(connectInfo)
+          .css('color', 'red');
+        // 切换按钮状态
+        $('#start-test-btn').hide();
+        $('#connect-again-btn').show();
       }
     }, 2000);
   };
   showDeviceConnectInfo();
 
   // 如果有设备未连接，唤起请求弹窗
-  if (!(hasCameraConnect && hasVoiceConnect && hasMicConnect)) {
+  if (!(hasCameraConnect && hasMicConnect)) {
     navigator.mediaDevices
-      .getUserMedia({ video: hasCameraDevice, audio: hasMicAndVoiceDevice })
-      .then(async () => {
-        // 重新获取设备信息
-        await getDevicesInfo();
+      .getUserMedia({ video: hasCameraDevice, audio: hasMicDevice })
+      .then(() => {
+        if (hasCameraDevice) hasCameraConnect = true;
+        if (hasMicDevice) hasMicConnect = true;
         // 更新首页popover的option list
         getDevicesList();
         // 显示设备连接信息
         showDeviceConnectInfo();
       })
       .catch(err => {
-        console.log('err', err.name);
+        console.log('getUserMedia err', err.name, err.message);
+        handleGetUserMediaError(err);
       });
   }
 }
@@ -843,28 +876,37 @@ async function createLocalStream(constraints, container) {
   try {
     await localStream.initialize();
   } catch (error) {
-    switch (error.name) {
-      case 'NotReadableError':
-        // 当系统或浏览器异常的时候，可能会出现此错误，您可能需要引导用户重启电脑/浏览器来尝试恢复。
-        alert('暂时无法访问摄像头/麦克风，请确保当前没有其他应用请求访问摄像头/麦克风，并重试');
-        return;
-      case 'NotAllowedError':
-        // 用户拒绝授权访问摄像头或麦克风 | 屏幕分享，您需要引导客户来授权访问
-        alert('用户已拒绝授权访问摄像头或麦克风');
-        return;
-      case 'NotFoundError':
-        // 找不到摄像头或麦克风设备
-        alert('找不到摄像头或麦克风设备');
-        return;
-      case 'OverConstrainedError':
-        alert(
-          '采集属性设置错误，如果您指定了 cameraId/microphoneId，请确保它们是一个有效的非空字符串'
-        );
-        return;
-      default:
-        alert('未知错误');
-        return;
-    }
+    handleGetUserMediaError(error);
   }
   container && localStream.play(container);
+}
+
+/**
+ * 处理getUserMedia的错误
+ * @param {Error} error
+ */
+function handleGetUserMediaError(error) {
+  switch (error.name) {
+    case 'NotReadableError':
+      // 当系统或浏览器异常的时候，可能会出现此错误，您可能需要引导用户重启电脑/浏览器来尝试恢复。
+      alert(
+        '暂时无法访问摄像头/麦克风，请确保系统授予当前浏览器摄像头/麦克风权限，并且没有其他应用占用摄像头/麦克风'
+      );
+      return;
+    case 'NotAllowedError':
+      alert('用户/系统已拒绝授权访问摄像头或麦克风');
+      return;
+    case 'NotFoundError':
+      // 找不到摄像头或麦克风设备
+      alert('找不到摄像头或麦克风设备');
+      return;
+    case 'OverConstrainedError':
+      alert(
+        '采集属性设置错误，如果您指定了 cameraId/microphoneId，请确保它们是一个有效的非空字符串'
+      );
+      return;
+    default:
+      alert('初始化本地流时遇到未知错误, 请重试');
+      return;
+  }
 }
