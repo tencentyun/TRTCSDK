@@ -1272,7 +1272,10 @@ namespace TRTCCSharpDemo
             if (this.startLocalPreviewCheckBox.Checked)
             {
                 StartLocalVideo();
-                this.localInfoLabel.Visible = false;
+                if (!this.muteVideoCheckBox.Checked)
+                {
+                    this.localInfoLabel.Visible = false;
+                }
             }
             else
             {

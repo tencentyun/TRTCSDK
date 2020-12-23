@@ -99,6 +99,9 @@ public:
     virtual void onStartPublishing(int err, const char *errMsg);
     virtual void onStopPublishing(int err, const char *errMsg);
 
+    virtual void onSnapshotComplete(const char* userId, TRTCVideoStreamType type, char* data,
+                                    uint32_t length, uint32_t width, uint32_t height,
+                                    TRTCVideoPixelFormat format);
 
     void startLocalRecord(const LiteAVScreenCaptureSourceInfo &source, const char* szRecordPath);
     void stopLocalRecord();
@@ -149,6 +152,8 @@ public:
     void sendCustomAudioFrame();
     void sendCustomVideoFrame();
 
+    void snapshotVideoFrame(const char* userId, TRTCVideoStreamType type);
+
 protected:
     void setPresetLayoutConfig(TRTCTranscodingConfig & config);
     std::string GetPathNoExt(std::string path);
@@ -189,6 +194,8 @@ private:
 
     std::thread* custom_audio_thread_ = nullptr;
     std::thread* custom_video_thread_ = nullptr;
+
+    int test_file_index_ = 1;
 
 private:
     HMODULE trtc_module_;

@@ -76,10 +76,12 @@ void UiShareSelect::InitWindow()
     COptionUI* check_cap_mouse = static_cast<COptionUI*>(m_pm.FindControl(_T("check_cap_mouse")));
     COptionUI* check_cap_highlight = static_cast<COptionUI*>(m_pm.FindControl(_T("check_cap_highlight")));
     COptionUI* check_high_performance = static_cast<COptionUI*>(m_pm.FindControl(_T("check_high_performance")));
+    COptionUI* check_cap_child_wnd = static_cast<COptionUI*>(m_pm.FindControl(_T("check_cap_child_wnd")));
     if (check_cap_mouse && check_cap_highlight && check_high_performance) {
         check_cap_mouse->Selected(true);
         check_cap_highlight->Selected(true);
         check_high_performance->Selected(true);
+        check_cap_child_wnd->Selected(false);
     }
 
     ITRTCScreenCaptureSourceList* wndInfoList = TRTCCloudCore::GetInstance()->GetWndList();
@@ -123,6 +125,9 @@ void UiShareSelect::_onSelChanged(TNotifyUI& msg)
     }
     else if (msg.pSender->GetName() == _T("check_high_performance")) {
         m_screen_property.enableHighPerformance = pOpenSender->IsSelected();
+    }
+    else if (msg.pSender->GetName() == _T("check_cap_child_wnd")) {
+        m_screen_property.enableCaptureChildWindow = pOpenSender->IsSelected();
     }
     for (size_t i = 0; i < m_vecShareSelectItem.size(); ++i)
     {

@@ -140,7 +140,6 @@ public: //trtc
     bool m_bCustomAudioCapture = false;    //自定义采集音频
     bool m_bCustomVideoCapture = false;    //自定义采集视频
 
-    bool user_default_3a_config_ = true;  
     bool m_bEnableAec = true;
     bool m_bEnableAns = true;
     bool m_bEnableAgc = true;

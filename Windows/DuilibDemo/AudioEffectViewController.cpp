@@ -101,8 +101,13 @@ void AudioEffectViewController::InitAudioMusicView()
         CListLabelElementUI* pElement3 = new CListLabelElementUI;
         pElement3->SetText(L"测试音乐3");
         pElement3->SetName(L"http://dldir1.qq.com/hudongzhibo/LiteAV/demomusic/testmusic3.mp3");
+        pMusicCombo->Add(pElement3);
 
-        pMusicCombo->Add(pElement3); 
+        CListLabelElementUI* pElement4 = new CListLabelElementUI;
+        pElement4->SetText(L"测试音乐4");
+        std::wstring testFileMp3 = TrtcUtil::getAppDirectory() + L"trtcres/BGM.mp3";
+        pElement4->SetName(testFileMp3.c_str());
+        pMusicCombo->Add(pElement4); 
 
         pMusicCombo->SelectItem(0);
     }

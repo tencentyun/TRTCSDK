@@ -27,7 +27,7 @@
 #include "UiShareSelect.h"
 
 #define AUDIO_DEVICE_VOLUME_TICKET 100
-#define AUDIO_VOLUME_TICKET 150
+#define AUDIO_VOLUME_TICKET 100
 #define BGM_PROGRESS_TICHET 100
 int TRTCSettingViewController::m_ref = 0;
 std::vector<TRTCSettingViewControllerNotify*> TRTCSettingViewController::vecNotifyList;
@@ -856,67 +856,47 @@ void TRTCSettingViewController::NotifyAudioTab(TNotifyUI & msg)
             else {
                 TRTCCloudCore::GetInstance()->getDeviceManager()->setCurrentDeviceMute(TRTCDeviceTypeSpeaker, false);
             }
-        } else if (msg.pSender->GetName() == _T("check_btn_3a_config")) {
-            COptionUI* pOpenSender = static_cast<COptionUI*>(msg.pSender);
-            if (pOpenSender->IsSelected() == false) {
-                CDataCenter::GetInstance()->user_default_3a_config_ = true;
-            } else {
-                CDataCenter::GetInstance()->user_default_3a_config_ = false;
-            }
-        }
-        else if (msg.pSender->GetName() == _T("check_btn_aec")) {
+        }  else if (msg.pSender->GetName() == _T("check_btn_aec")) {
             COptionUI* pOpenSender = static_cast<COptionUI*>(msg.pSender);
             if (pOpenSender->IsSelected() == false) {
                 CDataCenter::GetInstance()->m_bEnableAec = true;
-                if (!CDataCenter::GetInstance()->user_default_3a_config_) {
-                    std::string api =
-                        format("{\"api\":\"enableAudioAEC\",\"params\":{\"enable\":%d}}",
-                               CDataCenter::GetInstance()->m_bEnableAec);
-                    TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
-                }
 
+                std::string api = format("{\"api\":\"enableAudioAEC\",\"params\":{\"enable\":%d}}",
+                                         CDataCenter::GetInstance()->m_bEnableAec);
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
             }
             else {
                 CDataCenter::GetInstance()->m_bEnableAec = false;
-                if (!CDataCenter::GetInstance()->user_default_3a_config_) {
-                    std::string api = format("{\"api\":\"enableAudioAEC\",\"params\":{\"enable\":%d}}", CDataCenter::GetInstance()->m_bEnableAec);
-                    TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
-                }
+                std::string api = format("{\"api\":\"enableAudioAEC\",\"params\":{\"enable\":%d}}",
+                                         CDataCenter::GetInstance()->m_bEnableAec);
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
             }
         }
         else if (msg.pSender->GetName() == _T("check_btn_ans")) {
             COptionUI* pOpenSender = static_cast<COptionUI*>(msg.pSender);
             if (pOpenSender->IsSelected() == false) {
                 CDataCenter::GetInstance()->m_bEnableAns = true;
-                if (!CDataCenter::GetInstance()->user_default_3a_config_) {
-                    std::string api = format("{\"api\":\"enableAudioANS\",\"params\":{\"enable\":%d}}", CDataCenter::GetInstance()->m_bEnableAns);
-                    TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
-                }
+                std::string api = format("{\"api\":\"enableAudioANS\",\"params\":{\"enable\":%d}}", CDataCenter::GetInstance()->m_bEnableAns);
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
 
             }
             else {
                 CDataCenter::GetInstance()->m_bEnableAns = false;
-                if (!CDataCenter::GetInstance()->user_default_3a_config_) {
-                    std::string api = format("{\"api\":\"enableAudioANS\",\"params\":{\"enable\":%d}}", CDataCenter::GetInstance()->m_bEnableAns);
-                    TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
-                }
+                std::string api = format("{\"api\":\"enableAudioANS\",\"params\":{\"enable\":%d}}", CDataCenter::GetInstance()->m_bEnableAns);
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
             }
         }
         else if (msg.pSender->GetName() == _T("check_btn_agc")) {
             COptionUI* pOpenSender = static_cast<COptionUI*>(msg.pSender);
             if (pOpenSender->IsSelected() == false) {
                 CDataCenter::GetInstance()->m_bEnableAgc = true;
-                if (!CDataCenter::GetInstance()->user_default_3a_config_) {
-                    std::string api = format("{\"api\":\"enableAudioAGC\",\"params\":{\"enable\":%d}}", CDataCenter::GetInstance()->m_bEnableAgc);
-                    TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
-                }
+                std::string api = format("{\"api\":\"enableAudioAGC\",\"params\":{\"enable\":%d}}", CDataCenter::GetInstance()->m_bEnableAgc);
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
             }
             else {
                 CDataCenter::GetInstance()->m_bEnableAgc = false;
-                if (!CDataCenter::GetInstance()->user_default_3a_config_) {
-                    std::string api = format("{\"api\":\"enableAudioAGC\",\"params\":{\"enable\":%d}}", CDataCenter::GetInstance()->m_bEnableAgc);
-                    TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
-                }
+                std::string api = format("{\"api\":\"enableAudioAGC\",\"params\":{\"enable\":%d}}", CDataCenter::GetInstance()->m_bEnableAgc);
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
             }
         }
         else if(msg.pSender->GetName() == _T("check_system_audio_mix"))
@@ -955,12 +935,10 @@ void TRTCSettingViewController::NotifyAudioTab(TNotifyUI & msg)
             }
             sText.Format(_T("%d%"), level);
             pLabelValue->SetText(sText);
-            if (!CDataCenter::GetInstance()->user_default_3a_config_) {
-                std::string api = format("{\"api\":\"enableAudioAEC\",\"params\":{\"enable\":%d,\"level\":%d}}",
-                    CDataCenter::GetInstance()->m_bEnableAec, level);
+            std::string api = format("{\"api\":\"enableAudioAEC\",\"params\":{\"enable\":%d,\"level\":%d}}",
+                CDataCenter::GetInstance()->m_bEnableAec, level);
 
-                TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
-            }
+            TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
         } 
         else if (msg.pSender->GetName() == _T("slider_hook_aec"))
         {
@@ -1014,13 +992,11 @@ void TRTCSettingViewController::NotifyAudioTab(TNotifyUI & msg)
             }
             sText.Format(_T("%d%"), level);
             pLabelValue->SetText(sText);
-            if (!CDataCenter::GetInstance()->user_default_3a_config_) {
-                std::string api =
-                    format("{\"api\":\"enableAudioAGC\",\"params\":{\"enable\":%d,\"level\":%d}}",
-                        CDataCenter::GetInstance()->m_bEnableAgc, level);
+            std::string api =
+                format("{\"api\":\"enableAudioAGC\",\"params\":{\"enable\":%d,\"level\":%d}}",
+                    CDataCenter::GetInstance()->m_bEnableAgc, level);
 
-                TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
-            }
+            TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
         } 
          else if (msg.pSender->GetName() == _T("slider_ans")) {
             CProgressUI* pSlider = static_cast<CProgressUI*>(m_pmUI.FindControl(_T("slider_ans")));
@@ -1047,13 +1023,11 @@ void TRTCSettingViewController::NotifyAudioTab(TNotifyUI & msg)
             }
             sText.Format(_T("%d%"), level);
             pLabelValue->SetText(sText);
-            if (!CDataCenter::GetInstance()->user_default_3a_config_) {
-                std::string api =
-                    format("{\"api\":\"enableAudioANS\",\"params\":{\"enable\":%d,\"level\":%d}}",
-                        CDataCenter::GetInstance()->m_bEnableAns, level);
+            std::string api =
+                format("{\"api\":\"enableAudioANS\",\"params\":{\"enable\":%d,\"level\":%d}}",
+                    CDataCenter::GetInstance()->m_bEnableAns, level);
 
-                TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
-            }
+            TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
         } 
     }
 }
@@ -1176,8 +1150,7 @@ void TRTCSettingViewController::NotifyOtherTab(TNotifyUI & msg)
                 CDataCenter::GetInstance()->m_bMuteLocalAudio = true;
                 TRTCCloudCore::GetInstance()->getTRTCCloud()->muteLocalAudio(true);
             }
-        } 
-        else if (msg.pSender->GetName() == _T("btn_add_excluded_wnd")) {
+        } else if (msg.pSender->GetName() == _T("btn_add_excluded_wnd")) {
             CEditUI* edit_ui = static_cast<CEditUI*>(m_pmUI.FindControl(_T("edit_add_excluded_wnd")));
             if (edit_ui != nullptr) {
                 wstring str_text = edit_ui->GetText();
@@ -1193,6 +1166,22 @@ void TRTCSettingViewController::NotifyOtherTab(TNotifyUI & msg)
             }
         } else if (msg.pSender->GetName() == _T("btn_del_all_excluded_wnd")) {
             TRTCCloudCore::GetInstance()->getTRTCCloud()->removeAllExcludedShareWindow();
+        } else if (msg.pSender->GetName() == _T("btn_add_included_wnd")) {
+            CEditUI* edit_ui = static_cast<CEditUI*>(m_pmUI.FindControl(_T("edit_add_included_wnd")));
+            if (edit_ui != nullptr) {
+                wstring str_text = edit_ui->GetText();
+                uint32_t hwnd = (uint32_t)std::strtoul(Wide2UTF8(str_text).c_str(), nullptr, 16);
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->addIncludedShareWindow((HWND)hwnd);
+            }
+        } else if (msg.pSender->GetName() == _T("btn_del_included_wnd")) {
+            CEditUI* edit_ui = static_cast<CEditUI*>(m_pmUI.FindControl(_T("edit_del_included_wnd")));
+            if (edit_ui != nullptr) {
+                wstring str_text = edit_ui->GetText();
+                uint32_t hwnd = (uint32_t)std::strtoul(Wide2UTF8(str_text).c_str(), nullptr, 16);
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->removeIncludedShareWindow((HWND)hwnd);
+            }
+        } else if (msg.pSender->GetName() == _T("btn_del_all_included_wnd")) {
+            TRTCCloudCore::GetInstance()->getTRTCCloud()->removeAllIncludedShareWindow();
         } else if (msg.pSender->GetName() == _T("btn_switch_room")) {
             TRTCSwitchRoomConfig config;
             int32_t roomId = 0;
@@ -1846,6 +1835,11 @@ void TRTCSettingViewController::InitAudioTab()
     UpdateMicDevice();
     UpdateSpeakerDevice();
     {
+        if (TRTCCloudCore::GetInstance()->getDeviceManager()) {
+            CDataCenter::GetInstance()->m_speakerVolume =
+                TRTCCloudCore::GetInstance()->getDeviceManager()->getCurrentDeviceVolume(
+                    TRTCDeviceTypeSpeaker);
+        }
         uint32_t nVolume = CDataCenter::GetInstance()->m_speakerVolume;
         nVolume = nVolume * 100 / AUDIO_DEVICE_VOLUME_TICKET;
         CSliderUI* pSlider = static_cast<CSliderUI*>(m_pmUI.FindControl(_T("slider_speaker_volume")));
@@ -1858,8 +1852,7 @@ void TRTCSettingViewController::InitAudioTab()
             sText.Format(_T("%d%%"), nVolume);
             pLabelValue->SetText(sText);
         }
-        if (TRTCCloudCore::GetInstance()->getTRTCCloud()) {
-            TRTCCloudCore::GetInstance()->getDeviceManager()->setCurrentDeviceVolume(TRTCDeviceTypeSpeaker, nVolume * AUDIO_DEVICE_VOLUME_TICKET / 100);
+        if (TRTCCloudCore::GetInstance()->getDeviceManager()) {
 
             bool mute = TRTCCloudCore::GetInstance()->getDeviceManager()->getCurrentDeviceMute(TRTCDeviceTypeSpeaker);
             COptionUI* pCheckMute = static_cast<COptionUI*>(m_pmUI.FindControl(_T("check_speaker_mute")));
@@ -1868,6 +1861,10 @@ void TRTCSettingViewController::InitAudioTab()
         }
     }
     {
+        if (TRTCCloudCore::GetInstance()->getTRTCCloud()) {
+            CDataCenter::GetInstance()->m_micVolume =
+                 TRTCCloudCore::GetInstance()->getDeviceManager()->getCurrentDeviceVolume(TRTCDeviceTypeMic);
+        }
         uint32_t nVolume = CDataCenter::GetInstance()->m_micVolume;
         nVolume = nVolume * 100 / AUDIO_DEVICE_VOLUME_TICKET;
         CSliderUI* pSlider = static_cast<CSliderUI*>(m_pmUI.FindControl(_T("slider_mic_volume")));
@@ -1881,7 +1878,6 @@ void TRTCSettingViewController::InitAudioTab()
             pLabelValue->SetText(sText);
         }
         if (TRTCCloudCore::GetInstance()->getTRTCCloud()) {
-            TRTCCloudCore::GetInstance()->getDeviceManager()->setCurrentDeviceVolume(TRTCDeviceTypeMic, nVolume * AUDIO_DEVICE_VOLUME_TICKET / 100);
 
             bool mute = TRTCCloudCore::GetInstance()->getDeviceManager()->getCurrentDeviceMute(TRTCDeviceTypeMic);
             COptionUI* pCheckMute = static_cast<COptionUI*>(m_pmUI.FindControl(_T("check_mic_mute")));
@@ -1952,18 +1948,13 @@ void TRTCSettingViewController::InitAudioTab()
     }
 
     //音频 3A 开关
-    COptionUI* pCheck3AConfig = static_cast<COptionUI*>(m_pmUI.FindControl(_T("check_btn_3a_config")));
     COptionUI* pCheckAec = static_cast<COptionUI*>(m_pmUI.FindControl(_T("check_btn_aec")));
     COptionUI* pCheckAns = static_cast<COptionUI*>(m_pmUI.FindControl(_T("check_btn_ans")));
     COptionUI* pCheckAgc = static_cast<COptionUI*>(m_pmUI.FindControl(_T("check_btn_agc")));
     COptionUI* pCheckSystemAudioMix = static_cast<COptionUI*>(m_pmUI.FindControl(_T("check_system_audio_mix")));
 
-    if (pCheckAec && pCheckAns && pCheckAgc && pCheckSystemAudioMix && pCheck3AConfig)
+    if (pCheckAec && pCheckAns && pCheckAgc && pCheckSystemAudioMix)
     {
-        if (CDataCenter::GetInstance()->user_default_3a_config_)
-            pCheck3AConfig->Selected(true);
-        else
-            pCheck3AConfig->Selected(false);
         if (CDataCenter::GetInstance()->m_bEnableAec)
             pCheckAec->Selected(true);
         else

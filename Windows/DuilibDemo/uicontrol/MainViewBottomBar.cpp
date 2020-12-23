@@ -60,6 +60,10 @@ void MainViewBottomBar::Notify(TNotifyUI& msg)
         }
         else if (msg.pSender->GetName() == _T("btn_quit_room"))
         {
+            if (CDataCenter::GetInstance()->m_emLivePlayerSourceType == TRTC_CDN) {
+                TRTCCloudCore::GetInstance()->getTXLivePlayer()->setCallback(nullptr, nullptr);
+                TRTCCloudCore::GetInstance()->getTXLivePlayer()->stopPlay();
+            }
             if (m_pMainWnd)
                 m_pMainWnd->exitRoom();
         }

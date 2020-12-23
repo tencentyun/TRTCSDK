@@ -35,16 +35,20 @@
 	</HorizontalLayout>
 	<HorizontalLayout height="30" childalign="center" inset="0,10,0,0">
 	  <Label text="鼠标" font="2" width="80" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,1"/>
-	  <VerticalLayout width="20"/>
+	  <VerticalLayout width="5"/>
 	  <Option name="check_cap_mouse" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
-	  <VerticalLayout width="20"/>
+	  <VerticalLayout width="10"/>
 	  <Label text="描边" font="2" width="80" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,1"/>
-	  <VerticalLayout width="20"/>
+	  <VerticalLayout width="5"/>
 	  <Option name="check_cap_highlight" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
-	  <VerticalLayout width="20"/>
+	  <VerticalLayout width="10"/>
 	  <Label text="高性能" font="2" width="80" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,1"/>
-	  <VerticalLayout width="20"/>
+	  <VerticalLayout width="5"/>
 	  <Option name="check_high_performance" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
+	  <VerticalLayout width="10"/>
+	  <Label text="子窗口" font="2" width="80" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,1"/>
+	  <VerticalLayout width="5"/>
+	  <Option name="check_cap_child_wnd" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
     </HorizontalLayout>
 	<HorizontalLayout height="30" childalign="center" inset="0,10,0,0">
 	  <Label text="描边颜色" font="2" align="right" valign="center" width="80" textcolor="#FF000000" showhtml="true" padding="0,3,0,1"/>

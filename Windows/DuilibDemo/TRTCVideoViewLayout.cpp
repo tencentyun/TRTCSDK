@@ -44,6 +44,7 @@ void VideoCanvasContainer::initCanvasContainer()
     strBtnAudioIconName.Format(L"audioicon_%s_%d", m_userId.c_str(), m_streamType);
     strBtnVideoIconName.Format(L"videoicon_%s_%d", m_userId.c_str(), m_streamType);
     strBtnNetSignalIconName.Format(L"netsignalicon_%s_%d", m_userId.c_str(), m_streamType);
+    strBtnSnapshotName.Format(L"snapshot_%s_%d", m_userId.c_str(), m_streamType);
 
     std::wstring _name = GetName();
     if (_name.compare(L"lecture_view0") == 0 || _name.compare(L"gallery_view0") == 0)
@@ -63,7 +64,7 @@ void VideoCanvasContainer::initCanvasContainer()
         m_pIconBg = new CHorizontalLayoutUI();
         m_pIconBg->SetBkColor(0xB0202020);
         m_pIconBg->SetFloat();
-        m_pIconBg->SetFixedWidth(130);
+        m_pIconBg->SetFixedWidth(150);
         m_pIconBg->SetFixedHeight(28);
         p->Add(m_pIconBg);
         m_pIconBg->SetVisible(true);
@@ -133,8 +134,19 @@ void VideoCanvasContainer::initCanvasContainer()
         p->Add(m_pBtnVideoIcon);
     }
 
-    if (!m_bMainView && m_pLableText == nullptr)
+    if (m_pBtnSnapshot == nullptr)
     {
+        m_pBtnSnapshot = new CButtonUI();
+        m_pBtnSnapshot->SetNormalImage(L"videoview/snapshot.png");
+        m_pBtnSnapshot->SetName(strBtnSnapshotName);
+        m_pBtnSnapshot->SetFloat();
+        m_pBtnSnapshot->SetFixedWidth(16);
+        m_pBtnSnapshot->SetFixedHeight(16);
+        m_pBtnSnapshot->SetToolTip(L"截图");
+        p->Add(m_pBtnSnapshot);
+    }
+
+    if (!m_bMainView && m_pLableText == nullptr) {
         m_pLableText = new CLabelUI();
         m_pLableText->SetText(m_userId.c_str());
         m_pLableText->SetTextColor(0x00FFFFFF);
@@ -203,6 +215,10 @@ void VideoCanvasContainer::SetIsLable()
     {
         m_pBtnNetSignalIcon->SetVisible(false);
     }
+    if (m_pBtnSnapshot)
+    {
+        m_pBtnSnapshot->SetVisible(false);
+    }
     if (m_pLableText)
     {
         m_pLableText->SetVisible(false);
@@ -233,13 +249,14 @@ void VideoCanvasContainer::resetViewUIStatus(std::wstring userId, TRTCVideoStrea
     strBtnAudioIconName.Format(L"audioicon_%s_%d", m_userId.c_str(), m_streamType);
     strBtnVideoIconName.Format(L"videoicon_%s_%d", m_userId.c_str(), m_streamType);
     strBtnNetSignalIconName.Format(L"netsignalicon_%s_%d", m_userId.c_str(), m_streamType);
+    strBtnSnapshotName.Format(L"snapshot_%s_%d", m_userId.c_str(), m_streamType);
 
     m_pBtnRotation->SetName(strBtnRotationName);
     m_pBtnRenderMode->SetName(strBtnRenderModeName);
     m_pBtnAudioIcon->SetName(strBtnAudioIconName);
     m_pBtnVideoIcon->SetName(strBtnVideoIconName);
     m_pBtnNetSignalIcon->SetName(strBtnNetSignalIconName);
-
+    m_pBtnSnapshot->SetName(strBtnSnapshotName);
 
     if (m_pBtnRotation)
     {
@@ -281,6 +298,10 @@ void VideoCanvasContainer::resetViewUIStatus(std::wstring userId, TRTCVideoStrea
         {
             TRTCCloudCore::GetInstance()->getTRTCCloud()->setRemoteRenderParams(Wide2UTF8(m_userId).c_str(), m_streamType, m_canvasAttribute.renderParams);
         }
+    }
+
+    if (m_pBtnSnapshot) {
+        m_pBtnSnapshot->SetVisible(true);
     }
 
     if (m_pBtnAudioIcon)
@@ -462,11 +483,25 @@ void VideoCanvasContainer::SetPos(RECT rc, bool bNeedInvalidate)
         right_pos += 24;
     }
 
+    if (m_pBtnSnapshot && m_pBtnSnapshot->IsVisible()) {
+        RECT rc = m_rcItem;
+        int width = rc.right - rc.left;
+        int left = width - right_pos + 2;
+        int top = 8;
+        SIZE leftTop = {left, top};
+
+        SIZE btnLeftTop = m_pBtnSnapshot->GetFixedXY();
+        if (btnLeftTop.cx != leftTop.cx || btnLeftTop.cy != leftTop.cy) {
+            m_pBtnSnapshot->SetFixedXY(leftTop);
+        }
+        right_pos += 24;
+    }
+
     if (m_pIconBg)
     {
         RECT rc = m_rcItem;
         int width = rc.right - rc.left;
-        int left = width - 130;
+        int left = width - 150;
         int top = 2;
         SIZE leftTop = { left,top };
 
@@ -526,7 +561,7 @@ void VideoCanvasContainer::Notify(TNotifyUI & msg)
                 TRTCCloudCore::GetInstance()->getTRTCCloud()->setVideoEncoderRotation(m_canvasAttribute.renderParams.rotation);
             }
             else
-                TRTCCloudCore::GetInstance()->getTRTCCloud()->setRemoteRenderParams(Wide2UTF8(m_userId).c_str(), TRTCVideoStreamTypeBig, m_canvasAttribute.renderParams);
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->setRemoteRenderParams(Wide2UTF8(m_userId).c_str(), m_streamType, m_canvasAttribute.renderParams);
             return;
         }
 
@@ -547,10 +582,22 @@ void VideoCanvasContainer::Notify(TNotifyUI & msg)
             {
                 m_pLiveAvView->SetRenderMode((TXLiveAvVideoView::ViewRenderModeEnum)m_canvasAttribute.renderParams.fillMode);
             }
-            if (VideoCanvasContainer::localUserId.compare(m_userId) == 0)
+            if (VideoCanvasContainer::localUserId.compare(m_userId) == 0) {
                 TRTCCloudCore::GetInstance()->getTRTCCloud()->setLocalRenderParams(m_canvasAttribute.renderParams);
-            else
-                TRTCCloudCore::GetInstance()->getTRTCCloud()->setRemoteRenderParams(Wide2UTF8(m_userId).c_str(), TRTCVideoStreamTypeBig, m_canvasAttribute.renderParams);
+            } else {
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->setRemoteRenderParams(Wide2UTF8(m_userId).c_str(), m_streamType, m_canvasAttribute.renderParams);
+            }
+            return;
+        }
+
+        if (msg.pSender == m_pBtnSnapshot) {
+            if (VideoCanvasContainer::localUserId.compare(m_userId) == 0) {
+                TRTCCloudCore::GetInstance()->snapshotVideoFrame("", TRTCVideoStreamTypeBig);
+                TRTCCloudCore::GetInstance()->snapshotVideoFrame("", TRTCVideoStreamTypeSmall);
+                TRTCCloudCore::GetInstance()->snapshotVideoFrame("", TRTCVideoStreamTypeSub);
+            } else {
+                TRTCCloudCore::GetInstance()->snapshotVideoFrame(Wide2UTF8(m_userId).c_str(), m_streamType);
+            }
             return;
         }
 

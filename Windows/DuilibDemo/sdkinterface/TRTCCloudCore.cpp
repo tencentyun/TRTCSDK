@@ -655,6 +655,33 @@ void TRTCCloudCore::onStopPublishing(int err,const char * errMsg)
     }
 }
 
+void TRTCCloudCore::onSnapshotComplete(const char* userId, TRTCVideoStreamType type, char* data,
+                                       uint32_t length, uint32_t width, uint32_t height,
+                                       TRTCVideoPixelFormat format) {
+    if (data == nullptr || length == 0 || format == TRTCVideoPixelFormat_Unknown) {
+        return;
+    }
+    std::string user_id(userId);
+    if (user_id.empty()) {
+        user_id = "local";
+    }
+    std::string str_type;
+    if (type == TRTCVideoStreamTypeSub) {
+        str_type = "_SubStream_";
+    } else if (type == TRTCVideoStreamTypeBig){
+        str_type = "_BigStream_";
+    } else {
+        str_type = "_SmallStream_";
+    }
+    std::string file_name = user_id + str_type + std::to_string(test_file_index_++) + ".bmp";
+    std::wstring path = TrtcUtil::getAppDirectory() + UTF82Wide(file_name);
+    HBITMAP hbitmap = CreateBitmap(width, height, 1, 32, data);
+    TrtcUtil::SaveBitmapToFile(hbitmap, Wide2UTF8(path));
+    if (hbitmap != nullptr) {
+        DeleteObject(hbitmap);
+    }
+}
+
 void TRTCCloudCore::startLocalRecord(const LiteAVScreenCaptureSourceInfo & source,  const char * szRecordPath)
 {
     RECT captureRect = CDataCenter::GetInstance()->m_recordCaptureRect;
@@ -1603,6 +1630,10 @@ void TRTCCloudCore::sendCustomVideoFrame()
         frame.height = _video_height;
         m_pCloud->sendCustomVideoData(&frame);
     }
+}
+
+void TRTCCloudCore::snapshotVideoFrame(const char* userId, TRTCVideoStreamType type) {
+    m_pCloud->snapshotVideo(userId, type, TRTCSnapshotSourceTypeStream);
 }
 
 void TRTCCloudCore::setPresetLayoutConfig(TRTCTranscodingConfig & config) {

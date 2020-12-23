@@ -114,7 +114,9 @@ TRTCMainViewController::~TRTCMainViewController()
     TRTCCloudCore::GetInstance()->removeSDKMsgObserverByHwnd(GetHWND());
     m_pmUI.RemoveNotifier(this);
     m_pmUI.RemoveNotifier(m_pMainViewBottomBar);
-    TRTCCloudCore::Destory();
+    if (CDataCenter::GetInstance()->m_bOpenDemoTestConfig) {
+        TRTCCloudCore::Destory();
+    }
 }
 
 void TRTCMainViewController::Notify(TNotifyUI & msg)
@@ -238,8 +240,6 @@ void TRTCMainViewController::enterRoom()
 
     TRTCCloudCore::GetInstance()->getTRTCCloud()->setNetworkQosParam(CDataCenter::GetInstance()->m_qosParams);
 
-    TRTCCloudCore::GetInstance()->getDeviceManager()->setCurrentDeviceVolume(TRTCDeviceTypeMic, CDataCenter::GetInstance()->m_micVolume);
-    //TRTCCloudCore::GetInstance()->getDeviceManager()->setCurrentDeviceVolume(TRTCDeviceTypeSpeaker, CDataCenter::GetInstance()->m_speakerVolume);
     if (CDataCenter::GetInstance()->m_bShowAudioVolume)
         TRTCCloudCore::GetInstance()->getTRTCCloud()->enableAudioVolumeEvaluation(200);
 
@@ -1288,6 +1288,7 @@ void TRTCMainViewController::exitRoom()
     m_pUserListController->UnInitUserListUI();
     TXLiveAvVideoView::clearAllLogText();
     ShowWindow(false);
+    TRTCCloudCore::GetInstance()->getTRTCCloud()->muteAllRemoteAudio(true);
     TRTCCloudCore::GetInstance()->getTRTCCloud()->exitRoom();
 
     if (info._bEnterRoom == false || CDataCenter::GetInstance()->m_emLivePlayerSourceType == TRTC_CDN)

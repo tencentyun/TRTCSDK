@@ -103,6 +103,7 @@ private:
     CButtonUI *m_pBtnAudioIcon = nullptr;
     CButtonUI *m_pBtnVideoIcon = nullptr;
     CButtonUI *m_pBtnNetSignalIcon = nullptr;
+    CButtonUI *m_pBtnSnapshot = nullptr;
     CLabelUI *m_pLableText = nullptr;
     CHorizontalLayoutUI * m_pIconBg = nullptr;
     CDuiString strBtnRotationName;
@@ -110,6 +111,7 @@ private:
     CDuiString strBtnAudioIconName;
     CDuiString strBtnVideoIconName;
     CDuiString strBtnNetSignalIconName;
+    CDuiString strBtnSnapshotName;
     
     //CProgressUI* m_pVoiceProgress = nullptr;
 private:
