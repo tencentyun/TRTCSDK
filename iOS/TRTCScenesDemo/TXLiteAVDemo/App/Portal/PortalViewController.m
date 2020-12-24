@@ -84,7 +84,7 @@ UIPickerViewDataSource, UIPickerViewDelegate> {
                                    content:@"内含变声、音效、伴奏、背景音乐等声音玩法，适用于闲聊房、K歌房和开黑房等场景"
                                   onSelect:^{ [wSelf gotoVoiceRoomView]; }],
         [[MainMenuItem alloc] initWithIcon:[UIImage imageNamed:@"MenuLive"]
-                                     title:@"视频互动直播"
+                                     title:@"视频互动"
                                    content:@"观众时延低至800ms，上下麦无需loading，适用于低延时、十万人高并发的大型互动直播"
                                   onSelect:^{ [wSelf gotoLiveView]; }],
         [[MainMenuItem alloc] initWithIcon:[UIImage imageNamed:@"MenuAudioCall"]
@@ -97,7 +97,7 @@ UIPickerViewDataSource, UIPickerViewDelegate> {
                                   onSelect:^{ [wSelf gotoVideoCallView]; }]
     ];
     NSString *version = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
-    self.versionLabel.text = [NSString stringWithFormat:@"腾讯云 TRTC v%@(%@)", [TRTCCloud getSDKVersion], version];
+    self.versionLabel.text = [NSString stringWithFormat:@"TRTC v%@(%@)", [TRTCCloud getSDKVersion], version];
     
     UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
     [self.titleLabel addGestureRecognizer:tapGesture];

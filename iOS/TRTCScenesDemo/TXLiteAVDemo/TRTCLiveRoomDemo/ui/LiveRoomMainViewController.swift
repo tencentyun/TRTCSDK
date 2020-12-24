@@ -97,7 +97,7 @@ class LiveRoomMainViewController: UIViewController {
 
     private func initNavigationItemTitleView() {
         let titleView = UILabel()
-        titleView.text = "视频互动直播"
+        titleView.text = "视频互动"
         titleView.textColor = .white
         titleView.textAlignment = .center
         titleView.font = UIFont.boldSystemFont(ofSize: 17)

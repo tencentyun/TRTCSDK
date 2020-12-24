@@ -106,7 +106,7 @@ extension TRTCMeetingMainViewController {
             
             let okView = UIAlertAction(title: "确定", style: UIAlertAction.Style.default, handler: {
                 (action: UIAlertAction!) -> Void in
-                print("退房成功退房成功退房成功退房成功退房成功退房成功\n\n\n\n\n\n")
+                print("退房成功\n")
                 TRTCMeeting.sharedInstance().leave { (code, msg) in
                     debugPrint("log: exitMeeting: code \(code), msg: \(String(describing: msg))")
                 }
@@ -121,7 +121,6 @@ extension TRTCMeetingMainViewController {
             alertVC.addAction(okView)
             alertVC.addAction(cancelView)
             self.present(alertVC, animated: true, completion: nil)
-            
         }, onError: nil, onCompleted: nil, onDisposed: nil).disposed(by: disposeBag)
     }
     
@@ -310,10 +309,8 @@ extension TRTCMeetingMainViewController {
             // 开启摄像头预览
             // TODO 关闭录屏后，要延迟一会才能打开摄像头，SDK bug ?
             if needDelay {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    let localPreviewView = self.getRenderView(userId: self.selfUserId)!
-                    TRTCMeeting.sharedInstance().startCameraPreview(true, view: localPreviewView)
-                }
+                let localPreviewView = self.getRenderView(userId: self.selfUserId)!
+                TRTCMeeting.sharedInstance().startCameraPreview(true, view: localPreviewView)
             } else {
                 let localPreviewView = self.getRenderView(userId: self.selfUserId)!
                 TRTCMeeting.sharedInstance().startCameraPreview(true, view: localPreviewView)

@@ -75,6 +75,8 @@
     UIImageView*            _userAvatar;
     UILabel*                _userName;
     UITextField*            _roomName;
+    // 定时器
+    dispatch_source_t       _timer;
 }
 
 - (instancetype) init {
@@ -152,11 +154,19 @@
 
 
 - (void)onAppWillResignActive:(NSNotification*)notification {
-    _appIsInterrupt = YES;
+    if (!_appIsInterrupt) {
+        if (self->_timer) {
+            dispatch_suspend(self->_timer);
+        }
+        _appIsInterrupt = YES;
+    }
 }
 
 - (void)onAppDidBecomeActive:(NSNotification*)notification {
     if (_appIsInterrupt) {
+        if (self->_timer) {
+            dispatch_resume(self->_timer);
+        }
         _appIsInterrupt = NO;
     }
 }
@@ -217,6 +227,9 @@
     _curBgmDuration = 0;
     
     [self initRoomPreview];
+#ifdef TRTC_APPSTORE
+    [self makeToastWithMessage:@"本App仅用于功能体验，请勿商用。每个房间最多10人，持续时间最长10分钟。" duration:5];
+#endif
 }
 
 //预览相关视图
@@ -225,7 +238,7 @@
     _publishBtn = [[UIButton alloc] init];
     [_publishBtn setBackgroundColor:[UIColor appTint]];
     [[_publishBtn layer] setCornerRadius:8];
-    [_publishBtn setTitle:@"开始直播" forState:UIControlStateNormal];
+    [_publishBtn setTitle:@"开始" forState:UIControlStateNormal];
     [[_publishBtn titleLabel] setFont:[UIFont systemFontOfSize:22]];
     [self.view addSubview:_publishBtn];
     [_publishBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -325,7 +338,7 @@
     _roomName.delegate = self;
     
     UILabel *audioQualityLabel = [[UILabel alloc] init];
-    audioQualityLabel.text = @"直播音质";
+    audioQualityLabel.text = @"音质";
     audioQualityLabel.font = [UIFont systemFontOfSize:16];
     audioQualityLabel.textColor = [UIColor whiteColor];
     audioQualityLabel.textAlignment = NSTextAlignmentCenter;
@@ -425,6 +438,9 @@
         [self makeToastWithMessage:@"房间名不能为空"];
         return;
     }
+#ifdef TRTC_APPSTORE
+    [self createTimer];
+#endif
     __weak __typeof(self) weakSelf = self;
     __weak UIButton *weakStandardQualityButton = _standardQualityButton;
     [self _startPublishWithSdkAppID:SDKAPPID roomName:_roomName.text roomID:[self generateRoomID]  callback:^(NSInteger code, NSString * error) {
@@ -476,6 +492,48 @@
     [self.liveRoom showVideoDebugLog:NO];
     [_logicView.vBeauty resetAndApplyValues];
    [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
+}
+
+#pragma mark - 定时器 (GCD)
+- (void)createTimer {
+#ifdef TRTC_APPSTORE
+    //设置倒计时时间
+    //通过检验发现，方法调用后，timeout会先自动-1，所以如果从15秒开始倒计时timeout应该写16
+    __block int timeout = 1;
+   
+    //获取全局队列
+    dispatch_queue_t global = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    
+    //创建一个定时器，并将定时器的任务交给全局队列执行(并行，不会造成主线程阻塞)
+    _timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, global);
+    
+    // 设置触发的间隔时间
+    dispatch_source_set_timer(_timer, DISPATCH_TIME_NOW, 600 * NSEC_PER_SEC, 0 * NSEC_PER_SEC);
+    //600 * NSEC_PER_SEC  代表设置定时器触发的时间间隔为10miin
+    //0 * NSEC_PER_SEC    代表时间允许的误差是 0s
+    __weak __typeof(self)weakSelf = self;
+    //设置定时器的触发事件
+    dispatch_source_set_event_handler(_timer, ^{
+        __strong __typeof(weakSelf)strongSelf = weakSelf;
+        if (timeout <= 0) {
+            dispatch_source_cancel(strongSelf->_timer);
+            strongSelf->_timer = nil;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [strongSelf.logicView.topView pauseLive];
+                [strongSelf stopRtmp];
+                UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"本App仅用于功能体验，当前持续时间已达到10分钟上限，已自动解散房间。" message:nil preferredStyle:(UIAlertControllerStyleAlert)];
+                UIAlertAction *ok = [UIAlertAction actionWithTitle:@"确定" style:(UIAlertActionStyleDefault) handler:^(UIAlertAction * _Nonnull action) {
+                    //添加PK view
+                    [strongSelf closeVC];
+                }];
+                [alert addAction:ok];
+                [self presentViewController:alert animated:YES completion:nil];
+            });
+        }
+        timeout -= 1;
+    });
+    dispatch_resume(self->_timer);
+#endif
 }
 
 - (void)onAnchorEnter:(NSString *)userID {
@@ -760,6 +818,12 @@
 }
 
 - (void)closeVC {
+#ifdef TRTC_APPSTORE
+    if (self->_timer) {
+        dispatch_source_cancel(_timer);
+        self->_timer = nil;
+    }
+#endif
     [self.navigationController popViewControllerAnimated:YES];
 }
 

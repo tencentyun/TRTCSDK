@@ -485,7 +485,7 @@ TRTCLiveRoomDelegate>
     dispatch_async(dispatch_get_main_queue(), ^{
         NSLog(@"onRoomDestroy, roomID:%@", roomID);
         __weak __typeof(self) weakSelf = self;
-        [self showAlertWithTitle:@"大主播关闭直播间" sureAction:^{
+        [self showAlertWithTitle:@"大主播关闭视频互动" sureAction:^{
             [weakSelf closeVCWithRefresh:YES popViewController:YES];
         }];
     });
@@ -497,7 +497,7 @@ TRTCLiveRoomDelegate>
         if(errCode != 0){
             if (self->_isInVC) {
                 __weak __typeof(self) weakSelf = self;
-                [self showAlertWithTitle:@"大主播关闭直播间" sureAction:^{
+                [self showAlertWithTitle:@"大主播关闭视频互动间" sureAction:^{
                     [weakSelf closeVCWithRefresh:YES popViewController:YES];
                 }];
             }else{
@@ -510,7 +510,7 @@ TRTCLiveRoomDelegate>
 
 
 - (void)onKickoutJoinAnchor {
-    [TCUtil toastTip:@"不好意思，您被主播踢开" parentView:self.view];
+    [TCUtil toastTip:@"不好意思，您被房主踢开" parentView:self.view];
     [self stopLocalPreview];
 }
 
@@ -758,7 +758,7 @@ TRTCLiveRoomDelegate>
     if (!_isErrorAlert) {
         _isErrorAlert = YES;
         __weak __typeof(self) weakSelf = self;
-        [self showAlertWithTitle:@"直播已结束" sureAction:^{
+        [self showAlertWithTitle:@"已结束互动" sureAction:^{
             [weakSelf.navigationController popViewControllerAnimated:YES];
         }];
     }

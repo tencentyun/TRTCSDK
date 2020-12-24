@@ -35,6 +35,7 @@ class TRTCVoiceRoomViewModel: NSObject {
     }
     public weak var viewResponder: TRTCVoiceRoomViewResponder?
     
+    private(set) var isSelfMute: Bool = false
     // 防止多次退房
     private var isExitingRoom: Bool = false
     
@@ -59,6 +60,7 @@ class TRTCVoiceRoomViewModel: NSObject {
     private var mTakeSeatInvitationDic: [String: String] = [:]
     /// 抱麦信息记录
     private var mPickSeatInvitationDic: [String: SeatInvitation] = [:]
+    
     
     /// 房间管理对象
     private var voiceRoomManager: TRTCVoiceRoomManager {
@@ -126,6 +128,7 @@ class TRTCVoiceRoomViewModel: NSObject {
             viewResponder?.showToast(message: "已被房主禁言")
             return false
         }
+        isSelfMute = isMute
         if isMute {
             voiceRoom.stopMicrophone()
             viewResponder?.stopPlayBGM()

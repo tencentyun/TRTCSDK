@@ -18,9 +18,15 @@
 #import "UIColor+MLPFlatColors.h"
 #import "TXLiteAVDemo-Swift.h"
 
+@interface TCAnchorToolbarView ()
+
+@property(strong, nonatomic)TCShowLiveTopView *topView;
+
+@end
+
 @implementation TCAnchorToolbarView
 {
-    TCShowLiveTopView     *_topView;
+    
     TCPushShowResultView  *_resultView;
     TCAudienceListTableView *_audienceTableView;
     TCMsgListTableView    *_msgTableView;
@@ -203,7 +209,7 @@
     _closeBtn.frame = CGRectMake(icon_center_interval * 4.3,
                                  [[UIApplication sharedApplication] statusBarFrame].size.height + 5,
                                  icon_size * 2.7, icon_size * 0.8);
-    [_closeBtn setTitle:@"停止直播" forState:UIControlStateNormal];
+    [_closeBtn setTitle:@"停止" forState:UIControlStateNormal];
     _closeBtn.layer.cornerRadius = 5.0;
     _closeBtn.layer.masksToBounds = YES;
     _closeBtn.backgroundColor = [UIColor redColor];
@@ -540,7 +546,7 @@
 - (void)changeButtonText {
     _closeBtn.hidden = NO;
     _pkView.hidden = YES;
-    [_closeBtn setTitle:@"停止直播" forState:UIControlStateNormal];
+    [_closeBtn setTitle:@"停止" forState:UIControlStateNormal];
 }
 
 - (void)selectBeauty:(UIButton *)button {
@@ -768,7 +774,7 @@
 
 #pragma mark TCAnchorToolbarDelegate
 - (void)closeVC {
-    _closeAlert = [[UIAlertView alloc] initWithTitle:nil message:@"当前正在直播，是否退出直播？"  delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    _closeAlert = [[UIAlertView alloc] initWithTitle:nil message:@"视频互动进行中，确定要退出吗？"  delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
     [_closeAlert show];
 }
 
@@ -905,7 +911,7 @@
             TCMsgModel *msgModel = [[TCMsgModel alloc] init];
             msgModel.userId = info.imUserId;
             msgModel.userName = info.imUserName;
-            msgModel.userMsg  =  @"加入直播";
+            msgModel.userMsg  =  @"加入视频互动";
             msgModel.userHeadImageUrl = info.imUserIconUrl;
             msgModel.msgType = TCMsgModelType_MemberEnterRoom;
             
@@ -923,7 +929,7 @@
             TCMsgModel *msgModel = [[TCMsgModel alloc] init];
             msgModel.userId = info.imUserId;
             msgModel.userName = info.imUserName;
-            msgModel.userMsg  =  @"退出直播";
+            msgModel.userMsg  =  @"退出视频互动";
             msgModel.userHeadImageUrl = info.imUserIconUrl;
             msgModel.msgType = TCMsgModelType_MemberQuitRoom;
             
@@ -1124,7 +1130,7 @@
     _titleLabel.textAlignment = NSTextAlignmentCenter;
     _titleLabel.font = [UIFont boldSystemFontOfSize:15];
     _titleLabel.textColor = [UIColor whiteColor];
-    [_titleLabel setText:@"直播结束啦!"];
+    [_titleLabel setText:@"视频互动结束啦!"];
     [self addSubview:_titleLabel];
     
     
@@ -1139,7 +1145,7 @@
     _durationTipLabel.textAlignment = NSTextAlignmentCenter;
     _durationTipLabel.font = [UIFont boldSystemFontOfSize:12];
     _durationTipLabel.textColor = [UIColor grayColor];
-    [_durationTipLabel setText:[NSString stringWithFormat:@"直播时长"]];
+    [_durationTipLabel setText:[NSString stringWithFormat:@"视频互动时长"]];
     [self addSubview:_durationTipLabel];
     
     

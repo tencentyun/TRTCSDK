@@ -51,4 +51,8 @@ extension TCAnchorViewController {
     @objc func makeToast(message: String) {
         view.makeToast(message)
     }
+    
+    @objc func makeToast(message: String, duration: TimeInterval) {
+        view.makeToast(message, duration: duration)
+    }
 }

@@ -272,6 +272,9 @@ extension TRTCVoiceRoomRootView: TRTCVoiceRoomViewResponder {
             makeToast("被房主禁言", duration: 0.3)
         } else {
             makeToast("被房主解禁", duration: 0.3)
+            if viewModel.isSelfMute {
+                return;
+            }
         }
         mainMenuView.changeMixStatus(isMute: isMute)
     }

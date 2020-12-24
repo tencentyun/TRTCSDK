@@ -75,7 +75,7 @@ public class TRTCVoiceRoomViewController: UIViewController {
     @objc func cancel() {
         // 取消后直接返回首页
         if viewModel?.roomType == VoiceRoomViewType.anchor {
-            presentAlert(title: "退出直播间", message: "当前正在直播，是否退出") { [weak self] in
+            presentAlert(title: "退出", message: "当前正在音频互动，是否退出") { [weak self] in
                 guard let `self` = self else { return }
                 self.viewModel?.exitRoom() // 主播销毁房间
             }

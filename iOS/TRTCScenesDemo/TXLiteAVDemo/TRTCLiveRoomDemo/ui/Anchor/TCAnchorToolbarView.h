@@ -39,6 +39,7 @@
 /**
  *  推流模块逻辑view，里面展示了消息列表，弹幕动画，观众列表，美颜，美白等UI，其中与SDK的逻辑交互需要交给主控制器处理。
  */
+@class TCShowLiveTopView;
 @interface TCAnchorToolbarView : UIView <
     UITextFieldDelegate,
     V8HorizontalPickerViewDelegate,
@@ -58,6 +59,7 @@
 @property (nonatomic, retain) AnchorPKPanel     *vPKPanel;
 @property (nonatomic, weak) TRTCLiveRoom *liveRoom;
 @property (nonatomic, assign) BOOL           isPreview;
+@property(strong, nonatomic, readonly)TCShowLiveTopView *topView;
 
 - (void)setButtonHidden:(BOOL)buttonHidden;
 - (void)setLiveInfo:(TRTCLiveRoomInfo *)liveInfo;

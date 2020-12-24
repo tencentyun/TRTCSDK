@@ -118,17 +118,39 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
         collectionView.deselectItem(at: indexPath, animated: false)
         if (indexPath.row < roomInfos.count) {
             let room = roomInfos[indexPath.row]
-            if room.ownerId != ProfileManager.shared.curUserID() {
-                if let vc = TCAudienceViewController(play: room, videoIsReady: {
+            func enterRoom() {
+                if room.ownerId != ProfileManager.shared.curUserID() {
+                    if let vc = TCAudienceViewController(play: room, videoIsReady: {
+                        
+                    }) {
+                        vc.liveRoom = self.liveRoom
+                        self.navigationController?.pushViewController(vc, animated: true)
+                    }
                     
-                }) {
-                    vc.liveRoom = liveRoom
-                    navigationController?.pushViewController(vc, animated: true)
+                } else {
+                    self.createRoom()
                 }
-                
-            } else {
-                createRoom()
             }
+            #if TRTC_APPSTORE
+            V2TIMManager.sharedInstance()?.getGroupsInfo([room.roomId], succ: { [weak self] (result) in
+                guard let `self` = self else { return }
+                guard let info = result?.first else {
+                    self.view.makeToast("房间信息获取失败，请稍后再试。")
+                    return
+                }
+                if info.info.memberCount <= 10 {
+                    enterRoom()
+                } else {
+                    self.view.makeToast("当前房间人数超过限制，无法加入。")
+                }
+            }, fail: { [weak self] (error, message) in
+                guard let `self` = self else { return }
+                self.view.makeToast("房间信息获取失败，请稍后再试。")
+            });
+            #else
+            enterRoom()
+            #endif
+            
         }
     }
     

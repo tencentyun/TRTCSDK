@@ -190,6 +190,8 @@ class TRTCMeetingMainViewController: UIViewController, TRTCMeetingDelegate,
             AppUtils.shared.alertUserTips(self)
             let localPreviewView = getRenderView(userId: selfUserId)!
             TRTCMeeting.sharedInstance().startCameraPreview(true, view: localPreviewView)
+        } else {
+            TRTCMeeting.sharedInstance().stopCameraPreview()
         }
         TRTCMeeting.sharedInstance().startMicrophone();
         TRTCMeeting.sharedInstance().muteLocalAudio(!startConfig.isAudioOn)

@@ -217,13 +217,6 @@ NSString *helpUrlDb[] = {
         self.didLaunched = YES;
         [self playVideoFromLaunchInfo:self.launchInfo];
     }
-    
-#if defined(TRTC) || defined(TRTC_APPSTORE)
-    NSString *appStoreID = @"1400663224";
-#else
-    NSString *appStoreID = @"1152295397";
-#endif
-    [self checkStoreVersion:appStoreID];
     return YES;
 }
 
@@ -367,11 +360,14 @@ NSString *helpUrlDb[] = {
     UINavigationController *nav = nil;
 #ifdef TRTC
     nav = [[UINavigationController alloc] initWithRootViewController:self.portalVC];
+    NSString *appStoreID = @"1400663224";
 #else
+    NSString *appStoreID = @"1152295397";
     nav = [[UINavigationController alloc] initWithRootViewController:self.mainViewController];
 #endif
     self.window.rootViewController = nav;
     [self playVideoFromLaunchInfo:self.launchInfo];
+    [self checkStoreVersion:appStoreID];
 }
 
 - (void)showLoginController {

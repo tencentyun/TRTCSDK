@@ -461,7 +461,7 @@
             TCMsgModel *msgModel = [[TCMsgModel alloc] init];
             msgModel.userId = info.imUserId;
             msgModel.userName = info.imUserName;
-            msgModel.userMsg  =  @"加入直播";
+            msgModel.userMsg  =  @"加入视频互动";
             msgModel.userHeadImageUrl = info.imUserIconUrl;
             msgModel.msgType = TCMsgModelType_MemberEnterRoom;
             
@@ -479,7 +479,7 @@
             TCMsgModel *msgModel = [[TCMsgModel alloc] init];
             msgModel.userId = info.imUserId;
             msgModel.userName = info.imUserName;
-            msgModel.userMsg  =  @"退出直播";
+            msgModel.userMsg  =  @"退出视频互动";
             msgModel.userHeadImageUrl = info.imUserIconUrl;
             msgModel.msgType = TCMsgModelType_MemberQuitRoom;
             
