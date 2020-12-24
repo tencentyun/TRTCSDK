@@ -14,7 +14,7 @@
 | Electron | [下载](http://liteavsdk-1252463788.cosgz.myqcloud.com/TXLiteAVSDK_TRTC_Electron_latest.zip) | [DOC](https://cloud.tencent.com/document/product/647/38548) | [DOC](https://cloud.tencent.com/document/product/647/38549) |[API](https://cloud.tencent.com/document/product/647/38551) |
 | 微信小程序 | [下载](http://liteavsdk-1252463788.cosgz.myqcloud.com/TRTC_WXMini_latest.zip) | [DOC](https://cloud.tencent.com/document/product/647/32399) | [DOC](https://cloud.tencent.com/document/product/647/32183) |[API](https://cloud.tencent.com/document/product/647/17018) |
 
-## Version 8.1 @ 2020.12.03
+## Version 8.2 @ 2020.12.23
 
 **欢迎加入**
 
@@ -22,19 +22,22 @@
 北京、上海、深圳、广州均有岗位，如果您对音视频技术感兴趣，欢迎加入我们 [腾讯云 TRTC 研发团队](https://careers.tencent.com/jobdesc.html?postId=1297858141983088640) 。
 
 **功能新增**
-- 全平台：统计信息（onStatistics）中新增远端视频卡顿的相关统计指标
-- 全平台：支持通过音量调节接口 setAudioPlayoutVolume(100-150) 实现声音的增益效果
-- iOS&Android：新增 setLocalVideoProcessListener 接口，能更好地支持第三方美颜 SDK 的集成
-- C# ：同步升级至最新版本的 API 接口
+iOS & Android 新增回调混合本地采集与所有播放的音频数据，本地音频录制更方便啦
+Android 本地渲染支持 TextureView，本地画面也可以应用动画效果
+Android 自定义渲染支持 RGBA 格式
+Windows 支持视频截图能力
+Windows 窗口分享支持设置白名单，仅分享目标窗口与白名单窗口。窗口分享超灵活
+Mac 自定义渲染支持截图
 
 **质量优化**
-- 全平台：优化戴耳机时的声音处理算法，提高声音音质
-- Android：优化音频前处理算法，降低 3A 算法对音质的影响
+Android 在线直播画质优化，直播更加美美哒
+windows 优化回声消除算法，降低漏回声的概率
 
 **问题修复**
-- iOS：修复部分偶现的强杀 App 导致的崩溃问题
-- Android：修复当采集帧率比较高时出现的美颜效果异常问题
-- Windows：修复高 DPI 下屏幕分享偶现的崩溃问题
+iOS 修复 VODPlayer 和 TRTC 同时使用时，偶现音频播放异常的问题
+Android 修复自定义美颜处理本地黑屏的问题
+Windows 修复偶现进程无法退出的问题
+各平台修复近期反馈的严重bug，进一步提升稳定性
 
 
 更早期的版本更新历史请点击  [More](https://cloud.tencent.com/document/product/647/46907)...
