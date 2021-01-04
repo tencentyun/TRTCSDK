@@ -15,15 +15,9 @@ class ShareClient {
       mode: 'rtc',
       sdkAppId: this.sdkAppId_,
       userId: this.userId_,
-      userSig: this.userSig_,
-      /**
-       * disable receivers to avoid receiving remote streams as we only want to
-       * publish the screen stream
-       */
-      disableReceiver: true
+      userSig: this.userSig_
     });
 
-    this.client_.setDefaultMuteRemoteStreams(true);
     this.handleEvents();
   }
 
@@ -77,7 +71,7 @@ class ShareClient {
 
     try {
       await this.client_.join({
-        roomId: this.roomId_
+        roomId: parseInt(this.roomId_)
       });
       console.log('ShareClient join room success');
       this.isJoined_ = true;
@@ -148,6 +142,7 @@ class ShareClient {
         console.log(`${event.type} player is ${event.state}`);
       });
       console.log('stream-subscribed ID: ', id);
+      this.client_.unsubscribe(remoteStream);
     });
     // fired when the remote stream is removed, e.g. the remote user called Client.unpublish()
     this.client_.on('stream-removed', evt => {
