@@ -35,7 +35,7 @@ class RtcClient {
     try {
       // join the room
       await this.client_.join({
-        roomId: this.roomId_
+        roomId: parseInt(this.roomId_)
       });
       console.log('join room success');
       this.isJoined_ = true;

@@ -744,7 +744,7 @@ async function startNetworkTesting() {
       }
     });
     await client.join({
-      roomId: options.roomId
+      roomId: parseInt(options.roomId)
     });
     await createLocalStream(
       {
