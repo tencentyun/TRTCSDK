@@ -49,8 +49,14 @@ void ShareSelectItem::setWndInfo(const TRTCScreenCaptureSourceInfo& info)
     CImageCanvas* pWndView = static_cast<CImageCanvas*>(m_pRootControl->GetItemAt(0));
     CControlUI* pControl = static_cast<CControlUI*>(m_pRootControl->GetItemAt(1));
 
-    std::string thumbData(m_info.thumbBGRA.buffer, m_info.thumbBGRA.length);
-    pWndView->setPaintData(m_info.thumbBGRA.width, m_info.thumbBGRA.height, thumbData);
+    if (m_info.thumbBGRA.length == 0 || m_info.thumbBGRA.buffer == nullptr) {
+        std::string iconData(m_info.iconBGRA.buffer, m_info.iconBGRA.length);
+        pWndView->setPaintData(m_info.iconBGRA.width, m_info.iconBGRA.height, iconData);
+    } else {
+        std::string thumbData(m_info.thumbBGRA.buffer, m_info.thumbBGRA.length);
+        pWndView->setPaintData(m_info.thumbBGRA.width, m_info.thumbBGRA.height, thumbData);
+    }
+    
     pWndView->SetVisible(true);
     pControl->SetVisible(false);
 }

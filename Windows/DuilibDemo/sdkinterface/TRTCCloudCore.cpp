@@ -1018,7 +1018,7 @@ std::vector<TRTCCloudCore::MediaDeviceInfo>& TRTCCloudCore::getCameraDevice()
 
 ITRTCScreenCaptureSourceList* TRTCCloudCore::GetWndList()
 {
-    return m_pCloud->getScreenCaptureSources(SIZE{ 120, 70 }, SIZE{ 20,20 });
+    return m_pCloud->getScreenCaptureSources(SIZE{ 240, 140 }, SIZE{ 20,20 });
 }
 
 void TRTCCloudCore::selectMicDevice(std::wstring text)

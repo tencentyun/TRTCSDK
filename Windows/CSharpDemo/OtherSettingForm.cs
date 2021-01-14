@@ -419,14 +419,7 @@ namespace TRTCCSharpDemo
 
         private void removeAllWindowsBtn_Click(object sender, EventArgs e)
         {
-            string hwnd_str = this.addHwndTextBox.Text;
-            if (string.IsNullOrEmpty(hwnd_str))
-            {
-                ShowMessage("移除的过滤窗口句柄不能为空！");
-                return;
-            }
-            uint hwnd = Convert.ToUInt32(hwnd_str, 16);
-            mTRTCCloud.removeExcludedShareWindow((IntPtr)hwnd);
+            mTRTCCloud.removeAllExcludedShareWindow();
         }
 
         private void addHwndBtn_Click(object sender, EventArgs e)
@@ -443,7 +436,14 @@ namespace TRTCCSharpDemo
 
         private void removeHwndBtn_Click(object sender, EventArgs e)
         {
-            mTRTCCloud.removeAllExcludedShareWindow();
+            string hwnd_str = this.addHwndTextBox.Text;
+            if (string.IsNullOrEmpty(hwnd_str))
+            {
+                ShowMessage("移除的过滤窗口句柄不能为空！");
+                return;
+            }
+            uint hwnd = Convert.ToUInt32(hwnd_str, 16);
+            mTRTCCloud.removeExcludedShareWindow((IntPtr)hwnd);
         }
 
         private void OnRoomTextBoxKeyPress(object sender, KeyPressEventArgs e)
