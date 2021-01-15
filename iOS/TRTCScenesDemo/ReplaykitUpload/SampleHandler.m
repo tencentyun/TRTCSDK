@@ -572,7 +572,7 @@ static void onDarwinReplayKit2ResolutionChange(CFNotificationCenterRef center,
 
 #pragma mark - TXReplayKitExtDelegate
 #if TRTC_EXT
-- (void)boradcastFinished:(TXReplayKitExt *)broadcast reason:(TXReplayKitExtReason)reason
+- (void)broadcastFinished:(TXReplayKitExt *)broadcast reason:(TXReplayKitExtReason)reason
 {
     NSString *tip = @"";
     switch (reason) {
