@@ -201,13 +201,6 @@ void TRTCMainViewController::enterRoom()
 
     TRTCCloudCore::GetInstance()->getTRTCCloud()->setLocalVideoRenderCallback(TRTCVideoPixelFormat_BGRA32, TRTCVideoBufferType_Buffer, (ITRTCVideoRenderCallback*)getShareViewMgrInstance());
 
-    //设置代理环境
-    //TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI("{\"api\": \"setProxy\",\"params\" :{\"socks5_host\" : \"120.27.153.72\",\"socks5_port\" : 35726,\"socks5_auth\" : \"\", \"http_host\": \"45.125.32.182\",\"http_port\" : 3128,\"http_auth\" : \"\"}}");
-
-    //设置连接环境
-    std::string cmd = format("{\"api\": \"setNetEnv\",\"params\" :{\"env\" : %d}}", CDataCenter::GetInstance()->m_nLinkTestServer);
-    TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(cmd.c_str());
-
     TRTCCloudCore::GetInstance()->getTRTCCloud()->setDefaultStreamRecvMode(\
         CDataCenter::GetInstance()->m_bAutoRecvAudio, CDataCenter::GetInstance()->m_bAutoRecvVideo);
 
@@ -215,9 +208,6 @@ void TRTCMainViewController::enterRoom()
         TRTCCloudCore::GetInstance()->getTRTCCloud()->setAudioQuality((TRTCAudioQuality)CDataCenter::GetInstance()->audio_quality_);
     }
 	InternalEnterRoom();
-
-    // 关闭 SDK 内部无权限提示弹窗，无权限警告码会通过 onWarning 抛出
-    //TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI("{\"api\":\"enablePopupTips\",\"params\" :{\"enable\":false}}");
 
     //进入房间
     LocalUserInfo& info = CDataCenter::GetInstance()->getLocalUserInfo();
@@ -1264,15 +1254,7 @@ void TRTCMainViewController::InternalEnterRoom()
         CDataCenter::GetInstance()->m_strCustomStreamId = format("%d_%d_%s_main", GenerateTestUserSig::SDKAPPID, info._roomId, info._userId.c_str());
     params.streamId = CDataCenter::GetInstance()->m_strCustomStreamId.c_str();
 
-    // TRTCCloudCore::GetInstance()->getTRTCCloud()->setEncodedDataProcessingListener();
-    char api_str[128] = {0};
-    sprintf_s(api_str, 128,
-              "{\"api\":\"setEncodedDataProcessingListener\", \"params\": {\"listener\":%llu}}",
-              (uint64_t)TRTCCustomerCrypt::getEncodedDataProcessingListener());
-    TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api_str);
     TRTCCloudCore::GetInstance()->getTRTCCloud()->enterRoom(params, CDataCenter::GetInstance()->m_sceneParams);
-
-    
 }
 
 

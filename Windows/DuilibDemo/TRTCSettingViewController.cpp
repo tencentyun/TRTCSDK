@@ -630,8 +630,7 @@ void TRTCSettingViewController::Notify(TNotifyUI & msg)
                 RemoteUserInfoList& userMap = CDataCenter::GetInstance()->m_remoteUser;
                 for (auto it : userMap) 
                 {
-                    std::string api = format("{\"api\":\"muteRemoteAudioInSpeaker\",\"params\":{\"userID\":\"%s\", \"enable\":%d}}", it.first.c_str(), true);
-                    TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
+                    //todo
                 }
                 m_bMuteRemotesAudio = true;
             }
@@ -640,8 +639,7 @@ void TRTCSettingViewController::Notify(TNotifyUI & msg)
                 RemoteUserInfoList& userMap = CDataCenter::GetInstance()->m_remoteUser;
                 for (auto it : userMap)
                 {
-                    std::string api = format("{\"api\":\"muteRemoteAudioInSpeaker\",\"params\":{\"userID\":\"%s\", \"enable\":%d}}", it.first.c_str(), false);
-                    TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
+                    // todo
                 }
                 m_bMuteRemotesAudio = false;
             }
@@ -935,10 +933,7 @@ void TRTCSettingViewController::NotifyAudioTab(TNotifyUI & msg)
             }
             sText.Format(_T("%d%"), level);
             pLabelValue->SetText(sText);
-            std::string api = format("{\"api\":\"enableAudioAEC\",\"params\":{\"enable\":%d,\"level\":%d}}",
-                CDataCenter::GetInstance()->m_bEnableAec, level);
-
-            TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
+            // todo
         } 
         else if (msg.pSender->GetName() == _T("slider_hook_aec"))
         {
@@ -965,10 +960,7 @@ void TRTCSettingViewController::NotifyAudioTab(TNotifyUI & msg)
             }
             sText.Format(_T("%d%"), level);
             pLabelValue->SetText(sText);
-            std::string api =
-                format("{\"api\":\"enableSystemLoopbackAudioAEC\",\"params\":{\"enable\":%d,\"level\":%d}}",enable_hook_aec,level);
-
-            TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
+            // todo
         }
         else if (msg.pSender->GetName() == _T("slider_agc")) {
             CProgressUI* pSlider = static_cast<CProgressUI*>(m_pmUI.FindControl(_T("slider_agc")));
@@ -992,11 +984,7 @@ void TRTCSettingViewController::NotifyAudioTab(TNotifyUI & msg)
             }
             sText.Format(_T("%d%"), level);
             pLabelValue->SetText(sText);
-            std::string api =
-                format("{\"api\":\"enableAudioAGC\",\"params\":{\"enable\":%d,\"level\":%d}}",
-                    CDataCenter::GetInstance()->m_bEnableAgc, level);
-
-            TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
+            // todo
         } 
          else if (msg.pSender->GetName() == _T("slider_ans")) {
             CProgressUI* pSlider = static_cast<CProgressUI*>(m_pmUI.FindControl(_T("slider_ans")));
@@ -1023,11 +1011,7 @@ void TRTCSettingViewController::NotifyAudioTab(TNotifyUI & msg)
             }
             sText.Format(_T("%d%"), level);
             pLabelValue->SetText(sText);
-            std::string api =
-                format("{\"api\":\"enableAudioANS\",\"params\":{\"enable\":%d,\"level\":%d}}",
-                    CDataCenter::GetInstance()->m_bEnableAns, level);
-
-            TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
+            // todo
         } 
     }
 }
@@ -1077,11 +1061,9 @@ void TRTCSettingViewController::NotifyOtherTab(TNotifyUI & msg)
         else if (msg.pSender->GetName() == _T("check_black_push")) {
             COptionUI* pOpenSender = static_cast<COptionUI*>(msg.pSender);
             if (pOpenSender->IsSelected() == false) {  //事件值是反的
-                CDataCenter::GetInstance()->m_bBlackFramePush = true;
-                TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI("{\"api\":\"enableBlackStream\",\"params\" :{\"enable\":true}}");
+                 //todo
             } else {
-                CDataCenter::GetInstance()->m_bBlackFramePush = false;
-                TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI("{\"api\":\"enableBlackStream\",\"params\" :{\"enable\":false}}");
+                // todo
             }
         }
         else if (msg.pSender->GetName() == _T("check_remote_mirror"))
