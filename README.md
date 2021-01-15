@@ -14,30 +14,33 @@
 | Electron | [下载](http://liteavsdk-1252463788.cosgz.myqcloud.com/TXLiteAVSDK_TRTC_Electron_latest.zip) | [DOC](https://cloud.tencent.com/document/product/647/38548) | [DOC](https://cloud.tencent.com/document/product/647/38549) |[API](https://cloud.tencent.com/document/product/647/38551) |
 | 微信小程序 | [下载](http://liteavsdk-1252463788.cosgz.myqcloud.com/TRTC_WXMini_latest.zip) | [DOC](https://cloud.tencent.com/document/product/647/32399) | [DOC](https://cloud.tencent.com/document/product/647/32183) |[API](https://cloud.tencent.com/document/product/647/17018) |
 
-## Version 8.2 @ 2020.12.23
+## Version 8.3 @ 2021.01.15
 
 **欢迎加入**
-
 团队技术氛围浓厚，培训体系完善，产品线多样，有经验丰富的“老司机”手把手帮你入门音视频技术。<br>
 北京、上海、深圳、广州均有岗位，如果您对音视频技术感兴趣，欢迎加入我们 [腾讯云 TRTC 研发团队](https://careers.tencent.com/jobdesc.html?postId=1297858141983088640) 。
 
 **功能新增**
-- iOS & Android 新增回调混合本地采集与所有播放的音频数据，本地音频录制更方便啦。
-- Android 视频渲染组件 TXCloudVideoView 支持通过 addVideoView(new TextureView(getApplicationContext())) 接口将 TextureView 用于本地渲染。
-- Android 自定义渲染回调支持 RGBA 格式的视频数据。
-- Windows 支持本地摄像头采集和播放远端视频流截图，参见 ITRTCCloud.snapshotVideo。
-- Windows 屏幕分享支持通过 addExcludedShareWindow 和 addIncludedShareWindow 接口排除或强制包含您所指定的窗口，从而实现更灵活的屏幕分享能力。
-- Mac & iOS 自定义渲染的模式下也可以调用 TRTCCloud.snapshotVideo 截取视频流图片。
 
-**质量优化**
-- Android 在线直播编码质量优化，视频画面更清晰。
-- Windows 优化回声消除算法，进一步提升回声消除的效果。
+这个版本我们重点优化了自定义采集相关的业务逻辑:
+- 我们优化了音频模块，以确保在您使用 [enableCustomAudioCapture](http://doc.qcloudtrtc.com/group__TRTCCloud__ios.html#ab8f8aaa19d70c6a2c9d62ecceb6e974d) 采集音频数据送给 SDK 处理时 SDK 依然能够保持很好的回声抑制和降噪效果（该特性适用于 iOS Android 和 Mac 平台）。
+- 如果您希望在 TRTC SDK 的基础上，继续增加自己的声音特效和声音处理逻辑，在 8.3 版本上会更加简单，因为你可以通过 [setCapturedRawAudioFrameDelegateFormat](http://doc.qcloudtrtc.com/group__TRTCCloud__ios.html#a4b58b1ee04d0c692f383084d87111f86) 等接口，设置音频数据的回调格式，包括音频采样率、音频声道数和采样点数等，以便您能够以自己喜欢的音频格式处理这些音频数据（该特性支持 iOS 和 Android 平台）。
+- 如果您希望自己采集视频数据，并同时使用 TRTC SDK 自带的音频模块，可能会遇到音画不对齐的问题，这是因为 SDK 内部的时间线有自己的控制逻辑，因此我们提供了一个叫做 [generateCustomPTS](http://doc.qcloudtrtc.com/group__TRTCCloud__ios.html#ae5f2a974fa23954c5efd682dc464cdee) 的接口，你可以在采集到的一帧视频画面时，调用此接口并记录一下当前的 PTS(时间戳)，之后调用 [sendCustomVideoData](http://doc.qcloudtrtc.com/group__TRTCCloud__ios.html#a76e8101153afc009f374bc2b242c6831) 时带上这个时间戳，就可以很好地保证音画同步（该特性适用于全部平台）。
+- Windows 版本的 SDK 增加了对域名格式的 Socks5 代理地址的支持。
 
 **问题修复**
-- iOS 修复 VODPlayer 和 TRTC 同时使用时偶现的音频播放异常的问题。
-- Android 修复自定义美颜引起的本地渲染黑屏问题。
-- Windows 修复偶现的当前进程无法退出的问题。
-
+- 全平台：修复偶现音频数据时间戳异常导致录制内容音画不同步的问题。
+- Windows：优化窗口分享在高 DPI 环境下的兼容性。
+- Windows：获取可分享的窗口列表时增加最小化的窗口，最小化窗口的缩略图是其进程的图标。
+- Windows：修复 SDK 启动后非必要的 DXGI 占用问题。
+- iOS：修复手动设置焦点会导致 ANR 的问题。
+- iOS：修复偶现切换前后摄像头无效的问题。
+- iOS：修复 VODPlayer 减速播放 crash。
+- iOS：修复偶现进房后默认从听筒播放的问题。
+- iOS & Android：优化回声消除和噪声抑制的效果，并且耳返也能听到混响的效果。
+- Android：修复偶现硬解绿屏花屏的问题。
+- Mac：修复窗口分享并开启高亮时，窗口贴边会造成高亮边框闪烁的问题。
+- Mac：修复渲染视图移动时会黑屏的问题。
 
 更早期的版本更新历史请点击  [More](https://cloud.tencent.com/document/product/647/46907)...
 
@@ -65,5 +68,3 @@
 ### Web 网页
 > [Chrome 打开体验](https://trtc-1252463788.file.myqcloud.com/web/demo/official-demo/index.html)
 ![](https://main.qcloudimg.com/raw/56e2bbc928a11bac85e5b78ac171b3bc.jpg)
-
-
