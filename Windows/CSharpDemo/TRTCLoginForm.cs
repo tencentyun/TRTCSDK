@@ -197,10 +197,6 @@ namespace TRTCCSharpDemo
                     e.Handled = true;
             }
         }
-
-        /// <summary>
-        /// 主要用于本地调试环境时，存在该文件时启动测试功能
-        /// </summary>
         
     }
 }

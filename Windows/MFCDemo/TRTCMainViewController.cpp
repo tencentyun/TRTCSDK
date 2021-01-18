@@ -913,9 +913,6 @@ void TRTCMainViewController::enterRoom(TRTCParams& params)
         getTRTCCloud()->setPriorRemoteVideoStreamType(TRTCVideoStreamTypeSmall);
     }
 
-    getTRTCCloud()->callExperimentalAPI("{\"api\":\"setCustomRenderMode\",\"params\" :{\"mode\":1}}");
-
-
     getTRTCCloud()->enterRoom(params, TRTCStorageConfigMgr::GetInstance()->appScene);
     std::string userId(params.userId);
     m_userId = userId;

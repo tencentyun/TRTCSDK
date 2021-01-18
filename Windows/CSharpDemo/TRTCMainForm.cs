@@ -70,13 +70,6 @@ namespace TRTCCSharpDemo
 
         private Dictionary<string, TXLiteAVVideoView> mVideoViews;
 
-        #region NetEnvironment
-
-        [DllImport("liteav.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void setNetEnv(int bTestEnv);
-
-        #endregion
-
         public TRTCMainForm(TRTCLoginForm loginForm)
         {
             // 初始化 Form
@@ -280,9 +273,6 @@ namespace TRTCCSharpDemo
                 trtcParams.businessInfo = "{\"Str_uc_params\":{\"pure_audio_push_mod\": 1}}";
             else
                 trtcParams.businessInfo = "";
-
-            // 设置连接环境
-            setNetEnv(DataManager.GetInstance().testEnv);
 
             // 用户进房
             mTRTCCloud.enterRoom(ref trtcParams, DataManager.GetInstance().appScene);

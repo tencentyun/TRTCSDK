@@ -312,44 +312,17 @@ namespace TRTCCSharpDemo
 
         private void aecCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            if (this.aecCheckBox.Checked)
-            {
-                string api = "{\"api\":\"enableAudioAEC\",\"params\":{\"enable\":1}}";
-                mTRTCCloud.callExperimentalAPI(api);
-            }
-            else
-            {
-                string api = "{\"api\":\"enableAudioAEC\",\"params\":{\"enable\":0}}";
-                mTRTCCloud.callExperimentalAPI(api);
-            }
+            //todo
         }
 
         private void ansCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            if (this.ansCheckBox.Checked)
-            {
-                string api = "{\"api\":\"enableAudioANS\",\"params\":{\"enable\":1}}";
-                mTRTCCloud.callExperimentalAPI(api);
-            }
-            else
-            {
-                string api = "{\"api\":\"enableAudioANS\",\"params\":{\"enable\":0}}";
-                mTRTCCloud.callExperimentalAPI(api);
-            }
+            //todo
         }
 
         private void agcCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            if (this.agcCheckBox.Checked)
-            {
-                string api = "{\"api\":\"enableAudioAGC\",\"params\":{\"enable\":1}}";
-                mTRTCCloud.callExperimentalAPI(api);
-            }
-            else
-            {
-                string api = "{\"api\":\"enableAudioAGC\",\"params\":{\"enable\":0}}";
-                mTRTCCloud.callExperimentalAPI(api);
-            }
+            //todo
         }
 
         private void audioQualityComboBox_SelectedIndexChanged(object sender, EventArgs e)

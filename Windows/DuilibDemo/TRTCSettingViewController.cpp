@@ -859,42 +859,34 @@ void TRTCSettingViewController::NotifyAudioTab(TNotifyUI & msg)
             if (pOpenSender->IsSelected() == false) {
                 CDataCenter::GetInstance()->m_bEnableAec = true;
 
-                std::string api = format("{\"api\":\"enableAudioAEC\",\"params\":{\"enable\":%d}}",
-                                         CDataCenter::GetInstance()->m_bEnableAec);
-                TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
+                //todo
             }
             else {
                 CDataCenter::GetInstance()->m_bEnableAec = false;
-                std::string api = format("{\"api\":\"enableAudioAEC\",\"params\":{\"enable\":%d}}",
-                                         CDataCenter::GetInstance()->m_bEnableAec);
-                TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
+                //todo
             }
         }
         else if (msg.pSender->GetName() == _T("check_btn_ans")) {
             COptionUI* pOpenSender = static_cast<COptionUI*>(msg.pSender);
             if (pOpenSender->IsSelected() == false) {
                 CDataCenter::GetInstance()->m_bEnableAns = true;
-                std::string api = format("{\"api\":\"enableAudioANS\",\"params\":{\"enable\":%d}}", CDataCenter::GetInstance()->m_bEnableAns);
-                TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
+                //todo
 
             }
             else {
                 CDataCenter::GetInstance()->m_bEnableAns = false;
-                std::string api = format("{\"api\":\"enableAudioANS\",\"params\":{\"enable\":%d}}", CDataCenter::GetInstance()->m_bEnableAns);
-                TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
+                //todo
             }
         }
         else if (msg.pSender->GetName() == _T("check_btn_agc")) {
             COptionUI* pOpenSender = static_cast<COptionUI*>(msg.pSender);
             if (pOpenSender->IsSelected() == false) {
                 CDataCenter::GetInstance()->m_bEnableAgc = true;
-                std::string api = format("{\"api\":\"enableAudioAGC\",\"params\":{\"enable\":%d}}", CDataCenter::GetInstance()->m_bEnableAgc);
-                TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
+                //todo
             }
             else {
                 CDataCenter::GetInstance()->m_bEnableAgc = false;
-                std::string api = format("{\"api\":\"enableAudioAGC\",\"params\":{\"enable\":%d}}", CDataCenter::GetInstance()->m_bEnableAgc);
-                TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
+                //todo
             }
         }
         else if(msg.pSender->GetName() == _T("check_system_audio_mix"))
@@ -2421,8 +2413,7 @@ void TRTCSettingViewController::stopAllTestSetting()
         RemoteUserInfoList& userMap = CDataCenter::GetInstance()->m_remoteUser;
         for (auto it : userMap)
         {
-            std::string api = format("{\"api\":\"muteRemoteAudioInSpeaker\",\"params\":{\"userID\":\"%s\", \"enable\":%d}}", it.first.c_str(), false);
-            TRTCCloudCore::GetInstance()->getTRTCCloud()->callExperimentalAPI(api.c_str());
+            //todo
         }
         m_bMuteRemotesAudio = false;
     }
