@@ -115,8 +115,14 @@
         if (!self) {
             return;
         }
+        self.isLogin = NO;
+        if (callback) {
+            callback(0, @"log out IM SDK success");
+        }
     } fail:^(int code, NSString *desc) {
-        
+        if (callback) {
+            callback(VOICE_ROOM_SERVICE_CODE_ERROR, @"log out IM SDK failed");
+        }
     }];
 }
 
