@@ -1,0 +1,24 @@
+<RCC>
+    <qresource prefix="/bgm">
+        <file>image/bgm/bgm_pause.png</file>
+        <file>image/bgm/bgm_play.png</file>
+        <file>image/bgm/bgm_stop.png</file>
+        <file>image/bgm/bgm_reset.png</file>
+    </qresource>
+    <qresource prefix="/setting">
+        <file>image/setting/advance_setting.png</file>
+        <file>image/setting/cdn_setting.png</file>
+        <file>image/setting/general_setting.png</file>
+        <file>image/setting/music_setting.png</file>
+        <file>image/setting/audio_setting.png</file>
+        <file>image/setting/screen_share_setting.png</file>
+        <file>image/setting/video_setting.png</file>
+    </qresource>
+    <qresource prefix="/switch">
+        <file>image/switch/audio_close.png</file>
+        <file>image/switch/audio_normal.png</file>
+        <file>image/switch/video_close.png</file>
+        <file>image/switch/video_normal.png</file>
+    </qresource>
+    <qresource prefix="/"/>
+</RCC>

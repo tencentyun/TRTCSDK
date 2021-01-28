@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/bgm">
+        <file>audio/bgm/audio_long.mp3</file>
+        <file>audio/bgm/audio_short.m4a</file>
+    </qresource>
+    <qresource prefix="/sound">
+        <file>audio/sound/bianpao.m4a</file>
+        <file>audio/sound/didi.aac</file>
+        <file>audio/sound/qingcui.aac</file>
+    </qresource>
+</RCC>
