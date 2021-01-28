@@ -63,7 +63,7 @@ INCLUDEPATH += $$PWD/.
 DEPENDPATH += $$PWD/.
 
 TRANSLATIONS += \
-    QTSimpleDemo_zh_CN.ts
+    QTDemo_zh_CN.ts
 
 QMAKE_INFO_PLIST += Info.plist
 
@@ -92,7 +92,7 @@ DEPENDPATH += $$PWD/base/util/mac/usersig/include
 win32 {
 
 TRANSLATIONS += \
-    QTSimpleDemo_zh_CN.ts
+    QTDemo_zh_CN.ts
 SOURCES += base/util/win/usersig/GenerateTestUsersig.cpp
 HEADERS += base/util/win/usersig/GenerateTestUsersig.h
 
