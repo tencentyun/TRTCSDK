@@ -314,7 +314,6 @@ class UserController {
     }
   }
   _removeStream(stream) {
-    console.warn('==========', stream)
     this.streamList = this.streamList.filter((item)=>{
       if (item.userID === stream.userID && item.streamType === stream.streamType) {
         return false

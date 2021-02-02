@@ -2,10 +2,9 @@ import EventEmitter from './utils/event.js'
 import TSignaling from './utils/tsignaling-wx'
 import * as ENV from 'utils/environment.js'
 import MTA from 'libs/mta_analysis.js'
-import { EVENT, TRTC_EVENT } from './common/constants.js'
+import { EVENT, TRTC_EVENT, ACTION_TYPE, BUSINESS_ID, CALL_STATUS } from './common/constants.js'
 import UserController from './controller/user-controller'
-
-const app = getApp()
+import formateTime from './utils/formate-time'
 
 const TAG_NAME = 'TRTCCalling-Component'
 // 组件旨在跨终端维护一个通话状态管理机，以事件发布机制驱动上层进行管理，并通过API调用进行状态变更。
@@ -17,7 +16,7 @@ Component({
     config: {
       type: Object,
       value: {
-        sdkAppID: app.globalData.sdkAppID,
+        sdkAppID: wx.$globalData.sdkAppID,
         userID: '',
         userSig: '',
         type: 0,
@@ -31,16 +30,25 @@ Component({
     pusherAvatar: {
       type: String,
       value: '',
+      observer: function(newVal, oldVal) {
+        this.setData({
+          pusherAvatar: newVal,
+        })
+      },
     },
-    remoteAvatar: {
-      type: String,
-      value: '',
+    avatarList: {
+      type: Object,
+      value: {},
+      observer: function(newVal, oldVal) {
+        this.setData({
+          avatarList: newVal,
+        })
+      },
     },
-
   },
   data: {
+    callStatus: CALL_STATUS.IDLE, // 用户当前的通话状态
     soundMode: 'speaker', // 声音模式 听筒/扬声器
-    callingFlag: false,
     active: false,
     pusherConfig: { // 本地上行状态管理
       pushUrl: '',
@@ -56,34 +64,26 @@ Component({
     },
     invitationAccept: { // 发出的邀请，以及返回的状态
       inviteID: '',
-      acceptFlag: false,
       rejectFlag: false,
     },
+    startTalkTime: 0, // 开始通话的时间，用于计算1v1通话时长
     _historyUserList: [], // 房间内进过房的成员列表，用于发送call_end
+    _isGroupCall: false, // 当前通话是否是群通话
+    _groupID: '', // 群组ID
+    _unHandledInviteeList: [], // 未处理的被邀请着列表
   },
 
   methods: {
     _initEventEmitter() {
       // 监听TSignaling事件
       this.tsignaling.on(TSignaling.EVENT.NEW_INVITATION_RECEIVED, (event) => {
-        console.log(TAG_NAME, 'onNewInvitationReceived', `是否在通话：${this.data.callingFlag || this.data.invitationAccept.acceptFlag}, inviteID:${event.data.inviteID} inviter:${event.data.inviter} inviteeList:${event.data.inviteeList} data:${event.data.data}`)
+        console.log(TAG_NAME, 'onNewInvitationReceived', `是否在通话：${this.data.callStatus === CALL_STATUS.CALLING || this.data.callStatus === CALL_STATUS.CONNECTED}, inviteID:${event.data.inviteID} inviter:${event.data.inviter} inviteeList:${event.data.inviteeList} data:${event.data.data}`)
+        const { inviteID, inviter, inviteeList, groupID = '' } = event.data
         const data = JSON.parse(event.data.data)
-        // 新的通话邀请
-        // {
-        //   "version":0,
-        //   "call_type":1,
-        //   "room_id":"123"
-        // }
-        // 通话结束，发出的 call_end
-        // {
-        //   "version":0,
-        //   "call_type":1,
-        //   "call_end":123123
-        // }
-        // 通话中，接收的新的邀请时，忙线拒绝
-        if (this.data.callingFlag || this.data.invitationAccept.acceptFlag) {
+        // 当前在通话中或在呼叫/被呼叫中，接收的新的邀请时，忙线拒绝
+        if (this.data.callStatus === CALL_STATUS.CALLING || this.data.callStatus === CALL_STATUS.CONNECTED) {
           this.tsignaling.reject({
-            inviteID: event.data.inviteID,
+            inviteID: inviteID,
             data: JSON.stringify({
               version: 0,
               call_type: data.call_type,
@@ -92,72 +92,118 @@ Component({
           })
           return
         }
-        if (data.call_end) {
-          // 小程序端对 call_end 的接收不做业务处理，这里只是向外抛出这个事件
-          this._emitter.emit(EVENT.CALL_END, {
-            call_end: data.call_end,
-          })
-        } else {
-          this.data.invitation.inviteID = event.data.inviteID
-          this.data.invitation.inviter = event.data.inviter
-
-          this.data.invitation.type = data.call_type
-          this.data.invitation.roomID = data.room_id
-          this.setData({
-            invitation: this.data.invitation,
-            callingFlag: true, // 当前invitation未处理完成时，下一个invitation都将会忙线
-          }, () => {
-            console.log(`${TAG_NAME} NEW_INVITATION_RECEIVED invitation: `, this.data.callingFlag, this.data.invitation)
-            this._emitter.emit(EVENT.INVITED, {
-              inviter: this.data.invitation.inviter,
-              type: this.data.invitation.type,
+        // 此处判断inviteeList.length 大于2，用于在非群组下多人通话判断
+        const isGroupCall = (groupID && true) || inviteeList.length >= 2
+        // 此处逻辑用于通话结束时发出的invite信令
+        if (isGroupCall) {
+          // 群通话已结束时，room_id 不存在或者 call_end 为 0
+          if (!data.room_id || data.call_end === 0) {
+            // 群通话中收到最后挂断的邀请信令通知其他成员通话结束
+            this._emitter.emit(EVENT.CALL_END, {
+              sponsor: inviter,
+              call_end: 0,
             })
+            return
+          }
+        } else {
+          if (data.call_end > 0) {
+            // 1v1通话挂断时，通知对端的通话结束和通话时长
+            this._emitter.emit(EVENT.CALL_END, {
+              sponsor: inviter,
+              call_end: data.call_end,
+            })
+            return
+          }
+        }
+        if (isGroupCall) {
+          this._initGroupCallInfo({
+            _isGroupCall: true,
+            _groupID: groupID,
+            _unHandledInviteeList: [...inviteeList],
           })
         }
+        this.data.config.type = data.call_type
+        this.data.invitation.inviteID = inviteID
+        this.data.invitation.inviter = inviter
+        this.data.invitation.type = data.call_type
+        this.data.invitation.roomID = data.room_id
+        this.data.invitationAccept.inviteID = inviteID
+        // 被邀请人进入calling状态
+        // 当前invitation未处理完成时，下一个invitation都将会忙线
+        this._setCallStatus(CALL_STATUS.CALLING)
+        this.setData({
+          config: this.data.config,
+          invitation: this.data.invitation,
+          invitationAccept: this.data.invitationAccept,
+        }, () => {
+          console.log(`${TAG_NAME} NEW_INVITATION_RECEIVED invitation: `, this.data.callStatus, this.data.invitation)
+          this._emitter.emit(EVENT.INVITED, {
+            sponsor: inviter,
+            inviteeList: inviteeList,
+            isFromGroup: isGroupCall,
+            inviteID: inviteID,
+            inviteData: {
+              version: data.version,
+              callType: data.call_type,
+              roomID: data.room_id,
+              callEnd: 0,
+            },
+          })
+        })
       })
       this.tsignaling.on(TSignaling.EVENT.INVITEE_ACCEPTED, (event) => {
         // 发出的邀请收到接受的回调
         console.log(`${TAG_NAME} INVITEE_ACCEPTED inviteID:${event.data.inviteID} invitee:${event.data.invitee} data:${event.data.data}`)
-        if (this.data.invitationAccept.inviteID === event.data.inviteID) {
-          this.data.invitationAccept.acceptFlag = true
-          this.setData({
-            invitationAccept: this.data.invitationAccept,
-          })
+        // 发起人进入通话状态从此处判断
+        if (event.data.inviter === this._getUserID()) {
+          this._setCallStatus(CALL_STATUS.CONNECTED)
+        }
+        if (this._getGroupCallFlag()) {
+          this._setUnHandledInviteeList(event.data.invitee)
+          return
         }
       })
       this.tsignaling.on(TSignaling.EVENT.INVITEE_REJECTED, (event) => {
         // 发出的邀请收到拒绝的回调
         console.log(`${TAG_NAME} INVITEE_REJECTED inviteID:${event.data.inviteID} invitee:${event.data.invitee} data:${event.data.data}`)
-        // 小程序使用双向绑定模式，这里只向外抛出拒绝的用户 userID 业务逻辑由业务层进行处理
+        // 多人通话时处于通话中的成员都可以收到此事件，此处只需要发起邀请方需要后续逻辑处理
+        if (event.data.inviter !== this._getUserID()) {
+          return
+        }
         const data = JSON.parse(event.data.data)
-        if (this.data.invitationAccept.inviteID === event.data.inviteID) {
-          this.data.invitationAccept.rejectFlag = true
-          this.setData({
-            invitationAccept: this.data.invitationAccept,
-          }, () => {
-            if (data.line_busy === '') {
-              this._emitter.emit(EVENT.LINE_BUSY, {
-                inviteID: event.data.inviteID,
-                invitee: event.data.invitee,
-                reason: 'line busy',
-              })
-            } else {
-              this._emitter.emit(EVENT.REJECT, {
-                inviteID: event.data.inviteID,
-                invitee: event.data.invitee,
-                reason: 'reject',
-              })
+        if (data.line_busy === '' || data.line_busy === 'line_busy') {
+          this._emitter.emit(EVENT.LINE_BUSY, {
+            inviteID: event.data.inviteID,
+            invitee: event.data.invitee,
+            reason: 'line busy',
+          })
+        } else {
+          this._emitter.emit(EVENT.REJECT, {
+            inviteID: event.data.inviteID,
+            invitee: event.data.invitee,
+            reason: 'reject',
+          })
+        }
+        if (this._getGroupCallFlag()) {
+          this._setUnHandledInviteeList(event.data.invitee, (list) => {
+            // 所有邀请的用户都已处理
+            if (list.length === 0) {
+              // 1、如果还在呼叫在，发出结束通话事件
+              // 2、已经接受邀请，远端没有用户，发出结束通话事件
+              if (this.data.callStatus === CALL_STATUS.CALLING || (this.data.callStatus === CALL_STATUS.CONNECTED && this.data.streamList.length === 0)) {
+                this._emitter.emit(EVENT.CALL_END, {
+                  inviteID: event.data.inviteID,
+                  call_end: 0,
+                })
+              }
             }
           })
         }
       })
       this.tsignaling.on(TSignaling.EVENT.INVITATION_CANCELLED, (event) => {
         // 收到的邀请收到该邀请取消的回调
-        console.log('demo | onInvitationCancelled', `inviteID:${event.data.inviteID} inviter:${event.data.invitee} data:${event.data.data}`)
-        // invitation取消，收到此消息的时候应该还没有接通，为防止时序的问题，还是走一下挂断流程
-        this.setData({
-          callingFlag: false,
-        })
+        console.log(TAG_NAME, 'onInvitationCancelled邀请取消', `inviteID:${event.data.inviteID} inviter:${event.data.invitee} data:${event.data.data}`)
+        this._setCallStatus(CALL_STATUS.IDLE)
         this._emitter.emit(EVENT.CALLING_CANCEL, {
           inviteID: event.data.inviteID,
           invitee: event.data.invitee,
@@ -165,11 +211,74 @@ Component({
       })
       this.tsignaling.on(TSignaling.EVENT.INVITATION_TIMEOUT, (event) => {
         console.log(TAG_NAME, 'onInvitationTimeout 邀请超时', `inviteID:${event.data.inviteID} inviteeList:${event.data.inviteeList}`)
-        // 邀请超时, 无人应答
-        this._emitter.emit(EVENT.NO_RESP, {
-          inviteID: event.data.inviteID,
-          inviteeList: event.data.inviteeList,
+        const { groupID = '', inviteID, inviter, inviteeList, isSelfTimeout } = event.data
+        if (this.data.callStatus !== CALL_STATUS.CONNECTED) {
+          // 自己发起通话且先超时，即对方不在线，isSelfTimeout是对方是否在线的标识
+          if (inviter === this._getUserID() && isSelfTimeout) {
+            this._setCallStatus(CALL_STATUS.IDLE)
+            this._emitter.emit(EVENT.NO_RESP, {
+              groupID: groupID,
+              inviteID: inviteID,
+              sponsor: inviter,
+              timeoutUserList: inviteeList,
+            })
+            this._emitter.emit(EVENT.CALL_END, {
+              inviteID: inviteID,
+              sponsor: inviter,
+              call_end: 0,
+            })
+            return
+          }
+        }
+        // 被邀请方在线超时接入侧序监听此事件做相应的业务逻辑处理,多人通话时，接入侧需要通过此事件处理某个用户超时逻辑
+        this._emitter.emit(EVENT.CALLING_TIMEOUT, {
+          groupID: groupID,
+          inviteID: inviteID,
+          sponsor: inviter,
+          timeoutUserList: inviteeList,
         })
+        if (this._getGroupCallFlag()) {
+          // 群通话逻辑处理
+          const unHandledInviteeList = this._getUnHandledInviteeList()
+          const restInviteeList = []
+          unHandledInviteeList.forEach((invitee) => {
+            if (inviteeList.indexOf(invitee) === -1) {
+              restInviteeList.push(invitee)
+            }
+          })
+          this.setData({
+            _unHandledInviteeList: restInviteeList,
+          })
+          // restInviteeList 为空且无远端流
+          if (restInviteeList.length === 0 && this.data.streamList.length === 0) {
+            if (this.data.callStatus === CALL_STATUS.CONNECTED) {
+              // 发消息到群组，结束本次通话
+              this.lastOneHangup({
+                inviteID: inviteID,
+                userIDList: [inviter],
+                callType: this.data.config.type,
+                callEnd: 0,
+              })
+              return
+            }
+            this._emitter.emit(EVENT.CALL_END, {
+              inviteID: inviteID,
+              sponsor: inviter,
+              call_end: 0,
+            })
+          }
+        } else {
+          // 1v1通话被邀请方超时
+          this._emitter.emit(EVENT.CALL_END, {
+            inviteID: inviteID,
+            sponsor: inviter,
+            call_end: 0,
+          })
+        }
+        // 用inviteeList进行判断，是为了兼容多人通话
+        if (inviteeList.includes(this._getUserID())) {
+          this._setCallStatus(CALL_STATUS.IDLE)
+        }
       })
       this.tsignaling.on(TSignaling.EVENT.SDK_READY, () => {
         console.log(TAG_NAME, 'TSignaling SDK ready')
@@ -207,13 +316,17 @@ Component({
         this.setData({
           playerList: event.data.userList,
         }, () => {
-          // this._emitter.emit(EVENT.REMOTE_USER_JOIN, { userID: event.data.userID })
+          if (!this.data.startTalkTime) {
+            this.setData({
+              startTalkTime: Date.now(),
+            })
+          }
           this._emitter.emit(EVENT.USER_ENTER, {
             userID: event.data.userID,
           })
-          if (this.data._historyUserList.indexOf(event.data.userID) > -1) {
-            this.data._historyUserList.push(event.data.userID)
-          }
+          // if (this.data._historyUserList.indexOf(event.data.userID) === -1) {
+          //   this.data._historyUserList.push(event.data.userID)
+          // }
         })
         console.log(TAG_NAME, 'REMOTE_USER_JOIN', 'streamList:', this.data.streamList, 'userList:', this.data.userList)
       })
@@ -225,10 +338,33 @@ Component({
             playerList: event.data.userList,
             streamList: event.data.streamList,
           }, () => {
-            // TODO: 房间内没有远端用户时就退房, 并且发出invite消息，带call_end信息
             this._emitter.emit(EVENT.USER_LEAVE, {
               userID: event.data.userID,
             })
+            // 群组或多人通话时需要从列表中删掉离开的用户
+            // const index = this.data._historyUserList.indexOf(event.data.userID)
+            // if (index > -1) {
+            //   this.data._historyUserList.splice(index, 1)
+            // }
+            // 群组或多人通话模式下，有用户离开时，远端还有用户，则只下发用户离开事件
+            if (event.data.streamList.length > 0 && this._getGroupCallFlag()) {
+              this._emitter.emit(EVENT.USER_LEAVE, {
+                userID: event.data.userID,
+              })
+              return
+            }
+            // 无远端流，需要发起最后一次邀请信令， 此处逻辑是为与native对齐，正确操作应该放在hangup中处理
+            if (this.data.streamList.length === 0) {
+              this.lastOneHangup({
+                inviteID: this.data.invitationAccept.inviteID,
+                userIDList: [event.data.userID],
+                callType: this.data.config.type,
+                callEnd: Math.round((Date.now() - this.data.startTalkTime) / 1000),
+              })
+              this.setData({
+                startTalkTime: 0,
+              })
+            }
           })
         }
         console.log(TAG_NAME, 'REMOTE_USER_LEAVE', 'streamList:', this.data.streamList, 'userList:', this.data.userList)
@@ -298,7 +434,7 @@ Component({
      */
     login() {
       return new Promise((resolve, reject) => {
-        this.tsignaling.setLogLevel(0)
+        this.tsignaling.setLogLevel(4)
         MTA.Page.stat()
         this.tsignaling.login({
           userID: this.data.config.userID,
@@ -358,11 +494,13 @@ Component({
         timeout: 30,
       }).then( (res) => {
         console.log(`${TAG_NAME} call(userID: ${userID}, type: ${type}) success`)
+        // 发起人进入calling状态
+        this._setCallStatus(CALL_STATUS.CALLING)
         this.data.invitationAccept.inviteID = res.inviteID
         this.setData({
           invitationAccept: this.data.invitationAccept,
-          callingFlag: true,
         })
+        return res.data.message
       }).catch((error) => {
         console.log(`${TAG_NAME} call(userID:${userID},type:${type}) failed', error: ${error}`)
       })
@@ -376,6 +514,15 @@ Component({
      * @param groupID IM群组ID
      */
     groupCall(params) {
+      // 生成房间号，拼接URL地址
+      const roomID = Math.floor(Math.random() * 100000000 + 1) // 随机生成房间号
+      this._getPushUrl(roomID)
+      this._enterTRTCRoom()
+      this._initGroupCallInfo({
+        _isGroupCall: true,
+        _groupID: params.groupID,
+        _unHandledInviteeList: [...params.userIDList],
+      })
       this.tsignaling.inviteInGroup({
         groupID: params.groupID,
         inviteeList: params.userIDList,
@@ -383,91 +530,170 @@ Component({
         data: JSON.stringify({
           version: 0,
           call_type: params.type,
-          room_id: Math.floor(Math.random() * 100000000 + 1),
+          room_id: roomID,
         }),
-      }).then(function(res) {
+      }).then((res) => {
         console.log(TAG_NAME, 'inviteInGroup OK', res)
-      }).catch(function(error) {
+        // 发起人进入calling状态
+        this._setCallStatus(CALL_STATUS.CALLING)
+        this.data.invitationAccept.inviteID = res.inviteID
+        this.setData({
+          invitationAccept: this.data.invitationAccept,
+        })
+        return res.data.message
+      }).catch((error) => {
         console.log(TAG_NAME, 'inviteInGroup failed', error)
       })
     },
     /**
      * 当您作为被邀请方收到 {@link TRTCCallingDelegate#onInvited } 的回调时，可以调用该函数接听来电
      */
-    accept() {
+    async accept() {
       // 拼接pusherURL进房
       console.log(TAG_NAME, 'accept() inviteID: ', this.data.invitation.inviteID)
-      this.tsignaling.accept({
+      const acceptRes = await this.tsignaling.accept({
         inviteID: this.data.invitation.inviteID,
         data: JSON.stringify({
           version: 0,
           call_type: this.data.config.type,
         }),
-      }).then( () => {
-        console.log('接受成功')
-      }).catch( () => {
-        console.error('接受失败')
       })
-      this._getPushUrl(this.data.invitation.roomID)
-      this._enterTRTCRoom()
+      if (acceptRes.code === 0) {
+        console.log(TAG_NAME, '接受成功')
+        // 被邀请人进入通话状态
+        this._setCallStatus(CALL_STATUS.CONNECTED)
+        if (this._getGroupCallFlag()) {
+          this._setUnHandledInviteeList(this._getUserID())
+        }
+        this._getPushUrl(this.data.invitation.roomID)
+        this._enterTRTCRoom()
+        return acceptRes.data.message
+      }
+      console.error(TAG_NAME, '接受失败', acceptRes)
+      return acceptRes
     },
     /**
      * 当您作为被邀请方收到的回调时，可以调用该函数拒绝来电
      */
-    reject() {
+    async reject() {
       if (this.data.invitation.inviteID) {
-        this.tsignaling.reject({
+        const rejectRes = await this.tsignaling.reject({
           inviteID: this.data.invitation.inviteID,
           data: JSON.stringify({
             version: 0,
             call_type: this.data.config.type,
           }),
-        }).then( (res) => {
-          console.log('demo reject OK', res)
-          this._reset()
-        }).catch( (error) => {
-          console.log('demo reject failed', error)
         })
-      } else {
-        console.warn(`${TAG_NAME} 未收到邀请，无法拒绝`)
-        return
+        if (rejectRes.code === 0) {
+          console.log(TAG_NAME, 'reject OK', rejectRes)
+          this._setCallStatus(CALL_STATUS.IDLE)
+          return rejectRes.data.message
+        }
+        console.log(TAG_NAME, 'reject failed', rejectRes)
+        return rejectRes
       }
+      console.warn(`${TAG_NAME} 未收到邀请，无法拒绝`)
+      return '未收到邀请，无法拒绝'
     },
     /**
-     * 当您处于通话中，可以调用该函数结束通话
+     * 当您处于通话中，可以调用该函数挂断通话
+     * 当您发起通话时，可用去了取消通话
      */
     hangup() {
-      const inviterFlag = !this.data.invitation.inviteID && this.data.invitationAccept.inviteID && true // 是否是邀请者
-      if (inviterFlag && !this.data.invitationAccept.acceptFlag && !this.data.invitationAccept.rejectFlag) {
+      const inviterFlag = !this.data.invitation.inviteID && this.data.invitationAccept.inviteID // 是否是邀请者
+      let cancelRes = null
+      if (inviterFlag && this.data.callStatus === CALL_STATUS.CALLING) {
         console.log(TAG_NAME, 'cancel() inviteID: ', this.data.invitationAccept.inviteID)
         this.tsignaling.cancel({
           inviteID: this.data.invitationAccept.inviteID,
+        }).then((res) => {
+          cancelRes = res
         })
       }
-      if (this.data.playerList.length === 0 && this.data.invitationAccept.acceptFlag) {
-        const currentTime = Date.parse(new Date())
-        // console.log('发送call_end信息', currentTime)
-        this.data._historyUserList.forEach( (user) => {
-          this.tsignaling.invite({
-            userID: user,
-            data: JSON.stringify({
-              version: 0,
-              call_type: this.data.config.type,
-              call_end: currentTime,
-            }),
-          })
-        })
+      this._setCallStatus(CALL_STATUS.IDLE)
+      // 发起方取消通话时需要携带消息实例
+      if (cancelRes) {
         this._emitter.emit(EVENT.CALL_END, {
-          inviteID: this.data.invitationAccept.inviteID,
-          call_end: currentTime,
+          message: cancelRes.data.message,
         })
       }
-      this._reset().then( () => {
+      // console.warn('hangup', this._getGroupCallFlag(), this.data.streamList.length > 1, this.data._unHandledInviteeList)
+      // 群组或多人通话时，如果远端流大于1，则不是最后一个挂断的用户，某用户挂断需要下发call_end用于处理上层UI,因为小程序此处的挂断操作在模版中进行，与web不同
+      if (this._getGroupCallFlag() && this.data.streamList.length > 1 && this.data._unHandledInviteeList.length === 0) {
+        this._emitter.emit(EVENT.CALL_END)
+      }
+      if (this._getGroupCallFlag() && this.data._unHandledInviteeList.length > 0) {
+        this._emitter.emit(EVENT.CALL_END)
+      }
+      this._reset().then(() => {
         this._emitter.emit(EVENT.HANG_UP)
-        console.log(TAG_NAME, 'hangup() pusherConfig: ', this.data.pusherConfig)
       })
     },
+    // 最后一位离开房间的用户发送该信令 (http://tapd.oa.com/Qcloud_MLVB/markdown_wikis/show/#1210146251001590857)
+    async lastOneHangup(params) {
+      const { userIDList, callType, callEnd } = params
+      let res = null
+      // 群组通话
+      if (this._getGroupCallFlag()) {
+        res = await this.tsignaling.inviteInGroup({
+          groupID: this.data._groupID,
+          inviteeList: userIDList,
+          data: JSON.stringify({
+            version: 0,
+            call_type: callType,
+            call_end: 0, // 群call_end 目前设置为0
+          }),
+          timeout: 0,
+        })
+      } else {
+        // 1v1 通话
+        res = await this.tsignaling.invite({
+          userID: userIDList[0],
+          data: JSON.stringify({
+            version: 0,
+            call_type: callType,
+            call_end: callEnd,
+          }),
+        })
+      }
+      this._setCallStatus(CALL_STATUS.IDLE)
+      this._emitter.emit(EVENT.CALL_END, {
+        message: res.data.message,
+      })
+      this._reset()
+    },
 
+    _initGroupCallInfo(options) {
+      this.setData({
+        _isGroupCall: options._isGroupCall,
+        _groupID: options._groupID,
+        _unHandledInviteeList: options._unHandledInviteeList,
+      })
+    },
+    _getGroupCallFlag() {
+      return this.data._isGroupCall
+    },
+    _setUnHandledInviteeList(userID, callback) {
+      // 使用callback防御列表更新时序问题
+      const list = [...this._getUnHandledInviteeList()]
+      const unHandleList = list.filter((item) => item !== userID)
+      this.setData({
+        _unHandledInviteeList: unHandleList,
+      }, () => {
+        callback && callback(unHandleList)
+      })
+    },
+    _getUnHandledInviteeList() {
+      return this.data._unHandledInviteeList
+    },
+    _getUserID() {
+      return this.data.config.userID
+    },
+    _setCallStatus(status) {
+      this.setData({
+        callStatus: status,
+      })
+    },
     _reset() {
       return new Promise( (resolve, reject) => {
         console.log(TAG_NAME, ' _reset()')
@@ -490,12 +716,13 @@ Component({
           streamList: result.streamList,
           _historyUserList: [],
           active: false,
-          callingFlag: false,
           invitationAccept: {
             inviteID: '',
-            acceptFlag: false,
-            rejectFlag: false,
           },
+          startTalkTime: 0,
+          _isGroupCall: false,
+          _groupID: '',
+          _unHandledInviteeList: [],
         }, () => {
           resolve()
         })
@@ -791,6 +1018,41 @@ Component({
         pusherConfig: this.data.pusherConfig,
       })
     },
+    /**
+   * 从消息对象中提取通话相关的信息
+   * @param message
+   */
+    extractCallingInfoFromMessage(message) {
+      if (!message || message.type !== 'TIMCustomElem') {
+        return ''
+      }
+      const signalingData = JSON.parse(message.payload.data)
+      if (signalingData.businessID !== BUSINESS_ID.SIGNAL) {
+        return ''
+      }
+      switch (signalingData.actionType) {
+        case ACTION_TYPE.INVITE: {
+          const objectData = JSON.parse(signalingData.data)
+          if (objectData.call_end > 0 && !signalingData.groupID) {
+            return `结束通话，通话时长：${formateTime(objectData.call_end)}`
+          }
+          if (objectData.call_end === 0 || !objectData.room_id) {
+            return '结束群聊'
+          }
+          return '发起通话'
+        }
+        case ACTION_TYPE.CANCEL_INVITE:
+          return '取消通话'
+        case ACTION_TYPE.ACCEPT_INVITE:
+          return '已接听'
+        case ACTION_TYPE.REJECT_INVITE:
+          return '拒绝通话'
+        case ACTION_TYPE.INVITE_TIMEOUT:
+          return '无应答'
+        default:
+          return ''
+      }
+    },
   },
 
   /**
@@ -799,7 +1061,9 @@ Component({
   lifetimes: {
     created: function() {
       // 在组件实例刚刚被创建时执行
-      console.log(TAG_NAME, 'created', ENV)
+      console.log(TAG_NAME, 'created', ENV, this.data.config)
+      // this.tsignaling = new TSignaling({ SDKAppID: this.data.config.sdkAppID, tim: wx.$app })
+      // tim为非必填参数，如果您的小程序中已存在IM实例，可以通过这个参数将其传入，避免IM实例的重复创建
       this.tsignaling = new TSignaling({ SDKAppID: this.data.config.sdkAppID })
       wx.setKeepScreenOn({
         keepScreenOn: true,
@@ -835,11 +1099,11 @@ Component({
     },
   },
   pageLifetimes: {
-    show: function() {
-    },
+    show: function() {},
     hide: function() {
       // 组件所在的页面被隐藏时执行
       console.log(TAG_NAME, 'hide')
+      this._reset()
     },
     resize: function(size) {
       // 组件所在的页面尺寸变化时执行
