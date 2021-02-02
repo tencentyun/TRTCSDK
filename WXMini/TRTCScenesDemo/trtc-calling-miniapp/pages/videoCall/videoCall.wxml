@@ -2,8 +2,8 @@
   <TRTCCalling id="TRTCCalling-component" class="trtc-calling {{callingFlag ? '' : 'hidden'}}" config="{{config}}" pusherAvatar="{{pusherAvatar}}" remoteAvatar="{{invitee.avatar || inviter.avatar}}"></TRTCCalling>
   <view wx:if="{{incomingCallFlag}}" class="incoming-call">
     <image src="../Resources/avatar1_100.png" />
-    <view class="tips">{{invitation.inviter}}</view>
-    <view class="tips" >{{'邀请你' + (invitation.type === 1 ? '语音' : '视频') + '通话'}}</view>
+    <view class="tips">{{invitation.sponsor}}</view>
+    <view class="tips" >{{'邀请你' + (invitation.inviteData.callType === 1 ? '语音' : '视频') + '通话'}}</view>
     <view class="btn-operate">
       <view class="call-operate" style="background-color: red" bindtap="handleOnReject">
         <image src="../Resources/hangup.png" />

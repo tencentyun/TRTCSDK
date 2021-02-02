@@ -1,11 +1,9 @@
 // index.js
-// const app = getApp()
-const app = getApp()
 Page({
   data: {
     template: '1v1',
-    headerHeight: app.globalData.headerHeight,
-    statusBarHeight: app.globalData.statusBarHeight,
+    headerHeight: wx.$globalData.headerHeight,
+    statusBarHeight: wx.$globalData.statusBarHeight,
     entryInfos: [
       { icon: '../Resources/call.png', title: '语音通话', desc: '<TRTCCaliing>', navigateTo: '../audioCall/audioCall' },
       { icon: '../Resources/doubleroom.png', title: '视频通话', desc: '<TRTCCaliing>', navigateTo: '../videoCall/videoCall' },

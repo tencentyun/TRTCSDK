@@ -1,27 +1,26 @@
 .pusher-video {
   position: absolute;
-  right: 2vw;
-  top: 2vw;
+  right: 0;
+  top: 0;
   width: 160px;
-  height: 200px;
+  height: 260px;
   z-index: 3;
 }
-
-.player1 {
+.player {
   position: absolute;
   width: 100%;
   height: 100%;
   background-color: #f75c45;
   z-index: 1;
 }
-
-.player2 {
-  width: 40vw;
-  height: 40vw;
+.stream-box {
+  position: relative;
+  float: left;
+  width: 50vw;
+  height: 260px;
   background-color: #f75c45;
-  z-index: 1;
+  z-index: 3;
 }
-
 .handle-btns {
   position: absolute;
   z-index: 3;

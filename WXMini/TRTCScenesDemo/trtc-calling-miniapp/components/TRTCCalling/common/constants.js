@@ -47,3 +47,21 @@ export const DEFAULT_PLAYER_CONFIG = {
   autoPauseIfNavigate: true, // 当跳转到其它小程序页面时，是否自动暂停本页面的实时音视频播放
   autoPauseIfOpenNative: true, // 当跳转到其它微信原生页面时，是否自动暂停本页面的实时音视频播放
 }
+
+export const CALL_STATUS = {
+  IDLE: 'idle',
+  CALLING: 'calling',
+  CONNECTED: 'connected',
+}
+
+export const ACTION_TYPE = {
+  INVITE: 1, // 邀请方发起邀请
+  CANCEL_INVITE: 2, // 邀请方取消邀请
+  ACCEPT_INVITE: 3, // 被邀请方同意邀请
+  REJECT_INVITE: 4, // 被邀请方拒绝邀请
+  INVITE_TIMEOUT: 5, // 被邀请方超时未回复
+}
+
+export const BUSINESS_ID = {
+  SIGNAL: 1, // 信令
+}

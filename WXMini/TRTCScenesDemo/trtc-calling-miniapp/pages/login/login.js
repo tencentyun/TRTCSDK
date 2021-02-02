@@ -1,5 +1,3 @@
-const app = getApp()
-
 Page({
   data: {
     userID: '',
@@ -27,10 +25,17 @@ Page({
   },
 
   login() {
-    app.globalData.userID = this.data.userID
-    wx.redirectTo({
+    if (!this.data.userID) {
+      wx.showToast({
+        title: '名称不能为空',
+        icon: 'error',
+      })
+    } else {
+      wx.$globalData.userID = this.data.userID
+      wx.redirectTo({
       // 若把入口加到腾讯视频云小程序下，则带参数进行传递
-      url: `../index/index`,
-    })
+        url: `../index/index`,
+      })
+    }
   },
 })
