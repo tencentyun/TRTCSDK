@@ -33,6 +33,7 @@ export default {
       loginUserInfo: state => state.loginUserInfo,
       meetingUserIdList: state => state.meetingUserIdList,
       callStatus: state => state.callStatus,
+      isAccepted: state => state.isAccepted,
       isInviter: state => state.isInviter
     }),
     userList: function() {
@@ -63,6 +64,10 @@ export default {
       this.$emit("callUser", { param });
     },
     handleCancelCallBtnClick: function() {
+      // 对方刚接受邀请，但进房未成功
+      if (this.isAccepted && this.callStatus !== "connected") {
+        return;
+      }
       this.callUserId = "";
       this.$emit("cancelCallUser");
     }

@@ -78,9 +78,25 @@
 ### 实现自定义 UI 界面
 #### 步骤1：集成 SDK
 NPM 集成
+> 从v0.6.0起，需要手动安装依赖 [trtc-js-sdk](https://www.npmjs.com/package/trtc-js-sdk) 和 [tim-js-sdk](https://www.npmjs.com/package/tim-js-sdk) 以及 [tsignaling](https://www.npmjs.com/package/tsignaling)
+>- 为了减小 trtc-calling-js.js 的体积，避免和接入侧已使用的 trtc-js-sdk 和 tim-js-sdk 以及 tsignaling 发生版本冲突，trtc-js-sdk 和 tim-js-sdk 以及 tsignaling 不再被打包到 trtc-calling-js.js，在使用前您需要手动安装依赖。
 ```javascript
-//TRTCCalling SDK
-npm install trtc-calling-js --save
+  npm i trtc-js-sdk --save
+  npm i tim-js-sdk --save
+  npm i tsignaling --save
+  npm i trtc-calling-js --save
+ 
+  // 如果您通过 script 方式使用 trtc-calling-js，需要按顺序先手动引入 trtc.js
+  <script src="./trtc.js"></script>
+  
+  // 接着手动引入 tim-js.js
+  <script src="./tim-js.js"></script>
+  
+  // 然后再手动引入 tsignaling.js
+  <script src="./tsignaling.js"></script>
+
+  // 最后再手动引入 trtc-calling-js.js
+  <script src="./trtc-calling-js.js"></script>
 ```
 在项目脚本里引入模块
 ```javascript

@@ -11,6 +11,7 @@ function createStore () {
       // trtc 相关
       callStatus: '', // 状态, idle, calling, connected
       isInviter: false, // c2c 通话，说不定一开始不是 inviter, 后面邀请了别人就是 inviter 了
+      isAccepted: false,
       meetingUserIdList: [],
       muteVideoUserIdList: [],
       muteAudioUserIdList: []
@@ -39,6 +40,9 @@ function createStore () {
         if (state.meetingUserIdList.indexOf(userId) === -1) {
           state.meetingUserIdList.push(userId);
         }
+      },
+      userAccepted (state, isAccepted) {
+        state.isAccepted = isAccepted;
       },
       userLeaveMeeting (state, userId) {
         const index = state.meetingUserIdList.findIndex(item => item === userId);
