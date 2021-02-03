@@ -8,7 +8,7 @@
       <span>{{this.getNewInvitationDialogContent()}}</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleRejectCall">拒绝</el-button>
-        <el-button type="primary" @click="handleDebounce(handleAcceptCall, 500)">接听</el-button>
+        <el-button type="primary" @click="handleAccept">接听</el-button>
       </span>
     </el-dialog>
   </div>
@@ -44,6 +44,7 @@ export default {
     isLogin: state => state.isLogin,
     loginUserInfo: state => state.loginUserInfo,
     callStatus: state => state.callStatus,
+    isAccepted: state => state.isAccepted,
     meetingUserIdList: state => state.meetingUserIdList,
     muteVideoUserIdList: state => state.muteVideoUserIdList,
     muteAudioUserIdList: state => state.muteAudioUserIdList
@@ -74,6 +75,10 @@ export default {
         this.handleNewInvitationReceived
       );
       this.$trtcCalling.on(
+        this.TrtcCalling.EVENT.USER_ACCEPT,
+        this.handleUserAccept
+      );
+      this.$trtcCalling.on(
         this.TrtcCalling.EVENT.USER_ENTER,
         this.handleUserEnter
       );
@@ -105,7 +110,10 @@ export default {
         this.TrtcCalling.EVENT.NO_RESP,
         this.handleNoResponse
       );
-      this.$trtcCalling.on(this.TrtcCalling.EVENT.CALL_END, this.handleCallEnd);
+      this.$trtcCalling.on(
+        this.TrtcCalling.EVENT.CALLING_END,
+        this.handleCallEnd
+      );
       this.$trtcCalling.on(
         this.TrtcCalling.EVENT.USER_VIDEO_AVAILABLE,
         this.handleUserVideoChange
@@ -122,6 +130,10 @@ export default {
         this.handleNewInvitationReceived
       );
       this.$trtcCalling.off(
+        this.TrtcCalling.EVENT.USER_ACCEPT,
+        this.handleUserAccept
+      );
+      this.$trtcCalling.off(
         this.TrtcCalling.EVENT.USER_ENTER,
         this.handleUserEnter
       );
@@ -154,7 +166,7 @@ export default {
         this.handleNoResponse
       );
       this.$trtcCalling.off(
-        this.TrtcCalling.EVENT.CALL_END,
+        this.TrtcCalling.EVENT.CALLING_END,
         this.handleCallEnd
       );
       this.$trtcCalling.off(
@@ -216,6 +228,10 @@ export default {
       }
     },
 
+    handleAccept: function() {
+      this.handleDebounce(this.handleAcceptCall(), 500);
+    },
+
     handleDebounce: function(func, wait) {
       let context = this;
       let args = arguments;
@@ -249,6 +265,10 @@ export default {
       } catch (e) {
         this.dissolveMeetingIfNeed();
       }
+    },
+    handleUserAccept: function({ userID }) {
+      this.$store.commit("userAccepted", true);
+      console.log(userID, "accepted");
     },
     handleUserEnter: function({ userID }) {
       // 建立连接
@@ -294,6 +314,7 @@ export default {
     },
     handleKickedOut: function() {
       //重复登陆，被踢出房间
+      this.$store.commit("userAccepted", false);
       this.$trtcCalling.logout();
       this.$store.commit("userLogoutSuccess");
     },
@@ -308,6 +329,7 @@ export default {
       this.$trtcCalling.hangup();
       this.dissolveMeetingIfNeed();
       this.$router.push("/");
+      this.$store.commit("userAccepted", false);
     },
     handleNoResponse: async function({ userID }) {
       const userName = await getUsernameByUserid(userID);
