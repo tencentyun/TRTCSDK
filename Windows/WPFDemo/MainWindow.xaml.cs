@@ -470,6 +470,16 @@ namespace TRTCWPFDemo
             MessageBox.Show(message);
         }
 
-        
+        public void onSwitchRoom(TXLiteAVError errCode, string errMsg)
+        {
+        }
+
+        public void onAudioDeviceCaptureVolumeChanged(uint volume, bool muted)
+        {
+        }
+
+        public void onAudioDevicePlayoutVolumeChanged(uint volume, bool muted)
+        {
+        }
     }
 }

@@ -57,6 +57,7 @@ public: //cb
     virtual void NotifyMixTab(TNotifyUI& msg);
     virtual void NotifyRecordTab(TNotifyUI& msg);
     virtual void NotifyAudioRecord(TNotifyUI& msg);
+    virtual void NotifyLocalRecord(TNotifyUI& msg);
     virtual CControlUI* CreateControl(LPCTSTR pstrClass);
 
     //ITRTCCloudCallback
@@ -124,4 +125,6 @@ public:
     static std::vector<TRTCSettingViewControllerNotify*> vecNotifyList;
 
     wstring m_strAudioRecordFile;
+    wstring m_strMixAudioAppPath;
+    wstring m_strLocalRecordFile;
 };

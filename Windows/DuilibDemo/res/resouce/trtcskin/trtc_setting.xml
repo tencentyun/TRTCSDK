@@ -322,9 +322,9 @@
 			</VerticalLayout>
 			
 			<!--record setting page-->
-			<VerticalLayout name="record_tab_layout" childpadding="10">
-			<VerticalLayout height="20"/>
-			<GroupBox text="本地AV录制" padding="20,0,20,0" childpadding="20" bordercolor="#FF808080" bkcolor="#FFF0F0F0" bordersize="1" height="300">
+			<VerticalLayout name="record_tab_layout" childpadding="10" vscrollbar="true">
+			<VerticalLayout height="5"/>
+			<GroupBox text="本地AV录制" padding="20,0,20,0" childpadding="20" bordercolor="#FF808080" bkcolor="#FFF0F0F0" bordersize="1" height="210">
 				<HorizontalLayout inset="0,0,0,0" childvalign="left" height="30">
 					<Label text="启动录制" font="2" width="70" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,6,0,1"/>
 					<VerticalLayout width="20"/>
@@ -358,7 +358,7 @@
 					<VerticalLayout width="5"/>
 				</HorizontalLayout>
 				</GroupBox>
-			<GroupBox text="录音" padding="20,0,20,0" childpadding="20" bordercolor="#FF808080" bkcolor="#FFF0F0F0" bordersize="1" height="200">
+			<GroupBox text="录音" padding="20,0,20,0" childpadding="20" bordercolor="#FF808080" bkcolor="#FFF0F0F0" bordersize="1" height="180">
 				<HorizontalLayout inset="0,0,0,0" childvalign="left" height="30">
 					<Label text="启动录音" font="2" width="70" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,6,0,1"/>
 					<VerticalLayout width="20"/>
@@ -377,6 +377,62 @@
 					<VerticalLayout width="20"/>
 					<Label name="label_audio_record_opt_status" text="" width="400" font="1" align="left" valign="left" textcolor="#FFEE7942" showhtml="true" padding="0,3,0,1"/>
 					<VerticalLayout width="5"/>
+				</HorizontalLayout>
+			</GroupBox>
+			<GroupBox text="进程混音" padding="20,0,20,0" childpadding="20" bordercolor="#FF808080" bkcolor="#FFF0F0F0" bordersize="1" height="180">
+				<HorizontalLayout inset="0,0,0,0" childvalign="left" height="30">
+					<Label text="启动混音" font="2" width="70" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,6,0,1"/>
+					<VerticalLayout width="20"/>
+					<Option name="check_start_mix_app_audio" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true" padding="0,6,0,0"/>
+				</HorizontalLayout>
+				<HorizontalLayout inset="0,0,0,0" childvalign="left" height="24">
+					<Label text="应用路径" font="2" width="70" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,3,0,1"/>
+					<VerticalLayout width="20"/>
+					<Edit name="edit_mix_app_audio_filepath" text="D:\\test\\QQmusic.exe" height="24" font="2" align="center" textpadding="20,0,20,0" tipvalue="D:\\test\\QQmusic.exe" tipvaluecolor="#FF808080" tipvaluealign="center" normalimage="res='login/edit_normal.png' corner='6,6,6,6'" focusedimage="res='login/edit_focus.png' corner='6,6,6,6'"/>
+					<VerticalLayout width="20"/>
+					<Button name="btn_update_mix_app_audio_filepath" text="更新" textcolor="#FF000000" textpadding="6,0,6,0" style="btn_style" width="60" height="30" />
+					<VerticalLayout width="20"/>
+				</HorizontalLayout>
+				<HorizontalLayout inset="0,0,0,0" childvalign="left" height="30">
+					<Label text="状态提示:" font="2" width="70" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,6,0,1"/>
+					<VerticalLayout width="20"/>
+					<Label name="label_mix_app_audio_opt_status" text="" width="400" font="1" align="left" valign="left" textcolor="#FFEE7942" showhtml="true" padding="0,3,0,1"/>
+					<VerticalLayout width="5"/>
+				</HorizontalLayout>
+			</GroupBox>
+			<GroupBox bkcolor="#FFF0F0F0" bordercolor="#FF808080" bordersize="1" childpadding="20" height="300" padding="20,0,20,0" text="本地录制">
+				<HorizontalLayout childvalign="left" height="30" inset="0,0,0,0">
+					<Label text="启动录制" font="2" width="70" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,6,0,1"/>
+					<VerticalLayout width="20"/>
+					<Option name="check_start_local_record" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true" padding="0,6,0,0"/>
+				</HorizontalLayout>
+				<HorizontalLayout childvalign="left" height="24" inset="0,0,0,0">
+					<Label align="right" font="2" padding="0,3,0,1" showhtml="true" text="录制文件" textcolor="#FF000000" valign="center"
+						width="70" />
+					<VerticalLayout width="20" />
+					<Edit name="edit_local_record_filepath" align="center" focusedimage="res='login/edit_focus.png' corner='6,6,6,6'" font="2" height="24" normalimage="res='login/edit_normal.png' corner='6,6,6,6'"
+						text="D:\\test\\1.mp4" textpadding="20,0,20,0" tipvalue="D:\\test\\1.mp4"
+						tipvaluealign="center" tipvaluecolor="#FF808080" />
+				</HorizontalLayout>
+				<HorizontalLayout inset="28,0,0,0" name="choose_local_record_type" childvalign="left" height="24">
+					<Label text="录制类型: " font="2" width="80" align="left" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,0"/>
+					<Option name="local_record_audio" group="mixtemptyle" text="仅音频" style="radio_style" width="0" autocalcwidth="true"/>
+					<Option name="local_record_video" group="mixtemptyle" text="仅视频" style="radio_style" width="0" autocalcwidth="true"/>
+					<Option name="local_record_both" group="mixtemptyle" text="音视频" style="radio_style" width="0" autocalcwidth="true"/>
+				</HorizontalLayout>
+				<HorizontalLayout childvalign="left" height="24" inset="0,0,0,0">
+					<VerticalLayout width="20" />
+					<Button name="btn_update_local_record_filepath" style="btn_style" height="30" text="更新" textcolor="#FF000000"
+						textpadding="6,0,6,0" width="60" />
+					<VerticalLayout width="20" />
+				</HorizontalLayout>
+				<HorizontalLayout childvalign="left" height="30" inset="0,0,0,0">
+					<Label align="right" font="2" padding="0,6,0,1" showhtml="true" text="状态提示:" textcolor="#FF000000" valign="center"
+						width="70" />
+					<VerticalLayout width="20" />
+					<Label name="label_local_record_opt_status" align="left" font="1" padding="0,3,0,1" showhtml="true" text="" textcolor="#FFEE7942"
+						valign="left" width="400" />
+					<VerticalLayout width="5" />
 				</HorizontalLayout>
 			</GroupBox>
 			</VerticalLayout>
@@ -399,6 +455,11 @@
 					<Label text="开启黑帧推流" font="2" width="118" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,1"/>
 					<VerticalLayout width="80"/>
 					<Option name="check_black_push" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
+				</HorizontalLayout>
+				<HorizontalLayout inset="28,6,0,0" childvalign="left" height="24">
+					<Label text="开启水印" font="2" width="118" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,1"/>
+					<VerticalLayout width="80"/>
+					<Option name="check_water_mark" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
 				</HorizontalLayout>
 				<HorizontalLayout inset="28,0,0,0" childvalign="left" height="24">
 					<Label text="开启自定义采集音频" font="2" width="118" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,3,0,1"/>

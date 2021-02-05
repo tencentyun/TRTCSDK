@@ -129,7 +129,7 @@ void TRTCCloudCore::PreUninit()
         CDataCenter::GetInstance()->m_bStartSystemVoice = false;
         TRTCCloudCore::GetInstance()->getTRTCCloud()->stopSystemAudioLoopback();
     }
-
+    CDataCenter::GetInstance()->m_bWateMark = false;
     stopLocalRecord();
     destroyLocalRecordShareInstance();
     stopCloudMixStream();

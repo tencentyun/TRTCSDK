@@ -135,6 +135,7 @@ void TRTCSettingViewController::Notify(TNotifyUI & msg)
     NotifyMixTab(msg);
     NotifyRecordTab(msg);
     NotifyAudioRecord(msg);
+    NotifyLocalRecord(msg);
     CDuiString name = msg.pSender->GetName();
     if (msg.sType == _T("selectchanged"))  
     {
@@ -311,6 +312,16 @@ void TRTCSettingViewController::Notify(TNotifyUI & msg)
         }
         if (name.CompareNoCase(_T("mix_temp_preset")) == 0) {
             CDataCenter::GetInstance()->m_mixTemplateID = TRTCTranscodingConfigMode_Template_PresetLayout;
+        }
+
+        if (name.CompareNoCase(_T("local_record_audio")) == 0) {
+            CDataCenter::GetInstance()->m_localRecordType = TRTCLocalRecordType_Audio;
+        }
+        if (name.CompareNoCase(_T("local_record_video")) == 0) {
+            CDataCenter::GetInstance()->m_localRecordType = TRTCLocalRecordType_Video;
+        }
+        if (name.CompareNoCase(_T("local_record_both")) == 0) {
+            CDataCenter::GetInstance()->m_localRecordType = TRTCLocalRecordType_Both;
         }
         
         if (name.CompareNoCase(_T("auto_mode")) == 0) {
@@ -1049,6 +1060,19 @@ void TRTCSettingViewController::NotifyOtherTab(TNotifyUI & msg)
                 TRTCCloudCore::GetInstance()->getTRTCCloud()->setLocalRenderParams(CDataCenter::GetInstance()->getLocalRenderParams());
                 TRTCCloudCore::GetInstance()->getTRTCCloud()->setVideoEncoderMirror(CDataCenter::GetInstance()->m_bLocalVideoMirror);
             }
+        } else if (msg.pSender->GetName() == _T("check_water_mark"))
+        {
+            COptionUI* pOpenSender = static_cast<COptionUI*>(msg.pSender);
+            if (pOpenSender->IsSelected() == false)  //事件值是反的
+            {
+                CDataCenter::GetInstance()->m_bWateMark = true;
+                std::wstring srcData = TrtcUtil::getAppDirectory() + L"trtcskin/login/logo.png";
+                std::string water_mark_file = Wide2UTF8(srcData);
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->setWaterMark(TRTCVideoStreamTypeBig, water_mark_file.c_str(), TRTCWaterMarkSrcTypeFile, 0,0,0.1,0.1,0.1);
+            } else {
+                CDataCenter::GetInstance()->m_bWateMark = false;
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->setWaterMark(TRTCVideoStreamTypeBig,"", TRTCWaterMarkSrcTypeFile, 0,0,0,0,0);
+            }
         }
         else if (msg.pSender->GetName() == _T("check_black_push")) {
             COptionUI* pOpenSender = static_cast<COptionUI*>(msg.pSender);
@@ -1483,9 +1507,137 @@ void TRTCSettingViewController::NotifyAudioRecord(TNotifyUI & msg)
                 }
             }
         }
+        else if (msg.pSender->GetName() == _T("check_start_mix_app_audio")) {
+            COptionUI* pOpenSender = static_cast<COptionUI*>(msg.pSender);
+            if (pOpenSender->IsSelected() == false)  //事件值是反的
+            {
+                if (m_strMixAudioAppPath.empty()) {
+                    CMsgWnd::ShowMessageBox(GetHWND(), _T("TRTCDuilibDemo"),
+                                            _T("启动录音失败，您尚未输入录音文件地址！"),
+                                            0xFFF08080);
+                    pOpenSender->Selected(true);
+                    return;
+                }
+                TRTCAudioRecordingParams audioRecordingParams;
+
+                string strFile = Wide2UTF8(m_strMixAudioAppPath);
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->startSystemAudioLoopback(strFile.c_str());
+
+                CDataCenter::GetInstance()->m_bStartMixAppAudio = true;
+                CDataCenter::GetInstance()->m_wstrMixAudioAppPath = m_strMixAudioAppPath;
+                CLabelUI* pLabelValue =
+                    static_cast<CLabelUI*>(m_pmUI.FindControl(_T("label_mix_app_audio_opt_status")));
+                if (pLabelValue) {
+                    CDuiString sText;
+                    sText.Format(_T("正在启动进程混音:%s ...."), m_strMixAudioAppPath.c_str());
+                    pLabelValue->SetText(sText);
+                }
+            } else {
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->stopSystemAudioLoopback();
+                CDataCenter::GetInstance()->m_bStartMixAppAudio = false;
+                m_strMixAudioAppPath = L"";
+                CDataCenter::GetInstance()->m_wstrMixAudioAppPath = m_strMixAudioAppPath;
+                CLabelUI* pLabelValue =
+                    static_cast<CLabelUI*>(m_pmUI.FindControl(_T("label_mix_app_audio_opt_status")));
+                if (pLabelValue) {
+                    pLabelValue->SetText(L"停止进程混音...");
+                }
+            }
+        } else if (msg.pSender->GetName() == _T("btn_update_mix_app_audio_filepath")) {
+            CEditUI* pEdit =
+                static_cast<CEditUI*>(m_pmUI.FindControl(_T("edit_mix_app_audio_filepath")));
+            if (pEdit != nullptr) {
+                wstring strFile = pEdit->GetText();
+
+                m_strMixAudioAppPath = strFile;
+
+                CLabelUI* pLabelValue =
+                    static_cast<CLabelUI*>(m_pmUI.FindControl(_T("label_mix_app_audio_opt_status")));
+                if (pLabelValue) {
+                    CDuiString sText;
+                    sText.Format(_T("更新进程混音APP路径：%s"), strFile.c_str());
+                    pLabelValue->SetText(sText);
+                }
+            }
+        }
     }
 }
+void TRTCSettingViewController::NotifyLocalRecord(TNotifyUI & msg)
+{
+    CDuiString name = msg.pSender->GetName();
+    if (msg.sType == _T("click"))
+    {
+        if (msg.pSender->GetName() == _T("check_start_local_record"))
+        {
+            COptionUI* pOpenSender = static_cast<COptionUI*>(msg.pSender);
+            if (pOpenSender->IsSelected() == false) //事件值是反的
+            {
+                if (m_strLocalRecordFile.empty())
+                {
+                    CMsgWnd::ShowMessageBox(GetHWND(), _T("TRTCDuilibDemo"), _T("启动录制失败，您尚未输入录制文件地址！"), 0xFFF08080);
+                    pOpenSender->Selected(true);
+                    return;
+                }
+                TRTCAudioRecordingParams audioRecordingParams;
 
+                string strFile = Wide2UTF8(m_strLocalRecordFile);
+                audioRecordingParams.filePath = strFile.c_str();
+
+                //int nResult = TRTCCloudCore::GetInstance()->getTRTCCloud()->startAudioRecording(audioRecordingParams);
+
+                TRTCLocalRecordingParams params;
+                params.filePath = strFile.c_str();
+                params.recordType = (TRTCLocalRecordType)CDataCenter::GetInstance()->m_localRecordType;
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->startLocalRecording(params);
+                CDataCenter::GetInstance()->m_bStartLocalRecording = true;
+                CDataCenter::GetInstance()->m_wstrLocalRecordFile = m_strLocalRecordFile;
+                CLabelUI* pLabelValue = static_cast<CLabelUI*>(m_pmUI.FindControl(_T("label_local_record_opt_status")));
+                if (pLabelValue)
+                {
+                    CDuiString sText;
+                    sText.Format(_T("正在启动录制:%s   type:%d...."), m_strLocalRecordFile.c_str(), (int)CDataCenter::GetInstance()->m_localRecordType);
+                    pLabelValue->SetText(sText);
+                }
+            }
+            else
+            {
+
+                //TRTCCloudCore::GetInstance()->getTRTCCloud()->stopAudioRecording();
+                TRTCCloudCore::GetInstance()->getTRTCCloud()->stopLocalRecording();
+                CDataCenter::GetInstance()->m_bStartLocalRecording = false;
+                m_strLocalRecordFile = L"";
+                CDataCenter::GetInstance()->m_wstrAudioRecordFile = m_strLocalRecordFile;
+                CLabelUI* pLabelValue = static_cast<CLabelUI*>(m_pmUI.FindControl(_T("label_local_record_opt_status")));
+                if (pLabelValue)
+                {
+                    pLabelValue->SetText(L"停止录制...");
+                }
+
+            }
+        }
+        else if (msg.pSender->GetName() == _T("btn_update_local_record_filepath"))
+        {
+            {
+                CEditUI* pEdit = static_cast<CEditUI*>(m_pmUI.FindControl(_T("edit_local_record_filepath")));
+                if (pEdit != nullptr)
+                {
+                    wstring strFile = pEdit->GetText();
+
+                    m_strLocalRecordFile = strFile;
+
+                    CLabelUI* pLabelValue = static_cast<CLabelUI*>(m_pmUI.FindControl(_T("label_local_record_opt_status")));
+                    if (pLabelValue)
+                    {
+                        CDuiString sText;
+                        sText.Format(_T("更新录制文件路径：%s type: %d"), strFile.c_str(), (int)CDataCenter::GetInstance()->m_localRecordType);
+                        pLabelValue->SetText(sText);
+                    }
+                }
+            }
+
+        }
+    }
+}
 
 DuiLib::CControlUI* TRTCSettingViewController::CreateControl(LPCTSTR pstrClass)
 {
@@ -1802,6 +1954,27 @@ void TRTCSettingViewController::InitNormalTab()
         }
         if(pMixTempSel) pMixTempSel->Selected(true);
     }
+
+    //处理本地录制的设置配置
+    {
+        COptionUI* pLocalRecordTypeSel = static_cast<COptionUI*>(m_pmUI.FindControl(_T("local_record_both")));;
+
+        TRTCLocalRecordType localRecordType = CDataCenter::GetInstance()->m_localRecordType;
+        switch (localRecordType) {
+        case TRTCLocalRecordType_Audio:
+            pLocalRecordTypeSel = static_cast<COptionUI*>(m_pmUI.FindControl(_T("local_record_audio")));
+            break;
+        case TRTCLocalRecordType_Video:
+            pLocalRecordTypeSel = static_cast<COptionUI*>(m_pmUI.FindControl(_T("local_record_video")));
+            break;
+        case TRTCLocalRecordType_Both:
+            pLocalRecordTypeSel = static_cast<COptionUI*>(m_pmUI.FindControl(_T("local_record_both")));
+            break;
+        default:
+            break;
+        }
+        if (pLocalRecordTypeSel) pLocalRecordTypeSel->Selected(true);
+    }
 }
 
 void TRTCSettingViewController::InitAudioTab()
@@ -2113,6 +2286,12 @@ void TRTCSettingViewController::InitOtherTab()
         if (CDataCenter::GetInstance()->m_bLocalVideoMirror)
             pLoacalMirror->Selected(true);
     }
+    COptionUI* pWaterMark =
+        static_cast<COptionUI*>(m_pmUI.FindControl(_T("check_water_mark")));
+    if (pWaterMark) {
+        pWaterMark->Selected(false);
+        if (CDataCenter::GetInstance()->m_bWateMark) pWaterMark->Selected(true);
+    }
     COptionUI* pBlackPush = static_cast<COptionUI*>(m_pmUI.FindControl(_T("check_black_push")));
     if (pBlackPush)
     {
@@ -2283,6 +2462,26 @@ void TRTCSettingViewController::InitRecordTab()
         else
         {
             pCheckAudioRecordUI->Selected(false);
+        }
+    }
+
+    COptionUI* pCheckMixAppAudioUI =
+        static_cast<COptionUI*>(m_pmUI.FindControl(_T("check_start_mix_app_audio")));
+    if (pCheckMixAppAudioUI) {
+        pCheckMixAppAudioUI->Selected(false);
+        if (CDataCenter::GetInstance()->m_bStartMixAppAudio) {
+            pCheckMixAppAudioUI->Selected(true);
+
+            CLabelUI* pLabelValue =
+                static_cast<CLabelUI*>(m_pmUI.FindControl(_T("label_mix_app_audio_opt_status")));
+            if (pLabelValue) {
+                CDuiString sText;
+                sText.Format(_T("正在进程混音:%s ...."),
+                             CDataCenter::GetInstance()->m_wstrMixAudioAppPath.c_str());
+                pLabelValue->SetText(sText);
+            }
+        } else {
+            pCheckMixAppAudioUI->Selected(false);
         }
     }
 }

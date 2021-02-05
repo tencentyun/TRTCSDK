@@ -14,8 +14,8 @@ namespace TrtcUtil
 
     std::map<int,std::string> split(char* str, const char* pattern);
 
-    bool SaveBitmapToFile(HBITMAP bitmap, const std::string& filename);  //±£´æÎ»Í¼µ½ÎÄ¼ş
-    WORD GetBitmapBitCount();  //¼ÆËãÎ»Í¼ÎÄ¼şÃ¿¸öÏñËØËùÕ¼×Ö½ÚÊı
+    bool SaveBitmapToFile(HBITMAP bitmap, const std::string& filename);  //ä¿å­˜ä½å›¾åˆ°æ–‡ä»¶
+    WORD GetBitmapBitCount();  //è®¡ç®—ä½å›¾æ–‡ä»¶æ¯ä¸ªåƒç´ æ‰€å å­—èŠ‚æ•°
     void ProcessPalette(HBITMAP hBitmap, const BITMAP& bitmap, DWORD paletteSize,
-                               LPBITMAPINFOHEADER lpBmpInfoHeader);  //´¦Àíµ÷É«°å
+                               LPBITMAPINFOHEADER lpBmpInfoHeader);  //å¤„ç†è°ƒè‰²æ¿
 }

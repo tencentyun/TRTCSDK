@@ -136,6 +136,7 @@ public: //trtc
     bool m_bRemoteVideoMirror = false;     //暂不支持
     bool m_bShowAudioVolume =   true;      //开启音量提示
     bool m_bBlackFramePush = false;        //开启黑帧推流
+    bool m_bWateMark = false;
 
     bool m_bCustomAudioCapture = false;    //自定义采集音频
     bool m_bCustomVideoCapture = false;    //自定义采集视频
@@ -175,6 +176,13 @@ public: //trtc
     bool m_bStartAudioRecording = false;
     std::wstring m_wstrAudioRecordFile;
 
+    bool m_bStartMixAppAudio = false;
+    std::wstring m_wstrMixAudioAppPath;
+
+    //本地录制参数
+    bool m_bStartLocalRecording = false;
+    std::wstring m_wstrLocalRecordFile;
+    TRTCLocalRecordType m_localRecordType = TRTCLocalRecordType_Both;
 
     bool m_bStartSystemVoice = false;
 

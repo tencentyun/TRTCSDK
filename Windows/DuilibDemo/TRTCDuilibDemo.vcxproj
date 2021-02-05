@@ -109,7 +109,8 @@
     </Link>
     <PostBuildEvent>
       <Command>copy /Y "$(ProjectDir)..\SDK\CPlusPlus\Win32\lib\*.dll" "$(OutDir)"
-xcopy /E /Y "$(ProjectDir)res\resouce" "$(OutDir)"</Command>
+xcopy /E /Y "$(ProjectDir)res\resouce" "$(OutDir)"
+editbin /SUBSYSTEM:CONSOLE $(OutDir)$(ProjectName).exe</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>@echo off
