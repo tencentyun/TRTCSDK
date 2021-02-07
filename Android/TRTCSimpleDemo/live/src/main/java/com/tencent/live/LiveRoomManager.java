@@ -74,8 +74,8 @@ public class LiveRoomManager {
         map.put("method", "createRoom");
         map.put("appId", GenerateTestUserSig.SDKAPPID + "");
         map.put("type", "1");
-        String time = String.valueOf(System.currentTimeMillis());
-        final String roomId = time.substring(time.length() - 8);
+        // 进房roomid为 int 值，所以这里也需要 int， 为了方便直接转换成string，请保持和进房int一致
+        final String roomId = String.valueOf(System.currentTimeMillis()%100000000);
         map.put("roomId", roomId);
         new Thread(new Runnable() {
             @Override
