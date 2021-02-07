@@ -23,6 +23,7 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 (isPhoneX);})
 
 #define kSafeAreaBottom 34
+#define kDefaultHeight 526
 
 @interface AudioEffectSettingView ()<TCMusicSelectItemDelegate, TCMusicSelectedDelegate, TCSlideItemDelegate, TCMusicPlayStatusDelegate> {
     BOOL _isViewReady; // 视图布局是否完成
@@ -65,11 +66,11 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
     if (self) {
         self->_theme = theme;
         self->_currentType = type;
-        CGFloat bottom_height = IS_IPhoneXSeries ? 34 : 0;
+        CGFloat bottom_height = IS_IPhoneXSeries ? kSafeAreaBottom : 0;
         self.frame = CGRectMake(0,
-                                [UIScreen mainScreen].bounds.size.height - 526 - bottom_height,
+                                [UIScreen mainScreen].bounds.size.height - kDefaultHeight - bottom_height,
                                 [UIScreen mainScreen].bounds.size.width,
-                                526 + bottom_height);
+                                kDefaultHeight + bottom_height);
         [self createViewModel];
         [self setupInitStyle];
         [self bindInteraction];
@@ -119,6 +120,11 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 }
 
 #pragma mark - public method 实现
+
++ (CGFloat)height {
+    return kDefaultHeight;
+}
+
 - (void)show {
     if (self->_isShow) {
         return;
@@ -415,12 +421,6 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
     [self.collectionContainer mas_makeConstraints:^(ASMASConstraintMaker *make) {
         make.top.equalTo(self.slideContainer.mas_bottom).offset(30);
         make.left.right.equalTo(self);
-        if (@available(iOS 11.0, *)) {
-            make.bottom.equalTo(self.mas_safeAreaLayoutGuideBottom).offset(-30);
-        } else {
-            make.bottom.equalTo(self.mas_bottom).offset(-30);
-        }
-        
     }];
     [self.voiceChangeView mas_makeConstraints:^(ASMASConstraintMaker *make) {
         make.height.mas_equalTo(90.0);

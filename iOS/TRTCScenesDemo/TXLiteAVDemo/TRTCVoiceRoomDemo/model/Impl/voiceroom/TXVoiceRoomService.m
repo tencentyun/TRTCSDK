@@ -286,13 +286,18 @@
         }
         [self unInitIMListener];
         [self cleanRoomStatus];
+        if (callback) {
+            callback(0, @"exite room success.");
+        }
     } fail:^(int code, NSString *desc) {
         @strongify(self)
         if (!self) {
             return;
         }
         [self unInitIMListener];
-        callback(code, desc ?: @"exite room failed.");
+        if (callback) {
+            callback(code, desc ?: @"exite room failed.");
+        }
     }];
 }
 

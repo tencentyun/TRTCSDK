@@ -93,7 +93,7 @@
 
 + (NSDictionary<NSString *,NSString *> *)parseCusMsgWithJsonDic:(NSDictionary *)jsonDic {
     NSMutableDictionary *result = [[NSMutableDictionary alloc] initWithCapacity:2];
-    result[@"cmd"] = [jsonDic objectForKey:VOICE_ROOM_KEY_CMD_ACTION] ?: @"";
+    result[@"cmd"] = [jsonDic objectForKey:VOICE_ROOM_KEY_INVITATION_CMD] ?: @"";
     result[@"message"] = [jsonDic objectForKey:@"message"] ?: @"";
     return result;
 }

@@ -27,6 +27,7 @@ typedef NS_ENUM(NSUInteger, AudioEffectSettingViewType) {
 
 @property(nonatomic, weak)id<AudioEffectViewDelegate> delegate;
 
++ (CGFloat)height;
 
 - (instancetype)initWithType:(AudioEffectSettingViewType)type;
 - (instancetype)initWithType:(AudioEffectSettingViewType)type theme:(TCASKitTheme *)theme;
