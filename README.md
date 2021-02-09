@@ -14,33 +14,31 @@
 | Electron | [下载](http://liteavsdk-1252463788.cosgz.myqcloud.com/TXLiteAVSDK_TRTC_Electron_latest.zip) | [DOC](https://cloud.tencent.com/document/product/647/38548) | [DOC](https://cloud.tencent.com/document/product/647/38549) |[API](https://cloud.tencent.com/document/product/647/38551) |
 | 微信小程序 | [下载](http://liteavsdk-1252463788.cosgz.myqcloud.com/TRTC_WXMini_latest.zip) | [DOC](https://cloud.tencent.com/document/product/647/32399) | [DOC](https://cloud.tencent.com/document/product/647/32183) |[API](https://cloud.tencent.com/document/product/647/17018) |
 
-## Version 8.3 @ 2021.01.15
+## Version 8.4 @ 2021.02.08
 
 **欢迎加入**
 团队技术氛围浓厚，培训体系完善，产品线多样，有经验丰富的“老司机”手把手帮你入门音视频技术。<br>
-北京、上海、深圳、广州均有岗位，如果您对音视频技术感兴趣，欢迎加入我们 [腾讯云 TRTC 研发团队](https://careers.tencent.com/jobdesc.html?postId=1297858141983088640) 。
+北京、西安、上海、深圳、广州均有岗位，如果您对音视频技术感兴趣，欢迎加入我们 [腾讯云 TRTC 研发团队](https://careers.tencent.com/jobdesc.html?postId=1297858141983088640) 。
 
 **功能新增**
-
-这个版本我们重点优化了自定义采集相关的业务逻辑:
-- 我们优化了音频模块，以确保在您使用 [enableCustomAudioCapture](http://doc.qcloudtrtc.com/group__TRTCCloud__ios.html#ab8f8aaa19d70c6a2c9d62ecceb6e974d) 采集音频数据送给 SDK 处理时 SDK 依然能够保持很好的回声抑制和降噪效果（该特性适用于 iOS Android 和 Mac 平台）。
-- 如果您希望在 TRTC SDK 的基础上，继续增加自己的声音特效和声音处理逻辑，在 8.3 版本上会更加简单，因为你可以通过 [setCapturedRawAudioFrameDelegateFormat](http://doc.qcloudtrtc.com/group__TRTCCloud__ios.html#a4b58b1ee04d0c692f383084d87111f86) 等接口，设置音频数据的回调格式，包括音频采样率、音频声道数和采样点数等，以便您能够以自己喜欢的音频格式处理这些音频数据（该特性支持 iOS 和 Android 平台）。
-- 如果您希望自己采集视频数据，并同时使用 TRTC SDK 自带的音频模块，可能会遇到音画不对齐的问题，这是因为 SDK 内部的时间线有自己的控制逻辑，因此我们提供了一个叫做 [generateCustomPTS](http://doc.qcloudtrtc.com/group__TRTCCloud__ios.html#ae5f2a974fa23954c5efd682dc464cdee) 的接口，你可以在采集到的一帧视频画面时，调用此接口并记录一下当前的 PTS(时间戳)，之后调用 [sendCustomVideoData](http://doc.qcloudtrtc.com/group__TRTCCloud__ios.html#a76e8101153afc009f374bc2b242c6831) 时带上这个时间戳，就可以很好地保证音画同步（该特性适用于全部平台）。
-- Windows 版本的 SDK 增加了对域名格式的 Socks5 代理地址的支持。
+1. Mac 版本开始支持采集 Mac 操作系统的输出声音，也就是跟 Windows 端一样的 SystemLoopback 能力，该功能可以让 SDK 采集当前系统的声音，开启这个功能后，主播就可以很方便地向其他用户直播音乐或者电影文件了。
+2. Mac 版本屏幕分享开始支持本地预览功能，您可以通过一个小窗口像用户展示屏幕分享的预览内容。
+3. Windows 版本增加进程音量调整能力，使用 [setApplicationPlayVolume](http://doc.qcloudtrtc.com/group__ITXDeviceManager__cplusplus.html#af6722fa5e6e45738e007004c374948b1) 可以设置系统的音量合成器的音量大小。
+4. 全平台版本均新增本地音视频录制功能，主播可以在推流过程中把本地的音频和视频录制成一个 mp4 文件，参见 [startLocalRecording](http://doc.qcloudtrtc.com/group__TRTCCloud__ios.html#a5075d55a6fc31895eedd5b23a1b8826b)
+5. 全平台版本均优化了 [Music](http://doc.qcloudtrtc.com/group__TRTCCloudDef__ios.html#ga865e618ff3a81236f9978723c00e86fb) 模式下的声音质量，更加适合类似 cloubhouse 的语音直播场景。
 
 **问题修复**
-- 全平台：修复偶现音频数据时间戳异常导致录制内容音画不同步的问题。
-- Windows：优化窗口分享在高 DPI 环境下的兼容性。
-- Windows：获取可分享的窗口列表时增加最小化的窗口，最小化窗口的缩略图是其进程的图标。
-- Windows：修复 SDK 启动后非必要的 DXGI 占用问题。
-- iOS：修复手动设置焦点会导致 ANR 的问题。
-- iOS：修复偶现切换前后摄像头无效的问题。
-- iOS：修复 VODPlayer 减速播放 crash。
-- iOS：修复偶现进房后默认从听筒播放的问题。
-- iOS & Android：优化回声消除和噪声抑制的效果，并且耳返也能听到混响的效果。
-- Android：修复偶现硬解绿屏花屏的问题。
-- Mac：修复窗口分享并开启高亮时，窗口贴边会造成高亮边框闪烁的问题。
-- Mac：修复渲染视图移动时会黑屏的问题。
+1. 全平台：优化音视频链路的网络抗性，在 70% 的极端查网络环境下，音视频依然较为流畅。
+2. Windows：优化部分场景下的直播音质，大幅减少了声音损伤问题。
+3. Windows：性能优化，在部分使用场景下的性能较旧版本有 20%-30% 的提升。
+4. Windows：修复 Windows Server 2019 Datacenter x64 系统上启动桌面分享 crash 的问题。
+5. Windows：修复分享窗口的同时改变目标窗口大小会偶发分享意外终止的 BUG。
+6. Windows：修复部分型号的摄像头采集不出画面的问题。
+7. iOS：修复 snapvideoshot 会造成 CAAnimation 动画卡顿的问题。
+8. iOS&Mac：修复使用同一个 View 轮流显示摄像头和屏幕分享画面时，屏幕分享画面黑屏的问题。
+9. iOS：修复使用第三方美颜组件时在 iPhone 6s 上可能会出现花屏的问题。
+10. iOS：修复点播与 TRTC 同时使用时，在停止点播播放时偶现 crash 的问题。
+11. Android：修复使用蓝牙耳机时被电话打断，拒绝接听电话后声音通过扬声器播放的问题。
 
 更早期的版本更新历史请点击  [More](https://cloud.tencent.com/document/product/647/46907)...
 
