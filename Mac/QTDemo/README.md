@@ -1,7 +1,7 @@
-#关于QTDemo 
+# 关于QTDemo 
 
 
-##一、准备好您的[SDKAppID](https://console.cloud.tencent.com/rav)和[SECRETKEY](https://console.cloud.tencent.com/rav)
+## 一、准备好您的[SDKAppID](https://console.cloud.tencent.com/rav)和[SECRETKEY](https://console.cloud.tencent.com/rav)
 >**获取SDKAppID：** 进入腾讯云实时音视频【控制台】创建应用，即可看到 SDKAppId。它是腾讯云用于区分客户的唯一标识。
 
 >**获取SECRETKEY：** 计算签名用的加密密钥，获取步骤如下：
@@ -15,7 +15,7 @@
 >**将已经准备好的SDKAppID和SECRETKEY设置到QTDemo -> base -> Defs.h文件中对应位置的SDKAppID和SECRETKEY上即可。**
 
 
-##二、如何跑通Demo
+## 二、如何跑通Demo
 > 
 >**Mac:** 下载并安装[Qt Creator](https://www.qt.io/download-qt-installer?hsCtaTracking=99d9dd4f-5681-48d2-b096-470725510d34%7C074ddad0-fdef-4e53-8aa8-5e8a876d6ab4)，然后用Qt Creator打开** QTDemo.pro**，到**QTDemo/base/Defs.h**头文件中配置好对应的**SECRETKEY** 和 **SDKAppID** 即可开始编译运行调试；
 >
@@ -40,7 +40,7 @@
 > 另外您会在目录结构中看到 ** QTDemo.pro**，`.pro`为工程配置文件，包括但不限于资源文件引用、编译配置等。
 
 
-##三、类
+## 三、类
 >1、mainwindow为Demo主界面，所有功能设置的入口均展示在该主界面
 >
 >2、TestGeneralSetting为 **常规设置**，包括Log的保存路径和存储设置、网络测试、画质偏好、多路编码等
