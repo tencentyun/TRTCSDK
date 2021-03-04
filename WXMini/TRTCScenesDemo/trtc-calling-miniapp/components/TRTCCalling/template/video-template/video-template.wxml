@@ -8,6 +8,7 @@
 		audio-volume-type="voicecall"
 		beauty="5"
 		enable-mic="{{true}}"
+		device-position="front"
 		bindstatechange="_pusherStateChangeHandler"
 		bindaudiovolumenotify="_pusherAudioVolumeNotify"
 	/>
