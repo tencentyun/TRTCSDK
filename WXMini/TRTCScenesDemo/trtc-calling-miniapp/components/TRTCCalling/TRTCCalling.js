@@ -810,12 +810,16 @@ Component({
     },
 
     switchCamera(isFrontCamera) {
-      this.data.pusherConfig.frontCamera = isFrontCamera ? 'front' : 'back'
-      this.setData({
-        pusherConfig: this.data.pusherConfig,
-      }, () => {
-        console.log(`${TAG_NAME}, switchCamera(), frontCamera${this.data.pusherConfig.frontCamera}`)
-      })
+      const targetPos = isFrontCamera ? 'front' : 'back'
+      if (this.data.pusherConfig.frontCamera !== targetPos) {
+        wx.createLivePusherContext().switchCamera()
+        this.data.pusherConfig.frontCamera = targetPos
+        this.setData({
+          pusherConfig: this.data.pusherConfig,
+        }, () => {
+          console.log(`${TAG_NAME}, switchCamera(), frontCamera${this.data.pusherConfig.frontCamera}`)
+        })
+      }
     },
     setHandsFree(isHandsFree) {
       this.data.soundMode = isHandsFree ? 'speaker' : 'ear'
