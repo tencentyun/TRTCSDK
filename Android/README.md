@@ -16,6 +16,7 @@
 |  ├─ trtcliveroomdemo      // 场景三：互动直播，包含连麦、PK、聊天、点赞等特性
 |  ├─ trtcaudiocalldemo     // 场景四：音频通话，展示双人音频通话，有离线通知能力
 |  ├─ trtcvideocalldemo     // 场景五：视频通话，展示双人视频通话，有离线通知能力
+|  ├─ trtcchatsalondemo     // 场景六：语音沙龙，多人音频聊天场景
 |  
 ├─ TRTCSimpleDemo // TRTC精简化Demo，包含通话模式和直播模式。
 |  ├─ live                  // 演示 TRTC 以直播模式运行的示例代码，该模式下有角色的概念
