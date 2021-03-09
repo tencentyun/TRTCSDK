@@ -1,0 +1,66 @@
+/* 
+  TRTCChatSalonDemo.strings
+  TXLiteAVDemo
+
+  Created by abyyxwang on 2021/3/3.
+  Copyright © 2021 Tencent. All rights reserved.
+*/
+"'s salon room" = "'s salon room";
+"create a chat salon room" = "create a chat salon room";
+"topic" = "topic";
+"default room topic" = "default room topic";
+"user ID" = "user ID";
+"default user ID" = "default user ID";
+"Let’s go" = "Let’s go";
+"Nickname or username is empty" = "Nickname or username is empty";
+"Accept" = "Accept";
+"Raised hands" = "Raised hands";
+"Close" = "Close";
+"Welcome" = "Welcome";
+"Dismiss" = "Dismiss";
+"applies to become a speaker" = "applies to become a speaker";
+"You raised your hand! We'll let the speakers know you want to talk~" = "You raised your hand! We'll let the speakers know you want to talk~";
+"room ID" = "room ID";
+"You want to leave the room?" = "You want to leave the room?";
+"Audience.Confirm" = "Confirm";
+"Wait a bit" = "Wait a bit";
+"Seat.Muted" = "Muted";
+"Seat.Unmuted" = "Unmuted";
+"The seat list is not yet initialized!" = "The seat list is not yet initialized!";
+"Enter room success" = "Enter room success";
+"Enter room failed" = "Enter room failed";
+"failed to create a room" = "failed to create a room";
+"you are a speaker" = "you are a speaker";
+"The room is loading" = "The room is loading";
+"waiting for host's consent" = "waiting for host's consent";
+"failed to sent the hand-up message" = "failed to sent the hand-up message";
+"Host succeeded in occupying the seat" = "Host succeeded in occupying the seat";
+"Host failed to occupy the seat" = "Host failed to occupy the seat";
+"Only the host can operate" = "Only the host can operate";
+"Action.move to the audience" = "move to the audience";
+"The request has expired" = "The request has expired";
+"Failed to accept request" = "Failed to accept request";
+"succeeded in becoming an audience" = "succeeded in becoming an audience";
+"failed to become an audience" = "failed to become an audience";
+"The host has closed the room" = "The host has closed the room";
+"Hands up" = "Hands up";
+"Message.move to the audience" = "move to the audience";
+"succeeded in becoming a speaker" = "succeeded in becoming a speaker";
+"failed to become a speaker" = "failed to become a speaker";
+"speakers" = "speakers";
+"audiences" = "audiences";
+"Leave quietly" = "Leave quietly";
+"Owner.Confirm" = "Confirm";
+"Cancel" = "Cancel";
+"you want to end the room?" = "you want to end the room?";
+"Mic.Muted" = "Muted";
+"Mic.Unmuted" = "Unmuted";
+"Please select" = "Please select";
+"chat salon" = "chat salon";
+"online" = "online";
+"pull down to refresh" = "pull down to refresh";
+"loading…" = "loading…";
+"invalid appid" = "invalid appid";
+"No content yet~" = "No content yet~";
+"Failed to get room list" = "Failed to get room list";
+"Failed to get list" = "Failed to get list";

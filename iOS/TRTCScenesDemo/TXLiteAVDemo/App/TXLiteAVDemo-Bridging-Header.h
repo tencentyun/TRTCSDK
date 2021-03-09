@@ -17,8 +17,13 @@
 #import "TCAnchorViewController.h"
 #import "TCAudienceViewController.h"
 #import "TRTCMeeting.h"
+// VocieRoom
 #import "TRTCVoiceRoomDef.h"
 #import "TRTCVoiceRoom.h"
+// ChatSalon
+#import "TRTCChatSalon.h"
+#import "TRTCChatSalonDef.h"
+
 #import "TRTCLiveRoom.h"
 #import "TRTCCalling.h"
 #endif

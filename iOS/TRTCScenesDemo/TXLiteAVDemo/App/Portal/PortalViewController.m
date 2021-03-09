@@ -48,6 +48,7 @@ UIPickerViewDataSource, UIPickerViewDelegate> {
 
 @property (nonatomic, strong) TRTCLiveRoom *liveRoom;
 @property (nonatomic, strong) TRTCVoiceRoom *voiceRoom;
+@property (nonatomic, strong) TRTCChatSalon *chatSalon;
 
 @property (nonatomic, strong) NSArray<MainMenuItem *> *mainMenuItems;
 
@@ -73,28 +74,33 @@ UIPickerViewDataSource, UIPickerViewDelegate> {
 
     _liveRoom = [TRTCLiveRoom shareInstance];
     _voiceRoom = [TRTCVoiceRoom sharedInstance];
+    _chatSalon = [TRTCChatSalon sharedInstance];
     __weak __typeof(self) wSelf = self;
     self.mainMenuItems = @[
         [[MainMenuItem alloc] initWithIcon:[UIImage imageNamed:@"MenuMeeting"]
-                                     title:@"多人视频会议"
+                                     title:[PortalViewController getLocalizedString:@"Video Conferencing"]
                                    content:@"语音自动降噪、视频画质超高清，适用于在线会议、远程培训、小班课等场景"
                                   onSelect:^{ [wSelf gotoMeetingView]; }],
         [[MainMenuItem alloc] initWithIcon:[UIImage imageNamed:@"MenuVoiceRoom"]
-                                     title:@"语音聊天室"
+                                     title:[PortalViewController getLocalizedString:@"Audio Chat Room"]
                                    content:@"内含变声、音效、伴奏、背景音乐等声音玩法，适用于闲聊房、K歌房和开黑房等场景"
                                   onSelect:^{ [wSelf gotoVoiceRoomView]; }],
         [[MainMenuItem alloc] initWithIcon:[UIImage imageNamed:@"MenuLive"]
-                                     title:@"视频互动"
+                                     title:[PortalViewController getLocalizedString:@"Interactive Video Live Streaming"]
                                    content:@"观众时延低至800ms，上下麦无需loading，适用于低延时、十万人高并发的大型互动直播"
                                   onSelect:^{ [wSelf gotoLiveView]; }],
         [[MainMenuItem alloc] initWithIcon:[UIImage imageNamed:@"MenuAudioCall"]
-                                     title:@"语音通话"
+                                     title:[PortalViewController getLocalizedString:@"Audio Call"]
                                    content:@"48kHz高音质语音，60%丢包可正常语音，领先行业的3A处理，杜绝回声和啸叫"
                                   onSelect:^{ [wSelf gotoAudioCallView]; }],
         [[MainMenuItem alloc] initWithIcon:[UIImage imageNamed:@"MenuVideoCall"]
-                                     title:@"视频通话"
+                                     title:[PortalViewController getLocalizedString:@"Video Call"]
                                    content:@"支持1080P超清视频，50%丢包率可正常视频，自备美颜特效，带来高品质视频通话体验"
-                                  onSelect:^{ [wSelf gotoVideoCallView]; }]
+                                  onSelect:^{ [wSelf gotoVideoCallView]; }],
+        [[MainMenuItem alloc] initWithIcon:[UIImage imageNamed:@"MainChatSalon"]
+                                     title:[PortalViewController getLocalizedString:@"Chat Salon"]
+                                   content:@""
+                                  onSelect:^{ [wSelf gotoChatSalonView]; }]
     ];
     NSString *version = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
     self.versionLabel.text = [NSString stringWithFormat:@"TRTC v%@(%@)", [TRTCCloud getSDKVersion], version];
@@ -191,6 +197,21 @@ UIPickerViewDataSource, UIPickerViewDelegate> {
 
     }];
     TRTCVoiceRoomEnteryControl* container = [[TRTCVoiceRoomEnteryControl alloc] initWithSdkAppId:SDKAPPID userId:userID];
+    UIViewController* vc = [container makeEntranceViewController];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)gotoChatSalonView {
+    NSString *userID = [[ProfileManager shared] curUserID];
+    NSString *userSig = [[ProfileManager shared] curUserSig];
+    [self.chatSalon login:SDKAPPID userID:userID userSig:userSig callback:^(int32_t code, NSString * _Nonnull message) {
+        NSLog(@"login voiceroom success.");
+    }];
+    LoginResultModel *curUser = [[ProfileManager shared] curUserModel];
+    [self.chatSalon setSelfProfile:curUser.name avatarURL:curUser.avatar callback:^(int32_t code, NSString * _Nonnull message) {
+        NSLog(@"voiceroom: set self profile success.");
+    }];
+    TRTCChatSalonEnteryControl* container = [[TRTCChatSalonEnteryControl alloc] initWithSdkAppId:SDKAPPID userID:userID];
     UIViewController* vc = [container makeEntranceViewController];
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -324,6 +345,14 @@ UIPickerViewDataSource, UIPickerViewDelegate> {
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
     return 1;
+}
+
+#pragma mark - Localized
+
++ (NSString *)getLocalizedString:(NSString *)key {
+    NSBundle *bundle = [NSBundle mainBundle];
+    NSString *tableName = @"AppPortalLocalized";
+    return [bundle localizedStringForKey:key value:key table:tableName];
 }
 
 @end

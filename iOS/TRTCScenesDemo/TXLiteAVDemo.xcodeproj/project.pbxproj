@@ -561,6 +561,14 @@
 		40B5C6942484BE4800D3A718 /* AudioEffectSettingKitResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 40B5C6872484BBE500D3A718 /* AudioEffectSettingKitResources.bundle */; };
 		40B5C6952484BE5100D3A718 /* AudioEffectSettingKitResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 40B5C6872484BBE500D3A718 /* AudioEffectSettingKitResources.bundle */; };
 		40B5C6962484BE5700D3A718 /* AudioEffectSettingKitResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 40B5C6872484BBE500D3A718 /* AudioEffectSettingKitResources.bundle */; };
+		40BE0EE925EF724600C58D6C /* TRTCChatSalonDemoLocalized.strings in Resources */ = {isa = PBXBuildFile; fileRef = 40BE0EEE25EF724600C58D6C /* TRTCChatSalonDemoLocalized.strings */; };
+		40BE0EEA25EF724600C58D6C /* TRTCChatSalonDemoLocalized.strings in Resources */ = {isa = PBXBuildFile; fileRef = 40BE0EEE25EF724600C58D6C /* TRTCChatSalonDemoLocalized.strings */; };
+		40BE0EEB25EF724600C58D6C /* TRTCChatSalonDemoLocalized.strings in Resources */ = {isa = PBXBuildFile; fileRef = 40BE0EEE25EF724600C58D6C /* TRTCChatSalonDemoLocalized.strings */; };
+		40BE0EEC25EF724600C58D6C /* TRTCChatSalonDemoLocalized.strings in Resources */ = {isa = PBXBuildFile; fileRef = 40BE0EEE25EF724600C58D6C /* TRTCChatSalonDemoLocalized.strings */; };
+		40BE0EF825EF762F00C58D6C /* TRTCChatSalonLocalized.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40BE0EF725EF762F00C58D6C /* TRTCChatSalonLocalized.swift */; };
+		40BE0EF925EF762F00C58D6C /* TRTCChatSalonLocalized.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40BE0EF725EF762F00C58D6C /* TRTCChatSalonLocalized.swift */; };
+		40BE0EFA25EF762F00C58D6C /* TRTCChatSalonLocalized.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40BE0EF725EF762F00C58D6C /* TRTCChatSalonLocalized.swift */; };
+		40BE0EFB25EF762F00C58D6C /* TRTCChatSalonLocalized.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40BE0EF725EF762F00C58D6C /* TRTCChatSalonLocalized.swift */; };
 		40BEFEB6246942E400F4E10D /* TCBeautyPanelResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 40AA536724458EC800303EF7 /* TCBeautyPanelResources.bundle */; };
 		40C0BD51244848D300931313 /* GenerateTestUserSig.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F8DC2446E6C5000C37A3 /* GenerateTestUserSig.m */; };
 		40C0BD6B24484A1700931313 /* LiveRoomMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9272446E6C6000C37A3 /* LiveRoomMainViewController.swift */; };
@@ -609,6 +617,10 @@
 		40C0BDE3244853FF00931313 /* TCAudienceViewController+LiveDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F9492446E6C6000C37A3 /* TCAudienceViewController+LiveDelegate.swift */; };
 		40C0BDE4244853FF00931313 /* TCAudienceToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F94A2446E6C6000C37A3 /* TCAudienceToolbarView.m */; };
 		40C0BDE5244853FF00931313 /* LiveRoomMainViewController+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3F94C2446E6C6000C37A3 /* LiveRoomMainViewController+UI.swift */; };
+		40E18DA725ECC2B7002F7CD9 /* TRTCChatSalonTakeSeatTipsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40E18DA625ECC2B7002F7CD9 /* TRTCChatSalonTakeSeatTipsView.swift */; };
+		40E18DA825ECC2B7002F7CD9 /* TRTCChatSalonTakeSeatTipsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40E18DA625ECC2B7002F7CD9 /* TRTCChatSalonTakeSeatTipsView.swift */; };
+		40E18DA925ECC2B7002F7CD9 /* TRTCChatSalonTakeSeatTipsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40E18DA625ECC2B7002F7CD9 /* TRTCChatSalonTakeSeatTipsView.swift */; };
+		40E18DAA25ECC2B7002F7CD9 /* TRTCChatSalonTakeSeatTipsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40E18DA625ECC2B7002F7CD9 /* TRTCChatSalonTakeSeatTipsView.swift */; };
 		40E1F43E2468F72900F3D350 /* UIColor+MLPFlatColors.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3FA002447056D000C37A3 /* UIColor+MLPFlatColors.m */; };
 		40E1F43F2468F72900F3D350 /* UIColor+MLPFlatColors.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3FA002447056D000C37A3 /* UIColor+MLPFlatColors.m */; };
 		40E1F4402468F72A00F3D350 /* UIColor+MLPFlatColors.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3FA002447056D000C37A3 /* UIColor+MLPFlatColors.m */; };
@@ -627,6 +639,114 @@
 		40E25FCE2480C797005EB543 /* Portal+Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40E25FCC2480C796005EB543 /* Portal+Swift.swift */; };
 		40E25FCF2480C797005EB543 /* Portal+Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40E25FCC2480C796005EB543 /* Portal+Swift.swift */; };
 		40E8146424A0F905007C4113 /* TRTCMeetingMoreViewShareVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AAEC25B2497807100B57D86 /* TRTCMeetingMoreViewShareVC.swift */; };
+		40EC852025E77AA500149FAA /* TRTCChatSalonDef.m in Sources */ = {isa = PBXBuildFile; fileRef = 40EC850E25E77AA500149FAA /* TRTCChatSalonDef.m */; };
+		40EC852125E77AA500149FAA /* TRTCChatSalonDef.m in Sources */ = {isa = PBXBuildFile; fileRef = 40EC850E25E77AA500149FAA /* TRTCChatSalonDef.m */; };
+		40EC852225E77AA500149FAA /* TRTCChatSalonDef.m in Sources */ = {isa = PBXBuildFile; fileRef = 40EC850E25E77AA500149FAA /* TRTCChatSalonDef.m */; };
+		40EC852325E77AA500149FAA /* TRTCChatSalonDef.m in Sources */ = {isa = PBXBuildFile; fileRef = 40EC850E25E77AA500149FAA /* TRTCChatSalonDef.m */; };
+		40EC852425E77AA500149FAA /* ChatSalonTRTCService.m in Sources */ = {isa = PBXBuildFile; fileRef = 40EC851025E77AA500149FAA /* ChatSalonTRTCService.m */; };
+		40EC852525E77AA500149FAA /* ChatSalonTRTCService.m in Sources */ = {isa = PBXBuildFile; fileRef = 40EC851025E77AA500149FAA /* ChatSalonTRTCService.m */; };
+		40EC852625E77AA500149FAA /* ChatSalonTRTCService.m in Sources */ = {isa = PBXBuildFile; fileRef = 40EC851025E77AA500149FAA /* ChatSalonTRTCService.m */; };
+		40EC852725E77AA500149FAA /* ChatSalonTRTCService.m in Sources */ = {isa = PBXBuildFile; fileRef = 40EC851025E77AA500149FAA /* ChatSalonTRTCService.m */; };
+		40EC852825E77AA500149FAA /* TXChatSalonService.m in Sources */ = {isa = PBXBuildFile; fileRef = 40EC851325E77AA500149FAA /* TXChatSalonService.m */; };
+		40EC852925E77AA500149FAA /* TXChatSalonService.m in Sources */ = {isa = PBXBuildFile; fileRef = 40EC851325E77AA500149FAA /* TXChatSalonService.m */; };
+		40EC852A25E77AA500149FAA /* TXChatSalonService.m in Sources */ = {isa = PBXBuildFile; fileRef = 40EC851325E77AA500149FAA /* TXChatSalonService.m */; };
+		40EC852B25E77AA500149FAA /* TXChatSalonService.m in Sources */ = {isa = PBXBuildFile; fileRef = 40EC851325E77AA500149FAA /* TXChatSalonService.m */; };
+		40EC852C25E77AA500149FAA /* TXChatSalonIMJsonHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 40EC851625E77AA500149FAA /* TXChatSalonIMJsonHandle.m */; };
+		40EC852D25E77AA500149FAA /* TXChatSalonIMJsonHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 40EC851625E77AA500149FAA /* TXChatSalonIMJsonHandle.m */; };
+		40EC852E25E77AA500149FAA /* TXChatSalonIMJsonHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 40EC851625E77AA500149FAA /* TXChatSalonIMJsonHandle.m */; };
+		40EC852F25E77AA500149FAA /* TXChatSalonIMJsonHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 40EC851625E77AA500149FAA /* TXChatSalonIMJsonHandle.m */; };
+		40EC853025E77AA500149FAA /* TRTCChatSalon.m in Sources */ = {isa = PBXBuildFile; fileRef = 40EC851725E77AA500149FAA /* TRTCChatSalon.m */; };
+		40EC853125E77AA500149FAA /* TRTCChatSalon.m in Sources */ = {isa = PBXBuildFile; fileRef = 40EC851725E77AA500149FAA /* TRTCChatSalon.m */; };
+		40EC853225E77AA500149FAA /* TRTCChatSalon.m in Sources */ = {isa = PBXBuildFile; fileRef = 40EC851725E77AA500149FAA /* TRTCChatSalon.m */; };
+		40EC853325E77AA500149FAA /* TRTCChatSalon.m in Sources */ = {isa = PBXBuildFile; fileRef = 40EC851725E77AA500149FAA /* TRTCChatSalon.m */; };
+		40EC853425E77AA500149FAA /* TXChatSalonBaseDef.m in Sources */ = {isa = PBXBuildFile; fileRef = 40EC851B25E77AA500149FAA /* TXChatSalonBaseDef.m */; };
+		40EC853525E77AA500149FAA /* TXChatSalonBaseDef.m in Sources */ = {isa = PBXBuildFile; fileRef = 40EC851B25E77AA500149FAA /* TXChatSalonBaseDef.m */; };
+		40EC853625E77AA500149FAA /* TXChatSalonBaseDef.m in Sources */ = {isa = PBXBuildFile; fileRef = 40EC851B25E77AA500149FAA /* TXChatSalonBaseDef.m */; };
+		40EC853725E77AA500149FAA /* TXChatSalonBaseDef.m in Sources */ = {isa = PBXBuildFile; fileRef = 40EC851B25E77AA500149FAA /* TXChatSalonBaseDef.m */; };
+		40EC856125E77D6F00149FAA /* TRTCChatSalonEnteryControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC854525E77D6F00149FAA /* TRTCChatSalonEnteryControl.swift */; };
+		40EC856225E77D6F00149FAA /* TRTCChatSalonEnteryControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC854525E77D6F00149FAA /* TRTCChatSalonEnteryControl.swift */; };
+		40EC856325E77D6F00149FAA /* TRTCChatSalonEnteryControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC854525E77D6F00149FAA /* TRTCChatSalonEnteryControl.swift */; };
+		40EC856425E77D6F00149FAA /* TRTCChatSalonEnteryControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC854525E77D6F00149FAA /* TRTCChatSalonEnteryControl.swift */; };
+		40EC856525E77D6F00149FAA /* TRTCChatSalonManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC854725E77D6F00149FAA /* TRTCChatSalonManager.swift */; };
+		40EC856625E77D6F00149FAA /* TRTCChatSalonManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC854725E77D6F00149FAA /* TRTCChatSalonManager.swift */; };
+		40EC856725E77D6F00149FAA /* TRTCChatSalonManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC854725E77D6F00149FAA /* TRTCChatSalonManager.swift */; };
+		40EC856825E77D6F00149FAA /* TRTCChatSalonManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC854725E77D6F00149FAA /* TRTCChatSalonManager.swift */; };
+		40EC856925E77D6F00149FAA /* TRTCCreateChatSalonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC854925E77D6F00149FAA /* TRTCCreateChatSalonViewModel.swift */; };
+		40EC856A25E77D6F00149FAA /* TRTCCreateChatSalonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC854925E77D6F00149FAA /* TRTCCreateChatSalonViewModel.swift */; };
+		40EC856B25E77D6F00149FAA /* TRTCCreateChatSalonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC854925E77D6F00149FAA /* TRTCCreateChatSalonViewModel.swift */; };
+		40EC856C25E77D6F00149FAA /* TRTCCreateChatSalonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC854925E77D6F00149FAA /* TRTCCreateChatSalonViewModel.swift */; };
+		40EC856D25E77D6F00149FAA /* TRTCCreateChatSalonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC854A25E77D6F00149FAA /* TRTCCreateChatSalonViewController.swift */; };
+		40EC856E25E77D6F00149FAA /* TRTCCreateChatSalonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC854A25E77D6F00149FAA /* TRTCCreateChatSalonViewController.swift */; };
+		40EC856F25E77D6F00149FAA /* TRTCCreateChatSalonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC854A25E77D6F00149FAA /* TRTCCreateChatSalonViewController.swift */; };
+		40EC857025E77D6F00149FAA /* TRTCCreateChatSalonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC854A25E77D6F00149FAA /* TRTCCreateChatSalonViewController.swift */; };
+		40EC857125E77D6F00149FAA /* TRTCCreateChatSalonRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC854B25E77D6F00149FAA /* TRTCCreateChatSalonRootView.swift */; };
+		40EC857225E77D6F00149FAA /* TRTCCreateChatSalonRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC854B25E77D6F00149FAA /* TRTCCreateChatSalonRootView.swift */; };
+		40EC857325E77D6F00149FAA /* TRTCCreateChatSalonRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC854B25E77D6F00149FAA /* TRTCCreateChatSalonRootView.swift */; };
+		40EC857425E77D6F00149FAA /* TRTCCreateChatSalonRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC854B25E77D6F00149FAA /* TRTCCreateChatSalonRootView.swift */; };
+		40EC857525E77D6F00149FAA /* TRTCChatSalonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC854D25E77D6F00149FAA /* TRTCChatSalonViewController.swift */; };
+		40EC857625E77D6F00149FAA /* TRTCChatSalonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC854D25E77D6F00149FAA /* TRTCChatSalonViewController.swift */; };
+		40EC857725E77D6F00149FAA /* TRTCChatSalonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC854D25E77D6F00149FAA /* TRTCChatSalonViewController.swift */; };
+		40EC857825E77D6F00149FAA /* TRTCChatSalonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC854D25E77D6F00149FAA /* TRTCChatSalonViewController.swift */; };
+		40EC857925E77D6F00149FAA /* TRTCChatSalonMainMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC854F25E77D6F00149FAA /* TRTCChatSalonMainMenuView.swift */; };
+		40EC857A25E77D6F00149FAA /* TRTCChatSalonMainMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC854F25E77D6F00149FAA /* TRTCChatSalonMainMenuView.swift */; };
+		40EC857B25E77D6F00149FAA /* TRTCChatSalonMainMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC854F25E77D6F00149FAA /* TRTCChatSalonMainMenuView.swift */; };
+		40EC857C25E77D6F00149FAA /* TRTCChatSalonMainMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC854F25E77D6F00149FAA /* TRTCChatSalonMainMenuView.swift */; };
+		40EC857D25E77D6F00149FAA /* TRTCChatSalonSeatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC855025E77D6F00149FAA /* TRTCChatSalonSeatCell.swift */; };
+		40EC857E25E77D6F00149FAA /* TRTCChatSalonSeatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC855025E77D6F00149FAA /* TRTCChatSalonSeatCell.swift */; };
+		40EC857F25E77D6F00149FAA /* TRTCChatSalonSeatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC855025E77D6F00149FAA /* TRTCChatSalonSeatCell.swift */; };
+		40EC858025E77D6F00149FAA /* TRTCChatSalonSeatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC855025E77D6F00149FAA /* TRTCChatSalonSeatCell.swift */; };
+		40EC858125E77D6F00149FAA /* TRTCChatSalonSeatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC855125E77D6F00149FAA /* TRTCChatSalonSeatView.swift */; };
+		40EC858225E77D6F00149FAA /* TRTCChatSalonSeatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC855125E77D6F00149FAA /* TRTCChatSalonSeatView.swift */; };
+		40EC858325E77D6F00149FAA /* TRTCChatSalonSeatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC855125E77D6F00149FAA /* TRTCChatSalonSeatView.swift */; };
+		40EC858425E77D6F00149FAA /* TRTCChatSalonSeatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC855125E77D6F00149FAA /* TRTCChatSalonSeatView.swift */; };
+		40EC858525E77D6F00149FAA /* TRTCChatSalonTipsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC855225E77D6F00149FAA /* TRTCChatSalonTipsView.swift */; };
+		40EC858625E77D6F00149FAA /* TRTCChatSalonTipsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC855225E77D6F00149FAA /* TRTCChatSalonTipsView.swift */; };
+		40EC858725E77D6F00149FAA /* TRTCChatSalonTipsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC855225E77D6F00149FAA /* TRTCChatSalonTipsView.swift */; };
+		40EC858825E77D6F00149FAA /* TRTCChatSalonTipsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC855225E77D6F00149FAA /* TRTCChatSalonTipsView.swift */; };
+		40EC858925E77D6F00149FAA /* TRTCCSAudienceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC855325E77D6F00149FAA /* TRTCCSAudienceTableViewCell.swift */; };
+		40EC858A25E77D6F00149FAA /* TRTCCSAudienceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC855325E77D6F00149FAA /* TRTCCSAudienceTableViewCell.swift */; };
+		40EC858B25E77D6F00149FAA /* TRTCCSAudienceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC855325E77D6F00149FAA /* TRTCCSAudienceTableViewCell.swift */; };
+		40EC858C25E77D6F00149FAA /* TRTCCSAudienceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC855325E77D6F00149FAA /* TRTCCSAudienceTableViewCell.swift */; };
+		40EC858D25E77D6F00149FAA /* TRTCChatSalonTipsTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC855425E77D6F00149FAA /* TRTCChatSalonTipsTableCell.swift */; };
+		40EC858E25E77D6F00149FAA /* TRTCChatSalonTipsTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC855425E77D6F00149FAA /* TRTCChatSalonTipsTableCell.swift */; };
+		40EC858F25E77D6F00149FAA /* TRTCChatSalonTipsTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC855425E77D6F00149FAA /* TRTCChatSalonTipsTableCell.swift */; };
+		40EC859025E77D6F00149FAA /* TRTCChatSalonTipsTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC855425E77D6F00149FAA /* TRTCChatSalonTipsTableCell.swift */; };
+		40EC859525E77D6F00149FAA /* TRTCCSAudienceListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC855625E77D6F00149FAA /* TRTCCSAudienceListView.swift */; };
+		40EC859625E77D6F00149FAA /* TRTCCSAudienceListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC855625E77D6F00149FAA /* TRTCCSAudienceListView.swift */; };
+		40EC859725E77D6F00149FAA /* TRTCCSAudienceListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC855625E77D6F00149FAA /* TRTCCSAudienceListView.swift */; };
+		40EC859825E77D6F00149FAA /* TRTCCSAudienceListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC855625E77D6F00149FAA /* TRTCCSAudienceListView.swift */; };
+		40EC859925E77D6F00149FAA /* TRTCChatSalonVIewDataDef.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC855725E77D6F00149FAA /* TRTCChatSalonVIewDataDef.swift */; };
+		40EC859A25E77D6F00149FAA /* TRTCChatSalonVIewDataDef.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC855725E77D6F00149FAA /* TRTCChatSalonVIewDataDef.swift */; };
+		40EC859B25E77D6F00149FAA /* TRTCChatSalonVIewDataDef.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC855725E77D6F00149FAA /* TRTCChatSalonVIewDataDef.swift */; };
+		40EC859C25E77D6F00149FAA /* TRTCChatSalonVIewDataDef.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC855725E77D6F00149FAA /* TRTCChatSalonVIewDataDef.swift */; };
+		40EC859D25E77D6F00149FAA /* TRTCChatSalonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC855825E77D6F00149FAA /* TRTCChatSalonViewModel.swift */; };
+		40EC859E25E77D6F00149FAA /* TRTCChatSalonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC855825E77D6F00149FAA /* TRTCChatSalonViewModel.swift */; };
+		40EC859F25E77D6F00149FAA /* TRTCChatSalonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC855825E77D6F00149FAA /* TRTCChatSalonViewModel.swift */; };
+		40EC85A025E77D6F00149FAA /* TRTCChatSalonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC855825E77D6F00149FAA /* TRTCChatSalonViewModel.swift */; };
+		40EC85A125E77D6F00149FAA /* TRTCChatSalonRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC855925E77D6F00149FAA /* TRTCChatSalonRootView.swift */; };
+		40EC85A225E77D6F00149FAA /* TRTCChatSalonRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC855925E77D6F00149FAA /* TRTCChatSalonRootView.swift */; };
+		40EC85A325E77D6F00149FAA /* TRTCChatSalonRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC855925E77D6F00149FAA /* TRTCChatSalonRootView.swift */; };
+		40EC85A425E77D6F00149FAA /* TRTCChatSalonRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC855925E77D6F00149FAA /* TRTCChatSalonRootView.swift */; };
+		40EC85A525E77D6F00149FAA /* TRTCChatSalonListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC855B25E77D6F00149FAA /* TRTCChatSalonListViewController.swift */; };
+		40EC85A625E77D6F00149FAA /* TRTCChatSalonListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC855B25E77D6F00149FAA /* TRTCChatSalonListViewController.swift */; };
+		40EC85A725E77D6F00149FAA /* TRTCChatSalonListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC855B25E77D6F00149FAA /* TRTCChatSalonListViewController.swift */; };
+		40EC85A825E77D6F00149FAA /* TRTCChatSalonListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC855B25E77D6F00149FAA /* TRTCChatSalonListViewController.swift */; };
+		40EC85A925E77D6F00149FAA /* TRTCChatSalonListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC855D25E77D6F00149FAA /* TRTCChatSalonListCell.swift */; };
+		40EC85AA25E77D6F00149FAA /* TRTCChatSalonListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC855D25E77D6F00149FAA /* TRTCChatSalonListCell.swift */; };
+		40EC85AB25E77D6F00149FAA /* TRTCChatSalonListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC855D25E77D6F00149FAA /* TRTCChatSalonListCell.swift */; };
+		40EC85AC25E77D6F00149FAA /* TRTCChatSalonListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC855D25E77D6F00149FAA /* TRTCChatSalonListCell.swift */; };
+		40EC85AD25E77D6F00149FAA /* TRTCChatSalonListRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC855E25E77D6F00149FAA /* TRTCChatSalonListRootView.swift */; };
+		40EC85AE25E77D6F00149FAA /* TRTCChatSalonListRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC855E25E77D6F00149FAA /* TRTCChatSalonListRootView.swift */; };
+		40EC85AF25E77D6F00149FAA /* TRTCChatSalonListRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC855E25E77D6F00149FAA /* TRTCChatSalonListRootView.swift */; };
+		40EC85B025E77D6F00149FAA /* TRTCChatSalonListRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC855E25E77D6F00149FAA /* TRTCChatSalonListRootView.swift */; };
+		40EC85B125E77D6F00149FAA /* TRTCChatSalonListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC855F25E77D6F00149FAA /* TRTCChatSalonListViewModel.swift */; };
+		40EC85B225E77D6F00149FAA /* TRTCChatSalonListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC855F25E77D6F00149FAA /* TRTCChatSalonListViewModel.swift */; };
+		40EC85B325E77D6F00149FAA /* TRTCChatSalonListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC855F25E77D6F00149FAA /* TRTCChatSalonListViewModel.swift */; };
+		40EC85B425E77D6F00149FAA /* TRTCChatSalonListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC855F25E77D6F00149FAA /* TRTCChatSalonListViewModel.swift */; };
+		40EC85B525E77D6F00149FAA /* TRTCChatSalonAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 40EC856025E77D6F00149FAA /* TRTCChatSalonAssets.xcassets */; };
+		40EC85B625E77D6F00149FAA /* TRTCChatSalonAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 40EC856025E77D6F00149FAA /* TRTCChatSalonAssets.xcassets */; };
+		40EC85B725E77D6F00149FAA /* TRTCChatSalonAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 40EC856025E77D6F00149FAA /* TRTCChatSalonAssets.xcassets */; };
+		40EC85B825E77D6F00149FAA /* TRTCChatSalonAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 40EC856025E77D6F00149FAA /* TRTCChatSalonAssets.xcassets */; };
 		40EF362F24BC3FD0006AA4BB /* TRTCCloudAnction.m in Sources */ = {isa = PBXBuildFile; fileRef = 40EF361F24BC3FCD006AA4BB /* TRTCCloudAnction.m */; };
 		40EF363024BC3FD0006AA4BB /* TRTCCloudAnction.m in Sources */ = {isa = PBXBuildFile; fileRef = 40EF361F24BC3FCD006AA4BB /* TRTCCloudAnction.m */; };
 		40EF363124BC3FD0006AA4BB /* TRTCCloudAnction.m in Sources */ = {isa = PBXBuildFile; fileRef = 40EF361F24BC3FCD006AA4BB /* TRTCCloudAnction.m */; };
@@ -980,6 +1100,12 @@
 		A0FFAD96213791B70087FF45 /* TVCHttpMessageURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = A0FFAD93213791B70087FF45 /* TVCHttpMessageURLProtocol.m */; };
 		A0FFAD99213791B70087FF45 /* TVCHttpMessageURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = A0FFAD93213791B70087FF45 /* TVCHttpMessageURLProtocol.m */; };
 		BD32F8A6AF7CC2FF9A53096E /* libPods-TXLiteAVDemo_TRTC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A32AD4BB38080AB19D3659FC /* libPods-TXLiteAVDemo_TRTC.a */; };
+		C600497825ECE75C00EAEB17 /* TRTCChatSalonHandsUpTipsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C600497725ECE75C00EAEB17 /* TRTCChatSalonHandsUpTipsView.swift */; };
+		C600497925ECE75C00EAEB17 /* TRTCChatSalonHandsUpTipsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C600497725ECE75C00EAEB17 /* TRTCChatSalonHandsUpTipsView.swift */; };
+		C600497A25ECE75C00EAEB17 /* TRTCChatSalonHandsUpTipsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C600497725ECE75C00EAEB17 /* TRTCChatSalonHandsUpTipsView.swift */; };
+		C600497B25ECE75C00EAEB17 /* TRTCChatSalonHandsUpTipsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C600497725ECE75C00EAEB17 /* TRTCChatSalonHandsUpTipsView.swift */; };
+		C667B8DB25F7151400B099FC /* AppPortalLocalized.strings in Resources */ = {isa = PBXBuildFile; fileRef = C667B8DE25F7151400B099FC /* AppPortalLocalized.strings */; };
+		C667B8DC25F7151400B099FC /* AppPortalLocalized.strings in Resources */ = {isa = PBXBuildFile; fileRef = C667B8DE25F7151400B099FC /* AppPortalLocalized.strings */; };
 		CE01F53E206DDE060056D693 /* VideoCompressPreviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE01F53D206DDE060056D693 /* VideoCompressPreviewController.m */; };
 		CE01F53F206DDE060056D693 /* VideoCompressPreviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE01F53D206DDE060056D693 /* VideoCompressPreviewController.m */; };
 		CE01F541206DDE060056D693 /* VideoCompressPreviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE01F53D206DDE060056D693 /* VideoCompressPreviewController.m */; };
@@ -1518,7 +1644,46 @@
 		40B3F9FE2447042C000C37A3 /* HUDHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUDHelper.h; sourceTree = "<group>"; };
 		40B3FA002447056D000C37A3 /* UIColor+MLPFlatColors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+MLPFlatColors.m"; sourceTree = "<group>"; };
 		40B3FA012447056D000C37A3 /* UIColor+MLPFlatColors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+MLPFlatColors.h"; sourceTree = "<group>"; };
+		40BE0EED25EF724600C58D6C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/TRTCChatSalonDemoLocalized.strings; sourceTree = "<group>"; };
+		40BE0EF625EF724C00C58D6C /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/TRTCChatSalonDemoLocalized.strings"; sourceTree = "<group>"; };
+		40BE0EF725EF762F00C58D6C /* TRTCChatSalonLocalized.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TRTCChatSalonLocalized.swift; sourceTree = "<group>"; };
+		40E18DA625ECC2B7002F7CD9 /* TRTCChatSalonTakeSeatTipsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TRTCChatSalonTakeSeatTipsView.swift; sourceTree = "<group>"; };
 		40E25FCC2480C796005EB543 /* Portal+Swift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Portal+Swift.swift"; sourceTree = "<group>"; };
+		40EC850E25E77AA500149FAA /* TRTCChatSalonDef.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCChatSalonDef.m; sourceTree = "<group>"; };
+		40EC851025E77AA500149FAA /* ChatSalonTRTCService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatSalonTRTCService.m; sourceTree = "<group>"; };
+		40EC851125E77AA500149FAA /* ChatSalonTRTCService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatSalonTRTCService.h; sourceTree = "<group>"; };
+		40EC851325E77AA500149FAA /* TXChatSalonService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TXChatSalonService.m; sourceTree = "<group>"; };
+		40EC851425E77AA500149FAA /* TXChatSalonIMJsonHandle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXChatSalonIMJsonHandle.h; sourceTree = "<group>"; };
+		40EC851525E77AA500149FAA /* TXChatSalonService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXChatSalonService.h; sourceTree = "<group>"; };
+		40EC851625E77AA500149FAA /* TXChatSalonIMJsonHandle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TXChatSalonIMJsonHandle.m; sourceTree = "<group>"; };
+		40EC851725E77AA500149FAA /* TRTCChatSalon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCChatSalon.m; sourceTree = "<group>"; };
+		40EC851925E77AA500149FAA /* TXChatSalonCommonDef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXChatSalonCommonDef.h; sourceTree = "<group>"; };
+		40EC851A25E77AA500149FAA /* TXChatSalonBaseDef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXChatSalonBaseDef.h; sourceTree = "<group>"; };
+		40EC851B25E77AA500149FAA /* TXChatSalonBaseDef.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TXChatSalonBaseDef.m; sourceTree = "<group>"; };
+		40EC851C25E77AA500149FAA /* TRTCChatSalon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCChatSalon.h; sourceTree = "<group>"; };
+		40EC851D25E77AA500149FAA /* TRTCChatSalonDef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCChatSalonDef.h; sourceTree = "<group>"; };
+		40EC851E25E77AA500149FAA /* TRTCChatSalonDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCChatSalonDelegate.h; sourceTree = "<group>"; };
+		40EC854525E77D6F00149FAA /* TRTCChatSalonEnteryControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCChatSalonEnteryControl.swift; sourceTree = "<group>"; };
+		40EC854725E77D6F00149FAA /* TRTCChatSalonManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCChatSalonManager.swift; sourceTree = "<group>"; };
+		40EC854925E77D6F00149FAA /* TRTCCreateChatSalonViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCCreateChatSalonViewModel.swift; sourceTree = "<group>"; };
+		40EC854A25E77D6F00149FAA /* TRTCCreateChatSalonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCCreateChatSalonViewController.swift; sourceTree = "<group>"; };
+		40EC854B25E77D6F00149FAA /* TRTCCreateChatSalonRootView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCCreateChatSalonRootView.swift; sourceTree = "<group>"; };
+		40EC854D25E77D6F00149FAA /* TRTCChatSalonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCChatSalonViewController.swift; sourceTree = "<group>"; };
+		40EC854F25E77D6F00149FAA /* TRTCChatSalonMainMenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCChatSalonMainMenuView.swift; sourceTree = "<group>"; };
+		40EC855025E77D6F00149FAA /* TRTCChatSalonSeatCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCChatSalonSeatCell.swift; sourceTree = "<group>"; };
+		40EC855125E77D6F00149FAA /* TRTCChatSalonSeatView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCChatSalonSeatView.swift; sourceTree = "<group>"; };
+		40EC855225E77D6F00149FAA /* TRTCChatSalonTipsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCChatSalonTipsView.swift; sourceTree = "<group>"; };
+		40EC855325E77D6F00149FAA /* TRTCCSAudienceTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCCSAudienceTableViewCell.swift; sourceTree = "<group>"; };
+		40EC855425E77D6F00149FAA /* TRTCChatSalonTipsTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCChatSalonTipsTableCell.swift; sourceTree = "<group>"; };
+		40EC855625E77D6F00149FAA /* TRTCCSAudienceListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCCSAudienceListView.swift; sourceTree = "<group>"; };
+		40EC855725E77D6F00149FAA /* TRTCChatSalonVIewDataDef.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCChatSalonVIewDataDef.swift; sourceTree = "<group>"; };
+		40EC855825E77D6F00149FAA /* TRTCChatSalonViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCChatSalonViewModel.swift; sourceTree = "<group>"; };
+		40EC855925E77D6F00149FAA /* TRTCChatSalonRootView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCChatSalonRootView.swift; sourceTree = "<group>"; };
+		40EC855B25E77D6F00149FAA /* TRTCChatSalonListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCChatSalonListViewController.swift; sourceTree = "<group>"; };
+		40EC855D25E77D6F00149FAA /* TRTCChatSalonListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCChatSalonListCell.swift; sourceTree = "<group>"; };
+		40EC855E25E77D6F00149FAA /* TRTCChatSalonListRootView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCChatSalonListRootView.swift; sourceTree = "<group>"; };
+		40EC855F25E77D6F00149FAA /* TRTCChatSalonListViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCChatSalonListViewModel.swift; sourceTree = "<group>"; };
+		40EC856025E77D6F00149FAA /* TRTCChatSalonAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = TRTCChatSalonAssets.xcassets; sourceTree = "<group>"; };
 		40EF361E24BC3FCD006AA4BB /* TRTCCloudAnction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCCloudAnction.h; sourceTree = "<group>"; };
 		40EF361F24BC3FCD006AA4BB /* TRTCCloudAnction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTCCloudAnction.m; sourceTree = "<group>"; };
 		40EF362124BC3FCD006AA4BB /* TRTCLiveRoomIMAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCLiveRoomIMAction.h; sourceTree = "<group>"; };
@@ -1752,6 +1917,9 @@
 		A0FFAD93213791B70087FF45 /* TVCHttpMessageURLProtocol.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TVCHttpMessageURLProtocol.m; sourceTree = "<group>"; };
 		A256AF019D8E84B3B797494C /* libPods-TXLiteAVDemo_TRTC_AppStore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TXLiteAVDemo_TRTC_AppStore.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A32AD4BB38080AB19D3659FC /* libPods-TXLiteAVDemo_TRTC.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TXLiteAVDemo_TRTC.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C600497725ECE75C00EAEB17 /* TRTCChatSalonHandsUpTipsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TRTCChatSalonHandsUpTipsView.swift; sourceTree = "<group>"; };
+		C667B8DD25F7151400B099FC /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/AppPortalLocalized.strings"; sourceTree = "<group>"; };
+		C667B8E525F7151B00B099FC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/AppPortalLocalized.strings; sourceTree = "<group>"; };
 		CE01F53C206DDE060056D693 /* VideoCompressPreviewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoCompressPreviewController.h; sourceTree = "<group>"; };
 		CE01F53D206DDE060056D693 /* VideoCompressPreviewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoCompressPreviewController.m; sourceTree = "<group>"; };
 		CE45D2971F15C527003506D1 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
@@ -2146,6 +2314,15 @@
 			path = QRScan;
 			sourceTree = "<group>";
 		};
+		405397D825E63C3B00B61D5D /* TRTCChatSalonDemo */ = {
+			isa = PBXGroup;
+			children = (
+				40EC854425E77D6F00149FAA /* ui */,
+				40EC850C25E77AA500149FAA /* model */,
+			);
+			path = TRTCChatSalonDemo;
+			sourceTree = "<group>";
+		};
 		4090F614246ADBBF00EA72A0 /* TRTCMeetingDemo */ = {
 			isa = PBXGroup;
 			children = (
@@ -2166,6 +2343,7 @@
 				4090F78E246AE23B00EA72A0 /* MainMenuCell.m */,
 				4090F78F246AE23B00EA72A0 /* ColorMacro.h */,
 				4090F793246AE25A00EA72A0 /* TRTCPortalAssets.xcassets */,
+				C667B8DE25F7151400B099FC /* AppPortalLocalized.strings */,
 			);
 			path = Portal;
 			sourceTree = "<group>";
@@ -2366,6 +2544,139 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		40EC850C25E77AA500149FAA /* model */ = {
+			isa = PBXGroup;
+			children = (
+				40EC850D25E77AA500149FAA /* Impl */,
+				40EC851C25E77AA500149FAA /* TRTCChatSalon.h */,
+				40EC851D25E77AA500149FAA /* TRTCChatSalonDef.h */,
+				40EC851E25E77AA500149FAA /* TRTCChatSalonDelegate.h */,
+			);
+			path = model;
+			sourceTree = "<group>";
+		};
+		40EC850D25E77AA500149FAA /* Impl */ = {
+			isa = PBXGroup;
+			children = (
+				40EC850E25E77AA500149FAA /* TRTCChatSalonDef.m */,
+				40EC850F25E77AA500149FAA /* trtc */,
+				40EC851225E77AA500149FAA /* chatsalon */,
+				40EC851725E77AA500149FAA /* TRTCChatSalon.m */,
+				40EC851825E77AA500149FAA /* base */,
+			);
+			path = Impl;
+			sourceTree = "<group>";
+		};
+		40EC850F25E77AA500149FAA /* trtc */ = {
+			isa = PBXGroup;
+			children = (
+				40EC851025E77AA500149FAA /* ChatSalonTRTCService.m */,
+				40EC851125E77AA500149FAA /* ChatSalonTRTCService.h */,
+			);
+			path = trtc;
+			sourceTree = "<group>";
+		};
+		40EC851225E77AA500149FAA /* chatsalon */ = {
+			isa = PBXGroup;
+			children = (
+				40EC851325E77AA500149FAA /* TXChatSalonService.m */,
+				40EC851425E77AA500149FAA /* TXChatSalonIMJsonHandle.h */,
+				40EC851525E77AA500149FAA /* TXChatSalonService.h */,
+				40EC851625E77AA500149FAA /* TXChatSalonIMJsonHandle.m */,
+			);
+			path = chatsalon;
+			sourceTree = "<group>";
+		};
+		40EC851825E77AA500149FAA /* base */ = {
+			isa = PBXGroup;
+			children = (
+				40EC851925E77AA500149FAA /* TXChatSalonCommonDef.h */,
+				40EC851A25E77AA500149FAA /* TXChatSalonBaseDef.h */,
+				40EC851B25E77AA500149FAA /* TXChatSalonBaseDef.m */,
+			);
+			path = base;
+			sourceTree = "<group>";
+		};
+		40EC854425E77D6F00149FAA /* ui */ = {
+			isa = PBXGroup;
+			children = (
+				40EC854525E77D6F00149FAA /* TRTCChatSalonEnteryControl.swift */,
+				40EC854625E77D6F00149FAA /* NetworkRoomManager */,
+				40EC854825E77D6F00149FAA /* TRTCCreateChatSalonViewController */,
+				40EC854C25E77D6F00149FAA /* TRTCChatSalonViewController */,
+				40EC855A25E77D6F00149FAA /* TRTCChatSalonListViewController */,
+				40EC856025E77D6F00149FAA /* TRTCChatSalonAssets.xcassets */,
+				40BE0EEE25EF724600C58D6C /* TRTCChatSalonDemoLocalized.strings */,
+				40BE0EF725EF762F00C58D6C /* TRTCChatSalonLocalized.swift */,
+			);
+			path = ui;
+			sourceTree = "<group>";
+		};
+		40EC854625E77D6F00149FAA /* NetworkRoomManager */ = {
+			isa = PBXGroup;
+			children = (
+				40EC854725E77D6F00149FAA /* TRTCChatSalonManager.swift */,
+			);
+			path = NetworkRoomManager;
+			sourceTree = "<group>";
+		};
+		40EC854825E77D6F00149FAA /* TRTCCreateChatSalonViewController */ = {
+			isa = PBXGroup;
+			children = (
+				40EC854925E77D6F00149FAA /* TRTCCreateChatSalonViewModel.swift */,
+				40EC854A25E77D6F00149FAA /* TRTCCreateChatSalonViewController.swift */,
+				40EC854B25E77D6F00149FAA /* TRTCCreateChatSalonRootView.swift */,
+			);
+			path = TRTCCreateChatSalonViewController;
+			sourceTree = "<group>";
+		};
+		40EC854C25E77D6F00149FAA /* TRTCChatSalonViewController */ = {
+			isa = PBXGroup;
+			children = (
+				40EC854E25E77D6F00149FAA /* SubViews */,
+				40EC854D25E77D6F00149FAA /* TRTCChatSalonViewController.swift */,
+				40EC855725E77D6F00149FAA /* TRTCChatSalonVIewDataDef.swift */,
+				40EC855825E77D6F00149FAA /* TRTCChatSalonViewModel.swift */,
+				40EC855925E77D6F00149FAA /* TRTCChatSalonRootView.swift */,
+			);
+			path = TRTCChatSalonViewController;
+			sourceTree = "<group>";
+		};
+		40EC854E25E77D6F00149FAA /* SubViews */ = {
+			isa = PBXGroup;
+			children = (
+				40EC854F25E77D6F00149FAA /* TRTCChatSalonMainMenuView.swift */,
+				40EC855025E77D6F00149FAA /* TRTCChatSalonSeatCell.swift */,
+				40EC855125E77D6F00149FAA /* TRTCChatSalonSeatView.swift */,
+				40EC855225E77D6F00149FAA /* TRTCChatSalonTipsView.swift */,
+				40EC855325E77D6F00149FAA /* TRTCCSAudienceTableViewCell.swift */,
+				40EC855425E77D6F00149FAA /* TRTCChatSalonTipsTableCell.swift */,
+				40EC855625E77D6F00149FAA /* TRTCCSAudienceListView.swift */,
+				40E18DA625ECC2B7002F7CD9 /* TRTCChatSalonTakeSeatTipsView.swift */,
+				C600497725ECE75C00EAEB17 /* TRTCChatSalonHandsUpTipsView.swift */,
+			);
+			path = SubViews;
+			sourceTree = "<group>";
+		};
+		40EC855A25E77D6F00149FAA /* TRTCChatSalonListViewController */ = {
+			isa = PBXGroup;
+			children = (
+				40EC855B25E77D6F00149FAA /* TRTCChatSalonListViewController.swift */,
+				40EC855C25E77D6F00149FAA /* SubViews */,
+				40EC855E25E77D6F00149FAA /* TRTCChatSalonListRootView.swift */,
+				40EC855F25E77D6F00149FAA /* TRTCChatSalonListViewModel.swift */,
+			);
+			path = TRTCChatSalonListViewController;
+			sourceTree = "<group>";
+		};
+		40EC855C25E77D6F00149FAA /* SubViews */ = {
+			isa = PBXGroup;
+			children = (
+				40EC855D25E77D6F00149FAA /* TRTCChatSalonListCell.swift */,
+			);
+			path = SubViews;
+			sourceTree = "<group>";
+		};
 		40EF361D24BC3FCD006AA4BB /* Impl */ = {
 			isa = PBXGroup;
 			children = (
@@ -2456,6 +2767,7 @@
 				40B3F8DB2446E6C5000C37A3 /* Debug */,
 				4011CC0C24E4DDB600C543D7 /* TRTCCallingDemo */,
 				40B3F9252446E6C6000C37A3 /* TRTCLiveRoomDemo */,
+				405397D825E63C3B00B61D5D /* TRTCChatSalonDemo */,
 				40B3F8F52446E6C5000C37A3 /* TRTCVoiceRoomDemo */,
 				4090F614246ADBBF00EA72A0 /* TRTCMeetingDemo */,
 				40F8531D1EE8FC1E00EE47D7 /* Supporting Files */,
@@ -3027,6 +3339,8 @@
 				40B5C6942484BE4800D3A718 /* AudioEffectSettingKitResources.bundle in Resources */,
 				40B3F6C22446E518000C37A3 /* TCBeautyPanelResources.bundle in Resources */,
 				4090F791246AE23B00EA72A0 /* Portal.storyboard in Resources */,
+				40BE0EEB25EF724600C58D6C /* TRTCChatSalonDemoLocalized.strings in Resources */,
+				C667B8DB25F7151400B099FC /* AppPortalLocalized.strings in Resources */,
 				6AAEC26D2497807200B57D86 /* TRTCMeetingRoomDemo.xcassets in Resources */,
 				6A50323624A1A68E00701E6B /* UserProtocol.html in Resources */,
 				40B3F6C72446E518000C37A3 /* FilterResource.bundle in Resources */,
@@ -3034,6 +3348,7 @@
 				40A7CFDA245FC0CF00E792A5 /* TRTCLiveRoomDemo.xcassets in Resources */,
 				4090F794246AE25A00EA72A0 /* TRTCPortalAssets.xcassets in Resources */,
 				40B3F6CA2446E518000C37A3 /* Assets.xcassets in Resources */,
+				40EC85B725E77D6F00149FAA /* TRTCChatSalonAssets.xcassets in Resources */,
 				4040CC5F2497C79400CA4FAA /* TRTCVoiceRoomAssets.xcassets in Resources */,
 				40B3F6CC2446E518000C37A3 /* Main.storyboard in Resources */,
 			);
@@ -3170,13 +3485,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				40EC856325E77D6F00149FAA /* TRTCChatSalonEnteryControl.swift in Sources */,
 				40B3F9A02446E6C6000C37A3 /* TCPlaceHolderTextView.m in Sources */,
 				4011CC3D24E4DDB600C543D7 /* TRTCCallingUtils.m in Sources */,
+				40EC859725E77D6F00149FAA /* TRTCCSAudienceListView.swift in Sources */,
 				4040CC832497C79400CA4FAA /* TRTCVoiceRoomSeatCell.swift in Sources */,
 				40EF363D24BC3FD0006AA4BB /* TRTCLiveRoomModelDef.m in Sources */,
 				40B3F9A22446E6C6000C37A3 /* TCMsgListCell.m in Sources */,
 				6AAEC2B92497807200B57D86 /* TRTCMeeting.m in Sources */,
+				40EC853225E77AA500149FAA /* TRTCChatSalon.m in Sources */,
 				40EF364124BC3FD0006AA4BB /* TRTCLiveRoomDef.m in Sources */,
+				40EC852225E77AA500149FAA /* TRTCChatSalonDef.m in Sources */,
+				C600497A25ECE75C00EAEB17 /* TRTCChatSalonHandsUpTipsView.swift in Sources */,
 				4046B15A24B36AD700F27349 /* TXBaseDef.m in Sources */,
 				6AAEC2B12497807200B57D86 /* TRTCMeetingMemberViewController.swift in Sources */,
 				4041832B2455853000DD70AB /* V8HorizontalPickerView.m in Sources */,
@@ -3185,6 +3505,7 @@
 				4090F790246AE23B00EA72A0 /* PortalViewController.m in Sources */,
 				40B3F9A42446E6C6000C37A3 /* TCMsgModel.m in Sources */,
 				4040CCAB2497C79400CA4FAA /* TRTCVoiceRoomListRootView.swift in Sources */,
+				40EC857B25E77D6F00149FAA /* TRTCChatSalonMainMenuView.swift in Sources */,
 				6AAEC2A52497807200B57D86 /* TRTCMeetingMoreViewShareVC.swift in Sources */,
 				4040CC672497C79400CA4FAA /* TRTCVoiceRoomVIewDataDef.swift in Sources */,
 				4040CCB32497C79400CA4FAA /* TRTCCreateVoiceRoomViewController.swift in Sources */,
@@ -3195,39 +3516,50 @@
 				40E1F44F2468F75300F3D350 /* NSDictionary+Common.m in Sources */,
 				40B3F9B02446E6C6000C37A3 /* LiveRoomMainViewController+UI.swift in Sources */,
 				40B3F9DF2446EF11000C37A3 /* TCLog.m in Sources */,
+				40EC859F25E77D6F00149FAA /* TRTCChatSalonViewModel.swift in Sources */,
 				40EF363124BC3FD0006AA4BB /* TRTCCloudAnction.m in Sources */,
 				4040CCA72497C79400CA4FAA /* TRTCVoiceRoomListViewController.swift in Sources */,
 				4040CC972497C79400CA4FAA /* TRTCVoiceRoomTipsTableCell.swift in Sources */,
 				40B3F9E22446EF11000C37A3 /* TCUtil.m in Sources */,
 				4040CC932497C79400CA4FAA /* TRTCAudienceTableViewCell.swift in Sources */,
 				40B3F6762446E518000C37A3 /* AppDelegate.m in Sources */,
+				40EC856B25E77D6F00149FAA /* TRTCCreateChatSalonViewModel.swift in Sources */,
 				2840D92A24B85E2A00723FBC /* SDWebImagePlaceholderImageManager.swift in Sources */,
 				6AAEC28D2497807200B57D86 /* TRTCMeetingMoreViewVideoVC.swift in Sources */,
 				6AAEC2812497807200B57D86 /* TRTCBroadcastExtensionLauncher.swift in Sources */,
+				40EC852A25E77AA500149FAA /* TXChatSalonService.m in Sources */,
 				6AAEC2C12497807200B57D86 /* IMProtocol.m in Sources */,
 				4011CC2124E4DDB600C543D7 /* TRTCCallingCell.swift in Sources */,
 				40B3F9AB2446E6C6000C37A3 /* BeautyPerformer.swift in Sources */,
 				6AAEC2AD2497807200B57D86 /* TRTCMeetingMoreViewAudioVC.swift in Sources */,
 				4046B16324B36C0A00F27349 /* TRTCLog.swift in Sources */,
+				40EC859B25E77D6F00149FAA /* TRTCChatSalonVIewDataDef.swift in Sources */,
+				40EC857F25E77D6F00149FAA /* TRTCChatSalonSeatCell.swift in Sources */,
 				4046B14E24B36AD700F27349 /* TRTCVoiceRoomDef.m in Sources */,
 				6AAEC2792497807200B57D86 /* TRTCMeetingConst.swift in Sources */,
 				40B3F9AB2446E6C6000C37A3 /* BeautyPerformer.swift in Sources */,
 				4040CC9B2497C79400CA4FAA /* TRTCVoiceRoomMsgInputView.swift in Sources */,
 				40B3F6812446E518000C37A3 /* UIView+Additions.m in Sources */,
 				4040CC7B2497C79400CA4FAA /* UIColor+hex.swift in Sources */,
+				40E18DA925ECC2B7002F7CD9 /* TRTCChatSalonTakeSeatTipsView.swift in Sources */,
 				40B3F9AF2446E6C6000C37A3 /* TCAudienceToolbarView.m in Sources */,
 				40B3F9AA2446E6C6000C37A3 /* TCAnchorToolbarView.m in Sources */,
 				4040CCAF2497C79400CA4FAA /* TRTCVoiceRoomListCell.swift in Sources */,
 				40B3F6852446E518000C37A3 /* NSString+Common.m in Sources */,
 				6AAEC2A12497807200B57D86 /* TRTCMeetingNewViewController+UI.swift in Sources */,
 				6AAEC27D2497807200B57D86 /* TRTCMeetingMainViewController+CollectionView.swift in Sources */,
+				40EC85A325E77D6F00149FAA /* TRTCChatSalonRootView.swift in Sources */,
 				6AAEC2992497807200B57D86 /* TRTCMeetingMoreControllerUI.swift in Sources */,
 				4046B15224B36AD700F27349 /* TXVoiceRoomService.m in Sources */,
+				40EC858F25E77D6F00149FAA /* TRTCChatSalonTipsTableCell.swift in Sources */,
+				40EC858B25E77D6F00149FAA /* TRTCCSAudienceTableViewCell.swift in Sources */,
 				4011CC2D24E4DDB600C543D7 /* TRTCVideoCallViewController.swift in Sources */,
+				40EC85AF25E77D6F00149FAA /* TRTCChatSalonListRootView.swift in Sources */,
 				40EF363524BC3FD0006AA4BB /* TRTCLiveRoomIMAction.m in Sources */,
 				4046B15624B36AD700F27349 /* TXVoiceRoomIMJsonHandle.m in Sources */,
 				4040CC8B2497C79400CA4FAA /* TRTCVoiceRoomSeatView.swift in Sources */,
 				4040CCB72497C79400CA4FAA /* TRTCCreateVoiceRoomRootView.swift in Sources */,
+				40BE0EFA25EF762F00C58D6C /* TRTCChatSalonLocalized.swift in Sources */,
 				40B3F9AC2446E6C6000C37A3 /* TCAnchorViewController+LiveDelegate.swift in Sources */,
 				40E25FCE2480C797005EB543 /* Portal+Swift.swift in Sources */,
 				6AAEC2B52497807200B57D86 /* TXRoomService.m in Sources */,
@@ -3235,8 +3567,10 @@
 				4011CC2524E4DDB600C543D7 /* CallUserModel.swift in Sources */,
 				40EF364C24BC4134006AA4BB /* RoomManager.swift in Sources */,
 				4011CC3924E4DDB600C543D7 /* TRTCCalling.m in Sources */,
+				40EC852E25E77AA500149FAA /* TXChatSalonIMJsonHandle.m in Sources */,
 				4046B15E24B36AD700F27349 /* TRTCVoiceRoom.m in Sources */,
 				6AAEC2892497807200B57D86 /* TRTCMeetingMemberViewController+CollectionView.swift in Sources */,
+				40EC857325E77D6F00149FAA /* TRTCCreateChatSalonRootView.swift in Sources */,
 				4011CC4524E4DDB600C543D7 /* TRTCCalling+Signal.m in Sources */,
 				4040CC632497C79400CA4FAA /* TRTCCreateVoiceRoomViewModel.swift in Sources */,
 				40B3F9AD2446E6C6000C37A3 /* TCAudienceViewController.m in Sources */,
@@ -3244,6 +3578,7 @@
 				40B3F9A92446E6C6000C37A3 /* AnchorPKPanel.swift in Sources */,
 				4046B14A24B36AD700F27349 /* VoiceRoomTRTCService.m in Sources */,
 				402A010624506F740037A219 /* main.m in Sources */,
+				40EC858725E77D6F00149FAA /* TRTCChatSalonTipsView.swift in Sources */,
 				40B3F9AE2446E6C6000C37A3 /* TCAudienceViewController+LiveDelegate.swift in Sources */,
 				40EF364524BC3FD0006AA4BB /* TRTCLiveRoom.m in Sources */,
 				40B3F9A32446E6C6000C37A3 /* TCMsgBarrageView.m in Sources */,
@@ -3251,13 +3586,16 @@
 				6AAEC2912497807200B57D86 /* TRTCMeetingMemberController+UI.swift in Sources */,
 				4040CC872497C79400CA4FAA /* TRTCVoiceRoomViewController.swift in Sources */,
 				4040CCA32497C79400CA4FAA /* TRTCAudienceListView.swift in Sources */,
+				40EC856725E77D6F00149FAA /* TRTCChatSalonManager.swift in Sources */,
 				40B3F6902446E518000C37A3 /* UIButton+Additions.m in Sources */,
 				6AAEC29D2497807200B57D86 /* TRTCMeetingMainViewController.swift in Sources */,
 				40B3FA022447056D000C37A3 /* UIColor+MLPFlatColors.m in Sources */,
 				6AAEC2852497807200B57D86 /* TRTCMeetingMainViewController+UI.swift in Sources */,
 				6AAEC2C52497807200B57D86 /* TXMeetingPair.m in Sources */,
 				4040CC6B2497C79400CA4FAA /* TRTCVoiceRoomListViewModel.swift in Sources */,
+				40EC856F25E77D6F00149FAA /* TRTCCreateChatSalonViewController.swift in Sources */,
 				4040CC8F2497C79400CA4FAA /* TRTCVoiceRoomTipsView.swift in Sources */,
+				40EC853625E77AA500149FAA /* TXChatSalonBaseDef.m in Sources */,
 				4011CC4124E4DDB600C543D7 /* TRTCCallingModel.m in Sources */,
 				40B3F6912446E518000C37A3 /* UIView+CustomAutoLayout.m in Sources */,
 				40B3F6922446E518000C37A3 /* UIViewController+BackButtonHandler.m in Sources */,
@@ -3266,11 +3604,17 @@
 				6AAEC2A92497807200B57D86 /* TRTCMeetingMoreViewController.swift in Sources */,
 				40B3F9A52446E6C6000C37A3 /* TCMsgListTableView.m in Sources */,
 				4040CC6F2497C79400CA4FAA /* TRTCVoiceRoomViewModel.swift in Sources */,
+				40EC857725E77D6F00149FAA /* TRTCChatSalonViewController.swift in Sources */,
 				40B3F9A72446E6C6000C37A3 /* TCAnchorViewController.m in Sources */,
+				40EC85A725E77D6F00149FAA /* TRTCChatSalonListViewController.swift in Sources */,
 				40B3F6972446E518000C37A3 /* NSObject+CommonBlock.m in Sources */,
+				40EC85B325E77D6F00149FAA /* TRTCChatSalonListViewModel.swift in Sources */,
 				4040CC7F2497C79400CA4FAA /* TRTCVoiceRoomMainMenuView.swift in Sources */,
+				40EC852625E77AA500149FAA /* ChatSalonTRTCService.m in Sources */,
 				6AAEC2BD2497807200B57D86 /* TRTCMeetingDef.m in Sources */,
+				40EC85AB25E77D6F00149FAA /* TRTCChatSalonListCell.swift in Sources */,
 				4040CC772497C79400CA4FAA /* TRTCVoiceRoomEnteryControl.swift in Sources */,
+				40EC858325E77D6F00149FAA /* TRTCChatSalonSeatView.swift in Sources */,
 				40EF363924BC3FD0006AA4BB /* TRTCLiveRoomMemberManager.m in Sources */,
 				40B3F69F2446E518000C37A3 /* NSData+Common.m in Sources */,
 				4040CC9F2497C79400CA4FAA /* TRTCVoiceRoomRootView.swift in Sources */,
@@ -3324,6 +3668,15 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		40BE0EEE25EF724600C58D6C /* TRTCChatSalonDemoLocalized.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				40BE0EED25EF724600C58D6C /* en */,
+				40BE0EF625EF724C00C58D6C /* zh-Hans */,
+			);
+			name = TRTCChatSalonDemoLocalized.strings;
+			sourceTree = "<group>";
+		};
 		40F853311EE8FC9B00EE47D7 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -3338,6 +3691,15 @@
 				40F853341EE8FC9B00EE47D7 /* Base */,
 			);
 			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		C667B8DE25F7151400B099FC /* AppPortalLocalized.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C667B8DD25F7151400B099FC /* zh-Hans */,
+				C667B8E525F7151B00B099FC /* en */,
+			);
+			name = AppPortalLocalized.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

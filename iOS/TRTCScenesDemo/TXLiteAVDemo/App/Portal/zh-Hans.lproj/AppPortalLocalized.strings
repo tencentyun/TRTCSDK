@@ -1,0 +1,14 @@
+/*
+ AppPortal.strings
+  TXLiteAVDemo
+
+  Created by jiruizhang on 2021/3/9.
+  Copyright © 2021 Tencent. All rights reserved.
+*/
+"Video Conferencing" = "多人视频会议";
+"Audio Chat Room" = "语音聊天室";
+"Interactive Video Live Streaming" = "视频互动";
+"Audio Call" = "语音通话";
+"Video Call" = "视频通话";
+"Chat Salon" = "语音沙龙";
+
