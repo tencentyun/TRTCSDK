@@ -33,6 +33,8 @@ import com.tencent.liteav.trtccalling.model.TRTCCallingDelegate;
 import com.tencent.liteav.trtccalling.model.impl.TRTCCallingImpl;
 import com.tencent.liteav.trtccalling.ui.audiocall.TRTCAudioCallActivity;
 import com.tencent.liteav.trtccalling.ui.videocall.TRTCVideoCallActivity;
+import com.tencent.liteav.trtcchatsalon.model.TRTCChatSalon;
+import com.tencent.liteav.trtcchatsalon.model.TRTCChatSalonCallback;
 import com.tencent.liteav.trtcvoiceroom.model.TRTCVoiceRoom;
 import com.tencent.liteav.trtcvoiceroom.model.TRTCVoiceRoomCallback;
 
@@ -212,6 +214,7 @@ public class CallService extends Service {
                 initLiveRoom();
                 initMeetingData();
                 initVoiceRoom();
+                initChatSalon();
             }
         });
     }
@@ -305,6 +308,25 @@ public class CallService extends Service {
             public void onCallback(int code, String msg) {
                 if (code == 0) {
                     voiceRoom.setSelfProfile(userModel.userName, userModel.userAvatar, new TRTCVoiceRoomCallback.ActionCallback() {
+                        @Override
+                        public void onCallback(int code, String msg) {
+                            if (code == 0) {
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    private void initChatSalon() {
+        final UserModel     userModel = ProfileManager.getInstance().getUserModel();
+        final TRTCChatSalon chatSalonRoom = TRTCChatSalon.sharedInstance(this);
+        chatSalonRoom.login(GenerateTestUserSig.SDKAPPID, userModel.userId, userModel.userSig, new TRTCChatSalonCallback.ActionCallback() {
+            @Override
+            public void onCallback(int code, String msg) {
+                if (code == 0) {
+                    chatSalonRoom.setSelfProfile(userModel.userName, userModel.userAvatar, new TRTCChatSalonCallback.ActionCallback() {
                         @Override
                         public void onCallback(int code, String msg) {
                             if (code == 0) {

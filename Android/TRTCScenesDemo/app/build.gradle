@@ -48,6 +48,7 @@ dependencies {
     compile project(':trtcvoiceroomdemo')
     compile project(':trtccallingdemo')
     compile project(':trtcmeetingdemo')
+    compile project(':trtcchatsalondemo')
     compile project(':login')
 
     compile 'com.android.support:appcompat-v7:25.+'

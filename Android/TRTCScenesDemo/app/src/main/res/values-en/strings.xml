@@ -12,4 +12,10 @@
     <string name="str_room_id_tips">Input Room Id</string>
     <string name="str_user_id_tips">Input Username</string>
 
+    <string name="item_video_conferencing">Video Conferencing</string>
+    <string name="item_chat_room">Audio Chat Room</string>
+    <string name="item_video_interactive_live_streaming">Interactive Video</string>
+    <string name="item_voice_call">Audio Call</string>
+    <string name="item_video_call">Video Call</string>
+    <string name="item_chat_salon">Chat Salon</string>
 </resources>

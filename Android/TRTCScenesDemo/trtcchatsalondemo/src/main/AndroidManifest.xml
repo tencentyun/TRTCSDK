@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.tencent.liteav.trtcchatsalon">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application>
+        <activity
+            android:name="com.tencent.liteav.trtcchatsalon.ui.room.ChatSalonAnchorActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:launchMode="singleTop"
+            android:theme="@style/TRTChatSalonChatTheme"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.tencent.liteav.trtcchatsalon.ui.room.ChatSalonAudienceActivity"
+            android:configChanges="orientation|keyboardHidden"
+
+            android:launchMode="singleTop"
+            android:theme="@style/TRTChatSalonChatTheme"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.tencent.liteav.trtcchatsalon.ui.list.ChatSalonListActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:launchMode="singleTask"
+            android:theme="@style/TRTChatSalonChatTheme"
+            android:screenOrientation="portrait" />
+        <activity android:name="com.tencent.liteav.trtcchatsalon.ui.list.ChatSalonCreateActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:launchMode="singleTop"
+            android:theme="@style/TRTChatSalonChatTheme"
+            android:screenOrientation="portrait" />
+    </application>
+
+</manifest>

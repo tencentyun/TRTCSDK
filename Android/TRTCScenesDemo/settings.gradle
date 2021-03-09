@@ -7,6 +7,7 @@ include ':trtccallingdemo'
 include ':trtcliveroomdemo'
 include ':trtcvoiceroomdemo'
 include ':trtcmeetingdemo'
+include ':trtcchatsalondemo'
 include ':audioeffectsettingkit'
 
 

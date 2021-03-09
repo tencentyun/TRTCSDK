@@ -16,4 +16,11 @@
 
     <string name="main_privacy_text" translatable="false">点击查看<a href="http://privacy.qq.com/">隐私政策</a></string>
     <string name="working">正在运行中</string>
+
+    <string name="item_video_conferencing">多人视频会议</string>
+    <string name="item_chat_room">语音聊天室</string>
+    <string name="item_video_interactive_live_streaming">视频互动直播</string>
+    <string name="item_voice_call">语音通话</string>
+    <string name="item_video_call">视频通话</string>
+    <string name="item_chat_salon">语音沙龙</string>
 </resources>

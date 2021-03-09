@@ -11,4 +11,11 @@
 
     <string name="str_room_id_tips">输入房间号</string>
     <string name="str_user_id_tips">输入用户名</string>
+
+    <string name="item_video_conferencing">多人视频会议</string>
+    <string name="item_chat_room">语音聊天室</string>
+    <string name="item_video_interactive_live_streaming">视频互动直播</string>
+    <string name="item_voice_call">语音通话</string>
+    <string name="item_video_call">视频通话</string>
+    <string name="item_chat_salon">语音沙龙</string>
 </resources>
