@@ -154,9 +154,12 @@ namespace TRTCCSharpDemo
         private void OnDisposed(object sender, EventArgs e)
         {
             // 清理资源
-            mTRTCCloud.removeCallback(this);
-            mTRTCCloud.setLogCallback(null);
-            mTRTCCloud = null;
+            if (mTRTCCloud != null)
+            {
+                mTRTCCloud.removeCallback(this);
+                mTRTCCloud.setLogCallback(null);
+                mTRTCCloud = null;
+            }
             mDeviceManager = null;
         }
 
@@ -1839,7 +1842,10 @@ namespace TRTCCSharpDemo
             else
             {
                 // 关闭自定义采集音频，开启本地采集音频
-                mTRTCCloud.startLocalAudio(DataManager.GetInstance().AudioQuality);
+                if (this.startLocalAudioCheckBox.Checked)
+                {
+                    mTRTCCloud.startLocalAudio(DataManager.GetInstance().AudioQuality);
+                }
                 if (this.muteAudioCheckBox.Checked)
                     mTRTCCloud.muteLocalAudio(true);
                 else
@@ -1853,6 +1859,7 @@ namespace TRTCCSharpDemo
             {
                 // 开启自定义采集视频，停止本地采集视频，开启自定义渲染视频
                 mTRTCCloud.stopLocalPreview();
+                this.localInfoLabel.Visible = false;
                 if (mRenderMode == 1)
                 {
                     AddCustomVideoView(this.localVideoPanel, mUserId, TRTCVideoStreamType.TRTCVideoStreamTypeBig, true);
@@ -1861,15 +1868,27 @@ namespace TRTCCSharpDemo
             else
             {
                 // 关闭自定义采集视频，开启本地采集视频，关闭自定义渲染视频
-                mTRTCCloud.startLocalPreview(mCameraVideoHandle);
+                if (this.startLocalPreviewCheckBox.Checked)
+                {
+                    mTRTCCloud.startLocalPreview(mCameraVideoHandle);
+                }
+                else
+                {
+                    this.localInfoLabel.Visible = true;
+                }
                 if (mRenderMode == 1)
                 {
                     RemoveCustomVideoView(this.localVideoPanel, mUserId, TRTCVideoStreamType.TRTCVideoStreamTypeBig, true);
                 }
                 if (this.muteVideoCheckBox.Checked)
+                {
                     mTRTCCloud.muteLocalVideo(true);
+                    this.localInfoLabel.Visible = true;
+                }
                 else
+                {
                     mTRTCCloud.muteLocalVideo(false);
+                }
             }
         }
 

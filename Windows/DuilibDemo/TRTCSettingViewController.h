@@ -58,6 +58,7 @@ public: //cb
     virtual void NotifyRecordTab(TNotifyUI& msg);
     virtual void NotifyAudioRecord(TNotifyUI& msg);
     virtual void NotifyLocalRecord(TNotifyUI& msg);
+    virtual void NotifyVodTab(TNotifyUI& msg);
     virtual CControlUI* CreateControl(LPCTSTR pstrClass);
 
     //ITRTCCloudCallback
@@ -87,6 +88,7 @@ private:
     void InitOtherTab();
     void InitMixTab();
     void InitRecordTab();
+    void InitVodTab();
     void UpdateCameraDevice();
     void UpdateMicDevice();
     void UpdateSpeakerDevice();

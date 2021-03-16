@@ -18,8 +18,8 @@ class TRTCMainViewController;
 class TRTCSettingViewController;
 class AudioEffectViewController;
 class AudioEffectOldViewController;
-class MainViewBottomBar : public INotifyUI, public IMessageFilterUI
-{
+class VodPlayerViewController;
+class MainViewBottomBar : public INotifyUI, public IMessageFilterUI {
 public:
     MainViewBottomBar(TRTCMainViewController * pMainWnd = nullptr);
     ~MainViewBottomBar();
@@ -47,12 +47,16 @@ public:
     void onDisconnectOtherRoom(int errCode, std::string errMsg);
 private:
     void OpenAudioEffectWnd();
+    void OpenVodPlayerWnd();
 private:
     TRTCSettingViewController* m_pSettingWnd = nullptr;
     TRTCMainViewController *m_pMainWnd = nullptr;
 
     AudioEffectViewController *m_pAudioEffectWnd = nullptr;
     AudioEffectOldViewController *m_pAudioEffectOldWnd = nullptr;
+
+    VodPlayerViewController *m_pVodPlayerViewWnd = nullptr;
+
     bool m_bPlay = false;
     bool m_bShowLectureModeUi = false;
     int m_showDashboardStyle = 0;

@@ -1189,6 +1189,9 @@ namespace DuiLib {
 			ASSERT( *pstrList == _T('\"') );
 			if( *pstrList++ != _T('\"') ) return this;
 			SetAttribute(sItem, sValue);
+            if (*pstrList == _T('\0')){
+                return this;
+            }
 			if( *pstrList++ != _T(' ') && *pstrList++ != _T(',') ) return this;
 		}
 		return this;

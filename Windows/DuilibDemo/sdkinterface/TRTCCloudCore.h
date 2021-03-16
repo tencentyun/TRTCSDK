@@ -23,7 +23,6 @@ typedef void(__cdecl *DestroyTXLivePlayer)(ITXLivePlayer** pTXlivePlayer);
 class TRTCCloudCore 
     : public ITRTCCloudCallback
     , public ITRTCLogCallback
-    , public ITXVodPlayerCallback
     , public ITRTCAudioFrameCallback
     , public TXLiteAVLocalRecordCallback
 {
@@ -82,9 +81,6 @@ public:
     virtual void onDeviceChange(const char* deviceId, TRTCDeviceType type, TRTCDeviceState state);
     virtual void onScreenCaptureStarted();
     virtual void onScreenCaptureStoped(int reason);
-    virtual void onVodPlayerStarted(uint64_t msLength);
-    virtual void onVodPlayerStoped(int reason);
-    virtual void onVodPlayerError(int error) override;
     virtual void onLog(const char* log, TRTCLogLevel level, const char* module);
     virtual void onConnectOtherRoom(const char* userId, TXLiteAVError errCode, const char* errMsg);
     virtual void onDisconnectOtherRoom(TXLiteAVError errCode, const char* errMsg);
@@ -148,6 +144,7 @@ public:
     void stopCustomCaptureAudio();
     void startCustomCaptureVideo(std::wstring filePat, int width, int height);
     void stopCustomCaptureVideo();
+    void switchVodRender(VodRenderMode vodRenderMode);
 
     void sendCustomAudioFrame();
     void sendCustomVideoFrame();
@@ -168,7 +165,6 @@ private:
     std::multimap<uint32_t, HWND> m_mapSDKMsgFilter;    // userId和VideoView*的映射map
     std::mutex m_mutexMsgFilter;
     ITRTCCloud* m_pCloud = nullptr;
-    ITXVodPlayer* m_pVodPlayer = nullptr;
     ITXLivePlayer* m_pLivePlayer = nullptr;
     ITXDeviceManager* m_pDeviceManager = nullptr;
     bool m_bStartLocalPreview = false;
