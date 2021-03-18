@@ -18,7 +18,7 @@
 #import "UIColor+MLPFlatColors.h"
 #import "TXLiteAVDemo-Swift.h"
 
-@interface TCAnchorToolbarView ()
+@interface TCAnchorToolbarView ()<AudioEffectViewDelegate>
 
 @property(strong, nonatomic)TCShowLiveTopView *topView;
 
@@ -325,6 +325,7 @@
     //********************
     // 音乐
     _vMusicPanel = [[AudioEffectSettingView alloc] initWithType:AudioEffectSettingViewCustom];
+    _vMusicPanel.delegate = self;
     //***
     //BGM
     _vBGMPanel = [[UIView alloc] init];
@@ -1013,6 +1014,12 @@
     return YES;
 }
 
+- (void)onEffectViewHidden:(BOOL)isHidden {
+    if (isHidden) {
+        [self addGestureRecognizer:_tap];
+    }
+}
+
 #pragma mark - 滑动隐藏界面UI
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
@@ -1042,7 +1049,6 @@
     
     if (!_vMusicPanel.isHidden && !_isTouchMusicPanel) {
         [_vMusicPanel hide];
-        [self addGestureRecognizer:_tap];
     }
 }
 

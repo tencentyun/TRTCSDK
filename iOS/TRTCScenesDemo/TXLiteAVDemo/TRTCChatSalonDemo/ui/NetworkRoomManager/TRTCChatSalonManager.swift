@@ -40,7 +40,7 @@ let chatSalonBaseUrl = "https://service-c2zjvuxa-1252463788.gz.apigw.tencentcs.c
                                  success: @escaping ()->Void,
                                  failed: @escaping (_ code: Int32,  _ error: String)-> Void) {
         let params = ["method":"createRoom", "appId":String(sdkAppID),
-                      "type":"voiceRoom", "roomId":roomID] as [String : Any]
+                      "type":"chatSalon", "roomId":roomID] as [String : Any]
         Alamofire.request(chatSalonBaseUrl, method: .post, parameters: params).responseJSON {(data) in
             if let respData = data.data, respData.count > 0 {
                 let decoder = JSONDecoder()
@@ -63,7 +63,7 @@ let chatSalonBaseUrl = "https://service-c2zjvuxa-1252463788.gz.apigw.tencentcs.c
     success: @escaping ()->Void,
     failed: @escaping (_ code: Int32,  _ error: String)-> Void) {
         let params = ["method":"destroyRoom", "appId":String(sdkAppID),
-                      "type":"voiceRoom", "roomId":roomID] as [String : Any]
+                      "type":"chatSalon", "roomId":roomID] as [String : Any]
         Alamofire.request(chatSalonBaseUrl, method: .post, parameters: params).responseJSON {(data) in
             if let respData = data.data, respData.count > 0 {
                 let decoder = JSONDecoder()
@@ -86,7 +86,7 @@ let chatSalonBaseUrl = "https://service-c2zjvuxa-1252463788.gz.apigw.tencentcs.c
                                   success: @escaping (_ roomIDs:[String])->Void,
                                   failed: @escaping (_ code: Int32,  _ error: String)-> Void) {
         let params = ["method":"getRoomList", "appId":String(sdkAppID),
-                      "type":"voiceRoom"] as [String : Any]
+                      "type":"chatSalon"] as [String : Any]
         Alamofire.request(chatSalonBaseUrl, method: .post, parameters: params).responseJSON {(data) in
             if let respData = data.data, respData.count > 0 {
                 let decoder = JSONDecoder()

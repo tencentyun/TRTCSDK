@@ -129,12 +129,10 @@ class TRTCVoiceRoomViewModel: NSObject {
             return false
         }
         isSelfMute = isMute
+        voiceRoom.muteLocalAudio(mute: isMute)
         if isMute {
-            voiceRoom.stopMicrophone()
-            viewResponder?.stopPlayBGM()
             viewResponder?.showToast(message: "已关闭麦克风")
         } else {
-            voiceRoom.startMicrophone()
             viewResponder?.recoveryVoiceSetting()
             viewResponder?.showToast(message: "已打开麦克风")
         }
