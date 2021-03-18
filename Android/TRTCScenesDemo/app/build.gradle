@@ -9,7 +9,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 14
-        versionName "8.4.664"
+        versionName "8.5.677"
 
         multiDexEnabled true
         ndk {

@@ -132,7 +132,6 @@ public class VoiceRoomBaseActivity extends AppCompatActivity implements VoiceRoo
                         ToastUtils.showLong("您已开启麦克风");
                     } else {
                         mTRTCVoiceRoom.stopMicrophone();
-                        mAnchorAudioPanel.stopPlay();
                         ToastUtils.showLong("您已关闭麦克风");
                     }
                 }

@@ -142,7 +142,7 @@ public class ChatSalonListFragment extends Fragment implements SwipeRefreshLayou
     private void getRoomList() {
         mSwipeRefreshLayout.setRefreshing(true);
         // 首先从后台获取 房间列表的id
-        RoomManager.getInstance().getRoomList(TCConstants.TYPE_VOICE_ROOM, new RoomManager.GetRoomListCallback() {
+        RoomManager.getInstance().getRoomList(TCConstants.TYPE_CHAT_SALON, new RoomManager.GetRoomListCallback() {
             @Override
             public void onSuccess(final List<String> roomIdList) {
                 if (!CollectionUtils.isEmpty(roomIdList)) {

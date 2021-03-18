@@ -69,7 +69,7 @@ public class TRTCMainActivity extends Activity {
         }
         setContentView(R.layout.activity_trtc_main);
         mTvVersion = (TextView) findViewById(R.id.main_tv_version);
-        mTvVersion.setText("腾讯云 TRTC v" + TXLiveBase.getSDKVersionStr()+"(8.4.664)");
+        mTvVersion.setText("腾讯云 TRTC v" + TXLiveBase.getSDKVersionStr()+"(8.5.677)");
         mMainTitle = (TextView) findViewById(R.id.main_title);
         mMainTitle.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -202,7 +202,7 @@ public class TRTCMainActivity extends Activity {
     }
 
     private File getLogFile() {
-        String       path      = getExternalFilesDir(null).getAbsolutePath() + "/log/tencent/liteav";
+        String       path      = getExternalFilesDir(null).getAbsolutePath() + "/log/liteav";
         List<String> logs      = new ArrayList<>();
         File         directory = new File(path);
         if (directory != null && directory.exists() && directory.isDirectory()) {

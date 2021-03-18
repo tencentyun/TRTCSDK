@@ -77,7 +77,7 @@ public class ChatSalonAnchorActivity extends ChatSalonBaseActivity {
     }
 
     private void destroyRoom() {
-        RoomManager.getInstance().destroyRoom(mRoomId, TCConstants.TYPE_VOICE_ROOM, new RoomManager.ActionCallback() {
+        RoomManager.getInstance().destroyRoom(mRoomId, TCConstants.TYPE_CHAT_SALON, new RoomManager.ActionCallback() {
             @Override
             public void onSuccess() {
                 Log.d(TAG, "destroyRoom success");
@@ -114,7 +114,7 @@ public class ChatSalonAnchorActivity extends ChatSalonBaseActivity {
         mCurrentRole = TRTCCloudDef.TRTCRoleAnchor;
         //设置昵称、头像
         mTRTCChatSalon.setSelfProfile(mUserName, mUserAvatar, null);
-        RoomManager.getInstance().createRoom(mRoomId, TCConstants.TYPE_VOICE_ROOM, new RoomManager.ActionCallback() {
+        RoomManager.getInstance().createRoom(mRoomId, TCConstants.TYPE_CHAT_SALON, new RoomManager.ActionCallback() {
             @Override
             public void onSuccess() {
                 internalCreateRoom();
