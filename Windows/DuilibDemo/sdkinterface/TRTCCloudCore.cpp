@@ -416,28 +416,35 @@ void TRTCCloudCore::onScreenCaptureStoped(int reason)
     }
 }
 
-//void TRTCCloudCore::onVodPlayerStarted(uint64_t msLength) {
-//    for (auto& itr : m_mapSDKMsgFilter) {
-//        if (itr.first == WM_USER_CMD_VodStart && itr.second != nullptr) {
-//            ::PostMessage(itr.second, WM_USER_CMD_VodStart, 0, 0);
-//        }
-//    }
-//}
+void TRTCCloudCore::onVodPlayerStarted(uint64_t msLength)
+{
+    for (auto& itr : m_mapSDKMsgFilter)
+    {
+        if (itr.first == WM_USER_CMD_VodStart && itr.second != nullptr)
+        {
+            ::PostMessage(itr.second, WM_USER_CMD_VodStart, 0, 0);
+        }
+    }
+}
 
-//void TRTCCloudCore::onVodPlayerStoped(int reason)
-//{
-//    for (auto& itr : m_mapSDKMsgFilter)
-//    {
-//        if (itr.first == WM_USER_CMD_VodEnd && itr.second != nullptr)
-//        {
-//            ::PostMessage(itr.second, WM_USER_CMD_VodEnd, 0, 0);
-//        }
-//    }
-//    if (m_pVodPlayer) {
-//        destroyTXVodPlayer(&m_pVodPlayer);
-//        m_pVodPlayer = nullptr;
-//    }
-//}
+void TRTCCloudCore::onVodPlayerStoped(int reason)
+{
+    for (auto& itr : m_mapSDKMsgFilter)
+    {
+        if (itr.first == WM_USER_CMD_VodEnd && itr.second != nullptr)
+        {
+            ::PostMessage(itr.second, WM_USER_CMD_VodEnd, 0, 0);
+        }
+    }
+    if (m_pVodPlayer) {
+        destroyTXVodPlayer(&m_pVodPlayer);
+        m_pVodPlayer = nullptr;
+    }
+}
+
+void TRTCCloudCore::onVodPlayerError(int error)
+{
+}
 
 void TRTCCloudCore::onDeviceChange(const char* deviceId, TRTCDeviceType type, TRTCDeviceState state)
 {
@@ -1075,12 +1082,12 @@ void TRTCCloudCore::stopScreen()
 
 void TRTCCloudCore::startMedia(const char * mediaFile, HWND rendHwnd)
 {
-   /* stopMedia();
+    stopMedia();
     if (m_pVodPlayer == nullptr)
     {
         m_pVodPlayer = createTXVodPlayer(mediaFile);
         m_pVodPlayer->setCallback(this);
-    }*/
+    }
     //m_pCloud->setSubStreamDataSource(m_pVodPlayer, rendHwnd);
 }
 
@@ -1563,15 +1570,8 @@ void TRTCCloudCore::stopCustomCaptureVideo()
     }
 }
 
-void TRTCCloudCore::switchVodRender(VodRenderMode vodRenderMode) {
-    for (auto& itr : m_mapSDKMsgFilter) {
-        if (itr.first == WM_USER_CMD_OnVodPlayerRenderMode && itr.second != nullptr) {
-            ::PostMessage(itr.second, WM_USER_CMD_OnVodPlayerRenderMode, vodRenderMode, 0);
-        }
-    }
-}
-
-void TRTCCloudCore::sendCustomAudioFrame() {
+void TRTCCloudCore::sendCustomAudioFrame()
+{
     if (!m_bStartCustomCaptureAudio)
         return;
     if (m_pCloud)
@@ -1628,7 +1628,7 @@ void TRTCCloudCore::sendCustomVideoFrame()
         frame.data = _video_buffer;
         frame.width = _video_width;
         frame.height = _video_height;
-        m_pCloud->sendCustomVideoData(TRTCVideoStreamTypeBig, & frame);
+        m_pCloud->sendCustomVideoData(&frame);
     }
 }
 

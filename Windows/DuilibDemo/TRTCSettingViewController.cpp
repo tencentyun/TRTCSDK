@@ -136,8 +136,6 @@ void TRTCSettingViewController::Notify(TNotifyUI & msg)
     NotifyRecordTab(msg);
     NotifyAudioRecord(msg);
     NotifyLocalRecord(msg);
-    NotifyVodTab(msg);
-
     CDuiString name = msg.pSender->GetName();
     if (msg.sType == _T("selectchanged"))  
     {
@@ -148,7 +146,6 @@ void TRTCSettingViewController::Notify(TNotifyUI & msg)
         if (name.CompareNoCase(_T("mix_tab")) == 0) pTabSwitch->SelectItem(3);
         if (name.CompareNoCase(_T("record_tab")) == 0) pTabSwitch->SelectItem(4);
         if (name.CompareNoCase(_T("other_tab")) == 0) pTabSwitch->SelectItem(5);
-        if (name.CompareNoCase(_T("vod_tab")) == 0) pTabSwitch->SelectItem(6);
         if (name.CompareNoCase(_T("qos_smooth")) == 0) {  
             CDataCenter::GetInstance()->m_qosParams.preference = TRTCVideoQosPreferenceSmooth;
 
@@ -1641,52 +1638,6 @@ void TRTCSettingViewController::NotifyLocalRecord(TNotifyUI & msg)
         }
     }
 }
-void TRTCSettingViewController::NotifyVodTab(TNotifyUI& msg) {
-    if (!is_init_windows_finished) {
-        return;
-    }
-    CDuiString name = msg.pSender->GetName();
-    if (msg.sType == _T("click")) {
-        if (msg.pSender->GetName() == _T("check_push_stream")) {
-            COptionUI* pOpenSender = static_cast<COptionUI*>(msg.pSender);
-            if (pOpenSender->IsSelected() == false){
-                TRTCCloudCore::GetInstance()->getTRTCCloud()->enableMixExternalAudioFrame(
-                    true, CDataCenter::GetInstance()->append_audio_play);
-                TRTCCloudCore::GetInstance()->getTRTCCloud()->enableCustomVideoCapture(
-                    TRTCVideoStreamTypeSub, true);
-                CDataCenter::GetInstance()->vod_push_ = true;
-            } else {
-                TRTCCloudCore::GetInstance()->getTRTCCloud()->enableMixExternalAudioFrame(
-                    false, CDataCenter::GetInstance()->append_audio_play);
-                TRTCCloudCore::GetInstance()->getTRTCCloud()->enableCustomVideoCapture(
-                    TRTCVideoStreamTypeSub, false);
-                CDataCenter::GetInstance()->vod_push_ = false;
-            }
-        } 
-        else if (msg.pSender->GetName() == _T("check_audio_play_stream")) {
-            COptionUI* pOpenSender = static_cast<COptionUI*>(msg.pSender);
-            if (pOpenSender->IsSelected() == false) {
-                TRTCCloudCore::GetInstance()->getTRTCCloud()->enableMixExternalAudioFrame(
-                    CDataCenter::GetInstance()->vod_push_, true);
-                CDataCenter::GetInstance()->append_audio_play = true;
-            } else {
-                TRTCCloudCore::GetInstance()->getTRTCCloud()->enableMixExternalAudioFrame(
-                    CDataCenter::GetInstance()->vod_push_, false);
-                CDataCenter::GetInstance()->append_audio_play = false;
-            }
-        }
-        else if (msg.pSender->GetName() == _T("vod_wnd_render")) {
-            CDataCenter::GetInstance()->vod_render_mode_ = VOD_RENDER_WND;
-            TRTCCloudCore::GetInstance()->switchVodRender(VOD_RENDER_WND);
-        } else if (msg.pSender->GetName() == _T("vod_render")) {
-            CDataCenter::GetInstance()->vod_render_mode_ = VOD_RENDER_CUSTOM;
-            TRTCCloudCore::GetInstance()->switchVodRender(VOD_RENDER_CUSTOM);
-        } else if (msg.pSender->GetName() == _T("trtc_render")) {
-            CDataCenter::GetInstance()->vod_render_mode_ = VOD_RENDER_TRTC;
-            TRTCCloudCore::GetInstance()->switchVodRender(VOD_RENDER_TRTC);
-        }
-    }
-}
 
 DuiLib::CControlUI* TRTCSettingViewController::CreateControl(LPCTSTR pstrClass)
 {
@@ -1814,7 +1765,6 @@ void TRTCSettingViewController::InitWindow()
     InitOtherTab();
     InitMixTab();
     InitRecordTab();
-    InitVodTab();
 
     //初始化tab面板  
     CTabLayoutUI* pTabSwitch = static_cast<CTabLayoutUI*>(m_pmUI.FindControl(_T("tab_switch")));
@@ -2534,37 +2484,6 @@ void TRTCSettingViewController::InitRecordTab()
             pCheckMixAppAudioUI->Selected(false);
         }
     }
-}
-
-void TRTCSettingViewController::InitVodTab() {
-    COptionUI* pVodPush = static_cast<COptionUI*>(m_pmUI.FindControl(_T("check_push_stream")));
-    if (pVodPush) {
-        pVodPush->Selected(CDataCenter::GetInstance()->vod_push_);
-    }
-    COptionUI* pTRTCAppendAudioPlay =
-        static_cast<COptionUI*>(m_pmUI.FindControl(_T("check_audio_play_stream")));
-    if (pTRTCAppendAudioPlay) {
-        pTRTCAppendAudioPlay->Selected(CDataCenter::GetInstance()->append_audio_play);
-    }
-    COptionUI* pRenderModeVodWnd =
-        static_cast<COptionUI*>(m_pmUI.FindControl(_T("vod_wnd_render")));
-    COptionUI* pRenderModeVodCustom = static_cast<COptionUI*>(m_pmUI.FindControl(_T("vod_render")));
-    COptionUI* pRenderModeTRTCWnd = static_cast<COptionUI*>(m_pmUI.FindControl(_T("trtc_render")));
-    if (pRenderModeVodWnd && pRenderModeVodCustom && pRenderModeTRTCWnd)
-    {
-        pRenderModeVodWnd->Selected(false);
-        pRenderModeVodCustom->Selected(false);
-        pRenderModeTRTCWnd->Selected(false);
-
-        if (CDataCenter::GetInstance()->vod_render_mode_ == VOD_RENDER_WND){
-            pRenderModeVodWnd->Selected(true);
-        } else if (CDataCenter::GetInstance()->vod_render_mode_ == VOD_RENDER_CUSTOM) {
-            pRenderModeVodCustom->Selected(true);
-        } else if (CDataCenter::GetInstance()->vod_render_mode_ == VOD_RENDER_TRTC) {
-            pRenderModeTRTCWnd->Selected(true);
-        }
-    }
-    
 }
 
 void TRTCSettingViewController::UpdateCameraDevice()

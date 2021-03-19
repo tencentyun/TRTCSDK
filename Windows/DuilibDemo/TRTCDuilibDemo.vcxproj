@@ -263,19 +263,16 @@ xcopy /E /Y "$(ProjectDir)res\resouce" "$(OutDir)"</Command>
     <ClCompile Include="TRTCMainViewController.cpp" />
     <ClCompile Include="TRTCSettingViewController.cpp" />
     <ClCompile Include="TRTCVideoViewLayout.cpp" />
-    <ClCompile Include="uicontrol\FileDialog.cpp" />
     <ClCompile Include="uicontrol\MainViewBottomBar.cpp" />
     <ClCompile Include="uicontrol\MsgBoxWnd.cpp" />
     <ClCompile Include="uicontrol\PopBoxWnd.cpp" />
     <ClCompile Include="uicontrol\TXLiveAvVideoView.cpp" />
-    <ClCompile Include="uicontrol\VideoWnd.cpp" />
     <ClCompile Include="userlist\UserItem.cpp" />
     <ClCompile Include="userlist\UserListController.cpp" />
     <ClCompile Include="utils\BugReport.cpp" />
     <ClCompile Include="utils\ConfigMgr.cpp" />
     <ClCompile Include="utils\DataCenter.cpp" />
     <ClCompile Include="utils\TrtcUtil.cpp" />
-    <ClCompile Include="VodPlayerViewController.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioEffectOldViewController.h" />
@@ -315,12 +312,10 @@ xcopy /E /Y "$(ProjectDir)res\resouce" "$(OutDir)"</Command>
     <ClInclude Include="TRTCMainViewController.h" />
     <ClInclude Include="TRTCSettingViewController.h" />
     <ClInclude Include="TRTCVideoViewLayout.h" />
-    <ClInclude Include="uicontrol\FileDialog.h" />
     <ClInclude Include="uicontrol\MainViewBottomBar.h" />
     <ClInclude Include="uicontrol\MsgBoxWnd.h" />
     <ClInclude Include="uicontrol\PopBoxWnd.h" />
     <ClInclude Include="uicontrol\TXLiveAvVideoView.h" />
-    <ClInclude Include="uicontrol\VideoWnd.h" />
     <ClInclude Include="userlist\UserItem.h" />
     <ClInclude Include="userlist\UserListController.h" />
     <ClInclude Include="utils\BugReport.h" />
@@ -328,7 +323,6 @@ xcopy /E /Y "$(ProjectDir)res\resouce" "$(OutDir)"</Command>
     <ClInclude Include="utils\crash_agent.h" />
     <ClInclude Include="utils\DataCenter.h" />
     <ClInclude Include="utils\TrtcUtil.h" />
-    <ClInclude Include="VodPlayerViewController.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="TRTCDuilibDemo.rc" />

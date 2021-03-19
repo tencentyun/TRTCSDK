@@ -306,12 +306,6 @@ void CDataCenter::Init()
     else
         m_strSocks5ProxyPort = 0;
 
-
-    bRet = m_pConfigMgr->GetValue(INI_ROOT_KEY, INI_KEY_LOCAL_VIDEO_MIRROR, strParam);
-    if (bRet)
-        m_bLocalVideoMirror = _wtoi(strParam.c_str());
-    else
-        m_bLocalVideoMirror = false;
 }
 
 void CDataCenter::WriteEngineConfig()

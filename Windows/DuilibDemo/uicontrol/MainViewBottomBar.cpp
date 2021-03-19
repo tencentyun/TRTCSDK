@@ -15,7 +15,6 @@
 #include "UserMassegeIdDefine.h"
 #include "AudioEffectViewController.h"
 #include "AudioEffectOldViewController.h"
-#include "VodPlayerViewController.h"
 
 MainViewBottomBar::MainViewBottomBar(TRTCMainViewController * pMainWnd)
 {
@@ -61,6 +60,10 @@ void MainViewBottomBar::Notify(TNotifyUI& msg)
         }
         else if (msg.pSender->GetName() == _T("btn_quit_room"))
         {
+            if (CDataCenter::GetInstance()->m_emLivePlayerSourceType == TRTC_CDN) {
+                TRTCCloudCore::GetInstance()->getTXLivePlayer()->setCallback(nullptr, nullptr);
+                TRTCCloudCore::GetInstance()->getTXLivePlayer()->stopPlay();
+            }
             if (m_pMainWnd)
                 m_pMainWnd->exitRoom();
         }
@@ -294,19 +297,24 @@ void MainViewBottomBar::Notify(TNotifyUI& msg)
                 pStatus->SetText(statusText.c_str());
                 msg.pSender->SetEnabled(false);
             }
-        } else if (msg.pSender->GetName() == _T("btn_pkview_stop")) {
+        }
+        else if (msg.pSender->GetName() == _T("btn_pkview_stop"))
+        {
             TRTCCloudCore::GetInstance()->getTRTCCloud()->disconnectOtherRoom();
-        } else if (msg.pSender->GetName() == _T("btn_member")) {
+        }
+        else if (msg.pSender->GetName() == _T("btn_member"))
+        {
             onBtnMemberClick();
-        } else if (msg.pSender->GetName() == _T("btn_music")) {
-            OpenAudioEffectWnd();
-        } else if (msg.pSender->GetName() == _T("btn_player")) {
-            OpenVodPlayerWnd();
+        }
+        else if (msg.pSender->GetName() == _T("btn_music"))
+        {
+           OpenAudioEffectWnd();
         }
     }
 }
 
-LRESULT MainViewBottomBar::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, bool& bHandled) {
+LRESULT MainViewBottomBar::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, bool & bHandled)
+{
     if (uMsg == WM_MENUCLICK)
     {
         MenuCmd* pMenuCmd = (MenuCmd*)wParam;
@@ -398,6 +406,29 @@ LRESULT MainViewBottomBar::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lPara
 
         CDataCenter::GetInstance()->m_localInfo.publish_sub_video = false;
         if (CDataCenter::GetInstance()->m_mixTemplateID <= TRTCTranscodingConfigMode_Manual) TRTCCloudCore::GetInstance()->updateMixTranCodeInfo();
+    }
+    else if (uMsg == WM_USER_CMD_VodStart)
+    {
+        m_bPlay = true;
+        CButtonUI* pBtn = static_cast<CButtonUI*>(m_pMainWnd->getPaintManagerUI().FindControl(_T("btn_play")));
+        if (pBtn) {
+            //pBtn->SetForeImage(L"dest='22,3,52,33' source='0,0,30,30' res='bottom/camera_open.png'");
+            pBtn->SetText(L"关闭播片");
+        }
+        LocalUserInfo info = CDataCenter::GetInstance()->getLocalUserInfo();
+        m_pMainWnd->getTRTCVideoViewLayout()->dispatchVideoView(UTF82Wide(info._userId), TRTCVideoStreamType::TRTCVideoStreamTypeSub);
+
+    }
+    else if (uMsg == WM_USER_CMD_VodEnd)
+    {
+        CButtonUI* pBtn = static_cast<CButtonUI*>(m_pMainWnd->getPaintManagerUI().FindControl(_T("btn_play")));
+        if (pBtn) {
+            //pBtn->SetForeImage(L"dest='22,3,52,33' source='0,0,30,30' res='bottom/camera_close.png'");
+            pBtn->SetText(L"启动播片");
+        }        
+        m_bPlay = false;
+        LocalUserInfo info = CDataCenter::GetInstance()->getLocalUserInfo();
+        m_pMainWnd->getTRTCVideoViewLayout()->deleteVideoView(UTF82Wide(info._userId), TRTCVideoStreamType::TRTCVideoStreamTypeSub);
     }
     return 0;
 }
@@ -681,23 +712,4 @@ void MainViewBottomBar::OpenAudioEffectWnd()
         m_pAudioEffectWnd->ShowWindow(true);
     }
    
-}
-
-void MainViewBottomBar::OpenVodPlayerWnd() {
-   
-    if (m_pVodPlayerViewWnd) {
-        if (VodPlayerViewController::getRef() > 0) {
-            m_pVodPlayerViewWnd->Close(ID_CLOSE_WINDOW_NO_QUIT_MSGLOOP);
-        }
-
-        m_pVodPlayerViewWnd = nullptr;
-    }
-
-    m_pVodPlayerViewWnd = new VodPlayerViewController();
-    m_pVodPlayerViewWnd->Create(m_pMainWnd->GetHWND(), _T("播放器"),
-                                WS_VISIBLE | WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU,
-                                WS_EX_WINDOWEDGE);
-    m_pVodPlayerViewWnd->CenterWindow();
-    m_pVodPlayerViewWnd->ShowWindow(true);
-
 }
