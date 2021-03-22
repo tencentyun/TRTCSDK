@@ -50,15 +50,15 @@ class ShareClient {
         this.leave();
         $('#screen-btn').attr('src', './img/screen-off.png');
       });
-    } catch (e) {
-      console.error('fail to initialize share stream -', e);
+    } catch (error) {
+      console.error('fail to initialize share stream -', error);
       $('#screen-btn').attr('src', 'img/screen-off.png');
-      switch (e.name) {
+      switch (error.name) {
         case 'NotReadableError':
           alert('屏幕分享失败，请确保系统允许当前浏览器获取屏幕内容');
           return;
         case 'NotAllowedError':
-          if (e.message === 'Permission denied by system') {
+          if (error.message === 'Permission denied by system') {
             alert('屏幕分享失败，请确保系统允许当前浏览器获取屏幕内容');
           } else {
             console.log('User refused to share the screen');
@@ -75,16 +75,16 @@ class ShareClient {
       });
       console.log('ShareClient join room success');
       this.isJoined_ = true;
-    } catch (e) {
-      console.error('ShareClient join room failed! ' + e);
+    } catch (error) {
+      console.error('ShareClient join room failed! ' + error);
     }
 
     try {
       // publish the screen share stream
       await this.client_.publish(this.localStream_);
       this.isPublished_ = true;
-    } catch (e) {
-      console.error('ShareClient failed to publish local stream ' + e);
+    } catch (error) {
+      console.error('ShareClient failed to publish local stream ' + error);
     }
   }
 
@@ -132,6 +132,7 @@ class ShareClient {
       const userId = remoteStream.getUserId();
       console.log(`remote stream added: [${userId}] ID: ${id} type: ${remoteStream.getType()}`);
       console.log('subscribe to this remote stream');
+      this.client_.unsubscribe(remoteStream);
     });
     // fired when a remote stream has been subscribed
     this.client_.on('stream-subscribed', evt => {
@@ -142,7 +143,6 @@ class ShareClient {
         console.log(`${event.type} player is ${event.state}`);
       });
       console.log('stream-subscribed ID: ', id);
-      this.client_.unsubscribe(remoteStream);
     });
     // fired when the remote stream is removed, e.g. the remote user called Client.unpublish()
     this.client_.on('stream-removed', evt => {
