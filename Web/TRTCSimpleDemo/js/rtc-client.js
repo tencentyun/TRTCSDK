@@ -14,8 +14,7 @@ class RtcClient {
     this.localStream_ = null;
     this.remoteStreams_ = [];
     this.members_ = new Map();
-    this.volumeIntervalMap_ = new Map();
-    this.volumeLevelMap_ = new Map();
+    this.getAudioLevelTimer_ = -1;
 
     // create a client for RtcClient
     this.client_ = TRTC.createClient({
@@ -67,16 +66,16 @@ class RtcClient {
         this.localStream_.on('player-state-changed', event => {
           console.log(`local stream ${event.type} player is ${event.state}`);
         });
-      } catch (e) {
-        console.error('failed to initialize local stream - ' + e);
-        switch (e.name) {
+      } catch (error) {
+        console.error('failed to initialize local stream - ' + error);
+        switch (error.name) {
           case 'NotReadableError':
             alert(
               '暂时无法访问摄像头/麦克风，请确保系统允许当前浏览器访问摄像头/麦克风，并且没有其他应用占用摄像头/麦克风'
             );
             return;
           case 'NotAllowedError':
-            if (e.message === 'Permission denied by system') {
+            if (error.message === 'Permission denied by system') {
               alert('请确保系统允许当前浏览器访问摄像头/麦克风');
             } else {
               console.log('User refused to share the screen');
@@ -99,11 +98,14 @@ class RtcClient {
         this.localStream_.play('main-video');
         $('#main-video-btns').show();
         $('#mask_main').appendTo($('#player_' + this.localStream_.getId()));
-      } catch (e) {
-        console.error('failed to publish local stream - ', e);
+      } catch (error) {
+        console.error('failed to publish local stream - ', error);
       }
-    } catch (e) {
-      console.error('join room failed! ' + e);
+
+      // 开始获取音量
+      this.startGetAudioLevel();
+    } catch (error) {
+      console.error('join room failed! ' + error);
     }
     //更新成员状态
     let states = this.client_.getRemoteMutedState();
@@ -120,8 +122,6 @@ class RtcClient {
         $('#mask_' + this.members_.get(state.userId).getId()).show();
       }
     }
-    // 监听自己的声音大小
-    this.setVolumeInterval(this.localStream_);
   }
 
   async leave() {
@@ -135,14 +135,12 @@ class RtcClient {
     // leave the room
     await this.client_.leave();
 
-    // 停止音量的监听及量化
-    this.clearVolumeInterval();
-
     this.localStream_.stop();
     this.localStream_.close();
     this.localStream_ = null;
     this.isJoined_ = false;
-    this.volumeLevelMap_.clear();
+    // 停止获取音量
+    this.stopGetAudioLevel();
     resetView();
   }
 
@@ -157,8 +155,8 @@ class RtcClient {
     }
     try {
       await this.client_.publish(this.localStream_);
-    } catch (e) {
-      console.error('failed to publish local stream ' + e);
+    } catch (error) {
+      console.error('failed to publish local stream ' + error);
       this.isPublished_ = false;
     }
 
@@ -181,12 +179,10 @@ class RtcClient {
 
   muteLocalAudio() {
     this.localStream_.muteAudio();
-    this.deleteVolumeInterval(this.userId_);
   }
 
   unmuteLocalAudio() {
     this.localStream_.unmuteAudio();
-    this.setVolumeInterval(this.localStream_);
   }
 
   muteLocalVideo() {
@@ -265,18 +261,6 @@ class RtcClient {
       this.remoteStreams_.push(remoteStream);
       remoteStream.on('player-state-changed', event => {
         console.log(`${event.type} player is ${event.state}`);
-        if (event.type == 'video' && event.state == 'STOPPED') {
-          $('#mask_' + remoteStream.getId()).show();
-          $('#' + remoteStream.getUserId())
-            .find('.member-video-btn')
-            .attr('src', 'img/camera-off.png');
-        }
-        if (event.type == 'video' && event.state == 'PLAYING') {
-          $('#mask_' + remoteStream.getId()).hide();
-          $('#' + remoteStream.getUserId())
-            .find('.member-video-btn')
-            .attr('src', 'img/camera-on.png');
-        }
       });
       addVideoView(id);
       if (remoteStream.userId_ && remoteStream.userId_.indexOf('share_') > -1) {
@@ -312,8 +296,12 @@ class RtcClient {
         return stream.getId() !== id;
       });
       removeView(id);
-      // 删除对声音大小的监听
-      this.deleteVolumeInterval(remoteStream.getUserId());
+      $('#' + remoteStream.getUserId())
+        .find('.member-audio-btn')
+        .attr('src', 'img/mic-off.png');
+      $('#' + remoteStream.getUserId())
+        .find('.member-video-btn')
+        .attr('src', 'img/camera-off.png');
       console.log(`stream-removed ID: ${id}  type: ${remoteStream.getType()}`);
     });
 
@@ -342,23 +330,24 @@ class RtcClient {
       $('#' + evt.userId)
         .find('.member-audio-btn')
         .attr('src', 'img/mic-off.png');
-      this.deleteVolumeInterval(evt.userId);
     });
     this.client_.on('unmute-audio', evt => {
       console.log(evt.userId + ' unmute audio');
       $('#' + evt.userId)
         .find('.member-audio-btn')
         .attr('src', 'img/mic-on.png');
-      this.setVolumeInterval(this.remoteStreams_.find(stream => stream.getUserId() === evt.userId));
     });
     this.client_.on('mute-video', evt => {
       console.log(evt.userId + ' mute video');
       $('#' + evt.userId)
         .find('.member-video-btn')
         .attr('src', 'img/camera-off.png');
-      let streamId = this.members_.get(evt.userId).getId();
-      if (streamId) {
-        $('#mask_' + streamId).show();
+      const remoteStream = this.members_.get(evt.userId);
+      if (remoteStream) {
+        let streamId = remoteStream.getId();
+        if (streamId) {
+          $('#mask_' + streamId).show();
+        }
       }
     });
     this.client_.on('unmute-video', evt => {
@@ -388,48 +377,27 @@ class RtcClient {
     }
   }
 
-  // 监听用户的声音大小，每次浏览器刷新时渲染一次
-  setVolumeInterval(stream) {
-    if (!stream) return;
-    let streamUserId = stream.getUserId();
-    let volumeLevelInterval = setAnimationFrame(() => {
-      const level = stream.getAudioLevel();
-      // 获取到的音量大小和上一次记录的音量大小不同时进行更新渲染
-      if (level !== this.volumeLevelMap_.get(streamUserId)) {
-        // console.log(`user ${streamUserId} is speaking ${level}`, Date.now());
-        this.volumeLevelMap_.set(streamUserId, level);
-        let containerId = streamUserId === this.userId_ ? 'member-me' : streamUserId;
-        if (level > 0.01) {
-          $(`#${containerId}`)
+  startGetAudioLevel() {
+    // 监听音量回调事件，更新每个用户的音量图标
+    this.client_.on('audio-volume', ({ result }) => {
+      result.forEach(({ userId, audioVolume }) => {
+        if (audioVolume >= 10) {
+          console.warn(`userId: ${userId} is speaking audioVolume: ${audioVolume}`);
+          $(`#${userId === this.userId_ ? 'member-me' : userId}`)
             .find('.volume-level')
-            .css('height', `${level * 100 * 4}%`);
+            .css('height', `${audioVolume * 4}%`);
         } else {
-          $(`#${containerId}`)
+          $(`#${userId === this.userId_ ? 'member-me' : userId}`)
             .find('.volume-level')
             .css('height', `0%`);
         }
-      }
+      });
     });
-    this.volumeIntervalMap_.set(streamUserId, volumeLevelInterval);
+    this.client_.enableAudioVolumeEvaluation(100);
   }
 
-  // 清空监听用户的声音大小
-  deleteVolumeInterval(userId) {
-    let volumeLevelInterval = this.volumeIntervalMap_.get(userId);
-    volumeLevelInterval && clearAnimationFrame(volumeLevelInterval);
-    this.volumeIntervalMap_.delete(userId);
-
-    let containerId = userId === this.userId_ ? 'member-me' : userId;
-    $(`#${containerId}`)
-      .find('.volume-level')
-      .css('height', `0%`);
-  }
-
-  // 用户离开房间时，清空对所有用户的音量监听
-  clearVolumeInterval() {
-    this.volumeIntervalMap_.forEach(volumeInterval => {
-      volumeInterval && clearAnimationFrame(volumeInterval);
-    });
-    this.volumeIntervalMap_.clear();
+  // 停止获取流音量
+  stopGetAudioLevel() {
+    this.client_.enableAudioVolumeEvaluation(-1);
   }
 }

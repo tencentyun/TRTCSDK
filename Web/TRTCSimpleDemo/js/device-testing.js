@@ -1,3 +1,4 @@
+/* eslint-disable require-jsdoc */
 /**
  * 设备检测demo
  */
@@ -16,7 +17,16 @@ let hasCameraDevice = false,
 let cameraTestingResult = {};
 let voiceTestingResult = {};
 let micTestingResult = {};
-let networkTestingResult = {};
+let networkTestingResult = {
+  uplinkNetworkQualities: [],
+  downlinkNetworkQualities: [],
+  rttList: [],
+  average: {
+    rtt: 0,
+    uplinkNetworkQuality: 0,
+    downlinkNetworkQuality: 0
+  }
+};
 
 // 记录检测步骤，用于关闭时清空弹窗
 let completedTestingPageIdList = [];
@@ -143,6 +153,16 @@ async function deviceTestingInit() {
   // 点击【重新测试】按钮
   $('#testing-again').on('click', () => {
     $('#device-testing-report').hide();
+    networkTestingResult = {
+      uplinkNetworkQualities: [],
+      downlinkNetworkQualities: [],
+      rttList: [],
+      average: {
+        rtt: 0,
+        uplinkNetworkQuality: 0,
+        downlinkNetworkQuality: 0
+      }
+    };
     startDeviceConnect();
     completedTestingPageIdList = [];
   });
@@ -713,12 +733,6 @@ async function startNetworkTesting() {
     .text(`${browser.browser} ${browser.version}`)
     .appendTo('#browser');
 
-  // 获取ip地址信息
-  // $('#ip').empty();
-  // let IPAddress = await getIPAddress();
-  // $('<div></div>').text(IPAddress).appendTo('#ip');
-  // networkTestingResult.IPAddress = IPAddress;
-
   // 是否支持屏幕分享能力
   $('#screen-share').empty();
   let isScreenShareSupported = TRTC.isScreenShareSupported();
@@ -726,39 +740,118 @@ async function startNetworkTesting() {
     .text(isScreenShareSupported ? '支持' : '不支持')
     .appendTo('#screen-share');
 
-  // 上下行网络质量
-  presetting.login(false, async options => {
-    client = TRTC.createClient({ mode: 'rtc', ...options });
-    client.on('network-quality', event => {
-      networkQualityNum++;
-      // 收到3次'network-quality'事件的时候认为拿到了网络实际质量
-      if (networkQualityNum === 3) {
-        networkTestingResult.upLinkNetwork = event.uplinkNetworkQuality;
-        networkTestingResult.downLinkNetwork = event.downlinkNetworkQuality;
-        $('#uplink-network')
-          .removeClass('network-loading')
-          .text(NETWORK_QUALITY[String(networkTestingResult.upLinkNetwork)]);
-        $('#testing-report-btn').show();
-        client && client.leave();
-        client && client.off('network-quality');
-      }
-    });
-    await client.join({
-      roomId: parseInt(options.roomId)
-    });
-    await createLocalStream(
-      {
-        audio: true,
-        video: false
-      },
-      'audio-container'
-    );
-    await client.publish(localStream);
-    // 音频轨道静音
-    localStream.muteAudio();
-  });
+  testUplinkNetworkQuality();
+  testDownlinkNetworkQuality();
+
+  let countDown = 15;
+  const intervalId = setInterval(() => {
+    if (countDown === 0) {
+      clearInterval(intervalId);
+
+      networkTestingResult.average.uplinkNetworkQuality = Math.ceil(
+        networkTestingResult.uplinkNetworkQualities.reduce((value, current) => value + current, 0) /
+          networkTestingResult.uplinkNetworkQualities.length
+      );
+      networkTestingResult.average.downlinkNetworkQuality = Math.ceil(
+        networkTestingResult.downlinkNetworkQualities.reduce(
+          (value, current) => value + current,
+          0
+        ) / networkTestingResult.downlinkNetworkQualities.length
+      );
+      networkTestingResult.average.rtt = Math.ceil(
+        networkTestingResult.rttList.reduce((value, current) => value + current, 0) /
+          networkTestingResult.rttList.length
+      );
+      $('#uplink-network')
+        .removeClass('network-loading')
+        .text(NETWORK_QUALITY[String(networkTestingResult.average.uplinkNetworkQuality)]);
+
+      $('#downlink-network')
+        .removeClass('network-loading')
+        .text(NETWORK_QUALITY[String(networkTestingResult.average.downlinkNetworkQuality)]);
+
+      $('#network-rtt')
+        .removeClass('network-loading')
+        .text(`${networkTestingResult.average.rtt}ms`);
+
+      networkTestingResult.uplinkNetworkQualities = [];
+      networkTestingResult.downlinkNetworkQualities = [];
+      networkTestingResult.rttList = [];
+      localStream.stop();
+      localStream.close();
+      window.uplinkClient.leave();
+      window.downlinkClient.leave();
+      $('#testing-report-btn').show();
+      $('#count-down').text(`已完成`);
+    } else {
+      $('#count-down').text(`${countDown--}s`);
+    }
+  }, 1000);
 }
 
+async function testUplinkNetworkQuality() {
+  // eslint-disable-next-line no-undef
+  const { sdkAppId, userId, userSig, roomId } = await getUserSig('user_uplink_test', 1846464);
+  window.uplinkClient = TRTC.createClient({
+    sdkAppId, // 填写 sdkAppId
+    userId,
+    userSig, // uplink_test 的 userSig
+    mode: 'rtc'
+  });
+
+  const localStream = TRTC.createStream({ audio: true, video: true });
+  await localStream.initialize();
+
+  window.uplinkClient.on('network-quality', async event => {
+    const { uplinkNetworkQuality } = event;
+    networkTestingResult.uplinkNetworkQualities.push(uplinkNetworkQuality);
+    $('#uplink-network')
+      .removeClass('network-loading')
+      .text(NETWORK_QUALITY[String(uplinkNetworkQuality)]);
+    const { rtt } = await window.uplinkClient.getTransportStats();
+    $('#network-rtt')
+      .removeClass('network-loading')
+      .text(`${rtt}ms`);
+    networkTestingResult.rttList.push(rtt);
+  });
+
+  await window.uplinkClient.join({ roomId }); // 加入用于测试的房间
+  await window.uplinkClient.publish(localStream);
+}
+
+async function testDownlinkNetworkQuality() {
+  // eslint-disable-next-line no-undef
+  const { sdkAppId, userId, userSig, roomId } = await getUserSig('user_downlink_test', 1846464);
+  window.downlinkClient = TRTC.createClient({
+    sdkAppId, // 填写 sdkAppId
+    userId,
+    userSig, // uplink_test 的 userSig
+    mode: 'rtc'
+  });
+
+  window.downlinkClient.on('stream-added', async event => {
+    await window.downlinkClient.subscribe(event.stream, { audio: true, video: true });
+    window.downlinkClient.on('network-quality', event => {
+      const { downlinkNetworkQuality } = event;
+      networkTestingResult.downlinkNetworkQualities.push(downlinkNetworkQuality);
+      $('#downlink-network')
+        .removeClass('network-loading')
+        .text(NETWORK_QUALITY[String(downlinkNetworkQuality)]);
+    });
+  });
+
+  await window.downlinkClient.join({ roomId }); // 加入用于测试的房间
+}
+/**
+ * 恢复检测页面头部图标的状态
+ */
+function initTestingTabTitle() {
+  ['camera', 'voice', 'mic', 'network'].forEach(item => {
+    $(`#${item}-testing`)
+      .removeClass('icon-blue complete')
+      .addClass('icon-gray');
+  });
+}
 /**
  * 展示检测报告
  */
@@ -808,10 +901,23 @@ function showTestingReport() {
 
   // 网络检测结果
   // $('#network-name').text(networkTestingResult.IPAddress);
-  $('#network-name').text('网络质量');
-  $('#network-testing-result')
-    .html(`${NETWORK_QUALITY[String(networkTestingResult.upLinkNetwork)]}`)
-    .css('color', `${Number(networkTestingResult.upLinkNetwork) > 3 ? 'red' : 'green'}`);
+  $('#rtt-result')
+    .text(`${networkTestingResult.average.rtt}ms`)
+    .css('color', `${Number(networkTestingResult.average.rtt) > 150 ? 'red' : 'green'}`);
+
+  $('#uplink-network-quality-result')
+    .text(`${NETWORK_QUALITY[String(networkTestingResult.average.uplinkNetworkQuality)]}`)
+    .css(
+      'color',
+      `${Number(networkTestingResult.average.uplinkNetworkQuality) > 3 ? 'red' : 'green'}`
+    );
+
+  $('#downlink-network-quality-result')
+    .text(`${NETWORK_QUALITY[String(networkTestingResult.average.downlinkNetworkQuality)]}`)
+    .css(
+      'color',
+      `${Number(networkTestingResult.average.downlinkNetworkQuality) > 3 ? 'red' : 'green'}`
+    );
 }
 
 /**
@@ -834,17 +940,6 @@ function finishDeviceTesting() {
     audioPlayer.pause();
   }
   audioPlayer.currentTime = 0;
-}
-
-/**
- * 恢复检测页面头部图标的状态
- */
-function initTestingTabTitle() {
-  ['camera', 'voice', 'mic', 'network'].forEach(item => {
-    $(`#${item}-testing`)
-      .removeClass('icon-blue complete')
-      .addClass('icon-gray');
-  });
 }
 
 /**

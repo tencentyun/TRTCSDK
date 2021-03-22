@@ -666,19 +666,3 @@ function getOS() {
     return detectDesktopOS();
   }
 }
-//使用requestAnimationFrame重写setInterval，进行性能优化
-function setAnimationFrame(render) {
-  // 计时器ID
-  let timer = {};
-  function animeLoop() {
-    render();
-    timer.id = requestAnimationFrame(animeLoop);
-  }
-  animeLoop();
-  return timer;
-}
-
-// 清除AnimationFrame
-function clearAnimationFrame(timer) {
-  cancelAnimationFrame(timer.id);
-}
