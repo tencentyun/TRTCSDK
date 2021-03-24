@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Window size="800,600" caption="0,0,0,30">
+	<HorizontalLayout bkcolor="#FF404040">
+		<VerticalLayout bkcolor="#FF404040" minwidth="800" text="" font="1" align="center" valign="center" textcolor="#FF000000">
+		<VerticalLayout name="videoview" bordersize="1" borderround="5,5">
+			<VideoCanvasContainer name="videoview_player" bkcolor="#FF202020" width="790" height="495"/>
+		</VerticalLayout>
+		
+		<VerticalLayout  pos="0,0,790,60">
+			<HorizontalLayout pos="0,0,790,18">
+				<Slider name="IDPLAYSEEK" width="785" height="18" bkimage="file='Player\SLIDER_PLAYSEEK_EMPTY.png' corner='5,30,5,30'" foreimage="file='Player\SLIDER_PLAYSEEK_FILL.png' corner='5,30,5,30'"  thumbimage="Player\SLIDER_KNOB.PNG" thumbhotimage="Player\SLIDER_KNOB.PNG"  thumbsize="13,13"/>
+			</HorizontalLayout>
+			<HorizontalLayout pos="0,0,0,42" bkimage="file='Player\BKGHOT.png' source='6,2,40,20'">
+				<HorizontalLayout >
+					<HorizontalLayout >
+						<Control />
+						<Label name="IDSPEED" pos="0,0,70,0" text="1.0倍速" align="center" textcolor="#FFFFFFFF"/>
+						<Label name="IDPTS" pos="0,0,140,0" text="00:00/00:00" align="center" textcolor="#FFFFFFFF"/>
+					</HorizontalLayout >
+				</HorizontalLayout >
+				<HorizontalLayout pos="0,0,305,0" height="42">
+					<Button name="IDSPEEDDOWN" tooltip="减速播放" pos="0,0,61,42" normalimage="file='Player\BTN_SPEEDDOWN.png' source='0,0,61,61'" hotimage="file='Player\BTN_SPEEDDOWN.png' source='61,0,122,61'" pushedimage="file='Player\BTN_SPEEDDOWN.png' source='122,0,183,61'" focusedimage="file='Player\BTN_SPEEDDOWN.png' source='183,0,244,61'"/>
+					<Container pos="0,0,61,40">
+						<Button name="IDPLAY" tooltip="播放" normalimage="file='Player\BTN_PLAY.png' source='0,0,61,61'" hotimage="file='Player\BTN_PLAY.png' source='61,0,122,61'" pushedimage="file='Player\BTN_PLAY.png' source='122,0,183,61'" focusedimage="file='Player\BTN_PLAY.png' source='183,0,244,61'"/>
+						<Button name="IDPAUSE" visible="false" textcolor="#00000000" disabledtextcolor="#00000000" normalimage="file='Player\BTN_PAUSE.png' source='0,0,61,61'" hotimage="file='Player\BTN_PAUSE.png' source='61,0,122,61'" pushedimage="file='Player\BTN_PAUSE.png' source='122,0,183,61'" focusedimage="file='Player\BTN_PAUSE.png' source='183,0,244,61'"/>
+					</Container>
+					<Button name="IDSPEEDUP" tooltip="加速播放" pos="0,0,61,42" normalimage="file='Player\BTN_SPEEDUP.png' source='0,0,61,61'" hotimage="file='Player\BTN_SPEEDUP.png' source='61,0,122,61'" pushedimage="file='Player\BTN_SPEEDUP.png' source='122,0,183,61'" focusedimage="file='Player\BTN_SPEEDUP.png' source='183,0,244,61'"/>
+					<Button name="IDSTOP" tooltip="停止播放" pos="0,0,55,35"  normalimage="file='Player\BTN_STOP.png' source='0,0,61,61'" hotimage="file='Player\BTN_STOP.png' source='61,0,122,61'" pushedimage="file='Player\BTN_STOP.png' source='122,0,183,61'" focusedimage="file='Player\BTN_STOP.png' source='183,0,244,61'"/>
+					<Button name="IDOPENFILE" tooltip="打开文件" pos="0,0,50,35" normalimage="file='Player\BTN_OPENFILE.png' source='0,0,61,61'" hotimage="file='Player\BTN_OPENFILE.png' source='61,0,122,61'" pushedimage="file='Player\BTN_OPENFILE.png' source='122,0,183,61'" focusedimage="file='Player\BTN_OPENFILE.png' source='183,0,244,61'"/>
+				</HorizontalLayout>
+				<HorizontalLayout height="42">
+					<Container pos="0,0,55,42">
+						<Button name="IDMUTE" tooltip="声音" normalimage="file='Player\BTN_MUTEON3.png' source='0,0,61,61'" hotimage="file='Player\BTN_MUTEON3.png' source='61,0,122,61'" pushedimage="file='Player\BTN_MUTEON3.png' source='122,0,183,61'" focusedimage="file='Player\BTN_MUTEON3.png' source='183,0,244,61'"/>
+						<Button name="IDUNMUTE" visible="false" textcolor="#00000000" disabledtextcolor="#00000000" normalimage="file='Player\BTN_MUTEOFF.png' source='0,0,61,61'" hotimage="file='Player\BTN_MUTEOFF.png' source='61,0,122,61'" pushedimage="file='Player\BTN_MUTEOFF.png' source='122,0,183,61'" focusedimage="file='Player\BTN_MUTEOFF.png' source='183,0,244,61'"/>
+					</Container>
+					<Slider name="IDVOLUME" pos="0,0,150,21" padding="5,10,0,0" bkimage="file='Player\SLIDER_EMPTY.PNG' corner='5,10,5,10'" foreimage="file='Player\SLIDER_FILL.PNG' source='2,0,28,23' corner='10,10,5,10'" thumbimage="Player\SLIDER_KNOB.PNG" thumbhotimage="Player\SLIDER_KNOB.PNG"  thumbsize="13,13"/>
+				</HorizontalLayout >
+			</HorizontalLayout>
+		</VerticalLayout>
+	</VerticalLayout>
+	</HorizontalLayout>
+</Window>
+

@@ -15,6 +15,12 @@ enum LivePlayerSourceType
     TRTC_CDN
 };
 
+enum VodRenderMode
+{
+    VOD_RENDER_WND,
+    VOD_RENDER_CUSTOM,
+    VOD_RENDER_TRTC,
+};
 typedef struct RemoteUserInfo
 {
     std::string user_id = "";
@@ -140,6 +146,8 @@ public: //trtc
 
     bool m_bCustomAudioCapture = false;    //自定义采集音频
     bool m_bCustomVideoCapture = false;    //自定义采集视频
+    bool m_bCustomSubAudioCapture = false;    //自定义辅路采集音频
+    bool m_bCustomSubVideoCapture = false;    //自定义辅路采集视频
 
     bool m_bEnableAec = true;
     bool m_bEnableAns = true;
@@ -188,7 +196,13 @@ public: //trtc
 
     int audio_quality_ = TRTCAudioQualityUnSelect;
     LivePlayerSourceType m_emLivePlayerSourceType = TRTC_RTC;
-public: 
+
+    
+    bool vod_push_video_ = true;
+    bool vod_push_audio_ = true;
+    VodRenderMode vod_render_mode_ = VOD_RENDER_WND;  
+
+   public: 
     //远端用户信息
     RemoteUserInfoList m_remoteUser;
     void addRemoteUser(std::string userId, bool bClear = true);

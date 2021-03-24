@@ -96,6 +96,14 @@ void UserListController::UpdateUserInfo(LocalUserInfo& info)
     }
 }
 
+bool UserListController::AudioAllMuted() {
+    return m_bAudioAllMuted;
+}
+
+bool UserListController::VideoAllMuted() {
+    return m_bVideoAllMuted;
+}
+
 void UserListController::Notify(TNotifyUI & msg)
 {
     if (msg.sType == _T("click"))
@@ -131,8 +139,8 @@ void UserListController::MuteAllAudio()
             RemoteUserInfo* info = CDataCenter::GetInstance()->FindRemoteUser(userId);
             if (info != nullptr)
             {
-                if (m_bAudioAllMuted && info->available_audio && info->subscribe_audio    \
-                    || !m_bAudioAllMuted && info->available_audio && !info->subscribe_audio)
+                if ((m_bAudioAllMuted && info->subscribe_audio) ||
+                    (!m_bAudioAllMuted && !info->subscribe_audio))
                 {
                     HWND _hwnd = m_pMainWnd->GetHWND();
                     UI_EVENT_MSG *msg = new UI_EVENT_MSG;
@@ -165,8 +173,8 @@ void UserListController::MuteAllVideo()
             RemoteUserInfo* info = CDataCenter::GetInstance()->FindRemoteUser(userId);
             if (info != nullptr)
             {
-                if ((m_bVideoAllMuted && info->available_main_video && info->subscribe_main_video) \
-                    || !m_bVideoAllMuted && info->available_main_video && !(info->subscribe_main_video))
+                if ((m_bVideoAllMuted && info->subscribe_main_video) \
+                    || (!m_bVideoAllMuted && !(info->subscribe_main_video)))
                 {
                     HWND _hwnd = m_pMainWnd->GetHWND();
                     UI_EVENT_MSG *msg = new UI_EVENT_MSG;
@@ -175,8 +183,8 @@ void UserListController::MuteAllVideo()
                     msg->_streamType = TRTCVideoStreamTypeBig;
                     ::PostMessage(_hwnd, WM_USER_VIEW_BTN_CLICK, (WPARAM)msg, 0);
                 }
-                if (m_bVideoAllMuted && info->available_sub_video && info->subscribe_sub_video    \
-                    || !m_bVideoAllMuted && info->available_sub_video && !(info->subscribe_sub_video))
+                if ((m_bVideoAllMuted && info->subscribe_sub_video)    \
+                    || (!m_bVideoAllMuted && !(info->subscribe_sub_video)))
                 {
                     HWND _hwnd = m_pMainWnd->GetHWND();
                     UI_EVENT_MSG *msg = new UI_EVENT_MSG;

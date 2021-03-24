@@ -52,12 +52,19 @@
 #define WM_USER_CMD_Warning               WM_USER_CMD + 79 //出现警告
 #define WM_USER_CMD_SwitchRoom            WM_USER_CMD + 80 //切换房间
 //音视频数据消息
-#define WM_USER_MEDIA_DATA WM_USER + 200
 
-//SDK事件消息
+//VOD 事件
+#define WM_USER_CMD_OnVodPlayerStarted WM_USER_CMD + 100  //点播开始回调
+#define WM_USER_CMD_OnVodPlayerProgress WM_USER_CMD + 101  //点播进度回调
+#define WM_USER_CMD_OnVodPlayerPaused WM_USER_CMD + 102   //点播暂停回调
+#define WM_USER_CMD_OnVodPlayerResumed WM_USER_CMD + 103  //点播恢复回调
+#define WM_USER_CMD_OnVodPlayerStoped WM_USER_CMD + 104   //点播停止回调
+#define WM_USER_CMD_OnVodPlayerError WM_USER_CMD + 105      //点播错误回调
+#define WM_USER_CMD_OnVodPlayerRenderMode WM_USER_CMD + 106   
+#define WM_USER_CMD_OnVodPlayerPublishVideo WM_USER_CMD + 107 
+#define WM_USER_CMD_OnVodPlayerPublishAudio WM_USER_CMD + 108
 
-
-//UI Define
+// UI Define
 #define WM_USER_UI_MSG_ID WM_USER + 400
 #define ID_CLOSE_WINDOW_NO_QUIT_MSGLOOP     WM_USER_UI_MSG_ID + 0       //有些窗口关闭不要退出消息循环
 #define ID_DELAY_SHOW_MSGBOX                WM_USER_UI_MSG_ID + 1                  //滞后弹提示窗口

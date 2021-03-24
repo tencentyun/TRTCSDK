@@ -135,6 +135,8 @@ void TRTCCloudCore::PreUninit()
     stopCloudMixStream();
     stopCustomCaptureVideo();
     stopCustomCaptureAudio();
+    stopCustomSubCaptureVideo();
+    stopCustomSubCaptureAudio();
     m_pCloud->stopAllRemoteView();
     m_pCloud->stopLocalPreview();
     m_pCloud->muteLocalVideo(true);
@@ -416,35 +418,28 @@ void TRTCCloudCore::onScreenCaptureStoped(int reason)
     }
 }
 
-void TRTCCloudCore::onVodPlayerStarted(uint64_t msLength)
-{
-    for (auto& itr : m_mapSDKMsgFilter)
-    {
-        if (itr.first == WM_USER_CMD_VodStart && itr.second != nullptr)
-        {
-            ::PostMessage(itr.second, WM_USER_CMD_VodStart, 0, 0);
-        }
-    }
-}
+//void TRTCCloudCore::onVodPlayerStarted(uint64_t msLength) {
+//    for (auto& itr : m_mapSDKMsgFilter) {
+//        if (itr.first == WM_USER_CMD_VodStart && itr.second != nullptr) {
+//            ::PostMessage(itr.second, WM_USER_CMD_VodStart, 0, 0);
+//        }
+//    }
+//}
 
-void TRTCCloudCore::onVodPlayerStoped(int reason)
-{
-    for (auto& itr : m_mapSDKMsgFilter)
-    {
-        if (itr.first == WM_USER_CMD_VodEnd && itr.second != nullptr)
-        {
-            ::PostMessage(itr.second, WM_USER_CMD_VodEnd, 0, 0);
-        }
-    }
-    if (m_pVodPlayer) {
-        destroyTXVodPlayer(&m_pVodPlayer);
-        m_pVodPlayer = nullptr;
-    }
-}
-
-void TRTCCloudCore::onVodPlayerError(int error)
-{
-}
+//void TRTCCloudCore::onVodPlayerStoped(int reason)
+//{
+//    for (auto& itr : m_mapSDKMsgFilter)
+//    {
+//        if (itr.first == WM_USER_CMD_VodEnd && itr.second != nullptr)
+//        {
+//            ::PostMessage(itr.second, WM_USER_CMD_VodEnd, 0, 0);
+//        }
+//    }
+//    if (m_pVodPlayer) {
+//        destroyTXVodPlayer(&m_pVodPlayer);
+//        m_pVodPlayer = nullptr;
+//    }
+//}
 
 void TRTCCloudCore::onDeviceChange(const char* deviceId, TRTCDeviceType type, TRTCDeviceState state)
 {
@@ -1082,12 +1077,12 @@ void TRTCCloudCore::stopScreen()
 
 void TRTCCloudCore::startMedia(const char * mediaFile, HWND rendHwnd)
 {
-    stopMedia();
+   /* stopMedia();
     if (m_pVodPlayer == nullptr)
     {
         m_pVodPlayer = createTXVodPlayer(mediaFile);
         m_pVodPlayer->setCallback(this);
-    }
+    }*/
     //m_pCloud->setSubStreamDataSource(m_pVodPlayer, rendHwnd);
 }
 
@@ -1570,8 +1565,119 @@ void TRTCCloudCore::stopCustomCaptureVideo()
     }
 }
 
-void TRTCCloudCore::sendCustomAudioFrame()
-{
+void TRTCCloudCore::startCustomSubCaptureAudio(std::wstring filePath, int samplerate, int channel) {
+    m_audioSubFilePath = filePath;
+    _sub_audio_file_length = 0;
+    _sub_audio_samplerate = samplerate;
+    _sub_audio_channel = channel;
+    ifstream ifs(m_audioSubFilePath, ifstream::binary);
+    if (!ifs) return;
+    streampos pos = ifs.tellg();
+    ifs.seekg(0, ios::end);
+    _sub_audio_file_length = ifs.tellg();
+    ifs.close();
+
+    m_bStartCustomSubCaptureAudio = true;
+    if (m_pCloud) m_pCloud->enableMixExternalAudioFrame(true, true);
+
+    if (sub_custom_audio_thread_ == nullptr) {
+        auto task2 = [=]() {
+            while (m_bStartCustomSubCaptureAudio) {
+                sendCustomSubAudioFrame();
+                Sleep(20);
+            }
+        };
+        sub_custom_audio_thread_ = new std::thread(task2);
+    }
+}
+
+void TRTCCloudCore::stopCustomSubCaptureAudio() {
+    m_audioSubFilePath = L"";
+    m_bStartCustomSubCaptureAudio = false;
+    _sub_offset_audioread = 0;
+    if (_sub_audio_buffer != nullptr) {
+        delete _sub_audio_buffer;
+        _sub_audio_buffer = nullptr;
+    }
+
+    if (sub_custom_audio_thread_) {
+        sub_custom_audio_thread_->join();
+        delete sub_custom_audio_thread_;
+        sub_custom_audio_thread_ = nullptr;
+    }
+
+    if (m_pCloud) m_pCloud->enableMixExternalAudioFrame(false, false);
+}
+
+void TRTCCloudCore::startCustomSubCaptureVideo(std::wstring filePat, int width, int height) {
+    m_videoSubFilePath = filePat;
+    _sub_video_file_length = 0;
+    _sub_video_width = width;
+    _sub_video_height = height;
+    ifstream ifs(m_videoSubFilePath, ifstream::binary);
+    if (!ifs) return;
+    streampos pos = ifs.tellg();
+    ifs.seekg(0, ios::end);
+    _sub_video_file_length = ifs.tellg();
+    ifs.close();
+
+    m_bStartCustomSubCaptureVideo = true;
+
+    if (m_pCloud) m_pCloud->enableCustomVideoCapture(TRTCVideoStreamTypeSub, true);
+
+    if (sub_custom_video_thread_ == nullptr) {
+        auto task2 = [=]() {
+            while (m_bStartCustomSubCaptureVideo) {
+                sendCustomSubVideoFrame();
+                Sleep(66);
+            }
+        };
+        sub_custom_video_thread_ = new std::thread(task2);
+    }
+}
+
+void TRTCCloudCore::stopCustomSubCaptureVideo() {
+    m_videoSubFilePath = L"";
+    m_bStartCustomSubCaptureVideo = false;
+    _sub_offset_videoread = 0;
+    if (_sub_video_buffer != nullptr) {
+        delete _sub_video_buffer;
+        _sub_video_buffer = nullptr;
+    }
+    if (m_pCloud) m_pCloud->enableCustomVideoCapture(TRTCVideoStreamTypeSub, false);
+    
+    if (sub_custom_video_thread_) {
+        sub_custom_video_thread_->join();
+        delete sub_custom_video_thread_;
+        sub_custom_video_thread_ = nullptr;
+    }
+}
+
+void TRTCCloudCore::switchVodRender(VodRenderMode vodRenderMode) {
+    for (auto& itr : m_mapSDKMsgFilter) {
+        if (itr.first == WM_USER_CMD_OnVodPlayerRenderMode && itr.second != nullptr) {
+            ::PostMessage(itr.second, WM_USER_CMD_OnVodPlayerRenderMode, vodRenderMode, 0);
+        }
+    }
+}
+
+void TRTCCloudCore::enableVodPublishVideo(bool enable) {
+    for (auto& itr : m_mapSDKMsgFilter) {
+        if (itr.first == WM_USER_CMD_OnVodPlayerPublishVideo && itr.second != nullptr) {
+            ::PostMessage(itr.second, WM_USER_CMD_OnVodPlayerPublishVideo, enable, 0);
+        }
+    }
+}
+
+void TRTCCloudCore::enableVodPublishAudio(bool enable) {
+    for (auto& itr : m_mapSDKMsgFilter) {
+        if (itr.first == WM_USER_CMD_OnVodPlayerPublishAudio && itr.second != nullptr) {
+            ::PostMessage(itr.second, WM_USER_CMD_OnVodPlayerPublishAudio, enable, 0);
+        }
+    }
+}
+
+void TRTCCloudCore::sendCustomAudioFrame() {
     if (!m_bStartCustomCaptureAudio)
         return;
     if (m_pCloud)
@@ -1628,7 +1734,57 @@ void TRTCCloudCore::sendCustomVideoFrame()
         frame.data = _video_buffer;
         frame.width = _video_width;
         frame.height = _video_height;
-        m_pCloud->sendCustomVideoData(&frame);
+        m_pCloud->sendCustomVideoData(TRTCVideoStreamTypeBig, & frame);
+    }
+}
+
+void TRTCCloudCore::sendCustomSubAudioFrame() {
+    if (!m_bStartCustomSubCaptureAudio) return;
+    if (m_pCloud) {
+        ifstream ifs(m_audioSubFilePath, ifstream::binary);
+        if (!ifs) return;
+
+        uint32_t bufferSize = (960 * _sub_audio_samplerate / 48000) * (_sub_audio_channel * 16 / 8);
+        if (_sub_audio_buffer == nullptr) _sub_audio_buffer = (char*)malloc(bufferSize + 2);
+
+        if (_sub_offset_audioread + bufferSize > _sub_audio_file_length) _sub_offset_audioread = 0;
+
+        ifs.seekg(_sub_offset_audioread);
+        ifs.read(_sub_audio_buffer, bufferSize);
+        _sub_offset_audioread += bufferSize;
+
+        TRTCAudioFrame frame;
+        frame.audioFormat = LiteAVAudioFrameFormatPCM;
+        frame.length = bufferSize;
+        frame.data = _sub_audio_buffer;
+        frame.sampleRate = _sub_audio_samplerate;
+        frame.channel = _sub_audio_channel;
+        m_pCloud->mixExternalAudioFrame(&frame);
+    }
+}
+
+void TRTCCloudCore::sendCustomSubVideoFrame() {
+    if (!m_bStartCustomSubCaptureVideo) return;
+    if (m_pCloud) {
+        ifstream ifs(m_videoSubFilePath, ifstream::binary);
+        if (!ifs) return;
+
+        uint32_t bufferSize = _sub_video_width * _sub_video_height * 3 / 2;
+        if (_sub_video_buffer == nullptr) _sub_video_buffer = (char*)malloc(bufferSize + 2);
+
+        if (_sub_offset_videoread + bufferSize > _sub_video_file_length) _sub_offset_videoread = 0;
+
+        ifs.seekg(_sub_offset_videoread);
+        ifs.read(_sub_video_buffer, bufferSize);
+        _sub_offset_videoread += bufferSize;
+
+        TRTCVideoFrame frame;
+        frame.videoFormat = LiteAVVideoPixelFormat_I420;
+        frame.length = bufferSize;
+        frame.data = _sub_video_buffer;
+        frame.width = _sub_video_width;
+        frame.height = _sub_video_height;
+        m_pCloud->sendCustomVideoData(TRTCVideoStreamTypeSub, &frame);
     }
 }
 

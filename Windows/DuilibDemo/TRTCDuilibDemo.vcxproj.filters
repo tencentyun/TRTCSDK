@@ -124,6 +124,13 @@
     <ClCompile Include="sdkinterface\TRTCCustomerCrypt.cpp">
       <Filter>sdkinterface</Filter>
     </ClCompile>
+    <ClCompile Include="VodPlayerViewController.cpp" />
+    <ClCompile Include="uicontrol\FileDialog.cpp">
+      <Filter>uicontrol</Filter>
+    </ClCompile>
+    <ClCompile Include="uicontrol\VideoWnd.cpp">
+      <Filter>uicontrol</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -253,6 +260,13 @@
     </ClInclude>
     <ClInclude Include="sdkinterface\TRTCCustomerCrypt.h">
       <Filter>sdkinterface</Filter>
+    </ClInclude>
+    <ClInclude Include="VodPlayerViewController.h" />
+    <ClInclude Include="uicontrol\FileDialog.h">
+      <Filter>uicontrol</Filter>
+    </ClInclude>
+    <ClInclude Include="uicontrol\VideoWnd.h">
+      <Filter>uicontrol</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

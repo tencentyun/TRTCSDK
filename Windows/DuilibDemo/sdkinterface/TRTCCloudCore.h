@@ -19,11 +19,11 @@ typedef void(__cdecl *DestroyTRTCShareInstance)();
 
 typedef ITXLivePlayer* (__cdecl *CreateTXLivePlayer)();
 typedef void(__cdecl *DestroyTXLivePlayer)(ITXLivePlayer** pTXlivePlayer);
+typedef void(__cdecl* SetNetEnv)(int bTestEnv);
 
 class TRTCCloudCore 
     : public ITRTCCloudCallback
     , public ITRTCLogCallback
-    , public ITXVodPlayerCallback
     , public ITRTCAudioFrameCallback
     , public TXLiteAVLocalRecordCallback
 {
@@ -82,9 +82,6 @@ public:
     virtual void onDeviceChange(const char* deviceId, TRTCDeviceType type, TRTCDeviceState state);
     virtual void onScreenCaptureStarted();
     virtual void onScreenCaptureStoped(int reason);
-    virtual void onVodPlayerStarted(uint64_t msLength);
-    virtual void onVodPlayerStoped(int reason);
-    virtual void onVodPlayerError(int error) override;
     virtual void onLog(const char* log, TRTCLogLevel level, const char* module);
     virtual void onConnectOtherRoom(const char* userId, TXLiteAVError errCode, const char* errMsg);
     virtual void onDisconnectOtherRoom(TXLiteAVError errCode, const char* errMsg);
@@ -148,9 +145,18 @@ public:
     void stopCustomCaptureAudio();
     void startCustomCaptureVideo(std::wstring filePat, int width, int height);
     void stopCustomCaptureVideo();
+    void startCustomSubCaptureAudio(std::wstring filePath, int samplerate, int channel);
+    void stopCustomSubCaptureAudio();
+    void startCustomSubCaptureVideo(std::wstring filePat, int width, int height);
+    void stopCustomSubCaptureVideo();
+    void switchVodRender(VodRenderMode vodRenderMode);
+    void enableVodPublishVideo(bool enable);
+    void enableVodPublishAudio(bool enable);
 
     void sendCustomAudioFrame();
     void sendCustomVideoFrame();
+    void sendCustomSubAudioFrame();
+    void sendCustomSubVideoFrame();
 
     void snapshotVideoFrame(const char* userId, TRTCVideoStreamType type);
 
@@ -168,7 +174,6 @@ private:
     std::multimap<uint32_t, HWND> m_mapSDKMsgFilter;    // userId和VideoView*的映射map
     std::mutex m_mutexMsgFilter;
     ITRTCCloud* m_pCloud = nullptr;
-    ITXVodPlayer* m_pVodPlayer = nullptr;
     ITXLivePlayer* m_pLivePlayer = nullptr;
     ITXDeviceManager* m_pDeviceManager = nullptr;
     bool m_bStartLocalPreview = false;
@@ -195,6 +200,20 @@ private:
     std::thread* custom_audio_thread_ = nullptr;
     std::thread* custom_video_thread_ = nullptr;
 
+    //自定义辅路采集功能:
+    std::wstring m_videoSubFilePath, m_audioSubFilePath;
+    bool m_bStartCustomSubCaptureAudio = false;
+    bool m_bStartCustomSubCaptureVideo = false;
+    uint32_t _sub_offset_videoread = 0, _sub_offset_audioread = 0;
+    uint32_t _sub_video_file_length = 0, _sub_audio_file_length = 0;
+    char* _sub_audio_buffer = nullptr;
+    char* _sub_video_buffer = nullptr;
+    int _sub_audio_samplerate = 0, _sub_audio_channel = 0;
+    int _sub_video_width = 0, _sub_video_height = 0;
+
+    std::thread* sub_custom_audio_thread_ = nullptr;
+    std::thread* sub_custom_video_thread_ = nullptr;
+
     int test_file_index_ = 1;
 
 private:
@@ -204,6 +223,6 @@ private:
 
     CreateTXLivePlayer createTXLivePlayer_ = nullptr;
     DestroyTXLivePlayer destroyTXLivePlayer_ = nullptr;
-
+    SetNetEnv set_net_env_ = nullptr;
 };
 

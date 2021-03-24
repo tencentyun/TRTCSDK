@@ -23,7 +23,10 @@ public:
     void RemoveUser(std::string userId);
     void UpdateUserInfo(RemoteUserInfo& info);
     void UpdateUserInfo(LocalUserInfo& info);
-protected:
+    bool AudioAllMuted();
+    bool VideoAllMuted();
+
+   protected:
     virtual void Notify(TNotifyUI& msg);
 private:
     void MuteAllAudio();

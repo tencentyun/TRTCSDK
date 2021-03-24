@@ -136,6 +136,8 @@ void TRTCSettingViewController::Notify(TNotifyUI & msg)
     NotifyRecordTab(msg);
     NotifyAudioRecord(msg);
     NotifyLocalRecord(msg);
+    NotifyVodTab(msg);
+
     CDuiString name = msg.pSender->GetName();
     if (msg.sType == _T("selectchanged"))  
     {
@@ -146,6 +148,7 @@ void TRTCSettingViewController::Notify(TNotifyUI & msg)
         if (name.CompareNoCase(_T("mix_tab")) == 0) pTabSwitch->SelectItem(3);
         if (name.CompareNoCase(_T("record_tab")) == 0) pTabSwitch->SelectItem(4);
         if (name.CompareNoCase(_T("other_tab")) == 0) pTabSwitch->SelectItem(5);
+        if (name.CompareNoCase(_T("vod_tab")) == 0) pTabSwitch->SelectItem(6);
         if (name.CompareNoCase(_T("qos_smooth")) == 0) {  
             CDataCenter::GetInstance()->m_qosParams.preference = TRTCVideoQosPreferenceSmooth;
 
@@ -841,11 +844,70 @@ void TRTCSettingViewController::Notify(TNotifyUI & msg)
                 TRTCCloudCore::GetInstance()->stopCustomCaptureVideo();
             }
         }
+        if (msg.pSender->GetName() == _T("check_custom_sub_audio")) {
+            COptionUI* pOpenSender = static_cast<COptionUI*>(msg.pSender);
+            if (CDataCenter::GetInstance()->m_localInfo._bEnterRoom == false) {
+                pOpenSender->Selected(true);
+                CMsgWnd::ShowMessageBox(GetHWND(), _T("TRTCDuilibDemo"), _T("Error: 请先进入房间"),
+                                        0xFFF08080);
+                return;
+            }
+            if (pOpenSender->IsSelected() == false)  //事件值是反的
+            {
+                std::wstring testFile = TrtcUtil::getAppDirectory() + L"trtcres/48_1_audio.pcm";
+                CComboUI* pAudioFileCombo =
+                    static_cast<CComboUI*>(m_pmUI.FindControl(_T("combo_audio_sub_pcmfile")));
+                int samplerate = 48000, channel = 1;
+                if (pAudioFileCombo) {
+                    int index = pAudioFileCombo->GetCurSel();
+                    if (index == 0) {
+                        testFile = TrtcUtil::getAppDirectory() + L"trtcres/48_1_audio.pcm";
+                        samplerate = 48000, channel = 1;
+                    } else if (index == 1) {
+                        testFile = TrtcUtil::getAppDirectory() + L"trtcres/16_1_audio.pcm";
+                        samplerate = 16000, channel = 1;
+                    }
+                }
+                CDataCenter::GetInstance()->m_bCustomSubAudioCapture = true;
+                TRTCCloudCore::GetInstance()->startCustomSubCaptureAudio(testFile, samplerate, channel);
+            } else {
+                CDataCenter::GetInstance()->m_bCustomSubAudioCapture = false;
+                TRTCCloudCore::GetInstance()->stopCustomSubCaptureAudio();
+            }
+        }
+        if (msg.pSender->GetName() == _T("check_custom_sub_video")) {
+            COptionUI* pOpenSender = static_cast<COptionUI*>(msg.pSender);
+            if (CDataCenter::GetInstance()->m_localInfo._bEnterRoom == false) {
+                pOpenSender->Selected(true);
+                CMsgWnd::ShowMessageBox(GetHWND(), _T("TRTCDuilibDemo"), _T("Error: 请先进入房间"),
+                                        0xFFF08080);
+                return;
+            }
+
+            if (pOpenSender->IsSelected() == false)  //事件值是反的
+            {
+                std::wstring testFile = TrtcUtil::getAppDirectory() + L"trtcres/320x240_video.yuv";
+
+                CComboUI* pVideoFileCombo =
+                    static_cast<CComboUI*>(m_pmUI.FindControl(_T("combo_video_sub_yuvfile")));
+                int width = 320, height = 240;
+                if (pVideoFileCombo) {
+                    int index = pVideoFileCombo->GetCurSel();
+                    if (index == 0) {
+                        testFile = TrtcUtil::getAppDirectory() + L"trtcres/320x240_video.yuv";
+                        width = 320, height = 240;
+                    }
+                }
+                CDataCenter::GetInstance()->m_bCustomSubVideoCapture = true;
+                TRTCCloudCore::GetInstance()->startCustomSubCaptureVideo(testFile, width, height);
+            } else {
+                CDataCenter::GetInstance()->m_bCustomSubVideoCapture = false;
+                TRTCCloudCore::GetInstance()->stopCustomSubCaptureVideo();
+            }
+        }
     }
 }
-
-void TRTCSettingViewController::NotifyAudioTab(TNotifyUI & msg)
-{
+void TRTCSettingViewController::NotifyAudioTab(TNotifyUI& msg) {
     if (msg.sType == _T("click"))
     {
         if (msg.pSender->GetName() == _T("check_mic_mute")) {
@@ -1638,6 +1700,44 @@ void TRTCSettingViewController::NotifyLocalRecord(TNotifyUI & msg)
         }
     }
 }
+void TRTCSettingViewController::NotifyVodTab(TNotifyUI& msg) {
+    if (!is_init_windows_finished) {
+        return;
+    }
+    CDuiString name = msg.pSender->GetName();
+    if (msg.sType == _T("click")) {
+        if (msg.pSender->GetName() == _T("check_push_video_stream")) {
+            COptionUI* pOpenSender = static_cast<COptionUI*>(msg.pSender);
+            if (pOpenSender->IsSelected() == false) {
+                TRTCCloudCore::GetInstance()->enableVodPublishVideo(true);
+                CDataCenter::GetInstance()->vod_push_video_ = true;
+            } else {
+               
+                CDataCenter::GetInstance()->vod_push_video_ = false;
+                TRTCCloudCore::GetInstance()->enableVodPublishVideo(false);
+            }
+        } 
+        else if (msg.pSender->GetName() == _T("check_push_audio_stream")) {
+            COptionUI* pOpenSender = static_cast<COptionUI*>(msg.pSender);
+            if (pOpenSender->IsSelected() == false) {
+                TRTCCloudCore::GetInstance()->enableVodPublishAudio(true);
+                CDataCenter::GetInstance()->vod_push_audio_ = true;
+            } else {
+                CDataCenter::GetInstance()->vod_push_audio_ = false;
+                TRTCCloudCore::GetInstance()->enableVodPublishAudio(false);
+            }
+        } else if (msg.pSender->GetName() == _T("vod_wnd_render")) {
+            CDataCenter::GetInstance()->vod_render_mode_ = VOD_RENDER_WND;
+            TRTCCloudCore::GetInstance()->switchVodRender(VOD_RENDER_WND);
+        } else if (msg.pSender->GetName() == _T("vod_render")) {
+            CDataCenter::GetInstance()->vod_render_mode_ = VOD_RENDER_CUSTOM;
+            TRTCCloudCore::GetInstance()->switchVodRender(VOD_RENDER_CUSTOM);
+        } else if (msg.pSender->GetName() == _T("trtc_render")) {
+            CDataCenter::GetInstance()->vod_render_mode_ = VOD_RENDER_TRTC;
+            TRTCCloudCore::GetInstance()->switchVodRender(VOD_RENDER_TRTC);
+        }
+    }
+}
 
 DuiLib::CControlUI* TRTCSettingViewController::CreateControl(LPCTSTR pstrClass)
 {
@@ -1765,6 +1865,7 @@ void TRTCSettingViewController::InitWindow()
     InitOtherTab();
     InitMixTab();
     InitRecordTab();
+    InitVodTab();
 
     //初始化tab面板  
     CTabLayoutUI* pTabSwitch = static_cast<CTabLayoutUI*>(m_pmUI.FindControl(_T("tab_switch")));
@@ -2335,6 +2436,18 @@ void TRTCSettingViewController::InitOtherTab()
         pVideoFileCombo->SelectItem(0);
     }
 
+     CComboUI* pAudioSubFileCombo =
+        static_cast<CComboUI*>(m_pmUI.FindControl(_T("combo_audio_sub_pcmfile")));
+    if (pAudioSubFileCombo) {
+         pAudioSubFileCombo->SelectItem(0);
+    }
+
+    CComboUI* pVideoSubFileCombo =
+        static_cast<CComboUI*>(m_pmUI.FindControl(_T("combo_video_sub_yuvfile")));
+    if (pVideoSubFileCombo) {
+        pVideoSubFileCombo->SelectItem(0);
+    }
+
     COptionUI* pPublishScreenInBigStream = static_cast<COptionUI*>(m_pmUI.FindControl(_T("check_use_main_stream")));
     if (pPublishScreenInBigStream)
     {
@@ -2484,6 +2597,36 @@ void TRTCSettingViewController::InitRecordTab()
             pCheckMixAppAudioUI->Selected(false);
         }
     }
+}
+
+void TRTCSettingViewController::InitVodTab() {
+    COptionUI* pVodPushVideo = static_cast<COptionUI*>(m_pmUI.FindControl(_T("check_push_video_stream")));
+    if (pVodPushVideo) {
+        pVodPushVideo->Selected(CDataCenter::GetInstance()->vod_push_video_);
+    }
+    COptionUI* pVodPushAudio = static_cast<COptionUI*>(m_pmUI.FindControl(_T("check_push_audio_stream")));
+    if (pVodPushAudio) {
+        pVodPushAudio->Selected(CDataCenter::GetInstance()->vod_push_audio_);
+    }
+    COptionUI* pRenderModeVodWnd =
+        static_cast<COptionUI*>(m_pmUI.FindControl(_T("vod_wnd_render")));
+    COptionUI* pRenderModeVodCustom = static_cast<COptionUI*>(m_pmUI.FindControl(_T("vod_render")));
+    COptionUI* pRenderModeTRTCWnd = static_cast<COptionUI*>(m_pmUI.FindControl(_T("trtc_render")));
+    if (pRenderModeVodWnd && pRenderModeVodCustom && pRenderModeTRTCWnd)
+    {
+        pRenderModeVodWnd->Selected(false);
+        pRenderModeVodCustom->Selected(false);
+        pRenderModeTRTCWnd->Selected(false);
+
+        if (CDataCenter::GetInstance()->vod_render_mode_ == VOD_RENDER_WND){
+            pRenderModeVodWnd->Selected(true);
+        } else if (CDataCenter::GetInstance()->vod_render_mode_ == VOD_RENDER_CUSTOM) {
+            pRenderModeVodCustom->Selected(true);
+        } else if (CDataCenter::GetInstance()->vod_render_mode_ == VOD_RENDER_TRTC) {
+            pRenderModeTRTCWnd->Selected(true);
+        }
+    }
+    
 }
 
 void TRTCSettingViewController::UpdateCameraDevice()

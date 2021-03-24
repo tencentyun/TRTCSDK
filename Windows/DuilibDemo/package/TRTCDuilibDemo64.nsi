@@ -73,6 +73,7 @@ Section "MainSection" SEC01
   CreateDirectory "$INSTDIR\trtcskin\videoview"
   CreateDirectory "$INSTDIR\trtcskin\userlist"
   CreateDirectory "$INSTDIR\trtcskin\music"
+  CreateDirectory "$INSTDIR\trtcskin\Player"
 
   SetOverwrite on
   
@@ -100,6 +101,8 @@ Section "MainSection" SEC01
   File "..\Build\Bin\Win32\Release\trtcskin\userlist\*.*"
   SetOutPath "$INSTDIR\trtcskin\music"
   File "..\Build\Bin\Win32\Release\trtcskin\music\*.*"
+  SetOutPath "$INSTDIR\trtcskin\Player"
+  File "..\Build\Bin\Win32\Release\trtcskin\Player\*.*"
 
   SetOutPath "$INSTDIR\trtcres"
   File "..\Build\Bin\Win64\Release\trtcres\*.*"
@@ -168,6 +171,7 @@ Section Uninstall
   Delete "$INSTDIR\trtcskin\videoview\*.*"
   Delete "$INSTDIR\trtcskin\userlist\*.*"
   Delete "$INSTDIR\trtcskin\music\*.*"
+  Delete "$INSTDIR\trtcskin\Player\*.*"
 
   RMDir "$SMPROGRAMS\TRTCDuilibDemo"
   RMDir "$INSTDIR\trtcres"
@@ -180,6 +184,7 @@ Section Uninstall
   RMDir "$INSTDIR\trtcskin\videoview"
   RMDir "$INSTDIR\trtcskin\userlist"
   RMDir "$INSTDIR\trtcskin\music"
+  RMDir "$INSTDIR\trtcskin\Player"
   RMDir "$INSTDIR\trtcskin"
   RMDir "$INSTDIR"
 

@@ -22,6 +22,7 @@
 			<Option height="30" text="混流设置" name="mix_tab"  font="1" hotbkcolor="#FFEEEEEE" selectedbkcolor="#FFD8D8D8" group="tab_setting" foreimage="dest='20,7,36,23' res='setting/mixstream_normal.png'"/>
 			<Option height="30" text="本地录制" name="record_tab"  font="1" hotbkcolor="#FFEEEEEE" selectedbkcolor="#FFD8D8D8" group="tab_setting" foreimage="dest='20,7,36,23' res='setting/record_normal.png'"/>
 			<Option height="30" text="其他设置" name="other_tab" font="1" hotbkcolor="#FFEEEEEE" selectedbkcolor="#FFD8D8D8" group="tab_setting" foreimage="dest='20,7,36,23' res='setting/other_set.png'"/>
+			<Option height="30" text="点播设置" name="vod_tab" font="1" hotbkcolor="#FFEEEEEE" selectedbkcolor="#FFD8D8D8" group="tab_setting" foreimage="dest='20,7,36,23' res='setting/vod_palyer.png'"/>
 		</VerticalLayout>
 		<VerticalLayout width="2" bkcolor="#FF808080"/>
 		<VerticalLayout>
@@ -439,6 +440,7 @@
 			
 			<!--other setting page-->
 			<VerticalLayout name="other_tab_layout" childpadding="10" vscrollbar="true">
+
 				<VerticalLayout height="20"/>
 				
 				<HorizontalLayout inset="28,6,0,0" childvalign="left" height="24">
@@ -477,6 +479,25 @@
 					<Option name="check_custom_video" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true" padding="0,3,0,0"/>
 					<VerticalLayout width="20"/>
 					<Combo name="combo_video_yuvfile" width="130" height="24" style="devicecombo" dropbox="bordercolor=&quot;#FF1E90FF&quot; bordersize=&quot;1&quot; bkcolor=&quot;#FFFFFFFF&quot;">
+						<ListLabelElement text="320×240_video.yuv"/>
+					</Combo>  
+				</HorizontalLayout>
+				<HorizontalLayout inset="28,0,0,0" childvalign="left" height="24">
+					<Label text="开启自定义辅路采集音频" font="2" width="118" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,3,0,1"/>
+					<VerticalLayout width="80"/>
+					<Option name="check_custom_sub_audio" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true" padding="0,3,0,0"/>
+					<VerticalLayout width="20"/>
+					<Combo name="combo_audio_sub_pcmfile" width="130" height="24" style="devicecombo" dropbox="bordercolor=&quot;#FF1E90FF&quot; bordersize=&quot;1&quot; bkcolor=&quot;#FFFFFFFF&quot;">
+						<ListLabelElement text="48_1_audio.pcm"/>
+						<ListLabelElement text="16_1_audio.pcm"/>
+					</Combo>
+				</HorizontalLayout>
+				<HorizontalLayout inset="28,0,0,0" childvalign="left" height="24">
+					<Label text="开启自定义辅路采集视频" font="2" width="118" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,3,0,1"/>
+					<VerticalLayout width="80"/>
+					<Option name="check_custom_sub_video" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true" padding="0,3,0,0"/>
+					<VerticalLayout width="20"/>
+					<Combo name="combo_video_sub_yuvfile" width="130" height="24" style="devicecombo" dropbox="bordercolor=&quot;#FF1E90FF&quot; bordersize=&quot;1&quot; bkcolor=&quot;#FFFFFFFF&quot;">
 						<ListLabelElement text="320×240_video.yuv"/>
 					</Combo>  
 				</HorizontalLayout>
@@ -570,6 +591,34 @@
 					<VerticalLayout width="10"/>
 				</HorizontalLayout>
 				
+				<VerticalLayout height="20"/>
+			</VerticalLayout>
+		    <!--vod setting page-->
+			<VerticalLayout name="vod_tab_layout" childpadding="10" vscrollbar="true">
+				<VerticalLayout height="20"/>
+				<HorizontalLayout childvalign="left" height="24">
+					<HorizontalLayout childvalign="left" inset="8,8,0,0" childpadding="10">
+					  <Label text="渲染模式: " font="2" width="100" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,0"/>
+					 <VerticalLayout width="20"/>
+					  <Option name="vod_wnd_render" group="renderstyle" text="VOD窗口" style="radio_style" width="0" autocalcwidth="true"/>
+					  <Option name="vod_render" group="renderstyle" text="VOD自定义" style="radio_style" width="0" autocalcwidth="true"/>
+					  <Option name="trtc_render" group="renderstyle" text="TRTC自定义" style="radio_style" width="0" autocalcwidth="true"/>
+					</HorizontalLayout>
+				</HorizontalLayout>
+				<HorizontalLayout childvalign="left" height="24">
+					<HorizontalLayout childvalign="left" inset="8,8,0,0" childpadding="10">
+					 <Label text="推送视频" font="2" width="100" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,0"/>
+					<VerticalLayout width="80"/>
+					<Option name="check_push_video_stream" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
+					</HorizontalLayout>
+				</HorizontalLayout>
+				<HorizontalLayout childvalign="left" height="24">
+					<HorizontalLayout childvalign="left" inset="8,8,0,0" childpadding="10">
+					 <Label text="推送音频" font="2" width="100" align="right" valign="center" textcolor="#FF000000" showhtml="true" padding="0,0,0,0"/>
+					<VerticalLayout width="80"/>
+					<Option name="check_push_audio_stream" text="" textcolor="#FF000000" textpadding="6,0,6,0" style="cb_style" width="0" autocalcwidth="true"/>
+					</HorizontalLayout>
+				</HorizontalLayout>
 				<VerticalLayout height="20"/>
 			</VerticalLayout>
 		</TabLayout>
