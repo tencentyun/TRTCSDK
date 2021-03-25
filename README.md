@@ -14,31 +14,31 @@
 | Electron | [下载](http://liteavsdk-1252463788.cosgz.myqcloud.com/TXLiteAVSDK_TRTC_Electron_latest.zip) | [DOC](https://cloud.tencent.com/document/product/647/38548) | [DOC](https://cloud.tencent.com/document/product/647/38549) |[API](https://cloud.tencent.com/document/product/647/38551) |
 | 微信小程序 | [下载](http://liteavsdk-1252463788.cosgz.myqcloud.com/TRTC_WXMini_latest.zip) | [DOC](https://cloud.tencent.com/document/product/647/32399) | [DOC](https://cloud.tencent.com/document/product/647/32183) |[API](https://cloud.tencent.com/document/product/647/17018) |
 
-## Version 8.4 @ 2021.02.08
+## Version 8.5 @ 2021.03.24
 
 **欢迎加入**
 团队技术氛围浓厚，培训体系完善，产品线多样，有经验丰富的“老司机”手把手帮你入门音视频技术。<br>
 北京、西安、上海、深圳、广州均有岗位，如果您对音视频技术感兴趣，欢迎加入我们 [腾讯云 TRTC 研发团队](https://careers.tencent.com/jobdesc.html?postId=1297858141983088640) 。
 
+
 **功能新增**
-1. Mac 版本开始支持采集 Mac 操作系统的输出声音，也就是跟 Windows 端一样的 SystemLoopback 能力，该功能可以让 SDK 采集当前系统的声音，开启这个功能后，主播就可以很方便地向其他用户直播音乐或者电影文件了。
-2. Mac 版本屏幕分享开始支持本地预览功能，您可以通过一个小窗口向用户展示屏幕分享的预览内容。
-3. Windows 版本增加进程音量调整能力，使用 [setApplicationPlayVolume](http://doc.qcloudtrtc.com/group__ITXDeviceManager__cplusplus.html#af6722fa5e6e45738e007004c374948b1) 可以设置系统的音量合成器的音量大小。
-4. 全平台版本均新增本地音视频录制功能，主播可以在推流过程中把本地的音频和视频录制成一个 mp4 文件，参见 [startLocalRecording](http://doc.qcloudtrtc.com/group__TRTCCloud__ios.html#a5075d55a6fc31895eedd5b23a1b8826b)
-5. 全平台版本均优化了 [Music](http://doc.qcloudtrtc.com/group__TRTCCloudDef__ios.html#ga865e618ff3a81236f9978723c00e86fb) 模式下的声音质量，更加适合类似 cloubhouse 的语音直播场景。
+1. Mac：优化屏幕分享功能，您可以在分享目标窗口的同时指定其他窗口一起分享出去。参见 API addIncludedShareWindow
+1. 全平台：新增播片功能，您可以使用 TXVODPlayer 与 TRTCCloud 绑定，把点播正在播放的内容通过 TRTC 的辅路推流分享出去。
+1. 全平台：新增辅路自定义采集，参见 API sendCustomVideoData。
+1. 全平台：新增自定义混音功能，您可以将自己的一路音轨混入 SDK 的音频处理流程中，SDK 会先将两路音轨混合后再一起发布出去，参见 API mixExternalAudioFrame。
+1. 全平台：支持指定纯视频混流，混流控制更灵活。
+
+
+**质量优化**
+1.Mac：startSystemAudioLoopback 支持双声道。
+1.Windows：选择幻灯片窗口进行屏幕分享时，支持自动切换到放映窗口。
+1.全平台：状态回调增加端到端延迟。
+
 
 **问题修复**
-1. 全平台：优化音视频链路的网络抗性，在 70% 的极端查网络环境下，音视频依然较为流畅。
-2. Windows：优化部分场景下的直播音质，大幅减少了声音损伤问题。
-3. Windows：性能优化，在部分使用场景下的性能较旧版本有 20%-30% 的提升。
-4. Windows：修复 Windows Server 2019 Datacenter x64 系统上启动桌面分享 crash 的问题。
-5. Windows：修复分享窗口的同时改变目标窗口大小会偶发分享意外终止的 BUG。
-6. Windows：修复部分型号的摄像头采集不出画面的问题。
-7. iOS：修复 snapvideoshot 会造成 CAAnimation 动画卡顿的问题。
-8. iOS&Mac：修复使用同一个 View 轮流显示摄像头和屏幕分享画面时，屏幕分享画面黑屏的问题。
-9. iOS：修复使用第三方美颜组件时在 iPhone 6s 上可能会出现花屏的问题。
-10. iOS：修复点播与 TRTC 同时使用时，在停止点播播放时偶现 crash 的问题。
-11. Android：修复使用蓝牙耳机时被电话打断，拒绝接听电话后声音通过扬声器播放的问题。
+1. iOS：优化部分设备偶现后台 OpenGL 渲染 crash 的问题。
+1. iOS：优化屏幕画面静止时屏幕分享在播放无法播放的问题。
+
 
 更早期的版本更新历史请点击  [More](https://cloud.tencent.com/document/product/647/46907)...
 
