@@ -50,4 +50,5 @@
     <string name="trtcchatsalon_create_room_limit">"The cloud communication account you are currently using has not activated the audio and video chat room function, and the number of chat rooms created exceeds the limit, please go to the Tencent Cloud official website to open [IM audio and video chat rooms]：https://cloud.tencent.com/document/product/269/11673"</string>
     <string name="trtcchatsalon_create_or_join_group_limit">"The number of groups that a single user can create and join exceeds the limit, please purchase relevant packages, more details:https://cloud.tencent.com/document/product/269/11673"</string>
     <string name="trtcchatsalon_group_member_limit">"The number of group members exceeds the limit, please refer to it, please purchase the relevant packages, more details:https://cloud.tencent.com/document/product/269/11673"</string>
+    <string name="trtcchatsalon_invitation_limit">The request is being processed, please try again later</string>
 </resources>

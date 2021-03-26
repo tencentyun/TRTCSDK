@@ -19,11 +19,14 @@ import java.util.Map;
 
 import static com.tencent.liteav.trtcchatsalon.model.impl.room.impl.IMProtocol.Define.CODE_ROOM_CUSTOM_MSG;
 import static com.tencent.liteav.trtcchatsalon.model.impl.room.impl.IMProtocol.Define.CODE_ROOM_DESTROY;
+import static com.tencent.liteav.trtcchatsalon.model.impl.room.impl.IMProtocol.Define.CODE_ROOM_KICK_SEAT_MSG;
+import static com.tencent.liteav.trtcchatsalon.model.impl.room.impl.IMProtocol.Define.CODE_ROOM_PICK_SEAT_MSG;
 import static com.tencent.liteav.trtcchatsalon.model.impl.room.impl.IMProtocol.Define.KEY_ATTR_VERSION;
 import static com.tencent.liteav.trtcchatsalon.model.impl.room.impl.IMProtocol.Define.KEY_CMD_ACTION;
 import static com.tencent.liteav.trtcchatsalon.model.impl.room.impl.IMProtocol.Define.KEY_CMD_VERSION;
 import static com.tencent.liteav.trtcchatsalon.model.impl.room.impl.IMProtocol.Define.KEY_ROOM_INFO;
 import static com.tencent.liteav.trtcchatsalon.model.impl.room.impl.IMProtocol.Define.KEY_SEAT;
+import static com.tencent.liteav.trtcchatsalon.model.impl.room.impl.IMProtocol.Define.KEY_USER_ID;
 import static com.tencent.liteav.trtcchatsalon.model.impl.room.impl.IMProtocol.Define.VALUE_ATTR_VERSION;
 import static com.tencent.liteav.trtcchatsalon.model.impl.room.impl.IMProtocol.Define.VALUE_CMD_VERSION;
 
@@ -36,6 +39,7 @@ public class IMProtocol {
         public static final String VALUE_ATTR_VERSION = "1.0";
         public static final String KEY_ROOM_INFO      = "roomInfo";
         public static final String KEY_SEAT           = "seat";
+        public static final String KEY_USER_ID        = "userId";
 
         public static final String KEY_CMD_VERSION   = "version";
         public static final String VALUE_CMD_VERSION = "1.0";
@@ -51,17 +55,15 @@ public class IMProtocol {
         public static final int CODE_ROOM_DESTROY = 200;
 
         public static final int CODE_ROOM_CUSTOM_MSG = 301;
+        public static final int CODE_ROOM_KICK_SEAT_MSG = 302;
+        public static final int CODE_ROOM_PICK_SEAT_MSG = 303;
     }
 
-    public static HashMap<String, String> getInitRoomMap(TXRoomInfo TXRoomInfo, Map<String, TXSeatInfo> TXSeatInfoMap) {
+    public static HashMap<String, String> getInitRoomMap(TXRoomInfo TXRoomInfo) {
         Gson                    gson    = new Gson();
         HashMap<String, String> jsonMap = new HashMap<>();
         jsonMap.put(KEY_ATTR_VERSION, VALUE_ATTR_VERSION);
         jsonMap.put(KEY_ROOM_INFO, gson.toJson(TXRoomInfo));
-        for (Map.Entry<String, TXSeatInfo> entry: TXSeatInfoMap.entrySet()) {
-            String json = gson.toJson(entry.getValue(), TXSeatInfo.class);
-            jsonMap.put(KEY_SEAT + entry.getKey(), json);
-        }
         return jsonMap;
     }
 
@@ -181,6 +183,30 @@ public class IMProtocol {
             jsonObject.put(KEY_CMD_ACTION, CODE_ROOM_CUSTOM_MSG);
             jsonObject.put("command", cmd);
             jsonObject.put("message", msg);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonObject.toString();
+    }
+
+    public static String getKickMsgJsonStr(String userId) {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put(KEY_ATTR_VERSION, VALUE_ATTR_VERSION);
+            jsonObject.put(KEY_CMD_ACTION, CODE_ROOM_KICK_SEAT_MSG);
+            jsonObject.put(KEY_USER_ID, userId);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonObject.toString();
+    }
+
+    public static String getPickMsgJsonStr(String userId) {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put(KEY_ATTR_VERSION, VALUE_ATTR_VERSION);
+            jsonObject.put(KEY_CMD_ACTION, CODE_ROOM_PICK_SEAT_MSG);
+            jsonObject.put(KEY_USER_ID, userId);
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -32,6 +32,7 @@ public class ChatSalonTRTCService extends TRTCCloudListener {
     private Handler                      mMainHandler;
     private TXCallback                   mEnterRoomCallback;
     private TXCallback                   mExitRoomCallback;
+    private OnSwitchRoleListener         mOnSwitchRoleListener;
 
     public static synchronized ChatSalonTRTCService getInstance() {
         if (sInstance == null) {
@@ -208,14 +209,16 @@ public class ChatSalonTRTCService extends TRTCCloudListener {
         mTRTCCloud.startLocalAudio();
     }
 
-    public void switchToAnchor() {
+    public void switchToAnchor(OnSwitchRoleListener listener) {
         mTRTCCloud.switchRole(TRTCCloudDef.TRTCRoleAnchor);
         mTRTCCloud.startLocalAudio();
+        mOnSwitchRoleListener = listener;
     }
 
-    public void switchToAudience() {
+    public void switchToAudience(OnSwitchRoleListener listener) {
         mTRTCCloud.stopLocalAudio();
         mTRTCCloud.switchRole(TRTCCloudDef.TRTCRoleAudience);
+        mOnSwitchRoleListener = listener;
     }
 
     public void stopMicrophone() {
@@ -248,5 +251,18 @@ public class ChatSalonTRTCService extends TRTCCloudListener {
 
     public TXAudioEffectManager getAudioEffectManager() {
         return mTRTCCloud.getAudioEffectManager();
+    }
+
+    @Override
+    public void onSwitchRole(int code, String message) {
+        super.onSwitchRole(code, message);
+        TRTCLogger.i(TAG, "on switch role, code:" + code + " msg:" + message);
+        if (mOnSwitchRoleListener != null) {
+            mOnSwitchRoleListener.onTRTCSwitchRole(code, message);
+        }
+    }
+
+    public interface OnSwitchRoleListener {
+        void onTRTCSwitchRole(int code, String message);
     }
 }

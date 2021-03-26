@@ -15,8 +15,6 @@ import com.tencent.liteav.trtcchatsalon.ui.list.TCConstants;
 import com.tencent.liteav.trtcchatsalon.ui.widget.ConfirmDialogFragment;
 import com.tencent.trtc.TRTCCloudDef;
 
-import java.util.List;
-
 /**
  * 观众界面
  */
@@ -66,6 +64,7 @@ public class ChatSalonAudienceActivity extends ChatSalonBaseActivity {
             mBtnLeaveMic.setVisibility(View.VISIBLE);
             mBtnMic.setVisibility(View.VISIBLE);
             mBtnHandUp.setVisibility(View.GONE);
+            updateHandUpIcon(false);
         } else {
             mBtnMic.setActivated(false);
             mBtnLeaveMic.setVisibility(View.GONE);
@@ -86,6 +85,7 @@ public class ChatSalonAudienceActivity extends ChatSalonBaseActivity {
                 ToastUtils.showShort(R.string.trtcchatsalon_exit_room_success);
             }
         });
+        mMemberEntityMap.clear();
     }
 
     private void showExitRoom() {
@@ -124,6 +124,7 @@ public class ChatSalonAudienceActivity extends ChatSalonBaseActivity {
                     //进房成功
                     ToastUtils.showShort(R.string.trtcchatsalon_enter_room_success);
                     mTRTCChatSalon.setAudioQuality(mAudioQuality);
+                    getAudienceList();
                 } else {
                     ToastUtils.showShort(getString(R.string.trtcchatsalon_enter_room_failed) + "[" + code + "]:" + msg);
                     finish();
@@ -150,6 +151,8 @@ public class ChatSalonAudienceActivity extends ChatSalonBaseActivity {
                     mStateTips.addView(mHandUpTipsView);
                     mStateTips.setVisibility(View.VISIBLE);
                     updateHandUpIcon(true);
+                } else if(code == TRTCChatSalonDef.INVITATION_REQUEST_LIMIT) {
+                    ToastUtils.showShort(getString(R.string.trtcchatsalon_invitation_limit));
                 } else {
                     ToastUtils.showShort(getString(R.string.trtcchatsalon_request_failed) + ":" + msg);
                     updateHandUpIcon(false);
@@ -177,7 +180,7 @@ public class ChatSalonAudienceActivity extends ChatSalonBaseActivity {
                 mStateTips.setVisibility(View.GONE);
             }
         };
-        mHandler.postDelayed(mTimeoutRunnable, 10000);
+        mHandler.postDelayed(mTimeoutRunnable, 3000);
     }
 
 

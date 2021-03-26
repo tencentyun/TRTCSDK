@@ -1,6 +1,5 @@
 package com.tencent.liteav.trtcchatsalon.model;
 
-import com.tencent.liteav.trtcchatsalon.model.TRTCChatSalonDef.SeatInfo;
 import com.tencent.trtc.TRTCCloudDef;
 
 import java.util.List;
@@ -30,12 +29,6 @@ public interface TRTCChatSalonDelegate {
      * 房间信息改变的通知
      */
     void onRoomInfoChange(TRTCChatSalonDef.RoomInfo roomInfo);
-
-    /**
-     * 进入房间后，当前房间主播信息回调
-     * @param seatInfoList 座位列表信息
-     */
-    void onEnterRoomSeatListNotify(List<SeatInfo> seatInfoList);
 
     /**
      * 有成员上麦(主动上麦/主播抱人上麦)
@@ -128,4 +121,11 @@ public interface TRTCChatSalonDelegate {
      * @param inviter 邀请人userId
      */
     void onInvitationCancelled(String id, String inviter);
+
+    /**
+     * 邀请超时回调
+     *
+     * @param id  邀请id
+     */
+    void onInvitationTimeout(String id);
 }

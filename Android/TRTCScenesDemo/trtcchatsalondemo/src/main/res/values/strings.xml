@@ -49,4 +49,7 @@
     <string name="trtcchatsalon_nickname">昵称</string>
     <string name="trtcchatsalon_create_room_limit">"您当前使用的云通讯账号未开通音视频聊天室功能，创建聊天室数量超过限额，请前往腾讯云官网开通【IM音视频聊天室】，地址：https://cloud.tencent.com/document/product/269/11673"</string>
     <string name="trtcchatsalon_create_or_join_group_limit">"单个用户可创建和加入的群组数量超过了限制，请购买相关套餐,价格地址：https://cloud.tencent.com/document/product/269/11673"</string>
-    <string name="trtcchatsalon_group_member_limit">"群成员数量超过限制，请参考，请购买相关套餐，价格地址：https://cloud.tencent.com/document/product/269/11673"</string></resources>
+    <string name="trtcchatsalon_group_member_limit">"群成员数量超过限制，请参考，请购买相关套餐，价格地址：https://cloud.tencent.com/document/product/269/11673"</string>
+    <string name="trtcchatsalon_invitation_limit">请求正在处理，请稍后再试</string>
+</resources>
+

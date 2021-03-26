@@ -441,6 +441,9 @@ public class TXRoomService extends V2TIMSDKListener {
                             return;
                         }
                         // 解析seat info
+                        if (mTXRoomInfo.seatSize == null) {
+                            mTXRoomInfo.seatSize = 0;
+                        }
                         mTXSeatInfoList = IMProtocol.getSeatListFromAttr(attrMap, mTXRoomInfo.seatSize);
                         mTXRoomInfo.roomId = roomId;
                         TRTCLogger.i(TAG, "enter room success: " + mRoomId);

@@ -18,4 +18,19 @@
     <string name="item_voice_call">Audio Call</string>
     <string name="item_video_call">Video Call</string>
     <string name="item_chat_salon">Chat Salon</string>
+
+    <string name="app_toast_login_success">Logged in</string>
+    <string name="app_toast_login_fail">Login failed [%d]%s</string>
+
+    <string name="app_tv_video_cloud_tools_version">Tencent Cloud TRTC v%s</string>
+    <string name="app_title_share_log">Share log</string>
+    <string name="app_dialog_log_out">Are you sure you want to exit?</string>
+    <string name="app_dialog_exit_app">Are you sure you want to exit the app?</string>
+
+    <string name="app_item_link_mic_new">Co-anchoring (New)</string>
+    <string name="app_item_mlvb">MLVB</string>
+
+    <string name="app_tv_main_title">Tencent Video Cloud</string>
+    <string name="app_tv_main_version">version = 1.0</string>
+    <string name="app_tv_main_bottom_hint">This app demonstrates the features of Tencent Video Cloud terminal products.</string>
 </resources>

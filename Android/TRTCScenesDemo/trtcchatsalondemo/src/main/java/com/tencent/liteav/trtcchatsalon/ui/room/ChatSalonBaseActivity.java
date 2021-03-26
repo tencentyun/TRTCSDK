@@ -59,11 +59,12 @@ public class ChatSalonBaseActivity extends AppCompatActivity implements ChatSalo
     protected TRTCChatSalon mTRTCChatSalon;
     protected Context mContext;
 
-    protected LinkedList<ChatSalonMemberEntity>  mAnchorEntityList;
+    protected List<ChatSalonMemberEntity>        mAnchorEntityList;
     protected List<ChatSalonMemberEntity>        mAudienceEntityList;
     protected Map<String, ChatSalonMemberEntity> mMemberEntityMap;
-    protected List<ChatSalonMemberEntity>        mRequestSpeakMembers;
+    protected LinkedList<ChatSalonMemberEntity>  mRequestSpeakMembers;
     protected Map<String, ChatSalonMemberEntity> mRequestSpeakMap;
+    protected Map<String, ChatSalonMemberEntity> mRequestIdMap;
 
     protected ChatSalonAnchorAdapter   mAnchorAdapter;
     protected ChatSalonAudienceAdapter mAudienceAdapter;
@@ -111,10 +112,10 @@ public class ChatSalonBaseActivity extends AppCompatActivity implements ChatSalo
                     boolean currentMode = !mBtnMic.isSelected();
                     mBtnMic.setSelected(currentMode);
                     if (currentMode) {
-                        mTRTCChatSalon.startMicrophone();
+                        mTRTCChatSalon.muteLocalAudio(false);
                         ToastUtils.showLong(R.string.trtcchatsalon_already_open_mic);
                     } else {
-                        mTRTCChatSalon.stopMicrophone();
+                        mTRTCChatSalon.muteLocalAudio(true);
                         ToastUtils.showLong(R.string.trtcchatsalon_already_close_mic);
                     }
                 }
@@ -170,10 +171,11 @@ public class ChatSalonBaseActivity extends AppCompatActivity implements ChatSalo
         mTvHandUpCount    = (TextView) findViewById(R.id.tv_hand_up_count);
         mHandleInvitation = View.inflate(this, R.layout.trtcchatsalon_layout_handle_invitation, null);
         mHandleInvitationTextView = mHandleInvitation.findViewById(R.id.state_tips_text);
-        mConfirmDialogFragment    = new ConfirmDialogFragment();
-        mRequestSpeakMembers = new ArrayList<>();
+        mConfirmDialogFragment = new ConfirmDialogFragment();
+        mRequestSpeakMembers = new LinkedList<>();
         mRequestSpeakMap = new HashMap<>();
         mMemberEntityMap = new HashMap<>();
+        mRequestIdMap = new HashMap<>();
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -187,7 +189,7 @@ public class ChatSalonBaseActivity extends AppCompatActivity implements ChatSalo
             }
         });
 
-        mAnchorEntityList = new LinkedList<>();
+        mAnchorEntityList = new ArrayList<>();
         mAnchorAdapter = new ChatSalonAnchorAdapter(this, mAnchorEntityList, new ChatSalonAnchorAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
@@ -249,7 +251,7 @@ public class ChatSalonBaseActivity extends AppCompatActivity implements ChatSalo
         mToolbarTitle.setText(getString(R.string.trtcchatsalon_main_title, roomInfo.roomName, roomInfo.roomId));
     }
 
-    private void getAudienceList() {
+    protected void getAudienceList() {
         mTRTCChatSalon.getUserInfoList(null, new TRTCChatSalonCallback.UserListCallback() {
             @Override
             public void onCallback(int code, String msg, List<TRTCChatSalonDef.UserInfo> list) {
@@ -277,56 +279,6 @@ public class ChatSalonBaseActivity extends AppCompatActivity implements ChatSalo
             }
         });
     }
-    @Override
-    public void onEnterRoomSeatListNotify(final List<TRTCChatSalonDef.SeatInfo> seatInfoList) {
-        final List<String> userIds = new ArrayList<>();
-        final List<ChatSalonMemberEntity> anchorEntityList = new ArrayList<>();
-        for (int i = 0; i < seatInfoList.size(); i++) {
-            TRTCChatSalonDef.SeatInfo seatInfo =  seatInfoList.get(i);
-            if (seatInfo != null && !TextUtils.isEmpty(seatInfo.userId)) {
-                ChatSalonMemberEntity entity = new ChatSalonMemberEntity();
-                entity.userId = seatInfo.userId;
-                entity.isMute = seatInfo.mute;
-                if (seatInfo.userId.equals(mRoomOwnerId)) {
-                    entity.isManager = true;
-                }
-                userIds.add(seatInfo.userId);
-                mMemberEntityMap.put(seatInfo.userId, entity);
-                anchorEntityList.add(entity);
-            }
-        }
-        Log.d(TAG, "onSeatListChange userIds: " + userIds + " mRoomOwnerId:" + mRoomOwnerId);
-        if (userIds.isEmpty()) {
-            return;
-        }
-
-        //所有的userId拿到手，开始去搜索详细信息了
-        mTRTCChatSalon.getUserInfoList(userIds, new TRTCChatSalonCallback.UserListCallback() {
-            @Override
-            public void onCallback(int code, String msg, List<TRTCChatSalonDef.UserInfo> list) {
-                for (TRTCChatSalonDef.UserInfo userInfo : list) {
-                    Log.d(TAG, "onSeatListChange userInfo: " + userInfo);
-                    if (!TextUtils.isEmpty(userInfo.userId)) {
-                        ChatSalonMemberEntity entity = mMemberEntityMap.get(userInfo.userId);
-                        if (entity == null) {
-                            continue;
-                        }
-                        entity.userName = userInfo.userName;
-                        entity.userAvatar = userInfo.userAvatar;
-                        if (userInfo.userId.equals(mRoomOwnerId)) {
-                            entity.isManager = true;
-                        }
-                    }
-                    HashMap<String, ChatSalonMemberEntity> audienceMap = mAudienceAdapter.getChatSalonMap();
-                    if (audienceMap.containsKey(userInfo.userId)) {
-                        mAudienceAdapter.removeMember(userInfo.userId);
-                    }
-                }
-                mAnchorAdapter.addMembers(anchorEntityList);
-                getAudienceList();
-            }
-        });
-    }
 
     @Override
     public void onAnchorEnterSeat(TRTCChatSalonDef.UserInfo user) {
@@ -341,6 +293,7 @@ public class ChatSalonBaseActivity extends AppCompatActivity implements ChatSalo
         entity.userId = user.userId;
         entity.userName = user.userName;
         entity.userAvatar = user.userAvatar;
+        entity.enterTime = System.currentTimeMillis();
         mMemberEntityMap.put(user.userId, entity);
         mAnchorAdapter.addMember(entity);
         mAudienceAdapter.removeMember(user.userId);
@@ -401,7 +354,6 @@ public class ChatSalonBaseActivity extends AppCompatActivity implements ChatSalo
             return;
         }
         mAudienceAdapter.removeMember(userInfo.userId);
-        mMemberEntityMap.remove(userInfo.userId);
     }
 
     @Override
@@ -449,6 +401,11 @@ public class ChatSalonBaseActivity extends AppCompatActivity implements ChatSalo
 
     @Override
     public void onInvitationCancelled(String id, String inviter) {
+
+    }
+
+    @Override
+    public void onInvitationTimeout(String id) {
 
     }
 

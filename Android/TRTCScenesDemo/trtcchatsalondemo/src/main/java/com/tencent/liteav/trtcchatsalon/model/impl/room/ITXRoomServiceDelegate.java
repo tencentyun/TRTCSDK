@@ -2,7 +2,6 @@ package com.tencent.liteav.trtcchatsalon.model.impl.room;
 
 
 import com.tencent.liteav.trtcchatsalon.model.impl.base.TXRoomInfo;
-import com.tencent.liteav.trtcchatsalon.model.impl.base.TXSeatInfo;
 import com.tencent.liteav.trtcchatsalon.model.impl.base.TXUserInfo;
 
 import java.util.List;
@@ -16,15 +15,13 @@ public interface ITXRoomServiceDelegate {
 
     void onRoomInfoChange(TXRoomInfo TXRoomInfo);
 
-    void onEnterRoomSeatListNotify(List<TXSeatInfo> TXSeatInfoList);
-
     void onRoomAudienceEnter(TXUserInfo userInfo);
 
     void onRoomAudienceLeave(TXUserInfo userInfo);
 
-    void onSeatTake(String seatUserId, TXUserInfo userInfo);
+    void onSeatTake(TXUserInfo userInfo);
 
-    void onSeatLeave(String seatUserId, TXUserInfo userInfo);
+    void onSeatLeave(TXUserInfo userInfo);
 
     void onSeatMute(String seatUserId, boolean mute);
 
@@ -35,4 +32,6 @@ public interface ITXRoomServiceDelegate {
     void onInviteeRejected(String id, String invitee);
 
     void onInvitationCancelled(String id, String inviter);
+
+    void onInvitationTimeout(String id, List<String> inviteeList);
 }

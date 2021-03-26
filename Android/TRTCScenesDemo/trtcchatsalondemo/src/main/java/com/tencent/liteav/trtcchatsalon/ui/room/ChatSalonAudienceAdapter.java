@@ -14,6 +14,7 @@ import com.squareup.picasso.Picasso;
 import com.tencent.liteav.trtcchatsalon.R;
 import com.tencent.liteav.trtcchatsalon.ui.base.ChatSalonMemberEntity;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 

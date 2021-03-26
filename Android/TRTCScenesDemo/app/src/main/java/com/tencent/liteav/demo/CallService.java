@@ -203,13 +203,13 @@ public class CallService extends Service {
             @Override
             public void onError(int i, String s) {
                 // 登录IM失败
-                ToastUtils.showLong("登录IM失败，所有功能不可用[" + i + "]" + s);
+                ToastUtils.showLong(getString(R.string.app_toast_login_fail, i, s));
             }
 
             @Override
             public void onSuccess() {
                 //1. 登录IM成功
-                ToastUtils.showLong("登录成功");
+                ToastUtils.showLong(getString(R.string.app_toast_login_success));
                 initTRTCCallingData();
                 initLiveRoom();
                 initMeetingData();

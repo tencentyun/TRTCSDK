@@ -6,6 +6,7 @@ import android.os.Looper;
 import android.text.TextUtils;
 
 import com.tencent.liteav.audio.TXAudioEffectManager;
+import com.tencent.liteav.trtcchatsalon.R;
 import com.tencent.liteav.trtcchatsalon.model.TRTCChatSalon;
 import com.tencent.liteav.trtcchatsalon.model.TRTCChatSalonCallback;
 import com.tencent.liteav.trtcchatsalon.model.TRTCChatSalonDef;
@@ -14,7 +15,6 @@ import com.tencent.liteav.trtcchatsalon.model.impl.base.TRTCLogger;
 import com.tencent.liteav.trtcchatsalon.model.impl.base.TXCallback;
 import com.tencent.liteav.trtcchatsalon.model.impl.base.TXRoomInfo;
 import com.tencent.liteav.trtcchatsalon.model.impl.base.TXRoomInfoListCallback;
-import com.tencent.liteav.trtcchatsalon.model.impl.base.TXSeatInfo;
 import com.tencent.liteav.trtcchatsalon.model.impl.base.TXUserInfo;
 import com.tencent.liteav.trtcchatsalon.model.impl.base.TXUserListCallback;
 import com.tencent.liteav.trtcchatsalon.model.impl.room.ITXRoomServiceDelegate;
@@ -24,8 +24,10 @@ import com.tencent.liteav.trtcchatsalon.model.impl.trtc.ChatSalonTRTCServiceDele
 import com.tencent.trtc.TRTCCloudDef;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class TRTCChatSalonImpl extends TRTCChatSalon implements ITXRoomServiceDelegate, ChatSalonTRTCServiceDelegate {
@@ -47,6 +49,8 @@ public class TRTCChatSalonImpl extends TRTCChatSalon implements ITXRoomServiceDe
     private Set<String>                          mAnchorList;
     // 已抛出的观众列表
     private Set<String>                          mAudienceList;
+    private HashMap<String, Boolean>             mMuteMap;
+    private HashMap<String, String>              mInvitationMap;
     private TRTCChatSalonCallback.ActionCallback mEnterSeatCallback;
     private TRTCChatSalonCallback.ActionCallback mLeaveSeatCallback;
     private TRTCChatSalonCallback.ActionCallback mPickSeatCallback;
@@ -76,6 +80,8 @@ public class TRTCChatSalonImpl extends TRTCChatSalon implements ITXRoomServiceDe
         mDelegateHandler = new Handler(Looper.getMainLooper());
         mAnchorList = new HashSet<>();
         mAudienceList = new HashSet<>();
+        mMuteMap = new HashMap<>();
+        mInvitationMap = new HashMap<>();
         ChatSalonTRTCService.getInstance().setDelegate(this);
         ChatSalonTRTCService.getInstance().init(context);
         TXRoomService.getInstance().init(context);
@@ -85,6 +91,8 @@ public class TRTCChatSalonImpl extends TRTCChatSalon implements ITXRoomServiceDe
     private void clearList() {
         mAnchorList.clear();
         mAudienceList.clear();
+        mMuteMap.clear();
+        mInvitationMap.clear();
     }
 
     private void runOnMainThread(Runnable runnable) {
@@ -234,8 +242,21 @@ public class TRTCChatSalonImpl extends TRTCChatSalon implements ITXRoomServiceDe
                     public void onCallback(final int code, final String msg) {
                         TRTCLogger.i(TAG, "create room in service, code:" + code + " msg:" + msg);
                         if (code == 0) {
-                            enterTRTCRoomInner(mRoomId, mUserId, mUserSig, TRTCCloudDef.TRTCRoleAnchor, callback);
-                            return;
+                            enterTRTCRoomInner(mRoomId, mUserId, mUserSig, TRTCCloudDef.TRTCRoleAnchor, new TRTCChatSalonCallback.ActionCallback() {
+                                @Override
+                                public void onCallback(final int code, final String msg) {
+                                    TRTCLogger.i(TAG, "trtc enter room finish, room id:" + roomId + " code:" + code + " msg:" + msg);
+                                    runOnDelegateThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            TXRoomService.getInstance().onSeatTake(mUserId);
+                                            if (callback != null) {
+                                                callback.onCallback(code, msg);
+                                            }
+                                        }
+                                    });
+                                }
+                            });
                         } else {
                             runOnDelegateThread(new Runnable() {
                                 @Override
@@ -246,14 +267,6 @@ public class TRTCChatSalonImpl extends TRTCChatSalon implements ITXRoomServiceDe
                                 }
                             });
                         }
-                        runOnDelegateThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (callback != null) {
-                                    callback.onCallback(code, msg);
-                                }
-                            }
-                        });
                     }
                 });
             }
@@ -317,20 +330,6 @@ public class TRTCChatSalonImpl extends TRTCChatSalon implements ITXRoomServiceDe
                 clearList();
                 mRoomId = String.valueOf(roomId);
                 TRTCLogger.i(TAG, "start enter room, room id:" + roomId);
-                enterTRTCRoomInner(mRoomId, mUserId, mUserSig, TRTCCloudDef.TRTCRoleAudience, new TRTCChatSalonCallback.ActionCallback() {
-                    @Override
-                    public void onCallback(final int code, final String msg) {
-                        TRTCLogger.i(TAG, "trtc enter room finish, room id:" + roomId + " code:" + code + " msg:" + msg);
-                        runOnDelegateThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (callback != null) {
-                                    callback.onCallback(code, msg);
-                                }
-                            }
-                        });
-                    }
-                });
                 TXRoomService.getInstance().enterRoom(mRoomId, new TXCallback() {
                     @Override
                     public void onCallback(final int code, final String msg) {
@@ -338,7 +337,9 @@ public class TRTCChatSalonImpl extends TRTCChatSalon implements ITXRoomServiceDe
                         runOnMainThread(new Runnable() {
                             @Override
                             public void run() {
-                                if (code != 0) {
+                                if (code == 0) {
+                                    enterTRTCRoomInner(mRoomId, mUserId, mUserSig, TRTCCloudDef.TRTCRoleAudience, callback);
+                                } else {
                                     runOnDelegateThread(new Runnable() {
                                         @Override
                                         public void run() {
@@ -413,7 +414,7 @@ public class TRTCChatSalonImpl extends TRTCChatSalon implements ITXRoomServiceDe
     }
 
     private boolean isOnSeat(String userId) {
-        return TXRoomService.getInstance().isOnSeat(userId);
+        return mAnchorList.contains(userId);
     }
 
     @Override
@@ -552,20 +553,7 @@ public class TRTCChatSalonImpl extends TRTCChatSalon implements ITXRoomServiceDe
                     return;
                 }
                 mEnterSeatCallback = callback;
-                TXRoomService.getInstance().takeSeat(mUserId, new TXCallback() {
-                    @Override
-                    public void onCallback(int code, String msg) {
-                        if (code != 0) {
-                            //出错了，恢复callback
-                            mEnterSeatCallback = null;
-                            if (callback != null) {
-                                callback.onCallback(code, msg);
-                            }
-                        } else {
-                            TRTCLogger.i(TAG, "take seat callback success, and wait attrs changed.");
-                        }
-                    }
-                });
+                TXRoomService.getInstance().onSeatTake(mUserId);
             }
         });
     }
@@ -589,23 +577,7 @@ public class TRTCChatSalonImpl extends TRTCChatSalon implements ITXRoomServiceDe
                     return;
                 }
                 mLeaveSeatCallback = callback;
-                TXRoomService.getInstance().leaveSeat(mUserId, new TXCallback() {
-                    @Override
-                    public void onCallback(final int code, final String msg) {
-                        if (code != 0) {
-                            //出错了，恢复callback
-                            mLeaveSeatCallback = null;
-                            runOnDelegateThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    if (callback != null) {
-                                        callback.onCallback(code, msg);
-                                    }
-                                }
-                            });
-                        }
-                    }
-                });
+                TXRoomService.getInstance().onSeatLeave(mUserId);
             }
         });
     }
@@ -622,27 +594,18 @@ public class TRTCChatSalonImpl extends TRTCChatSalon implements ITXRoomServiceDe
                         @Override
                         public void run() {
                             if (callback != null) {
-                                callback.onCallback(-1, "该用户已经是麦上主播了");
+                                callback.onCallback(-1, mContext.getString(R.string.trtcchatsalon_already_anchor));
                             }
                         }
                     });
                     return;
                 }
                 mPickSeatCallback = callback;
-                TXRoomService.getInstance().pickSeat(userId, new TXCallback() {
+                TXRoomService.getInstance().sendPickMsg(userId, new TXCallback() {
                     @Override
-                    public void onCallback(final int code, final String msg) {
-                        if (code != 0) {
-                            //出错了，恢复callback
-                            mPickSeatCallback = null;
-                            runOnDelegateThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    if (callback != null) {
-                                        callback.onCallback(code, msg);
-                                    }
-                                }
-                            });
+                    public void onCallback(int code, String msg) {
+                        if (callback != null) {
+                            callback.onCallback(code, msg);
                         }
                     }
                 });
@@ -657,20 +620,11 @@ public class TRTCChatSalonImpl extends TRTCChatSalon implements ITXRoomServiceDe
             public void run() {
                 TRTCLogger.i(TAG, "kickSeat " + userId);
                 mKickSeatCallback = callback;
-                TXRoomService.getInstance().kickSeat(userId, new TXCallback() {
+                TXRoomService.getInstance().sendKickMsg(userId, new TXCallback() {
                     @Override
-                    public void onCallback(final int code, final String msg) {
-                        if (code != 0) {
-                            //出错了，恢复callback
-                            mKickSeatCallback = null;
-                            runOnDelegateThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    if (callback != null) {
-                                        callback.onCallback(code, msg);
-                                    }
-                                }
-                            });
+                    public void onCallback(int code, String msg) {
+                        if (callback != null) {
+                            callback.onCallback(code, msg);
                         }
                     }
                 });
@@ -684,7 +638,6 @@ public class TRTCChatSalonImpl extends TRTCChatSalon implements ITXRoomServiceDe
             @Override
             public void run() {
                 ChatSalonTRTCService.getInstance().startMicrophone();
-                muteSeat(mUserId, false, null);
             }
         });
     }
@@ -695,7 +648,6 @@ public class TRTCChatSalonImpl extends TRTCChatSalon implements ITXRoomServiceDe
             @Override
             public void run() {
                 ChatSalonTRTCService.getInstance().stopMicrophone();
-                muteSeat(mUserId, true, null);
             }
         });
     }
@@ -724,6 +676,7 @@ public class TRTCChatSalonImpl extends TRTCChatSalon implements ITXRoomServiceDe
             public void run() {
                 TRTCLogger.i(TAG, "mute local audio, mute:" + mute);
                 ChatSalonTRTCService.getInstance().muteLocalAudio(mute);
+                muteSeat(mUserId, mute, null);
             }
         });
     }
@@ -845,13 +798,27 @@ public class TRTCChatSalonImpl extends TRTCChatSalon implements ITXRoomServiceDe
 
     @Override
     public String sendInvitation(final String cmd, final String userId, final String content, final TRTCChatSalonCallback.ActionCallback callback) {
-        TRTCLogger.i(TAG, "sendInvitation to " + userId + " cmd:" + cmd + " content:" + content);
-        return TXRoomService.getInstance().sendInvitation(cmd, userId, content, new TXCallback() {
+        final String cmdId = cmd + userId;
+        if (mInvitationMap.containsKey(cmdId)) {
+            runOnMainThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (callback != null) {
+                        callback.onCallback(TRTCChatSalonDef.INVITATION_REQUEST_LIMIT, "handling the invitation");
+                    }
+                }
+            });
+            return "";
+        }
+        final String id = TXRoomService.getInstance().sendInvitation(cmd, userId, content, new TXCallback() {
             @Override
             public void onCallback(final int code, final String msg) {
                 runOnDelegateThread(new Runnable() {
                     @Override
                     public void run() {
+                        if (code != 0) {
+                            mInvitationMap.remove(cmdId);
+                        }
                         if (callback != null) {
                             callback.onCallback(code, msg);
                         }
@@ -859,6 +826,9 @@ public class TRTCChatSalonImpl extends TRTCChatSalon implements ITXRoomServiceDe
                 });
             }
         });
+        mInvitationMap.put(cmdId, id);
+        TRTCLogger.i(TAG, "sendInvitation to " + userId + " cmd:" + cmd + " content:" + content + " id: "+id);
+        return id;
     }
 
     @Override
@@ -929,24 +899,38 @@ public class TRTCChatSalonImpl extends TRTCChatSalon implements ITXRoomServiceDe
             }
         });
     }
+
+    @Override
+    public void onInvitationTimeout(final String id, List<String> inviteeList) {
+        runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                TRTCLogger.i(TAG, "onInvitationTimeout " + id);
+                updateInvitationMap(id);
+                if (mDelegate != null) {
+                    mDelegate.onInvitationTimeout(id);
+                }
+            }
+        });
+    }
+
+    private void updateInvitationMap(String id) {
+        if (TextUtils.isEmpty(id)) {
+            return;
+        }
+        for (Map.Entry<String, String> entry: mInvitationMap.entrySet()) {
+            if (id.equals(entry.getValue())) {
+                mInvitationMap.remove(entry.getKey());
+            }
+        }
+    }
+
     private void muteSeat(final String userId, final boolean isMute, final TRTCChatSalonCallback.ActionCallback callback) {
         runOnMainThread(new Runnable() {
             @Override
             public void run() {
-                TRTCLogger.i(TAG, "kickSeat " + userId + " " + isMute);
-                TXRoomService.getInstance().muteSeat(userId, isMute, new TXCallback() {
-                    @Override
-                    public void onCallback(final int code, final String msg) {
-                        runOnDelegateThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (callback != null) {
-                                    callback.onCallback(code, msg);
-                                }
-                            }
-                        });
-                    }
-                });
+                TRTCLogger.i(TAG, "muteSeat " + userId + " " + isMute);
+                TXRoomService.getInstance().onSeatMute(userId, isMute);
             }
         });
     }
@@ -1006,6 +990,8 @@ public class TRTCChatSalonImpl extends TRTCChatSalon implements ITXRoomServiceDe
 
     @Override
     public void onRoomRecvRoomCustomMsg(final String roomId, final String cmd, final String message, final TXUserInfo userInfo) {
+        TRTCLogger.i(TAG, "onRoomRecvRoomTextMsg:" + roomId + " msg:" + message);
+
         runOnDelegateThread(new Runnable() {
             @Override
             public void run() {
@@ -1035,25 +1021,6 @@ public class TRTCChatSalonImpl extends TRTCChatSalon implements ITXRoomServiceDe
                 roomInfo.needRequest = (tXRoomInfo.needRequest == 1);
                 if (mDelegate != null) {
                     mDelegate.onRoomInfoChange(roomInfo);
-                }
-            }
-        });
-    }
-
-    @Override
-    public void onEnterRoomSeatListNotify(final List<TXSeatInfo> tXSeatInfoList) {
-        runOnDelegateThread(new Runnable() {
-            @Override
-            public void run() {
-                List<TRTCChatSalonDef.SeatInfo> seatInfoList = new ArrayList<>();
-                for (TXSeatInfo seatInfo : tXSeatInfoList) {
-                    TRTCChatSalonDef.SeatInfo info = new TRTCChatSalonDef.SeatInfo();
-                    info.userId = seatInfo.user;
-                    info.mute = seatInfo.mute;
-                    seatInfoList.add(info);
-                }
-                if (mDelegate != null) {
-                    mDelegate.onEnterRoomSeatListNotify(seatInfoList);
                 }
             }
         });
@@ -1092,27 +1059,26 @@ public class TRTCChatSalonImpl extends TRTCChatSalon implements ITXRoomServiceDe
     }
 
     @Override
-    public void onSeatTake(final String userId, final TXUserInfo userInfo) {
+    public void onSeatTake(final TXUserInfo userInfo) {
         runOnMainThread(new Runnable() {
             @Override
             public void run() {
-                if (userInfo.userId.equals(mUserId)) {
-                    //是自己上线了, 切换角色
-                    ChatSalonTRTCService.getInstance().switchToAnchor();
-                }
                 runOnDelegateThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (mDelegate != null) {
-                            TRTCChatSalonDef.UserInfo info = new TRTCChatSalonDef.UserInfo();
-                            info.userId = userInfo.userId;
-                            info.userAvatar = userInfo.avatarURL;
-                            info.userName = userInfo.userName;
-                            mDelegate.onAnchorEnterSeat(info);
-                        }
-                        if (mPickSeatCallback != null) {
-                            mPickSeatCallback.onCallback(0, "pick seat success");
-                            mPickSeatCallback = null;
+                        final String userId = userInfo.userId;
+                        if (userId.equals(mUserId)) {
+                            //是自己上线了, 切换角色
+                            ChatSalonTRTCService.getInstance().switchToAnchor(new ChatSalonTRTCService.OnSwitchRoleListener() {
+                                @Override
+                                public void onTRTCSwitchRole(int code, String message) {
+                                    onAnchorEnterSeat(userInfo);
+                                    ChatSalonTRTCService.getInstance().muteLocalAudio(false);
+                                    muteSeat(userId, false, null);
+                                }
+                            });
+                        } else {
+                            onAnchorEnterSeat(userInfo);
                         }
                     }
                 });
@@ -1133,43 +1099,78 @@ public class TRTCChatSalonImpl extends TRTCChatSalon implements ITXRoomServiceDe
     }
 
     @Override
-    public void onSeatLeave(final String userId, final TXUserInfo userInfo) {
+    public void onSeatLeave(final TXUserInfo userInfo) {
         runOnMainThread(new Runnable() {
             @Override
             public void run() {
-                if (userInfo.userId.equals(mUserId)) {
-                    //自己下线了~
-                    ChatSalonTRTCService.getInstance().switchToAudience();
-                }
                 runOnDelegateThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (mDelegate != null) {
-                            TRTCChatSalonDef.UserInfo info = new TRTCChatSalonDef.UserInfo();
-                            info.userId = userInfo.userId;
-                            info.userAvatar = userInfo.avatarURL;
-                            info.userName = userInfo.userName;
-                            mDelegate.onAnchorLeaveSeat(info);
-                        }
-                        if (mKickSeatCallback != null) {
-                            mKickSeatCallback.onCallback(0, "kick seat success");
-                            mKickSeatCallback = null;
+                        String userId = userInfo.userId;
+                        mAnchorList.remove(userId);
+                        if (userInfo.userId.equals(mUserId)) {
+                            //自己下线了~
+                            ChatSalonTRTCService.getInstance().switchToAudience(new ChatSalonTRTCService.OnSwitchRoleListener() {
+                                @Override
+                                public void onTRTCSwitchRole(int code, String message) {
+                                    onAnchorLeaveSeat(userInfo);
+                                }
+                            });
+                        } else {
+                            onAnchorLeaveSeat(userInfo);
                         }
                     }
                 });
-                if (userInfo.userId.equals(mUserId)) {
-                    runOnDelegateThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (mLeaveSeatCallback != null) {
-                                mLeaveSeatCallback.onCallback(0, "enter seat success");
-                                mLeaveSeatCallback = null;
-                            }
-                        }
-                    });
-                }
             }
         });
+    }
+
+    private void onAnchorEnterSeat(TXUserInfo userInfo) {
+        String userId = userInfo.userId;
+        mAnchorList.add(userId);
+        if (mDelegate != null) {
+            TRTCChatSalonDef.UserInfo info = new TRTCChatSalonDef.UserInfo();
+            info.userId = userInfo.userId;
+            info.userAvatar = userInfo.avatarURL;
+            info.userName = userInfo.userName;
+            mDelegate.onAnchorEnterSeat(info);
+        }
+        //保存静音状态
+        if (mMuteMap.containsKey(userId)) {
+            boolean mute = mMuteMap.get(userId);
+            muteSeat(userId, mute, null);
+            mMuteMap.remove(userId);
+        }
+        if (mPickSeatCallback != null) {
+            mPickSeatCallback.onCallback(0, "pick seat success");
+            mPickSeatCallback = null;
+        }
+    }
+
+    private void onAnchorLeaveSeat(TXUserInfo userInfo) {
+        if (mDelegate != null) {
+            TRTCChatSalonDef.UserInfo info = new TRTCChatSalonDef.UserInfo();
+            info.userId = userInfo.userId;
+            info.userAvatar = userInfo.avatarURL;
+            info.userName = userInfo.userName;
+            mDelegate.onAnchorLeaveSeat(info);
+        }
+        if (mKickSeatCallback != null) {
+            mKickSeatCallback.onCallback(0, "kick seat success");
+            mKickSeatCallback = null;
+        }
+
+        if (userInfo.userId.equals(mUserId)) {
+            runOnDelegateThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (mLeaveSeatCallback != null) {
+                        mLeaveSeatCallback.onCallback(0, "enter seat success");
+                        mLeaveSeatCallback = null;
+                    }
+                }
+            });
+        }
     }
 
     @Override
@@ -1178,9 +1179,6 @@ public class TRTCChatSalonImpl extends TRTCChatSalon implements ITXRoomServiceDe
             @Override
             public void run() {
                 if (mDelegate != null) {
-                    if (userId.equals(mUserId)) {
-                        ChatSalonTRTCService.getInstance().muteLocalAudio(mute);
-                    }
                     mDelegate.onSeatMute(userId, mute);
                 }
             }
@@ -1204,6 +1202,7 @@ public class TRTCChatSalonImpl extends TRTCChatSalon implements ITXRoomServiceDe
         runOnDelegateThread(new Runnable() {
             @Override
             public void run() {
+                updateInvitationMap(id);
                 if (mDelegate != null) {
                     mDelegate.onInviteeAccepted(id, invitee);
                 }
@@ -1216,6 +1215,7 @@ public class TRTCChatSalonImpl extends TRTCChatSalon implements ITXRoomServiceDe
         runOnDelegateThread(new Runnable() {
             @Override
             public void run() {
+                updateInvitationMap(id);
                 if (mDelegate != null) {
                     mDelegate.onInviteeRejected(id, invitee);
                 }
@@ -1228,6 +1228,7 @@ public class TRTCChatSalonImpl extends TRTCChatSalon implements ITXRoomServiceDe
         runOnDelegateThread(new Runnable() {
             @Override
             public void run() {
+                updateInvitationMap(id);
                 if (mDelegate != null) {
                     mDelegate.onInvitationCancelled(id, inviter);
                 }
@@ -1237,21 +1238,21 @@ public class TRTCChatSalonImpl extends TRTCChatSalon implements ITXRoomServiceDe
 
     @Override
     public void onTRTCAnchorEnter(String userId) {
-        mAnchorList.add(userId);
+        TXRoomService.getInstance().onSeatTake(userId);
     }
 
     @Override
     public void onTRTCAnchorExit(String userId) {
-        if (TXRoomService.getInstance().isOwner()) {
-            // 主播是房主
-            kickSeat(userId, null);
-        }
-        mAnchorList.remove(userId);
+        TXRoomService.getInstance().onSeatLeave(userId);
     }
 
     @Override
     public void onTRTCAudioAvailable(String userId, boolean available) {
-
+        if (mAnchorList.contains(userId)) {
+            mDelegate.onSeatMute(userId, !available);
+        } else {
+            mMuteMap.put(userId, !available);
+        }
     }
 
     @Override

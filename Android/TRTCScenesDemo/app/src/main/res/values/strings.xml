@@ -23,4 +23,38 @@
     <string name="item_voice_call">语音通话</string>
     <string name="item_video_call">视频通话</string>
     <string name="item_chat_salon">语音沙龙</string>
+
+    <string name="app_toast_login_success">登录成功</string>
+    <string name="app_toast_login_fail">登录IM失败，所有功能不可用[%d]%s</string>
+
+    <string name="app_tv_video_cloud_tools_version">视频云工具包 v%s</string>
+    <string name="app_title_share_log">分享日志</string>
+    <string name="app_dialog_log_out">确定要退出登录吗？</string>
+    <string name="app_dialog_exit_app">确定要退出APP吗？</string>
+
+    <string name="app_item_live_pusher">推流演示（摄像头推流）</string>
+    <string name="app_item_live_player">拉流演示</string>
+    <string name="app_item_link_mic_new">连麦演示（新方案）</string>
+    <string name="app_item_link_mic_old">连麦演示（旧方案）</string>
+    <string name="app_item_link_mic">连麦演示</string>
+    <string name="app_item_xiao_zhi_bo">小直播</string>
+    <string name="app_item_mlvb">移动直播 MLVB</string>
+
+    <string name="app_item_super_player">超级播放器</string>
+    <string name="app_item_player">播放器 Player</string>
+
+    <string name="app_item_video_recording">视频录制</string>
+    <string name="app_item_effects_editor">特效编辑</string>
+    <string name="app_item_video_stitching">视频拼接</string>
+    <string name="app_item_picture_transition">图片转场</string>
+    <string name="app_item_video_upload">视频上传</string>
+    <string name="app_item_xiao_shi_pin">小视频</string>
+    <string name="app_item_ugsv">短视频 UGSV</string>
+
+    <string name="app_item_trtc">实时音视频 TRTC</string>
+
+    <string name="app_tv_smart_version">Smart版本 v%s</string>
+    <string name="app_tv_main_title">腾讯视频云</string>
+    <string name="app_tv_main_version">version = 1.0</string>
+    <string name="app_tv_main_bottom_hint">本APP用于展示腾讯视频云终端产品的各类功能</string>
 </resources>

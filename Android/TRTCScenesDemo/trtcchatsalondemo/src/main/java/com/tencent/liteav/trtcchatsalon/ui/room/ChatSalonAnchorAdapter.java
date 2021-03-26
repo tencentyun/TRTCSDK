@@ -14,6 +14,8 @@ import com.squareup.picasso.Picasso;
 import com.tencent.liteav.trtcchatsalon.R;
 import com.tencent.liteav.trtcchatsalon.ui.base.ChatSalonMemberEntity;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -25,12 +27,12 @@ public class  ChatSalonAnchorAdapter extends
     private static final String TAG = ChatSalonAnchorAdapter.class.getSimpleName();
 
     private Context mContext;
-    private LinkedList<ChatSalonMemberEntity>      mDataList;
+    private List<ChatSalonMemberEntity>            mDataList;
     private OnItemClickListener                    mOnItemClickListener;
     private String                                 mEmptyText;
     private HashMap<String, ChatSalonMemberEntity> mChatSalonMap;
 
-    public ChatSalonAnchorAdapter(Context context, LinkedList<ChatSalonMemberEntity> list,
+    public ChatSalonAnchorAdapter(Context context, List<ChatSalonMemberEntity> list,
                                   OnItemClickListener onItemClickListener) {
         this.mContext = context;
         this.mDataList = list;
@@ -69,13 +71,25 @@ public class  ChatSalonAnchorAdapter extends
         if (entity.userId == null) {
             return;
         }
+        if (mDataList == null) {
+            return;
+        }
         if (!mChatSalonMap.containsKey(entity.userId)) {
-            if (entity.isManager) {
-                mDataList.addFirst(entity);
-            } else {
-                mDataList.add(entity);
-            }
+            mDataList.add(entity);
             mChatSalonMap.put(entity.userId, entity);
+            Collections.sort(mDataList);
+            Collections.sort(mDataList, new Comparator<ChatSalonMemberEntity>() {
+                @Override
+                public int compare(ChatSalonMemberEntity o1, ChatSalonMemberEntity o2) {
+                    if (o1.isManager && !o2.isManager) {
+                        return -1;
+                    }
+                    if (!o1.isManager && o2.isManager) {
+                        return 1;
+                    }
+                    return 0;
+                }
+            });
             notifyDataSetChanged();
         }
     }

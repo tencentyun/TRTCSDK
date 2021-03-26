@@ -3,6 +3,8 @@ package com.tencent.liteav.trtcchatsalon.model;
 import java.util.List;
 
 public class TRTCChatSalonDef {
+    public static final int INVITATION_REQUEST_LIMIT = -2;
+
     public static class SeatInfo {
         /// 【字段含义】座位是否被静音
         public boolean mute;
