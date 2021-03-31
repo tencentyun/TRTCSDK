@@ -1,12 +1,18 @@
 import EventEmitter from './utils/event.js'
-import TSignaling from './utils/tsignaling-wx'
 import * as ENV from 'utils/environment.js'
 import MTA from 'libs/mta_analysis.js'
 import { EVENT, TRTC_EVENT, ACTION_TYPE, BUSINESS_ID, CALL_STATUS } from './common/constants.js'
 import UserController from './controller/user-controller'
 import formateTime from './utils/formate-time'
+import TSignaling from './utils/tsignaling-wx'
+
+// TODO 组件挂载和模版方式分离，目前使用的方式，只能把TRTCCalling挂载在index页面上
 
 const TAG_NAME = 'TRTCCalling-Component'
+
+// 在trtc-calling中只维护一个tsignaling实例，否则的话可能会引起信令层状态的混乱，上层的多个Tsignal信令会同时处理底层的IM消息
+let tsignaling = null
+
 // 组件旨在跨终端维护一个通话状态管理机，以事件发布机制驱动上层进行管理，并通过API调用进行状态变更。
 // 组件设计思路将UI和状态管理分离。您可以通过修改`template`文件夹下的文件，适配您的业务场景，
 // 在UI展示上，您可以通过属性的方式，将上层的用户头像，名称等数据传入组件内部，`static`下的用户头像图片，
@@ -76,13 +82,25 @@ Component({
   methods: {
     _initEventEmitter() {
       // 监听TSignaling事件
-      this.tsignaling.on(TSignaling.EVENT.NEW_INVITATION_RECEIVED, (event) => {
+      tsignaling.off(TSignaling.EVENT.NEW_INVITATION_RECEIVED)
+      tsignaling.off(TSignaling.EVENT.INVITEE_ACCEPTED)
+      tsignaling.off(TSignaling.EVENT.INVITATION_CANCELLED)
+      tsignaling.off(TSignaling.EVENT.INVITEE_REJECTED)
+      tsignaling.off(TSignaling.EVENT.INVITATION_TIMEOUT)
+      tsignaling.off(TSignaling.EVENT.SDK_READY)
+      tsignaling.off(TSignaling.EVENT.SDK_NOT_READY)
+      tsignaling.off(TSignaling.EVENT.TEXT_MESSAGE_RECEIVED)
+      tsignaling.off(TSignaling.EVENT.CUSTOM_MESSAGE_RECEIVED)
+      tsignaling.off(TSignaling.EVENT.REMOTE_USER_JOIN)
+      tsignaling.off(TSignaling.EVENT.REMOTE_USER_LEAVE)
+      tsignaling.off(TSignaling.EVENT.KICKED_OUT)
+      tsignaling.on(TSignaling.EVENT.NEW_INVITATION_RECEIVED, (event) => {
         console.log(TAG_NAME, 'onNewInvitationReceived', `是否在通话：${this.data.callStatus === CALL_STATUS.CALLING || this.data.callStatus === CALL_STATUS.CONNECTED}, inviteID:${event.data.inviteID} inviter:${event.data.inviter} inviteeList:${event.data.inviteeList} data:${event.data.data}`)
         const { inviteID, inviter, inviteeList, groupID = '' } = event.data
         const data = JSON.parse(event.data.data)
         // 当前在通话中或在呼叫/被呼叫中，接收的新的邀请时，忙线拒绝
         if (this.data.callStatus === CALL_STATUS.CALLING || this.data.callStatus === CALL_STATUS.CONNECTED) {
-          this.tsignaling.reject({
+          tsignaling.reject({
             inviteID: inviteID,
             data: JSON.stringify({
               version: 0,
@@ -151,7 +169,7 @@ Component({
           })
         })
       })
-      this.tsignaling.on(TSignaling.EVENT.INVITEE_ACCEPTED, (event) => {
+      tsignaling.on(TSignaling.EVENT.INVITEE_ACCEPTED, (event) => {
         // 发出的邀请收到接受的回调
         console.log(`${TAG_NAME} INVITEE_ACCEPTED inviteID:${event.data.inviteID} invitee:${event.data.invitee} data:${event.data.data}`)
         // 发起人进入通话状态从此处判断
@@ -163,7 +181,7 @@ Component({
           return
         }
       })
-      this.tsignaling.on(TSignaling.EVENT.INVITEE_REJECTED, (event) => {
+      tsignaling.on(TSignaling.EVENT.INVITEE_REJECTED, (event) => {
         // 发出的邀请收到拒绝的回调
         console.log(`${TAG_NAME} INVITEE_REJECTED inviteID:${event.data.inviteID} invitee:${event.data.invitee} data:${event.data.data}`)
         // 多人通话时处于通话中的成员都可以收到此事件，此处只需要发起邀请方需要后续逻辑处理
@@ -200,7 +218,7 @@ Component({
           })
         }
       })
-      this.tsignaling.on(TSignaling.EVENT.INVITATION_CANCELLED, (event) => {
+      tsignaling.on(TSignaling.EVENT.INVITATION_CANCELLED, (event) => {
         // 收到的邀请收到该邀请取消的回调
         console.log(TAG_NAME, 'onInvitationCancelled邀请取消', `inviteID:${event.data.inviteID} inviter:${event.data.invitee} data:${event.data.data}`)
         this._setCallStatus(CALL_STATUS.IDLE)
@@ -209,7 +227,7 @@ Component({
           invitee: event.data.invitee,
         })
       })
-      this.tsignaling.on(TSignaling.EVENT.INVITATION_TIMEOUT, (event) => {
+      tsignaling.on(TSignaling.EVENT.INVITATION_TIMEOUT, (event) => {
         console.log(TAG_NAME, 'onInvitationTimeout 邀请超时', `inviteID:${event.data.inviteID} inviteeList:${event.data.inviteeList}`)
         const { groupID = '', inviteID, inviter, inviteeList, isSelfTimeout } = event.data
         if (this.data.callStatus !== CALL_STATUS.CONNECTED) {
@@ -280,34 +298,34 @@ Component({
           this._setCallStatus(CALL_STATUS.IDLE)
         }
       })
-      this.tsignaling.on(TSignaling.EVENT.SDK_READY, () => {
+      tsignaling.on(TSignaling.EVENT.SDK_READY, () => {
         console.log(TAG_NAME, 'TSignaling SDK ready')
       })
-      this.tsignaling.on(TSignaling.EVENT.SDK_NOT_READY, () => {
+      tsignaling.on(TSignaling.EVENT.SDK_NOT_READY, () => {
         this._emitter.emit(EVENT.ERROR, {
           errorMsg: 'TSignaling SDK not ready !!! 如果想使用发送消息等功能，接入侧需驱动 SDK 进入 ready 状态',
         })
       })
-      this.tsignaling.on(TSignaling.EVENT.TEXT_MESSAGE_RECEIVED, () => {
+      tsignaling.on(TSignaling.EVENT.TEXT_MESSAGE_RECEIVED, () => {
 
       })
-      this.tsignaling.on(TSignaling.EVENT.CUSTOM_MESSAGE_RECEIVED, () => {
+      tsignaling.on(TSignaling.EVENT.CUSTOM_MESSAGE_RECEIVED, () => {
 
       })
-      this.tsignaling.on(TSignaling.EVENT.REMOTE_USER_JOIN, () => {
+      tsignaling.on(TSignaling.EVENT.REMOTE_USER_JOIN, () => {
         //
       })
-      this.tsignaling.on(TSignaling.EVENT.REMOTE_USER_LEAVE, () => {
+      tsignaling.on(TSignaling.EVENT.REMOTE_USER_LEAVE, () => {
         // 离开
       })
-      this.tsignaling.on(TSignaling.EVENT.KICKED_OUT, () => {
+      tsignaling.on(TSignaling.EVENT.KICKED_OUT, () => {
         // 被踢下线 TODO
         wx.showToast({
           title: '您已被踢下线',
         })
         this.hangup()
       })
-      this.tsignaling.on(TSignaling.EVENT.NET_STATE_CHANGE, () => {
+      tsignaling.on(TSignaling.EVENT.NET_STATE_CHANGE, () => {
 
       })
       // 监听TRTC SDK抛出的事件
@@ -434,9 +452,9 @@ Component({
      */
     login() {
       return new Promise((resolve, reject) => {
-        this.tsignaling.setLogLevel(4)
+        tsignaling.setLogLevel(4)
         MTA.Page.stat()
-        this.tsignaling.login({
+        tsignaling.login({
           userID: this.data.config.userID,
           userSig: this.data.config.userSig,
         }).then( () => {
@@ -450,7 +468,7 @@ Component({
      * 登出接口，登出后无法再进行拨打操作
      */
     logout() {
-      this.tsignaling.logout({
+      tsignaling.logout({
         userID: this.data.config.userID,
         userSig: this.data.config.userSig,
       }).then( () => {
@@ -484,7 +502,7 @@ Component({
       const roomID = Math.floor(Math.random() * 100000000 + 1) // 随机生成房间号
       this._getPushUrl(roomID)
       this._enterTRTCRoom()
-      this.tsignaling.invite({
+      tsignaling.invite({
         userID: userID,
         data: JSON.stringify({
           version: 0,
@@ -523,7 +541,7 @@ Component({
         _groupID: params.groupID,
         _unHandledInviteeList: [...params.userIDList],
       })
-      this.tsignaling.inviteInGroup({
+      tsignaling.inviteInGroup({
         groupID: params.groupID,
         inviteeList: params.userIDList,
         timeout: 30,
@@ -551,7 +569,7 @@ Component({
     async accept() {
       // 拼接pusherURL进房
       console.log(TAG_NAME, 'accept() inviteID: ', this.data.invitation.inviteID)
-      const acceptRes = await this.tsignaling.accept({
+      const acceptRes = await tsignaling.accept({
         inviteID: this.data.invitation.inviteID,
         data: JSON.stringify({
           version: 0,
@@ -577,7 +595,7 @@ Component({
      */
     async reject() {
       if (this.data.invitation.inviteID) {
-        const rejectRes = await this.tsignaling.reject({
+        const rejectRes = await tsignaling.reject({
           inviteID: this.data.invitation.inviteID,
           data: JSON.stringify({
             version: 0,
@@ -604,7 +622,7 @@ Component({
       let cancelRes = null
       if (inviterFlag && this.data.callStatus === CALL_STATUS.CALLING) {
         console.log(TAG_NAME, 'cancel() inviteID: ', this.data.invitationAccept.inviteID)
-        this.tsignaling.cancel({
+        tsignaling.cancel({
           inviteID: this.data.invitationAccept.inviteID,
         }).then((res) => {
           cancelRes = res
@@ -635,7 +653,7 @@ Component({
       let res = null
       // 群组通话
       if (this._getGroupCallFlag()) {
-        res = await this.tsignaling.inviteInGroup({
+        res = await tsignaling.inviteInGroup({
           groupID: this.data._groupID,
           inviteeList: userIDList,
           data: JSON.stringify({
@@ -647,7 +665,7 @@ Component({
         })
       } else {
         // 1v1 通话
-        res = await this.tsignaling.invite({
+        res = await tsignaling.invite({
           userID: userIDList[0],
           data: JSON.stringify({
             version: 0,
@@ -696,6 +714,7 @@ Component({
     },
     _reset() {
       return new Promise( (resolve, reject) => {
+        tsignaling.logout()
         console.log(TAG_NAME, ' _reset()')
         const result = this.userController.reset()
         this.data.pusherConfig = {
@@ -1066,9 +1085,11 @@ Component({
     created: function() {
       // 在组件实例刚刚被创建时执行
       console.log(TAG_NAME, 'created', ENV, this.data.config)
-      // this.tsignaling = new TSignaling({ SDKAppID: this.data.config.sdkAppID, tim: wx.$app })
-      // tim为非必填参数，如果您的小程序中已存在IM实例，可以通过这个参数将其传入，避免IM实例的重复创建
-      this.tsignaling = new TSignaling({ SDKAppID: this.data.config.sdkAppID })
+      if (!tsignaling) {
+        // tsignaling = new TSignaling({ SDKAppID: this.data.config.sdkAppID, tim: wx.$app })
+        // tim为非必填参数，如果您的小程序中已存在IM实例，可以通过这个参数将其传入，避免IM实例的重复创建
+        tsignaling = new TSignaling({ SDKAppID: this.data.config.sdkAppID })
+      }
       wx.setKeepScreenOn({
         keepScreenOn: true,
       })
