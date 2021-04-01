@@ -335,7 +335,7 @@ if exist %25SourceFile%25 (
  echo sdk is exist!
 ) else (
     echo sdk is not exist! you must down sdk first!
-    echo 1. download sdk url http://liteavsdk-1252463788.cosgz.myqcloud.com/TXLiteAVSDK_TRTC_Win_latest.zip
+    echo 1. download sdk url https://liteav.sdk.qcloud.com/download/latest/TXLiteAVSDK_TRTC_Win_latest.zip
     echo 2. copy sdk file to ..\SDK\  Directory
 )</PreBuildEvent>
   </PropertyGroup>

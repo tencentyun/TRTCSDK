@@ -88,19 +88,19 @@ void AudioEffectViewController::InitAudioMusicView()
     if (pMusicCombo) {
         CListLabelElementUI* pElement1 = new CListLabelElementUI;
         pElement1->SetText(L"测试音乐1");
-        pElement1->SetName(L"http://dldir1.qq.com/hudongzhibo/LiteAV/demomusic/testmusic1.mp3"); 
+        pElement1->SetName(L"https://liteav.sdk.qcloud.com/app/res/bgm/testmusic1.mp3"); 
 
         pMusicCombo->Add(pElement1); 
 
         CListLabelElementUI* pElement2 = new CListLabelElementUI;
         pElement2->SetText(L"测试音乐2");
-        pElement2->SetName(L"http://dldir1.qq.com/hudongzhibo/LiteAV/demomusic/testmusic2.mp3");
+        pElement2->SetName(L"https://liteav.sdk.qcloud.com/app/res/bgm/testmusic2.mp3");
 
         pMusicCombo->Add(pElement2); 
 
         CListLabelElementUI* pElement3 = new CListLabelElementUI;
         pElement3->SetText(L"测试音乐3");
-        pElement3->SetName(L"http://dldir1.qq.com/hudongzhibo/LiteAV/demomusic/testmusic3.mp3");
+        pElement3->SetName(L"https://liteav.sdk.qcloud.com/app/res/bgm/testmusic3.mp3");
         pMusicCombo->Add(pElement3);
 
         CListLabelElementUI* pElement4 = new CListLabelElementUI;

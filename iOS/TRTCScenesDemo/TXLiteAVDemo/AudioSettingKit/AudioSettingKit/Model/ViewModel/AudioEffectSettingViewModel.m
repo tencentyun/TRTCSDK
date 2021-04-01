@@ -127,17 +127,17 @@
         @{
             @"name": @"环绕声测试1",
             @"singer": @"佚名",
-            @"url": @"http://dldir1.qq.com/hudongzhibo/LiteAV/demomusic/testmusic1.mp3"
+            @"url": @"https://liteav.sdk.qcloud.com/app/res/bgm/testmusic1.mp3"
         },
         @{
             @"name": @"环绕声测试2",
             @"singer": @"佚名",
-            @"url": @"http://dldir1.qq.com/hudongzhibo/LiteAV/demomusic/testmusic2.mp3"
+            @"url": @"https://liteav.sdk.qcloud.com/app/res/bgm/testmusic2.mp3"
         },
         @{
             @"name": @"环绕声测试3",
             @"singer": @"佚名",
-            @"url": @"http://dldir1.qq.com/hudongzhibo/LiteAV/demomusic/testmusic3.mp3"
+            @"url": @"https://liteav.sdk.qcloud.com/app/res/bgm/testmusic3.mp3"
         }
     ];
     NSMutableArray *result = [[NSMutableArray alloc] initWithCapacity:2];

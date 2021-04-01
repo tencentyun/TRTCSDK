@@ -19,7 +19,7 @@
 > 
 >**Mac:** 下载并安装[Qt Creator](https://www.qt.io/download-qt-installer?hsCtaTracking=99d9dd4f-5681-48d2-b096-470725510d34%7C074ddad0-fdef-4e53-8aa8-5e8a876d6ab4)，然后用Qt Creator打开** QTDemo.pro**，到**QTDemo/base/Defs.h**头文件中配置好对应的**SECRETKEY** 和 **SDKAppID** 即可开始编译运行调试；
 >
-> `注意：`请您确保已将`TXLiteAVSDK_TRTC_Mac.framework`[下载](http://liteavsdk-1252463788.cosgz.myqcloud.com/TXLiteAVSDK_TRTC_Mac_latest.tar.bz2)并保存到`Mac/SDK`文件夹下。
+> `注意：`请您确保已将`TXLiteAVSDK_TRTC_Mac.framework`[下载](https://liteav.sdk.qcloud.com/download/latest/TXLiteAVSDK_TRTC_Mac_latest.tar.bz2)并保存到`Mac/SDK`文件夹下。
 >
 >  至此，所有环境配置完毕，您可以通过 **Qt Creator** 编译并调试Demo。
 
@@ -31,7 +31,7 @@
 >>
 >>最后：您需要将**SDK/CPlusPlus/Win32/lib**下的所有的`.dll`文件拷贝到工程目录下的`debug`文件夹下。请注意：`debug`文件夹是在VS上的环境配置完后自动生成
 >
-> `注意：`请您确保已将`SDK`文件夹下的`CPlusPlus`[下载](http://liteavsdk-1252463788.cosgz.myqcloud.com/TXLiteAVSDK_TRTC_Mac_latest.tar.bz2)并保存到`Windows/SDK`文件夹下，如下图：
+> `注意：`请您确保已将`SDK`文件夹下的`CPlusPlus`[下载](https://liteav.sdk.qcloud.com/download/latest/TXLiteAVSDK_TRTC_Mac_latest.tar.bz2)并保存到`Windows/SDK`文件夹下，如下图：
 >
 >  ![image][tmp]
 >
