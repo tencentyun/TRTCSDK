@@ -714,7 +714,6 @@ Component({
     },
     _reset() {
       return new Promise( (resolve, reject) => {
-        tsignaling.logout()
         console.log(TAG_NAME, ' _reset()')
         const result = this.userController.reset()
         this.data.pusherConfig = {
