@@ -73,7 +73,7 @@ defaultConfig {
 #### 方法二：手动下载（aar）
 如果您的网络连接 JCenter 有问题，您也可以手动下载 SDK 集成到工程里：
 
-1. 下载最新版本 [实时音视频 SDK](http://liteavsdk-1252463788.cosgz.myqcloud.com/TXLiteAVSDK_TRTC_Android_latest.zip)。
+1. 下载最新版本 [实时音视频 SDK](https://liteav.sdk.qcloud.com/download/latest/TXLiteAVSDK_TRTC_Android_latest.zip)。
 2. 将下载到的 aar 文件拷贝到工程的 **app/libs** 目录下。
 3. 在工程根目录下的 build.gradle 中，添加 **flatDir**，指定本地仓库路径。
 ```

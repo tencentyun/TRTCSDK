@@ -43,7 +43,7 @@
 ## 相关文档链接
 
 - [SDK 的版本更新历史](https://github.com/tencentyun/TRTCSDK/releases)
-- [SDK 的 API 文档](http://doc.qcloudtrtc.com/md_introduction_trtc_iOS_mac_%E6%A6%82%E8%A7%88.html)
+- [SDK 的 API 文档](https://liteav.sdk.qcloud.com/doc/api/zh-cn/md_introduction_trtc_iOS_mac_%E6%A6%82%E8%A7%88.html)
 - [SDK 的官方体验 App](https://cloud.tencent.com/document/product/647/17021)
 - [场景方案：互动直播](https://cloud.tencent.com/document/product/647/43181)
 - [场景方案：视频通话](https://cloud.tencent.com/document/product/647/42044)

@@ -82,9 +82,9 @@ public class AudioEffectPanel extends FrameLayout {
     private ImageButton mImgbtnBGMPlay;
     private TXAudioEffectManager mAudioEffectManager;
     private BGMListener mBGMPlayListenr;
-    private static final String ONLINE_BGM_FIRST = "http://dldir1.qq.com/hudongzhibo/LiteAV/demomusic/testmusic1.mp3";
-    private static final String ONLINE_BGM_SECOND = "http://dldir1.qq.com/hudongzhibo/LiteAV/demomusic/testmusic2.mp3";
-    private static final String ONLINE_BGM_THIRD = "http://dldir1.qq.com/hudongzhibo/LiteAV/demomusic/testmusic3.mp3";
+    private static final String ONLINE_BGM_FIRST = "https://liteav.sdk.qcloud.com/app/res/bgm/testmusic1.mp3";
+    private static final String ONLINE_BGM_SECOND = "https://liteav.sdk.qcloud.com/app/res/bgm/testmusic2.mp3";
+    private static final String ONLINE_BGM_THIRD = "https://liteav.sdk.qcloud.com/app/res/bgm/testmusic3.mp3";
 
     private int     mBGMId     = -1;
     private float   mPitch     = 0;
