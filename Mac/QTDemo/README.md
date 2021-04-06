@@ -31,7 +31,7 @@
 >>
 >>最后：您需要将**SDK/CPlusPlus/Win32/lib**下的所有的`.dll`文件拷贝到工程目录下的`debug`文件夹下。请注意：`debug`文件夹是在VS上的环境配置完后自动生成
 >
-> `注意：`请您确保已将`SDK`文件夹下的`CPlusPlus`[下载](https://liteav.sdk.qcloud.com/download/latest/TXLiteAVSDK_TRTC_Mac_latest.tar.bz2)并保存到`Windows/SDK`文件夹下，如下图：
+> `注意：`请您确保已将`SDK`文件夹下的`CPlusPlus`[下载](https://liteav.sdk.qcloud.com/download/latest/TXLiteAVSDK_TRTC_Win_latest.zip)并保存到`Windows/SDK`文件夹下，如下图：
 >
 >  ![image][tmp]
 >
