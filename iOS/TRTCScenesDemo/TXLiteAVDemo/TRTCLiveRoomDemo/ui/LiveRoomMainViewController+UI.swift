@@ -49,7 +49,7 @@ extension LiveRoomMainViewController {
             }
             if uintIDs.count == 0 {
                 self?.roomsCollection.mj_header?.endRefreshing()
-                self?.view.makeToast("当前暂无内容哦~")
+                self?.view.makeToast(.noContentText)
                 return
             }
             self?.liveRoom?.getRoomInfos(roomIDs: uintIDs, callback: { (code, error, infos) in
@@ -58,16 +58,16 @@ extension LiveRoomMainViewController {
                     self?.roomInfos = infos
                     self?.roomsCollection.reloadData()
                     if infos.count == 0 {
-                        self?.view.makeToast("当前暂无内容哦~")
+                        self?.view.makeToast(.noContentText)
                     }
                 } else {
-                   self?.view.makeToast("获取房间列表失败")
+                    self?.view.makeToast(.listFailedText)
                 }
             })
         }) { [weak self] (code, error) in
             debugPrint(error)
             self?.roomsCollection.mj_header?.endRefreshing()
-            self?.view.makeToast("获取房间列表失败")
+            self?.view.makeToast(.listFailedText)
         }
     }
     
@@ -76,4 +76,8 @@ extension LiveRoomMainViewController {
         vc.liveRoom = liveRoom
         navigationController?.pushViewController(vc, animated: true)
     }
+}
+private extension String {
+    static let noContentText = TRTCLocalize("Demo.TRTC.LiveRoom.nocontentnow~")
+    static let listFailedText = TRTCLocalize("Demo.TRTC.LiveRoom.getroomlistfailed")
 }

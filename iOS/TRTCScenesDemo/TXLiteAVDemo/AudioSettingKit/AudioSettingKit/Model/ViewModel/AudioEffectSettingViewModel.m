@@ -32,6 +32,8 @@
 
 @implementation AudioEffectSettingViewModel
 
+#define L(x) [self.theme localizedString:x]
+
 - (instancetype)init
 {
     self = [super init];
@@ -63,7 +65,20 @@
 }
 
 - (NSArray<TCAudioScrollMenuCellModel *> *)createVoiceChangeDataSource{
-    NSArray *titleArray = @[@"原声", @"熊孩子", @"萝莉", @"大叔", @"重金属", @"感冒", @"外国人", @"困兽", @"死肥宅", @"强电流", @"重机械", @"空灵"];
+    NSArray *titleArray = @[
+        L(@"ASKit.MenuItem.Original"),
+        L(@"ASKit.MenuItem.Naughty boy"),
+        L(@"ASKit.MenuItem.Little girl"),
+        L(@"ASKit.MenuItem.Middle-aged man"),
+        L(@"ASKit.MenuItem.Heavy metal"),
+        L(@"ASKit.MenuItem.Being cold"),
+        L(@"ASKit.MenuItem.Non-native speaker"),
+        L(@"ASKit.MenuItem.Furious animal"),
+        L(@"ASKit.MenuItem.Fat otaku"),
+        L(@"ASKit.MenuItem.Strong electric current"),
+        L(@"ASKit.MenuItem.Robot"),
+        L(@"ASKit.MenuItem.Ethereal voice")
+    ];
     NSArray *iconNameArray = @[@"voiceChange_normal_close", @"voiceChange_xionghaizi", @"voiceChange_luoli", @"voiceChange_dashu", @"voiceChange_zhongjinshu", @"voiceChange_ganmao", @"voiceChange_waiguo", @"voiceChange_kunshou", @"voiceChange_feizhai", @"voiceChange_qiangdianliu", @"voiceChange_jixie", @"voiceChange_konglin"];
     NSArray *iconSelectedNameArray = @[@"voiceChange_normal_open", @"voiceChange_xionghaizi", @"voiceChange_luoli", @"voiceChange_dashu", @"voiceChange_zhongjinshu", @"voiceChange_ganmao", @"voiceChange_waiguo", @"voiceChange_kunshou", @"voiceChange_feizhai", @"voiceChange_qiangdianliu", @"voiceChange_jixie", @"voiceChange_konglin"];
     NSMutableArray *result = [[NSMutableArray alloc] initWithCapacity:2];
@@ -74,7 +89,7 @@
         TCAudioScrollMenuCellModel *model = [[TCAudioScrollMenuCellModel alloc] init];
         model.title = title;
         model.actionID = index;
-        if ([title isEqualToString:@"原声"]) {
+        if ([title isEqualToString:L(@"ASKit.MenuItem.Original")]) {
             model.selected = YES;
         } else {
             model.selected = NO;
@@ -93,7 +108,16 @@
 }
 
 - (NSArray<TCAudioScrollMenuCellModel *> *)createReverberationDataSource{
-    NSArray *titleArray = @[@"无效果", @"KTV", @"小房间", @"大会堂", @"低沉", @"洪亮", @"金属声", @"磁性"];
+    NSArray *titleArray = @[
+        L(@"ASKit.MenuItem.No effect"),
+        L(@"ASKit.MenuItem.Karaoke room"),
+        L(@"ASKit.MenuItem.Small room"),
+        L(@"ASKit.MenuItem.Big hall"),
+        L(@"ASKit.MenuItem.Deep"),
+        L(@"ASKit.MenuItem.Resonant"),
+        L(@"ASKit.MenuItem.Metallic"),
+        L(@"ASKit.MenuItem.Husky")
+    ];
     NSArray *iconNameArray = @[@"Reverb_normal_close", @"Reverb_KTV", @"Reverb_literoom", @"Reverb_dahuitang", @"Reverb_dicheng", @"Reverb_hongliang", @"Reverb_zhongjinshu", @"Reverb_cixin"];
     NSArray *iconSelectedNameArray =  @[@"Reverb_normal_open", @"Reverb_KTV", @"Reverb_literoom", @"Reverb_dahuitang", @"Reverb_dicheng", @"Reverb_hongliang", @"Reverb_zhongjinshu", @"Reverb_cixin"];
     NSMutableArray *result = [[NSMutableArray alloc] initWithCapacity:2];
@@ -104,7 +128,7 @@
         TCAudioScrollMenuCellModel *model = [[TCAudioScrollMenuCellModel alloc] init];
         model.actionID = index;
         model.title = title;
-        if ([title isEqualToString:@"无效果"]) {
+        if ([title isEqualToString:L(@"ASKit.MenuItem.No effect")]) {
             model.selected = YES;
         } else {
             model.selected = NO;
@@ -125,18 +149,18 @@
 - (NSArray<TCMusicSelectedModel *> *)createMusicDataSources {
     NSArray* musicsData = @[
         @{
-            @"name": @"环绕声测试1",
-            @"singer": @"佚名",
+            @"name": L(@"ASKit.MenuItem.Surround sound test 1"),
+            @"singer": L(@"ASKit.MenuItem.Unknown"),
             @"url": @"https://liteav.sdk.qcloud.com/app/res/bgm/testmusic1.mp3"
         },
         @{
-            @"name": @"环绕声测试2",
-            @"singer": @"佚名",
+            @"name": L(@"ASKit.MenuItem.Surround sound test 2"),
+            @"singer": L(@"ASKit.MenuItem.Unknown"),
             @"url": @"https://liteav.sdk.qcloud.com/app/res/bgm/testmusic2.mp3"
         },
         @{
-            @"name": @"环绕声测试3",
-            @"singer": @"佚名",
+            @"name": L(@"ASKit.MenuItem.Surround sound test 3"),
+            @"singer": L(@"ASKit.MenuItem.Unknown"),
             @"url": @"https://liteav.sdk.qcloud.com/app/res/bgm/testmusic3.mp3"
         }
     ];

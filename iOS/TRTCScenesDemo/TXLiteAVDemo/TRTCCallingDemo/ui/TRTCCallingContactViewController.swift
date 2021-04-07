@@ -75,7 +75,7 @@ class TRTCCallingContactViewController: UIViewController, TRTCCallingDelegate {
         let searchBar = UISearchBar.init()
         searchBar.backgroundImage = UIImage.init()
         searchBar.barTintColor = .searchBarBackColor
-        searchBar.placeholder = "搜索手机号"
+        searchBar.placeholder = .searchPhoneNumberText
         searchBar.backgroundColor = .clear
         searchBar.barTintColor = .clear
         searchBar.returnKeyType = .search
@@ -86,7 +86,7 @@ class TRTCCallingContactViewController: UIViewController, TRTCCallingDelegate {
     /// 搜索按钮
     lazy var searchBtn: UIButton = {
        let done = UIButton()
-        done.setTitle("搜索", for: .normal)
+        done.setTitle(.searchText, for: .normal)
         done.setTitleColor(.white, for: .normal)
         done.alpha = 0.5
         done.titleLabel?.font = UIFont.systemFont(ofSize: 16)
@@ -523,7 +523,7 @@ extension TRTCCallingContactViewController: UITextFieldDelegate, UISearchBarDele
         }) { [weak self] (error) in
             guard let self = self else {return}
             self.searchResult = nil
-            self.view.makeToast("查询失败")
+            self.view.makeToast(.failedSearchText)
         }
     }
 }
@@ -547,7 +547,7 @@ extension TRTCCallingContactViewController: UITableViewDelegate, UITableViewData
                 cell.config(model: user, selected: false) { [weak self] in
                     guard let self = self else { return }
                     if user.userId == AppUtils.shared.curUserId {
-                        self.view.makeToast("不能邀请自己")
+                        self.view.makeToast(.cantInvateSelfText)
                         return
                     }
                     if let finish = self.selectedFinished {
@@ -577,22 +577,17 @@ extension TRTCCallingContactViewController: UITableViewDelegate, UITableViewData
 }
 
 private extension String {
-    static let yourUserNameText = String.localized(of: "您的手机号")
-    static let searchPhoneNumberText = String.localized(of: "搜索手机号")
-    static let searchText = String.localized(of: "搜索")
-    static let backgroundTipsText = String.localized(of: "搜索添加已注册用户\n以发起通话")
-    static let enterConvText = String.localized(of: "进入通话")
-    static let cancelConvText = String.localized(of: "通话取消")
-    static let callTimeOutText = String.localized(of: "通话超时")
-    static let rejectToastText = String.localized(of: "拒绝了通话")
-    static let leaveToastText = String.localized(of: "离开了通话")
-    static let norespToastText = String.localized(of: "未响应")
-    static let busyToastText = String.localized(of: "忙线")
-    
-    static func localized(of key: String, comment: String = "") -> String {
-        return NSLocalizedString(key,
-                                 tableName: "Localizable",
-                                 bundle: Bundle.main,
-                                 comment: comment)
-    }
+    static let yourUserNameText = TRTCLocalize("Demo.TRTC.calling.yourphonenumber")
+    static let searchPhoneNumberText = TRTCLocalize("Demo.TRTC.calling.searchphonenumber")
+    static let searchText = TRTCLocalize("Demo.TRTC.calling.searching")
+    static let backgroundTipsText = TRTCLocalize("Demo.TRTC.calling.searchandcall")
+    static let enterConvText = TRTCLocalize("Demo.TRTC.calling.callingbegan")
+    static let cancelConvText = TRTCLocalize("Demo.TRTC.calling.callingcancel")
+    static let callTimeOutText = TRTCLocalize("Demo.TRTC.calling.callingtimeout")
+    static let rejectToastText = TRTCLocalize("Demo.TRTC.calling.callingrefuse")
+    static let leaveToastText = TRTCLocalize("Demo.TRTC.calling.callingleave")
+    static let norespToastText = TRTCLocalize("Demo.TRTC.calling.callingnoresponse")
+    static let busyToastText = TRTCLocalize("Demo.TRTC.calling.callingbusy")
+    static let failedSearchText = TRTCLocalize("Demo.TRTC.calling.searchingfailed")
+    static let cantInvateSelfText = TRTCLocalize("Demo.TRTC.calling.cantinviteself")
 }

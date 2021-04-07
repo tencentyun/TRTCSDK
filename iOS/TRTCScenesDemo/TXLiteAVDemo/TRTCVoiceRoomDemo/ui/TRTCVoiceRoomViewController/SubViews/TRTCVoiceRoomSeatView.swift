@@ -66,7 +66,7 @@ class TRTCVoiceRoomSeatView: UIView {
     
     let nameLabel: UILabel = {
         let label = UILabel.init(frame: .zero)
-        label.text = "点击上麦"
+        label.text = .handsupText
         label.font = UIFont.systemFont(ofSize: 14.0)
         label.textColor = UIColor.init(0xEBF4FF)
         label.textAlignment = .center
@@ -121,7 +121,7 @@ class TRTCVoiceRoomSeatView: UIView {
         if model.isClosed {
             // close 状态
             avatarImageView.image = UIImage.init(named: "voiceroom_seat_lock")
-            nameLabel.text = "已锁定"
+            nameLabel.text = .lockedText
             return
         }
         muteImageView.isHidden = !(model.seatInfo?.mute ?? false)
@@ -134,7 +134,7 @@ class TRTCVoiceRoomSeatView: UIView {
         } else {
             // 无人
             avatarImageView.image = UIImage.init(named: "voiceroom_placeholder_avatar")
-            nameLabel.text = model.isOwner ? "邀请上麦" : "点击上麦"
+            nameLabel.text = model.isOwner ? .inviteHandsupText : .handsupText
         }
     }
 }
@@ -169,7 +169,9 @@ extension TRTCVoiceRoomSeatView {
 
 /// MARK: - internationalization string
 fileprivate extension String {
-    
+    static let handsupText = TRTCLocalize("Demo.TRTC.VoiceRoom.presshandsup")
+    static let lockedText = TRTCLocalize("Demo.TRTC.VoiceRoom.islocked")
+    static let inviteHandsupText = TRTCLocalize("Demo.TRTC.VoiceRoom.invitehandsup")
 }
 
 

@@ -19,6 +19,7 @@ static NSString* VOICE_ROOM_KEY_SEAT = @"seat";
 static NSString* VOICE_ROOM_KEY_CMD_VERSION = @"version";
 static NSString* VOICE_ROOM_VALUE_CMD_VERSION = @"1.0";
 static NSString* VOICE_ROOM_KEY_CMD_ACTION = @"action";
+static NSString* VOICE_ROOM_KEY_USER_ID = @"userId";
 
 static NSString* VOICE_ROOM_KEY_INVITATION_VERSION = @"version";
 static NSString* VOICE_ROOM_VALUE_INVITATION_VERSION = @"1.0";
@@ -29,6 +30,7 @@ typedef NS_ENUM(NSUInteger, TXChatSalonCustomCodeType) {
     kChatSalonCodeUnknown = 0,
     kChatSalonCodeDestroy = 200,
     kChatSalonCodeCustomMsg = 301,
+    kChatSalonCodeKickSeatMsg = 302,
 };
 
 @interface TXChatSalonIMJsonHandle : NSObject
@@ -52,6 +54,8 @@ typedef NS_ENUM(NSUInteger, TXChatSalonCustomCodeType) {
 + (NSString *)getCusMsgJsonStrWithCmd:(NSString *)cmd msg:(NSString *)msg;
 
 + (NSDictionary<NSString *, NSString *> *)parseCusMsgWithJsonDic:(NSDictionary *)jsonDic;
+
++ (NSString *)getKickMsgJsonStrWithUserID:(NSString *)userID;
 
 @end
 

@@ -43,7 +43,7 @@ class TRTCVoiceRoomTipsTableCell: UITableViewCell {
     let acceptButton: UIButton = {
         let button = UIButton.init(type: .custom)
         button.setBackgroundImage(UIColor.init(0xE84B40).trans2Image(), for: .normal)
-        button.setTitle("接受", for: .normal)
+        button.setTitle(.acceptText, for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
         button.isHidden = true
         button.layer.cornerRadius = 3.0
@@ -139,4 +139,9 @@ class TRTCVoiceRoomTipsTableCell: UITableViewCell {
             layoutIfNeeded()
         }
     }
+}
+
+/// MARK: - internationalization string
+fileprivate extension String {
+    static let acceptText = TRTCLocalize("Demo.TRTC.LiveRoom.accept")
 }

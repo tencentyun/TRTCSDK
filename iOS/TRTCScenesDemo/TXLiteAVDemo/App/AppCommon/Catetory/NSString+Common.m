@@ -681,6 +681,18 @@ char pinyinFirstLetter(unsigned short hanzi)
     }
 }
 
+//判断当前系统语言是否为英文
++ (BOOL)isCurrentLanguageEnglish
+{
+    NSArray *languages = [NSLocale preferredLanguages];
+    NSString *currentLanguage = [languages objectAtIndex:0];
+    if ([currentLanguage hasPrefix:@"en"])
+    {
+        return YES;
+    }
+    return NO;
+}
+
 @end
 
 #if TARGET_OS_IOS

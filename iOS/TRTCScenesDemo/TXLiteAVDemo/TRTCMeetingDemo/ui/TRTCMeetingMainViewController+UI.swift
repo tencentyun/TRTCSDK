@@ -88,7 +88,7 @@ extension TRTCMeetingMainViewController {
         }, onError: nil, onCompleted: nil, onDisposed: nil).disposed(by: disposeBag)
         
         // 退出
-        exitButton.setTitle("退出会议", for: .normal)
+        exitButton.setTitle(.exitMeetingText, for: .normal)
         exitButton.titleLabel?.font = UIFont.systemFont(ofSize: 14)
         exitButton.backgroundColor = UIColor(red: 232 / 255.0, green: 75 / 255.0, blue: 64 / 255.0, alpha: 1.0)
         exitButton.layer.cornerRadius = 4.0
@@ -102,20 +102,20 @@ extension TRTCMeetingMainViewController {
         exitButton.rx.controlEvent(.touchUpInside).subscribe(onNext: { [weak self] in
             guard let self = self else {return}
             
-            let alertVC = UIAlertController(title: "提示", message: "确定退出会议？", preferredStyle: UIAlertController.Style.alert)
+            let alertVC = UIAlertController(title: .promptText, message: .sureExitText, preferredStyle: UIAlertController.Style.alert)
             
-            let okView = UIAlertAction(title: "确定", style: UIAlertAction.Style.default, handler: {
+            let okView = UIAlertAction(title: .confirmText, style: UIAlertAction.Style.default, handler: {
                 (action: UIAlertAction!) -> Void in
-                print("退房成功\n")
+                print("exit success\n")
                 TRTCMeeting.sharedInstance().leave { (code, msg) in
                     debugPrint("log: exitMeeting: code \(code), msg: \(String(describing: msg))")
                 }
                 self.navigationController?.popViewController(animated: true)
             })
             
-            let cancelView = UIAlertAction(title: "取消", style: UIAlertAction.Style.cancel, handler: {
+            let cancelView = UIAlertAction(title: .cancelText, style: UIAlertAction.Style.cancel, handler: {
                 (action: UIAlertAction!) -> Void in
-                print("取消按钮已点击")
+                print("cancel btn click\n")
             })
             
             alertVC.addAction(okView)
@@ -266,7 +266,7 @@ extension TRTCMeetingMainViewController {
                 TRTCMeeting.sharedInstance().startScreenCapture(params)
                 TRTCBroadcastExtensionLauncher.launch()
             } else {
-                self.view.makeToast("系统版本低于12.0，请升级系统")
+                self.view.makeToast(.versionLowText)
             }
         }, onError: nil, onCompleted: nil, onDisposed: nil).disposed(by: disposeBag)
         
@@ -334,4 +334,14 @@ extension TRTCMeetingMainViewController {
             self.isLogViewShow = false
         }
     }
+}
+
+/// MARK: - internationalization string
+fileprivate extension String {
+    static let exitMeetingText = TRTCLocalize("Demo.TRTC.Meeting.exitmeeting")
+    static let promptText = TRTCLocalize("Demo.TRTC.LiveRoom.prompt")
+    static let sureExitText = TRTCLocalize("Demo.TRTC.Meeting.suretoexitmeeting")
+    static let confirmText = TRTCLocalize("Demo.TRTC.LiveRoom.confirm")
+    static let cancelText = TRTCLocalize("Demo.TRTC.LiveRoom.cancel")
+    static let versionLowText = TRTCLocalize("Demo.TRTC.Meeting.versiontoolow")
 }

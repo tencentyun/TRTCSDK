@@ -93,9 +93,9 @@ class TRTCVoiceRoomViewModel: NSObject {
         isExitingRoom = true
         if dependencyContainer.userId == roomInfo.ownerId && roomType == .anchor {
             voiceRoomManager.destroyRoom(sdkAppID: dependencyContainer.mSDKAppID, roomID: "\(roomInfo.roomID)", success: {
-                TRTCLog.out("---销毁房间成功")
+                TRTCLog.out("---deinit room success")
             }) { (code, message) in
-                TRTCLog.out("---销毁房间失败")
+                TRTCLog.out("---deinit room failed")
             }
             voiceRoom.destroyRoom { [weak self] (code, message) in
                 guard let `self` = self else { return }
@@ -125,16 +125,16 @@ class TRTCVoiceRoomViewModel: NSObject {
     public func muteAction(isMute: Bool) -> Bool {
         guard checkButtonPermission() else { return false }
         guard !isOwnerMute else {
-            viewResponder?.showToast(message: "已被房主禁言")
+            viewResponder?.showToast(message: .seatmutedText)
             return false
         }
         isSelfMute = isMute
         voiceRoom.muteLocalAudio(mute: isMute)
         if isMute {
-            viewResponder?.showToast(message: "已关闭麦克风")
+            viewResponder?.showToast(message: .micmutedText)
         } else {
             viewResponder?.recoveryVoiceSetting()
-            viewResponder?.showToast(message: "已打开麦克风")
+            viewResponder?.showToast(message: .micunmutedText)
         }
         return true
     }
@@ -142,15 +142,15 @@ class TRTCVoiceRoomViewModel: NSObject {
     public func spechAction(isMute: Bool) {
         voiceRoom.muteAllRemoteAudio(isMute: isMute)
         if isMute {
-            viewResponder?.showToast(message: "已静音")
+            viewResponder?.showToast(message: .mutedText)
         } else {
-            viewResponder?.showToast(message: "已取消静音")
+            viewResponder?.showToast(message: .unmutedText)
         }
     }
     
     public func clickSeat(model: SeatInfoModel) {
         guard isSeatInitSuccess else {
-            viewResponder?.showToast(message: "麦位列表还未初始化哦！")
+            viewResponder?.showToast(message: .seatuninitText)
             return
         }
         if roomType == .audience || dependencyContainer.userId != roomInfo.ownerId {
@@ -164,10 +164,10 @@ class TRTCVoiceRoomViewModel: NSObject {
         voiceRoom.enterRoom(roomID: roomInfo.roomID) { [weak self] (code, message) in
             guard let `self` = self else { return }
             if code == 0 {
-                self.viewResponder?.showToast(message: "进房成功")
+                self.viewResponder?.showToast(message: .enterSuccessText)
                 self.voiceRoom.setAuidoQuality(quality: toneQuality)
             } else {
-                self.viewResponder?.showToast(message: "进房失败")
+                self.viewResponder?.showToast(message: .enterFailedText)
                 self.viewResponder?.popToPrevious()
             }
         }
@@ -190,7 +190,7 @@ class TRTCVoiceRoomViewModel: NSObject {
                 if code == -1301 {
                     self.internalCreateRoom()
                 } else {
-                    self.viewResponder?.showToast(message: "创建房间失败")
+                    self.viewResponder?.showToast(message: .createRoomFailedText)
                     self.viewResponder?.popToPrevious()
                 }
             }
@@ -202,11 +202,11 @@ class TRTCVoiceRoomViewModel: NSObject {
             return
         }
         // 消息回显示
-        let entity = MsgEntity.init(userId: dependencyContainer.userId, userName: "我", content: message, invitedId: "", type: MsgEntity.TYPE_NORMAL)
+        let entity = MsgEntity.init(userId: dependencyContainer.userId, userName: .meText, content: message, invitedId: "", type: MsgEntity.TYPE_NORMAL)
         notifyMsg(entity: entity)
         voiceRoom.sendRoomTextMsg(message: message) { [weak self] (code, message) in
             guard let `self` = self else { return }
-            self.viewResponder?.showToast(message: code == 0 ? "发送成功" : "发送失败:\(message)")
+            self.viewResponder?.showToast(message: code == 0 ? .sendSuccessText : String.sendFailedText.replacingOccurrences(of: "xxx", with: message))
         }
     }
     
@@ -239,7 +239,7 @@ extension TRTCVoiceRoomViewModel {
                 self.takeMainSeat()
                 self.getAudienceList()
             } else {
-                self.viewResponder?.showToast(message: "进入房间失败")
+                self.viewResponder?.showToast(message: .enterFailedText)
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
                     guard let `self` = self else { return }
                     self.viewResponder?.popToPrevious()
@@ -252,9 +252,9 @@ extension TRTCVoiceRoomViewModel {
         voiceRoom.enterSeat(seatIndex: 0) { [weak self] (code, message) in
             guard let `self` = self else { return }
             if code == 0 {
-                self.viewResponder?.showToast(message: "房主占座成功")
+                self.viewResponder?.showToast(message: .cupySeatSuccessText)
             } else {
-                self.viewResponder?.showToast(message: "房主占座失败")
+                self.viewResponder?.showToast(message: .cupySeatFailedText)
             }
         }
     }
@@ -286,7 +286,7 @@ extension TRTCVoiceRoomViewModel {
     
     func checkButtonPermission() -> Bool {
         if roomType == .audience {
-            viewResponder?.showToast(message: "只有主播才能操作哦")
+            viewResponder?.showToast(message: .onlyAnchorOperationText)
             return false
         }
         return true
@@ -314,30 +314,30 @@ extension TRTCVoiceRoomViewModel {
     
     private func audienceClickItem(model: SeatInfoModel) {
         guard !model.isClosed else {
-            viewResponder?.showToast(message: "麦位已被锁定，无法申请上麦")
+            viewResponder?.showToast(message: .seatLockedText)
             return
         }
         if model.isUsed {
             if dependencyContainer.userId == model.seatUser?.userId ?? "" {
                 // 点击自己的头像，弹出下麦对话框
-                viewResponder?.showActionSheet(actionTitles: ["下麦"], actions: { [weak self] (index) in
+                viewResponder?.showActionSheet(actionTitles: [.audienceText], actions: { [weak self] (index) in
                     guard let `self` = self else { return }
                     self.leaveSeat()
                 })
             } else {
-                viewResponder?.showToast(message: "\(model.seatUser?.userName ?? "其他主播")")
+                viewResponder?.showToast(message: "\(model.seatUser?.userName ?? .otherAnchorText)")
             }
         } else {
             if mSelfSeatIndex != -1 {
-                viewResponder?.showToast(message: "您已经在\(mSelfSeatIndex)号麦位上了")
+                viewResponder?.showToast(message: LocalizeReplaceXX(.isInxxSeatText, String(mSelfSeatIndex)))
                 return
             }
             guard model.seatIndex != -1 else {
-                viewResponder?.showToast(message: "麦位信息没有初始化，暂时无法申请上麦")
+                viewResponder?.showToast(message: .notInitText)
                 return
             }
             // 没人:申请上麦
-            viewResponder?.showActionSheet(actionTitles: ["上麦"], actions: { [weak self] (index) in
+            viewResponder?.showActionSheet(actionTitles: [.handsupText], actions: { [weak self] (index) in
                 guard let `self` = self else { return }
                 self.startTakeSeat(seatIndex: model.seatIndex)
             })
@@ -348,7 +348,7 @@ extension TRTCVoiceRoomViewModel {
         if model.isUsed {
             // 弹出禁言， 踢人
             let isMute = model.seatInfo?.mute ?? false
-            viewResponder?.showActionSheet(actionTitles: ["对Ta\(isMute ? "解禁" : "禁言")", "请Ta下麦"], actions: { [weak self] (index) in
+            viewResponder?.showActionSheet(actionTitles: [LocalizeReplaceXX(.totaxxText, (isMute ? String.unmuteOneText : String.muteOneText)), .makeAudienceText], actions: { [weak self] (index) in
                 guard let `self` = self else { return }
                 if index == 0 {
                     // 禁言
@@ -362,7 +362,7 @@ extension TRTCVoiceRoomViewModel {
         }
         if !model.isClosed {
             // 没人的话弹出封禁麦位和请人上麦
-            viewResponder?.showActionSheet(actionTitles: ["邀人上麦", "封禁麦位"], actions: { [weak self] (index) in
+            viewResponder?.showActionSheet(actionTitles: [.inviteHandsupText, .banSeatText], actions: { [weak self] (index) in
                 guard let `self` = self else { return }
                 if index == 0 {
                     self.onAnchorSeatSelected(seatIndex: model.seatIndex)
@@ -371,7 +371,7 @@ extension TRTCVoiceRoomViewModel {
                 }
             })
         } else {
-            viewResponder?.showActionSheet(actionTitles: ["解禁麦位"], actions: { [weak self] (index) in
+            viewResponder?.showActionSheet(actionTitles: [.liftbanSeatText], actions: { [weak self] (index) in
                 guard let `self` = self else { return }
                 self.voiceRoom.closeSeat(seatIndex: model.seatIndex, isClose: false, callback: nil)
             })
@@ -389,7 +389,7 @@ extension TRTCVoiceRoomViewModel {
         // 邀请
         let seatEntity = anchorSeatList[currentInvitateSeatIndex - 1]
         if seatEntity.isUsed {
-            viewResponder?.showToast(message: "这个座位已经有人了")
+            viewResponder?.showToast(message: .seatBusyText)
             return
         }
         let seatInvitation = SeatInvitation.init(seatIndex: currentInvitateSeatIndex, inviteUserId: userInfo.userId)
@@ -398,7 +398,7 @@ extension TRTCVoiceRoomViewModel {
                                                 content: "\(seatInvitation.seatIndex)") { [weak self] (code, message) in
                                                     guard let `self` = self else { return }
                                                     if code == 0 {
-                                                        self.viewResponder?.showToast(message: "发送邀请成功")
+                                                        self.viewResponder?.showToast(message: .sendInviteSuccessText)
                                                     }
         }
         mPickSeatInvitationDic[inviteId] = seatInvitation
@@ -408,7 +408,7 @@ extension TRTCVoiceRoomViewModel {
     private func acceptTakeSeatInviattion(userInfo: VoiceRoomUserInfo) {
         // 接受
         guard let inviteID = mTakeSeatInvitationDic[userInfo.userId] else {
-            viewResponder?.showToast(message: "该请求已过期")
+            viewResponder?.showToast(message: .reqExpiredText)
             return
         }
         voiceRoom.acceptInvitation(identifier: inviteID) { [weak self] (code, message) in
@@ -424,7 +424,7 @@ extension TRTCVoiceRoomViewModel {
                     self.viewResponder?.refreshMsgView()
                 }
             } else {
-                self.viewResponder?.showToast(message: "接受请求失败")
+                self.viewResponder?.showToast(message: .acceptReqFailedText)
             }
         }
     }
@@ -433,9 +433,9 @@ extension TRTCVoiceRoomViewModel {
         voiceRoom.leaveSeat { [weak self] (code, message) in
             guard let `self` = self else { return }
             if code == 0 {
-                self.viewResponder?.showToast(message: "下麦成功")
+                self.viewResponder?.showToast(message: .audienceSuccessText)
             } else {
-                self.viewResponder?.showToast(message: "下麦失败：\(message)")
+                self.viewResponder?.showToast(message: LocalizeReplaceXX(.audienceFailedxxText, message))
             }
         }
     }
@@ -444,13 +444,13 @@ extension TRTCVoiceRoomViewModel {
     /// - Parameter seatIndex: 上的作为号
     private func startTakeSeat(seatIndex: Int) {
         if roomType == .anchor {
-            viewResponder?.showToast(message: "已经是上麦主播了")
+            viewResponder?.showToast(message: .beingArchonText)
             return
         }
         if roomInfo.needRequest {
             // 需要申请上麦
             guard roomInfo.ownerId != "" else {
-                viewResponder?.showToast(message: "房间还没有准备好")
+                viewResponder?.showToast(message: .roomNotReadyText)
                 return
             }
             let cmd = VoiceRoomConstants.CMD_REQUEST_TAKE_SEAT
@@ -458,9 +458,9 @@ extension TRTCVoiceRoomViewModel {
             let inviteId = voiceRoom.sendInvitation(cmd: cmd, userId: targetUserId, content: "\(seatIndex)") { [weak self] (code, message) in
                 guard let `self` = self else { return }
                 if code == 0 {
-                    self.viewResponder?.showToast(message: "申请已发出，等待主播处理")
+                    self.viewResponder?.showToast(message: .reqSentText)
                 } else {
-                    self.viewResponder?.showToast(message: "申请发送失败：\(message)")
+                    self.viewResponder?.showToast(message: LocalizeReplaceXX(.reqSendFailedxxText, message))
                 }
             }
             mInvitationSeatDic[inviteId] = seatIndex
@@ -469,9 +469,9 @@ extension TRTCVoiceRoomViewModel {
             voiceRoom.enterSeat(seatIndex: seatIndex) { [weak self] (code, message) in
                 guard let `self` = self else { return }
                 if code == 0 {
-                    self.viewResponder?.showToast(message: "上麦成功")
+                    self.viewResponder?.showToast(message: .handsupSuccessText)
                 } else {
-                    self.viewResponder?.showToast(message: "上麦失败")
+                    self.viewResponder?.showToast(message: .handsupFailedText)
                 }
             }
         }
@@ -479,19 +479,19 @@ extension TRTCVoiceRoomViewModel {
     
     private func recvPickSeat(identifier: String, cmd: String, content: String) {
         guard let seatIndex = Int.init(content) else { return }
-        viewResponder?.showAlert(info: (title: "提示", message: "主播邀请你上\(seatIndex)号麦"), sureAction: { [weak self] in
+        viewResponder?.showAlert(info: (title: .alertText, message: LocalizeReplaceXX(.invitexxSeatText, String(seatIndex))), sureAction: { [weak self] in
             guard let `self` = self else { return }
             self.voiceRoom.acceptInvitation(identifier: identifier) { [weak self] (code, message) in
                 guard let `self` = self else { return }
                 if code != 0 {
-                    self.viewResponder?.showToast(message: "接受请求失败")
+                    self.viewResponder?.showToast(message: .acceptReqFailedText)
                 }
             }
         }, cancelAction: { [weak self] in
             guard let `self` = self else { return }
             self.voiceRoom.rejectInvitation(identifier: identifier) { [weak self] (code, message) in
                 guard let `self` = self else { return }
-                self.viewResponder?.showToast(message: "您已经拒绝上麦申请")
+                self.viewResponder?.showToast(message: .refuseHandsupText)
             }
         })
     }
@@ -508,7 +508,7 @@ extension TRTCVoiceRoomViewModel {
         // 显示到通知栏
         let audinece = memberAudienceDic[inviter]
         let seatIndex = (Int.init(content) ?? 0)
-        let content = "申请上\(seatIndex)号麦"
+        let content = LocalizeReplaceXX(.applyxxSeatText, String(seatIndex))
         let msgEntity = MsgEntity.init(userId: inviter, userName: audinece?.userInfo.userName ?? inviter, content: content, invitedId: identifier, type: MsgEntity.TYPE_WAIT_AGREE)
         msgEntityList.append(msgEntity)
         viewResponder?.refreshMsgView()
@@ -579,7 +579,7 @@ extension TRTCVoiceRoomViewModel: TRTCVoiceRoomDelegate {
     }
     
     func onRoomDestroy(message: String) {
-        viewResponder?.showToast(message: "房主已解散房间")
+        viewResponder?.showToast(message: .closeRoomText)
         voiceRoom.exitRoom(callback: nil)
         viewResponder?.popToPrevious()
     }
@@ -648,7 +648,7 @@ extension TRTCVoiceRoomViewModel: TRTCVoiceRoomDelegate {
                 return
             }
             if self.anchorSeatList.count != seatInfoList.count - 1 {
-                TRTCLog.out("座位列表数据出问题了数据出问题了")
+                TRTCLog.out(String.seatlistWrongText)
                 return
             }
             // 修改座位列表的user信息
@@ -665,7 +665,7 @@ extension TRTCVoiceRoomViewModel: TRTCVoiceRoomDelegate {
             // 房主上麦就不提醒了
             return;
         }
-        showNotifyMsg(messsage: "\(user.userName)上\(index)号麦")
+        showNotifyMsg(messsage: LocalizeReplace(.beyySeatText, user.userName, String(index)))
         if user.userId == dependencyContainer.userId {
             roomType = .anchor
             mSelfSeatIndex = index
@@ -679,7 +679,7 @@ extension TRTCVoiceRoomViewModel: TRTCVoiceRoomDelegate {
             // 房主下麦就不提醒了
             return;
         }
-        showNotifyMsg(messsage: "\(user.userName)下\(index)号麦")
+        showNotifyMsg(messsage: LocalizeReplace(.audienceyySeatText, user.userName, String(index)))
         if user.userId == dependencyContainer.userId {
             roomType = .audience
             mSelfSeatIndex = -1
@@ -691,9 +691,9 @@ extension TRTCVoiceRoomViewModel: TRTCVoiceRoomDelegate {
     
     func onSeatMute(index: Int, isMute: Bool) {
         if isMute {
-            showNotifyMsg(messsage: "\(index)号位被禁言")
+            showNotifyMsg(messsage: LocalizeReplaceXX(.bemutedxxText, String(index)))
         } else {
-            showNotifyMsg(messsage: "\(index)号位解除禁言")
+            showNotifyMsg(messsage: LocalizeReplaceXX(.beunmutedxxText, String(index)))
         }
         if mSelfSeatIndex == index {
             isOwnerMute = isMute
@@ -702,11 +702,11 @@ extension TRTCVoiceRoomViewModel: TRTCVoiceRoomDelegate {
     }
     
     func onSeatClose(index: Int, isClose: Bool) {
-        showNotifyMsg(messsage: "房主\(isClose ? "封禁" : "解禁")\(index)号位")
+        showNotifyMsg(messsage: LocalizeReplace(.ownerxxSeatText, isClose ? .banSeatText : .unmuteOneText, String(index)))
     }
     
     func onAudienceEnter(userInfo: VoiceRoomUserInfo) {
-        showNotifyMsg(messsage: "\(userInfo.userName)进房")
+        showNotifyMsg(messsage: LocalizeReplaceXX(.inRoomText, userInfo.userName))
         // 主播端(房主)
         if roomType == .anchor && roomInfo.ownerId == dependencyContainer.userId {
             let memberEntityModel = AudienceInfoModel.init(type: 0, userInfo: userInfo) { [weak self] (index) in
@@ -727,7 +727,7 @@ extension TRTCVoiceRoomViewModel: TRTCVoiceRoomDelegate {
     }
     
     func onAudienceExit(userInfo: VoiceRoomUserInfo) {
-        showNotifyMsg(messsage: "\(userInfo.userName)退房")
+        showNotifyMsg(messsage: LocalizeReplaceXX(.exitRoomText, userInfo.userName))
         // 主播端(房主)
         if roomType == .anchor && roomInfo.ownerId == dependencyContainer.userId {
             memberAudienceList.removeAll { (model) -> Bool in
@@ -784,9 +784,9 @@ extension TRTCVoiceRoomViewModel: TRTCVoiceRoomDelegate {
                 voiceRoom.enterSeat(seatIndex: seatIndex) { [weak self] (code, message) in
                     guard let `self` = self else { return }
                     if code == 0 {
-                        self.viewResponder?.showToast(message: "上麦成功")
+                        self.viewResponder?.showToast(message: .handsupSuccessText)
                     } else {
-                        self.viewResponder?.showToast(message: "上麦失败")
+                        self.viewResponder?.showToast(message: .handsupFailedText)
                     }
                 }
             }
@@ -804,7 +804,7 @@ extension TRTCVoiceRoomViewModel: TRTCVoiceRoomDelegate {
                 voiceRoom.pickSeat(seatIndex: seatInvitation.seatIndex, userId: seatInvitation.inviteUserId) { [weak self] (code, message) in
                     guard let `self` = self else { return }
                     if code == 0 {
-                        self.viewResponder?.showToast(message: "抱\(invitee)上麦成功")
+                        self.viewResponder?.showToast(message: LocalizeReplaceXX(.hugHandsupSuccessText, invitee))
                     }
                 }
             }
@@ -815,7 +815,7 @@ extension TRTCVoiceRoomViewModel: TRTCVoiceRoomDelegate {
     func onInviteeRejected(identifier: String, invitee: String) {
         if let seatInvitation = mPickSeatInvitationDic.removeValue(forKey: identifier) {
             guard let audience = memberAudienceDic[seatInvitation.inviteUserId] else { return }
-            viewResponder?.showToast(message: "\(audience.userInfo.userName)拒绝上麦")
+            viewResponder?.showToast(message: LocalizeReplaceXX(.refuseBespeakerText, audience.userInfo.userName))
             changeAudience(status: AudienceInfoModel.TYPE_IDEL, user: audience.userInfo)
         }
         
@@ -824,4 +824,65 @@ extension TRTCVoiceRoomViewModel: TRTCVoiceRoomDelegate {
     func onInvitationCancelled(identifier: String, invitee: String) {
         
     }
+}
+
+/// MARK: - internationalization string
+fileprivate extension String {
+    static let seatmutedText = TRTCLocalize("Demo.TRTC.VoiceRoom.onseatmuted")
+    static let micmutedText = TRTCLocalize("Demo.TRTC.Salon.micmuted")
+    static let micunmutedText = TRTCLocalize("Demo.TRTC.Salon.micunmuted")
+    static let mutedText = TRTCLocalize("Demo.TRTC.VoiceRoom.ismuted")
+    static let unmutedText = TRTCLocalize("Demo.TRTC.VoiceRoom.isunmuted")
+    static let seatuninitText = TRTCLocalize("Demo.TRTC.Salon.seatlistnotinit")
+    static let enterSuccessText = TRTCLocalize("Demo.TRTC.Salon.enterroomsuccess")
+    static let enterFailedText = TRTCLocalize("Demo.TRTC.Salon.enterroomfailed")
+    static let createRoomFailedText = TRTCLocalize("Demo.TRTC.LiveRoom.createroomfailed")
+    static let meText = TRTCLocalize("Demo.TRTC.LiveRoom.me")
+    static let sendSuccessText = TRTCLocalize("Demo.TRTC.VoiceRoom.sendsuccess")
+    static let sendFailedText = TRTCLocalize("Demo.TRTC.VoiceRoom.sendfailedxx")
+    static let cupySeatSuccessText = TRTCLocalize("Demo.TRTC.Salon.hostoccupyseatsuccess")
+    static let cupySeatFailedText = TRTCLocalize("Demo.TRTC.Salon.hostoccupyseatfailed")
+    static let onlyAnchorOperationText = TRTCLocalize("Demo.TRTC.VoiceRoom.onlyanchorcanoperation")
+    static let seatLockedText = TRTCLocalize("Demo.TRTC.VoiceRoom.seatislockedandcanthandup")
+    static let audienceText = TRTCLocalize("Demo.TRTC.Salon.audience")
+    static let otherAnchorText = TRTCLocalize("Demo.TRTC.VoiceRoom.otheranchor")
+    static let isInxxSeatText = TRTCLocalize("Demo.TRTC.VoiceRoom.isinxxseat")
+    static let notInitText = TRTCLocalize("Demo.TRTC.VoiceRoom.seatisnotinittocanthandsup")
+    static let handsupText = TRTCLocalize("Demo.TRTC.Salon.handsup")
+    static let totaxxText = TRTCLocalize("Demo.TRTC.VoiceRoom.totaxx")
+    static let unmuteOneText = TRTCLocalize("Demo.TRTC.VoiceRoom.unmuteone")
+    static let muteOneText = TRTCLocalize("Demo.TRTC.VoiceRoom.muteone")
+    static let makeAudienceText = TRTCLocalize("Demo.TRTC.VoiceRoom.makeoneaudience")
+    static let inviteHandsupText = TRTCLocalize("Demo.TRTC.VoiceRoom.invitehandsup")
+    static let banSeatText = TRTCLocalize("Demo.TRTC.VoiceRoom.banseat")
+    static let liftbanSeatText = TRTCLocalize("Demo.TRTC.VoiceRoom.liftbanseat")
+    static let seatBusyText = TRTCLocalize("Demo.TRTC.VoiceRoom.seatisbusy")
+    static let sendInviteSuccessText = TRTCLocalize("Demo.TRTC.VoiceRoom.sendinvitesuccess")
+    static let reqExpiredText = TRTCLocalize("Demo.TRTC.Salon.reqisexpired")
+    static let acceptReqFailedText = TRTCLocalize("Demo.TRTC.Salon.acceptreqfailed")
+    static let audienceSuccessText = TRTCLocalize("Demo.TRTC.Salon.audiencesuccess")
+    static let audienceFailedxxText = TRTCLocalize("Demo.TRTC.Salon.audiencefailedxx")
+    static let beingArchonText = TRTCLocalize("Demo.TRTC.Salon.isbeingarchon")
+    static let roomNotReadyText = TRTCLocalize("Demo.TRTC.Salon.roomnotready")
+    static let reqSentText = TRTCLocalize("Demo.TRTC.VoiceRoom.reqsentandwaitforarchondeal")
+    static let reqSendFailedxxText = TRTCLocalize("Demo.TRTC.VoiceRoom.reqsendfailedxx")
+    static let handsupSuccessText = TRTCLocalize("Demo.TRTC.Salon.successbecomespaker")
+    static let handsupFailedText = TRTCLocalize("Demo.TRTC.Salon.failedbecomespaker")
+    
+    static let alertText = TRTCLocalize("Demo.TRTC.LiveRoom.prompt")
+    static let invitexxSeatText = TRTCLocalize("Demo.TRTC.VoiceRoom.anchorinvitexxseat")
+    static let refuseHandsupText = TRTCLocalize("Demo.TRTC.VoiceRoom.refusehandsupreq")
+    static let applyxxSeatText = TRTCLocalize("Demo.TRTC.VoiceRoom.applyforxxseat")
+    static let closeRoomText = TRTCLocalize("Demo.TRTC.Salon.archonclosedroom")
+    static let seatlistWrongText = TRTCLocalize("Demo.TRTC.VoiceRoom.seatlistwentwrong")
+    static let beyySeatText = TRTCLocalize("Demo.TRTC.VoiceRoom.xxbeyyseat")
+    static let audienceyySeatText = TRTCLocalize("Demo.TRTC.VoiceRoom.xxaudienceyyseat")
+    static let bemutedxxText = TRTCLocalize("Demo.TRTC.VoiceRoom.xxisbemuted")
+    static let beunmutedxxText = TRTCLocalize("Demo.TRTC.VoiceRoom.xxisbeunmuted")
+    static let ownerxxSeatText = TRTCLocalize("Demo.TRTC.VoiceRoom.ownerxxyyseat")
+    static let banText = TRTCLocalize("Demo.TRTC.VoiceRoom.ban")
+    static let inRoomText = TRTCLocalize("Demo.TRTC.LiveRoom.xxinroom")
+    static let exitRoomText = TRTCLocalize("Demo.TRTC.VoiceRoom.xxexitroom")
+    static let hugHandsupSuccessText = TRTCLocalize("Demo.TRTC.VoiceRoom.hugxxhandsupsuccess")
+    static let refuseBespeakerText = TRTCLocalize("Demo.TRTC.VoiceRoom.refusebespeaker")
 }

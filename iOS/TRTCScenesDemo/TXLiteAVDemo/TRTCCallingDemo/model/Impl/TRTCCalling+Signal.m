@@ -9,6 +9,8 @@
 #import "TRTCCallingUtils.h"
 #import "TRTCCallingHeader.h"
 
+#import "AppLocalized.h"
+
 @implementation TRTCCalling (Signal)
 
 - (void)addSignalListener {
@@ -186,7 +188,7 @@
                                   @"version" : @(APNs_Version)};       // 推送版本
     NSDictionary *extParam = @{@"entity" : entityParam};
     V2TIMOfflinePushInfo *info = [[V2TIMOfflinePushInfo alloc] init];
-    info.desc = @"您有一个通话请求";
+    info.desc = TRTCLocalize(@"Demo.TRTC.calling.callingrequest");
     info.ext = [TRTCCallingUtils dictionary2JsonStr:extParam];
     V2TIMMessage *msg = [[V2TIMManager sharedInstance] createCustomMessage:[TRTCCallingUtils dictionary2JsonData:@{@"version" : @(Version) , @"businessID" : @"av_call"}]];
     // 针对每个被邀请成员单独邀请
@@ -393,7 +395,7 @@
             if ([self.curInvitingList containsObject:user]) {
                 [self.curInvitingList removeObject:user];
             }
-            [self.delegate onError:-1 msg:@"系统错误"];
+            [self.delegate onError:-1 msg:TRTCLocalize(@"Demo.TRTC.calling.syserror")];
             [self checkAutoHangUp];
         }
             break;

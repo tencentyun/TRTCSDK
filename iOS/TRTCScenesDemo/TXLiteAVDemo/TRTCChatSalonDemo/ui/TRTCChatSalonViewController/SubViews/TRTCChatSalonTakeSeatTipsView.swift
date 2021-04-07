@@ -116,9 +116,9 @@ class TRTCChatSalonTakeSeatTipsView: UIView {
 
 
 fileprivate extension String {
-    static let welcomeText = ChatSalonLocalized.getLocalizedString(key: "Welcome")
-    static let refuseText = ChatSalonLocalized.getLocalizedString(key: "Dismiss")
-    static let takeSeatSuffix = ChatSalonLocalized.getLocalizedString(key: "applies to become a speaker")
+    static let welcomeText = TRTCLocalize("Demo.TRTC.Salon.welcome")
+    static let refuseText = TRTCLocalize("Demo.TRTC.Salon.dismiss")
+    static let takeSeatSuffix = TRTCLocalize("Demo.TRTC.Salon.appliestobecomeaspeaker")
 }
 
 fileprivate extension UIColor {

@@ -46,11 +46,6 @@ NS_SWIFT_NAME(onRoomDestroy(message:));
 - (void)onRoomInfoChange:(ChatSalonInfo *)roomInfo
 NS_SWIFT_NAME(onRoomInfoChange(roomInfo:));
 
-/// 进入房间后，当前房间主播信息回调
-/// @param seatInfoList 座位列表信息
-- (void)onEnterRoomSeatListNotify:(NSArray<ChatSalonSeatInfo *> *)seatInfoList
-NS_SWIFT_NAME(onEnterRoomSeatListNotify(seatInfoList:));
-
 /// 有成员上麦(主动上麦/主播抱人上麦)
 /// @param user 用户信息
 - (void)onAnchorEnterSeat:(ChatSalonUserInfo *)user
@@ -129,6 +124,10 @@ NS_SWIFT_NAME(onInviteeRejected(identifier:invitee:));
 /// @param invitee 邀请者ID
 - (void)onInvitationCancelled:(NSString *)identifier
                       invitee:(NSString *)invitee NS_SWIFT_NAME(onInvitationCancelled(identifier:invitee:));
+
+/// 邀请超时
+/// @param identifier 邀请 ID
+- (void)onInvitationTimeout:(NSString *)identifier NS_SWIFT_NAME(onInvitationTimeout(identifier:));
 
 @end
 

@@ -146,8 +146,8 @@ extension TRTCCSAudienceListView: UITableViewDataSource {
 
 /// MARK: - internationalization string
 fileprivate extension String {
-    static let listTitle = ChatSalonLocalized.getLocalizedString(key: "Raised hands")
-    static let close = ChatSalonLocalized.getLocalizedString(key: "Close")
+    static let listTitle = TRTCLocalize("Demo.TRTC.Salon.raisedhands")
+    static let close = TRTCLocalize("Demo.TRTC.Salon.close")
 }
 
 

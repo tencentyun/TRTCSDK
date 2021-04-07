@@ -21,6 +21,7 @@
 #import <UserNotifications/UserNotifications.h>
 #import <ReplayKit/ReplayKit.h>
 #import "SimpleIPC.h"
+#import "ReplayKitLocalized.h"
 
 #if TRTC_EXT
 #import <TXLiteAVSDK_ReplayKitExt/TXLiteAVSDK_ReplayKitExt.h>
@@ -204,14 +205,14 @@ static void onDarwinReplayKit2ResolutionChange(CFNotificationCenterRef center,
 - (void)handleReplayKit2PushStopNotification:(NSNotification*)noti
 {
     [self stop];
-    [self sendLocalNotificationToHostAppWithTitle:@"腾讯云录屏推流" msg:@"推流已停止" userInfo:nil];
+    [self sendLocalNotificationToHostAppWithTitle:ReplayKitLocalize(@"ReplayKitUpload.SampleHandler.tencentcloudpushstream") msg:ReplayKitLocalize(@"ReplayKitUpload.SampleHandler.pushstreamstop") userInfo:nil];
 }
 
 - (void)handleReplayKit2RotateChangeNotification:(NSNotification*)noti
 {
     NSString *rotate = [self _getConfigForKey:kReplayKit2RotateKey fromConfig:noti.userInfo];
     if (!rotate) {
-        [self sendLocalNotificationToHostAppWithTitle:@"腾讯云录屏推流" msg:@"切换失败" userInfo:nil];
+        [self sendLocalNotificationToHostAppWithTitle:ReplayKitLocalize(@"ReplayKitUpload.SampleHandler.tencentcloudpushstream") msg:ReplayKitLocalize(@"ReplayKitUpload.SampleHandler.exchangeerror") userInfo:nil];
         return;
     }
     if ([rotate isEqualToString:kReplayKit2Lanscape]) {
@@ -440,7 +441,7 @@ static void onDarwinReplayKit2ResolutionChange(CFNotificationCenterRef center,
 }
 
 - (void)broadcastStartedWithSetupInfo:(NSDictionary<NSString *,NSObject *> *)setupInfo {
-    [self sendLocalNotificationToHostAppWithTitle:@"腾讯云录屏推流" msg:@"录屏已开始，请从这里点击回到Demo->直播->录屏推流->设置推流URL与横竖屏和清晰度" userInfo:@{kReplayKit2UploadingKey: kReplayKit2Uploading}];
+    [self sendLocalNotificationToHostAppWithTitle:ReplayKitLocalize(@"ReplayKitUpload.SampleHandler.tencentcloudpushstream") msg:ReplayKitLocalize(@"ReplayKitUpload.SampleHandler.replaystart") userInfo:@{kReplayKit2UploadingKey: kReplayKit2Uploading}];
 #if TRTC_EXT
     [[TXReplayKitExt sharedInstance] setupWithAppGroup:kReplayKit2AppGroupId delegate:self];
 #endif
@@ -450,20 +451,20 @@ static void onDarwinReplayKit2ResolutionChange(CFNotificationCenterRef center,
     // User has requested to pause the broadcast. Samples will stop being delivered.
     NSLog(@"broadcastPaused");
     [self pause];
-    [self sendLocalNotificationToHostAppWithTitle:@"腾讯云录屏推流" msg:@"录屏已暂停" userInfo:nil];
+    [self sendLocalNotificationToHostAppWithTitle:ReplayKitLocalize(@"ReplayKitUpload.SampleHandler.tencentcloudpushstream") msg:ReplayKitLocalize(@"ReplayKitUpload.SampleHandler.replaystop") userInfo:nil];
 }
 
 - (void)broadcastResumed {
     // User has requested to resume the broadcast. Samples delivery will resume.
     NSLog(@"broadcastResumed");
     [self resume];
-    [self sendLocalNotificationToHostAppWithTitle:@"腾讯云录屏推流" msg:@"录屏已恢复" userInfo:nil];
+    [self sendLocalNotificationToHostAppWithTitle:ReplayKitLocalize(@"ReplayKitUpload.SampleHandler.tencentcloudpushstream") msg:ReplayKitLocalize(@"ReplayKitUpload.SampleHandler.replayrestored") userInfo:nil];
 }
 
 - (void)broadcastFinished {
     // User has requested to finish the broadcast.
     NSLog(@"broadcastFinished");
-    [self sendLocalNotificationToHostAppWithTitle:@"腾讯云录屏推流" msg:@"录屏已结束" userInfo:@{kReplayKit2UploadingKey: kReplayKit2Stop}];
+    [self sendLocalNotificationToHostAppWithTitle:ReplayKitLocalize(@"ReplayKitUpload.SampleHandler.tencentcloudpushstream") msg:ReplayKitLocalize(@"ReplayKitUpload.SampleHandler.replayend") userInfo:@{kReplayKit2UploadingKey: kReplayKit2Stop}];
     [self stop];
 #if TRTC_EXT
     [[TXReplayKitExt sharedInstance] finishBroadcast];
@@ -542,11 +543,11 @@ static void onDarwinReplayKit2ResolutionChange(CFNotificationCenterRef center,
     NSLog(@"onPushEvent %d", EvtID);
 #if !defined(TRTC) || defined(TRTC_APPSTORE)
     if (EvtID == PUSH_ERR_NET_DISCONNECT) {
-        [self sendLocalNotificationToHostAppWithTitle:@"腾讯云录屏推流" msg:@"推流失败!请换个姿势再来一次" userInfo:nil];
+        [self sendLocalNotificationToHostAppWithTitle:ReplayKitLocalize(@"ReplayKitUpload.SampleHandler.tencentcloudpushstream") msg:ReplayKitLocalize(@"ReplayKitUpload.SampleHandler.replayfailed") userInfo:nil];
     }  else if (EvtID == PUSH_EVT_PUSH_BEGIN) {
-        [self sendLocalNotificationToHostAppWithTitle:@"腾讯云录屏推流" msg:@"连接成功！开始推流" userInfo:nil];
+        [self sendLocalNotificationToHostAppWithTitle:ReplayKitLocalize(@"ReplayKitUpload.SampleHandler.tencentcloudpushstream") msg:ReplayKitLocalize(@"ReplayKitUpload.SampleHandler.connectsuccess") userInfo:nil];
     } else if (EvtID == PUSH_WARNING_NET_BUSY) {
-        [self sendLocalNotificationToHostAppWithTitle:@"腾讯云录屏推流" msg:@"网络上行带宽不足" userInfo:nil];
+        [self sendLocalNotificationToHostAppWithTitle:ReplayKitLocalize(@"ReplayKitUpload.SampleHandler.tencentcloudpushstream") msg:ReplayKitLocalize(@"ReplayKitUpload.SampleHandler.networkuplink")  userInfo:nil];
     }
 #endif
 }
@@ -577,13 +578,13 @@ static void onDarwinReplayKit2ResolutionChange(CFNotificationCenterRef center,
     NSString *tip = @"";
     switch (reason) {
         case TXReplayKitExtReasonRequestedByMain:
-            tip = @"屏幕共享已结束";
+            tip = ReplayKitLocalize(@"ReplayKitUpload.SampleHandler.screenshareend");
             break;
         case TXReplayKitExtReasonDisconnected:
-            tip = @"应用断开";
+            tip = ReplayKitLocalize(@"ReplayKitUpload.SampleHandler.applicationtodisconnect");
             break;
         case TXReplayKitExtReasonVersionMismatch:
-            tip = @"集成错误（SDK 版本号不相符合）";
+            tip = ReplayKitLocalize(@"ReplayKitUpload.SampleHandler.integrationerror"); 
             break;
     }
 

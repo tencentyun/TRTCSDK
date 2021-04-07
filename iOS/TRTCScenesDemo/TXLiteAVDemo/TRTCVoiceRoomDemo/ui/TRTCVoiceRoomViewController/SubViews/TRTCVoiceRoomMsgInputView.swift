@@ -26,7 +26,7 @@ class TRTCVoiceRoomMsgInputView: UIView {
     
     let msgTextFiled: UITextField = {
         let textField = UITextField.init(frame: .zero)
-        textField.attributedPlaceholder = NSAttributedString.init(string: "说点什么", attributes: [.font: UIFont.systemFont(ofSize: 16.0), .foregroundColor: UIColor.placeholderBackColor])
+        textField.attributedPlaceholder = NSAttributedString.init(string: .saysmtText, attributes: [.font: UIFont.systemFont(ofSize: 16.0), .foregroundColor: UIColor.placeholderBackColor])
         textField.textColor = UIColor.init(0x000000)
         textField.font = UIFont.systemFont(ofSize: 16.0)
         return textField
@@ -34,7 +34,7 @@ class TRTCVoiceRoomMsgInputView: UIView {
     
     let sendButton: UIButton = {
         let button = UIButton.init(type: .custom)
-        button.setTitle("发送", for: .normal)
+        button.setTitle(.sendText, for: .normal)
         button.setBackgroundImage(UIColor.buttonBackColor.trans2Image(), for: .normal)
         button.setTitleColor(UIColor.init(0xEBF4FF), for: .normal)
         return button
@@ -150,7 +150,9 @@ class TRTCVoiceRoomMsgInputView: UIView {
 
 /// MARK: - internationalization string
 fileprivate extension String {
-    
+    static let saysmtText = TRTCLocalize("Demo.TRTC.VoiceRoom.saysomething")
+    static let sendText = TRTCLocalize("Demo.TRTC.LiveRoom.send")
+
 }
 
 

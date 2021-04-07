@@ -27,6 +27,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)onInviteeAcceptedWithIdentifier:(NSString *)identifier invitee:(NSString *)invitee;
 - (void)onInviteeRejectedWithIdentifier:(NSString *)identifier invitee:(NSString *)invitee;
 - (void)onInviteeCancelledWithIdentifier:(NSString *)identifier invitee:(NSString *)invitee;
+- (void)onSeatKick;
+- (void)onInvitationTimeout:(NSString *)inviteID;
 
 @end
 
@@ -90,6 +92,12 @@ static int VOICE_ROOM_SERVICE_CODE_ERROR = -1;
 - (void)rejectInvitaiton:(NSString *)identifier callback:(TXCallback _Nullable)callback;
 
 - (void)cancelInvitation:(NSString *)identifier callback:(TXCallback _Nullable)callback;
+
+- (void)onSeatTakeWithUser:(NSString *)userID;
+
+- (void)onSeatLeaveWithUser:(NSString *)userID;
+
+- (void)sendC2CCustomMessage:(NSString *)cmd to:(NSString *)userID callback:(TXCallback)callback;
 
 @end
 

@@ -1,0 +1,269 @@
+/* 
+  LivePlayerLocalized.strings
+  TXLiteAVDemo
+
+  Created by adams on 2021/3/19.
+  Copyright © 2021 Tencent. All rights reserved.
+*/
+
+"LiveLinkMicDemoOld.RoomList.thereisnolivebroadcastinprogress" = "No live streams now";
+"LiveLinkMicDemoOld.RoomList.pleaseclickonthenewbroadcastroom" = "Tap to create one";
+"LiveLinkMicDemoOld.RoomList.selectthebroadcastroomandclickin" = "Select a room and tap to join";
+"LiveLinkMicDemoOld.RoomList.createliveroom" = "Create Room";
+"LiveLinkMicDemoOld.RoomList.inthelogin" = "Logging in";
+"LiveLinkMicDemoOld.RoomList.login" = "Log In";
+"LiveLinkMicDemoOld.RoomList.determine" = "OK";
+"LiveLinkMicDemoOld.RoomList.lyf" = "Faye";
+"LiveLinkMicDemoOld.RoomList.lb" = "刘备";
+"LiveLinkMicDemoOld.RoomList.mq" = "Maggie";
+"LiveLinkMicDemoOld.RoomList.wzj" = "Joe";
+"LiveLinkMicDemoOld.RoomList.zy" = "John";
+"LiveLinkMicDemoOld.RoomList.lb" = "鲁班";
+"LiveLinkMicDemoOld.RoomList.hy" = "Hobert";
+"LiveLinkMicDemoOld.RoomList.aql" = "Angela";
+"LiveLinkMicDemoOld.RoomList.as" = "Arthur";
+"LiveLinkMicDemoOld.RoomList.cc" = "Chace";
+"LiveLinkMicDemoOld.RoomList.blsy" = "Biden";
+"LiveLinkMicDemoOld.RoomList.dhty" = "Dobbin";
+"LiveLinkMicDemoOld.RoomList.hml" = "Holly";
+"LiveLinkMicDemoOld.RoomList.zgl" = "Lucas";
+"LiveLinkMicDemoOld.RoomList.hz" = "Zachary";
+"LiveLinkMicDemoOld.RoomList.bzhw" = "William";
+"LiveLinkMicDemoOld.RoomList.zk" = "Ken";
+"LiveLinkMicDemoOld.RoomList.lb" = "Ben";
+"LiveLinkMicDemoOld.RoomList.nkll" = "Lulu";
+"LiveLinkMicDemoOld.RoomList.zf" = "Fernand";
+"LiveLinkMicDemoOld.RoomList.liveRoominitfailure" = "Failed to initialize room";
+
+"LiveLinkMicDemoOld.RoomMsgList.systemmessage" = "System message";
+"LiveLinkMicDemoOld.RoomMsgList.me" = "Me";
+
+"LiveLinkMicDemoOld.RoomNew.createliveroom" = "Create Room";
+"LiveLinkMicDemoOld.RoomNew.liveroomname" = "Room Name";
+"LiveLinkMicDemoOld.RoomNew.enterthenameofthestudio" = "Enter a room name";
+"LiveLinkMicDemoOld.RoomNew.beginlive" = "Start";
+"LiveLinkMicDemoOld.RoomNew.prompt" = "Note";
+"LiveLinkMicDemoOld.RoomNew.nameoftheliveroomcannotbeempty" = "Room name cannot be empty";
+"LiveLinkMicDemoOld.RoomNew.liveroomnamelengthexceedslimit" = "Name length exceeded the limit";
+
+"LiveLinkMicDemoOld.RoomPlayer.entertextcontent" = "Send a message";
+"LiveLinkMicDemoOld.RoomPlayer.send" = "Send";
+"LiveLinkMicDemoOld.RoomPlayer.connectionsuccessful" = "Connected";
+"LiveLinkMicDemoOld.RoomPlayer.enterliveroomfailed" = "Failed to enter the room";
+"LiveLinkMicDemoOld.RoomPlayer.messagecannotbeempty" = "You cannot send an empty message";
+"LiveLinkMicDemoOld.RoomPlayer.liveroomhasbeendisbanded" = "The room is closed";
+"LiveLinkMicDemoOld.RoomPlayer.playxx" = "播放: userID[xxx] userName[yyy] accelerateURL[zzz]";
+
+"LiveLinkMicDemoOld.RoomPusher.selecttheanchor" = "Select Anchor";
+"LiveLinkMicDemoOld.RoomPusher.nicknamexx" = "Nickname: xxx";
+"LiveLinkMicDemoOld.RoomPusher.pkrequestsentwaiting" = "Your request to compete has been sent. Please wait for reply.";
+"LiveLinkMicDemoOld.RoomPusher.yourrequestacceptedstartpk" = "Your request was accepted. The competition starts.";
+"LiveLinkMicDemoOld.RoomPusher.imaudioandvideochatrooms" = "The number of chat rooms created has reached the maximum. Please go to the Tencent Cloud website to enable **IM Audio-Video Chat Room** for your
+account";
+"LiveLinkMicDemoOld.RoomPusher.toopen" = "去开通";
+"LiveLinkMicDemoOld.RoomPusher.confirm" = "确认";
+"LiveLinkMicDemoOld.RoomPusher.failedtocreatealivebooth" = "Failed to create room";
+"LiveLinkMicDemoOld.RoomPusher.pleasewaithostisbusy" = "The anchor is busy. Please wait.";
+"LiveLinkMicDemoOld.RoomPusher.xxrequestwheat" = "[xxx] requested to co-anchor";
+"LiveLinkMicDemoOld.RoomPusher.refusedto" = "Decline";
+"LiveLinkMicDemoOld.RoomPusher.anchordoesnotyourpk" = "The anchor declined your request to compete";
+"LiveLinkMicDemoOld.RoomPusher.accept" = "Accept";
+"LiveLinkMicDemoOld.RoomPusher.theendpk" = "The anchor ended competition";
+"LiveLinkMicDemoOld.RoomPusher.anchordoesnotyourconnection" = "The anchor declined your request to co-anchor";
+"LiveLinkMicDemoOld.RoomPusher.xxrequestpk" = "[xxx] requested to compete";
+
+"LiveLinkMicDemoOld.RoomTableCell.liveroomid" = "Room ID:";
+"LiveLinkMicDemoOld.RoomTableCell.onlinenumber" = "Online Users:";
+"LiveLinkMicDemoOld.RoomTableCell.xxxpeople" = "xxx";
+
+"LiveLinkMicDemoOld.MLVBLiveRoom.initIMSDKxxyyzz" = "Initializing the IM SDK: appID[xxx] userID[yyy] timestamp[zzz]";
+"LiveLinkMicDemoOld.MLVBLiveRoom.imloginbackxxyy" = "IM login error returned:  errCode[xxx] errMsg[yyy]";
+"LiveLinkMicDemoOld.MLVBLiveRoom.loginsuccess" = "Logged in";
+"LiveLinkMicDemoOld.MLVBLiveRoom.loginfailed" = "Login failed";
+"LiveLinkMicDemoOld.MLVBLiveRoom.initliveroomfailedxxyy" = "Failed to initialize the room: errorCode[xxx] errorMsg[yyy]";
+"LiveLinkMicDemoOld.MLVBLiveRoom.imforcedoffline" = "IM force logout ";
+"LiveLinkMicDemoOld.MLVBLiveRoom.requestgetliveroom" = "Requested room list: index[xxx] cnt[yyy]";
+"LiveLinkMicDemoOld.MLVBLiveRoom.joinimfinishxxyy" = "加入IMGroup完成: errCode[xxx] errMsg[yyy]";
+"LiveLinkMicDemoOld.MLVBLiveRoom.enterroomfailed" = "Failed to enter the room. Failed to get the room list.";
+"LiveLinkMicDemoOld.MLVBLiveRoom.invalidplaybackaddress" = "Invalid playback addresss or no data now";
+"LiveLinkMicDemoOld.MLVBLiveRoom.joinroomfailedxx" = "Failed to enter the room IM: xxx";
+"LiveLinkMicDemoOld.MLVBLiveRoom.leaveimfinishxxyy" = "离开IM Group完成: errCode[xxx] errMsg[yyy]";
+"LiveLinkMicDemoOld.MLVBLiveRoom.notjoinroom" = "Not in the room";
+"LiveLinkMicDemoOld.MLVBLiveRoom.donothavepking" = "No ongoing competition";
+"LiveLinkMicDemoOld.MLVBLiveRoom.liveroomloginxx" = "LiveRoom登录, userID[xxx]";
+"LiveLinkMicDemoOld.MLVBLiveRoom.liveroomloginfailedxx" = "LiveRoom登录失败: error[xxx]";
+"LiveLinkMicDemoOld.MLVBLiveRoom.networktimeout" = "Network request timed out. Please check your network.";
+"LiveLinkMicDemoOld.MLVBLiveRoom.anchordidnotprocessconnectionrequest" = "The anchor did not respond to your co-anchoring request";
+"LiveLinkMicDemoOld.MLVBLiveRoom.anchordidnotprocesspk" = "The anchor did not respond to your competition request or response timeout";
+"LiveLinkMicDemoOld.MLVBLiveRoom.joinroomxxyyzz" = "Joined room: userID[xxx] userName[yyy] playUrl[zzz]";
+"LiveLinkMicDemoOld.MLVBLiveRoom.leaveroomxxyy" = "Left room:  userID[xxx] userName[yyy]";
+"LiveLinkMicDemoOld.MLVBLiveRoom.pushstreamdisconnected" = "Push interrupted. Please check your network.";
+"LiveLinkMicDemoOld.MLVBLiveRoom.failedtogetcamerapermission" = "Failed to get camera permission. Please go to Privacy > Camera to grant the permission";
+"LiveLinkMicDemoOld.MLVBLiveRoom.failedtogetmicrophonepermission" = "Failed to get mic permission. Please go to Privacy > Microphone to grant the permission";
+"LiveLinkMicDemoOld.MLVBLiveRoom.groupisusedxx" = "群组 xxx 已被使用，并且操作者为群主，可以直接使用";
+"LiveLinkMicDemoOld.MLVBLiveRoom.thecloudcommunicationaccountyou" = "The number of chat rooms created has reached the maximum. Please go to the Tencent Cloud website (https://buy.cloud.tencent.com/avc) to enable **IM Audio-Video Chat Room** for your account.";
+"LiveLinkMicDemoOld.MLVBLiveRoom.startrequestxxyy" = "Requesting xxx, yyy";
+"LiveLinkMicDemoOld.MLVBLiveRoom.requestxxyybackzz" = "Requested xxx yyy, returned zzz";
+"LiveLinkMicDemoOld.MLVBLiveRoom.success" = "succeeded";
+"LiveLinkMicDemoOld.MLVBLiveRoom.failed" = "failed";
+"LiveLinkMicDemoOld.MLVBLiveRoom.requestxxerroryy" = "Failed to request xxx: error[yyy]";
+"LiveLinkMicDemoOld.MLVBLiveRoom.networktimeoutchecknetworksettingxx" = "[MLVBLiveRoom] Network request timed out. Please check your network. xxx";
+"LiveLinkMicDemoOld.MLVBLiveRoom.isdestruction" = "[MLVBLiveRoom] The room was destroyed";
+"LiveLinkMicDemoOld.MLVBLiveRoom.startpushfailedxx" = "[MLVBLiveRoom] Failed to push streams. xxx";
+"LiveLinkMicDemoOld.MLVBLiveRoom.requestfailedxx" = "merge_video_stream request failed: error[xxx]";
+"LiveLinkMicDemoOld.MLVBLiveRoom.appsvrmsgrequestxxyyzzmmnn" = "AppSvr回复merge_video_stream请求: errCode[xxx] errMsg[yyy] description[code = zzz message = mmm timestamp = nnn]";
+"LiveLinkMicDemoOld.MLVBLiveRoom.roomxxxwasdisbanded" = "Room [xxx] was closed";
+"LiveLinkMicDemoOld.MLVBLiveRoom.rogerthehostxxyy" = "Received a co-anchoring request from anchor [xxx-yyy]";
+"LiveLinkMicDemoOld.MLVBLiveRoom.receivethebiganchortorespondxxyy" = "Received response from the room owner: :result[xxx] message[yyy]";
+"LiveLinkMicDemoOld.MLVBLiveRoom.receiveanchorkickoutthenewsofevenwheat" = "Received a message that your co-anchoring was ended by the room owner";
+"LiveLinkMicDemoOld.MLVBLiveRoom.receiveroomanchorpkrequestxxyy" = "Received a competition request from anchor [yyy] from room [xxx]";
+"LiveLinkMicDemoOld.MLVBLiveRoom.pushstreamdisconnectedxxyyzzmm" = "Received response from anchor [yyy] from room [xxx]: result[zzz] message[mmm]";
+"LiveLinkMicDemoOld.MLVBLiveRoom.receiveroomanchorpkendmsgxxyy" = "Received a message that anchor [yyy] from room [xxx] ended competition";
+
+"LivePlayerDemo.PlayViewController.pleaseenterorscantheqrcode" = "Enter a playback address or scan QR code";
+"LivePlayerDemo.PlayViewController.livestreamingplayer" = "Live Streaming Player";
+"LivePlayerDemo.PlayViewController.delayadjustment" = "Latency Setting";
+"LivePlayerDemo.PlayViewController.speed" = "Fast";
+"LivePlayerDemo.PlayViewController.smooth" = "Smooth";
+"LivePlayerDemo.PlayViewController.auto" = "Auto";
+"LivePlayerDemo.PlayViewController.iosversionbelow" = "Your iOS is below 8.2 and does not support hardware acceleration";
+"LivePlayerDemo.PlayViewController.switchtoharddecoding" = "Switched to hardware decoding. The playback restarts.";
+"LivePlayerDemo.PlayViewController.switchtosoftdecoding" = "Switched to software decoding. The playback restarts.";
+"LivePlayerDemo.PlayViewController.lowdelayplayback" = "Low-latency Play";
+"LivePlayerDemo.PlayViewController.lowdelaypullstreamaddress" = "Low-latency pull requires hotlink protection signature. See https://cloud.tencent.com/document/product/454/7880#RealTimePlay";
+"LivePlayerDemo.PlayViewController.playaddressisnotlegal" = "Invalid playback address. Only RTMP and FLV are supported for live streaming currently!";
+"LivePlayerDemo.PlayViewController.playerstartfailed" = "Failed to start the player";
+"LivePlayerDemo.PlayViewController.changewifitosee" = "Do you want to wait till your are connected to Wi-Fi to watch?";
+"LivePlayerDemo.PlayViewController.yes" = "Yes";
+"LivePlayerDemo.PlayViewController.no" = "No";
+"LivePlayerDemo.PlayViewController.failedtogetlowdelayplaybackaddress" = "Failed to get the low-latency playback address";
+"LivePlayerDemo.PlayViewController.testaddressfromonline" = "A screen recording stream in UTC time is pushed via the test address , and the MLVB SDK for Windows and VCam are used for push";
+
+"LivePusherDemo.CameraPush.pleaseinputthepushstream" = "Enter a push address or scan QR code";
+"LivePusherDemo.CameraPush.rtmppullstream" = "RTMP Push";
+"LivePusherDemo.CameraPush.iosemulatordoesnotsupport" = "iOS simulators cannot push or play back streams. Please use a real device.";
+"LivePusherDemo.CameraPush.pushstreamaddressisnotvalid" = "Invalid push address. Only RTMP is supported now.";
+"LivePusherDemo.CameraPush.thethrusterfailedtostart" = "Failed to start the pusher";
+"LivePusherDemo.CameraPush.off" = "Close";
+"LivePusherDemo.CameraPush.addressacquisitioninprocess" = "Getting address";
+"LivePusherDemo.CameraPush.failedtogetpushstreamaddress" = "Failed to get the playback address";
+"LivePusherDemo.CameraPush.lowlatency" = "Low Latency";
+"LivePusherDemo.CameraPush.rtmpaddressxxflvaddressyyhlsaddresszz" = "RTMP playback address: xxx\n\nFLV playback address: yyy\n\nHLS playback address: zzz\n\nLow-latency playback address: mmm";
+"LivePusherDemo.CameraPush.getaddresssuccess" = "Suceeded";
+"LivePusherDemo.CameraPush.playbackaddresshasbeencopiedtotheclipboard" = "Playback address copied to clipboard";
+"LivePusherDemo.CameraPush.changetowifipushstream" = "Do you want to wait till you are connected to Wi-Fi to push streams?";
+"LivePusherDemo.CameraPush.currentnetworkenvironmentisnotgood" = "Poor network conditions. Change a network to ensure ";
+"LivePusherDemo.CameraPush.startloadingassets" = "Loading resources";
+"LivePusherDemo.CameraPush.loadingxx" = "Loading xxx %%";
+"LivePusherDemo.CameraPush.assetsloadsuccess" = "Loaded successfully";
+"LivePusherDemo.CameraPush.assetsloadfailed" = "Failed to load resources";
+
+"LivePusherDemo.MoreSetting.screenshots" = "Take";
+"LivePusherDemo.MoreSetting.enableprivacymode" = "Private";
+"LivePusherDemo.MoreSetting.turnonmutemode" = "Mute";
+"LivePusherDemo.MoreSetting.turnonviewmirror" = "Playback Mirror";
+"LivePusherDemo.MoreSetting.turnontherearflash" = "Back Flashlight";
+"LivePusherDemo.MoreSetting.turnonhorizontalpushflow" = "Landscape Mode";
+"LivePusherDemo.MoreSetting.openingdebuglog" = "Debug Logs";
+"LivePusherDemo.MoreSetting.addwatermark" = "Watermarking";
+"LivePusherDemo.MoreSetting.delaymeasurementbar" = "Latency Measurement Toolbar";
+"LivePusherDemo.MoreSetting.manuallyclickexposureandfocus" = "Tap to Adjust Focus/Exposure";
+"LivePusherDemo.MoreSetting.gesturetozoominonthepreview" = "Pinch to Zoom";
+"LivePusherDemo.MoreSetting.enableaudiopushstream" = "Audio-Only Stream";
+"LivePusherDemo.MoreSetting.localscreenshots" = "Local Screenshot";
+"LivePusherDemo.MoreSetting.sendmessage" = "Send Message";
+
+"LivePusherDemo.PushSetting.setting" = "Setting";
+"LivePusherDemo.PushSetting.bluray" = "蓝光";
+"LivePusherDemo.PushSetting.superclear" = "UHD";
+"LivePusherDemo.PushSetting.hd" = "HD";
+"LivePusherDemo.PushSetting.standarddefinition" = "SD";
+"LivePusherDemo.PushSetting.lianmaibighost" = "Co-anchor with Room Owner";
+"LivePusherDemo.PushSetting.lianmaismallhost" = "Co-anchor with Non-room owner Anchor";
+"LivePusherDemo.PushSetting.realtimeaudioandvideo" = "TRTC";
+"LivePusherDemo.PushSetting.voice" = "Voice";
+"LivePusherDemo.PushSetting.standard" = "Standard";
+"LivePusherDemo.PushSetting.music" = "Music";
+"LivePusherDemo.PushSetting.back" = "Back";
+"LivePusherDemo.PushSetting.imagequality" = "Video Quality";
+"LivePusherDemo.PushSetting.cancel" = "Cancel";
+"LivePusherDemo.PushSetting.thesoundquality" = "Audio Quality";
+"LivePusherDemo.PushSetting.openbandwidthadaptation" = "Bandwidth Adaptation";
+"LivePusherDemo.PushSetting.enablehardwareacceleration" = "Hardware Acceleration";
+"LivePusherDemo.PushSetting.opentheearsback" = "In-ear Monitor";
+"LivePusherDemo.PushSetting.qualitypreference" = "Video Quality";
+"LivePusherDemo.PushSetting.thesoundqualitychoice" = "Sound Quality";
+
+"LivePusherDemo.PushLogView.coderate" = "Bitrate:";
+"LivePusherDemo.PushLogView.uploadspeed" = "Upload speed:";
+"LivePusherDemo.PushLogView.stepcheckaddresslegitimacy" = "State 1: check address validity";
+"LivePusherDemo.PushLogView.connecttothecloudserver" = "Stage 2: connected to CVM";
+"LivePusherDemo.PushLogView.cameraissuccessfullyopened" = "Stage 3: camera turned on";
+"LivePusherDemo.PushLogView.encoderstartsnormally" = "Stage 4: encoder started";
+"LivePusherDemo.PushLogView.begintopushflow" = "Stage 5: starting push";
+
+"LivePusherDemo.PushBgm.numberofcycles" = "循环次数：";
+"LivePusherDemo.PushBgm.onlinemusic" = "在线音乐？";
+"LivePusherDemo.PushBgm.micvolume" = "MIC音量：";
+"LivePusherDemo.PushBgm.bgmvolume" = "BGM音量：";
+"LivePusherDemo.PushBgm.bgmtone" = "BGM音调：";
+"LivePusherDemo.PushBgm.start" = "Start";
+"LivePusherDemo.PushBgm.pause" = "Pause";
+"LivePusherDemo.PushBgm.end" = "End";
+"LivePusherDemo.PushBgm.restore" = "Resume";
+
+"LivePusherDemo.ScreenPush.recordthelivescreen" = "Stream Screen Recording";
+"LivePusherDemo.ScreenPush.scantheqrcodeorclick" = "Scan QR code or tap New to generate an address";
+"LivePusherDemo.ScreenPush.verticalscreen" = "Portrait";
+"LivePusherDemo.ScreenPush.landscape" = "Landscape";
+"LivePusherDemo.ScreenPush.startpushstream" = "Start Push";
+"LivePusherDemo.ScreenPush.instructionsforscreenrecording" = "Note:";
+"LivePusherDemo.ScreenPush.gotothecontrolcenterandlongpressthestartscreen" = "In Control Center, touch and hold the record button, and select Video Cloud Toolkt to start screen recording. If you cannot find the button, go to Settings > Control Center to add.";
+"LivePusherDemo.ScreenPush.addressinprocess" = "Getting address";
+"LivePusherDemo.ScreenPush.failedtogetpushstreamaddress" = "Failed to get the push address";
+"LivePusherDemo.ScreenPush.tencentcloudpushstream" = "腾讯云录屏推流";
+"LivePusherDemo.ScreenPush.systempleaseupgrade" = "Only iOS 11 and above support screen recording. Please update your system.";
+"LivePusherDemo.ScreenPush.enterpushaddress" = "Enter a push address";
+"LivePusherDemo.ScreenPush.gotothecontrolcenter" = "Please start screen recording in Control Center first.";
+"LivePusherDemo.ScreenPush.turnonscreenrecordingpushstreams" = "Are you sure you want to start pushing screen recording streams?";
+"LivePusherDemo.ScreenPush.flvplayaddress" = "FLV playback address";
+"LivePusherDemo.ScreenPush.pushoverflow" = "End";
+"LivePusherDemo.ScreenPush.closescreenpushstream" = "Are you sure you want to stop pushing screen recording streams?";
+
+"SuperPlayerDemo.UGCUploadList.errorcodexxerrormsgyy" = "Error code: xxx; error message: yyy";
+
+"SuperPlayerDemo.DownloadView.deletetask" = "删除任务";
+"SuperPlayerDemo.DownloadView.stoptask" = "停止任务";
+"SuperPlayerDemo.DownloadView.progressxxspeedyy" = "进度 xxx, 速度 yyy";
+
+"SuperPlayerDemo.CFDanmaku.usebarrage" = "如果要使用中间弹幕 必须先设置中间弹幕的时间及最大行数";
+"SuperPlayerDemo.CFDanmaku.toomanycomments" = "同一时间评论太多--排不开了--------------------------";
+"SuperPlayerDemo.CFDanmaku.mustsettingbarrage" = "必须先设置弹幕的时间\\最大行数\\弹幕行高";
+
+"SuperPlayerDemo.MoviePlayer.xxtherelease" = "xxx释放了";
+"SuperPlayerDemo.MoviePlayer.uploadvideo" = "上传视频";
+"SuperPlayerDemo.MoviePlayer.ondemandlist" = "VOD List";
+"SuperPlayerDemo.MoviePlayer.livelist" = "Live Streaming List";
+"SuperPlayerDemo.MoviePlayer.getvideoerrorxx" = "获取视频失败：xxx";
+"SuperPlayerDemo.MoviePlayer.getlivelisterror" = "直播列表请求失败";
+"SuperPlayerDemo.MoviePlayer.video" = "Video";
+"SuperPlayerDemo.MoviePlayer.fileidrequesterror" = "Failed to request file ID";
+"SuperPlayerDemo.MoviePlayer.lackofparameterxxyyzz" = "缺少参数:appId=xxx,fileId=yyy,psign=zzz";
+"SuperPlayerDemo.MoviePlayer.changetoweibostyle" = "已切换微博风格";
+"SuperPlayerDemo.MoviePlayer.changetonormalstyle" = "已切换默认风格";
+"SuperPlayerDemo.MoviePlayer.newplayvideo" = "这是新播放的视频";
+"SuperPlayerDemo.MoviePlayer.addvideo" = "添加视频";
+"SuperPlayerDemo.MoviePlayer.enterappid" = "Enter a valid app ID";
+"SuperPlayerDemo.MoviePlayer.enterfileid" = "Enter a valid file ID";
+"SuperPlayerDemo.MoviePlayer.enterliveurl" = "请输入直播url";
+"SuperPlayerDemo.MoviePlayer.enterplayeraddress" = "Enter a valid playback address";
+
+"SuperPlayerDemo.TXMoviePlayerNetApi.parametererror" = "Incorrect parameter";
+"SuperPlayerDemo.TXMoviePlayerNetApi.requesterror" = "请求失败";
+"SuperPlayerDemo.TXMoviePlayerNetApi.contentisnil" = "内容为空";
+"SuperPlayerDemo.TXMoviePlayerNetApi.invalidformat" = "格式错误";
+
+"SuperPlayerDemo.SuperPlayerGuideView.slideupanddowntoadjust" = "Draw up/down to adjust screen brightness";
+"SuperPlayerDemo.SuperPlayerGuideView.slideupanddowntovolume" = "Drag up/down to adjust volume";
+"SuperPlayerDemo.SuperPlayerGuideView.slideleftandrighttofastforward" = "Drag left/right to rewind/fast-forward";
+"SuperPlayerDemo.SuperPlayerGuideView.leftwatchlivecontent" = "Drag to the left to watch earlier streams";

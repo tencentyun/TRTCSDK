@@ -242,7 +242,7 @@ extension TRTCCallingAuidoViewController {
                 self.isMicMute = !self.isMicMute
                 TRTCCalling.shareInstance().setMicMute(self.isMicMute)
                 self.mute.setImage(UIImage(named: self.isMicMute ? "ic_mute_on" : "ic_mute"), for: .normal)
-                self.view.makeToast(self.isMicMute ? "开启静音" : "关闭静音")
+                self.view.makeToast(self.isMicMute ? .muteonText : .muteoffText)
                 }, onError: nil, onCompleted: nil, onDisposed: nil).disposed(by: disposebag)
             mute.isHidden = true
             mute.snp.remakeConstraints { (make) in
@@ -261,7 +261,7 @@ extension TRTCCallingAuidoViewController {
                 self.isHandsFreeOn = !self.isHandsFreeOn
                 TRTCCalling.shareInstance().setHandsFree(self.isHandsFreeOn)
                 self.handsfree.setImage(UIImage(named: self.isHandsFreeOn ? "ic_handsfree_on" : "ic_handsfree"), for: .normal)
-                self.view.makeToast(self.isHandsFreeOn ? "开启免提" : "关闭免提")
+                self.view.makeToast(self.isHandsFreeOn ? .handsfreeonText : .handsfreeoffText)
                 }, onError: nil, onCompleted: nil, onDisposed: nil).disposed(by: disposebag)
             handsfree.isHidden = true
             handsfree.snp.remakeConstraints { (make) in
@@ -519,3 +519,9 @@ extension TRTCCallingAuidoViewController: UICollectionViewDelegate, UICollection
     }
 }
 
+fileprivate extension String {
+    static let muteonText = TRTCLocalize("Demo.TRTC.calling.muteon")
+    static let muteoffText = TRTCLocalize("Demo.TRTC.calling.muteoff")
+    static let handsfreeonText = TRTCLocalize("Demo.TRTC.calling.handsfreeon")
+    static let handsfreeoffText = TRTCLocalize("Demo.TRTC.calling.handsfreeoff")
+}

@@ -39,7 +39,7 @@ class TRTCMeetingMoreViewVideoVC: UIViewController, UIPickerViewDelegate, UIPick
     lazy var resolutionLabel: UILabel = {
         let label = UILabel(frame: CGRect(x: 20, y: 30, width: 100, height: 25))
         label.textAlignment = NSTextAlignment.left
-        label.text = "分辨率"
+        label.text = .resolutionText
         label.font = UIFont.systemFont(ofSize: 18)
         label.textColor = .white
         return label
@@ -48,7 +48,7 @@ class TRTCMeetingMoreViewVideoVC: UIViewController, UIPickerViewDelegate, UIPick
     lazy var frameLabel: UILabel = {
         let label = UILabel(frame: CGRect(x: 20, y: 80, width: 100, height: 25))
         label.textAlignment = NSTextAlignment.left
-        label.text = "帧率"
+        label.text = .framerateText
         label.font = UIFont.systemFont(ofSize: 18)
         label.textColor = .white
         return label
@@ -57,7 +57,7 @@ class TRTCMeetingMoreViewVideoVC: UIViewController, UIPickerViewDelegate, UIPick
     lazy var bitrateLabel: UILabel = {
         let label = UILabel(frame: CGRect(x: 20, y: 130, width: 100, height: 25))
         label.textAlignment = NSTextAlignment.left
-        label.text = "码率"
+        label.text = .bitrateText
         label.font = UIFont.systemFont(ofSize: 18)
         label.textColor = .white
         return label
@@ -66,7 +66,7 @@ class TRTCMeetingMoreViewVideoVC: UIViewController, UIPickerViewDelegate, UIPick
     lazy var mirrorLabel: UILabel = {
         let label = UILabel(frame: CGRect(x: 20, y: 180, width: 100, height: 25))
         label.textAlignment = NSTextAlignment.left
-        label.text = "本地镜像"
+        label.text = .localmirrorText
         label.font = UIFont.systemFont(ofSize: 18)
         label.textColor = .white
         return label
@@ -243,11 +243,11 @@ class TRTCMeetingMoreViewVideoVC: UIViewController, UIPickerViewDelegate, UIPick
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if pickerView.tag == TAG_RESOLUTION {
-            print("分辨率选择完毕")
+            print(String.resolutionSelectedText)
             updateResolution(index: row)
             
         } else if pickerView.tag == TAG_FPS {
-            print("帧率选择完毕")
+            print(String.framerateSelectedText)
             updateFps(index: row)
         }
     }
@@ -287,4 +287,14 @@ class TRTCMeetingMoreViewVideoVC: UIViewController, UIPickerViewDelegate, UIPick
     @objc func hideKeyboard(tapG:UITapGestureRecognizer){
         self.view.endEditing(true)
     }
+}
+
+/// MARK: - internationalization string
+fileprivate extension String {
+    static let resolutionText = TRTCLocalize("Demo.TRTC.Meeting.resolution")
+    static let framerateText = TRTCLocalize("Demo.TRTC.Meeting.framerate")
+    static let bitrateText = TRTCLocalize("Demo.TRTC.Meeting.bitrate")
+    static let localmirrorText = TRTCLocalize("Demo.TRTC.Meeting.localmirror")
+    static let resolutionSelectedText = TRTCLocalize("Demo.TRTC.Meeting.resolutionselected")
+    static let framerateSelectedText = TRTCLocalize("Demo.TRTC.Meeting.framerateselected")
 }

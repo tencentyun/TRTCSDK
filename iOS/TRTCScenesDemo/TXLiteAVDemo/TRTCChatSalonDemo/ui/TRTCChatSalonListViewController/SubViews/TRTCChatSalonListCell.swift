@@ -99,5 +99,5 @@ class TRTCChatSalonListCell: UICollectionViewCell {
 }
 
 fileprivate extension String {
-    static let online = ChatSalonLocalized.getLocalizedString(key: "online")
+    static let online = TRTCLocalize("Demo.TRTC.Salon.online")
 }

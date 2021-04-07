@@ -57,7 +57,7 @@ class TRTCCreateVoiceRoomRootView: UIView {
     
     let roomNumberLabel: UILabel = {
         let label = UILabel.init(frame: .zero)
-        label.text = "主题"
+        label.text = .topicText
         label.font = UIFont.systemFont(ofSize: 16.0)
         label.textColor = UIColor.init(0xEBF4FF)
         label.textAlignment = .left
@@ -67,7 +67,7 @@ class TRTCCreateVoiceRoomRootView: UIView {
     
     let roomNameInputTextFiled: UITextField = {
         let textField = UITextField.init(frame: .zero)
-        textField.attributedPlaceholder = NSAttributedString.init(string: "请输入房间主题", attributes: [.font: UIFont.systemFont(ofSize: 16.0), .foregroundColor: UIColor.placeholderBackColor])
+        textField.attributedPlaceholder = NSAttributedString.init(string: .enterTopicText, attributes: [.font: UIFont.systemFont(ofSize: 16.0), .foregroundColor: UIColor.placeholderBackColor])
         textField.textColor = UIColor.init(0xEBF4FF)
         textField.font = UIFont.systemFont(ofSize: 16.0)
         return textField
@@ -82,7 +82,7 @@ class TRTCCreateVoiceRoomRootView: UIView {
     
     let userNameLabel: UILabel = {
         let label = UILabel.init(frame: .zero)
-        label.text = "昵称"
+        label.text = .nicknameText
         label.font = UIFont.systemFont(ofSize: 16.0)
         label.textColor = UIColor.init(0xEBF4FF)
         label.textAlignment = .left
@@ -92,7 +92,7 @@ class TRTCCreateVoiceRoomRootView: UIView {
     
     let userNameTextFiled: UITextField = {
         let textField = UITextField.init(frame: .zero)
-        textField.attributedPlaceholder = NSAttributedString.init(string: "请输入昵称", attributes: [.font: UIFont.systemFont(ofSize: 16.0), .foregroundColor: UIColor.placeholderBackColor])
+        textField.attributedPlaceholder = NSAttributedString.init(string: .enterNicknameText, attributes: [.font: UIFont.systemFont(ofSize: 16.0), .foregroundColor: UIColor.placeholderBackColor])
         textField.textColor = UIColor.init(0xEBF4FF)
         textField.font = UIFont.systemFont(ofSize: 16.0)
         return textField
@@ -100,7 +100,7 @@ class TRTCCreateVoiceRoomRootView: UIView {
     
     let roleLabel: UILabel = {
         let label = UILabel.init(frame: .zero)
-        label.text = "上麦需要房主同意"
+        label.text = .agreeSpeakerText
         label.font = UIFont.systemFont(ofSize: 16.0)
         label.textColor = UIColor.init(0xEBF4FF)
         label.textAlignment = .left
@@ -124,7 +124,7 @@ class TRTCCreateVoiceRoomRootView: UIView {
     
     let toneQualityLabel: UILabel = {
         let label = UILabel.init(frame: .zero)
-        label.text = "音质选择"
+        label.text = .qualitySelectText
         label.font = UIFont.systemFont(ofSize: 16.0)
         label.textColor = UIColor.init(0xEBF4FF)
         label.textAlignment = .left
@@ -141,7 +141,7 @@ class TRTCCreateVoiceRoomRootView: UIView {
     
     let heightQualityButton: UIButton = {
         let button = UIButton.init(type: .custom)
-        button.setTitle("音乐", for: .normal)
+        button.setTitle(.musicText, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16.0)
         button.setImage(UIImage.init(named: "voiceroom_oval"), for: .normal)
         button.setImage(UIImage.init(named: "voiceroom_selected"), for: .selected)
@@ -150,12 +150,14 @@ class TRTCCreateVoiceRoomRootView: UIView {
         button.imageEdgeInsets = UIEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 5)
         button.titleEdgeInsets = UIEdgeInsets.init(top: 0, left: 5, bottom: 0, right: 0)
         button.imageView?.contentMode = .scaleAspectFit
+        button.titleLabel?.adjustsFontSizeToFitWidth = true
+        button.titleLabel?.minimumScaleFactor = 0.5
         return button
     }()
     
     let mediumQualityButton: UIButton = {
         let button = UIButton.init(type: .custom)
-        button.setTitle("标准", for: .normal)
+        button.setTitle(.standardText, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16.0)
         button.setImage(UIImage.init(named: "voiceroom_oval"), for: .normal)
         button.setImage(UIImage.init(named: "voiceroom_selected"), for: .selected)
@@ -164,12 +166,14 @@ class TRTCCreateVoiceRoomRootView: UIView {
         button.imageEdgeInsets = UIEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 5)
         button.titleEdgeInsets = UIEdgeInsets.init(top: 0, left: 5, bottom: 0, right: 0)
         button.imageView?.contentMode = .scaleAspectFit
+        button.titleLabel?.adjustsFontSizeToFitWidth = true
+        button.titleLabel?.minimumScaleFactor = 0.5
         return button
     }()
     
     let lowQualityButton: UIButton = {
         let button = UIButton.init(type: .custom)
-        button.setTitle("语音", for: .normal)
+        button.setTitle(.voiceText, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16.0)
         button.setImage(UIImage.init(named: "voiceroom_oval"), for: .normal)
         button.setImage(UIImage.init(named: "voiceroom_selected"), for: .selected)
@@ -178,6 +182,8 @@ class TRTCCreateVoiceRoomRootView: UIView {
         button.imageEdgeInsets = UIEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 5)
         button.titleEdgeInsets = UIEdgeInsets.init(top: 0, left: 5, bottom: 0, right: 0)
         button.imageView?.contentMode = .scaleAspectFit
+        button.titleLabel?.adjustsFontSizeToFitWidth = true
+        button.titleLabel?.minimumScaleFactor = 0.5
         return button
     }()
     
@@ -186,7 +192,7 @@ class TRTCCreateVoiceRoomRootView: UIView {
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16.0)
         button.setTitleColor(UIColor.init(0x56749E), for: .disabled)
         button.setTitleColor(UIColor.init(0xFFFFFF), for: .normal)
-        button.setTitle("创建聊天室", for: .normal)
+        button.setTitle(.createChatroomText, for: .normal)
         button.setBackgroundImage(UIColor.inputImageBackColor.trans2Image(), for: .disabled)
         button.setBackgroundImage(UIColor.buttonBackColor.trans2Image(), for: .normal)
         return button
@@ -194,7 +200,7 @@ class TRTCCreateVoiceRoomRootView: UIView {
     
     let tipsLabel: UILabel = {
         let label = UILabel.init(frame: .zero)
-        label.text = "若房间号不存在将自动创建并加入该房间"
+        label.text = ""
         label.font = UIFont.systemFont(ofSize: 16.0)
         label.textColor = .placeholderBackColor
         label.textAlignment = .center
@@ -319,7 +325,7 @@ extension TRTCCreateVoiceRoomRootView {
             return
         }
         guard roomNameString != "" && userNameString != ""  else {
-            makeToast("昵称或用户名为空")
+            makeToast(.nameisNullText)
             return
         }
         viewModel.roomName = roomNameString
@@ -404,7 +410,7 @@ extension TRTCCreateVoiceRoomRootView {
         [heightQualityButton, mediumQualityButton].forEach { (button) in
             button.snp.makeConstraints { (make) in
                 make.height.equalTo(24)
-                make.width.equalTo(70)
+//                make.width.equalTo(70)
             }
         }
     }
@@ -423,4 +429,20 @@ extension TRTCCreateVoiceRoomRootView {
             make.left.right.equalTo(enterRoomButton)
         }
     }
+}
+
+fileprivate extension String {
+    static let controllerTitle = TRTCLocalize("Demo.TRTC.VoiceRoom.createvoicechatroom")
+    static let topicText = TRTCLocalize("Demo.TRTC.Salon.topic")
+    static let enterTopicText = TRTCLocalize("Demo.TRTC.VoiceRoom.entertopic")
+    static let nicknameText = TRTCLocalize("Demo.TRTC.VoiceRoom.nickname")
+    static let enterNicknameText = TRTCLocalize("Demo.TRTC.VoiceRoom.enternickname")
+    static let agreeSpeakerText = TRTCLocalize("Demo.TRTC.VoiceRoom.bespeakershouldagreebyowner")
+    static let qualitySelectText = TRTCLocalize("Demo.TRTC.VoiceRoom.soundqualityselect")
+    static let musicText = TRTCLocalize("Demo.TRTC.LiveRoom.music")
+    static let standardText = TRTCLocalize("Demo.TRTC.LiveRoom.standard")
+    static let voiceText = TRTCLocalize("Demo.TRTC.VoiceRoom.voice")
+    static let createChatroomText = TRTCLocalize("Demo.TRTC.VoiceRoom.createchatroom")
+    static let roomidNullText = TRTCLocalize("Demo.TRTC.VoiceRoom.nullroomidwillautocreateandjoinroom")
+    static let nameisNullText = TRTCLocalize("Demo.TRTC.Salon.nicknameorusernameisempty")
 }

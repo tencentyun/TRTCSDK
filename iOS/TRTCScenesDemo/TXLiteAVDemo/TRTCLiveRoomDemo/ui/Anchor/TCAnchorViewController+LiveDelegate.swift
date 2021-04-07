@@ -68,7 +68,7 @@ extension TCAnchorViewController: TRTCLiveRoomDelegate {
     
     public func trtcLiveRoomOnQuitRoomPK(_ trtcLiveRoom: TRTCLiveRoom) {
         self.curPkRoom = nil
-        TCUtil.toastTip("对方主播已结束PK", parentView: view)
+        TCUtil.toastTip(.endPk, parentView: view)
         linkFrameRestore()
     }
     
@@ -87,4 +87,7 @@ extension TCAnchorViewController: TRTCLiveRoomDelegate {
             }
         }
     }
+}
+private extension String {
+    static let endPk = TRTCLocalize("Demo.TRTC.LiveRoom.opponentanchorendpd")
 }

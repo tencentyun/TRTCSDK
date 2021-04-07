@@ -11,6 +11,7 @@
 #import <ImSDK/ImSDK.h>
 #import "TXVoiceRoomIMJsonHandle.h"
 #import "txvoiceroomCommonDef.h"
+#import "AppLocalized.h"
 
 @interface TXVoiceRoomService ()<V2TIMSDKListener, V2TIMSimpleMsgListener, V2TIMGroupListener, V2TIMSignalingListener>
 
@@ -181,11 +182,11 @@
         TRTCLog(@"create room error: %d, msg: %@", code, desc);
         NSString *msg = desc ?: @"create room fiald";
         if (code == 10036) {
-            msg = @"您当前使用的云通讯账号未开通音视频聊天室功能，创建聊天室数量超过限额，请前往腾讯云官网开通【IM音视频聊天室】，地址：https://cloud.tencent.com/document/product/269/11673";
+            msg = LocalizeReplaceXX(@"Demo.TRTC.Buy.chatroom", @"https://cloud.tencent.com/document/product/269/11673");
         } else if (code == 10037) {
-            msg = @"单个用户可创建和加入的群组数量超过了限制，请购买相关套餐,价格地址：https://cloud.tencent.com/document/product/269/11673";
+            msg = LocalizeReplaceXX(@"Demo.TRTC.Buy.grouplimit", @"https://cloud.tencent.com/document/product/269/11673");
         } else if (code == 10038) {
-            msg = @"群成员数量超过限制，请参考，请购买相关套餐，价格地址：https://cloud.tencent.com/document/product/269/11673";
+            msg = LocalizeReplaceXX(@"Demo.TRTC.Buy.groupmemberlimit", @"https://cloud.tencent.com/document/product/269/11673");
         }
         
         if (code == 10025 || code == 10021) {

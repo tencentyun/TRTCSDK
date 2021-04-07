@@ -92,4 +92,7 @@ char pinyinFirstLetter(unsigned short hanzi);
 //递归计算符合规定的文本长度
 - (NSString *)cutBeyondTextInLength:(NSInteger)maxLenth;
 
+//判断当前系统语言是否为英文
++ (BOOL)isCurrentLanguageEnglish;
+
 @end

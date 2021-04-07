@@ -9,6 +9,7 @@
 #import "TRTCLiveRoomMemberManager.h"
 #import "TRTCLiveRoomDef.h"
 #import <MJExtension.h>
+#import "AppLocalized.h"
 
 @interface TRTCLiveRoomMemberManager ()
 
@@ -219,7 +220,7 @@
     NSArray *anchorList = groupInfo[@"list"];
     if (!anchorList) {
 #if DEBUG
-        NSAssert(NO, @"主播列表为空");
+        NSAssert(NO, TRTCLocalize(@"Demo.TRTC.LiveRoom.anchorlistisnull"));
 #endif
         return;
     }

@@ -35,3 +35,9 @@
 
 
 @end
+
+@implementation TXChatSalonSendInviteInfo
+
+
+
+@end

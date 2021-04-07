@@ -28,7 +28,7 @@ class CallingSelectUserTableViewCell: UITableViewCell {
     let callButton: UIButton = {
         let button = UIButton.init(type: .custom)
         button.backgroundColor = UIColor.appTint
-        button.setTitle("呼叫", for: .normal)
+        button.setTitle(TRTCLocalize("Demo.TRTC.Streaming.call"), for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 4.0
         return button

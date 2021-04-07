@@ -11,6 +11,7 @@
 #import <ImSDK/ImSDK.h>
 #import "TXChatSalonIMJsonHandle.h"
 #import "TXChatSalonCommonDef.h"
+#import "AppLocalized.h"
 
 @interface TXChatSalonService ()<V2TIMSDKListener, V2TIMSimpleMsgListener, V2TIMGroupListener, V2TIMSignalingListener>
 
@@ -190,11 +191,11 @@
         TRTCLog(@"create room error: %d, msg: %@", code, desc);
         NSString *msg = desc ?: @"create room fiald";
         if (code == 10036) {
-            msg = @"您当前使用的云通讯账号未开通音视频聊天室功能，创建聊天室数量超过限额，请前往腾讯云官网开通【IM音视频聊天室】，地址：https://cloud.tencent.com/document/product/269/11673";
+            msg = LocalizeReplaceXX(@"Demo.TRTC.Buy.chatroom", @"https://cloud.tencent.com/document/product/269/11673");
         } else if (code == 10037) {
-            msg = @"单个用户可创建和加入的群组数量超过了限制，请购买相关套餐,价格地址：https://cloud.tencent.com/document/product/269/11673";
+            msg = LocalizeReplaceXX(@"Demo.TRTC.Buy.grouplimit", @"https://cloud.tencent.com/document/product/269/11673");
         } else if (code == 10038) {
-            msg = @"群成员数量超过限制，请参考，请购买相关套餐，价格地址：https://cloud.tencent.com/document/product/269/11673";
+            msg = LocalizeReplaceXX(@"Demo.TRTC.Buy.groupmemberlimit", @"https://cloud.tencent.com/document/product/269/11673");
         }
         
         if (code == 10025 || code == 10021) {
@@ -371,14 +372,17 @@
         callback(-1, @"only owner can kick someone on the seat.");
         return;
     }
-    TXChatSalonSeatInfo *changeInfo = [self.seatInfoList objectForKey:userID];
-    if (changeInfo) {
-        // 在麦位上
-        NSString *key = [NSString stringWithFormat:@"%@%@", VOICE_ROOM_KEY_SEAT, userID];
-        [self removeGroupAttrs:@[key] callback:callback];
-    } else {
-        callback(-1, @"already leave seat.");
-    }
+    
+    NSString *msg = [TXChatSalonIMJsonHandle getKickMsgJsonStrWithUserID:userID];
+    [self.imManager sendC2CCustomMessage:[msg dataUsingEncoding:NSUTF8StringEncoding] to:userID succ:^{
+        if (callback) {
+            callback(0, @"send c2c custom message success.");
+        }
+    } fail:^(int code, NSString *desc) {
+        if (callback) {
+            callback(code, desc);
+        }
+    }];
 }
 
 - (void)muteSeat:(NSString *)userID mute:(BOOL)mute callback:(TXCallback)callback {
@@ -545,7 +549,7 @@
 
 - (NSString *)sendInvitation:(NSString *)cmd userID:(NSString *)userID content:(NSString *)content callback:(TXCallback)callback {
     NSString* jsonString = [TXChatSalonIMJsonHandle getInvitationMsgWithRoomId:self.mRoomId cmd:cmd content:content];
-    return [self.imManager invite:userID data:jsonString timeout:0 succ:^{
+    return [self.imManager invite:userID data:jsonString timeout:20 succ:^{
         TRTCLog(@"send invitation success.");
         if (callback) {
             callback(0, @"send invitation success.");
@@ -610,7 +614,31 @@
 }
 
 - (void)onRecvC2CCustomMessage:(NSString *)msgID sender:(V2TIMUserInfo *)info customData:(NSData *)data {
-    
+    if (!data) {
+        return;
+    }
+    NSString *jsonString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    NSDictionary *dic = [jsonString mj_JSONObject];
+    NSString *version = [dic objectForKey:VOICE_ROOM_KEY_ATTR_VERSION];
+    if (!version || ![version isEqualToString:VOICE_ROOM_VALUE_ATTR_VERSION]) {
+        TRTCLog(@"protocol version is nil or not match, ignore c2c msg");
+        return;
+    }
+    NSNumber *action = [dic objectForKey:VOICE_ROOM_KEY_CMD_ACTION];
+    if (!action) {
+        TRTCLog(@"c2c action can't parse from data");
+        return;
+    }
+    int actionValue = [action intValue];
+    switch (actionValue) {
+        case kChatSalonCodeKickSeatMsg:
+            if ([self canDelegateResponseMethod:@selector(onSeatKick)]) {
+                [self.delegate onSeatKick];
+            }
+            break;
+        default:
+            break;
+    }
 }
 
 - (void)onRecvGroupTextMessage:(NSString *)msgID groupID:(NSString *)groupID sender:(V2TIMGroupMemberInfo *)info text:(NSString *)text {
@@ -737,13 +765,13 @@
         TXChatSalonSeatInfo *new = [seatInfoList objectForKey:key];
         if (old == nil & new != nil) {
             // 有人进入
-            [self onSeatTakeWithUser:new.user];
+//            [self onSeatTakeWithUser:new.user];
         }
         if (old != nil & new == nil) {
-            [self onSeatLeaveWithUser:old.user];
+//            [self onSeatLeaveWithUser:old.user];
         }
         if ((old != nil & new != nil) & (old.mute != new.mute)) {
-            [self onSeatMuteWithUser:new.user mute:new.mute];
+//            [self onSeatMuteWithUser:new.user mute:new.mute];
         }
         if (old == nil && new == nil) {
             NSAssert(NO, @"seat info error, old and new info all be nil.");
@@ -783,6 +811,12 @@
 - (void)onInvitationCancelled:(NSString *)inviteID inviter:(NSString *)inviter data:(NSString *)data {
     if ([self canDelegateResponseMethod:@selector(onInviteeCancelledWithIdentifier:invitee:)]) {
         [self.delegate onInviteeCancelledWithIdentifier:inviteID invitee:inviter];
+    }
+}
+
+-(void)onInvitationTimeout:(NSString *)inviteID inviteeList:(NSArray<NSString *> *)inviteeList {
+    if ([self canDelegateResponseMethod:@selector(onInvitationTimeout:)]) {
+        [self.delegate onInvitationTimeout:inviteID];
     }
 }
 
@@ -923,9 +957,9 @@
         if ([self canDelegateResponseMethod:@selector(onRoomInfoChange:)]) {
             [self.delegate onRoomInfoChange:self.roomInfo];
         }
-        if ([self canDelegateResponseMethod:@selector(onSeatInfoListChange:)]) {
-            [self.delegate onSeatInfoListChange:self.seatInfoList];
-        }
+//        if ([self canDelegateResponseMethod:@selector(onSeatInfoListChange:)]) {
+//            [self.delegate onSeatInfoListChange:self.seatInfoList];
+//        }
         if (callback) {
             callback(0, @"enter rooom success");
         }

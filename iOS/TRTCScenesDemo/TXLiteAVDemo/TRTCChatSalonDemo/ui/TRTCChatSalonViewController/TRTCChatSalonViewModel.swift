@@ -42,7 +42,7 @@ class TRTCChatSalonViewModel: NSObject {
     private var isExitingRoom: Bool = false
     
     private(set) var roomInfo: ChatSalonInfo
-    private(set) var isSeatInitSuccess: Bool = false
+//    private(set) var isSeatInitSuccess: Bool = false
     private(set) var mSelfSeatIndex: Int = -1
     private(set) var isOwnerMute: Bool = false
     /// 是否是房主
@@ -56,6 +56,7 @@ class TRTCChatSalonViewModel: NSObject {
     private(set) var anchorSeatList: [String : ChatSalonSeatInfoModel] = [:]
     /// 观众信息记录
     private(set) var memberAudienceDic: [String: CSAudienceInfoModel] = [:]
+    private(set) var audienceUserIDs: [String] = []
     /// 上麦申请记录
     var requestTakeSeatMap: [String: CSMemberRequestEntity] = [:]
     /// 是否举手
@@ -155,19 +156,10 @@ class TRTCChatSalonViewModel: NSObject {
     }
     
     public func spechAction(isMute: Bool) {
-//        chatSalon.muteAllRemoteAudio(isMute: isMute)
-//        if isMute {
-//            viewResponder?.showToast(message: "TODO")
-//        } else {
-//            viewResponder?.showToast(message: "TODO")
-//        }
+
     }
     
     public func clickSeat(model: ChatSalonSeatInfoModel) {
-        guard isSeatInitSuccess else {
-            viewResponder?.showToast(message: .micInitNotReadyText)
-            return
-        }
         if roomType == .audience || !isOwner {
             audienceClickItem(model: model)
         } else {
@@ -218,18 +210,7 @@ class TRTCChatSalonViewModel: NSObject {
         }
     }
     
-    public func onTextMsgSend(message: String) {
-//        if message.count == 0 {
-//            return
-//        }
-//        // 消息回显示
-//        let entity = CSMsgEntity.init(userID: dependencyContainer.userID, userName: "TODO", content: message, invitedId: "", type: CSMsgEntity.TYPE_NORMAL)
-//        notifyMsg(entity: entity)
-//        chatSalon.sendRoomTextMsg(message: message) { [weak self] (code, message) in
-//            guard let `self` = self else { return }
-//            self.viewResponder?.showToast(message: code == 0 ? "TODO" : "TODO:\(message)")
-//        }
-    }
+    public func onTextMsgSend(message: String) { }
     
     /// 同意上麦
     /// - Parameter identifier: 上麦的id
@@ -268,7 +249,11 @@ class TRTCChatSalonViewModel: NSObject {
             if code == 0 {
                 self.viewResponder?.showHandUpTips(isShow: true)
             } else {
-                self.viewResponder?.showToast(message: "\(String.takeSeatSendFailed)\(message)")
+                if (code == ChatSalonErrorCode.inviteLimited.rawValue) {
+                    self.viewResponder?.showToast(message: String.inviteLimitedText)
+                } else {
+                    self.viewResponder?.showToast(message: "\(String.takeSeatSendFailed)\(message)")
+                }
                 self.isHandUp = false
             }
         }
@@ -289,7 +274,6 @@ extension TRTCChatSalonViewModel {
             guard let `self` = self else { return }
             if code == 0 {
                 self.viewResponder?.changeRoom(title: "\(self.roomInfo.roomName)(\(self.roomInfo.roomID))")
-                self.takeMainSeat()
                 self.getAudienceList()
             } else {
                 self.viewResponder?.showToast(message: .enterRoomFailText)
@@ -297,17 +281,6 @@ extension TRTCChatSalonViewModel {
                     guard let `self` = self else { return }
                     self.viewResponder?.popToPrevious()
                 }
-            }
-        }
-    }
-    
-    private func takeMainSeat() {
-        chatSalon.enterSeat { [weak self] (code, message) in
-            guard let `self` = self else { return }
-            if code == 0 {
-                self.viewResponder?.showToast(message: .masterOnSeatSuccess)
-            } else {
-                self.viewResponder?.showToast(message: .masterOnSeatFailed)
             }
         }
     }
@@ -328,12 +301,12 @@ extension TRTCChatSalonViewModel {
                         }
                     }
                 }.filter { (model) -> Bool in
-                    return !self.anchorSeatList.keys.contains(model.userInfo.userID)
+                    return !self.anchorUserIDs.contains(model.userInfo.userID)
                 }
                 audienceInfoModels.forEach { (info) in
                     self.memberAudienceDic[info.userInfo.userID] = info
                 }
-                self.viewResponder?.audienceListRefresh()
+                self.handleAudienceListChanged()
             }
         }
     }
@@ -440,7 +413,7 @@ extension TRTCChatSalonViewModel {
         if var audienceModel = audinece {
             audienceModel.type = CSAudienceInfoModel.TYPE_WAIT_AGREE
             memberAudienceDic[audienceModel.userInfo.userID] = audienceModel
-            viewResponder?.audienceListRefresh()
+            handleAudienceListChanged()
         }
         mTakeCSSeatInvitationDic[inviter] = identifier
     }
@@ -484,6 +457,11 @@ extension TRTCChatSalonViewModel {
                 }
             }
         }
+        handleAudienceListChanged()
+    }
+    
+    private func handleAudienceListChanged() {
+        audienceUserIDs = memberAudienceDic.keys.sorted(by: <)
         viewResponder?.audienceListRefresh()
     }
 }
@@ -517,72 +495,6 @@ extension TRTCChatSalonViewModel: TRTCChatSalonDelegate {
         viewResponder?.changeRoom(title: "\(roomInfo.roomName)(\(roomInfo.roomID))")
     }
     
-    func onEnterRoomSeatListNotify(seatInfoList: [ChatSalonSeatInfo]) {
-        TRTCLog.out("roomLog: onSeatListChange: \(seatInfoList)")
-        isSeatInitSuccess = true
-        anchorUserIDs.removeAll()
-        anchorSeatList.removeAll()
-        var needRefreshAudience = false
-        var masterID = ""
-        seatInfoList.forEach { (item) in
-            let seatInfo = item
-            var anchorSeatInfo = ChatSalonSeatInfoModel.init { [weak self] (model) in
-                guard let `self` = self else { return }
-                self.clickSeat(model: model)
-            }
-            anchorSeatInfo.seatInfo = seatInfo
-            anchorSeatInfo.isOwner = roomInfo.ownerId == seatInfo.userID
-            if anchorSeatInfo.isOwner {
-                masterID = seatInfo.userID
-                masterAnchor = anchorSeatInfo
-                masterAnchor?.isUsed = true
-            } else {
-                if seatInfo.userID != "" {
-                    TRTCLog.out("roomLog: onSeatListChange ==== : \(seatInfo.userID)")
-                    anchorUserIDs.append(seatInfo.userID)
-                    anchorSeatList[seatInfo.userID] = anchorSeatInfo
-                }
-            }
-            if memberAudienceDic.keys.contains(seatInfo.userID) {
-                needRefreshAudience = true
-                memberAudienceDic.removeValue(forKey: seatInfo.userID)
-            }
-        }
-        if needRefreshAudience {
-            viewResponder?.audienceListRefresh()
-        }
-        let seatUserIds = seatInfoList.filter({ (seat) -> Bool in
-            return seat.userID != ""
-        }).map { (seatInfo) -> String in
-            return seatInfo.userID
-        }
-        chatSalon.getUserInfoList(userIDList: seatUserIds) { [weak self] (code, message, userInfos) in
-            guard let `self` = self else { return }
-            guard code == 0 else { return }
-            var userdic: [String : ChatSalonUserInfo] = [:]
-            userInfos.forEach { (info) in
-                userdic[info.userID] = info
-            }
-            if seatInfoList.count > 0 {
-                if masterID != "" {
-                    self.masterAnchor?.isUsed = true
-                    self.masterAnchor?.seatUser = userdic[masterID]
-                }
-            } else {
-                return
-            }
-            for (key, value) in self.anchorSeatList {
-                if let info = userdic[key] {
-                    var model = value
-                    model.isUsed = true
-                    model.seatUser = info
-                    self.anchorSeatList[key] = model
-                }
-            }
-            self.viewResponder?.refreshAnchorInfos()
-        }
-    }
-    
     func onAnchorEnterSeat(user: ChatSalonUserInfo) {
         if user.userID == roomInfo.ownerId {
             // 房主上麦就不提醒了
@@ -594,6 +506,7 @@ extension TRTCChatSalonViewModel: TRTCChatSalonDelegate {
             }
             self.masterAnchor?.isUsed = true
             self.masterAnchor?.seatUser = user
+            self.masterAnchor?.isOwner = true
             let anchorSeatInfo = ChatSalonSeatInfo.init()
             anchorSeatInfo.userID = user.userID
             self.masterAnchor?.seatInfo = anchorSeatInfo
@@ -610,7 +523,7 @@ extension TRTCChatSalonViewModel: TRTCChatSalonDelegate {
                 self.clickSeat(model: model)
             }
             let seatInfo = ChatSalonSeatInfo.init()
-            seatInfo.mute = false
+            seatInfo.mute = true
             seatInfo.userID = user.userID
             anchorSeatInfo.seatInfo = seatInfo
             anchorSeatInfo.seatUser = user
@@ -645,6 +558,11 @@ extension TRTCChatSalonViewModel: TRTCChatSalonDelegate {
     
     func onSeatMute(userID: String, isMute: Bool) {
         // TODO: user mute UI action. in seatInfoChange recv.
+        if userID == self.masterAnchor?.seatUser?.userID {
+            self.masterAnchor?.seatInfo?.mute = isMute
+            viewResponder?.refreshAnchorInfos()
+            return
+        }
         guard let seatInfo = anchorSeatList[userID] else {
             return
         }
@@ -656,6 +574,9 @@ extension TRTCChatSalonViewModel: TRTCChatSalonDelegate {
     }
     
     func onAudienceEnter(userInfo: ChatSalonUserInfo) {
+        if userInfo.userID == roomInfo.ownerId {
+            return;
+        }
         showNotifyMsg(messsage: "\(userInfo.userName)进房")
         let memberEntityModel = CSAudienceInfoModel.init(type: 0, userInfo: userInfo) { [weak self] (index) in
             guard let `self` = self else { return }
@@ -666,17 +587,16 @@ extension TRTCChatSalonViewModel: TRTCChatSalonDelegate {
                 self.viewResponder?.reuqestTakeSeatList(show: false)
             }
         }
-        if !memberAudienceDic.keys.contains(userInfo.userID) {
+        if !memberAudienceDic.keys.contains(userInfo.userID) && !anchorUserIDs.contains(userInfo.userID) {
             memberAudienceDic[userInfo.userID] = memberEntityModel
-            viewResponder?.audienceListRefresh()
+            handleAudienceListChanged()
         }
         
     }
     
     func onAudienceExit(userInfo: ChatSalonUserInfo) {
         memberAudienceDic.removeValue(forKey: userInfo.userID)
-        viewResponder?.refreshAnchorInfos()
-
+        handleAudienceListChanged()
     }
     
     func onUserVolumeUpdate(userVolumes: [TRTCVolumeInfo], totalVolume: Int) {
@@ -764,7 +684,21 @@ extension TRTCChatSalonViewModel: TRTCChatSalonDelegate {
     }
     
     func onInvitationCancelled(identifier: String, invitee: String) {
-        
+        if roomType == .anchor {
+            if let userID = self.requestTakeSeatMap.first(where: { $1.invitedId == identifier })?.key {
+                self.requestTakeSeatMap.removeValue(forKey: userID)
+            }
+            self.viewResponder?.refreshTakeSeatList()
+        }
+    }
+    
+    func onInvitationTimeout(identifier: String) {
+        if roomType == .anchor {
+            if let userID = self.requestTakeSeatMap.first(where: { $1.invitedId == identifier })?.key {
+                self.requestTakeSeatMap.removeValue(forKey: userID)
+            }
+            self.viewResponder?.refreshTakeSeatList()
+        }
     }
     
     func onAudioAvailable(userID: String, available: Bool) {
@@ -773,27 +707,28 @@ extension TRTCChatSalonViewModel: TRTCChatSalonDelegate {
 }
 
 fileprivate extension String {
-    static let closedMicText = ChatSalonLocalized.getLocalizedString(key: "Mic.Muted")
-    static let openedMicText = ChatSalonLocalized.getLocalizedString(key: "Mic.Unmuted")
-    static let micInitNotReadyText = ChatSalonLocalized.getLocalizedString(key: "The seat list is not yet initialized!")
-    static let enterRoomSuccText = ChatSalonLocalized.getLocalizedString(key: "Enter room success")
-    static let enterRoomFailText = ChatSalonLocalized.getLocalizedString(key: "Enter room failed")
-    static let createRoomFailedText = ChatSalonLocalized.getLocalizedString(key: "failed to create a room")
-    static let alreadyIsAnchorText = ChatSalonLocalized.getLocalizedString(key: "you are a speaker")
-    static let roomNotReadyText = ChatSalonLocalized.getLocalizedString(key: "The room is loading")
-    static let waitHostAcceptText = ChatSalonLocalized.getLocalizedString(key: "waiting for host's consent")
-    static let takeSeatSendFailed = ChatSalonLocalized.getLocalizedString(key: "failed to sent the hand-up message")
-    static let masterOnSeatSuccess = ChatSalonLocalized.getLocalizedString(key: "Host succeeded in occupying the seat")
-    static let masterOnSeatFailed = ChatSalonLocalized.getLocalizedString(key: "Host failed to occupy the seat")
-    static let onlyAnchorUse = ChatSalonLocalized.getLocalizedString(key: "Only the host can operate")
-    static let kickOutMicText = ChatSalonLocalized.getLocalizedString(key: "Action.move to the audience")
-    static let inviatttionTimeoutText = ChatSalonLocalized.getLocalizedString(key: "The request has expired")
-    static let acceptInvitationFailed = ChatSalonLocalized.getLocalizedString(key: "Failed to accept request")
-    static let leaveSeatSuccText = ChatSalonLocalized.getLocalizedString(key: "succeeded in becoming an audience")
-    static let leaveSeatFailedText = ChatSalonLocalized.getLocalizedString(key: "failed to become an audience")
-    static let hostDestroyRoomText = ChatSalonLocalized.getLocalizedString(key: "The host has closed the room")
-    static let enterSeatText = ChatSalonLocalized.getLocalizedString(key: "Hands up")
-    static let leaveSeatText = ChatSalonLocalized.getLocalizedString(key: "Message.move to the audience")
-    static let enterSeatSuccessText = ChatSalonLocalized.getLocalizedString(key: "succeeded in becoming a speaker")
-    static let enterSeatFailedText = ChatSalonLocalized.getLocalizedString(key: "failed to become a speaker")
+    static let closedMicText = TRTCLocalize("Demo.TRTC.Salon.micmuted")
+    static let openedMicText = TRTCLocalize("Demo.TRTC.Salon.micunmuted")
+    static let micInitNotReadyText = TRTCLocalize("Demo.TRTC.Salon.seatlistnotinit")
+    static let enterRoomSuccText = TRTCLocalize("Demo.TRTC.Salon.enterroomsuccess")
+    static let enterRoomFailText = TRTCLocalize("Demo.TRTC.Salon.enterroomfailed")
+    static let createRoomFailedText = TRTCLocalize("Demo.TRTC.LiveRoom.createroomfailed")
+    static let alreadyIsAnchorText = TRTCLocalize("Demo.TRTC.Salon.isbeingarchon")
+    static let roomNotReadyText = TRTCLocalize("Demo.TRTC.Salon.roomnotready")
+    static let waitHostAcceptText = TRTCLocalize("Demo.TRTC.Salon.waitinghostconsent")
+    static let takeSeatSendFailed = TRTCLocalize("Demo.TRTC.Salon.failedsenthandupmessage")
+    static let masterOnSeatSuccess = TRTCLocalize("Demo.TRTC.Salon.hostoccupyseatsuccess")
+    static let masterOnSeatFailed = TRTCLocalize("Demo.TRTC.Salon.hostoccupyseatfailed")
+    static let onlyAnchorUse = TRTCLocalize("Demo.TRTC.LiveRoom.onlyanchorcanoperation")
+    static let kickOutMicText = TRTCLocalize("Demo.TRTC.Salon.movetotheaudience")
+    static let inviatttionTimeoutText = TRTCLocalize("Demo.TRTC.Salon.reqisexpired")
+    static let acceptInvitationFailed = TRTCLocalize("Demo.TRTC.Salon.acceptreqfailed")
+    static let leaveSeatSuccText = TRTCLocalize("Demo.TRTC.Salon.audiencesuccess")
+    static let leaveSeatFailedText = TRTCLocalize("Demo.TRTC.Salon.failedaudience")
+    static let hostDestroyRoomText = TRTCLocalize("Demo.TRTC.Salon.archonclosedroom")
+    static let enterSeatText = TRTCLocalize("Demo.TRTC.Salon.handsup")
+    static let leaveSeatText = TRTCLocalize("Demo.TRTC.Salon.audience")
+    static let enterSeatSuccessText = TRTCLocalize("Demo.TRTC.Salon.successbecomespaker")
+    static let enterSeatFailedText = TRTCLocalize("Demo.TRTC.Salon.failedbecomespaker")
+    static let inviteLimitedText = TRTCLocalize("Demo.TRTC.Salon.invitelimited")
 }

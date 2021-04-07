@@ -48,6 +48,6 @@ class TRTCCreateVoiceRoomViewController: UIViewController {
 }
 
 private extension String {
-    static let controllerTitle = "创建语音聊天室"
+    static let controllerTitle = TRTCLocalize("Demo.TRTC.VoiceRoom.createvoicechatroom")
 }
 

@@ -11,6 +11,7 @@
 #import "TRTCMeeting.h"
 #import "TXRoomService.h"
 #import "TRTCMeetingDef.h"
+#import "AppLocalized.h"
 
 @interface TRTCMeeting() <TRTCCloudDelegate, TXRoomServiceDelegate>
 {
@@ -286,7 +287,7 @@ typedef void (^block)(TRTCMeeting *self);
             
             TRTCMeetingUserInfo *mainUserInfo = [self->_userInfoList valueForKey:userId];
             if (mainUserInfo) {
-                userInfo.userName = [NSString stringWithFormat:@"%@（辅流）", mainUserInfo.userName];
+                userInfo.userName = [NSString stringWithFormat:@"%@（%@）", mainUserInfo.userName, TRTCLocalize(@"Demo.TRTC.Meeting.secondarystream")];
                 userInfo.avatarURL = mainUserInfo.avatarURL;
             }
             

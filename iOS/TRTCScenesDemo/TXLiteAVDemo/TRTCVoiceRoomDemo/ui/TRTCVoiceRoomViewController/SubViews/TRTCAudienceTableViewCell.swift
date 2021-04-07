@@ -42,9 +42,9 @@ class TRTCAudienceTableViewCell: UITableViewCell {
     
     let inviateButton: UIButton = {
         let button = UIButton.init(type: .custom)
-        button.setTitle("邀请", for: .normal)
+        button.setTitle(.inviteText, for: .normal)
         button.setBackgroundImage(UIColor.buttonBackColor.trans2Image(), for: .normal)
-        button.setTitle("接受", for: .selected)
+        button.setTitle(.acceptText, for: .selected)
         button.setBackgroundImage(UIColor.init(0xE84B40).trans2Image(), for: .selected)
         return button
     }()
@@ -121,3 +121,10 @@ class TRTCAudienceTableViewCell: UITableViewCell {
         self.model = model
     }
 }
+
+/// MARK: - internationalization string
+fileprivate extension String {
+    static let acceptText = TRTCLocalize("Demo.TRTC.LiveRoom.accept")
+    static let inviteText = TRTCLocalize("Demo.TRTC.LiveRoom.invite")
+}
+

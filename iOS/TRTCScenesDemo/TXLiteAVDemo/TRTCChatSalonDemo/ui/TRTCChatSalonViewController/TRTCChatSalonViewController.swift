@@ -95,10 +95,10 @@ extension TRTCChatSalonViewController {
 }
 
 private extension String {
-    static let controllerTitle = ChatSalonLocalized.getLocalizedString(key: "room ID")
-    static let alertTitle = ChatSalonLocalized.getLocalizedString(key: "You want to leave the room?")
-    static let alertConfirm = ChatSalonLocalized.getLocalizedString(key: "Audience.Confirm")
-    static let alertCancel = ChatSalonLocalized.getLocalizedString(key: "Wait a bit")
+    static let controllerTitle = TRTCLocalize("Demo.TRTC.Salon.roomid")
+    static let alertTitle = TRTCLocalize("Demo.TRTC.Salon.surewanttoleaveroom")
+    static let alertConfirm = TRTCLocalize("Demo.TRTC.Salon.audienceconfirm")
+    static let alertCancel = TRTCLocalize("Demo.TRTC.Salon.waitabit")
 }
 
 

@@ -51,9 +51,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)stopMicrophone;
 
-- (void)switchToAnchor;
+- (void)switchToAnchor:(TXCallback _Nullable)callback;
 
-- (void)switchToAudience;
+- (void)switchToAudience:(TXCallback _Nullable)callback;
 
 - (void)setSpeaker:(BOOL)userSpeaker;
 

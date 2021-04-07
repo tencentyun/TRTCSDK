@@ -44,8 +44,8 @@ let roomBaseUrl = "https://service-c2zjvuxa-1252463788.gz.apigw.tencentcs.com/re
             if let respData = data.data, respData.count > 0 {
                 let decoder = JSONDecoder()
                 guard let result = try? decoder.decode(roomCommonModel.self, from: respData) else {
-                    failed(-1, "roomCommonModel decode失败")
-                    fatalError("roomCommonModel decode失败")
+                    failed(-1, "roomCommonModel decode failed")
+                    fatalError("roomCommonModel decode failed")
                 }
                 if result.errorCode == 0 {
                     success()
@@ -53,7 +53,7 @@ let roomBaseUrl = "https://service-c2zjvuxa-1252463788.gz.apigw.tencentcs.com/re
                     failed(result.errorCode, result.errorMessage)
                 }
             } else {
-                failed(-1,"返回空")
+                failed(-1,"return null")
             }
         }
     }
@@ -67,8 +67,8 @@ let roomBaseUrl = "https://service-c2zjvuxa-1252463788.gz.apigw.tencentcs.com/re
             if let respData = data.data, respData.count > 0 {
                 let decoder = JSONDecoder()
                 guard let result = try? decoder.decode(roomCommonModel.self, from: respData) else {
-                    failed(-1, "roomCommonModel decode失败")
-                    fatalError("roomCommonModel decode失败")
+                    failed(-1, "roomCommonModel decode failed")
+                    fatalError("roomCommonModel decode failed")
                 }
                 if result.errorCode == 0 {
                     success()
@@ -76,7 +76,7 @@ let roomBaseUrl = "https://service-c2zjvuxa-1252463788.gz.apigw.tencentcs.com/re
                     failed(result.errorCode, result.errorMessage)
                 }
             } else {
-                failed(-1,"返回空")
+                failed(-1,"return null")
             }
         }
     }
@@ -90,8 +90,8 @@ let roomBaseUrl = "https://service-c2zjvuxa-1252463788.gz.apigw.tencentcs.com/re
             if let respData = data.data, respData.count > 0 {
                 let decoder = JSONDecoder()
                 guard let result = try? decoder.decode(roomInfoResultModel.self, from: respData) else {
-                    failed(-1, "roomInfoResultModel decode失败")
-                    fatalError("roomInfoResultModel decode失败")
+                    failed(-1, "roomInfoResultModel decode failed")
+                    fatalError("roomInfoResultModel decode failed")
                 }
                 if result.errorCode == 0 {
                     var roomIDs: [String] = []
@@ -103,7 +103,7 @@ let roomBaseUrl = "https://service-c2zjvuxa-1252463788.gz.apigw.tencentcs.com/re
                     failed(result.errorCode, result.errorMessage)
                 }
             } else {
-                failed(-1,"返回空")
+                failed(-1,"return null")
             }
         }
     }

@@ -18,7 +18,7 @@ import Foundation
     
     lazy var inviteLabel: UILabel = {
         let label = UILabel()
-        label.text = "邀请"
+        label.text = .inviteText
         label.textAlignment = NSTextAlignment.center
         label.isUserInteractionEnabled = true
         label.textColor = .white
@@ -157,7 +157,7 @@ import Foundation
         if roomInfos.count > 0 {
             return " "
         }
-        return isLoading ? "正在加载..." : "暂无主播"
+        return isLoading ? .loadingText : .noAnchorText
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -205,13 +205,13 @@ import Foundation
         let headerLabel = UILabel()
         headerLabel.frame = CGRect(x: 0, y: 40, width: tableView.bounds.size.width, height: 50)
         headerLabel.textAlignment = NSTextAlignment.center
-        headerLabel.text = "PK邀请"
+        headerLabel.text = .invitePKText
         headerLabel.textColor = .white
         headerLabel.backgroundColor = .pannelBackColor
         headerLabel.isUserInteractionEnabled = true
         
         let cancel = UIButton(frame: CGRect(x: self.bounds.size.width * 4.0 / 5.0, y: 0, width: self.bounds.size.width / 5.0, height: 40))
-        cancel.setTitle("取消", for: UIControl.State.normal)
+        cancel.setTitle(.cancelText, for: UIControl.State.normal)
         cancel.backgroundColor = .clear
         cancel.addTarget(self, action: #selector(hiddenPanel), for: UIControl.Event.touchUpInside)
         headerLabel.addSubview(cancel)
@@ -239,4 +239,11 @@ import Foundation
             }
         }
     }
+}
+private extension String {
+    static let inviteText = TRTCLocalize("Demo.TRTC.LiveRoom.invite")
+    static let invitePKText = TRTCLocalize("Demo.TRTC.LiveRoom.invitepk")
+    static let loadingText = TRTCLocalize("Demo.TRTC.LiveRoom.loading")
+    static let noAnchorText = TRTCLocalize("Demo.TRTC.LiveRoom.noanchor")
+    static let cancelText = TRTCLocalize("Demo.TRTC.LiveRoom.cancel")
 }

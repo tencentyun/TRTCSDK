@@ -98,4 +98,13 @@
     return result;
 }
 
++ (NSString *)getKickMsgJsonStrWithUserID:(NSString *)userID {
+    NSMutableDictionary *result = [[NSMutableDictionary alloc] init];
+    [result setValue:VOICE_ROOM_VALUE_ATTR_VERSION forKey:VOICE_ROOM_KEY_ATTR_VERSION];
+    [result setValue:@(kChatSalonCodeKickSeatMsg) forKey:VOICE_ROOM_KEY_CMD_ACTION];
+    [result setValue:userID forKey:VOICE_ROOM_KEY_USER_ID];
+    
+    return [result mj_JSONString];
+}
+
 @end

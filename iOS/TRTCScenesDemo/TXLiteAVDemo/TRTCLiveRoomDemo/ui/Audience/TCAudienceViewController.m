@@ -160,7 +160,7 @@ TRTCLiveRoomDelegate>
     _noOwnerTip.backgroundColor = [UIColor clearColor];
     [_noOwnerTip setTextColor:[UIColor whiteColor]];
     [_noOwnerTip setTextAlignment:NSTextAlignmentCenter];
-    [_noOwnerTip setText:@"主播暂时不在线..."];
+    [_noOwnerTip setText:TRTCLocalize(@"Demo.TRTC.LiveRoom.anchornotonline")];
     [self.view addSubview:_noOwnerTip];
     [_noOwnerTip setHidden:YES];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -279,7 +279,7 @@ TRTCLiveRoomDelegate>
             if (self == nil) {
                 return ;
             }
-            [self makeToastWithMessage:error.length > 0 ? error : @"进入房间失败"];
+            [self makeToastWithMessage:error.length > 0 ? error : TRTCLocalize(@"Demo.TRTC.LiveRoom.enterroomfailed")];
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 //退房
                 [self closeVCWithRefresh:YES popViewController:YES];
@@ -302,7 +302,7 @@ TRTCLiveRoomDelegate>
     [_btnLinkMic setImage:[UIImage imageNamed:@"linkmic_off"] forState:UIControlStateNormal];
     [_btnLinkMic setEnabled:NO];
     
-    [self showWaitingNotice:@"等待主播接受"];
+    [self showWaitingNotice:TRTCLocalize(@"Demo.TRTC.LiveRoom.waitforanchoraccept")];
     
     [self.liveRoom requestJoinAnchor:@"" responseCallback:^(BOOL agreed, NSString * reason) {
         __strong __typeof(wself) self = wself;
@@ -318,7 +318,7 @@ TRTCLiveRoomDelegate>
         if (agreed) {
             self->_isBeingLinkMic = YES;
             [self->_btnLinkMic setImage:[UIImage imageNamed:@"linkmic_off"] forState:UIControlStateNormal];
-            [TCUtil toastTip:@"主播接受了您的连麦请求，开始连麦" parentView:self.view];
+            [TCUtil toastTip:TRTCLocalize(@"Demo.TRTC.LiveRoom.anchoracceptreqandbegan") parentView:self.view];
             
             //推流允许前后切换摄像头
             self->_btnCamera.hidden = NO;
@@ -346,7 +346,7 @@ TRTCLiveRoomDelegate>
             if ([reason length] > 0) {
                 [TCUtil toastTip:reason parentView:self.view];
             } else {
-                [TCUtil toastTip:@"主播拒绝了您的连麦请求" parentView:self.view];
+                [TCUtil toastTip:TRTCLocalize(@"Demo.TRTC.LiveRoom.refusemicconnectionreq") parentView:self.view];
             }
         }
     }];
@@ -409,7 +409,7 @@ TRTCLiveRoomDelegate>
         [_btnLinkMic setImage:[UIImage imageNamed:@"linkmic_on"] forState:UIControlStateNormal];
         [_btnLinkMic setEnabled:YES];
         [self hideWaitingNotice];
-        [TCUtil toastTip:@"连麦请求超时，主播没有做出回应" parentView:self.view];
+        [TCUtil toastTip:TRTCLocalize(@"Demo.TRTC.LiveRoom.micconnecttimeoutandanchornoresponse") parentView:self.view];
     }
 }
 
@@ -467,7 +467,7 @@ TRTCLiveRoomDelegate>
 
 - (void)showAlertWithTitle:(NSString *)title sureAction:(void(^)(void))callback {
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:nil preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *sureAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertAction *sureAction = [UIAlertAction actionWithTitle:TRTCLocalize(@"Demo.TRTC.LiveRoom.confirm") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         if (callback) {
             callback();
         }
@@ -485,7 +485,7 @@ TRTCLiveRoomDelegate>
     dispatch_async(dispatch_get_main_queue(), ^{
         NSLog(@"onRoomDestroy, roomID:%@", roomID);
         __weak __typeof(self) weakSelf = self;
-        [self showAlertWithTitle:@"大主播关闭视频互动" sureAction:^{
+        [self showAlertWithTitle:TRTCLocalize(@"Demo.TRTC.LiveRoom.anchorcloseinteraction") sureAction:^{
             [weakSelf closeVCWithRefresh:YES popViewController:YES];
         }];
     });
@@ -497,7 +497,7 @@ TRTCLiveRoomDelegate>
         if(errCode != 0){
             if (self->_isInVC) {
                 __weak __typeof(self) weakSelf = self;
-                [self showAlertWithTitle:@"大主播关闭视频互动间" sureAction:^{
+                [self showAlertWithTitle:TRTCLocalize(@"Demo.TRTC.LiveRoom.anchorcloseinteractionroom") sureAction:^{
                     [weakSelf closeVCWithRefresh:YES popViewController:YES];
                 }];
             }else{
@@ -510,7 +510,7 @@ TRTCLiveRoomDelegate>
 
 
 - (void)onKickoutJoinAnchor {
-    [TCUtil toastTip:@"不好意思，您被房主踢开" parentView:self.view];
+    [TCUtil toastTip:TRTCLocalize(@"Demo.TRTC.LiveRoom.sorryforkicked") parentView:self.view];
     [self stopLocalPreview];
 }
 
@@ -635,7 +635,7 @@ TRTCLiveRoomDelegate>
 
 - (BOOL)checkPlayUrl:(NSString *)playUrl {
     if (!([playUrl hasPrefix:@"http:"] || [playUrl hasPrefix:@"https:"] || [playUrl hasPrefix:@"rtmp:"] )) {
-        [TCUtil toastTip:@"播放地址不合法，目前仅支持rtmp,flv,hls,mp4播放方式!" parentView:self.view];
+        [TCUtil toastTip:TRTCLocalize(@"Demo.TRTC.LiveRoom.addressillegalandsupportrfhm") parentView:self.view];
         return NO;
     }
     if (_isLivePlay) {
@@ -644,7 +644,7 @@ TRTCLiveRoomDelegate>
         } else if (([playUrl hasPrefix:@"https:"] || [playUrl hasPrefix:@"http:"]) && [playUrl rangeOfString:@".flv"].length > 0) {
             _playType = PLAY_TYPE_LIVE_FLV;
         } else{
-            [TCUtil toastTip:@"播放地址不合法，直播目前仅支持rtmp,flv播放方式!" parentView:self.view];
+            [TCUtil toastTip:TRTCLocalize(@"Demo.TRTC.LiveRoom.addressillegalandsupportrf") parentView:self.view];
             return NO;
         }
     } else {
@@ -656,12 +656,12 @@ TRTCLiveRoomDelegate>
             } else if ([playUrl rangeOfString:@".mp4"].length > 0){
                 _playType= PLAY_TYPE_VOD_MP4;
             } else {
-                [TCUtil toastTip:@"播放地址不合法，点播目前仅支持flv,hls,mp4播放方式!" parentView:self.view];
+                [TCUtil toastTip:TRTCLocalize(@"Demo.TRTC.LiveRoom.addressillegalandsupportfhm") parentView:self.view];
                 return NO;
             }
             
         } else {
-            [TCUtil toastTip:@"播放地址不合法，点播目前仅支持flv,hls,mp4播放方式!" parentView:self.view];
+            [TCUtil toastTip:TRTCLocalize(@"Demo.TRTC.LiveRoom.addressillegalandsupportfhm") parentView:self.view];
             return NO;
         }
     }
@@ -758,7 +758,7 @@ TRTCLiveRoomDelegate>
     if (!_isErrorAlert) {
         _isErrorAlert = YES;
         __weak __typeof(self) weakSelf = self;
-        [self showAlertWithTitle:@"已结束互动" sureAction:^{
+        [self showAlertWithTitle:TRTCLocalize(@"Demo.TRTC.LiveRoom.endedinteractive") sureAction:^{
             [weakSelf.navigationController popViewControllerAnimated:YES];
         }];
     }
@@ -785,19 +785,19 @@ TRTCLiveRoomDelegate>
         //检查麦克风权限
         AVAuthorizationStatus statusAudio = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeAudio];
         if (statusAudio == AVAuthorizationStatusDenied) {
-            [TCUtil toastTip:@"获取麦克风权限失败，请前往隐私-麦克风设置里面打开应用权限" parentView:self.view];
+            [TCUtil toastTip:TRTCLocalize(@"Demo.TRTC.LiveRoom.micauthorityfailed") parentView:self.view];
             return;
         }
         
         //是否有摄像头权限
         AVAuthorizationStatus statusVideo = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
         if (statusVideo == AVAuthorizationStatusDenied) {
-            [TCUtil toastTip:@"获取摄像头权限失败，请前往隐私-相机设置里面打开应用权限" parentView:self.view];
+            [TCUtil toastTip:TRTCLocalize(@"Demo.TRTC.LiveRoom.cameraauthorityfailed") parentView:self.view];
             return;
         }
         
         if ([[[UIDevice currentDevice] systemVersion] floatValue] < 8.0) {
-            [TCUtil toastTip:@"系统不支持硬编码， 启动连麦失败" parentView:self.view];
+            [TCUtil toastTip:TRTCLocalize(@"Demo.TRTC.LiveRoom.notsupporthardencodeandstartmicconnectfailed") parentView:self.view];
             return;
         }
         

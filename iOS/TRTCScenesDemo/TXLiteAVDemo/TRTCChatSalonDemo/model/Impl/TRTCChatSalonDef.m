@@ -18,7 +18,7 @@
 {
     self = [super init];
     if (self) {
-        self.mute = NO;
+        self.mute = YES;
         self.userID = @"";
     }
     return self;

@@ -17,6 +17,7 @@
 @property (nonatomic, strong) TRTCParams *mTRTCParms;
 @property (nonatomic, copy) TXCallback enterRoomCallback;
 @property (nonatomic, copy) TXCallback exitRoomCallback;
+@property (nonatomic, copy) TXCallback switchRoleCallback;
 
 @property (nonatomic, strong, readonly)TRTCCloud *mTRTCCloud;
 
@@ -119,12 +120,14 @@
     [self.mTRTCCloud stopLocalAudio];
 }
 
-- (void)switchToAnchor {
+- (void)switchToAnchor:(TXCallback)callback {
+    self.switchRoleCallback = callback;
     [self.mTRTCCloud switchRole:TRTCRoleAnchor];
     [self.mTRTCCloud startLocalAudio:TRTCAudioQualityDefault];
 }
 
-- (void)switchToAudience {
+- (void)switchToAudience:(TXCallback)callback {
+    self.switchRoleCallback = callback;
     [self.mTRTCCloud stopLocalAudio];
     [self.mTRTCCloud switchRole:TRTCRoleAudience];
 }
@@ -202,6 +205,12 @@
 - (void)onRemoteUserLeaveRoom:(NSString *)userID reason:(NSInteger)reason {
     if ([self canDelegateResponseMethod:@selector(onTRTCAnchorExit:)]) {
         [self.delegate onTRTCAnchorExit:userID];
+    }
+}
+
+- (void)onSwitchRole:(TXLiteAVError)errCode errMsg:(NSString *)errMsg {
+    if (self.switchRoleCallback) {
+        self.switchRoleCallback(errCode, errMsg);
     }
 }
 

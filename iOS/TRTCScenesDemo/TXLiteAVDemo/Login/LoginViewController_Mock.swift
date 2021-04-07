@@ -26,7 +26,7 @@ class LoginViewController: UIViewController {
         let title = UILabel()
         title.textColor = .appTint
         title.font = UIFont.boldSystemFont(ofSize: 30)
-        title.text = "腾讯云 TRTC"
+        title.text = V2Localize("V2.Live.LoginMock.tencentcloudtrtc")
         title.textAlignment = .center
         return title
     }()
@@ -44,7 +44,7 @@ class LoginViewController: UIViewController {
     lazy var loginButton: UIButton = {
         let sign = UIButton()
         sign.backgroundColor = .appTint
-        sign.setTitle("登录", for: .normal)
+        sign.setTitle(V2Localize("V2.Live.LoginMock.login"), for: .normal)
         sign.setTitleColor(.white, for: .normal)
         sign.layer.cornerRadius = 4
         return sign
@@ -57,7 +57,7 @@ class LoginViewController: UIViewController {
         tip.textColor = UIColor(hex: "525252")
         let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString")
         let sdvVersionStr = TXLiveBase.getSDKVersionStr()
-        tip.text = "腾讯云 TRTC v\(version)(\(sdvVersionStr))"
+        tip.text = "\(V2Localize("V2.Live.LoginMock.tencentcloudtrtc")) v\(version)(\(sdvVersionStr))"
         tip.adjustsFontSizeToFitWidth = true
         return tip
     }()
@@ -67,7 +67,7 @@ class LoginViewController: UIViewController {
         tip.textAlignment = .center
         tip.font = UIFont.systemFont(ofSize: 14)
         tip.textColor = UIColor(hex: "525252")
-        tip.text = "本APP用于展示腾讯云实时音视频的各类功能"
+        tip.text = V2Localize("This app demonstrates the features of Tencent Video Cloud terminal products.")
         tip.adjustsFontSizeToFitWidth = true
         return tip
     }()

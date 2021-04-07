@@ -45,8 +45,8 @@ let chatSalonBaseUrl = "https://service-c2zjvuxa-1252463788.gz.apigw.tencentcs.c
             if let respData = data.data, respData.count > 0 {
                 let decoder = JSONDecoder()
                 guard let result = try? decoder.decode(ChatSalonCommonModel.self, from: respData) else {
-                    failed(-1, "ChatSalonCommonModel decode失败")
-                    fatalError("ChatSalonCommonModel decode失败")
+                    failed(-1, "ChatSalonCommonModel decode failed")
+                    fatalError("ChatSalonCommonModel decode failed")
                 }
                 if result.errorCode == 0 {
                     success()
@@ -54,7 +54,7 @@ let chatSalonBaseUrl = "https://service-c2zjvuxa-1252463788.gz.apigw.tencentcs.c
                     failed(result.errorCode, result.errorMessage)
                 }
             } else {
-                failed(-1,"返回空")
+                failed(-1,"return null")
             }
         }
     }
@@ -68,8 +68,8 @@ let chatSalonBaseUrl = "https://service-c2zjvuxa-1252463788.gz.apigw.tencentcs.c
             if let respData = data.data, respData.count > 0 {
                 let decoder = JSONDecoder()
                 guard let result = try? decoder.decode(ChatSalonCommonModel.self, from: respData) else {
-                    failed(-1, "ChatSalonCommonModel decode失败")
-                    fatalError("ChatSalonCommonModel decode失败")
+                    failed(-1, "ChatSalonCommonModel decode failed")
+                    fatalError("ChatSalonCommonModel decode failed")
                 }
                 if result.errorCode == 0 {
                     success()
@@ -77,7 +77,7 @@ let chatSalonBaseUrl = "https://service-c2zjvuxa-1252463788.gz.apigw.tencentcs.c
                     failed(result.errorCode, result.errorMessage)
                 }
             } else {
-                failed(-1,"返回空")
+                failed(-1,"return null")
             }
         }
     }
@@ -91,8 +91,8 @@ let chatSalonBaseUrl = "https://service-c2zjvuxa-1252463788.gz.apigw.tencentcs.c
             if let respData = data.data, respData.count > 0 {
                 let decoder = JSONDecoder()
                 guard let result = try? decoder.decode(ChatSalonInfoResultModel.self, from: respData) else {
-                    failed(-1, "ChatSalonInfoResultModel decode失败")
-                    fatalError("ChatSalonInfoResultModel decode失败")
+                    failed(-1, "ChatSalonInfoResultModel decode failed")
+                    fatalError("ChatSalonInfoResultModel decode failed")
                 }
                 if result.errorCode == 0 {
                     var roomIDs: [String] = []
@@ -104,7 +104,7 @@ let chatSalonBaseUrl = "https://service-c2zjvuxa-1252463788.gz.apigw.tencentcs.c
                     failed(result.errorCode, result.errorMessage)
                 }
             } else {
-                failed(-1,"返回空")
+                failed(-1,"return null")
             }
         }
     }

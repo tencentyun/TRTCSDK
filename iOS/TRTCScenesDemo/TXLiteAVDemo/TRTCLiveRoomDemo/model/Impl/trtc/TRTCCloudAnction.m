@@ -10,6 +10,7 @@
 #import "TXLivePlayer.h"
 #import "TXLiveRoomCommonDef.h"
 #import <MJExtension.h>
+#import "AppLocalized.h"
 
 static int trtcLivePlayTimeOut = 5;
 
@@ -205,7 +206,7 @@ static int trtcLivePlayTimeOut = 5;
     PlayInfo *info = self.userPlayInfo[userId];
     if (info) {
         if (callback) {
-            callback(-1, @"请勿重复播放");
+            callback(-1, TRTCLocalize(@"Demo.TRTC.LiveRoom.donotreplaypls"));
         }
         return;
     }
@@ -229,7 +230,7 @@ static int trtcLivePlayTimeOut = 5;
                 return;
             }
             if ([self.curroomUUID isEqualToString:blockUUID]) {
-                [self playCallBackWithUserId:userId code:-1 message:@"超时未播放"];
+                [self playCallBackWithUserId:userId code:-1 message:TRTCLocalize(@"Demo.TRTC.LiveRoom.timeouttonotplay")];
             }
         });
     }
@@ -247,11 +248,11 @@ static int trtcLivePlayTimeOut = 5;
     PlayInfo* playInfo = self.userPlayInfo[userId];
     if (usesCDN) {
         if (playInfo.streamId) {
-            [self playCallBackWithUserId:playInfo.streamId code:-1 message:@"停止播放"];
+            [self playCallBackWithUserId:playInfo.streamId code:-1 message:TRTCLocalize(@"Demo.TRTC.LiveRoom.stopplaying")];
         }
         [self stopCdnPlay:playInfo.cdnPlayer];
     } else {
-        [self playCallBackWithUserId:userId code:-1 message:@"停止播放"];
+        [self playCallBackWithUserId:userId code:-1 message:TRTCLocalize(@"Demo.TRTC.LiveRoom.stopplaying")];
         [[TRTCCloud sharedInstance] stopRemoteView:userId];
     }
     [self.userPlayInfo removeObjectForKey:userId];
@@ -357,7 +358,7 @@ static int trtcLivePlayTimeOut = 5;
 
 #pragma mark - private method
 - (void)startCDNPlay:(TXLivePlayer *)cdnPlayer streamId:(NSString *)streamId view:(UIView *)view {
-    if (!self.urlDomain || streamId) {
+    if (!self.urlDomain || !streamId) {
         return;
     }
     NSString *streamUrl = nil;
@@ -372,7 +373,7 @@ static int trtcLivePlayTimeOut = 5;
     cdnPlayer.delegate = trtcCDNDelegate;
     int result = [cdnPlayer startPlay:streamUrl type:PLAY_TYPE_LIVE_FLV];
     if (result != 0) {
-        [self playCallBackWithUserId:streamId code:result message:@"播放失败"];
+        [self playCallBackWithUserId:streamId code:result message:TRTCLocalize(@"Demo.TRTC.LiveRoom.playingfailed")];
     }
 }
 

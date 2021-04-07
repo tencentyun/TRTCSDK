@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		404DEF2824E2D1F3005657DF /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 404DEF2324E23DFE005657DF /* Localizable.strings */; };
 		4534342D23B070AE0034FF12 /* TCBeautyPanelActionProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = 4534342B23B070AE0034FF12 /* TCBeautyPanelActionProxy.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4534342E23B070AE0034FF12 /* TCBeautyPanelActionProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 4534342C23B070AE0034FF12 /* TCBeautyPanelActionProxy.m */; };
 		4579C38B23AC64DC005ECC1C /* TCBeautyPanel.h in Headers */ = {isa = PBXBuildFile; fileRef = 4579C38923AC64DC005ECC1C /* TCBeautyPanel.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -39,6 +40,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		404DEF2224E23DFE005657DF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		404DEF2424E23E1D005657DF /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		4534342B23B070AE0034FF12 /* TCBeautyPanelActionProxy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TCBeautyPanelActionProxy.h; sourceTree = "<group>"; };
 		4534342C23B070AE0034FF12 /* TCBeautyPanelActionProxy.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TCBeautyPanelActionProxy.m; sourceTree = "<group>"; };
 		4579C38623AC64DC005ECC1C /* TCBeautyPanel.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TCBeautyPanel.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -196,6 +199,7 @@
 		4579C3FB23AC660C005ECC1C /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				404DEF2324E23DFE005657DF /* Localizable.strings */,
 				45E74D5B23B0A6C900C22B31 /* goodluck.mp4 */,
 				4579C3FC23AC660C005ECC1C /* Info.plist */,
 				4579C40023AC6635005ECC1C /* Media.xcassets */,
@@ -300,6 +304,7 @@
 			knownRegions = (
 				en,
 				Base,
+				"zh-Hans",
 			);
 			mainGroup = 4579C37C23AC64DC005ECC1C;
 			productRefGroup = 4579C38723AC64DC005ECC1C /* Products */;
@@ -324,6 +329,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				404DEF2824E2D1F3005657DF /* Localizable.strings in Resources */,
 				4579C40123AC6635005ECC1C /* Media.xcassets in Resources */,
 				45E74D5C23B0A6C900C22B31 /* goodluck.mp4 in Resources */,
 			);
@@ -353,11 +359,24 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXVariantGroup section */
+		404DEF2324E23DFE005657DF /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				404DEF2224E23DFE005657DF /* en */,
+				404DEF2424E23E1D005657DF /* zh-Hans */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
 /* Begin XCBuildConfiguration section */
 		4579C38C23AC64DC005ECC1C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -419,6 +438,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";

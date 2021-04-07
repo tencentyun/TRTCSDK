@@ -10,6 +10,8 @@
 #import "TRTCCalling+Signal.h"
 #import "TRTCCallingHeader.h"
 
+#import "AppLocalized.h"
+
 @interface TRTCCalling ()
 
 @property(nonatomic, assign)int mSDKAppID;
@@ -70,8 +72,7 @@
         [self setupAPNS];
         return;
     }
-    
-    NSAssert(userID.length > 0 || userSig.length > 0, @"用户名或用户签名设置有误");
+    NSAssert(userID.length > 0 || userSig.length > 0, TRTCLocalize(@"Demo.TRTC.calling.useriderror"));
     TIMLoginParam *loginParam = [[TIMLoginParam alloc] init];
     loginParam.identifier = userID;
     loginParam.userSig = userSig;
@@ -304,9 +305,9 @@
     config.businessID = self.imBusinessID;
     config.token = self.deviceToken;
     [[V2TIMManager sharedInstance] setAPNS:config succ:^{
-        TRTCLog(@"-----> 上传 token 成功");
+        TRTCLog(@"-----> upload token success");
     } fail:^(int code, NSString *desc) {
-        TRTCLog(@"-----> 上传 token 失败");
+        TRTCLog(@"-----> upload token failed");
     }];
 }
 

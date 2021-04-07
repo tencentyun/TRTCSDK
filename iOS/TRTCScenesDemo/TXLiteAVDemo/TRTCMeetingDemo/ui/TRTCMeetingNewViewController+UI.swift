@@ -17,7 +17,7 @@ extension TRTCMeetingNewViewController {
         let screenHeight = UIScreen.main.bounds.size.height
         
         ToastManager.shared.position = .center
-        title = "多人视频会议"
+        title = .titleText
         
         let gradientLayer = CAGradientLayer.init()
         gradientLayer.colors = [UIColor(rgb: 0x13294b).cgColor,UIColor(rgb: 0x050c17).cgColor]
@@ -58,11 +58,13 @@ extension TRTCMeetingNewViewController {
         roomTip.backgroundColor = .clear
         roomTip.textColor = UIColor(rgb: 0xebf4ff)
         roomTip.font = UIFont.systemFont(ofSize: 16)
-        roomTip.text = "会议号"
+        roomTip.text = .meetingNumberText
+        roomTip.adjustsFontSizeToFitWidth = true
+        roomTip.minimumScaleFactor = 0.5
         inputPanel.addSubview(roomTip)
         roomTip.snp.makeConstraints { (make) in
             make.leading.equalTo(16)
-            make.width.equalTo(50)
+            make.width.lessThanOrEqualTo(80)
             make.height.equalTo(24)
             make.centerY.equalTo(inputPanel).multipliedBy(0.5)
         }
@@ -71,11 +73,13 @@ extension TRTCMeetingNewViewController {
         userNameTip.backgroundColor = .clear
         userNameTip.textColor = UIColor(rgb: 0xebf4ff)
         userNameTip.font = UIFont.systemFont(ofSize: 16)
-        userNameTip.text = "用户名"
+        userNameTip.text = .userIdText
+        userNameTip.adjustsFontSizeToFitWidth = true
+        userNameTip.minimumScaleFactor = 0.5
         inputPanel.addSubview(userNameTip)
         userNameTip.snp.makeConstraints { (make) in
             make.leading.equalTo(16)
-            make.width.equalTo(50)
+            make.width.lessThanOrEqualTo(80)
             make.height.equalTo(24)
             make.centerY.equalTo(inputPanel).multipliedBy(1.5)
         }
@@ -83,7 +87,7 @@ extension TRTCMeetingNewViewController {
         roomInput.backgroundColor = .clear
         roomInput.textColor = UIColor(rgb: 0xebf4ff)
         roomInput.font = UIFont.systemFont(ofSize: 16)
-        roomInput.attributedPlaceholder = NSAttributedString(string: "请输入会议号",
+        roomInput.attributedPlaceholder = NSAttributedString(string: .enterMeetingNumText,
                                                              attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray])
         roomInput.keyboardType = .numberPad
         inputPanel.addSubview(roomInput)
@@ -97,7 +101,7 @@ extension TRTCMeetingNewViewController {
         userNameInput.backgroundColor = .clear
         userNameInput.textColor = UIColor(rgb: 0xebf4ff)
         userNameInput.font = UIFont.systemFont(ofSize: 16)
-        userNameInput.attributedPlaceholder = NSAttributedString(string: "请输入用户名",
+        userNameInput.attributedPlaceholder = NSAttributedString(string: .enterUserNameText,
                                                                  attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray])
         inputPanel.addSubview(userNameInput)
         userNameInput.snp.makeConstraints { (make) in
@@ -112,7 +116,7 @@ extension TRTCMeetingNewViewController {
         openCameraTip.backgroundColor = .clear
         openCameraTip.textColor = UIColor(rgb: 0xebf4ff)
         openCameraTip.font = UIFont.systemFont(ofSize: 16)
-        openCameraTip.text = "开启摄像头"
+        openCameraTip.text = .openCameraText
         openCameraTip.snp.makeConstraints { (make) in
             make.top.equalTo(inputPanel.snp.bottom).offset(32)
             make.leading.equalTo(inputPanel.snp.leading).offset(16)
@@ -135,7 +139,7 @@ extension TRTCMeetingNewViewController {
         openMicTip.backgroundColor = .clear
         openMicTip.textColor = UIColor(rgb: 0xebf4ff)
         openMicTip.font = UIFont.systemFont(ofSize: 16)
-        openMicTip.text = "开启麦克风"
+        openMicTip.text = .openMicText
         openMicTip.snp.makeConstraints { (make) in
             make.top.equalTo(openCameraTip.snp.bottom).offset(34)
             make.leading.equalTo(openCameraTip.snp.leading)
@@ -159,11 +163,11 @@ extension TRTCMeetingNewViewController {
         audioQualityLabel.backgroundColor = .clear
         audioQualityLabel.textColor = UIColor(rgb: 0xebf4ff)
         audioQualityLabel.font = UIFont.systemFont(ofSize: 16)
-        audioQualityLabel.text = "音质选择"
+        audioQualityLabel.text = .soundQualitySelectText
         audioQualityLabel.snp.makeConstraints { (make) in
             make.top.equalTo(openMicSwitch.snp.bottom).offset(34)
             make.leading.equalTo(openMicTip)
-            make.width.equalTo(100)
+//            make.width.equalTo(100)
             make.height.equalTo(24)
         }
         
@@ -182,14 +186,14 @@ extension TRTCMeetingNewViewController {
         }
         
         let speechQualityLabel = UILabel()
-        speechQualityLabel.text = "语音"
+        speechQualityLabel.text = .voiceText
         speechQualityLabel.textColor = UIColor(rgb: 0xebf4ff)
         view.addSubview(speechQualityLabel)
         speechQualityLabel.snp.makeConstraints { (make) in
             make.top.equalTo(speechQualityButton)
             make.leading.equalTo(speechQualityButton.snp.trailing).offset(5)
             make.height.equalTo(20)
-            make.width.equalTo(40)
+//            make.width.equalTo(40)
         }
         
         // 标准
@@ -205,14 +209,14 @@ extension TRTCMeetingNewViewController {
         }
         
         let defaultQualityLabel = UILabel()
-        defaultQualityLabel.text = "标准"
+        defaultQualityLabel.text = .standardText
         defaultQualityLabel.textColor = UIColor(rgb: 0xebf4ff)
         view.addSubview(defaultQualityLabel)
         defaultQualityLabel.snp.makeConstraints { (make) in
             make.top.equalTo(defaultQualityButton)
             make.leading.equalTo(defaultQualityButton.snp.trailing).offset(5)
             make.height.equalTo(20)
-            make.width.equalTo(40)
+//            make.width.equalTo(40)
         }
         
         // 音乐
@@ -228,14 +232,14 @@ extension TRTCMeetingNewViewController {
         }
         
         let musicQualityLabel = UILabel()
-        musicQualityLabel.text = "音乐"
+        musicQualityLabel.text = .musicText
         musicQualityLabel.textColor = UIColor(rgb: 0xebf4ff)
         view.addSubview(musicQualityLabel)
         musicQualityLabel.snp.makeConstraints { (make) in
             make.top.equalTo(musicQualityButton)
             make.leading.equalTo(musicQualityButton.snp.trailing).offset(5)
             make.height.equalTo(20)
-            make.width.equalTo(40)
+//            make.width.equalTo(40)
         }
         
         // 画质选择
@@ -244,11 +248,11 @@ extension TRTCMeetingNewViewController {
         videoQualityLabel.backgroundColor = .clear
         videoQualityLabel.textColor = UIColor(rgb: 0xebf4ff)
         videoQualityLabel.font = UIFont.systemFont(ofSize: 16)
-        videoQualityLabel.text = "画质选择"
+        videoQualityLabel.text = .picQualitySelectText
         videoQualityLabel.snp.makeConstraints { (make) in
             make.top.equalTo(speechQualityLabel.snp.bottom).offset(34)
             make.leading.equalTo(openMicTip)
-            make.width.equalTo(100)
+//            make.width.equalTo(100)
             make.height.equalTo(24)
         }
         
@@ -267,14 +271,14 @@ extension TRTCMeetingNewViewController {
         }
         
         let fluencyVideoLabel = UILabel()
-        fluencyVideoLabel.text = "流畅"
+        fluencyVideoLabel.text = .smoothText
         fluencyVideoLabel.textColor = UIColor(rgb: 0xebf4ff)
         view.addSubview(fluencyVideoLabel)
         fluencyVideoLabel.snp.makeConstraints { (make) in
             make.top.equalTo(fluencyVideoButton)
             make.leading.equalTo(fluencyVideoButton.snp.trailing).offset(5)
             make.height.equalTo(20)
-            make.width.equalTo(40)
+//            make.width.equalTo(40)
         }
         
         // 清晰
@@ -291,20 +295,20 @@ extension TRTCMeetingNewViewController {
         }
         
         let distinctVideoLabel = UILabel()
-        distinctVideoLabel.text = "清晰"
+        distinctVideoLabel.text = .clearText
         distinctVideoLabel.textColor = UIColor(rgb: 0xebf4ff)
         view.addSubview(distinctVideoLabel)
         distinctVideoLabel.snp.makeConstraints { (make) in
             make.top.equalTo(distinctVideoButton)
             make.leading.equalTo(distinctVideoButton.snp.trailing).offset(5)
             make.height.equalTo(20)
-            make.width.equalTo(40)
+//            make.width.equalTo(40)
         }
         
         
 
         let enterBtn = UIButton()
-        enterBtn.setTitle("进入会议", for: .normal)
+        enterBtn.setTitle(.enterMeetingText, for: .normal)
         enterBtn.setBackgroundImage(UIColor.buttonBackColor.trans2Image(), for: .normal)
         enterBtn.layer.cornerRadius = 6
         enterBtn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 19)
@@ -435,25 +439,25 @@ extension TRTCMeetingNewViewController {
     
     func autoCheck() -> (Bool, UInt32, String) {
         if (roomInput.text?.count ?? 0) <= 0 {
-            view.makeToast("请输入会议号")
+            view.makeToast(.enterMeetingNumText)
             return (false, 0, "")
         }
         if (userNameInput.text?.count ?? 0) <= 0 {
-            view.makeToast("请输入用户名")
+            view.makeToast(.enterUserNameText)
             return (false, 0, "")
         }
         guard let roomID = UInt32(roomInput.text ?? "") else {
-            view.makeToast("请输入合法的会议ID")
+            view.makeToast(.enterLegitMeetingNumText)
             return (false, 0, "")
         }
         
         if roomID <= 0 {
-            view.makeToast("请输入合法的会议ID")
+            view.makeToast(.enterLegitMeetingNumText)
             return (false, 0, "")
         }
         
         guard let userName = userNameInput.text else {
-            view.makeToast("请输入用户名")
+            view.makeToast(.enterUserNameText)
             return (false, 0, "")
         }
         
@@ -503,4 +507,25 @@ extension TRTCMeetingNewViewController {
             userNameInput.resignFirstResponder()
         }
     }
+}
+
+/// MARK: - internationalization string
+fileprivate extension String {
+    static let titleText = TRTCLocalize("Demo.TRTC.Meeting.multivideoconference")
+    static let meetingNumberText = TRTCLocalize("Demo.TRTC.Meeting.meetingnum")
+    static let userIdText = TRTCLocalize("Demo.TRTC.Salon.userid")
+    static let enterMeetingNumText = TRTCLocalize("Demo.TRTC.Meeting.entermeetingnum")
+    static let enterUserNameText = TRTCLocalize("Demo.TRTC.Meeting.enterusername")
+    static let openCameraText = TRTCLocalize("Demo.TRTC.Meeting.opencamera")
+    static let openMicText = TRTCLocalize("Demo.TRTC.Meeting.openmic")
+    static let soundQualitySelectText = TRTCLocalize("Demo.TRTC.VoiceRoom.soundqualityselect")
+    static let voiceText = TRTCLocalize("Demo.TRTC.VoiceRoom.voice")
+    static let standardText = TRTCLocalize("Demo.TRTC.LiveRoom.standard")
+    static let musicText = TRTCLocalize("Demo.TRTC.LiveRoom.music")
+    static let picQualitySelectText = TRTCLocalize("Demo.TRTC.Meeting.picqualityselect")
+    static let smoothText = TRTCLocalize("Demo.TRTC.Meeting.smooth")
+    static let clearText = TRTCLocalize("Demo.TRTC.Meeting.clear")
+    static let enterMeetingText = TRTCLocalize("Demo.TRTC.Meeting.entermeeting")
+    static let enterLegitMeetingNumText = TRTCLocalize("Demo.TRTC.Meeting.enterlegitmeetingnum")
+    static let shareText = TRTCLocalize("Demo.TRTC.Meeting.share")
 }

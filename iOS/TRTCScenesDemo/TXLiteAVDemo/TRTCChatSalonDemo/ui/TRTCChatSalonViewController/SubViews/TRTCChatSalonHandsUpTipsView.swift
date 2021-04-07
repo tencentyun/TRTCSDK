@@ -67,5 +67,5 @@ fileprivate extension UIColor {
 }
 
 fileprivate extension String {
-    static let successMsg = ChatSalonLocalized.getLocalizedString(key: "You raised your hand! We'll let the speakers know you want to talk~")
+    static let successMsg = TRTCLocalize("Demo.TRTC.Salon.raisedhandandwaitmanageraccept")
 }

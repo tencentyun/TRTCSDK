@@ -58,6 +58,8 @@
         _titleLabel.textColor = [self.theme normalFontColor];
         _titleLabel.font = [self.theme themeFontWithSize:10.0];
         _titleLabel.adjustsFontSizeToFitWidth = YES;
+        _titleLabel.textAlignment = NSTextAlignmentCenter;
+        _titleLabel.numberOfLines = 2;
     }
     return _titleLabel;
 }
@@ -95,9 +97,9 @@
 }
 
 - (void)constructViewHierachy {
-    [self addSubview:self.iconView];
-    [self addSubview:self.selectedImageView];
-    [self addSubview:self.titleLabel];
+    [self.contentView addSubview:self.iconView];
+    [self.contentView addSubview:self.selectedImageView];
+    [self.contentView addSubview:self.titleLabel];
 }
 
 - (void)activateConstraints {
@@ -110,8 +112,10 @@
     }];
     [self.titleLabel mas_makeConstraints:^(ASMASConstraintMaker *make) {
         make.centerX.equalTo(self.mas_centerX);
-        make.top.equalTo(self.iconView.mas_bottom).offset(8.0);
-        make.width.mas_lessThanOrEqualTo(44.0);
+        make.top.equalTo(self.iconView.mas_bottom).offset(5.0);
+        make.bottom.equalTo(self.contentView.mas_bottom);
+        make.left.equalTo(self.contentView.mas_left);
+        make.right.equalTo(self.contentView.mas_right);
     }];
 }
 

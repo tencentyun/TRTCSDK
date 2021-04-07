@@ -11,6 +11,7 @@
 - (instancetype)initWithId:(NSString *)identifier name:(NSString *)name url:(NSString *)address;
 @end
 
+
 @interface TCPituMotionManager : NSObject
 @property (readonly, nonatomic) NSArray<TCPituMotion *> * motionPasters;
 @property (readonly, nonatomic) NSArray<TCPituMotion *> * cosmeticPasters;

@@ -213,16 +213,16 @@ class TRTCMeetingMainViewController: UIViewController, TRTCMeetingDelegate,
         TRTCMeeting.sharedInstance().createMeeting(roomId) { (code, msg) in
             if code == 0 {
                 // 创建房间成功
-                self.view.makeToast("会议创建成功")
+                self.view.makeToast(.meetingCreateSuccessText)
                 return;
             }
             
             // 会议创建不成功，表示会议已经存在，那就直接进入会议
             TRTCMeeting.sharedInstance().enter(roomId) { (code, msg) in
                 if code == 0{
-                    self.view.makeToast("会议进入成功")
+                    self.view.makeToast(.meetingEnterSuccessText)
                 } else {
-                    self.view.makeToast("会议进入失败：" + msg!)
+                    self.view.makeToast(.meetingEnterFailedText + msg!)
                 }
             }
         }
@@ -279,9 +279,9 @@ class TRTCMeetingMainViewController: UIViewController, TRTCMeetingDelegate,
     
     func onError(_ code: Int, message: String?) {
         if code == -1308 {
-            self.view.makeToast("启动录屏失败")
+            self.view.makeToast(.startRecordingFailedText)
         } else {
-            self.view.makeToast("出现错误[" + "\(code)" + "]:" + message!)
+            self.view.makeToast(LocalizeReplace(.wentWrongxxyyText, String(code), message!))
         }
     }
     
@@ -372,7 +372,7 @@ class TRTCMeetingMainViewController: UIViewController, TRTCMeetingDelegate,
     
     func onRoomDestroy(_ roomId: String) {
         if startConfig.roomId == UInt32(roomId) {
-            self.view.makeToast("创建者已结束会议")
+            self.view.makeToast(.creatorEndMeetingText)
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                 self.navigationController?.popViewController(animated: true)
             }
@@ -392,17 +392,17 @@ class TRTCMeetingMainViewController: UIViewController, TRTCMeetingDelegate,
         if !self.isScreenPushing {
             self.isScreenPushing = true
         }
-        self.view.makeToast("屏幕分享开始")
+        self.view.makeToast(.screenSharingBeganText)
     }
     
     func onScreenCapturePaused(_ reason: Int32) {
         debugPrint("log: onScreenCapturePaused: " + "\(reason)")
-        self.view.makeToast("屏幕分享暂停")
+        self.view.makeToast(.screenSharingPauseText)
     }
     
     func onScreenCaptureResumed(_ reason: Int32) {
         debugPrint("log: onScreenCaptureResumed: " + "\(reason)")
-        self.view.makeToast("屏幕分享恢复")
+        self.view.makeToast(.screenSharingResumeText)
     }
     
     func onScreenCaptureStoped(_ reason: Int32) {
@@ -461,4 +461,17 @@ class TRTCMeetingMainViewController: UIViewController, TRTCMeetingDelegate,
         // 通知列表更新UI
         NotificationCenter.default.post(name: refreshUserListNotification, object: self.attendeeList)
     }
+}
+
+/// MARK: - internationalization string
+fileprivate extension String {
+    static let meetingCreateSuccessText = TRTCLocalize("Demo.TRTC.Meeting.meetingcreatsuccess")
+    static let meetingEnterSuccessText = TRTCLocalize("Demo.TRTC.Meeting.meetingentersuccess")
+    static let meetingEnterFailedText = TRTCLocalize("Demo.TRTC.Meeting.meetingenterfailed")
+    static let startRecordingFailedText = TRTCLocalize("Demo.TRTC.Meeting.startrecordingfailed")
+    static let wentWrongxxyyText = TRTCLocalize("Demo.TRTC.Meeting.wentwrongxxyy")
+    static let creatorEndMeetingText = TRTCLocalize("Demo.TRTC.Meeting.creatorendmeeting")
+    static let screenSharingBeganText = TRTCLocalize("Demo.TRTC.Meeting.screensharingbegan")
+    static let screenSharingPauseText = TRTCLocalize("Demo.TRTC.Meeting.screensharingpause")
+    static let screenSharingResumeText = TRTCLocalize("Demo.TRTC.Meeting.screensharingresume")
 }

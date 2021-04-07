@@ -11,7 +11,7 @@ import Toast_Swift
 
 extension TRTCMeetingMemberViewController {
     func setupUI() {
-        title = "成员列表"
+        title = .memberListText
         
         let gradientLayer = CAGradientLayer.init()
         gradientLayer.colors = [UIColor(rgb: 0x13294b).cgColor,UIColor(rgb: 0x050c17).cgColor]
@@ -42,7 +42,7 @@ extension TRTCMeetingMemberViewController {
     
     func setupControls() {
         // 全体静音按钮
-        muteAllAudioButton.setTitle("全体静音", for: .normal)
+        muteAllAudioButton.setTitle(.mutedAllText, for: .normal)
         muteAllAudioButton.backgroundColor = UIColor(hex: "#E84B40")
         muteAllAudioButton.layer.cornerRadius = 4.0
         view.addSubview(muteAllAudioButton)
@@ -57,12 +57,12 @@ extension TRTCMeetingMemberViewController {
             
             self.delegate?.onMuteAllAudio(mute: true)
             self.view.hideToast()
-            self.view.makeToast("全体静音")
+            self.view.makeToast(.mutedAllText)
         }, onError: nil, onCompleted: nil, onDisposed: nil).disposed(by: disposeBag)
         
         
         // 解除全体静音按钮
-        unmuteAllAudioButton.setTitle("解除全体静音", for: .normal)
+        unmuteAllAudioButton.setTitle(.unmutedAllText, for: .normal)
         unmuteAllAudioButton.backgroundColor = .buttonBackColor
         unmuteAllAudioButton.layer.cornerRadius = 4.0
         view.addSubview(unmuteAllAudioButton)
@@ -77,14 +77,16 @@ extension TRTCMeetingMemberViewController {
             
             self.delegate?.onMuteAllAudio(mute: false)
             self.view.hideToast()
-            self.view.makeToast("解除全体静音")
+            self.view.makeToast(.unmutedAllText)
         }).disposed(by: disposeBag)
         
         
         // 全体禁画按钮
-        muteAllVideoButton.setTitle("全体禁画", for: .normal)
+        muteAllVideoButton.setTitle(.forbidAllPicText, for: .normal)
         muteAllVideoButton.backgroundColor = UIColor(hex: "#E84B40")
         muteAllVideoButton.layer.cornerRadius = 4.0
+        muteAllVideoButton.titleLabel?.adjustsFontSizeToFitWidth = true
+        muteAllVideoButton.titleLabel?.minimumScaleFactor = 0.5
         view.addSubview(muteAllVideoButton)
         muteAllVideoButton.snp.remakeConstraints { (make) in
             make.centerX.equalTo(view).offset(130)
@@ -97,8 +99,16 @@ extension TRTCMeetingMemberViewController {
             
             self.delegate?.onMuteAllVideo(mute: true)
             self.view.hideToast()
-            self.view.makeToast("全体禁画")
+            self.view.makeToast(.forbidAllPicText)
         }).disposed(by: disposeBag)
         
     }
+}
+
+/// MARK: - internationalization string
+fileprivate extension String {
+    static let memberListText = TRTCLocalize("Demo.TRTC.Meeting.memberlist")
+    static let mutedAllText = TRTCLocalize("Demo.TRTC.Meeting.mutedall")
+    static let unmutedAllText = TRTCLocalize("Demo.TRTC.Meeting.unmutedall")
+    static let forbidAllPicText = TRTCLocalize("Demo.TRTC.Meeting.forbidallpic")
 }

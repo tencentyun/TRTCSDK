@@ -79,11 +79,31 @@
         _tap =[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(clickScreen:)];
         [self addGestureRecognizer:_tap];
         // FIXME: - 这里的手势和音效页有冲突，暂时屏蔽了。
-        _audioEffectArry = [NSMutableArray arrayWithObjects:@"原声", @"KTV", @"房间", @"会堂", @"低沉", @"洪亮", @"金属", @"磁性", nil];
+        _audioEffectArry = [NSMutableArray arrayWithObjects:
+                            TRTCLocalize(@"Demo.TRTC.LiveRoom.originalsound"),
+                            TRTCLocalize(@"Demo.TRTC.LiveRoom.ktv"),
+                            TRTCLocalize(@"Demo.TRTC.LiveRoom.room"),
+                            TRTCLocalize(@"Demo.TRTC.LiveRoom.hall"),
+                            TRTCLocalize(@"Demo.TRTC.LiveRoom.muffled"),
+                            TRTCLocalize(@"Demo.TRTC.LiveRoom.sonorous"),
+                            TRTCLocalize(@"Demo.TRTC.LiveRoom.metal"),
+                            TRTCLocalize(@"Demo.TRTC.LiveRoom.magnetic"), nil];
         _audioEffectViewArry = [NSMutableArray arrayWithCapacity:_audioEffectArry.count];
         _audioEffectSelectedType = 0;
         
-        _audioEffectArry2 = [NSMutableArray arrayWithObjects:@"原声", @"熊孩子", @"萝莉", @"大叔", @"重金属", @"感冒", @"外国人", @"困兽", @"死肥仔", @"强电流", @"重机械", @"空灵", nil];
+        _audioEffectArry2 = [NSMutableArray arrayWithObjects:
+                             TRTCLocalize(@"Demo.TRTC.LiveRoom.originalsound"),
+                             TRTCLocalize(@"Demo.TRTC.LiveRoom.badboy"),
+                             TRTCLocalize(@"Demo.TRTC.LiveRoom.loli"),
+                             TRTCLocalize(@"Demo.TRTC.LiveRoom.uncle"),
+                             TRTCLocalize(@"Demo.TRTC.LiveRoom.heavymetal"),
+                             TRTCLocalize(@"Demo.TRTC.LiveRoom.catarrh"),
+                             TRTCLocalize(@"Demo.TRTC.LiveRoom.foreigner"),
+                             TRTCLocalize(@"Demo.TRTC.LiveRoom.sleepybeast"),
+                             TRTCLocalize(@"Demo.TRTC.LiveRoom.fattydead"),
+                             TRTCLocalize(@"Demo.TRTC.LiveRoom.strongcurrent"),
+                             TRTCLocalize(@"Demo.TRTC.LiveRoom.heavymachinery"),
+                             TRTCLocalize(@"Demo.TRTC.LiveRoom.ethereal"), nil];
         _audioEffectViewArry2 = [NSMutableArray arrayWithCapacity:_audioEffectArry2.count];
         _audioEffectSelectedType2 = 0;
         
@@ -209,7 +229,7 @@
     _closeBtn.frame = CGRectMake(icon_center_interval * 4.3,
                                  [[UIApplication sharedApplication] statusBarFrame].size.height + 5,
                                  icon_size * 2.7, icon_size * 0.8);
-    [_closeBtn setTitle:@"停止" forState:UIControlStateNormal];
+    [_closeBtn setTitle:TRTCLocalize(@"Demo.TRTC.LiveRoom.stop") forState:UIControlStateNormal];
     _closeBtn.layer.cornerRadius = 5.0;
     _closeBtn.layer.masksToBounds = YES;
     _closeBtn.backgroundColor = [UIColor redColor];
@@ -249,7 +269,7 @@
     
     UIButton *sendBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     sendBtn.frame = CGRectMake(self.width - 15 - MSG_TEXT_SEND_BTN_WIDTH, (_msgInputView.height - MSG_TEXT_SEND_FEILD_HEIGHT)/2, MSG_TEXT_SEND_BTN_WIDTH, MSG_TEXT_SEND_FEILD_HEIGHT);
-    [sendBtn setTitle:@"发送" forState:UIControlStateNormal];
+    [sendBtn setTitle:TRTCLocalize(@"Demo.TRTC.LiveRoom.send") forState:UIControlStateNormal];
     [sendBtn.titleLabel setFont:[UIFont systemFontOfSize:16]];
     [sendBtn setTitleColor:UIColorFromRGB(0x0ACCAC) forState:UIControlStateNormal];
     [sendBtn setBackgroundColor:[UIColor clearColor]];
@@ -264,7 +284,7 @@
     _msgInputFeild = [[UITextField alloc] initWithFrame:CGRectMake(msgInputFeildLine1.right + 10,sendBtn.y,msgInputFeildLine2.left - msgInputFeildLine1.right - 20,MSG_TEXT_SEND_FEILD_HEIGHT)];
     _msgInputFeild.backgroundColor = [UIColor clearColor];
     _msgInputFeild.returnKeyType = UIReturnKeySend;
-    _msgInputFeild.placeholder = @"和大家说点什么吧";
+    _msgInputFeild.placeholder = TRTCLocalize(@"Demo.TRTC.LiveRoom.saysomething");
     _msgInputFeild.delegate = self;
     _msgInputFeild.textColor = [UIColor blackColor];
     _msgInputFeild.font = [UIFont systemFontOfSize:14];
@@ -337,14 +357,14 @@
     [_btnSelectBGM.layer setMasksToBounds:YES];
     [_btnSelectBGM.layer setCornerRadius:6];
     [_btnSelectBGM.layer setBorderWidth:1.0];
-    [_btnSelectBGM setTitle:@"伴奏" forState:UIControlStateNormal];
+    [_btnSelectBGM setTitle:TRTCLocalize(@"Demo.TRTC.LiveRoom.accompaniment") forState:UIControlStateNormal];
     [_btnSelectBGM setTitleColor:UIColorFromRGB(0x0ACCAC) forState:UIControlStateNormal];
     [_btnSelectBGM addTarget:self action:@selector(clickMusicSelect:) forControlEvents:UIControlEventTouchUpInside];
     
     _btnStopBGM = [[UIButton alloc] init];
     _btnStopBGM.titleLabel.font = [UIFont systemFontOfSize:12.f];
     _btnStopBGM.layer.borderColor = UIColorFromRGB(0x0ACCAC).CGColor;;
-    [_btnStopBGM setTitle:@"结束" forState:UIControlStateNormal];
+    [_btnStopBGM setTitle:TRTCLocalize(@"Demo.TRTC.LiveRoom.end") forState:UIControlStateNormal];
     [_btnStopBGM.layer setMasksToBounds:YES];
     [_btnStopBGM.layer setCornerRadius:6];
     [_btnStopBGM.layer setBorderWidth:1.0];
@@ -357,7 +377,7 @@
     _vAudioEffectPanel.backgroundColor = [UIColor colorWithWhite:0.2 alpha:0.5];
     
     _labVolumeForBGM = [[UILabel alloc] init];
-    [_labVolumeForBGM setText:@"伴奏音量"];
+    [_labVolumeForBGM setText:TRTCLocalize(@"Demo.TRTC.LiveRoom.accompanimentvolume")];
     [_labVolumeForBGM setFont:[UIFont systemFontOfSize:12.f]];
     _labVolumeForBGM.textColor = UIColorFromRGB(0x0ACCAC);
     //    [_labVolumeForBGM sizeToFit];
@@ -373,7 +393,7 @@
     [_sldVolumeForBGM addTarget:self action:@selector(sliderValueChange:) forControlEvents:UIControlEventValueChanged];
     
     _labVolumeForVoice = [[UILabel alloc] init];
-    [_labVolumeForVoice setText:@"人声音量"];
+    [_labVolumeForVoice setText:TRTCLocalize(@"Demo.TRTC.LiveRoom.vocalvolume")];
     [_labVolumeForVoice setFont:[UIFont systemFontOfSize:12.f]];
     _labVolumeForVoice.textColor = UIColorFromRGB(0x0ACCAC);
     //    [_labVolumeForVoice sizeToFit];
@@ -389,7 +409,7 @@
     [_sldVolumeForVoice addTarget:self action:@selector(sliderValueChange:) forControlEvents:UIControlEventValueChanged];
     
     _labPositionForBGM = [[UILabel alloc] init];
-    [_labPositionForBGM setText:@"伴奏快进"];
+    [_labPositionForBGM setText:TRTCLocalize(@"Demo.TRTC.LiveRoom.accompanimentfastforward")];
     [_labPositionForBGM setFont:[UIFont systemFontOfSize:12.f]];
     _labPositionForBGM.textColor = UIColorFromRGB(0x0ACCAC);
     
@@ -532,7 +552,7 @@
 - (void)changeButtonStopPK {
     _closeBtn.hidden = NO;
     _pkView.hidden = NO;
-    [_closeBtn setTitle:@"结束PK" forState:UIControlStateNormal];
+    [_closeBtn setTitle:TRTCLocalize(@"Demo.TRTC.LiveRoom.endpk") forState:UIControlStateNormal];
     [_closeBtn removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
     [_closeBtn addTarget:self action:@selector(quitRoomPKAction:) forControlEvents:UIControlEventTouchUpInside];
 }
@@ -547,7 +567,7 @@
 - (void)changeButtonText {
     _closeBtn.hidden = NO;
     _pkView.hidden = YES;
-    [_closeBtn setTitle:@"停止" forState:UIControlStateNormal];
+    [_closeBtn setTitle:TRTCLocalize(@"Demo.TRTC.LiveRoom.stop") forState:UIControlStateNormal];
 }
 
 - (void)selectBeauty:(UIButton *)button {
@@ -775,7 +795,7 @@
 
 #pragma mark TCAnchorToolbarDelegate
 - (void)closeVC {
-    _closeAlert = [[UIAlertView alloc] initWithTitle:nil message:@"视频互动进行中，确定要退出吗？"  delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    _closeAlert = [[UIAlertView alloc] initWithTitle:nil message:TRTCLocalize(@"Demo.TRTC.LiveRoom.interactioninprogress")  delegate:self cancelButtonTitle:TRTCLocalize(@"Demo.TRTC.LiveRoom.cancel") otherButtonTitles:TRTCLocalize(@"Demo.TRTC.LiveRoom.confirm"), nil];
     [_closeAlert show];
 }
 
@@ -912,7 +932,7 @@
             TCMsgModel *msgModel = [[TCMsgModel alloc] init];
             msgModel.userId = info.imUserId;
             msgModel.userName = info.imUserName;
-            msgModel.userMsg  =  @"加入视频互动";
+            msgModel.userMsg  =  TRTCLocalize(@"Demo.TRTC.LiveRoom.joininteraction");
             msgModel.userHeadImageUrl = info.imUserIconUrl;
             msgModel.msgType = TCMsgModelType_MemberEnterRoom;
             
@@ -930,7 +950,7 @@
             TCMsgModel *msgModel = [[TCMsgModel alloc] init];
             msgModel.userId = info.imUserId;
             msgModel.userName = info.imUserName;
-            msgModel.userMsg  =  @"退出视频互动";
+            msgModel.userMsg  =  TRTCLocalize(@"Demo.TRTC.LiveRoom.exitinteraction");
             msgModel.userHeadImageUrl = info.imUserIconUrl;
             msgModel.msgType = TCMsgModelType_MemberQuitRoom;
             
@@ -943,7 +963,7 @@
         case TCMsgModelType_Praise: {
             TCMsgModel *msgModel = [[TCMsgModel alloc] init];
             msgModel.userName = [info imUserName];
-            msgModel.userMsg  =  @"点了个赞";
+            msgModel.userMsg  =  TRTCLocalize(@"Demo.TRTC.LiveRoom.clicklike");
             msgModel.userHeadImageUrl = info.imUserIconUrl;
             msgModel.msgType = TCMsgModelType_Praise;
             
@@ -988,12 +1008,12 @@
     NSString *textMsg = [textField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     if (textMsg.length <= 0) {
         textField.text = @"";
-        [HUDHelper alert:@"消息不能为空"];
+        [HUDHelper alert:TRTCLocalize(@"Demo.TRTC.LiveRoom.messagecantbeempty")];
         return YES;
     }
     
     TCMsgModel *msgModel = [[TCMsgModel alloc] init];
-    msgModel.userName = @"我";
+    msgModel.userName = TRTCLocalize(@"Demo.TRTC.LiveRoom.me");
     msgModel.userMsg  =  textMsg;
     msgModel.userHeadImageUrl = [[ProfileManager shared] curUserModel].avatar;
     
@@ -1136,7 +1156,7 @@
     _titleLabel.textAlignment = NSTextAlignmentCenter;
     _titleLabel.font = [UIFont boldSystemFontOfSize:15];
     _titleLabel.textColor = [UIColor whiteColor];
-    [_titleLabel setText:@"视频互动结束啦!"];
+    [_titleLabel setText:TRTCLocalize(@"Demo.TRTC.LiveRoom.interactionitsover")];
     [self addSubview:_titleLabel];
     
     
@@ -1151,7 +1171,7 @@
     _durationTipLabel.textAlignment = NSTextAlignmentCenter;
     _durationTipLabel.font = [UIFont boldSystemFontOfSize:12];
     _durationTipLabel.textColor = [UIColor grayColor];
-    [_durationTipLabel setText:[NSString stringWithFormat:@"视频互动时长"]];
+    [_durationTipLabel setText:TRTCLocalize(@"Demo.TRTC.LiveRoom.interactionduration")];
     [self addSubview:_durationTipLabel];
     
     
@@ -1166,7 +1186,7 @@
     _viewerCountTipLabel.textAlignment = NSTextAlignmentCenter;
     _viewerCountTipLabel.font = [UIFont boldSystemFontOfSize:12];
     _viewerCountTipLabel.textColor = [UIColor grayColor];
-    [_viewerCountTipLabel setText:[NSString stringWithFormat:@"观看人数"]];
+    [_viewerCountTipLabel setText:TRTCLocalize(@"Demo.TRTC.LiveRoom.viewers")];
     [self addSubview:_viewerCountTipLabel];
     
     
@@ -1181,7 +1201,7 @@
     _praiseTipLabel.textAlignment = NSTextAlignmentCenter;
     _praiseTipLabel.font = [UIFont boldSystemFontOfSize:12];
     _praiseTipLabel.textColor = [UIColor grayColor];
-    [_praiseTipLabel setText:[NSString stringWithFormat:@"获赞数量"]];
+    [_praiseTipLabel setText:TRTCLocalize(@"Demo.TRTC.LiveRoom.numberoflikes")];
     [self addSubview:_praiseTipLabel];
     
     _line = [[UILabel alloc] init];
@@ -1191,7 +1211,7 @@
     _backBtn = [[UIButton alloc] init];
     _backBtn.backgroundColor = [UIColor clearColor];
     _backBtn.titleLabel.font = [UIFont systemFontOfSize:16];
-    [_backBtn setTitle:@"返回" forState:UIControlStateNormal];
+    [_backBtn setTitle:TRTCLocalize(@"Demo.TRTC.LiveRoom.back") forState:UIControlStateNormal];
     [_backBtn setTitleColor:[UIColor flatBlueColor] forState:UIControlStateNormal];
     [self addSubview:_backBtn];
     

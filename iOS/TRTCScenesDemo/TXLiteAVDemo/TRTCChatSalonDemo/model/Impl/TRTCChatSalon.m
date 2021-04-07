@@ -11,6 +11,7 @@
 #import "TXChatSalonService.h"
 #import "TXChatSalonCommonDef.h"
 #import "TRTCCloud.h"
+#import "AppLocalized.h"
 
 @interface TRTCChatSalon ()<ChatSalonTRTCServiceDelegate, ITXRoomServiceDelegate>
 
@@ -23,6 +24,8 @@
 @property (nonatomic, strong) NSMutableSet<NSString *> *audienceList;
 @property (nonatomic, strong) NSMutableDictionary<NSString *, ChatSalonSeatInfo *> *seatInfoList;
 @property (nonatomic, assign) BOOL isTakeSeat;
+@property (nonatomic, strong) NSMutableDictionary<NSString *, NSNumber *> *cachedMuteInfo;
+@property (nonatomic, strong) NSMutableDictionary<NSString *, TXChatSalonSendInviteInfo *> *cachedSendInviteInfoDict;
 
 @property (nonatomic, strong) ChatSalonInfo *roomInfo;
 
@@ -53,6 +56,8 @@ static dispatch_once_t onceToken;
         self.seatInfoList = [[NSMutableDictionary alloc] initWithCapacity:2];
         self.anchorSeatList = [[NSMutableSet alloc] initWithCapacity:2];
         self.audienceList = [[NSMutableSet alloc] initWithCapacity:2];
+        self.cachedMuteInfo = [[NSMutableDictionary alloc] init];
+        self.cachedSendInviteInfoDict = [[NSMutableDictionary alloc] init];
         self.isTakeSeat = NO;
         self.roomService.delegate = self;
         self.roomTRTCService.delegate =self;
@@ -74,10 +79,7 @@ static dispatch_once_t onceToken;
 
 #pragma mark - private method
 - (BOOL)isOnSeatWithUserId:(NSString *)userID {
-    if (self.seatInfoList.count == 0) {
-        return NO;
-    }
-    return [self.seatInfoList.allKeys containsObject:userID];
+    return [self.anchorSeatList containsObject:userID];
 }
 
 - (void)runMainQueue:(void(^)(void))action {
@@ -102,6 +104,8 @@ static dispatch_once_t onceToken;
     [self.seatInfoList removeAllObjects];
     [self.anchorSeatList removeAllObjects];
     [self.audienceList removeAllObjects];
+    [self.cachedMuteInfo removeAllObjects];
+    [self.cachedSendInviteInfoDict removeAllObjects];
 }
 
 - (void)exitRoomInternal:(ActionCallback _Nullable)callback {
@@ -300,7 +304,18 @@ static dispatch_once_t onceToken;
                 return;
             }
             if (code == 0) {
-                [self enterTRTCRoomInnerWithRoomId:self.roomID userID:self.userID userSign:self.userSig role:kTRTCRoleAnchorValue callback:callback];
+                [self enterTRTCRoomInnerWithRoomId:self.roomID userID:self.userID userSign:self.userSig role:kTRTCRoleAnchorValue callback:^(int code, NSString * _Nonnull message) {
+                    [self.roomTRTCService switchToAnchor:^(int code, NSString * _Nonnull message) {
+                        if (code == 0) {
+                            [self.roomService onSeatTakeWithUser:self.userID];
+                        }
+                    }];
+                    
+                    if (callback) {
+                        callback(code, message);
+                    }
+                }];
+                
                 return;
             } else {
                 [self runOnDelegateQueue:^{
@@ -372,17 +387,7 @@ static dispatch_once_t onceToken;
         [self clearList];
         self.roomID = [NSString stringWithFormat:@"%ld", (long)roomID];
         TRTCLog(@"start enter room, room id is %ld", (long)roomID);
-        [self enterTRTCRoomInnerWithRoomId:self.roomID userID:self.userID userSign:self.userSig role:kTRTCRoleAudienceValue callback:^(int code, NSString * _Nonnull message) {
-            @strongify(self)
-            if (!self) {
-                return;
-            }
-            if (callback) {
-                [self runMainQueue:^{
-                    callback(code, message);
-                }];
-            }
-        }];
+        
         [self.roomService enterRoom:self.roomID callback:^(int code, NSString * _Nonnull message) {
             @strongify(self)
             if (!self) {
@@ -392,6 +397,18 @@ static dispatch_once_t onceToken;
                 [self runOnDelegateQueue:^{
                     if ([self canDelegateResponseMethod:@selector(onError:message:)]) {
                         [self.delegate onError:code message:message];
+                    }
+                }];
+            } else {
+                [self enterTRTCRoomInnerWithRoomId:self.roomID userID:self.userID userSign:self.userSig role:kTRTCRoleAudienceValue callback:^(int code, NSString * _Nonnull message) {
+                    @strongify(self)
+                    if (!self) {
+                        return;
+                    }
+                    if (callback) {
+                        [self runMainQueue:^{
+                            callback(code, message);
+                        }];
                     }
                 }];
             }
@@ -515,10 +532,10 @@ static dispatch_once_t onceToken;
             return;
         }
         self.enterSeatCallback = callback;
-        [self.roomService takeSeat:^(int code, NSString * _Nonnull message) {
+        
+        [self.roomTRTCService switchToAnchor:^(int code, NSString * _Nonnull message) {
             if (code == 0) {
-                TRTCLog(@"take seat callback success, and wait attrs changed");
-                callback(0, @"take seat callback success, and wait attrs changed");
+                [self.roomService onSeatTakeWithUser:self.userID];
             } else {
                 self.enterSeatCallback = nil;
                 self.isTakeSeat = NO;
@@ -539,18 +556,21 @@ static dispatch_once_t onceToken;
         }
         if (!self.isTakeSeat) {
             [self runOnDelegateQueue:^{
-                callback(-1, @"you are not in the seat.");
+                if (callback) {
+                    callback(-1, @"you are not in the seat.");
+                }
             }];
             return;
         }
         self.leaveSeatCallback = callback;
-        [self.roomService leaveSeat:^(int code, NSString * _Nonnull message) {
+        
+        [self.roomTRTCService switchToAudience:^(int code, NSString * _Nonnull message) {
             @strongify(self)
             if (!self) {
                 return;
             }
             if (code == 0) {
-                TRTCLog(@"levae seat success. and wait attrs changed");
+                [self.roomService onSeatLeaveWithUser:self.userID];
             } else {
                 self.leaveSeatCallback = nil;
                 if (callback) {
@@ -571,7 +591,7 @@ static dispatch_once_t onceToken;
         if ([self isOnSeatWithUserId:userID]) {
             [self runOnDelegateQueue:^{
                 if (callback) {
-                    callback(-1, @"该用户已经是上麦主播了");
+                    callback(-1, TRTCLocalize(@"Demo.TRTC.Salon.userisspeaker"));
                 }
             }];
             return;
@@ -675,13 +695,24 @@ static dispatch_once_t onceToken;
 
 - (void)muteLocalAudio:(BOOL)mute{
     @weakify(self)
-    [self muteSeat:self.userID isMute:mute callback:nil];
+//    [self muteSeat:self.userID isMute:mute callback:nil];
     [self runMainQueue:^{
         @strongify(self)
         if (!self) {
             return;
         }
         [self.roomTRTCService muteLocalAudio:mute];
+        
+        @weakify(self)
+        [self runOnDelegateQueue:^{
+            @strongify(self)
+            if (!self) {
+                return;
+            }
+            if ([self canDelegateResponseMethod:@selector(onSeatMute:isMute:)]) {
+                [self.delegate onSeatMute:self.userID isMute:mute];
+            }
+        }];
     }];
 }
 
@@ -787,18 +818,50 @@ static dispatch_once_t onceToken;
 }
 
 - (NSString *)sendInvitation:(NSString *)cmd userID:(NSString *)userID content:(NSString *)content callback:(ActionCallback)callback{
+    NSArray *cachedInfoArray = [self.cachedSendInviteInfoDict allValues];
+    for (TXChatSalonSendInviteInfo *info in cachedInfoArray) {
+        if ([info.cmd isEqualToString:cmd] && [info.userID isEqualToString:userID]) {
+            if (callback) {
+                callback(ChatSalonErrorCodeInviteLimited, @"frequency limited");
+            }
+            break;
+        }
+    }
+    
     @weakify(self)
-    return [self.roomService sendInvitation:cmd userID:userID content:content callback:^(int code, NSString * _Nonnull message) {
+    NSString *inviteID = [self.roomService sendInvitation:cmd userID:userID content:content callback:^(int code, NSString * _Nonnull message) {
         @strongify(self)
         if (!self) {
             return;
         }
+        
+        if (code != 0) {
+            NSString *curInviteID = nil;
+            for (NSString *key in self.cachedSendInviteInfoDict.allKeys) {
+                TXChatSalonSendInviteInfo *info = [self.cachedSendInviteInfoDict objectForKey:key];
+                if ([info.cmd isEqualToString:cmd] && [info.userID isEqualToString:userID]) {
+                    curInviteID = key;
+                    break;
+                }
+            }
+            [self.cachedSendInviteInfoDict removeObjectForKey:curInviteID];
+        }
+        
         [self runOnDelegateQueue:^{
             if (callback) {
                 callback(code, message);
             }
         }];
     }];
+    
+    if (inviteID != nil) {
+        TXChatSalonSendInviteInfo *info = [[TXChatSalonSendInviteInfo alloc] init];
+        info.cmd = cmd;
+        info.userID = userID;
+        [self.cachedSendInviteInfoDict setObject:info forKey:inviteID];
+    }
+    
+    return inviteID;
 }
 
 - (void)acceptInvitation:(NSString *)identifier callback:(ActionCallback)callback{
@@ -867,21 +930,29 @@ static dispatch_once_t onceToken;
 #pragma mark - ChatSalonTRTCServiceDelegate
 
 - (void)onTRTCAnchorEnter:(NSString *)userID {
-    [self.anchorSeatList addObject:userID];
+    [self.roomService onSeatTakeWithUser:userID];
 }
 
 - (void)onTRTCAnchorExit:(NSString *)userID {
-    if (self.roomService.isOwner) {
-        if (self.seatInfoList.count > 0) {
-            if ([self.seatInfoList.allKeys containsObject:userID]) {
-                [self kickSeat:userID callback:nil];
-            }
-        }
-    }
+    [self.roomService onSeatLeaveWithUser:userID];
 }
 
 - (void)onTRTCAudioAvailable:(NSString *)userID available:(BOOL)available {
-    
+    @weakify(self)
+    [self runOnDelegateQueue:^{
+        @strongify(self)
+        if (!self) {
+            return;
+        }
+        
+        if ([self.anchorSeatList containsObject:userID]) {
+            if ([self canDelegateResponseMethod:@selector(onSeatMute:isMute:)]) {
+                [self.delegate onSeatMute:userID isMute:!available];
+            }
+        } else {
+            [self.cachedMuteInfo setObject:@(!available) forKey:userID];
+        }
+    }];
 }
 
 - (void)onError:(NSInteger)code message:(NSString *)message {
@@ -994,24 +1065,7 @@ static dispatch_once_t onceToken;
 }
 
 - (void)onSeatInfoListChange:(NSDictionary<NSString *, TXChatSalonSeatInfo *> *)seatInfoList{
-    @weakify(self)
-    [self runOnDelegateQueue:^{
-        @strongify(self)
-        if (!self) {
-            return;
-        }
-        NSMutableDictionary* roomSeatList = [[NSMutableDictionary alloc] initWithCapacity:2];
-        for (TXChatSalonSeatInfo* info in seatInfoList.allValues) {
-            ChatSalonSeatInfo* seat = [[ChatSalonSeatInfo alloc] init];
-            seat.userID = info.user;
-            seat.mute = info.mute;
-            [roomSeatList setObject:seat forKey:seat.userID];
-        }
-        self.seatInfoList = [roomSeatList mutableCopy];
-        if ([self canDelegateResponseMethod:@selector(onEnterRoomSeatListNotify:)]) {
-            [self.delegate onEnterRoomSeatListNotify:[roomSeatList allValues]];
-        }
-    }];
+    // IM 属性修改回调，暂不使用
 }
 
 - (void)onRoomAudienceEnter:(TXChatSalonUserInfo *)userInfo {
@@ -1055,13 +1109,13 @@ static dispatch_once_t onceToken;
         if (!self) {
             return;
         }
+        
+        [self.anchorSeatList addObject:userInfo.userID];
+        
         BOOL isSelfEnterSeat = [userInfo.userID isEqualToString:self.userID];
         if (isSelfEnterSeat) {
             // 是自己上线了
             self.isTakeSeat = YES;
-            [self.roomTRTCService switchToAnchor];
-            BOOL mute = self.seatInfoList[userInfo.userID].mute;
-            [self.roomTRTCService muteLocalAudio:mute];
         }
         [self runOnDelegateQueue:^{
             @strongify(self)
@@ -1074,6 +1128,18 @@ static dispatch_once_t onceToken;
             user.userAvatar = userInfo.avatarURL;
             if ([self canDelegateResponseMethod:@selector(onAnchorEnterSeat:)]) {
                 [self.delegate onAnchorEnterSeat:user];
+            }
+            
+            NSNumber *cachedMute = self.cachedMuteInfo[userInfo.userID];
+            if (cachedMute) {
+                if ([self canDelegateResponseMethod:@selector(onSeatMute:isMute:)]) {
+                    [self.delegate onSeatMute:userInfo.userID isMute:[cachedMute boolValue]];
+                }
+                [self.cachedMuteInfo removeObjectForKey:userInfo.userID];
+            } else if (isSelfEnterSeat) {
+                if ([self canDelegateResponseMethod:@selector(onSeatMute:isMute:)]) {
+                    [self.delegate onSeatMute:userInfo.userID isMute:NO];
+                }
             }
             if (self.pickSeatCallback) {
                 self.pickSeatCallback(0, @"pick seat success");
@@ -1102,9 +1168,11 @@ static dispatch_once_t onceToken;
         if (!self) {
             return;
         }
+        
+        [self.anchorSeatList removeObject:userInfo.userID];
+        
         if ([self.userID isEqualToString:userInfo.userID]) {
             self.isTakeSeat = NO;
-            [self.roomTRTCService switchToAudience];
         }
         ChatSalonUserInfo* user = [[ChatSalonUserInfo alloc] init];
         user.userID = userInfo.userID;
@@ -1126,22 +1194,6 @@ static dispatch_once_t onceToken;
     }];
 }
 
-- (void)onSeatMuteWithUser:(NSString *)userID mute:(BOOL)isMute {
-    @weakify(self)
-    [self runOnDelegateQueue:^{
-        @strongify(self)
-        if (!self) {
-            return;
-        }
-        if (self.isTakeSeat && [userID isEqualToString:self.userID]) {
-            [self.roomTRTCService muteLocalAudio:isMute];
-        }
-        if ([self canDelegateResponseMethod:@selector(onSeatMute:isMute:)]) {
-            [self.delegate onSeatMute:userID isMute:isMute];
-        }
-    }];
-}
-
 - (void)onReceiveNewInvitationWithIdentifier:(NSString *)identifier inviter:(NSString *)inviter cmd:(NSString *)cmd content:(NSString *)content{
     @weakify(self)
     [self runOnDelegateQueue:^{
@@ -1156,6 +1208,9 @@ static dispatch_once_t onceToken;
 }
 
 - (void)onInviteeAcceptedWithIdentifier:(NSString *)identifier invitee:(NSString *)invitee {
+    if ([self.cachedSendInviteInfoDict objectForKey:identifier]) {
+        [self.cachedSendInviteInfoDict removeObjectForKey:identifier];
+    }
     @weakify(self)
     [self runOnDelegateQueue:^{
         @strongify(self)
@@ -1169,6 +1224,9 @@ static dispatch_once_t onceToken;
 }
 
 - (void)onInviteeRejectedWithIdentifier:(NSString *)identifier invitee:(NSString *)invitee {
+    if ([self.cachedSendInviteInfoDict objectForKey:identifier]) {
+        [self.cachedSendInviteInfoDict removeObjectForKey:identifier];
+    }
     @weakify(self)
     [self runOnDelegateQueue:^{
         @strongify(self)
@@ -1192,6 +1250,27 @@ static dispatch_once_t onceToken;
             [self.delegate onInvitationCancelled:identifier invitee:invitee];
         }
     }];
+}
+
+- (void)onInvitationTimeout:(NSString *)inviteID {
+    if ([self.cachedSendInviteInfoDict objectForKey:inviteID]) {
+        [self.cachedSendInviteInfoDict removeObjectForKey:inviteID];
+    }
+    
+    @weakify(self)
+    [self runOnDelegateQueue:^{
+        @strongify(self)
+        if (!self) {
+            return;
+        }
+        if ([self canDelegateResponseMethod:@selector(onInvitationTimeout:)]) {
+            [self.delegate onInvitationTimeout:inviteID];
+        }
+    }];
+}
+
+- (void)onSeatKick {
+    [self leaveSeat:nil];
 }
 
 @end

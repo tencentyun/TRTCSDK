@@ -68,11 +68,11 @@ let loginBaseUrl = "https://xxx.com/release/"
     func copy() -> UserModel {
         let encoder = JSONEncoder()
         guard let data = try? encoder.encode(self) else {
-            fatalError("encode失败")
+            fatalError("encode failed")
         }
         let decoder = JSONDecoder()
         guard let target = try? decoder.decode(UserModel.self, from: data) else {
-           fatalError("decode失败")
+           fatalError("decode failed")
         }
         return target
     }
@@ -159,8 +159,8 @@ let loginBaseUrl = "https://xxx.com/release/"
             if let respData = data.data, respData.count > 0 {
                 let decoder = JSONDecoder()
                 guard let result = try? decoder.decode(VerifyModel.self, from: respData) else {
-                    failed("VerifyModel decode失败")
-                    fatalError("VerifyModel decode失败")
+                    failed("VerifyModel decode failed")
+                    fatalError("VerifyModel decode failed")
                 }
                 if result.errorCode == 0 , let sessionID = result.data?.sessionId {
                     self.sessionId = sessionID
@@ -169,7 +169,7 @@ let loginBaseUrl = "https://xxx.com/release/"
                     failed(result.errorMessage)
                 }
             } else {
-                failed("发送失败，请稍后重试")
+                failed("Send failed, please try again later.")
             }
         }
     }
@@ -207,11 +207,11 @@ let loginBaseUrl = "https://xxx.com/release/"
                         failed: @escaping (_ error: String)->Void) {
         let nameUrl = loginBaseUrl + "nickname"
         guard let userId = curUserModel?.userId else {
-            failed("注册失败，请稍后重试")
+            failed("Regist failed, please try again later.")
             return
         }
         guard let token = curUserModel?.token else {
-            failed("注册失败，请稍后重试")
+            failed("Regist failed, please try again later.")
             return
         }
         let params = ["userId":userId,"name":name,"token":token] as [String : Any]
@@ -234,7 +234,7 @@ let loginBaseUrl = "https://xxx.com/release/"
                     }
                 }
             } else {
-                failed("注册失败，请稍候重试")
+                failed("Regist failed, please try again later.")
             }
         }
     }
@@ -250,7 +250,7 @@ let loginBaseUrl = "https://xxx.com/release/"
         if phone.count > 0 {
             success(UserModel.init(userID: phone))
         } else {
-            failed("错误的userID")
+            failed("Wrong userID")
         }
     }
     
@@ -265,7 +265,7 @@ let loginBaseUrl = "https://xxx.com/release/"
         if userID.count > 0 {
             success(UserModel.init(userID: userID))
         } else {
-            failed("错误的userID")
+            failed("Wrong userID")
         }
     }
     
@@ -284,7 +284,7 @@ let loginBaseUrl = "https://xxx.com/release/"
             }
             success(models)
         } else {
-            failed("空userIDs")
+            failed("Null userIDs")
         }
     }
     
@@ -299,7 +299,7 @@ let loginBaseUrl = "https://xxx.com/release/"
         TIMManager.sharedInstance()?.initSdk(config)
         
         guard let userID = curUserModel?.userId else {
-            failed("userID 错误")
+            failed("userID failed")
             return
         }
         let user = String(userID)

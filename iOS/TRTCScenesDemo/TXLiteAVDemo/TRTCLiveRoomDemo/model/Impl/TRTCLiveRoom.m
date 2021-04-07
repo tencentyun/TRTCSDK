@@ -14,6 +14,7 @@
 #import "TRTCCloudAnction.h"
 #import <MJExtension.h>
 #import <ImSDK/ImSDK.h>
+#import "AppLocalized.h"
 
 static double trtcLiveSendMsgTimeOut = 15;
 static double trtcLiveHandleMsgTimeOut = 10;
@@ -162,7 +163,7 @@ static double trtcLiveCheckStatusTimeOut = 3;
     BOOL result = [TRTCLiveRoomIMAction setupSDKWithSDKAppID:sdkAppID userSig:userSig messageLister:self];
     if (!result) {
         if (callback) {
-            callback(-1, @"初始化失败");
+            callback(-1, TRTCLocalize(@"Demo.TRTC.LiveRoom.initializefailed"));
         }
         return;
     }
@@ -337,7 +338,7 @@ static double trtcLiveCheckStatusTimeOut = 3;
             return;
         }
         if ([uuid isEqualToString:self.trtcAction.curroomUUID] && self.enterRoomCallback) {
-            self.enterRoomCallback(-1, @"enterRoom 请求超时");
+            self.enterRoomCallback(-1, TRTCLocalize(@"Demo.TRTC.LiveRoom.enterroomtimeout"));
             self.enterRoomCallback = nil;
         }
     });
@@ -353,7 +354,7 @@ static double trtcLiveCheckStatusTimeOut = 3;
     }
     if (self.isOwner) {
         if (callback) {
-            callback(-1, @"只有普通成员才能退房");
+            callback(-1, TRTCLocalize(@"Demo.TRTC.LiveRoom.onlyordinarymembercanexit"));
         }
         return;
     }
@@ -401,7 +402,7 @@ static double trtcLiveCheckStatusTimeOut = 3;
     NSString *roomId = [self checkRoomJoined:nil];
     if (!roomId) {
         if (callback) {
-            callback(-1, @"没有进入房间", self.memberManager.audience);
+            callback(-1, TRTCLocalize(@"Demo.TRTC.LiveRoom.notenterroom"), self.memberManager.audience);
         }
         return;
     }
@@ -505,7 +506,7 @@ static double trtcLiveCheckStatusTimeOut = 3;
         [self.trtcAction startPlay:anchor.userId streamID:anchor.streamId view:view usesCDN:self.shouldPlayCdn roomId:nil callback:callback];
     } else {
         if (callback) {
-            callback(-1, @"未找到该主播");
+            callback(-1, TRTCLocalize(@"Demo.TRTC.LiveRoom.notfoundanchor"));
         }
     }
 }
@@ -527,28 +528,28 @@ static double trtcLiveCheckStatusTimeOut = 3;
     }
     TRTCLiveUserInfo *me = [self checkUserLogIned:nil];
     if (!me) {
-        responseCallback(NO, @"还未登录");
+        responseCallback(NO, TRTCLocalize(@"Demo.TRTC.LiveRoom.notlogin"));
         return;
     }
     NSString *roomID = [self checkRoomJoined:nil];
     if (!roomID) {
-        responseCallback(NO, @"没有进入房间");
+        responseCallback(NO, TRTCLocalize(@"Demo.TRTC.LiveRoom.notenterroom"));
         return;
     }
     if (self.isAnchor) {
-        responseCallback(NO, @"当前已经是连麦状态");
+        responseCallback(NO, TRTCLocalize(@"Demo.TRTC.LiveRoom.ismicconnectednow"));
         return;
     }
     if (self.status == TRTCLiveRoomLiveStatusRoomPK || self.pkAnchorInfo.userId) {
-        responseCallback(NO, @"当前主播正在PK");
+        responseCallback(NO, TRTCLocalize(@"Demo.TRTC.LiveRoom.anchorisinpk"));
         return;
     }
     if (self.joinAnchorInfo.userId) {
-        responseCallback(NO, @"当前用户正在等待连麦回复");
+        responseCallback(NO, TRTCLocalize(@"Demo.TRTC.LiveRoom.userwaitingresponseformicconnect"));
         return;
     }
     if (self.status == TRTCLiveRoomLiveStatusNone) {
-        responseCallback(NO, @"出错请稍后尝试");
+        responseCallback(NO, TRTCLocalize(@"Demo.TRTC.LiveRoom.smtwrongandretry"));
         return;
     }
     
@@ -573,7 +574,7 @@ static double trtcLiveCheckStatusTimeOut = 3;
             return;
         }
         if (self.requestJoinAnchorCallback && [uuid isEqualToString:self.joinAnchorInfo.uuid]) {
-            self.requestJoinAnchorCallback(NO, @"主播未回应连麦请求");
+            self.requestJoinAnchorCallback(NO, TRTCLocalize(@"Demo.TRTC.LiveRoom.anchornotresponsethereq"));
             self.requestJoinAnchorCallback = nil;
             [self clearJoinState];
         }
@@ -628,7 +629,7 @@ static double trtcLiveCheckStatusTimeOut = 3;
     }
     if (!self.memberManager.anchors[userID]) {
         if (callback) {
-            callback(-1, @"该用户尚未连麦");
+            callback(-1, TRTCLocalize(@"Demo.TRTC.LiveRoom.usernotmicconnect"));
         }
         return;
     }
@@ -642,36 +643,36 @@ static double trtcLiveCheckStatusTimeOut = 3;
     }
     TRTCLiveUserInfo *me = [self checkUserLogIned:nil];
     if (!me) {
-        responseCallback(NO, @"还未登录");
+        responseCallback(NO, TRTCLocalize(@"Demo.TRTC.LiveRoom.notlogin"));
         return;
     }
     NSString *myRoomId = [self checkRoomJoined:nil];
     if (!myRoomId) {
-        responseCallback(NO, @"没有进入房间");
+        responseCallback(NO, TRTCLocalize(@"Demo.TRTC.LiveRoom.notenterroom"));
         return;
     }
     NSString* streamId = [self checkIsPublishing:nil];
     if (!streamId) {
-        responseCallback(NO, @"只有推流后才能操作");
+        responseCallback(NO, TRTCLocalize(@"Demo.TRTC.LiveRoom.onlypushstreamcanoperate"));
         return;
     }
     if (self.status == TRTCLiveRoomLiveStatusLinkMic || self.joinAnchorInfo.userId) {
-        responseCallback(NO, @"当前主播正在连麦, 无法开启PK");
+        responseCallback(NO, TRTCLocalize(@"Demo.TRTC.LiveRoom.anchorisconnectingandunablepk"));
         return;
     }
     if (self.status == TRTCLiveRoomLiveStatusRoomPK) {
-        responseCallback(NO, @"当前主播正在PK");
+        responseCallback(NO, TRTCLocalize(@"Demo.TRTC.LiveRoom.anchorisinpk"));
         return;
     }
     if (self.pkAnchorInfo.userId) {
-        responseCallback(NO, @"当前用户正在等待PK回复");
+        responseCallback(NO, TRTCLocalize(@"Demo.TRTC.LiveRoom.useriswaitingforpkrep"));
         return;
     }
     if (self.status == TRTCLiveRoomLiveStatusNone) {
-        responseCallback(NO, @"出错请稍后尝试");
+        responseCallback(NO, TRTCLocalize(@"Demo.TRTC.LiveRoom.smtwrongandretry"));
         return;
     }
-    NSString *roomIDStr = [NSString stringWithFormat:@"%d", roomID];
+    NSString *roomIDStr = [NSString stringWithFormat:@"%u", (unsigned int)roomID];
     self.requestRoomPKCallback = responseCallback;
     self.pkAnchorInfo.userId = userID;
     self.pkAnchorInfo.roomId = roomIDStr;
@@ -689,7 +690,7 @@ static double trtcLiveCheckStatusTimeOut = 3;
             return;
         }
         if (self.requestRoomPKCallback && [uuid isEqualToString:self.pkAnchorInfo.uuid]) {
-            self.requestRoomPKCallback(NO, @"主播未回应跨房PK请求");
+            self.requestRoomPKCallback(NO, TRTCLocalize(@"Demo.TRTC.LiveRoom.anchornotresponsepkbetweenroom"));
             self.requestRoomPKCallback = nil;
             [self clearPKState];
         }
@@ -754,7 +755,7 @@ static double trtcLiveCheckStatusTimeOut = 3;
         [TRTCLiveRoomIMAction quitRoomPKWithUserID:self.memberManager.pkAnchor.userId callback:callback];
     } else {
         if (callback) {
-            callback(-1, @"当前不是PK状态");
+            callback(-1, TRTCLocalize(@"Demo.TRTC.LiveRoom.isnotpkstate"));
         }
     }
 }
@@ -1157,10 +1158,10 @@ static double trtcLiveCheckStatusTimeOut = 3;
         }
             break;
         case TRTCLiveRoomIMActionTypeUnknown:
-            NSLog(@"收到了其他消息");
+            NSLog(@"%@", TRTCLocalize(@"Demo.TRTC.LiveRoom.receiveothermessage"));
             break;
         default:
-            TRTCLog(@"!!!!!!!! 未知消息type");
+            TRTCLog(@"!!!!!!!! unknow message type");
             break;
     }
 }
@@ -1246,12 +1247,12 @@ static double trtcLiveCheckStatusTimeOut = 3;
 
 - (void)handleJoinAnchorRequestFromUser:(TRTCLiveUserInfo *)user reason:(NSString *)reason {
     if (self.status == TRTCLiveRoomLiveStatusRoomPK || self.pkAnchorInfo.userId != nil) {
-        [self responseJoinAnchor:user.userId agree:NO reason:@"主播正在跨房PK中"];
+        [self responseJoinAnchor:user.userId agree:NO reason:TRTCLocalize(@"Demo.TRTC.LiveRoom.anchorispkbetweenroom")];
         return;
     }
     if (self.joinAnchorInfo.userId != nil) {
         if (![self.joinAnchorInfo.userId isEqualToString:user.userId]) {
-            [self responseJoinAnchor:user.userId agree:NO reason:@"主播正在处理他人连麦中"];
+            [self responseJoinAnchor:user.userId agree:NO reason:TRTCLocalize(@"Demo.TRTC.LiveRoom.anchordealothermicconnect")];
         }
         return;
     }
@@ -1268,7 +1269,7 @@ static double trtcLiveCheckStatusTimeOut = 3;
             return;
         }
         if (!self.joinAnchorInfo.isResponsed && [uuid isEqualToString:self.joinAnchorInfo.uuid]) {
-            [self responseJoinAnchor:user.userId agree:NO reason:@"超时未回应"];
+            [self responseJoinAnchor:user.userId agree:NO reason:TRTCLocalize(@"Demo.TRTC.LiveRoom.timeouttonorespond")];
             [self clearJoinState];
         }
     });
@@ -1312,11 +1313,11 @@ static double trtcLiveCheckStatusTimeOut = 3;
 
 - (void)handleRoomPKRequestFromUser:(TRTCLiveUserInfo *)user roomId:(NSString *)roomId streamId:(NSString *)streamId {
     if (self.status == TRTCLiveRoomLiveStatusLinkMic || self.joinAnchorInfo.userId != nil) {
-        [self responseRoomPKWithUserID:user.userId agree:NO reason:@"主播正在连麦中"];
+        [self responseRoomPKWithUserID:user.userId agree:NO reason:TRTCLocalize(@"Demo.TRTC.LiveRoom.anchorismicconnecting")];
         return;
     }
     if ((self.pkAnchorInfo.userId != nil && ![self.pkAnchorInfo.roomId isEqualToString:roomId]) || self.status == TRTCLiveRoomLiveStatusRoomPK) {
-        [self responseRoomPKWithUserID:user.userId agree:NO reason:@"主播正在PK中"];
+        [self responseRoomPKWithUserID:user.userId agree:NO reason:TRTCLocalize(@"Demo.TRTC.LiveRoom.anchorispking")];
         return;
     }
     if ([self.pkAnchorInfo.userId isEqualToString:user.userId]) {
@@ -1337,7 +1338,7 @@ static double trtcLiveCheckStatusTimeOut = 3;
             return;
         }
         if (!self.pkAnchorInfo.isResponsed && [uuid isEqualToString:self.pkAnchorInfo.uuid]) {
-            [self responseRoomPKWithUserID:user.userId agree:NO reason:@"超时未响应"];
+            [self responseRoomPKWithUserID:user.userId agree:NO reason:TRTCLocalize(@"Demo.TRTC.LiveRoom.timeouttonoresponse")];
             [self clearPKState];
         }
     });
@@ -1407,7 +1408,7 @@ static double trtcLiveCheckStatusTimeOut = 3;
 - (TRTCLiveUserInfo *)checkUserLogIned:(Callback)callback {
     if (!self.me) {
         if (callback) {
-            callback(-1, @"还未登录");
+            callback(-1, TRTCLocalize(@"Demo.TRTC.LiveRoom.notlogin"));
         }
         return nil;
     }
@@ -1417,7 +1418,7 @@ static double trtcLiveCheckStatusTimeOut = 3;
 - (NSString *)checkRoomJoined:(Callback)callback {
     if (!self.roomID) {
         if (callback) {
-            callback(-1, @"还未进入房间");
+            callback(-1, TRTCLocalize(@"Demo.TRTC.LiveRoom.hasnotenterroom"));
         }
         return nil;
     }
@@ -1427,7 +1428,7 @@ static double trtcLiveCheckStatusTimeOut = 3;
 - (BOOL)checkRoomUnjoined:(Callback)callback {
     if (self.roomID) {
         if (callback) {
-            callback(-1, @"当前在房间中");
+            callback(-1, TRTCLocalize(@"Demo.TRTC.LiveRoom.isinroomnow"));
         }
         return NO;
     }
@@ -1437,7 +1438,7 @@ static double trtcLiveCheckStatusTimeOut = 3;
 - (BOOL)checkIsOwner:(Callback)callback {
     if (!self.isOwner) {
         if (callback) {
-            callback(-1, @"只有主播才能操作");
+            callback(-1, TRTCLocalize(@"Demo.TRTC.LiveRoom.onlyanchorcanoperation"));
         }
         return NO;
     }
@@ -1447,7 +1448,7 @@ static double trtcLiveCheckStatusTimeOut = 3;
 - (NSString *)checkIsPublishing:(Callback)callback {
     if (!self.me.streamId) {
         if (callback) {
-             callback(-1, @"只有推流后才能操作");
+             callback(-1, TRTCLocalize(@"Demo.TRTC.LiveRoom.onlypushstreamcanoperate"));
         }
         return nil;
     }

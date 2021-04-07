@@ -75,7 +75,7 @@ public class TRTCVoiceRoomViewController: UIViewController {
     @objc func cancel() {
         // 取消后直接返回首页
         if viewModel?.roomType == VoiceRoomViewType.anchor {
-            presentAlert(title: "退出", message: "当前正在音频互动，是否退出") { [weak self] in
+            presentAlert(title: .exitText, message: .sureToExitText) { [weak self] in
                 guard let `self` = self else { return }
                 self.viewModel?.exitRoom() // 主播销毁房间
             }
@@ -88,11 +88,11 @@ public class TRTCVoiceRoomViewController: UIViewController {
 extension TRTCVoiceRoomViewController {
     func presentAlert(title: String, message: String, sureAction:@escaping () -> Void) {
         let alertVC = UIAlertController.init(title: title, message: message, preferredStyle: .alert)
-        let alertOKAction = UIAlertAction.init(title: "确定", style: .default) { (action) in
+        let alertOKAction = UIAlertAction.init(title: .confirmText, style: .default) { (action) in
             alertVC.dismiss(animated: true, completion: nil)
             sureAction()
         }
-        let alertCancelAction = UIAlertAction.init(title: "取消", style: .cancel) { (action) in
+        let alertCancelAction = UIAlertAction.init(title: .cancelText, style: .cancel) { (action) in
             alertVC.dismiss(animated: true, completion: nil)
         }
         alertVC.addAction(alertCancelAction)
@@ -102,7 +102,11 @@ extension TRTCVoiceRoomViewController {
 }
 
 private extension String {
-    static let controllerTitle = "房间号"
+    static let exitText = TRTCLocalize("Demo.TRTC.VoiceRoom.exit")
+    static let sureToExitText = TRTCLocalize("Demo.TRTC.VoiceRoom.isvoicingandsuretoexit")
+    static let confirmText = TRTCLocalize("Demo.TRTC.LiveRoom.confirm")
+    static let cancelText = TRTCLocalize("Demo.TRTC.LiveRoom.cancel")
+    
 }
 
 

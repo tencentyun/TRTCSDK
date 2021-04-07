@@ -65,4 +65,9 @@ typedef void(^ActionCallback)(int code, NSString * _Nonnull message);
 typedef void(^ChatSalonInfoCallback)(int code, NSString * _Nonnull message, NSArray<ChatSalonInfo * > * _Nonnull roomInfos);
 typedef void(^ChatSalonUserListCallback)(int code, NSString * _Nonnull message, NSArray<ChatSalonUserInfo * > * _Nonnull userInfos);
 
+typedef NS_ENUM(NSInteger, ChatSalonErrorCode) {
+    ChatSalonErrorCodeInviteLimited   = -2,
+};
+
+
 NS_ASSUME_NONNULL_END

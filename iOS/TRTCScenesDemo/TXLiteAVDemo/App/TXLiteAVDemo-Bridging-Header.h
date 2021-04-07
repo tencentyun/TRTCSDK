@@ -9,11 +9,20 @@
 
 
 /* TXLiteAVDemo_Bridging_Header_h */
+
+// localized string usage
+#import "AppLocalized.h"
+
 #ifdef TRTC
 #import "PortalViewController.h"
 #endif
 
+#ifdef ENABLE_INTERNATIONAL
+#import "TXLiveBase.h"
+#endif
+
 #ifdef ENABLE_TRTC
+
 #import "TCAnchorViewController.h"
 #import "TCAudienceViewController.h"
 #import "TRTCMeeting.h"

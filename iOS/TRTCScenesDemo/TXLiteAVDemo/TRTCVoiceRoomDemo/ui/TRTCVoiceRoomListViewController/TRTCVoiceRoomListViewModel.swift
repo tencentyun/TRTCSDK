@@ -47,7 +47,7 @@ class TRTCVoiceRoomListViewModel {
     @objc
     func getRoomList() {
         guard dependencyContainer.mSDKAppID != 0 else {
-            viewResponder?.showToast(message: "APPID 不正确")
+            viewResponder?.showToast(message: .appidErrorText)
             return
         }
         voiceRoomManager.getRoomList(sdkAppID: dependencyContainer.mSDKAppID, success: { [weak self] (roomIds: [String]) in
@@ -59,7 +59,7 @@ class TRTCVoiceRoomListViewModel {
                 DispatchQueue.main.async {
                     self.roomList = []
                     self.viewResponder?.refreshList()
-                    self.viewResponder?.showToast(message: "当前暂无内容哦~")
+                    self.viewResponder?.showToast(message: .nocontentText)
                     self.viewResponder?.stopListRefreshing()
                 }
                 return;
@@ -69,7 +69,7 @@ class TRTCVoiceRoomListViewModel {
                 self.viewResponder?.stopListRefreshing()
                 if code == 0 {
                     if roomInfos.count == 0 {
-                        self.viewResponder?.showToast(message: "当前暂无内容哦")
+                        self.viewResponder?.showToast(message: .nocontenttText)
                     }
                     DispatchQueue.main.async {
                         self.roomList = roomInfos
@@ -77,14 +77,14 @@ class TRTCVoiceRoomListViewModel {
                     }
                 } else {
                     TRTCLog.out("get room list failed. code\(code), message:\(message)")
-                    self.viewResponder?.showToast(message: "获取房间列表失败")
+                    self.viewResponder?.showToast(message: .roomlistFailedText)
                 }
                 self.viewResponder?.stopListRefreshing()
             }
         }) { [weak self] (code, message) in
             guard let `self` = self else { return }
             TRTCLog.out("error: get room list fail. code: \(code), message:\(message)")
-            self.viewResponder?.showToast(message: "获取列表失败")
+            self.viewResponder?.showToast(message: .listFailedText)
             self.viewResponder?.stopListRefreshing()
         }
     }
@@ -110,4 +110,12 @@ class TRTCVoiceRoomListViewModel {
         let vc = self.dependencyContainer.makeVoiceRoomViewController(roomInfo: info, role: .audience)
         self.viewResponder?.pushRoomView(viewController: vc)
     }
+}
+
+private extension String {
+    static let appidErrorText = TRTCLocalize("Demo.TRTC.Salon.invalidappid")
+    static let nocontentText = TRTCLocalize("Demo.TRTC.LiveRoom.nocontentnow~")
+    static let nocontenttText = TRTCLocalize("Demo.TRTC.VoiceRoom.nocontentnow")
+    static let roomlistFailedText = TRTCLocalize("Demo.TRTC.LiveRoom.getroomlistfailed")
+    static let listFailedText = TRTCLocalize("Demo.TRTC.Salon.getlistfailed")
 }

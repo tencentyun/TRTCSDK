@@ -11,6 +11,7 @@
 #import <ImSDK/ImSDK.h>
 #import "TRTCLiveRoomDef.h"
 #import <MJExtension.h>
+#import "AppLocalized.h"
 
 typedef NS_ENUM(NSUInteger, ConvType) {
     ConvTypeUser,
@@ -209,7 +210,7 @@ typedef NS_ENUM(NSUInteger, ConvType) {
 + (void)getRoomInfoWithRoomIds:(NSArray<NSString *> *)roomIds success:(LRRoomInfosCallback)success error:(LRIMCallback)error {
     [[V2TIMManager sharedInstance] getGroupsInfo:roomIds succ:^(NSArray<V2TIMGroupInfoResult *> *groupResultList) {
         if (!groupResultList) {
-            error(-1, @"无法获取房间信息");
+            error(-1, TRTCLocalize(@"Demo.TRTC.LiveRoom.cannotgetroominfo"));
             return;
         }
         NSMutableArray<TRTCLiveRoomInfo *> *roomInfos = [[NSMutableArray alloc] initWithCapacity:2];
@@ -241,7 +242,7 @@ typedef NS_ENUM(NSUInteger, ConvType) {
         }
     } fail:^(int code, NSString *desc) {
         if (error) {
-            error(code, desc ?: @"获取房间信息失败");
+            error(code, desc ?: TRTCLocalize(@"Demo.TRTC.LiveRoom.getroominfofailed"));
         }
     }];
 }

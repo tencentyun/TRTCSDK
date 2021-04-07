@@ -53,7 +53,7 @@ extension ProfileViewController {
             make.height.equalTo(30)
         }
         
-        let (userName, nameSignal) = getTextObservable(placeholder: "请输入用户名")
+        let (userName, nameSignal) = getTextObservable(placeholder: V2Localize("V2.Live.LoginMock.enterusername"))
         userName.delegate = self
         view.addSubview(userName)
         userName.snp.makeConstraints { (make) in
@@ -82,7 +82,7 @@ extension ProfileViewController {
             }
             ProfileManager.shared.setNickName(name: name, success: {
                 self.loading.stopAnimating()
-                self.view.makeToast("注册成功")
+                self.view.makeToast(V2Localize("V2.Live.LoginMock.registsuccess"))
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                     //show main vc
                     AppUtils.shared.showMainController()

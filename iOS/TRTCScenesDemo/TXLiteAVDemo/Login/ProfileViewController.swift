@@ -21,14 +21,14 @@ class ProfileViewController: UIViewController {
         let title = UILabel()
         title.textColor = .appTint
         title.font = UIFont.boldSystemFont(ofSize: 30)
-        title.text = "腾讯云 TRTC"
+        title.text = V2Localize("V2.Live.LoginMock.tencentcloudtrtc")
         title.textAlignment = .center
         return title
     }()
     
     let avatarTip: UILabel = {
         let tip = UILabel()
-        tip.text = "头像"
+        tip.text = V2Localize("V2.Live.LoginMock.avatar")
         tip.textColor = .white
         tip.font = UIFont.systemFont(ofSize: 14)
         return tip
@@ -44,7 +44,7 @@ class ProfileViewController: UIViewController {
     
     let userNameTip: UILabel = {
         let tip = UILabel()
-        tip.text = "设置用户名"
+        tip.text = V2Localize("V2.Live.LoginMock.setusername")
         tip.textColor = .white
         tip.font = UIFont.systemFont(ofSize: 14)
         return tip
@@ -53,7 +53,7 @@ class ProfileViewController: UIViewController {
     let signButton: UIButton = {
         let sign = UIButton()
         sign.backgroundColor = .appTint
-        sign.setTitle("注册", for: .normal)
+        sign.setTitle(V2Localize("V2.Live.LoginMock.regist"), for: .normal)
         sign.setTitleColor(.white, for: .normal)
         sign.layer.cornerRadius = 4
         return sign
@@ -64,7 +64,7 @@ class ProfileViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
-            self.view.makeToast("首次登录请补充用户信息")
+            self.view.makeToast(V2Localize("V2.Live.LoginMock.adduserinformationforfirstlogin"))
         }
     }
     

@@ -61,7 +61,7 @@
                                                         <constraint firstAttribute="width" secondItem="yaQ-yT-aj1" secondAttribute="height" multiplier="1:1" id="fjR-xZ-h9D"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1co-4P-GNY">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="1co-4P-GNY">
                                                     <rect key="frame" x="0.0" y="58.5" width="160" height="46.5"/>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -100,8 +100,8 @@
                                 <color key="textColor" red="0.32156862749999998" green="0.32156862749999998" blue="0.32156862749999998" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="本APP用于展示实时音视频的各类功能" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ceY-lH-tgz">
-                                <rect key="frame" x="0.0" y="619" width="375" height="30"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="本APP用于展示实时音视频的各类功能" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="ceY-lH-tgz">
+                                <rect key="frame" x="10" y="619" width="355" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="eDL-xS-TWb"/>
                                 </constraints>
@@ -118,11 +118,11 @@
                             <constraint firstItem="4nF-2a-FoD" firstAttribute="top" secondItem="FEk-i4-gOv" secondAttribute="bottom" id="5iV-Ks-HD4"/>
                             <constraint firstAttribute="trailing" secondItem="IEY-2m-Eif" secondAttribute="trailing" id="BHC-Ub-8tE"/>
                             <constraint firstItem="2CK-1J-eYx" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="DZu-G7-xqG"/>
-                            <constraint firstItem="ceY-lH-tgz" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="FFK-eO-l8e"/>
+                            <constraint firstItem="ceY-lH-tgz" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="10" id="FFK-eO-l8e"/>
                             <constraint firstItem="Wc5-34-1It" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Kgj-hw-ngx"/>
                             <constraint firstAttribute="trailing" secondItem="4nF-2a-FoD" secondAttribute="trailing" id="Ouf-BC-iIr"/>
                             <constraint firstItem="ceY-lH-tgz" firstAttribute="top" secondItem="IEY-2m-Eif" secondAttribute="bottom" constant="5" id="Qxc-wi-a7x"/>
-                            <constraint firstAttribute="trailing" secondItem="ceY-lH-tgz" secondAttribute="trailing" id="URa-Lx-QsY"/>
+                            <constraint firstAttribute="trailing" secondItem="ceY-lH-tgz" secondAttribute="trailing" constant="10" id="URa-Lx-QsY"/>
                             <constraint firstItem="Aea-0P-Yel" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="22" id="UXA-9c-o9O"/>
                             <constraint firstAttribute="trailing" secondItem="2CK-1J-eYx" secondAttribute="trailing" id="XHr-xg-9Gg"/>
                             <constraint firstItem="Aea-0P-Yel" firstAttribute="centerY" secondItem="Wc5-34-1It" secondAttribute="centerY" id="i22-lc-ZsE"/>
@@ -133,6 +133,7 @@
                     </view>
                     <connections>
                         <outlet property="collectionView" destination="2CK-1J-eYx" id="qDg-2s-CTF"/>
+                        <outlet property="descLabel" destination="ceY-lH-tgz" id="DJx-iq-lmW"/>
                         <outlet property="titleLabel" destination="Wc5-34-1It" id="Oy3-c8-lJf"/>
                         <outlet property="versionLabel" destination="IEY-2m-Eif" id="y2B-5P-ToF"/>
                     </connections>

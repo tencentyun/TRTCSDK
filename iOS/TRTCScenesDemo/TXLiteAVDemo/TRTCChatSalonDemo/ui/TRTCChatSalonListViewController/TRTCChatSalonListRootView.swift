@@ -194,8 +194,8 @@ extension TRTCChatSalonListRootView: TRTCChatSalonListViewResponder {
 
 /// MARK: - internationalization string
 fileprivate extension String {
-    static let pullRefresh = ChatSalonLocalized.getLocalizedString(key: "pull down to refresh")
-    static let refreshing = ChatSalonLocalized.getLocalizedString(key: "loading…")
+    static let pullRefresh = TRTCLocalize("Demo.TRTC.LiveRoom.pullrefresh")
+    static let refreshing = TRTCLocalize("Demo.TRTC.LiveRoom.refreshing")
 }
 
 

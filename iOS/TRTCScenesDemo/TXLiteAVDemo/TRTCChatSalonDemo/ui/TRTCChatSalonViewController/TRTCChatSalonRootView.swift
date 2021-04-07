@@ -108,6 +108,10 @@ class TRTCChatSalonRootView: UIView {
         return button
     }()
     
+    lazy var tipsView: TRTCChatSalonTakeSeatTipsView = {
+        return TRTCChatSalonTakeSeatTipsView.init(frame: .zero, viewModel: viewModel)
+    }()
+    
     // 静音按钮
     let muteButton: UIButton = {
         let button = UIButton.init(frame: .zero)
@@ -235,9 +239,9 @@ extension TRTCChatSalonRootView: UICollectionViewDelegateFlowLayout {
             return
         }
         if indexPath.row > 0 {
-            let index = viewModel.anchorSeatList.index(viewModel.anchorSeatList.startIndex, offsetBy: indexPath.row - 1)
-            if index >= viewModel.anchorSeatList.startIndex && index <= viewModel.anchorSeatList.endIndex {
-                let (_, model) = viewModel.anchorSeatList[index]
+            if indexPath.row > 0 && indexPath.row <= viewModel.anchorUserIDs.count {
+                let userID = viewModel.anchorUserIDs[indexPath.row - 1]
+                guard let model = viewModel.anchorSeatList[userID] else { return }
                 model.action?(model) // 转换座位号输入
             }
         }
@@ -272,7 +276,7 @@ extension TRTCChatSalonRootView: UICollectionViewDataSource {
         if section == 0 {
             return viewModel.anchorUserIDs.count + 1
         } else {
-            return viewModel.memberAudienceDic.count
+            return viewModel.audienceUserIDs.count
         }
     }
     
@@ -291,9 +295,10 @@ extension TRTCChatSalonRootView: UICollectionViewDataSource {
                 }
                 
             } else {
-                let index = viewModel.memberAudienceDic.index(viewModel.memberAudienceDic.startIndex, offsetBy: indexPath.row)
-                let (_, audience) = viewModel.memberAudienceDic[index]
-                seatCell.setCell(audience: audience)
+                let userID = viewModel.audienceUserIDs[indexPath.row]
+                if let audience = viewModel.memberAudienceDic[userID] {
+                    seatCell.setCell(audience: audience)
+                }
             }
         }
         return cell
@@ -448,11 +453,13 @@ extension TRTCChatSalonRootView {
     }
     
     func showTopTips(type: TopTipsType) {
+        guard requestTakeSeatListView.isHidden else {
+            return
+        }
         let innerView: UIView
         let height: CGFloat
         switch type {
         case .requestTakeSeat(let info):
-            let tipsView = TRTCChatSalonTakeSeatTipsView.init(frame: .zero, viewModel: viewModel)
             tipsView.currentTakeSeatInfo = info
             innerView = tipsView
             height = TRTCChatSalonTakeSeatTipsView.kHeight
@@ -469,11 +476,17 @@ extension TRTCChatSalonRootView {
         topTipsView.snp.updateConstraints { (make) in
             make.height.equalTo(height)
         }
-        
         layoutIfNeeded()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 10) { [weak self] in
+            guard let self = self else { return }
+            self.hideTopTips()
+        }
     }
     
     func hideTopTips() {
+        guard !topTipsView.isHidden else {
+            return
+        }
         topTipsView.isHidden = true
         topTipsView.snp.updateConstraints { (make) in
             make.height.equalTo(0)
@@ -545,7 +558,7 @@ extension TRTCChatSalonRootView: TRTCChatSalonViewResponder {
     
     
     func audienceListRefresh() {
-        seatCollection.reloadSections(IndexSet.init(integer: 1))
+        seatCollection.reloadData()
     }
     
     func onSeatMute(isMute: Bool) {
@@ -623,6 +636,7 @@ extension TRTCChatSalonRootView: TRTCChatSalonViewResponder {
     
     func reuqestTakeSeatList(show: Bool) {
         if show {
+            hideTopTips()
             requestTakeSeatListView.show()
         } else {
             requestTakeSeatListView.hide()
@@ -641,21 +655,21 @@ extension TRTCChatSalonRootView: TRTCChatSalonViewResponder {
 
 /// MARK: - internationalization string
 fileprivate extension String {
-    static let anchorHeaderText = ChatSalonLocalized.getLocalizedString(key: "speakers")
-    static let audienceHeaderText = ChatSalonLocalized.getLocalizedString(key: "audiences")
-    static let leaveText = ChatSalonLocalized.getLocalizedString(key: "Leave quietly")
-    static let sureActionTitle = ChatSalonLocalized.getLocalizedString(key: "Owner.Confirm")
-    static let cancelActionTitle = ChatSalonLocalized.getLocalizedString(key: "Cancel")
-    static let acceptTitle = ChatSalonLocalized.getLocalizedString(key: "Welcome")
-    static let refuseTitle = ChatSalonLocalized.getLocalizedString(key: "Dismiss")
-    static let ownerExitMsg = ChatSalonLocalized.getLocalizedString(key: "you want to end the room?")
-    static let seatMute = ChatSalonLocalized.getLocalizedString(key: "Seat.Muted")
-    static let seatUnmute = ChatSalonLocalized.getLocalizedString(key: "Seat.Unmuted")
-    static let chooseTitle = ChatSalonLocalized.getLocalizedString(key: "Please select")
+    static let anchorHeaderText = TRTCLocalize("Demo.TRTC.Salon.anchor")
+    static let audienceHeaderText = TRTCLocalize("Demo.TRTC.Salon.audiences")
+    static let leaveText = TRTCLocalize("Demo.TRTC.Salon.leavequietly")
+    static let sureActionTitle = TRTCLocalize("Demo.TRTC.LiveRoom.confirm")
+    static let cancelActionTitle = TRTCLocalize("Demo.TRTC.LiveRoom.cancel")
+    static let acceptTitle = TRTCLocalize("Demo.TRTC.Salon.welcome")
+    static let refuseTitle = TRTCLocalize("Demo.TRTC.Salon.dismiss")
+    static let ownerExitMsg = TRTCLocalize("Demo.TRTC.Salon.wanttoendroom")
+    static let seatMute = TRTCLocalize("Demo.TRTC.Salon.seatmuted")
+    static let seatUnmute = TRTCLocalize("Demo.TRTC.Salon.seatunmuted")
+    static let chooseTitle = TRTCLocalize("Demo.TRTC.Salon.pleaseselect")
     
-    static let alertAudienceTitle = ChatSalonLocalized.getLocalizedString(key: "You want to leave the room?")
-    static let alertAudienceConfirm = ChatSalonLocalized.getLocalizedString(key: "Audience.Confirm")
-    static let alertAudienceCancel = ChatSalonLocalized.getLocalizedString(key: "Wait a bit")
+    static let alertAudienceTitle = TRTCLocalize("Demo.TRTC.Salon.surewanttoleaveroom")
+    static let alertAudienceConfirm = TRTCLocalize("Demo.TRTC.Salon.audienceconfirm")
+    static let alertAudienceCancel = TRTCLocalize("Demo.TRTC.Salon.waitabit")
 }
 
 fileprivate extension UIColor {

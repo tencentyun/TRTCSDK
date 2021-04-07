@@ -69,7 +69,7 @@ static NSInteger           _index = 0;
         _index++;
     }
     else {
-        NSMutableAttributedString *msgShow = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"通知 %@%@", msgModel.userName, msgModel.userMsg]];
+        NSMutableAttributedString *msgShow = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@%@", TRTCLocalize(@"Demo.TRTC.LiveRoom.notice"), msgModel.userName, msgModel.userMsg]];
         [attribute appendAttributedString:msgShow];
         [attribute addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:MSG_TABLEVIEW_LABEL_FONT] range:NSMakeRange(0, attribute.length)];
         [attribute addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:241/255.0 green:43/255.0 blue:91/255.0 alpha:1] range:NSMakeRange(0, msgShow.length)];

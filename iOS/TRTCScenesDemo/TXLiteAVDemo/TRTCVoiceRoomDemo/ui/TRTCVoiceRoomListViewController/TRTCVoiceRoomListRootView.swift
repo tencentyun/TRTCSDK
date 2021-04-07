@@ -107,8 +107,8 @@ class TRTCVoiceRoomListRootView: UIView {
         roomListCollection.delegate = self
         roomListCollection.dataSource = self
         let header = MJRefreshStateHeader(refreshingTarget: self, refreshingAction: #selector(refreshListAction))
-        header.setTitle("下拉刷新", for: .pulling)
-        header.setTitle("刷新中", for: .refreshing)
+        header.setTitle(.pullrefreshText, for: .pulling)
+        header.setTitle(.refreshingText, for: .refreshing)
         header.setTitle("", for: .idle)
         header.lastUpdatedTimeLabel?.isHidden = true
         roomListCollection.mj_header = header
@@ -194,7 +194,8 @@ extension TRTCVoiceRoomListRootView: TRTCVoiceRoomListViewResponder {
 
 /// MARK: - internationalization string
 fileprivate extension String {
-    
+    static let pullrefreshText = TRTCLocalize("Demo.TRTC.LiveRoom.pullrefresh")
+    static let refreshingText = TRTCLocalize("Demo.TRTC.LiveRoom.refreshing")
 }
 
 

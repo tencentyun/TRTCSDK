@@ -1,0 +1,16 @@
+/* 
+  InfoPlist.strings
+  TXLiteAVDemo
+
+  Created by adams on 2021/3/25.
+  Copyright © 2021 Tencent. All rights reserved.
+*/
+
+CFBundleDisplayName = "TRTC";
+NSAppleMusicUsageDescription = "TRTC needs access to your media library to acquire music";
+NSCameraUsageDescription = "TRTC needs access to your camera to capture video";
+NSMicrophoneUsageDescription = "TRTC needs access to your mic to capture audio";
+NSPhotoLibraryAddUsageDescription = "TRTC needs access your photo library to save edited files";
+NSPhotoLibraryUsageDescription = "TRTC needs access to your photo library to edit videos";
+"UILaunchStoryboardName" = "LaunchScreen_en";
+

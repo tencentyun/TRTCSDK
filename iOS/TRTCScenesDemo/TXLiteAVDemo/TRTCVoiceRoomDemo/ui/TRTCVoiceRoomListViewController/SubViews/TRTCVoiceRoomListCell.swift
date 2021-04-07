@@ -13,7 +13,7 @@ class TRTCVoiceRoomListCell: UICollectionViewCell {
     
     let coverImageView: UIImageView = {
         let imageView = UIImageView.init(frame: .zero)
-        imageView.contentMode = .scaleAspectFill
+        imageView.contentMode = .scaleToFill
         return imageView
     }()
     
@@ -52,7 +52,7 @@ class TRTCVoiceRoomListCell: UICollectionViewCell {
         self.coverImageView.sd_setImage(with:imageURL, placeholderImage:UIImage.init(named: imageName) ,completed: nil)
         self.anchorNameLabel.text = model.ownerName
         self.roomNameLabel.text = model.roomName
-        self.memberCountLabel.text = "\(model.memberCount)在线"
+        self.memberCountLabel.text = LocalizeReplaceXX(.onlinexxText, String(model.memberCount))
     }
     
     // MARK: - 视图生命周期函数
@@ -96,4 +96,9 @@ class TRTCVoiceRoomListCell: UICollectionViewCell {
     }
     
     
+}
+
+/// MARK: - internationalization string
+fileprivate extension String {
+    static let onlinexxText = TRTCLocalize("Demo.TRTC.VoiceRoom.xxonline")
 }

@@ -1,0 +1,9 @@
+/* 
+  InfoPlist.strings
+  TXLiteAVDemo
+
+  Created by adams on 2021/3/24.
+  Copyright © 2021 Tencent. All rights reserved.
+*/
+
+CFBundleDisplayName = "TRTC多人会议录屏";

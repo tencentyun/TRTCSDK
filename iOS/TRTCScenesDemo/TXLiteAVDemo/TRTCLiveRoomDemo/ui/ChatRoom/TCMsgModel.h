@@ -20,7 +20,7 @@
 // 发送框
 #define MSG_TEXT_SEND_VIEW_HEIGHT          45
 #define MSG_TEXT_SEND_FEILD_HEIGHT         25
-#define MSG_TEXT_SEND_BTN_WIDTH            35
+#define MSG_TEXT_SEND_BTN_WIDTH            40
 #define MSG_TEXT_SEND_BULLET_BTN_WIDTH     55
 
 // 小图标

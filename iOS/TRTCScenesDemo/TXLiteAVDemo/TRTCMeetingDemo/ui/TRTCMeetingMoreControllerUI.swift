@@ -17,7 +17,7 @@ final class TRTCMeetingMoreControllerUI: TRTCMeetingMoreViewController {
     var selectIndex = 0
     
     lazy var segView:CenterSegmentView = {
-        let nameArray = ["视频", "音频", "分享"]
+        let nameArray : [String] = [.videoText, .audioText, .shareText]
         let vcVideo = TRTCMeetingMoreViewVideoVC()
         let vcAudio = TRTCMeetingMoreViewAudioVC()
         let vcShare = TRTCMeetingMoreViewShareVC()
@@ -36,7 +36,7 @@ final class TRTCMeetingMoreControllerUI: TRTCMeetingMoreViewController {
     lazy var setLabel:UILabel = {
         let label = UILabel(frame: CGRect(x: 0, y: 16, width: screenWidth, height: 30))
         label.textAlignment = NSTextAlignment.center
-        label.text = "设置"
+        label.text = .settingText
         label.font = UIFont.systemFont(ofSize: 18)
         label.textColor = .white
         return label
@@ -50,4 +50,12 @@ final class TRTCMeetingMoreControllerUI: TRTCMeetingMoreViewController {
         view.addSubview(setLabel)
         view.addSubview(self.segView)
     }
+}
+
+/// MARK: - internationalization string
+fileprivate extension String {
+    static let videoText = TRTCLocalize("Demo.TRTC.Meeting.video")
+    static let audioText = TRTCLocalize("Demo.TRTC.Meeting.audio")
+    static let shareText = TRTCLocalize("Demo.TRTC.Meeting.share")
+    static let settingText = TRTCLocalize("Demo.TRTC.Meeting.share")
 }

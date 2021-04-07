@@ -11,6 +11,7 @@
 #import "TXVoiceRoomService.h"
 #import "TXVoiceRoomCommonDef.h"
 #import "TRTCCloud.h"
+#import "AppLocalized.h"
 
 @interface TRTCVoiceRoom ()<VoiceRoomTRTCServiceDelegate, ITXRoomServiceDelegate>
 
@@ -594,7 +595,7 @@ static dispatch_once_t onceToken;
         if ([self isOnSeatWithUserId:userId]) {
             [self runOnDelegateQueue:^{
                 if (callback) {
-                    callback(-1, @"该用户已经是上麦主播了");
+                    callback(-1, TRTCLocalize(@"Demo.TRTC.Salon.userisspeaker"));
                 }
             }];
             return;

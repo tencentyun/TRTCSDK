@@ -75,5 +75,5 @@ public class TRTCVoiceRoomListViewController: UIViewController {
 }
 
 private extension String {
-    static let controllerTitle = "语音聊天室"
+    static let controllerTitle = TRTCLocalize("Demo.TRTC.VoiceRoom.voicechatroom")
 }

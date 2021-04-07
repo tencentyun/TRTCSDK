@@ -75,5 +75,5 @@ public class TRTCChatSalonListViewController: UIViewController {
 }
 
 private extension String {
-    static let controllerTitle = ChatSalonLocalized.getLocalizedString(key: "chat salon")
+    static let controllerTitle = TRTCLocalize("Demo.TRTC.Salon.chatsalon")
 }

@@ -66,4 +66,10 @@ typedef NS_ENUM(NSUInteger, TXSeatStatus) {
 
 @end
 
+@interface TXChatSalonSendInviteInfo : NSObject
+@property (nonatomic, copy) NSString *cmd;
+@property (nonatomic, copy) NSString *userID;
+
+@end
+
 NS_ASSUME_NONNULL_END

@@ -228,7 +228,7 @@
     
     [self initRoomPreview];
 #ifdef TRTC_APPSTORE
-    [self makeToastWithMessage:@"本App仅用于功能体验，请勿商用。每个房间最多10人，持续时间最长10分钟。" duration:5];
+    [self makeToastWithMessage:TRTCLocalize(@"Demo.TRTC.LiveRoom.alerttoexperienceandshowlongestduration") duration:5];
 #endif
 }
 
@@ -238,7 +238,7 @@
     _publishBtn = [[UIButton alloc] init];
     [_publishBtn setBackgroundColor:[UIColor appTint]];
     [[_publishBtn layer] setCornerRadius:8];
-    [_publishBtn setTitle:@"开始" forState:UIControlStateNormal];
+    [_publishBtn setTitle:TRTCLocalize(@"Demo.TRTC.LiveRoom.start") forState:UIControlStateNormal];
     [[_publishBtn titleLabel] setFont:[UIFont systemFontOfSize:22]];
     [self.view addSubview:_publishBtn];
     [_publishBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -326,7 +326,7 @@
     [_roomName setTextColor:[UIColor whiteColor]];
     [_roomName setReturnKeyType:UIReturnKeyDone];
     [_roomName setFont:[UIFont boldSystemFontOfSize:22]];
-    [_roomName setAttributedPlaceholder:[[NSAttributedString alloc] initWithString:@"标题有趣能吸引人气" attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.8 alpha:1]}]];
+    [_roomName setAttributedPlaceholder:[[NSAttributedString alloc] initWithString:TRTCLocalize(@"Demo.TRTC.LiveRoom.titlefuncanattractpopularity") attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.8 alpha:1]}]];
     [_createTopPanel addSubview:_roomName];
     [_roomName mas_makeConstraints:^(MASConstraintMaker *make) {
         make.height.mas_equalTo(32);
@@ -338,13 +338,13 @@
     _roomName.delegate = self;
     
     UILabel *audioQualityLabel = [[UILabel alloc] init];
-    audioQualityLabel.text = @"音质";
+    audioQualityLabel.text = TRTCLocalize(@"Demo.TRTC.LiveRoom.soundquality");
     audioQualityLabel.font = [UIFont systemFontOfSize:16];
     audioQualityLabel.textColor = [UIColor whiteColor];
     audioQualityLabel.textAlignment = NSTextAlignmentCenter;
     [_createTopPanel addSubview:audioQualityLabel];
     [audioQualityLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.mas_equalTo(70);
+//        make.width.mas_equalTo(70);
         make.height.mas_equalTo(32);
         make.leading.equalTo(_roomName);
         make.top.mas_equalTo(_roomName.mas_bottom).offset(6);
@@ -352,7 +352,7 @@
     
     _standardQualityButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [_standardQualityButton setBackgroundColor:AUDIO_QUALITY_DEFAULT_COLOR];
-    [_standardQualityButton setTitle:@"标准" forState:UIControlStateNormal];
+    [_standardQualityButton setTitle:TRTCLocalize(@"Demo.TRTC.LiveRoom.standard") forState:UIControlStateNormal];
     _standardQualityButton.titleLabel.font = [UIFont systemFontOfSize:15];
     _standardQualityButton.layer.cornerRadius = 8;
     [_standardQualityButton addTarget:self
@@ -360,7 +360,7 @@
                      forControlEvents:UIControlEventTouchUpInside];
     [_createTopPanel addSubview:_standardQualityButton];
     [_standardQualityButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.mas_equalTo(56);
+//        make.width.mas_equalTo(56);
         make.height.mas_equalTo(32);
         make.left.equalTo(audioQualityLabel.mas_right).offset(6);
         make.top.mas_equalTo(_roomName.mas_bottom).offset(4);
@@ -368,7 +368,7 @@
     
     _musicQualityButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [_musicQualityButton setBackgroundColor:AUDIO_QUALITY_SELECTED_COLOR];
-    [_musicQualityButton setTitle:@"音乐" forState:UIControlStateNormal];
+    [_musicQualityButton setTitle:TRTCLocalize(@"Demo.TRTC.LiveRoom.music") forState:UIControlStateNormal];
     _musicQualityButton.titleLabel.font = [UIFont systemFontOfSize:15];
     _musicQualityButton.layer.cornerRadius = 8;
     [_musicQualityButton addTarget:self
@@ -377,7 +377,7 @@
     _musicQualityButton.selected = YES;
     [_createTopPanel addSubview:_musicQualityButton];
     [_musicQualityButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.mas_equalTo(56);
+//        make.width.mas_equalTo(56);
         make.height.mas_equalTo(32);
         make.left.equalTo(_standardQualityButton.mas_right).offset(8);
         make.top.mas_equalTo(_roomName.mas_bottom).offset(4);
@@ -435,7 +435,7 @@
         [_roomName resignFirstResponder];
     }
     if (_roomName.text.length <= 0) {
-        [self makeToastWithMessage:@"房间名不能为空"];
+        [self makeToastWithMessage:TRTCLocalize(@"Demo.TRTC.LiveRoom.roomnamecantbeempty")];
         return;
     }
 #ifdef TRTC_APPSTORE
@@ -460,7 +460,7 @@
                 NSLog(@"%ld",(long)code);
             }];
         } else {
-            [self makeToastWithMessage:error.length > 0 ? error : @"创建房间失败"];
+            [self makeToastWithMessage:error.length > 0 ? error : TRTCLocalize(@"Demo.TRTC.LiveRoom.createroomfailed")];
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 [self stopRtmp];
                 [self closeVC];
@@ -521,8 +521,8 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 [strongSelf.logicView.topView pauseLive];
                 [strongSelf stopRtmp];
-                UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"本App仅用于功能体验，当前持续时间已达到10分钟上限，已自动解散房间。" message:nil preferredStyle:(UIAlertControllerStyleAlert)];
-                UIAlertAction *ok = [UIAlertAction actionWithTitle:@"确定" style:(UIAlertActionStyleDefault) handler:^(UIAlertAction * _Nonnull action) {
+                UIAlertController *alert = [UIAlertController alertControllerWithTitle:TRTCLocalize(@"Demo.TRTC.LiveRoom.alerttoexperienceandupperlimit") message:nil preferredStyle:(UIAlertControllerStyleAlert)];
+                UIAlertAction *ok = [UIAlertAction actionWithTitle:TRTCLocalize(@"Demo.TRTC.LiveRoom.confirm") style:(UIAlertActionStyleDefault) handler:^(UIAlertAction * _Nonnull action) {
                     //添加PK view
                     [strongSelf closeVC];
                 }];
@@ -600,17 +600,17 @@
 
 - (void)onRequestJoinAnchor:(TRTCLiveUserInfo *)user reason:(NSString *)reason timeout: (double)timeout {
     if ([_setLinkMemeber count] >= MAX_LINKMIC_MEMBER_SUPPORT) {
-        [TCUtil toastTip:@"连麦请求拒绝，主播端连麦人数超过最大限制" parentView:self.view];
-        [self.liveRoom responseJoinAnchor:user.userId agree:NO reason:@"主播端连麦人数超过最大限制"];
+        [TCUtil toastTip:TRTCLocalize(@"Demo.TRTC.LiveRoom.micconnectionrefusedandanchorpeopleexceedsmaxlimit") parentView:self.view];
+        [self.liveRoom responseJoinAnchor:user.userId agree:NO reason:TRTCLocalize(@"Demo.TRTC.LiveRoom.anchorpeopleexceedsmaxlimit")];
     }
     else if (_userIdRequest.length > 0) {
         if (![_userIdRequest isEqualToString:user.userId]) {
-            [TCUtil toastTip:@"连麦请求拒绝，主播正在处理其它人的连麦请求" parentView:self.view];
-            [self.liveRoom responseJoinAnchor:user.userId agree:NO reason:@"请稍后，主播正在处理其它人的连麦请求"];
+            [TCUtil toastTip:TRTCLocalize(@"Demo.TRTC.LiveRoom.micconnectionrefusedandanchordealotherreq") parentView:self.view];
+            [self.liveRoom responseJoinAnchor:user.userId agree:NO reason:TRTCLocalize(@"Demo.TRTC.LiveRoom.waitforhandleotherreq")];
         }
     } else if (_curPkRoom != nil) {
-        [TCUtil toastTip:@"连麦请求拒绝，正在进行PK操作" parentView:self.view];
-        [self.liveRoom responseJoinAnchor:user.userId agree:NO reason:@"请稍后，主播正在进行PK"];
+        [TCUtil toastTip:TRTCLocalize(@"Demo.TRTC.LiveRoom.micconnectionrefusedandinpk") parentView:self.view];
+        [self.liveRoom responseJoinAnchor:user.userId agree:NO reason:TRTCLocalize(@"Demo.TRTC.LiveRoom.micconnectionrefusedandinpk")];
     }
     else {
         TCStatusInfoView * statusInfoView = [self getStatusInfoViewFrom:user.userId];
@@ -625,7 +625,7 @@
         }
         _userIdRequest = user.userId;
         curRequest = user;
-        UIAlertView* _alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:[NSString stringWithFormat:@"%@向您发起连麦请求", user.userName]  delegate:self cancelButtonTitle:@"拒绝" otherButtonTitles:@"接受", nil];
+        UIAlertView* _alertView = [[UIAlertView alloc] initWithTitle:TRTCLocalize(@"Demo.TRTC.LiveRoom.prompt") message:LocalizeReplaceXX(TRTCLocalize(@"Demo.TRTC.LiveRoom.xxinitiateamicconnectionreq"), user.userName)  delegate:self cancelButtonTitle:TRTCLocalize(@"Demo.TRTC.LiveRoom.refuse") otherButtonTitles:TRTCLocalize(@"Demo.TRTC.LiveRoom.accept"), nil];
         
         [_alertView show];
         
@@ -638,7 +638,7 @@
     if (_userIdRequest != nil && _userIdRequest.length > 0) {
         if (buttonIndex == 0) {
             //拒绝连麦
-            [self.liveRoom responseJoinAnchor:curRequest.userId agree:NO reason:@"主播拒绝了您的连麦请求"];
+            [self.liveRoom responseJoinAnchor:curRequest.userId agree:NO reason:TRTCLocalize(@"Demo.TRTC.LiveRoom.refusemicconnectionreq")];
         }
         else if (buttonIndex == 1) {
             //接受连麦
@@ -675,7 +675,7 @@
             [_setLinkMemeber removeObject:userID];
             [statusInfoView stopPlay];
             [statusInfoView emptyPlayInfo];
-            [TCUtil toastTip: [NSString stringWithFormat: @"%@连麦超时", userID] parentView:self.view];
+            [TCUtil toastTip:LocalizeReplaceXX(@"Demo.TRTC.LiveRoom.xxmicconnectiontimeout", userID) parentView:self.view];
         }
     }
 }
@@ -685,7 +685,7 @@
     if (alertView) {
         [alertView dismissWithClickedButtonIndex:0 animated:NO];
     }
-    [TCUtil toastTip: @"处理连麦请求超时" parentView:self.view];
+    [TCUtil toastTip: TRTCLocalize(@"Demo.TRTC.LiveRoom.dealmicconnectionreqtimeout") parentView:self.view];
 }
 
 - (NSString*) getLinkMicSessionID {
@@ -749,13 +749,13 @@
     self.curPkRoom = [[TRTCLiveRoomInfo alloc] init];
     self.curPkRoom.ownerId = user.userId;
     self.curPkRoom.ownerName = user.userName;
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:@"%@发起了PK请求",user.userName] message:nil preferredStyle:(UIAlertControllerStyleAlert)];
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:LocalizeReplaceXX(@"Demo.TRTC.LiveRoom.xxinitiatepk", user.userName) message:nil preferredStyle:(UIAlertControllerStyleAlert)];
     __weak __typeof(self) weakSelf = self;
-    UIAlertAction *reject = [UIAlertAction actionWithTitle:@"拒绝" style:(UIAlertActionStyleCancel) handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertAction *reject = [UIAlertAction actionWithTitle:TRTCLocalize(@"Demo.TRTC.LiveRoom.refuse") style:(UIAlertActionStyleCancel) handler:^(UIAlertAction * _Nonnull action) {
         [weakSelf linkFrameRestore];
-        [weakSelf.liveRoom responseRoomPKWithUserID:user.userId agree:NO reason:@"主播拒绝"];
+        [weakSelf.liveRoom responseRoomPKWithUserID:user.userId agree:NO reason:TRTCLocalize(@"Demo.TRTC.LiveRoom.anchorrefuse")];
     }];
-    UIAlertAction *ok = [UIAlertAction actionWithTitle:@"接受" style:(UIAlertActionStyleDefault) handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertAction *ok = [UIAlertAction actionWithTitle:TRTCLocalize(@"Demo.TRTC.LiveRoom.accept") style:(UIAlertActionStyleDefault) handler:^(UIAlertAction * _Nonnull action) {
         [weakSelf.liveRoom responseRoomPKWithUserID:user.userId agree:YES reason:@""];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"PKNotificationKey" object:nil];
         //添加PK view
@@ -768,7 +768,7 @@
 
 - (void)PKAlertCheck: (UIAlertController*)alert {
     if (alert.presentingViewController == self.navigationController) {
-        [TCUtil toastTip: [NSString stringWithFormat: @"处理%@PK超时", _curPkRoom.ownerName] parentView:self.view];
+        [TCUtil toastTip:LocalizeReplaceXX(@"Demo.TRTC.LiveRoom.dealxxpktimeout", _curPkRoom.ownerName) parentView:self.view];
         [alert dismissViewControllerAnimated:YES completion:nil];
         [self linkFrameRestore];
     }
@@ -870,7 +870,7 @@
 
 - (void)pkWithRoom:(TRTCLiveRoomInfo*)room {
     if (_setLinkMemeber.count > 0) {
-        [TCUtil toastTip:@"正在连麦中，请稍候尝试PK操作" parentView:self.view];
+        [TCUtil toastTip:TRTCLocalize(@"Demo.TRTC.LiveRoom.micconnectingandwaitforpk") parentView:self.view];
         return;
     }
     
@@ -882,7 +882,7 @@
             return ;
         }
         if (accept) {
-            [TCUtil toastTip:[NSString stringWithFormat:@"%@已接受您的PK请求",room.ownerName] parentView:self.view];
+            [TCUtil toastTip:LocalizeReplaceXX(@"Demo.TRTC.LiveRoom.xxacceptpkreq", room.ownerName) parentView:self.view];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"PKNotificationKey" object:nil];
             //添加PK view
             
@@ -890,7 +890,7 @@
             if (error.length > 0) {
                 [TCUtil toastTip: error parentView:self.view];
             } else {
-               [TCUtil toastTip:[NSString stringWithFormat:@"%@拒绝了您的PK请求",room.ownerName] parentView:self.view];
+               [TCUtil toastTip:LocalizeReplaceXX(@"Demo.TRTC.LiveRoom.xxrefusepkreq", room.ownerName) parentView:self.view];
             }
             if (self->_roomStatus != TRTCLiveRoomLiveStatusRoomPK) {
                 self.curPkRoom = nil;

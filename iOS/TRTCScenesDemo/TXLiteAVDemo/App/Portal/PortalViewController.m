@@ -6,6 +6,7 @@
 #import "ColorMacro.h"
 #import "MainMenuCell.h"
 #import "TXLiteAVDemo-Swift.h"
+#import "AppLocalized.h"
 
 #if DEBUG
 #define SdkBusiId (18069)
@@ -43,6 +44,7 @@ UIPickerViewDataSource, UIPickerViewDelegate> {
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, weak) IBOutlet UILabel *versionLabel;
 @property (nonatomic, weak) IBOutlet UILabel *titleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *descLabel;
 
 @property (nonatomic, strong) TRTCCallingContactViewController *videoCallVC;
 
@@ -78,32 +80,33 @@ UIPickerViewDataSource, UIPickerViewDelegate> {
     __weak __typeof(self) wSelf = self;
     self.mainMenuItems = @[
         [[MainMenuItem alloc] initWithIcon:[UIImage imageNamed:@"MenuMeeting"]
-                                     title:[PortalViewController getLocalizedString:@"Video Conferencing"]
-                                   content:@"语音自动降噪、视频画质超高清，适用于在线会议、远程培训、小班课等场景"
+                                     title: AppPortalLocalize(@"Video Conferencing")
+                                   content: AppPortalLocalize(@"App.PortalViewController.audioauto")
                                   onSelect:^{ [wSelf gotoMeetingView]; }],
         [[MainMenuItem alloc] initWithIcon:[UIImage imageNamed:@"MenuVoiceRoom"]
-                                     title:[PortalViewController getLocalizedString:@"Audio Chat Room"]
-                                   content:@"内含变声、音效、伴奏、背景音乐等声音玩法，适用于闲聊房、K歌房和开黑房等场景"
+                                     title:AppPortalLocalize(@"Audio Chat Room")
+                                   content:AppPortalLocalize(@"App.PortalViewController.includesoundchanges")
                                   onSelect:^{ [wSelf gotoVoiceRoomView]; }],
         [[MainMenuItem alloc] initWithIcon:[UIImage imageNamed:@"MenuLive"]
-                                     title:[PortalViewController getLocalizedString:@"Interactive Video Live Streaming"]
-                                   content:@"观众时延低至800ms，上下麦无需loading，适用于低延时、十万人高并发的大型互动直播"
+                                     title:AppPortalLocalize(@"Interactive Video Live Streaming")
+                                   content:AppPortalLocalize(@"App.PortalViewController.audiencedelayaslow")
                                   onSelect:^{ [wSelf gotoLiveView]; }],
         [[MainMenuItem alloc] initWithIcon:[UIImage imageNamed:@"MenuAudioCall"]
-                                     title:[PortalViewController getLocalizedString:@"Audio Call"]
-                                   content:@"48kHz高音质语音，60%丢包可正常语音，领先行业的3A处理，杜绝回声和啸叫"
+                                     title:AppPortalLocalize(@"Audio Call")
+                                   content:AppPortalLocalize(@"App.PortalViewController.highqualityspeech")
                                   onSelect:^{ [wSelf gotoAudioCallView]; }],
         [[MainMenuItem alloc] initWithIcon:[UIImage imageNamed:@"MenuVideoCall"]
-                                     title:[PortalViewController getLocalizedString:@"Video Call"]
-                                   content:@"支持1080P超清视频，50%丢包率可正常视频，自备美颜特效，带来高品质视频通话体验"
+                                     title:AppPortalLocalize(@"Video Call")
+                                   content:AppPortalLocalize(@"App.PortalViewController.supports1080PUHDvideo")
                                   onSelect:^{ [wSelf gotoVideoCallView]; }],
         [[MainMenuItem alloc] initWithIcon:[UIImage imageNamed:@"MainChatSalon"]
-                                     title:[PortalViewController getLocalizedString:@"Chat Salon"]
+                                     title:AppPortalLocalize(@"Chat Salon")
                                    content:@""
                                   onSelect:^{ [wSelf gotoChatSalonView]; }]
     ];
     NSString *version = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
     self.versionLabel.text = [NSString stringWithFormat:@"TRTC v%@(%@)", [TRTCCloud getSDKVersion], version];
+    self.descLabel.text = TRTCLocalize(@"Demo.TRTC.Home.appusetoshowfunc");
     
     UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
     [self.titleLabel addGestureRecognizer:tapGesture];
@@ -130,14 +133,14 @@ UIPickerViewDataSource, UIPickerViewDelegate> {
         [TRTCCalling shareInstance].imBusinessID = SdkBusiId;
         [TRTCCalling shareInstance].deviceToken = [AppUtils shared].appDelegate.deviceToken;
         [[ProfileManager shared] IMLoginWithUserSig:userSig success:^{
-            [self makeToastWithMessage:@"登录IM成功"];
+            [self makeToastWithMessage:AppPortalLocalize(@"App.PortalViewController.loginimsuccess")];
             [[TRTCCalling shareInstance] login:SDKAPPID user:userID userSig:userSig success:^{
                 NSLog(@"Audio call login success.");
             } failed:^(int code, NSString *error) {
                 NSLog(@"Audio call login failed.");
             }];
         } failed:^(NSString * error) {
-            [self makeToastWithMessage:@"登录IM失败"];
+            [self makeToastWithMessage:AppPortalLocalize(@"App.PortalViewController.loginimfailed")];
         }];
     }
 }
@@ -165,13 +168,13 @@ UIPickerViewDataSource, UIPickerViewDelegate> {
 
 - (void)gotoVideoCallView {
     self.videoCallVC.callType = CallType_Video;
-    self.videoCallVC.title = @"视频通话";
+    self.videoCallVC.title = AppPortalLocalize(@"App.PortalViewController.videocalling");
     [self.navigationController pushViewController:self.videoCallVC animated:YES];
 }
 
 - (void)gotoAudioCallView {
     self.videoCallVC.callType = CallType_Audio;
-    self.videoCallVC.title = @"语音通话";
+    self.videoCallVC.title = AppPortalLocalize(@"App.PortalViewController.audiocalling");
     [self.navigationController pushViewController:self.videoCallVC animated:YES];
 }
 
@@ -217,11 +220,11 @@ UIPickerViewDataSource, UIPickerViewDelegate> {
 }
 
 - (IBAction)logout:(id)sender {
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"确定要退出登录吗？" message:nil preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:AppPortalLocalize(@"App.PortalViewController.areyousureloginout") message:nil preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:AppPortalLocalize(@"App.PortalViewController.cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
         
     }];
-    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:AppPortalLocalize(@"App.PortalViewController.determine") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         [[ProfileManager shared] removeLoginCache];
         [[AppUtils shared] showLoginController];
         [[V2TIMManager sharedInstance] logout:^{
@@ -243,7 +246,7 @@ UIPickerViewDataSource, UIPickerViewDelegate> {
     UIButton* uploadButton = [UIButton buttonWithType:UIButtonTypeSystem];
     uploadButton.center = CGPointMake(self.view.bounds.size.width / 2, _logUploadView.frame.size.height * 0.9);
     uploadButton.bounds = CGRectMake(0, 0, self.view.bounds.size.width / 3, _logUploadView.frame.size.height * 0.2);
-    [uploadButton setTitle:@"分享上传日志" forState:UIControlStateNormal];
+    [uploadButton setTitle:AppPortalLocalize(@"App.PortalViewController.sharelog") forState:UIControlStateNormal];
     [uploadButton addTarget:self action:@selector(onSharedUploadLog:) forControlEvents:UIControlEventTouchUpInside];
     [_logUploadView addSubview:uploadButton];
 
@@ -345,14 +348,6 @@ UIPickerViewDataSource, UIPickerViewDelegate> {
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
     return 1;
-}
-
-#pragma mark - Localized
-
-+ (NSString *)getLocalizedString:(NSString *)key {
-    NSBundle *bundle = [NSBundle mainBundle];
-    NSString *tableName = @"AppPortalLocalized";
-    return [bundle localizedStringForKey:key value:key table:tableName];
 }
 
 @end

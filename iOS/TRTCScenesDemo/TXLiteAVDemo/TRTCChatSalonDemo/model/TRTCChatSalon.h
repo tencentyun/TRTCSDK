@@ -105,8 +105,7 @@ NS_ASSUME_NONNULL_BEGIN
 * 1.【观众】向您的服务端获取最新的语音聊天室列表，可能包含多个直播间的 roomId 和房间信息。
 * 2. 观众选择一个语音聊天室，调用`enterRoom`并传入房间号即可进入该房间。
 * 3. 进房后会收到组件的`onRoomInfoChange`房间属性变化事件通知，此时可以记录房间属性并做相应改变，例如 UI 展示房间名、记录上麦是否需要请求主播同意等。
-* 4. 进房后会收到组件的`onEnterRoomSeatListNotify`麦位表变化事件通知，此时可以将麦位表变化刷新到 UI 界面上。
-* 5. 进房后还会收到麦位表有主播进入的`onAnchorEnterSeat`的事件通知。
+* 4. 进房后还会收到麦位表有主播进入的`onAnchorEnterSeat`的事件通知。
 *
 * - parameter roomID   房间标识
 * - parameter callback 进入房间是否成功的结果回调

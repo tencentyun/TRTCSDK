@@ -118,8 +118,8 @@ class TRTCChatSalonListViewModel {
 }
 
 fileprivate extension String {
-    static let toastAppIdError = ChatSalonLocalized.getLocalizedString(key: "invalid appid")
-    static let toastEmptyContent = ChatSalonLocalized.getLocalizedString(key: "No content yet~")
-    static let toastGetInfoListFailed = ChatSalonLocalized.getLocalizedString(key: "Failed to get room list")
-    static let toastGetListFailed = ChatSalonLocalized.getLocalizedString(key: "Failed to get list")
+    static let toastAppIdError = TRTCLocalize("Demo.TRTC.Salon.invalidappid")
+    static let toastEmptyContent = TRTCLocalize("Demo.TRTC.LiveRoom.nocontentnow~")
+    static let toastGetInfoListFailed = TRTCLocalize("Demo.TRTC.LiveRoom.getroomlistfailed")
+    static let toastGetListFailed = TRTCLocalize("Demo.TRTC.Salon.getlistfailed")
 }

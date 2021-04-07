@@ -135,17 +135,17 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
             V2TIMManager.sharedInstance()?.getGroupsInfo([room.roomId], succ: { [weak self] (result) in
                 guard let `self` = self else { return }
                 guard let info = result?.first else {
-                    self.view.makeToast("房间信息获取失败，请稍后再试。")
+                    self.view.makeToast(.roomInfoFailedText)
                     return
                 }
                 if info.info.memberCount <= 10 {
                     enterRoom()
                 } else {
-                    self.view.makeToast("当前房间人数超过限制，无法加入。")
+                    self.view.makeToast(.roomExceedLimitText)
                 }
             }, fail: { [weak self] (error, message) in
                 guard let `self` = self else { return }
-                self.view.makeToast("房间信息获取失败，请稍后再试。")
+                self.view.makeToast(.roomInfoFailedText)
             });
             #else
             enterRoom()
@@ -160,4 +160,8 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
         return CGSize(width: view.bounds.width / 2 , height: view.bounds.width / 2)
     }
     
+}
+private extension String {
+    static let roomInfoFailedText = TRTCLocalize("Demo.TRTC.LiveRoom.roominfofailed")
+    static let roomExceedLimitText = TRTCLocalize("Demo.TRTC.LiveRoom.roomexceedlimit")
 }

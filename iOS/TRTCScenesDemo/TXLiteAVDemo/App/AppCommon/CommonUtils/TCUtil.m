@@ -13,7 +13,7 @@
 #import <sys/types.h>
 #import <sys/sysctl.h>
 #import "TXLiteAVDemo-Swift.h"
-
+#import "AppLocalized.h"
 
 //错误码
 #define kError_InvalidParam                            -10001
@@ -98,9 +98,9 @@
         NSData* data = [TCUtil dictionary2JsonData:params];
         if (data == nil)
         {
-            DebugLog(@"sendHttpRequest failed，参数转成json格式失败");
+            DebugLog(AppPortalLocalize(@"AppCommon.TCUtil.sendhttprequest"));
             dispatch_async(dispatch_get_main_queue(), ^{
-                handler(kError_ConvertJsonFailed, @"参数错误", nil);
+                handler(kError_ConvertJsonFailed, AppPortalLocalize(@"AppCommon.TCUtil.parametererror"), nil);
             });
             return;
         }
@@ -132,7 +132,7 @@
             {
                 DebugLog(@"internalSendRequest failed，NSURLSessionDataTask return error code:%d, des:%@", [error code], [error description]);
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    handler(kError_HttpError, @"服务请求失败", nil);
+                    handler(kError_HttpError, AppPortalLocalize(@"AppCommon.TCUtil.serverrequesterror"), nil);
                 });
             }
             else
@@ -177,7 +177,7 @@
         NSData* data = [TCUtil dictionary2JsonData:param];
         if (data == nil)
         {
-            DebugLog(@"sendHttpRequest failed，参数转成json格式失败");
+            DebugLog(AppPortalLocalize(@"AppCommon.TCUtil.sendhttprequest"));
             dispatch_async(dispatch_get_main_queue(), ^{
                 handler(kError_ConvertJsonFailed, nil);
             });

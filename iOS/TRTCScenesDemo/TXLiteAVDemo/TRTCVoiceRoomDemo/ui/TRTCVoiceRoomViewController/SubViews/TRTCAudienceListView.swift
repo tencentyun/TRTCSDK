@@ -35,7 +35,7 @@ class TRTCAudienceListView: UIView {
     
     let titleLabel: UILabel = {
         let label = UILabel.init(frame: .zero)
-        label.text = "邀请上麦"
+        label.text = .inviteHandsupText
         label.font = UIFont.systemFont(ofSize: 16.0)
         label.textColor = UIColor.init(0xEBF4FF)
         label.textAlignment = .center
@@ -44,7 +44,7 @@ class TRTCAudienceListView: UIView {
     
     let closeButton: UIButton = {
         let button = UIButton.init(type: .custom)
-        button.setTitle("关闭", for: .normal)
+        button.setTitle(.closeText, for: .normal)
         return button
     }()
     
@@ -145,7 +145,8 @@ extension TRTCAudienceListView: UITableViewDataSource {
 
 /// MARK: - internationalization string
 fileprivate extension String {
-    
+    static let closeText = TRTCLocalize("Demo.TRTC.Salon.close")
+    static let inviteHandsupText = TRTCLocalize("Demo.TRTC.VoiceRoom.invitehandsup")
 }
 
 

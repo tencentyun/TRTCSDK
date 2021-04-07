@@ -8,7 +8,7 @@
 
 #import "AppDelegate.h"
 #import <Bugly/Bugly.h>
-
+#import "AppLocalized.h"
 
 #ifdef ENABLE_TRTC
 #ifdef ENABLE_PLAY
@@ -149,7 +149,7 @@ NSString *helpUrlDb[] = {
     [TXUGCBase setLicenceURL:@"" key:@""];
 #endif
     
-#if defined(ENABLE_PUSH) && !defined(TRTC)
+#if (defined(ENABLE_PUSH) || defined(ENABLE_INTERNATIONAL)) && !defined(TRTC)
     [TXLiveBase setLicenceURL:@"" key:@""];
 #endif
     
@@ -271,7 +271,7 @@ NSString *helpUrlDb[] = {
                     }
                 }];
             } else {
-                NSLog(@"当前版本不包含超级播放器，无法播放视频");
+                NSLog(@"current version not support super player, so cannot play video");
             }
         }
     }
@@ -367,7 +367,10 @@ NSString *helpUrlDb[] = {
 #endif
     self.window.rootViewController = nav;
     [self playVideoFromLaunchInfo:self.launchInfo];
+    
+#if !defined(ENABLE_INTERNATIONAL)
     [self checkStoreVersion:appStoreID];
+#endif
 }
 
 - (void)showLoginController {
@@ -391,12 +394,12 @@ NSString *helpUrlDb[] = {
     NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         NSError *err;
         if (!data || data.length == 0) {
-            NSLog(@"====== 没有商店信息 ======");
+            NSLog(@"====== no store data ======");
             return;
         }
         NSDictionary *remoteDic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:&err];
         if (err) {
-            NSLog(@"====== 没有商店信息 ======");
+            NSLog(@"====== no store info ======");
             return;
         }
         NSArray *array = [remoteDic objectForKey:@"results"];
@@ -405,7 +408,7 @@ NSString *helpUrlDb[] = {
         }
         NSDictionary *appInfo = [array firstObject];
         NSString *appStoreVersion = [appInfo objectForKey:@"version"];
-        NSLog(@"====== 商店应用版本信息：%@ ======", appStoreVersion);
+        NSLog(@"====== store version info: %@ ======", appStoreVersion);
         BOOL result = [wself compareVersion:appStoreVersion];
         dispatch_async(dispatch_get_main_queue(), ^{
             if (result) {
@@ -419,16 +422,17 @@ NSString *helpUrlDb[] = {
 - (BOOL)compareVersion:(NSString *)appStoreVersion {
     NSDictionary *infoDic = [[NSBundle mainBundle] infoDictionary];
     NSString *currentVersion = [infoDic objectForKey:@"CFBundleShortVersionString"];
-    NSLog(@"====== 当前Demo版本号为：%@ ======", currentVersion);
+    NSLog(@"====== current version is %@ ======", currentVersion);
     return [appStoreVersion compare:currentVersion options:NSNumericSearch] == NSOrderedDescending;
 }
 
 - (void)showUpdateAlertController:(NSString *)appID {
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"有新版本发布啦~" preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *sureAction = [UIAlertAction actionWithTitle:@"现在更新" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:TRTCLocalize(@"Demo.TRTC.LiveRoom.prompt") message:TRTCLocalize(@"Demo.TRTC.Home.newversionpublic") preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *sureAction = [UIAlertAction actionWithTitle:TRTCLocalize(@"Demo.TRTC.Home.updatenow") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         [self openAppStore:appID];
     }];
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"稍后再说" style:UIAlertActionStyleCancel handler:nil];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:TRTCLocalize(@"Demo.TRTC.Home.later") style:UIAlertActionStyleCancel handler:nil];
     [alertController addAction:sureAction];
     [alertController addAction:cancelAction];
     if (self.window.rootViewController) {
