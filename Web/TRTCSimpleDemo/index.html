@@ -249,8 +249,20 @@
                                 <div id="screen-share"></div>
                             </div>
                             <div class="testing-index-group">
-                                <div class="testing-index">网络质量</div>
+                                <div class="testing-index">网络延迟</div>
+                                <div id="network-rtt" class="network-loading"></div>
+                            </div>
+                            <div class="testing-index-group">
+                                <div class="testing-index">上行网络质量</div>
                                 <div id="uplink-network" class="network-loading"></div>
+                            </div>
+                            <div class="testing-index-group">
+                                <div class="testing-index">下行网络质量</div>
+                                <div id="downlink-network" class="network-loading"></div>
+                            </div>
+                            <div class="testing-index-group">
+                                <div class="testing-index">检测剩余时间</div>
+                                <div id="count-down"></div>
                             </div>
                         </div>
                         <div class="testing-footer">
@@ -307,9 +319,31 @@
                                         <use xlink:href="#icon-network"></use>
                                     </svg>
                                 </div>
-                                <div id="network-name" class="device-name"></div>
+                                <div id="network-name" class="device-name">网络延迟</div>
                             </div>
-                            <div id="network-testing-result" class="network-testing-result"></div>
+                            <div id="rtt-result" class="network-testing-result"></div>
+                        </div>
+                        <div class="device-report network-report">
+                            <div class="device-info">
+                                <div class="report-icon">
+                                    <svg class="icon" aria-hidden="true">
+                                        <use xlink:href="#icon-network"></use>
+                                    </svg>
+                                </div>
+                                <div id="etwork-name" class="device-name">上行网络质量</div>
+                            </div>
+                            <div id="uplink-network-quality-result" class="network-testing-result"></div>
+                        </div>
+                        <div class="device-report network-report">
+                            <div class="device-info">
+                                <div class="report-icon">
+                                    <svg class="icon" aria-hidden="true">
+                                        <use xlink:href="#icon-network"></use>
+                                    </svg>
+                                </div>
+                                <div id="network-name" class="device-name">下行网络质量</div>
+                            </div>
+                            <div id="downlink-network-quality-result" class="network-testing-result"></div>
                         </div>
                     </div>
                     <div class="device-report-footer">

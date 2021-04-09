@@ -791,7 +791,8 @@ async function startNetworkTesting() {
 
 async function testUplinkNetworkQuality() {
   // eslint-disable-next-line no-undef
-  const { sdkAppId, userId, userSig, roomId } = await getUserSig('user_uplink_test', 1846464);
+  const userId = 'user_uplink_test';
+  const { sdkAppId, userSig } = await genTestUserSig(userId);
   window.uplinkClient = TRTC.createClient({
     sdkAppId, // 填写 sdkAppId
     userId,
@@ -815,17 +816,18 @@ async function testUplinkNetworkQuality() {
     networkTestingResult.rttList.push(rtt);
   });
 
-  await window.uplinkClient.join({ roomId }); // 加入用于测试的房间
+  await window.uplinkClient.join({ roomId: 1846464 }); // 加入用于测试的房间
   await window.uplinkClient.publish(localStream);
 }
 
 async function testDownlinkNetworkQuality() {
   // eslint-disable-next-line no-undef
-  const { sdkAppId, userId, userSig, roomId } = await getUserSig('user_downlink_test', 1846464);
+  const userId = 'user_downlink_test';
+  const { sdkAppId, userSig } = await genTestUserSig(userId);
   window.downlinkClient = TRTC.createClient({
     sdkAppId, // 填写 sdkAppId
     userId,
-    userSig, // uplink_test 的 userSig
+    userSig, // downlink_test 的 userSig
     mode: 'rtc'
   });
 
@@ -840,7 +842,7 @@ async function testDownlinkNetworkQuality() {
     });
   });
 
-  await window.downlinkClient.join({ roomId }); // 加入用于测试的房间
+  await window.downlinkClient.join({ roomId: 1846464 }); // 加入用于测试的房间
 }
 /**
  * 恢复检测页面头部图标的状态
