@@ -1,6 +1,5 @@
 import EventEmitter from './utils/event.js'
 import * as ENV from 'utils/environment.js'
-import MTA from 'libs/mta_analysis.js'
 import { EVENT, TRTC_EVENT, ACTION_TYPE, BUSINESS_ID, CALL_STATUS } from './common/constants.js'
 import UserController from './controller/user-controller'
 import formateTime from './utils/formate-time'
@@ -453,7 +452,6 @@ Component({
     login() {
       return new Promise((resolve, reject) => {
         tsignaling.setLogLevel(4)
-        MTA.Page.stat()
         tsignaling.login({
           userID: this.data.config.userID,
           userSig: this.data.config.userSig,
@@ -624,6 +622,10 @@ Component({
         console.log(TAG_NAME, 'cancel() inviteID: ', this.data.invitationAccept.inviteID)
         tsignaling.cancel({
           inviteID: this.data.invitationAccept.inviteID,
+          data: JSON.stringify({
+            version: 0,
+            call_type: this.data.config.type,
+          }),
         }).then((res) => {
           cancelRes = res
         })
@@ -830,8 +832,8 @@ Component({
     switchCamera(isFrontCamera) {
       const targetPos = isFrontCamera ? 'front' : 'back'
       if (this.data.pusherConfig.frontCamera !== targetPos) {
-        wx.createLivePusherContext().switchCamera()
         this.data.pusherConfig.frontCamera = targetPos
+        wx.createLivePusherContext().switchCamera()
         this.setData({
           pusherConfig: this.data.pusherConfig,
         }, () => {
@@ -1092,13 +1094,6 @@ Component({
       wx.setKeepScreenOn({
         keepScreenOn: true,
       })
-      MTA.App.init({
-        'appID': '500728728',
-        'eventID': '500730148',
-        'autoReport': true,
-        'statParam': true,
-        'ignoreParams': [],
-      })
     },
     attached: function() {
       // 在组件实例进入页面节点树时执行
@@ -1106,7 +1101,6 @@ Component({
       this.EVENT = EVENT
       this._emitter = new EventEmitter()
       this.userController = new UserController()
-      MTA.Page.stat()
     },
     ready: function() {
       // 在组件在视图层布局完成后执行
