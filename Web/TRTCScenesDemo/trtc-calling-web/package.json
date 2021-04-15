@@ -16,7 +16,7 @@
     "tim-js-sdk": "^2.9.2",
     "trtc-calling-js": "^0.7.0",
     "trtc-js-sdk": "^4.8.5",
-    "tsignaling": "^0.1.2",
+    "tsignaling": "^0.4.0",
     "vue": "^2.6.11",
     "vue-router": "^3.3.4",
     "vuex": "^3.5.1"
