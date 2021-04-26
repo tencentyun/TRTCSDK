@@ -24,7 +24,7 @@
 
 
 ### step2. 下载 SDK 和 Demo 源码
-选择小程序源码点击下载，我们提供了 [Github](https://github.com/tencentyun/TRTCSDK/tree/master) 和 [Zip压缩包](http://liteavsdk-1252463788.cosgz.myqcloud.com/TRTC_WXMini_latest.zip) 两种获取方式。
+选择小程序源码点击下载，我们提供了 [Github](https://github.com/tencentyun/TRTCSDK/tree/master) 和 [Zip压缩包](https://web.sdk.qcloud.com/trtc/miniapp/download/trtc-room.zip) 两种获取方式。
 
 ### step3. 将 SDKAppID 和密钥粘贴到指定位置
 可以在下图中看到 SDKAppID 和 SecretKey 两个关键信息，这是要运行 Demo 所必须的，然后将他们按照页面上的指引粘贴到源代码中自带的 `GenerateTestUserSig.js` 文件中。

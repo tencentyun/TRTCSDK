@@ -2337,7 +2337,7 @@ Component({
     _handleBGMOperation(event) {
       const operationName = event.currentTarget.dataset.operationName
       if (this[operationName]) {
-        this[operationName]({ url: 'https://trtc-1252463788.cos.ap-guangzhou.myqcloud.com/web/assets/bgm-test.mp3' })
+        this[operationName]({ url: 'https://web.sdk.qcloud.com/trtc/miniapp/asset/bgm-test.mp3' })
       }
     },
     _selectBeautyStyle: function(event) {

@@ -30,7 +30,7 @@
 
 ### 步骤2：下载 SDK 和 Demo 源码
 
-1. 您可以单击【[Github](https://github.com/tencentyun/TRTCSDK/tree/master/WXMini/TRTCScenesDemo)】跳转至 Github（或单击【[ZIP](https://liteavsdk-1252463788.cos.ap-guangzhou.myqcloud.com/TRTC_WXMini_latest.zip)】），下载相关 SDK 及配套的 Demo 源码。
+1. 您可以单击【[Github](https://github.com/tencentyun/TRTCSDK/tree/master/WXMini/TRTCScenesDemo)】跳转至 Github（或单击【[ZIP](https://web.sdk.qcloud.com/trtc/miniapp/download/trtc-room.zip)】），下载相关 SDK 及配套的 Demo 源码。
 
 <span id="step3"></span>
 
