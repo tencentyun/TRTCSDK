@@ -178,7 +178,7 @@ export default {
     startLive() {
       this.isPushing = true;
       // 进入房间便会开始推流
-      // TRTCParams 详细说明，请查看文档：https://trtc-1252463788.file.myqcloud.com/electron_sdk/docs/TRTCParams.html
+      // TRTCParams 详细说明，请查看文档：https://web.sdk.qcloud.com/trtc/electron/doc/zh-cn/trtc_electron_sdk/TRTCParams.html
       let param = new TRTCParams();
       param.sdkAppId = this.sdkInfo.sdkappid;
       param.userSig = this.sdkInfo.userSig;
@@ -594,7 +594,7 @@ export default {
     logger.log(`mounted, setCurrentCameraDevice('${this.cameraId}')`);
     trtcCloud.setCurrentCameraDevice(this.cameraId);
     // 5. 设置编码参数
-    // TRTCVideoEncParam 的详细说明，请参考： https://trtc-1252463788.file.myqcloud.com/electron_sdk/docs/TRTCVideoEncParam.html
+    // TRTCVideoEncParam 的详细说明，请参考： https://web.sdk.qcloud.com/trtc/electron/doc/zh-cn/trtc_electron_sdk/TRTCVideoEncParam.html
     let encParam = new TRTCVideoEncParam();
 
     /**
@@ -618,7 +618,7 @@ export default {
     trtcCloud.setVideoEncoderParam(encParam);
 
     // 6. 开启美颜 
-    // setBeautyStyle 详细信息，请参考：https://trtc-1252463788.file.myqcloud.com/electron_sdk/docs/TRTCCloud.html#setBeautyStyle
+    // setBeautyStyle 详细信息，请参考：https://web.sdk.qcloud.com/trtc/electron/doc/zh-cn/trtc_electron_sdk/TRTCCloud.html#setBeautyStyle
     trtcCloud.setBeautyStyle(TRTCBeautyStyle.TRTCBeautyStyleNature, 9, 9, 9);
 
     // 7. 显示摄像头画面和开房麦克风

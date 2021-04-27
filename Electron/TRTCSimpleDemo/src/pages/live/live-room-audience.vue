@@ -335,7 +335,7 @@ export default {
     trtcCloud.on('onUserSubStreamAvailable', this.onUserSubStreamAvailable.bind(this));
 
     // 5. 进入房间
-    // TRTCParams 详细说明，请查看文档：https://trtc-1252463788.file.myqcloud.com/electron_sdk/docs/TRTCParams.html
+    // TRTCParams 详细说明，请查看文档：https://web.sdk.qcloud.com/trtc/electron/doc/zh-cn/trtc_electron_sdk/TRTCParams.html
     let param = new TRTCParams();
     param.sdkAppId = this.sdkInfo.sdkappid;
     param.userSig = this.sdkInfo.userSig;
