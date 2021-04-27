@@ -17,10 +17,10 @@
 
 <table>
 <tr>
-<td><img width="260" height="561" src="https://demovideo-1252463788.cos.ap-shanghai.myqcloud.com/trtcvoiceroom.gif"/></td>
-<td><img width="260" height="561" src="https://demovideo-1252463788.cos.ap-shanghai.myqcloud.com/trtcvideocall.gif"/></td>
-<td><img width="260" height="561" src="https://demovideo-1252463788.cos.ap-shanghai.myqcloud.com/trtcmeeting1.gif"/></td>
-<td><img width="260" height="561" src="https://demovideo-1252463788.cos.ap-shanghai.myqcloud.com/trtcmeeting2.gif"/></td>
+<td><img width="260" height="561" src="https://web.sdk.qcloud.com/trtc/miniapp/doc/zh-cn/trtcvoiceroom.gif"/></td>
+<td><img width="260" height="561" src="https://web.sdk.qcloud.com/trtc/miniapp/doc/zh-cn/trtcvideocall.gif"/></td>
+<td><img width="260" height="561" src="https://web.sdk.qcloud.com/trtc/miniapp/doc/zh-cn/trtcmeeting1.gif"/></td>
+<td><img width="260" height="561" src="https://web.sdk.qcloud.com/trtc/miniapp/doc/zh-cn/trtcmeeting2.gif"/></td>
 </tr>
 </table>
 
@@ -1020,9 +1020,9 @@ trtcRoomContext.on(EVENT.IM_MESSAGE_RECEIVED,(event)=>{
 | BGM_PLAY_COMPLETE          | BGM 播放结束通知。                                           |
 | ERROR                      | 本地推流出现错误、渲染错误事件等。                           |
 | IM_READY                   | IM 就绪的通知，收到该通知后可以进行收发消息操作。            |
-| IM_MESSAGE_RECEIVED        | 收到 IM 消息的通知，详情请参见 [Message 对象文档](https://imsdk-1252463788.file.myqcloud.com/IM_DOC/Web/Message.html)。|
+| IM_MESSAGE_RECEIVED        | 收到 IM 消息的通知，详情请参见 [Message 对象文档](https://web.sdk.qcloud.com/im/doc/zh-cn//Message.html)。|
 | IM_NOT_READY               | IM 未就绪的通知，收到该通知后不可以进行收发消息操作。            |
-| IM_ERROR                   | IM 错误事件，详情请参见 [即时通信 IM 错误码](https://imsdk-1252463788.file.myqcloud.com/IM_DOC/Web/global.html#%E9%94%99%E8%AF%AF%E7%A0%81%E5%AF%B9%E7%85%A7%E8%A1%A8) 。|                                            |
+| IM_ERROR                   | IM 错误事件，详情请参见 [即时通信 IM 错误码](https://web.sdk.qcloud.com/im/doc/zh-cn//global.html#%E9%94%99%E8%AF%AF%E7%A0%81%E5%AF%B9%E7%85%A7%E8%A1%A8) 。|                                            |
 
 ## 错误码
 ERROR 事件触发时会返回响应的错误码，错误码含义如下
