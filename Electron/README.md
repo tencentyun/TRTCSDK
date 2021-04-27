@@ -39,6 +39,6 @@ Electron 版 TRTC Demo 基于 TRTCSDK 设计和实现，Demo 包含实时音视�
 ## 相关文档链接
 
 - [SDK 的版本更新历史](https://github.com/tencentyun/TRTCSDK/releases)
-- [SDK 的 API 文档](https://trtc-1252463788.file.myqcloud.com/electron_sdk/docs/)
+- [SDK 的 API 文档](https://web.sdk.qcloud.com/trtc/electron/doc/zh-cn/trtc_electron_sdk/index.html)
 - [SDK 的官方体验 App](https://cloud.tencent.com/document/product/647/17021)
 

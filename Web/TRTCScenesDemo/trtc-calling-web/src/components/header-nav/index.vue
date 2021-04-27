@@ -27,7 +27,7 @@ export default {
     handleCommand: function(command) {
       if (command === "command-detect") {
         window.open(
-          "https://trtc-1252463788.cos.ap-guangzhou.myqcloud.com/web/demo/env-detect/index.html",
+          "https://web.sdk.qcloud.com/trtc/webrtc/demo/detect/index.html",
           "__blank"
         );
         return;
