@@ -1,0 +1,340 @@
+/*
+  Localized.strings
+  TRTCSimpleDemo-OC
+
+  Created by adams on 2021/4/14.
+  
+*/
+
+"TRTC-API-Example.Home.Title" = "腾讯云TRTC API Example";
+"TRTC-API-Example.Home.BasicFunctions" = "基础功能";
+"TRTC-API-Example.Home.VoiceCalls" = "语音通话";
+"TRTC-API-Example.Home.VoiceCallsDesc" = "双人/多人语音通话、包含静音/免提等功能";
+"TRTC-API-Example.Home.VideoCalls" = "视频通话";
+"TRTC-API-Example.Home.VideoCallsDesc" = "双人/多人视频通话、包含静音/免提等功能";
+"TRTC-API-Example.Home.VideoLive" = "视频互动直播";
+"TRTC-API-Example.Home.TalkingRoom" = "语音互动直播";
+"TRTC-API-Example.Home.LiveScreen" = "录屏直播";
+"TRTC-API-Example.Home.LiveScreenDesc" = "直播过程中分享屏幕，适用于在线教育，游戏直播等场景";
+
+"TRTC-API-Example.Home.AdvancedFeatures" = "进阶功能";
+"TRTC-API-Example.Home.StringRoomId" = "字符串房间号";
+"TRTC-API-Example.Home.VideoQuality" = "画质设定";
+"TRTC-API-Example.Home.SoundQuality" = "音质设定";
+"TRTC-API-Example.Home.RenderParams" = "渲染控制";
+"TRTC-API-Example.Home.SpeedTest" = "网络测速";
+"TRTC-API-Example.Home.PushCDN" = "CDN发布";
+"TRTC-API-Example.Home.CustomCamera" = "自定义视频采集&渲染";
+"TRTC-API-Example.Home.SoundEffects" = "设置音效";
+"TRTC-API-Example.Home.SetBGM" = "设置背景音乐";
+"TRTC-API-Example.Home.LocalVideoShare" = "本地视频分享";
+"TRTC-API-Example.Home.LocalRecord" = "本地媒体录制";
+"TRTC-API-Example.Home.JoinMultipleRoom" = "加入多个房间";
+"TRTC-API-Example.Home.SendReceiveSEIMessage" = "收发SEI消息";
+"TRTC-API-Example.Home.QuicklySwitchRooms" = "快速切换房间";
+"TRTC-API-Example.Home.RoomPK" = "跨房PK";
+"TRTC-API-Example.Home.ThirdBeauty" = "第三方美颜";
+
+"TRTC-API-Example.VoiceChatRoom.Title" = "TRTC 语音互动直播示例教程";
+"TRTC-API-Example.VoiceChatRoom.EnterRoomNumber" = "请输入房间号（必填项）";
+"TRTC-API-Example.VoiceChatRoom.EnterUserName" = "请输入用户名（必填项）";
+"TRTC-API-Example.VoiceChatRoom.ChooseUserIdentify" = "请选择角色（必选项）";
+"TRTC-API-Example.VoiceChatRoom.Anchor" = "主播";
+"TRTC-API-Example.VoiceChatRoom.Audience" = "观众";
+"TRTC-API-Example.VoiceChatRoom.EnterRoom" = "进入房间";
+"TRTC-API-Example.VoiceChatRoom.tips" = "房间号、用户名不能为空";
+
+"TRTC-API-Example.VoiceChatRoomAnchor.Title" = "房间号: xxx";
+"TRTC-API-Example.VoiceChatRoomAnchor.AnchorOperate" = "主播操作";
+"TRTC-API-Example.VoiceChatRoomAnchor.mute" = "静音";
+"TRTC-API-Example.VoiceChatRoomAnchor.cancelmute" = "取消静音";
+"TRTC-API-Example.VoiceChatRoomAnchor.upMic" = "上麦";
+"TRTC-API-Example.VoiceChatRoomAnchor.downMic" = "下麦";
+
+"TRTC-API-Example.VoiceChatRoomAudience.Title" = "房间号: xxx";
+"TRTC-API-Example.VoiceChatRoomAudience.AudienceOperate" = "观众操作";
+"TRTC-API-Example.VoiceChatRoomAudience.mute" = "关闭麦克风";
+"TRTC-API-Example.VoiceChatRoomAudience.cancelmute" = "打开麦克风";
+"TRTC-API-Example.VoiceChatRoomAudience.upMic" = "上麦";
+"TRTC-API-Example.VoiceChatRoomAudience.downMic" = "下麦";
+
+"TRTC-API-Example.AlertViewController.ponit" = "提示";
+"TRTC-API-Example.AlertViewController.determine" = "确定";
+
+"TRTC-API-Example.Live.Title" = "TRTC 视频互动直播示例";
+"TRTC-API-Example.Live.EnterRoomNumber" = "请输入房间号（必填项）";
+"TRTC-API-Example.Live.EnterUserName" = "请输入用户名（必填项）";
+"TRTC-API-Example.Live.ChooseUserIdentify" = "请选择角色（必选项）";
+"TRTC-API-Example.Live.Anchor" = "主播";
+"TRTC-API-Example.Live.Audience" = "观众";
+"TRTC-API-Example.Live.EnterRoom" = "进入房间";
+"TRTC-API-Example.Live.tips" = "房间号、用户名不能为空";
+
+"TRTC-API-Example.LiveAnchor.Title" = "房间号: xxx";
+"TRTC-API-Example.LiveAnchor.VideoOptions" = "视频选项";
+"TRTC-API-Example.LiveAnchor.AudioOptions" = "音频选项";
+"TRTC-API-Example.LiveAnchor.mute" = "关闭麦克风";
+"TRTC-API-Example.LiveAnchor.cancelmute" = "打开麦克风";
+"TRTC-API-Example.LiveAnchor.rearcamera" = "使用后置摄像头";
+"TRTC-API-Example.LiveAnchor.frontcamera" = "使用前置摄像头";
+"TRTC-API-Example.LiveAnchor.opencamera" = "打开摄像头";
+"TRTC-API-Example.LiveAnchor.closecamera" = "关闭摄像头";
+
+"TRTC-API-Example.LiveAudience.Title" = "房间号: xxx";
+"TRTC-API-Example.LiveAudience.Operating" = "操作";
+"TRTC-API-Example.LiveAudience.mute" = "静音";
+"TRTC-API-Example.LiveAudience.muteoff" = "取消静音";
+
+"TRTC-API-Example.AudioCallingEnter.Title" = "TRTC 语音通话示例";
+"TRTC-API-Example.AudioCallingEnter.EnterRoomNumber" = "请输入房间号（必填项）";
+"TRTC-API-Example.AudioCallingEnter.EnterUserName" = "请输入用户名（必填项）";
+"TRTC-API-Example.AudioCallingEnter.EnterRoom" = "进入房间";
+
+"TRTC-API-Example.AudioCalling.Title" = "房间号: ";
+"TRTC-API-Example.AudioCalling.mute" = "关闭麦克风";
+"TRTC-API-Example.AudioCalling.cancelMute" = "打开麦克风";
+"TRTC-API-Example.AudioCalling.speaker" = "使用扬声器";
+"TRTC-API-Example.AudioCalling.earPhone" = "使用听筒";
+"TRTC-API-Example.AudioCalling.hangup" = "挂断";
+"TRTC-API-Example.AudioCalling.dashBorad" = "信息面板";
+"TRTC-API-Example.AudioCalling.volumInfo" = "音量信息";
+"TRTC-API-Example.AudioCalling.network" = "网络信息";
+"TRTC-API-Example.AudioCalling.best" = "最好";
+"TRTC-API-Example.AudioCalling.good" = "好";
+"TRTC-API-Example.AudioCalling.normal" = "一般";
+"TRTC-API-Example.AudioCalling.wrong" = "差";
+"TRTC-API-Example.AudioCalling.bad" = "很差";
+"TRTC-API-Example.AudioCalling.noUse" = "不可用";
+"TRTC-API-Example.AudioCalling.muted" = "已静音";
+"TRTC-API-Example.AudioCalling.cancelMute" = "打开麦克风";
+
+"TRTC-API-Example.VideoCallingEnter.Title" = "TRTC 视频通话示例";
+"TRTC-API-Example.VideoCallingEnter.EnterRoomNumber" = "请输入房间号（必填项）";
+"TRTC-API-Example.VideoCallingEnter.EnterUserName" = "请输入用户名（必填项）";
+"TRTC-API-Example.VideoCallingEnter.EnterRoom" = "进入房间";
+
+"TRTC-API-Example.VideoCalling.Title" = "房间号: ";
+"TRTC-API-Example.VideoCalling.openCam" = "打开摄像头";
+"TRTC-API-Example.VideoCalling.closeCam" = "关闭摄像头";
+"TRTC-API-Example.VideoCalling.useFrontCam" = "使用前置摄像头";
+"TRTC-API-Example.VideoCalling.useBehindCam" = "使用后置摄像头";
+"TRTC-API-Example.VideoCalling.mute" = "关闭麦克风";
+"TRTC-API-Example.VideoCalling.cancelMute" = "打开麦克风";
+"TRTC-API-Example.VideoCalling.speaker" = "使用扬声器";
+"TRTC-API-Example.VideoCalling.earPhone" = "使用听筒";
+"TRTC-API-Example.VideoCalling.videoOptions" = "视频选项";
+"TRTC-API-Example.VideoCalling.audioOptions" = "音频选项";
+
+"TRTC-API-Example.ScreenEntrance.Title" = "TRTC 屏幕共享示例";
+"TRTC-API-Example.ScreenEntrance.EnterRoomNumber" = "请输入房间号（必填项）";
+"TRTC-API-Example.ScreenEntrance.EnterUserName" = "请输入用户名（必填项）";
+"TRTC-API-Example.ScreenEntrance.EnterRole" = "请选择角色（必选项）";
+"TRTC-API-Example.ScreenEntrance.Anchor" = "主播";
+"TRTC-API-Example.ScreenEntrance.Audience" = "观众";
+"TRTC-API-Example.ScreenEntrance.EnterRoom" = "进入房间";
+"TRTC-API-Example.ScreenEntrance.versionTips" = "录屏直播建议在iOS13及以上系统使用";
+
+"TRTC-API-Example.ScreenAnchor.Title" = "屏幕分享";
+"TRTC-API-Example.ScreenAnchor.RoomNumber" = "房间号: ";
+"TRTC-API-Example.ScreenAnchor.UserName" = "用户名: ";
+"TRTC-API-Example.ScreenAnchor.Resolution" = "分辨率：1280 * 720";
+"TRTC-API-Example.ScreenAnchor.Description" = "请在其他设备上使用观众身份进入相同的房间进行观看";
+"TRTC-API-Example.ScreenAnchor.BeginScreenShare" = "开始屏幕分享";
+"TRTC-API-Example.ScreenAnchor.StopScreenShare" = "停止屏幕分享";
+"TRTC-API-Example.ScreenAnchor.WaitScreenShare" = "等待屏幕分享";
+"TRTC-API-Example.ScreenAnchor.mute" = "关闭麦克风";
+"TRTC-API-Example.ScreenAnchor.cancelMute" = "打开麦克风";
+"TRTC-API-Example.ScreenAnchor.liveStop" = "屏幕共享已结束";
+"TRTC-API-Example.ScreenAnchor.appReset" = "应用断开";
+"TRTC-API-Example.ScreenAnchor.sdkError" = "集成错误（SDK 版本号不相符合）";
+
+"TRTC-API-Example.ScreenAudience.Title" = "房间号: ";
+
+"TRTC-API-Example.SetAudioEffect.Title" = "房间号: xxx";
+"TRTC-API-Example.SetAudioEffect.roomId" = "房间号";
+"TRTC-API-Example.SetAudioEffect.userId" = "用户ID";
+"TRTC-API-Example.SetAudioEffect.voiceChanger" = "请选择变声效果(请在推流后设置)";
+"TRTC-API-Example.SetAudioEffect.reverberation" = "请选择混响效果(请在推流后设置)";
+"TRTC-API-Example.SetAudioEffect.origin" = "原声";
+"TRTC-API-Example.SetAudioEffect.child" = "熊孩子";
+"TRTC-API-Example.SetAudioEffect.loli" = "萝莉";
+"TRTC-API-Example.SetAudioEffect.metal" = "重金属";
+"TRTC-API-Example.SetAudioEffect.uncle" = "大叔";
+"TRTC-API-Example.SetAudioEffect.normal" = "无效果";
+"TRTC-API-Example.SetAudioEffect.ktv" = "KTV";
+"TRTC-API-Example.SetAudioEffect.smallRoom" = "小房间";
+"TRTC-API-Example.SetAudioEffect.greatHall" = "大会堂";
+"TRTC-API-Example.SetAudioEffect.muffled" = "低沉";
+"TRTC-API-Example.SetAudioEffect.startPush" = "开始推流";
+"TRTC-API-Example.SetAudioEffect.stopPush" = "停止推流";
+"TRTC-API-Example.SetAudioEffect.userIdxxx" = "用户ID: xxx";
+
+"TRTC-API-Example.SetAudioQuality.roomId" = "房间号";
+"TRTC-API-Example.SetAudioQuality.userId" = "用户ID";
+"TRTC-API-Example.SetAudioQuality.chooseQuality" = "请选择音质";
+"TRTC-API-Example.SetAudioQuality.qualityDefalut" = "默认模式";
+"TRTC-API-Example.SetAudioQuality.qualitySpeech" = "语音模式";
+"TRTC-API-Example.SetAudioQuality.qualityMusic" = "音乐模式";
+"TRTC-API-Example.SetAudioQuality.chooseVolume" = "请选择采集音量";
+"TRTC-API-Example.SetAudioQuality.start" = "开始推流";
+"TRTC-API-Example.SetAudioQuality.stop" = "停止推流";
+"TRTC-API-Example.SetAudioQuality.Title" = "房间号: ";
+
+"TRTC-API-Example.SetVideoQuality.roomId" = "房间号";
+"TRTC-API-Example.SetVideoQuality.userId" = "用户ID";
+"TRTC-API-Example.SetVideoQuality.start" = "开始推流";
+"TRTC-API-Example.SetVideoQuality.stop" = "停止推流";
+"TRTC-API-Example.SetVideoQuality.Title" = "房间号: ";
+"TRTC-API-Example.SetVideoQuality.chooseBitrate" = "请选择码率";
+"TRTC-API-Example.SetVideoQuality.chooseFps" = "请选择帧率";
+"TRTC-API-Example.SetVideoQuality.chooseResolution" = "请选择分辨率";
+
+"TRTC-API-Example.SetBGM.Title" = "房间号: xxx";
+"TRTC-API-Example.SetBGM.roomId" = "房间号";
+"TRTC-API-Example.SetBGM.userId" = "用户ID";
+"TRTC-API-Example.SetBGM.bgmChanger" = "请选择背景音乐";
+"TRTC-API-Example.SetBGM.setBgmVolume" = "设置背景音乐音量";
+"TRTC-API-Example.SetBGM.bgm1" = "背景音乐1";
+"TRTC-API-Example.SetBGM.bgm2" = "背景音乐2";
+"TRTC-API-Example.SetBGM.bgm3" = "背景音乐3";
+"TRTC-API-Example.SetBGM.startPush" = "开始推流";
+"TRTC-API-Example.SetBGM.stopPush" = "停止推流";
+"TRTC-API-Example.SetBGM.userIdxxx" = "用户ID: xxx";
+
+"TRTC-API-Example.SpeedTest.title" = "TRTC 网络测试";
+"TRTC-API-Example.SpeedTest.userId" = "请输入用户名(必填项)";
+"TRTC-API-Example.SpeedTest.speedTestResult" = "测速结果";
+"TRTC-API-Example.SpeedTest.beginTest" = "开始测速";
+"TRTC-API-Example.SpeedTest.completedTest" = "完成测速";
+
+"TRTC-API-Example.SwitchRoom.Title" = "房间号: xxx";
+"TRTC-API-Example.SwitchRoom.roomId" = "房间号";
+"TRTC-API-Example.SwitchRoom.changeRoom" = "切换房间";
+"TRTC-API-Example.SwitchRoom.startPush" = "开始推流";
+"TRTC-API-Example.SwitchRoom.stopPush" = "停止推流";
+"TRTC-API-Example.SwitchRoom.inputRoomIDNumber" = "请输入八位数字房间号";
+
+"TRTC-API-Example.PushCDN.Title" = "CDN 发布";
+"TRTC-API-Example.PushCDN.TipsTitle" = "您好，请选择进入房间角色:";
+"TRTC-API-Example.PushCDN.TipsOne" = "- 主播可以进入房间，在进房参数中填写streamid,可自动发布CDN；";
+"TRTC-API-Example.PushCDN.TipsTwo" = "- 当主播数大于等于2时，可开启云端混流；";
+"TRTC-API-Example.PushCDN.TipsThree" = "- 主播选择旁路到CDN后，观众可以输入播放地址进行观看；";
+"TRTC-API-Example.PushCDN.AnchorStart" = "我是主播";
+"TRTC-API-Example.PushCDN.AudienceStart" = "我是观众";
+"TRTC-API-Example.PushCDN.TipsURL" = "在进行TRTC推CDN流发布前，需要完成以下事项：
+1、在控制台启用旁路推流，推流地址在启动该功能后会自动生成。
+2、播放CDN需要您自行申请注册并备案播放域名。
+参考文档：
+实现CDN直播观看：
+https://cloud.tencent.com/document/product/647/16826
+云端混流转码：
+https://cloud.tencent.com/document/product/647/16827";
+"TRTC-API-Example.PushCDN.NextStep" = "下一步";
+
+"TRTC-API-Example.PushCDNAnchor.Title" = "房间号: xxx";
+"TRTC-API-Example.PushCDNAnchor.pushStreamAddress" = "播放地址：http://{您的播放域名}/{stream_id}.flv";
+"TRTC-API-Example.PushCDNAnchor.mixConfignot" = "多路云端混流（主播数>=2）";
+"TRTC-API-Example.PushCDNAnchor.mixConfig" = "多路云端混流";
+"TRTC-API-Example.PushCDNAnchor.manualMode" = "全手动模式";
+"TRTC-API-Example.PushCDNAnchor.leftRightMode" = "预排版左右";
+"TRTC-API-Example.PushCDNAnchor.previewMode" = "预排版画中画";
+"TRTC-API-Example.PushCDNAnchor.roomId" = "房间号";
+"TRTC-API-Example.PushCDNAnchor.StreamId" = "Stream Id";
+"TRTC-API-Example.PushCDNAnchor.startPush" = "开始推流";
+"TRTC-API-Example.PushCDNAnchor.stopPush" = "停止推流";
+
+"TRTC-API-Example.PushCDNAudience.Title" = "CDN 发布";
+"TRTC-API-Example.PushCDNAudience.pushStreamAddress" = "播放地址：http://{您的播放域名}/{stream_id}.flv";
+"TRTC-API-Example.PushCDNAudience.startPlay" = "观看CDN直播";
+"TRTC-API-Example.PushCDNAudience.stopPlay" = "停止播放";
+"TRTC-API-Example.PushCDNAudience.inputStreamId" = "请输入StreamID";
+
+"TRTC-API-Example.LocalRecord.Title" = "房间号: xxx";
+"TRTC-API-Example.LocalRecord.recordingxx" = "录制中：xxx";
+"TRTC-API-Example.LocalRecord.recordFileAddress" = "录制文件地址";
+"TRTC-API-Example.LocalRecord.roomId" = "房间号（默认生成8位，可修改）";
+"TRTC-API-Example.LocalRecord.startRecord" = "开始录制";
+"TRTC-API-Example.LocalRecord.stopRecord" = "停止录制";
+"TRTC-API-Example.LocalRecord.startPush" = "开始推流";
+"TRTC-API-Example.LocalRecord.stopPush" = "停止推流";
+"TRTC-API-Example.LocalRecord.recordSuccess" = "录制成功";
+"TRTC-API-Example.LocalRecord.recordSuccessPath" = "视频已保存到系统相册中，请到系统相册中查看录制视频";
+
+"TRTC-API-Example.RenderParams.Title" = "房间号: ";
+"TRTC-API-Example.RenderParams.rotate0" = "0度";
+"TRTC-API-Example.RenderParams.rotate90" = "90度";
+"TRTC-API-Example.RenderParams.rotate180" = "180度";
+"TRTC-API-Example.RenderParams.rotate270" = "270度";
+"TRTC-API-Example.RenderParams.renderModeFill" = "填充";
+"TRTC-API-Example.RenderParams.renderModeAdaptor" = "适应";
+"TRTC-API-Example.RenderParams.frontSymmetric" = "前摄开启";
+"TRTC-API-Example.RenderParams.allSymmetric" = "前后摄均开启";
+"TRTC-API-Example.RenderParams.allKeep" = "前后摄均关闭";
+"TRTC-API-Example.RenderParams.roomId" = "房间号";
+"TRTC-API-Example.RenderParams.userId" = "用户ID";
+"TRTC-API-Example.RenderParams.localRate" = "设置预览图像旋转角度(顺时针)";
+"TRTC-API-Example.RenderParams.remoteRate" = "设置远端图像旋转角度(顺时针)";
+"TRTC-API-Example.RenderParams.localRenderMode" = "设置预览图像渲染模式";
+"TRTC-API-Example.RenderParams.remoteRenderMode" = "设置远端图像渲染模式";
+"TRTC-API-Example.RenderParams.remoteUserId" = "远端用户ID";
+"TRTC-API-Example.RenderParams.localMirrorMode" = "设置预览镜像模式";
+"TRTC-API-Example.RenderParams.start" = "开始推流";
+"TRTC-API-Example.RenderParams.stop" = "停止推流";
+"TRTC-API-Example.RenderParams.waitOtherUser" = "房间无其他用户，请等待其他用户加入";
+"TRTC-API-Example.RenderParams.chooseUserId" = "选择要渲染控制的远端用户ID";
+
+"TRTC-API-Example.SendAndReceiveSEI.Title" = "房间号: xxx";
+"TRTC-API-Example.SendAndReceiveSEI.UserIdxx" = "用户ID:xxx";
+"TRTC-API-Example.SendAndReceiveSEI.SendSEIxx" = "已发送: xxx";
+"TRTC-API-Example.SendAndReceiveSEI.ReceiveSEIxxyy" = "接收到: (xxx)yyy";
+"TRTC-API-Example.SendAndReceiveSEI.SendSEIBtn" = "发送SEI消息";
+"TRTC-API-Example.SendAndReceiveSEI.roomId" = "房间号";
+"TRTC-API-Example.SendAndReceiveSEI.userId" = "用户ID";
+"TRTC-API-Example.SendAndReceiveSEI.startPush" = "开始推流";
+"TRTC-API-Example.SendAndReceiveSEI.stopPush" = "停止推流";
+"TRTC-API-Example.SendAndReceiveSEI.SEIMessage" = "TRTC好棒啊";
+"TRTC-API-Example.SendAndReceiveSEI.SEIMessageDesc" = "SEI消息";
+
+"TRTC-API-Example.JoinMultipleRoom.title" = "TRTC 加入多个房间";
+"TRTC-API-Example.JoinMultipleRoom.start" = "开始";
+"TRTC-API-Example.JoinMultipleRoom.stop" = "停止";
+"TRTC-API-Example.JoinMultipleRoom.roomNum" = "房间号";
+
+"TRTC-API-Example.RoomPk.title" = "房间号: ";
+"TRTC-API-Example.RoomPk.start" = "开始推流";
+"TRTC-API-Example.RoomPk.stop" = "停止推流";
+"TRTC-API-Example.RoomPk.startPK" = "开始PK";
+"TRTC-API-Example.RoomPk.stopPK" = "停止PK";
+"TRTC-API-Example.RoomPk.roomId" = "房间号";
+"TRTC-API-Example.RoomPk.UserId" = "用户ID";
+"TRTC-API-Example.RoomPk.pkRoomId" = "PK主播的房间号";
+"TRTC-API-Example.RoomPk.pkUserId" = "PK主播的用户ID";
+"TRTC-API-Example.RoomPk.connectRoomError" = "连接房间失败";
+
+"TRTC-API-Example.ThirdBeauty.Title" = "房间号: xxx";
+"TRTC-API-Example.ThirdBeauty.UserIdxx" = "用户ID:xxx";
+"TRTC-API-Example.ThirdBeauty.SetBeautyLevel" = "设置磨皮级别";
+"TRTC-API-Example.ThirdBeauty.roomId" = "房间号";
+"TRTC-API-Example.ThirdBeauty.userId" = "用户ID";
+"TRTC-API-Example.ThirdBeauty.startPush" = "开始推流";
+"TRTC-API-Example.ThirdBeauty.stopPush" = "停止推流";
+
+"TRTC-API-Example.CustomCamera.viewTitle" = "房间号: xxx";
+"TRTC-API-Example.CustomCamera.roomId" = "房间号";
+"TRTC-API-Example.CustomCamera.userId" = "用户ID";
+"TRTC-API-Example.CustomCamera.startPush" = "开始推流";
+"TRTC-API-Example.CustomCamera.stopPush" = "停止推流";
+
+"TRTC-API-Example.LocalVideoShare.Title" = "房间号: ";
+"TRTC-API-Example.LocalVideoShare.roomId" = "房间号(默认生成8位，可修改)";
+"TRTC-API-Example.LocalVideoShare.chooseLocalVideo" = "请选择本地视频文件";
+"TRTC-API-Example.LocalVideoShare.start" = "开始推流";
+"TRTC-API-Example.LocalVideoShare.stop" = "停止推流";
+"TRTC-API-Example.LocalVideoShare.choose" = "点击选择";
+
+"TRTC-API-Example.StringRoomId.Title" = "房间号: xxx";
+"TRTC-API-Example.StringRoomId.UserIdxx" = "用户ID:xxx";
+"TRTC-API-Example.StringRoomId.roomId" = "房间号";
+"TRTC-API-Example.StringRoomId.userId" = "用户ID";
+"TRTC-API-Example.StringRoomId.start" = "开始推流";
+"TRTC-API-Example.StringRoomId.stop" = "停止推流";

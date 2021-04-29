@@ -1,0 +1,18 @@
+//
+//  TRTC-API-Example-OC-PrefixHeader.pch
+//  TRTC-API-Example-OC
+//
+//  Created by adams on 2021/4/14.
+//
+
+#ifndef TRTC_API_Example_OC_PrefixHeader_pch
+#define TRTC_API_Example_OC_PrefixHeader_pch
+
+#import "AppLocalized.h"
+#import "UIColor+Hex.h"
+#import "GenerateTestUserSig.h"
+#import "NSString+Common.h"
+#import <TXLiteAVSDK_TRTC/TRTCCloud.h>
+#import "UIViewController+AlertViewController.h"
+
+#endif /* TRTC_API_Example_OC_PrefixHeader_pch */

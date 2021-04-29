@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LocalRecordViewController">
+            <connections>
+                <outlet property="bottomConstraint" destination="8Gx-MR-wfH" id="VPf-8h-Ygj"/>
+                <outlet property="pushStreamButton" destination="qm5-U9-FQx" id="tUc-36-4gP"/>
+                <outlet property="recordAddressLabel" destination="dIO-q0-zJ8" id="gDQ-Lt-S6n"/>
+                <outlet property="recordAddressTextField" destination="9P5-HR-ABX" id="smS-51-dxC"/>
+                <outlet property="recordButton" destination="HpT-9k-Cfb" id="JeF-a0-mlZ"/>
+                <outlet property="recordLabel" destination="pNn-Ku-5k3" id="Z0V-Pv-qAH"/>
+                <outlet property="roomIdLabel" destination="mau-NR-pHm" id="GWK-fP-6fE"/>
+                <outlet property="roomIdTextField" destination="0Vo-37-8U5" id="K8U-N5-PR0"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="9P5-HR-ABX" userLabel="RoomIDTextField">
+                    <rect key="frame" x="20" y="733" width="219" height="34"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dIO-q0-zJ8" userLabel="RoomIDLabel">
+                    <rect key="frame" x="20" y="707" width="33" height="16"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0Vo-37-8U5" userLabel="StreamIDTextField">
+                    <rect key="frame" x="20" y="803" width="219" height="34"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qm5-U9-FQx" userLabel="PushStreamBtn">
+                    <rect key="frame" x="274" y="803.5" width="120" height="33"/>
+                    <color key="backgroundColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="120" id="uMe-lw-7Ny"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                    <inset key="titleEdgeInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
+                    <state key="normal" title="Button">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="2"/>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="onStartPushStreamClick:" destination="-1" eventType="touchUpInside" id="VYC-3b-QBY"/>
+                    </connections>
+                </button>
+                <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HpT-9k-Cfb" userLabel="PushStreamBtn">
+                    <rect key="frame" x="274" y="733.5" width="120" height="33"/>
+                    <color key="backgroundColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="120" id="N1L-gQ-JBw"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                    <inset key="titleEdgeInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
+                    <state key="normal" title="Button">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="2"/>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="onRecordClick:" destination="-1" eventType="touchUpInside" id="rJj-8C-gKN"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pNn-Ku-5k3" userLabel="RoomIDLabel">
+                    <rect key="frame" x="20" y="661" width="33" height="16"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                    <color key="textColor" systemColor="systemRedColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mau-NR-pHm" userLabel="StreamIDLabel">
+                    <rect key="frame" x="20" y="777" width="33" height="16"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
+            <color key="backgroundColor" red="0.14117647059999999" green="0.1450980392" blue="0.1333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="pNn-Ku-5k3" firstAttribute="leading" secondItem="dIO-q0-zJ8" secondAttribute="leading" id="1Qo-sb-H7A"/>
+                <constraint firstItem="9P5-HR-ABX" firstAttribute="top" secondItem="dIO-q0-zJ8" secondAttribute="bottom" constant="10" id="30F-A6-YvB"/>
+                <constraint firstItem="9P5-HR-ABX" firstAttribute="trailing" secondItem="0Vo-37-8U5" secondAttribute="trailing" id="3xw-Ys-PST"/>
+                <constraint firstItem="qm5-U9-FQx" firstAttribute="leading" secondItem="0Vo-37-8U5" secondAttribute="trailing" constant="35" id="7dj-hF-Lsn"/>
+                <constraint firstItem="mau-NR-pHm" firstAttribute="leading" secondItem="0Vo-37-8U5" secondAttribute="leading" id="82j-rs-h7p"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="bottom" secondItem="0Vo-37-8U5" secondAttribute="bottom" constant="25" id="8Gx-MR-wfH"/>
+                <constraint firstItem="9P5-HR-ABX" firstAttribute="leading" secondItem="0Vo-37-8U5" secondAttribute="leading" id="CBn-sr-mfK"/>
+                <constraint firstItem="HpT-9k-Cfb" firstAttribute="centerY" secondItem="9P5-HR-ABX" secondAttribute="centerY" id="DFm-nN-bpf"/>
+                <constraint firstItem="qm5-U9-FQx" firstAttribute="centerY" secondItem="0Vo-37-8U5" secondAttribute="centerY" id="Hg8-dI-Kz0"/>
+                <constraint firstItem="HpT-9k-Cfb" firstAttribute="trailing" secondItem="qm5-U9-FQx" secondAttribute="trailing" id="K7x-IL-fSs"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="qm5-U9-FQx" secondAttribute="trailing" constant="20" id="NEJ-7i-8CI"/>
+                <constraint firstItem="HpT-9k-Cfb" firstAttribute="leading" secondItem="qm5-U9-FQx" secondAttribute="leading" id="Ody-rw-sXg"/>
+                <constraint firstItem="0Vo-37-8U5" firstAttribute="top" secondItem="mau-NR-pHm" secondAttribute="bottom" constant="10" id="QJr-8e-hXy"/>
+                <constraint firstItem="dIO-q0-zJ8" firstAttribute="top" secondItem="pNn-Ku-5k3" secondAttribute="bottom" constant="30" id="Sad-DJ-YBh"/>
+                <constraint firstItem="dIO-q0-zJ8" firstAttribute="leading" secondItem="9P5-HR-ABX" secondAttribute="leading" id="dor-Wj-3Ui"/>
+                <constraint firstItem="0Vo-37-8U5" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="20" id="eD4-IP-G2I"/>
+                <constraint firstItem="mau-NR-pHm" firstAttribute="top" secondItem="9P5-HR-ABX" secondAttribute="bottom" constant="10" id="qtT-XQ-ppT"/>
+            </constraints>
+            <point key="canvasLocation" x="141" y="104"/>
+        </view>
+    </objects>
+    <resources>
+        <systemColor name="systemRedColor">
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>

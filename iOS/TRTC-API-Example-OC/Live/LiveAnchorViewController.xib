@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LiveAnchorViewController">
+            <connections>
+                <outlet property="audioOperatingLabel" destination="zPf-3h-GVl" id="7eS-wN-D9w"/>
+                <outlet property="changeCameraButton" destination="nGI-bd-vZs" id="RzO-Fe-5O4"/>
+                <outlet property="muteButton" destination="FhH-Bs-w5F" id="qs6-3n-7ct"/>
+                <outlet property="openCameraButton" destination="clX-dj-g2H" id="8hH-U5-uEb"/>
+                <outlet property="videoOperatingLabel" destination="fNU-KO-0P6" id="JFe-t3-ofw"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="nvj-Nf-Ma8"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fNU-KO-0P6" userLabel="VideoOptionsLabel">
+                    <rect key="frame" x="20" y="691" width="37.5" height="18"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nGI-bd-vZs" userLabel="ChangeCameraBtn">
+                    <rect key="frame" x="20" y="724" width="140" height="30"/>
+                    <color key="backgroundColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="0.84705882349999995" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="140" id="4Ku-5D-SQT"/>
+                        <constraint firstAttribute="height" constant="30" id="UEe-52-v8R"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <inset key="titleEdgeInsets" minX="5" minY="0.0" maxX="5" maxY="0.0"/>
+                    <state key="normal" title="Button">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="2"/>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="onChangeCameraClick:" destination="-1" eventType="touchUpInside" id="ers-Xu-lRf"/>
+                    </connections>
+                </button>
+                <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="clX-dj-g2H" userLabel="OpenCameraBtn">
+                    <rect key="frame" x="190" y="724" width="140" height="30"/>
+                    <color key="backgroundColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="0.84705882349999995" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="30" id="2Ev-uw-qKC"/>
+                        <constraint firstAttribute="width" constant="140" id="ovo-ck-fQP"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <inset key="titleEdgeInsets" minX="5" minY="0.0" maxX="5" maxY="0.0"/>
+                    <state key="normal" title="Button">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="2"/>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="onOpenCameraClick:" destination="-1" eventType="touchUpInside" id="gcf-0x-Uai"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zPf-3h-GVl" userLabel="AudioOptionsLabel">
+                    <rect key="frame" x="20" y="774" width="37.5" height="18"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FhH-Bs-w5F" userLabel="MuteBtn">
+                    <rect key="frame" x="20" y="807" width="70" height="30"/>
+                    <color key="backgroundColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="0.84705882349999995" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="70" id="Ohn-SV-tvF"/>
+                        <constraint firstAttribute="height" constant="30" id="uh3-LV-bs3"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <inset key="titleEdgeInsets" minX="2" minY="0.0" maxX="2" maxY="0.0"/>
+                    <state key="normal" title="Button">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="2"/>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="onMuteClick:" destination="-1" eventType="touchUpInside" id="fBU-vE-jxA"/>
+                    </connections>
+                </button>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
+            <color key="backgroundColor" red="0.10980392156862745" green="0.10980392156862745" blue="0.11764705882352941" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="fNU-KO-0P6" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="20" id="41K-t5-mfx"/>
+                <constraint firstItem="nGI-bd-vZs" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="20" id="Ahq-fw-xDk"/>
+                <constraint firstItem="FhH-Bs-w5F" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="20" id="Fm6-Hc-6tF"/>
+                <constraint firstItem="nGI-bd-vZs" firstAttribute="top" secondItem="fNU-KO-0P6" secondAttribute="bottom" constant="15" id="KND-j1-ozS"/>
+                <constraint firstItem="zPf-3h-GVl" firstAttribute="leading" secondItem="FhH-Bs-w5F" secondAttribute="leading" id="Roh-ef-uH1"/>
+                <constraint firstItem="clX-dj-g2H" firstAttribute="centerY" secondItem="nGI-bd-vZs" secondAttribute="centerY" id="Tf7-AP-woq"/>
+                <constraint firstItem="clX-dj-g2H" firstAttribute="leading" secondItem="nGI-bd-vZs" secondAttribute="trailing" constant="30" id="eJL-WC-PSx"/>
+                <constraint firstItem="zPf-3h-GVl" firstAttribute="top" secondItem="nGI-bd-vZs" secondAttribute="bottom" constant="20" id="lTe-8O-aRw"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="bottom" secondItem="FhH-Bs-w5F" secondAttribute="bottom" constant="25" id="nbH-C7-6mH"/>
+                <constraint firstItem="FhH-Bs-w5F" firstAttribute="top" secondItem="zPf-3h-GVl" secondAttribute="bottom" constant="15" id="uWz-92-hae"/>
+            </constraints>
+            <point key="canvasLocation" x="85.507246376811594" y="153.34821428571428"/>
+        </view>
+    </objects>
+</document>
