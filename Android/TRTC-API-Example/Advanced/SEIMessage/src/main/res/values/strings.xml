@@ -1,0 +1,16 @@
+<resources>
+    <string name="seimessage_send_and_receive">收发SEI消息</string>
+    <string name="seimessage_room_id">房间号</string>
+    <string name="seimessage_user_id">用户ID</string>
+    <string name="seimessage_message">SEI消息</string>
+    <string name="seimessage_start_push">开始推流</string>
+    <string name="seimessage_stop_push">停止推流</string>
+    <string name="seimessage_send_sei_message">发送SEI消息</string>
+    <string name="seimessage_content">TRTC好棒啊</string>
+    <string name="seimessage_content_empty_toast">请输入SEI消息</string>
+    <string name="seimessage_send_message_error_toast">发送SEI消息失败</string>
+    <string name="seimessage_send_message_success_toast">已发送: %s</string>
+    <string name="seimessage_receive_sei_message_toast">接收到: (%s) %s</string>
+    <string name="seimessage_receive_sei_message_toast_error">SEI消息异常: %s</string>
+    <string name="seimessage_please_input_roomid_and_userid">请输入房间号和用户ID</string>
+</resources>

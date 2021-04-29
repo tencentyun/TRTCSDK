@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="switchroom_main_bg">#1b1b1b</color>
+    <color name="switchroom_green_bg">#34c759</color>
+    <color name="switchroom_button_select">#34c759</color>
+    <color name="switchroom_button_select_off">#8d8d8d</color>
+</resources>

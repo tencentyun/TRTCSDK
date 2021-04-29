@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/audioquality_main_bg"
+    tools:context=".SetAudioQualityActivity">
+    <com.tencent.rtmp.ui.TXCloudVideoView
+        android:id="@+id/txcvv_main_local"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="15dp"
+            android:background="@mipmap/basic_ic_back" />
+
+        <TextView
+            android:id="@+id/tv_room_number"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="15dp"
+            android:gravity="center_horizontal"
+            android:text="@string/audioquality_trtc_set_quality"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_alignParentBottom="true"
+        android:id="@+id/ll_edit_info"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="20dp"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:orientation="vertical"
+            android:layout_weight="1.5"
+            android:paddingLeft="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/audioquality_roomid"
+                android:textSize="14sp"
+                android:textColor="@android:color/white"/>
+
+            <EditText
+                android:id="@+id/et_room_id"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:paddingLeft="5dp"
+                android:text="1256732"
+                android:background="@drawable/basic_edit_bg" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_weight="1.5">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/audioquality_userid"
+                android:textSize="14sp"
+                android:textColor="@android:color/white"/>
+
+            <EditText
+                android:id="@+id/et_user_id"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:paddingLeft="5dp"
+                android:background="@drawable/basic_edit_bg" />
+
+        </LinearLayout>
+        <Button
+            android:id="@+id/btn_start_push"
+            android:layout_below="@+id/ll_set"
+            android:layout_marginTop="10dp"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:background="@drawable/basic_button_bg"
+            android:text="@string/audioquality_start_push"
+            android:layout_marginRight="10dp"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_set"
+        android:layout_above="@+id/ll_edit_info"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="15dp"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:orientation="vertical"
+            android:layout_weight="1.5"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/audioquality_please_select_audio_quality"
+                android:textSize="14sp"
+                android:textColor="@android:color/white"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn_quality_default"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@color/audioquality_button_select"
+                    android:padding="0dp"
+                    android:text="@string/audioquality_quality_default"
+                    android:textSize="10sp"
+                    android:textColor="@android:color/white" />
+
+                <Button
+                    android:id="@+id/btn_quality_speech"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="0dp"
+                    android:text="@string/audioquality_quality_speech"
+                    android:background="@color/audioquality_button_select_off"
+                    android:layout_marginLeft="5dp"
+                    android:textSize="10sp"
+                    android:textColor="@android:color/white"/>
+
+                <Button
+                    android:id="@+id/btn_quality_music"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="5dp"
+                    android:text="@string/audioquality_quality_music"
+                    android:textSize="10sp"
+                    android:background="@color/audioquality_button_select_off"
+                    android:textColor="@android:color/white"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_weight="1">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/audioquality_please_set_volumn"
+                android:textSize="14sp"
+                android:textColor="@android:color/white"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:orientation="horizontal">
+                <SeekBar
+                    android:id="@+id/sb_voice_volume"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:max="100"
+                    android:progress="100"
+                    android:paddingTop="13dp"
+                    android:paddingBottom="13dp"
+                    android:layout_weight="1"
+                    android:progressDrawable="@drawable/basic_seekbar_style"
+                    android:thumb="@drawable/basic_seekbar_thumb" />
+                <TextView
+                    android:id="@+id/tv_volume"
+                    android:layout_width="match_parent"
+                    android:layout_weight="3"
+                    android:layout_height="30dp"
+                    android:textColor="@android:color/white"
+                    android:text="100"
+                    android:textSize="10sp"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <com.tencent.rtmp.ui.TXCloudVideoView
+        android:layout_marginTop="70dp"
+        android:layout_alignParentRight="true"
+        android:id="@+id/txcvv_video_remote1"
+        android:layout_width="90dp"
+        android:layout_height="160dp"
+        android:background="@android:color/darker_gray"
+        android:visibility="gone"
+        />
+    <com.tencent.rtmp.ui.TXCloudVideoView
+        android:layout_marginTop="240dp"
+        android:layout_alignParentRight="true"
+        android:id="@+id/txcvv_video_remote2"
+        android:layout_width="90dp"
+        android:layout_height="160dp"
+        android:background="@android:color/darker_gray"
+        android:visibility="gone"/>
+    <com.tencent.rtmp.ui.TXCloudVideoView
+        android:layout_marginTop="410dp"
+        android:layout_alignParentRight="true"
+        android:id="@+id/txcvv_video_remote3"
+        android:layout_width="90dp"
+        android:layout_height="160dp"
+        android:background="@android:color/darker_gray"
+        android:visibility="gone"/>
+    <com.tencent.rtmp.ui.TXCloudVideoView
+        android:layout_marginTop="410dp"
+        android:layout_alignParentLeft="true"
+        android:id="@+id/txcvv_video_remote4"
+        android:layout_width="90dp"
+        android:layout_height="160dp"
+        android:background="@android:color/darker_gray"
+        android:visibility="gone"/>
+    <com.tencent.rtmp.ui.TXCloudVideoView
+        android:layout_marginTop="240dp"
+        android:layout_alignParentLeft="true"
+        android:id="@+id/txcvv_video_remote5"
+        android:layout_width="90dp"
+        android:layout_height="160dp"
+        android:background="@android:color/darker_gray"
+        android:visibility="gone"/>
+    <com.tencent.rtmp.ui.TXCloudVideoView
+        android:layout_marginTop="70dp"
+        android:layout_alignParentLeft="true"
+        android:id="@+id/txcvv_video_remote6"
+        android:layout_width="90dp"
+        android:layout_height="160dp"
+        android:background="@android:color/darker_gray"
+        android:visibility="gone"/>
+</RelativeLayout>

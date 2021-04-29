@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/black"
+    tools:context=".PushCDNAnchorActivity">
+
+    <com.tencent.rtmp.ui.TXCloudVideoView
+        android:id="@+id/videoview_pushcdn_anchor_main"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/tv_pushcdn_anchor_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="42dp"
+        android:text="@string/pushcdn_anchor_room_title"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_back"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="40dp"
+        android:background="@android:color/transparent"
+        android:src="@mipmap/basic_ic_back"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btn_start_pushcdn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginBottom="124dp"
+        android:background="@color/pushcdn_mixconfig_button_disable_bg"
+        android:text="@string/pushcdn_anchor_mixconfig_disabled"
+        android:textColor="@android:color/white"
+        android:textSize="21sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_pushcdn_anchor_stream_url"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/basic_edit_bg"
+        android:padding="5dp"
+        android:text="@string/pushcdn_anchor_cdn_url_guide"
+        android:textColor="@android:color/black"
+        android:textSize="10sp"
+        android:textIsSelectable="true"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/btn_start_pushcdn"
+        app:layout_constraintLeft_toLeftOf="@id/btn_start_pushcdn"
+        app:layout_constraintRight_toRightOf="@id/btn_start_pushcdn" />
+
+    <RadioGroup
+        android:id="@+id/rg_pushcdn_mix_mode"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="@id/btn_start_pushcdn"
+        app:layout_constraintRight_toRightOf="@id/btn_start_pushcdn"
+        app:layout_constraintTop_toBottomOf="@id/btn_start_pushcdn">
+
+        <RadioButton
+            android:id="@+id/rb_mix_mode_manual"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:textSize="10sp"
+            android:checked="false"
+            android:buttonTint="@drawable/basic_selector_radio_bg"
+            android:text="@string/pushcdn_anchor_mixconfig_manual"/>
+
+        <RadioButton
+            android:id="@+id/rb_mix_mode_left_right"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:buttonTint="@drawable/basic_selector_radio_bg"
+            android:textSize="10sp"
+            android:checked="false"
+            android:text="@string/pushcdn_anchor_mixconfig_left_right"/>
+
+        <RadioButton
+            android:id="@+id/rb_mix_mode_in_picture"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:buttonTint="@drawable/basic_selector_radio_bg"
+            android:textSize="10sp"
+            android:checked="true"
+            android:text="@string/pushcdn_anchor_mixconfig_in_picture"/>
+    </RadioGroup>
+
+
+    <EditText
+        android:id="@+id/et_pushcdn_anchor_room_id"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="30dp"
+        android:background="@android:color/white"
+        android:layout_marginEnd="15dp"
+        android:layout_marginRight="15dp"
+        android:textSize="10sp"
+        android:text="1256732"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/et_pushcdn_anchor_stream_id"
+        app:layout_constraintTop_toBottomOf="@id/rg_pushcdn_mix_mode" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="7dp"
+        android:text="@string/pushcdn_anchor_room_id_guide"
+        android:textColor="@android:color/white"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@id/et_pushcdn_anchor_room_id"
+        app:layout_constraintStart_toStartOf="@id/et_pushcdn_anchor_room_id" />
+
+    <EditText
+        android:id="@+id/et_pushcdn_anchor_stream_id"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:background="@android:color/white"
+        android:textSize="10sp"
+        app:layout_constraintTop_toTopOf="@id/et_pushcdn_anchor_room_id"
+        app:layout_constraintLeft_toRightOf="@id/et_pushcdn_anchor_room_id"
+        app:layout_constraintRight_toRightOf="@id/btn_push_enterroom" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="7dp"
+        android:text="@string/pushcdn_anchor_stream_id_input_guide"
+        android:textColor="@android:color/white"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/et_pushcdn_anchor_stream_id"
+        app:layout_constraintStart_toStartOf="@+id/et_pushcdn_anchor_stream_id" />
+
+    <Button
+        android:id="@+id/btn_push_enterroom"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginBottom="124dp"
+        android:background="@color/pushcdn_green_bg"
+        android:layout_marginStart="15dp"
+        android:layout_marginLeft="15dp"
+        android:text="@string/pushcdn_anchor_enter_room"
+        android:textColor="@android:color/white"
+        android:textSize="12sp"
+        app:layout_constraintTop_toTopOf="@id/et_pushcdn_anchor_stream_id"
+        app:layout_constraintLeft_toRightOf="@id/et_pushcdn_anchor_stream_id"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <com.tencent.rtmp.ui.TXCloudVideoView
+        android:id="@+id/videoview_pushcdn_anchor_user1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        app:layout_constraintDimensionRatio="9:16"
+        app:layout_constraintHeight_percent="0.2"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.tencent.rtmp.ui.TXCloudVideoView
+        android:id="@+id/videoview_pushcdn_anchor_user2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintDimensionRatio="9:16"
+        app:layout_constraintHeight_percent="0.2"
+        app:layout_constraintRight_toRightOf="@id/videoview_pushcdn_anchor_user1"
+        app:layout_constraintTop_toBottomOf="@id/videoview_pushcdn_anchor_user1" />
+
+    <com.tencent.rtmp.ui.TXCloudVideoView
+        android:id="@+id/videoview_pushcdn_anchor_user3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintDimensionRatio="9:16"
+        app:layout_constraintHeight_percent="0.2"
+        app:layout_constraintRight_toRightOf="@id/videoview_pushcdn_anchor_user2"
+        app:layout_constraintTop_toBottomOf="@id/videoview_pushcdn_anchor_user2" />
+</androidx.constraintlayout.widget.ConstraintLayout>

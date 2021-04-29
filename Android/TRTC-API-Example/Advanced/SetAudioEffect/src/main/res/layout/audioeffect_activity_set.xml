@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/audioeffect_main_bg">
+
+    <com.tencent.rtmp.ui.TXCloudVideoView
+        android:id="@+id/txcvv_main_local"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="15dp"
+            android:background="@mipmap/basic_ic_back" />
+
+        <TextView
+            android:id="@+id/tv_room_number"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="15dp"
+            android:gravity="center_horizontal"
+            android:text="@string/audioeffect_trtc_set_quality"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_alignParentBottom="true"
+        android:id="@+id/ll_edit_info"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="20dp"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:orientation="vertical"
+            android:layout_weight="1.5"
+            android:paddingLeft="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/audioeffect_roomid"
+                android:textSize="14sp"
+                android:textColor="@android:color/white"/>
+
+            <EditText
+                android:id="@+id/et_room_id"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:paddingLeft="5dp"
+                android:text="1256732"
+                android:background="@drawable/basic_edit_bg" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_weight="1.5">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/audioeffect_userid"
+                android:textSize="14sp"
+                android:textColor="@android:color/white"/>
+
+            <EditText
+                android:id="@+id/et_user_id"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:paddingLeft="5dp"
+                android:background="@drawable/basic_edit_bg" />
+
+        </LinearLayout>
+        <Button
+            android:id="@+id/btn_start_push"
+            android:layout_below="@+id/ll_set"
+            android:layout_marginTop="10dp"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:background="@drawable/basic_button_bg"
+            android:text="@string/audioeffect_start_push"
+            android:layout_marginRight="10dp"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_reverb"
+        android:layout_above="@+id/ll_edit_info"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/audioeffect_please_select_reverb"
+            android:textSize="14sp"
+            android:textColor="@android:color/white"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_reverb_default"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="0dp"
+                android:text="@string/audioeffect_reverb_default"
+                android:background="@color/audioeffect_button_select"
+                android:textColor="@android:color/white"/>
+
+            <Button
+                android:id="@+id/btn_reverb_ktv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="0dp"
+                android:text="@string/audioeffect_reverb_ktv"
+                android:background="@color/audioeffect_button_select"
+                android:layout_marginLeft="5dp"
+                android:textColor="@android:color/white"/>
+
+            <Button
+                android:id="@+id/btn_reverb_small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginLeft="5dp"
+                android:text="@string/audioeffect_reverb_small"
+                android:background="@color/audioeffect_button_select"
+                android:textColor="@android:color/white"/>
+
+            <Button
+                android:id="@+id/btn_reverb_big"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginLeft="5dp"
+                android:text="@string/audioeffect_reverb_big"
+                android:background="@color/audioeffect_button_select"
+                android:textColor="@android:color/white"/>
+
+            <Button
+                android:id="@+id/btn_reverb_low"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginLeft="5dp"
+                android:text="@string/audioeffect_reverb_low"
+                android:background="@color/audioeffect_button_select"
+                android:textColor="@android:color/white"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_above="@+id/ll_reverb"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/audioeffect_please_select_effect"
+            android:textSize="14sp"
+            android:textColor="@android:color/white"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_effect_default"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="0dp"
+                android:text="@string/audiaeffect_effect_default"
+                android:background="@color/audioeffect_button_select"
+                android:textColor="@android:color/white"/>
+
+            <Button
+                android:id="@+id/btn_effect_child"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="0dp"
+                android:text="@string/audioeffect_child"
+                android:background="@color/audioeffect_button_select"
+                android:layout_marginLeft="5dp"
+                android:textColor="@android:color/white"/>
+
+            <Button
+                android:id="@+id/btn_effect_lolita"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginLeft="5dp"
+                android:text="@string/audioeffect_lolita"
+                android:background="@color/audioeffect_button_select"
+                android:textColor="@android:color/white"/>
+
+            <Button
+                android:id="@+id/btn_effect_metal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginLeft="5dp"
+                android:text="@string/audioeffect_metal"
+                android:background="@color/audioeffect_button_select"
+                android:textColor="@android:color/white"/>
+
+            <Button
+                android:id="@+id/btn_effect_uncle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginLeft="5dp"
+                android:text="@string/audioeffect_uncle"
+                android:background="@color/audioeffect_button_select"
+                android:textColor="@android:color/white"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <com.tencent.rtmp.ui.TXCloudVideoView
+        android:layout_marginTop="70dp"
+        android:layout_alignParentRight="true"
+        android:id="@+id/txcvv_video_remote1"
+        android:layout_width="90dp"
+        android:layout_height="160dp"
+        android:background="@android:color/darker_gray"
+        android:visibility="gone"
+        />
+    <com.tencent.rtmp.ui.TXCloudVideoView
+        android:layout_marginTop="240dp"
+        android:layout_alignParentRight="true"
+        android:id="@+id/txcvv_video_remote2"
+        android:layout_width="90dp"
+        android:layout_height="160dp"
+        android:background="@android:color/darker_gray"
+        android:visibility="gone"/>
+    <com.tencent.rtmp.ui.TXCloudVideoView
+        android:layout_marginTop="410dp"
+        android:layout_alignParentRight="true"
+        android:id="@+id/txcvv_video_remote3"
+        android:layout_width="90dp"
+        android:layout_height="160dp"
+        android:background="@android:color/darker_gray"
+        android:visibility="gone"/>
+    <com.tencent.rtmp.ui.TXCloudVideoView
+        android:layout_marginTop="410dp"
+        android:layout_alignParentLeft="true"
+        android:id="@+id/txcvv_video_remote4"
+        android:layout_width="90dp"
+        android:layout_height="160dp"
+        android:background="@android:color/darker_gray"
+        android:visibility="gone"/>
+    <com.tencent.rtmp.ui.TXCloudVideoView
+        android:layout_marginTop="240dp"
+        android:layout_alignParentLeft="true"
+        android:id="@+id/txcvv_video_remote5"
+        android:layout_width="90dp"
+        android:layout_height="160dp"
+        android:background="@android:color/darker_gray"
+        android:visibility="gone"/>
+    <com.tencent.rtmp.ui.TXCloudVideoView
+        android:layout_marginTop="70dp"
+        android:layout_alignParentLeft="true"
+        android:id="@+id/txcvv_video_remote6"
+        android:layout_width="90dp"
+        android:layout_height="160dp"
+        android:background="@android:color/darker_gray"
+        android:visibility="gone"/>
+</RelativeLayout>

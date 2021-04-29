@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">screen</string>
+    <string name="screenshare_title">TRTC屏幕共享示例</string>
+    <string name="screenshare_room_input_error_tip">"房间号和用户名不能为空"</string>
+    <string name="screenshare_permission_overlay">"需要打开悬浮窗权限"</string>
+    <string name="screenshare_start">"开始屏幕分享"</string>
+    <string name="screenshare_stop">"停止屏幕分享"</string>
+    <string name="screenshare_start_failed">"启动屏幕共享失败"</string>
+    <string name="screenshare_username">"用户名："</string>
+    <string name="screenshare_room_id">"房间号："</string>
+    <string name="screenshare_resolution">"分辨率：1280 * 720"</string>
+    <string name="screenshare_watch_tips">"请在其他设备上使用观众身份进入相同的房间进行观看"</string>
+    <string name="screenshare_permission_toast">请在设置-权限设置里打开悬浮窗权限</string>
+    <string name="screenshare_please_select_role">请选择角色(必填项)</string>
+    <string name="screenshare_mute_audio">关闭麦克风</string>
+    <string name="screenshare_stop_mute_audio">打开麦克风</string>
+    <string name="screenshare_enter_room">进入房间</string>
+    <string name="screenshare_please_input_userid">请输入用户名(必填项)</string>
+    <string name="screenshare_please_input_roomid">请输入房间号(必填项)</string>
+    <string name="screenshare_audience">观众</string>
+    <string name="screenshare_anchor">主播</string>
+    <string name="screenshare_screen_share">屏幕分享</string>
+</resources>

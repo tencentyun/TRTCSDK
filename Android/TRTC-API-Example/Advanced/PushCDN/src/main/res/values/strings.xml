@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pushcdn_page_title">CDN发布</string>
+    <string name="pushcdn_select_role_guide">您好，请选择进入房间角色：\n- 主播可以进入房间，在进房参数中填写streamid,可自动发布CDN；\n- 当主播数大于等于2时，可开启云端混流；\n- 主播选择旁路到CDN后，观众可以输入播放地址进行观看；</string>
+    <string name="pushcdn_select_role_result">在进行TRTC推CDN流发布前，需要完成以下事项：\n1、在控制台启用旁路推流，推流地址在启动该功能后会自动生成。\n2、播放CDN需要您自行申请注册并备案播放域名。\n参考文档：\n实现CDN直播观看：\nhttps://cloud.tencent.com/document/product/647/16826\n云端混流转码：\nhttps://cloud.tencent.com/document/product/647/16827</string>
+    <string name="pushcdn_select_role_anchor_choice">我是主播</string>
+    <string name="pushcdn_select_role_audience_choice">我是观众</string>
+    <string name="pushcdn_select_role_net_step">下一步</string>
+    <string name="pushcdn_audience_input_guide">播放地址：http://{您的播放域名}/{stream_id}.flv</string>
+    <string name="pushcdn_audience_start_play">观看CDN直播</string>
+    <string name="pushcdn_audience_stop_play">停止播放</string>
+    <string name="pushcdn_audience_empty_stream_id_tip">stream id不能为空</string>
+    <string name="pushcdn_anchor_room_title">房间号：</string>
+    <string name="pushcdn_anchor_mixconfig_disabled">多路云端混流(主播数>=2)</string>
+    <string name="pushcdn_anchor_cdn_url_guide">播放地址：http://{您的播放域名}/{stream_id}.flv</string>
+    <string name="pushcdn_anchor_mixconfig_left_right">预排版左右</string>
+    <string name="pushcdn_anchor_mixconfig_in_picture">预排版画中画</string>
+    <string name="pushcdn_anchor_mixconfig_manual">全手动模式</string>
+    <string name="pushcdn_anchor_room_id_guide">房间号</string>
+    <string name="pushcdn_anchor_stream_id_input_guide">stream id</string>
+    <string name="pushcdn_anchor_enter_room">开始推流</string>
+    <string name="pushcdn_anchor_exit_room">停止推流</string>
+    <string name="pushcdn_anchor_empty_room_id_tip">房间号不能为空</string>
+    <string name="pushcdn_anchor_need_enter_room_tip">请先执行进房操作，点击推流</string>
+    <string name="pushcdn_anchor_more_anchor_tip">主播数>=2时才可混流</string>
+    <string name="pushcdn_anchor_enter_room_success_tip">进房成功！房间号：</string>
+    <string name="pushcdn_anchor_enter_room_failed_tip">进房失败！错误码：</string>
+    <string name="pushcdn_anchor_exit_room_success_tip">退房成功</string>
+    <string name="pushcdn_anchor_start_set_mixconfig">点击开启混流</string>
+    <string name="pushcdn_anchor_switch_mixconfig">切换所选混流模式</string>
+    <string name="pushcdn_suffix_flv">.flv</string>
+    <string name="pushcdn_more_cloud_mix">多路云端混流</string>
+    <string name="pushcdn_please_input_streamid">请输入StreamID</string>
+</resources>

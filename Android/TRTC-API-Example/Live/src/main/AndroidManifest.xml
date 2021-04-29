@@ -1,0 +1,10 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.tencent.trtc.live">
+
+    <application>
+        <activity android:name="com.tencent.trtc.live.LiveEnterActivity" />
+        <activity android:name="com.tencent.trtc.live.LiveAnchorActivity" />
+        <activity android:name="com.tencent.trtc.live.LiveAudienceActivity" />
+    </application>
+
+</manifest>

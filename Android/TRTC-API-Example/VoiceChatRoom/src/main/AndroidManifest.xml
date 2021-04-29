@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.tencent.trtc.voicechatoom">
+
+    <application>
+        <activity android:name="com.tencent.trtc.voicechatoom.VoiceChatRoomEnterActivity" />
+        <activity android:name="com.tencent.trtc.voicechatoom.VoiceChatRoomAudienceActivity" />
+        <activity android:name="com.tencent.trtc.voicechatoom.VoiceChatRoomAnchorActivity" />
+    </application>
+</manifest>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="pushcdn_green_bg">#34C759</color>
+    <color name="pushcdn_mixconfig_button_disable_bg">#6D7278</color>
+    <color name="pushcdn_mixconfig_button_disable_text_color">#3F000000</color>
+</resources>

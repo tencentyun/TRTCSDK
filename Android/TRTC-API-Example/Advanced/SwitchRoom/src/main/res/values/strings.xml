@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="switchroom_trtc_switch_room"><TRTC>切换房间</TRTC></string>
+    <string name="switchroom_start_push">开始推流</string>
+    <string name="switchroom_stop_push">停止推流</string>
+    <string name="switchroom_roomid">房间号</string>
+    <string name="switchroom_please_input_roomid">请输入八位数字房间号</string>
+    <string name="switchroom_switch_room">切换房间</string>
+    <string name="switchroom_toast_switch_success">切换房间成功</string>
+    <string name="switchroom_toast_switch_failed">切换房间失败</string>
+</resources>

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="speedtest_green_bg">#34C759</color>
+    <color name="speedtest_title_bg">#B7B7B7</color>
+</resources>

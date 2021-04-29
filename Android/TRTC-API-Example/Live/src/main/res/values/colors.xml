@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="live_main_bg">#1B1B1B</color>
+    <color name="live_green_bg">#34c759</color>
+    <color name="live_bottom_dialog_blue">#037BFF</color>
+    <color name="live_bottom_dialog_gray">#8F8F8F</color>
+    <color name="live_title_bg">#B7B7B7</color>
+    <color name="live_single_select_button_bg">#34c759</color>
+    <color name="live_single_select_button_bg_off">#999999</color>
+</resources>

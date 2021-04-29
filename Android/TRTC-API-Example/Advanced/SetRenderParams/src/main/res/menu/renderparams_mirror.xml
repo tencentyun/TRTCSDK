@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/mirror_auto"
+        android:title="前摄开启" />
+    <item
+        android:id="@+id/mirror_enable"
+        android:title="前后摄均开启" />
+
+    <item
+        android:id="@+id/mirror_disable"
+        android:title="前后摄均关闭" />
+</menu>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/black"
+    tools:context=".speedtest.SpeedTestActivity">
+
+    <TextView
+        android:id="@+id/tv_speedtest_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:gravity="center"
+        android:layout_marginTop="48dp"
+        android:textColor="@color/speedtest_title_bg"
+        android:textSize="20sp"
+        android:text="@string/speedtest_title"/>
+
+    <EditText
+        android:id="@+id/et_speedtest_user_id"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="62dp"
+        android:layout_marginRight="32dp"
+        android:background="@color/speedtest_title_bg"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_speedtest_title" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="7dp"
+        android:text="@string/speedtest_input_guide"
+        android:textSize="12sp"
+        android:textColor="@color/speedtest_title_bg"
+        app:layout_constraintBottom_toTopOf="@+id/et_speedtest_user_id"
+        app:layout_constraintStart_toStartOf="@+id/et_speedtest_user_id" />
+
+    <TextView
+        android:id="@+id/tv_speedtest_result"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="49dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginBottom="49dp"
+        android:textIsSelectable="true"
+        android:background="@color/speedtest_title_bg"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/btn_speedtest_start"
+        app:layout_constraintTop_toBottomOf="@id/et_speedtest_user_id" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="7dp"
+        android:text="@string/speedtest_result_guide"
+        android:textSize="12sp"
+        android:textColor="@color/speedtest_title_bg"
+        app:layout_constraintBottom_toTopOf="@+id/tv_speedtest_result"
+        app:layout_constraintStart_toStartOf="@+id/tv_speedtest_result" />
+
+    <Button
+        android:id="@+id/btn_speedtest_start"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginBottom="66dp"
+        android:text="@string/speedtest_start"
+        android:textSize="21sp"
+        android:textColor="@android:color/white"
+        android:background="@color/speedtest_green_bg"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

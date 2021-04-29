@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="renderparams_trtc_set_quality">TRTC渲染控制</string>
+    <string name="renderparams_please_input_roomid_and_userid">请输入房间号和用户ID</string>
+    <string name="renderparams_rotate_0">0度</string>
+    <string name="renderparams_rotate_90">90度</string>
+    <string name="renderparams_rotate_180">180度</string>
+    <string name="renderparams_rotate_270">270度</string>
+    <string name="renderparams_roomid">房间号</string>
+    <string name="renderparams_userid">用户ID</string>
+    <string name="renderparams_start_push">开始推流</string>
+    <string name="renderparams_set_local_rotate">设置预览图像旋转角度（顺时针）</string>
+    <string name="renderparams_set_remote_roate">设置远端图像旋转角度(顺时针)</string>
+    <string name="renderparams_set_local_mirror">设置预览镜像模式</string>
+    <string name="renderparams_mirror_auto">前摄开启</string>
+    <string name="renderparams_set_remote_mode">设置远端图像渲染模式</string>
+    <string name="renderparams_mode_fill">填充</string>
+    <string name="renderparams_set_local_mode">设置预览图像渲染模式</string>
+    <string name="renderparams_remote_userid">远端用户ID</string>
+    <string name="renderparams_stop_push">停止推流</string>
+    <string name="renderparams_please_start_push">请先推流</string>
+    <string name="renderparams_plsase_ensure_remote_userid">请确保已有远程用户画面并且已经输入远程用户ID</string>
+    <string name="renderparams_mdoe_fit">适应</string>
+    <string name="renderparams_mirror_enable">前后摄均开启</string>
+    <string name="renderparams_mirror_disable">前后摄均关闭</string>
+    <string name="renderparams_no_remote_user_list">房间无其他用户，请等待其他用户加入</string>
+</resources>

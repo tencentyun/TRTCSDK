@@ -1,0 +1,515 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/renderparams_main_bg">
+
+    <com.tencent.rtmp.ui.TXCloudVideoView
+        android:id="@+id/txcvv_main_local"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="15dp"
+            android:background="@mipmap/basic_ic_back" />
+
+        <TextView
+            android:id="@+id/tv_room_number"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="15dp"
+            android:gravity="center_horizontal"
+            android:text="@string/renderparams_trtc_set_quality"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="90dp"
+        android:layout_height="160dp"
+        android:layout_marginTop="70dp"
+        android:layout_alignParentRight="true"
+        android:background="@android:color/transparent">
+        <com.tencent.rtmp.ui.TXCloudVideoView
+            android:id="@+id/txcvv_video_remote1"
+            android:layout_width="90dp"
+            android:layout_height="160dp"
+            android:background="@android:color/darker_gray"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/tv_remote_user1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:text=""/>
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="90dp"
+        android:layout_height="160dp"
+        android:layout_marginTop="240dp"
+        android:layout_alignParentRight="true"
+        android:background="@android:color/transparent">
+        <com.tencent.rtmp.ui.TXCloudVideoView
+            android:id="@+id/txcvv_video_remote2"
+            android:layout_width="90dp"
+            android:layout_height="160dp"
+            android:background="@android:color/darker_gray"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/tv_remote_user2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:text=""/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="90dp"
+        android:layout_height="160dp"
+        android:layout_marginTop="410dp"
+        android:layout_alignParentRight="true"
+        android:background="@android:color/transparent">
+        <com.tencent.rtmp.ui.TXCloudVideoView
+            android:id="@+id/txcvv_video_remote3"
+            android:layout_width="90dp"
+            android:layout_height="160dp"
+            android:background="@android:color/darker_gray"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/tv_remote_user3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:text=""/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="90dp"
+        android:layout_height="160dp"
+        android:layout_marginTop="410dp"
+        android:layout_alignParentLeft="true"
+        android:background="@android:color/transparent">
+        <com.tencent.rtmp.ui.TXCloudVideoView
+            android:id="@+id/txcvv_video_remote4"
+            android:layout_width="90dp"
+            android:layout_height="160dp"
+            android:background="@android:color/darker_gray"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/tv_remote_user4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:text=""/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="90dp"
+        android:layout_height="160dp"
+        android:layout_marginTop="240dp"
+        android:layout_alignParentLeft="true"
+        android:background="@android:color/transparent">
+        <com.tencent.rtmp.ui.TXCloudVideoView
+            android:id="@+id/txcvv_video_remote5"
+            android:layout_width="90dp"
+            android:layout_height="160dp"
+            android:background="@android:color/darker_gray"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/tv_remote_user5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:text=""/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="90dp"
+        android:layout_height="160dp"
+        android:layout_marginTop="70dp"
+        android:layout_alignParentLeft="true"
+        android:background="@android:color/transparent">
+        <com.tencent.rtmp.ui.TXCloudVideoView
+            android:id="@+id/txcvv_video_remote6"
+            android:layout_width="90dp"
+            android:layout_height="160dp"
+            android:background="@android:color/darker_gray"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/tv_remote_user6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:text=""/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_alignParentBottom="true"
+        android:id="@+id/ll_edit_info"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="20dp"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:orientation="vertical"
+            android:layout_weight="1.5"
+            android:paddingLeft="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/renderparams_roomid"
+                android:textSize="14sp"
+                android:textColor="@android:color/white"/>
+
+            <EditText
+                android:id="@+id/et_room_id"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:paddingLeft="5dp"
+                android:text="1256732"
+                android:background="@drawable/basic_edit_bg" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_weight="1.5">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/renderparams_userid"
+                android:textSize="14sp"
+                android:textColor="@android:color/white"/>
+
+            <EditText
+                android:id="@+id/et_user_id"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:paddingLeft="5dp"
+                android:background="@drawable/basic_edit_bg" />
+
+        </LinearLayout>
+        <Button
+            android:id="@+id/btn_start_push"
+            android:layout_below="@+id/ll_set"
+            android:layout_marginTop="10dp"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:background="@drawable/basic_button_bg"
+            android:text="@string/renderparams_start_push"
+            android:layout_marginRight="10dp"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_edit_resolution"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="20dp"
+        android:layout_above="@+id/ll_edit_info"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:paddingLeft="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/renderparams_set_local_rotate"
+                android:textSize="10sp"
+                android:textColor="@android:color/white"/>
+
+            <LinearLayout
+                android:id="@+id/ll_local_rotate"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:orientation="horizontal"
+                android:layout_marginRight="40dp"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:background="@drawable/basic_edit_bg">
+
+                <TextView
+                    android:id="@+id/tv_local_rotate"
+                    android:layout_width="match_parent"
+                    android:layout_weight="3"
+                    android:layout_height="30dp"
+                    android:textColor="@android:color/black"
+                    android:paddingLeft="20dp"
+                    android:gravity="center"
+                    android:text="@string/renderparams_rotate_0"
+                    android:textSize="10sp"/>
+
+                <ImageView
+                    android:layout_width="12.5dp"
+                    android:layout_height="7dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/renderparams_arraw"/>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/renderparams_set_remote_roate"
+                android:textSize="10sp"
+                android:textColor="@android:color/white"/>
+            <LinearLayout
+                android:id="@+id/ll_remote_rotate"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:gravity="center_vertical"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="40dp"
+                android:orientation="horizontal"
+                android:background="@drawable/basic_edit_bg">
+
+                <TextView
+                    android:id="@+id/tv_remote_rotate"
+                    android:layout_width="match_parent"
+                    android:layout_weight="3"
+                    android:layout_height="30dp"
+                    android:gravity="center"
+                    android:textColor="@android:color/black"
+                    android:paddingLeft="20dp"
+                    android:text="@string/renderparams_rotate_0"
+                    android:textSize="10sp"/>
+
+                <ImageView
+                    android:layout_width="12.5dp"
+                    android:layout_height="7dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/renderparams_arraw"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_edit_mirror"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="20dp"
+        android:layout_above="@+id/ll_edit_resolution"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:paddingLeft="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/renderparams_set_local_mirror"
+                android:textSize="12sp"
+                android:textColor="@android:color/white"/>
+
+            <LinearLayout
+                android:id="@+id/ll_local_mirror"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:orientation="horizontal"
+                android:layout_marginRight="40dp"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:background="@drawable/basic_edit_bg">
+
+                <TextView
+                    android:id="@+id/tv_local_mirror"
+                    android:layout_width="match_parent"
+                    android:layout_weight="3"
+                    android:layout_height="30dp"
+                    android:textColor="@android:color/black"
+                    android:paddingLeft="20dp"
+                    android:gravity="center"
+                    android:text="@string/renderparams_mirror_auto"
+                    android:textSize="10sp"/>
+
+                <ImageView
+                    android:layout_width="12.5dp"
+                    android:layout_height="7dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/renderparams_arraw"/>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/renderparams_set_remote_mode"
+                android:textSize="12sp"
+                android:textColor="@android:color/white"/>
+            <LinearLayout
+                android:id="@+id/ll_remote_mode"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:gravity="center_vertical"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="40dp"
+                android:orientation="horizontal"
+                android:background="@drawable/basic_edit_bg">
+
+                <TextView
+                    android:id="@+id/tv_remote_mode"
+                    android:layout_width="match_parent"
+                    android:layout_weight="3"
+                    android:layout_height="30dp"
+                    android:gravity="center"
+                    android:textColor="@android:color/black"
+                    android:paddingLeft="20dp"
+                    android:text="@string/renderparams_mode_fill"
+                    android:textSize="10sp"/>
+
+                <ImageView
+                    android:layout_width="12.5dp"
+                    android:layout_height="7dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/renderparams_arraw"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_edit_mode"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="20dp"
+        android:layout_above="@+id/ll_edit_mirror"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:paddingLeft="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/renderparams_set_local_mode"
+                android:textSize="12sp"
+                android:textColor="@android:color/white"/>
+
+            <LinearLayout
+                android:id="@+id/ll_local_mode"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:orientation="horizontal"
+                android:layout_marginRight="40dp"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:background="@drawable/basic_edit_bg">
+
+                <TextView
+                    android:id="@+id/tv_local_mode"
+                    android:layout_width="match_parent"
+                    android:layout_weight="3"
+                    android:layout_height="30dp"
+                    android:textColor="@android:color/black"
+                    android:paddingLeft="20dp"
+                    android:gravity="center"
+                    android:text="@string/renderparams_mode_fill"
+                    android:textSize="10sp"/>
+
+                <ImageView
+                    android:layout_width="12.5dp"
+                    android:layout_height="7dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/renderparams_arraw"/>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/renderparams_remote_userid"
+                android:textSize="12sp"
+                android:textColor="@android:color/white"/>
+            <LinearLayout
+                android:id="@+id/ll_remote_userid"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:orientation="horizontal"
+                android:layout_marginRight="40dp"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:background="@drawable/basic_edit_bg">
+
+                <TextView
+                    android:id="@+id/tv_remote_userid"
+                    android:layout_width="match_parent"
+                    android:layout_weight="3"
+                    android:layout_height="30dp"
+                    android:textColor="@android:color/black"
+                    android:paddingLeft="20dp"
+                    android:gravity="center"
+                    android:text=""
+                    android:textSize="10sp"/>
+
+                <ImageView
+                    android:layout_width="12.5dp"
+                    android:layout_height="7dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/renderparams_arraw"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

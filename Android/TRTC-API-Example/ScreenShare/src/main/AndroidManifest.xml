@@ -1,0 +1,15 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.tencent.trtc.screenshare" >
+
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
+    <application>
+        <activity android:name="com.tencent.trtc.screenshare.ScreenAnchorActivity" />
+        <activity android:name="com.tencent.trtc.screenshare.ScreenEntranceActivity" />
+        <activity android:name="com.tencent.trtc.screenshare.ScreenAudienceActvity" />
+        <activity
+            android:name="com.tencent.rtmp.video.TXScreenCapture$TXScreenCaptureAssistantActivity"
+            android:theme="@android:style/Theme.Translucent" />
+    </application>
+
+</manifest>

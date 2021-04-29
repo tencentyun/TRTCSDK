@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">TRTC-API-Example</string>
+    <string name="main_trtc_title">腾讯云TRTC API Example</string>
+
+    <string name="main_trtc_base_funciton">基础功能</string>
+    <string name="main_item_aduio_call">语音通话</string>
+    <string name="main_item_aduio_call_desc">双人/多人语音通话、包含静音/免提等功能</string>
+    <string name="main_item_video_call">视频通话</string>
+    <string name="main_item_video_call_desc">双人/多人视频通话、包含静音/免提等功能</string>
+    <string name="main_item_live">视频互动直播</string>
+    <string name="main_item_voice_chat_room">语音互动直播</string>
+    <string name="main_item_screen_share">录屏直播</string>
+    <string name="main_item_screen_share_desc">直播过程中分享屏幕，适用于在线教育，游戏直播等场景</string>
+
+    <string name="main_trtc_advanced">进阶功能</string>
+    <string name="main_item_string_room_id">字符串房间号</string>
+    <string name="main_rtrc_set_video_quality">画质设定</string>
+    <string name="main_rtrc_set_audio_quality">音质设定</string>
+    <string name="main_rerc_render_params">渲染控制</string>
+    <string name="main_item_speed_test">网络测速</string>
+    <string name="main_item_pushcdn">CDN发布</string>
+    <string name="main_trtc_custom_camera">自定义视频采集&amp;渲染</string>
+    <string name="main_rtrc_set_audio_effect">设置音效</string>
+    <string name="main_trtc_set_bgm">设置背景音乐</string>
+    <string name="main_trtc_local_video_share">本地视频分享</string>
+    <string name="main_item_local_record">本地视频录制</string>
+    <string name="main_item_join_multiple_room">加入多个房间</string>
+    <string name="main_item_sei_message">收发SEI消息</string>
+    <string name="main_item_switch_room">快速切换房间</string>
+    <string name="main_trtc_connect_other_room_pk">跨房PK</string>
+    <string name="main_item_third_beauty">第三方美颜</string>
+</resources>

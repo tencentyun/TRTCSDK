@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="audioeffect_trtc_set_quality">TRTC音效设置</string>
+    <string name="audioeffect_please_input_roomid_and_userid">请输入房间号和用户ID</string>
+    <string name="audioeffect_uncle">大叔</string>
+    <string name="audioeffect_metal">重金属</string>
+    <string name="audioeffect_lolita">萝莉</string>
+    <string name="audioeffect_child">熊孩子</string>
+    <string name="audiaeffect_effect_default">原声</string>
+    <string name="audioeffect_please_select_effect">请选择变声效果（请在推流后设置）</string>
+    <string name="audioeffect_reverb_low">低沉</string>
+    <string name="audioeffect_reverb_big">大会堂</string>
+    <string name="audioeffect_reverb_small">小房间</string>
+    <string name="audioeffect_reverb_ktv">KTV</string>
+    <string name="audioeffect_reverb_default">无效果</string>
+    <string name="audioeffect_please_select_reverb">请选择混响效果（请在推流后设置）</string>
+    <string name="audioeffect_start_push">开始推流</string>
+    <string name="audioeffect_stop_push">停止推流</string>
+    <string name="audioeffect_userid">用户ID</string>
+    <string name="audioeffect_roomid">房间号</string>
+</resources>

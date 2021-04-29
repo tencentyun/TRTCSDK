@@ -1,0 +1,9 @@
+<resources>
+    <string name="thirdbeauty_title">第三方美颜</string>
+    <string name="thirdbeauty_room_id">房间号</string>
+    <string name="thirdbeauty_user_id">用户ID</string>
+    <string name="thirdbeauty_start_push">开始推流</string>
+    <string name="thirdbeauty_stop_push">停止推流</string>
+    <string name="thirdbeauty_set_blur_level">设置磨皮级别</string>
+    <string name="thirdbeauty_please_input_roomid_and_userid">请输入房间号和用户ID</string>
+</resources>

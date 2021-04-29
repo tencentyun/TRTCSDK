@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="bgm_trtc_set_bgm">TRTC背景音乐</string>
+    <string name="bgm_stop_push">停止推流</string>
+    <string name="bgm_start_push">开始推流</string>
+    <string name="bgm_please_input_roomid_userid">请输入房间号和用户ID</string>
+    <string name="bgm_roomid">房间号</string>
+    <string name="bgm_userid">用户ID</string>
+    <string name="bgm_please_select_audio_bgm">请选择背景音乐</string>
+    <string name="bgm_please_set_volumn">请选择背景音乐音量</string>
+    <string name="bgm_bgm_3">背景音乐3</string>
+    <string name="bgm_bgm_2">背景音乐2</string>
+    <string name="bgm_bgm_1">背景音乐1</string>
+</resources>

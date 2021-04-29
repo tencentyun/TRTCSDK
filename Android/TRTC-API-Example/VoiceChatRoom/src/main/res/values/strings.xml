@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="voicechatroom_title">语音互动直播示例教程</string>
+    <string name="voicechatroom_room_input_error_tip">房间号和用户名不能为空</string>
+    <string name="voicechatroom_please_select_role">请选择角色（必填项）</string>
+    <string name="voicechatroom_anchor_operator">主播操作</string>
+    <string name="voicechatroom_audience_operator">观众操作</string>
+    <string name="voicechatroom_mute_audio">静音</string>
+    <string name="voicechatroom_close_mic">关闭麦克风</string>
+    <string name="voicechatroom_speaker_receiver">扬声器/听筒</string>
+    <string name="voicechatroom_up_mic">上麦</string>
+    <string name="voicechatroom_down_mic">下麦</string>
+    <string name="voicechatroom_stop_mute_audio">取消静音</string>
+    <string name="voicechatroom_use_receiver">使用听筒</string>
+    <string name="voicechatroom_use_speaker">使用扬声器</string>
+    <string name="voicechatroom_enter_room">进入房间</string>
+    <string name="voicechatroom_please_input_userid">请输入用户名（必填项）</string>
+    <string name="voicechatroom_please_input_roomid">请输入房间号（必填项）</string>
+    <string name="voicechatroom_audience">观众</string>
+    <string name="voicechatroom_anchor">主播</string>
+    <string name="voicechatroom_roomid">房间号:</string>
+</resources>

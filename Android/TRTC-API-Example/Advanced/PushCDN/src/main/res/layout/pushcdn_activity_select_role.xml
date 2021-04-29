@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/black"
+    tools:context=".PushCDNSelectRoleActivity">
+
+    <TextView
+        android:id="@+id/tv_pushcdn_select_role_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:gravity="center"
+        android:layout_marginTop="48dp"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        android:text="@string/pushcdn_page_title"/>
+
+    <TextView
+        android:id="@+id/tv_pushcdn_select_role_guide"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_pushcdn_select_role_title"
+        android:layout_marginTop="39dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:textSize="12sp"
+        android:textColor="@android:color/white"
+        android:text="@string/pushcdn_select_role_guide"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/tv_pushcdn_select_role_guide"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:gravity="center_horizontal"
+        >
+        <TextView
+            android:id="@+id/tv_pushcdn_anchor_choice"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:background="@drawable/pushcdn_selectrole_bg_circle_green"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:textColor="@android:color/white"
+            android:text="@string/pushcdn_select_role_anchor_choice"
+            android:layout_marginTop="46dp"/>
+
+        <TextView
+            android:id="@+id/tv_pushcdn_audience_choice"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:background="@drawable/pushcdn_selectrole_bg_circle_gray"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:textColor="@android:color/white"
+            android:layout_marginLeft="30dp"
+            android:text="@string/pushcdn_select_role_audience_choice"
+            android:layout_marginTop="46dp"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/btn_push_cdn_select_role_choice_confirm"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginBottom="30dp"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:textSize="12sp"
+        android:textColor="@android:color/white"
+        android:text="@string/pushcdn_select_role_result"/>
+
+    <Button
+        android:id="@+id/btn_push_cdn_select_role_choice_confirm"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginBottom="66dp"
+        android:text="@string/pushcdn_select_role_net_step"
+        android:textSize="21sp"
+        android:textColor="@android:color/white"
+        android:background="@color/pushcdn_green_bg"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

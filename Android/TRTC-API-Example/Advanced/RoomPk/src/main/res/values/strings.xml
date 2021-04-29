@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="connectotherroom_trtc_set_quality">TRTC画质设置</string>
+    <string name="connectotherroom_start_push">开始推流</string>
+    <string name="connectotherroom_stop_push">停止推流</string>
+    <string name="connectotherroom_roomid">房间号</string>
+    <string name="connectotherroom_userid">用户ID</string>
+    <string name="connectotherroom_please_select_bitrate">请选择码率</string>
+    <string name="connectotherroom_please_select_fps">请选择帧率</string>
+    <string name="connectotherroom_please_select_resolution">请选择分辨率</string>
+    <string name="connectotherroom_please_input_roomid_and_userid">请输入房间号和用户ID</string>
+    <string name="connectotherroom_start_pk">开始PK</string>
+    <string name="connectotherroom_please_input_need_pk_userid">PK主播的用户ID</string>
+    <string name="connectotherroom_please_input_need_pk_roomid">PK主播的房间号</string>
+    <string name="connectotherroom_stop_pk">停止PK</string>
+</resources>

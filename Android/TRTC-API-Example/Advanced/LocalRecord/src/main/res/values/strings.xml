@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="localrecord_trtc_set_quality">TRTC画质设置</string>
+    <string name="localrecord_start_push">开始推流</string>
+    <string name="localrecord_stop_push">停止推流</string>
+    <string name="localrecord_roomid">房间号</string>
+    <string name="localrecord_please_input_roomid_and_userid">请输入房间号</string>
+    <string name="localrecord_start_record">开始录制</string>
+    <string name="localrecord_stop_record">停止录制</string>
+    <string name="localrecord_please_input_record_file_name">请输入录制文件名</string>
+    <string name="localrecord_please_input_roomid">房间号（默认生成8位，可修改）</string>
+</resources>

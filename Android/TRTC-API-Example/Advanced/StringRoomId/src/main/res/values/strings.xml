@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="stringroomid_trtc_string_room_id">TRTC字符串房间号</string>
+    <string name="stringroomid_stop_push">停止推流</string>
+    <string name="stringroomid_start_push">开始推流</string>
+    <string name="stringroomid_please_input_roomid_userid">请输入房间号和用户ID</string>
+    <string name="stringroomid_roomid">房间号</string>
+    <string name="stringroomid_userid">用户ID</string>
+</resources>

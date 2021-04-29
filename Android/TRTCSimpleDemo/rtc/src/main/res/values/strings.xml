@@ -1,5 +1,0 @@
-<resources>
-    <string name="app_name">rtc</string>
-    <string name="rtc_room_input_error_tip">"房间号和用户名不能为空"</string>
-    <string name="rtc_permisson_error_tip">"用户没有允许需要的权限，加入通话失败"</string>
-</resources>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.tencent.trtc.pushcdn">
+
+    <application>
+        <activity android:name=".PushCDNAnchorActivity"/>
+        <activity android:name=".PushCDNAudienceActivity" />
+        <activity android:name=".PushCDNSelectRoleActivity" />
+    </application>
+
+</manifest>

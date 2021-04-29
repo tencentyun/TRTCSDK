@@ -1,0 +1,12 @@
+<resources>
+    <string name="mediashare_trtc_set_bgm">TRTC 视频文件分享</string>
+    <string name="mediashare_select_file">点击选择</string>
+    <string name="mediashare_stop_push">停止推流</string>
+    <string name="mediashare_start_push">开始推流</string>
+    <string name="mediashare_please_input_roomid_userid">请输入房间号和用户ID</string>
+    <string name="mediashare_media_file_name">请选择本地视频文件</string>
+    <string name="mediashare_roomid">房间号</string>
+    <string name="mediashare_userid">用户ID</string>
+    <string name="mediashare_please_select_video_file">请选择一个视频文件</string>
+    <string name="mediashare_input_roomid">房间号（默认生成8位，可修改）</string>
+</resources>

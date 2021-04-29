@@ -1,9 +1,0 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.tencent.rtc">
-
-    <application>
-        <activity android:name="com.tencent.rtc.RTCActivity" />
-        <activity android:name="com.tencent.rtc.RTCEntranceActivity" />
-    </application>
-
-</manifest>

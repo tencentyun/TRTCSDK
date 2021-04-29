@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="renderparams_green_bg">#34c759</color>
+    <color name="renderparams_main_bg">#1b1b1b</color>
+</resources>

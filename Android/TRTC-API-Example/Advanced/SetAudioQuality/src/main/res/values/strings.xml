@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="audioquality_trtc_set_quality">TRTC音质设置</string>
+    <string name="audioquality_stop_push">停止推流</string>
+    <string name="audioquality_start_push">开始推流</string>
+    <string name="audioquality_please_input_roomid_userid">请输入房间号和用户ID</string>
+    <string name="audioquality_roomid">房间号</string>
+    <string name="audioquality_userid">用户ID</string>
+    <string name="audioquality_please_select_audio_quality">请选择音质</string>
+    <string name="audioquality_quality_default">默认模式</string>
+    <string name="audioquality_quality_speech">语音模式</string>
+    <string name="audioquality_quality_music">音乐模式</string>
+    <string name="audioquality_please_set_volumn">请选择采集音量</string>
+</resources>
