@@ -193,14 +193,16 @@ public: //trtc
     TRTCLocalRecordType m_localRecordType = TRTCLocalRecordType_Both;
 
     bool m_bStartSystemVoice = false;
+    std::wstring third_app_path_;
 
     int audio_quality_ = TRTCAudioQualityUnSelect;
     LivePlayerSourceType m_emLivePlayerSourceType = TRTC_RTC;
 
-    
     bool vod_push_video_ = true;
     bool vod_push_audio_ = true;
-    VodRenderMode vod_render_mode_ = VOD_RENDER_WND;  
+    VodRenderMode vod_render_mode_ = VOD_RENDER_WND;
+
+    bool need_minimize_windows_ = true;
 
    public: 
     //远端用户信息

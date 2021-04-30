@@ -143,14 +143,13 @@ class CDNLivePlayerViewMgr :public ITXLivePlayerCallback
 {
     virtual void onEventCallback(int eventId, const int paramCount, const char **paramKeys, const char **paramValues, void *pUserData)
     {
-        
+        int n = eventId;
     }
     virtual void onVideoDecodeCallback(char* data, unsigned int length, int width, int height, TXEOutputVideoFormat format, void *pUserData)
     {
         TXLiveAvVideoView* viewPtr = (TXLiveAvVideoView*)pUserData;
-        if (viewPtr != nullptr) {
-            viewPtr->AppendVideoFrame((unsigned char *)data, length, width, height, TRTCVideoPixelFormat_I420, LiteAVVideoRotation0);
-        }
+
+       viewPtr->AppendVideoFrame((unsigned char *)data, length, width, height, TRTCVideoPixelFormat_I420, LiteAVVideoRotation0);
 
 
     }

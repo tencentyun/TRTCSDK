@@ -1265,6 +1265,13 @@ void TRTCSettingViewController::NotifyOtherTab(TNotifyUI & msg)
         } else if (msg.pSender->GetName() == _T("btn_send_sei")) {
             ::KillTimer(GetHWND(), m_send_sei_timer);
             ::SetTimer(GetHWND(), m_send_sei_timer, 500, NULL);
+        } else if (msg.pSender->GetName() == _T("check_mini_windows")) {
+            COptionUI* pOpenSender = static_cast<COptionUI*>(msg.pSender);
+            if (pOpenSender->IsSelected() == false) { //事件值是反的
+                CDataCenter::GetInstance()->need_minimize_windows_ = true;
+            } else {
+                CDataCenter::GetInstance()->need_minimize_windows_ = false;
+            }
         }
     }
 
@@ -2223,36 +2230,47 @@ void TRTCSettingViewController::InitAudioTab()
             pCheckSystemAudioMix->Selected(false);
     }
 
-     if (CDataCenter::GetInstance()->m_bOpenDemoTestConfig) {
+    if (CDataCenter::GetInstance()->m_bOpenDemoTestConfig) {
+        CHorizontalLayoutUI* aec_layout =
+            static_cast<CHorizontalLayoutUI*>(m_pmUI.FindControl(_T("ace_layout")));
+        if (aec_layout) {
+            aec_layout->SetVisible(true);
+        }
 
-         CHorizontalLayoutUI* aec_layout = 
-             static_cast<CHorizontalLayoutUI*>(m_pmUI.FindControl(_T("ace_layout")));
-         if (aec_layout) {
-             aec_layout->SetVisible(true);
+        CHorizontalLayoutUI* hook_aec_layout =
+            static_cast<CHorizontalLayoutUI*>(m_pmUI.FindControl(_T("hook_aec_layout")));
+        if (hook_aec_layout) {
+            hook_aec_layout->SetVisible(true);
+        }
+        CHorizontalLayoutUI* agc_layout =
+            static_cast<CHorizontalLayoutUI*>(m_pmUI.FindControl(_T("agc_layout")));
+        if (agc_layout) {
+            agc_layout->SetVisible(true);
+        }
+        CHorizontalLayoutUI* ans_layout =
+            static_cast<CHorizontalLayoutUI*>(m_pmUI.FindControl(_T("ans_layout")));
+        if (ans_layout) {
+            ans_layout->SetVisible(true);
+        }
+
+        CGroupBoxUI* auido_groupbox =
+            static_cast<CGroupBoxUI*>(m_pmUI.FindControl(_T("audio_groupbox")));
+        if (auido_groupbox) {
+            auido_groupbox->SetFixedHeight(320);
+        }
+
+         CVerticalLayoutUI* switch_room_layout =
+             static_cast<CVerticalLayoutUI*>(m_pmUI.FindControl(_T("switch_room_layout")));
+         if (switch_room_layout) {
+            switch_room_layout->SetVisible(true);
          }
 
-          CHorizontalLayoutUI* hook_aec_layout = 
-              static_cast<CHorizontalLayoutUI*>(m_pmUI.FindControl(_T("hook_aec_layout")));
-         if (hook_aec_layout) {
-              hook_aec_layout->SetVisible(true);
+         CVerticalLayoutUI* test_feat_layout =
+             static_cast<CVerticalLayoutUI*>(m_pmUI.FindControl(_T("test_feat_layout")));
+         if (test_feat_layout) {
+             test_feat_layout->SetVisible(true);
          }
-         CHorizontalLayoutUI* agc_layout =
-             static_cast<CHorizontalLayoutUI*>(m_pmUI.FindControl(_T("agc_layout")));
-         if (agc_layout) {
-             agc_layout->SetVisible(true);
-         }
-         CHorizontalLayoutUI* ans_layout =
-             static_cast<CHorizontalLayoutUI*>(m_pmUI.FindControl(_T("ans_layout")));
-         if (ans_layout) {
-             ans_layout->SetVisible(true);
-         }
-
-         CGroupBoxUI* auido_groupbox =
-             static_cast<CGroupBoxUI*>(m_pmUI.FindControl(_T("audio_groupbox")));
-         if (auido_groupbox) {
-             auido_groupbox->SetFixedHeight(320);
-         }
-     }
+    }
 }
 
 void TRTCSettingViewController::InitVideoTab()
@@ -2472,7 +2490,7 @@ void TRTCSettingViewController::InitOtherTab()
     if (pCheckLocalVideoOpenUI)
     {
         pCheckLocalVideoOpenUI->Selected(false);
-       
+
         if (!CDataCenter::GetInstance()->m_bMuteLocalVideo)
         {
             pCheckLocalVideoOpenUI->Selected(true);
@@ -2483,11 +2501,18 @@ void TRTCSettingViewController::InitOtherTab()
     if (pCheckLocalAudioOpenUI)
     {
         pCheckLocalAudioOpenUI->Selected(false);
-       
 
         if (!CDataCenter::GetInstance()->m_bMuteLocalAudio)
         {
             pCheckLocalAudioOpenUI->Selected(true);
+        }
+    }
+
+    COptionUI* pCheckMiniWindowOpenUI = static_cast<COptionUI*>(m_pmUI.FindControl(_T("check_mini_windows")));
+    if (pCheckMiniWindowOpenUI) {
+        pCheckMiniWindowOpenUI->Selected(false);
+        if (CDataCenter::GetInstance()->need_minimize_windows_) {
+            pCheckMiniWindowOpenUI->Selected(true);
         }
     }
 }

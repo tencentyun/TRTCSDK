@@ -85,19 +85,22 @@ void UiShareSelect::InitWindow()
     }
 
     ITRTCScreenCaptureSourceList* wndInfoList = TRTCCloudCore::GetInstance()->GetWndList();
-
+ 
     ms_nLastSelectedIndex = 0;
     if (ms_nLastSelectedIndex >= wndInfoList->getCount()) ms_nLastSelectedIndex = wndInfoList->getCount() - 1;
 
     for (size_t i = 0; i < wndInfoList->getCount(); ++i)
     {
+        if (!CDataCenter::GetInstance()->need_minimize_windows_ && wndInfoList->getSourceInfo(i).isMinimizeWindow) {
+            continue;
+        }
         ShareSelectItem* pItem = new ShareSelectItem();
         CVerticalLayoutUI* pUI = pItem->CreateControl(&m_pm);
         pUI->SetFixedWidth(150);
         pUI->SetFixedHeight(100);
         pItem->setWndInfo(wndInfoList->getSourceInfo(i));
-        pLayout->Add(pUI);
         if (i == ms_nLastSelectedIndex) pItem->select(true);
+        pLayout->Add(pUI);
         m_vecShareSelectItem.push_back(pItem);
     }
     wndInfoList->release();

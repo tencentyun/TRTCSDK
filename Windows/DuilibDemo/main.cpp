@@ -69,7 +69,7 @@ void InitResource()
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*lpCmdLine*/, int nCmdShow)
 {
     LINFO(L"WinMain:: App run begin");
-
+ 
     PROCESSENTRY32 pe32;
     pe32.dwSize = sizeof(pe32);
 
@@ -94,7 +94,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*l
     {
         return false;
     }
-
+    ::CoInitialize(NULL);
 #ifdef _DEBUG
     //::MessageBoxW(NULL, NULL, NULL, MB_OK);   // 方便附加调试
 #endif // DEBUG
@@ -121,8 +121,6 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*l
     CPaintManagerUI::SetInstance(hInstance);
     InitResource();
 
-    HRESULT Hr = ::CoInitialize(NULL);
-    if (FAILED(Hr)) return 0;
     CDataCenter::GetInstance()->Init();
 
     TRTCLoginViewController* pLogin = new TRTCLoginViewController();
