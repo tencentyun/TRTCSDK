@@ -4,10 +4,12 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -66,7 +68,8 @@ public class VoiceRoomSeatAdapter extends
     public class ViewHolder extends RecyclerView.ViewHolder {
         public CircleImageView mImgHead;
         public TextView        mTvName;
-        public FrameLayout     mFrameLayoutHeadImg;
+        public ImageView       mIvMute;
+        public ImageView       mIvTalkBorder;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -84,18 +87,18 @@ public class VoiceRoomSeatAdapter extends
                 }
             });
             if (model.isClose) {
-                //close的界面
                 mImgHead.setImageResource(R.drawable.trtcvoiceroom_ic_lock);
-                mImgHead.setCircleBackgroundColor(context.getResources().getColor(R.color.trtcvoiceroom_circle));
-                mTvName.setText("座位已锁定");
-                mFrameLayoutHeadImg.setForeground(null);
+                mTvName.setText("");
+                mIvMute.setVisibility(View.GONE);
+                mIvTalkBorder.setVisibility(View.GONE);
                 return;
             }
             if (!model.isUsed) {
                 // 占位图片
-                mImgHead.setImageResource(R.drawable.trtcvoiceroom_ic_head);
-                mTvName.setText(mEmptyText);
-                mTvName.setTextColor(context.getResources().getColor(R.color.trtcvoiceroom_text_color_disable));
+                mImgHead.setImageResource(R.drawable.trtcvoiceroom_add_seat);
+                mTvName.setText("");
+                mIvMute.setVisibility(View.GONE);
+                mIvTalkBorder.setVisibility(View.GONE);
             } else {
                 if (!TextUtils.isEmpty(model.userAvatar)) {
                     Picasso.get().load(model.userAvatar).into(mImgHead);
@@ -105,20 +108,23 @@ public class VoiceRoomSeatAdapter extends
                 if (!TextUtils.isEmpty(model.userName)) {
                     mTvName.setText(model.userName);
                 } else {
-                    mTvName.setText("主播名还在查找");
+                    mTvName.setText(R.string.trtcvoiceroom_tv_the_anchor_name_is_still_looking_up);
                 }
-            }
-            if (model.isMute) {
-                mFrameLayoutHeadImg.setForeground(context.getResources().getDrawable(R.drawable.trtcvoiceroom_ic_head_mute));
-            } else {
-                mFrameLayoutHeadImg.setForeground(null);
+                boolean mute = model.isUserMute || model.isSeatMute;
+                mIvMute.setVisibility(mute ? View.VISIBLE : View.GONE);
+                if (mute) {
+                    mIvTalkBorder.setVisibility(View.GONE);
+                } else {
+                    mIvTalkBorder.setVisibility(model.isTalk ? View.VISIBLE : View.GONE);
+                }
             }
         }
 
         private void initView(@NonNull final View itemView) {
             mImgHead = (CircleImageView) itemView.findViewById(R.id.img_head);
             mTvName = (TextView) itemView.findViewById(R.id.tv_name);
-            mFrameLayoutHeadImg = (FrameLayout) itemView.findViewById(R.id.layout_img_head);
+            mIvMute = (ImageView) itemView.findViewById(R.id.iv_mute);
+            mIvTalkBorder = (ImageView) itemView.findViewById(R.id.iv_talk_border);
         }
     }
 }

@@ -14,7 +14,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
@@ -24,6 +23,7 @@ import com.tencent.liteav.trtcchatsalon.model.TRTCChatSalon;
 import com.tencent.liteav.trtcchatsalon.model.TRTCChatSalonCallback;
 import com.tencent.liteav.trtcchatsalon.model.TRTCChatSalonDef;
 import com.tencent.liteav.trtcchatsalon.model.TRTCChatSalonDelegate;
+import com.tencent.liteav.trtcchatsalon.ui.utils.StatusBarUtils;
 import com.tencent.liteav.trtcchatsalon.ui.base.ChatSalonMemberEntity;
 import com.tencent.liteav.trtcchatsalon.ui.widget.ConfirmDialogFragment;
 import com.tencent.liteav.trtcchatsalon.ui.widget.HandUpListDialog;
@@ -96,9 +96,8 @@ public class ChatSalonBaseActivity extends AppCompatActivity implements ChatSalo
         mContext = this;
         // 应用运行时，保持不锁屏、全屏化
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.trtcchatsalon_activity_main);
+        StatusBarUtils.initStatusBar(this);
         initView();
         initData();
         initListener();

@@ -93,7 +93,7 @@ public class AnchorPKSelectView extends RelativeLayout {
     }
 
     public void refreshView() {
-        mPusherTagTv.setText("正在加载中...");
+        mPusherTagTv.setText(getResources().getString(R.string.trtcliveroom_loading));
         RoomManager.getInstance().getRoomList(TCConstants.TYPE_LIVE_ROOM, new RoomManager.GetRoomListCallback() {
             @Override
             public void onSuccess(List<String> roomIdList) {
@@ -118,9 +118,9 @@ public class AnchorPKSelectView extends RelativeLayout {
                                 mRoomInfos.add(info);
                             }
                             if (CollectionUtils.isEmpty(mRoomInfos)) {
-                                mPusherTagTv.setText("暂无可PK主播");
+                                mPusherTagTv.setText(getResources().getString(R.string.trtcliveroom_no_anchor_for_pk));
                             } else {
-                                mPusherTagTv.setText("PK 邀请");
+                                mPusherTagTv.setText(getResources().getString(R.string.trtcliveroom_title_pk_request));
                             }
                             mRoomListAdapter.notifyDataSetChanged();
                         }
@@ -130,7 +130,7 @@ public class AnchorPKSelectView extends RelativeLayout {
 
             @Override
             public void onFailed(int code, String msg) {
-                ToastUtils.showShort("获取PK主播列表失败");
+                ToastUtils.showShort(getResources().getString(R.string.trtcliveroom_get_anchor_list_fail));
             }
         });
     }

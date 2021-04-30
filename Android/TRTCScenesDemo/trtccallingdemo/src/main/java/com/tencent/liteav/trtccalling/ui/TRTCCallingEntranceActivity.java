@@ -73,7 +73,7 @@ public class TRTCCallingEntranceActivity extends AppCompatActivity {
             callUserInfo.userAvatar = mSearchModel.userAvatar;
             callUserInfo.userName = mSearchModel.userName;
             callUserInfoList.add(callUserInfo);
-            ToastUtils.showShort("视频呼叫:" + callUserInfo.userName);
+            ToastUtils.showShort(getString(R.string.trtccalling_toast_video_call, callUserInfo.userName));
             TRTCVideoCallActivity.startCallSomeone(this, selfInfo, callUserInfoList);
         } else {
             TRTCAudioCallActivity.UserInfo selfInfo = new TRTCAudioCallActivity.UserInfo();
@@ -86,7 +86,7 @@ public class TRTCCallingEntranceActivity extends AppCompatActivity {
             callUserInfo.userAvatar = mSearchModel.userAvatar;
             callUserInfo.userName = mSearchModel.userName;
             callUserInfoList.add(callUserInfo);
-            ToastUtils.showShort("语音呼叫:" + callUserInfo.userName);
+            ToastUtils.showShort(getString(R.string.trtccalling_toast_voice_call, callUserInfo.userName));
             TRTCAudioCallActivity.startCallSomeone(this, selfInfo, callUserInfoList);
         }
     }
@@ -127,7 +127,7 @@ public class TRTCCallingEntranceActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (mSelfModel.userId.equals(mSearchModel.userId)) {
-                    ToastUtils.showShort("不能呼叫自己");
+                    ToastUtils.showShort(getString(R.string.trtccalling_toast_not_call_myself));
                     return;
                 }
                 startCallSomeone();
@@ -180,7 +180,7 @@ public class TRTCCallingEntranceActivity extends AppCompatActivity {
         mTvSelfPhone.setText(getString(R.string.trtccalling_call_self_format, mSelfModel.phone));
 
         if (mType == TRTCCalling.TYPE_VIDEO_CALL) {
-            mTvTitle.setText(getString(R.string.trtccalling_video_call));
+            mTvTitle.setText(getString(R.string.trtccalling_title_video_call));
         } else {
             mTvTitle.setText(getString(R.string.trtccalling_audio_call));
         }
@@ -203,7 +203,7 @@ public class TRTCCallingEntranceActivity extends AppCompatActivity {
             Window window = getWindow();
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+                    | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(Color.TRANSPARENT);
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {

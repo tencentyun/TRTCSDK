@@ -20,6 +20,7 @@ import com.blankj.utilcode.util.SizeUtils;
 import com.tencent.liteav.demo.trtc.R;
 import com.tencent.liteav.login.model.ProfileManager;
 import com.tencent.liteav.login.model.UserModel;
+import com.tencent.liteav.meeting.ui.utils.StateBarUtils;
 import com.tencent.liteav.meeting.ui.widget.settingitem.BaseSettingItem;
 import com.tencent.liteav.meeting.ui.widget.settingitem.SwitchSettingItem;
 import com.tencent.trtc.TRTCCloudDef;
@@ -38,7 +39,6 @@ public class CreateMeetingActivity extends AppCompatActivity {
     private TextView mTitleMain;
     private Toolbar                    mToolbar;
     private EditText                   mRoomIdEt;
-    private EditText                   mUserNameEt;
     private TextView                   mEnterTv;
     private LinearLayout               mSettingContainerLl;
     private RadioButton                mVoiceRb;
@@ -61,7 +61,7 @@ public class CreateMeetingActivity extends AppCompatActivity {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            if (!TextUtils.isEmpty(mRoomIdEt.getText().toString()) && !TextUtils.isEmpty(mUserNameEt.getText().toString())) {
+            if (!TextUtils.isEmpty(mRoomIdEt.getText().toString())) {
                 mEnterTv.setEnabled(true);
             } else {
                 mEnterTv.setEnabled(false);
@@ -78,6 +78,7 @@ public class CreateMeetingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_meeting);
+        StateBarUtils.setLightStatusBar(this);
         initView();
         initData();
         initPermission();
@@ -93,19 +94,19 @@ public class CreateMeetingActivity extends AppCompatActivity {
             }
         });
         mRoomIdEt.addTextChangedListener(mEditTextWatcher);
-        mUserNameEt.addTextChangedListener(mEditTextWatcher);
         mEnterTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                enterMeeting(mRoomIdEt.getText().toString(), mUserNameEt.getText().toString());
+                enterMeeting(mRoomIdEt.getText().toString());
             }
         });
     }
 
-    private void enterMeeting(final String roomId, final String userName) {
+    private void enterMeeting(final String roomId) {
         UserModel userModel  = ProfileManager.getInstance().getUserModel();
         String    userId     = userModel.userId;
         String    userAvatar = userModel.userAvatar;
+        String     userName  = userModel.userName;
         int       tempRoomId;
         try {
             tempRoomId = Integer.parseInt(roomId);
@@ -133,12 +134,11 @@ public class CreateMeetingActivity extends AppCompatActivity {
         mTitleMain = (TextView) findViewById(R.id.main_title);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mRoomIdEt = (EditText) findViewById(R.id.et_room_id);
-        mUserNameEt = (EditText) findViewById(R.id.et_user_name);
         mEnterTv = (TextView) findViewById(R.id.tv_enter);
         mSettingContainerLl = (LinearLayout) findViewById(R.id.ll_setting_container);
 
         mSettingItemList = new ArrayList<>();
-        BaseSettingItem.ItemText itemText = new BaseSettingItem.ItemText("开启摄像头", "");
+        BaseSettingItem.ItemText itemText = new BaseSettingItem.ItemText(getString(R.string.meeting_title_turn_on_camera), "");
         SwitchSettingItem mOpenCameraItem = new SwitchSettingItem(this, itemText,
                 new SwitchSettingItem.Listener() {
                     @Override
@@ -148,7 +148,7 @@ public class CreateMeetingActivity extends AppCompatActivity {
                 }).setCheck(true);
         mSettingItemList.add(mOpenCameraItem);
 
-        itemText = new BaseSettingItem.ItemText("开启麦克风", "");
+        itemText = new BaseSettingItem.ItemText(getString(R.string.meeting_title_turn_on_microphone), "");
         SwitchSettingItem mOpenAudioItem = new SwitchSettingItem(this, itemText,
                 new SwitchSettingItem.Listener() {
                     @Override

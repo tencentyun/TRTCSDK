@@ -1,10 +1,10 @@
 <resources>
     <string name="tctrtcchatsalon_app_name">Chat Salon</string>
-    <string name="trtcchatsalon_numer_format" formatted="false">%d watching</string>
+    <string name="trtcchatsalon_numer_format">%d watching</string>
     <string name="trtcchatsalon_agree">agree</string>
     <string name="trtcchatsalon_warning_not_empty">"input can't be empty!"</string>
     <string name="trtcchatsalon_send">send</string>
-    <string name="trtcchatsalon_main_title" formatted="false">%1s(%2d)</string>
+    <string name="trtcchatsalon_main_title">%1s(%2d)</string>
     <string name="trtcchatsalon_request_expired">The request has expired</string>
     <string name="trtcchatsalon_accept_failed">Failed to accept request</string>
     <string name="trtcchatsalon_anchor_take_seat_success">Host succeeded in occupying the seat</string>

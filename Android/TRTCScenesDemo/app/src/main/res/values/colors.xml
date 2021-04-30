@@ -77,5 +77,12 @@
 
     <!--TRTCMainActivity item被选中的颜色-->
     <color name="textColorSecond">#37465F</color>
-
+    <color name="app_color_tab_select">#006EFF</color>
+    <color name="app_color_tab_normal">#999999</color>
+    <color name="app_color_main_bg">#F1F3F8</color>
+    <color name="app_color_main_text">#333333</color>
+    <color name="app_color_bg_dialog">#66000000</color>
+    <color name="app_color_input_normal">#BBBBBB</color>
+    <color name="app_color_input_no_match">#FA585E</color>
+    <color name="app_color_line">#EEEEEE</color>
 </resources>

@@ -40,6 +40,8 @@ import com.tencent.liteav.meeting.model.TRTCMeetingCallback;
 import com.tencent.liteav.meeting.model.TRTCMeetingDef;
 import com.tencent.liteav.meeting.model.TRTCMeetingDelegate;
 import com.tencent.liteav.meeting.ui.remote.RemoteUserListView;
+import com.tencent.liteav.meeting.ui.utils.StateBarUtils;
+import com.tencent.liteav.meeting.ui.widget.base.ConfirmDialogFragment;
 import com.tencent.liteav.meeting.ui.widget.feature.FeatureConfig;
 import com.tencent.liteav.meeting.ui.widget.feature.FeatureSettingFragmentDialog;
 import com.tencent.liteav.meeting.ui.widget.page.MeetingPageLayoutManager;
@@ -100,7 +102,7 @@ public class MeetingMainActivity extends AppCompatActivity implements TRTCMeetin
     private ViewStub                     mStubRemoteUserView;
     private RemoteUserListView           mRemoteUserView;
     private FeatureSettingFragmentDialog mFeatureSettingFragmentDialog; //更多设置面板
-    private Group                        mScreenCaptureGroup;
+    private View                        mScreenCaptureGroup;
     private Group                        mBottomToolBarGroup;
     private TextView                     mStopScreenCaptureTv;
     private View                         mFloatingWindow;
@@ -136,10 +138,8 @@ public class MeetingMainActivity extends AppCompatActivity implements TRTCMeetin
         super.onCreate(savedInstanceState);
         // 应用运行时，保持不锁屏、全屏化
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        StateBarUtils.setDarkStatusBar(this);
         setContentView(R.layout.activity_meeting_main);
-        getWindow().setFormat(PixelFormat.TRANSLUCENT);
         initData();
         initView();
         startCreateOrEnterMeeting();
@@ -150,6 +150,7 @@ public class MeetingMainActivity extends AppCompatActivity implements TRTCMeetin
     public void onBackPressed() {
         if (mRemoteUserView != null && mRemoteUserView.isShown()) {
             mRemoteUserView.setVisibility(View.GONE);
+            StateBarUtils.setDarkStatusBar(MeetingMainActivity.this);
             return;
         }
         preExitMeeting();
@@ -176,9 +177,9 @@ public class MeetingMainActivity extends AppCompatActivity implements TRTCMeetin
     private void preExitMeeting() {
         String notifyMsg = "";
         if (isCreating) {
-            notifyMsg = "您是会议创建者，退出后会议将结束!";
+            notifyMsg = getString(R.string.meeting_msg_exit_meeting);
         } else {
-            notifyMsg = "确认退出会议?";
+            notifyMsg = getString(R.string.meeting_msg_confirm_exit_meeting);
         }
         showExitInfoDialog(notifyMsg, false);
     }
@@ -198,7 +199,7 @@ public class MeetingMainActivity extends AppCompatActivity implements TRTCMeetin
                 if (code == 0) {
                     // 创建房间成功
                     isCreating = true;
-                    ToastUtils.showLong("会议创建成功");
+                    ToastUtils.showLong(getString(R.string.meeting_toast_create_meeting_successfully));
                     mMeetingHeadBarView.setTitle(String.valueOf(mRoomId));
                     changeResolution();
                     return;
@@ -227,7 +228,7 @@ public class MeetingMainActivity extends AppCompatActivity implements TRTCMeetin
         FeatureConfig.getInstance().setAudioVolumeEvaluation(true);
         mTRTCMeeting.setDelegate(this);
         mTRTCMeeting.setSelfProfile(mUserName, mUserAvatar, null);
-        mMeetingHeadBarView.setTitle("会议进入中...");
+        mMeetingHeadBarView.setTitle(getString(R.string.meeting_title_entering));
         createMeeting();
         // 根据外面传入的设置，选择是否打开相应的功能
         mTRTCMeeting.setAudioQuality(mAudioQuality);
@@ -384,7 +385,7 @@ public class MeetingMainActivity extends AppCompatActivity implements TRTCMeetin
                 preExitMeeting();
             }
         });
-        mScreenCaptureGroup = (Group) findViewById(R.id.group_screen_capture);
+        mScreenCaptureGroup = findViewById(R.id.group_screen_capture);
         mBottomToolBarGroup = (Group) findViewById(R.id.group_bottom_tool_bar);
         mStopScreenCaptureTv = (TextView) findViewById(R.id.tv_stop_screen_capture);
 
@@ -490,10 +491,10 @@ public class MeetingMainActivity extends AppCompatActivity implements TRTCMeetin
     @Override
     public void onError(int code, String message) {
         if (code == -1308) {
-            ToastUtils.showLong("启动录屏失败");
+            ToastUtils.showLong(getString(R.string.meeting_toast_start_screen_recording_failed));
             stopScreenCapture();
         } else {
-            ToastUtils.showLong("出现错误[" + code + "]:" + message);
+            ToastUtils.showLong(getString(R.string.meeting_toast_error, code, message));
             finish();
         }
     }
@@ -501,7 +502,7 @@ public class MeetingMainActivity extends AppCompatActivity implements TRTCMeetin
     @Override
     public void onRoomDestroy(String roomId) {
         if (String.valueOf(mRoomId).equals(roomId)) {
-            ToastUtils.showShort("创建者已结束会议");
+            ToastUtils.showShort(getString(R.string.meeting_toast_end_meeting));
             finish();
         }
     }
@@ -746,7 +747,7 @@ public class MeetingMainActivity extends AppCompatActivity implements TRTCMeetin
         } else if (id == R.id.img_screen_share) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (!PermissionUtils.isGrantedDrawOverlays()) {
-                    ToastUtils.showLong("需要打开悬浮窗权限");
+                    ToastUtils.showLong(getString(R.string.meeting_toast_need_floating_window_permission));
                     PermissionUtils.requestDrawOverlays(new PermissionUtils.SimpleCallback() {
                         @Override
                         public void onGranted() {
@@ -755,7 +756,7 @@ public class MeetingMainActivity extends AppCompatActivity implements TRTCMeetin
 
                         @Override
                         public void onDenied() {
-                            ToastUtils.showLong("需要打开悬浮窗权限");
+                            ToastUtils.showLong(getString(R.string.meeting_toast_need_floating_window_permission));
                         }
                     });
                 } else {
@@ -884,11 +885,12 @@ public class MeetingMainActivity extends AppCompatActivity implements TRTCMeetin
                 @Override
                 public void onFinishClick() {
                     mRemoteUserView.setVisibility(View.GONE);
+                    StateBarUtils.setDarkStatusBar(MeetingMainActivity.this);
                 }
 
                 @Override
                 public void onMuteAllAudioClick() {
-                    ToastUtils.showShort("全体静音");
+                    ToastUtils.showShort(getString(R.string.meeting_toast_mute_all_audio));
                     mIsUserEnterMuteAudio = true;
                     for (int i = 1; i < mMemberEntityList.size(); i++) {
                         MemberEntity entity = mMemberEntityList.get(i);
@@ -900,7 +902,7 @@ public class MeetingMainActivity extends AppCompatActivity implements TRTCMeetin
 
                 @Override
                 public void onMuteAllAudioOffClick() {
-                    ToastUtils.showShort("解除全体静音");
+                    ToastUtils.showShort(getString(R.string.meeting_toast_not_mute_all_audio));
                     mIsUserEnterMuteAudio = false;
                     for (int i = 1; i < mMemberEntityList.size(); i++) {
                         MemberEntity entity = mMemberEntityList.get(i);
@@ -912,7 +914,7 @@ public class MeetingMainActivity extends AppCompatActivity implements TRTCMeetin
 
                 @Override
                 public void onMuteAllVideoClick() {
-                    ToastUtils.showShort("全体静画");
+                    ToastUtils.showShort(getString(R.string.meeting_toast_mute_all_video));
                     for (int i = 1; i < mMemberEntityList.size(); i++) {
                         MemberEntity entity = mMemberEntityList.get(i);
                         entity.setMuteVideo(true);
@@ -949,11 +951,14 @@ public class MeetingMainActivity extends AppCompatActivity implements TRTCMeetin
             });
             mRemoteUserView.setRemoteUser(mMemberEntityList);
             mRemoteUserView.notifyDataSetChanged();
+            StateBarUtils.setLightStatusBar(MeetingMainActivity.this);
         } else {
             if (mRemoteUserView.isShown()) {
                 mRemoteUserView.setVisibility(View.GONE);
+                StateBarUtils.setDarkStatusBar(MeetingMainActivity.this);
             } else {
                 mRemoteUserView.setVisibility(View.VISIBLE);
+                StateBarUtils.setLightStatusBar(MeetingMainActivity.this);
             }
         }
     }
@@ -980,36 +985,41 @@ public class MeetingMainActivity extends AppCompatActivity implements TRTCMeetin
      * @param isError true错误消息（必须退出） false提示消息（可选择是否退出）
      */
     public void showExitInfoDialog(String msg, Boolean isError) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setCancelable(true);
-        builder.setTitle(msg);
+        final ConfirmDialogFragment dialogFragment = new ConfirmDialogFragment();
+        dialogFragment.setCancelable(true);
+        dialogFragment.setMessage(msg);
+        if (dialogFragment.isAdded()) {
+            dialogFragment.dismiss();
+            return;
+        }
         if (!isError) {
-            builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            dialogFragment.setPositiveText(getString(R.string.meeting_dialog_ok));
+            dialogFragment.setNegativeText(getString(R.string.meeting_dialog_cancel));
+            dialogFragment.setPositiveClickListener(new ConfirmDialogFragment.PositiveClickListener() {
                 @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
+                public void onClick() {
+                    dialogFragment.dismiss();
                     exitMeetingConfirm();
-                    finish();
-                }
+                    finish();            }
             });
-            builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+
+            dialogFragment.setNegativeClickListener(new ConfirmDialogFragment.NegativeClickListener() {
                 @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
+                public void onClick() {
+                    dialogFragment.dismiss();
                 }
             });
         } else {
             //当情况为错误的时候，直接停止推流
-            builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            dialogFragment.setPositiveText(getString(R.string.meeting_dialog_ok));
+            dialogFragment.setPositiveClickListener(new ConfirmDialogFragment.PositiveClickListener() {
                 @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
+                public void onClick() {
+                    dialogFragment.dismiss();
                 }
             });
         }
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-        alertDialog.setCanceledOnTouchOutside(false);
+        dialogFragment.show(getFragmentManager(), "ConfirmDialogFragment");
     }
 
     private MeetingVideoView.Listener mMeetingViewClick = new MeetingVideoView.Listener() {

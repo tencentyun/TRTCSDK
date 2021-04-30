@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusableInTouchMode="true"
-    android:background="@drawable/trtcliveroom_bg_main_gradient">
+    android:background="@color/trtcliveroom_color_white">
 
     <android.support.constraint.Guideline
         android:layout_width="match_parent"
@@ -24,6 +24,8 @@
         android:id="@+id/fl_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="28dp">
@@ -37,13 +39,14 @@
             android:paddingBottom="2dp"
             android:text="@string/trtcliveroom_room_list_activity_title"
             android:textAlignment="center"
-            android:textColor="@color/trtcliveroom_color_title"
+            android:textColor="@color/trtcliveroom_color_black"
+            android:textStyle="bold"
             android:textSize="18sp" />
 
         <ImageButton
             android:id="@+id/liveroom_back_button"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="left|center_vertical"
             android:background="@color/trtcliveroom_transparent"
             android:paddingLeft="10dp"

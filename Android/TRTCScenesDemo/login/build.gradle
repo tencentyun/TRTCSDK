@@ -33,5 +33,8 @@ dependencies {
     compile 'com.blankj:utilcode:1.25.9'
     compile "com.android.support:appcompat-v7:$rootProject.ext.supportSdkVersion"
     compile "com.android.support:recyclerview-v7:$rootProject.ext.supportSdkVersion"
+    compile 'de.hdodenhof:circleimageview:3.1.0'
+    compile "com.android.support:design:$rootProject.ext.supportSdkVersion"
+    compile rootProject.ext.imSdk
 }
 

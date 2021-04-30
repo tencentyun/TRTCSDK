@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:singleLine="true"
-            android:text="创建语音聊天室"
+            android:text="@string/trtcvoiceroom_title_create_chat_room"
             android:textColor="@color/colorWhite"
             android:textSize="18sp" />
     </android.support.v7.widget.Toolbar>
@@ -40,7 +40,7 @@
             android:id="@+id/room_id_tag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="主题"
+            android:text="@string/trtcvoiceroom_title_theme"
             android:textColor="@color/trtcvoiceroom_text_color_second"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -51,7 +51,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@null"
-            android:hint="请输入聊天室主题"
+            android:hint="@string/trtcvoiceroom_hint_please_input_theme"
             android:maxLines="1"
             android:singleLine="true"
             android:textColorHint="@color/trtcvoiceroom_text_color_hint"
@@ -74,7 +74,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="昵称"
+            android:text="@string/trtcvoiceroom_title_nickname"
             android:textColor="@color/trtcvoiceroom_text_color_second"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="@+id/room_id_tag"
@@ -86,7 +86,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:background="@null"
-            android:hint="请输入昵称"
+            android:hint="@string/trtcvoiceroom_hint_please_input_nickname"
             android:textColorHint="@color/trtcvoiceroom_text_color_hint"
             app:layout_constraintBottom_toBottomOf="@id/user_id_tag"
             app:layout_constraintEnd_toEndOf="parent"
@@ -130,7 +130,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
-            android:text="上麦需要房主同意"
+            android:text="@string/trtcvoiceroom_tv_need_agree"
             android:textColor="@color/trtcvoiceroom_btn_text"
             android:textSize="@dimen/title_text_size"
             app:layout_constraintStart_toStartOf="parent"
@@ -153,7 +153,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="20dp"
-            android:text="音质选择"
+            android:text="@string/trtcvoiceroom_tv_sound_quality"
             android:textColor="@color/trtcvoiceroom_btn_text"
             android:textSize="@dimen/title_text_size"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -172,14 +172,14 @@
             <RadioButton
                 android:id="@+id/rb_normal"
                 style="@style/TRTCVoiceRoomCreateRadioButtonStyle"
-                android:text="标准" />
+                android:text="@string/trtcvoiceroom_rb_normal" />
 
             <RadioButton
                 android:id="@+id/rb_music"
                 android:layout_marginLeft="30dp"
                 style="@style/TRTCVoiceRoomCreateRadioButtonStyle"
                 android:checked="true"
-                android:text="音乐" />
+                android:text="@string/trtcvoiceroom_rb_music" />
         </RadioGroup>
     </android.support.constraint.ConstraintLayout>
 
@@ -194,7 +194,7 @@
         android:enabled="true"
         android:gravity="center"
         android:padding="10dp"
-        android:text="创建聊天室"
+        android:text="@string/trtcvoiceroom_tv_create_chat_room"
         android:textColor="@drawable/trtcvoiceroom_button_text_color"
         android:textSize="18sp" />
 </LinearLayout>

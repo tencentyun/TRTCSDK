@@ -4,18 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_main_gradient"
+    android:background="@color/meeting_color_white"
     android:orientation="vertical"
     tools:context="com.tencent.liteav.meeting.ui.CreateMeetingActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
+        android:layout_marginTop="28dp"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:navigationIcon="@drawable/ic_back">
+        app:navigationIcon="@drawable/trtcliveroom_ic_back">
 
         <TextView
             android:id="@+id/main_title"
@@ -23,9 +24,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:singleLine="true"
-            android:text="多人视频会议"
-            android:textColor="@color/colorWhite"
-            android:textSize="18sp" />
+            android:text="@string/meeting_item_video_conferencing"
+            android:textColor="@color/meeting_color_black"
+            android:textSize="16sp" />
     </android.support.v7.widget.Toolbar>
 
     <android.support.constraint.ConstraintLayout
@@ -34,7 +35,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
         android:layout_marginRight="20dp"
-        android:background="@drawable/bg_item_gradient"
+        android:background="@drawable/trtcmeeting_bg_edit_meeting_info"
         android:orientation="vertical"
         android:padding="20dp">
 
@@ -42,9 +43,10 @@
             android:id="@+id/room_id_tag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="会议号"
-            android:textColor="@color/meetingTextColorSecond"
-            android:textSize="18sp"
+            android:text="@string/meeting_tv_meeting_number"
+            android:textColor="@color/meeting_color_main_text"
+            android:textSize="16sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -56,52 +58,20 @@
             android:layout_marginLeft="10dp"
             android:background="@null"
             android:maxEms="10"
-            android:hint="请输入会议号"
+            android:hint="@string/meeting_tv_please_input_meeting_number"
             android:inputType="number"
             android:maxLines="1"
             android:imeOptions="actionNext"
             android:singleLine="true"
+            android:textSize="16sp"
+            android:textColor="@color/meeting_color_main_text"
             android:textColorHint="@color/meetingTextColorHint"
             app:layout_constraintBottom_toBottomOf="@+id/room_id_tag"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/room_id_tag"
             app:layout_constraintTop_toTopOf="@+id/room_id_tag" />
 
-        <View
-            android:id="@+id/view_divide"
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            android:background="@color/meetingTextColorHint"
-            app:layout_constraintTop_toBottomOf="@+id/room_id_tag" />
 
-        <TextView
-            android:id="@+id/user_id_tag"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="用户名"
-            android:textColor="@color/meetingTextColorSecond"
-            android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="@+id/room_id_tag"
-            app:layout_constraintTop_toBottomOf="@+id/view_divide" />
-
-        <EditText
-            android:id="@+id/et_user_name"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:background="@null"
-            android:hint="请输入用户名"
-            android:maxLines="1"
-            android:imeOptions="actionDone"
-            android:singleLine="true"
-            android:textColorHint="@color/meetingTextColorHint"
-            app:layout_constraintBottom_toBottomOf="@id/user_id_tag"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/user_id_tag"
-            app:layout_constraintTop_toTopOf="@id/user_id_tag" />
     </android.support.constraint.ConstraintLayout>
 
     <LinearLayout
@@ -120,7 +90,7 @@
         android:layout_marginTop="15dp"
         android:layout_marginRight="30dp"
         android:text="@string/meeting_tv_audio_quality"
-        android:textColor="@color/meetingTextColorSecond"
+        android:textColor="@color/meeting_color_second_text"
         android:textSize="@dimen/meetingItemTitleSize" />
 
     <RadioGroup
@@ -134,17 +104,20 @@
 
         <RadioButton
             android:id="@+id/rb_voice"
+            android:textColor="@color/meeting_color_second_text"
             style="@style/MeetingCreateRadioButtonStyle"
             android:checked="true"
             android:text="@string/meeting_rb_voice" />
 
         <RadioButton
             android:id="@+id/rb_normal"
+            android:textColor="@color/meeting_color_second_text"
             style="@style/MeetingCreateRadioButtonStyle"
             android:text="@string/meeting_rb_normal" />
 
         <RadioButton
             android:id="@+id/rb_music"
+            android:textColor="@color/meeting_color_second_text"
             style="@style/MeetingCreateRadioButtonStyle"
             android:text="@string/meeting_rb_music" />
     </RadioGroup>
@@ -156,7 +129,7 @@
         android:layout_marginTop="15dp"
         android:layout_marginRight="30dp"
         android:text="@string/meeting_tv_video_quality"
-        android:textColor="@color/meetingTextColorSecond"
+        android:textColor="@color/meeting_color_second_text"
         android:textSize="@dimen/meetingItemTitleSize" />
 
     <RadioGroup
@@ -170,12 +143,14 @@
 
         <RadioButton
             android:id="@+id/rb_video_fast"
+            android:textColor="@color/meeting_color_second_text"
             style="@style/MeetingCreateRadioButtonStyle"
             android:checked="true"
             android:text="@string/meeting_rb_video_fast" />
 
         <RadioButton
             android:id="@+id/rb_video_hd"
+            android:textColor="@color/meeting_color_second_text"
             style="@style/MeetingCreateRadioButtonStyle"
             android:text="@string/meeting_rb_video_hd" />
 
@@ -183,17 +158,15 @@
 
     <TextView
         android:id="@+id/tv_enter"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginRight="20dp"
-        android:background="@drawable/meeting_button_border"
+        android:layout_width="148dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="52dp"
         android:gravity="center"
-        android:padding="10dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/meeting_button_border"
         android:enabled="false"
-        android:text="进入会议"
-        android:textColor="@drawable/meeting_button_text_color"
+        android:text="@string/enter_tag_normal"
+        android:textColor="@color/meeting_color_white"
         android:textSize="18sp" />
 
 <!--    <TextView-->

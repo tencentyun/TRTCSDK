@@ -18,7 +18,7 @@
         android:layout_marginLeft="25dp"
         android:layout_weight="1"
         android:clickable="false"
-        android:text="测试"
+        android:text="@string/btn_ok"
         android:textColor="#ffffff"
         android:textSize="18dp" />
 

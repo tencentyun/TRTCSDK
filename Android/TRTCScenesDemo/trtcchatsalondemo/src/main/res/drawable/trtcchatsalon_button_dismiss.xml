@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <stroke android:color="@color/trtcchatsalon_white" android:width="1dp" />
-    <corners android:radius="3dp" />
+    <solid android:color="#F4F5F9" />
+    <corners android:radius="19dp" />
+    <padding android:left="24dp" android:right="24dp" android:top="8dp" android:bottom="8dp" />
 </shape>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="audio_effect_setting_bgm_title">Background music</string>
+    <string name="audio_effect_setting_panel_close">Close</string>
+    <string name="audio_effect_setting_panel_select_song">Select song</string>
+
+    <string name="audio_effect_setting_surround_sound_test_1">Surround sound test 1</string>
+    <string name="audio_effect_setting_surround_sound_test_2">Surround sound test 2</string>
+    <string name="audio_effect_setting_surround_sound_test_3">Surround sound test 3</string>
+    <string name="audio_effect_setting_unknown">Unknown</string>
+
+    <string name="audio_effect_setting_title">Audio Effect Settings</string>
+
+    <string name="audio_effect_setting_panel_music_volume">Music volume level</string>
+    <string name="audio_effect_setting_panel_mic_volume">Voice volume level</string>
+    <string name="audio_effect_setting_panel_music_pitch">Music tone</string>
+    <string name="audio_effect_setting_panel_changer">Voice changing</string>
+    <string name="audio_effect_setting_panel_reverb">Reverb</string>
+
+    <string name="audio_effect_setting_changetype_original">Original</string>
+    <string name="audio_effect_setting_changetype_child">Naughty boy</string>
+    <string name="audio_effect_setting_changetype_luoli">Little girl</string>
+    <string name="audio_effect_setting_changetype_dashu">Middle-aged man</string>
+    <string name="audio_effect_setting_changetype_metal">Heavy metal</string>
+    <string name="audio_effect_setting_changetype_sick">Being cold</string>
+    <string name="audio_effect_setting_changetype_foreign">Non-native speaker</string>
+    <string name="audio_effect_setting_changetype_kunsou">Furious animal</string>
+    <string name="audio_effect_setting_changetype_feizai">Fat otaku</string>
+    <string name="audio_effect_setting_changetype_dianliu">Strong electric current</string>
+    <string name="audio_effect_setting_changetype_machine">Robot</string>
+    <string name="audio_effect_setting_changetype_kongling">Ethereal voice</string>
+
+    <string name="audio_effect_setting_reverbtype_origin">No effect</string>
+    <string name="audio_effect_setting_reverbtype_ktv">Karaoke room</string>
+    <string name="audio_effect_setting_reverbtype_room">Small room</string>
+    <string name="audio_effect_setting_reverbtype_meeting">Big hall</string>
+    <string name="audio_effect_setting_reverbtype_lowdeep">Deep</string>
+    <string name="audio_effect_setting_reverbtype_hongliang">Resonant</string>
+    <string name="audio_effect_setting_reverbtype_heavymetal">Metallic</string>
+    <string name="audio_effect_setting_reverbtype_cixing">Husky</string>
+
+
+</resources>

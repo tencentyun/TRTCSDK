@@ -39,7 +39,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="开启音频" />
+        tools:text="@string/meeting_tv_enable_audio" />
 
     <RadioGroup
         android:id="@+id/rg_item"

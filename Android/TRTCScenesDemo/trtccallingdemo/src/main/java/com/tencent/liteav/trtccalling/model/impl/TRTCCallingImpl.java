@@ -19,6 +19,7 @@ import com.tencent.imsdk.v2.V2TIMSignalingListener;
 import com.tencent.imsdk.v2.V2TIMUserFullInfo;
 import com.tencent.imsdk.v2.V2TIMValueCallback;
 import com.tencent.liteav.beauty.TXBeautyManager;
+import com.tencent.liteav.trtccalling.R;
 import com.tencent.liteav.trtccalling.model.TRTCCalling;
 import com.tencent.liteav.trtccalling.model.TRTCCallingDelegate;
 import com.tencent.liteav.trtccalling.model.impl.base.CallModel;
@@ -839,7 +840,7 @@ public class TRTCCallingImpl extends TRTCCalling {
         v2TIMOfflinePushInfo.setExt(new Gson().toJson(containerBean).getBytes());
         // OPPO必须设置ChannelID才可以收到推送消息，这个channelID需要和控制台一致
         v2TIMOfflinePushInfo.setAndroidOPPOChannelID("tuikit");
-        v2TIMOfflinePushInfo.setDesc("您有一个通话请求");
+        v2TIMOfflinePushInfo.setDesc(mContext.getString(R.string.trtccalling_title_have_a_call_invitation));
         v2TIMOfflinePushInfo.setTitle(nickname);
         MessageCustom custom = new MessageCustom();
         custom.businessID = MessageCustom.BUSINESS_ID_AV_CALL;

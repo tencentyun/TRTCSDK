@@ -1,7 +1,6 @@
 package com.tencent.liteav.trtcvoiceroom.ui.list;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -31,6 +30,7 @@ import com.tencent.trtc.TRTCCloudDef;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 
 /**
@@ -41,6 +41,20 @@ import java.util.List;
 public class VoiceRoomListFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     private static final String TAG = "VoiceRoomListFragment";
 
+    private static final String ROOM_COVER_ARRAY [] = {
+            "https://liteav-test-1252463788.cos.ap-guangzhou.myqcloud.com/voice_room/voice_room_cover1.png",
+            "https://liteav-test-1252463788.cos.ap-guangzhou.myqcloud.com/voice_room/voice_room_cover2.png",
+            "https://liteav-test-1252463788.cos.ap-guangzhou.myqcloud.com/voice_room/voice_room_cover3.png",
+            "https://liteav-test-1252463788.cos.ap-guangzhou.myqcloud.com/voice_room/voice_room_cover4.png",
+            "https://liteav-test-1252463788.cos.ap-guangzhou.myqcloud.com/voice_room/voice_room_cover5.png",
+            "https://liteav-test-1252463788.cos.ap-guangzhou.myqcloud.com/voice_room/voice_room_cover6.png",
+            "https://liteav-test-1252463788.cos.ap-guangzhou.myqcloud.com/voice_room/voice_room_cover7.png",
+            "https://liteav-test-1252463788.cos.ap-guangzhou.myqcloud.com/voice_room/voice_room_cover8.png",
+            "https://liteav-test-1252463788.cos.ap-guangzhou.myqcloud.com/voice_room/voice_room_cover9.png",
+            "https://liteav-test-1252463788.cos.ap-guangzhou.myqcloud.com/voice_room/voice_room_cover10.png",
+            "https://liteav-test-1252463788.cos.ap-guangzhou.myqcloud.com/voice_room/voice_room_cover11.png",
+            "https://liteav-test-1252463788.cos.ap-guangzhou.myqcloud.com/voice_room/voice_room_cover12.png",
+    };
 
     private RoomListAdapter    mRoomListViewAdapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
@@ -48,7 +62,7 @@ public class VoiceRoomListFragment extends Fragment implements SwipeRefreshLayou
     private String             mSelfUserId;
     private RecyclerView       mListRv;
     private TextView           mListviewEmptyTv;
-    private ImageView          mCreateRoomBtn;
+    private View               mCreateRoomBtn;
 
     public static VoiceRoomListFragment newInstance() {
         Bundle                args     = new Bundle();
@@ -69,7 +83,7 @@ public class VoiceRoomListFragment extends Fragment implements SwipeRefreshLayou
     private void initView(@NonNull final View itemView) {
         mListRv = (RecyclerView) itemView.findViewById(R.id.rv_list);
         mListviewEmptyTv = (TextView) itemView.findViewById(R.id.tv_listview_empty);
-        mCreateRoomBtn = (ImageView) itemView.findViewById(R.id.btn_create_room);
+        mCreateRoomBtn = itemView.findViewById(R.id.container_create_room);
         mCreateRoomBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,10 +108,10 @@ public class VoiceRoomListFragment extends Fragment implements SwipeRefreshLayou
                     }
                 });
         mListRv.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        mListRv.setAdapter(mRoomListViewAdapter);
         mListRv.addItemDecoration(
-                new SpaceDecoration(getResources().getDimensionPixelOffset(R.dimen.large_image_left_margin),
+                new SpaceDecoration(getResources().getDimensionPixelOffset(R.dimen.trtcvoiceroom_room_list_margin_top),
                         2));
+        mListRv.setAdapter(mRoomListViewAdapter);
         mRoomListViewAdapter.notifyDataSetChanged();
 
         mSelfUserId = ProfileManager.getInstance().getUserModel().userId;
@@ -107,18 +121,20 @@ public class VoiceRoomListFragment extends Fragment implements SwipeRefreshLayou
      * 点击的就是之前自己创建的房间，重新创建
      */
     private void startEnterExistRoom(RoomEntity info) {
-        ToastUtils.showShort("该房间是您创建，重新进入中...");
+        ToastUtils.showShort(getString(R.string.trtcvoiceroom_toast_reentering));
         String roomName    = info.roomName;
         String userId      = ProfileManager.getInstance().getUserModel().userId;
         String userName    = ProfileManager.getInstance().getUserModel().userName;
-        String userAvatar  = ProfileManager.getInstance().getUserModel().userAvatar;
-        String coverAvatar = ProfileManager.getInstance().getUserModel().userAvatar;
-        VoiceRoomAnchorActivity.createRoom(getActivity(), roomName, userId, userName, userAvatar, coverAvatar, TRTCCloudDef.TRTC_AUDIO_QUALITY_MUSIC, true);
+        String coverUrl    = info.coverUrl;
+        VoiceRoomAnchorActivity.createRoom(getActivity(), roomName, userId, userName, coverUrl, TRTCCloudDef.TRTC_AUDIO_QUALITY_MUSIC, true);
     }
 
     private void createRoom() {
-        Intent intent = new Intent(getActivity(), VoiceRoomCreateActivity.class);
-        getActivity().startActivity(intent);
+        int index = new Random().nextInt(ROOM_COVER_ARRAY.length);
+        String coverUrl = ROOM_COVER_ARRAY[index];
+        String userName    = ProfileManager.getInstance().getUserModel().userName;
+        VoiceRoomCreateDialog dialog = new VoiceRoomCreateDialog(getActivity());
+        dialog.showVoiceRoomCreateDialog(mSelfUserId, userName, coverUrl, TRTCCloudDef.TRTC_AUDIO_QUALITY_DEFAULT, true);
     }
 
     private void refreshView() {
@@ -128,7 +144,7 @@ public class VoiceRoomListFragment extends Fragment implements SwipeRefreshLayou
     }
 
     private void enterRoom(RoomEntity info) {
-        VoiceRoomAudienceActivity.enterRoom(getActivity(), Integer.valueOf(info.roomId), mSelfUserId, TRTCCloudDef.TRTC_AUDIO_QUALITY_MUSIC);
+        VoiceRoomAudienceActivity.enterRoom(getActivity(), Integer.valueOf(info.roomId), mSelfUserId, TRTCCloudDef.TRTC_AUDIO_QUALITY_DEFAULT);
     }
 
     @Override
@@ -172,7 +188,7 @@ public class VoiceRoomListFragment extends Fragment implements SwipeRefreshLayou
                                 }
                                 mRoomListViewAdapter.notifyDataSetChanged();
                             } else {
-                                ToastUtils.showLong("组件获取列表失败:" + msg);
+                                ToastUtils.showLong(getString(R.string.trtcvoiceroom_toast_obtain_list_failed, msg));
                             }
                             mSwipeRefreshLayout.setRefreshing(false);
                             refreshView();
@@ -187,7 +203,7 @@ public class VoiceRoomListFragment extends Fragment implements SwipeRefreshLayou
 
             @Override
             public void onFailed(int code, String msg) {
-                ToastUtils.showShort("请求网络失败 " + msg);
+                ToastUtils.showShort(getString(R.string.trtcvoiceroom_toast_request_network_failure, msg));
                 mSwipeRefreshLayout.setRefreshing(false);
                 refreshView();
             }
@@ -276,6 +292,7 @@ public class VoiceRoomListFragment extends Fragment implements SwipeRefreshLayou
                 mAnchorNameTv.setText(model.anchorName);
                 mRoomNameTv.setText(model.roomName);
                 mMembersLive.setText(context.getString(R.string.trtcvoiceroom_numer_format, model.audiencesNum));
+
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

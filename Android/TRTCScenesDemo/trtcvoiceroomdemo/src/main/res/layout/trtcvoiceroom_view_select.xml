@@ -1,41 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/trtcvoiceroom_bg_main_gradient">
+    android:background="@drawable/trtcvoiceroom_bg_dialog"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp">
 
     <TextView
-        android:id="@+id/tv_pusher_tag"
+        android:id="@+id/room_theme_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="5dp"
-        android:gravity="center_horizontal"
-        android:text="邀请上麦"
-        android:textColor="@color/colorWhite"
-        android:textSize="16sp" />
+        android:layout_marginTop="32dp"
+        android:text="@string/trtcvoiceroom_audience"
+        android:textColor="@color/trtcvoiceroom_black"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tv_cancel"
+
+    <RelativeLayout
+        android:id="@+id/close_seat"
+        app:layout_constraintTop_toTopOf="@id/room_theme_title"
+        app:layout_constraintBottom_toBottomOf="@id/room_theme_title"
+        app:layout_constraintRight_toRightOf="parent"
+        android:paddingLeft="14dp"
+        android:paddingRight="14dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:background="@drawable/trtcvoiceroom_bg_close_seat"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/tv_pusher_tag"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="20dp"
-        android:text="取消"
-        android:textColor="@color/colorWhite"
-        android:textSize="16sp" />
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_close_seat"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:src="@drawable/trtcvoiceroom_close_seat" />
+
+        <TextView
+            android:id="@+id/tv_close_seat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:layout_toRightOf="@id/iv_close_seat"
+            android:text="@string/trtcvoiceroom_lock"
+            android:textColor="@color/trtcvoiceroom_black"
+            android:textSize="14sp" />
+
+    </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_pusher_list"
+        app:layout_constraintTop_toBottomOf="@id/room_theme_title"
+        app:layout_constraintLeft_toLeftOf="parent"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/tv_pusher_tag"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginRight="20dp">
+        android:layout_height="280dp"
+        android:layout_marginTop="20dp">
 
     </android.support.v7.widget.RecyclerView>
-</RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>

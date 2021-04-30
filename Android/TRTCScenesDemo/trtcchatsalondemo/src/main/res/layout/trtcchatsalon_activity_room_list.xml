@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusableInTouchMode="true"
-    android:background="@drawable/trtcchatsalon_bg_main_gradient">
+    android:background="@color/trtcchatsalon_white">
 
     <android.support.constraint.Guideline
         android:layout_width="match_parent"
@@ -24,6 +24,7 @@
         android:id="@+id/fl_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -36,7 +37,8 @@
             android:paddingBottom="2dp"
             android:text="@string/tctrtcchatsalon_app_name"
             android:textAlignment="center"
-            android:textColor="#EEEEEE"
+            android:textStyle="bold"
+            android:textColor="@color/trtcchatsalon_color_black"
             android:textSize="18sp" />
 
         <ImageButton

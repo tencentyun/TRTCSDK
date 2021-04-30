@@ -34,7 +34,7 @@ public abstract class BaseSettingFragmentDialog extends DialogFragment {
         Window window = getDialog().getWindow();
         if (window != null) {
             //肯定要设置一个
-            window.setBackgroundDrawableResource(R.drawable.bg_dialog_gradient);
+            window.setBackgroundDrawableResource(R.drawable.trtcmeeting_bottom_dialog);
             WindowManager.LayoutParams windowParams = window.getAttributes();
             DisplayMetrics             dm           = new DisplayMetrics();
             getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);

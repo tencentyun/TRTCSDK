@@ -291,7 +291,7 @@ public class TCAudienceActivity extends AppCompatActivity implements View.OnClic
             AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.TRTCLiveRoomDialogTheme)
                     .setTitle(R.string.trtcliveroom_error)
                     .setMessage(errorMsg)
-                    .setNegativeButton(R.string.trtcliveroom_get_it, new DialogInterface.OnClickListener() {
+                    .setNegativeButton(R.string.trtcliveroom_ok, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             mDialogError.dismiss();

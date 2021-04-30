@@ -46,7 +46,7 @@ public class AudioSettingFragment extends BaseSettingFragment {
         mRecordFilePath = getRecordFilePath();
 
         BaseSettingItem.ItemText itemText =
-                new BaseSettingItem.ItemText("采集音量", "");
+                new BaseSettingItem.ItemText(getString(R.string.meeting_title_collection_volume), "");
         mSettingItemList.add(new SeekBarSettingItem(getContext(), itemText, new SeekBarSettingItem.Listener() {
             @Override
             public void onSeekBarChange(int progress, boolean fromUser) {
@@ -56,7 +56,7 @@ public class AudioSettingFragment extends BaseSettingFragment {
         }).setProgress(mFeatureConfig.getMicVolume()));
 
         itemText =
-                new BaseSettingItem.ItemText("播放音量", "");
+                new BaseSettingItem.ItemText(getString(R.string.meeting_title_play_volume), "");
         mSettingItemList.add(new SeekBarSettingItem(getContext(), itemText, new SeekBarSettingItem.Listener() {
             @Override
             public void onSeekBarChange(int progress, boolean fromUser) {
@@ -66,7 +66,7 @@ public class AudioSettingFragment extends BaseSettingFragment {
         }).setProgress(mFeatureConfig.getPlayoutVolume()));
 
         itemText =
-                new BaseSettingItem.ItemText("音量提示", "");
+                new BaseSettingItem.ItemText(getString(R.string.meeting_title_volume_reminder), "");
         mAudioVolumeEvaluationItem = new SwitchSettingItem(getContext(), itemText, new SwitchSettingItem.Listener() {
             @Override
             public void onSwitchChecked(boolean isChecked) {
@@ -80,7 +80,7 @@ public class AudioSettingFragment extends BaseSettingFragment {
         mSettingItemList.add(mAudioVolumeEvaluationItem);
 
         itemText =
-                new BaseSettingItem.ItemText("音频录制", "");
+                new BaseSettingItem.ItemText(getString(R.string.meeting_title_audio_recording), "");
         mRecordItem = new CustomSettingItem(getContext(), itemText, createAudioRecordButton());
         mRecordItem.setAlign(CustomSettingItem.ALIGN_RIGHT);
         mSettingItemList.add(mRecordItem);
@@ -99,13 +99,13 @@ public class AudioSettingFragment extends BaseSettingFragment {
         List<View>     views  = new ArrayList<>();
         final TextView button = new TextView(getContext());
         if (!mFeatureConfig.isRecording()) {
-            button.setText("开始录制");
+            button.setText(getString(R.string.meeting_btn_start_recording));
         } else {
-            button.setText("停止录制");
+            button.setText(getString(R.string.meeting_btn_stop_recording));
         }
-        button.setPadding(SizeUtils.dp2px(8), SizeUtils.dp2px(4), SizeUtils.dp2px(8), SizeUtils.dp2px(4));
+        button.setPadding(SizeUtils.dp2px(12), SizeUtils.dp2px(4), SizeUtils.dp2px(12), SizeUtils.dp2px(4));
         button.setBackgroundResource(R.drawable.meeting_button_border);
-        button.setTextColor(getResources().getColor(R.color.meetingTextColorSecond));
+        button.setTextColor(getResources().getColor(R.color.meeting_color_white));
 
         button.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         button.setOnClickListener(new View.OnClickListener() {
@@ -118,12 +118,12 @@ public class AudioSettingFragment extends BaseSettingFragment {
                     TRTCCloudDef.TRTCAudioRecordingParams params = new TRTCCloudDef.TRTCAudioRecordingParams();
                     params.filePath = mRecordFilePath;
                     mTRTCMeeting.startFileDumping(params);
-                    button.setText("结束录制");
+                    button.setText(getString(R.string.meeting_btn_end_recording));
                 } else {
                     mTRTCMeeting.stopFileDumping();
                     mFeatureConfig.setRecording(false);
-                    button.setText("开始录制");
-                    ToastUtils.showLong("录音文件路径已复制：" + mRecordFilePath);
+                    button.setText(getString(R.string.meeting_btn_start_recording));
+                    ToastUtils.showLong(getString(R.string.meeting_toast_recording_file_path_copied, mRecordFilePath));
                     ClipboardManager cm = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
                     if(cm != null) {
                         ClipData mClipData = ClipData.newPlainText("path", mRecordFilePath);

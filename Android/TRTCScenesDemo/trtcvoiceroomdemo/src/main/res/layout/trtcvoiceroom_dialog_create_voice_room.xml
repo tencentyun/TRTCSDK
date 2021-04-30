@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/trtcvoiceroom_bg_dialog"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+
+        <TextView
+            android:id="@+id/room_theme_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="@string/trtcvoiceroom_room_theme"
+            android:textColor="@color/trtcvoiceroom_black"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/et_room_name"
+            android:layout_width="match_parent"
+            android:layout_height="176dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/trtcvoiceroom_bg_et_room_theme"
+            android:gravity="top"
+            android:hint="@string/trtcvoiceroom_room_theme_limit"
+            android:maxLength="60"
+            android:padding="20dp"
+            android:textColor="@color/trtcvoiceroom_black"
+            android:textColorHint="@color/trtcvoiceroom_text_color_hint"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_enter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/trtcvoiceroom_button_border"
+            android:enabled="false"
+            android:gravity="center"
+            android:paddingLeft="38dp"
+            android:paddingTop="14dp"
+            android:paddingRight="38dp"
+            android:paddingBottom="14dp"
+            android:text="@string/trtcvoiceroom_start_talk"
+            android:textColor="@color/trtcvoiceroom_white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

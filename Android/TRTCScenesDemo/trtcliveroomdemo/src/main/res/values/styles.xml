@@ -3,8 +3,11 @@
     </style>
 
     <style name="TRTCLiveRoomDialogFragment" parent="@android:style/Theme.Holo.Dialog">
+        <item name="android:windowIsFloating">false</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowCloseOnTouchOutside">true</item>
+        <item name="android:windowBackground">@color/trtcliveroom_color_bg_dialog_black</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
     </style>
 
     <!--video model -->

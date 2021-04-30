@@ -5,27 +5,45 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
+
     <FrameLayout
-        android:id="@+id/layout_img_head"
         android:layout_gravity="center_horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
+        android:layout_width="64dp"
+        android:layout_height="64dp">
+
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/img_head"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            app:civ_border_width="0dp"
-            android:src="@drawable/trtcvoiceroom_ic_head"/>
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/trtcvoiceroom_add_seat"
+            app:civ_border_width="0dp" />
+
+        <ImageView
+            android:id="@+id/iv_mute"
+            android:visibility="gone"
+            android:layout_gravity="bottom|end"
+            android:src="@drawable/trtcvoiceroom_ic_seat_mute"
+            android:layout_width="24dp"
+            android:layout_height="24dp" />
+
+        <ImageView
+            android:id="@+id/iv_talk_border"
+            android:visibility="gone"
+            android:background="@drawable/trtcvoiceroom_bg_talk"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
     </FrameLayout>
+
 
     <TextView
         android:id="@+id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:textSize="@dimen/text_size_middle"
-        android:textColor="@color/trtcvoiceroom_text_color_disable"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/trtcvoiceroom_white"
+        android:textSize="12sp"
         tools:text="123123" />
 </LinearLayout>

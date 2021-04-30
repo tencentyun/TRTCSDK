@@ -39,7 +39,7 @@ import java.util.List;
  * Function: 直播列表页面，展示房间列表
  */
 public class ChatSalonListFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
-    private static final String TAG = "VoiceRoomListFragment";
+    private static final String TAG = "ChatSalonListFragment";
 
 
     private RoomListAdapter    mRoomListViewAdapter;

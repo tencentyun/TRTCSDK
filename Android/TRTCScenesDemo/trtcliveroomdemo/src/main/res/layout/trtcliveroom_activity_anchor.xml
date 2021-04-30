@@ -129,8 +129,8 @@
 
     <Button
         android:id="@+id/btn_close_before_live"
-        android:layout_width="@dimen/trtcliveroom_btn_size"
-        android:layout_height="@dimen/trtcliveroom_btn_size"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="15dp"
         android:layout_marginRight="15dp"
@@ -241,8 +241,8 @@
 
     <Button
         android:id="@+id/btn_close"
-        android:layout_width="80dp"
-        android:layout_height="26dp"
+        android:layout_width="wrap_content"
+        android:layout_height="38dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="20dp"
         android:background="@drawable/trtcliveroom_btn_live_over"
@@ -314,7 +314,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:background="@drawable/trtcliveroom_message_background"
+        android:paddingBottom="15dp"
+        android:background="@drawable/trtcliveroom_bg_create_room"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="@id/gl_horizontal"
@@ -353,11 +354,11 @@
             android:layout_marginBottom="5dp"
             android:background="@null"
             android:hint="@string/trtcliveroom_hint_live_room_name"
-            android:maxLength="10"
+            android:maxLength="15"
             android:maxLines="1"
             android:singleLine="true"
             android:textCursorDrawable="@drawable/trtcliveroom_bg_edittext"
-            android:textSize="22sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/img_live_room_cover"
             app:layout_constraintEnd_toEndOf="parent"
@@ -368,22 +369,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="32dp"
             android:layout_marginBottom="10dp"
             android:text="@string/trtcliveroom_text_voice_quality"
             android:textColor="@color/colorWhite"
-            android:textSize="@dimen/trtcliveroom_text_size_middle"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/img_live_room_cover"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/et_live_room_name" />
 
         <RadioGroup
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
+            android:layout_marginRight="20dp"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="@+id/tv_live_room_quality_tag"
-            app:layout_constraintStart_toEndOf="@+id/tv_live_room_quality_tag"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/tv_live_room_quality_tag">
 
             <RadioButton
@@ -394,7 +396,8 @@
                 android:button="@null"
                 android:gravity="center"
                 android:text="@string/trtcliveroom_voice_quality_standard"
-                android:textColor="@color/white"
+                android:textColor="@drawable/trtcliveroom_bg_live_room_rb_quality_tv"
+                android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_live_room_quality_tag"
                 app:layout_constraintStart_toEndOf="@+id/tv_live_room_quality_tag"
                 app:layout_constraintTop_toTopOf="@+id/tv_live_room_quality_tag" />
@@ -403,28 +406,17 @@
                 android:id="@+id/rb_live_room_quality_music"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="20dp"
                 android:background="@drawable/trtcliveroom_bg_live_room_rb_quality"
                 android:button="@null"
                 android:gravity="center"
                 android:checked="true"
+                android:textSize="14sp"
                 android:text="@string/trtcliveroom_voice_quality_muisic"
-                android:textColor="@color/white" />
+                android:textColor="@drawable/trtcliveroom_bg_live_room_rb_quality_tv" />
 
         </RadioGroup>
 
 
     </android.support.constraint.ConstraintLayout>
-
-
-    <com.tencent.liteav.audiosettingkit.AudioEffectPanel
-        android:id="@+id/anchor_audio_panel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:visibility="gone"/>
-
 </android.support.constraint.ConstraintLayout>

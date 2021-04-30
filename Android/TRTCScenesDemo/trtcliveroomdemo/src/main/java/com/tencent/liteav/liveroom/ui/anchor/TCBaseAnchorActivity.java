@@ -162,6 +162,9 @@ public abstract class TCBaseAnchorActivity extends Activity implements TRTCLiveR
         mGroupLiveAfterToolbar = (Group) findViewById(R.id.after_live_toolbar);
         mImageLiveRoomCover = (ImageView) findViewById(R.id.img_live_room_cover);
         mEditLiveRoomName = (EditText) findViewById(R.id.et_live_room_name);
+        if (!TextUtils.isEmpty(mSelfName)) {
+            mEditLiveRoomName.setText(getString(R.string.trtcliveroom_create_room_default, mSelfName));
+        }
         mButtonSwitchCamBeforeLive = (Button) findViewById(R.id.btn_switch_cam_before_live);
         mButtonStartRoom = (Button) findViewById(R.id.btn_start_room);
         mButtonBeautyBeforeLive = (Button) findViewById(R.id.btn_beauty_before_live);
@@ -179,7 +182,7 @@ public abstract class TCBaseAnchorActivity extends Activity implements TRTCLiveR
                 }
                 String roomName = mEditLiveRoomName.getText().toString().trim();
                 if (TextUtils.isEmpty(roomName)) {
-                    ToastUtils.showLong("房间名不能为空");
+                    ToastUtils.showLong(getText(R.string.trtcliveroom_warning_room_name_empty));
                     return;
                 }
                 InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
@@ -231,7 +234,7 @@ public abstract class TCBaseAnchorActivity extends Activity implements TRTCLiveR
                     onSuccess();
                 } else {
                     mIsCreatingRoom = false;
-                    ToastUtils.showLong("创建房间失败[" + code + "]:" + msg);
+                    ToastUtils.showLong(getString(R.string.trtcliveroom_toast_error_create_live_room, code, msg));
                 }
             }
         });
@@ -253,7 +256,7 @@ public abstract class TCBaseAnchorActivity extends Activity implements TRTCLiveR
     @Override
     public void onBackPressed() {
         if (mIsEnterRoom) {
-            showExitInfoDialog("当前正在直播，是否退出直播？", false);
+            showExitInfoDialog(getString(R.string.trtcliveroom_warning_anchor_exit_room), false);
         } else {
             finishRoom();
         }
@@ -634,7 +637,7 @@ public abstract class TCBaseAnchorActivity extends Activity implements TRTCLiveR
             android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this, R.style.TRTCLiveRoomDialogTheme)
                     .setTitle(R.string.trtcliveroom_error)
                     .setMessage(errorMsg)
-                    .setNegativeButton(R.string.trtcliveroom_get_it, new DialogInterface.OnClickListener() {
+                    .setNegativeButton(R.string.trtcliveroom_ok, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             mErrorDialog.dismiss();

@@ -16,10 +16,10 @@ public class SpaceDecoration extends RecyclerView.ItemDecoration {
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         if (parent.getChildLayoutPosition(view) % colNum == 0) {
-            outRect.right = space;
+            outRect.right = space / 2;
             outRect.bottom = space;
         } else {
-            outRect.left = space;
+            outRect.left = space / 2;
             outRect.bottom = space;
         }
     }

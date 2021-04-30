@@ -9,16 +9,9 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ServiceUtils;
-import com.blankj.utilcode.util.ToastUtils;
-import com.tencent.imsdk.session.SessionWrapper;
-import com.tencent.imsdk.v2.V2TIMCallback;
-import com.tencent.imsdk.v2.V2TIMManager;
-import com.tencent.imsdk.v2.V2TIMSDKConfig;
-import com.tencent.imsdk.v2.V2TIMSDKListener;
 import com.tencent.liteav.debug.GenerateTestUserSig;
 import com.tencent.liteav.liveroom.model.TRTCLiveRoom;
 import com.tencent.liteav.liveroom.model.TRTCLiveRoomCallback;
@@ -44,7 +37,12 @@ import java.util.Map;
 public class CallService extends Service {
     private static final int NOTIFICATION_ID = 1001;
 
+    private TRTCLiveRoom        mTRTCLiveRoom;
     private TRTCCalling         mTRTCCalling;
+    private TRTCMeeting         mTRTCMeeting;
+    private TRTCVoiceRoom       mTRTCVoiceRoom;
+    private TRTCChatSalon       mTRTCChatSalon;
+
     private TRTCCallingDelegate mTRTCCallingDelegate = new TRTCCallingDelegate() {
         // <editor-fold  desc="视频监听代码">
         @Override
@@ -148,8 +146,6 @@ public class CallService extends Service {
         }
         // </editor-fold  desc="视频监听代码">
     };
-    //视频直播
-    private TRTCLiveRoom        mTRTCLiveRoom;
 
     public static void start(Context context) {
         if (ServiceUtils.isServiceRunning(CallService.class)) {
@@ -175,48 +171,11 @@ public class CallService extends Service {
         Notification notification = createForegroundNotification();
         //将服务置于启动状态 ,NOTIFICATION_ID指的是创建的通知的ID
         startForeground(NOTIFICATION_ID, notification);
-
-        // 由于两个模块公用一个IM，所以需要在这里先进行登录，您的App只使用一个model，可以直接调用VideoCall 对应函数
-        // 目前 Demo 为了方便您接入，使用的是本地签发 sig 的方式，您的项目上线，务必要保证将签发逻辑转移到服务端，否者会出现 key 被盗用，流量盗用的风险。
-        if (SessionWrapper.isMainProcess(this)) {
-            V2TIMSDKConfig config = new V2TIMSDKConfig();
-            config.setLogLevel(V2TIMSDKConfig.V2TIM_LOG_DEBUG);
-            V2TIMManager.getInstance().initSDK(this, GenerateTestUserSig.SDKAPPID, config, new V2TIMSDKListener() {
-                @Override
-                public void onConnecting() {
-                }
-
-                @Override
-                public void onConnectSuccess() {
-                }
-
-                @Override
-                public void onConnectFailed(int code, String error) {
-                }
-            });
-        }
-        String userId  = ProfileManager.getInstance().getUserModel().userId;
-        String userSig = ProfileManager.getInstance().getUserModel().userSig;
-        Log.d("Login", "login: " + userId + " " + userSig);
-        // 由于这里提前登陆了，所以会导致上一次的消息收不到，您在APP中单独使用 ITRTCAudioCall.login 不会出现这种问题
-        V2TIMManager.getInstance().login(userId, userSig, new V2TIMCallback() {
-            @Override
-            public void onError(int i, String s) {
-                // 登录IM失败
-                ToastUtils.showLong(getString(R.string.app_toast_login_fail, i, s));
-            }
-
-            @Override
-            public void onSuccess() {
-                //1. 登录IM成功
-                ToastUtils.showLong(getString(R.string.app_toast_login_success));
-                initTRTCCallingData();
-                initLiveRoom();
-                initMeetingData();
-                initVoiceRoom();
-                initChatSalon();
-            }
-        });
+        initTRTCCallingData();
+        initLiveRoom();
+        initMeetingData();
+        initVoiceRoom();
+        initChatSalon();
     }
 
     private Notification createForegroundNotification() {
@@ -280,6 +239,21 @@ public class CallService extends Service {
         if (mTRTCCalling != null) {
             mTRTCCalling.removeDelegate(mTRTCCallingDelegate);
         }
+        if (mTRTCCalling != null) {
+            mTRTCCalling.destroy();
+        }
+        if (mTRTCLiveRoom != null) {
+            mTRTCLiveRoom.destroyRoom(null);
+        }
+        if (mTRTCMeeting != null) {
+            mTRTCMeeting.destroyMeeting(0, null);
+        }
+        if (mTRTCVoiceRoom != null) {
+            mTRTCVoiceRoom.destroyRoom(null);
+        }
+        if (mTRTCChatSalon != null) {
+            mTRTCChatSalon.destroyRoom(null);
+        }
     }
 
     private void initTRTCCallingData() {
@@ -293,7 +267,8 @@ public class CallService extends Service {
 
     private void initMeetingData() {
         final UserModel userModel = ProfileManager.getInstance().getUserModel();
-        TRTCMeeting.sharedInstance(this).login(GenerateTestUserSig.SDKAPPID, userModel.userId, userModel.userSig, new TRTCMeetingCallback.ActionCallback() {
+        mTRTCMeeting = TRTCMeeting.sharedInstance(this);
+        mTRTCMeeting.login(GenerateTestUserSig.SDKAPPID, userModel.userId, userModel.userSig, new TRTCMeetingCallback.ActionCallback() {
             @Override
             public void onCallback(int code, String msg) {
             }
@@ -302,12 +277,12 @@ public class CallService extends Service {
 
     private void initVoiceRoom() {
         final UserModel     userModel = ProfileManager.getInstance().getUserModel();
-        final TRTCVoiceRoom voiceRoom = TRTCVoiceRoom.sharedInstance(this);
-        voiceRoom.login(GenerateTestUserSig.SDKAPPID, userModel.userId, userModel.userSig, new TRTCVoiceRoomCallback.ActionCallback() {
+        mTRTCVoiceRoom = TRTCVoiceRoom.sharedInstance(this);
+        mTRTCVoiceRoom.login(GenerateTestUserSig.SDKAPPID, userModel.userId, userModel.userSig, new TRTCVoiceRoomCallback.ActionCallback() {
             @Override
             public void onCallback(int code, String msg) {
                 if (code == 0) {
-                    voiceRoom.setSelfProfile(userModel.userName, userModel.userAvatar, new TRTCVoiceRoomCallback.ActionCallback() {
+                    mTRTCVoiceRoom.setSelfProfile(userModel.userName, userModel.userAvatar, new TRTCVoiceRoomCallback.ActionCallback() {
                         @Override
                         public void onCallback(int code, String msg) {
                             if (code == 0) {
@@ -321,12 +296,12 @@ public class CallService extends Service {
 
     private void initChatSalon() {
         final UserModel     userModel = ProfileManager.getInstance().getUserModel();
-        final TRTCChatSalon chatSalonRoom = TRTCChatSalon.sharedInstance(this);
-        chatSalonRoom.login(GenerateTestUserSig.SDKAPPID, userModel.userId, userModel.userSig, new TRTCChatSalonCallback.ActionCallback() {
+        mTRTCChatSalon = TRTCChatSalon.sharedInstance(this);
+        mTRTCChatSalon.login(GenerateTestUserSig.SDKAPPID, userModel.userId, userModel.userSig, new TRTCChatSalonCallback.ActionCallback() {
             @Override
             public void onCallback(int code, String msg) {
                 if (code == 0) {
-                    chatSalonRoom.setSelfProfile(userModel.userName, userModel.userAvatar, new TRTCChatSalonCallback.ActionCallback() {
+                    mTRTCChatSalon.setSelfProfile(userModel.userName, userModel.userAvatar, new TRTCChatSalonCallback.ActionCallback() {
                         @Override
                         public void onCallback(int code, String msg) {
                             if (code == 0) {
@@ -341,5 +316,11 @@ public class CallService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    @Override
+    public void onTaskRemoved(Intent rootIntent) {
+        super.onTaskRemoved(rootIntent);
+        stopSelf();
     }
 }

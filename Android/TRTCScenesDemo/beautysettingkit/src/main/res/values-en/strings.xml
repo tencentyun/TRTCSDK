@@ -45,6 +45,8 @@
     <string name="beauty_panel_faceshape">Face-shape</string>
 
     <string name="beauty_panel_filter_standard">Standard</string>
+    <string name="beauty_panel_filter_ziran">Natural</string>
+    <string name="beauty_panel_filter_baixi">Blond</string>
     <string name="beauty_panel_filter_cheery">Cheery</string>
     <string name="beauty_panel_filter_cloud">Cloud</string>
     <string name="beauty_panel_filter_pure">Pure</string>

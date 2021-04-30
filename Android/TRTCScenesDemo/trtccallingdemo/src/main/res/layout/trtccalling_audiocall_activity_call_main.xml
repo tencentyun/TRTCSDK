@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/trtccalling_bg_main_gradient">
+    android:background="@color/trtccalling_color_white">
 
     <android.support.constraint.Guideline
         android:id="@+id/top_guide_line"
@@ -31,6 +31,7 @@
         android:id="@+id/tv_inviting_tag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/trtccalling_color_main"
         android:text="@string/trtccalling_inviting_tag"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -52,6 +53,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="40dp"
+        android:textColor="@color/trtccalling_color_main"
+        android:textStyle="bold"
         android:textSize="@dimen/trtccalling_text_size_middle"
         app:layout_constraintBottom_toTopOf="@+id/ll_hangup"
         app:layout_constraintEnd_toEndOf="parent"
@@ -71,8 +74,8 @@
 
         <ImageView
             android:id="@+id/img_mute"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
             android:src="@drawable/trtccalling_bg_mute_mic" />
 
     </LinearLayout>
@@ -109,8 +112,8 @@
 
         <ImageView
             android:id="@+id/img_handsfree"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
             android:src="@drawable/trtccalling_bg_handsfree" />
 
     </LinearLayout>

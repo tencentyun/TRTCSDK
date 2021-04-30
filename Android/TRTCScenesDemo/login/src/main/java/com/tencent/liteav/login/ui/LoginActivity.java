@@ -15,6 +15,8 @@ import com.tencent.liteav.login.model.ProfileManager;
 import com.tencent.liteav.login.R;
 import com.tencent.liteav.login.ui.view.LoginStatusLayout;
 
+import static com.tencent.liteav.login.model.ProfileManager.ERROR_CODE_NEED_REGISTER;
+
 public class LoginActivity extends BaseActivity {
     private static final String TAG = LoginActivity.class.getName();
 
@@ -142,6 +144,16 @@ public class LoginActivity extends BaseActivity {
 
             @Override
             public void onFailed(int code, String msg) {
+                if (code == ERROR_CODE_NEED_REGISTER) {
+                    handleLoginStatus(STATUS_LOGIN_SUCCESS);
+                    ToastUtils.showLong(R.string.login_tips_register);
+                    Intent starter = new Intent(LoginActivity.this, ProfileActivity.class);
+                    starter.putExtra("code", ERROR_CODE_NEED_REGISTER);
+                    startActivity(starter);
+                    finish();
+                } else {
+                    handleLoginStatus(STATUS_LOGIN_FAIL);
+                }
             }
         });
     }

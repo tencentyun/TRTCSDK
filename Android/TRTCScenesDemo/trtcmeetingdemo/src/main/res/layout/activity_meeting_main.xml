@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_main_gradient"
     tools:context="com.tencent.liteav.meeting.ui.MeetingMainActivity">
 
     <android.support.v7.widget.RecyclerView
@@ -13,12 +12,13 @@
         android:layout_height="match_parent"
         android:background="@android:color/transparent" />
 
-    <android.support.constraint.Group
-        android:id="@+id/group_screen_capture"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:constraint_referenced_ids="tv_stop_screen_capture,tv_screen_capture_tag" />
+<!--    <android.support.constraint.Group-->
+<!--        android:id="@+id/group_screen_capture"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="#ff0000"-->
+<!--        android:visibility="gone"-->
+<!--        app:constraint_referenced_ids="tv_stop_screen_capture,tv_screen_capture_tag" />-->
 
     <android.support.constraint.Group
         android:id="@+id/group_bottom_tool_bar"
@@ -31,44 +31,51 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
-        tools:background="@color/meetingTextColorSecond"
         tools:visibility="visible"/>
 
-    <TextView
-        android:id="@+id/tv_screen_capture_tag"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="您正在共享屏幕"
-        android:textColor="@color/meetingTextColorSecond"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/tv_stop_screen_capture"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/group_screen_capture"
+        android:visibility="gone"
+        android:background="#AAAAAA"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/tv_stop_screen_capture"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/meeting_button_exit"
-        android:text="停止共享"
-        android:textColor="@color/meetingTextColorSecond"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_screen_capture_tag" />
+        <TextView
+            android:id="@+id/tv_screen_capture_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/meeting_tv_screen_capture"
+            android:textColor="@color/meeting_color_white"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/tv_stop_screen_capture"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
 
+        <TextView
+            android:id="@+id/tv_stop_screen_capture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/meeting_button_exit"
+            android:text="@string/meeting_tv_stop_screen_capture"
+            android:textColor="@color/meeting_color_white"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_screen_capture_tag" />
+
+    </android.support.constraint.ConstraintLayout>
 
     <com.tencent.liteav.meeting.ui.MeetingHeadBarView
         android:id="@+id/view_meeting_head_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_meeting_head_gradient"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
+        android:layout_marginTop="28dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -96,7 +103,6 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:background="@color/colorTranslucent"
         app:layout_constraintTop_toBottomOf="@+id/tool_bar_view" />
 
     <android.support.v7.widget.AppCompatImageButton

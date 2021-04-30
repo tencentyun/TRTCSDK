@@ -10,8 +10,8 @@
 
     <ImageView
         android:id="@+id/img_headset"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_centerVertical="true"
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
@@ -19,8 +19,8 @@
 
     <ImageView
         android:id="@+id/img_camera_switch"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_centerVertical="true"
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
@@ -47,7 +47,7 @@
         android:layout_marginEnd="10dp"
         android:layout_marginRight="10dp"
         android:background="@drawable/meeting_button_exit"
-        android:text="退出会议"
+        android:text="@string/meeting_tv_exit_meeting"
         android:textColor="@color/colorWhite"
         android:textSize="14sp" />
 </merge>

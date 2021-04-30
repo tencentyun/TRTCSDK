@@ -17,7 +17,7 @@ public class CommonBottomDialog extends BottomSheetDialog {
     private OnButtonClickListener mOnButtonClickListener;
 
     public CommonBottomDialog(Context context) {
-        super(context);
+        super(context, R.style.TRTCChatSalonDialogTheme);
         setContentView(R.layout.trtcchatsalon_view_bottom_dialog);
         mViewContainer = (LinearLayout) findViewById(R.id.view_container);
         findViewById(R.id.tv_cancel).setOnClickListener(new View.OnClickListener() {
@@ -55,8 +55,8 @@ public class CommonBottomDialog extends BottomSheetDialog {
     private TextView createButton(final int position, final String text) {
         TextView textView = new TextView(getContext());
         textView.setText(text);
-        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-        textView.setTextColor(getContext().getResources().getColor(R.color.colorWhite));
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+        textView.setTextColor(getContext().getResources().getColor(R.color.trtcchatsalon_color_text_blue));
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

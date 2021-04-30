@@ -790,6 +790,16 @@ public class TRTCVoiceRoomImpl extends TRTCVoiceRoom implements ITXRoomServiceDe
         });
     }
 
+    @Override
+    public void setVoiceEarMonitorEnable(final boolean enable) {
+        runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                VoiceRoomTRTCService.getInstance().enableAudioEarMonitoring(enable);
+            }
+        });
+    }
+
     /**
      * 静音本地
      * <p>
@@ -799,10 +809,10 @@ public class TRTCVoiceRoomImpl extends TRTCVoiceRoom implements ITXRoomServiceDe
      */
     @Override
     public void muteLocalAudio(final boolean mute) {
+        TRTCLogger.i(TAG, "mute local audio, mute:" + mute);
         runOnMainThread(new Runnable() {
             @Override
             public void run() {
-                TRTCLogger.i(TAG, "mute local audio, mute:" + mute);
                 VoiceRoomTRTCService.getInstance().muteLocalAudio(mute);
             }
         });
@@ -1167,7 +1177,11 @@ public class TRTCVoiceRoomImpl extends TRTCVoiceRoom implements ITXRoomServiceDe
                     //是自己上线了, 切换角色
                     mTakeSeatIndex = index;
                     VoiceRoomTRTCService.getInstance().switchToAnchor();
-                    VoiceRoomTRTCService.getInstance().muteLocalAudio(mSeatInfoList.get(index).mute);
+                    boolean mute = mSeatInfoList.get(index).mute;
+                    VoiceRoomTRTCService.getInstance().muteLocalAudio(mute);
+                    if (!mute) {
+                        mDelegate.onUserMicrophoneMute(userInfo.userId, false);
+                    }
                 }
                 runOnDelegateThread(new Runnable() {
                     @Override
@@ -1269,9 +1283,6 @@ public class TRTCVoiceRoomImpl extends TRTCVoiceRoom implements ITXRoomServiceDe
             @Override
             public void run() {
                 if (mDelegate != null) {
-                    if (mTakeSeatIndex == index) {
-                        VoiceRoomTRTCService.getInstance().muteLocalAudio(mute);
-                    }
                     mDelegate.onSeatMute(index, mute);
                 }
             }
@@ -1352,8 +1363,15 @@ public class TRTCVoiceRoomImpl extends TRTCVoiceRoom implements ITXRoomServiceDe
     }
 
     @Override
-    public void onTRTCAudioAvailable(String userId, boolean available) {
-
+    public void onTRTCAudioAvailable(final String userId, final boolean available) {
+        runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                if (mDelegate != null) {
+                    mDelegate.onUserMicrophoneMute(userId, !available);
+                }
+            }
+        });
     }
 
     @Override
@@ -1374,14 +1392,12 @@ public class TRTCVoiceRoomImpl extends TRTCVoiceRoom implements ITXRoomServiceDe
     }
 
     @Override
-    public void onUserVoiceVolume(final ArrayList<TRTCCloudDef.TRTCVolumeInfo> userVolumes, int totalVolume) {
+    public void onUserVoiceVolume(final ArrayList<TRTCCloudDef.TRTCVolumeInfo> userVolumes, final int totalVolume) {
         runOnDelegateThread(new Runnable() {
             @Override
             public void run() {
                 if (mDelegate != null && userVolumes != null) {
-                    for (TRTCCloudDef.TRTCVolumeInfo info : userVolumes) {
-                        mDelegate.onUserVolumeUpdate(info.userId, info.volume);
-                    }
+                    mDelegate.onUserVolumeUpdate(userVolumes, totalVolume);
                 }
             }
         });

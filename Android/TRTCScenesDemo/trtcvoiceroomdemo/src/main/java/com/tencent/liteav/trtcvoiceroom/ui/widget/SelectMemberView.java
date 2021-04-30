@@ -17,7 +17,9 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.tencent.liteav.trtcvoiceroom.R;
+import com.tencent.liteav.trtcvoiceroom.model.TRTCVoiceRoomCallback;
 import com.tencent.liteav.trtcvoiceroom.ui.base.MemberEntity;
+import com.tencent.liteav.trtcvoiceroom.ui.base.VoiceRoomSeatEntity;
 
 import java.util.List;
 
@@ -29,15 +31,16 @@ import java.util.List;
 public class SelectMemberView extends BottomSheetDialog {
     private Context            mContext;
     private RecyclerView       mPusherListRv;
+    private ImageView          mIvCloseSeat;
+    private TextView           mTVCloseSeat;
     private ListAdapter        mListAdapter;
     private List<MemberEntity> mMemberEntityList;
     private onSelectedCallback mOnSelectedCallback;
-    private TextView           mPusherTagTv;
-    private TextView           mTextCancel;
+    protected View             mCloseSeat;
     private int                mSeatIndex;
 
     public SelectMemberView(@NonNull Context context) {
-        super(context);
+        super(context, R.style.TRTCVoiceRoomDialogTheme);
         setContentView(R.layout.trtcvoiceroom_view_select);
         initView(context);
     }
@@ -50,20 +53,22 @@ public class SelectMemberView extends BottomSheetDialog {
     private void initView(Context context) {
         mContext = context;
         mPusherListRv = (RecyclerView) findViewById(R.id.rv_pusher_list);
-        mPusherTagTv = (TextView) findViewById(R.id.tv_pusher_tag);
-        mTextCancel = (TextView) findViewById(R.id.tv_cancel);
+        mIvCloseSeat = (ImageView) findViewById(R.id.iv_close_seat);
+        mTVCloseSeat = (TextView) findViewById(R.id.tv_close_seat);
+        mCloseSeat = findViewById(R.id.close_seat);
+
         if (mPusherListRv != null) {
             mPusherListRv.setLayoutManager(new LinearLayoutManager(mContext));
             mPusherListRv.addItemDecoration(new SpaceDecoration(dp2px(mContext, 15),
                     1));
         }
-        mTextCancel.setOnClickListener(new View.OnClickListener() {
+        mCloseSeat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dismiss();
                 if (mOnSelectedCallback != null) {
-                    mOnSelectedCallback.onCancel();
+                    mOnSelectedCallback.onCloseButtonClick(mSeatIndex);
                 }
+                dismiss();
             }
         });
     }
@@ -78,10 +83,6 @@ public class SelectMemberView extends BottomSheetDialog {
         mOnSelectedCallback = onSelectedCallback;
     }
 
-    public void refreshView() {
-        mPusherTagTv.setText("正在加载中...");
-    }
-
     public void notifyDataSetChanged() {
         if (mListAdapter != null) {
             mListAdapter.notifyDataSetChanged();
@@ -92,16 +93,30 @@ public class SelectMemberView extends BottomSheetDialog {
         mSeatIndex = seatIndex;
     }
 
+    public int getSeatIndex() {
+        return mSeatIndex;
+    }
+
+    public void updateCloseStatus(boolean isClose) {
+        if (isClose) {
+            mIvCloseSeat.setImageResource(R.drawable.trtcvoiceroom_open_seat);
+            mTVCloseSeat.setText(mContext.getString(R.string.trtcvoiceroom_unlock));
+        } else {
+            mIvCloseSeat.setImageResource(R.drawable.trtcvoiceroom_close_seat);
+            mTVCloseSeat.setText(mContext.getString(R.string.trtcvoiceroom_lock));
+        }
+    }
+
     public void setList(List<MemberEntity> userInfoList) {
         if (mListAdapter == null) {
             mMemberEntityList = userInfoList;
             mListAdapter = new ListAdapter(mContext, mMemberEntityList, new ListAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(int position) {
-                    if (mOnSelectedCallback == null) {
-                        return;
+                    if (mOnSelectedCallback != null) {
+                        mOnSelectedCallback.onSelected(mSeatIndex, mMemberEntityList.get(position));
                     }
-                    mOnSelectedCallback.onSelected(mSeatIndex, mMemberEntityList.get(position));
+                    dismiss();
                 }
             });
             mPusherListRv.setAdapter(mListAdapter);
@@ -110,8 +125,8 @@ public class SelectMemberView extends BottomSheetDialog {
 
     public interface onSelectedCallback {
         void onSelected(int seatIndex, MemberEntity memberEntity);
-
         void onCancel();
+        void onCloseButtonClick(int seatIndex);
     }
 
     public static class ListAdapter extends
@@ -176,12 +191,10 @@ public class SelectMemberView extends BottomSheetDialog {
                 }
                 if (model.type == MemberEntity.TYPE_IDEL) {
                     mButtonInvite.setVisibility(View.VISIBLE);
-                    mButtonInvite.setText("邀请");
-                    mButtonInvite.setBackgroundColor(context.getResources().getColor(R.color.trtcvoiceroom_color_text_blue));
+                    mButtonInvite.setText(context.getResources().getString(R.string.trtcvoiceroom_tv_invite));
                 } else if (model.type == MemberEntity.TYPE_WAIT_AGREE) {
                     mButtonInvite.setVisibility(View.VISIBLE);
-                    mButtonInvite.setText("同意");
-                    mButtonInvite.setBackgroundColor(context.getResources().getColor(R.color.trtcvoiceroom_color_text_red));
+                    mButtonInvite.setText(R.string.trtcvoiceroom_agree);
                 } else {
                     mButtonInvite.setVisibility(View.INVISIBLE);
                 }

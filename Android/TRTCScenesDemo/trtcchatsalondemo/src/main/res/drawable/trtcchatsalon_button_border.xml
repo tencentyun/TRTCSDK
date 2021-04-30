@@ -4,9 +4,9 @@
     <item android:state_enabled="true">
         <shape android:shape="rectangle"
             android:useLevel="false">
-            <solid android:color="#0062E3" />
-            <corners android:radius="3dp"/>
-            <padding android:left="5dp" android:right="5dp" android:top="3dp" android:bottom="3dp"/>
+            <solid android:color="#006EFF" />
+            <corners android:radius="28dp"/>
+            <padding android:left="38dp" android:right="38dp" android:top="14dp" android:bottom="14dp"/>
         </shape>
     </item>
 
@@ -14,8 +14,8 @@
         <shape android:shape="rectangle"
             android:useLevel="false">
             <solid android:color="#092650" />
-            <corners android:radius="3dp"/>
-            <padding android:left="5dp" android:right="5dp" android:top="3dp" android:bottom="3dp"/>
+            <corners android:radius="28dp"/>
+            <padding android:left="38dp" android:right="38dp" android:top="14dp" android:bottom="14dp"/>
         </shape>
     </item>
 </selector>

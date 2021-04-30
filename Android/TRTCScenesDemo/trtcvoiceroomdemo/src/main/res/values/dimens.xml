@@ -6,4 +6,5 @@
     <dimen name="small_image_left_margin">5dp</dimen>
     <dimen name="large_image_left_margin">10dp</dimen>
     <dimen name="title_text_size">16sp</dimen>
+    <dimen name="trtcvoiceroom_room_list_margin_top">20dp</dimen>
 </resources>

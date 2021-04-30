@@ -34,12 +34,13 @@
         android:layout_gravity="center_vertical"
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
-        android:textColor="@color/meetingItemBtn"
+        android:textColor="@color/meeting_color_second_text"
+        android:textStyle="bold"
         android:textSize="@dimen/meetingItemTitleSize"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="开启音频" />
+        tools:text="@string/meeting_tv_enable_audio" />
 
     <LinearLayout
         android:id="@+id/ll_item"

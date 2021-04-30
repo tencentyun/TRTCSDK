@@ -31,7 +31,7 @@ public class HandUpListDialog extends BottomSheetDialog {
     private List<ChatSalonMemberEntity> mMemberEntityList;
 
     public HandUpListDialog(@NonNull Context context) {
-        super(context);
+        super(context, R.style.TRTCChatSalonDialogTheme);
         setContentView(R.layout.trtcchatsalon_dialog_hand_up_list);
         initView(context);
     }

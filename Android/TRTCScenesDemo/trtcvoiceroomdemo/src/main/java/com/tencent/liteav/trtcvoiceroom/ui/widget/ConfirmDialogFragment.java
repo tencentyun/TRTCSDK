@@ -13,6 +13,7 @@ public class ConfirmDialogFragment extends DialogFragment {
     private PositiveClickListener mPositiveClickListener;
     private NegativeClickListener mNegativeClickListener;
 
+
     private String mMessageText;
 
     @Override

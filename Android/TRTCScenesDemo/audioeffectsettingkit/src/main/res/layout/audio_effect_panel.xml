@@ -63,7 +63,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="音效设置"
+                android:text="@string/audio_effect_setting_title"
                 android:textColor="@android:color/white"
                 android:textSize="16sp" />
 

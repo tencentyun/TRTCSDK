@@ -1,11 +1,17 @@
 package com.tencent.liteav.login.model;
 
+import android.content.Context;
 import android.text.TextUtils;
 import android.app.Activity;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.SPUtils;
+import com.tencent.imsdk.v2.V2TIMCallback;
+import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.liteav.debug.GenerateTestUserSig;
+import com.tencent.liteav.login.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +19,8 @@ import java.util.List;
 public class ProfileManager {
     private static final ProfileManager ourInstance = new ProfileManager();
 
+    public static final int ERROR_CODE_UNKNOWN         = -1;
+    public static final int ERROR_CODE_NEED_REGISTER   = -2;
 
     private final static String PER_DATA       = "per_profile_manager";
     private final static String PER_USER_MODEL = "per_user_model";
@@ -26,9 +34,14 @@ public class ProfileManager {
     private String    mToken;
     private String    mUserPubishVideoDate;
     private boolean   isLogin = false;
+    private Context   mContext;
 
     public static ProfileManager getInstance() {
         return ourInstance;
+    }
+
+    public void initContext(Context context) {
+        mContext = context;
     }
 
     private ProfileManager() {
@@ -107,27 +120,142 @@ public class ProfileManager {
     public void login(String userId, String sms, final ActionCallback callback) {
         isLogin = true;
         setUserId(userId);
-        UserModel userModel = new UserModel();
-        userModel.userAvatar = getAvatarUrl(userId);
-        userModel.userName = userId;
+        final UserModel userModel = new UserModel();
         userModel.phone = userId;
         userModel.userId = userId;
         userModel.userSig = GenerateTestUserSig.genTestUserSig(userModel.userId);
         setUserModel(userModel);
-        callback.onSuccess();
+        loginIM(userModel, new ActionCallback() {
+            @Override
+            public void onSuccess() {
+                setUserModel(userModel);
+                isLogin = true;
+                callback.onSuccess();
+            }
+
+            @Override
+            public void onFailed(int code, String msg) {
+                isLogin = false;
+                callback.onFailed(code, msg);
+            }
+        });
     }
 
     public void autoLogin(String userId, String token, final ActionCallback callback) {
         isLogin = true;
         setUserId(userId);
-        UserModel userModel = new UserModel();
-        userModel.userAvatar = getAvatarUrl(userId);
-        userModel.userName = userId;
+        final UserModel userModel = new UserModel();
         userModel.phone = userId;
         userModel.userId = userId;
         userModel.userSig = GenerateTestUserSig.genTestUserSig(userModel.userId);
         setUserModel(userModel);
-        callback.onSuccess();
+        loginIM(userModel, new ActionCallback() {
+            @Override
+            public void onSuccess() {
+                setUserModel(userModel);
+                isLogin = true;
+                callback.onSuccess();
+            }
+
+            @Override
+            public void onFailed(int code, String msg) {
+                isLogin = false;
+                callback.onFailed(code, msg);
+            }
+        });
+    }
+
+    private void loginIM(final UserModel userModel, final ActionCallback callback) {
+        if (mContext == null) {
+            Log.d(TAG, "login im failed, context is null");
+            return;
+        }
+        IMManager.sharedInstance().initIMSDK(mContext);
+        V2TIMManager.getInstance().login(userModel.userId, userModel.userSig, new V2TIMCallback() {
+            @Override
+            public void onError(int i, String s) {
+                // 登录IM失败
+                callback.onFailed(i, s);
+                showToast(mContext.getString(R.string.login_toast_login_fail, i, s));
+            }
+
+            @Override
+            public void onSuccess() {
+                //1. 登录IM成功
+                showToast(mContext.getString(R.string.login_toast_login_success));
+                IMManager.sharedInstance().setLogin(true);
+                IMManager.sharedInstance().getUserInfo(userModel.userId, new IMManager.UserCallback() {
+                    @Override
+                    public void onCallback(int code, String msg, IMUserInfo userInfo) {
+                        if (code == 0) {
+                            if (userInfo == null) {
+                                callback.onFailed(ERROR_CODE_UNKNOWN, "user info get is null");
+                                return;
+                            }
+                            // 如果说第一次没有设置用户名，跳转注册用户名
+                            if (TextUtils.isEmpty(userInfo.userName)) {
+                                callback.onFailed(ERROR_CODE_NEED_REGISTER, mContext.getString(R.string.login_not_register));
+                            } else {
+                                userModel.userName = userInfo.userName;
+                                userModel.userAvatar = userInfo.userAvatar;
+                                callback.onSuccess();
+                            }
+                        } else {
+                            callback.onFailed(code, msg);
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    public void setNickName(final String nickname, final ActionCallback callback) {
+        IMManager.sharedInstance().setNickname(nickname, new IMManager.Callback() {
+            @Override
+            public void onCallback(int errorCode, String message) {
+                if (errorCode == 0) {
+                    mUserModel.userName = nickname;
+                    saveUserModel();
+                    callback.onSuccess();
+                } else {
+                    callback.onFailed(errorCode, message);
+                    showToast(mContext.getString(R.string.login_toast_failed_to_set_username, message));
+                }
+            }
+        });
+    }
+
+    public void setAvatar(final String avatar, final ActionCallback callback) {
+        IMManager.sharedInstance().setAvatar(avatar, new IMManager.Callback() {
+            @Override
+            public void onCallback(int errorCode, String message) {
+                if (errorCode == 0) {
+                    mUserModel.userAvatar = avatar;
+                    saveUserModel();
+                    callback.onSuccess();
+                } else {
+                    callback.onFailed(errorCode, message);
+                    showToast(mContext.getString(R.string.login_toast_failed_to_set_username, message));
+                }
+            }
+        });
+    }
+
+    public void setNicknameAndAvatar(final String nickname, final String avatar, final ActionCallback callback) {
+        IMManager.sharedInstance().setAvatar(avatar, new IMManager.Callback() {
+            @Override
+            public void onCallback(int errorCode, String message) {
+                if (errorCode == 0) {
+                    mUserModel.userAvatar = avatar;
+                    mUserModel.userName = nickname;
+                    saveUserModel();
+                    callback.onSuccess();
+                } else {
+                    callback.onFailed(errorCode, message);
+                    showToast(mContext.getString(R.string.login_toast_failed_to_set_username, message));
+                }
+            }
+        });
     }
 
     public NetworkAction getUserInfoByUserId(String userId, final GetUserInfoCallback callback) {
@@ -174,6 +302,10 @@ public class ProfileManager {
         int    index = bytes[bytes.length - 1] % 10;
         String avatarName = "avatar" + index + "_100";
         return "https://imgcache.qq.com/qcloud/public/static//" + avatarName + ".20191230.png";
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
     }
 
     private void saveUserModel() {

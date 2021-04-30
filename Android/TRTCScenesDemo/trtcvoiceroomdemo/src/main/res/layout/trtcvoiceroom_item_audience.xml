@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="32dp"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/img_head"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/trtcvoiceroom_ic_head" />
+
+
+</LinearLayout>

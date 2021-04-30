@@ -57,7 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
-            android:textColor="@color/trtcchatsalon_white"
+            android:textColor="@color/trtcchatsalon_main_text"
             tools:text="123123" />
 
     </LinearLayout>

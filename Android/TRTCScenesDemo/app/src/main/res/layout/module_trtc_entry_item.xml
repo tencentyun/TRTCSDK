@@ -1,50 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/item_cl"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center_vertical"
-    android:orientation="horizontal">
+    android:orientation="vertical">
+    
     <View
-        android:layout_width="150dp"
-        android:layout_height="100dp"
-        android:background="@drawable/bg_item_gradient"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_title"
-        app:layout_constraintEnd_toEndOf="@+id/img_item"
-        app:layout_constraintStart_toStartOf="@+id/img_item"
-        app:layout_constraintTop_toTopOf="@+id/img_item" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="16dp" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/item_cl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/app_bg_item_main_list">
 
     <ImageView
         android:id="@+id/img_item"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginRight="20dp"
-        android:scaleType="fitXY"
-        app:layout_constraintBottom_toTopOf="@+id/tv_title"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="170dp"
+        android:layout_height="136dp"
+        android:layout_marginLeft="14dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed"
-        tools:src="@drawable/live_stream" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:src="@drawable/app_audio_call" />
 
     <TextView
         android:id="@+id/tv_title"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="30dp"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/img_item"
-        tools:text="多人视频会议" />
+        android:textStyle="bold"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="34dp"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/img_item"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginRight="10dp" />
 
-</android.support.constraint.ConstraintLayout>
+    <TextView
+        android:id="@+id/tv_description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingBottom="20dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginRight="10dp"
+        android:textColor="#666666"
+        android:textSize="14sp"
+        app:layout_constraintLeft_toRightOf="@id/img_item"
+        app:layout_constraintTop_toBottomOf="@id/tv_title"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <View
+        android:id="@+id/bottom_line"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="16dp" />
+</LinearLayout>

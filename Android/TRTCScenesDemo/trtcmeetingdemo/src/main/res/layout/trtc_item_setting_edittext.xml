@@ -39,7 +39,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="开启音频" />
+        tools:text="@string/meeting_tv_enable_audio" />
 
     <LinearLayout
         android:id="@+id/ll_item"
@@ -66,7 +66,7 @@
             android:layout_gravity="right"
             android:layout_marginLeft="3dp"
             android:clickable="true"
-            android:text="发送"
+            android:text="@string/meeting_tv_send"
             android:textSize="14sp" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

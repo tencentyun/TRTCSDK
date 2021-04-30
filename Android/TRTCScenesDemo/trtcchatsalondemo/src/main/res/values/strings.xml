@@ -1,10 +1,10 @@
 <resources>
     <string name="tctrtcchatsalon_app_name">语音沙龙</string>
-    <string name="trtcchatsalon_numer_format" formatted="false" >%d人在看</string>
+    <string name="trtcchatsalon_numer_format" >%d人在看</string>
     <string name="trtcchatsalon_agree">同意</string>
     <string name="trtcchatsalon_warning_not_empty">"输入不能为空!"</string>
     <string name="trtcchatsalon_send">发送</string>
-    <string name="trtcchatsalon_main_title" formatted="false">%1s(%2d)</string>
+    <string name="trtcchatsalon_main_title">%1s(%2d)</string>
     <string name="trtcchatsalon_request_expired">该请求已过期</string>
     <string name="trtcchatsalon_accept_failed">接受请求失败</string>
     <string name="trtcchatsalon_anchor_take_seat_success">房主占座成功</string>

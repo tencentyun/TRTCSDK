@@ -9,7 +9,7 @@
     {
       "tab_id": 1,
       "tab_type": 10001,
-      "tab_name": "美颜",
+      "tab_name": "@beauty_setting_panel_beauty",
       "tab_item_name_size": 10,
       "tab_item_name_color_normal": "#ff888888",
       "tab_item_name_color_select": "#ffffffff",
@@ -244,7 +244,7 @@
     {
       "tab_id": 2,
       "tab_type": 10002,
-      "tab_name": "滤镜",
+      "tab_name": "@beauty_setting_panel_filter",
       "tab_item_name_size": 10,
       "tab_item_name_color_normal": "#ff888888",
       "tab_item_name_color_select": "#ffffffff",
@@ -442,7 +442,7 @@
     {
       "tab_id": 3,
       "tab_type": 10003,
-      "tab_name": "动效",
+      "tab_name": "@beauty_setting_panel_dynamic_effect",
       "tab_item_name_size": 10,
       "tab_item_name_color_normal": "#ff888888",
       "tab_item_name_color_select": "#ffffffff",
@@ -478,7 +478,7 @@
     {
       "tab_id": 4,
       "tab_type": 10004,
-      "tab_name": "美妆",
+      "tab_name": "@beauty_setting_panel_facebeauty",
       "tab_item_name_size": 10,
       "tab_item_name_color_normal": "#ff888888",
       "tab_item_name_color_select": "#ffffffff",
@@ -514,7 +514,7 @@
     {
       "tab_id": 5,
       "tab_type": 10005,
-      "tab_name": "手势",
+      "tab_name": "@beauty_setting_panel_gesture",
       "tab_item_name_size": 10,
       "tab_item_name_color_normal": "#ff888888",
       "tab_item_name_color_select": "#ffffffff",
@@ -550,7 +550,7 @@
     {
       "tab_id": 6,
       "tab_type": 10006,
-      "tab_name": "抠背",
+      "tab_name": "@beauty_cutout_background_ai",
       "tab_item_name_size": 10,
       "tab_item_name_color_normal": "#ff888888",
       "tab_item_name_color_select": "#ffffffff",
@@ -586,7 +586,7 @@
     {
       "tab_id": 7,
       "tab_type": 10007,
-      "tab_name": "绿幕",
+      "tab_name": "@beauty_setting_panel_green_screen",
       "tab_item_name_size": 10,
       "tab_item_name_color_normal": "#ff888888",
       "tab_item_name_color_select": "#ffffffff",

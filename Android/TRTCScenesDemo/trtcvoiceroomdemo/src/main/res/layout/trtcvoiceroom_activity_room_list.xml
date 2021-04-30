@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusableInTouchMode="true"
-    android:background="@drawable/trtcvoiceroom_bg_main_gradient">
+    android:background="@color/trtcvoiceroom_white">
 
     <android.support.constraint.Guideline
         android:layout_width="match_parent"
@@ -15,6 +15,7 @@
         android:id="@+id/fragment_container"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:background="@color/trtcvoiceroom_white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -23,7 +24,9 @@
     <FrameLayout
         android:id="@+id/fl_title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:background="@color/trtcvoiceroom_white"
+        android:layout_height="44dp"
+        android:layout_marginTop="28dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -34,9 +37,10 @@
             android:layout_gravity="center"
             android:paddingTop="2dp"
             android:paddingBottom="2dp"
-            android:text="语音聊天室"
+            android:text="@string/trtcvoiceroom_title_chat_room"
+            android:textStyle="bold"
             android:textAlignment="center"
-            android:textColor="#EEEEEE"
+            android:textColor="@color/trtcvoiceroom_black"
             android:textSize="18sp" />
 
         <ImageButton

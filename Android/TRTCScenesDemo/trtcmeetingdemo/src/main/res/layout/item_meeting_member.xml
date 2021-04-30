@@ -5,12 +5,12 @@
     android:id="@+id/rl_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#AAAAAA"
     android:padding="1dp">
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/bg_item_gradient"/>
+        android:layout_height="match_parent" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/img_user_head"
@@ -40,7 +40,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="50dp"
         android:gravity="center_vertical"
         android:padding="10dp">
 
@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/colorWhite"
             android:textSize="14sp"
-            tools:text="王大锤" />
+            tools:text="@string/meeting_tv_tools_user_name" />
 
         <ImageView
             android:id="@+id/img_signal"

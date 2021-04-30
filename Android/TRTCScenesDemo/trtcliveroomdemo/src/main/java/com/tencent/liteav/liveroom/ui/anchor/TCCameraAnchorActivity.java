@@ -1,8 +1,6 @@
 package com.tencent.liteav.liveroom.ui.anchor;
 
 import android.animation.ObjectAnimator;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -20,7 +18,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.ToastUtils;
-import com.tencent.liteav.audiosettingkit.AudioEffectPanel;
 import com.tencent.liteav.demo.beauty.model.ItemInfo;
 import com.tencent.liteav.demo.beauty.model.TabInfo;
 import com.tencent.liteav.demo.beauty.view.BeautyPanel;
@@ -29,6 +26,7 @@ import com.tencent.liteav.liveroom.model.TRTCLiveRoomCallback;
 import com.tencent.liteav.liveroom.model.TRTCLiveRoomDef;
 import com.tencent.liteav.liveroom.ui.common.adapter.TCUserAvatarListAdapter;
 import com.tencent.liteav.liveroom.ui.common.utils.TCUtils;
+import com.tencent.liteav.liveroom.ui.widget.AudioEffectPanel;
 import com.tencent.liteav.liveroom.ui.widget.video.TCVideoView;
 import com.tencent.liteav.liveroom.ui.widget.video.TCVideoViewMgr;
 import com.tencent.liteav.login.model.ProfileManager;
@@ -122,16 +120,14 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity implements View
         mTextMemberCount.setText("0");
         mButtonPK = (Button) findViewById(R.id.btn_request_pk);
         //AudioEffectPanel
-        mPanelAudioControl = (AudioEffectPanel) findViewById(R.id.anchor_audio_panel);
+        mPanelAudioControl = new AudioEffectPanel(this);
         mPanelAudioControl.setAudioEffectManager(mLiveRoom.getAudioEffectManager());
-        mPanelAudioControl.initPanelDefaultBackground();
-        mPanelAudioControl.setOnAudioEffectPanelHideListener(new AudioEffectPanel.OnAudioEffectPanelHideListener() {
+        mPanelAudioControl.setDismissListener(new AudioEffectPanel.OnDismissListener() {
             @Override
-            public void onClosePanel() {
+            public void onDismiss() {
                 mGroupLiveAfter.setVisibility(View.VISIBLE);
             }
         });
-
         mPanelBeautyControl = (BeautyPanel) findViewById(R.id.beauty_panel);
         mPanelBeautyControl.setOnBeautyListener(new BeautyPanel.OnBeautyListener() {
             @Override
@@ -370,37 +366,38 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity implements View
 
     @Override
     public void onRequestRoomPK(final TRTCLiveRoomDef.TRTCLiveUserInfo userInfo, final int timeout) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                .setCancelable(true)
-                .setTitle(R.string.trtcliveroom_tips)
-                .setMessage(getString(R.string.trtcliveroom_request_pk, userInfo.userName))
-                .setPositiveButton(R.string.trtcliveroom_accept, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        mLiveRoom.responseRoomPK(userInfo.userId, true, "");
-                    }
-                })
-                .setNegativeButton(R.string.trtcliveroom_refuse, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        mLiveRoom.responseRoomPK(userInfo.userId, false, getString(R.string.trtcliveroom_anchor_refuse_pk_request));
-                    }
-                });
+        final ConfirmDialogFragment dialogFragment = new ConfirmDialogFragment();
+        dialogFragment.setCancelable(false);
+        dialogFragment.setMessage(getString(R.string.trtcliveroom_request_pk, userInfo.userName));
+        if (dialogFragment.isAdded()) {
+            dialogFragment.dismiss();
+            return;
+        }
+        dialogFragment.setPositiveText(getString(R.string.trtcliveroom_accept));
+        dialogFragment.setNegativeText(getString(R.string.trtcliveroom_refuse));
+        dialogFragment.setPositiveClickListener(new ConfirmDialogFragment.PositiveClickListener() {
+            @Override
+            public void onClick() {
+                dialogFragment.dismiss();
+                mLiveRoom.responseRoomPK(userInfo.userId, true, "");
+            }
+        });
 
+        dialogFragment.setNegativeClickListener(new ConfirmDialogFragment.NegativeClickListener() {
+            @Override
+            public void onClick() {
+                dialogFragment.dismiss();
+                mLiveRoom.responseRoomPK(userInfo.userId, false, getString(R.string.trtcliveroom_anchor_refuse_pk_request));
+            }
+        });
         mMainHandler.post(new Runnable() {
             @Override
             public void run() {
-                final AlertDialog alertDialog = builder.create();
-                alertDialog.setCancelable(false);
-                alertDialog.setCanceledOnTouchOutside(false);
-                alertDialog.show();
-
+                dialogFragment.show(getFragmentManager(), "ConfirmDialogFragment");
                 mMainHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        alertDialog.dismiss();
+                        dialogFragment.dismiss();
                     }
                 }, timeout);
             }
@@ -414,42 +411,38 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity implements View
 
     @Override
     public void onRequestJoinAnchor(final TRTCLiveRoomDef.TRTCLiveUserInfo userInfo, String reason, final int timeout) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                .setCancelable(true)
-                .setTitle(R.string.trtcliveroom_tips)
-                .setMessage(getString(R.string.trtcliveroom_request_link_mic, userInfo.userName))
-                .setPositiveButton(R.string.trtcliveroom_accept, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        mLiveRoom.responseJoinAnchor(userInfo.userId, true, "");
-                    }
-                })
-                .setNegativeButton(R.string.trtcliveroom_refuse, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        mLiveRoom.responseJoinAnchor(userInfo.userId, false, getString(R.string.trtcliveroom_anchor_refuse_link_request));
-                        dialog.dismiss();
-                    }
-                });
+        final ConfirmDialogFragment dialogFragment = new ConfirmDialogFragment();
+        dialogFragment.setCancelable(false);
+        dialogFragment.setMessage(getString(R.string.trtcliveroom_request_link_mic, userInfo.userName));
+        if (dialogFragment.isAdded()) {
+            dialogFragment.dismiss();
+            return;
+        }
+        dialogFragment.setPositiveText(getString(R.string.trtcliveroom_accept));
+        dialogFragment.setNegativeText(getString(R.string.trtcliveroom_refuse));
+        dialogFragment.setPositiveClickListener(new ConfirmDialogFragment.PositiveClickListener() {
+            @Override
+            public void onClick() {
+                dialogFragment.dismiss();
+                mLiveRoom.responseJoinAnchor(userInfo.userId, true, "");
+            }
+        });
 
+        dialogFragment.setNegativeClickListener(new ConfirmDialogFragment.NegativeClickListener() {
+            @Override
+            public void onClick() {
+                dialogFragment.dismiss();
+                mLiveRoom.responseJoinAnchor(userInfo.userId, false, getString(R.string.trtcliveroom_anchor_refuse_link_request));
+            }
+        });
         mMainHandler.post(new Runnable() {
             @Override
             public void run() {
-                if (mAnchorUserIdList.size() >= 3) {
-                    mLiveRoom.responseJoinAnchor(userInfo.userId, false, getString(R.string.trtcliveroom_warning_link_user_max_limit));
-                    return;
-                }
-
-                final AlertDialog alertDialog = builder.create();
-                alertDialog.setCancelable(false);
-                alertDialog.setCanceledOnTouchOutside(false);
-                alertDialog.show();
-
+                dialogFragment.show(getFragmentManager(), "ConfirmDialogFragment");
                 mMainHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        alertDialog.dismiss();
+                        dialogFragment.dismiss();
                     }
                 }, timeout);
             }
@@ -482,12 +475,6 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity implements View
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        if (null != mPanelAudioControl && mPanelAudioControl.getVisibility() != View.GONE && ev.getRawY() < mPanelAudioControl.getTop()) {
-            mPanelAudioControl.setVisibility(View.GONE);
-            mPanelAudioControl.hideAudioPanel();
-            mGroupLiveAfter.setVisibility(View.VISIBLE);
-        }
-
         if (null != mViewPKAnchorList && mViewPKAnchorList.getVisibility() != View.GONE && ev.getRawY() < mViewPKAnchorList.getTop()) {
             mViewPKAnchorList.setVisibility(View.GONE);
             mGroupLiveAfter.setVisibility(View.VISIBLE);
@@ -556,7 +543,7 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity implements View
             } else {
                 mViewPKAnchorList.setVisibility(View.VISIBLE);
                 mPanelBeautyControl.setVisibility(View.GONE);
-                mPanelAudioControl.setVisibility(View.GONE);
+                mPanelAudioControl.dismiss();
                 mGroupLiveAfter.setVisibility(View.GONE);
             }
         } else if (id == R.id.beauty_btn) {
@@ -564,17 +551,15 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity implements View
                 mPanelBeautyControl.setVisibility(View.GONE);
             } else {
                 mPanelBeautyControl.setVisibility(View.VISIBLE);
-                mPanelAudioControl.setVisibility(View.GONE);
+                mPanelAudioControl.dismiss();
                 mGroupLiveAfter.setVisibility(View.GONE);
             }
         } else if (id == R.id.btn_audio_ctrl) {
-            if (mPanelAudioControl.isShown()) {
-                mPanelAudioControl.setVisibility(View.GONE);
-                mPanelAudioControl.hideAudioPanel();
+            if (mPanelAudioControl.isShowing()) {
+                mPanelAudioControl.dismiss();
                 mGroupLiveAfter.setVisibility(View.VISIBLE);
             } else {
-                mPanelAudioControl.setVisibility(View.VISIBLE);
-                mPanelAudioControl.showAudioPanel();
+                mPanelAudioControl.show();
                 mGroupLiveAfter.setVisibility(View.GONE);
                 mPanelBeautyControl.setVisibility(View.GONE);
                 mViewPKAnchorList.setVisibility(View.GONE);

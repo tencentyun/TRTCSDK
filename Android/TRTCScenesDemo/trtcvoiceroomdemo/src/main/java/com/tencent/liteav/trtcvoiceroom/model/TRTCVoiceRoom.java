@@ -227,6 +227,12 @@ public abstract class TRTCVoiceRoom {
     public abstract void stopMicrophone();
 
     /**
+     * 开启/关闭 耳返
+     * @param enable 开启/关闭
+     */
+    public abstract void setVoiceEarMonitorEnable(boolean enable);
+
+    /**
      * 设置音质
      * @param quality TRTC_AUDIO_QUALITY_MUSIC/TRTC_AUDIO_QUALITY_DEFAULT/TRTC_AUDIO_QUALITY_SPEECH
      */

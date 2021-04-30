@@ -101,7 +101,7 @@ public class VoiceRoomCreateActivity extends AppCompatActivity {
         String userName    = mUserNameEt.getText().toString();
         String userAvatar  = ProfileManager.getInstance().getUserModel().userAvatar;
         String coverAvatar = ProfileManager.getInstance().getUserModel().userAvatar;
-        VoiceRoomAnchorActivity.createRoom(this, roomName, userId, userName, userAvatar, coverAvatar, audioQuality, mNeedOwnerAgree);
+        VoiceRoomAnchorActivity.createRoom(this, roomName, userId, userName, coverAvatar, audioQuality, mNeedOwnerAgree);
     }
 
     private void initView() {

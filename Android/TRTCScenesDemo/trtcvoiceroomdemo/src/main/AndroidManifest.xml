@@ -14,7 +14,6 @@
         <activity
             android:name=".ui.room.VoiceRoomAudienceActivity"
             android:configChanges="orientation|keyboardHidden"
-
             android:launchMode="singleTop"
             android:theme="@style/ChatTheme"
             android:screenOrientation="portrait" />
@@ -22,11 +21,6 @@
             android:name=".ui.list.VoiceRoomListActivity"
             android:configChanges="orientation|keyboardHidden"
             android:launchMode="singleTask"
-            android:theme="@style/ChatTheme"
-            android:screenOrientation="portrait" />
-        <activity android:name=".ui.list.VoiceRoomCreateActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:launchMode="singleTop"
             android:theme="@style/ChatTheme"
             android:screenOrientation="portrait" />
     </application>

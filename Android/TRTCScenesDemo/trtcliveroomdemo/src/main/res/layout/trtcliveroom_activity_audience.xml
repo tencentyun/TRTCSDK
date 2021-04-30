@@ -164,13 +164,14 @@
 
     <Button
         android:id="@+id/btn_close"
-        android:layout_width="@dimen/trtcliveroom_btn_size"
-        android:layout_height="@dimen/trtcliveroom_btn_size"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
         android:background="@drawable/trtcliveroom_btn_close"
         android:onClick="onClick"
         android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_like"
         app:layout_constraintStart_toEndOf="@+id/btn_like"
         app:layout_constraintTop_toTopOf="@+id/btn_like" />
 

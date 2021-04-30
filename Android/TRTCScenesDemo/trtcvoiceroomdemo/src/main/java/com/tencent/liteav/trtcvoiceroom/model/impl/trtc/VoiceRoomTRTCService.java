@@ -86,6 +86,8 @@ public class VoiceRoomTRTCService extends TRTCCloudListener {
         }
         mTRTCCloud.setListener(this);
         mTRTCCloud.enterRoom(mTRTCParams, TRTCCloudDef.TRTC_APP_SCENE_VOICE_CHATROOM);
+        // enable volume callback
+        enableAudioEvaluation(true);
     }
 
     public void exitRoom(TXCallback callback) {
@@ -204,6 +206,10 @@ public class VoiceRoomTRTCService extends TRTCCloudListener {
 
     public void startMicrophone() {
         mTRTCCloud.startLocalAudio();
+    }
+
+    public void enableAudioEarMonitoring(boolean enable) {
+        mTRTCCloud.enableAudioEarMonitoring(enable);
     }
 
     public void switchToAnchor() {

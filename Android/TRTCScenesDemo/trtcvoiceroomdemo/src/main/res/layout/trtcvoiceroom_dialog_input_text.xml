@@ -40,14 +40,16 @@
             android:layout_marginRight="10dp"
             android:layout_gravity="center"
             android:layout_height="wrap_content">
+
             <Button
                 android:id="@+id/confrim_btn"
-                android:layout_width="50dp"
-                android:layout_height="30dp"
-                android:background="@drawable/trtcvoiceroom_bg_button_border"
+                android:layout_width="64dp"
+                android:layout_height="36dp"
+                android:background="@drawable/trtcvoiceroom_bg_msg_send"
                 android:gravity="center"
                 android:textColor="@color/colorWhite"
                 android:text="@string/trtcvoiceroom_send" />
+
         </LinearLayout>
 
 

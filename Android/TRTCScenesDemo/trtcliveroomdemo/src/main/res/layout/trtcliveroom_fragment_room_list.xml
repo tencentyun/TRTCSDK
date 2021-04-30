@@ -6,9 +6,8 @@
         android:id="@+id/swipe_refresh_layout_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="20dp">
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp">
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_room_list"
             android:layout_width="match_parent"

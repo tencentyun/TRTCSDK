@@ -11,6 +11,7 @@ import com.tencent.bugly.beta.download.DownloadListener;
 import com.tencent.bugly.beta.download.DownloadTask;
 import com.tencent.bugly.beta.upgrade.UpgradeStateListener;
 import com.tencent.bugly.crashreport.CrashReport;
+import com.tencent.liteav.login.model.ProfileManager;
 import com.tencent.rtmp.TXLiveBase;
 
 import java.lang.reflect.Constructor;
@@ -56,6 +57,7 @@ public class DemoApplication extends MultiDexApplication {
             builder.detectFileUriExposure();
         }
         closeAndroidPDialog();
+        ProfileManager.getInstance().initContext(this);
     }
 
     //    public static RefWatcher getRefWatcher(Context context) {

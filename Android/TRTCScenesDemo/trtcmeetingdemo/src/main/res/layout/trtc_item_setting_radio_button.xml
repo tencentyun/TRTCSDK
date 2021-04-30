@@ -11,5 +11,5 @@
         android:checked="true"
         android:textColor="#999999"
         android:textSize="16sp"
-        tools:text="开启" />
+        tools:text="@string/meeting_tv_enable" />
 </merge>

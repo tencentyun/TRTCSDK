@@ -4,9 +4,9 @@
     <item android:state_enabled="true">
         <shape android:shape="rectangle"
             android:useLevel="false">
-            <solid android:color="#FF4E42" />
-            <corners android:radius="3dp"/>
-            <padding android:left="10dp" android:right="10dp" android:top="5dp" android:bottom="5dp"/>
+            <solid android:color="#FA585E" />
+            <corners android:radius="20dp"/>
+            <padding android:left="17dp" android:right="17dp" android:top="8dp" android:bottom="8dp"/>
         </shape>
     </item>
 

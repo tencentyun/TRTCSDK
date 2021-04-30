@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dp"
-        android:textColor="@color/trtcchatsalon_white"
+        android:textColor="@color/trtcchatsalon_main_text"
         android:textSize="14sp"
         tools:text="123123" />
 </LinearLayout>

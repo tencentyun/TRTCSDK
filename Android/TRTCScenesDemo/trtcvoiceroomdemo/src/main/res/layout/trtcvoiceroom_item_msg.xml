@@ -4,8 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:paddingTop="5dp"
-    android:paddingBottom="5dp">
+    android:paddingTop="4dp"
+    android:paddingBottom="4dp">
 
     <FrameLayout
         android:layout_width="0dp"
@@ -14,29 +14,32 @@
         android:layout_weight="1">
 
         <TextView
-            android:id="@+id/tv_msg_content"
             android:layout_width="wrap_content"
+            android:id="@+id/tv_msg_content"
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@+id/btn_msg_agree"
-            android:background="@drawable/trtcvoiceroom_bg_msg"
+            android:background="@drawable/trtcvoiceroom_bg_msg_item"
             android:ellipsize="end"
             android:gravity="center_horizontal"
-            android:maxLines="1"
-            android:paddingLeft="7dp"
-            android:paddingTop="3dp"
-            android:paddingRight="7dp"
+            android:paddingLeft="16dp"
+            android:paddingTop="4dp"
+            android:paddingRight="16dp"
             android:paddingBottom="4dp"
-            android:singleLine="true"
             android:textColor="@color/white"
             android:textSize="14sp"
-            tools:text="申请上1号麦" />
+            tools:text="@string/trtcvoiceroom_tv_tools_apply_tips" />
     </FrameLayout>
 
     <TextView
         android:id="@+id/btn_msg_agree"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/trtcvoiceroom_bg_btn_msg"
+        android:layout_marginLeft="20dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:background="@drawable/trtcvoiceroom_bg_select_item"
         android:text="@string/trtcvoiceroom_agree"
         android:textColor="@color/white"
         android:textSize="14sp"

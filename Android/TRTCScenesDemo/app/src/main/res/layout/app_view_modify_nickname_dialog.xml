@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingBottom="40dp"
+    android:focusableInTouchMode="true"
+    android:background="@drawable/app_bg_dialog">
+
+
+    <TextView
+        android:id="@+id/title"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/app_modify_nickname"
+        android:textColor="@color/black"
+        android:layout_marginLeft="20dp"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/confirm"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/title"
+        app:layout_constraintBottom_toBottomOf="@id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_confirm"
+        android:textColor="#006EFF"
+        android:textStyle="bold"
+        android:layout_marginRight="20dp"
+        android:textSize="16sp" />
+
+    <EditText
+        android:id="@+id/et_nickname"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:padding="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/app_bg_edit_text"
+        android:hint="@string/app_input_nickname_hint"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:paddingTop="14dp"
+        android:paddingBottom="14dp"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/black"
+        android:textColorHint="#BBBBBB"
+        android:textSize="16sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title"/>
+
+
+    <TextView
+        android:id="@+id/tips"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/et_nickname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/app_tips_user_name"
+        android:textColor="@color/app_color_input_normal"
+        android:layout_marginLeft="20dp"
+        android:textSize="14sp" />
+
+</android.support.constraint.ConstraintLayout>

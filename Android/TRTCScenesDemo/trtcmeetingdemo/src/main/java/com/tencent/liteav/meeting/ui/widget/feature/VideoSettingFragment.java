@@ -67,7 +67,7 @@ public class VideoSettingFragment extends BaseSettingFragment {
          * 所以要在一开始先初始化码率的item，不然会出现null的情况
          */
         BaseSettingItem.ItemText itemText =
-                new BaseSettingItem.ItemText("码率", "");
+                new BaseSettingItem.ItemText(getString(R.string.meeting_title_bitrate), "");
         mBitrateItem = new SeekBarSettingItem(getContext(), itemText, new SeekBarSettingItem.Listener() {
             @Override
             public void onSeekBarChange(int progress, boolean fromUser) {
@@ -83,7 +83,7 @@ public class VideoSettingFragment extends BaseSettingFragment {
         // 分辨率相关
         mCurRes = getResolutionPos(mFeatureConfig.getVideoResolution());
         itemText =
-                new BaseSettingItem.ItemText("分辨率", getResources().getStringArray(R.array.solution));
+                new BaseSettingItem.ItemText(getString(R.string.meeting_title_resolution), getResources().getStringArray(R.array.solution));
         mResolutionItem = new SelectionSettingItem(getContext(), itemText,
                 new SelectionSettingItem.Listener() {
                     @Override
@@ -101,7 +101,7 @@ public class VideoSettingFragment extends BaseSettingFragment {
         mSettingItemList.add(mResolutionItem);
 
         //帧率
-        itemText = new BaseSettingItem.ItemText("帧率", getResources().getStringArray(R.array.video_fps));
+        itemText = new BaseSettingItem.ItemText(getString(R.string.meeting_title_frame_rate), getResources().getStringArray(R.array.video_fps));
         mVideoFpsItem = new SelectionSettingItem(getContext(), itemText,
                 new SelectionSettingItem.Listener() {
                     @Override
@@ -125,7 +125,8 @@ public class VideoSettingFragment extends BaseSettingFragment {
         mSettingItemList.add(mBitrateItem);
 
         itemText =
-                new BaseSettingItem.ItemText("本地镜像", "开启", "关闭");
+                new BaseSettingItem.ItemText(getString(R.string.meeting_title_local_mirror),
+                        getString(R.string.meeting_title_enable), getString(R.string.meeting_title_disable));
         mMirrorTypeItem = new SwitchSettingItem(getContext(), itemText, new SwitchSettingItem.Listener() {
             @Override
             public void onSwitchChecked(boolean isChecked) {

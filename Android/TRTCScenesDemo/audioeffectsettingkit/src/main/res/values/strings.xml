@@ -4,6 +4,14 @@
     <string name="audio_effect_setting_bgm_title">背景音乐</string>
     <string name="audio_effect_setting_panel_close">关闭</string>
     <string name="audio_effect_setting_panel_select_song">选择歌曲</string>
+
+    <string name="audio_effect_setting_surround_sound_test_1">环绕声测试1</string>
+    <string name="audio_effect_setting_surround_sound_test_2">环绕声测试2</string>
+    <string name="audio_effect_setting_surround_sound_test_3">环绕声测试3</string>
+    <string name="audio_effect_setting_unknown">佚名</string>
+
+    <string name="audio_effect_setting_title">音效设置</string>
+
     <string name="audio_effect_setting_panel_music_volume">音乐音量</string>
     <string name="audio_effect_setting_panel_mic_volume">人声音量</string>
     <string name="audio_effect_setting_panel_music_pitch">音乐升降调</string>
@@ -31,6 +39,5 @@
     <string name="audio_effect_setting_reverbtype_hongliang">洪亮</string>
     <string name="audio_effect_setting_reverbtype_heavymetal">金属声</string>
     <string name="audio_effect_setting_reverbtype_cixing">磁性</string>
-
 
 </resources>

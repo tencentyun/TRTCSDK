@@ -65,7 +65,7 @@ public class RemoteUserListAdapter extends
                 mHeadImg.setImageResource(R.drawable.meeting_head);
             }
             if (isSelf) {
-                mUserNameTv.setText(model.getUserName() + "(自己)");
+                mUserNameTv.setText(mUserNameTv.getResources().getString(R.string.meeting_tv_me, model.getUserName()));
                 mAudioImg.setVisibility(View.GONE);
                 mVideoImg.setVisibility(View.GONE);
             } else {

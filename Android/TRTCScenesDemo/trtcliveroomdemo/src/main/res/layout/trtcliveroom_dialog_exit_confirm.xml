@@ -4,17 +4,19 @@
     android:layout_width="279dp"
     android:layout_height="138dp"
     android:layout_gravity="center"
-    android:background="@color/trtcliveroom_color_bg_detail_live">
-
+    android:background="@drawable/trtcliveroom_confirm_dialog">
 
     <TextView
         android:id="@+id/tv_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
         android:layout_marginTop="30dp"
         android:text="@string/trtcliveroom_warning_anchor_exit_room"
-        android:textColor="@color/white"
-        android:textSize="16sp"
+        android:textColor="@color/trtcliveroom_color_title"
+        android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -24,13 +26,13 @@
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:layout_marginBottom="48dp"
-        android:background="@color/trtcliveroom_color_shadow"
+        android:background="@color/trtcliveroom_color_line"
         app:layout_constraintBottom_toBottomOf="parent" />
 
     <View
         android:layout_width="1px"
         android:layout_height="48dp"
-        android:background="@color/trtcliveroom_color_shadow"
+        android:background="@color/trtcliveroom_color_line"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
@@ -47,7 +49,7 @@
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             android:text="@android:string/cancel"
-            android:textColor="@color/white"
+            android:textColor="@color/login_color_blue"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="@id/cl_button_panel"
             app:layout_constraintHorizontal_weight="1"
@@ -60,7 +62,7 @@
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             android:text="@android:string/ok"
-            android:textColor="@color/white"
+            android:textColor="@color/beauty_color_red"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="@id/cl_button_panel"
             app:layout_constraintHorizontal_weight="1"

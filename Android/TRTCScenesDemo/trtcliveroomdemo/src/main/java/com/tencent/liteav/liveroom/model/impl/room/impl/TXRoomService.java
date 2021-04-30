@@ -23,6 +23,7 @@ import com.tencent.imsdk.v2.V2TIMSimpleMsgListener;
 import com.tencent.imsdk.v2.V2TIMUserFullInfo;
 import com.tencent.imsdk.v2.V2TIMUserInfo;
 import com.tencent.imsdk.v2.V2TIMValueCallback;
+import com.tencent.liteav.liveroom.R;
 import com.tencent.liteav.liveroom.model.TRTCLiveRoomDef;
 import com.tencent.liteav.liveroom.model.impl.base.TRTCLogger;
 import com.tencent.liteav.liveroom.model.impl.base.TXCallback;
@@ -288,13 +289,13 @@ public class TXRoomService implements ITXRoomService {
             public void onError(int code, String s) {
                 String msg = s;
                 if (code == 10036) {
-                    msg = "您当前使用的云通讯账号未开通音视频聊天室功能，创建聊天室数量超过限额，请前往腾讯云官网开通【IM音视频聊天室】，地址：https://cloud.tencent.com/document/product/269/11673";
+                    msg = mContext.getString(R.string.trtcliveroom_create_room_limit);
                 }
                 if (code == 10037) {
-                    msg = "单个用户可创建和加入的群组数量超过了限制，请购买相关套餐,价格地址：https://cloud.tencent.com/document/product/269/11673";
+                    msg = mContext.getString(R.string.trtcliveroom_create_or_join_group_limit);
                 }
                 if (code == 10038) {
-                    msg = "群成员数量超过限制，请参考，请购买相关套餐，价格地址：https://cloud.tencent.com/document/product/269/11673";
+                    msg = mContext.getString(R.string.trtcliveroom_group_member_limit);
                 }
                 if (code == 10025) {
                     // 10025 表明群主是自己，那么认为创建房间成功

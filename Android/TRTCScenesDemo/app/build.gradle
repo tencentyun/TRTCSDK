@@ -8,8 +8,8 @@ android {
         applicationId "com.tencent.trtc"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 14
-        versionName "8.5.677"
+        versionCode 16
+        versionName "8.6.10097"
 
         multiDexEnabled true
         ndk {

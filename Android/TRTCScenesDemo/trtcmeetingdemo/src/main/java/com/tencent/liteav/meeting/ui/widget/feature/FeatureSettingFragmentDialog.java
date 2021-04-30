@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
+import com.tencent.liteav.demo.trtc.R;
 import com.tencent.liteav.meeting.model.TRTCMeeting;
 import com.tencent.liteav.meeting.ui.widget.base.BaseSettingFragment;
 import com.tencent.liteav.meeting.ui.widget.base.BaseTabSettingFragmentDialog;
@@ -22,7 +23,7 @@ public class FeatureSettingFragmentDialog extends BaseTabSettingFragmentDialog {
     /**
      * 控件布局相关
      */
-    public final String[]             TITLE_LIST = {"视频", "音频", "分享"};
+    private      String[]             TITLE_LIST;
     private      VideoSettingFragment mVideoSettingFragment;
     private      AudioSettingFragment mAudioSettingFragment;
     private      ShareSettingFragment mShareSettingFragment;
@@ -32,6 +33,11 @@ public class FeatureSettingFragmentDialog extends BaseTabSettingFragmentDialog {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        TITLE_LIST = new String[]{
+                getString(R.string.meeting_title_video),
+                getString(R.string.meeting_title_audio),
+                getString(R.string.meeting_title_sharing)
+        };
         initFragment();
     }
 

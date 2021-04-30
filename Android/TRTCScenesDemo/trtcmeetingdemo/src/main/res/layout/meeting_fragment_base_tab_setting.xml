@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:background="@drawable/bg_main_gradient">
+    android:background="@drawable/trtcliveroom_bg_more_action"
+    tools:background="@drawable/trtcliveroom_bg_more_action">
 
     <RelativeLayout
         android:id="@+id/rl_tool_bar"
@@ -20,9 +21,10 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:singleLine="true"
-            android:text="设置"
-            android:textColor="@color/meetingTextColorSecond"
-            android:textSize="16sp" />
+            android:text="@string/meeting_tv_settings"
+            android:textStyle="bold"
+            android:textColor="@color/meeting_color_black"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/toolbar_close"
@@ -34,7 +36,7 @@
             android:layout_marginEnd="15dp"
             android:layout_marginRight="15dp"
             android:singleLine="true"
-            android:text="关闭"
+            android:text="@string/meeting_title_disable"
             android:visibility="gone"
             android:textColor="@color/meetingTextColorSecond"
             android:textSize="16sp" />
@@ -46,10 +48,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"
-        app:tabIndicatorColor="@color/tabColorSelected"
-        app:tabSelectedTextColor="@color/tabColorSelected"
+        app:tabIndicatorColor="@color/meeting_color_blue"
+        app:tabSelectedTextColor="@color/meeting_color_blue"
         app:tabTextAppearance="@style/BaseTabFragmentTabText"
-        app:tabTextColor="@color/tabColorNormal" />
+        app:tabTextColor="@color/meeting_color_black" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/vp_content"

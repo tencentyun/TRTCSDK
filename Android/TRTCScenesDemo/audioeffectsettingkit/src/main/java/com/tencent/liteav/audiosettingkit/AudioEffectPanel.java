@@ -504,9 +504,9 @@ public class AudioEffectPanel extends FrameLayout {
 
     private List<BGMItemEntity> createBGMItems() {
         List<BGMItemEntity> list = new ArrayList<>();
-        list.add(new BGMItemEntity("环绕声测试1", ONLINE_BGM_FIRST, "佚名"));
-        list.add(new BGMItemEntity("环绕声测试2", ONLINE_BGM_SECOND, "佚名"));
-        list.add(new BGMItemEntity("环绕声测试3", ONLINE_BGM_THIRD, "佚名"));
+        list.add(new BGMItemEntity(getResources().getString(R.string.audio_effect_setting_surround_sound_test_1), ONLINE_BGM_FIRST, getResources().getString(R.string.audio_effect_setting_unknown)));
+        list.add(new BGMItemEntity(getResources().getString(R.string.audio_effect_setting_surround_sound_test_2), ONLINE_BGM_SECOND, getResources().getString(R.string.audio_effect_setting_unknown)));
+        list.add(new BGMItemEntity(getResources().getString(R.string.audio_effect_setting_surround_sound_test_3), ONLINE_BGM_THIRD, getResources().getString(R.string.audio_effect_setting_unknown)));
         return list;
     }
 

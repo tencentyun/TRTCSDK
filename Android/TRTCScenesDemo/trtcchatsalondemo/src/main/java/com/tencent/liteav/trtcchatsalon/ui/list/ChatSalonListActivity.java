@@ -15,6 +15,7 @@ import com.blankj.utilcode.util.PermissionUtils;
 import com.tencent.liteav.debug.GenerateTestUserSig;
 import com.tencent.liteav.login.model.RoomManager;
 import com.tencent.liteav.trtcchatsalon.R;
+import com.tencent.liteav.trtcchatsalon.ui.utils.StatusBarUtils;
 
 /**
  * 用于显示列表页的activity
@@ -27,7 +28,7 @@ public class ChatSalonListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.trtcchatsalon_activity_room_list);
-
+        StatusBarUtils.initStatusBar(this);
         findViewById(R.id.liveroom_back_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

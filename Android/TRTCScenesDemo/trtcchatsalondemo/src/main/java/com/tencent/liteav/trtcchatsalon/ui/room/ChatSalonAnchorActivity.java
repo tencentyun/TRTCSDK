@@ -99,6 +99,7 @@ public class ChatSalonAnchorActivity extends ChatSalonBaseActivity {
             }
         });
         mTRTCChatSalon.setDelegate(null);
+        mMemberEntityMap.clear();
     }
 
     /**
@@ -171,7 +172,7 @@ public class ChatSalonAnchorActivity extends ChatSalonBaseActivity {
 
     private void onAgreeInvite(final ChatSalonMemberEntity memberEntity) {
         if (memberEntity != null) {
-            String inviteId = memberEntity.invitedId;
+           final String inviteId = memberEntity.invitedId;
             if (inviteId == null) {
                 ToastUtils.showLong(R.string.trtcchatsalon_request_expired);
                 return;
@@ -179,16 +180,16 @@ public class ChatSalonAnchorActivity extends ChatSalonBaseActivity {
             mTRTCChatSalon.acceptInvitation(inviteId, new TRTCChatSalonCallback.ActionCallback() {
                 @Override
                 public void onCallback(int code, String msg) {
-                    if (code == 0) {
-                        mRequestSpeakMap.remove(memberEntity.userId);
-                        mRequestSpeakMembers.remove(memberEntity);
-                        if (mHandUpListDialog != null) {
-                            mHandUpListDialog.notifyDataSetChanged();
-                        }
-                        updateHandUpCountView();
-                    } else {
+                    if (code != 0) {
                         ToastUtils.showShort(mContext.getString(R.string.trtcchatsalon_accept_failed) + code);
                     }
+                    mRequestSpeakMap.remove(memberEntity.userId);
+                    mRequestSpeakMembers.remove(memberEntity);
+                    mRequestIdMap.remove(inviteId);
+                    if (mHandUpListDialog != null) {
+                        mHandUpListDialog.notifyDataSetChanged();
+                    }
+                    updateHandUpCountView();
                 }
             });
         }
@@ -233,7 +234,7 @@ public class ChatSalonAnchorActivity extends ChatSalonBaseActivity {
                     mIsEnterRoom = true;
                     mToolbarTitle.setText(getString(R.string.trtcchatsalon_main_title, roomParam.roomName, mRoomId));
                     mTRTCChatSalon.setAudioQuality(mAudioQuality);
-                    takeMainSeat();
+                    getAudienceList();
                 }
             }
         });
@@ -243,21 +244,6 @@ public class ChatSalonAnchorActivity extends ChatSalonBaseActivity {
         // 这里我们用简单的 userId hashcode，然后取余
         // 您的room id应该是您后台生成的唯一值
         return (mSelfUserId + "_voice_room").hashCode() & 0x7FFFFFFF;
-    }
-
-    private void takeMainSeat() {
-        // 开始创建房间
-        mTRTCChatSalon.enterSeat(new TRTCChatSalonCallback.ActionCallback() {
-            @Override
-            public void onCallback(int code, String msg) {
-                if (code == 0) {
-                    //成功上座位，可以展示UI了
-                    ToastUtils.showLong(mContext.getString(R.string.trtcchatsalon_anchor_take_seat_success));
-                } else {
-                    ToastUtils.showLong(mContext.getString(R.string.trtcchatsalon_anchor_take_seat_failed) + "[" + code + "]:" + msg);
-                }
-            }
-        });
     }
 
     @Override
@@ -275,13 +261,29 @@ public class ChatSalonAnchorActivity extends ChatSalonBaseActivity {
             ChatSalonMemberEntity entity = mRequestSpeakMap.get(inviter);
             if (entity != null) {
                 entity.invitedId = inviteId;
+                mRequestIdMap.put(inviteId, entity);
             } else {
                 memberEntity.invitedId = inviteId;
                 mRequestSpeakMembers.add(memberEntity);
                 mRequestSpeakMap.put(inviter, memberEntity);
+                mRequestIdMap.put(inviteId, memberEntity);
             }
             updateHandUpCountView();
         }
+    }
+
+    @Override
+    public void onInvitationTimeout(String id) {
+        ChatSalonMemberEntity entity = mRequestIdMap.get(id);
+        if (entity != null) {
+            mRequestSpeakMap.remove(entity.userId);
+            mRequestSpeakMembers.remove(entity);
+            mRequestIdMap.remove(id);
+            if (mHandUpListDialog != null) {
+                mHandUpListDialog.notifyDataSetChanged();
+            }
+        }
+        updateHandUpCountView();
     }
 
     private void updateHandUpCountView() {
@@ -289,7 +291,7 @@ public class ChatSalonAnchorActivity extends ChatSalonBaseActivity {
         if (count > 0) {
             mTvHandUpCount.setText(String.valueOf(count));
             mTvHandUpCount.setVisibility(View.VISIBLE);
-            ChatSalonMemberEntity entity = mRequestSpeakMembers.get(0);
+            ChatSalonMemberEntity entity = mRequestSpeakMembers.getLast();
             if (entity != null) {
                 mStateTips.removeAllViews();
                 mStateTips.addView(mHandleInvitation);

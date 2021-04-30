@@ -3,13 +3,14 @@
     android:layout_height="wrap_content"
     android:paddingTop="8dp"
     android:paddingBottom="8dp"
-    android:background="#0062E3"
+    android:background="@color/trtcchatsalon_color_green"
     android:orientation="horizontal">
 
     <ImageView
         android:layout_width="14dp"
         android:layout_height="14dp"
         android:layout_gravity="center_vertical"
+        android:layout_marginLeft="18dp"
         android:background="@drawable/trtcchatsalon_hand_up_success" />
 
     <TextView
@@ -21,5 +22,5 @@
         android:gravity="center_vertical"
         android:text="@string/trtcchatsalon_hand_up_success"
         android:textColor="@color/trtcchatsalon_white"
-        android:textSize="14sp" />
+        android:textSize="16sp" />
 </LinearLayout>

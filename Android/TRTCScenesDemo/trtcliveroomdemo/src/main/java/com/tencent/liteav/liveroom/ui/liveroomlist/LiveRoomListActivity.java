@@ -20,6 +20,7 @@ import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.tencent.liteav.debug.GenerateTestUserSig;
 import com.tencent.liteav.liveroom.R;
+import com.tencent.liteav.liveroom.ui.common.utils.StateBarUtils;
 import com.tencent.liteav.liveroom.ui.common.utils.TCConstants;
 import com.tencent.liteav.login.model.RoomManager;
 
@@ -37,13 +38,11 @@ public class LiveRoomListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         RoomManager.getInstance().initSdkAppId(GenerateTestUserSig.SDKAPPID);
         setContentView(R.layout.trtcliveroom_activity_room_list);
-
+        StateBarUtils.initStatusBar(this);
         initNavigationBack();
         initTitleEvent();
         initNavigationMenu();
-        initStatusBar();
         initLiveRoomListFragment();
-
         requestPermission();
     }
 
@@ -79,19 +78,6 @@ public class LiveRoomListActivity extends AppCompatActivity {
         boolean useCDNFirst = SPUtils.getInstance().getBoolean(TCConstants.USE_CDN_PLAY, false);
         if (useCDNFirst) {
             findViewById(R.id.tv_cdn_tag).setVisibility(View.VISIBLE);
-        }
-    }
-
-    private void initStatusBar() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = getWindow();
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(Color.TRANSPARENT);
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
     }
 

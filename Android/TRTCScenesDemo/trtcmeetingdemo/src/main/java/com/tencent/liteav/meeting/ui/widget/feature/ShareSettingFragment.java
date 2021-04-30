@@ -99,13 +99,13 @@ public class ShareSettingFragment extends BaseSettingFragment implements View.On
     public void onClick(View v) {
         if (v.getId() == R.id.share) {
             if (TextUtils.isEmpty(mPlayUrl)) {
-                ToastUtils.showShort("播放地址不能为空");
+                ToastUtils.showShort(getString(R.string.meeting_toast_play_url_not_null));
                 return;
             }
             Intent intent = new Intent(Intent.ACTION_SEND);
             intent.putExtra(Intent.EXTRA_TEXT, mPlayUrl);
             intent.setType("text/plain");
-            startActivity(Intent.createChooser(intent, "分享"));
+            startActivity(Intent.createChooser(intent, getString(R.string.meeting_title_sharing)));
         }
     }
 

@@ -1,6 +1,7 @@
 package com.tencent.liteav.trtcvoiceroom.model;
 
 import com.tencent.liteav.trtcvoiceroom.model.TRTCVoiceRoomDef.SeatInfo;
+import com.tencent.trtc.TRTCCloudDef;
 
 import java.util.List;
 
@@ -58,6 +59,13 @@ public interface TRTCVoiceRoomDelegate {
     void onSeatMute(int index, boolean isMute);
 
     /**
+     * 用户麦克风是否静音
+     * @param userId 用户id
+     * @param mute   是否静音
+     */
+    void onUserMicrophoneMute(String userId, boolean mute);
+
+    /**
      * 主播封麦
      * @param index  操作的麦位
      * @param isClose 是否封禁麦位
@@ -81,10 +89,10 @@ public interface TRTCVoiceRoomDelegate {
     /**
      * 上麦成员的音量变化
      *
-     * @param userId 用户 ID
-     * @param volume 音量大小 0-100
+     * @param userVolumes 用户列表
+     * @param totalVolume 音量大小 0-100
      */
-    void onUserVolumeUpdate(String userId, int volume);
+    void onUserVolumeUpdate(List<TRTCCloudDef.TRTCVolumeInfo> userVolumes, int totalVolume);
 
     /**
      * 收到文本消息。

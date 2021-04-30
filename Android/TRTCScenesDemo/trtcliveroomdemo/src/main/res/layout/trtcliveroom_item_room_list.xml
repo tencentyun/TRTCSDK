@@ -18,10 +18,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/tv_room_name"
-        android:layout_marginLeft="4dp"
         android:ellipsize="end"
-        android:maxWidth="200dp"
         android:singleLine="true"
+        android:layout_marginLeft="4dp"
         android:textColor="@android:color/white"
         android:textSize="14sp" />
 
