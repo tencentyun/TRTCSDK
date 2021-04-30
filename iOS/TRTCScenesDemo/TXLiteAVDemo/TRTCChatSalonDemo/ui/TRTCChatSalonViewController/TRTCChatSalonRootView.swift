@@ -15,8 +15,10 @@ class TRTCChatSalonRootView: UIView {
     
     private class HeaderView: UICollectionReusableView {
         private var isViewReady = false
-        let imageView: UIImageView = {
-            let view = UIImageView.init(frame: CGRect.zero)
+        let marginView: UIView = {
+            let view = UIView(frame: .zero)
+            view.backgroundColor = UIColor(hex: "999999")
+            view.layer.cornerRadius = 1.5
             return view
         }()
         
@@ -30,16 +32,17 @@ class TRTCChatSalonRootView: UIView {
         override func didMoveToWindow() {
             super.didMoveToWindow()
             guard !isViewReady else { return }
-            addSubview(imageView)
+            addSubview(marginView)
             addSubview(titleLabel)
-            imageView.snp.makeConstraints { (make) in
-                make.height.width.equalTo(20)
+            marginView.snp.makeConstraints { (make) in
+                make.width.equalTo(3)
+                make.height.equalTo(12)
                 make.left.equalToSuperview()
                 make.centerY.equalToSuperview()
             }
             titleLabel.snp.makeConstraints { (make) in
-                make.left.equalTo(imageView.snp.right).offset(10)
-                make.centerY.equalTo(imageView.snp.centerY)
+                make.left.equalTo(marginView.snp.right).offset(10)
+                make.centerY.equalTo(marginView.snp.centerY)
             }
         }
     }
@@ -52,6 +55,7 @@ class TRTCChatSalonRootView: UIView {
     init(frame: CGRect = .zero, viewModel: TRTCChatSalonViewModel) {
         self.viewModel = viewModel
         super.init(frame: frame)
+        backgroundColor = .white
         bindInteraction()
     }
     
@@ -59,20 +63,14 @@ class TRTCChatSalonRootView: UIView {
         fatalError("can't init this viiew from coder")
     }
     
-    let backgroundLayer: CALayer = {
-        // fillCode
-        let layer = CAGradientLayer()
-        layer.colors = [UIColor.init(0x13294b).cgColor, UIColor.init(0x000000).cgColor]
-        layer.locations = [0.2, 1.0]
-        layer.startPoint = CGPoint(x: 0.4, y: 0)
-        layer.endPoint = CGPoint(x: 0.6, y: 1.0)
-        return layer
-    }()
-    
     lazy var topTipsView: UIView = {
         let view = UIView.init()
         view.isHidden = true
-        view.backgroundColor = UIColor.init(0x0062e3)
+        view.backgroundColor = .white
+        view.layer.shadowColor = UIColor(hex: "9E9E9E")?.cgColor
+        view.layer.shadowOffset = CGSize(width: 0, height: 1)
+        view.layer.shadowOpacity = 0.5
+        view.layer.shadowRadius = 2
         return view
     }()
     
@@ -83,7 +81,7 @@ class TRTCChatSalonRootView: UIView {
         let collectionView = UICollectionView.init(frame: .zero, collectionViewLayout: layout)
         collectionView.register(TRTCChatSalonSeatCell.self, forCellWithReuseIdentifier: "TRTCChatSalonSeatCell")
         collectionView.register(HeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "ChatSalon.HeaderView")
-        collectionView.backgroundColor = UIColor.clear
+        collectionView.backgroundColor = .clear
         return collectionView
     }()
     
@@ -102,9 +100,11 @@ class TRTCChatSalonRootView: UIView {
     let leaveButton: UIButton = {
         let button = UIButton.init(frame: .zero)
         button.setTitle(.leaveText, for: .normal)
-        button.setBackgroundImage(UIColor.buttonTintColor.trans2Image(), for: .normal)
-        button.layer.cornerRadius = 3
+        button.setBackgroundImage(UIColor(hex: "F4F5F9")!.trans2Image(), for: .normal)
+        button.setTitleColor(UIColor(hex: "FA585E"), for: .normal)
+        button.layer.cornerRadius = 18
         button.layer.masksToBounds = true
+        button.adjustsImageWhenHighlighted = false
         return button
     }()
     
@@ -147,7 +147,7 @@ class TRTCChatSalonRootView: UIView {
     let handUpListDot: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 7)
-        label.textColor = UIColor.white
+        label.textColor = .white
         label.backgroundColor = UIColor.init(0xE35454)
         label.textAlignment = .center
         label.layer.cornerRadius = 8
@@ -174,8 +174,6 @@ class TRTCChatSalonRootView: UIView {
     
     func constructViewHierarchy() {
         /// 此方法内只做add子视图操作
-        backgroundLayer.frame = bounds;
-        layer.insertSublayer(backgroundLayer, at: 0)
         addSubview(topTipsView)
         addSubview(seatCollection)
         addSubview(mainMenuView)
@@ -254,7 +252,6 @@ extension TRTCChatSalonRootView: UICollectionViewDelegateFlowLayout {
                                                                          for: indexPath)
             if let header = view as? HeaderView {
                 header.titleLabel.text = indexPath.section == 0 ? .anchorHeaderText : .audienceHeaderText
-                header.imageView.image = indexPath.section == 0 ? UIImage.anchorHeaderIcon : UIImage.audienceHeaderIcon
             }
             return view
         } else {
@@ -338,11 +335,13 @@ extension TRTCChatSalonRootView {
                 make.bottom.equalToSuperview().offset(-20)
             }
         }
+        leaveButton.sizeToFit()
+        let width = leaveButton.frame.width
         leaveButton.snp.makeConstraints { (make) in
             make.centerY.equalToSuperview()
             make.left.equalToSuperview().offset(20)
             make.height.equalTo(36)
-            make.width.equalTo(144)
+            make.width.equalTo(width+40)
         }
         // 主播观众公有
         muteButton.snp.makeConstraints { (make) in
@@ -673,7 +672,7 @@ fileprivate extension String {
 }
 
 fileprivate extension UIColor {
-    static let textColor = UIColor.init(0xEBF4FF) // 文本颜色
+    static let textColor = UIColor.black // 文本颜色
     static let buttonTintColor = UIColor.init(0x0062e3) // 按钮颜色
 }
 

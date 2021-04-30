@@ -24,7 +24,7 @@
 #define MSG_TEXT_SEND_BULLET_BTN_WIDTH     55
 
 // 小图标
-#define BOTTOM_BTN_ICON_WIDTH  35
+#define BOTTOM_BTN_ICON_WIDTH  52
 
 @interface IMUserAble : NSObject
 

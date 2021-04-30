@@ -37,23 +37,12 @@ class TRTCChatSalonSeatView: UIView {
         fatalError("can't init this viiew from coder")
     }
     
-    override func draw(_ rect: CGRect) {
-        super.draw(rect)
-        guard !isGetBounds else {
-            return
-        }
-        let width = self.frame.width
-        avatarImageView.layer.cornerRadius = 25
-        avatarImageView.layer.masksToBounds = true
-        speakView.layer.cornerRadius = 25
-        speakView.layer.borderWidth = 4
-        speakView.layer.borderColor = UIColor.init(0x0FA968).cgColor
-    }
-    
     let avatarImageView: UIImageView = {
         let imageView = UIImageView.init(frame: .zero)
         imageView.contentMode = .scaleAspectFit
         imageView.image = UIImage.init(named: "voiceroom_placeholder_avatar")
+        imageView.layer.masksToBounds = true
+        imageView.layer.cornerRadius = 25
         return imageView
     }()
     
@@ -61,6 +50,9 @@ class TRTCChatSalonSeatView: UIView {
         let view = UIView.init()
         view.backgroundColor = UIColor.clear
         view.isHidden = true
+        view.layer.borderWidth = 4
+        view.layer.borderColor = UIColor.init(0x0FA968).cgColor
+        view.layer.cornerRadius = 25
         return view
     }()
     
@@ -76,7 +68,7 @@ class TRTCChatSalonSeatView: UIView {
         let label = UILabel.init(frame: .zero)
         label.text = ""
         label.font = UIFont.systemFont(ofSize: 14.0)
-        label.textColor = UIColor.init(0xFFFFFF)
+        label.textColor = .black
         label.textAlignment = .center
         label.numberOfLines = 1
         label.adjustsFontSizeToFitWidth = true
@@ -185,13 +177,13 @@ extension TRTCChatSalonSeatView {
     private func toEmptyStates(isMaster: Bool) {
         let fontSize: CGFloat = 14.0
         nameLabel.font = UIFont.systemFont(ofSize: fontSize)
-        nameLabel.textColor = UIColor.init(0xFFFFFF)
+        nameLabel.textColor = .black
     }
     
     private func toFullStates(isMaster: Bool) {
         let fontSize: CGFloat = 14.0
         nameLabel.font = UIFont.systemFont(ofSize: fontSize)
-        nameLabel.textColor = UIColor.init(0xFFFFFF)
+        nameLabel.textColor = .black
     }
 }
 

@@ -71,7 +71,9 @@ class TRTCVoiceRoomEnteryControl: NSObject {
     /// 创建语聊房页面
     /// - Returns: 创建语聊房VC
     func makeCreateVoiceRoomViewController() -> UIViewController {
-         return TRTCCreateVoiceRoomViewController.init(dependencyContainer: self)
+         let vc =  TRTCCreateVoiceRoomViewController.init(dependencyContainer: self)
+        vc.modalPresentationStyle = .fullScreen
+        return vc
     }
     
     

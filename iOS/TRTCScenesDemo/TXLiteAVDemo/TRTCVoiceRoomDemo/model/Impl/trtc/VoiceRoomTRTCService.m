@@ -87,6 +87,12 @@
 
 - (void)muteLocalAudio:(BOOL)isMute {
     [self.mTRTCCloud muteLocalAudio:isMute];
+    TRTCLog(@"mute local %d", isMute);
+}
+
+- (void)setVoiceEarMonitorEnable:(BOOL)enable {
+    [[self.mTRTCCloud getAudioEffectManager] enableVoiceEarMonitor:enable];
+    TRTCLog(@"ear monitor %@", enable ? @"enable" : @"disable");
 }
 
 - (void)muteRemoteAudioWithUserId:(NSString *)userId isMute:(BOOL)isMute {
@@ -157,6 +163,7 @@
 - (void)internalEnterRoom{
     if (self.mTRTCParms) {
         self.mTRTCCloud.delegate = self;
+        [self enableAudioEvalutation:YES];
         [self.mTRTCCloud enterRoom:self.mTRTCParms appScene:TRTCAppSceneVoiceChatRoom];
     }
 }

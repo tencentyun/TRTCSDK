@@ -28,6 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)onInviteeRejectedWithIdentifier:(NSString *)identifier invitee:(NSString *)invitee;
 - (void)onInviteeCancelledWithIdentifier:(NSString *)identifier invitee:(NSString *)invitee;
 - (void)onSeatKick;
+- (void)onSeatPick;
 - (void)onInvitationTimeout:(NSString *)inviteID;
 
 @end

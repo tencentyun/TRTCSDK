@@ -18,6 +18,7 @@
 #import "UIView+Additions.h"
 #import <TCBeautyPanel/TCBeautyPanel.h>
 #import "TXLiteAVDemo-Swift.h"
+#import "UIColor+HexColor.h"
 
 #define MAX_LINKMIC_MEMBER_SUPPORT  3
 
@@ -27,8 +28,8 @@
 #define VIDEO_VIEW_MARGIN_RIGHT     8
 #define VIDEO_VIEW_MARGIN_SPACE     5
 
-#define AUDIO_QUALITY_SELECTED_COLOR [UIColor colorWithRed:76/255.0 green:163/255.0 blue:113/255.0 alpha:1.0]
-#define AUDIO_QUALITY_DEFAULT_COLOR  [UIColor colorWithWhite:0.5 alpha:0.6]
+#define AUDIO_QUALITY_SELECTED_COLOR [UIColor hexColor:@"29CC85"]
+#define AUDIO_QUALITY_DEFAULT_COLOR  [UIColor hexColor:@"F4F5F9"]
 
 @implementation TCAnchorViewController
 {
@@ -77,6 +78,7 @@
     UITextField*            _roomName;
     // 定时器
     dispatch_source_t       _timer;
+    TRTCLiveRoomSoundEffectViewModel *_effectViewModel;
 }
 
 - (instancetype) init {
@@ -237,7 +239,7 @@
     //开始推送
     _publishBtn = [[UIButton alloc] init];
     [_publishBtn setBackgroundColor:[UIColor appTint]];
-    [[_publishBtn layer] setCornerRadius:8];
+    [[_publishBtn layer] setCornerRadius:25];
     [_publishBtn setTitle:TRTCLocalize(@"Demo.TRTC.LiveRoom.start") forState:UIControlStateNormal];
     [[_publishBtn titleLabel] setFont:[UIFont systemFontOfSize:22]];
     [self.view addSubview:_publishBtn];
@@ -276,11 +278,7 @@
     [_closeBtn setImage:[UIImage imageNamed:@"close"] forState:UIControlStateNormal];
     [self.view addSubview:_closeBtn];
     [_closeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        if (@available(iOS 11.0, *)) {
-            make.top.mas_equalTo(self.view.safeAreaInsets.top).offset(28);
-        } else {
-            make.top.mas_equalTo(20);
-        }
+        make.top.mas_equalTo(SafeAreaTopHeight + 20);
         make.trailing.mas_equalTo(-20);
         make.height.width.mas_equalTo(BOTTOM_BTN_ICON_WIDTH);
     }];
@@ -294,7 +292,6 @@
         make.leading.equalTo(self.view).offset(20);
         make.trailing.equalTo(self.view).offset(-20);
         make.top.mas_equalTo(110);
-        make.height.mas_equalTo(120);
     }];
 
     _userAvatar = [[UIImageView alloc] init];
@@ -327,6 +324,15 @@
     [_roomName setReturnKeyType:UIReturnKeyDone];
     [_roomName setFont:[UIFont boldSystemFontOfSize:22]];
     [_roomName setAttributedPlaceholder:[[NSAttributedString alloc] initWithString:TRTCLocalize(@"Demo.TRTC.LiveRoom.titlefuncanattractpopularity") attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.8 alpha:1]}]];
+    NSString *userName = [ProfileManager shared].curUserModel.name;
+    if (!userName) {
+        userName = @"";
+    }
+    NSString *defaultName = LocalizeReplaceXX(TRTCLocalize(@"Demo.TRTC.VoiceRoom.xxxsroom"), userName);
+    if (defaultName.length > 15) {
+        defaultName = [defaultName substringToIndex:15];
+    }
+    _roomName.text = defaultName;
     [_createTopPanel addSubview:_roomName];
     [_roomName mas_makeConstraints:^(MASConstraintMaker *make) {
         make.height.mas_equalTo(32);
@@ -344,43 +350,50 @@
     audioQualityLabel.textAlignment = NSTextAlignmentCenter;
     [_createTopPanel addSubview:audioQualityLabel];
     [audioQualityLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.width.mas_equalTo(70);
-        make.height.mas_equalTo(32);
-        make.leading.equalTo(_roomName);
-        make.top.mas_equalTo(_roomName.mas_bottom).offset(6);
+        make.leading.equalTo(_userAvatar);
+        make.top.equalTo(_userAvatar.mas_bottom).offset(6);
+        make.bottom.equalTo(_createTopPanel).offset(-20);
     }];
     
     _standardQualityButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [_standardQualityButton setBackgroundColor:AUDIO_QUALITY_DEFAULT_COLOR];
     [_standardQualityButton setTitle:TRTCLocalize(@"Demo.TRTC.LiveRoom.standard") forState:UIControlStateNormal];
+    [_standardQualityButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [_standardQualityButton setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
     _standardQualityButton.titleLabel.font = [UIFont systemFontOfSize:15];
-    _standardQualityButton.layer.cornerRadius = 8;
+    _standardQualityButton.layer.cornerRadius = 16;
     [_standardQualityButton addTarget:self
                                action:@selector(onAudioQualityButtonClicked:)
                      forControlEvents:UIControlEventTouchUpInside];
     [_createTopPanel addSubview:_standardQualityButton];
+    [_standardQualityButton sizeToFit];
+    CGFloat width = _standardQualityButton.width;
     [_standardQualityButton mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.width.mas_equalTo(56);
         make.height.mas_equalTo(32);
-        make.left.equalTo(audioQualityLabel.mas_right).offset(6);
-        make.top.mas_equalTo(_roomName.mas_bottom).offset(4);
+        make.left.equalTo(audioQualityLabel.mas_right).offset(20);
+        make.centerY.equalTo(audioQualityLabel);
+        make.width.mas_equalTo(16+width);
     }];
     
     _musicQualityButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [_musicQualityButton setBackgroundColor:AUDIO_QUALITY_SELECTED_COLOR];
     [_musicQualityButton setTitle:TRTCLocalize(@"Demo.TRTC.LiveRoom.music") forState:UIControlStateNormal];
     _musicQualityButton.titleLabel.font = [UIFont systemFontOfSize:15];
-    _musicQualityButton.layer.cornerRadius = 8;
+    [_musicQualityButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [_musicQualityButton setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
+    _musicQualityButton.layer.cornerRadius = 16;
     [_musicQualityButton addTarget:self
                             action:@selector(onAudioQualityButtonClicked:)
                   forControlEvents:UIControlEventTouchUpInside];
     _musicQualityButton.selected = YES;
     [_createTopPanel addSubview:_musicQualityButton];
+    [_musicQualityButton sizeToFit];
+    width = _musicQualityButton.width;
     [_musicQualityButton mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.width.mas_equalTo(56);
         make.height.mas_equalTo(32);
-        make.left.equalTo(_standardQualityButton.mas_right).offset(8);
-        make.top.mas_equalTo(_roomName.mas_bottom).offset(4);
+        make.left.equalTo(_standardQualityButton.mas_right).offset(20);
+        make.centerY.equalTo(audioQualityLabel);
+        make.width.mas_equalTo(16+width);
     }];
 }
 
@@ -546,7 +559,7 @@
     BOOL isPKMode = (_curPkRoom != nil && [userID isEqualToString:_curPkRoom.ownerId]);
     if(isPKMode) {
          _isPKEnter = YES;
-        [_logicView.btnPK setBackgroundImage:[UIImage imageNamed:@"pk_start"] forState:UIControlStateNormal];
+        [_logicView.btnPK setImage:[UIImage imageNamed:@"live_pk_start"] forState:UIControlStateNormal];
     }
     for (TCStatusInfoView * statusInfoView in _statusInfoViewArray) {
         if ([userID isEqualToString:statusInfoView.userID]) {
@@ -675,7 +688,7 @@
             [_setLinkMemeber removeObject:userID];
             [statusInfoView stopPlay];
             [statusInfoView emptyPlayInfo];
-            [TCUtil toastTip:LocalizeReplaceXX(@"Demo.TRTC.LiveRoom.xxmicconnectiontimeout", userID) parentView:self.view];
+            [TCUtil toastTip:LocalizeReplaceXX(TRTCLocalize(@"Demo.TRTC.LiveRoom.xxmicconnectiontimeout"), userID) parentView:self.view];
         }
     }
 }
@@ -749,7 +762,7 @@
     self.curPkRoom = [[TRTCLiveRoomInfo alloc] init];
     self.curPkRoom.ownerId = user.userId;
     self.curPkRoom.ownerName = user.userName;
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:LocalizeReplaceXX(@"Demo.TRTC.LiveRoom.xxinitiatepk", user.userName) message:nil preferredStyle:(UIAlertControllerStyleAlert)];
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:LocalizeReplaceXX(TRTCLocalize(@"Demo.TRTC.LiveRoom.xxinitiatepk"), user.userName) message:nil preferredStyle:(UIAlertControllerStyleAlert)];
     __weak __typeof(self) weakSelf = self;
     UIAlertAction *reject = [UIAlertAction actionWithTitle:TRTCLocalize(@"Demo.TRTC.LiveRoom.refuse") style:(UIAlertActionStyleCancel) handler:^(UIAlertAction * _Nonnull action) {
         [weakSelf linkFrameRestore];
@@ -768,7 +781,7 @@
 
 - (void)PKAlertCheck: (UIAlertController*)alert {
     if (alert.presentingViewController == self.navigationController) {
-        [TCUtil toastTip:LocalizeReplaceXX(@"Demo.TRTC.LiveRoom.dealxxpktimeout", _curPkRoom.ownerName) parentView:self.view];
+        [TCUtil toastTip:LocalizeReplaceXX(TRTCLocalize(@"Demo.TRTC.LiveRoom.dealxxpktimeout"), _curPkRoom.ownerName) parentView:self.view];
         [alert dismissViewControllerAnimated:YES completion:nil];
         [self linkFrameRestore];
     }
@@ -787,7 +800,7 @@
     _curPkRoom = curPkRoom;
     if (_curPkRoom == nil) {
         _isPKEnter = NO;
-        [_logicView.btnPK setBackgroundImage:[UIImage imageNamed:@"pk_start"] forState:UIControlStateNormal];
+        [_logicView.btnPK setImage:[UIImage imageNamed:@"live_pk_start"] forState:UIControlStateNormal];
     }
 }
 
@@ -856,7 +869,20 @@
 }
 
 - (void)clickMusic:(UIButton *)button {
-    [_logicView.vMusicPanel show];
+    if (!_effectViewModel) {
+        _effectViewModel = [[TRTCLiveRoomSoundEffectViewModel alloc] initWithLiveRoom:_liveRoom];
+    }
+    TRTCLiveRoomSoundEffectAlert *alert = [[TRTCLiveRoomSoundEffectAlert alloc] initWithEffectViewModel:_effectViewModel];
+    UIView *superview = [UIApplication sharedApplication].windows.firstObject;
+    if (!superview) {
+        superview = self.view;
+    }
+    [superview addSubview:alert];
+    [alert mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(superview);
+    }];
+    [superview layoutIfNeeded];
+    [alert show];
 }
 
 - (void)clickPK:(UIButton *)button {
@@ -882,7 +908,7 @@
             return ;
         }
         if (accept) {
-            [TCUtil toastTip:LocalizeReplaceXX(@"Demo.TRTC.LiveRoom.xxacceptpkreq", room.ownerName) parentView:self.view];
+            [TCUtil toastTip:LocalizeReplaceXX(TRTCLocalize(@"Demo.TRTC.LiveRoom.xxacceptpkreq"), room.ownerName) parentView:self.view];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"PKNotificationKey" object:nil];
             //添加PK view
             
@@ -890,7 +916,7 @@
             if (error.length > 0) {
                 [TCUtil toastTip: error parentView:self.view];
             } else {
-               [TCUtil toastTip:LocalizeReplaceXX(@"Demo.TRTC.LiveRoom.xxrefusepkreq", room.ownerName) parentView:self.view];
+               [TCUtil toastTip:LocalizeReplaceXX(TRTCLocalize(@"Demo.TRTC.LiveRoom.xxrefusepkreq"), room.ownerName) parentView:self.view];
             }
             if (self->_roomStatus != TRTCLiveRoomLiveStatusRoomPK) {
                 self.curPkRoom = nil;
@@ -1088,7 +1114,7 @@
 - (void)textFieldDidChange:(UITextField *)textField
 {
     if(textField == _roomName){
-        NSInteger kMaxLength = 10;
+        NSInteger kMaxLength = 15;
         NSString *toBeString = textField.text;
         NSString *lang = [[UIApplication sharedApplication]textInputMode].primaryLanguage; //ios7之前使用[UITextInputMode currentInputMode].primaryLanguage
         if ([lang isEqualToString:@"zh-Hans"]) { //中文输入

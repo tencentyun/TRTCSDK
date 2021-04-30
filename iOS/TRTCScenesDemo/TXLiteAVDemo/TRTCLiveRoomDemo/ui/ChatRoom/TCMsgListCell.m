@@ -115,7 +115,7 @@ static NSInteger           _index = 0;
         _hostNickName = hostNickName;
         _hostFaceUrl = hostFaceUrl;
         
-        self.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
+        self.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.2];
         self.layer.cornerRadius = frame.size.height / 2;
         self.layer.masksToBounds = YES;
         [self initUI];

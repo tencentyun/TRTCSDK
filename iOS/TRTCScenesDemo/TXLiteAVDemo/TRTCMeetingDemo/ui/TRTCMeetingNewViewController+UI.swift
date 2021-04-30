@@ -12,6 +12,11 @@ import RxSwift
 import Toast_Swift
 
 extension TRTCMeetingNewViewController {
+    
+    @objc func backBtnClick() {
+        navigationController?.popViewController(animated: true)
+    }
+    
     func setupUI() {
         // 获取屏幕的高度
         let screenHeight = UIScreen.main.bounds.size.height
@@ -19,45 +24,31 @@ extension TRTCMeetingNewViewController {
         ToastManager.shared.position = .center
         title = .titleText
         
-        let gradientLayer = CAGradientLayer.init()
-        gradientLayer.colors = [UIColor(rgb: 0x13294b).cgColor,UIColor(rgb: 0x050c17).cgColor]
-        gradientLayer.startPoint = CGPoint(x: 0.5, y: 0)
-        gradientLayer.endPoint = CGPoint(x: 0.5, y: 1)
-        gradientLayer.frame = view.bounds
-        view.layer.insertSublayer(gradientLayer, at: 0)
+        let backBtn = UIButton(type: .custom)
+        backBtn.setImage(UIImage(named: "meeting_back"), for: .normal)
+        backBtn.addTarget(self, action: #selector(backBtnClick), for: .touchUpInside)
+        backBtn.sizeToFit()
+        let item = UIBarButtonItem(customView: backBtn)
+        item.tintColor = .black
+        navigationItem.leftBarButtonItem = item
         
         // input Panel
         let inputPanel = UIView()
+        inputPanel.backgroundColor = UIColor(hex: "F4F5F9")
+        inputPanel.layer.cornerRadius = 10
+        inputPanel.clipsToBounds = true
         view.addSubview(inputPanel)
         inputPanel.snp.makeConstraints { (make) in
             make.top.equalTo(view.snp.topMargin).offset(15)
-            make.height.equalTo(screenHeight * 113.0/667)
+            make.height.equalTo(screenHeight * 137.0*0.5/812)
             make.leading.equalTo(20)
             make.trailing.equalTo(-20)
         }
         
-        // 输入框底色
-        let inputGradientLayer = CAGradientLayer.init()
-        inputGradientLayer.colors = [UIColor(rgb: 0x0d2c5b).cgColor,UIColor(rgb: 0x122755).cgColor]
-        inputGradientLayer.startPoint = CGPoint(x: 0.5, y: 0)
-        inputGradientLayer.endPoint = CGPoint(x: 0.5, y: 1)
-        inputGradientLayer.frame = CGRect(x: 0, y: 0, width: view.bounds.width - 40, height: screenHeight * 113.0/667)
-        inputPanel.layer.insertSublayer(inputGradientLayer, at: 0)
-        
-        let line = UIView()
-        line.backgroundColor = .white
-        inputPanel.addSubview(line)
-        line.snp.makeConstraints { (make) in
-            make.leading.equalTo(16)
-            make.trailing.equalTo(-16)
-            make.centerY.equalTo(inputPanel)
-            make.height.equalTo(0.5)
-        }
-        
         let roomTip = UILabel()
         roomTip.backgroundColor = .clear
-        roomTip.textColor = UIColor(rgb: 0xebf4ff)
-        roomTip.font = UIFont.systemFont(ofSize: 16)
+        roomTip.textColor = UIColor(hex: "333333")
+        roomTip.font = UIFont(name: "PingFangSC-Medium", size: 16)
         roomTip.text = .meetingNumberText
         roomTip.adjustsFontSizeToFitWidth = true
         roomTip.minimumScaleFactor = 0.5
@@ -66,29 +57,14 @@ extension TRTCMeetingNewViewController {
             make.leading.equalTo(16)
             make.width.lessThanOrEqualTo(80)
             make.height.equalTo(24)
-            make.centerY.equalTo(inputPanel).multipliedBy(0.5)
-        }
-        
-        let userNameTip = UILabel()
-        userNameTip.backgroundColor = .clear
-        userNameTip.textColor = UIColor(rgb: 0xebf4ff)
-        userNameTip.font = UIFont.systemFont(ofSize: 16)
-        userNameTip.text = .userIdText
-        userNameTip.adjustsFontSizeToFitWidth = true
-        userNameTip.minimumScaleFactor = 0.5
-        inputPanel.addSubview(userNameTip)
-        userNameTip.snp.makeConstraints { (make) in
-            make.leading.equalTo(16)
-            make.width.lessThanOrEqualTo(80)
-            make.height.equalTo(24)
-            make.centerY.equalTo(inputPanel).multipliedBy(1.5)
+            make.centerY.equalTo(inputPanel)
         }
         
         roomInput.backgroundColor = .clear
-        roomInput.textColor = UIColor(rgb: 0xebf4ff)
+        roomInput.textColor = UIColor(hex: "333333")
         roomInput.font = UIFont.systemFont(ofSize: 16)
         roomInput.attributedPlaceholder = NSAttributedString(string: .enterMeetingNumText,
-                                                             attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray])
+                                                             attributes: [NSAttributedString.Key.foregroundColor: UIColor(hex: "BBBBBB") ?? UIColor.lightGray])
         roomInput.keyboardType = .numberPad
         inputPanel.addSubview(roomInput)
         roomInput.snp.makeConstraints { (make) in
@@ -97,24 +73,10 @@ extension TRTCMeetingNewViewController {
             make.centerY.height.equalTo(roomTip)
         }
         
-        
-        userNameInput.backgroundColor = .clear
-        userNameInput.textColor = UIColor(rgb: 0xebf4ff)
-        userNameInput.font = UIFont.systemFont(ofSize: 16)
-        userNameInput.attributedPlaceholder = NSAttributedString(string: .enterUserNameText,
-                                                                 attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray])
-        inputPanel.addSubview(userNameInput)
-        userNameInput.snp.makeConstraints { (make) in
-            make.leading.equalTo(userNameTip.snp.trailing).offset(30)
-            make.trailing.equalTo(-16)
-            make.centerY.height.equalTo(userNameTip)
-        }
-        
-        
         let openCameraTip = UILabel()
         view.addSubview(openCameraTip)
         openCameraTip.backgroundColor = .clear
-        openCameraTip.textColor = UIColor(rgb: 0xebf4ff)
+        openCameraTip.textColor = UIColor(hex: "666666")
         openCameraTip.font = UIFont.systemFont(ofSize: 16)
         openCameraTip.text = .openCameraText
         openCameraTip.snp.makeConstraints { (make) in
@@ -137,7 +99,7 @@ extension TRTCMeetingNewViewController {
         let openMicTip = UILabel()
         view.addSubview(openMicTip)
         openMicTip.backgroundColor = .clear
-        openMicTip.textColor = UIColor(rgb: 0xebf4ff)
+        openMicTip.textColor = UIColor(hex: "666666")
         openMicTip.font = UIFont.systemFont(ofSize: 16)
         openMicTip.text = .openMicText
         openMicTip.snp.makeConstraints { (make) in
@@ -161,13 +123,12 @@ extension TRTCMeetingNewViewController {
         let audioQualityLabel = UILabel()
         view.addSubview(audioQualityLabel)
         audioQualityLabel.backgroundColor = .clear
-        audioQualityLabel.textColor = UIColor(rgb: 0xebf4ff)
+        audioQualityLabel.textColor = UIColor(hex: "666666")
         audioQualityLabel.font = UIFont.systemFont(ofSize: 16)
         audioQualityLabel.text = .soundQualitySelectText
         audioQualityLabel.snp.makeConstraints { (make) in
             make.top.equalTo(openMicSwitch.snp.bottom).offset(34)
             make.leading.equalTo(openMicTip)
-//            make.width.equalTo(100)
             make.height.equalTo(24)
         }
         
@@ -187,13 +148,12 @@ extension TRTCMeetingNewViewController {
         
         let speechQualityLabel = UILabel()
         speechQualityLabel.text = .voiceText
-        speechQualityLabel.textColor = UIColor(rgb: 0xebf4ff)
+        speechQualityLabel.textColor = UIColor(hex: "333333")
         view.addSubview(speechQualityLabel)
         speechQualityLabel.snp.makeConstraints { (make) in
             make.top.equalTo(speechQualityButton)
             make.leading.equalTo(speechQualityButton.snp.trailing).offset(5)
             make.height.equalTo(20)
-//            make.width.equalTo(40)
         }
         
         // 标准
@@ -210,13 +170,12 @@ extension TRTCMeetingNewViewController {
         
         let defaultQualityLabel = UILabel()
         defaultQualityLabel.text = .standardText
-        defaultQualityLabel.textColor = UIColor(rgb: 0xebf4ff)
+        defaultQualityLabel.textColor = UIColor(hex: "333333")
         view.addSubview(defaultQualityLabel)
         defaultQualityLabel.snp.makeConstraints { (make) in
             make.top.equalTo(defaultQualityButton)
             make.leading.equalTo(defaultQualityButton.snp.trailing).offset(5)
             make.height.equalTo(20)
-//            make.width.equalTo(40)
         }
         
         // 音乐
@@ -233,26 +192,24 @@ extension TRTCMeetingNewViewController {
         
         let musicQualityLabel = UILabel()
         musicQualityLabel.text = .musicText
-        musicQualityLabel.textColor = UIColor(rgb: 0xebf4ff)
+        musicQualityLabel.textColor = UIColor(hex: "333333")
         view.addSubview(musicQualityLabel)
         musicQualityLabel.snp.makeConstraints { (make) in
             make.top.equalTo(musicQualityButton)
             make.leading.equalTo(musicQualityButton.snp.trailing).offset(5)
             make.height.equalTo(20)
-//            make.width.equalTo(40)
         }
         
         // 画质选择
         let videoQualityLabel = UILabel()
         view.addSubview(videoQualityLabel)
         videoQualityLabel.backgroundColor = .clear
-        videoQualityLabel.textColor = UIColor(rgb: 0xebf4ff)
+        videoQualityLabel.textColor = UIColor(hex: "666666")
         videoQualityLabel.font = UIFont.systemFont(ofSize: 16)
         videoQualityLabel.text = .picQualitySelectText
         videoQualityLabel.snp.makeConstraints { (make) in
             make.top.equalTo(speechQualityLabel.snp.bottom).offset(34)
             make.leading.equalTo(openMicTip)
-//            make.width.equalTo(100)
             make.height.equalTo(24)
         }
         
@@ -272,13 +229,12 @@ extension TRTCMeetingNewViewController {
         
         let fluencyVideoLabel = UILabel()
         fluencyVideoLabel.text = .smoothText
-        fluencyVideoLabel.textColor = UIColor(rgb: 0xebf4ff)
+        fluencyVideoLabel.textColor = UIColor(hex: "333333")
         view.addSubview(fluencyVideoLabel)
         fluencyVideoLabel.snp.makeConstraints { (make) in
             make.top.equalTo(fluencyVideoButton)
             make.leading.equalTo(fluencyVideoButton.snp.trailing).offset(5)
             make.height.equalTo(20)
-//            make.width.equalTo(40)
         }
         
         // 清晰
@@ -296,13 +252,12 @@ extension TRTCMeetingNewViewController {
         
         let distinctVideoLabel = UILabel()
         distinctVideoLabel.text = .clearText
-        distinctVideoLabel.textColor = UIColor(rgb: 0xebf4ff)
+        distinctVideoLabel.textColor = UIColor(hex: "333333")
         view.addSubview(distinctVideoLabel)
         distinctVideoLabel.snp.makeConstraints { (make) in
             make.top.equalTo(distinctVideoButton)
             make.leading.equalTo(distinctVideoButton.snp.trailing).offset(5)
             make.height.equalTo(20)
-//            make.width.equalTo(40)
         }
         
         
@@ -310,7 +265,8 @@ extension TRTCMeetingNewViewController {
         let enterBtn = UIButton()
         enterBtn.setTitle(.enterMeetingText, for: .normal)
         enterBtn.setBackgroundImage(UIColor.buttonBackColor.trans2Image(), for: .normal)
-        enterBtn.layer.cornerRadius = 6
+        enterBtn.layer.cornerRadius = 25
+        enterBtn.clipsToBounds = true
         enterBtn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 19)
         enterBtn.setTitleColor(.white, for: .normal)
         view.addSubview(enterBtn)
@@ -336,10 +292,6 @@ extension TRTCMeetingNewViewController {
         // fill with record
         if let roomID = UserDefaults.standard.object(forKey: TRTCMeetingRoomIDKey) as? UInt32 {
             roomInput.text = String(roomID)
-        }
-        
-        if let userName = UserDefaults.standard.object(forKey: TRTCMeetingUserNameKey) as? String {
-            userNameInput.text = userName
         }
         
         if let isOpenCamera = UserDefaults.standard.object(forKey: TRTCMeetingOpenCameraKey) as? Bool {
@@ -437,32 +389,23 @@ extension TRTCMeetingNewViewController {
         }
     }
     
-    func autoCheck() -> (Bool, UInt32, String) {
+    func autoCheck() -> (Bool, UInt32) {
         if (roomInput.text?.count ?? 0) <= 0 {
             view.makeToast(.enterMeetingNumText)
-            return (false, 0, "")
-        }
-        if (userNameInput.text?.count ?? 0) <= 0 {
-            view.makeToast(.enterUserNameText)
-            return (false, 0, "")
+            return (false, 0)
         }
         guard let roomID = UInt32(roomInput.text ?? "") else {
             view.makeToast(.enterLegitMeetingNumText)
-            return (false, 0, "")
+            return (false, 0)
         }
         
         if roomID <= 0 {
             view.makeToast(.enterLegitMeetingNumText)
-            return (false, 0, "")
-        }
-        
-        guard let userName = userNameInput.text else {
-            view.makeToast(.enterUserNameText)
-            return (false, 0, "")
+            return (false, 0)
         }
         
         resignInput()
-        return (true, roomID, userName)
+        return (true, roomID)
     }
     
     func enterRoom() {
@@ -473,16 +416,15 @@ extension TRTCMeetingNewViewController {
         }
         
         // 设置用户昵称和头像等信息
-        let userName = userNameInput.text!
-        let avatar = ProfileManager.shared.curUserModel?.avatar
-        TRTCMeeting.sharedInstance().setSelfProfile(userName, avatarURL: avatar ?? "") { (code, msg) in
-            print("setSelfProfile" + "\(code)" + msg!)
-            ProfileManager.shared.curUserModel?.name = userName
+        guard let userName = ProfileManager.shared.curUserModel?.name, let avatar = ProfileManager.shared.curUserModel?.avatar else {
+            return
+        }
+        TRTCMeeting.sharedInstance().setSelfProfile(userName, avatarURL: avatar) { (code, msg) in
+            
         }
         
         // 保存当前的配置
         UserDefaults.standard.set(params.1, forKey: TRTCMeetingRoomIDKey)
-        UserDefaults.standard.set(params.2, forKey: TRTCMeetingUserNameKey)
         UserDefaults.standard.set(self.openCameraSwitch.isOn, forKey: TRTCMeetingOpenCameraKey)
         UserDefaults.standard.set(self.openMicSwitch.isOn, forKey: TRTCMeetingOpenMicKey)
         UserDefaults.standard.set(self.audioQuality, forKey: TRTCMeetingAudioQualityKey)
@@ -502,9 +444,6 @@ extension TRTCMeetingNewViewController {
     func resignInput() {
         if roomInput.isFirstResponder {
             roomInput.resignFirstResponder()
-        }
-        if userNameInput.isFirstResponder {
-            userNameInput.resignFirstResponder()
         }
     }
 }

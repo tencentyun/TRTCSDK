@@ -27,8 +27,6 @@
 
 #ifndef TRTC
 #import "MainViewController.h"
-#else
-#import "PortalViewController.h"
 #endif
 
 #import "AFNetworkReachabilityManager.h"
@@ -357,9 +355,10 @@ NSString *helpUrlDb[] = {
 
 #pragma mark - 登录跳转方法
 - (void)showPortalConroller {
-    UINavigationController *nav = nil;
+    UIViewController *nav = nil;
 #ifdef TRTC
-    nav = [[UINavigationController alloc] initWithRootViewController:self.portalVC];
+    nav = [[MainTabbarController alloc] init];
+//    nav = [[UINavigationController alloc] initWithRootViewController:self.portalVC];
     NSString *appStoreID = @"1400663224";
 #else
     NSString *appStoreID = @"1152295397";
@@ -375,8 +374,13 @@ NSString *helpUrlDb[] = {
 
 - (void)showLoginController {
 #ifndef NOT_LOGIN
+#ifdef TRTC
+    TRTCLoginViewController *vc = [[TRTCLoginViewController alloc] init];
+    self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:vc];
+#else
     LoginViewController *vc = [[LoginViewController alloc] init];
     self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:vc];
+#endif
 #endif
 }
 

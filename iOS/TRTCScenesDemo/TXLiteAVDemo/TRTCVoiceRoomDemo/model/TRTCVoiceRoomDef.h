@@ -34,6 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString *userId;
 @property (nonatomic, strong) NSString *userName;
 @property (nonatomic, strong) NSString *userAvatar;
+@property (nonatomic, assign) BOOL mute;
 
 @end
 

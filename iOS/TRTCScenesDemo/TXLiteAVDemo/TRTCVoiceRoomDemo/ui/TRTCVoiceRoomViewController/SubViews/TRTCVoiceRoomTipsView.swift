@@ -25,6 +25,7 @@ class TRTCVoiceRoomTipsView: UIView {
     let tipsTableView: UITableView = {
         let tableView = UITableView.init(frame: .zero, style: .plain)
         tableView.register(TRTCVoiceRoomTipsTableCell.self, forCellReuseIdentifier: "TRTCVoiceRoomTipsTableCell")
+        tableView.register(TRTCVoiceRoomTipsWelcomCell.self, forCellReuseIdentifier: "TRTCVoiceRoomTipsWelcomCell")
         tableView.backgroundColor = UIColor.clear
         tableView.separatorStyle = .none
         tableView.estimatedRowHeight = 50
@@ -62,10 +63,9 @@ class TRTCVoiceRoomTipsView: UIView {
     
     func refreshList() {
         tipsTableView.reloadData()
-//        tipsTableView
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
-            self.tipsTableView.scrollToRow(at: IndexPath.init(row: self.viewModel.msgEntityList.count - 1, section: 0),
+            self.tipsTableView.scrollToRow(at: IndexPath.init(row: self.viewModel.msgEntityList.count, section: 0),
                                            at: .bottom,
                                            animated: true)
         }
@@ -73,40 +73,39 @@ class TRTCVoiceRoomTipsView: UIView {
 }
 
 extension TRTCVoiceRoomTipsView: UITableViewDelegate {
-    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.row == 0, let url = URL(string: TRTCVoiceRoomTipsWelcomCell.urlText), UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.openURL(url)
+        }
+    }
 }
 
 extension TRTCVoiceRoomTipsView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.msgEntityList.count
+        return viewModel.msgEntityList.count + 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.row == 0 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "TRTCVoiceRoomTipsWelcomCell", for: indexPath)
+            return cell
+        }
         let cell = tableView.dequeueReusableCell(withIdentifier: "TRTCVoiceRoomTipsTableCell", for: indexPath)
         if let tipsCell = cell as? TRTCVoiceRoomTipsTableCell {
-            let model = viewModel.msgEntityList[indexPath.row]
-            if model.type == MsgEntity.TYPE_NORMAL {
-                var textInfo = "\(model.content)"
-                if model.userName.count > 0 {
-                    textInfo = "\(model.userName):\(model.content)"
-                }
-                tipsCell.setCell(info: textInfo, action: nil)
-            } else if model.type == MsgEntity.TYPE_AGREED {
-                tipsCell.setCell(info: "\(model.userName)\(model.content)", action: nil)
-            } else {
-                tipsCell.setCell(info: "\(model.userName)\(model.content)") { [weak self] in
-                    guard let `self` = self else { return }
-                    self.viewModel.acceptTakeSeat(identifier: model.userId)
-                }
-            }
+            let model = viewModel.msgEntityList[indexPath.row-1]
+            tipsCell.setCell(model: model, action: { [weak self] in
+                guard let `self` = self else { return }
+                self.viewModel.acceptTakeSeat(identifier: model.userId)
+            }, indexPath: indexPath)
         }
         return cell
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if let tipsCell = cell as? TRTCVoiceRoomTipsTableCell {
-            tipsCell.updateCell()
+        guard indexPath.row != 0, let tipsCell = cell as? TRTCVoiceRoomTipsTableCell else {
+            return
         }
+        tipsCell.updateCell()
     }
 }
 

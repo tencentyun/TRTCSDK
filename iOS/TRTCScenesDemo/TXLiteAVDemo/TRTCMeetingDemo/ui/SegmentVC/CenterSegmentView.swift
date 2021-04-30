@@ -26,7 +26,7 @@ class CenterSegmentView: UIView {
     var titleNormalColor:UIColor = .gray
     
     //标题选中颜色
-    var titleSelectColor:UIColor = .white
+    var titleSelectColor:UIColor = .black
     
     //选中字体大小
     var selectFont = UIFont.systemFont(ofSize: 18)
@@ -52,7 +52,7 @@ class CenterSegmentView: UIView {
     }()
     
     //
-    lazy var segmentScrollV:UIScrollView = {
+    lazy var segmentScrollView:UIScrollView = {
         let view = UIScrollView()
         return view
     }()
@@ -98,19 +98,19 @@ class CenterSegmentView: UIView {
         self.segmentView.tag = 50
         self.addSubview(self.segmentView)
     
-        self.segmentScrollV.frame = CGRect(x: 0, y: self.segmentScrollVHeight, width: frame.size.width, height: frame.size.height - self.segmentScrollVHeight)
-        self.segmentScrollV.contentSize = CGSize(width: frame.size.width * CGFloat(controllers.count), height: 0)
-        self.segmentScrollV.delegate = self
-        self.segmentScrollV.showsHorizontalScrollIndicator = false
+        self.segmentScrollView.frame = CGRect(x: 0, y: self.segmentScrollVHeight, width: frame.size.width, height: frame.size.height - self.segmentScrollVHeight)
+        self.segmentScrollView.contentSize = CGSize(width: frame.size.width * CGFloat(controllers.count), height: 0)
+        self.segmentScrollView.delegate = self
+        self.segmentScrollView.showsHorizontalScrollIndicator = false
         
         //是否开启平移，每次平移就是scrollView的宽度
-        self.segmentScrollV.isPagingEnabled = true
-        self.segmentScrollV.bounces = false
+        self.segmentScrollView.isPagingEnabled = true
+        self.segmentScrollView.bounces = false
             
-        self.addSubview(self.segmentScrollV)
+        self.addSubview(self.segmentScrollView)
             
         for (index,controller) in controllers.enumerated() {
-            self.segmentScrollV.addSubview(controller.view)
+            self.segmentScrollView.addSubview(controller.view)
             controller.view.frame = CGRect(x: CGFloat(index) * frame.size.width, y: 0, width: frame.size.width, height: frame.size.height)
         }
             
@@ -129,7 +129,7 @@ class CenterSegmentView: UIView {
                 self.seleBtn = btn
                 btn.titleLabel?.font = self.selectFont
                 //初始化选中的控制器CGPoint(,0)
-                self.segmentScrollV.setContentOffset(CGPoint(x: CGFloat(btn.tag) * self.frame.size.width, y: 0), animated: true)
+                self.segmentScrollView.setContentOffset(CGPoint(x: CGFloat(btn.tag) * self.frame.size.width, y: 0), animated: true)
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "SelectVC"), object: btn, userInfo: nil)
             }else {
                 btn.isSelected = false
@@ -172,13 +172,13 @@ class CenterSegmentView: UIView {
         if sender.tag != 0 {
             controllers.first?.view.endEditing(true)
         }
-        self.segmentScrollV.setContentOffset(CGPoint(x: CGFloat(sender.tag) * self.frame.size.width, y: 0), animated: true)
+        self.segmentScrollView.setContentOffset(CGPoint(x: CGFloat(sender.tag) * self.frame.size.width, y: 0), animated: true)
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "SelectVC"), object: sender, userInfo: nil)
     }
 }
 extension CenterSegmentView:UIScrollViewDelegate {
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        let tag = Int(self.segmentScrollV.contentOffset.x / self.frame.size.width)
+        let tag = Int(self.segmentScrollView.contentOffset.x / self.frame.size.width)
         if tag != 0 {
             controllers.first?.view.endEditing(true)
         }

@@ -7,14 +7,17 @@
 //
 import UIKit
 
+
 /// 语聊房列表页
 public class TRTCVoiceRoomListViewController: UIViewController {
     // 依赖管理者
     let dependencyContainer: TRTCVoiceRoomEnteryControl
+    
     var viewModel: TRTCVoiceRoomListViewModel?
         
     init(dependencyContainer: TRTCVoiceRoomEnteryControl) {
         self.dependencyContainer = dependencyContainer
+        
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -26,19 +29,30 @@ public class TRTCVoiceRoomListViewController: UIViewController {
         TRTCLog.out("deinit \(type(of: self))")
     }
     
+    public override var preferredStatusBarStyle: UIStatusBarStyle {
+        get {
+            if #available(iOS 13.0, *) {
+                return .darkContent
+            } else {
+                return .default
+            }
+        }
+    }
+    
+    public override var prefersStatusBarHidden: Bool {
+        get {
+            return false
+        }
+    }
+    
     // MARK: - life cycle
     public override func viewDidLoad() {
         super.viewDidLoad()
-        title = .controllerTitle
-        let backItem = UIBarButtonItem.init(image: UIImage.init(named: "navigationbar_back"), style: .plain, target: self, action: #selector(cancel))
-        self.navigationItem.leftBarButtonItem = backItem
-        let rightItem = UIBarButtonItem.init(image: UIImage.init(named: "help_small"), style: .plain, target: self, action: #selector(connectWeb))
-        self.navigationItem.rightBarButtonItem = rightItem
     }
         
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController?.setNavigationBarHidden(false, animated: false)
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
     }
     
     public override func viewDidAppear(_ animated: Bool) {
@@ -67,7 +81,7 @@ public class TRTCVoiceRoomListViewController: UIViewController {
     }
     
     /// 连接官方文档
-    @objc func connectWeb() {
+    @objc public func connectWeb() {
         if let url = URL(string: "https://cloud.tencent.com/document/product/647/35428") {
             UIApplication.shared.openURL(url)
         }

@@ -11,7 +11,6 @@ class TRTCVoiceRoomRootView: UIView {
     private var isViewReady: Bool = false
     let viewModel: TRTCVoiceRoomViewModel
     public weak var rootViewController: UIViewController?
-    public var alertController: UIAlertController?
     
     init(frame: CGRect = .zero, viewModel: TRTCVoiceRoomViewModel) {
         self.viewModel = viewModel
@@ -33,8 +32,19 @@ class TRTCVoiceRoomRootView: UIView {
         return layer
     }()
     
+    lazy var bgView: UIImageView = {
+        let bg = UIImageView(frame: .zero)
+        bg.contentMode = .scaleAspectFill
+        return bg
+    }()
+    
     let masterContainer: UIView = {
         let view = UIView.init(frame: .zero)
+        return view
+    }()
+    
+    lazy var topView : TRTCVoiceRoomTopView = {
+        var view = TRTCVoiceRoomTopView(viewModel: viewModel)
         return view
     }()
     
@@ -45,9 +55,10 @@ class TRTCVoiceRoomRootView: UIView {
     
     let seatCollection: UICollectionView = {
         let layout = UICollectionViewFlowLayout.init()
-        layout.itemSize = CGSize.init(width: 66, height: 95)
-        layout.minimumLineSpacing = 30.0
-        layout.minimumInteritemSpacing = (UIScreen.main.bounds.width - 60.0 - (66.0 * 3)) / 2.0
+        layout.itemSize = CGSize.init(width: 64, height: 90)
+        layout.minimumLineSpacing = 20.0
+        layout.minimumInteritemSpacing = 26
+        layout.sectionInset = .init(top: 0, left: 20, bottom: 0, right: 20)
         layout.scrollDirection = .vertical
         let collectionView = UICollectionView.init(frame: .zero, collectionViewLayout: layout)
         collectionView.register(TRTCVoiceRoomSeatCell.self, forCellWithReuseIdentifier: "TRTCVoiceRoomSeatCell")
@@ -62,10 +73,11 @@ class TRTCVoiceRoomRootView: UIView {
     
     let mainMenuView: TRTCVoiceRoomMainMenuView = {
         let icons: [IconTuple] = [
-            (UIImage.init(named: "voiceroom_message_normal")!, UIImage.init(named: "voiceroom_message_select")!),
-            (UIImage.init(named: "voiceroom_mic_close")!, UIImage.init(named: "voiceroom_mic_open")!),
-            (UIImage.init(named: "voiceroom_voice_close")!, UIImage.init(named: "voiceroom_voice_open")!),
-            (UIImage.init(named: "voiceroom_audioEffect_close")!, UIImage.init(named: "voiceroom_audioEffect_open")!)
+            IconTuple(normal: UIImage(named: "room_message")!, selected: UIImage(named: "room_message")!, type: .message),
+            IconTuple(normal: UIImage(named: "room_leave_mic")!, selected: UIImage(named: "room_leave_mic")!, type: .micoff),
+            IconTuple(normal: UIImage(named: "room_bgmusic")!, selected: UIImage(named: "room_bgmusic")!, type: .bgmusic),
+            IconTuple(normal: UIImage(named: "room_voice_off")!, selected: UIImage(named: "room_voice_on")!, type: .mute),
+            IconTuple(normal: UIImage(named: "room_more")!, selected: UIImage(named: "room_more")!, type: .more),
         ]
         let view = TRTCVoiceRoomMainMenuView.init(icons: icons)
         return view
@@ -104,12 +116,15 @@ class TRTCVoiceRoomRootView: UIView {
         isViewReady = true
         constructViewHierarchy() // 视图层级布局
         activateConstraints() // 生成约束（此时有可能拿不到父视图正确的frame）
+        bgView.sd_setImage(with: URL(string: viewModel.roomInfo.coverUrl), placeholderImage: nil, options: .continueInBackground, completed: nil)
     }
     
     func constructViewHierarchy() {
         /// 此方法内只做add子视图操作
         backgroundLayer.frame = bounds;
         layer.insertSublayer(backgroundLayer, at: 0)
+        addSubview(bgView)
+        addSubview(topView)
         addSubview(masterContainer)
         masterContainer.addSubview(masterSeatView)
         addSubview(seatCollection)
@@ -121,7 +136,12 @@ class TRTCVoiceRoomRootView: UIView {
     }
 
     func activateConstraints() {
-        /// 此方法内只给子视图做布局,使用:AutoLayout布局
+        bgView.snp.makeConstraints { (make) in
+            make.edges.equalToSuperview()
+        }
+        topView.snp.makeConstraints { (make) in
+            make.top.leading.trailing.equalToSuperview()
+        }
         activateConstraintsOfMasterArea()
         activateConstraintsOfCustomSeatArea()
         activateConstraintsOfTipsView()
@@ -139,26 +159,43 @@ class TRTCVoiceRoomRootView: UIView {
 }
 
 extension TRTCVoiceRoomRootView: TRTCVoiceRoomMainMenuDelegate {
-    func menuView(menu: TRTCVoiceRoomMainMenuView, click item: UIButton, index: Int) {
-        switch index {
-        case 0:
+    func menuView(menu: TRTCVoiceRoomMainMenuView, click item: IconTuple) -> Bool {
+        switch item.type {
+        case .message:
             // 消息框
             viewModel.openMessageTextInput()
-        case 1:
-            // 麦克风
-            if viewModel.muteAction(isMute: item.isSelected) {
-                item.isSelected = !item.isSelected
-            }
-        case 2:
-            // 外放
-            viewModel.spechAction(isMute: item.isSelected)
-            item.isSelected = !item.isSelected
-        case 3:
+            break
+        case .bgmusic:
             // 音效
-            viewModel.openAudioEffectMenu()
-        default:
+            showBgMusicAlert()
+            break
+        case .mute:
+            // 麦克风
+            if viewModel.isOwner {
+                if let user = viewModel.masterAnchor?.seatUser {
+                    viewModel.userMuteMap[user.userId] = item.isSelect
+                    onAnchorMute(isMute: item.isSelect)
+                }
+            }
+            else {
+                if viewModel.mSelfSeatIndex > 0, let user = viewModel.anchorSeatList[viewModel.mSelfSeatIndex-1].seatUser, !(viewModel.anchorSeatList[viewModel.mSelfSeatIndex-1].seatInfo?.mute ?? true) {
+                    viewModel.userMuteMap[user.userId] = item.isSelect
+                    onAnchorMute(isMute: item.isSelect)
+                }
+            }
+            return viewModel.muteAction(isMute: item.isSelect)
+        case .more:
+            viewModel.moreBtnClick()
+            break
+        case .micoff:
+            let seatIndex = viewModel.mSelfSeatIndex
+            if seatIndex > 0 && seatIndex <= viewModel.anchorSeatList.count {
+                let model = viewModel.anchorSeatList[seatIndex - 1]
+                viewModel.audienceClickMicoff(model: model)
+            }
             break
         }
+        return false
     }
 }
 
@@ -180,7 +217,7 @@ extension TRTCVoiceRoomRootView: UICollectionViewDataSource {
         let model = viewModel.anchorSeatList[indexPath.row]
         if let seatCell = cell as? TRTCVoiceRoomSeatCell {
             // 配置 seatCell 信息
-            seatCell.setCell(model: model)
+            seatCell.setCell(model: model, userMuteMap: viewModel.userMuteMap)
         }
         return cell
     }
@@ -189,28 +226,21 @@ extension TRTCVoiceRoomRootView: UICollectionViewDataSource {
 extension TRTCVoiceRoomRootView {
     func activateConstraintsOfMasterArea() {
         masterContainer.snp.makeConstraints { (make) in
-            make.right.left.equalToSuperview()
-            make.height.equalTo(186)
-            if #available(iOS 11.0, *) {
-                make.top.equalTo(safeAreaLayoutGuide.snp.top)
-            } else {
-                // Fallback on earlier versions
-                make.top.equalToSuperview().offset(64)
-            }
+            make.top.equalTo(topView.snp_bottom).offset(20)
+            make.centerX.equalToSuperview()
         }
         masterSeatView.snp.makeConstraints { (make) in
-            make.center.equalToSuperview()
-            make.width.equalTo(88)
-            make.height.equalTo(120)
+            make.top.bottom.centerX.equalToSuperview()
+            make.width.equalTo(convertPixel(w: 80))
         }
     }
     
     func activateConstraintsOfCustomSeatArea() {
         seatCollection.snp.makeConstraints { (make) in
-            make.top.equalTo(masterContainer.snp.bottom)
-            make.height.equalTo(220)
-            make.left.equalToSuperview().offset(30)
-            make.right.equalToSuperview().offset(-30)
+            make.top.equalTo(masterContainer.snp.bottom).offset(20)
+            make.height.equalTo(200)
+            make.left.equalToSuperview()
+            make.right.equalToSuperview()
         }
     }
     
@@ -225,12 +255,12 @@ extension TRTCVoiceRoomRootView {
     func activateConstraintsOfMainMenu() {
         mainMenuView.snp.makeConstraints { (make) in
             make.left.right.equalToSuperview()
-            make.height.equalTo(30)
+            make.height.equalTo(52)
             if #available(iOS 11.0, *) {
-                make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).offset(-10)
+                make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).offset(-20)
             } else {
                 // Fallback on earlier versions
-                make.bottom.equalToSuperview().offset(-10)
+                make.bottom.equalToSuperview().offset(-20)
             }
         }
     }
@@ -253,6 +283,7 @@ extension TRTCVoiceRoomRootView: TRTCVoiceRoomViewResponder {
     
     func stopPlayBGM() {
         audioEffectView.stopPlay()
+        mainMenuView.audienceType()
     }
     
     func recoveryVoiceSetting() {
@@ -265,6 +296,7 @@ extension TRTCVoiceRoomRootView: TRTCVoiceRoomViewResponder {
     
     func audienceListRefresh() {
         audiceneListView.refreshList()
+        topView.reloadAudienceList()
     }
     
     func onSeatMute(isMute: Bool) {
@@ -279,33 +311,25 @@ extension TRTCVoiceRoomRootView: TRTCVoiceRoomViewResponder {
         mainMenuView.changeMixStatus(isMute: isMute)
     }
     
-    func showAlert(info: (title: String, message: String), sureAction: @escaping () -> Void, cancelAction: (() -> Void)?) {
-        if let alert = alertController {
-            alert.dismiss(animated: false) { [weak self] in
-                guard let `self` = self else { return }
-                self.alertController = nil
-            }
+    func onAnchorMute(isMute: Bool) {
+        if let master = viewModel.masterAnchor {
+            masterSeatView.setSeatInfo(model: master, userMuteMap: viewModel.userMuteMap)
         }
+        seatCollection.reloadData()
+    }
+    
+    func showAlert(info: (title: String, message: String), sureAction: @escaping () -> Void, cancelAction: (() -> Void)?) {
         let alertController = UIAlertController.init(title: info.title, message: info.message, preferredStyle: .alert)
         let sureAlertAction = UIAlertAction.init(title: .acceptText, style: .default) { (action) in
             sureAction()
-            alertController.dismiss(animated: false) { [weak self] in
-                guard let `self` = self else { return }
-                self.alertController = nil
-            }
         }
         let cancelAlertAction = UIAlertAction.init(title: .refuseText, style: .cancel) { (action) in
             cancelAction?()
-            alertController.dismiss(animated: false) { [weak self] in
-                guard let `self` = self else { return }
-                self.alertController = nil
-            }
         }
         alertController.addAction(sureAlertAction)
         alertController.addAction(cancelAlertAction)
-        rootViewController?.present(alertController, animated: false, completion: { [weak self] in
-            guard let `self` = self else { return }
-            self.alertController = alertController
+        rootViewController?.present(alertController, animated: false, completion: {
+            
         })
     }
     
@@ -327,32 +351,71 @@ extension TRTCVoiceRoomRootView: TRTCVoiceRoomViewResponder {
         rootViewController?.present(actionSheet, animated: true, completion: nil)
     }
     
+    func showMoreAlert() {
+        let alert = TRTCVoiceRoomMoreAlert(viewModel: viewModel)
+        addSubview(alert)
+        alert.snp.makeConstraints { (make) in
+            make.edges.equalToSuperview()
+        }
+        alert.layoutIfNeeded()
+        alert.show()
+    }
+    func showBgMusicAlert() {
+        let alert = TRTCVoiceRoomSoundEffectAlert(viewModel: viewModel)
+        addSubview(alert)
+        alert.snp.makeConstraints { (make) in
+            make.edges.equalToSuperview()
+        }
+        alert.layoutIfNeeded()
+        alert.show()
+    }
+    
+    func showAudienceAlert(seat: SeatInfoModel) {
+        let audienceList = viewModel.memberAudienceList
+        let alert = TRTCVoiceRoomAudienceAlert(viewModel: viewModel, seatModel: seat, audienceList: audienceList)
+        addSubview(alert)
+        alert.snp.makeConstraints { (make) in
+            make.edges.equalToSuperview()
+        }
+        alert.layoutIfNeeded()
+        alert.show()
+    }
+    
     func showToast(message: String) {
         makeToast(message)
     }
     
     func popToPrevious() {
         rootViewController?.navigationController?.popViewController(animated: true)
-         audioEffectView.resetAudioSetting()
+        audioEffectView.resetAudioSetting()
     }
     
     func switchView(type: VoiceRoomViewType) {
         switch type {
         case .audience:
+            viewModel.userType = .audience
             mainMenuView.audienceType()
         case .anchor:
-            mainMenuView.anchorType()
+            if viewModel.isOwner {
+                viewModel.userType = .owner
+                mainMenuView.ownerType()
+            }
+            else {
+                viewModel.userType = .anchor
+                mainMenuView.anchorType()
+            }
         }
     }
     
-    func changeRoom(title: String) {
-        rootViewController?.title = title
+    func changeRoom(info: VoiceRoomInfo) {
+        topView.reloadRoomInfo(info)
     }
     
     func refreshAnchorInfos() {
         if let masterAnchor = viewModel.masterAnchor {
-            masterSeatView.setSeatInfo(model: masterAnchor)
+            masterSeatView.setSeatInfo(model: masterAnchor, userMuteMap: viewModel.userMuteMap)
         }
+        topView.reloadRoomAvatar()
         seatCollection.reloadData()
     }
     

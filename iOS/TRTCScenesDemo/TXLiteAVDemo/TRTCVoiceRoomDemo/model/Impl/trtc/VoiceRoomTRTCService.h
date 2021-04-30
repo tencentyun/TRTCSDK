@@ -41,6 +41,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)muteLocalAudio:(BOOL)isMute;
 
+- (void)setVoiceEarMonitorEnable:(BOOL)enable;
+
 - (void)muteRemoteAudioWithUserId:(NSString *)userId isMute:(BOOL)isMute;
 
 - (void)muteAllRemoteAudio:(BOOL)isMute;

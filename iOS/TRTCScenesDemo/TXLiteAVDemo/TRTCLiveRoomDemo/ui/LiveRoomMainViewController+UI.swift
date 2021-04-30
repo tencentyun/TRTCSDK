@@ -12,22 +12,16 @@ import Toast_Swift
 extension LiveRoomMainViewController {
     func setupUI() {
         ToastManager.shared.position = .bottom
-        gradientLayer.colors = colors.compactMap{ $0 }
-        gradientLayer.frame = view.bounds
-        view.layer.insertSublayer(gradientLayer, at: 0)
-
-        var topPadding: CGFloat = 0
+//        gradientLayer.colors = colors.compactMap{ $0 }
+//        gradientLayer.frame = view.bounds
+//        view.layer.insertSublayer(gradientLayer, at: 0)
         
-        if #available(iOS 11.0, *) {
-            let window = UIApplication.shared.keyWindow
-            topPadding = window!.safeAreaInsets.top
-        }
-        topPadding = max(44, topPadding)
+        view.backgroundColor = .white
         
         self.view.addSubview(roomsCollection)
         roomsCollection.snp.makeConstraints { (make) in
             make.leading.trailing.equalTo(view)
-            make.top.equalTo(topPadding + UIScreen.main.bounds.size.height * 27.0/667)
+            make.top.equalTo(UIScreen.main.bounds.size.height * 27.0/667)
             make.bottom.equalTo(0)
         }
         

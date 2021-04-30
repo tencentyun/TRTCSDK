@@ -29,6 +29,13 @@
 
 @implementation VoiceRoomUserInfo
 
+- (instancetype)init {
+    if (self = [super init]) {
+        self.mute = YES;
+    }
+    return self;
+}
+
 - (void)setUserName:(NSString *)userName{
     if (!userName) {
         userName = @"";

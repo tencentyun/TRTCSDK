@@ -65,31 +65,30 @@ class TRTCCallingContactViewController: UIViewController, TRTCCallingDelegate {
     
     let searchContainerView: UIView = {
         let view = UIView.init(frame: .zero)
-        view.backgroundColor = .searchBarBackColor
-        view.layer.cornerRadius = 2
-        view.layer.masksToBounds = true
+        view.backgroundColor = .clear
         return view
     }()
     
     let searchBar: UISearchBar = {
         let searchBar = UISearchBar.init()
         searchBar.backgroundImage = UIImage.init()
-        searchBar.barTintColor = .searchBarBackColor
         searchBar.placeholder = .searchPhoneNumberText
-        searchBar.backgroundColor = .clear
+        searchBar.backgroundColor = UIColor(hex: "F4F5F9")
         searchBar.barTintColor = .clear
         searchBar.returnKeyType = .search
-        searchBar.layer.cornerRadius = 2
+        searchBar.layer.cornerRadius = 20
         return searchBar
     }()
     
     /// 搜索按钮
     lazy var searchBtn: UIButton = {
-       let done = UIButton()
+        let done = UIButton(type: .custom)
         done.setTitle(.searchText, for: .normal)
         done.setTitleColor(.white, for: .normal)
-        done.alpha = 0.5
         done.titleLabel?.font = UIFont.systemFont(ofSize: 16)
+        done.backgroundColor = UIColor(hex: "006EFF")
+        done.clipsToBounds = true
+        done.layer.cornerRadius = 20
         return done
     }()
     
@@ -97,7 +96,7 @@ class TRTCCallingContactViewController: UIViewController, TRTCCallingDelegate {
         let label = UILabel.init(frame: .zero)
         label.text = "\(String.yourUserNameText):\(ProfileManager.shared.curUserModel?.phone ?? "")"
         label.font = UIFont.systemFont(ofSize: 16.0)
-        label.textColor = UIColor.init(0xEBF4FF)
+        label.textColor = .black
         label.textAlignment = .left
         return label
     }()
@@ -129,13 +128,26 @@ class TRTCCallingContactViewController: UIViewController, TRTCCallingDelegate {
         label.text = .backgroundTipsText
         label.numberOfLines = 2
         label.textAlignment = NSTextAlignment.center
-        label.textColor = .placeholderBackColor
+        label.textColor = UIColor(hex: "BBBBBB")
         return label
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .white
+        
+        let backBtn = UIButton(type: .custom)
+        backBtn.setImage(UIImage(named: "calling_back"), for: .normal)
+        backBtn.addTarget(self, action: #selector(backBtnClick), for: .touchUpInside)
+        let item = UIBarButtonItem(customView: backBtn)
+        item.tintColor = .black
+        navigationItem.leftBarButtonItem = item
+        
         setupUI()
+    }
+    
+    @objc func backBtnClick() {
+        navigationController?.popViewController(animated: true)
     }
     
     deinit {
@@ -343,17 +355,6 @@ extension TRTCCallingContactViewController {
     }
     
     func constructViewHierarchy() {
-        // 添加全局背景
-        let colors = [UIColor(red: 19.0 / 255.0, green: 41.0 / 255.0,
-                              blue: 75.0 / 255.0, alpha: 1).cgColor,
-                      UIColor(red: 5.0 / 255.0, green: 12.0 / 255.0,
-                              blue: 23.0 / 255.0, alpha: 1).cgColor]
-        let gradientLayer = CAGradientLayer()
-        gradientLayer.colors = colors.compactMap { $0 }
-        gradientLayer.startPoint = CGPoint(x: 0, y: 0)
-        gradientLayer.endPoint = CGPoint(x: 1, y: 1)
-        gradientLayer.frame = view.bounds
-        view.layer.insertSublayer(gradientLayer, at: 0)
         // 添加SearchBar
         view.addSubview(searchContainerView)
         searchContainerView.addSubview(searchBar)
@@ -366,28 +367,22 @@ extension TRTCCallingContactViewController {
     }
     
     func activateConstraints() {
-        var topPadding: CGFloat = 44
-        if #available(iOS 11.0, *) {
-            let window = UIApplication.shared.keyWindow
-            topPadding = window!.safeAreaInsets.top
-        }
-        topPadding = max(26, topPadding)
         searchContainerView.snp.makeConstraints { (make) in
-            make.top.equalTo(view).offset(topPadding + 60)
+            make.top.equalTo(view).offset(20)
             make.leading.equalTo(20)
             make.trailing.equalTo(-20)
             make.height.equalTo(40)
         }
         searchBar.snp.makeConstraints { (make) in
-            make.top.left.bottom.equalToSuperview()
-            make.right.equalTo(searchBtn.snp.left).offset(5)
+            make.top.leading.bottom.equalToSuperview()
+            make.trailing.equalTo(searchBtn.snp_leading).offset(-10)
         }
         searchBtn.snp.makeConstraints { (make) in
-            make.top.right.bottom.equalToSuperview()
+            make.top.trailing.bottom.equalToSuperview()
             make.width.equalTo(60)
         }
         userInfoLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(searchBar.snp.bottom).offset(20)
+            make.top.equalTo(searchContainerView.snp_bottom).offset(20)
             make.leading.equalTo(20)
             make.trailing.equalTo(-20)
             make.height.equalTo(20)
@@ -414,7 +409,7 @@ extension TRTCCallingContactViewController {
         if let textfield = searchBar.value(forKey: "searchField") as? UITextField {
             textfield.layer.cornerRadius = 10.0
             textfield.layer.masksToBounds = true
-            textfield.textColor = UIColor.white
+            textfield.textColor = .black
             textfield.backgroundColor = .clear
             textfield.leftViewMode = .always
             if let leftView = textfield.leftView as? UIImageView {

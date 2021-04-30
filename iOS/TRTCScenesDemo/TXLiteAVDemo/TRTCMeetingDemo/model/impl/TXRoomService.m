@@ -190,11 +190,11 @@ static TXRoomService *_sharedInstance = nil;
     } fail:^(int code, NSString *desc) {
         NSString *msg = [NSString stringWithFormat:@"%@", desc];
         if (code == 10036) {
-            msg = LocalizeReplaceXX(@"Demo.TRTC.Buy.chatroom", @"https://cloud.tencent.com/document/product/269/11673");
+            msg = LocalizeReplaceXX(TRTCLocalize(@"Demo.TRTC.Buy.chatroom"), @"https://cloud.tencent.com/document/product/269/11673");
         } else if (code == 10037) {
-            msg = LocalizeReplaceXX(@"Demo.TRTC.Buy.grouplimit", @"https://cloud.tencent.com/document/product/269/11673");
+            msg = LocalizeReplaceXX(TRTCLocalize(@"Demo.TRTC.Buy.grouplimit"), @"https://cloud.tencent.com/document/product/269/11673");
         } else if (code == 10038) {
-            msg = LocalizeReplaceXX(@"Demo.TRTC.Buy.groupmemberlimit", @"https://cloud.tencent.com/document/product/269/11673");
+            msg = LocalizeReplaceXX(TRTCLocalize(@"Demo.TRTC.Buy.groupmemberlimit"), @"https://cloud.tencent.com/document/product/269/11673");
         }
         
         if (code == 10025) {

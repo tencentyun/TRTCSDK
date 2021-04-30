@@ -22,7 +22,7 @@ class TRTCChatSalonHandsUpTipsView: UIView {
     
     let contentLabel: UILabel = {
         let label = UILabel.init(frame: .zero)
-        label.textColor = UIColor.init(0xEBF4FF)
+        label.textColor = .black
         label.fontSize = 14
         label.text = String.successMsg
         return label

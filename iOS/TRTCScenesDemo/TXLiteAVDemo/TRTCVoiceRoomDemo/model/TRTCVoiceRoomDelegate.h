@@ -13,6 +13,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class TRTCVolumeInfo;
+
 @protocol TRTCVoiceRoomDelegate <NSObject>
 
 /// 错误回调
@@ -70,6 +72,12 @@ NS_SWIFT_NAME(onAnchorLeaveSeat(index:user:));
             isMute:(BOOL)isMute
 NS_SWIFT_NAME(onSeatMute(index:isMute:));
 
+/// 用户麦克风是否静音回调
+/// @param userId 用户id
+/// @param mute 是否静音
+- (void)onUserMicrophoneMute:(NSString *)userId mute:(BOOL)mute
+NS_SWIFT_NAME(onUserMicrophoneMute(userId:mute:));
+
 /// 座位关闭回调
 /// @param index 座位号
 /// @param isClose 是否关闭
@@ -87,12 +95,11 @@ NS_SWIFT_NAME(onAudienceEnter(userInfo:));
 - (void)onAudienceExit:(VoiceRoomUserInfo *)userInfo
 NS_SWIFT_NAME(onAudienceExit(userInfo:));
 
-/// 用户音量变动回调
-/// @param userId 用户ID
-/// @param volume 音量信息
-- (void)onUserVolumeUpdate:(NSString *)userId
-                              volume:(NSInteger)volume
-NS_SWIFT_NAME(onUserVolumeUpdate(userId:volume:));
+/// 上麦成员的音量变化
+/// @param userVolumes 各个用户音量信息
+/// @param totalVolume 整体音量信息
+- (void)onUserVolumeUpdate:(NSArray<TRTCVolumeInfo *> *)userVolumes totalVolume:(NSInteger)totalVolume
+NS_SWIFT_NAME(onUserVolumeUpdate(userVolumes:totalVolume:));
 
 /// 文本消息接收回调
 /// @param message 消息内容

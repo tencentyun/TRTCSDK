@@ -182,11 +182,11 @@
         TRTCLog(@"create room error: %d, msg: %@", code, desc);
         NSString *msg = desc ?: @"create room fiald";
         if (code == 10036) {
-            msg = LocalizeReplaceXX(@"Demo.TRTC.Buy.chatroom", @"https://cloud.tencent.com/document/product/269/11673");
+            msg = LocalizeReplaceXX(TRTCLocalize(@"Demo.TRTC.Buy.chatroom"), @"https://cloud.tencent.com/document/product/269/11673");
         } else if (code == 10037) {
-            msg = LocalizeReplaceXX(@"Demo.TRTC.Buy.grouplimit", @"https://cloud.tencent.com/document/product/269/11673");
+            msg = LocalizeReplaceXX(TRTCLocalize(@"Demo.TRTC.Buy.grouplimit"), @"https://cloud.tencent.com/document/product/269/11673");
         } else if (code == 10038) {
-            msg = LocalizeReplaceXX(@"Demo.TRTC.Buy.groupmemberlimit", @"https://cloud.tencent.com/document/product/269/11673");
+            msg = LocalizeReplaceXX(TRTCLocalize(@"Demo.TRTC.Buy.groupmemberlimit"), @"https://cloud.tencent.com/document/product/269/11673");
         }
         
         if (code == 10025 || code == 10021) {
@@ -346,7 +346,7 @@
         TXSeatInfo* changeInfo = [[TXSeatInfo alloc] init];
         changeInfo.status = kTXSeatStatusUnused;
         changeInfo.user = @"";
-        changeInfo.mute = NO;
+        changeInfo.mute = info.mute;
         NSDictionary *dic = [TXVoiceRoomIMJsonHandle getSeatInfoJsonStrWithIndex:seatIndex info:changeInfo];
         [self modeifyGroupAttrs:dic callback:callback];
     } else {
@@ -400,7 +400,7 @@
     TXSeatInfo *changeInfo = [[TXSeatInfo alloc] init];
     changeInfo.status = kTXSeatStatusUnused;
     changeInfo.user = @"";
-    changeInfo.mute = NO;
+    changeInfo.mute = self.seatInfoList[seatIndex].mute;
     NSDictionary *dic = [TXVoiceRoomIMJsonHandle getSeatInfoJsonStrWithIndex:seatIndex info:changeInfo];
     [self modeifyGroupAttrs:dic callback:callback];
 }

@@ -12,7 +12,7 @@ import Toast_Swift
 extension TRTCMeetingMainViewController {
     func setupUI() {
         ToastManager.shared.position = .bottom
-        view.backgroundColor = .appBackGround
+        view.backgroundColor = .white
         self.navigationController?.isNavigationBarHidden = true
         
         attendeeCollectionView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height)
@@ -41,7 +41,7 @@ extension TRTCMeetingMainViewController {
             make.top.leading.trailing.equalTo(view)
             make.height.equalTo(topPadding + 45)
         }
-        backView.backgroundColor = UIColor(rgb: 0x3313294B).withAlphaComponent(0.5)
+        backView.backgroundColor = .clear
         
         
         // 房间号label
@@ -62,7 +62,7 @@ extension TRTCMeetingMainViewController {
         switchAudioRouteButton.snp.remakeConstraints { (make) in
             make.leading.equalTo(20)
             make.top.equalTo(topPadding + 5)
-            make.width.height.equalTo(30)
+            make.width.height.equalTo(32)
         }
         switchAudioRouteButton.rx.controlEvent(.touchUpInside).subscribe(onNext: { [weak self] in
             guard let self = self else {return}
@@ -77,9 +77,9 @@ extension TRTCMeetingMainViewController {
         switchCameraButton.setImage(UIImage(named: "meeting_switch_camera"), for: .normal)
         backView.addSubview(switchCameraButton)
         switchCameraButton.snp.remakeConstraints { (make) in
-            make.leading.equalTo(switchAudioRouteButton.snp.trailing).offset(5)
+            make.leading.equalTo(switchAudioRouteButton.snp.trailing).offset(10)
             make.top.equalTo(switchAudioRouteButton)
-            make.width.height.equalTo(30)
+            make.width.height.equalTo(32)
         }
         switchCameraButton.rx.controlEvent(.touchUpInside).subscribe(onNext: { [weak self] in
             guard let self = self else {return}
@@ -91,13 +91,13 @@ extension TRTCMeetingMainViewController {
         exitButton.setTitle(.exitMeetingText, for: .normal)
         exitButton.titleLabel?.font = UIFont.systemFont(ofSize: 14)
         exitButton.backgroundColor = UIColor(red: 232 / 255.0, green: 75 / 255.0, blue: 64 / 255.0, alpha: 1.0)
-        exitButton.layer.cornerRadius = 4.0
+        exitButton.layer.cornerRadius = 19
         backView.addSubview(exitButton)
         exitButton.snp.remakeConstraints { (make) in
             make.trailing.equalTo(-25)
             make.top.equalTo(topPadding + 9)
             make.width.equalTo(80)
-            make.height.equalTo(26)
+            make.height.equalTo(38)
         }
         exitButton.rx.controlEvent(.touchUpInside).subscribe(onNext: { [weak self] in
             guard let self = self else {return}
@@ -132,7 +132,7 @@ extension TRTCMeetingMainViewController {
             make.bottom.leading.trailing.equalTo(view)
             make.height.equalTo(55)
         }
-        backView.backgroundColor = UIColor(rgb: 0x3313294B).withAlphaComponent(0.5)
+        backView.backgroundColor = .clear
         
         
         // 开关麦克风

@@ -20,6 +20,7 @@ class TRTCChatSalonListRootView: UIView {
     init(frame: CGRect = .zero, viewModel: TRTCChatSalonListViewModel) {
         self.viewModel = viewModel
         super.init(frame: frame)
+        backgroundColor = .white
     }
     
     required init?(coder: NSCoder) {
@@ -29,16 +30,6 @@ class TRTCChatSalonListRootView: UIView {
     let loading = NVActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 100, height: 60),
                                           type: .ballRotate,
                                           color: .searchBarBackColor)
-    
-    let backgroundLayer: CALayer = {
-        // fillCode
-        let layer = CAGradientLayer()
-        layer.colors = [UIColor.init(0x13294b).cgColor, UIColor.init(0x000000).cgColor]
-        layer.locations = [0.2, 1.0]
-        layer.startPoint = CGPoint(x: 0.4, y: 0)
-        layer.endPoint = CGPoint(x: 0.6, y: 1.0)
-        return layer
-    }()
     
     let createButton: UIButton = {
         let button = UIButton.init(type: .custom)
@@ -53,11 +44,11 @@ class TRTCChatSalonListRootView: UIView {
         layout.minimumLineSpacing = 5.0
         layout.minimumInteritemSpacing = 5.0
         layout.scrollDirection = .vertical
-        layout.sectionInset = UIEdgeInsets.init(top: 0, left: 20, bottom: 40, right: 20)
         let collectionView = UICollectionView.init(frame: .zero, collectionViewLayout: layout)
         collectionView.register(TRTCChatSalonListCell.self, forCellWithReuseIdentifier: "TRTCChatSalonListCell")
-        collectionView.backgroundColor = UIColor.clear
+        collectionView.backgroundColor = .clear
         collectionView.bounces = true
+        collectionView.contentInset = UIEdgeInsets.init(top: 0, left: 20, bottom: 40, right: 20)
         return collectionView
     }()
     
@@ -75,8 +66,6 @@ class TRTCChatSalonListRootView: UIView {
 
     func constructViewHierarchy() {
         /// 此方法内只做add子视图操作
-        backgroundLayer.frame = self.bounds;
-        layer.insertSublayer(backgroundLayer, at: 0)
         addSubview(roomListCollection)
         addSubview(createButton)
         addSubview(loading)

@@ -31,6 +31,7 @@ typedef NS_ENUM(NSUInteger, TXChatSalonCustomCodeType) {
     kChatSalonCodeDestroy = 200,
     kChatSalonCodeCustomMsg = 301,
     kChatSalonCodeKickSeatMsg = 302,
+    kChatSalonCodePickSeatMsg = 303,
 };
 
 @interface TXChatSalonIMJsonHandle : NSObject
@@ -56,7 +57,7 @@ typedef NS_ENUM(NSUInteger, TXChatSalonCustomCodeType) {
 + (NSDictionary<NSString *, NSString *> *)parseCusMsgWithJsonDic:(NSDictionary *)jsonDic;
 
 + (NSString *)getKickMsgJsonStrWithUserID:(NSString *)userID;
-
++ (NSString *)getPickMsgJsonStrWithUserID:(NSString *)userID;
 @end
 
 NS_ASSUME_NONNULL_END

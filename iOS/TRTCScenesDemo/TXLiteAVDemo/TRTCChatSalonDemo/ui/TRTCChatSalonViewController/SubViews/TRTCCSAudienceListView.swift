@@ -22,9 +22,16 @@ class TRTCCSAudienceListView: UIView {
         fatalError("can't init this viiew from coder")
     }
     
+    lazy var bgView: UIView = {
+        let view = UIView(frame: .zero)
+        view.backgroundColor = .black
+        view.alpha = 0.3
+        return view
+    }()
+    
     let container: UIView = {
         let view = UIView.init(frame: .zero)
-        view.backgroundColor = .pannelBackColor
+        view.backgroundColor = .white
         return view
     }()
     
@@ -37,7 +44,7 @@ class TRTCCSAudienceListView: UIView {
         let label = UILabel.init(frame: .zero)
         label.text = String.listTitle
         label.font = UIFont.systemFont(ofSize: 16.0)
-        label.textColor = UIColor.init(0xFFFFFF)
+        label.textColor = .black
         label.textAlignment = .center
         return label
     }()
@@ -45,13 +52,14 @@ class TRTCCSAudienceListView: UIView {
     let closeButton: UIButton = {
         let button = UIButton.init(type: .custom)
         button.setTitle(String.close, for: .normal)
+        button.setTitleColor(.black, for: .normal)
         return button
     }()
     
     let tableView: UITableView = {
         let tableView = UITableView.init(frame: .zero)
         tableView.register(TRTCCSAudienceTableViewCell.self, forCellReuseIdentifier: "TRTCCSAudienceTableViewCell")
-        tableView.backgroundColor = UIColor.clear
+        tableView.backgroundColor = .clear
         tableView.rowHeight = 64
         tableView.separatorStyle = .none
         return tableView
@@ -73,6 +81,7 @@ class TRTCCSAudienceListView: UIView {
 
     func constructViewHierarchy() {
         /// 此方法内只做add子视图操作
+        addSubview(bgView)
         addSubview(container)
         container.addSubview(titleContainer)
         titleContainer.addSubview(titleLabel)
@@ -82,6 +91,9 @@ class TRTCCSAudienceListView: UIView {
 
     func activateConstraints() {
         /// 此方法内只给子视图做布局,使用:AutoLayout布局
+        bgView.snp.makeConstraints { (make) in
+            make.edges.equalToSuperview()
+        }
         container.snp.makeConstraints { (make) in
             make.bottom.left.right.equalToSuperview()
             make.height.equalTo(418)

@@ -700,10 +700,6 @@ extension TRTCChatSalonViewModel: TRTCChatSalonDelegate {
             self.viewResponder?.refreshTakeSeatList()
         }
     }
-    
-    func onAudioAvailable(userID: String, available: Bool) {
-        
-    }
 }
 
 fileprivate extension String {

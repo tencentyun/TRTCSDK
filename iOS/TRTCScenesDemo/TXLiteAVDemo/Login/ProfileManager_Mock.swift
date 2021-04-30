@@ -293,22 +293,35 @@ let loginBaseUrl = "https://xxx.com/release/"
     ///   - success: 成功
     ///   - failed: 失败
     @objc func IMLogin(userSig: String, success: @escaping ()->Void, failed: @escaping (_ error: String)->Void) {
-        let config = TIMSdkConfig.init()
-        config.sdkAppId = Int32(SDKAPPID)
-        config.dbPath = NSHomeDirectory() + "/Documents/com_tencent_imsdk_data/"
-        TIMManager.sharedInstance()?.initSdk(config)
+        V2TIMManager.sharedInstance()?.initSDK(SDKAPPID, config: nil, listener: nil)
         
         guard let userID = curUserModel?.userId else {
-            failed("userID failed")
+            failed("userID wrong")
             return
         }
         let user = String(userID)
         let loginParam = TIMLoginParam.init()
         loginParam.identifier = user
         loginParam.userSig = userSig
-        TIMManager.sharedInstance()?.login(loginParam, succ: {
+        V2TIMManager.sharedInstance()?.login(user, userSig: userSig, succ: {
             debugPrint("login success")
-            success()
+            V2TIMManager.sharedInstance()?.getUsersInfo([userID], succ: { [weak self] (infos) in
+                guard let `self` = self else { return }
+                if let info = infos?.first {
+                    self.curUserModel?.avatar = info.faceURL
+                    self.curUserModel?.name = info.nickName
+                    self.curUserModel?.userId = info.userID
+                    success()
+                }
+                else {
+                    failed("")
+                }
+            }, fail: { (code, err) in
+                failed(err ?? "")
+                debugPrint("get user info failed, code:\(code), error: \(err ?? "nil")")
+            })
+            
+            
         }, fail: { (code, errorDes) in
             failed(errorDes ?? "")
             debugPrint("login failed, code:\(code), error: \(errorDes ?? "nil")")
@@ -329,5 +342,19 @@ let loginBaseUrl = "https://xxx.com/release/"
     
     @objc public func curUserSig() -> String {
            return curUserModel?.userSig ?? ""
+    }
+    
+    @objc func synchronizUserInfo() {
+        guard let userModel = curUserModel else {
+            return
+        }
+        let userInfo = V2TIMUserFullInfo()
+        userInfo.nickName = userModel.name
+        userInfo.faceURL = userModel.avatar
+        V2TIMManager.sharedInstance()?.setSelfInfo(userInfo, succ: {
+            debugPrint("set profile success")
+        }, fail: { (code, desc) in
+            debugPrint("set profile failed.")
+        })
     }
 }

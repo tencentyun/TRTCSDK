@@ -32,10 +32,16 @@ class TRTCCreateVoiceRoomViewModel {
         return dependencyContainer.getVoiceRoom()
     }
     
+    var screenShot : UIView?
+    
     var roomName: String = ""
-    var userName: String = ""
+    var userName: String {
+        get {
+            return ProfileManager.shared.curUserModel?.name ?? ""
+        }
+    }
     var needRequest: Bool = true
-    var toneQuality: VoiceRoomToneQuality = .music
+    var toneQuality: VoiceRoomToneQuality = .defaultQuality
     
     /// 初始化方法
     /// - Parameter container: 依赖管理容器，负责VoiceRoom模块的依赖管理
@@ -47,11 +53,15 @@ class TRTCCreateVoiceRoomViewModel {
         TRTCLog.out("deinit \(type(of: self))")
     }
     
+    private func randomBgImageLink() -> String {
+        let random = arc4random() % 12 + 1
+        return "https://liteav-test-1252463788.cos.ap-guangzhou.myqcloud.com/voice_room/voice_room_cover\(random).png"
+    }
     func createRoom() {
         let userId = ProfileManager.shared.curUserID() ?? dependencyContainer.userId
-        let coverAvatar = ProfileManager.shared.curUserModel?.avatar ?? ""
+        let coverAvatar = randomBgImageLink()
         let roomId = getRoomId()
-        let roomInfo = VoiceRoomInfo.init(roomID: roomId, ownerId: userId, memberCount: 7)
+        let roomInfo = VoiceRoomInfo.init(roomID: roomId, ownerId: userId, memberCount: 9)
         roomInfo.ownerName = userName
         roomInfo.coverUrl = coverAvatar
         roomInfo.roomName = roomName

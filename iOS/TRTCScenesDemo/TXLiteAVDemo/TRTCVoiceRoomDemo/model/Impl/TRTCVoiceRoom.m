@@ -39,6 +39,7 @@
 @property (nonatomic, readonly)TXVoiceRoomService *roomService;
 @property (nonatomic, readonly)VoiceRoomTRTCService *roomTRTCService;
 
+@property (nonatomic, assign)BOOL isSelfMute;
 @end
 
 @implementation TRTCVoiceRoom
@@ -57,6 +58,7 @@ static dispatch_once_t onceToken;
         self.takeSeatIndex = -1;
         self.roomService.delegate = self;
         self.roomTRTCService.delegate =self;
+        self.isSelfMute = NO;
     }
     return self;
 }
@@ -108,6 +110,7 @@ static dispatch_once_t onceToken;
     [self.seatInfoList removeAllObjects];
     [self.anchorSeatList removeAllObjects];
     [self.audienceList removeAllObjects];
+    self.isSelfMute = NO;
 }
 
 - (void)exitRoomInternal:(ActionCallback _Nullable)callback {
@@ -718,7 +721,19 @@ static dispatch_once_t onceToken;
     }];
 }
 
+- (void)setVoiceEarMonitorEnable:(BOOL)enable {
+    @weakify(self)
+    [self runMainQueue:^{
+        @strongify(self)
+        if (!self) {
+            return;
+        }
+        [self.roomTRTCService setVoiceEarMonitorEnable:enable];
+    }];
+}
+
 - (void)muteLocalAudio:(BOOL)mute{
+    self.isSelfMute = mute;
     @weakify(self)
     [self runMainQueue:^{
         @strongify(self)
@@ -910,6 +925,8 @@ static dispatch_once_t onceToken;
 
 #pragma mark - VoiceRoomTRTCServiceDelegate
 
+
+
 - (void)onTRTCAnchorEnter:(NSString *)userId {
     [self.anchorSeatList addObject:userId];
 }
@@ -929,10 +946,6 @@ static dispatch_once_t onceToken;
             }
         }
     }
-}
-
-- (void)onTRTCAudioAvailable:(NSString *)userId available:(BOOL)available {
-    
 }
 
 - (void)onError:(NSInteger)code message:(NSString *)message {
@@ -959,11 +972,22 @@ static dispatch_once_t onceToken;
         if (!self) {
             return;
         }
-        [userVolumes enumerateObjectsUsingBlock:^(TRTCVolumeInfo * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            if ([self canDelegateResponseMethod:@selector(onUserVolumeUpdate:volume:)] && obj.userId) {
-                [self.delegate onUserVolumeUpdate:obj.userId volume:obj.volume];
-            }
-        }];
+        if ([self canDelegateResponseMethod:@selector(onUserVolumeUpdate:totalVolume:)]) {
+            [self.delegate onUserVolumeUpdate:userVolumes totalVolume:totalVolume];
+        }
+    }];
+}
+
+- (void)onTRTCAudioAvailable:(NSString *)userId available:(BOOL)available {
+    @weakify(self)
+    [self runOnDelegateQueue:^{
+        @strongify(self)
+        if (!self) {
+            return;
+        }
+        if ([self canDelegateResponseMethod:@selector(onUserMicrophoneMute:mute:)]) {
+            [self.delegate onUserMicrophoneMute:userId mute:!available];
+        }
     }];
 }
 
@@ -1211,7 +1235,11 @@ static dispatch_once_t onceToken;
             return;
         }
         if (self.takeSeatIndex == index) {
-            [self.roomTRTCService muteLocalAudio:isMute];
+            if (isMute) {
+                [self.roomTRTCService muteLocalAudio:YES];
+            } else {
+                [self.roomTRTCService muteLocalAudio:self.isSelfMute];
+            }
         }
         if ([self canDelegateResponseMethod:@selector(onSeatMute:isMute:)]) {
             [self.delegate onSeatMute:index isMute:isMute];

@@ -30,9 +30,21 @@ public class TRTCChatSalonListViewController: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         title = .controllerTitle
-        let backItem = UIBarButtonItem.init(image: UIImage.init(named: "navigationbar_back"), style: .plain, target: self, action: #selector(cancel))
+        
+        let backBtn = UIButton(type: .custom)
+        backBtn.setImage(UIImage(named: "navigationbar_back"), for: .normal)
+        backBtn.addTarget(self, action: #selector(cancel), for: .touchUpInside)
+        backBtn.sizeToFit()
+        let backItem = UIBarButtonItem(customView: backBtn)
+        backItem.tintColor = .black
         self.navigationItem.leftBarButtonItem = backItem
-        let rightItem = UIBarButtonItem.init(image: UIImage.init(named: "help_small"), style: .plain, target: self, action: #selector(connectWeb))
+        
+        let helpBtn = UIButton(type: .custom)
+        helpBtn.setImage(UIImage(named: "help_small"), for: .normal)
+        helpBtn.addTarget(self, action: #selector(connectWeb), for: .touchUpInside)
+        helpBtn.sizeToFit()
+        let rightItem = UIBarButtonItem(customView: helpBtn)
+        rightItem.tintColor = .black
         self.navigationItem.rightBarButtonItem = rightItem
     }
         

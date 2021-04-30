@@ -74,18 +74,6 @@ class TRTCCallingAuidoViewController: UIViewController, CallingViewControllerRes
         return stack
     }()
     
-    let colors = [UIColor(red: 19.0 / 255.0, green: 41.0 / 255.0,
-                          blue: 75.0 / 255.0, alpha: 1).cgColor,
-                  UIColor(red: 5.0 / 255.0, green: 12.0 / 255.0,
-                          blue: 23.0 / 255.0, alpha: 1).cgColor]
-    
-    let gradientLayer: CAGradientLayer = {
-        let layer = CAGradientLayer()
-        layer.startPoint = CGPoint(x: 0, y: 0)
-        layer.endPoint = CGPoint(x: 1, y: 1)
-        return layer
-    }()
-    
     lazy var OnInviteePanel: UIView = {
         let panel = UIView()
         return panel
@@ -171,6 +159,8 @@ class TRTCCallingAuidoViewController: UIViewController, CallingViewControllerRes
 extension TRTCCallingAuidoViewController {
     func setupUI() {
         
+        view.backgroundColor = UIColor(hex: "F4F5F9")
+        
         view.addSubview(OnInviteePanel)
         OnInviteePanel.addSubview(OninviteeStackView)
         OninviteeStackView.snp.makeConstraints { (make) in
@@ -180,10 +170,6 @@ extension TRTCCallingAuidoViewController {
         
         ToastManager.shared.position = .bottom
         var topPadding: CGFloat = 0
-        
-        gradientLayer.colors = colors.compactMap{ $0 }
-        gradientLayer.frame = view.bounds
-        view.layer.insertSublayer(gradientLayer, at: 0)
         
         if #available(iOS 11.0, *) {
             let window = UIApplication.shared.keyWindow
@@ -273,7 +259,7 @@ extension TRTCCallingAuidoViewController {
         }
         
         if callTimeLabel.superview == nil {
-            callTimeLabel.textColor = .white
+            callTimeLabel.textColor = .black
             callTimeLabel.backgroundColor = .clear
             callTimeLabel.text = "00:00"
             callTimeLabel.textAlignment = .center

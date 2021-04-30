@@ -14,7 +14,7 @@ class TRTCCSAudienceTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        backgroundColor = UIColor.clear
+        backgroundColor = .clear
         selectionStyle = .none
         bindInteraction()
     }
@@ -35,7 +35,7 @@ class TRTCCSAudienceTableViewCell: UITableViewCell {
         let label = UILabel.init(frame: .zero)
         label.text = ""
         label.font = UIFont.systemFont(ofSize: 16.0)
-        label.textColor = UIColor.init(0xFFFFFF)
+        label.textColor = .black
         label.textAlignment = .left
         return label
     }()
@@ -44,6 +44,8 @@ class TRTCCSAudienceTableViewCell: UITableViewCell {
         let button = UIButton.init(type: .custom)
         button.setBackgroundImage(UIImage(named: "chatsalon_add_mic"), for: .normal)
         button.setBackgroundImage(UIImage(named: "chatsalon_added_mic"), for: .selected)
+        button.clipsToBounds = true
+        button.layer.cornerRadius = 15
         return button
     }()
     
@@ -118,4 +120,8 @@ class TRTCCSAudienceTableViewCell: UITableViewCell {
         inviateButton.isSelected = model.type == CSAudienceInfoModel.TYPE_WAIT_AGREE
         self.model = model
     }
+}
+
+fileprivate extension String {
+    static let welcomeText = TRTCLocalize("Demo.TRTC.Salon.welcome")
 }

@@ -13,7 +13,7 @@ class TRTCChatSalonListCell: UICollectionViewCell {
     
     let coverImageView: UIImageView = {
         let imageView = UIImageView.init(frame: .zero)
-        imageView.contentMode = .scaleAspectFill
+        imageView.contentMode = .scaleToFill
         return imageView
     }()
     
@@ -21,7 +21,7 @@ class TRTCChatSalonListCell: UICollectionViewCell {
         let label = UILabel.init(frame: .zero)
         label.text = ""
         label.font = UIFont.systemFont(ofSize: 14.0)
-        label.textColor = UIColor.init(0xFFFFFF)
+        label.textColor = .white
         label.textAlignment = .left
         return label
     }()
@@ -30,7 +30,7 @@ class TRTCChatSalonListCell: UICollectionViewCell {
         let label = UILabel.init(frame: .zero)
         label.text = ""
         label.font = UIFont.systemFont(ofSize: 14.0)
-        label.textColor = UIColor.init(0xFFFFFF)
+        label.textColor = .white
         label.textAlignment = .left
         label.numberOfLines = 0
         return label
@@ -40,7 +40,7 @@ class TRTCChatSalonListCell: UICollectionViewCell {
         let label = UILabel.init(frame: .zero)
         label.text = ""
         label.font = UIFont.systemFont(ofSize: 12.0)
-        label.textColor = UIColor.init(0xFFFFFF)
+        label.textColor = .white
         label.textAlignment = .left
         label.adjustsFontSizeToFitWidth = true
         return label
@@ -61,6 +61,8 @@ class TRTCChatSalonListCell: UICollectionViewCell {
         guard !isViewReady else {
             return
         }
+        layer.cornerRadius = 10
+        clipsToBounds = true
         isViewReady = true
         constructViewHierarchy()
         activateConstraints()

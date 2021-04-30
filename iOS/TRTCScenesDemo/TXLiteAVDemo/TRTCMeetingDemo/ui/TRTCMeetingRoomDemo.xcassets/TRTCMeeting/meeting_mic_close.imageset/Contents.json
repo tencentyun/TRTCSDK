@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "meeting_mic_close.png",
+      "filename" : "语音-关.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "meeting_mic_close@2x.png",
+      "filename" : "语音-关@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "meeting_mic_close@3x.png",
+      "filename" : "语音-关@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

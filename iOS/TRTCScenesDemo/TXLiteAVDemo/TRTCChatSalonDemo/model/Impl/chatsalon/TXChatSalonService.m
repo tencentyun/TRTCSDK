@@ -191,11 +191,11 @@
         TRTCLog(@"create room error: %d, msg: %@", code, desc);
         NSString *msg = desc ?: @"create room fiald";
         if (code == 10036) {
-            msg = LocalizeReplaceXX(@"Demo.TRTC.Buy.chatroom", @"https://cloud.tencent.com/document/product/269/11673");
+            msg = LocalizeReplaceXX(TRTCLocalize(@"Demo.TRTC.Buy.chatroom"), @"https://cloud.tencent.com/document/product/269/11673");
         } else if (code == 10037) {
-            msg = LocalizeReplaceXX(@"Demo.TRTC.Buy.grouplimit", @"https://cloud.tencent.com/document/product/269/11673");
+            msg = LocalizeReplaceXX(TRTCLocalize(@"Demo.TRTC.Buy.grouplimit"), @"https://cloud.tencent.com/document/product/269/11673");
         } else if (code == 10038) {
-            msg = LocalizeReplaceXX(@"Demo.TRTC.Buy.groupmemberlimit", @"https://cloud.tencent.com/document/product/269/11673");
+            msg = LocalizeReplaceXX(TRTCLocalize(@"Demo.TRTC.Buy.groupmemberlimit"), @"https://cloud.tencent.com/document/product/269/11673");
         }
         
         if (code == 10025 || code == 10021) {
@@ -357,11 +357,17 @@
         callback(-1, @"already on the seat");
         return;
     }
-    TXChatSalonSeatInfo *changeInfo = [[TXChatSalonSeatInfo alloc] init];
-    changeInfo.user = userID;
-    changeInfo.mute = NO;
-    NSDictionary *dic = [TXChatSalonIMJsonHandle getSeatInfoJsonStrWithUserID:userID info:changeInfo];
-    [self modeifyGroupAttrs:dic callback:callback];
+    
+    NSString *msg = [TXChatSalonIMJsonHandle getPickMsgJsonStrWithUserID:userID];
+    [self.imManager sendC2CCustomMessage:[msg dataUsingEncoding:NSUTF8StringEncoding] to:userID succ:^{
+        if (callback) {
+            callback(0, @"send c2c custom message success.");
+        }
+    } fail:^(int code, NSString *desc) {
+        if (callback) {
+            callback(code, desc);
+        }
+    }];
 }
 
 - (void)kickSeat:(NSString *)userID callback:(TXCallback)callback {
@@ -634,6 +640,11 @@
         case kChatSalonCodeKickSeatMsg:
             if ([self canDelegateResponseMethod:@selector(onSeatKick)]) {
                 [self.delegate onSeatKick];
+            }
+            break;
+        case kChatSalonCodePickSeatMsg:
+            if ([self canDelegateResponseMethod:@selector(onSeatPick)]) {
+                [self.delegate onSeatPick];
             }
             break;
         default:

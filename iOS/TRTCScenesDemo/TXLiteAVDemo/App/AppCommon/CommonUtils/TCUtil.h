@@ -15,6 +15,8 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 }\
 (isPhoneX);})
 
+#define SafeAreaTopHeight (IPHONE_X ? 44 : 20)
+
 typedef void(^videoIsReadyBlock)(void);
 
 @interface TCUtil : NSObject

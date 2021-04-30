@@ -8,6 +8,12 @@
 
 import UIKit
 
+enum TRTCVoiceRoomSeatCellType {
+    case add
+    case seat
+    case lock
+}
+
 class TRTCVoiceRoomSeatCell: UICollectionViewCell {
     private var isViewReady: Bool = false
     
@@ -27,7 +33,7 @@ class TRTCVoiceRoomSeatCell: UICollectionViewCell {
     }
     
     func constructViewHierarchy() {
-        addSubview(seatView)
+        contentView.addSubview(seatView)
     }
     
     func activateConstraints() {
@@ -36,7 +42,23 @@ class TRTCVoiceRoomSeatCell: UICollectionViewCell {
         }
     }
     
-    func setCell(model: SeatInfoModel) {
-        seatView.setSeatInfo(model: model)
+    func setCell(model: SeatInfoModel, userMuteMap: [String:Bool]) {
+        seatView.setSeatInfo(model: model, userMuteMap: userMuteMap)
+    }
+    
+    func setCell(_ type: TRTCVoiceRoomSeatCellType, _ model: SeatInfoModel) {
+        switch type {
+        case .add:
+            seatView.avatarImageView.image = UIImage(named: "add")
+            seatView.nameLabel.text = ""
+            break
+        case .lock:
+            seatView.avatarImageView.image = UIImage(named: "lock")
+            seatView.nameLabel.text = ""
+            break
+        default:
+            setCell(model: model, userMuteMap: [:])
+            break
+        }
     }
 }

@@ -26,7 +26,7 @@ class MeetingMemberCell: UICollectionViewCell {
     
     lazy var userLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .white
+        label.textColor = .black
         label.backgroundColor = UIColor.clear
         label.textAlignment = .left
         label.font = UIFont.systemFont(ofSize: 16)
@@ -40,23 +40,25 @@ class MeetingMemberCell: UICollectionViewCell {
             guard let self = self else {return}
             
             self.attendeeModel.isMuteAudio = !self.attendeeModel.isMuteAudio
-            self.muteAudioButton.setImage(UIImage(named: self.attendeeModel.isMuteAudio ? "meeting_mic_close" : "meeting_mic_open"), for: .normal)
+            self.muteAudioButton.isSelected = self.attendeeModel.isMuteAudio
             self.delegate?.onMuteAudio(userId: self.attendeeModel.userId, mute: self.attendeeModel.isMuteAudio)
         }, onError: nil, onCompleted: nil).disposed(by: disposeBag)
-        
+        button.setImage(UIImage(named: "meeting_mic_on"), for: .normal)
+        button.setImage(UIImage(named: "meeting_mic_off"), for: .selected)
         return button
     }()
     
     lazy var muteVideoButton: UIButton = {
-        let button = UIButton()
+        let button = UIButton(type: .custom)
         button.rx.controlEvent(.touchUpInside).subscribe(onNext: { [weak self] in
             guard let self = self else {return}
             
             self.attendeeModel.isMuteVideo = !self.attendeeModel.isMuteVideo
-            self.muteVideoButton.setImage(UIImage(named: (self.attendeeModel.isMuteVideo) ? "meeting_camera_close" : "meeting_camera_open"), for: .normal)
+            self.muteVideoButton.isSelected = self.attendeeModel.isMuteVideo
             self.delegate?.onMuteVideo(userId: self.attendeeModel.userId, mute: self.attendeeModel.isMuteVideo)
         }, onError: nil, onCompleted: nil).disposed(by: disposeBag)
-        
+        button.setImage(UIImage(named: "meeting_camera_on"), for: .normal)
+        button.setImage(UIImage(named: "meeting_camera_off"), for: .selected)
         return button
     }()
     
@@ -89,7 +91,6 @@ class MeetingMemberCell: UICollectionViewCell {
         
         // 静音按钮
         self.addSubview(muteAudioButton)
-        muteAudioButton.setImage(UIImage(named: model.isMuteAudio ? "meeting_mic_close" : "meeting_mic_open"), for: .normal)
         muteAudioButton.snp.remakeConstraints { (make) in
             make.width.height.equalTo(40)
             make.leading.equalTo(self.snp.trailing).offset(-100)
@@ -98,12 +99,14 @@ class MeetingMemberCell: UICollectionViewCell {
         
         // 禁画按钮
         self.addSubview(muteVideoButton)
-        muteVideoButton.setImage(UIImage(named: model.isMuteVideo ? "meeting_camera_close" : "meeting_camera_open"), for: .normal)
         muteVideoButton.snp.remakeConstraints { (make) in
             make.width.height.equalTo(40)
             make.leading.equalTo(self.snp.trailing).offset(-50)
             make.centerY.equalTo(self)
         }
+        
+        muteAudioButton.isSelected = model.isMuteAudio
+        muteVideoButton.isSelected = model.isMuteVideo
         
         // 如果当前cell是自己，那就隐藏静音和静画的按钮
         muteAudioButton.isHidden = (model.userId == ProfileManager.shared.curUserID()! ? true : false)

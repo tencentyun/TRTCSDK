@@ -10,22 +10,36 @@ import UIKit
 import Toast_Swift
 
 extension TRTCMeetingMemberViewController {
+    
+    @objc func backBtnClick() {
+        navigationController?.popViewController(animated: true)
+    }
+    
     func setupUI() {
         title = .memberListText
+        navigationController?.navigationBar.titleTextAttributes =
+            [NSAttributedString.Key.foregroundColor : UIColor.black,
+             NSAttributedString.Key.font : UIFont(name: "PingFangSC-Semibold", size: 18) ?? UIFont.systemFont(ofSize: 18)
+            ]
+        navigationController?.navigationBar.barTintColor = UIColor(hex: "F4F5F9")
+        navigationController?.navigationBar.isTranslucent = false
         
-        let gradientLayer = CAGradientLayer.init()
-        gradientLayer.colors = [UIColor(rgb: 0x13294b).cgColor,UIColor(rgb: 0x050c17).cgColor]
-        gradientLayer.startPoint = CGPoint(x: 0.5, y: 0)
-        gradientLayer.endPoint = CGPoint(x: 0.5, y: 1)
-        gradientLayer.frame = view.bounds
-        view.layer.insertSublayer(gradientLayer, at: 0)
+        let backBtn = UIButton(type: .custom)
+        backBtn.setImage(UIImage(named: "meeting_back"), for: .normal)
+        backBtn.addTarget(self, action: #selector(backBtnClick), for: .touchUpInside)
+        backBtn.sizeToFit()
+        let item = UIBarButtonItem(customView: backBtn)
+        item.tintColor = .black
+        navigationItem.leftBarButtonItem = item
+        
+        view.backgroundColor = UIColor(hex: "F4F5F9")
         
         view.addSubview(memberCollectionView)
         memberCollectionView.snp.makeConstraints { (make) in
             make.leading.trailing.equalTo(view)
             make.bottom.equalTo(view)
-            make.top.equalTo(topPadding + 45)
-            make.height.equalTo(view).offset(-150)
+            make.top.equalTo(10)
+            make.height.equalTo(view).offset(0)
         }
         
         setupControls()
@@ -41,14 +55,24 @@ extension TRTCMeetingMemberViewController {
     }
     
     func setupControls() {
+        
+        let green = UIColor(hex: "29CC85")
+        let blue = UIColor(hex: "006EFF")
+        
         // 全体静音按钮
         muteAllAudioButton.setTitle(.mutedAllText, for: .normal)
-        muteAllAudioButton.backgroundColor = UIColor(hex: "#E84B40")
-        muteAllAudioButton.layer.cornerRadius = 4.0
+        muteAllAudioButton.backgroundColor = .white
+        muteAllAudioButton.layer.borderWidth = 1
+        muteAllAudioButton.layer.borderColor = green?.cgColor
+        muteAllAudioButton.setTitleColor(green, for: .normal)
+        muteAllAudioButton.layer.cornerRadius = 20
+        muteAllAudioButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
+        muteAllAudioButton.titleLabel?.adjustsFontSizeToFitWidth = true
+        muteAllAudioButton.titleLabel?.minimumScaleFactor = 0.5
         view.addSubview(muteAllAudioButton)
         muteAllAudioButton.snp.makeConstraints { (make) in
             make.centerX.equalTo(view).offset(-130)
-            make.bottom.equalTo(view).offset(-20)
+            make.bottom.equalTo(view).offset(-20-kDeviceSafeBottomHeight)
             make.height.equalTo(40)
             make.width.equalTo(80)
         }
@@ -63,12 +87,16 @@ extension TRTCMeetingMemberViewController {
         
         // 解除全体静音按钮
         unmuteAllAudioButton.setTitle(.unmutedAllText, for: .normal)
-        unmuteAllAudioButton.backgroundColor = .buttonBackColor
-        unmuteAllAudioButton.layer.cornerRadius = 4.0
+        unmuteAllAudioButton.backgroundColor = green
+        unmuteAllAudioButton.setTitleColor(.white, for: .normal)
+        unmuteAllAudioButton.layer.cornerRadius = 20
+        unmuteAllAudioButton.titleLabel?.adjustsFontSizeToFitWidth = true
+        unmuteAllAudioButton.titleLabel?.minimumScaleFactor = 0.5
+        unmuteAllAudioButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
         view.addSubview(unmuteAllAudioButton)
         unmuteAllAudioButton.snp.makeConstraints { (make) in
             make.centerX.equalTo(view).offset(0)
-            make.bottom.equalTo(view).offset(-20)
+            make.bottom.equalTo(muteAllAudioButton)
             make.height.equalTo(40)
             make.width.equalTo(120)
         }
@@ -83,14 +111,18 @@ extension TRTCMeetingMemberViewController {
         
         // 全体禁画按钮
         muteAllVideoButton.setTitle(.forbidAllPicText, for: .normal)
-        muteAllVideoButton.backgroundColor = UIColor(hex: "#E84B40")
-        muteAllVideoButton.layer.cornerRadius = 4.0
+        muteAllVideoButton.setTitleColor(blue, for: .normal)
+        muteAllVideoButton.backgroundColor = .white
+        muteAllVideoButton.layer.cornerRadius = 20
+        muteAllVideoButton.layer.borderColor = blue?.cgColor
+        muteAllVideoButton.layer.borderWidth = 1
         muteAllVideoButton.titleLabel?.adjustsFontSizeToFitWidth = true
         muteAllVideoButton.titleLabel?.minimumScaleFactor = 0.5
+        muteAllVideoButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
         view.addSubview(muteAllVideoButton)
         muteAllVideoButton.snp.remakeConstraints { (make) in
             make.centerX.equalTo(view).offset(130)
-            make.bottom.equalTo(view).offset(-20)
+            make.bottom.equalTo(muteAllAudioButton)
             make.height.equalTo(40)
             make.width.equalTo(80)
         }

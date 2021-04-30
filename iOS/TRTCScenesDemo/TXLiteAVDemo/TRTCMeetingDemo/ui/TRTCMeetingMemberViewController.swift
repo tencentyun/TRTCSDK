@@ -58,9 +58,12 @@ class TRTCMeetingMemberViewController: UIViewController {
         collection.showsVerticalScrollIndicator = false
         collection.showsHorizontalScrollIndicator = false
         collection.contentMode = .scaleToFill
-        collection.backgroundColor = .clear
+        collection.backgroundColor = .white
         collection.dataSource = self
         collection.delegate = self
+        collection.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 150, right: 0)
+        collection.clipsToBounds = true
+        collection.layer.cornerRadius = 20
         return collection
     }()
     

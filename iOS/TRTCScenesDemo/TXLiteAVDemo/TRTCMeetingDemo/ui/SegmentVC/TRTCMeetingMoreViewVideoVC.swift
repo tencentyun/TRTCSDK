@@ -41,7 +41,7 @@ class TRTCMeetingMoreViewVideoVC: UIViewController, UIPickerViewDelegate, UIPick
         label.textAlignment = NSTextAlignment.left
         label.text = .resolutionText
         label.font = UIFont.systemFont(ofSize: 18)
-        label.textColor = .white
+        label.textColor = .black
         return label
     }()
     
@@ -50,7 +50,7 @@ class TRTCMeetingMoreViewVideoVC: UIViewController, UIPickerViewDelegate, UIPick
         label.textAlignment = NSTextAlignment.left
         label.text = .framerateText
         label.font = UIFont.systemFont(ofSize: 18)
-        label.textColor = .white
+        label.textColor = .black
         return label
     }()
     
@@ -59,7 +59,7 @@ class TRTCMeetingMoreViewVideoVC: UIViewController, UIPickerViewDelegate, UIPick
         label.textAlignment = NSTextAlignment.left
         label.text = .bitrateText
         label.font = UIFont.systemFont(ofSize: 18)
-        label.textColor = .white
+        label.textColor = .black
         return label
     }()
     
@@ -68,7 +68,7 @@ class TRTCMeetingMoreViewVideoVC: UIViewController, UIPickerViewDelegate, UIPick
         label.textAlignment = NSTextAlignment.left
         label.text = .localmirrorText
         label.font = UIFont.systemFont(ofSize: 18)
-        label.textColor = .white
+        label.textColor = .black
         return label
     }()
     
@@ -111,7 +111,7 @@ class TRTCMeetingMoreViewVideoVC: UIViewController, UIPickerViewDelegate, UIPick
     lazy var bitrateShowLabel: UILabel = {
         let label = UILabel(frame: CGRect(x: UIScreen.main.bounds.size.width / 7.0*5.5, y: 130, width: 100, height: 20))
         label.textAlignment = NSTextAlignment.left
-        label.textColor = .white
+        label.textColor = .black
         label.font = UIFont.systemFont(ofSize: 18)
         label.text = String(Int(bitrateTable[bitrateIndex].defaultBitrate)) + "kbps"
         return label
@@ -162,7 +162,7 @@ class TRTCMeetingMoreViewVideoVC: UIViewController, UIPickerViewDelegate, UIPick
         resolutionTextField.backgroundColor = .clear
         resolutionTextField.textAlignment = .left
         
-        resolutionTextField.textColor = .white
+        resolutionTextField.textColor = .black
         
         self.view.addSubview(resolutionTextField)
         
@@ -198,7 +198,7 @@ class TRTCMeetingMoreViewVideoVC: UIViewController, UIPickerViewDelegate, UIPick
         fpsTextField.backgroundColor = .clear
         fpsTextField.textAlignment = .left
         
-        fpsTextField.textColor = .white
+        fpsTextField.textColor = .black
         
         self.view.addSubview(fpsTextField)
     }

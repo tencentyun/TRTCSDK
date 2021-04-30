@@ -642,7 +642,7 @@ extension TRTCCallingVideoViewController {
         }
         
         if callTimeLabel.superview == nil {
-            callTimeLabel.textColor = .white
+            callTimeLabel.textColor = .black
             callTimeLabel.backgroundColor = .clear
             callTimeLabel.text = "00:00"
             callTimeLabel.textAlignment = .center

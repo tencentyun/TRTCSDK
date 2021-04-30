@@ -30,6 +30,7 @@ struct SeatInfoModel {
     var seatInfo: VoiceRoomSeatInfo?
     var seatUser: VoiceRoomUserInfo?
     var action: ((Int) -> Void)? // 入参为SeatIndex
+    var isTalking: Bool = false
 }
 
 /// 记录房间消息列表的Model

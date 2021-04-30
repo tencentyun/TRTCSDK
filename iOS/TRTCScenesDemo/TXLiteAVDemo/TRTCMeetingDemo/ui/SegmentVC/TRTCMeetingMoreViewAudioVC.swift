@@ -15,7 +15,7 @@ class TRTCMeetingMoreViewAudioVC: UIViewController {
         label.textAlignment = NSTextAlignment.left
         label.text = .captureVolumeText
         label.font = UIFont.systemFont(ofSize: 18)
-        label.textColor = .white
+        label.textColor = .black
         label.adjustsFontSizeToFitWidth = true
         label.minimumScaleFactor = 0.5
         return label
@@ -27,7 +27,7 @@ class TRTCMeetingMoreViewAudioVC: UIViewController {
         label.textAlignment = NSTextAlignment.left
         label.text = .playingVolumeText
         label.font = UIFont.systemFont(ofSize: 18)
-        label.textColor = .white
+        label.textColor = .black
         label.adjustsFontSizeToFitWidth = true
         label.minimumScaleFactor = 0.5
         return label
@@ -39,7 +39,7 @@ class TRTCMeetingMoreViewAudioVC: UIViewController {
         label.textAlignment = NSTextAlignment.left
         label.text = .volumePromptText
         label.font = UIFont.systemFont(ofSize: 18)
-        label.textColor = .white
+        label.textColor = .black
         label.adjustsFontSizeToFitWidth = true
         label.minimumScaleFactor = 0.5
         return label
@@ -51,7 +51,7 @@ class TRTCMeetingMoreViewAudioVC: UIViewController {
         label.textAlignment = NSTextAlignment.left
         label.text = .audioRecordingText
         label.font = UIFont.systemFont(ofSize: 18)
-        label.textColor = .white
+        label.textColor = .black
         label.adjustsFontSizeToFitWidth = true
         label.minimumScaleFactor = 0.5
         return label
@@ -106,14 +106,14 @@ class TRTCMeetingMoreViewAudioVC: UIViewController {
     // 停止录制button
     lazy var recordButton: UIButton = {
         let button = UIButton(frame: CGRect(x: UIScreen.main.bounds.size.width / 7.0 * 5, y: 150, width: 80, height: 25))
-        button.layer.cornerRadius = 4
+        button.layer.cornerRadius = 25*0.5
         button.layer.masksToBounds = true
         
         button.setTitle(.startRecordingText, for: .normal)
         button.tag = 0
         button.titleLabel?.font = UIFont.systemFont(ofSize: 15)
         button.backgroundColor = .buttonBackColor
-        button.titleLabel?.textColor = .white
+        button.titleLabel?.textColor = .black
         button.contentHorizontalAlignment = .center
         button.addTarget(self, action: #selector(stopRecording), for: .touchUpInside)
         

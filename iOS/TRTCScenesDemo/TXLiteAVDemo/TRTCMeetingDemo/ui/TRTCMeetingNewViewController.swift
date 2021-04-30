@@ -13,7 +13,6 @@ class TRTCMeetingNewViewController: UIViewController {
 
     let disposeBag = DisposeBag()
     let roomInput = UITextField()
-    let userNameInput = UITextField()
     let openCameraSwitch = UISwitch()
     let openMicSwitch = UISwitch()
     
@@ -28,6 +27,7 @@ class TRTCMeetingNewViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .white
         setupUI()
     }
     

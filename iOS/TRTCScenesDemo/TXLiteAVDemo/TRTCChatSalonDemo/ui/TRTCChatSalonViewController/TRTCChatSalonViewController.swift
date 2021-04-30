@@ -36,7 +36,13 @@ public class TRTCChatSalonViewController: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         title = "\(roomInfo.roomName)\(roomInfo.roomID)"
-        let backItem = UIBarButtonItem.init(image: UIImage.init(named: "navigationbar_back"), style: .plain, target: self, action: #selector(cancel))
+        
+        let backBtn = UIButton(type: .custom)
+        backBtn.setImage(UIImage(named: "navigationbar_back"), for: .normal)
+        backBtn.addTarget(self, action: #selector(cancel), for: .touchUpInside)
+        backBtn.sizeToFit()
+        let backItem = UIBarButtonItem(customView: backBtn)
+        backItem.tintColor = .black
         self.navigationItem.leftBarButtonItem = backItem
         guard let model = viewModel else { return }
         if model.roomType == .audience {

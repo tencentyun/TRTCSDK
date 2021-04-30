@@ -11,7 +11,7 @@
 "Demo.TRTC.calling.handsfreeon" = "开启免提";
 "Demo.TRTC.calling.handsfreeoff" = "关闭免提";
 "Demo.TRTC.calling.invitetovideocall" = "邀请你视频通话";
-"Demo.TRTC.calling.yourphonenumber" = "您的手机号";
+"Demo.TRTC.calling.yourphonenumber" = "您的手机号 ";
 "Demo.TRTC.calling.searchphonenumber" = "搜索手机号";
 "Demo.TRTC.calling.searching" = "搜索";
 "Demo.TRTC.calling.searchandcall" = "搜索添加已注册用户\n以发起通话";
@@ -194,7 +194,7 @@
 "Demo.TRTC.VoiceRoom.otheranchor" = "其他主播";
 "Demo.TRTC.VoiceRoom.isinxxseat" = "您已经在xxx号麦位上了";
 "Demo.TRTC.VoiceRoom.seatisnotinittocanthandsup" = "麦位信息没有初始化，暂时无法申请上麦";
-"Demo.TRTC.Salon.handsup" = "上麦";
+"Demo.TRTC.Salon.handsup" = "请求上麦";
 "Demo.TRTC.VoiceRoom.totaxx" = "对Taxxx";
 "Demo.TRTC.VoiceRoom.unmuteone" = "解禁";
 "Demo.TRTC.VoiceRoom.muteone" = "禁言";
@@ -291,7 +291,7 @@
 "Demo.TRTC.Meeting.video" = "视频";
 "Demo.TRTC.Meeting.audio" = "音频";
 "Demo.TRTC.Meeting.setting" = "设置";
-"Demo.TRTC.Salon.xxsroom" = " 的沙龙";
+"Demo.TRTC.Salon.xxsroom" = " 的沙龙 ";
 "Demo.TRTC.Salon.createsalonroom" = "创建语音沙龙";
 "Demo.TRTC.Salon.defaultroomtopic" = "默认房间名称";
 "Demo.TRTC.Salon.defaultuserid" = "默认用户名";
@@ -365,3 +365,80 @@
 "Demo.TRTC." = "用户接受";
 "Demo.TRTC." = "用户拒绝";
 "Demo.TRTC." = "录音文件路径已复制";
+
+
+"ASKit.Common.Close" = "关闭";
+// 主菜单
+"ASKit.MainMenu.Title" = "音效设置";
+"ASKit.MainMenu.BGM" = "背景音乐";
+"ASKit.MainMenu.SelectMusic" = "选择歌曲";
+"ASKit.MainMenu.MusicVolum" = "音乐音量";
+"ASKit.MainMenu.PersonVolum" = "人声音量";
+"ASKit.MainMenu.PersonPitch" = "音乐升降调";
+
+"ASKit.MainMenu.VoiceChangeTitle" = "变声";
+"ASKit.MainMenu.Reverberation" = "混响";
+
+"ASKit.MusicSelectMenu.Title" = "背景音乐";
+
+"ASKit.MenuItem.Surround sound test 1" = "环绕声测试1";
+"ASKit.MenuItem.Surround sound test 2" = "环绕声测试2";
+"ASKit.MenuItem.Surround sound test 3" = "环绕声测试3";
+"ASKit.MenuItem.Unknown" = "佚名";
+"ASKit.MenuItem.Reverb" = "混响";
+"ASKit.MenuItem.Original" = "原声";
+"ASKit.MenuItem.Naughty boy" = "熊孩子";
+"ASKit.MenuItem.Little girl" = "萝莉";
+"ASKit.MenuItem.Middle-aged man" = "大叔";
+"ASKit.MenuItem.Heavy metal" = "重金属";
+"ASKit.MenuItem.Being cold" = "感冒";
+"ASKit.MenuItem.Non-native speaker" = "外国人";
+"ASKit.MenuItem.Furious animal" = "困兽";
+"ASKit.MenuItem.Fat otaku" = "死肥宅";
+"ASKit.MenuItem.Strong electric current" = "强电流";
+"ASKit.MenuItem.Robot" = "重机械";
+"ASKit.MenuItem.Ethereal voice" = "空灵";
+"ASKit.MenuItem.No effect" = "无效果";
+"ASKit.MenuItem.Karaoke room" = "KTV";
+"ASKit.MenuItem.Small room" = "小房间";
+"ASKit.MenuItem.Big hall" = "大会堂";
+"ASKit.MenuItem.Deep" = "低沉";
+"ASKit.MenuItem.Resonant" = "洪亮";
+"ASKit.MenuItem.Metallic" = "金属声";
+"ASKit.MenuItem.Husky" = "磁性";
+
+
+"Demo.TRTC.VoiceRoom.audience" = "观众";
+"Demo.TRTC.VoiceRoom.unlock" = "解锁";
+"Demo.TRTC.VoiceRoom.lock" = "锁定";
+"Demo.TRTC.VoiceRoom.agree" = "同意";
+"Demo.TRTC.VoiceRoom.invite" = "邀请";
+"Demo.TRTC.VoiceRoom.earmonitor" = "耳返";
+"Demo.TRTC.VoiceRoom.tools" = "工具";
+"Demo.TRTC.VoiceRoom.back" = "返回";
+"Demo.TRTC.VoiceRoom.roomname" = "房间名称";
+"Demo.TRTC.VoiceRoom.roomidxx" = "房间ID: xxx";
+"Demo.TRTC.VoiceRoom.xxenterroom" = "xxx 进入房间";
+"Demo.TRTC.VoiceRoom.useearphones" = "请带上耳机获得更好体验";
+"Demo.TRTC.VoiceRoom.copyrights" = "版权曲库©";
+"Demo.TRTC.VoiceRoom.createroom" = "创建房间";
+"Demo.TRTC.VoiceRoom.roomsubject" = "房间主题";
+"Demo.TRTC.VoiceRoom.enterroomsubject" = "请输入房间主题（最多60字）";
+"Demo.TRTC.VoiceRoom.starttalking" = "开始交谈";
+"Demo.TRTC.VoiceRoom.xxxsroom" = "xxx的房间";
+"Demo.TRTC.VoiceRoom.musicname1" = "欢快";
+"Demo.TRTC.VoiceRoom.musicname2" = "忧郁";
+"Demo.TRTC.VoiceRoom.musicname3" = "神奇世界";
+
+"Demo.TRTC.Login.enterphonenumber" = "请输入手机号";
+"Demo.TRTC.Login.enterverificationcode" = "请输入验证码";
+"Demo.TRTC.Login.getverificationcode" = "获取验证码";
+"Demo.TRTC.Login.login" = "登录";
+"Demo.TRTC.Login.registsuccess" = "注册成功";
+"Demo.TRTC.Login.regist" = "注册";
+"Demo.TRTC.Login.enterusername" = "请输入用户昵称";
+"Demo.TRTC.Login.setavatar" = "设置头像";
+"Demo.TRTC.Login.done" = "确认";
+"Demo.TRTC.Login.limit20count" = "仅限中文、字母、数字和下划线，2-20个字";
+
+"Demo.TRTC.VoiceRoom.welcome" = "欢迎体验TRTC语聊房！\n进一步了解如何快速搭建语聊房，请点击：\nxxx";

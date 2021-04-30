@@ -37,30 +37,37 @@ class TRTCVoiceRoomSeatView: UIView {
         fatalError("can't init this viiew from coder")
     }
     
-    override func draw(_ rect: CGRect) {
-        super.draw(rect)
-        guard !isGetBounds else {
-            return
-        }
-        
-        let width = self.frame.width
-        avatarImageView.layer.cornerRadius = width / 2.0
-        avatarImageView.layer.masksToBounds = true
+    deinit {
+        TRTCLog.out("seat view deinit")
     }
     
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
+        avatarImageView.layer.cornerRadius = avatarImageView.frame.height*0.5
+        
+        speakView.layer.cornerRadius = speakView.frame.height*0.5
+        speakView.layer.borderWidth = 4
+        speakView.layer.borderColor = UIColor.init(0x0FA968).cgColor
+    }
+    let speakView: UIView = {
+        let view = UIView.init()
+        view.backgroundColor = UIColor.clear
+        view.isHidden = true
+        return view
+    }()
     let avatarImageView: UIImageView = {
         let imageView = UIImageView.init(frame: .zero)
         imageView.contentMode = .scaleAspectFit
         imageView.image = UIImage.init(named: "voiceroom_placeholder_avatar")
+        imageView.layer.masksToBounds = true
         return imageView
     }()
     
     let muteImageView: UIImageView = {
         let imageView = UIImageView.init(frame: .zero)
         imageView.contentMode = .scaleAspectFit
-        imageView.image = UIImage.init(named: "voiceroom_mic_dis")
+        imageView.image = UIImage.init(named: "audience_voice_off")
         imageView.isHidden = true
-        imageView.alpha = 0.8
         return imageView
     }()
     
@@ -72,6 +79,7 @@ class TRTCVoiceRoomSeatView: UIView {
         label.textAlignment = .center
         label.numberOfLines = 1
         label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = 0.5
         return label
     }()
     
@@ -95,21 +103,25 @@ class TRTCVoiceRoomSeatView: UIView {
         addSubview(avatarImageView)
         addSubview(muteImageView)
         addSubview(nameLabel)
+        avatarImageView.addSubview(speakView)
     }
 
     func activateConstraints() {
         /// 此方法内只给子视图做布局,使用:AutoLayout布局
         avatarImageView.snp.makeConstraints { (make) in
-            make.top.left.right.equalToSuperview()
-            make.height.equalTo(snp.width)
+            make.top.centerX.width.equalToSuperview()
+            make.height.equalTo(avatarImageView.snp_width)
         }
         muteImageView.snp.makeConstraints { (make) in
-            make.center.equalTo(avatarImageView.snp.center)
-            make.height.width.equalTo(snp.width).multipliedBy(0.5)
+            make.trailing.bottom.equalTo(avatarImageView)
         }
         nameLabel.snp.makeConstraints { (make) in
-            make.left.right.equalToSuperview()
-            make.bottom.equalToSuperview()
+            make.leading.trailing.bottom.equalToSuperview()
+            make.top.equalTo(avatarImageView.snp_bottom).offset(8)
+            make.width.lessThanOrEqualTo(120)
+        }
+        speakView.snp.makeConstraints { (make) in
+            make.edges.equalToSuperview()
         }
     }
 
@@ -117,14 +129,29 @@ class TRTCVoiceRoomSeatView: UIView {
         /// 此方法负责做viewModel和视图的绑定操作
     }
     
-    func setSeatInfo(model: SeatInfoModel) {
+    func isMute(userId: String, map: [String:Bool]) -> Bool {
+        if map.keys.contains(userId) {
+            return map[userId]!
+        }
+        return true
+    }
+    
+    func setSeatInfo(model: SeatInfoModel, userMuteMap: [String:Bool]) {
         if model.isClosed {
             // close 状态
-            avatarImageView.image = UIImage.init(named: "voiceroom_seat_lock")
-            nameLabel.text = .lockedText
+            avatarImageView.image = UIImage.init(named: "room_lockseat")
+            nameLabel.text = ""//.lockedText
             return
         }
-        muteImageView.isHidden = !(model.seatInfo?.mute ?? false)
+        
+        if let user = model.seatUser {
+            let userMute = isMute(userId: user.userId, map: userMuteMap)
+            muteImageView.isHidden = !((model.seatInfo?.mute ?? false) || userMute)
+        }
+        else {
+            muteImageView.isHidden = true
+        }
+        
         if model.isUsed {
             // 有人
             if let userSeatInfo = model.seatUser {
@@ -133,8 +160,14 @@ class TRTCVoiceRoomSeatView: UIView {
             }
         } else {
             // 无人
-            avatarImageView.image = UIImage.init(named: "voiceroom_placeholder_avatar")
-            nameLabel.text = model.isOwner ? .inviteHandsupText : .handsupText
+            avatarImageView.image = UIImage.init(named: "Servingwheat")
+            nameLabel.text = ""
+                //model.isOwner ? .inviteHandsupText : .handsupText
+        }
+        if (model.isTalking) {
+            speakView.isHidden = false
+        } else {
+            speakView.isHidden = true
         }
     }
 }

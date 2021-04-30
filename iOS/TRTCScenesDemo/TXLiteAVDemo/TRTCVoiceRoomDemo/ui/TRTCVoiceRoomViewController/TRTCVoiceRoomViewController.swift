@@ -36,7 +36,12 @@ public class TRTCVoiceRoomViewController: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         title = "\(roomInfo.roomName)\(roomInfo.roomID)"
-        let backItem = UIBarButtonItem.init(image: UIImage.init(named: "navigationbar_back"), style: .plain, target: self, action: #selector(cancel))
+        
+        let backBtn = UIButton(type: .custom)
+        backBtn.setImage(UIImage(named: "navigationbar_back"), for: .normal)
+        backBtn.addTarget(self, action: #selector(cancel), for: .touchUpInside)
+        backBtn.sizeToFit()
+        let backItem = UIBarButtonItem(customView: backBtn)
         self.navigationItem.leftBarButtonItem = backItem
         guard let model = viewModel else { return }
         if model.roomType == .audience {
@@ -44,6 +49,11 @@ public class TRTCVoiceRoomViewController: UIViewController {
         } else {
             model.createRoom(toneQuality: toneQuality.rawValue)
         }
+    }
+    
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
     }
     
     public override func viewDidAppear(_ animated: Bool) {
@@ -106,7 +116,6 @@ private extension String {
     static let sureToExitText = TRTCLocalize("Demo.TRTC.VoiceRoom.isvoicingandsuretoexit")
     static let confirmText = TRTCLocalize("Demo.TRTC.LiveRoom.confirm")
     static let cancelText = TRTCLocalize("Demo.TRTC.LiveRoom.cancel")
-    
 }
 
 

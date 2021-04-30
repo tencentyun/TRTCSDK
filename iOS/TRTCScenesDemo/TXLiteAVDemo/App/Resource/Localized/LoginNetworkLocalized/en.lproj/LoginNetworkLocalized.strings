@@ -14,3 +14,6 @@
 "LoginNetwork.ProfileManager.loginfailed" = "Login failed. Please try again later.";
 "LoginNetwork.ProfileManager.registerfailed" = "Registration failed. Please try again later";
 "LoginNetwork.ProfileManager.queryfailed" = "Query failed. Please try again later.";
+
+"Demo.TRTC.Login.welcome" = "Welcome to Tencent Real-Time Communication";
+"Demo.TRTC.Login.countrycode" = "Country Code";

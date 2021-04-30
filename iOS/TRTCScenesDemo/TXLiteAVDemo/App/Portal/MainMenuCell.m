@@ -12,14 +12,23 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *iconView;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *descLabel;
 
 @end
 
 @implementation MainMenuCell
 
+- (instancetype)initWithFrame:(CGRect)frame {
+    if (self = [super initWithFrame:frame]) {
+//        self.layer.cornerRadius = 10;
+    }
+    return self;
+}
+
 - (void)setItem:(MainMenuItem *)item {
     self.iconView.image = item.icon;
     self.titleLabel.text = item.title;
+    self.descLabel.text = item.content;
 }
 
 @end

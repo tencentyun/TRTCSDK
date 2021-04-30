@@ -98,7 +98,7 @@ class LiveRoomMainViewController: UIViewController {
     private func initNavigationItemTitleView() {
         let titleView = UILabel()
         titleView.text = .videoInteractionText
-        titleView.textColor = .white
+        titleView.textColor = .black
         titleView.textAlignment = .center
         titleView.font = UIFont.boldSystemFont(ofSize: 17)
         titleView.adjustsFontSizeToFitWidth = true
@@ -117,9 +117,25 @@ class LiveRoomMainViewController: UIViewController {
             rightCDN.title = ""
         }
         
-        let rightItem = UIBarButtonItem.init(image: UIImage.init(named: "help_small"), style: .plain, target: self, action: #selector(connectWeb))
+        let helpBtn = UIButton(type: .custom)
+        helpBtn.setImage(UIImage(named: "help_small"), for: .normal)
+        helpBtn.addTarget(self, action: #selector(connectWeb), for: .touchUpInside)
+        helpBtn.sizeToFit()
+        let rightItem = UIBarButtonItem(customView: helpBtn)
+        rightItem.tintColor = .black
         navigationItem.rightBarButtonItems = [rightItem, rightCDN]
         
+        let backBtn = UIButton(type: .custom)
+        backBtn.setImage(UIImage(named: "liveroom_back"), for: .normal)
+        backBtn.addTarget(self, action: #selector(backBtnClick), for: .touchUpInside)
+        backBtn.sizeToFit()
+        let backItem = UIBarButtonItem(customView: backBtn)
+        backItem.tintColor = .black
+        navigationItem.leftBarButtonItem = backItem
+    }
+    
+    @objc func backBtnClick() {
+        navigationController?.popViewController(animated: true)
     }
     
     @objc func connectWeb() {

@@ -30,10 +30,10 @@ class TRTCMeetingMoreViewShareVC: UIViewController {
         
         button.setTitle(.shareText, for: .normal)
         button.backgroundColor = .buttonBackColor
-        button.titleLabel?.textColor = .white
+        button.titleLabel?.textColor = .black
         button.contentHorizontalAlignment = .center
         button.layer.masksToBounds = true
-        button.layer.cornerRadius = 4
+        button.layer.cornerRadius = 15
         button.addTarget(self, action: #selector(shareQRCode), for: .touchUpInside)
         
         return button

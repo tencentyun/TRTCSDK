@@ -218,6 +218,13 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setAuidoQuality:(NSInteger)quality NS_SWIFT_NAME(setAuidoQuality(quality:));
 
 /**
+* 开启/关闭 耳返
+*
+* - parameter enable 开启/关闭
+*/
+- (void)setVoiceEarMonitorEnable:(BOOL)enable NS_SWIFT_NAME(setVoiceEarMonitor(enable:));
+
+/**
 * 开启本地静音
 *
 * - parameter mute 是否静音
@@ -317,6 +324,8 @@ NS_ASSUME_NONNULL_BEGIN
 * - parameter callback     接受操作的回调
 */
 - (void)cancelInvitation:(NSString *)identifier callback:(ActionCallback _Nullable)callback NS_SWIFT_NAME(cancelInvitation(identifier:callback:));
+
+
 
 @end
 

@@ -13,14 +13,14 @@ import NVActivityIndicatorView
 class CallingSelectUserTableViewCell: UITableViewCell {
     private var isViewReady = false
     private var buttonAction: (() -> Void)?
-    lazy var userImg: UIImageView = {
+    lazy var userImageView: UIImageView = {
        let img = UIImageView()
         return img
     }()
     
     lazy var nameLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .white
+        label.textColor = .black
         label.backgroundColor = .clear
         return label
     }()
@@ -30,7 +30,7 @@ class CallingSelectUserTableViewCell: UITableViewCell {
         button.backgroundColor = UIColor.appTint
         button.setTitle(TRTCLocalize("Demo.TRTC.Streaming.call"), for: .normal)
         button.setTitleColor(.white, for: .normal)
-        button.layer.cornerRadius = 4.0
+        button.layer.cornerRadius = 15
         return button
     }()
     
@@ -38,8 +38,8 @@ class CallingSelectUserTableViewCell: UITableViewCell {
         super.didMoveToWindow()
         guard !isViewReady else { return }
         isViewReady = true
-        contentView.addSubview(userImg)
-        userImg.snp.remakeConstraints { (make) in
+        contentView.addSubview(userImageView)
+        userImageView.snp.remakeConstraints { (make) in
             make.leading.equalToSuperview().offset(20)
             make.width.height.equalTo(50)
             make.centerY.equalTo(self)
@@ -47,7 +47,7 @@ class CallingSelectUserTableViewCell: UITableViewCell {
         
         contentView.addSubview(nameLabel)
         nameLabel.snp.remakeConstraints { (make) in
-            make.leading.equalTo(userImg.snp.trailing).offset(12)
+            make.leading.equalTo(userImageView.snp.trailing).offset(12)
             make.trailing.top.bottom.equalTo(self)
         }
         
@@ -69,9 +69,9 @@ class CallingSelectUserTableViewCell: UITableViewCell {
     
     func config(model: UserModel, selected: Bool = false, action: (() -> Void)? = nil) {
         backgroundColor = .clear
-        userImg.sd_setImage(with: URL(string: model.avatar), completed: nil)
-        userImg.layer.masksToBounds = true
-        userImg.layer.cornerRadius = 25
+        userImageView.sd_setImage(with: URL(string: model.avatar), completed: nil)
+        userImageView.layer.masksToBounds = true
+        userImageView.layer.cornerRadius = 25
         nameLabel.text = model.name
         buttonAction = action
     }

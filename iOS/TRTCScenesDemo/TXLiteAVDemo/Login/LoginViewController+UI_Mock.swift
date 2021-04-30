@@ -1,5 +1,5 @@
 //
-//  LoginViewController+UI.swift
+//  TRTCLoginViewController+UI.swift
 //  trtcScenesDemo
 //
 //  Created by xcoderliu on 12/16/19.
@@ -13,7 +13,7 @@ import SnapKit
 import Material
 import Toast_Swift
 
-extension LoginViewController {
+extension TRTCLoginViewController {
     
     /// 绘制UI
     func setupUI() {
@@ -170,7 +170,7 @@ extension LoginViewController {
 
 //MARK: - UITextFieldDelegate
 
-extension LoginViewController: UITextFieldDelegate {
+extension TRTCLoginViewController: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let maxCount = 11
         guard let textFieldText = textField.text,

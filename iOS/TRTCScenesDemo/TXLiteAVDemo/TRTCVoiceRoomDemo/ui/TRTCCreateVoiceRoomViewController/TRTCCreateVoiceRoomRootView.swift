@@ -1,448 +1,275 @@
 //
 //  TRTCCreateVoiceRoomRootView.swift
-//  TRTCVoiceRoomDemo
+//  TXLiteAVDemo
 //
-//  Created by abyyxwang on 2020/6/4.
-//  Copyright © 2020 tencent. All rights reserved.
+//  Created by gg on 2021/3/22.
+//  Copyright © 2021 Tencent. All rights reserved.
 //
 
-import UIKit
-import SnapKit
-import Toast_Swift
+import Foundation
 
 class TRTCCreateVoiceRoomRootView: UIView {
     
-    private var isViewReady: Bool = false
+    private let bgView : UIView = {
+        let bg = UIView(frame: .zero)
+        bg.backgroundColor = .black
+        bg.alpha = 0.6
+        return bg
+    }()
+    
+    private let contentView : UIView = {
+        let view = UIView(frame: .zero)
+        view.backgroundColor = .white
+        return view
+    } ()
+    
+    private let titleLabel : UILabel = {
+        let label = UILabel(frame: .zero)
+        label.font = UIFont(name: "PingFangSC-Medium", size: 24)
+        label.textColor = .black
+        label.textAlignment = .left
+        label.text = .titleText
+        return label
+    }()
+    
+    private lazy var textView : UITextView = {
+        let textView = UITextView(frame: .zero)
+        textView.font = UIFont(name: "PingFangSC-Regular", size: 16)
+        textView.textContainerInset = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
+        textView.text = LocalizeReplaceXX(.defaultCreateText, viewModel.userName)
+        textView.textColor = .black
+        textView.layer.cornerRadius = 20
+        textView.backgroundColor = UIColor(hex: "F4F5F9")
+        return textView
+    }()
+    
+    private let createBtn : UIButton = {
+        let btn = UIButton(type: .custom)
+        btn.setTitle(.createText, for: .normal)
+        btn.titleLabel?.textColor = .white
+        btn.titleLabel?.font = UIFont(name: "PingFangSC-Medium", size: 18)
+        btn.setBackgroundImage((UIColor(hex: "006EFF") ?? UIColor.blue).trans2Image(), for: .normal)
+        btn.isEnabled = true
+        btn.clipsToBounds = true
+        return btn
+    }()
+    
+    private func createScreenShot() {
+        guard let view = viewModel.screenShot else {
+            return
+        }
+        insertSubview(view, belowSubview: bgView)
+        view.snp.makeConstraints { (make) in
+            make.edges.equalToSuperview()
+        }
+    }
+    
     private let viewModel: TRTCCreateVoiceRoomViewModel
     
     weak var rootViewController: UIViewController?
-    
-    required init?(coder: NSCoder) {
-        fatalError("init corder is not permit in this view")
-    }
     
     init(viewModel: TRTCCreateVoiceRoomViewModel, frame: CGRect = .zero) {
         self.viewModel = viewModel
         super.init(frame: frame)
         bindInteraction()
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardFrameChange(noti:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
     }
     
     deinit {
-        TRTCLog.out("deinit \(type(of: self))")
+        NotificationCenter.default.removeObserver(self)
     }
     
-    let backgroundLayer: CALayer = {
-        // fillCode
-        let layer = CAGradientLayer()
-        layer.colors = [UIColor.init(0x13294b).cgColor, UIColor.init(0x000000).cgColor]
-        layer.locations = [0.2, 1.0]
-        layer.startPoint = CGPoint(x: 0.4, y: 0)
-        layer.endPoint = CGPoint(x: 0.6, y: 1.0)
-        return layer
-    }()
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
-    // 输入框
-    let inputContainer: UIView = {
-        let view = UIView.init(frame: .zero)
-        // fillCode
-        let layer = CAGradientLayer()
-        layer.colors = [UIColor(red: 0.05, green: 0.17, blue: 0.36, alpha: 1).cgColor, UIColor(red: 0.07, green: 0.15, blue: 0.33, alpha: 1).cgColor]
-        layer.locations = [0, 1]
-        layer.frame = CGRect.init(origin: .zero, size: .init(width: UIScreen.main.bounds.width - 40, height: 113))
-        layer.startPoint = CGPoint(x: 0.26, y: 0.13)
-        layer.endPoint = CGPoint(x: 0.92, y: 0.92)
-        view.layer.addSublayer(layer)
-        return view
-    }()
+    @objc
+    func keyboardFrameChange(noti : Notification) {
+        guard let info = noti.userInfo else {
+            return
+        }
+        guard let value = info[UIResponder.keyboardFrameEndUserInfoKey], value is CGRect else {
+            return
+        }
+        let rect = value as! CGRect
+        transform = CGAffineTransform(translationX: 0, y: -ScreenHeight+rect.minY)
+    }
     
-    let roomNumberLabel: UILabel = {
-        let label = UILabel.init(frame: .zero)
-        label.text = .topicText
-        label.font = UIFont.systemFont(ofSize: 16.0)
-        label.textColor = UIColor.init(0xEBF4FF)
-        label.textAlignment = .left
-        label.adjustsFontSizeToFitWidth = true
-        return label
-    }()
+    var isViewReady = false
     
-    let roomNameInputTextFiled: UITextField = {
-        let textField = UITextField.init(frame: .zero)
-        textField.attributedPlaceholder = NSAttributedString.init(string: .enterTopicText, attributes: [.font: UIFont.systemFont(ofSize: 16.0), .foregroundColor: UIColor.placeholderBackColor])
-        textField.textColor = UIColor.init(0xEBF4FF)
-        textField.font = UIFont.systemFont(ofSize: 16.0)
-        return textField
-    }()
-
-    
-    let cuttingLine: UIView = {
-        let view = UIView.init(frame: .zero)
-        view.backgroundColor = UIColor.init(0xFFFFFF, alpha: 0.11)
-        return view
-    }()
-    
-    let userNameLabel: UILabel = {
-        let label = UILabel.init(frame: .zero)
-        label.text = .nicknameText
-        label.font = UIFont.systemFont(ofSize: 16.0)
-        label.textColor = UIColor.init(0xEBF4FF)
-        label.textAlignment = .left
-        label.adjustsFontSizeToFitWidth = true
-        return label
-    }()
-    
-    let userNameTextFiled: UITextField = {
-        let textField = UITextField.init(frame: .zero)
-        textField.attributedPlaceholder = NSAttributedString.init(string: .enterNicknameText, attributes: [.font: UIFont.systemFont(ofSize: 16.0), .foregroundColor: UIColor.placeholderBackColor])
-        textField.textColor = UIColor.init(0xEBF4FF)
-        textField.font = UIFont.systemFont(ofSize: 16.0)
-        return textField
-    }()
-    
-    let roleLabel: UILabel = {
-        let label = UILabel.init(frame: .zero)
-        label.text = .agreeSpeakerText
-        label.font = UIFont.systemFont(ofSize: 16.0)
-        label.textColor = UIColor.init(0xEBF4FF)
-        label.textAlignment = .left
-        return label
-    }()
-    
-    let roleButtonStack: UIStackView = {
-        let stack = UIStackView.init(frame: .zero)
-        stack.axis = .horizontal
-        stack.distribution = .equalSpacing
-        stack.alignment = .center
-        return stack
-    }()
-    
-    let roleSwitchButton: UISwitch = {
-        let roleSwitchButton = UISwitch.init()
-        roleSwitchButton.isOn = true // 默认同意
-        roleSwitchButton.onTintColor = .buttonBackColor
-        return roleSwitchButton
-    }()
-    
-    let toneQualityLabel: UILabel = {
-        let label = UILabel.init(frame: .zero)
-        label.text = .qualitySelectText
-        label.font = UIFont.systemFont(ofSize: 16.0)
-        label.textColor = UIColor.init(0xEBF4FF)
-        label.textAlignment = .left
-        return label
-    }()
-    
-    let toneQualityStack: UIStackView = {
-        let stack = UIStackView.init(frame: .zero)
-        stack.axis = .horizontal // 布局方向
-        stack.distribution = .equalSpacing // 主方向上的排布方式
-        stack.alignment = .center // 子方向的对齐方式
-        return stack
-    }()
-    
-    let heightQualityButton: UIButton = {
-        let button = UIButton.init(type: .custom)
-        button.setTitle(.musicText, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16.0)
-        button.setImage(UIImage.init(named: "voiceroom_oval"), for: .normal)
-        button.setImage(UIImage.init(named: "voiceroom_selected"), for: .selected)
-        button.contentHorizontalAlignment = .left
-        button.contentEdgeInsets = UIEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 0)
-        button.imageEdgeInsets = UIEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 5)
-        button.titleEdgeInsets = UIEdgeInsets.init(top: 0, left: 5, bottom: 0, right: 0)
-        button.imageView?.contentMode = .scaleAspectFit
-        button.titleLabel?.adjustsFontSizeToFitWidth = true
-        button.titleLabel?.minimumScaleFactor = 0.5
-        return button
-    }()
-    
-    let mediumQualityButton: UIButton = {
-        let button = UIButton.init(type: .custom)
-        button.setTitle(.standardText, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16.0)
-        button.setImage(UIImage.init(named: "voiceroom_oval"), for: .normal)
-        button.setImage(UIImage.init(named: "voiceroom_selected"), for: .selected)
-        button.contentHorizontalAlignment = .left
-        button.contentEdgeInsets = UIEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 0)
-        button.imageEdgeInsets = UIEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 5)
-        button.titleEdgeInsets = UIEdgeInsets.init(top: 0, left: 5, bottom: 0, right: 0)
-        button.imageView?.contentMode = .scaleAspectFit
-        button.titleLabel?.adjustsFontSizeToFitWidth = true
-        button.titleLabel?.minimumScaleFactor = 0.5
-        return button
-    }()
-    
-    let lowQualityButton: UIButton = {
-        let button = UIButton.init(type: .custom)
-        button.setTitle(.voiceText, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16.0)
-        button.setImage(UIImage.init(named: "voiceroom_oval"), for: .normal)
-        button.setImage(UIImage.init(named: "voiceroom_selected"), for: .selected)
-        button.contentHorizontalAlignment = .left
-        button.contentEdgeInsets = UIEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 0)
-        button.imageEdgeInsets = UIEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 5)
-        button.titleEdgeInsets = UIEdgeInsets.init(top: 0, left: 5, bottom: 0, right: 0)
-        button.imageView?.contentMode = .scaleAspectFit
-        button.titleLabel?.adjustsFontSizeToFitWidth = true
-        button.titleLabel?.minimumScaleFactor = 0.5
-        return button
-    }()
-    
-    let enterRoomButton: UIButton = {
-        let button = UIButton.init(type: .custom)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16.0)
-        button.setTitleColor(UIColor.init(0x56749E), for: .disabled)
-        button.setTitleColor(UIColor.init(0xFFFFFF), for: .normal)
-        button.setTitle(.createChatroomText, for: .normal)
-        button.setBackgroundImage(UIColor.inputImageBackColor.trans2Image(), for: .disabled)
-        button.setBackgroundImage(UIColor.buttonBackColor.trans2Image(), for: .normal)
-        return button
-    }()
-    
-    let tipsLabel: UILabel = {
-        let label = UILabel.init(frame: .zero)
-        label.text = ""
-        label.font = UIFont.systemFont(ofSize: 16.0)
-        label.textColor = .placeholderBackColor
-        label.textAlignment = .center
-        label.adjustsFontSizeToFitWidth = true
-        return label
-    }()
-    
-    // MARK: - 视图生命周期
     override func didMoveToWindow() {
         super.didMoveToWindow()
         guard !isViewReady else {
             return
         }
         isViewReady = true
-        constructViewHierarchy() // 视图层级布局
-        activateConstraints() // 生成约束（此时有可能拿不到父视图正确的frame）
+        constructViewHierarchy()
+        activateConstraints()
+        bindInteraction()
+        createScreenShot()
     }
     
-    func constructViewHierarchy() {
-        /// 此方法内只做add子视图操作
-        backgroundLayer.frame = self.bounds;
-        layer.insertSublayer(backgroundLayer, at: 0)
-        // 输入区域
-        addSubview(inputContainer)
-        inputContainer.addSubview(roomNumberLabel)
-        inputContainer.addSubview(roomNameInputTextFiled)
-        inputContainer.addSubview(cuttingLine)
-        inputContainer.addSubview(userNameLabel)
-        inputContainer.addSubview(userNameTextFiled)
-        // 设置区域
-        addSubview(roleButtonStack)
-        roleButtonStack.addArrangedSubview(roleLabel)
-        roleButtonStack.addArrangedSubview(roleSwitchButton)
-        addSubview(toneQualityStack)
-        toneQualityStack.addArrangedSubview(toneQualityLabel)
-        toneQualityStack.addArrangedSubview(heightQualityButton)
-        toneQualityStack.addArrangedSubview(mediumQualityButton)
-        // 进入按钮区域
-        addSubview(enterRoomButton)
-        addSubview(tipsLabel)
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
+        createBtn.layer.cornerRadius = createBtn.frame.height*0.5
+        contentView.roundedRect(rect: contentView.bounds, byRoundingCorners: [.topLeft, .topRight], cornerRadii: CGSize(width: 12, height: 12))
     }
-
-    func activateConstraints() {
-        activateConstraintsOfInput()
-        activateConstraintsOfButtonItem()
-        activateConstraintsOfEnterRoom()
+    
+    private func constructViewHierarchy() {
+        addSubview(bgView)
+        addSubview(contentView)
+        contentView.addSubview(titleLabel)
+        contentView.addSubview(textView)
+        contentView.addSubview(createBtn)
     }
-
-    func bindInteraction() {
-        roleSwitchButton.isOn = viewModel.needRequest
-        heightQualityButton.isSelected = true
-        roomNameInputTextFiled.delegate = self
-        userNameTextFiled.delegate = self
-        
-        roomNameInputTextFiled.text = viewModel.roomName
-        userNameTextFiled.text = viewModel.userName
-        /// 此方法负责做viewModel和视图的绑定操作
-        roleSwitchButton.addTarget(self, action: #selector(roleAction(_:)), for: .touchUpInside)
-        heightQualityButton.addTarget(self, action: #selector(qulityAction(_:)), for: .touchUpInside)
-        mediumQualityButton.addTarget(self, action: #selector(qulityAction(_:)), for: .touchUpInside)
-        enterRoomButton.addTarget(self, action: #selector(enterRoomAction(_:)), for: .touchUpInside)
+    
+    private func activateConstraints() {
+        bgView.snp.makeConstraints { (make) in
+            make.edges.equalToSuperview()
+        }
+        contentView.snp.makeConstraints { (make) in
+            make.leading.trailing.bottom.equalToSuperview()
+        }
+        titleLabel.snp.makeConstraints { (make) in
+            make.leading.equalToSuperview().offset(20)
+            make.top.equalToSuperview().offset(32)
+        }
+        textView.snp.makeConstraints { (make) in
+            make.leading.equalToSuperview().offset(20)
+            make.trailing.equalToSuperview().offset(-20)
+            make.top.equalTo(titleLabel.snp_bottom).offset(20)
+            make.height.equalTo(176)
+        }
+        createBtn.snp.makeConstraints { (make) in
+            make.centerX.equalToSuperview()
+            make.top.equalTo(textView.snp_bottom).offset(32)
+            make.height.equalTo(52)
+            make.width.equalTo(160)
+            make.bottom.equalToSuperview().offset(-54)
+        }
+    }
+    
+    private func bindInteraction() {
+        createBtn.addTarget(self, action: #selector(createBtnClick), for: .touchUpInside)
+        textView.delegate = self
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesBegan(touches, with: event)
-        self.endEditing(true)
-    }
-}
-
-extension TRTCCreateVoiceRoomRootView: UITextFieldDelegate {
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
-    }
-    
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if textField == roomNameInputTextFiled {
-            // 限制只能输入数字
-            return true
-        } else if textField == userNameTextFiled {
-            // 可以对输入做限制
-            return true
-        }
-        return true
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        if textField == roomNameInputTextFiled {
-            viewModel.roomName = textField.text ?? ""
-        } else {
-            viewModel.userName = textField.text ?? ""
-        }
-    }
-}
-
-extension TRTCCreateVoiceRoomRootView {
-    
-    @objc
-    func roleAction(_ sender: UISwitch) {
-        viewModel.needRequest = sender.isOn
-    }
-   
-    @objc
-    func qulityAction(_ sender: UIButton) {
-        heightQualityButton.isSelected = sender == heightQualityButton
-        mediumQualityButton.isSelected = sender == mediumQualityButton
-        lowQualityButton.isSelected = sender == lowQualityButton
-        var quality = VoiceRoomToneQuality.music
-        if mediumQualityButton.isSelected {
-            quality = .defaultQuality
-        }
-        if lowQualityButton.isSelected {
-            quality = .speech
-        }
-        viewModel.toneQuality = quality
-    }
-    
-    @objc
-    func enterRoomAction(_ sender: UIButton) {
-        // 获取输入
-        guard let roomNameString = roomNameInputTextFiled.text, let userNameString = userNameTextFiled.text else {
+        guard let point = touches.first?.location(in: self) else {
             return
         }
-        guard roomNameString != "" && userNameString != ""  else {
-            makeToast(.nameisNullText)
-            return
+        if contentView.frame.contains(point) {
+            textView.endEdit()
         }
-        viewModel.roomName = roomNameString
-        viewModel.userName = userNameString
+        else {
+            textView.resignFirstResponder()
+            rootViewController?.navigationController?.popViewController(animated: false)
+        }
+    }
+    
+    @objc
+    func createBtnClick() {
+        if textView.isFirstResponder {
+            textView.resignFirstResponder()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
+                guard let `self` = self else { return }
+                self.enterRoom()
+            }
+        }
+        else {
+            enterRoom()
+        }
+    }
+    
+    private func enterRoom() {
+        if textView.text == String.placeholderTitleText {
+            viewModel.roomName = LocalizeReplaceXX(.defaultCreateText, viewModel.userName)
+        }
+        else {
+            viewModel.roomName = textView.text
+        }
         viewModel.createRoom()
     }
 }
 
-extension TRTCCreateVoiceRoomRootView: TRTCCreateVoiceRoomViewResponder {
+
+extension TRTCCreateVoiceRoomRootView : UITextViewDelegate {
+    func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
+        textView.beganEdit()
+        return true
+    }
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        textView.becomeFirstResponder()
+    }
+    func textViewDidEndEditing(_ textView: UITextView) {
+        textView.endEdit()
+        createBtn.isEnabled = textView.text != String.placeholderTitleText
+    }
+    func textViewDidChange(_ textView: UITextView) {
+        createBtn.isEnabled = textView.text != ""
+    }
+}
+
+extension UITextView {
+    func beganEdit() {
+        if self.text == String.placeholderTitleText {
+            self.text = ""
+            self.textColor = .black
+        }
+    }
+    func endEdit() {
+        if self.text == "" {
+            self.text = .placeholderTitleText
+            self.textColor = UIColor(hex: "BBBBBB")
+        }
+        self.resignFirstResponder()
+    }
+}
+extension UIView {
+    /// 切部分圆角
+    ///
+    /// - Parameters:
+    ///   - rect: 传入View的Rect
+    ///   - byRoundingCorners: 裁剪位置
+    ///   - cornerRadii: 裁剪半径
+    public func roundedRect(rect:CGRect, byRoundingCorners: UIRectCorner, cornerRadii: CGSize) {
+        let maskPath = UIBezierPath.init(roundedRect: rect, byRoundingCorners: byRoundingCorners, cornerRadii: cornerRadii)
+        let maskLayer = CAShapeLayer.init()
+        maskLayer.frame = bounds
+        maskLayer.path = maskPath.cgPath
+        self.layer.mask = maskLayer
+    }
+    
+    /// 切圆角
+    ///
+    /// - Parameter rect: 传入view的Rect
+    public func roundedCircle(rect: CGRect) {
+        roundedRect(rect: rect, byRoundingCorners: .allCorners, cornerRadii: CGSize(width: bounds.size.width / 2, height: bounds.size.height / 2))
+    }
+}
+
+extension TRTCCreateVoiceRoomRootView : TRTCCreateVoiceRoomViewResponder {
     func push(viewController: UIViewController) {
         rootViewController?.navigationController?.pushViewController(viewController, animated: true)
-    }
-}
-
-// MARK: - 自动化约束
-extension TRTCCreateVoiceRoomRootView {
-    func activateConstraintsOfInput() {
-        inputContainer.snp.makeConstraints { (make) in
-            make.left.equalToSuperview().offset(20)
-            make.right.equalToSuperview().offset(-20)
-            if #available(iOS 11.0, *) {
-                make.top.equalTo(safeAreaLayoutGuide.snp.top).offset(15)
-            } else {
-                 make.top.equalToSuperview().offset(15)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+            guard let `self` = self else { return }
+            guard let vc = self.rootViewController else { return }
+            guard let vcs = vc.navigationController?.viewControllers else {
+                return
             }
-            make.height.equalTo(113)
-        }
-        cuttingLine.snp.makeConstraints { (make) in
-            make.centerY.equalToSuperview()
-            make.left.equalToSuperview().offset(16)
-            make.right.equalToSuperview().offset(-16)
-            make.height.equalTo(0.5)
-        }
-        roomNumberLabel.snp.makeConstraints { (make) in
-            make.top.equalToSuperview()
-            make.bottom.equalTo(cuttingLine.snp.top)
-            make.left.equalTo(cuttingLine.snp.left)
-            make.width.equalTo(55)
-        }
-        roomNameInputTextFiled.snp.makeConstraints { (make) in
-            make.right.equalTo(cuttingLine.snp.right)
-            make.top.equalToSuperview()
-            make.bottom.equalTo(cuttingLine.snp.top)
-            make.left.equalTo(roomNumberLabel.snp.right).offset(30)
-        }
-        userNameLabel.snp.makeConstraints { (make) in
-            make.bottom.equalToSuperview()
-            make.top.equalTo(cuttingLine.snp.bottom)
-            make.left.equalTo(cuttingLine.snp.left)
-            make.width.equalTo(55)
-        }
-        userNameTextFiled.snp.makeConstraints { (make) in
-            make.right.equalTo(cuttingLine.snp.right)
-            make.bottom.equalToSuperview()
-            make.top.equalTo(cuttingLine.snp.bottom)
-            make.left.equalTo(userNameLabel.snp.right).offset(30)
-        }
-    }
-    
-    func activateConstraintsOfButtonItem() {
-        
-        roleButtonStack.snp.makeConstraints { (make) in
-            make.top.equalTo(inputContainer.snp.bottom).offset(30)
-            make.left.equalToSuperview().offset(36)
-            make.right.equalToSuperview().offset(-36)
-            make.height.equalTo(24)
-        }
-        roleLabel.sizeToFit()
-        [roleSwitchButton].forEach { (button) in
-            button.snp.makeConstraints { (make) in
-                make.height.equalTo(24)
-                make.width.equalTo(60)
+            var controllers = vcs
+            if let index = controllers.firstIndex(of: vc) {
+                controllers.remove(at: index)
+                vc.navigationController?.viewControllers = controllers
             }
-        }
-        toneQualityStack.snp.makeConstraints { (make) in
-            make.left.equalToSuperview().offset(36)
-            make.right.equalToSuperview().offset(-36)
-            make.top.equalTo(roleButtonStack.snp.bottom).offset(25)
-            make.height.equalTo(24)
-        }
-        toneQualityLabel.sizeToFit()
-        [heightQualityButton, mediumQualityButton].forEach { (button) in
-            button.snp.makeConstraints { (make) in
-                make.height.equalTo(24)
-//                make.width.equalTo(70)
-            }
-        }
-    }
-    
-    func activateConstraintsOfEnterRoom() {
-        enterRoomButton.snp.makeConstraints { (make) in
-            make.left.equalToSuperview().offset(20)
-            make.right.equalToSuperview().offset(-20)
-            make.height.equalTo(48)
-            make.top.equalTo(toneQualityStack.snp.bottom).offset(30)
-        }
-        
-        tipsLabel.snp.makeConstraints { (make) in
-            make.centerX.equalToSuperview()
-            make.top.equalTo(enterRoomButton.snp.bottom).offset(30)
-            make.left.right.equalTo(enterRoomButton)
         }
     }
 }
 
+/// MARK: - internationalization string
 fileprivate extension String {
-    static let controllerTitle = TRTCLocalize("Demo.TRTC.VoiceRoom.createvoicechatroom")
-    static let topicText = TRTCLocalize("Demo.TRTC.Salon.topic")
-    static let enterTopicText = TRTCLocalize("Demo.TRTC.VoiceRoom.entertopic")
-    static let nicknameText = TRTCLocalize("Demo.TRTC.VoiceRoom.nickname")
-    static let enterNicknameText = TRTCLocalize("Demo.TRTC.VoiceRoom.enternickname")
-    static let agreeSpeakerText = TRTCLocalize("Demo.TRTC.VoiceRoom.bespeakershouldagreebyowner")
-    static let qualitySelectText = TRTCLocalize("Demo.TRTC.VoiceRoom.soundqualityselect")
-    static let musicText = TRTCLocalize("Demo.TRTC.LiveRoom.music")
-    static let standardText = TRTCLocalize("Demo.TRTC.LiveRoom.standard")
-    static let voiceText = TRTCLocalize("Demo.TRTC.VoiceRoom.voice")
-    static let createChatroomText = TRTCLocalize("Demo.TRTC.VoiceRoom.createchatroom")
-    static let roomidNullText = TRTCLocalize("Demo.TRTC.VoiceRoom.nullroomidwillautocreateandjoinroom")
-    static let nameisNullText = TRTCLocalize("Demo.TRTC.Salon.nicknameorusernameisempty")
+    static let titleText = TRTCLocalize("Demo.TRTC.VoiceRoom.roomsubject")
+    static let placeholderTitleText = TRTCLocalize("Demo.TRTC.VoiceRoom.enterroomsubject")
+    static let createText = TRTCLocalize("Demo.TRTC.VoiceRoom.starttalking")
+    static let defaultCreateText = TRTCLocalize("Demo.TRTC.VoiceRoom.xxxsroom")
 }

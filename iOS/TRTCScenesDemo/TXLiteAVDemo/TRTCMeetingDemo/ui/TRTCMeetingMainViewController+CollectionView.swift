@@ -45,7 +45,7 @@ class MeetingRenderView: UIView {
     }()
     
     func configModel(model: MeetingAttendeeModel) {
-        backgroundColor = .searchBarBackColor
+        backgroundColor = UIColor(hex: "AAAAAA")
 
         if model.userId.count == 0 {
             return

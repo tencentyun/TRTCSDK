@@ -11,37 +11,67 @@ import UIKit
 class TRTCVoiceRoomListCell: UICollectionViewCell {
     private var isViewReady: Bool = false
     
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        layer.cornerRadius = 10
+        clipsToBounds = true
+        backgroundColor = .clear
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     let coverImageView: UIImageView = {
         let imageView = UIImageView.init(frame: .zero)
         imageView.contentMode = .scaleToFill
+        imageView.clipsToBounds = true
         return imageView
     }()
     
     let anchorNameLabel: UILabel = {
         let label = UILabel.init(frame: .zero)
         label.text = ""
-        label.font = UIFont.systemFont(ofSize: 14.0)
-        label.textColor = UIColor.init(0xFFFFFF)
-        label.textAlignment = .left
+        label.font = UIFont(name: "PingFangSC-Regular", size: 14)
+        label.textColor = .white
+        label.adjustsFontSizeToFitWidth = true
         return label
     }()
     
     let roomNameLabel: UILabel = {
         let label = UILabel.init(frame: .zero)
         label.text = ""
-        label.font = UIFont.systemFont(ofSize: 14.0)
-        label.textColor = UIColor.init(0xFFFFFF)
+        label.font = UIFont(name: "PingFangSC-Regular", size: 12)
+        label.textColor = .white
         label.textAlignment = .left
-        label.numberOfLines = 0
+        label.adjustsFontSizeToFitWidth = true
         return label
+    }()
+    
+    lazy var memberContainerView: UIView = {
+        let view = UIView(frame: .zero)
+        view.backgroundColor = .clear
+        view.clipsToBounds = true
+        return view
+    }()
+    
+    lazy var memberBgView: UIView = {
+        let view = UIView(frame: .zero)
+        view.backgroundColor = .white
+        view.alpha = 0.2
+        return view
+    }()
+    
+    lazy var memberCountIcon: UIImageView = {
+        let imageV = UIImageView(image: UIImage(named: "audience"))
+        return imageV
     }()
     
     let memberCountLabel: UILabel = {
         let label = UILabel.init(frame: .zero)
         label.text = ""
-        label.font = UIFont.systemFont(ofSize: 12.0)
-        label.textColor = UIColor.init(0xFFFFFF)
-        label.textAlignment = .left
+        label.font = UIFont(name: "PingFangSC-Medium", size: 12)
+        label.textColor = .white
         label.adjustsFontSizeToFitWidth = true
         return label
     }()
@@ -51,8 +81,13 @@ class TRTCVoiceRoomListCell: UICollectionViewCell {
         let imageName = "voiceroom_cover1"
         self.coverImageView.sd_setImage(with:imageURL, placeholderImage:UIImage.init(named: imageName) ,completed: nil)
         self.anchorNameLabel.text = model.ownerName
-        self.roomNameLabel.text = model.roomName
-        self.memberCountLabel.text = LocalizeReplaceXX(.onlinexxText, String(model.memberCount))
+        self.roomNameLabel.text = model.roomName.count > 0 ? model.roomName : " "
+        self.memberCountLabel.text = String(model.memberCount)
+    }
+    
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
+        memberContainerView.layer.cornerRadius = memberContainerView.frame.height * 0.5
     }
     
     // MARK: - 视图生命周期函数
@@ -64,38 +99,51 @@ class TRTCVoiceRoomListCell: UICollectionViewCell {
         isViewReady = true
         constructViewHierarchy()
         activateConstraints()
-        backgroundColor = UIColor.init(0x000000, alpha: 0.5)
     }
     
     func constructViewHierarchy() {
-        addSubview(coverImageView)
-        addSubview(anchorNameLabel)
-        addSubview(roomNameLabel)
-        addSubview(memberCountLabel)
+        contentView.addSubview(coverImageView)
+        contentView.addSubview(anchorNameLabel)
+        contentView.addSubview(roomNameLabel)
+        contentView.addSubview(memberContainerView)
+        memberContainerView.addSubview(memberBgView)
+        memberContainerView.addSubview(memberCountIcon)
+        memberContainerView.addSubview(memberCountLabel)
     }
     
     func activateConstraints() {
         coverImageView.snp.makeConstraints { (make) in
-            make.top.leading.trailing.bottom.equalToSuperview()
+            make.edges.equalToSuperview()
         }
         roomNameLabel.snp.makeConstraints { (make) in
-            make.left.equalToSuperview().offset(6.0)
-            make.bottom.equalToSuperview().offset(-6.0)
-            make.width.lessThanOrEqualToSuperview().multipliedBy(0.55)
+            make.leading.equalToSuperview().offset(10)
+            make.bottom.equalToSuperview().offset(-10)
+            make.trailing.greaterThanOrEqualToSuperview().offset(-10)
         }
         anchorNameLabel.snp.makeConstraints { (make) in
-            make.left.equalToSuperview().offset(6.0)
-            make.bottom.equalTo(roomNameLabel.snp.top).offset(-6.0)
-            make.width.lessThanOrEqualToSuperview().multipliedBy(0.6)
+            make.leading.equalTo(roomNameLabel)
+            make.bottom.equalTo(roomNameLabel.snp_top)
+            make.trailing.greaterThanOrEqualToSuperview().offset(-10)
+        }
+        memberContainerView.snp.makeConstraints { (make) in
+            make.leading.equalToSuperview().offset(10)
+            make.top.equalToSuperview().offset(10)
+        }
+        memberBgView.snp.makeConstraints { (make) in
+            make.edges.equalToSuperview()
+        }
+        memberCountIcon.snp.makeConstraints { (make) in
+            make.centerX.equalTo(memberContainerView.snp_leading).offset(12)
+            make.centerY.equalToSuperview()
+            make.size.equalTo(CGSize(width: 16, height: 16))
         }
         memberCountLabel.snp.makeConstraints { (make) in
-            make.right.equalToSuperview().offset(-6.0)
-            make.bottom.equalToSuperview().offset(-6.0)
-            make.width.lessThanOrEqualToSuperview().multipliedBy(0.38)
+            make.top.equalToSuperview().offset(3)
+            make.bottom.equalToSuperview().offset(-3)
+            make.trailing.equalToSuperview().offset(-8)
+            make.leading.equalTo(memberCountIcon.snp_centerX).offset(8)
         }
     }
-    
-    
 }
 
 /// MARK: - internationalization string

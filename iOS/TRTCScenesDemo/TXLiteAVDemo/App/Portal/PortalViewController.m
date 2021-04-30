@@ -7,6 +7,7 @@
 #import "MainMenuCell.h"
 #import "TXLiteAVDemo-Swift.h"
 #import "AppLocalized.h"
+#import "UIColor+HexColor.h"
 
 #if DEBUG
 #define SdkBusiId (18069)
@@ -27,10 +28,10 @@
     
     CGFloat width                = [UIScreen mainScreen].bounds.size.width;
     
-    self.sectionInset            = UIEdgeInsetsMake(0, width * 0.08, 0, width * 0.08);
-    self.itemSize                = CGSizeMake(width * 0.36, width * 0.24);
-    self.minimumLineSpacing      = width * 0.1;
-    self.minimumInteritemSpacing = 10.0f;
+    self.sectionInset            = UIEdgeInsetsMake(20, 20, 20, 20);
+    self.itemSize                = CGSizeMake(width - 40, 144);
+    self.minimumLineSpacing      = 16;
+    self.minimumInteritemSpacing = 16;
 }
 
 @end
@@ -60,16 +61,39 @@ UIPickerViewDataSource, UIPickerViewDelegate> {
 
 @implementation PortalViewController
 
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    if (@available(iOS 13.0, *)) {
+        return UIStatusBarStyleDarkContent;
+    } else {
+        return UIStatusBarStyleDefault;
+    }
+}
+
+- (BOOL)prefersStatusBarHidden {
+    return NO;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor whiteColor];
-    NSArray *colors = [NSArray arrayWithObjects:(__bridge id)[UIColor colorWithRed:19.0 / 255.0 green:41.0 / 255.0 blue:75.0 / 255.0 alpha:1].CGColor, (__bridge id)[UIColor colorWithRed:5.0 / 255.0 green:12.0 / 255.0 blue:23.0 / 255.0 alpha:1].CGColor, nil];
-    CAGradientLayer *gradientLayer = [CAGradientLayer layer];
-    gradientLayer.colors = colors;
-    gradientLayer.startPoint = CGPointMake(0, 0);
-    gradientLayer.endPoint = CGPointMake(1, 1);
-    gradientLayer.frame = self.view.bounds;
-    [self.view.layer insertSublayer:gradientLayer atIndex:0];
+    self.view.backgroundColor = [UIColor hexColor:@"F4F5F9"];
+    
+    self.navigationController.navigationBar.topItem.title = @"TRTC";
+    
+    [self.navigationController.navigationBar setTitleTextAttributes:
+     @{NSForegroundColorAttributeName:[UIColor blackColor],
+       NSFontAttributeName:[UIFont fontWithName:@"PingFangSC-Semibold" size:18]
+     }];
+    self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
+    self.navigationController.navigationBar.translucent = NO;
+    
+    UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [backBtn setTitle:AppPortalLocalize(@"Demo.TRTC.Portal.Home.logout") forState:UIControlStateNormal];
+    [backBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    backBtn.titleLabel.font = [UIFont fontWithName:@"PingFangSC-Regular" size:16];
+    [backBtn addTarget:self action:@selector(logout:) forControlEvents:UIControlEventTouchUpInside];
+    [backBtn sizeToFit];
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:backBtn];
+    self.navigationItem.rightBarButtonItems = @[item];
     
     _videoCallVC = [[TRTCCallingContactViewController alloc] init];
     [[TRTCCalling shareInstance] addDelegate:_videoCallVC];
@@ -78,6 +102,34 @@ UIPickerViewDataSource, UIPickerViewDelegate> {
     _voiceRoom = [TRTCVoiceRoom sharedInstance];
     _chatSalon = [TRTCChatSalon sharedInstance];
     __weak __typeof(self) wSelf = self;
+#ifdef TRTC
+    self.mainMenuItems = @[
+        [[MainMenuItem alloc] initWithIcon:[UIImage imageNamed:@"main_home_chatroom"]
+                                     title:AppPortalLocalize(@"Audio Chat Room")
+                                   content:AppPortalLocalize(@"Demo.TRTC.Portal.Home.chatroomdesc")
+                                  onSelect:^{ [wSelf gotoVoiceRoomView]; }],
+        [[MainMenuItem alloc] initWithIcon:[UIImage imageNamed:@"main_home_meeting"]
+                                     title: AppPortalLocalize(@"Video Conferencing")
+                                   content: AppPortalLocalize(@"Demo.TRTC.Portal.Home.meetingdesc")
+                                  onSelect:^{ [wSelf gotoMeetingView]; }],
+        [[MainMenuItem alloc] initWithIcon:[UIImage imageNamed:@"main_home_audiocall"]
+                                     title:AppPortalLocalize(@"Audio Call")
+                                   content:AppPortalLocalize(@"Demo.TRTC.Portal.Home.audiocalldesc")
+                                  onSelect:^{ [wSelf gotoAudioCallView]; }],
+        [[MainMenuItem alloc] initWithIcon:[UIImage imageNamed:@"main_home_videocall"]
+                                     title:AppPortalLocalize(@"Video Call")
+                                   content:AppPortalLocalize(@"Demo.TRTC.Portal.Home.videocalldesc")
+                                  onSelect:^{ [wSelf gotoVideoCallView]; }],
+        [[MainMenuItem alloc] initWithIcon:[UIImage imageNamed:@"main_home_videolive"]
+                                     title:AppPortalLocalize(@"Interactive Video Live Streaming")
+                                   content:AppPortalLocalize(@"Demo.TRTC.Portal.Home.videolivedesc")
+                                  onSelect:^{ [wSelf gotoLiveView]; }],
+        [[MainMenuItem alloc] initWithIcon:[UIImage imageNamed:@"main_home_chatsalon"]
+                                     title:AppPortalLocalize(@"Chat Salon")
+                                   content:AppPortalLocalize(@"Demo.TRTC.Portal.Home.chatsalondesc")
+                                  onSelect:^{ [wSelf gotoChatSalonView]; }]
+    ];
+#else
     self.mainMenuItems = @[
         [[MainMenuItem alloc] initWithIcon:[UIImage imageNamed:@"MenuMeeting"]
                                      title: AppPortalLocalize(@"Video Conferencing")
@@ -104,31 +156,33 @@ UIPickerViewDataSource, UIPickerViewDelegate> {
                                    content:@""
                                   onSelect:^{ [wSelf gotoChatSalonView]; }]
     ];
+#endif
     NSString *version = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
     self.versionLabel.text = [NSString stringWithFormat:@"TRTC v%@(%@)", [TRTCCloud getSDKVersion], version];
     self.descLabel.text = TRTCLocalize(@"Demo.TRTC.Home.appusetoshowfunc");
     
     UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
-    [self.titleLabel addGestureRecognizer:tapGesture];
+    [self.navigationController.navigationBar addGestureRecognizer:tapGesture];
     
     UILongPressGestureRecognizer* pressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)]; //提取SDK日志暗号!
     pressGesture.minimumPressDuration = 2.0;
     pressGesture.numberOfTouchesRequired = 1;
-    [self.titleLabel addGestureRecognizer:pressGesture];
-    self.titleLabel.userInteractionEnabled = YES;
+    [self.navigationController.navigationBar addGestureRecognizer:pressGesture];
+//    [self.titleLabel addGestureRecognizer:pressGesture];
+//    self.titleLabel.userInteractionEnabled = YES;
     [self setUpLogViews];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self setupToast];
-    [self.navigationController setNavigationBarHidden:YES];
+    [self.navigationController setNavigationBarHidden:NO animated:NO];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     NSString *userID = [[ProfileManager shared] curUserID];
     NSString *userSig = [[ProfileManager shared] curUserSig];
-    
+
     if (![[[V2TIMManager sharedInstance] getLoginUser] isEqual:userID]) {
         [TRTCCalling shareInstance].imBusinessID = SdkBusiId;
         [TRTCCalling shareInstance].deviceToken = [AppUtils shared].appDelegate.deviceToken;
@@ -163,18 +217,21 @@ UIPickerViewDataSource, UIPickerViewDelegate> {
         
     }];
     LiveRoomMainViewController *vc = [[LiveRoomMainViewController alloc] initWithLiveRoom:_liveRoom];
+    vc.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)gotoVideoCallView {
     self.videoCallVC.callType = CallType_Video;
     self.videoCallVC.title = AppPortalLocalize(@"App.PortalViewController.videocalling");
+    self.videoCallVC.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:self.videoCallVC animated:YES];
 }
 
 - (void)gotoAudioCallView {
     self.videoCallVC.callType = CallType_Audio;
     self.videoCallVC.title = AppPortalLocalize(@"App.PortalViewController.audiocalling");
+    self.videoCallVC.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:self.videoCallVC animated:YES];
 }
 
@@ -185,6 +242,7 @@ UIPickerViewDataSource, UIPickerViewDelegate> {
        
     }];
     TRTCMeetingNewViewController *vc = [[TRTCMeetingNewViewController alloc] init];
+    vc.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -201,6 +259,7 @@ UIPickerViewDataSource, UIPickerViewDelegate> {
     }];
     TRTCVoiceRoomEnteryControl* container = [[TRTCVoiceRoomEnteryControl alloc] initWithSdkAppId:SDKAPPID userId:userID];
     UIViewController* vc = [container makeEntranceViewController];
+    vc.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -216,10 +275,11 @@ UIPickerViewDataSource, UIPickerViewDelegate> {
     }];
     TRTCChatSalonEnteryControl* container = [[TRTCChatSalonEnteryControl alloc] initWithSdkAppId:SDKAPPID userID:userID];
     UIViewController* vc = [container makeEntranceViewController];
+    vc.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (IBAction)logout:(id)sender {
+- (void)logout:(id)sender {
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:AppPortalLocalize(@"App.PortalViewController.areyousureloginout") message:nil preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:AppPortalLocalize(@"App.PortalViewController.cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
         
@@ -240,8 +300,8 @@ UIPickerViewDataSource, UIPickerViewDelegate> {
 
 #pragma mark - 日志获取
 - (void)setUpLogViews {
-    _logUploadView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height / 2, self.view.bounds.size.width, self.view.bounds.size.height / 2)];
-    _logUploadView.backgroundColor = [UIColor whiteColor];
+    _logUploadView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height / 4, self.view.bounds.size.width, self.view.bounds.size.height / 2)];
+    _logUploadView.backgroundColor = [UIColor hexColor:@"F4F6F9"];
     _logUploadView.hidden = YES;
     UIButton* uploadButton = [UIButton buttonWithType:UIButtonTypeSystem];
     uploadButton.center = CGPointMake(self.view.bounds.size.width / 2, _logUploadView.frame.size.height * 0.9);
@@ -343,11 +403,6 @@ UIPickerViewDataSource, UIPickerViewDelegate> {
     MainMenuCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"MainMenuCell" forIndexPath:indexPath];
     cell.item = self.mainMenuItems[indexPath.row];
     return cell;
-}
-
-- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
-{
-    return 1;
 }
 
 @end

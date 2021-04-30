@@ -1273,4 +1273,8 @@ static dispatch_once_t onceToken;
     [self leaveSeat:nil];
 }
 
+- (void)onSeatPick {
+    [self enterSeat:nil];
+}
+
 @end

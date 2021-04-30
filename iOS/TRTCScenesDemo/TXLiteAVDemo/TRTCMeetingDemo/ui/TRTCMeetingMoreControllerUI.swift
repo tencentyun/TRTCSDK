@@ -38,7 +38,7 @@ final class TRTCMeetingMoreControllerUI: TRTCMeetingMoreViewController {
         label.textAlignment = NSTextAlignment.center
         label.text = .settingText
         label.font = UIFont.systemFont(ofSize: 18)
-        label.textColor = .white
+        label.textColor = .black
         return label
     }()
 
@@ -46,7 +46,7 @@ final class TRTCMeetingMoreControllerUI: TRTCMeetingMoreViewController {
         super.viewDidLoad()
         view.layer.masksToBounds = true
         view.layer.cornerRadius = 10
-        view.backgroundColor = .pannelBackColor
+        view.backgroundColor = .white
         view.addSubview(setLabel)
         view.addSubview(self.segView)
     }
@@ -57,5 +57,5 @@ fileprivate extension String {
     static let videoText = TRTCLocalize("Demo.TRTC.Meeting.video")
     static let audioText = TRTCLocalize("Demo.TRTC.Meeting.audio")
     static let shareText = TRTCLocalize("Demo.TRTC.Meeting.share")
-    static let settingText = TRTCLocalize("Demo.TRTC.Meeting.share")
+    static let settingText = TRTCLocalize("Demo.TRTC.Meeting.setting")
 }

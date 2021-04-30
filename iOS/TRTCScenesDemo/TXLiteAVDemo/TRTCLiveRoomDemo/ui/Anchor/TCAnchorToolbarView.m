@@ -17,6 +17,7 @@
 #import "HUDHelper.h"
 #import "UIColor+MLPFlatColors.h"
 #import "TXLiteAVDemo-Swift.h"
+#import <Masonry.h>
 
 @interface TCAnchorToolbarView ()<AudioEffectViewDelegate>
 
@@ -136,6 +137,12 @@
     _topView = [[TCShowLiveTopView alloc] initWithFrame:CGRectMake(5, statusBarHeight + 5, 110, 35) isHost:YES hostNickName:_liveInfo.ownerName
                                           audienceCount:_liveInfo.memberCount likeCount:0 hostFaceUrl:_liveInfo.streamUrl];
     [self addSubview:_topView];
+    [_topView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(_closeBtn);
+        make.leading.equalTo(self).offset(20);
+        make.width.mas_equalTo(110);
+        make.height.mas_equalTo(35);
+    }];
     __weak __typeof(self) weakSelf = self;
     [_topView setClickHead:^{
         __strong __typeof(weakSelf) self = weakSelf;
@@ -165,55 +172,64 @@
     _isPreview = YES;
     int   icon_size = BOTTOM_BTN_ICON_WIDTH;
     float startSpace = 15;
-    float icon_count = 6;
+//    float icon_count = 6;
     CGFloat bottomOffset = 0;
     if (@available(iOS 11, *)) {
         bottomOffset = UIApplication.sharedApplication.keyWindow.safeAreaInsets.bottom;
     }
-    float icon_center_y = self.height - icon_size/2 - startSpace - bottomOffset;
-    float icon_center_interval = (self.width - 2*startSpace - icon_size)/(icon_count - 1);
-    float first_icon_center_x = startSpace + icon_size/2;
-
+    
+    CGFloat margin = (UIScreen.mainScreen.bounds.size.width - icon_size * 5) / 6;
     
     //聊天
     _btnChat = [UIButton buttonWithType:UIButtonTypeCustom];
-    _btnChat.center = CGPointMake(first_icon_center_x + icon_size / 2.0, icon_center_y);
-    _btnChat.bounds = CGRectMake(0, 0, icon_size, icon_size);
     [_btnChat setBackgroundImage:[UIImage imageNamed:@"comment"] forState:UIControlStateNormal];
     [_btnChat addTarget:self action:@selector(clickChat:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_btnChat];
+    [_btnChat mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.leading.equalTo(self).offset(margin);
+        make.bottom.equalTo(self).offset(-bottomOffset-startSpace);
+        make.size.mas_equalTo(CGSizeMake(icon_size, icon_size));
+    }];
     
     //前置后置摄像头切换
     _btnCamera = [UIButton buttonWithType:UIButtonTypeCustom];
-    _btnCamera.center = CGPointMake(first_icon_center_x + icon_center_interval*1.4, icon_center_y);
-    _btnCamera.bounds = CGRectMake(0, 0, icon_size, icon_size);
-    [_btnCamera setImage:[UIImage imageNamed:@"camera"] forState:UIControlStateNormal];
+    [_btnCamera setImage:[UIImage imageNamed:@"live_camera"] forState:UIControlStateNormal];
     [_btnCamera addTarget:self action:@selector(clickCamera:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_btnCamera];
+    [_btnCamera mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.leading.equalTo(_btnChat.mas_trailing).offset(margin);
+        make.size.centerY.equalTo(_btnChat);
+    }];
     
     //PK按钮
     _btnPK = [UIButton buttonWithType:UIButtonTypeCustom];
-    _btnPK.center = CGPointMake(first_icon_center_x + icon_center_interval*2.5, icon_center_y);
-    _btnPK.bounds = CGRectMake(0, 0, icon_size, icon_size);
-    [_btnPK setBackgroundImage:[UIImage imageNamed:@"pk_start"] forState:UIControlStateNormal];
+    [_btnPK setImage:[UIImage imageNamed:@"live_pk_start"] forState:UIControlStateNormal];
     [_btnPK addTarget:self action:@selector(clickPK:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_btnPK];
+    [_btnPK mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.leading.equalTo(_btnCamera.mas_trailing).offset(margin);
+        make.size.centerY.equalTo(_btnChat);
+    }];
     
     //美颜开关按钮
     _btnBeauty = [UIButton buttonWithType:UIButtonTypeCustom];
-    _btnBeauty.center = CGPointMake(first_icon_center_x + icon_center_interval*3.5, icon_center_y);
-    _btnBeauty.bounds = CGRectMake(0, 0, icon_size, icon_size);
-    [_btnBeauty setImage:[UIImage imageNamed:@"meeting_beauty"] forState:UIControlStateNormal];
+    [_btnBeauty setImage:[UIImage imageNamed:@"live_beauty"] forState:UIControlStateNormal];
     [_btnBeauty addTarget:self action:@selector(clickBeauty:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_btnBeauty];
+    [_btnBeauty mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.leading.equalTo(_btnPK.mas_trailing).offset(margin);
+        make.size.centerY.equalTo(_btnChat);
+    }];
     
     //音乐按钮
     _btnMusic = [UIButton buttonWithType:UIButtonTypeCustom];
-    _btnMusic.center = CGPointMake(first_icon_center_x + icon_center_interval*4.5, icon_center_y);
-    _btnMusic.bounds = CGRectMake(0, 0, icon_size, icon_size);
     [_btnMusic setImage:[UIImage imageNamed:@"music_icon"] forState:UIControlStateNormal];
     [_btnMusic addTarget:self action:@selector(clickMusic:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_btnMusic];
+    [_btnMusic mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.leading.equalTo(_btnBeauty.mas_trailing).offset(margin);
+        make.size.centerY.equalTo(_btnChat);
+    }];
     
     //pk view
     _pkView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PK"]];
@@ -226,11 +242,8 @@
     
     //退出VC 停止直播
     _closeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    _closeBtn.frame = CGRectMake(icon_center_interval * 4.3,
-                                 [[UIApplication sharedApplication] statusBarFrame].size.height + 5,
-                                 icon_size * 2.7, icon_size * 0.8);
     [_closeBtn setTitle:TRTCLocalize(@"Demo.TRTC.LiveRoom.stop") forState:UIControlStateNormal];
-    _closeBtn.layer.cornerRadius = 5.0;
+    _closeBtn.layer.cornerRadius = 35 * 0.5;
     _closeBtn.layer.masksToBounds = YES;
     _closeBtn.backgroundColor = [UIColor redColor];
     [_closeBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -238,6 +251,16 @@
     [_closeBtn addTarget:self action:@selector(closeVC) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_closeBtn];
     [self bringSubviewToFront:_closeBtn];
+    [_closeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.trailing.equalTo(self).offset(-20);
+        if (@available(iOS 11.0, *)) {
+            make.top.equalTo(self.mas_safeAreaLayoutGuideTop).offset(20);
+        } else {
+            make.top.equalTo(self).offset(20);
+        }
+        make.width.mas_greaterThanOrEqualTo(100);
+        make.height.mas_equalTo(35);
+    }];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeButtonStopPK) name:@"PKNotificationKey" object:nil];
     
@@ -552,6 +575,7 @@
 - (void)changeButtonStopPK {
     _closeBtn.hidden = NO;
     _pkView.hidden = NO;
+    
     [_closeBtn setTitle:TRTCLocalize(@"Demo.TRTC.LiveRoom.endpk") forState:UIControlStateNormal];
     [_closeBtn removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
     [_closeBtn addTarget:self action:@selector(quitRoomPKAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -1155,7 +1179,7 @@
     _titleLabel = [[UILabel alloc] init];
     _titleLabel.textAlignment = NSTextAlignmentCenter;
     _titleLabel.font = [UIFont boldSystemFontOfSize:15];
-    _titleLabel.textColor = [UIColor whiteColor];
+    _titleLabel.textColor = [UIColor blackColor];
     [_titleLabel setText:TRTCLocalize(@"Demo.TRTC.LiveRoom.interactionitsover")];
     [self addSubview:_titleLabel];
     
@@ -1163,7 +1187,7 @@
     _durationLabel = [[UILabel alloc] init];
     _durationLabel.textAlignment = NSTextAlignmentCenter;
     _durationLabel.font = [UIFont boldSystemFontOfSize:15];
-    _durationLabel.textColor = [UIColor whiteColor];
+    _durationLabel.textColor = [UIColor blackColor];
     [_durationLabel setText:[NSString stringWithFormat:@"%02d:%02d:%02d", hour, min, sec]];
     [self addSubview:_durationLabel];
     
@@ -1178,7 +1202,7 @@
     _viewerCountLabel = [[UILabel alloc] init];
     _viewerCountLabel.textAlignment = NSTextAlignmentCenter;
     _viewerCountLabel.font = [UIFont boldSystemFontOfSize:12];
-    _viewerCountLabel.textColor = [UIColor whiteColor];
+    _viewerCountLabel.textColor = [UIColor blackColor];
     [_viewerCountLabel setText:[NSString stringWithFormat:@"%ld", [_resultData getTotalViewerCount]]];
     [self addSubview:_viewerCountLabel];
     
@@ -1193,7 +1217,7 @@
     _praiseLabel = [[UILabel alloc] init];
     _praiseLabel.textAlignment = NSTextAlignmentCenter;
     _praiseLabel.font = [UIFont boldSystemFontOfSize:12];
-    _praiseLabel.textColor = [UIColor whiteColor];
+    _praiseLabel.textColor = [UIColor blackColor];
     [_praiseLabel setText:[NSString stringWithFormat:@"%ld\n", [_resultData getLikeCount]]];
     [self addSubview:_praiseLabel];
     
@@ -1208,7 +1232,7 @@
     _line.backgroundColor = [UIColor grayColor];
     [self addSubview:_line];
     
-    _backBtn = [[UIButton alloc] init];
+    _backBtn = [UIButton buttonWithType:UIButtonTypeSystem];
     _backBtn.backgroundColor = [UIColor clearColor];
     _backBtn.titleLabel.font = [UIFont systemFontOfSize:16];
     [_backBtn setTitle:TRTCLocalize(@"Demo.TRTC.LiveRoom.back") forState:UIControlStateNormal];
@@ -1248,7 +1272,9 @@
     [_line sizeWith:CGSizeMake(rect.size.width, 0.5)];
     [_line layoutBelow:_praiseTipLabel margin:30];
     
-    [self setBackgroundColor:[UIColor colorWithRed:19/255.0 green:35/255.0 blue:63/255.0 alpha:1.0]];
+    [self setBackgroundColor:[UIColor whiteColor]];
+    self.layer.cornerRadius = 10;
+    self.clipsToBounds = true;
 }
 
 - (void)clickBackBtn {

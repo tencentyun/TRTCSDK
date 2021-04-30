@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "ic_handsfree_on.png",
+      "filename" : "扬声器-开.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "ic_handsfree_on@2x.png",
+      "filename" : "扬声器-开@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "ic_handsfree_on@3x.png",
+      "filename" : "扬声器-开@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

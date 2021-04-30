@@ -1,5 +1,5 @@
 //
-//  LoginViewController.swift
+//  TRTCLoginViewController.swift
 //  trtcScenesDemo
 //
 //  Created by xcoderliu on 12/16/19.
@@ -11,7 +11,7 @@ import RxSwift
 import NVActivityIndicatorView
 import Toast_Swift
 
-class LoginViewController: UIViewController {
+class TRTCLoginViewController: UIViewController {
     let disposeBag = DisposeBag()
     let loading = NVActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 100, height: 60),
                                           type: .ballBeat,

@@ -14,3 +14,6 @@
 "LoginNetwork.ProfileManager.loginfailed" = "登录失败，请稍后重试";
 "LoginNetwork.ProfileManager.registerfailed" = "注册失败，请稍后重试";
 "LoginNetwork.ProfileManager.queryfailed" = "查询失败，请稍候重试";
+
+"Demo.TRTC.Login.welcome" = "欢迎使用腾讯云实时音视频";
+"Demo.TRTC.Login.countrycode" = "国际电话区号";

@@ -28,7 +28,13 @@ class TRTCCreateChatSalonViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = TRTCCreateChatSalonRootView.viewTitle
-        let backItem = UIBarButtonItem.init(image: UIImage.init(named: "navigationbar_back"), style: .plain, target: self, action: #selector(cancel))
+        
+        let backBtn = UIButton(type: .custom)
+        backBtn.setImage(UIImage(named: "navigationbar_back"), for: .normal)
+        backBtn.addTarget(self, action: #selector(cancel), for: .touchUpInside)
+        backBtn.sizeToFit()
+        let backItem = UIBarButtonItem.init(customView: backBtn)
+        backItem.tintColor = .black
         self.navigationItem.leftBarButtonItem = backItem
     }
     

@@ -35,8 +35,10 @@ class TRTCVoiceRoomMsgInputView: UIView {
     let sendButton: UIButton = {
         let button = UIButton.init(type: .custom)
         button.setTitle(.sendText, for: .normal)
-        button.setBackgroundImage(UIColor.buttonBackColor.trans2Image(), for: .normal)
-        button.setTitleColor(UIColor.init(0xEBF4FF), for: .normal)
+        button.backgroundColor = UIColor(hex: "29CC85")
+        button.titleLabel?.textColor = .white
+        button.titleLabel?.font = UIFont(name: "PingFangSC-Medium", size: 14)
+        button.layer.cornerRadius = 18
         return button
     }()
     
@@ -71,7 +73,7 @@ class TRTCVoiceRoomMsgInputView: UIView {
         }
         sendButton.snp.makeConstraints { (make) in
             make.width.equalTo(60)
-            make.height.equalTo(30)
+            make.height.equalTo(36)
             make.centerY.equalToSuperview()
             make.right.equalToSuperview().offset(-20)
         }

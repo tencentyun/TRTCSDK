@@ -25,15 +25,23 @@ class TRTCCreateVoiceRoomViewController: UIViewController {
         TRTCLog.out("deinit \(type(of: self))")
     }
     
+    public var screenShot : UIView?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = .controllerTitle
-        let backItem = UIBarButtonItem.init(image: UIImage.init(named: "navigationbar_back"), style: .plain, target: self, action: #selector(cancel))
+        
+        let backBtn = UIButton(type: .custom)
+        backBtn.setImage(UIImage(named: "navigationbar_back"), for: .normal)
+        backBtn.addTarget(self, action: #selector(cancel), for: .touchUpInside)
+        backBtn.sizeToFit()
+        let backItem = UIBarButtonItem(customView: backBtn)
         self.navigationItem.leftBarButtonItem = backItem
     }
     
     override func loadView() {
         let voiceRoomModel = dependencyContainer.makeCreateVoiceRoomViewModel()
+        voiceRoomModel.screenShot = screenShot
         let rootView = TRTCCreateVoiceRoomRootView.init(viewModel: voiceRoomModel)
         voiceRoomModel.viewResponder = rootView
         rootView.rootViewController = self

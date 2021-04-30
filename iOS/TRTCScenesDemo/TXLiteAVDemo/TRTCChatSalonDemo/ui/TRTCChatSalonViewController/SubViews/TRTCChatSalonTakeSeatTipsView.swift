@@ -31,7 +31,7 @@ class TRTCChatSalonTakeSeatTipsView: UIView {
     
     let contentLabel: UILabel = {
         let label = UILabel.init(frame: .zero)
-        label.textColor = UIColor.init(0xEBF4FF)
+        label.textColor = .black
         label.fontSize = 14
         return label
     }()
@@ -40,7 +40,7 @@ class TRTCChatSalonTakeSeatTipsView: UIView {
         let button = UIButton.init(frame: .zero)
         button.setTitle(.welcomeText, for: .normal)
         button.setBackgroundImage(UIColor.init(0x0FA968).trans2Image(), for: .normal)
-        button.layer.cornerRadius = 3
+        button.layer.cornerRadius = 18
         button.layer.masksToBounds = true
         return button
     }()
@@ -48,11 +48,10 @@ class TRTCChatSalonTakeSeatTipsView: UIView {
     let refuseButton: UIButton = {
         let button = UIButton.init(frame: .zero)
         button.setTitle(.refuseText, for: .normal)
-        button.setBackgroundImage(UIColor.backgroundBlue.trans2Image(), for: .normal)
-        button.layer.cornerRadius = 3
+        button.setTitleColor(.black, for: .normal)
+        button.setBackgroundImage(UIColor(hex: "F4F5F9")!.trans2Image(), for: .normal)
+        button.layer.cornerRadius = 18
         button.layer.masksToBounds = true
-        button.layer.borderWidth = 1
-        button.layer.borderColor = UIColor.init(0xEBF4FF).cgColor
         return button
     }()
     
