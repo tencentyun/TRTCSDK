@@ -61,7 +61,6 @@ import {
   TRTCBeautyStyle,
   Rect,
 } from "trtc-electron-sdk/liteav/trtc_define";
-import mtaH5 from '../../common/mtah5';
 import {BDVideoEncode, BDBeauty} from '../../common/bd-tools';
 let trtcCloud = null; // 用于TRTCQcloud 实例， mounted 时实体化
 export default {
@@ -427,8 +426,6 @@ export default {
     // 3. 实例化一个 trtc-electron-sdk
     trtcCloud = new TRTCCloud();
     logger.warn(`sdk version: ${trtcCloud.getSDKVersion()}`);
-
-    mtaH5.reportSDKAppID(this.sdkInfo.sdkAppId);
 
     // 4. 配置基本的事件订阅
     trtcCloud.on('onStatistics', (statis)=>{logger.log('onStatistics', statis);});

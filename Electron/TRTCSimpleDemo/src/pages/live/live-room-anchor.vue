@@ -94,7 +94,6 @@ import {
   Rect,
 } from "trtc-electron-sdk/liteav/trtc_define";
 import genTestUserSig from '../../debug/gen-test-user-sig';
-import mtaH5 from '../../common/mtah5';
 import Log from '../../common/log';
 import {BDVideoEncode, BDBeauty} from '../../common/bd-tools';
 const logger = new Log(`trtcRoom`);
@@ -576,8 +575,6 @@ export default {
 
     // 2. 计算签名
     this.sdkInfo = genTestUserSig(this.userId);
-
-    mtaH5.reportSDKAppID(this.sdkInfo.sdkAppId);
 
     // 3. 实例化一个 TRTCCloud （包装了 TRTCCloud的类）
     trtcCloud = new TRTCCloud();

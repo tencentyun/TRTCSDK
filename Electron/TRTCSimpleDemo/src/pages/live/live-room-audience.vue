@@ -33,7 +33,6 @@
 <script>
 import TRTCCloud from 'trtc-electron-sdk';
 import {destroyLiveRoom} from '../../common/live-room-service';
-import mtaH5 from '../../common/mtah5';
 import {
   TRTCAppScene, 
   TRTCVideoStreamType, 
@@ -319,8 +318,6 @@ export default {
 
     // 2. 计算签名
     this.sdkInfo = genTestUserSig(this.userId);
-
-    mtaH5.reportSDKAppID(this.sdkInfo.sdkAppId);
 
     // 3. 实例化一个 TRTCCloud （包装了 TRTCCloud的类）
     trtcCloud = new TRTCCloud();
