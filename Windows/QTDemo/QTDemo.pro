@@ -73,6 +73,7 @@ LIBS += "-F$$PWD/../SDK"
 LIBS += -framework TXLiteAVSDK_TRTC_Mac
 LIBS += -framework Accelerate
 LIBS += -framework AudioUnit
+LIBS += -lbz2
 
 # 添加TXLiteAVSDK_TRTC_Mac.framework头文件
 INCLUDEPATH += $$PWD/../SDK/TXLiteAVSDK_TRTC_Mac.framework/Headers/cpp_interface
