@@ -194,7 +194,7 @@
     "@babel/plugin-syntax-import-meta": "^7.8.3",
     "@babel/plugin-transform-react-constant-elements": "^7.8.3",
     "@babel/plugin-transform-react-inline-elements": "^7.8.3",
-    "@babel/preset-env": "^7.8.6",
+    "@babel/preset-env": "^7.13.15",
     "@babel/preset-react": "^7.8.3",
     "@babel/preset-typescript": "^7.8.3",
     "@babel/register": "^7.8.6",
@@ -311,7 +311,7 @@
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
     "source-map-support": "^0.5.16",
-    "trtc-electron-education": "^1.0.3"
+    "trtc-electron-education": "1.2.0"
   },
   "devEngines": {
     "node": ">=7.x",

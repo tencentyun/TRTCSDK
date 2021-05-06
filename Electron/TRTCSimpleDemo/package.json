@@ -61,7 +61,7 @@
     "axios": "^0.19.2",
     "bootstrap-icons": "^1.0.0-alpha3",
     "core-js": "^3.6.4",
-    "trtc-electron-sdk": "latest",
+    "trtc-electron-sdk": "^8.4.1",
     "vue": "^2.6.11",
     "vue-router": "^3.1.6"
   },
