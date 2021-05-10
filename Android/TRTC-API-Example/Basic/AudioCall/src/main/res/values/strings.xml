@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="audiocall_input_error_tip">房间号和用户名不能为空</string>
+    <string name="audiocall_input_error_tip">房间号、用户名不能为空</string>
     <string name="audiocall_use_receiver">使用听筒</string>
     <string name="audiocall_use_speaker">使用扬声器</string>
     <string name="audiocall_title">TRTC 语音通话示例</string>
-    <string name="audiocall_user">用户</string>
-    <string name="audiocall_user_empty">：空席</string>
     <string name="audiocall_mute_audio">关闭麦克风</string>
     <string name="audiocall_stop_mute_audio">打开麦克风</string>
     <string name="audiocall_enter_room">进入房间</string>
@@ -13,8 +11,6 @@
     <string name="audiocall_please_input_roomid">请输入房间号(必填项)</string>
     <string name="audiocall_info_view">信息面板</string>
     <string name="audiocall_voice_info">音量信息</string>
-    <string name="audiocall_user_empty_show">用户：空席</string>
-    <string name="audiocall_speaker_receiver">听筒/扬声器</string>
     <string name="audiocall_mute">关闭麦克风</string>
     <string name="audiocall_hang_up">挂断</string>
     <string name="audiocall_net_info">网络信息</string>

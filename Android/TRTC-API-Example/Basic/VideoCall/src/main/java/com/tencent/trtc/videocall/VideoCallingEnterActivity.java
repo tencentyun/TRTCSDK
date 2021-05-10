@@ -17,6 +17,12 @@ import com.tencent.trtc.debug.Constant;
  *
  * - 可跳转TRTC视频通话页面{@link VideoCallingActivity}
  */
+
+/**
+ * Video Call Entrance View (set room ID and user ID)
+ *
+ * - Direct to the video call view: {@link VideoCallingActivity}
+ */
 public class VideoCallingEnterActivity extends AppCompatActivity {
 
     private EditText mEditInputUserId;

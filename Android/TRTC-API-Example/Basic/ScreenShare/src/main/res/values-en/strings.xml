@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">screen</string>
+    <string name="screenshare_title">Screen Sharing</string>
+    <string name="screenshare_room_input_error_tip">Enter a room ID and username</string>
+    <string name="screenshare_start">Start</string>
+    <string name="screenshare_stop">End</string>
+    <string name="screenshare_start_failed">Failed</string>
+    <string name="screenshare_username">Username: </string>
+    <string name="screenshare_room_id">Room ID: </string>
+    <string name="screenshare_resolution">Resolution: 1280 x 720</string>
+    <string name="screenshare_watch_tips">To watch the streams, enter the same room as audience using a different device</string>
+    <string name="screenshare_permission_toast">Please open the floating window permissions in Settings-Permission Settings</string>
+    <string name="screenshare_please_select_role">Role (Required)</string>
+    <string name="screenshare_mute_audio">Mic Off</string>
+    <string name="screenshare_stop_mute_audio">Mic On</string>
+    <string name="screenshare_enter_room">Enter Room</string>
+    <string name="screenshare_please_input_userid">User ID (Required)</string>
+    <string name="screenshare_please_input_roomid">Room ID (Required)</string>
+    <string name="screenshare_audience">Audience</string>
+    <string name="screenshare_anchor">Anchor</string>
+    <string name="screenshare_screen_share">Screen Sharing</string>
+</resources>

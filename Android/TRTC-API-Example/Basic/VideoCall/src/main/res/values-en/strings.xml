@@ -1,0 +1,18 @@
+<resources>
+    <string name="videocall_title">Video Call</string>
+    <string name="videocall_room_input_error_tip">Enter a room ID and username</string>
+    <string name="videocall_video_item">Video Settings</string>
+    <string name="videocall_audio_item">Audio Settings</string>
+    <string name="videocall_user_back_camera">Use Rear Camera</string>
+    <string name="videocall_user_front_camera">Use Front Camera</string>
+    <string name="videocall_open_camera">Camera On</string>
+    <string name="videocall_close_camera">Camera Off</string>
+    <string name="videocall_mute_audio">Mic On</string>
+    <string name="videocall_close_mute_audio">Mic Off</string>
+    <string name="videocall_use_speaker">Use Speaker</string>
+    <string name="videocall_use_receiver">Use Receiver</string>
+    <string name="videocall_enter_room">Enter Room</string>
+    <string name="videocall_please_input_userid">User ID (Required)</string>
+    <string name="videocall_please_input_roomid">Room ID (Required)</string>
+    <string name="videocall_roomid">Room ID: </string>
+</resources>

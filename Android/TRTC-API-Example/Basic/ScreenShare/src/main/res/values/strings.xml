@@ -1,8 +1,7 @@
 <resources>
     <string name="app_name">screen</string>
-    <string name="screenshare_title">TRTC屏幕共享示例</string>
+    <string name="screenshare_title">TRTC 屏幕共享示例</string>
     <string name="screenshare_room_input_error_tip">"房间号和用户名不能为空"</string>
-    <string name="screenshare_permission_overlay">"需要打开悬浮窗权限"</string>
     <string name="screenshare_start">"开始屏幕分享"</string>
     <string name="screenshare_stop">"停止屏幕分享"</string>
     <string name="screenshare_start_failed">"启动屏幕共享失败"</string>

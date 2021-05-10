@@ -32,6 +32,17 @@ import static com.tencent.trtc.TRTCCloudDef.TRTC_APP_SCENE_LIVE;
  *
  * - 详见API文档{https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCCloud__android.html#aa6671fc587513dad7df580556e43be58}
  */
+
+/**
+ * Screen Sharing View for Audience
+ *
+ * Features:
+ * - Enter a room: {@link ScreenAudienceActvity#enterRoom()}
+ * - Exit a room: {@link ScreenAudienceActvity#exitRoom()}
+ * - After receiving the callback of screen sharing, watch screen sharing streams: {@link TRTCCloud#startRemoteView} in {@link ScreenAudienceActvity.TRTCCloudImplListener#onUserVideoAvailable(String, boolean)}}
+ *
+ * - For more information, please see the API document {https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCCloud__android.html#aa6671fc587513dad7df580556e43be58}.
+ */
 public class ScreenAudienceActvity extends TRTCBaseActivity {
     private static final String TAG = "ScreenAudienceActvity";
 

@@ -35,6 +35,16 @@ import java.util.Random;
  *
  * - 详见API说明文档{https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCCloud__android.html#a6af5e2c4819a683042f382688aff41e9}
  */
+
+/**
+ * Setting Audio Quality
+ *
+ * Features:
+ * - Set audio quality: {@link TRTCCloud#startLocalAudio(int)}. The parameter in the API indicates audio quality.
+ * - Set the audio capturing volume: {@link TRTCCloud#setAudioCaptureVolume(int)}
+ *
+ * - For more information, please see the API document {https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCCloud__android.html#a6af5e2c4819a683042f382688aff41e9}.
+ */
 public class SetAudioQualityActivity extends TRTCBaseActivity implements View.OnClickListener {
     private static final String     TAG = "SetAudioQualityActivity";
 

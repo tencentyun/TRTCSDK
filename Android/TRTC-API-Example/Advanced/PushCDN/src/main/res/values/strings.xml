@@ -23,12 +23,6 @@
     <string name="pushcdn_anchor_empty_room_id_tip">房间号不能为空</string>
     <string name="pushcdn_anchor_need_enter_room_tip">请先执行进房操作，点击推流</string>
     <string name="pushcdn_anchor_more_anchor_tip">主播数>=2时才可混流</string>
-    <string name="pushcdn_anchor_enter_room_success_tip">进房成功！房间号：</string>
-    <string name="pushcdn_anchor_enter_room_failed_tip">进房失败！错误码：</string>
-    <string name="pushcdn_anchor_exit_room_success_tip">退房成功</string>
-    <string name="pushcdn_anchor_start_set_mixconfig">点击开启混流</string>
-    <string name="pushcdn_anchor_switch_mixconfig">切换所选混流模式</string>
-    <string name="pushcdn_suffix_flv">.flv</string>
     <string name="pushcdn_more_cloud_mix">多路云端混流</string>
     <string name="pushcdn_please_input_streamid">请输入StreamID</string>
 </resources>

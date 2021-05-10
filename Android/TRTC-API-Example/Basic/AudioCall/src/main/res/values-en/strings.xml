@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="audiocall_input_error_tip">Enter a room ID and username</string>
+    <string name="audiocall_use_receiver">Use Receiver</string>
+    <string name="audiocall_use_speaker">Use Speaker</string>
+    <string name="audiocall_title">Audio Call</string>
+    <string name="audiocall_mute_audio">Mic Off</string>
+    <string name="audiocall_stop_mute_audio">Mic On</string>
+    <string name="audiocall_enter_room">Enter Room</string>
+    <string name="audiocall_please_input_userid">User ID (Required)</string>
+    <string name="audiocall_please_input_roomid">Room ID (Required)</string>
+    <string name="audiocall_info_view">Info Panel</string>
+    <string name="audiocall_voice_info">Volume</string>
+    <string name="audiocall_mute">Mic Off</string>
+    <string name="audiocall_hang_up">Hang Up</string>
+    <string name="audiocall_net_info">Network Info</string>
+    <string name="audiocall_roomid">Room ID: </string>
+</resources>

@@ -64,8 +64,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:background="@drawable/common_edit_bg"
-                android:maxLength="10"
+                android:maxLength="30"
                 android:paddingLeft="5dp"
+                android:textSize="12sp"
                 android:text="@string/seimessage_content" />
 
         </LinearLayout>

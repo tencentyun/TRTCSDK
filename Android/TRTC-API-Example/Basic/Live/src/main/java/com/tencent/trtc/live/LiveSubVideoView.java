@@ -15,6 +15,12 @@ import com.tencent.rtmp.ui.TXCloudVideoView;
  *
  * - 用于管理小视频画面上的“关闭声音”、“关闭视频”按钮的状态
  */
+
+/**
+ * Small Image in Interactive Live Video Streaming Room
+ *
+ * - Use the buttons on the small image to enable/disable audio/video
+ */
 public class LiveSubVideoView extends FrameLayout {
 
     private TXCloudVideoView                mSubVideoView;         // 【控件】子画面View

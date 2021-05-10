@@ -30,6 +30,13 @@ import java.util.Random;
  * - API使用方式见<a href="https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCCloud__android.html#af7cf5544f9b8027e9526c32319a13838">setMixTranscodingConfig	(	TRTCCloudDef.TRTCTranscodingConfig 	config	)	</a>
  * - 混流场景及使用介绍见<a href="https://cloud.tencent.com/document/product/647/16827">云端混流转码</a>
  */
+
+/**
+ * CDN Publishing (stream pushing, CDN publishing, and stream mixing when there are 2 or more anchors in the room)
+ *
+ * - For how to use the API, see <a href="https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCCloud__android.html#af7cf5544f9b8027e9526c32319a13838">setMixTranscodingConfig	(	TRTCCloudDef.TRTCTranscodingConfig 	config	)	</a>.
+ * - To learn about the use cases and other details of On-Cloud MixTranscoding, see <a href=https://cloud.tencent.com/document/product/647/16827">On-Cloud MixTranscoding</a>.
+ */
 public class PushCDNAnchorActivity extends TRTCBaseActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
     private static final String     TAG                 = "PushCDNAnchorActivity";

@@ -95,11 +95,11 @@
         android:layout_below="@id/tv_role"
         android:layout_marginLeft="60dp"
         android:orientation="horizontal"
-        android:layout_width="140dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <Button
             android:id="@+id/btn_anchor"
-            android:layout_width="60dp"
+            android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_weight="1"
             android:background="@color/live_single_select_button_bg"
@@ -108,7 +108,7 @@
 
         <Button
             android:id="@+id/btn_audience"
-            android:layout_width="60dp"
+            android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:textColor="@android:color/white"
             android:background="@color/live_single_select_button_bg_off"

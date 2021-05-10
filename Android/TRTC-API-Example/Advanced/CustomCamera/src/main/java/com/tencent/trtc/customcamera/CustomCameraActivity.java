@@ -41,6 +41,18 @@ import java.util.Random;
  *
  * - 更多细节，详见API说明文档{https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCCloud__android.html}
  */
+
+/**
+ * Custom Video Capturing & Rendering
+ *
+ * This document shows how to enable custom video capturing and rendering in the TRTC SDK.
+ * - Call {@link CustomCameraCapture#startInternal(CustomCameraCapture.VideoFrameReadListener)} to start video capturing by the camera, with `VideoFrameReadListener` passed in.
+ * - Call the custom video capturing API {@link TRTCCloud#sendCustomVideoData(TRTCCloudDef.TRTCVideoFrame)} to send the video frames returned by `VideoFrameReadListener` to the SDK.
+ * - Get the processed local video data using {@link TRTCCloud#setLocalVideoRenderListener(int, int, TRTCCloudListener.TRTCVideoRenderListener)} and render it to the screen.
+ * - If there is a remote anchor, call {@link TRTCCloud#setRemoteVideoRenderListener(String, int, int, TRTCCloudListener.TRTCVideoRenderListener)} to get the anchor’s video frames and render them to the screen.
+ *
+ * - For more information, please see the API document {https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCCloud__android.html}.
+ */
 @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
 public class CustomCameraActivity extends TRTCBaseActivity implements View.OnClickListener {
 

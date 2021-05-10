@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="videoquality_trtc_set_quality">Video Quality Setting</string>
+    <string name="videoquality_start_push">Start Push</string>
+    <string name="videoquality_stop_push">End Push</string>
+    <string name="videoquality_roomid">Room ID</string>
+    <string name="videoquality_userid">User ID</string>
+    <string name="videoquality_please_select_bitrate">Bitrate</string>
+    <string name="videoquality_please_select_fps">Frame Rate</string>
+    <string name="videoquality_please_select_resolution">Resolution</string>
+    <string name="videoquality_please_input_roomid_and_userid">Enter a room ID and username</string>
+</resources>

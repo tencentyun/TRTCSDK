@@ -42,6 +42,19 @@ import static com.tencent.trtc.TRTCCloudDef.TRTC_APP_SCENE_VIDEOCALL;
  * 
  * - 详见API文档{https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCCloud__android.html#aa6671fc587513dad7df580556e43be58}
  */
+
+/**
+ * Screen Sharing View for Anchor
+ *
+ * Features:
+ * - Enter a room: {@link ScreenAnchorActivity#enterRoom()}
+ * - Exit a room: {@link ScreenAnchorActivity#exitRoom()}
+ * - Start screen sharing: {@link ScreenAnchorActivity#startScreenCapture()}
+ * - End screen sharing: {@link ScreenAnchorActivity#stopScreenCapture()}
+ * - Turn on/off the mic: {@link ScreenAnchorActivity#muteAudio()}
+ *
+ * - For more information, please see the API document {https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCCloud__android.html#aa6671fc587513dad7df580556e43be58}.
+ */
 public class ScreenAnchorActivity extends TRTCBaseActivity implements View.OnClickListener {
 
     private static final String TAG                                 = "ScreenAnchorActivity";

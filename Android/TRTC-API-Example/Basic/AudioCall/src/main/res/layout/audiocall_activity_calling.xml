@@ -47,7 +47,6 @@
                 android:id="@+id/tv_user1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/audiocall_user"
                 android:textColor="@android:color/white"/>
         </LinearLayout>
         <LinearLayout
@@ -66,7 +65,6 @@
                 android:id="@+id/tv_user2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/audiocall_user"
                 android:textColor="@android:color/white"/>
         </LinearLayout>
         <LinearLayout
@@ -85,7 +83,6 @@
                 android:id="@+id/tv_user3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/audiocall_user"
                 android:textColor="@android:color/white"/>
         </LinearLayout>
     </LinearLayout>
@@ -111,7 +108,6 @@
                 android:id="@+id/tv_user4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/audiocall_user"
                 android:textColor="@android:color/white"/>
         </LinearLayout>
         <LinearLayout
@@ -130,7 +126,6 @@
                 android:id="@+id/tv_user5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/audiocall_user"
                 android:textColor="@android:color/white"/>
         </LinearLayout>
         <LinearLayout
@@ -149,7 +144,6 @@
                 android:id="@+id/tv_user6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/audiocall_user"
                 android:textColor="@android:color/white"/>
         </LinearLayout>
     </LinearLayout>
@@ -177,7 +171,6 @@
             android:id="@+id/tv_voice1"
             android:layout_width="wrap_content"
             android:layout_height="12dp"
-            android:text="@string/audiocall_user_empty_show"
             android:textColor="#6dd400"
             android:textSize="10sp"
             android:visibility="gone"/>
@@ -185,7 +178,6 @@
             android:id="@+id/tv_voice2"
             android:layout_width="wrap_content"
             android:layout_height="12dp"
-            android:text="@string/audiocall_user_empty_show"
             android:textColor="#6dd400"
             android:textSize="10sp"
             android:visibility="gone"/>
@@ -193,7 +185,6 @@
             android:id="@+id/tv_voice3"
             android:layout_width="wrap_content"
             android:layout_height="12dp"
-            android:text="@string/audiocall_user_empty_show"
             android:textColor="#6dd400"
             android:textSize="10sp"
             android:visibility="gone"/>
@@ -201,7 +192,6 @@
             android:id="@+id/tv_voice4"
             android:layout_width="wrap_content"
             android:layout_height="12dp"
-            android:text="@string/audiocall_user_empty_show"
             android:textColor="#6dd400"
             android:textSize="10sp"
             android:visibility="gone"/>
@@ -209,7 +199,6 @@
             android:id="@+id/tv_voice5"
             android:layout_width="wrap_content"
             android:layout_height="12dp"
-            android:text="@string/audiocall_user_empty_show"
             android:textColor="#6dd400"
             android:textSize="10sp"
             android:visibility="gone"/>
@@ -217,7 +206,6 @@
             android:id="@+id/tv_voice6"
             android:layout_width="wrap_content"
             android:layout_height="12dp"
-            android:text="@string/audiocall_user_empty_show"
             android:textColor="#6dd400"
             android:textSize="10sp"
             android:visibility="gone"/>
@@ -233,7 +221,6 @@
             android:id="@+id/tv_network1"
             android:layout_width="wrap_content"
             android:layout_height="12dp"
-            android:text="@string/audiocall_user_empty_show"
             android:textColor="#6dd400"
             android:textSize="10sp"
             android:visibility="gone"/>
@@ -241,7 +228,6 @@
             android:id="@+id/tv_network2"
             android:layout_width="wrap_content"
             android:layout_height="12dp"
-            android:text="@string/audiocall_user_empty_show"
             android:textColor="#6dd400"
             android:textSize="10sp"
             android:visibility="gone"/>
@@ -249,7 +235,6 @@
             android:id="@+id/tv_network3"
             android:layout_width="wrap_content"
             android:layout_height="12dp"
-            android:text="@string/audiocall_user_empty_show"
             android:textColor="#6dd400"
             android:textSize="10sp"
             android:visibility="gone"/>
@@ -257,7 +242,6 @@
             android:id="@+id/tv_network4"
             android:layout_width="wrap_content"
             android:layout_height="12dp"
-            android:text="@string/audiocall_user_empty_show"
             android:textColor="#6dd400"
             android:textSize="10sp"
             android:visibility="gone"/>
@@ -265,7 +249,6 @@
             android:id="@+id/tv_network5"
             android:layout_width="wrap_content"
             android:layout_height="12dp"
-            android:text="@string/audiocall_user_empty_show"
             android:textColor="#6dd400"
             android:textSize="10sp"
             android:visibility="gone"/>
@@ -273,7 +256,6 @@
             android:id="@+id/tv_network6"
             android:layout_width="wrap_content"
             android:layout_height="12dp"
-            android:text="@string/audiocall_user_empty_show"
             android:textColor="#6dd400"
             android:textSize="10sp"
             android:visibility="gone"/>

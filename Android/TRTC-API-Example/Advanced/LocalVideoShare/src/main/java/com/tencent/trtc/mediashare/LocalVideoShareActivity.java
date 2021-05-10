@@ -47,6 +47,19 @@ import java.util.Random;
  *
  *  - 更多细节，详见API说明文档{https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCCloud__android.html}
  */
+
+/**
+ * Video File Sharing
+ *
+ * This document shows how to share a video file during live streaming. The steps are detailed below:
+ *  - Read and de-encapsulate the video file --> decode
+ *  - Call the SDK’s custom audio and video capturing APIs {@link TRTCCloud#sendCustomAudioData(TRTCCloudDef.TRTCAudioFrame)} and {@link TRTCCloud#sendCustomVideoData(TRTCCloudDef.TRTCVideoFrame)} to send the decoded audio and video frames to the SDK.
+ *  - Call {@link TRTCCloud#setLocalVideoRenderListener(int, int, TRTCCloudListener.TRTCVideoRenderListener)} to get the processed local video frames and render them to the screen.
+ *  - Call {@link TRTCCloud#setAudioFrameListener(TRTCCloudListener.TRTCAudioFrameListener)} )} to get and play the processed audio frames.
+ *  - If there is a remote anchor, call {@link TRTCCloud#setRemoteVideoRenderListener(String, int, int, TRTCCloudListener.TRTCVideoRenderListener)} to get the anchor’s video frames and render them to the screen. The audio of the anchor is automatically mixed and played in the previous step.
+ *
+ *  - For more information, please see the API document {https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCCloud__android.html}.
+ */
 @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
 public class LocalVideoShareActivity extends TRTCBaseActivity implements View.OnClickListener {
 

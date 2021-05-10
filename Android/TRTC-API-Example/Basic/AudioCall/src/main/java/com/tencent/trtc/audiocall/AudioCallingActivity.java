@@ -34,6 +34,18 @@ import java.util.List;
  *
  * - 详见接入文档{https://cloud.tencent.com/document/product/647/42047}
  */
+
+/**
+ * Audio Call
+ *
+ * Features:
+ * - Enter an audio call room: {@link AudioCallingActivity#enterRoom()}
+ * - Exit an audio call room: {@link AudioCallingActivity#exitRoom()}
+ * - Turn on/off the mic: {@link AudioCallingActivity#muteAudio()}
+ * - Switch between the speaker (hands-free mode) and receiver: {@link AudioCallingActivity#audioRoute()}
+ *
+ * - For more information, please see the integration document {https://cloud.tencent.com/document/product/647/42047}.
+ */
 public class AudioCallingActivity extends TRTCBaseActivity implements View.OnClickListener {
 
     private static final String             TAG = "AudioCallingActivity";

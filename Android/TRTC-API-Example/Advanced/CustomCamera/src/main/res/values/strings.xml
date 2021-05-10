@@ -2,7 +2,7 @@
     <string name="customcamera_trtc_set_bgm">TRTC 自定义视频采集&amp;渲染</string>
     <string name="customcamera_stop_push">停止推流</string>
     <string name="customcamera_start_push">开始推流</string>
-    <string name="customcamera_please_input_roomid_userid">请输入房间号和用户ID</string>
+    <string name="customcamera_please_input_roomid_userid">房间号和用户名不能为空</string>
     <string name="customcamera_roomid">房间号</string>
     <string name="customcamera_userid">用户ID</string>
 </resources>

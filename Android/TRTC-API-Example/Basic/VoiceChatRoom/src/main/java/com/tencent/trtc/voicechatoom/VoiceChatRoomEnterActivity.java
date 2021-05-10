@@ -23,6 +23,15 @@ import com.tencent.trtc.debug.Constant;
  *
  * - 详见API文档{https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCCloud__android.html#a915a4b3abca0e41f057022a4587faf66}
  */
+
+/**
+ * Interactive Live Audio Streaming Entrance (enter a room after specifying the room ID and selecting a role)
+ *
+ * - Enter a room as a room owner: {@link VoiceChatRoomAnchorActivity}
+ * - Enter a room as a listener: {@link VoiceChatRoomAudienceActivity}
+ *
+ * - For more information, please see the API document {https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCCloud__android.html#a915a4b3abca0e41f057022a4587faf66}.
+ */
 public class VoiceChatRoomEnterActivity extends AppCompatActivity {
     private EditText    mEditInputUserId;
     private EditText    mEditInputRoomId;

@@ -36,7 +36,7 @@ import javax.crypto.spec.SecretKeySpec;
 public class GenerateTestUserSig {
 
     /**
-     * 配置为CDN发布的域名
+     * 配置为CDN发布、混流的域名
      */
     public static final String  CDN_DOMAIN_NAME = "PLACEHOLDER";
 

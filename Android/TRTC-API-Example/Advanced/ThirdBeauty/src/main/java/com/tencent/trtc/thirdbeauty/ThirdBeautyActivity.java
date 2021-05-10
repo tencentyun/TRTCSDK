@@ -51,6 +51,31 @@ import java.util.List;
  * - 在 {@link TRTCCloudListener.TRTCVideoFrameListener#onProcessVideoFrame} 回调方法中使用第三方美颜处理视频数据，详见API说明文档 {https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCCloudListener__android.html#a22afb08b2a1a18563c7be28c904b166a}
  * </p>
  */
+
+/**
+ * Third-Party Beauty Filters
+ *
+ * The steps are detailed below:
+ * - Download FaceUnity at https://github.com/Faceunity/FUTRTCDemoDroid and import it to your project.
+ * You can modify `build.gradle` of the current module to specify SO architecture for the app:
+ * android {
+ *
+ * defaultConfig {
+ *
+ * ndk {
+ * abiFilters 'armeabi-v7a', 'arm64-v8a'
+ *
+ *
+ * - Initialize the beauty filter module {@link FURenderer} as needed:
+ * FURenderer.setup(getApplicationContext());
+ * mFURenderer = new FURenderer.Builder(getApplicationContext())
+ * .setCreateEglContext(false)
+ * .setInputTextureType(0)    // In TRTC, the parameter is `0` (TEXTURE_2D)
+ * .setCreateFaceBeauty(true)
+ * .build();
+ * - For how to set the callback using {@link TRTCCloud#setLocalVideoProcessListener}, see the API document {https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCCloud__android.html#a0b565dc8c77df7fb826f0c45d8ad2d85}.
+ * - For how to use third-party beauty filters to process video data in the {@link TRTCCloudListener.TRTCVideoFrameListener#onProcessVideoFrame} callback, see the API document {https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCCloudListener__android.html#a22afb08b2a1a18563c7be28c904b166a}.
+ */
 public class ThirdBeautyActivity extends TRTCBaseActivity implements View.OnClickListener {
 
     private static final String    TAG                 = "ThirdBeautyActivity";

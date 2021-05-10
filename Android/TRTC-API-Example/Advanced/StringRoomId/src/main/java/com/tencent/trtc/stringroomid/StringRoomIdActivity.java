@@ -31,6 +31,15 @@ import java.util.Random;
  * - 退出房间{@link TRTCCloud#exitRoom()}
  * - 详见API说明文档{https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCCloud__android.html#abfc1841af52e8f6a5f239a846a1e5d5c}
  */
+
+/**
+ * String-type Room ID
+ *
+ * Features:
+ * - Enter a room: {@link TRTCCloud#enterRoom(TRTCCloudDef.TRTCParams, int)}
+ * - Exit a room: {@link TRTCCloud#exitRoom()}
+ * - For more information, please see the API document {https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCCloud__android.html#abfc1841af52e8f6a5f239a846a1e5d5c}.
+ */
 public class StringRoomIdActivity extends TRTCBaseActivity implements View.OnClickListener {
     private static final String     TAG = "StringRoomIdActivity";
 

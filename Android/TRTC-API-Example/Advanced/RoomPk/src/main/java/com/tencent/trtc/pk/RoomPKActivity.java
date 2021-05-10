@@ -36,6 +36,15 @@ import java.util.Random;
  * - A主播跨房连麦B主播{@link TRTCCloud#ConnectOtherRoom(String)}
  * - 详见API说明文档{https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCCloud__android.html#ac1ab7e4a017b99bb91d89ce1b0fac5fd}
  */
+
+/**
+ * Cross-room Co-anchoring
+ *
+ * Features:
+ * - Anchor A co-anchors with anchor B: {@link TRTCCloud#ConnectOtherRoom(String)}
+ * - For more information, please see the API document {https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCCloud__android.html#ac1ab7e4a017b99bb91d89ce1b0fac5fd}.
+ *
+ */
 public class RoomPKActivity extends TRTCBaseActivity implements View.OnClickListener {
 
     private static final String     TAG                     = "ConnectOtherRoom";

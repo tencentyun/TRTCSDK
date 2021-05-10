@@ -37,6 +37,17 @@ import java.util.Random;
  *
  * - 详见API说明文档{https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TXAudioEffectManager__android.html#acaf02cbac9aa369c166ce60f600fb246}
  */
+
+/**
+ * Setting Background Music
+ *
+ * Features:
+ * - Set the background music: {@link TXAudioEffectManager#startPlayMusic(TXAudioEffectManager.AudioMusicParam)}
+ * - Set the local playback volume of background music: {@link TXAudioEffectManager#setMusicPlayoutVolume(int, int)}
+ * - Set the remote playback volume of background music: {@link TXAudioEffectManager#setMusicPublishVolume(int, int)}
+ *
+ * - For more information, please see the API document {https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TXAudioEffectManager__android.html#acaf02cbac9aa369c166ce60f600fb246}.
+ */
 public class SetBGMActivity extends TRTCBaseActivity implements View.OnClickListener {
     private static final String     TAG = "SetBGMActivity";
 

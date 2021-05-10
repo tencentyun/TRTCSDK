@@ -40,6 +40,20 @@ import java.util.List;
  *
  * - 详见接入文档{https://cloud.tencent.com/document/product/647/42045}
  */
+
+/**
+ * Video Call
+ *
+ * Features:
+ * - Enter a video call room: {@link VideoCallingActivity#enterRoom()}
+ * - Exit a video call room: {@link VideoCallingActivity#exitRoom()}
+ * - Switch between the front and rear cameras: {@link VideoCallingActivity#switchCamera()}
+ * - Turn on/off the camera: {@link VideoCallingActivity#muteVideo()}
+ * - Turn on/off the mic: {@link VideoCallingActivity#muteAudio()}
+ * - Display the video of other users (max. 6) in the room: {@link TRTCCloudImplListener#refreshRemoteVideoViews()}
+ *
+ * - For more information, please see the integration document {https://cloud.tencent.com/document/product/647/42045}.
+ */
 public class VideoCallingActivity extends TRTCBaseActivity implements View.OnClickListener {
 
     private static final String             TAG = "VideoCallingActivity";

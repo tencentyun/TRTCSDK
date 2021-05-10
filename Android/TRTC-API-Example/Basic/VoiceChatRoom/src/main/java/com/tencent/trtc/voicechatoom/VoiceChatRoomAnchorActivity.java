@@ -34,6 +34,16 @@ import static com.tencent.trtc.TRTCCloudDef.TRTC_APP_SCENE_VOICE_CHATROOM;
  *
  * - 详见API文档{https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCCloud__android.html#a915a4b3abca0e41f057022a4587faf66}
  */
+
+/**
+ * Interactive Live Audio Streaming View for Room Owner
+ *
+ * Features:
+ * - Mute: {@link VoiceChatRoomAnchorActivity#muteAudio()}
+ * - Become speaker/listener: {@link VoiceChatRoomAudienceActivity#upDownMic()}
+ *
+ * - For more information, please see the API document {https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCCloud__android.html#a915a4b3abca0e41f057022a4587faf66}
+ */
 public class VoiceChatRoomAnchorActivity extends TRTCBaseActivity {
     private static final String             TAG                             = "VoiceChatRoomAnchor";
 

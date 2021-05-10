@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">TRTC-API-Example</string>
+    <string name="main_trtc_title">TRTC API Example</string>
+
+    <string name="main_trtc_base_funciton">Basic Features</string>
+    <string name="main_item_aduio_call">Audio Call</string>
+    <string name="main_item_aduio_call_desc">One-to-one/Group audio call, which supports muting, hands-free mode, etc.</string>
+    <string name="main_item_video_call">Video Call</string>
+    <string name="main_item_video_call_desc">One-to-one/Group video call, which supports muting, hands-free mode, etc.</string>
+    <string name="main_item_live">Interactive Live Video Streaming</string>
+    <string name="main_item_voice_chat_room">Interactive Live Audio Streaming</string>
+    <string name="main_item_screen_share">Screen Recording Live Streaming</string>
+    <string name="main_item_screen_share_desc">Share the screen during live streaming, designed for online education, game streaming, etc.</string>
+
+    <string name="main_trtc_advanced">Advanced Features</string>
+    <string name="main_item_string_room_id">String-type Room ID</string>
+    <string name="main_rtrc_set_video_quality">Video Quality Setting</string>
+    <string name="main_rtrc_set_audio_quality">Audio Quality Setting</string>
+    <string name="main_rerc_render_params">Render Control</string>
+    <string name="main_item_speed_test">Network Speed Testing</string>
+    <string name="main_item_pushcdn">Publish via CDN</string>
+    <string name="main_trtc_custom_camera">Custom Video Capturing &amp; Rendering</string>
+    <string name="main_rtrc_set_audio_effect">Audio Effect Setting</string>
+    <string name="main_trtc_set_bgm">Background Music Setting</string>
+    <string name="main_trtc_local_video_share">Local Video Sharing</string>
+    <string name="main_item_local_record">Local Recording</string>
+    <string name="main_item_join_multiple_room">Enter Multiple Rooms</string>
+    <string name="main_item_sei_message">Receive/Send SEI Message</string>
+    <string name="main_item_switch_room">Switch Room</string>
+    <string name="main_trtc_connect_other_room_pk">Cross-room Competition</string>
+    <string name="main_item_third_beauty">Third-party Beauty Filter</string>
+</resources>

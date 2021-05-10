@@ -29,6 +29,15 @@ import java.util.List;
  * - 详见API说明文档 {https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCCloud__android.html#a3c4a93d24e0ef076168b44cf3545a8d4}
  * </p>
  */
+
+/**
+ * Entering Multiple Rooms
+ *
+ * Features:
+ * - Create a TRTCCloud instance: {@link TRTCCloud#createSubCloud}
+ * - Destroy a TRTCCloud instance: {@link TRTCCloud#destroySubCloud}
+ * - For more information, please see the API document {https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCCloud__android.html#a3c4a93d24e0ef076168b44cf3545a8d4}.
+ */
 public class JoinMultipleRoomActivity extends TRTCBaseActivity {
 
     private static final String       TAG                 = "JoinMultipleRoom";

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="common_please_input_roomid_and_userid">用户没有允许需要的权限，加入通话失败</string>
+</resources>

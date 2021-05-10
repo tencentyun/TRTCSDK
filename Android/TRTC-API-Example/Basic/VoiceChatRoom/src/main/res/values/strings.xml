@@ -7,7 +7,6 @@
     <string name="voicechatroom_audience_operator">观众操作</string>
     <string name="voicechatroom_mute_audio">静音</string>
     <string name="voicechatroom_close_mic">关闭麦克风</string>
-    <string name="voicechatroom_speaker_receiver">扬声器/听筒</string>
     <string name="voicechatroom_up_mic">上麦</string>
     <string name="voicechatroom_down_mic">下麦</string>
     <string name="voicechatroom_stop_mute_audio">取消静音</string>

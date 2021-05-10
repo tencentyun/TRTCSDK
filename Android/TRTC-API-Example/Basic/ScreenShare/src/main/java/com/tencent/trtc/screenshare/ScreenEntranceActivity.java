@@ -19,6 +19,13 @@ import com.tencent.trtc.debug.Constant;
  * 以主播角色进入房间{@link ScreenAnchorActivity}
  * 以观众角色进入房间{@link ScreenAudienceActvity}
  */
+
+/**
+ * Entrance for Screen Sharing Live Streaming (enter a room after specifying the room ID and selecting a role)
+ *
+ * Enter a room as an anchor: {@link ScreenAnchorActivity}
+ * Enter a room as audience: {@link ScreenAudienceActvity}
+ */
 public class ScreenEntranceActivity extends AppCompatActivity {
 
     private EditText    mEditInputUserId;

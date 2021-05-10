@@ -52,7 +52,7 @@
         android:background="@color/pushcdn_mixconfig_button_disable_bg"
         android:text="@string/pushcdn_anchor_mixconfig_disabled"
         android:textColor="@android:color/white"
-        android:textSize="21sp"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />

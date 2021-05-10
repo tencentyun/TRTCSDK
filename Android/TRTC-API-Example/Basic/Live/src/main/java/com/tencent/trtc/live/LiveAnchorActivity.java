@@ -38,6 +38,19 @@ import static com.tencent.trtc.TRTCCloudDef.TRTC_APP_SCENE_LIVE;
  *
  * 详见接入文档{https://cloud.tencent.com/document/product/647/43182}
  */
+
+/**
+ * Room View of Interactive Live Video Streaming for Anchor
+ *
+ * Features:
+ * - Enter a room: {@link LiveAnchorActivity#enterRoom()}
+ * - Exit a room: {@link LiveAnchorActivity#exitRoom()}
+ * - Switch between the front and rear cameras: {@link LiveAnchorActivity#switchCamera()}
+ * - Turn on/off the camera: {@link LiveAnchorActivity#muteVideo()}
+ * - Turn on/off the mic: {@link LiveAnchorActivity#muteAudio()}
+ *
+ * For more information, please see the integration document {https://cloud.tencent.com/document/product/647/43182}.
+ */
 public class LiveAnchorActivity extends TRTCBaseActivity implements View.OnClickListener {
     private static final String             TAG                     = "LiveBaseActivity";
     private static final int                DEFAULT_CAPACITY        = 5;

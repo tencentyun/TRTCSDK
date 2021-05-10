@@ -19,6 +19,13 @@ import com.tencent.trtc.debug.Constant;
  * - 以主播角色进入视频互动直播房间{@link LiveAnchorActivity}
  * - 以观众角色进入视频互动直播房间{@link LiveAudienceActivity}
  */
+
+/**
+ * Entrance View of Interactive Live Video Streaming
+ *
+ * - Enter a room as an anchor: {@link LiveAnchorActivity}
+ * - Enter a room as audience: {@link LiveAudienceActivity}
+ */
 public class LiveEnterActivity extends AppCompatActivity{
 
     private EditText    mEditInputUserId;

@@ -1,0 +1,25 @@
+<resources>
+    <string name="live_title">Interactive Live Video Streaming</string>
+    <string name="live_please_select_role">Role (Required)</string>
+    <string name="live_room_input_error_tip">Enter a room ID and username</string>
+    <string name="live_mute">Mute</string>
+    <string name="live_video_item">Video Settings</string>
+    <string name="live_audio_item">Audio Settings</string>
+    <string name="live_operator">Operation</string>
+    <string name="live_user_back_camera">Use Rear Camera</string>
+    <string name="live_user_front_camera">Use Front Camera</string>
+    <string name="live_open_camera">Camera On</string>
+    <string name="live_close_camera">Camera Off</string>
+    <string name="live_mute_audio">Muted</string>
+    <string name="live_close_mute_audio">Unmute</string>
+    <string name="live_use_speaker">Use Speaker</string>
+    <string name="live_use_receiver">Use Receiver</string>
+    <string name="live_enter_room">Enter Room</string>
+    <string name="live_please_input_userid">User ID (Required)</string>
+    <string name="live_please_input_roomid">Room ID (Required)</string>
+    <string name="live_audience">Audience</string>
+    <string name="live_anchor">Anchor</string>
+    <string name="live_roomid">Room ID: </string>
+    <string name="live_close_mic">Mic Off</string>
+    <string name="live_open_mic">Mic On</string>
+</resources>

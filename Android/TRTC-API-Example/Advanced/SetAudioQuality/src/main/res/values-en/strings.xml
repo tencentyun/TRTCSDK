@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="audioquality_trtc_set_quality">Audio Quality Setting</string>
+    <string name="audioquality_stop_push">End Push</string>
+    <string name="audioquality_start_push">Start Push</string>
+    <string name="audioquality_please_input_roomid_userid">Enter a room ID and username</string>
+    <string name="audioquality_roomid">Room ID</string>
+    <string name="audioquality_userid">User ID</string>
+    <string name="audioquality_please_select_audio_quality">Audio Quality</string>
+    <string name="audioquality_quality_default">Default</string>
+    <string name="audioquality_quality_speech">Speech</string>
+    <string name="audioquality_quality_music">Music</string>
+    <string name="audioquality_please_set_volumn">Capturing Volume</string>
+</resources>

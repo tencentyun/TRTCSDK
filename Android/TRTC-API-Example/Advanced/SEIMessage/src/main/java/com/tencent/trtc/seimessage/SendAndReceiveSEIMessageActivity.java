@@ -32,6 +32,16 @@ import java.util.List;
  * - 接收SEI消息{@link TRTCCloudListener#onRecvSEIMsg}，详见API说明文档 {https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCCloudListener__android.html#ad3640e6bf80a1f93991644701e9b0d96}；
  * </p>
  */
+
+/**
+ * SEI Message Receiving/Sending
+ *
+ * <p>
+ * Features:
+ * - Send SEI messages: {@link TRTCCloud#sendSEIMsg}. For more information, please see the API document {https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCCloud__android.html#a034f9e1effbdadf8b9bfb7f3f06486c4}.
+ * - Receive SEI messages: {@link TRTCCloudListener#onRecvSEIMsg}. For more information, please see the API document {https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCCloudListener__android.html#ad3640e6bf80a1f93991644701e9b0d96}.
+ * </p>
+ */
 public class SendAndReceiveSEIMessageActivity extends TRTCBaseActivity implements View.OnClickListener {
 
     private static final String    TAG                 = "SendAndReceiveSEIMessageActivity";

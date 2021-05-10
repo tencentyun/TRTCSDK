@@ -23,7 +23,7 @@
     <string name="main_rtrc_set_audio_effect">设置音效</string>
     <string name="main_trtc_set_bgm">设置背景音乐</string>
     <string name="main_trtc_local_video_share">本地视频分享</string>
-    <string name="main_item_local_record">本地视频录制</string>
+    <string name="main_item_local_record">本地媒体录制</string>
     <string name="main_item_join_multiple_room">加入多个房间</string>
     <string name="main_item_sei_message">收发SEI消息</string>
     <string name="main_item_switch_room">快速切换房间</string>

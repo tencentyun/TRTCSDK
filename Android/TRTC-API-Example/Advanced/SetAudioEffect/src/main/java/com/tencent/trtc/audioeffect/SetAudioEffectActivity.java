@@ -36,6 +36,17 @@ import java.util.Random;
  *
  * - 详见API说明文档{https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TXAudioEffectManager__android.html#adad5c18fa6883bef2edae8bc343bcec2}
  */
+
+/**
+ * Setting Audio Effects
+
+ * The steps are detailed below:
+ * - 1. Get the audio effect management class {@link TXAudioEffectManager}: {@link TRTCCloud#getAudioEffectManager()}
+ * - 2. Set audio effects: {@link TXAudioEffectManager#setVoiceChangerType(TXAudioEffectManager.TXVoiceChangerType)}
+ * - 3. Set reverb effects: {@link TXAudioEffectManager#setVoiceReverbType(TXAudioEffectManager.TXVoiceReverbType)}
+
+ * - For more information, please see the API document {https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TXAudioEffectManager__android.html#adad5c18fa6883bef2edae8bc343bcec2}.
+ */
 public class SetAudioEffectActivity extends TRTCBaseActivity implements View.OnClickListener {
 
     private static final String     TAG                     = "SetVideoQualityActivity";

@@ -34,6 +34,14 @@ import java.util.regex.Pattern;
  * - 切换房间{@link TRTCCloud#switchRoom(TRTCCloudDef.TRTCSwitchRoomConfig)} ,详见参数说明
  * - 详见API说明文档{https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCCloud__android.html#a09fbe471def0c1790357fc2b70149784}
  */
+
+/**
+ * Room Switching
+ *
+ * Features:
+ * - Switch rooms: {@link TRTCCloud#switchRoom(TRTCCloudDef.TRTCSwitchRoomConfig)}. For details, see the parameter description.
+ * - For more information, please see the API document {https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCCloud__android.html#a09fbe471def0c1790357fc2b70149784}.
+ */
 public class SwitchRoomActivity extends TRTCBaseActivity implements View.OnClickListener {
 
     private static final String     TAG                     = "SwitchRoomActivity";

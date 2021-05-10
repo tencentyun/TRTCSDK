@@ -1,0 +1,8 @@
+<resources>
+    <string name="customcamera_trtc_set_bgm">Custom Video Capturing &amp; Rendering</string>
+    <string name="customcamera_stop_push">End Push</string>
+    <string name="customcamera_start_push">Start Push</string>
+    <string name="customcamera_please_input_roomid_userid">Enter a room ID and username</string>
+    <string name="customcamera_roomid">Room ID</string>
+    <string name="customcamera_userid">User ID</string>
+</resources>

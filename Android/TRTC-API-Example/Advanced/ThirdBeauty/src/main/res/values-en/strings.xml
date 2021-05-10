@@ -1,0 +1,9 @@
+<resources>
+    <string name="thirdbeauty_title">Third-party Beauty Filter</string>
+    <string name="thirdbeauty_room_id">Room ID</string>
+    <string name="thirdbeauty_user_id">User ID</string>
+    <string name="thirdbeauty_start_push">Start Push</string>
+    <string name="thirdbeauty_stop_push">End Push</string>
+    <string name="thirdbeauty_set_blur_level">Skin Smoothing</string>
+    <string name="thirdbeauty_please_input_roomid_and_userid">Enter a room ID and username</string>
+</resources>

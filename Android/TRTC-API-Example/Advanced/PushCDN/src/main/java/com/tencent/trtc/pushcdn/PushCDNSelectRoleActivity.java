@@ -15,6 +15,14 @@ import androidx.appcompat.app.AppCompatActivity;
  * - 1.以主播身份进房进行推流和CDN发布{@link PushCDNAnchorActivity}
  * - 2.以观众身份输入CDN地址直接播放观看{@link PushCDNAudienceActivity}
  */
+
+/**
+ * Role Selection for CDN Publish/Playback
+ *
+ * - A user can:
+ * - 1. Enter the room as an anchor and push streams via CDNs: {@link PushCDNAnchorActivity
+ * - 2. Enter a CDN address as audience to play back streams: {@link PushCDNAudienceActivity}
+ */
 public class PushCDNSelectRoleActivity extends AppCompatActivity {
 
     private TextView    mTextAnchorChoice;

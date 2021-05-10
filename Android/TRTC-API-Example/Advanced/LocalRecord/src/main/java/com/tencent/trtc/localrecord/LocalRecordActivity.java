@@ -34,6 +34,16 @@ import java.util.Random;
  *
  * - 详见API说明文档{https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCCloud__android.html#a5d6bf60e9d3051f601988e55106b296c}
  */
+
+/**
+ * Local Video Recording
+ *
+ * Features:
+ * - Start video recording: {@link TRTCCloud#startLocalRecording(TRTCCloudDef.TRTCLocalRecordingParams)}
+ * - Stop video recording: {@link TRTCCloud#stopLocalRecording()}
+ *
+ * - For more information, please see the API document {https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCCloud__android.html#a5d6bf60e9d3051f601988e55106b296c}.
+ */
 public class LocalRecordActivity extends TRTCBaseActivity implements View.OnClickListener {
 
     private static final String     TAG                     = "LocalRecordActivity";

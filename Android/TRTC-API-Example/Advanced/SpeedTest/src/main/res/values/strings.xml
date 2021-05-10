@@ -2,9 +2,9 @@
 <resources>
     <string name="speedtest_input_error_tip">用户ID不能为空</string>
     <string name="speedtest_title">TRTC 网络测试</string>
-    <string name="speedtest_result_guide">测试结果：</string>
+    <string name="speedtest_result_guide">测速结果：</string>
     <string name="speedtest_input_guide">请输入用户名（必填项）</string>
-    <string name="speedtest_start">开始测试</string>
-    <string name="speedtest_finish">完成测试</string>
+    <string name="speedtest_start">开始测速</string>
+    <string name="speedtest_finish">完成测速</string>
     <string name="speedtest_fail">测试失败</string>
 </resources>

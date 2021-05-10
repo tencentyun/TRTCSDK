@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="speedtest_input_error_tip">User ID (Required)</string>
+    <string name="speedtest_title">Network Testing</string>
+    <string name="speedtest_result_guide">Test Result：</string>
+    <string name="speedtest_input_guide">User ID (Required</string>
+    <string name="speedtest_start">Start Test</string>
+    <string name="speedtest_finish">Speed test finished</string>
+    <string name="speedtest_fail">Speed test failed</string>
+</resources>

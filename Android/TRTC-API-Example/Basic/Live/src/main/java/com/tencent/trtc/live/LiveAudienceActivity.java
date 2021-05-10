@@ -33,6 +33,17 @@ import static com.tencent.trtc.TRTCCloudDef.TRTC_APP_SCENE_LIVE;
  *
  * - 详见接入文档{https://cloud.tencent.com/document/product/647/43182}
  */
+
+/**
+ * Room View of Interactive Live Video Streaming for Audience
+ *
+ * Features:
+ * - Enter a room: {@link LiveAudienceActivity#enterRoom()}
+ * - Exit a room: {@link LiveAudienceActivity#exitRoom()}
+ * - Mute: {@link LiveAudienceActivity#muteAudio()}
+ *
+ * - For more information, please see the integration document {https://cloud.tencent.com/document/product/647/43182}.
+ */
 public class LiveAudienceActivity extends TRTCBaseActivity implements View.OnClickListener {
     private static final String             TAG                     = "LiveAudienceActivity";
 

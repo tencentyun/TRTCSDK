@@ -423,13 +423,13 @@
     <LinearLayout
         android:id="@+id/ll_edit_mode"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         android:layout_above="@+id/ll_edit_mirror"
         android:orientation="horizontal">
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_weight="1"
             android:paddingLeft="10dp">
@@ -455,7 +455,7 @@
                     android:id="@+id/tv_local_mode"
                     android:layout_width="match_parent"
                     android:layout_weight="3"
-                    android:layout_height="30dp"
+                    android:layout_height="wrap_content"
                     android:textColor="@android:color/black"
                     android:paddingLeft="20dp"
                     android:gravity="center"
@@ -471,7 +471,7 @@
         </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingLeft="10dp"
             android:layout_weight="1">
@@ -485,7 +485,7 @@
             <LinearLayout
                 android:id="@+id/ll_remote_userid"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginRight="40dp"
                 android:layout_gravity="center_vertical"
@@ -496,7 +496,8 @@
                     android:id="@+id/tv_remote_userid"
                     android:layout_width="match_parent"
                     android:layout_weight="3"
-                    android:layout_height="30dp"
+                    android:layout_height="wrap_content"
+                    android:minHeight="30dp"
                     android:textColor="@android:color/black"
                     android:paddingLeft="20dp"
                     android:gravity="center"

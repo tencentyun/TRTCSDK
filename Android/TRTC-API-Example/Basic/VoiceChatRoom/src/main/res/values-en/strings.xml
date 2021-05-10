@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="voicechatroom_title">Interactive Live Audio Streaming</string>
+    <string name="voicechatroom_room_input_error_tip">Enter a room ID and username</string>
+    <string name="voicechatroom_please_select_role">Role (Required)</string>
+    <string name="voicechatroom_anchor_operator">Anchor Operation</string>
+    <string name="voicechatroom_audience_operator">Audience Operation</string>
+    <string name="voicechatroom_mute_audio">Mute</string>
+    <string name="voicechatroom_close_mic">Mic Off</string>
+    <string name="voicechatroom_up_mic">Mic On</string>
+    <string name="voicechatroom_down_mic">Mic Off</string>
+    <string name="voicechatroom_stop_mute_audio">Unmute</string>
+    <string name="voicechatroom_use_receiver">Use Receiver</string>
+    <string name="voicechatroom_use_speaker">Use Speaker</string>
+    <string name="voicechatroom_enter_room">Enter Room</string>
+    <string name="voicechatroom_please_input_userid">User ID (Required)</string>
+    <string name="voicechatroom_please_input_roomid">Room ID (Required)</string>
+    <string name="voicechatroom_audience">Audience</string>
+    <string name="voicechatroom_anchor">Anchor</string>
+    <string name="voicechatroom_roomid">Room ID: </string>
+</resources>

@@ -38,6 +38,14 @@ import java.util.Random;
  * - 设置视频质量{@link TRTCCloud#setVideoEncoderParam(TRTCCloudDef.TRTCVideoEncParam)},详见参数说明
  * - 详见API说明文档{https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCCloud__android.html#ae047d96922cb1c19135433fa7908e6ce}
  */
+
+/**
+ * Setting Video Quality
+ *
+ * Features:
+ *- Set video quality: {@link TRTCCloud#setVideoEncoderParam(TRTCCloudDef.TRTCVideoEncParam)}. For details, see the parameter description.
+ * - For more information, please see the API document {https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCCloud__android.html#ae047d96922cb1c19135433fa7908e6ce}.
+ */
 public class SetVideoQualityActivity extends TRTCBaseActivity implements View.OnClickListener {
 
     private static final String     TAG                     = "SetVideoQualityActivity";

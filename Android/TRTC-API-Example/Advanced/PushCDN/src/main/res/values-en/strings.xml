@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pushcdn_page_title">Publish via CDN</string>
+    <string name="pushcdn_select_role_guide">Select a role:\n- Anchors can publish streams via CDNs upon room entry by specifying the room entry parameter `streamid`.\n- Anchors can publish streams via CDNs upon room entry by specifying the room entry B2parameter B2\n- If anchors choose to relay streams to CDNs, audience can enter the playback address to watch the streams.</string>
+    <string name="pushcdn_select_role_result">Before you publish streams to CDNs, do the following:\n1. Enable relayed push in the console. A push address will be generated automatically.\n2. Register a domain name for playback and complete ICP filing.\nDocumentation: CDN Relayed Live Streaming (https://cloud.tencent.com/document/product/647/16826); On-Cloud MixTranscoding (https://cloud.tencent.com/document/product/647/16827)"</string>
+    <string name="pushcdn_select_role_anchor_choice">Anchor</string>
+    <string name="pushcdn_select_role_audience_choice">Audience</string>
+    <string name="pushcdn_select_role_net_step">Next</string>
+    <string name="pushcdn_audience_input_guide">Playback address: http://{your playback domain name}/{stream_id}.flv</string>
+    <string name="pushcdn_audience_start_play">Playback via CDN</string>
+    <string name="pushcdn_audience_stop_play">End Playback</string>
+    <string name="pushcdn_audience_empty_stream_id_tip">stream id is not empty</string>
+    <string name="pushcdn_anchor_room_title">Room ID：</string>
+    <string name="pushcdn_anchor_mixconfig_disabled">On-Cloud Stream Mixing (2 or More Anchors)</string>
+    <string name="pushcdn_anchor_cdn_url_guide">Playback address: http://{your playback domain name}/{stream_id}.flv</string>
+    <string name="pushcdn_anchor_mixconfig_left_right">Left and right</string>
+    <string name="pushcdn_anchor_mixconfig_in_picture">Picture-in-picture</string>
+    <string name="pushcdn_anchor_mixconfig_manual">Manual</string>
+    <string name="pushcdn_anchor_room_id_guide">Room ID</string>
+    <string name="pushcdn_anchor_stream_id_input_guide">stream id</string>
+    <string name="pushcdn_anchor_enter_room">Start Push</string>
+    <string name="pushcdn_anchor_exit_room">End Push</string>
+    <string name="pushcdn_anchor_empty_room_id_tip">Room ID (Required)</string>
+    <string name="pushcdn_anchor_need_enter_room_tip">After Enter Room</string>
+    <string name="pushcdn_anchor_more_anchor_tip">2 or More Anchors</string>
+    <string name="pushcdn_more_cloud_mix">On-Cloud Stream Mixing</string>
+    <string name="pushcdn_please_input_streamid">Stream ID</string>
+</resources>

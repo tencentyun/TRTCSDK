@@ -110,12 +110,12 @@
     <LinearLayout
         android:layout_above="@+id/ll_edit_info"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         android:orientation="horizontal">
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_weight="1.5"
             android:paddingLeft="10dp">
@@ -153,9 +153,10 @@
             <EditText
                 android:id="@+id/et_remote_user_id"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:paddingLeft="5dp"
-                android:background="@drawable/common_edit_bg" />
+                android:layout_height="36dp"
+                android:minHeight="30dp"
+                android:background="@drawable/common_edit_bg"
+                android:paddingLeft="5dp" />
 
         </LinearLayout>
         <Button

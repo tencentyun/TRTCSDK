@@ -38,6 +38,16 @@ import java.util.Random;
  *
  * - 详见API说明文档{https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCCloud__android.html#afe6ea1bf7c959722595356a9b7fc2179}
  */
+
+/**
+ * Video Rendering Control
+ *
+ * Features:
+ * - Set rendering parameters for local video: {@link TRTCCloud#setLocalRenderParams(TRTCCloudDef.TRTCRenderParams)}
+ * - Set rendering parameters for remote video: {@link TRTCCloud#setRemoteRenderParams(String, int, TRTCCloudDef.TRTCRenderParams)}
+ *
+ * - For more information, please see the API document {https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCCloud__android.html#afe6ea1bf7c959722595356a9b7fc2179}.
+ */
 public class SetRenderParamsActivity extends TRTCBaseActivity implements View.OnClickListener {
 
     private static final String     TAG                     = "SetRenderParamsActivity";

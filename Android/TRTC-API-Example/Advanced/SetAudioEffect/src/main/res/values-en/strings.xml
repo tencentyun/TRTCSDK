@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="audioeffect_trtc_set_quality">Audio Effect Setting</string>
+    <string name="audioeffect_please_input_roomid_and_userid">Enter a room ID and username</string>
+    <string name="audioeffect_uncle">Man</string>
+    <string name="audioeffect_metal">Metal</string>
+    <string name="audioeffect_lolita">Girl</string>
+    <string name="audioeffect_child">Child</string>
+    <string name="audiaeffect_effect_default">Original</string>
+    <string name="audioeffect_please_select_effect">Voice Change Effect (Set After Push)</string>
+    <string name="audioeffect_reverb_low">Deep</string>
+    <string name="audioeffect_reverb_big">Hall</string>
+    <string name="audioeffect_reverb_small">Room</string>
+    <string name="audioeffect_reverb_ktv">KTV</string>
+    <string name="audioeffect_reverb_default">Original</string>
+    <string name="audioeffect_please_select_reverb">Reverb Effect (Set After Push)</string>
+    <string name="audioeffect_start_push">Start Push</string>
+    <string name="audioeffect_stop_push">End Push</string>
+    <string name="audioeffect_userid">User ID</string>
+    <string name="audioeffect_roomid">Room ID</string>
+</resources>
