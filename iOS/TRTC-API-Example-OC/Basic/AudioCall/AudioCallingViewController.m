@@ -48,7 +48,6 @@ static const NSInteger maxRemoteUserNum = 6;
 - (TRTCCloud*)trtcCloud {
     if (!_trtcCloud) {
         _trtcCloud = [TRTCCloud sharedInstance];
-        _trtcCloud.delegate = self;
     }
     return _trtcCloud;
 }
@@ -72,9 +71,10 @@ static const NSInteger maxRemoteUserNum = 6;
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.trtcCloud.delegate = self;
     [self setupDefaultUIConfig];
     [self setupTRTCCloud];
-    
+
     _remoteInfoDictionary = [NSMutableDictionary dictionary];
     _userStatusTableView.allowsSelection = NO;
     [_userStatusTableView setDataSource:self];
@@ -114,8 +114,8 @@ static const NSInteger maxRemoteUserNum = 6;
     params.role = TRTCRoleAnchor;
     params.userSig = [GenerateTestUserSig genTestUserSig:params.userId];
     
-    [self.trtcCloud startLocalAudio:TRTCAudioQualityMusic];
     [self.trtcCloud enterRoom:params appScene:TRTCAppSceneVideoCall];
+    [self.trtcCloud startLocalAudio:TRTCAudioQualityMusic];
     [self.trtcCloud enableAudioVolumeEvaluation:1000];
 }
 

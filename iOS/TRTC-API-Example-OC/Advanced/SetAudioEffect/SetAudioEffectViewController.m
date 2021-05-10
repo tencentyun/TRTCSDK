@@ -270,6 +270,8 @@ static const NSInteger RemoteUserMaxNum = 6;
 
 #pragma mark - StartPushStream & StopPushStream
 - (void)startPushStream {
+    [self.trtcCloud startLocalPreview:true view:self.view];
+
     self.title = LocalizeReplace(Localize(@"TRTC-API-Example.SetAudioEffect.Title"), self.roomIDTextField.text);
     TRTCParams *params = [[TRTCParams alloc] init];
     params.sdkAppId = SDKAppID;
@@ -280,7 +282,6 @@ static const NSInteger RemoteUserMaxNum = 6;
     
     [self.trtcCloud enterRoom:params appScene:TRTCAppSceneLIVE];
     [self.trtcCloud startLocalAudio:TRTCAudioQualityMusic];
-    [self.trtcCloud startLocalPreview:true view:self.view];
     
     TRTCVideoEncParam *videoEncParam = [[TRTCVideoEncParam alloc] init];
     videoEncParam.videoFps = 24;

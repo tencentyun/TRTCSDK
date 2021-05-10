@@ -336,6 +336,14 @@
 				477EC9EF2626F754007AAC4F /* PCH */,
 				477EC9BA2626D64F007AAC4F /* Extension */,
 				477EC99F26268CB9007AAC4F /* Home */,
+				477EC96926268B09007AAC4F /* AppDelegate.h */,
+				477EC97026268B09007AAC4F /* AppDelegate.m */,
+				477EC97126268B09007AAC4F /* Info.plist */,
+				477EC96B26268B09007AAC4F /* LaunchScreen.storyboard */,
+				477EC96F26268B09007AAC4F /* main.m */,
+				477EC96D26268B09007AAC4F /* Main.storyboard */,
+				477EC97226268B09007AAC4F /* SceneDelegate.h */,
+				477EC96A26268B09007AAC4F /* SceneDelegate.m */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -365,19 +373,16 @@
 			path = Resource;
 			sourceTree = "<group>";
 		};
-		477EC96826268B09007AAC4F /* Base */ = {
+		477EC96826268B09007AAC4F /* Basic */ = {
 			isa = PBXGroup;
 			children = (
-				477EC96926268B09007AAC4F /* AppDelegate.h */,
-				477EC97026268B09007AAC4F /* AppDelegate.m */,
-				477EC97126268B09007AAC4F /* Info.plist */,
-				477EC96B26268B09007AAC4F /* LaunchScreen.storyboard */,
-				477EC96F26268B09007AAC4F /* main.m */,
-				477EC96D26268B09007AAC4F /* Main.storyboard */,
-				477EC97226268B09007AAC4F /* SceneDelegate.h */,
-				477EC96A26268B09007AAC4F /* SceneDelegate.m */,
+				8821F25B2626EB1C00F5852F /* AudioCall */,
+				8821F2532626EB1B00F5852F /* VideoCall */,
+				477EC9C52626DB32007AAC4F /* VoiceChatRoom */,
+				477EC95B26268B09007AAC4F /* Live */,
+				889444ED2627228500193FAD /* ScreenShare */,
 			);
-			path = Base;
+			path = Basic;
 			sourceTree = "<group>";
 		};
 		477EC99F26268CB9007AAC4F /* Home */ = {
@@ -733,15 +738,10 @@
 		8887C551262151200035C0B9 = {
 			isa = PBXGroup;
 			children = (
-				47E0727A2636A6C80027D05E /* Advanced */,
 				477EC9D22626E44C007AAC4F /* SDK */,
-				477EC9C52626DB32007AAC4F /* VoiceChatRoom */,
-				477EC95B26268B09007AAC4F /* Live */,
 				477EC95A26268B09007AAC4F /* App */,
-				8821F25B2626EB1C00F5852F /* AudioCall */,
-				8821F2532626EB1B00F5852F /* VideoCall */,
-				889444ED2627228500193FAD /* ScreenShare */,
-				477EC96826268B09007AAC4F /* Base */,
+				477EC96826268B09007AAC4F /* Basic */,
+				47E0727A2636A6C80027D05E /* Advanced */,
 				477EC96626268B09007AAC4F /* Resource */,
 				880B3C472624411B002683FB /* Debug */,
 				8887C55B262151200035C0B9 /* Products */,

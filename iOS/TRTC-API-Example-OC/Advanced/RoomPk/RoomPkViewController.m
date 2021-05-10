@@ -48,7 +48,6 @@
     if (!_trtcCloud) {
         _trtcCloud = [TRTCCloud sharedInstance];
         [_trtcCloud createSubCloud];
-        [_trtcCloud setDelegate:self];
     }
     return _trtcCloud;
 }
@@ -56,6 +55,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    [self.trtcCloud setDelegate:self];
     [self setupRandomRoomId];
     [self setupDefaultUIConfig];
 }
@@ -96,7 +96,7 @@
 
 - (void)setupTRTCCloud {
     [self.trtcCloud startLocalPreview:YES view:_localView];
-    
+
     TRTCParams *params = [TRTCParams new];
     params.sdkAppId = SDKAppID;
     params.roomId = [_roomIdTextField.text intValue];

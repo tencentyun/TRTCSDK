@@ -32,10 +32,7 @@
 
 - (void)onUserVideoAvailable:(NSString *)userId available:(BOOL)available {
     if ([self.delegate respondsToSelector:@selector(onUserVideoAvailableWithSubId:userId:available:)]) {
-        SEL sel = NSSelectorFromString(@"onUserVideoAvailableWithSubId:userId:available:");
-        IMP imp = class_getMethodImplementation([self.delegate class], sel);
-        void (*func)(id, SEL, NSInteger, NSString*, BOOL) = (void *)imp;
-        func(self.delegate, sel, self.subId, userId, available);
+        [self.delegate onUserVideoAvailableWithSubId:self.subId userId:userId available:available];
     }
 }
 

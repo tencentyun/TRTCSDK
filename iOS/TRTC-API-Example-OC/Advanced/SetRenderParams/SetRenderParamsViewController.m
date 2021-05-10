@@ -66,7 +66,6 @@ static const NSInteger maxRemoteUserNum = 6;
 - (TRTCCloud*)trtcCloud {
     if (!_trtcCloud) {
         _trtcCloud = [TRTCCloud sharedInstance];
-        _trtcCloud.delegate = self;
     }
     return _trtcCloud;
 }
@@ -88,6 +87,7 @@ static const NSInteger maxRemoteUserNum = 6;
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.trtcCloud.delegate = self;
     [self setupRandomId];
     [self setupDefaultUIConfig];
 }
@@ -143,7 +143,7 @@ static const NSInteger maxRemoteUserNum = 6;
 
 - (void)setupTRTCCloud {
     [self.trtcCloud startLocalPreview:YES view:_localVideoView];
-    
+
     TRTCParams *params = [TRTCParams new];
     params.sdkAppId = SDKAppID;
     params.roomId = [_roomIdTextField.text intValue];

@@ -73,6 +73,8 @@
 #pragma mark - StartPushStream & StopPushStream
 - (void)startPushStream {
     self.title = LocalizeReplace(Localize(@"TRTC-API-Example.SwitchRoom.Title"), self.roomIdTextField.text);
+    [self.trtcCloud startLocalPreview:true view:self.view];
+
     TRTCParams *params = [[TRTCParams alloc] init];
     params.sdkAppId = SDKAppID;
     params.roomId = [self.roomIdTextField.text intValue];
@@ -82,7 +84,6 @@
     
     [self.trtcCloud enterRoom:params appScene:TRTCAppSceneLIVE];
     [self.trtcCloud startLocalAudio:TRTCAudioQualityMusic];
-    [self.trtcCloud startLocalPreview:true view:self.view];
     
     TRTCVideoEncParam *videoEncParam = [[TRTCVideoEncParam alloc] init];
     videoEncParam.videoFps = 24;

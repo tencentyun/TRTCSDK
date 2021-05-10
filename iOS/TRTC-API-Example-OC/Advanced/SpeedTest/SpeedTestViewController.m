@@ -33,7 +33,6 @@
 - (TRTCCloud*)trtcCloud {
     if (!_trtcCloud) {
         _trtcCloud = [TRTCCloud sharedInstance];
-        _trtcCloud.delegate = self;
     }
     return _trtcCloud;
 }
@@ -42,7 +41,7 @@
     [super viewDidLoad];
     
     _isSpeedTesting = false;
-    
+    self.trtcCloud.delegate = self;
     [self setupRandomId];
     [self setupDefaultUIConfig];
 }

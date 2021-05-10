@@ -78,10 +78,7 @@
             UInt64 timeStamp = time.value;
             
             if ([strongSelf.delegate respondsToSelector:@selector(onReadVideoFrameAtFrameIntervals:timeStamp:)]) {
-                SEL select = NSSelectorFromString(@"onReadVideoFrameAtFrameIntervals:timeStamp:");
-                IMP method = class_getMethodImplementation([strongSelf.delegate class], select);
-                void (*func)(id, SEL, CVImageBufferRef, UInt64) = (void *)method;
-                func(strongSelf.delegate, select, CMSampleBufferGetImageBuffer(sampleBuffer), timeStamp);
+                [strongSelf.delegate onReadVideoFrameAtFrameIntervals:CMSampleBufferGetImageBuffer(sampleBuffer) timeStamp:timeStamp];
             }
             
             UInt64 standDelay = 1000 / strongSelf.mediaReader.fps * 1000;
@@ -112,10 +109,7 @@
             UInt64 timeStamp = time.value;
             
             if ([self.delegate respondsToSelector:@selector(onReadAudioFrameAtFrameIntervals:timeStamp:)]) {
-                SEL select = NSSelectorFromString(@"onReadAudioFrameAtFrameIntervals:timeStamp:");
-                IMP method = class_getMethodImplementation([self.delegate class], select);
-                void (*func)(id, SEL, NSData*, UInt64) = (void *)method;
-                func(self.delegate, select, [self createPCMData:sampleBuffer], timeStamp);
+                [strongSelf.delegate onReadAudioFrameAtFrameIntervals:[self createPCMData:sampleBuffer] timeStamp:timeStamp];
             }
         }
     } readFinished:^{

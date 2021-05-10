@@ -59,9 +59,9 @@
     params.role = TRTCRoleAnchor;
     
     self.trtcCloud.delegate = self;
+    [self.trtcCloud startLocalPreview:true view:self.view];
     [self.trtcCloud enterRoom:params appScene:TRTCAppSceneLIVE];
     [self.trtcCloud startLocalAudio:TRTCAudioQualityMusic];
-    [self.trtcCloud startLocalPreview:true view:self.view];
     
     TRTCVideoEncParam *videoEncParam = [[TRTCVideoEncParam alloc] init];
     videoEncParam.videoFps = 24;

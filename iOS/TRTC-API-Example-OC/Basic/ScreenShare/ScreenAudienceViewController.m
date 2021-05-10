@@ -19,7 +19,6 @@
 - (TRTCCloud*)trtcCloud {
     if (!_trtcCloud) {
         _trtcCloud = [TRTCCloud sharedInstance];
-        _trtcCloud.delegate = self;
     }
     return _trtcCloud;
 }
@@ -29,6 +28,8 @@
     self.title = [Localize(@"TRTC-API-Example.ScreenAudience.Title")
                   stringByAppendingString: [@(_roomId) stringValue]];
     
+    self.trtcCloud.delegate = self;
+
     TRTCParams *params = [TRTCParams new];
     params.sdkAppId = SDKAppID;
     params.roomId = _roomId;

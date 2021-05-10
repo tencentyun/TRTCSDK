@@ -136,15 +136,18 @@
 - (void)startPushStream {
     UInt32 roomId = [self.roomIdTextField.text intValue];
     self.title = LocalizeReplace(Localize(@"TRTC-API-Example.LocalRecord.Title"), self.roomIdTextField.text);
+   
+    [self.trtcCloud startLocalPreview:true view:self.view];
+
     TRTCParams *params = [[TRTCParams alloc] init];
     params.sdkAppId = SDKAppID;
     params.roomId = roomId;
     params.userId = [NSString generateRandomUserId];
     params.userSig = [GenerateTestUserSig genTestUserSig:params.userId];
     params.role = TRTCRoleAnchor;
+    
     [self.trtcCloud enterRoom:params appScene:TRTCAppSceneLIVE];
     [self.trtcCloud startLocalAudio:TRTCAudioQualityMusic];
-    [self.trtcCloud startLocalPreview:true view:self.view];
     
     TRTCVideoEncParam *videoEncParam = [[TRTCVideoEncParam alloc] init];
     videoEncParam.videoFps = 24;

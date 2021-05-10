@@ -76,7 +76,6 @@ static const NSInteger maxRemoteUserNum = 6;
     params.userId = userId;
     params.userSig = [GenerateTestUserSig genTestUserSig:userId];
     params.role = TRTCRoleAudience;
-    
     self.trtcCloud.delegate = self;
     [self.trtcCloud enterRoom:params appScene:TRTCAppSceneVoiceChatRoom];
 }

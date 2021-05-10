@@ -236,6 +236,8 @@ static const NSInteger RemoteUserMaxNum = 6;
 #pragma mark - StartPushStream & StopPushStream
 - (void)startPushStream {
     self.title = LocalizeReplace(Localize(@"TRTC-API-Example.ThirdBeauty.Title"), self.roomIdTextField.text);
+    [self.trtcCloud startLocalPreview:true view:self.view];
+
     TRTCParams *params = [[TRTCParams alloc] init];
     params.sdkAppId = SDKAppID;
     params.roomId = [self.roomIdTextField.text intValue];
@@ -252,7 +254,6 @@ static const NSInteger RemoteUserMaxNum = 6;
     [self.trtcCloud setLocalVideoRenderDelegate:self pixelFormat:(TRTCVideoPixelFormat_NV12) bufferType:(TRTCVideoBufferType_PixelBuffer)];
     [self.trtcCloud enterRoom:params appScene:TRTCAppSceneLIVE];
     [self.trtcCloud startLocalAudio:TRTCAudioQualityMusic];
-    [self.trtcCloud startLocalPreview:true view:self.view];
     
     TRTCVideoEncParam *videoEncParam = [[TRTCVideoEncParam alloc] init];
     videoEncParam.videoFps = 24;

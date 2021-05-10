@@ -43,7 +43,6 @@ typedef NS_ENUM(NSInteger, ScreenStatus) {
 - (TRTCCloud*)trtcCloud {
     if (!_trtcCloud) {
         _trtcCloud = [TRTCCloud sharedInstance];
-        _trtcCloud.delegate = self;
     }
     return _trtcCloud;
 }
@@ -59,6 +58,7 @@ typedef NS_ENUM(NSInteger, ScreenStatus) {
     [super viewDidLoad];
     self.status = ScreenStop;
     
+    self.trtcCloud.delegate = self;
     [self setupDefaultUIConfig];
     [self setupTRTCCloud];
 }

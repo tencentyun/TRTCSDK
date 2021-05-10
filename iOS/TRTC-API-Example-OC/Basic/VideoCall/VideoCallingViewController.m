@@ -45,7 +45,6 @@ static const NSInteger maxRemoteUserNum = 6;
 - (TRTCCloud*)trtcCloud {
     if (!_trtcCloud) {
         _trtcCloud = [TRTCCloud sharedInstance];
-        _trtcCloud.delegate = self;
     }
     return _trtcCloud;
 }
@@ -70,6 +69,7 @@ static const NSInteger maxRemoteUserNum = 6;
     [super viewDidLoad];
 
     self.isFrontCamera = YES;
+    self.trtcCloud.delegate = self;
 
     [self setupDefaultUIConfig];
     [self setupTRTCCloud];
@@ -109,6 +109,7 @@ static const NSInteger maxRemoteUserNum = 6;
 
 - (void)setupTRTCCloud {
     [self.remoteUidSet removeAllObjects];
+    
     [self.trtcCloud startLocalPreview:_isFrontCamera view:self.view];
     
     TRTCParams *params = [TRTCParams new];

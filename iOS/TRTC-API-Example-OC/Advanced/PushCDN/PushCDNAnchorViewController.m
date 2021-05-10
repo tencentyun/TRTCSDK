@@ -139,7 +139,6 @@ typedef NS_ENUM(NSInteger, ShowMode) {
     if (sender.selected) {
         self.isStartPush = true;
         [self refreshViewTitle];
-        [self startLocalPreview];
         [self enterTRTCRoom];
     } else {
         self.isStartPush = false;
@@ -267,11 +266,10 @@ typedef NS_ENUM(NSInteger, ShowMode) {
 }
 
 #pragma mark - trtc method
-- (void)startLocalPreview {
-    [self.trtcCloud startLocalPreview:YES view:self.anchorView];
-}
 
 - (void)enterTRTCRoom {
+    [self.trtcCloud startLocalPreview:YES view:self.anchorView];
+
     TRTCParams *params = [[TRTCParams alloc] init];
     params.sdkAppId = SDKAppID;
     params.roomId = [self.roomIDTextField.text intValue];

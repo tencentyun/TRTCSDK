@@ -60,11 +60,6 @@ static const NSInteger maxRemoteUserNum = 6;
 - (TRTCCloud*)trtcCloud {
     if (!_trtcCloud) {
         _trtcCloud = [TRTCCloud sharedInstance];
-        _trtcCloud.delegate = self;
-        [_trtcCloud setLocalVideoRenderDelegate:self
-                                    pixelFormat:TRTCVideoPixelFormat_NV12
-                                     bufferType:TRTCVideoBufferType_PixelBuffer];
-        [_trtcCloud setAudioFrameDelegate:self];
     }
     return _trtcCloud;
 }
@@ -79,6 +74,12 @@ static const NSInteger maxRemoteUserNum = 6;
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.trtcCloud.delegate = self;
+    [self.trtcCloud setLocalVideoRenderDelegate:self
+                                pixelFormat:TRTCVideoPixelFormat_NV12
+                                 bufferType:TRTCVideoBufferType_PixelBuffer];
+    [self.trtcCloud setAudioFrameDelegate:self];
+
     [self setupRandomId];
     [self setupDefaultUIConfig];
     [self setupRemoteViews];
