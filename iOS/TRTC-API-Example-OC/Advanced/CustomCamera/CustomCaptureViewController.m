@@ -1,5 +1,5 @@
 //
-//  CustomCaputreViewController.m
+//  CustomCaptureViewController.m
 //  TRTC-API-Example-OC
 //
 //  Created by abyyxwang on 2021/4/22.
@@ -13,15 +13,23 @@
  3、发送自定义采集数据。API:[self.trtcCloud enableCustomVideoCapture:YES];
  更多细节，详见：https://cloud.tencent.com/document/product/647/34066
  */
+/*
+ Custom Video Capturing and Rendering
+ The TRTC app supports custom video capturing and rendering. This document shows how to send custom video data.
+ 1. Enter a room: [self.trtcCloud enterRoom:params appScene:TRTCAppSceneLIVE]
+ 2. Enable custom video capturing: [self.trtcCloud enableCustomVideoCapture:YES]
+ 3. Send custom video data: [self.trtcCloud enableCustomVideoCapture:YES]
+ For more information, please see https://cloud.tencent.com/document/product/647/34066
+*/
 
-#import "CustomCaputreViewController.h"
+#import "CustomCaptureViewController.h"
 #import "CustomCameraHelper.h"
 #import "CustomCameraFrameRender.h"
 
 
 static const NSInteger maxRemoteUserNum = 6;
 
-@interface CustomCaputreViewController ()<
+@interface CustomCaptureViewController ()<
 CustomCameraHelperSampleBufferDelegate,
 TRTCCloudDelegate,
 TRTCVideoRenderDelegate
@@ -42,7 +50,7 @@ TRTCVideoRenderDelegate
 
 @end
 
-@implementation CustomCaputreViewController
+@implementation CustomCaptureViewController
 
 - (TRTCCloud *)trtcCloud {
     if (!_trtcCloud) {

@@ -18,7 +18,19 @@
  
  参考文档：https://cloud.tencent.com/document/product/647/32258
  */
+/*
+ Sharing Local Video
+ TRTC Local Video Sharing
 
+ This document shows how to integrate the local video sharing feature.
+
+ 1. Enable custom video capturing: [self.trtcCloud enableCustomVideoCapture:true]
+ 2. Enable custom audio capturing: [self.trtcCloud enableCustomAudioCapture:true]
+ 3. Send custom video: [self.trtcCloud sendCustomVideoData:videoFrame]
+ 4. Send custom audio: [self.trtcCloud sendCustomAudioData:audioFrame]
+
+ Documentation: https://cloud.tencent.com/document/product/647/32258
+ */
 
 #import "LocalVideoShareViewController.h"
 #import "CustomFrameRender.h"

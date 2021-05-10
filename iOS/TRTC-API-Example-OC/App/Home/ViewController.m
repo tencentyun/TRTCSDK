@@ -24,7 +24,7 @@
 #import "JoinMultipleRoomViewController.h"
 #import "RoomPkViewController.h"
 #import "ThirdBeautyViewController.h"
-#import "CustomCaputreViewController.h"
+#import "CustomCaptureViewController.h"
 #import "LocalVideoShareViewController.h"
 #import "StringRoomIdViewController.h"
 #import "HomeTableViewCell.h"
@@ -103,7 +103,7 @@
                       @{
                           @"title": Localize(@"TRTC-API-Example.Home.CustomCamera"),
                           @"desc": @"",
-                          @"class": @"CustomCaputreViewController"
+                          @"class": @"CustomCaptureViewController"
                       },
                       @{
                           @"title": Localize(@"TRTC-API-Example.Home.SoundEffects"),

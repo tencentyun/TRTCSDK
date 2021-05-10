@@ -13,7 +13,14 @@
  2、设置采集音量 API: [self.trtcCloud setAudioCaptureVolume:(UInt32)_volumeSlider.value];
  参考文档：https://cloud.tencent.com/document/product/647/32258
  */
-
+/*
+ Setting Audio Quality
+ TRTC Audio Quality Setting
+ This document shows how to integrate the audio quality setting feature.
+ 1. Set audio quality: [self.trtcCloud startLocalAudio:_audioQuality]
+ 2. Set capturing volume: [self.trtcCloud setAudioCaptureVolume:(UInt32)_volumeSlider.value]
+ Documentation: https://cloud.tencent.com/document/product/647/32258
+ */
 
 #import "SetAudioQualityViewController.h"
 

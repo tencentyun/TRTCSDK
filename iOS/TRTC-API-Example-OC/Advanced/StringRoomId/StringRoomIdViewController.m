@@ -13,6 +13,14 @@
  2、进入TRTC房间。 API:[self.trtcCloud enterRoom:params appScene:TRTCAppSceneLIVE];
  参考文档：https://cloud.tencent.com/document/product/647/32258
  */
+/*
+ String-type Room ID
+ The TRTC app supports string-type room IDs.
+ This document shows how to enable string-type room IDs in your project.
+ 1. Set a string-type room ID: params.strRoomId = self.roomIDTextField.text
+ 2. Enter a room: [self.trtcCloud enterRoom:params appScene:TRTCAppSceneLIVE]
+ Documentation: https://cloud.tencent.com/document/product/647/32258
+ */
 
 #import "StringRoomIdViewController.h"
 

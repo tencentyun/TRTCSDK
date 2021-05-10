@@ -15,6 +15,16 @@
  参考文档：https://cloud.tencent.com/document/product/647/43181
  */
 
+/*
+ Interactive Live Video Streaming - Audience
+ The TRTC app supports interactive live video streaming.
+ This document shows how to integrate the interactive live video streaming feature.
+ 1. Enter a room: [self.trtcCloud enterRoom:params appScene:TRTCAppSceneLIVE]
+ 2. Display the video of a remote user: [self.trtcCloud startRemoteView:userId streamType:TRTCVideoStreamTypeBig view:self.view]
+ 3. Mute a remote user: [self.trtcCloud muteRemoteAudio:userId mute:sender.selected]
+ Documentation: https://cloud.tencent.com/document/product/647/43181
+*/
+
 #import "LiveAudienceViewController.h"
 static const NSInteger maxRemoteUserNum = 6;
 

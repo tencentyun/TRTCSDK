@@ -19,7 +19,21 @@
  
  参考文档：https://cloud.tencent.com/document/product/647/32258
  */
+/*
+ Entering Multiple Rooms
+TRTC Multiple Room Entry
 
+This document shows how to integrate the multiple room entry feature.
+The SDK does not assign identifiers to TRTCCloud instances. You need to identify and distinguish instances by yourself. In the demo, subId is used to identify instances.
+Because a delegate callback must be set for each instance, SubCloudHelper is used to forward delegates, and subId is used for identification.
+
+1. Create an instance: [self.trtcCloud createSubCloud]
+2. Enter a room: [[_subCloudHelperArr[subId] getCloud] enterRoom:params appScene:TRTCAppSceneLIVE] enterRoom:params appScene:TRTCAppSceneLIVE];
+3. Exit a room: [[_subCloudHelperArr[subId] getCloud] exitRoom]
+
+Documentation: https://cloud.tencent.com/document/product/647/32258
+
+ */
 
 #import "JoinMultipleRoomViewController.h"
 #import "SubCloudHelper.h"

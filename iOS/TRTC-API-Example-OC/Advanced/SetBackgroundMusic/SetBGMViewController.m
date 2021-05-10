@@ -16,6 +16,17 @@
  5、调整远端播放的背景音乐音量。API:[[self.trtcCloud getAudioEffectManager] setMusicPublishVolume:self.bgmParam.ID volume:volume];
  参考文档：https://cloud.tencent.com/document/product/647/32258
  */
+/*
+ Setting Background Music
+ The TRTC app supports background music setting.
+ This document shows how to integrate the background music setting feature.
+ 1. Enter a room: [self.trtcCloud enterRoom:params appScene:TRTCAppSceneLIVE]
+ 2. Play background music: [[self.trtcCloud getAudioEffectManager] startPlayMusic:self.bgmParam onStart:^(NSInteger errCode) {} onProgress:^(NSInteger progressMs, NSInteger durationMs) {} onComplete:^(NSInteger errCode) {}]
+ 3. Pause background music: [[self.trtcCloud getAudioEffectManager] stopPlayMusic:self.bgmParam.ID]
+ 4. Adjust the playback volume of background music: [[self.trtcCloud getAudioEffectManager] setMusicPlayoutVolume:self.bgmParam.ID volume:volume]
+ 5. Adjust the remote playback volume of background music: [[self.trtcCloud getAudioEffectManager] setMusicPublishVolume:self.bgmParam.ID volume:volume]
+ Documentation: https://cloud.tencent.com/document/product/647/32258
+ */
 
 #import "SetBGMViewController.h"
 

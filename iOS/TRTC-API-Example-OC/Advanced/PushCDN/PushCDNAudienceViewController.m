@@ -14,6 +14,15 @@
  2、开始播放。 API: [self.livePlayer startPlay:streamUrl type:PLAY_TYPE_LIVE_FLV];
  参考文档：https://cloud.tencent.com/document/product/647/16827
  */
+/*
+ CDN Publishing - Audience
+ TRTC CDN Publishing
+ This document shows how to integrate the CDN publishing feature.
+ 1. Set the player delegate: [self.livePlayer setDelegate:self]
+ 2. Set the player container view: [self.livePlayer setupVideoWidget:CGRectZero containView:self.playerView insertIndex:0]
+ 3. Start playback: [self.livePlayer startPlay:streamUrl type:PLAY_TYPE_LIVE_FLV]
+ Documentation: https://cloud.tencent.com/document/product/647/16827
+ */
 
 #import "PushCDNAudienceViewController.h"
 
@@ -48,6 +57,7 @@
     [self.startPlayButton setTitle:Localize(@"TRTC-API-Example.PushCDNAudience.stopPlay") forState:UIControlStateSelected];
     [self.startPlayButton setBackgroundColor: UIColor.themeGreenColor];
     self.streamIDTextField.placeholder = Localize(@"TRTC-API-Example.PushCDNAudience.inputStreamId");
+    self.streamIDLabel.adjustsFontSizeToFitWidth = YES;
 }
 
 - (void)startPlay {

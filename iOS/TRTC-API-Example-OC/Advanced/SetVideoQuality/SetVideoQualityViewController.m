@@ -15,6 +15,16 @@
  参考文档：https://cloud.tencent.com/document/product/647/32236
  */
 
+/*
+ Setting Video Quality
+  TRTC Video Quality Setting
+  This document shows how to integrate the video quality setting feature.
+  1. Set resolution: [self.trtcCloud setVideoEncoderParam:self.videoEncParam]
+  2. Set bitrate: [self.trtcCloud setVideoEncoderParam:self.videoEncParam]
+  3. Set frame rate: [self.trtcCloud setVideoEncoderParam:self.videoEncParam]
+  Documentation: https://cloud.tencent.com/document/product/647/32236
+ */
+
 
 #import "SetVideoQualityViewController.h"
 

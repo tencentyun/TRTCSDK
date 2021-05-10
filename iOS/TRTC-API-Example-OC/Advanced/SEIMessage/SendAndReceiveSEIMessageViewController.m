@@ -14,6 +14,15 @@
  3、接收SEI消息。 API：TRTCCloudDelegate：- (void)onRecvSEIMsg:(NSString *)userId message:(NSData *)message;
  参考文档：https://cloud.tencent.com/document/product/647/32241
  */
+/*
+ SEI Message Receiving/Sending
+ The TRTC app supports sending and receiving SEI messages.
+ This document shows how to integrate the SEI message sending/receiving feature.
+ 1. Enter a room: [self.trtcCloud enterRoom:params appScene:TRTCAppSceneLIVE]
+ 2. Send SEI messages: [self.trtcCloud sendSEIMsg:SEIData repeatCount:1]
+ 3. Receive SEI messages: TRTCCloudDelegate：- (void)onRecvSEIMsg:(NSString *)userId message:(NSData *)message
+ Documentation: https://cloud.tencent.com/document/product/647/32241
+ */
 
 #import "SendAndReceiveSEIMessageViewController.h"
 

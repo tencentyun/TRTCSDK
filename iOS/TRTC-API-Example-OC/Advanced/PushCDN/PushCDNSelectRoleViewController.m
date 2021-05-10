@@ -8,6 +8,11 @@
 // CDN发布功能 - 进房入口
 // 1、选择角色身份，进入房间
 
+/**
+  CDN Publishing - enter
+  1. Select a role and enter the room
+ */
+
 #import "PushCDNSelectRoleViewController.h"
 #import "PushCDNAnchorViewController.h"
 #import "PushCDNAudienceViewController.h"

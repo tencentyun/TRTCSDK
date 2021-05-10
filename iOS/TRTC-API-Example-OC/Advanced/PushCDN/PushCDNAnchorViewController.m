@@ -13,6 +13,14 @@
  2、多云端混流。 API: [self.trtcCloud setMixTranscodingConfig:self.transcodingConfig];
  参考文档：https://cloud.tencent.com/document/product/647/16827
  */
+/*
+ CDN Publishing - Anchor
+ TRTC CDN Publishing
+ This document shows how to integrate the CDN publishing feature.
+ 1. Enter a room: [self.trtcCloud enterRoom:params appScene:TRTCAppSceneLIVE]
+ 2. Mix multiple streams on the cloud: [self.trtcCloud setMixTranscodingConfig:self.transcodingConfig]
+ Documentation: https://cloud.tencent.com/document/product/647/16827
+ */
 
 #import "PushCDNAnchorViewController.h"
 
@@ -468,6 +476,9 @@ typedef NS_ENUM(NSInteger, ShowMode) {
     self.audienceViewB.tag = 201;
     self.audienceViewC.tag = 202;
     
+    self.startPushButton.titleLabel.adjustsFontSizeToFitWidth = YES;
+    self.moreMixStreamButton.titleLabel.adjustsFontSizeToFitWidth = YES;
+
     [self refreshViewTitle];
     self.isStartPush = false;
     self.showMode = PictureAndPicture;

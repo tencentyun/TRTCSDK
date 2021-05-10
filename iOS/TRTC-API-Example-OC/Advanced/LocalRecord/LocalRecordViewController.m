@@ -14,6 +14,15 @@
  3、结束本地录制。  API:[self.trtcCloud stopLocalRecording];
  参考文档：https://cloud.tencent.com/document/product/647/32258
  */
+/*
+ Local Recording
+ The TRTC app supports local recording.
+ This document shows how to integrate the local recording feature.
+ 1. Enter a room: [self.trtcCloud enterRoom:params appScene:TRTCAppSceneLIVE]
+ 2. Start local recording: [self.trtcCloud startLocalRecording]
+ 3. Stop local recording: [self.trtcCloud stopLocalRecording]
+ Documentation: https://cloud.tencent.com/document/product/647/32258
+ */
 
 #import "LocalRecordViewController.h"
 #import <PhotosUI/PhotosUI.h>

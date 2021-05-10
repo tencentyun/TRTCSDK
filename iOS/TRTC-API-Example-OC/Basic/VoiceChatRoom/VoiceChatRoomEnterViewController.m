@@ -47,6 +47,7 @@ typedef NS_ENUM(NSUInteger, UserType) {
     
     self.enterRoomTextField.text = @"1256732";
     self.enterUserNameTextField.text = @"324532";
+    self.audienceButton.titleLabel.adjustsFontSizeToFitWidth = YES;
     self.userType = Anchor;
 }
 

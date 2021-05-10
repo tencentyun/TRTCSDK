@@ -15,7 +15,16 @@
  
  参考文档：https://cloud.tencent.com/document/product/647/32258
  */
+/*
+ Cross-room Competition
+ The TRTC app supports cross-room competition.
 
+ This document shows how to integrate the cross-room competition feature.
+
+ 1. Connect to another room: [self.trtcCloud connectOtherRoom:jsonString]
+
+ Documentation: https://cloud.tencent.com/document/product/647/32258
+ */
 
 #import "RoomPkViewController.h"
 

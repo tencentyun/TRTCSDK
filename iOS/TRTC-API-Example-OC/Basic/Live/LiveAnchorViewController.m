@@ -16,6 +16,17 @@
  参考文档：https://cloud.tencent.com/document/product/647/43181
  */
 
+/*
+ Interactive Live Video Streaming - Anchor
+  The TRTC app supports interactive live video streaming.
+  This document shows how to integrate the interactive live video streaming feature.
+  1. Enter a room: [self.trtcCloud enterRoom:params appScene:TRTCAppSceneLIVE]
+  2. Enable local video preview: [self.trtcCloud startLocalPreview:true view:self.view]
+  3. Switch camera: [[self.trtcCloud getDeviceManager] switchCamera:!sender.selected]
+  4. Mute local audio: [self.trtcCloud muteLocalAudio:sender.selected]
+  Documentation: https://cloud.tencent.com/document/product/647/43181
+ */
+
 #import "LiveAnchorViewController.h"
 
 @interface LiveAnchorViewController () <TRTCCloudDelegate>

@@ -18,6 +18,15 @@
  参考文档：https://cloud.tencent.com/document/product/647/42044
  */
 
+/*
+Real-Time Audio Call
+ TRTC Audio Call
+ This document shows how to integrate the real-time audio call feature.
+ 1. Switch between the speaker and receiver: [[_trtcCloud getDeviceManager] setAudioRoute:TXAudioRouteSpeakerphone]
+ 2. Mute the device so that others won’t hear the audio of the device: [_trtcCloud muteLocalAudio:true]
+ 3. Display other network and volume information: delegate -> onNetworkQuality, onUserVoiceVolume
+ Documentation: https://cloud.tencent.com/document/product/647/42046
+*/
 
 #import "VideoCallingViewController.h"
 

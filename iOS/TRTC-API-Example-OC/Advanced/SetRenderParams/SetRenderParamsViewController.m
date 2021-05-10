@@ -21,6 +21,22 @@
 
  参考文档：https://cloud.tencent.com/document/product/647/32237
  */
+/*
+ Rendering Control
+ TRTC Rendering Control View
+ This document shows how to integrate the rendering control feature.
+ 1. Set the mirror mode for the preview image: [self.trtcCloud setLocalRenderParams:renderParams]
+ 2. Set the rendering mode for the preview image: [self.trtcCloud setLocalRenderParams:renderParams]
+ 3. Set the rotation (clockwise) of the preview image: [self.trtcCloud setLocalRenderParams:renderParams]
+ 4. Set the rendering mode of a remote image: [self.trtcCloud setRemoteRenderParams:_remoteUserIdButton.currentTitle
+                                    streamType:TRTCVideoStreamTypeSmall
+                                        params:renderParams]
+ 5. Set the rotation (clockwise) of a remote image: [self.trtcCloud setRemoteRenderParams:_remoteUserIdButton.currentTitle
+                                    streamType:TRTCVideoStreamTypeSmall
+                                        params:renderParams]
+
+ Documentation: https://cloud.tencent.com/document/product/647/32237
+ */
 
 
 #import "SetRenderParamsViewController.h"

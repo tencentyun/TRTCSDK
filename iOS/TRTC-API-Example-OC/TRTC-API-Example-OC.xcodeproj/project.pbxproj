@@ -57,8 +57,8 @@
 		47E073012636A6C80027D05E /* SendAndReceiveSEIMessageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 47E072982636A6C80027D05E /* SendAndReceiveSEIMessageViewController.xib */; };
 		47E073022636A6C80027D05E /* SetAudioEffectViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 47E0729A2636A6C80027D05E /* SetAudioEffectViewController.xib */; };
 		47E073032636A6C80027D05E /* SetAudioEffectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E0729B2636A6C80027D05E /* SetAudioEffectViewController.m */; };
-		47E073042636A6C80027D05E /* CustomCaputreViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 47E0729F2636A6C80027D05E /* CustomCaputreViewController.xib */; };
-		47E073052636A6C80027D05E /* CustomCaputreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E072A02636A6C80027D05E /* CustomCaputreViewController.m */; };
+		47E073042636A6C80027D05E /* CustomCaptureViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 47E0729F2636A6C80027D05E /* CustomCaptureViewController.xib */; };
+		47E073052636A6C80027D05E /* CustomCaptureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E072A02636A6C80027D05E /* CustomCaptureViewController.m */; };
 		47E073062636A6C80027D05E /* CustomCameraHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E072A22636A6C80027D05E /* CustomCameraHelper.m */; };
 		47E073072636A6C80027D05E /* CustomCameraFrameRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E072A62636A6C80027D05E /* CustomCameraFrameRender.m */; };
 		47E073082636A6C80027D05E /* AVCamPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E072A72636A6C80027D05E /* AVCamPreviewView.m */; };
@@ -220,9 +220,9 @@
 		47E0729A2636A6C80027D05E /* SetAudioEffectViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SetAudioEffectViewController.xib; sourceTree = "<group>"; };
 		47E0729B2636A6C80027D05E /* SetAudioEffectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SetAudioEffectViewController.m; sourceTree = "<group>"; };
 		47E0729C2636A6C80027D05E /* SetAudioEffectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SetAudioEffectViewController.h; sourceTree = "<group>"; };
-		47E0729E2636A6C80027D05E /* CustomCaputreViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomCaputreViewController.h; sourceTree = "<group>"; };
-		47E0729F2636A6C80027D05E /* CustomCaputreViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomCaputreViewController.xib; sourceTree = "<group>"; };
-		47E072A02636A6C80027D05E /* CustomCaputreViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomCaputreViewController.m; sourceTree = "<group>"; };
+		47E0729E2636A6C80027D05E /* CustomCaptureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomCaptureViewController.h; sourceTree = "<group>"; };
+		47E0729F2636A6C80027D05E /* CustomCaptureViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomCaptureViewController.xib; sourceTree = "<group>"; };
+		47E072A02636A6C80027D05E /* CustomCaptureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomCaptureViewController.m; sourceTree = "<group>"; };
 		47E072A22636A6C80027D05E /* CustomCameraHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomCameraHelper.m; sourceTree = "<group>"; };
 		47E072A42636A6C80027D05E /* CustomCameraFrameRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomCameraFrameRender.h; sourceTree = "<group>"; };
 		47E072A52636A6C80027D05E /* AVCamPreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AVCamPreviewView.h; sourceTree = "<group>"; };
@@ -557,9 +557,9 @@
 		47E0729D2636A6C80027D05E /* CustomCamera */ = {
 			isa = PBXGroup;
 			children = (
-				47E0729E2636A6C80027D05E /* CustomCaputreViewController.h */,
-				47E072A02636A6C80027D05E /* CustomCaputreViewController.m */,
-				47E0729F2636A6C80027D05E /* CustomCaputreViewController.xib */,
+				47E0729E2636A6C80027D05E /* CustomCaptureViewController.h */,
+				47E072A02636A6C80027D05E /* CustomCaptureViewController.m */,
+				47E0729F2636A6C80027D05E /* CustomCaptureViewController.xib */,
 				47E072A12636A6C80027D05E /* Helper */,
 			);
 			path = CustomCamera;
@@ -907,7 +907,7 @@
 				8821F2642626EB1C00F5852F /* VideoCallingEnterViewController.xib in Resources */,
 				477EC9B626269568007AAC4F /* HomeTableViewCell.xib in Resources */,
 				477EC97C26268B0A007AAC4F /* LaunchScreen.storyboard in Resources */,
-				47E073042636A6C80027D05E /* CustomCaputreViewController.xib in Resources */,
+				47E073042636A6C80027D05E /* CustomCaptureViewController.xib in Resources */,
 				889444F32627DC0F00193FAD /* ScreenEntranceViewController.xib in Resources */,
 				47E0730B2636A6C80027D05E /* ThirdBeautyViewController.xib in Resources */,
 				47E0725F263656110027D05E /* InfoPlist.strings in Resources */,
@@ -952,7 +952,7 @@
 				477EC97B26268B0A007AAC4F /* SceneDelegate.m in Sources */,
 				47E073032636A6C80027D05E /* SetAudioEffectViewController.m in Sources */,
 				47E0732A2636A6C80027D05E /* MediaFileSyncReader.m in Sources */,
-				47E073052636A6C80027D05E /* CustomCaputreViewController.m in Sources */,
+				47E073052636A6C80027D05E /* CustomCaptureViewController.m in Sources */,
 				8821F2632626EB1C00F5852F /* VideoCallingViewController.m in Sources */,
 				47E073212636A6C80027D05E /* JoinMultipleRoomViewController.m in Sources */,
 				47E073242636A6C80027D05E /* SwitchRoomViewController.m in Sources */,
@@ -1179,7 +1179,7 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/App/PCH/TRTC-API-Example-OC-PrefixHeader.pch";
-				INFOPLIST_FILE = Base/Info.plist;
+				INFOPLIST_FILE = App/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1210,7 +1210,7 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/App/PCH/TRTC-API-Example-OC-PrefixHeader.pch";
-				INFOPLIST_FILE = Base/Info.plist;
+				INFOPLIST_FILE = App/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1233,7 +1233,7 @@
 				DEVELOPMENT_TEAM = F8A3GH6Q4W;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/../SDK";
-				INFOPLIST_FILE = ScreenShare/TXReplayKit_Screen/Info.plist;
+				INFOPLIST_FILE = Basic/ScreenShare/TXReplayKit_Screen/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1256,7 +1256,7 @@
 				DEVELOPMENT_TEAM = FN2V63AD2J;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/../SDK";
-				INFOPLIST_FILE = ScreenShare/TXReplayKit_Screen/Info.plist;
+				INFOPLIST_FILE = Basic/ScreenShare/TXReplayKit_Screen/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

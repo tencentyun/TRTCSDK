@@ -17,6 +17,18 @@
  参考文档：https://cloud.tencent.com/document/product/647/45753
  */
 
+/*
+ Interactive Live Audio Streaming - Room Owner
+ The TRTC app supports interactive live audio streaming.
+ This document shows how to integrate the interactive live audio streaming feature.
+ 1. Enter a room: [self.trtcCloud enterRoom:params appScene:TRTCAppSceneLIVE]
+ 2. Enable local audio: [self.trtcCloud startLocalAudio:TRTCAudioQualityMusic]
+ 3. Mute a remote user: [self.trtcCloud muteRemoteAudio:userId mute:sender.selected]
+ 4. Become speaker/listener: [self.trtcCloud switchRole: TRTCRoleAudience]
+ 5. In the demo, a maximum of 6 users can enter a room. The number can be modified as needed.
+ Documentation: https://cloud.tencent.com/document/product/647/45753
+*/
+
 #import "VoiceChatRoomAnchorViewController.h"
 
 

@@ -35,7 +35,7 @@
                     <textInputTraits key="textInputTraits"/>
                 </textField>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uP1-hb-Bja" userLabel="roomIDLabel">
-                    <rect key="frame" x="20" y="74" width="37.5" height="18"/>
+                    <rect key="frame" x="20" y="74" width="374" height="18"/>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
@@ -71,6 +71,7 @@
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="bottom" secondItem="WTx-YV-Po2" secondAttribute="bottom" constant="25" id="cjW-xm-5XA"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="WTx-YV-Po2" secondAttribute="trailing" constant="20" id="fMf-jg-nEJ"/>
                 <constraint firstItem="uP1-hb-Bja" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="30" id="hcI-M4-nnN"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="uP1-hb-Bja" secondAttribute="trailing" constant="20" id="hvg-Ek-hDy"/>
                 <constraint firstItem="izj-Cs-7YJ" firstAttribute="leading" secondItem="cCQ-wv-hHR" secondAttribute="leading" id="hzH-pT-m1G"/>
                 <constraint firstItem="uP1-hb-Bja" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="20" id="pRv-af-NEz"/>
                 <constraint firstItem="izj-Cs-7YJ" firstAttribute="top" secondItem="cCQ-wv-hHR" secondAttribute="bottom" constant="20" id="pUy-XW-B6M"/>

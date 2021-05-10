@@ -15,6 +15,16 @@
  参考文档：https://cloud.tencent.com/document/product/647/45750
  */
 
+/*
+ Screen Recording Live Streaming
+ The TRTC app supports screen recording live streaming.
+ This document shows how to integrate the screen recording live streaming feature.
+ 1. Start screen sharing: [self.trtcCloud startScreenCaptureByReplaykit:_encParams
+                             appGroup:@"group.com.tencent.liteav.RPLiveStreamShare"]
+ 2. Mute: [_trtcCloud muteLocalAudio:true]
+ Documentation: https://cloud.tencent.com/document/product/647/45750
+ */
+
 #import "ScreenAnchorViewController.h"
 #import "TRTCBroadcastExtensionLauncher.h"
 

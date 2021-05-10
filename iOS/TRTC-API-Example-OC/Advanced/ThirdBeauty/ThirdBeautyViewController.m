@@ -15,6 +15,17 @@
  参考文档：https://cloud.tencent.com/document/product/647/34066
  第三方美颜：https://github.com/Faceunity/FUTRTCDemo
  */
+/*
+ Third-Party Beauty Filters
+ The TRTC app supports third-party beauty filters.
+ This document shows how to integrate third-party beauty filters.
+ 1. Enter a room: [self.trtcCloud enterRoom:params appScene:TRTCAppSceneLIVE]
+ 2. Set the callback of remote video data for custom rendering: [self.trtcCloud setLocalVideoRenderDelegate:self pixelFormat:(TRTCVideoPixelFormat_NV12)
+ bufferType:(TRTCVideoBufferType_PixelBuffer)]
+ 3. Use a third-party filter SDK <FaceUnity is used in the demo>: [[FUManager shareManager] renderItemsToPixelBuffer:frame.pixelBuffer];
+ Documentation: https://cloud.tencent.com/document/product/647/34066
+ Third-party beauty filter: https://github.com/Faceunity/FUTRTCDemo
+ */
 
 #import "ThirdBeautyViewController.h"
 //#import "FUManager.h"

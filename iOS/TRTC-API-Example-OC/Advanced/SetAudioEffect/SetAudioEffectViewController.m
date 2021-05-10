@@ -14,6 +14,15 @@
  3、选择混响。 API:[[self.trtcCloud getAudioEffectManager] setVoiceReverbType:TXVoiceReverbType_0];
  参考文档：https://cloud.tencent.com/document/product/647/32258
  */
+/*
+ Setting Audio Effects
+ The TRTC app supports audio effect setting.
+ This document shows how to integrate the audio effect setting feature.
+ 1. Enter a room: [self.trtcCloud enterRoom:params appScene:TRTCAppSceneLIVE]
+ 2. Select a voice change effect: [[self.trtcCloud getAudioEffectManager] setVoiceChangerType:TXVoiceChangeType_0]
+ 3. Select a reverb effect: [[self.trtcCloud getAudioEffectManager] setVoiceReverbType:TXVoiceReverbType_0]
+ Documentation: https://cloud.tencent.com/document/product/647/32258
+ */
 
 #import "SetAudioEffectViewController.h"
 

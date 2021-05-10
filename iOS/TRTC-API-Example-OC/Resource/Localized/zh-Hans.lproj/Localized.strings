@@ -11,7 +11,6 @@
 "TRTC-API-Example.Home.VoiceCalls" = "语音通话";
 "TRTC-API-Example.Home.VoiceCallsDesc" = "双人/多人语音通话、包含静音/免提等功能";
 "TRTC-API-Example.Home.VideoCalls" = "视频通话";
-"TRTC-API-Example.Home.VideoCallsDesc" = "双人/多人视频通话、包含静音/免提等功能";
 "TRTC-API-Example.Home.VideoLive" = "视频互动直播";
 "TRTC-API-Example.Home.TalkingRoom" = "语音互动直播";
 "TRTC-API-Example.Home.LiveScreen" = "录屏直播";
