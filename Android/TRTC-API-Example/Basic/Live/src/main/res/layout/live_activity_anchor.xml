@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/live_main_bg">
+
+    <com.tencent.rtmp.ui.TXCloudVideoView
+        android:id="@+id/live_cloud_view_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="15dp"
+            android:background="@mipmap/common_ic_back" />
+
+        <TextView
+            android:id="@+id/tv_room_number"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="15dp"
+            android:gravity="center_horizontal"
+            android:text="1111"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+    <com.tencent.trtc.live.LiveSubVideoView
+        android:id="@+id/live_cloud_view_1"
+        android:layout_width="90dp"
+        android:layout_height="160dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="70dp"
+        android:layout_marginRight="15dp" />
+
+    <com.tencent.trtc.live.LiveSubVideoView
+        android:id="@+id/live_cloud_view_2"
+        android:layout_width="90dp"
+        android:layout_height="160dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="240dp"/>
+
+
+    <com.tencent.trtc.live.LiveSubVideoView
+        android:id="@+id/live_cloud_view_3"
+        android:layout_width="90dp"
+        android:layout_height="160dp"
+        android:layout_below="@id/live_cloud_view_2"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="410dp" />
+
+
+    <com.tencent.trtc.live.LiveSubVideoView
+        android:id="@+id/live_cloud_view_4"
+        android:layout_width="90dp"
+        android:layout_height="160dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="410dp"
+        android:layout_marginLeft="15dp" />
+
+
+    <com.tencent.trtc.live.LiveSubVideoView
+        android:id="@+id/live_cloud_view_5"
+        android:layout_width="90dp"
+        android:layout_height="160dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="240dp"
+        android:layout_marginLeft="15dp" />
+
+
+    <com.tencent.trtc.live.LiveSubVideoView
+        android:id="@+id/live_cloud_view_6"
+        android:layout_width="90dp"
+        android:layout_height="160dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="70dp"
+        android:layout_marginLeft="15dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="20dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:text="@string/live_video_item"
+            android:textColor="#ff0000"
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:id="@+id/ll_controller"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/live_btn_switch_camera"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_gravity="center_horizontal"
+                android:padding="5dp"
+                android:text="@string/live_user_back_camera"
+                android:textColor="@android:color/white"
+                android:background="@drawable/common_button_bg" />
+
+            <Button
+                android:id="@+id/btn_mute_video"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_gravity="center_horizontal"
+                android:padding="5dp"
+                android:text="@string/live_close_camera"
+                android:layout_marginLeft="15dp"
+                android:textColor="@android:color/white"
+                android:background="@drawable/common_button_bg"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/live_audio_item"
+            android:textColor="#ff0000"
+            android:layout_marginTop="5dp"
+            android:textSize="16sp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_mute_audio"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_gravity="center_horizontal"
+                android:padding="5dp"
+                android:text="@string/live_close_mic"
+                android:textColor="@android:color/white"
+                android:background="@drawable/common_button_bg" />
+        </LinearLayout>
+    </LinearLayout>
+
+
+</RelativeLayout>

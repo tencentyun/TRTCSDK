@@ -1,0 +1,21 @@
+<resources>
+    <string name="videocall_title">TRTC 视频通话示例</string>
+    <string name="videocall_room_input_error_tip">"房间号和用户名不能为空"</string>
+    <string name="videocall_video_item">视频选项</string>
+    <string name="videocall_switch_camera">切换摄像头</string>
+    <string name="videocall_open_close_camera">打开/关闭摄像头</string>
+    <string name="videocall_audio_item">音频选项</string>
+    <string name="videocall_audio_route">免提/听筒</string>
+    <string name="videocall_user_back_camera">使用后置摄像头</string>
+    <string name="videocall_user_front_camera">使用前置摄像头</string>
+    <string name="videocall_open_camera">打开摄像头</string>
+    <string name="videocall_close_camera">关闭摄像头</string>
+    <string name="videocall_mute_audio">打开麦克风</string>
+    <string name="videocall_close_mute_audio">关闭麦克风</string>
+    <string name="videocall_use_speaker">使用扬声器</string>
+    <string name="videocall_use_receiver">使用听筒</string>
+    <string name="videocall_enter_room">进入房间</string>
+    <string name="videocall_please_input_userid">请输入用户名(必填项)</string>
+    <string name="videocall_please_input_roomid">请输入房间号(必填项)</string>
+    <string name="videocall_roomid">房间号:</string>
+</resources>

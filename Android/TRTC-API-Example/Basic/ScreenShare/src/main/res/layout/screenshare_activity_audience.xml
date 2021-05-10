@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/screenshare_main_bg">
+
+    <com.tencent.rtmp.ui.TXCloudVideoView
+        android:id="@+id/live_cloud_remote_screenshare"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/screenshare_main_bg"/>
+
+    <LinearLayout
+        android:id="@+id/ll_room_info"
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+        <ImageView
+            android:id="@+id/trtc_ic_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="15dp"
+            android:background="@mipmap/common_ic_back" />
+
+        <TextView
+            android:id="@+id/trtc_tv_room_number"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="15dp"
+            android:gravity="center_horizontal"
+            android:text="1111"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+</FrameLayout>

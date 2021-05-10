@@ -7,11 +7,11 @@
 在这个示例项目中包含了以下场景:（带上对应的跳转目录，方便用户快速浏览感兴趣的功能）
 
 - 基础功能
-  - [语音通话](./AudioCall)
-  - [视频通话](./VideoCall)
-  - [视频互动直播](./Live)
-  - [语音互动直播](./VoiceChatRoom)
-  - [录屏直播](./ScreenShare)
+  - [语音通话](./Basic/AudioCall)
+  - [视频通话](./Basic/VideoCall)
+  - [视频互动直播](./Basic/Live)
+  - [语音互动直播](./Basic/VoiceChatRoom)
+  - [录屏直播](./Basic/ScreenShare)
 - 进阶功能
   - [字符串房间号](./Advanced/StringRoomId)
   - [画质设定](./Advanced/SetVideoQuality)

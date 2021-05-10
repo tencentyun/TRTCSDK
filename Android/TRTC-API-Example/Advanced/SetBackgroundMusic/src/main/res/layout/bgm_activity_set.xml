@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="15dp"
-            android:background="@mipmap/basic_ic_back" />
+            android:background="@mipmap/common_ic_back" />
 
         <TextView
             android:id="@+id/tv_room_number"
@@ -61,7 +61,7 @@
                 android:layout_height="30dp"
                 android:paddingLeft="5dp"
                 android:text="1256732"
-                android:background="@drawable/basic_edit_bg" />
+                android:background="@drawable/common_edit_bg" />
 
         </LinearLayout>
         <LinearLayout
@@ -83,7 +83,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:paddingLeft="5dp"
-                android:background="@drawable/basic_edit_bg" />
+                android:background="@drawable/common_edit_bg" />
 
         </LinearLayout>
         <Button
@@ -92,7 +92,7 @@
             android:layout_marginTop="10dp"
             android:layout_width="120dp"
             android:layout_height="40dp"
-            android:background="@drawable/basic_button_bg"
+            android:background="@drawable/common_button_bg"
             android:text="@string/bgm_start_push"
             android:layout_marginRight="10dp"
             android:textColor="@android:color/white"
@@ -188,8 +188,8 @@
                 android:paddingTop="13dp"
                 android:paddingBottom="13dp"
                 android:layout_weight="1"
-                android:progressDrawable="@drawable/basic_seekbar_style"
-                android:thumb="@drawable/basic_seekbar_thumb" />
+                android:progressDrawable="@drawable/common_seekbar_style"
+                android:thumb="@drawable/common_seekbar_thumb" />
             <TextView
                 android:id="@+id/tv_volume"
                 android:layout_width="match_parent"

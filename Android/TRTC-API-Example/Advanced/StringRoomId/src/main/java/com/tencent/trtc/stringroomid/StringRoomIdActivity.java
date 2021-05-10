@@ -66,8 +66,8 @@ public class StringRoomIdActivity extends TRTCBaseActivity implements View.OnCli
         mTRTCParams.userSig     = GenerateTestUserSig.genTestUserSig(mTRTCParams.userId);
         mTRTCParams.role        = TRTCCloudDef.TRTCRoleAnchor;
 
-        mTRTCCloud.startLocalAudio(TRTCCloudDef.TRTC_AUDIO_QUALITY_DEFAULT);
         mTRTCCloud.startLocalPreview(true, mTXCloudPreviewView);
+        mTRTCCloud.startLocalAudio(TRTCCloudDef.TRTC_AUDIO_QUALITY_DEFAULT);
         mTRTCCloud.enterRoom(mTRTCParams, TRTCCloudDef.TRTC_APP_SCENE_LIVE);
     }
 

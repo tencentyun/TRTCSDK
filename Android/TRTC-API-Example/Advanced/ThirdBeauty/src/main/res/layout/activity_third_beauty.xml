@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="15dp"
-            android:background="@mipmap/basic_ic_back" />
+            android:background="@mipmap/common_ic_back" />
 
         <TextView
             android:id="@+id/tv_room_number"
@@ -68,8 +68,8 @@
                     android:paddingTop="13dp"
                     android:paddingBottom="13dp"
                     android:progress="4"
-                    android:progressDrawable="@drawable/basic_seekbar_style"
-                    android:thumb="@drawable/basic_seekbar_thumb" />
+                    android:progressDrawable="@drawable/common_seekbar_style"
+                    android:thumb="@drawable/common_seekbar_thumb" />
 
                 <TextView
                     android:id="@+id/tv_blur_level"
@@ -111,7 +111,7 @@
                 android:id="@+id/et_room_id"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:background="@drawable/basic_edit_bg"
+                android:background="@drawable/common_edit_bg"
                 android:inputType="number"
                 android:paddingLeft="5dp"
                 android:text="1256732" />
@@ -137,7 +137,7 @@
                 android:id="@+id/et_user_id"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:background="@drawable/basic_edit_bg"
+                android:background="@drawable/common_edit_bg"
                 android:paddingLeft="5dp" />
 
         </LinearLayout>
@@ -148,7 +148,7 @@
             android:layout_height="40dp"
             android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
-            android:background="@drawable/basic_button_bg"
+            android:background="@drawable/common_button_bg"
             android:text="@string/thirdbeauty_start_push"
             android:textColor="@android:color/white"
             android:textSize="18sp" />

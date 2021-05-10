@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="15dp"
-            android:background="@mipmap/basic_ic_back" />
+            android:background="@mipmap/common_ic_back" />
 
         <TextView
             android:id="@+id/tv_room_number"
@@ -198,7 +198,7 @@
                 android:layout_height="30dp"
                 android:paddingLeft="5dp"
                 android:text="1256732"
-                android:background="@drawable/basic_edit_bg" />
+                android:background="@drawable/common_edit_bg" />
 
         </LinearLayout>
         <LinearLayout
@@ -220,7 +220,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:paddingLeft="5dp"
-                android:background="@drawable/basic_edit_bg" />
+                android:background="@drawable/common_edit_bg" />
 
         </LinearLayout>
         <Button
@@ -229,7 +229,7 @@
             android:layout_marginTop="10dp"
             android:layout_width="120dp"
             android:layout_height="40dp"
-            android:background="@drawable/basic_button_bg"
+            android:background="@drawable/common_button_bg"
             android:text="@string/renderparams_start_push"
             android:layout_marginRight="10dp"
             android:textColor="@android:color/white"
@@ -265,7 +265,7 @@
                 android:layout_marginRight="40dp"
                 android:layout_gravity="center_vertical"
                 android:gravity="center_vertical"
-                android:background="@drawable/basic_edit_bg">
+                android:background="@drawable/common_edit_bg">
 
                 <TextView
                     android:id="@+id/tv_local_rotate"
@@ -306,7 +306,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="40dp"
                 android:orientation="horizontal"
-                android:background="@drawable/basic_edit_bg">
+                android:background="@drawable/common_edit_bg">
 
                 <TextView
                     android:id="@+id/tv_remote_rotate"
@@ -357,7 +357,7 @@
                 android:layout_marginRight="40dp"
                 android:layout_gravity="center_vertical"
                 android:gravity="center_vertical"
-                android:background="@drawable/basic_edit_bg">
+                android:background="@drawable/common_edit_bg">
 
                 <TextView
                     android:id="@+id/tv_local_mirror"
@@ -398,7 +398,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="40dp"
                 android:orientation="horizontal"
-                android:background="@drawable/basic_edit_bg">
+                android:background="@drawable/common_edit_bg">
 
                 <TextView
                     android:id="@+id/tv_remote_mode"
@@ -449,7 +449,7 @@
                 android:layout_marginRight="40dp"
                 android:layout_gravity="center_vertical"
                 android:gravity="center_vertical"
-                android:background="@drawable/basic_edit_bg">
+                android:background="@drawable/common_edit_bg">
 
                 <TextView
                     android:id="@+id/tv_local_mode"
@@ -490,7 +490,7 @@
                 android:layout_marginRight="40dp"
                 android:layout_gravity="center_vertical"
                 android:gravity="center_vertical"
-                android:background="@drawable/basic_edit_bg">
+                android:background="@drawable/common_edit_bg">
 
                 <TextView
                     android:id="@+id/tv_remote_userid"

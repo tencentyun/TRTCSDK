@@ -8,8 +8,8 @@ android {
         applicationId "com.tencent.trtc.api_example"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 10
-        versionName "8.6.103"
+        versionCode 1
+        versionName "1.0"
         multiDexEnabled true
         ndk {
             abiFilters "armeabi-v7a", "arm64-v8a"
@@ -28,11 +28,11 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'com.android.support:multidex:1.0.1'
-    implementation project(':Live')
-    implementation project(':VideoCall')
-    implementation project(':ScreenShare')
-    implementation project(':AudioCall')
-    implementation project(':VoiceChatRoom')
+    implementation project(':Basic:Live')
+    implementation project(':Basic:VideoCall')
+    implementation project(':Basic:ScreenShare')
+    implementation project(':Basic:AudioCall')
+    implementation project(':Basic:VoiceChatRoom')
     implementation project(':Advanced:SetAudioQuality')
     implementation project(':Advanced:SetVideoQuality')
     implementation project(':Advanced:SetAudioEffect')

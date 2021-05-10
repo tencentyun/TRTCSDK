@@ -1,0 +1,16 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <solid android:color="@color/common_edit_solid" />
+
+    <corners
+        android:bottomLeftRadius="2dip"
+        android:bottomRightRadius="2dip"
+        android:topLeftRadius="2dip"
+        android:topRightRadius="2dip" />
+
+    <stroke
+        android:width="5px"
+        android:color="@color/common_edit_stroke" />
+
+</shape>

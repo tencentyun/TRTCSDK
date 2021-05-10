@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="15dp"
-            android:background="@mipmap/basic_ic_back" />
+            android:background="@mipmap/common_ic_back" />
 
         <TextView
             android:id="@+id/tv_room_number"
@@ -65,14 +65,14 @@
                 android:layout_marginRight="10dp"
                 android:layout_weight="2.0"
                 android:textSize="10sp"
-                android:background="@drawable/basic_edit_bg" />
+                android:background="@drawable/common_edit_bg" />
 
             <Button
                 android:id="@+id/btn_file_select"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                  android:layout_weight="1.0"
-                android:background="@drawable/basic_button_bg"
+                android:background="@drawable/common_button_bg"
                 android:text="@string/mediashare_select_file"
                 android:textColor="@android:color/white"
                 android:textSize="18sp" />
@@ -108,7 +108,7 @@
                 android:id="@+id/et_room_id"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:background="@drawable/basic_edit_bg"
+                android:background="@drawable/common_edit_bg"
                 android:paddingLeft="5dp"
                 android:text="1256732" />
 
@@ -122,7 +122,7 @@
             android:layout_below="@+id/ll_set"
             android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
-            android:background="@drawable/basic_button_bg"
+            android:background="@drawable/common_button_bg"
             android:text="@string/mediashare_start_push"
             android:textColor="@android:color/white"
             android:textSize="18sp" />

@@ -1,0 +1,36 @@
+<resources>
+    <string name="live_title">TRTC 视频互动直播示例</string>
+    <string name="live_please_select_role">请选择角色（必填项）</string>
+    <string name="live_room_input_error_tip">房间号和用户名不能为空</string>
+    <string name="live_mute">静音</string>
+    <string name="live_audio_route">扬声器/听筒</string>
+    <string name="live_switch_camera">切换摄像头</string>
+    <string name="live_open_close_camera">打开/关闭摄像头</string>
+    <string name="live_select_resolution">选择分辨率</string>
+    <string name="live_video_item">视频选项</string>
+    <string name="live_audio_item">音频选项</string>
+    <string name="live_operator">操作</string>
+    <string name="live_user_back_camera">使用后置摄像头</string>
+    <string name="live_user_front_camera">使用前置摄像头</string>
+    <string name="live_open_camera">打开摄像头</string>
+    <string name="live_close_camera">关闭摄像头</string>
+    <string name="live_mute_audio">已静音</string>
+    <string name="live_close_mute_audio">取消静音</string>
+    <string name="live_use_speaker">使用扬声器</string>
+    <string name="live_use_receiver">使用听筒</string>
+    <string name="live_enter_room">进入房间</string>
+    <string name="live_please_input_userid">请输入用户名（必填项）</string>
+    <string name="live_please_input_roomid">请输入房间号（必填项）</string>
+    <string name="live_audience">观众</string>
+    <string name="live_anchor">主播</string>
+    <string name="live_resolution">分辨率</string>
+    <string name="live_standard_definition">标清：360*640</string>
+    <string name="live_standard">标</string>
+    <string name="live_high_definition">高清：540*960</string>
+    <string name="live_high">高</string>
+    <string name="live_super_definition">超清：720*1280</string>
+    <string name="live_super">超</string>
+    <string name="live_roomid">房间号:</string>
+    <string name="live_close_mic">关闭麦克风</string>
+    <string name="live_open_mic">打开麦克风</string>
+</resources>

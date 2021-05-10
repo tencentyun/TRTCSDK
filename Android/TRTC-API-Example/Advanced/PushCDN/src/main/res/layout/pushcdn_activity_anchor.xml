@@ -38,7 +38,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="40dp"
         android:background="@android:color/transparent"
-        android:src="@mipmap/basic_ic_back"
+        android:src="@mipmap/common_ic_back"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -62,7 +62,7 @@
         android:layout_width="0dp"
         android:layout_height="35dp"
         android:layout_marginBottom="10dp"
-        android:background="@drawable/basic_edit_bg"
+        android:background="@drawable/common_edit_bg"
         android:padding="5dp"
         android:text="@string/pushcdn_anchor_cdn_url_guide"
         android:textColor="@android:color/black"
@@ -90,7 +90,7 @@
             android:textColor="@android:color/white"
             android:textSize="10sp"
             android:checked="false"
-            android:buttonTint="@drawable/basic_selector_radio_bg"
+            android:buttonTint="@drawable/common_selector_radio_bg"
             android:text="@string/pushcdn_anchor_mixconfig_manual"/>
 
         <RadioButton
@@ -99,7 +99,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textColor="@android:color/white"
-            android:buttonTint="@drawable/basic_selector_radio_bg"
+            android:buttonTint="@drawable/common_selector_radio_bg"
             android:textSize="10sp"
             android:checked="false"
             android:text="@string/pushcdn_anchor_mixconfig_left_right"/>
@@ -110,7 +110,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textColor="@android:color/white"
-            android:buttonTint="@drawable/basic_selector_radio_bg"
+            android:buttonTint="@drawable/common_selector_radio_bg"
             android:textSize="10sp"
             android:checked="true"
             android:text="@string/pushcdn_anchor_mixconfig_in_picture"/>
