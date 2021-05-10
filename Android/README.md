@@ -6,11 +6,12 @@
 
 ```
 ├─ TRTC-API-Example // TRTC API Example，包括视频通话、语音通话的基础功能以及一些高级功能
-|  ├─ AudioCall             // 演示 TRTC 音频通话的示例代码
-|  ├─ VideoCall             // 演示 TRTC 视频通话的示例代码
-|  ├─ Live                  // 演示 TRTC 视频互动直播的示例代码
-|  ├─ VoiceChatRoom         // 演示 TRTC 语音互动直播的示例代码
-|  ├─ ScreenShare           // 演示 TRTC 录屏直播的示例代码
+|  ├─ Basic                 // 演示 TRTC 基础功能示例代码
+|  |  ├─ AudioCall                 // 演示 TRTC 音频通话的示例代码
+|  |  ├─ VideoCall                 // 演示 TRTC 视频通话的示例代码
+|  |  ├─ Live                      // 演示 TRTC 视频互动直播的示例代码
+|  |  ├─ VoiceChatRoom             // 演示 TRTC 语音互动直播的示例代码
+|  |  ├─ ScreenShare               // 演示 TRTC 录屏直播的示例代码
 |  ├─ Advanced              // 演示 TRTC 高级功能示例代码
 |  |  ├─ StringRoomId              // 演示 TRTC 字符串房间号示例代码
 |  |  ├─ SetVideoQuality           // 演示 TRTC 画质设定示例代码
