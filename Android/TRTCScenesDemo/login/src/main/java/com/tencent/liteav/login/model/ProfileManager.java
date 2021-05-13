@@ -170,21 +170,14 @@ public class ProfileManager {
             Log.d(TAG, "login im failed, context is null");
             return;
         }
-        IMManager.sharedInstance().initIMSDK(mContext);
-        V2TIMManager.getInstance().login(userModel.userId, userModel.userSig, new V2TIMCallback() {
-            @Override
-            public void onError(int i, String s) {
-                // 登录IM失败
-                callback.onFailed(i, s);
-                showToast(mContext.getString(R.string.login_toast_login_fail, i, s));
-            }
-
+        final IMManager imManager = IMManager.sharedInstance();
+        imManager.initIMSDK(mContext);
+        imManager.login(userModel.userId, userModel.userSig, new IMManager.ActionCallback() {
             @Override
             public void onSuccess() {
                 //1. 登录IM成功
                 showToast(mContext.getString(R.string.login_toast_login_success));
-                IMManager.sharedInstance().setLogin(true);
-                IMManager.sharedInstance().getUserInfo(userModel.userId, new IMManager.UserCallback() {
+                imManager.getUserInfo(userModel.userId, new IMManager.UserCallback() {
                     @Override
                     public void onCallback(int code, String msg, IMUserInfo userInfo) {
                         if (code == 0) {
@@ -205,6 +198,13 @@ public class ProfileManager {
                         }
                     }
                 });
+            }
+
+            @Override
+            public void onFailed(int code, String msg) {
+                // 登录IM失败
+                callback.onFailed(code, msg);
+                showToast(mContext.getString(R.string.login_toast_login_fail, code, msg));
             }
         });
     }

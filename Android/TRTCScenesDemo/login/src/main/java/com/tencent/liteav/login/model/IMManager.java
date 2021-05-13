@@ -50,7 +50,7 @@ public class IMManager {
         }
     }
 
-    public void setLogin(boolean isLogin) {
+    private void setLogin(boolean isLogin) {
         mIsLogin = isLogin;
     }
 
@@ -181,6 +181,26 @@ public class IMManager {
                 }
             }
         });
+    }
+
+    public void login(String userId, String userSig, final ActionCallback callback) {
+        V2TIMManager.getInstance().login(userId, userSig, new V2TIMCallback() {
+            @Override
+            public void onError(int i, String s) {
+                callback.onFailed(i, s);
+            }
+
+            @Override
+            public void onSuccess() {
+                setLogin(true);
+                callback.onSuccess();
+            }
+        });
+    }
+
+    public interface ActionCallback {
+        void onSuccess();
+        void onFailed(int code, String msg);
     }
 
     public interface Callback {

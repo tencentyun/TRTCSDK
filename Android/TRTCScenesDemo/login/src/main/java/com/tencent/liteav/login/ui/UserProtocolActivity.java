@@ -53,7 +53,7 @@ public class UserProtocolActivity extends Activity {
                 if (mIntentCode == CODE_LOGIN_SUCCESS) {
                     Intent intent = new Intent();
                     intent.addCategory("android.intent.category.DEFAULT");
-                    intent.setAction("com.tencent.liteav.action.liteavapp");
+                    intent.setAction("com.tencent.liteav.action.portal");
                     startActivity(intent);
                     finish();
                 } else  {

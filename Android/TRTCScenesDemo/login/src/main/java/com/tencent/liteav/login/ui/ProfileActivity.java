@@ -43,7 +43,7 @@ public class ProfileActivity extends BaseActivity {
     private void startMainActivity() {
         Intent intent = new Intent();
         intent.addCategory("android.intent.category.DEFAULT");
-        intent.setAction("com.tencent.liteav.action.liteavapp");
+        intent.setAction("com.tencent.liteav.action.portal");
         startActivity(intent);
     }
 
