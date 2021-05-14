@@ -351,7 +351,7 @@ public class PushCDNAnchorActivity extends TRTCBaseActivity implements View.OnCl
                     Toast.makeText(PushCDNAnchorActivity.this, R.string.pushcdn_anchor_empty_room_id_tip, Toast.LENGTH_SHORT).show();
                 } else {
                     if (TextUtils.isEmpty(mEditStreamId.getText())) {
-                        mStreamId = "123abc";
+                        mStreamId = "abc123";
                         mEditStreamId.setText(mStreamId);
                     } else {
                         mStreamId = mEditStreamId.getText().toString().trim();

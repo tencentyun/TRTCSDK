@@ -1,4 +1,5 @@
 # TRTC API-Example 
+_中文 | [English](README.en.md)_
 
 ## 前言
 这个开源示例Demo主要演示了 [TRTC 实时音视频 SDK](https://cloud.tencent.com/document/product/647/32689) 部分API的使用示例，帮助开发者可以更好的理解 TRTC 实时音视频 SDK 的API，从而快速实现一些音视频场景的基本功能。 

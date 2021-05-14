@@ -33,20 +33,51 @@ import javax.crypto.spec.SecretKeySpec;
  *
  * Reference：https://cloud.tencent.com/document/product/647/17275#Server
  */
+
+/**
+ * Module:   GenerateTestUserSig
+ *
+ * Description: generates UserSig for testing. UserSig is a security signature designed by Tencent Cloud for its cloud services.
+ *           It is calculated based on `SDKAppID`, `UserID`, and `EXPIRETIME` using the HMAC-SHA256 encryption algorithm.
+ *
+ * Attention: do not use the code below in your commercial app. This is because:
+ *
+ *            The code may be able to calculate UserSig correctly, but it is only for quick testing of the SDK’s basic features, not for commercial apps.
+ *            `SECRETKEY` in client code can be easily decompiled and reversed, especially on web.
+ *             Once your key is disclosed, attackers will be able to steal your Tencent Cloud traffic.
+ *
+ *            The correct method is to deploy the `UserSig` calculation code and encryption key on your project server so that your app can request from your server a `UserSig` that is calculated whenever one is needed.
+ *           Given that it is more difficult to hack a server than a client app, server-end calculation can better protect your key.
+ *
+ * Reference: https://cloud.tencent.com/document/product/647/17275#Server
+ */
 public class GenerateTestUserSig {
 
     /**
      * 配置为CDN发布、混流的域名
+     *
+     */
+
+    /**
+     * Domain name for CDN publishing and stream mixing
      */
     public static final String  CDN_DOMAIN_NAME = "PLACEHOLDER";
 
     /**
      * CDN发布功能 混流bizId
      */
+
+    /**
+     * `bizId` for CDN publishing and stream mixing
+     */
     public static final int BIZID = PLACEHOLDER;
 
     /**
      * CDN发布功能 混流appId
+     */
+
+    /**
+     * `appId` for CDN publishing and stream mixing
      */
     public static final int APPID = PLACEHOLDER;
 
@@ -56,15 +87,27 @@ public class GenerateTestUserSig {
      * 进入腾讯云实时音视频[控制台](https://console.cloud.tencent.com/rav ) 创建应用，即可看到 SDKAppId，
      * 它是腾讯云用于区分客户的唯一标识。
      */
+
+    /**
+     * Tencent Cloud `SDKAppID`. Set it to the `SDKAppID` of your account.
+     *
+     * You can view your `SDKAppID` after creating an application in the [TRTC console](https://console.cloud.tencent.com/rav).
+     * `SDKAppID` uniquely identifies a Tencent Cloud account.
+     */
     public static final int SDKAPPID = PLACEHOLDER;
-
-
 
     /**
      * 签名过期时间，建议不要设置的过短
      * <p>
      * 时间单位：秒
      * 默认时间：7 x 24 x 60 x 60 = 604800 = 7 天
+     */
+
+    /**
+     * Signature validity period, which should not be set too short
+     * <p>
+     * Unit: second
+     * Default value: 604800 (7 days)
      */
     private static final int EXPIRETIME = 604800;
 
@@ -73,11 +116,22 @@ public class GenerateTestUserSig {
      * 计算签名用的加密密钥，获取步骤如下：
      *
      * step1. 进入腾讯云实时音视频[控制台](https://console.cloud.tencent.com/rav )，如果还没有应用就创建一个，
-     * step2. 单击您的应用，并进一步找到“快速上手”部分。
-     * step3. 点击“查看密钥”按钮，就可以看到计算 UserSig 使用的加密的密钥了，请将其拷贝并复制到如下的变量中
+     * step2. 单击应用信息，并进一步找到“快速上手”部分。
+     * step3. 点击“复制密钥”按钮，复制密钥，请将其拷贝并复制到如下的变量中
      *
      * 注意：该方案仅适用于调试Demo，正式上线前请将 UserSig 计算代码和密钥迁移到您的后台服务器上，以避免加密密钥泄露导致的流量盗用。
      * 文档：https://cloud.tencent.com/document/product/647/17275#Server
+     */
+
+    /**
+     * Follow the steps below to obtain the key required for UserSig calculation.
+     *
+     * Step 1. Log in to the [TRTC console](https://console.cloud.tencent.com/rav), and create an application if you don’t have one.
+     * Step 2. Find your application, click “Application Info”, and click the “Quick Start” tab.
+     * Step 3. Copy and paste the key to the code, as shown below.
+     *
+     * Note: this method is for testing only. Before commercial launch, please migrate the UserSig calculation code and key to your backend server to prevent key disclosure and traffic stealing.
+     * Reference: https://cloud.tencent.com/document/product/647/17275#Server
      */
     public static final String SECRETKEY = "PLACEHOLDER";
 
@@ -97,6 +151,23 @@ public class GenerateTestUserSig {
      *
      * 文档：https://cloud.tencent.com/document/product/647/17275#Server
      */
+
+    /**
+     * Calculating UserSig
+     *
+     * The asymmetric encryption algorithm HMAC-SHA256 is used in the function to calculate UserSig based on `SDKAppID`, `UserID`, and `EXPIRETIME`.
+     *
+     * @note: do not use the code below in your commercial app. This is because:
+     *
+     * The code may be able to calculate UserSig correctly, but it is only for quick testing of the SDK’s basic features, not for commercial apps.
+     * `SECRETKEY` in client code can be easily decompiled and reversed, especially on web.
+     * Once your key is disclosed, attackers will be able to steal your Tencent Cloud traffic.
+     *
+     * The correct method is to deploy the `UserSig` calculation code on your project server so that your app can request from your server a `UserSig` that is calculated whenever one is needed.
+     * Given that it is more difficult to hack a server than a client app, server-end calculation can better protect your key.
+     *
+     * Reference: https://cloud.tencent.com/document/product/647/17275#Server
+     */
     public static String genTestUserSig(String userId) {
         return GenTLSSignature(SDKAPPID, userId, EXPIRETIME, null, SECRETKEY);
     }
@@ -110,6 +181,17 @@ public class GenerateTestUserSig {
      * @param userbuf     默认填写null
      * @param priKeyContent 生成 tls 票据使用的私钥内容
      * @return 如果出错，会返回为空，或者有异常打印，成功返回有效的票据
+     */
+
+    /**
+     * Generating a TLS Ticket
+     *
+     * @param sdkappid    `appid` of your application
+     * @param userId      User ID
+     * @param expire      Validity period, in seconds
+     * @param userbuf     `null` by default
+     * @param priKeyContent Private key required for generating a TLS ticket
+     * @return If an error occurs, an empty string will be returned or exceptions printed. If the operation succeeds, a valid ticket will be returned.
      */
     private static String GenTLSSignature(long sdkappid, String userId, long expire, byte[] userbuf, String priKeyContent) {
         long currTime = System.currentTimeMillis() / 1000;
