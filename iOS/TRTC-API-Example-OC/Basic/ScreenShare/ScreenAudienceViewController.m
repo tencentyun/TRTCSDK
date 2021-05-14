@@ -34,7 +34,7 @@
     params.sdkAppId = SDKAppID;
     params.roomId = _roomId;
     params.userId = _userId;
-    params.role = TRTCRoleAnchor;
+    params.role = TRTCRoleAudience;
     params.userSig = [GenerateTestUserSig genTestUserSig:params.userId];
     
     [self.trtcCloud startLocalAudio:TRTCAudioQualityMusic];

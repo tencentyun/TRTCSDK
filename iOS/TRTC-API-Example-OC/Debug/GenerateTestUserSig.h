@@ -16,6 +16,24 @@
  * Reference：https://cloud.tencent.com/document/product/647/17275#Server
  */
 
+/*
+ * Module:   GenerateTestUserSig
+ *
+ * Description: generates UserSig for testing. UserSig is a security signature designed by Tencent Cloud for its cloud services.
+ *           It is calculated based on `SDKAppID`, `UserID`, and `EXPIRETIME` using the HMAC-SHA256 encryption algorithm.
+ *
+ * Attention: do not use the code below in your commercial app. This is because:
+ *
+ *            The code may be able to calculate UserSig correctly, but it is only for quick testing of the SDK’s basic features, not for commercial apps.
+ *            `SECRETKEY` in client code can be easily decompiled and reversed, especially on web.
+ *             Once your key is disclosed, attackers will be able to steal your Tencent Cloud traffic.
+ *
+ *            The correct method is to deploy the `UserSig` calculation code and encryption key on your project server so that your app can request from your server a `UserSig` that is calculated whenever one is needed.
+ *           Given that it is more difficult to hack a server than a client app, server-end calculation can better protect your key.
+ *
+ * Reference: https://cloud.tencent.com/document/product/647/17275#Server
+ */
+
 #import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
@@ -24,29 +42,38 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  * CDN发布功能 混流CDN_URL
  */
+/**
+ * Domain name for CDN publishing and stream mixing
+ */
 static NSString * const kCDN_URL = @"";
 
 /**
  * CDN发布功能 混流appId
+ */
+/**
+ * `appId` for CDN publishing and stream mixing
  */
 static const int CDNAPPID = 0;
 
 /**
  * CDN发布功能 混流bizId
  */
-static const int CDNBIZID = 0;
-
-
 /**
- * 随机生成房间号 房间号为8位数字
+ * `bizId` for CDN publishing and stream mixing
  */
-static const int ROOMID = 31233595;
+static const int CDNBIZID = 0;
 
 /**
  * 腾讯云 SDKAppId，需要替换为您自己账号下的 SDKAppId。
  *
  * 进入腾讯云实时音视频[控制台](https://console.cloud.tencent.com/rav ) 创建应用，即可看到 SDKAppId，
  * 它是腾讯云用于区分客户的唯一标识。
+ */
+/**
+ * Tencent Cloud `SDKAppID`. Set it to the `SDKAppID` of your account.
+ *
+ * You can view your `SDKAppID` after creating an application in the [TRTC console](https://console.cloud.tencent.com/rav).
+ * `SDKAppID` uniquely identifies a Tencent Cloud account.
  */
 static const int SDKAppID = 0;
 
@@ -55,6 +82,12 @@ static const int SDKAppID = 0;
  *
  *  时间单位：秒
  *  默认时间：7 x 24 x 60 x 60 = 604800 = 7 天
+ */
+/**
+ * Signature validity period, which should not be set too short
+ * <p>
+ * Unit: second
+ * Default value: 604800 (7 days)
  */
 static const int EXPIRETIME = 604800;
 
@@ -67,6 +100,16 @@ static const int EXPIRETIME = 604800;
  *
  * 注意：该方案仅适用于调试Demo，正式上线前请将 UserSig 计算代码和密钥迁移到您的后台服务器上，以避免加密密钥泄露导致的流量盗用。
  * 文档：https://cloud.tencent.com/document/product/647/17275#Server
+ */
+/**
+ * Follow the steps below to obtain the key required for UserSig calculation.
+ *
+ * Step 1. Log in to the [TRTC console](https://console.cloud.tencent.com/rav), and create an application if you don’t have one.
+ * Step 2. Find your application, click “Application Info”, and click the “Quick Start” tab.
+ * Step 3. Copy and paste the key to the code, as shown below.
+ *
+ * Note: this method is for testing only. Before commercial launch, please migrate the UserSig calculation code and key to your backend server to prevent key disclosure and traffic stealing.
+ * Reference: https://cloud.tencent.com/document/product/647/17275#Server
  */
 static NSString * const SECRETKEY = @"";
 
@@ -87,6 +130,22 @@ static NSString * const SECRETKEY = @"";
  * 由于破解服务器的成本要高于破解客户端 App，所以服务器计算的方案能够更好地保护您的加密密钥。
  *
  * 文档：https://cloud.tencent.com/document/product/647/17275#Server
+ */
+/**
+ * Calculating UserSig
+ *
+ * The asymmetric encryption algorithm HMAC-SHA256 is used in the function to calculate UserSig based on `SDKAppID`, `UserID`, and `EXPIRETIME`.
+ *
+ * @note: do not use the code below in your commercial app. This is because:
+ *
+ * The code may be able to calculate UserSig correctly, but it is only for quick testing of the SDK’s basic features, not for commercial apps.
+ * `SECRETKEY` in client code can be easily decompiled and reversed, especially on web.
+ * Once your key is disclosed, attackers will be able to steal your Tencent Cloud traffic.
+ *
+ * The correct method is to deploy the `UserSig` calculation code on your project server so that your app can request from your server a `UserSig` that is calculated whenever one is needed.
+ * Given that it is more difficult to hack a server than a client app, server-end calculation can better protect your key.
+ *
+ * Reference: https://cloud.tencent.com/document/product/647/17275#Server
  */
 + (NSString *)genTestUserSig:(NSString *)identifier;
 @end
