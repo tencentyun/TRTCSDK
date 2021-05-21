@@ -69,7 +69,6 @@ void InitResource()
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*lpCmdLine*/, int nCmdShow)
 {
     LINFO(L"WinMain:: App run begin");
- 
     PROCESSENTRY32 pe32;
     pe32.dwSize = sizeof(pe32);
 

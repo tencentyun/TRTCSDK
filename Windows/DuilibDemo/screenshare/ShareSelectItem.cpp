@@ -27,19 +27,19 @@ void ShareSelectItem::setWndInfo(const TRTCScreenCaptureSourceInfo& info)
     //pLabel->SetText(m_info.hwnd ? ToTStr(m_info.wndTitle).c_str() : _T("屏幕"));
     std::wstring sourceName = UTF82Wide(m_info.sourceName);
     if (sourceName.compare(L"Screen1") == 0)
-        pLabel->SetText(_T("显示器-1"));
+        sourceName = _T("显示器-1");
     else if (sourceName.compare(L"Screen2") == 0)
-        pLabel->SetText(_T("显示器-2"));
+        sourceName = _T("显示器-2");
     else if (sourceName.compare(L"Screen3") == 0)
-        pLabel->SetText(_T("显示器-3"));
+        sourceName = _T("显示器-3");
     else if (sourceName.compare(L"Screen4") == 0)
-        pLabel->SetText(_T("显示器-4"));
+        sourceName = _T("显示器-4");
     else if (sourceName.compare(L"Screen5") == 0)
-        pLabel->SetText(_T("显示器-5"));
-    else
-    {
-        pLabel->SetText(sourceName.c_str());
+        sourceName = _T("显示器-5");
+    if (m_info.isMainScreen) {
+        sourceName = sourceName + _T("（主屏）");
     }
+    pLabel->SetText(sourceName.c_str());
     if (m_info.sourceName != nullptr)
     {
         m_sourceName.assign(m_info.sourceName);
