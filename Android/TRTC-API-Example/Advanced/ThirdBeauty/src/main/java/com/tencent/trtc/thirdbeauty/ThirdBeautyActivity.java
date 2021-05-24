@@ -12,7 +12,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.basic.TRTCBaseActivity;
-import com.faceunity.nama.FURenderer;
 import com.tencent.liteav.TXLiteAVCode;
 import com.tencent.rtmp.ui.TXCloudVideoView;
 import com.tencent.trtc.TRTCCloud;
@@ -23,6 +22,7 @@ import com.tencent.trtc.debug.GenerateTestUserSig;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+//import com.faceunity.nama.FURenderer;
 
 /**
  * TRTC 第三方美颜页面
@@ -93,7 +93,7 @@ public class ThirdBeautyActivity extends TRTCBaseActivity implements View.OnClic
     private TRTCCloud              mTRTCCloud;
     private List<String>           mRemoteUserIdList;
     private boolean                mStartPushFlag = false;
-    private FURenderer             mFURenderer;
+//    private FURenderer mFURenderer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,12 +102,12 @@ public class ThirdBeautyActivity extends TRTCBaseActivity implements View.OnClic
 
         getSupportActionBar().hide();
 
-        FURenderer.setup(getApplicationContext());
-        mFURenderer = new FURenderer.Builder(getApplicationContext())
-                .setCreateEglContext(false)
-                .setInputTextureType(0)   /* TRTC 这里用的0 TEXTURE_2D*/
-                .setCreateFaceBeauty(true)
-                .build();
+//        FURenderer.setup(getApplicationContext());
+//        mFURenderer = new FURenderer.Builder(getApplicationContext())
+//                .setCreateEglContext(false)
+//                .setInputTextureType(0)   /* TRTC 这里用的0 TEXTURE_2D*/
+//                .setCreateFaceBeauty(true)
+//                .build();
 
         mTRTCCloud = TRTCCloud.sharedInstance(getApplicationContext());
         mTRTCCloud.setListener(new TRTCCloudImplListener(ThirdBeautyActivity.this));
@@ -178,25 +178,25 @@ public class ThirdBeautyActivity extends TRTCBaseActivity implements View.OnClic
     }
 
     private void initData() {
-        // 1. 设置 TRTCVideoFrameListener 回调, 详见API说明文档 {https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCCloud__android.html#a0b565dc8c77df7fb826f0c45d8ad2d85}
+//                  1. 设置 TRTCVideoFrameListener 回调, 详见API说明文档 {https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCCloud__android.html#a0b565dc8c77df7fb826f0c45d8ad2d85}
         mTRTCCloud.setLocalVideoProcessListener(TRTCCloudDef.TRTC_VIDEO_PIXEL_FORMAT_Texture_2D, TRTCCloudDef.TRTC_VIDEO_BUFFER_TYPE_TEXTURE, new TRTCCloudListener.TRTCVideoFrameListener() {
             @Override
             public void onGLContextCreated() {
-                // 2. GLContext 创建
-                mFURenderer.onSurfaceCreated();
+//                  2. GLContext 创建
+//                mFURenderer.onSurfaceCreated();
             }
 
             @Override
             public int onProcessVideoFrame(TRTCCloudDef.TRTCVideoFrame srcFrame, TRTCCloudDef.TRTCVideoFrame dstFrame) {
-                // 3. 调用第三方美颜模块处理, 详见API说明文档 {https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCCloudListener__android.html#a22afb08b2a1a18563c7be28c904b166a}
-                dstFrame.texture.textureId = mFURenderer.onDrawFrameSingleInput(srcFrame.texture.textureId, srcFrame.width, srcFrame.height);
+//                  3. 调用第三方美颜模块处理, 详见API说明文档 {https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCCloudListener__android.html#a22afb08b2a1a18563c7be28c904b166a}
+//                dstFrame.texture.textureId = mFURenderer.onDrawFrameSingleInput(srcFrame.texture.textureId, srcFrame.width, srcFrame.height);
                 return 0;
             }
 
             @Override
             public void onGLContextDestory() {
-                // 4. GLContext 销毁
-                mFURenderer.onSurfaceDestroyed();
+//                   4. GLContext 销毁
+//                mFURenderer.onSurfaceDestroyed();
             }
         });
 
@@ -204,8 +204,8 @@ public class ThirdBeautyActivity extends TRTCBaseActivity implements View.OnClic
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (mStartPushFlag && fromUser) {
-                    // 5. 设置磨皮级别
-                    mFURenderer.getFaceBeautyModule().setBlurLevel(seekBar.getProgress() / 9f);
+//                    5. 设置磨皮级别
+//                    mFURenderer.getFaceBeautyModule().setBlurLevel(seekBar.getProgress() / 9f);
                 }
                 mTextBlurLevel.setText(String.valueOf(progress));
             }
