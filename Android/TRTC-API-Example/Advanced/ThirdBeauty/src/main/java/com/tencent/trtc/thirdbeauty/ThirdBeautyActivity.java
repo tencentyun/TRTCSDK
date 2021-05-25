@@ -179,47 +179,47 @@ public class ThirdBeautyActivity extends TRTCBaseActivity implements View.OnClic
 
     private void initData() {
 //                  1. 设置 TRTCVideoFrameListener 回调, 详见API说明文档 {https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCCloud__android.html#a0b565dc8c77df7fb826f0c45d8ad2d85}
-        mTRTCCloud.setLocalVideoProcessListener(TRTCCloudDef.TRTC_VIDEO_PIXEL_FORMAT_Texture_2D, TRTCCloudDef.TRTC_VIDEO_BUFFER_TYPE_TEXTURE, new TRTCCloudListener.TRTCVideoFrameListener() {
-            @Override
-            public void onGLContextCreated() {
-//                  2. GLContext 创建
-//                mFURenderer.onSurfaceCreated();
-            }
-
-            @Override
-            public int onProcessVideoFrame(TRTCCloudDef.TRTCVideoFrame srcFrame, TRTCCloudDef.TRTCVideoFrame dstFrame) {
-//                  3. 调用第三方美颜模块处理, 详见API说明文档 {https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCCloudListener__android.html#a22afb08b2a1a18563c7be28c904b166a}
-//                dstFrame.texture.textureId = mFURenderer.onDrawFrameSingleInput(srcFrame.texture.textureId, srcFrame.width, srcFrame.height);
-                return 0;
-            }
-
-            @Override
-            public void onGLContextDestory() {
-//                   4. GLContext 销毁
+//        mTRTCCloud.setLocalVideoProcessListener(TRTCCloudDef.TRTC_VIDEO_PIXEL_FORMAT_Texture_2D, TRTCCloudDef.TRTC_VIDEO_BUFFER_TYPE_TEXTURE, new TRTCCloudListener.TRTCVideoFrameListener() {
+//            @Override
+//            public void onGLContextCreated() {
+////                  2. GLContext 创建
+//               mFURenderer.onSurfaceCreated();
+//            }
+//
+//            @Override
+//            public int onProcessVideoFrame(TRTCCloudDef.TRTCVideoFrame srcFrame, TRTCCloudDef.TRTCVideoFrame dstFrame) {
+////                  3. 调用第三方美颜模块处理, 详见API说明文档 {https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCCloudListener__android.html#a22afb08b2a1a18563c7be28c904b166a}
+//               dstFrame.texture.textureId = mFURenderer.onDrawFrameSingleInput(srcFrame.texture.textureId, srcFrame.width, srcFrame.height);
+//                return 0;
+//            }
+//
+//            @Override
+//            public void onGLContextDestory() {
+////                   4. GLContext 销毁
 //                mFURenderer.onSurfaceDestroyed();
-            }
-        });
-
-        mSeekBlurLevel.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if (mStartPushFlag && fromUser) {
-//                    5. 设置磨皮级别
+//            }
+//        });
+//
+//        mSeekBlurLevel.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+//            @Override
+//            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+//                if (mStartPushFlag && fromUser) {
+////                    5. 设置磨皮级别
 //                    mFURenderer.getFaceBeautyModule().setBlurLevel(seekBar.getProgress() / 9f);
-                }
-                mTextBlurLevel.setText(String.valueOf(progress));
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
+//                }
+//                mTextBlurLevel.setText(String.valueOf(progress));
+//            }
+//
+//            @Override
+//            public void onStartTrackingTouch(SeekBar seekBar) {
+//
+//            }
+//
+//            @Override
+//            public void onStopTrackingTouch(SeekBar seekBar) {
+//
+//            }
+//        });
     }
 
     @Override
@@ -315,5 +315,4 @@ public class ThirdBeautyActivity extends TRTCBaseActivity implements View.OnClic
         super.onDestroy();
         destroyRoom();
     }
-
 }
