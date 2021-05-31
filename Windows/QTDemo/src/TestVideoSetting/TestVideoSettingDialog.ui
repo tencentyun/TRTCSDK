@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TestVideoSettingDialog</class>
+ <widget class="QDialog" name="TestVideoSettingDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>424</width>
+    <height>285</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>画质设置</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_17">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>分辨率</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QComboBox" name="comboBoxVideoResolution">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Ignored" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">selection-color: rgb(0, 0, 0);</string>
+       </property>
+       <property name="currentText">
+        <string>640_360</string>
+       </property>
+       <property name="currentIndex">
+        <number>16</number>
+       </property>
+       <property name="maxVisibleItems">
+        <number>2</number>
+       </property>
+       <item>
+        <property name="text">
+         <string>120_120   // 宽高比1:1</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>160_160</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>270_270</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>480_480</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>160_120   // 宽高比4:3</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>240_180</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>280_210</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>320_240</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>400_300</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>480_360</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>640_480</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>960_720</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>160_90     // 宽高比16:9</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>256_144</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>320_180</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>480_270</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>640_360</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>960_540</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>1280_720</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>1920_1080</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_16">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>分辨率模式</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QComboBox" name="comboBoxResolutionMode">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">selection-color: rgb(0, 0, 0);</string>
+       </property>
+       <property name="currentIndex">
+        <number>0</number>
+       </property>
+       <property name="maxVisibleItems">
+        <number>2</number>
+       </property>
+       <item>
+        <property name="text">
+         <string>Landscape(横屏)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Porait(竖屏)</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>视频帧率</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QComboBox" name="comboBoxVideoFps">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">selection-color: rgb(0, 0, 0);</string>
+       </property>
+       <item>
+        <property name="text">
+         <string>15fps</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>20fps</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="label_12">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>本地填充模式</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QComboBox" name="comboBoxVideoFillMode">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">selection-color: rgb(0, 0, 0);</string>
+       </property>
+       <property name="currentIndex">
+        <number>0</number>
+       </property>
+       <property name="maxVisibleItems">
+        <number>2</number>
+       </property>
+       <item>
+        <property name="text">
+         <string>FIt(长边对齐)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>FIll(铺满屏幕)</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout_3">
+     <item row="0" column="0">
+      <widget class="QLabel" name="labelBitrateDesc">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+         <horstretch>30</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>上行码率                 </string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QSlider" name="horizontalSliderVideoBitrate">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="minimum">
+        <number>500</number>
+       </property>
+       <property name="maximum">
+        <number>2000</number>
+       </property>
+       <property name="singleStep">
+        <number>50</number>
+       </property>
+       <property name="pageStep">
+        <number>50</number>
+       </property>
+       <property name="value">
+        <number>550</number>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="tickPosition">
+        <enum>QSlider::NoTicks</enum>
+       </property>
+       <property name="tickInterval">
+        <number>50</number>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout_2">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_18">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>分辨率自调整</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QCheckBox" name="checkBoxEnableAdjustRes">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>开启/关闭</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_31">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>小画面/双路</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QCheckBox" name="checkBoxEnableEncSmallVideoStream">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>开启/关闭</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
