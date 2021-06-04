@@ -1,3 +1,6 @@
+import { randomUserID } from '../../../utils/common'
+import { genTestUserSig } from '../../../debug/GenerateTestUserSig'
+
 const app = getApp()
 Page({
 
@@ -12,43 +15,25 @@ Page({
     headerHeight: app.globalData.headerHeight,
     statusBarHeight: app.globalData.statusBarHeight,
     lc: '◀︎',
-    audioVolumeType: 'media',
-    debugMode: false,
-    streamList: [],
   },
   // 绑定输房间号入框
-  bindRoomID: function(e) {
+  bindRoomID(e) {
     this.setData({
       roomID: e.detail.value,
     })
   },
-  bindUserID: function(e) {
+  bindUserID(e) {
     this.setData({
       userID: e.detail.value,
     })
   },
-  roleChange: function(e) {
+  roleChange(e) {
     this.setData({
       role: e.detail.value,
     })
   },
-  selectVolumeType: function(e) {
-    this.setData({
-      audioVolumeType: e.detail.value,
-    })
-  },
-  switchDebugMode: function(event) {
-    this.setData({
-      debugMode: event.detail.value,
-    })
-  },
-  radioDebugChange: function(e) {
-    this.setData({
-      debug: e.detail.value,
-    })
-  },
   // 进入rtcroom页面
-  joinRoom: function() {
+  joinRoom() {
     // 防止两次点击操作间隔太快
     const nowTime = new Date()
     if (nowTime - this.tapTime < 1000) {
@@ -88,24 +73,26 @@ Page({
       })
       return
     }
-
-    const url = '../room/room?&roomID=' + this.data.roomID + '&debugMode=' + this.data.debugMode + '&userID=' + this.data.userID + '&role=' + this.data.role + '&audioVolumeType=' + this.data.audioVolumeType
+    const userID = this.data.userID || randomUserID()
+    const Signature = genTestUserSig(userID)
+    const url = `../room/room?&roomID=${this.data.roomID}&userID=${userID}&sdkAppID=${Signature.sdkAppID}&userSig=${Signature.userSig}&role=${this.data.role}`
     this.tapTime = nowTime
-    this.checkDeviceAuthorize().then((result)=>{
+    this.checkDeviceAuthorize().then((result) => {
       console.log('授权成功', result)
-      wx.navigateTo({ url: url })
-    }).catch((error)=>{
-      console.log('没有授权', error)
+      wx.navigateTo({ url })
     })
+      .catch((error) => {
+        console.log('没有授权', error)
+      })
   },
-  checkDeviceAuthorize: function() {
+  checkDeviceAuthorize() {
     this.hasOpenDeviceAuthorizeModal = false
     return new Promise((resolve, reject) => {
       if (!wx.getSetting || !wx.getSetting()) {
         // 微信测试版 获取授权API异常，目前只能即使没授权也可以通过
         resolve()
       }
-      wx.getSetting().then((result)=> {
+      wx.getSetting().then((result) => {
         console.log('getSetting', result)
         this.authorizeMic = result.authSetting['scope.record']
         // this.authorizeCamera = result.authSetting['scope.camera']
@@ -118,21 +105,22 @@ Page({
           console.log('getSetting 没有授权，弹出授权窗口', result)
           wx.authorize({
             scope: 'scope.record',
-          }).then((res)=>{
+          }).then((res) => {
             console.log('authorize mic', res)
             this.authorizeMic = true
             resolve()
-          }).catch((error)=>{
-            console.log('authorize mic error', error)
-            this.authorizeMic = false
-            this.openConfirm()
-            reject(new Error('authorize fail'))
           })
+            .catch((error) => {
+              console.log('authorize mic error', error)
+              this.authorizeMic = false
+              this.openConfirm()
+              reject(new Error('authorize fail'))
+            })
         }
       })
     })
   },
-  openConfirm: function() {
+  openConfirm() {
     if (this.hasOpenDeviceAuthorizeModal) {
       return
     }
@@ -141,7 +129,7 @@ Page({
       content: '您没有打开麦克风的权限，是否去设置打开？',
       confirmText: '确认',
       cancelText: '取消',
-      success: (res)=>{
+      success: (res) => {
         this.hasOpenDeviceAuthorizeModal = false
         console.log(res)
         // 点击“确认”时打开设置页面
@@ -156,7 +144,7 @@ Page({
       },
     })
   },
-  onBack: function() {
+  onBack() {
     wx.navigateBack({
       delta: 1,
     })
@@ -165,19 +153,19 @@ Page({
    * 生命周期函数--监听页面加载
    * @param {*} options 配置项
    */
-  onLoad: function(options) {
+  onLoad(options) {
 
   },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onReady: function() {
+  onReady() {
 
   },
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function() {
+  onShow() {
     wx.setKeepScreenOn({
       keepScreenOn: true,
     })
@@ -185,13 +173,13 @@ Page({
   /**
    * 生命周期函数--监听页面隐藏
    */
-  onHide: function() {
+  onHide() {
 
   },
   /**
    * 生命周期函数--监听页面卸载
    */
-  onUnload: function() {
+  onUnload() {
 
   },
 })

@@ -142,4 +142,14 @@
   padding-right:5vw;
   width:50rpx;
   height:60rpx;
+}/* 通过方法自定义模式 */
+.template-custom{
+  /* 绝对定位模式 pusher 和 player 都用绝对定位*/
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+}
+.template-custom .pusher-container,
+.template-custom .player-container{
+  position: absolute;
 }

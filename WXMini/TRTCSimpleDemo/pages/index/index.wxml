@@ -16,5 +16,5 @@
 </view>
 
 <view class='logo-box'>
-  <image class='logo' src='../../images/logo.png'></image>
+  <image class='logo' src='../../static/images/logo.png'></image>
 </view>
