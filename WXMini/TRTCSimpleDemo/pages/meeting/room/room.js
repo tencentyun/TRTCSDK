@@ -1,13 +1,7 @@
 import TRTC from '../../../static/trtc-wx'
-import { randomRoomID }  from '../../../utils/common'
 
 Page({
   data: {
-    roomID: 0, // 房间号
-    role: 'presenter',
-    initialRole: '',
-    showRolePanel: false,
-    userID: '',
     _rtcConfig: {
       sdkAppID: '', // 必要参数 开通实时音视频服务创建应用后分配的 sdkAppID
       userID: '', // 必要参数 用户 ID 可以由您的帐号系统指定
@@ -15,7 +9,9 @@ Page({
     },
     pusher: null,
     playerList: [],
-    muteAudio: false,
+    show_memberList: false,
+    localAudio: false,
+    localVideo: false
   },
 
   /**
@@ -27,6 +23,15 @@ Page({
       keepScreenOn: true,
     })
     this.TRTC = new TRTC(this)
+    // 将String 类型的 true false 转换成 boolean
+    Object.getOwnPropertyNames(options).forEach((key) => {
+      if (options[key] === 'true') {
+        options[key] = true
+      }
+      if (options[key] === 'false') {
+        options[key] = false
+      }
+    })
     this.init(options)
     this.bindTRTCRoomEvent()
     this.enterRoom({ roomID: options.roomID })
@@ -43,7 +48,6 @@ Page({
     // pusher 初始化参数
     const pusherConfig = {
       beautyLevel: 9,
-      audioVolumeType: 'media',
     }
     const pusher = this.TRTC.createPusher(pusherConfig)
     this.setData({
@@ -52,20 +56,19 @@ Page({
         sdkAppID: options.sdkAppID,
         userSig: options.userSig,
       },
-      role: options.role,
-      initialRole: options.role,
-      roomID: options.roomID,
-      pusher: pusher.pusherAttributes
+      pusher: pusher.pusherAttributes,
+      localAudio: options.localAudio,
+      localVideo: options.localVideo
     })
   },
 
   enterRoom(options) {
-    const roomID = options.roomID || randomRoomID()
+    const roomID = options.roomID
     const config =  Object.assign(this.data._rtcConfig, { roomID })
     this.setData({
       pusher: this.TRTC.enterRoom(config),
     }, () => {
-      this.TRTC.getPusherInstance().start() // 开始推流（autoPush的模式下不需要）
+      this.TRTC.getPusherInstance().start() // 开始推流
     })
   },
 
@@ -96,8 +99,10 @@ Page({
     // 初始化事件订阅
     this.TRTC.on(TRTC_EVENT.LOCAL_JOIN, (event) => {
       console.log('* room LOCAL_JOIN', event)
-      // 进房成功，触发该事件后可以对本地视频和音频进行设置
-      if (this.data.role === 'presenter') {
+      if (this.data.localVideo) {
+        this.setPusherAttributesHandler({ enableCamera: true })
+      }
+      if (this.data.localAudio) {
         this.setPusherAttributesHandler({ enableMic: true })
       }
     })
@@ -107,13 +112,40 @@ Page({
     this.TRTC.on(TRTC_EVENT.ERROR, (event) => {
       console.log('* room ERROR', event)
     })
+    this.TRTC.on(TRTC_EVENT.REMOTE_USER_JOIN, (event) => {
+      console.log('* room REMOTE_USER_JOIN', event)
+      const { userID } = event.data
+      wx.showToast({
+        title: `${userID} 进入了房间`,
+        icon: 'none',
+        duration: 2000,
+      })
+    })
     // 远端用户退出
     this.TRTC.on(TRTC_EVENT.REMOTE_USER_LEAVE, (event) => {
       console.log('* room REMOTE_USER_LEAVE', event)
-      const { playerList } = event.data
+      const { userID, playerList } = event.data
       this.setData({
-        playerList,
+        playerList: playerList
       })
+      wx.showToast({
+        title: `${userID} 离开了房间`,
+        icon: 'none',
+        duration: 2000,
+      })
+    })
+    // 远端用户推送视频
+    this.TRTC.on(TRTC_EVENT.REMOTE_VIDEO_ADD, (event) => {
+      console.log('* room REMOTE_VIDEO_ADD',  event)
+      const { player } = event.data
+      // 开始播放远端的视频流，默认是不播放的
+      this.setPlayerAttributesHandler(player, { muteVideo: false })
+    })
+    // 远端用户取消推送视频
+    this.TRTC.on(TRTC_EVENT.REMOTE_VIDEO_REMOVE, (event) => {
+      console.log('* room REMOTE_VIDEO_REMOVE', event)
+      const { player } = event.data
+      this.setPlayerAttributesHandler(player, { muteVideo: true })
     })
     // 远端用户推送音频
     this.TRTC.on(TRTC_EVENT.REMOTE_AUDIO_ADD, (event) => {
@@ -127,14 +159,20 @@ Page({
       const { player } = event.data
       this.setPlayerAttributesHandler(player, { muteAudio: true })
     })
-  },
-
-  _handleRoleChange() {
-    if (this.data.initialRole !== 'presenter') {
+    this.TRTC.on(TRTC_EVENT.REMOTE_AUDIO_VOLUME_UPDATE, (event) => {
+      console.log('* room REMOTE_AUDIO_VOLUME_UPDATE', event)
+      const { playerList } = event.data
       this.setData({
-        showRolePanel: !this.data.showRolePanel,
+        playerList: playerList
       })
-    }
+    })
+    this.TRTC.on(TRTC_EVENT.LOCAL_AUDIO_VOLUME_UPDATE, (event) => {
+      // console.log('* room LOCAL_AUDIO_VOLUME_UPDATE', event)
+      const { pusher } = event.data
+      this.setData({
+        pusher: pusher
+      })
+    })
   },
 
   // 是否订阅某一个player Audio
@@ -150,6 +188,18 @@ Page({
     }
   },
 
+  // 订阅 / 取消订阅某一个player Audio
+  _mutePlayerVideo(event) {
+    const player = event.currentTarget.dataset.value
+    if (player.hasVideo && player.muteVideo) {
+      this.setPlayerAttributesHandler(player, { muteVideo: false })
+      return
+    }
+    if (player.hasVideo && !player.muteVideo) {
+      this.setPlayerAttributesHandler(player, { muteVideo: true })
+      return
+    }
+  },
 
   // 挂断退出房间
   _hangUp() {
@@ -158,48 +208,13 @@ Page({
       delta: 1,
     })
   },
-  // 关闭
-  _allPlayerMuteAudio() {
-    if (this.data.playerList.length === 0) {
-      return
-    }
-    const players = this.TRTC.getPlayerList()
-    const muteAudio = !this.data.muteAudio
-    if (muteAudio) {
-      wx.showToast({
-        title: '开启禁言',
-        icon: 'none',
-        duration: 2000,
-      })
-    } else {
-      wx.showToast({
-        title: '取消禁言',
-        icon: 'none',
-        duration: 2000,
-      })
-    }
-    this.setData({
-      muteAudio: muteAudio
-    })
-    players.forEach((player) => {
-      this.setPlayerAttributesHandler(player, { muteAudio: muteAudio })
-    })
+
+  // 设置美颜
+  _setPusherBeautyHandle() {
+    const  beautyLevel = this.data.pusher.beautyLevel === 0 ? 9 : 0
+    this.setPusherAttributesHandler({ beautyLevel })
   },
-  _confirmRoleChange() {
-    if (this.data.role === 'audience') {
-      this.setPusherAttributesHandler({ enableMic: true })
-      this.setData({
-        role: 'presenter',
-        showRolePanel: false,
-      })
-    } else {
-      this.setPusherAttributesHandler({ enableMic: false })
-      this.setData({
-        role: 'audience',
-        showRolePanel: false,
-      })
-    }
-  },
+
   // 订阅 / 取消订阅 Audio
   _pusherAudioHandler() {
     if (this.data.pusher.enableMic) {
@@ -209,6 +224,25 @@ Page({
     }
   },
 
+  // 订阅 / 取消订阅 Video
+  _pusherVideoHandler() {
+    if (this.data.pusher.enableCamera) {
+      this.setPusherAttributesHandler({ enableCamera: false })
+    } else {
+      this.setPusherAttributesHandler({ enableCamera: true })
+    }
+  },
+
+  _switchMemberListPanel() {
+    this.setData({
+      show_memberList: true
+    })
+  },
+  _handleClose() {
+    this.setData({
+      show_memberList: false
+    })
+  },
   // 请保持跟 wxml 中绑定的事件名称一致
   _pusherStateChangeHandler(event) {
     this.TRTC.pusherEventHandler(event)

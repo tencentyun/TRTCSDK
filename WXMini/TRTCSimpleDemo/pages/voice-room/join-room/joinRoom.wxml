@@ -16,31 +16,8 @@
       <radio color='#006eff' value="audience"  id="audience"/>观众（仅收听）
     </label>
   </radio-group>
-  <view class="choice-content">
-    <text class="device-position">音量类型</text>
-    <radio-group class="radio-group-choice" bindchange="selectVolumeType">
-      <label>
-        <radio color='#006eff' value="auto" id="auto" />
-        自动
-      </label>
-      <label>
-        <radio color='#006eff' value="media" checked='true' id="media" />
-        媒体
-      </label>
-      <label>
-        <radio color='#006eff' value="voicecall" id="voicecall" />
-        通话
-      </label>
-    </radio-group>
-	</view>
-  <view class="choice-content">
-    <label class="label" for="switchDebugMode">
-      <text>调试模式</text>
-      <switch id="switchDebugMode" color="#006eff" checked="{{debugMode}}" bindchange="switchDebugMode"/>
-    </label>
-  </view>
 </view>
 <view class='bottom-btn'>
   <button class="btn" bindtap="joinRoom" hover-class="none">进入房间</button>
 </view>
-<cover-image class='close' style="top:{{(headerHeight + statusBarHeight) - 34}}rpx"src="../../../images/back.png" bindtap="onBack"></cover-image>
+<cover-image class='close' style="top:{{(headerHeight + statusBarHeight) - 34}}rpx"src="../../../static/images/back.png" bindtap="onBack"></cover-image>

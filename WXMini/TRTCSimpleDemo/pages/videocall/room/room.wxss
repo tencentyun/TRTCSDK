@@ -12,7 +12,13 @@
   top: 160rpx;
   z-index: 2;
 }
-
+.pusher{
+  height: 100%;
+}
+.player{
+  height: 100%;
+  width: 100%;
+}
 .template-1v1 .pusher-container.fullscreen{
   width: 100vw;
   height: 100vh;

@@ -1,51 +1,26 @@
 // index.js
 // const app = getApp()
+import { randomUserID } from '../../utils/common'
+import { genTestUserSig } from '../../debug/GenerateTestUserSig'
+
 const app = getApp()
 Page({
   data: {
     roomID: '',
-    template: '1v1',
-    debugMode: false,
-    cloudenv: 'PRO',
-    evnArray: [
-      { value: 'PRO', title: 'PRO' },
-      { value: 'CCC', title: 'CCC' },
-      { value: 'DEV', title: 'DEV' },
-      { value: 'UAT', title: 'UAT' },
-    ],
     headerHeight: app.globalData.headerHeight,
     statusBarHeight: app.globalData.statusBarHeight,
   },
 
-  onLoad: function() {
+  onLoad() {
 
   },
-  enterRoomID: function(event) {
-    // console.log('index enterRoomID', event)
+  enterRoomID(event) {
     this.setData({
       roomID: event.detail.value,
     })
   },
-  selectTemplate: function(event) {
-    console.log('index selectTemplate', event)
-    this.setData({
-      template: event.detail.value,
-    })
-  },
-  switchDebugMode: function(event) {
-    console.log('index switchDebugMode', event)
-    this.setData({
-      debugMode: event.detail.value,
-    })
-  },
-  selectEnv: function(event) {
-    console.log('index switchDebugMode', event)
-    this.setData({
-      cloudenv: event.detail.value,
-    })
-  },
-  enterRoom: function() {
-    const roomID = this.data.roomID
+  enterRoom() {
+    const { roomID } = this.data
     const nowTime = new Date()
     if (nowTime - this.tapTime < 1000) {
       return
@@ -74,23 +49,26 @@ Page({
       })
       return
     }
-    const url = `../room/room?roomID=${roomID}&template=${this.data.template}&debugMode=${this.data.debugMode}&cloudenv=${this.data.cloudenv}`
+    const userID = randomUserID()
+    const Signature = genTestUserSig(userID)
+    const url = `./room/room?roomID=${roomID}&userID=${userID}&sdkAppID=${Signature.sdkAppID}&userSig=${Signature.userSig}`
     this.tapTime = nowTime
-    this.checkDeviceAuthorize().then((result)=>{
+    this.checkDeviceAuthorize().then((result) => {
       console.log('授权成功', result)
-      wx.navigateTo({ url: url })
-    }).catch((error)=>{
-      console.log('没有授权', error)
+      wx.navigateTo({ url })
     })
+      .catch((error) => {
+        console.log('没有授权', error)
+      })
   },
-  checkDeviceAuthorize: function() {
+  checkDeviceAuthorize() {
     this.hasOpenDeviceAuthorizeModal = false
     return new Promise((resolve, reject) => {
       if (!wx.getSetting || !wx.getSetting()) {
         // 微信测试版 获取授权API异常，目前只能即使没授权也可以通过
         resolve()
       }
-      wx.getSetting().then((result)=> {
+      wx.getSetting().then((result) => {
         console.log('getSetting', result)
         this.authorizeMic = result.authSetting['scope.record']
         this.authorizeCamera = result.authSetting['scope.camera']
@@ -103,19 +81,20 @@ Page({
           console.log('getSetting 没有授权，弹出授权窗口', result)
           wx.authorize({
             scope: 'scope.record',
-          }).then((res)=>{
+          }).then((res) => {
             console.log('authorize mic', res)
             this.authorizeMic = true
             if (this.authorizeCamera) {
               resolve()
             }
-          }).catch((error)=>{
-            console.log('authorize mic error', error)
-            this.authorizeMic = false
           })
+            .catch((error) => {
+              console.log('authorize mic error', error)
+              this.authorizeMic = false
+            })
           wx.authorize({
             scope: 'scope.camera',
-          }).then((res)=>{
+          }).then((res) => {
             console.log('authorize camera', res)
             this.authorizeCamera = true
             if (this.authorizeMic) {
@@ -124,17 +103,18 @@ Page({
               this.openConfirm()
               reject(new Error('authorize fail'))
             }
-          }).catch((error)=>{
-            console.log('authorize camera error', error)
-            this.authorizeCamera = false
-            this.openConfirm()
-            reject(new Error('authorize fail'))
           })
+            .catch((error) => {
+              console.log('authorize camera error', error)
+              this.authorizeCamera = false
+              this.openConfirm()
+              reject(new Error('authorize fail'))
+            })
         }
       })
     })
   },
-  openConfirm: function() {
+  openConfirm() {
     if (this.hasOpenDeviceAuthorizeModal) {
       return
     }
@@ -143,7 +123,7 @@ Page({
       content: '您没有打开麦克风和摄像头的权限，是否去设置打开？',
       confirmText: '确认',
       cancelText: '取消',
-      success: (res)=>{
+      success: (res) => {
         this.hasOpenDeviceAuthorizeModal = false
         console.log(res)
         // 点击“确认”时打开设置页面
@@ -158,7 +138,7 @@ Page({
       },
     })
   },
-  onBack: function() {
+  onBack() {
     wx.navigateBack({
       delta: 1,
     })
