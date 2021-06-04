@@ -40,7 +40,7 @@
   },
   "compileType": "miniprogram",
   "libVersion": "2.10.1",
-  "appid": "wxd8a4a0122b389b50",
+  "appid": "在这填写您的微信小程序AppID",
   "projectname": "MiniProgram-TRTC",
   "debugOptions": {
     "hidedInDevtools": []
