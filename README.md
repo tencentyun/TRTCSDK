@@ -14,19 +14,24 @@
 | Electron | [下载](https://web.sdk.qcloud.com/trtc/electron/download/TXLiteAVSDK_TRTC_Electron_latest.zip) | [DOC](https://cloud.tencent.com/document/product/647/38548) | [DOC](https://cloud.tencent.com/document/product/647/38549) |[API](https://cloud.tencent.com/document/product/647/38551) |
 | 微信小程序 | [下载](https://web.sdk.qcloud.com/trtc/miniapp/download/trtc-room.zip) | [DOC](https://cloud.tencent.com/document/product/647/32399) | [DOC](https://cloud.tencent.com/document/product/647/32183) |[API](https://cloud.tencent.com/document/product/647/17018) |
 
-## Version 8.6 @ 2021.05.08
+## Version 8.7 @ 2021.05.25
 
 **欢迎加入**
 团队技术氛围浓厚，培训体系完善，产品线多样，有经验丰富的“老司机”手把手帮你入门音视频技术。<br>
 北京、西安、上海、深圳、广州均有岗位，如果您对音视频技术感兴趣，欢迎加入我们 [腾讯云 TRTC 研发团队](https://careers.tencent.com/jobdesc.html?postId=1297858141983088640) 。
 
-1. 全平台：优化网络流控算法，进一步提升音视频传输质量。
-1. 全平台：优化切换角色上下麦时音频播放的流畅度。
-1. iOS&Mac Windows：优化音频处理模块，提升了 SPEECH 模式和 DEFAULT 模式的语音质量。
-1. iOS&Mac：优化自定义音频采集在高CPU场景下的适应性。
-1. Mac：增加对苹果 M1 架构的原生支持。
-1. iOS & Android ：支持录屏视频通过辅路进行分享，对齐桌面端版本。
-1. Windows：优化内存分配逻辑，提高稳定性。
+功能新增
+1.全平台：增加外接音频设备的异常检测。您可以通过监听 onStatistics 回调 TRTCLocalStatistics 中的 audioCaptureState 来实时检测长时间静音、破音、异常间断问题。
+1. Windows：自定义采集支持输入 RGBA 格式的视频数据。
+
+质量优化
+1. 全平台：优化 bgm 资源管理，及时释放内存占用。
+1. 全平台：推流端退后台暂停视频上行时，播放端能及时收到 onUserVideoAvailable(false) 的通知。
+1. Mac：优化屏幕分享时鼠标捕捉的 CPU 和内存占用。
+
+问题修复
+1. Android ：修复 setRemoteViewFillMode 部分机型偶现不生效的问题。
+1. iOS/Mac：修复停止自定义美颜时的内存资源释放问题。
 
 
 更早期的版本更新历史请点击  [More](https://cloud.tencent.com/document/product/647/46907)...
