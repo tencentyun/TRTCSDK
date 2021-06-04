@@ -21,7 +21,7 @@
 北京、西安、上海、深圳、广州均有岗位，如果您对音视频技术感兴趣，欢迎加入我们 [腾讯云 TRTC 研发团队](https://careers.tencent.com/jobdesc.html?postId=1297858141983088640) 。
 
 功能新增
-1.全平台：增加外接音频设备的异常检测。您可以通过监听 onStatistics 回调 TRTCLocalStatistics 中的 audioCaptureState 来实时检测长时间静音、破音、异常间断问题。
+1. 全平台：增加外接音频设备的异常检测。您可以通过监听 onStatistics 回调 TRTCLocalStatistics 中的 audioCaptureState 来实时检测长时间静音、破音、异常间断问题。
 1. Windows：自定义采集支持输入 RGBA 格式的视频数据。
 
 质量优化
