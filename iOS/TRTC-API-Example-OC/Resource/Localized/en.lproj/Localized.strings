@@ -11,6 +11,7 @@
 "TRTC-API-Example.Home.VoiceCalls" = "Audio Call";
 "TRTC-API-Example.Home.VoiceCallsDesc" = "One-to-one/Group audio call, which supports muting, hands-free mode, etc.";
 "TRTC-API-Example.Home.VideoCalls" = "Video Call";
+"TRTC-API-Example.Home.VideoCallsDesc" = "One-to-one/Group video call, which supports muting, hands-free mode, etc.";
 "TRTC-API-Example.Home.VideoLive" = "Interactive Live Video Streaming";
 "TRTC-API-Example.Home.TalkingRoom" = "Interactive Live Audio Streaming";
 "TRTC-API-Example.Home.LiveScreen" = "Screen Recording Live Streaming";

@@ -138,13 +138,13 @@ static const NSInteger maxRemoteUserNum = 6;
     [self.trtcCloud enterRoom:params appScene:TRTCAppSceneLIVE];
     
     TRTCVideoEncParam *encParams = [TRTCVideoEncParam new];
-    encParams.videoResolution = TRTCVideoResolution_480_270;
+    encParams.videoResolution = TRTCVideoResolution_640_360;
     encParams.videoBitrate = 550;
-    encParams.videoFps = 10;
+    encParams.videoFps = 15;
     
     [self.trtcCloud setVideoEncoderParam:encParams];
     
-    [self.trtcCloud enableCustomVideoCapture:true];
+    [self.trtcCloud enableCustomVideoCapture:TRTCVideoStreamTypeBig enable:true];
     [self.trtcCloud enableCustomAudioCapture:true];
     [self.mediaReader start];
     [self.audioPlayer start];
