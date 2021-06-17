@@ -202,9 +202,8 @@ void TRTCMainViewController::enterRoom()
     TRTCCloudCore::GetInstance()->getTRTCCloud()->setDefaultStreamRecvMode(\
         CDataCenter::GetInstance()->m_bAutoRecvAudio, CDataCenter::GetInstance()->m_bAutoRecvVideo);
 
-    if (CDataCenter::GetInstance()->audio_quality_ != TRTCAudioQualityUnSelect ) {
-        TRTCCloudCore::GetInstance()->getTRTCCloud()->setAudioQuality((TRTCAudioQuality)CDataCenter::GetInstance()->audio_quality_);
-    }
+    TRTCCloudCore::GetInstance()->getTRTCCloud()->setAudioQuality((TRTCAudioQuality)CDataCenter::GetInstance()->audio_quality_);
+
 	InternalEnterRoom();
 
     //进入房间
@@ -222,6 +221,8 @@ void TRTCMainViewController::enterRoom()
     if (CDataCenter::GetInstance()->m_roleType == TRTCRoleAnchor)
     {
         TRTCCloudCore::GetInstance()->getTRTCCloud()->setVideoEncoderParam(CDataCenter::GetInstance()->m_videoEncParams);
+        TRTCCloudCore::GetInstance()->getTRTCCloud()->setLocalRenderParams(CDataCenter::GetInstance()->getLocalRenderParams());
+        TRTCCloudCore::GetInstance()->getTRTCCloud()->setVideoEncoderMirror(CDataCenter::GetInstance()->m_bLocalVideoMirror);
         
     }
 
@@ -773,9 +774,6 @@ void TRTCMainViewController::onEnterRoom(int result)
 
         if(CDataCenter::GetInstance()->m_bCDNMixTranscoding)
             TRTCCloudCore::GetInstance()->startCloudMixStream();
-
-        TRTCCloudCore::GetInstance()->getTRTCCloud()->setLocalRenderParams(CDataCenter::GetInstance()->getLocalRenderParams());
-        TRTCCloudCore::GetInstance()->getTRTCCloud()->setVideoEncoderMirror(CDataCenter::GetInstance()->m_bLocalVideoMirror);
     }
     else
     {

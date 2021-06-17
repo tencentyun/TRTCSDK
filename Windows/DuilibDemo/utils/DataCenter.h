@@ -8,7 +8,6 @@
 
 class CConfigMgr;
 
-#define TRTCAudioQualityUnSelect 0
 enum LivePlayerSourceType
 {
     TRTC_RTC,
@@ -195,7 +194,7 @@ public: //trtc
     bool m_bStartSystemVoice = false;
     std::wstring third_app_path_;
 
-    int audio_quality_ = TRTCAudioQualityUnSelect;
+    int audio_quality_ = TRTCAudioQualitySpeech;
     LivePlayerSourceType m_emLivePlayerSourceType = TRTC_RTC;
 
     bool vod_push_video_ = true;
