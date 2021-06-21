@@ -1191,6 +1191,7 @@
 					"@executable_path/SDK",
 				);
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/../SDK";
+				MARKETING_VERSION = 8.8;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tencent.liteavdemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = abyWildcardDev;
@@ -1222,6 +1223,7 @@
 					"@executable_path/SDK",
 				);
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/../SDK";
+				MARKETING_VERSION = 8.8;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tencent.fx.rtmpdemo2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = com.tencent.fx.rtmpdemo2_Production_SignProvision;
