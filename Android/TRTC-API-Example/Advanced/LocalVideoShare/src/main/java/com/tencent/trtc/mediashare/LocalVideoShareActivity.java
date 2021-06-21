@@ -40,10 +40,10 @@ import java.util.Random;
  *
  * 本文件展示了如何使用TRTC SDK实现视频文件直播分享功能，主要流程如下：
  *  - 读取视频文件、对视频文件进行解封装 --> 解码；
- *  - 将解码后的音视频帧通过TRTC的自定义采集接口{@link TRTCCloud#sendCustomAudioData(TRTCCloudDef.TRTCAudioFrame)} 和{@link TRTCCloud#sendCustomVideoData(TRTCCloudDef.TRTCVideoFrame)}发送给TRTC SDK；
- *  - 通过{@link TRTCCloud#setLocalVideoRenderListener(int, int, TRTCCloudListener.TRTCVideoRenderListener)}获取处理后的本地视频帧并渲染到屏幕上；
- *  - 通过{@link TRTCCloud#setAudioFrameListener(TRTCCloudListener.TRTCAudioFrameListener)} )}获取处理后的音频帧并进行播放；
- *  - 如果有远端主播，可以通过{@link TRTCCloud#setRemoteVideoRenderListener(String, int, int, TRTCCloudListener.TRTCVideoRenderListener)} 获取远端主播的视频帧并渲染到屏幕上，远端主播的音频会在上一步自动混音后播放；
+ *  - 将解码后的音视频帧通过TRTC的自定义采集接口{@link com.tencent.trtc.TRTCCloud#sendCustomAudioData(com.tencent.trtc.TRTCCloudDef.TRTCAudioFrame)} 和{@link com.tencent.trtc.TRTCCloud#sendCustomVideoData(int, com.tencent.trtc.TRTCCloudDef.TRTCVideoFrame)}发送给TRTC SDK；
+ *  - 通过{@link com.tencent.trtc.TRTCCloud#setLocalVideoRenderListener(int, int, com.tencent.trtc.TRTCCloudListener.TRTCVideoRenderListener)}获取处理后的本地视频帧并渲染到屏幕上；
+ *  - 通过{@link com.tencent.trtc.TRTCCloud#setAudioFrameListener(com.tencent.trtc.TRTCCloudListener.TRTCAudioFrameListener)} )}获取处理后的音频帧并进行播放；
+ *  - 如果有远端主播，可以通过{@link com.tencent.trtc.TRTCCloud#setRemoteVideoRenderListener(String, int, int, com.tencent.trtc.TRTCCloudListener.TRTCVideoRenderListener)} 获取远端主播的视频帧并渲染到屏幕上，远端主播的音频会在上一步自动混音后播放；
  *
  *  - 更多细节，详见API说明文档{https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCCloud__android.html}
  */
@@ -53,10 +53,10 @@ import java.util.Random;
  *
  * This document shows how to share a video file during live streaming. The steps are detailed below:
  *  - Read and de-encapsulate the video file --> decode
- *  - Call the SDK’s custom audio and video capturing APIs {@link TRTCCloud#sendCustomAudioData(TRTCCloudDef.TRTCAudioFrame)} and {@link TRTCCloud#sendCustomVideoData(TRTCCloudDef.TRTCVideoFrame)} to send the decoded audio and video frames to the SDK.
- *  - Call {@link TRTCCloud#setLocalVideoRenderListener(int, int, TRTCCloudListener.TRTCVideoRenderListener)} to get the processed local video frames and render them to the screen.
- *  - Call {@link TRTCCloud#setAudioFrameListener(TRTCCloudListener.TRTCAudioFrameListener)} )} to get and play the processed audio frames.
- *  - If there is a remote anchor, call {@link TRTCCloud#setRemoteVideoRenderListener(String, int, int, TRTCCloudListener.TRTCVideoRenderListener)} to get the anchor’s video frames and render them to the screen. The audio of the anchor is automatically mixed and played in the previous step.
+ *  - Call the SDK’s custom audio and video capturing APIs {@link com.tencent.trtc.TRTCCloud#sendCustomAudioData(com.tencent.trtc.TRTCCloudDef.TRTCAudioFrame)} and {@link com.tencent.trtc.TRTCCloud#sendCustomVideoData(int, com.tencent.trtc.TRTCCloudDef.TRTCVideoFrame)} to send the decoded audio and video frames to the SDK.
+ *  - Call {@link com.tencent.trtc.TRTCCloud#setLocalVideoRenderListener(int, int, com.tencent.trtc.TRTCCloudListener.TRTCVideoRenderListener)} to get the processed local video frames and render them to the screen.
+ *  - Call {@link com.tencent.trtc.TRTCCloud#setAudioFrameListener(com.tencent.trtc.TRTCCloudListener.TRTCAudioFrameListener)} )} to get and play the processed audio frames.
+ *  - If there is a remote anchor, call {@link com.tencent.trtc.TRTCCloud#setRemoteVideoRenderListener(String, int, int, com.tencent.trtc.TRTCCloudListener.TRTCVideoRenderListener)} to get the anchor’s video frames and render them to the screen. The audio of the anchor is automatically mixed and played in the previous step.
  *
  *  - For more information, please see the API document {https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCCloud__android.html}.
  */
@@ -111,7 +111,7 @@ public class LocalVideoShareActivity extends TRTCBaseActivity implements View.On
             videoFrame.pixelFormat = TRTCCloudDef.TRTC_VIDEO_PIXEL_FORMAT_Texture_2D;
             videoFrame.bufferType = TRTCCloudDef.TRTC_VIDEO_BUFFER_TYPE_TEXTURE;
 
-            mTRTCCloud.sendCustomVideoData(videoFrame);
+            mTRTCCloud.sendCustomVideoData(TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG, videoFrame);
         }
     };
 
@@ -171,7 +171,7 @@ public class LocalVideoShareActivity extends TRTCBaseActivity implements View.On
         mTRTCParams.role = TRTCCloudDef.TRTCRoleAnchor;
         mTRTCCloud.enterRoom(mTRTCParams, TRTCCloudDef.TRTC_APP_SCENE_LIVE);
 
-        mTRTCCloud.enableCustomVideoCapture(true);
+        mTRTCCloud.enableCustomVideoCapture(TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG, true);
         mTRTCCloud.enableCustomAudioCapture(true);
         mMediaFileSyncReader.start(mAudioFrameReadListener, mVideoFrameReadListener);
 

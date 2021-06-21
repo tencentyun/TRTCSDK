@@ -34,10 +34,10 @@ import java.util.Random;
  * TRTC 自定义相机采集&渲染的示例
  *
  * 本文件展示了如何使用TRTC SDK 实现相机的自定义采集&渲染功能，主要流程如下：
- * - 调用{@link CustomCameraCapture#startInternal(CustomCameraCapture.VideoFrameReadListener)}，启动Camera采集，并传入一个VideoFrameReadListener；
- * - 将VideoFrameReadListener返回的视频帧通过TRTC的自定义视频采集接口{@link TRTCCloud#sendCustomVideoData(TRTCCloudDef.TRTCVideoFrame)}发送给TRTC SDK；
- * - 通过{@link TRTCCloud#setLocalVideoRenderListener(int, int, TRTCCloudListener.TRTCVideoRenderListener)}获取处理后的本地视频帧并渲染到屏幕上；
- * - 如果有远端主播，可以通过{@link TRTCCloud#setRemoteVideoRenderListener(String, int, int, TRTCCloudListener.TRTCVideoRenderListener)} 获取远端主播的视频帧并渲染到屏幕上；
+ * - 调用{@link com.tencent.trtc.customcamera.helper.CustomCameraCapture#startInternal(com.tencent.trtc.customcamera.helper.CustomCameraCapture.VideoFrameReadListener)}，启动Camera采集，并传入一个VideoFrameReadListener；
+ * - 将{@link com.tencent.trtc.customcamera.helper.CustomCameraCapture.VideoFrameReadListener}返回的视频帧通过TRTC的自定义视频采集接口 {@link com.tencent.trtc.TRTCCloud#sendCustomVideoData(int, com.tencent.trtc.TRTCCloudDef.TRTCVideoFrame)}; 发送给TRTC SDK；
+ * - 通过{@link com.tencent.trtc.TRTCCloud#setLocalVideoRenderListener(int, int, com.tencent.trtc.TRTCCloudListener.TRTCVideoRenderListener)}获取处理后的本地视频帧并渲染到屏幕上；
+ * - 如果有远端主播，可以通过{@link com.tencent.trtc.TRTCCloud#setRemoteVideoRenderListener(String, int, int, com.tencent.trtc.TRTCCloudListener.TRTCVideoRenderListener)} 获取远端主播的视频帧并渲染到屏幕上；
  *
  * - 更多细节，详见API说明文档{https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCCloud__android.html}
  */
@@ -46,10 +46,10 @@ import java.util.Random;
  * Custom Video Capturing & Rendering
  *
  * This document shows how to enable custom video capturing and rendering in the TRTC SDK.
- * - Call {@link CustomCameraCapture#startInternal(CustomCameraCapture.VideoFrameReadListener)} to start video capturing by the camera, with `VideoFrameReadListener` passed in.
- * - Call the custom video capturing API {@link TRTCCloud#sendCustomVideoData(TRTCCloudDef.TRTCVideoFrame)} to send the video frames returned by `VideoFrameReadListener` to the SDK.
- * - Get the processed local video data using {@link TRTCCloud#setLocalVideoRenderListener(int, int, TRTCCloudListener.TRTCVideoRenderListener)} and render it to the screen.
- * - If there is a remote anchor, call {@link TRTCCloud#setRemoteVideoRenderListener(String, int, int, TRTCCloudListener.TRTCVideoRenderListener)} to get the anchor’s video frames and render them to the screen.
+ * - Call {@link com.tencent.trtc.customcamera.helper.CustomCameraCapture#startInternal(com.tencent.trtc.customcamera.helper.CustomCameraCapture.VideoFrameReadListener)} to start video capturing by the camera, with `VideoFrameReadListener` passed in.
+ * - Call the custom video capturing API {@link com.tencent.trtc.TRTCCloud#sendCustomVideoData(int, com.tencent.trtc.TRTCCloudDef.TRTCVideoFrame)}; to send the video frames returned by `{@link com.tencent.trtc.customcamera.helper.CustomCameraCapture.VideoFrameReadListener}` to the SDK.
+ * - Get the processed local video data using {@link com.tencent.trtc.TRTCCloud#setLocalVideoRenderListener(int, int, com.tencent.trtc.TRTCCloudListener.TRTCVideoRenderListener)} and render it to the screen.
+ * - If there is a remote anchor, call {@link com.tencent.trtc.TRTCCloud#setRemoteVideoRenderListener(String, int, int, com.tencent.trtc.TRTCCloudListener.TRTCVideoRenderListener)} to get the anchor’s video frames and render them to the screen.
  *
  * - For more information, please see the API document {https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCCloud__android.html}.
  */
@@ -86,7 +86,7 @@ public class CustomCameraActivity extends TRTCBaseActivity implements View.OnCli
             videoFrame.pixelFormat = TRTCCloudDef.TRTC_VIDEO_PIXEL_FORMAT_Texture_2D;
             videoFrame.bufferType = TRTCCloudDef.TRTC_VIDEO_BUFFER_TYPE_TEXTURE;
 
-            mTRTCCloud.sendCustomVideoData(videoFrame);
+            mTRTCCloud.sendCustomVideoData(TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG ,videoFrame);
         }
     };
 
@@ -144,7 +144,7 @@ public class CustomCameraActivity extends TRTCBaseActivity implements View.OnCli
         mTRTCParams.role = TRTCCloudDef.TRTCRoleAnchor;
         mTRTCCloud.enterRoom(mTRTCParams, TRTCCloudDef.TRTC_APP_SCENE_LIVE);
 
-        mTRTCCloud.enableCustomVideoCapture(true);
+        mTRTCCloud.enableCustomVideoCapture(TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG,true);
 
         mCustomCameraCapture.startInternal(mVideoFrameReadListener);
 
