@@ -63,3 +63,28 @@
 - [场景方案：互动直播](https://cloud.tencent.com/document/product/647/43181)
 - [场景方案：视频通话](https://cloud.tencent.com/document/product/647/42044)
 - [场景方案：语音通话](https://cloud.tencent.com/document/product/647/42046)
+
+## 相关文档链接
+
+
+- [SDK 的版本更新历史](https://github.com/tencentyun/TRTCSDK/releases)
+- [SDK 的 API 文档](http://doc.qcloudtrtc.com/md_introduction_trtc_Android_%E6%A6%82%E8%A7%88.html)
+- [SDK 的官方体验 App](https://cloud.tencent.com/document/product/647/17021)
+- [代码示例](https://cloud.tencent.com/document/product/647/57486)
+- [场景方案：互动直播](https://cloud.tencent.com/document/product/647/43181)
+- [场景方案：视频通话](https://cloud.tencent.com/document/product/647/42045)
+- [场景方案：语音通话](https://cloud.tencent.com/document/product/647/42047)
+- [场景方案：语音聊天室](https://cloud.tencent.com/document/product/647/45737)
+- [场景方案：语音沙龙](https://cloud.tencent.com/document/product/647/53537)
+- [场景方案：视频会议](https://cloud.tencent.com/document/product/647/45667)
+
+## 场景化解决方案
+8.8版本以后，TRTCSceneDemo所有源码，已全部拆分，移到对应的仓库，更新为TUI组件化方案。
+
+TUI组件化解决方案是腾讯云TRTC针对直播、语聊、视频通话等推出的低代码解决方案，依托腾讯在音视频&通信领域的技术积累，帮助开发者快速实现相关业务场景，聚焦核心业务，助力业务起飞！
+
+- [视频互动直播-TUILiveRoom](https://github.com/tencentyun/TUILiveRoom/)
+- [实时语音/视频通话-TUICalling](https://github.com/tencentyun/TUICalling/)
+- [多人视频会议-TUIMeeting](https://github.com/tencentyun/TUIMeeting/)
+- [语音聊天室-TUIVoiceRoom](https://github.com/tencentyun/TUIVoiceRoom/)
+- [语音沙龙-TUIChatSalon](https://github.com/tencentyun/TUIChatSalon)
