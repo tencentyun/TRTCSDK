@@ -1,8 +1,7 @@
 ## 目录结构说明
 
-本目录包含 Android 版 TRTC 的所有 Demo 源代码，被分成 TRTC-API-Example 和 TRTCScenesDemo 两个子目录：
+本目录包含 Android 版 TRTC-API-Example源码：
 - TRTC-API-Example： 最简单的示例代码，包括视频通话、语音通话的基础功能以及一些高级功能。
-- TRTCScenesDemo： 较复杂的场景案例，结合了 TRTC 和 IM 两个 SDK ，所实现的交互也更接近真实产品。
 
 ```
 ├─ TRTC-API-Example // TRTC API Example，包括视频通话、语音通话的基础功能以及一些高级功能
