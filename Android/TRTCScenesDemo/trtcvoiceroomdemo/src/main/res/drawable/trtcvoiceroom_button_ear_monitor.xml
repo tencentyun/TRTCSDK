@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@drawable/trtcvoiceroom_ic_open_ear_monitor" android:state_activated="true" android:state_selected="true" />
-    <item android:drawable="@drawable/trtcvoiceroom_ic_close_ear_monitor" android:state_activated="true" android:state_selected="false" />
-    <item android:drawable="@drawable/trtcvoiceroom_ic_close_ear_monitor" android:state_activated="false" />
-</selector>
