@@ -1,11 +1,10 @@
 ## 目录结构说明
 
-本目录包含 iOS 版 TRTC 的所有 Demo 源代码，被分成 TRTC-API-Example-OC 和 TRTCScenesDemo 两个子目录：
+本目录包含 iOS 版 TRTC-API-Example 源代码：
 - TRTC-API-Example-OC： 最简单的示例代码，使用Objective-C语言。包括视频通话、语音通话的基础功能以及一些高级功能。
-- TRTCScenesDemo： 较复杂的场景案例，结合了 TRTC 和 IM 两个 SDK ，所实现的交互也更接近真实产品。
-
+- 
 ```
-├─ TRTC-API-Example // TRTC API Example，包括视频通话、语音通话的基础功能以及一些高级功能
+├─ TRTC-API-Example-OC // TRTC API Example，包括视频通话、语音通话的基础功能以及一些高级功能
 │  ├─ Basic                 // 演示 TRTC 基本功能示例代码
 │  │  ├─ AudioCall                 // 演示 TRTC 音频通话的示例代码
 │  │  ├─ VideoCall                 // 演示 TRTC 视频通话的示例代码
