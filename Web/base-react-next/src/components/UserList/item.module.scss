@@ -1,0 +1,68 @@
+.item {
+  list-style: none;
+  margin: 0;
+  width: 100%;
+  display: flex;
+  padding: 0 0 5px 0;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  svg {
+    // margin: 0 2px;
+    color: #aeaeae;
+  }
+  &-icon {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  &-label-container {
+    display: flex;
+  }
+  &-label {
+    flex: 1;
+    max-width: 160px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  &-label-mobile {
+    max-width: 230px;
+  }
+  &-label-self {
+    max-width: 124px;
+  }
+  &-label-mobile-self {
+    max-width: 194px;
+  }
+  &-name {
+    color: #fff;
+    margin: 0 auto;
+  }
+  &:last-child{
+    padding: 0;
+  }
+}
+
+.audio-volume-container {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  .audio-icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  .volume-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    transition: height .1s ease;
+    .green-audio-icon {
+      position: absolute;
+      bottom: 0;
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "name": "trtc-js-samples-site",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "export": "next build && next export",
+    "start": "next start",
+    "lint": "eslint ./src",
+    "fix": "eslint ./src --fix"
+  },
+  "dependencies": {
+    "@material-ui/core": "^4.11.4",
+    "@material-ui/icons": "^4.11.2",
+    "@material-ui/lab": "^4.0.0-alpha.58",
+    "@zeit/next-css": "^1.0.1",
+    "axios": "^0.21.1",
+    "babel-plugin-styled-components": "^1.12.0",
+    "clsx": "^1.1.1",
+    "i18next": "^20.3.0",
+    "i18next-browser-languagedetector": "^6.1.1",
+    "is-mobile": "^3.0.0",
+    "js-cookie": "^2.2.1",
+    "next": "10.2.0",
+    "prop-types": "^15.7.2",
+    "qrcode.react": "^1.0.1",
+    "qs": "^6.10.1",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "react-i18next": "^11.8.15",
+    "sass": "^1.32.12",
+    "trtc-js-sdk": "^4.10.0"
+  },
+  "devDependencies": {
+    "eslint-config-tencent": "^1.0.0"
+  }
+}
