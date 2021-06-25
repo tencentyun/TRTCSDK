@@ -1,0 +1,6 @@
+.snack-bar {
+  &:not(:first-child) {
+    margin-top: 50px;
+    position: absolute;
+  }
+}
