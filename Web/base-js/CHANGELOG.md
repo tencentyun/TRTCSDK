@@ -1,4 +1,3 @@
-
 版本号`major.minor.patch`具体规则如下：
   - major：主版本号，如有重大版本重构则该字段递增，通常各主版本间接口不兼容。
   - minor：次版本号，各次版本号间接口保持兼容，如有接口新增或优化则该字段递增。
@@ -7,6 +6,13 @@
 >!
 > - 建议您及时更新至最新版本，以便获得更好的产品稳定性及在线支持。
 > - 版本升级注意事项请参见：[升级指引](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/tutorial-00-info-update-guideline.html)。
+
+## Version 4.11.1 @2021.06.25
+
+**Improvement**
+
+- 支持美颜插件，参考：[开启美颜](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/tutorial-28-advanced-beauty.html)。
+- 优化数据统计准确性。
 
 ## Version 4.11.0 @2021.06.18
 
@@ -69,14 +75,10 @@
 
 ## Version 4.9.0 @ 2021.03.19
 
-**Breaking Change**
-
-[TRTC.checkSystemRequirements](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/TRTC.html#.checkSystemRequirements) 返回详细检测结果，具体请参见 [接口文档](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/TRTC.html#.checkSystemRequirements) 及 [升级指引](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/tutorial-00-info-update-guideline.html) 。
-
 **Feature**
 
-- 云端混流支持预排版模式，请参见 [Client.startMixTranscode](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/Client.html#startMixTranscode) 接口。
-- 支持音量回调，请参见 [Client.enableAudioVolumeEvaluation](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/Client.html#enableAudioVolumeEvaluation) 接口。
+- 云端混流支持预排版模式，参考：[Client.startMixTranscode](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/Client.html#startMixTranscode) 接口。
+- 支持音量回调，参考：[Client.enableAudioVolumeEvaluation](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/Client.html#enableAudioVolumeEvaluation) 接口。
 
 **Improvement**
 
@@ -86,6 +88,10 @@ Websocket 的默认端口改为 443。
 
 - 修复 live 模式下，观众收不到主播进退房通知的问题。
 - 修复使用字符串房间号时，偶现重连失败的问题。
+
+**Breaking Change**
+
+- [TRTC.checkSystemRequirements](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/TRTC.html#.checkSystemRequirements) 返回详细检测结果，具体请参见 [接口文档](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/TRTC.html#.checkSystemRequirements) 及 [升级指引](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/tutorial-00-info-update-guideline.html) 。
 
 ## Version 4.8.6 @ 2021.03.01
 
@@ -136,10 +142,6 @@ Websocket 的默认端口改为 443。
 
 ## Version 4.8.2 @ 2020.12.31
 
-**Breaking Change**
-
-删除已废弃接口：setDefaultMuteRemoteStreams，请使用 [client.unsubscribe](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/Client.html#unsubscribe) 接口替代。
-
 **Improvement**
 
 - 优化进房接口 roomId 参数校验逻辑，详情请参见 [接口文档](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/Client.html#join) 及 [升级指引](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/tutorial-00-info-update-guideline.html)。
@@ -149,6 +151,9 @@ Websocket 的默认端口改为 443。
 
 修复退房时，偶现报错 `Cannot read property 'isConnected' of null` 的问题。
 
+**Breaking Change**
+
+删除已废弃接口：setDefaultMuteRemoteStreams，请使用 [TRTC.createClient 的 autoSubscribe 参数](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/TRTC.html#.createClient) 替代。
 
 ## Version 4.8.1 @ 2020.12.25
 
@@ -162,7 +167,8 @@ Websocket 的默认端口改为 443。
 **Feature**
 
 - 支持云端混流转码。
-- 全平台支持字符串房间号，参考：[TRTC.createClient 的 userDefineRecordId 参数](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/TRTC.html#.createClient)。
+- 全平台支持字符串房间号，参考：[TRTC.createClient 的 useStringRoomId 参数](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/TRTC.html#.createClient)。
+- 支持关闭自动订阅，参考：[TRTC.createClient 的 autoSubscribe 参数](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/TRTC.html#.createClient)。
 
 **Improvement**
 
@@ -193,10 +199,6 @@ Websocket 的默认端口改为 443。
 
 支持桌面端 Firefox M56+ 及桌面端 Edge M80+。
 
-**Breaking Change**
-
-[TRTC.checkSystemRequirements](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/TRTC.html#.checkSystemRequirements) 返回详细检测结果，具体请参见 [接口文档](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/TRTC.html#.checkSystemRequirements) 及 [升级指引](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/tutorial-00-info-update-guideline.html)。
-
 **Improvement**
 
 - 优化上行码率控制逻辑。
@@ -204,6 +206,9 @@ Websocket 的默认端口改为 443。
 - 优化 Websocket 重连逻辑。
 - 优化设备变更时的自动恢复推流逻辑，支持混音状态下插拔麦克风自动恢复推流。
 
+**Breaking Change**
+
+[TRTC.checkSystemRequirements](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/TRTC.html#.checkSystemRequirements) 返回详细检测结果，具体请参见 [接口文档](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/TRTC.html#.checkSystemRequirements) 及 [升级指引](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/tutorial-00-info-update-guideline.html)。
 
 ## Version 4.6.7 @ 2020.11.05
 
