@@ -11,7 +11,7 @@
     "serve": "vue-cli-service serve",
     "lint": "vue-cli-service lint",
     "electron": "node_modules/.bin/electron . --trtc_env=development",
-    "compile:mac": "node_modules/.bin/electron-builder --mac --arm64",
+    "compile:mac": "node_modules/.bin/electron-builder --mac",
     "compile:win64": "node_modules/.bin/electron-builder --win --x64",
     "compile:win32": "node_modules/.bin/electron-builder --win --ia32",
     "pack:mac": "npm run build:mac && npm run compile:mac",
@@ -58,7 +58,7 @@
     ]
   },
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "bootstrap-icons": "^1.0.0-alpha3",
     "core-js": "^3.6.4",
     "trtc-electron-sdk": "^8.4.1",
@@ -74,7 +74,7 @@
     "bootstrap-vue": "^2.10.0",
     "concurrently": "^5.2.0",
     "copy-webpack-plugin": "^5.1.1",
-    "electron": "8.1.1",
+    "electron": "^9.4.4",
     "electron-builder": "^22.4.1",
     "electron-node-loader": "^1.2.0",
     "eslint": "^6.7.2",
