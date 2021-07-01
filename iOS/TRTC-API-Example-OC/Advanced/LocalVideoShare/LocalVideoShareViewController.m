@@ -322,7 +322,6 @@ static const NSInteger maxRemoteUserNum = 6;
         rotation = TRTCVideoRotation_270;
     }
     videoFrame.rotation = rotation;
-    videoFrame.timestamp = timeStamp;
 
     [self.trtcCloud sendCustomVideoData:videoFrame];
 }
@@ -332,7 +331,6 @@ static const NSInteger maxRemoteUserNum = 6;
     audioFrame.channels = _mediaReader.audioChannels;
     audioFrame.sampleRate = _mediaReader.audioSampleRate;
     audioFrame.data = pcmData;
-    audioFrame.timestamp = timeStamp;
     
     [self.trtcCloud sendCustomAudioData:audioFrame];
 }

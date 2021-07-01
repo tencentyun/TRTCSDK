@@ -572,9 +572,9 @@
 		47E072A12636A6C80027D05E /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				47E072A82636A6C80027D05E /* CustomCameraHelper.h */,
 				47E072A22636A6C80027D05E /* CustomCameraHelper.m */,
 				47E072A32636A6C80027D05E /* Render */,
-				47E072A82636A6C80027D05E /* CustomCameraHelper.h */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -583,8 +583,8 @@
 			isa = PBXGroup;
 			children = (
 				47E072A42636A6C80027D05E /* CustomCameraFrameRender.h */,
-				47E072A52636A6C80027D05E /* AVCamPreviewView.h */,
 				47E072A62636A6C80027D05E /* CustomCameraFrameRender.m */,
+				47E072A52636A6C80027D05E /* AVCamPreviewView.h */,
 				47E072A72636A6C80027D05E /* AVCamPreviewView.m */,
 			);
 			path = Render;
@@ -1191,7 +1191,7 @@
 					"@executable_path/SDK",
 				);
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/../SDK";
-				MARKETING_VERSION = 8.8;
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tencent.liteavdemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = abyWildcardDev;
@@ -1223,7 +1223,7 @@
 					"@executable_path/SDK",
 				);
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/../SDK";
-				MARKETING_VERSION = 8.8;
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tencent.fx.rtmpdemo2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = com.tencent.fx.rtmpdemo2_Production_SignProvision;
