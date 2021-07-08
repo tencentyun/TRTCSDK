@@ -1,6 +1,6 @@
 import EventEmitter from './utils/event.js'
 import * as ENV from 'utils/environment.js'
-import { EVENT, TRTC_EVENT, ACTION_TYPE, BUSINESS_ID, CALL_STATUS } from './common/constants.js'
+import { EVENT, TRTC_EVENT, ACTION_TYPE, BUSINESS_ID, CALL_STATUS, CMD_TYPE_LIST } from './common/constants.js'
 import UserController from './controller/user-controller'
 import formateTime from './utils/formate-time'
 import TSignaling from './utils/tsignaling-wx'
@@ -97,16 +97,20 @@ Component({
         console.log(TAG_NAME, 'onNewInvitationReceived', `是否在通话：${this.data.callStatus === CALL_STATUS.CALLING || this.data.callStatus === CALL_STATUS.CONNECTED}, inviteID:${event.data.inviteID} inviter:${event.data.inviter} inviteeList:${event.data.inviteeList} data:${event.data.data}`)
         const { inviteID, inviter, inviteeList, groupID = '' } = event.data
         const data = JSON.parse(event.data.data)
+        
         // 当前在通话中或在呼叫/被呼叫中，接收的新的邀请时，忙线拒绝
         if (this.data.callStatus === CALL_STATUS.CALLING || this.data.callStatus === CALL_STATUS.CONNECTED) {
+
           tsignaling.reject({
             inviteID: inviteID,
-            data: JSON.stringify({
+            data: JSON.stringify(
+              this.handleNewMessage({
               version: 0,
               call_type: data.call_type,
-              line_busy: '',
-            }),
+              line_busy: 'line_busy',
+            },{ message: 'lineBusy' })),
           })
+          this._emitter.emit(EVENT.CALL_END)
           return
         }
         // 此处判断inviteeList.length 大于2，用于在非群组下多人通话判断
@@ -188,7 +192,10 @@ Component({
           return
         }
         const data = JSON.parse(event.data.data)
-        if (data.line_busy === '' || data.line_busy === 'line_busy') {
+        if (data.line_busy === '' || 
+            data.line_busy === 'line_busy'|| 
+            (data.data && data.data.message && 
+            data.data.message === 'lineBusy')) {
           this._emitter.emit(EVENT.LINE_BUSY, {
             inviteID: event.data.inviteID,
             invitee: event.data.invitee,
@@ -451,7 +458,7 @@ Component({
      */
     login() {
       return new Promise((resolve, reject) => {
-        tsignaling.setLogLevel(4)
+        tsignaling.setLogLevel(0)
         tsignaling.login({
           userID: this.data.config.userID,
           userSig: this.data.config.userSig,
@@ -502,11 +509,12 @@ Component({
       this._enterTRTCRoom()
       tsignaling.invite({
         userID: userID,
-        data: JSON.stringify({
-          version: 0,
-          call_type: type,
-          room_id: roomID,
-        }),
+        data: JSON.stringify(
+          this.handleNewMessage({
+            version: 0,
+            call_type: type,
+            room_id: roomID,
+          })),
         timeout: 30,
       }).then( (res) => {
         console.log(`${TAG_NAME} call(userID: ${userID}, type: ${type}) success`)
@@ -543,11 +551,12 @@ Component({
         groupID: params.groupID,
         inviteeList: params.userIDList,
         timeout: 30,
-        data: JSON.stringify({
+        data: JSON.stringify(
+          this.handleNewMessage({
           version: 0,
           call_type: params.type,
           room_id: roomID,
-        }),
+        })),
       }).then((res) => {
         console.log(TAG_NAME, 'inviteInGroup OK', res)
         // 发起人进入calling状态
@@ -569,10 +578,11 @@ Component({
       console.log(TAG_NAME, 'accept() inviteID: ', this.data.invitation.inviteID)
       const acceptRes = await tsignaling.accept({
         inviteID: this.data.invitation.inviteID,
-        data: JSON.stringify({
+        data: JSON.stringify(
+          this.handleNewMessage({
           version: 0,
           call_type: this.data.config.type,
-        }),
+        })),
       })
       if (acceptRes.code === 0) {
         console.log(TAG_NAME, '接受成功')
@@ -595,10 +605,11 @@ Component({
       if (this.data.invitation.inviteID) {
         const rejectRes = await tsignaling.reject({
           inviteID: this.data.invitation.inviteID,
-          data: JSON.stringify({
+          data: JSON.stringify(
+            this.handleNewMessage({
             version: 0,
             call_type: this.data.config.type,
-          }),
+          })),
         })
         if (rejectRes.code === 0) {
           console.log(TAG_NAME, 'reject OK', rejectRes)
@@ -622,10 +633,11 @@ Component({
         console.log(TAG_NAME, 'cancel() inviteID: ', this.data.invitationAccept.inviteID)
         tsignaling.cancel({
           inviteID: this.data.invitationAccept.inviteID,
-          data: JSON.stringify({
+          data: JSON.stringify(
+            this.handleNewMessage({
             version: 0,
             call_type: this.data.config.type,
-          }),
+          })),
         }).then((res) => {
           cancelRes = res
         })
@@ -639,12 +651,12 @@ Component({
       }
       // console.warn('hangup', this._getGroupCallFlag(), this.data.streamList.length > 1, this.data._unHandledInviteeList)
       // 群组或多人通话时，如果远端流大于1，则不是最后一个挂断的用户，某用户挂断需要下发call_end用于处理上层UI,因为小程序此处的挂断操作在模版中进行，与web不同
-      if (this._getGroupCallFlag() && this.data.streamList.length > 1 && this.data._unHandledInviteeList.length === 0) {
-        this._emitter.emit(EVENT.CALL_END)
-      }
-      if (this._getGroupCallFlag() && this.data._unHandledInviteeList.length > 0) {
-        this._emitter.emit(EVENT.CALL_END)
-      }
+      // if (this._getGroupCallFlag() && this.data.streamList.length > 1 && this.data._unHandledInviteeList.length === 0) {
+      //   this._emitter.emit(EVENT.CALL_END)
+      // }
+      // if (this._getGroupCallFlag() && this.data._unHandledInviteeList.length > 0) {
+      //   this._emitter.emit(EVENT.CALL_END)
+      // }
       this._reset().then(() => {
         this._emitter.emit(EVENT.HANG_UP)
       })
@@ -658,22 +670,24 @@ Component({
         res = await tsignaling.inviteInGroup({
           groupID: this.data._groupID,
           inviteeList: userIDList,
-          data: JSON.stringify({
+          data: JSON.stringify(
+            this.handleNewMessage({
             version: 0,
             call_type: callType,
             call_end: 0, // 群call_end 目前设置为0
-          }),
+          },{ cmd: 'hangup' })),
           timeout: 0,
         })
       } else {
         // 1v1 通话
         res = await tsignaling.invite({
           userID: userIDList[0],
-          data: JSON.stringify({
+          data: JSON.stringify(
+            this.handleNewMessage({
             version: 0,
             call_type: callType,
             call_end: callEnd,
-          }),
+          },{ cmd: 'hangup' })),
         })
       }
       this._setCallStatus(CALL_STATUS.IDLE)
@@ -1077,6 +1091,29 @@ Component({
           return ''
       }
     },
+      /**
+   * 信令数据处理
+   * @param data 第一层数据
+   * @param params 第二层数据
+   * @returns 处理后的数据
+   * {@link https://iwiki.woa.com/pages/viewpage.action?pageId=820079397}
+   */
+   handleNewMessage(data, params) {
+    let info =  {
+      extraInfo: '',
+      ...data,
+      version: 4,
+      businessID: 'av_call',
+      platform: 'MiniApp',
+      data: {
+        cmd: CMD_TYPE_LIST[data.call_type],
+        room_id: data.room_id,
+        message: '',
+        ...params
+      }
+    }
+    return info;
+  }
   },
 
   /**
