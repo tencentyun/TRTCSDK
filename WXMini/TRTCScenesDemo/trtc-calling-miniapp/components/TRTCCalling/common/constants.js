@@ -65,3 +65,5 @@ export const ACTION_TYPE = {
 export const BUSINESS_ID = {
   SIGNAL: 1, // 信令
 }
+
+export const CMD_TYPE_LIST = ['', 'audioCall', 'videoCall']

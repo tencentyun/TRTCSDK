@@ -78,10 +78,10 @@ Page({
       this.TRTCCalling.hangup()
     })
     this.TRTCCalling.on(TRTCCallingEvent.USER_LEAVE, () => {
-      this.TRTCCalling.hangup()
-      wx.showToast({
-        title: '对方已挂断',
-      })
+      // this.TRTCCalling.hangup()
+      // wx.showToast({
+      //   title: '对方已挂断',
+      // })
     })
     this.TRTCCalling.on(TRTCCallingEvent.NO_RESP, () => {
       this.setData({
@@ -102,7 +102,7 @@ Page({
       wx.showToast({
         title: '无应答超时',
       })
-      this.TRTCCalling.hangup()
+      // this.TRTCCalling.hangup()
     })
     this.TRTCCalling.on(TRTCCallingEvent.LINE_BUSY, () => {
       this.setData({
@@ -126,6 +126,12 @@ Page({
       this.setData({
         inviteCallFlag: false,
       })
+    })
+    this.TRTCCalling.on(TRTCCallingEvent.CALL_END, () => {
+      wx.showToast({
+        title: '通话结束',
+      })
+      this.TRTCCalling.hangup()
     })
   },
 
