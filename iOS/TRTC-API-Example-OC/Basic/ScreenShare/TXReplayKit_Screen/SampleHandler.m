@@ -21,7 +21,7 @@
 }
 
 - (void)broadcastFinished {
-    [[TXReplayKitExt sharedInstance] finishBroadcast];
+    [[TXReplayKitExt sharedInstance] broadcastFinished];
     // User has requested to finish the broadcast.
 }
 

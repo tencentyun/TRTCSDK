@@ -211,6 +211,15 @@
 			path = TXReplayKit_Screen;
 			sourceTree = "<group>";
 		};
+		7B8256A224C6C9BE00C6282D /* LocalVideoTest */ = {
+			isa = PBXGroup;
+			children = (
+				7B8256CC24C6D7A500C6282D /* testCustomVideo */,
+				7B8256A324C6CA1F00C6282D /* QBImagePicker */,
+			);
+			path = LocalVideoTest;
+			sourceTree = "<group>";
+		};
 		7B8256A324C6CA1F00C6282D /* QBImagePicker */ = {
 			isa = PBXGroup;
 			children = (
@@ -764,7 +773,6 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 8.8;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tencent.liteavdemo;
 				PRODUCT_NAME = SimpleDemo;
 				PROVISIONING_PROFILE_SPECIFIER = liteav_demo;
@@ -793,7 +801,6 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 8.8;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tencent.liteavdemo;
 				PRODUCT_NAME = SimpleDemo;
 				PROVISIONING_PROFILE_SPECIFIER = liteav_demo;
