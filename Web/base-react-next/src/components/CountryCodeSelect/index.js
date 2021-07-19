@@ -1,3 +1,4 @@
+import a18n from 'a18n';
 /* eslint-disable no-use-before-define */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
@@ -58,7 +59,7 @@ export default function CountryCodeSelect(props) {
         renderInput={params => (<div ref= {params.InputProps.ref}>
               <Input
                 type= "text"
-                placeholder="区号"
+                placeholder={a18n('区号')}
                 startAdornment= {
                   <InputAdornment position="start">+</InputAdornment>
                 }

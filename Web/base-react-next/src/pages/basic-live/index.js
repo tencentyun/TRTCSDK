@@ -1,3 +1,4 @@
+import a18n from 'a18n';
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
 import React, { useState, useEffect } from 'react';
@@ -10,19 +11,20 @@ import RoomIDInput from '@components/RoomIDInput';
 import { getNavConfig } from '@api/nav';
 import { getUrlParam } from '@utils/utils';
 import { handlePageUrl, handlePageChange } from '@utils/common';
-import { Button, Accordion, AccordionSummary, AccordionDetails, Typography, Radio, RadioGroup, FormControlLabel, FormControl, Tooltip, makeStyles, Switch, Grid } from '@material-ui/core';
+import { Button, Accordion, AccordionSummary, AccordionDetails, Typography, Radio, RadioGroup, FormControlLabel, FormControl, makeStyles } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import HelpIcon from '@material-ui/icons/Help';
 import SideBar from '@components/SideBar';
 import styles from '@styles/common.module.scss';
 import { withStyles } from '@material-ui/core/styles';
+import toast from '@components/Toast';
+import Cookies from 'js-cookie';
 
 const mobile = require('is-mobile');
 const DynamicDeviceSelect = dynamic(import('@components/DeviceSelect'), { ssr: false });
 const DynamicRtc = dynamic(import('@components/RtcClient/basic-live-rtc-client'), { ssr: false });
 const DynamicShareRtc = dynamic(import('@components/ShareRTC'), { ssr: false });
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
   'role-switch-container': {
     display: 'flex',
     flexDirection: 'row',
@@ -31,12 +33,6 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     fontSize: '1rem',
     height: 42,
-  },
-  'switch-button-container': {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-evenly',
-    flex: 1,
   },
   'role-select': {
     display: 'flex',
@@ -50,45 +46,8 @@ const useStyles = makeStyles(theme => ({
   'role-audience': {
     marginRight: 0,
   },
-  'icon-tips': {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-  },
 }));
 
-const AntSwitch = withStyles(theme => ({
-  root: {
-    width: 36,
-    height: 20,
-    padding: 0,
-    display: 'flex',
-  },
-  switchBase: {
-    padding: 2,
-    color: theme.palette.grey[500],
-    '&$checked': {
-      transform: 'translateX(12px)',
-      color: theme.palette.common.white,
-      '& + $track': {
-        opacity: 1,
-        backgroundColor: '#006EFF',
-        borderColor: theme.palette.primary.main,
-      },
-    },
-  },
-  thumb: {
-    width: 16,
-    height: 16,
-    boxShadow: 'none',
-  },
-  track: {
-    border: `1px solid ${theme.palette.grey[500]}`,
-    borderRadius: 20 / 2,
-    opacity: 1,
-    backgroundColor: theme.palette.common.white,
-  },
-  checked: {},
-}))(Switch);
 const BlueRadio = withStyles({
   root: {
     '&$checked': {
@@ -119,14 +78,13 @@ export default function BasicRtc(props) {
   const [isPublished, setIsPublished] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [userRole, setUserRole] = useState(audience);
-  const [changeRoleDisable, setChangeRoleDisable] = useState(true);
-  const [isManualChangeRole, setIsManualChangeRole] = React.useState(false);
-
-  const handleChange = () => {
-    !changeRoleDisable && setIsManualChangeRole(!isManualChangeRole);
-  };
+  const [mountFlag, setMountFlag] = useState(false);
 
   useEffect(() => {
+    const language = Cookies.get('trtc-lang') || getUrlParam('lang') || navigator.language || 'zh-CN';
+    a18n.setLocale(language);
+    setMountFlag(true);
+
     handlePageUrl();
     setUseStringRoomID(getUrlParam('useStringRoomID') === 'true');
     setIsMobile(mobile());
@@ -134,42 +92,43 @@ export default function BasicRtc(props) {
 
   const handleJoin = async () => {
     await RTC.handleJoin();
-    setChangeRoleDisable(false);
   };
 
   const handlePublish = async () => {
-    await RTC.handlePublish(isManualChangeRole).then((res) => {
-      if (res) {
-        setUserRole(anchor);
-        setChangeRoleDisable(true);
-      }
-    });
+    if (userRole === audience) {
+      toast.error('please change to Anchor', 2000);
+      return;
+    }
+    await RTC.handlePublish();
   };
 
   const handleUnPublish = async () => {
     await RTC.handleUnPublish();
     await RTC.destroyLocalStream();
-
-    setChangeRoleDisable(false);
   };
 
   const handleLeave = async () => {
     shareRTC && shareRTC.handleLeave();
     await RTC.handleLeave();
-    setChangeRoleDisable(true);
-    setIsManualChangeRole(false);
   };
 
   const changeRole = async () => {
-    const targetRole = userRole === audience ? anchor : audience;
-    setIsPublished(true);
-    await RTC.changeRole(targetRole)
-      .then((res) => {
-        res && setUserRole(targetRole);
-      })
-      .finally(() => {
-        setIsPublished(false);
-      });
+    if (!RTC.isJoined) {
+      toast.error('please join room!', 2000);
+      return;
+    }
+    if (RTC.isPublished || RTC.isPublishing) {
+      toast.error('please change role in unpublish ', 2000);
+      return;
+    }
+    try {
+      const targetRole = userRole === audience ? anchor : audience;
+      await RTC.client.switchRole(targetRole);
+      RTC.role = targetRole;
+      setUserRole(targetRole);
+    } catch (error) {
+      console.log('basic live change role error = ', error);
+    }
   };
 
   const setState = (type, value) => {
@@ -485,7 +444,7 @@ export default function BasicRtc(props) {
                 content: styles['accordion-summary-content'],
               }}
             >
-              <Typography>操作</Typography>
+              {mountFlag && <Typography>{a18n('操作')}</Typography>}
             </AccordionSummary>
             <AccordionDetails className={styles['accordion-details-container']}>
               <UserIDInput disabled={isJoined} onChange={value => setUserID(value)}></UserIDInput>
@@ -502,23 +461,11 @@ export default function BasicRtc(props) {
               </div>
 
               <FormControl component="fieldset" className={clsx(styles['button-container'], isMobile && styles['mobile-device'])}>
-                <div className={classes['role-switch-container']}>
-                  <span>角色切换方式：</span>
-                  <div className={classes['switch-button-container']} onClick={handleChange}>
-                    <Grid item>自动</Grid>
-                    <Grid item className={classes['switch-button']}>
-                      <AntSwitch size="medium" checked={isManualChangeRole} disabled={changeRoleDisable} name="isManualChangeRole" />
-                    </Grid>
-                    <Grid item>手动</Grid>
-                  </div>
-                  <Tooltip title='Audience 身份进房不推流; Anchor 身份进房主动推流。推流时自动切换到 Anchor; 关闭推流自动切换到 Audience'><HelpIcon className={classes['icon-tips']}></HelpIcon></Tooltip>
-                </div>
-
                 <RadioGroup aria-label="gender" name="gender" value={userRole} className={classes['role-switch-container']} onChange={changeRole}>
-                  <Typography>角色：</Typography>
+                  {mountFlag && <Typography>{a18n('角色')}</Typography>}
                   <div className={classes['role-select']}>
-                    <FormControlLabel value="anchor" control={<BlueRadio />} disabled={!isManualChangeRole || isPublished} label="Anchor" className={classes['role-anchor']} />
-                    <FormControlLabel value="audience" control={<BlueRadio />} disabled={!isManualChangeRole || isPublished} label="Audience" className={classes['role-audience']} />
+                    <FormControlLabel value="anchor" control={<BlueRadio />} label="Anchor" className={classes['role-anchor']} />
+                    <FormControlLabel value="audience" control={<BlueRadio />} label="Audience" className={classes['role-audience']} />
                   </div>
                 </RadioGroup>
               </FormControl>
@@ -534,7 +481,7 @@ export default function BasicRtc(props) {
         {
           !isMobile
           && <div className={clsx(styles['footer-container'])}>
-              <Typography>移动端体验</Typography>
+              {mountFlag && <Typography>{a18n('移动端体验')}</Typography>}
               <QRCoder roomID={roomID} ></QRCoder>
             </div>
         }
@@ -572,7 +519,7 @@ export default function BasicRtc(props) {
   return (
     <div className={clsx(styles['page-container'], isMobile && styles['mobile-device'])}>
       <Head>
-        <title>基础音视频通话</title>
+        <title>{a18n`${a18n(props.activeTitle)}-TRTC 腾讯实时音视频`}</title>
         <meta name="description" content="basic rtc communication by Tencent webRTC" />
       </Head>
       {
@@ -613,6 +560,7 @@ export default function BasicRtc(props) {
         extendActiveId={activeId}
         activeTitle={props.activeTitle}
         data={navConfig}
+        mountFlag={mountFlag}
         onActiveExampleChange={handlePageChange}
         isMobile={isMobile}
       >

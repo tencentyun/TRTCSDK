@@ -1,3 +1,4 @@
+import a18n from 'a18n';
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
 import React, { useState, useEffect } from 'react';
@@ -14,6 +15,7 @@ import { Button, Accordion, AccordionSummary, AccordionDetails, Typography } fro
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import SideBar from '@components/SideBar';
 import styles from '@styles/common.module.scss';
+import Cookies from 'js-cookie';
 
 const mobile = require('is-mobile');
 const DynamicDeviceSelect = dynamic(import('@components/DeviceSelect'), { ssr: false });
@@ -37,8 +39,13 @@ export default function BasicRtc(props) {
   const [isJoined, setIsJoined] = useState(false);
   const [isPublished, setIsPublished] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [mountFlag, setMountFlag] = useState(false);
 
   useEffect(() => {
+    const language = Cookies.get('trtc-lang') || getUrlParam('lang') || navigator.language || 'zh-CN';
+    a18n.setLocale(language);
+    setMountFlag(true);
+
     handlePageUrl();
     setUseStringRoomID(getUrlParam('useStringRoomID') === 'true');
     setIsMobile(mobile());
@@ -384,7 +391,7 @@ export default function BasicRtc(props) {
               content: styles['accordion-summary-content'],
             }}
           >
-            <Typography>操作</Typography>
+            {mountFlag && <Typography>{a18n('操作')}</Typography>}
           </AccordionSummary>
           <AccordionDetails className={styles['accordion-details-container']}>
             <UserIDInput disabled={isJoined} onChange={value => setUserID(value)}></UserIDInput>
@@ -413,7 +420,7 @@ export default function BasicRtc(props) {
         {
           !isMobile
           && <div className={clsx(styles['footer-container'])}>
-              <Typography>移动端体验</Typography>
+              {mountFlag && <Typography>{a18n('移动端体验')}</Typography>}
               <QRCoder roomID={roomID} ></QRCoder>
             </div>
         }
@@ -451,7 +458,7 @@ export default function BasicRtc(props) {
   return (
     <div className={clsx(styles['page-container'], isMobile && styles['mobile-device'])}>
       <Head>
-        <title>基础音视频通话</title>
+        {mountFlag && <title>{a18n`${a18n(props.activeTitle)}-TRTC 腾讯实时音视频`}</title>}
         <meta name="description" content="basic rtc communication by Tencent webRTC" />
       </Head>
       {
@@ -491,6 +498,7 @@ export default function BasicRtc(props) {
         extendActiveId={activeId}
         activeTitle={props.activeTitle}
         data={navConfig}
+        mountFlag={mountFlag}
         onActiveExampleChange={handlePageChange}
         isMobile={isMobile}
       >

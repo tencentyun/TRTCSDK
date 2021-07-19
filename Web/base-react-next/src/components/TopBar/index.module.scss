@@ -12,20 +12,29 @@
     text-overflow: ellipsis;
     flex: 1;
   }
+}
+.menu-item-text {
+  margin-left: 6px;
+  margin-right: 6px;
 
-  .icon-container {
-    display: flex;
-    cursor: pointer;
-    .icon-item {
-      display: flex;
-      padding: 0 0 0 10px;
-      justify-content: center;
-      align-items: center;
-      .icon-text {
-        margin-left: 2px;
-      }
-    }
-  }
+  // .icon-container {
+  //   display: flex;
+  //   cursor: pointer;
+  //   .icon-item {
+  //     display: flex;
+  //     padding: 0 0 0 10px;
+  //     justify-content: center;
+  //     align-items: center;
+  //     margin-right: 4px;
+  //     .icon-img {
+  //       color: #1890fe;
+  //       font-size: 30px;
+  //     }
+  //     .icon-text {
+  //       margin-left: 2px;
+  //     }
+  //   }
+  // }
 }
 .top-bar-container-mobile {
   width: calc(100% - 40px);

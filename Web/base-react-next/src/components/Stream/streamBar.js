@@ -10,6 +10,7 @@ import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import DesktopAccessDisabledIcon from '@material-ui/icons/DesktopAccessDisabled';
 import DesktopMacIcon from '@material-ui/icons/DesktopMac';
 import FullscreenIcon from '@material-ui/icons/Fullscreen';
+import PictureInPictureIcon from '@material-ui/icons/PictureInPicture';
 import Tooltip from '@material-ui/core/Tooltip';
 
 import styles from './streamBar.module.scss';
@@ -142,6 +143,15 @@ function StreamBar(props) {
                           </div>
                         </div>
                         : <MicOffIcon className={styles.pointer} onClick={e => handleChange('audio', e)} style={style}/>
+                    }
+                  </Tooltip>
+              }
+              {/* 画中画 */}
+              {
+                false && setting.hasVideo && isLocalStream
+                  && <Tooltip title={config.mutedVideo ? 'Unmute Video' : 'Mute Video'} arrow>
+                    {
+                      config.hasVideo && !config.mutedVideo && <PictureInPictureIcon className={styles.pointer} onClick={e => handleChange('picture', e)} style={style}/>
                     }
                   </Tooltip>
               }

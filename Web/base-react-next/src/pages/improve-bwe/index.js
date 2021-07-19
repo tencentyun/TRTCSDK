@@ -1,3 +1,4 @@
+import a18n from 'a18n';
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
 import React, { useState, useEffect } from 'react';
@@ -14,7 +15,7 @@ import { Button, Accordion, AccordionSummary, AccordionDetails, makeStyles, Sele
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import SideBar from '@components/SideBar';
 import styles from '@styles/common.module.scss';
-
+import Cookies from 'js-cookie';
 const mobile = require('is-mobile');
 const DynamicDeviceSelect = dynamic(import('@components/DeviceSelect'), { ssr: false });
 const DynamicRtc = dynamic(import('@components/RtcClient/improve-bwe-rtc-client'), { ssr: false });
@@ -66,8 +67,13 @@ export default function BasicRtc(props) {
   const [videoBitRate, setVideoBitRate] = useState(500);
   const [bandValue, setBandValue] = useState('None');
   const bandWidthList = ['None', '2000', '1000', '500', '250', '125'];
+  const [mountFlag, setMountFlag] = useState(false);
 
   useEffect(() => {
+    const language = Cookies.get('trtc-lang') || getUrlParam('lang') || navigator.language || 'zh-CN';
+    a18n.setLocale(language);
+    setMountFlag(true);
+
     handlePageUrl();
     setUseStringRoomID(getUrlParam('useStringRoomID') === 'true');
     setIsMobile(mobile());
@@ -447,50 +453,52 @@ export default function BasicRtc(props) {
       {/* 操作区域 */}
       <div className={clsx(styles['control-container'], isMobile && styles['mobile-device'])}>
         <div className={clsx(styles['body-container'], isMobile && styles['mobile-device'])}>
-          <Accordion className={styles['accordion-container']} defaultExpanded={true}>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1a-content"
-              id="panel1a-header"
-              classes={{
-                root: styles['accordion-summary-container'],
-                content: styles['accordion-summary-content'],
-              }}
-            >
-              <Typography>操作</Typography>
-            </AccordionSummary>
-            <AccordionDetails className={styles['accordion-details-container']}>
-              <UserIDInput disabled={isJoined} onChange={value => setUserID(value)}></UserIDInput>
-              <RoomIDInput disabled={isJoined} onChange={value => setRoomID(value)}></RoomIDInput>
+          {mountFlag
+            && <Accordion className={styles['accordion-container']} defaultExpanded={true}>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+                classes={{
+                  root: styles['accordion-summary-container'],
+                  content: styles['accordion-summary-content'],
+                }}
+              >
+                {mountFlag && <Typography>{a18n('操作')}</Typography>}
+              </AccordionSummary>
+              <AccordionDetails className={styles['accordion-details-container']}>
+                <UserIDInput disabled={isJoined} onChange={value => setUserID(value)}></UserIDInput>
+                <RoomIDInput disabled={isJoined} onChange={value => setRoomID(value)}></RoomIDInput>
 
-              <TextField
-                value={videoBitRate}
-                label="VideoBitrate(kbps)"
-                className={clsx(classes['band-input'], isMobile && classes['band-input-mobile'])}
-                onChange={e => setVideoBitRate(e.target.value)}
-              ></TextField>
+                <TextField
+                  value={videoBitRate}
+                  label="VideoBitrate(kbps)"
+                  className={clsx(classes['band-input'], isMobile && classes['band-input-mobile'])}
+                  onChange={e => setVideoBitRate(e.target.value)}
+                ></TextField>
 
-              <FormControl className={clsx(classes['band-input'], isMobile && classes['band-input-mobile'])}>
-                <InputLabel id="simple-select-label">BandWidth</InputLabel>
-                <Select
-                  value={bandValue}
-                  onChange={e => setBandValue(e.target.value)}
-                >
-                  {bandWidthList.map(num => <MenuItem value={num} key={num}>{num}</MenuItem>)}
-                </Select>
-              </FormControl>
+                <FormControl className={clsx(classes['band-input'], isMobile && classes['band-input-mobile'])}>
+                  <InputLabel id="simple-select-label">BandWidth</InputLabel>
+                  <Select
+                    value={bandValue}
+                    onChange={e => setBandValue(e.target.value)}
+                  >
+                    {bandWidthList.map(num => <MenuItem value={num} key={num}>{num}</MenuItem>)}
+                  </Select>
+                </FormControl>
 
-              <DynamicDeviceSelect deviceType="camera" onChange={value => setCameraID(value)}></DynamicDeviceSelect>
-              <DynamicDeviceSelect deviceType="microphone" onChange={value => setMicrophoneID(value)}></DynamicDeviceSelect>
+                <DynamicDeviceSelect deviceType="camera" onChange={value => setCameraID(value)}></DynamicDeviceSelect>
+                <DynamicDeviceSelect deviceType="microphone" onChange={value => setMicrophoneID(value)}></DynamicDeviceSelect>
 
-              <div className={clsx(styles['button-container'], isMobile && styles['mobile-device'])}>
-                <Button id="join" variant="contained" color="primary" className={ isJoined ? styles.forbidden : ''} onClick={handleJoin}>JOIN</Button>
-                <Button id="leave" variant="contained" color="primary" onClick={handleLeave}>LEAVE</Button>
-                <Button id="publish" variant="contained" color="primary" className={ isPublished ? styles.forbidden : '' } onClick={handlePublish}>PUBLISH</Button>
-                <Button id="unpublish" variant="contained" color="primary" onClick={handleUnPublish}>UNPUBLISH</Button>
-              </div>
-            </AccordionDetails>
-          </Accordion>
+                <div className={clsx(styles['button-container'], isMobile && styles['mobile-device'])}>
+                  <Button id="join" variant="contained" color="primary" className={ isJoined ? styles.forbidden : ''} onClick={handleJoin}>JOIN</Button>
+                  <Button id="leave" variant="contained" color="primary" onClick={handleLeave}>LEAVE</Button>
+                  <Button id="publish" variant="contained" color="primary" className={ isPublished ? styles.forbidden : '' } onClick={handlePublish}>PUBLISH</Button>
+                  <Button id="unpublish" variant="contained" color="primary" onClick={handleUnPublish}>UNPUBLISH</Button>
+                </div>
+              </AccordionDetails>
+            </Accordion>
+          }
           {/* 用户列表 */}
           <div className={clsx(styles['user-list-container'])}>
             <UserList localStreamConfig={localStreamConfig} remoteStreamConfigList={remoteStreamConfigList}>
@@ -509,7 +517,7 @@ export default function BasicRtc(props) {
         {
           !isMobile
           && <div className={clsx(styles['footer-container'])}>
-              <Typography>移动端体验</Typography>
+              {mountFlag && <Typography>{a18n('移动端体验')}</Typography>}
               <QRCoder roomID={roomID} ></QRCoder>
             </div>
         }
@@ -547,7 +555,7 @@ export default function BasicRtc(props) {
   return (
     <div className={clsx(styles['page-container'], isMobile && styles['mobile-device'])}>
       <Head>
-        <title>基础音视频通话</title>
+        <title>{a18n`${a18n(props.activeTitle)}-TRTC 腾讯实时音视频`}</title>
         <meta name="description" content="basic rtc communication by Tencent webRTC" />
       </Head>
       {
@@ -587,6 +595,7 @@ export default function BasicRtc(props) {
         extendActiveId={activeId}
         activeTitle={props.activeTitle}
         data={navConfig}
+        mountFlag={mountFlag}
         onActiveExampleChange={handlePageChange}
         isMobile={isMobile}
       >
