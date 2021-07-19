@@ -1,0 +1,55 @@
+.basic-screen-share {
+  .screen-share-title {
+    font-size: 16px;
+  }
+  .screen-share-list {
+    display: flex;
+    flex-wrap: wrap;
+    .share-item {
+      width: 100px;
+      margin: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      .share-item-name {
+        width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 3; //行数
+        -webkit-box-orient: vertical;
+      }
+      .share-btn {
+        margin: 5px;
+        font-size: 12px;
+        color: rgba(0, 0, 0, 0.87);
+        background-color: #e0e0e0;
+        min-width: 64px;
+        box-sizing: border-box;
+        border: none;
+        padding: 5px;
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    }
+    .share-item canvas {
+      width: 100%;
+      height: auto;
+    }
+  }
+  .screen-share-view {
+    display: flex;
+    flex-direction: row;
+    margin: 5px;
+    .share-preview-item {
+      width: 200px;
+      height: 150px;
+      margin-right: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #eff0f1;
+    }
+  }
+}

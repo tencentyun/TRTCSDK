@@ -1,0 +1,26 @@
+.call-statistics {
+  .video-view-preview {
+    flex-direction: column;
+
+    .summary-statistics {
+      display: flex;
+      flex-direction: row;
+      margin-bottom: 1rem;
+      padding: 0 0.5rem;
+      flex-wrap: wrap;
+      .summary-wrapper {
+        margin: 10px 20px 0 0;
+      }
+    }
+    .video-list-section {
+      display: flex;
+      flex-direction: row;
+    }
+    .video-wrapper {
+      #localVideoWrapper, #remoteVideoWrapper {
+        width: 200px;
+        height: 150px;
+      }
+    }
+  }
+}

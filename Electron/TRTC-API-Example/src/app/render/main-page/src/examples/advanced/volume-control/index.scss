@@ -1,0 +1,14 @@
+.volume-control {
+  .volume-control-form {
+    display: flex;
+
+    .form-left, .form-right {
+      flex: 1 1 auto;
+      width: 50%;
+    }
+
+    .form-section-title {
+      font-size: 1.25rem;
+    }
+  }
+}
