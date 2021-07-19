@@ -1,0 +1,16 @@
+.media-stream-mix {
+  #localScreenShareWrapper {
+    width: 320px;
+    height: 184px;
+    box-shadow: 2px 2px 18px 4px #c0c0c0;
+    background-color: lightblue;
+  }
+
+  .video-mixed-wrapper {
+    margin: 1rem 2rem;
+
+    #mixedVideoWrapper {
+      margin: 0.5rem;
+    }
+  }
+}
