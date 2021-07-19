@@ -1,4 +1,5 @@
-import React from 'react';
+import a18n from 'a18n';
+import React, { useState, useEffect } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Divider from '@material-ui/core/Divider';
@@ -18,7 +19,8 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import TopBar from '@components/TopBar';
 import clsx from 'clsx';
 import styles from './index.module.scss';
-
+import Cookies from 'js-cookie';
+import { getUrlParam } from '@utils/utils';
 
 const drawerWidth = 260;
 const useStyles = makeStyles(() => ({
@@ -57,16 +59,18 @@ const useStyles = makeStyles(() => ({
  * @param {element} props.extendPage 外部页面组件, 如果传递外部页面组件时, 此时不会渲染 props.data 中对应的页面组件
  */
 function SideBar(props) {
-  const { data = [], extendActiveId, isMobile = false, activeTitle = '基础音视频通话' } = props;
+  const { data = [], extendActiveId, isMobile = false, activeTitle = '', mountFlag = false } = props;
   const theme = useTheme();
   const classes = useStyles();
-  const [drawerOpen, setDrawerOpen] = React.useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const defaultActiveId = extendActiveId ? extendActiveId : (data[0] && (data[0].type === 'group' ? data[0].content[0].id : data[0].id));
-  const [activeId, setActiveId] = React.useState(defaultActiveId); // 默认选中的侧边导航条
+  const [activeId, setActiveId] = useState(defaultActiveId); // 默认选中的侧边导航条
   const activeIdFirstNumber = `${extendActiveId}`.slice(0, 1);
   const [selectNavigatorObj] = data.filter(obj => activeIdFirstNumber === `${obj.id}`) || [];
   const openIndexDefault = (selectNavigatorObj && selectNavigatorObj.type === 'group') ? selectNavigatorObj.id : 0;
-  const [openIndex, setOpenIndex] = React.useState(openIndexDefault);
+  const [openIndex, setOpenIndex] = useState(openIndexDefault);
+  const [language, setLanguage] = useState('');
+
   const handleDrawerToggle = () => setDrawerOpen(!drawerOpen); // drawer 组件折叠、隐藏
   const renderIcon = CustomIcon => (!CustomIcon ? null : <ListItemIcon><CustomIcon/></ListItemIcon>);
   const handleGroupClick = (item) => {
@@ -84,11 +88,16 @@ function SideBar(props) {
     props.onActiveExampleChange && props.onActiveExampleChange(item);
   };
 
+  useEffect(() => {
+    const language = Cookies.get('trtc-lang') || getUrlParam('lang') || navigator.language || 'zh-CN';
+    setLanguage(language);
+  }, [props]);
+
   // 生成导航栏信息
   const drawer = () => (
     <div>
       <div className={classes['sidebar-header-container']}>
-        <img src="./logo-transparent.png" alt="me" width="230" height="30"></img>
+        <img src={language === 'zh-CN' ? './trtc-logo-cn-w.png' : './trtc-logo-en-w.png'} alt="me" width="230" height="30"></img>
       </div>
       <Divider />
       {(props.data || []).map((item) => {
@@ -98,7 +107,7 @@ function SideBar(props) {
             <div key={item.id}>
               <ListItem button key={`${item.id}-groupItem`} onClick={handleGroupClick.bind(this, item)}>
                 {renderIcon(CustomIcon)}
-                <ListItemText primary={item.title} />
+                <ListItemText primary={a18n(item.title)} />
                 {openIndex === item.id ? <ExpandLess /> : <ExpandMore />}
               </ListItem>
               <Collapse in={openIndex === item.id} timeout="auto" unmountOnExit key={`${item.id}-groupCollapse`}>
@@ -111,7 +120,7 @@ function SideBar(props) {
                         onClick={handleItemClick.bind(this, groupItem)}
                       >
                         {renderIcon(CustomIcon)}
-                        <ListItemText primary={groupItem.title} />
+                        <ListItemText primary={a18n(groupItem.title)} />
                       </ListItem>
                     );
                   })}
@@ -126,7 +135,7 @@ function SideBar(props) {
               className={item.id === activeId ? classes['active-item'] : ''}
             >
               {renderIcon(CustomIcon)}
-              <ListItemText primary={item.title} />
+              <ListItemText primary={a18n(item.title)} />
             </ListItem>
           </div>
         );
@@ -149,7 +158,7 @@ function SideBar(props) {
           >
             <MenuIcon />
           </IconButton>
-          <TopBar title={activeTitle} isMobile={isMobile}></TopBar>
+          {mountFlag && <TopBar title={a18n(activeTitle)} isMobile={isMobile}></TopBar>}
         </Toolbar>
       </AppBar>
       <div className={styles['drawer-container']} aria-label='mailbox folders'>
@@ -161,10 +170,10 @@ function SideBar(props) {
               classes={{ paper: classes['drawer-paper'] }}
               ModalProps={{ keepMounted: true }}
             >
-              {drawer()}
+              {mountFlag && drawer()}
             </Drawer>
             : <Drawer classes={{ paper: classes['drawer-paper'] }} variant='permanent' open>
-              {drawer()}
+              {mountFlag && drawer()}
             </Drawer>}
         </Hidden>
       </div>

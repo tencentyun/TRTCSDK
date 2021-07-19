@@ -1,3 +1,4 @@
+import a18n from 'a18n';
 import React, { useState, useEffect } from 'react';
 import UserItem from './item';
 import styles from './list.module.scss';
@@ -26,7 +27,7 @@ function UserList(props) {
             content: styles['accordion-summary-content'],
           }}
         >
-          <Typography>成员列表</Typography>
+          <Typography>{a18n('成员列表')}</Typography>
         </AccordionSummary>
         <AccordionDetails className={styles['accordion-details-container']}>
           <ul className={`${styles['user-list-container']}`}>
@@ -40,7 +41,7 @@ function UserList(props) {
               ))
             }
             {!localStreamConfig && remoteStreamConfigList.length === 0
-          && <li><Typography align="center" variant="body2">暂无成员</Typography></li>}
+          && <li><Typography align="center" variant="body2">{a18n('暂无成员')}</Typography></li>}
           </ul>
         </AccordionDetails>
       </Accordion>

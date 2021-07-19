@@ -67,6 +67,23 @@ const Stream = (props) => {
       setFullscreen(refItem.current);
       return;
     }
+    if (e.name === 'picture') {
+      try {
+        if ('pictureInPictureEnabled' in document) {
+          const isInPicture = document.pictureInPictureElement;
+          if (!isInPicture) {
+            refItem.current.childNodes[0].childNodes[1].requestPictureInPicture();
+          } else {
+            document.exitPictureInPicture();
+          }
+        } else {
+          Toast.error('Browser not support picture in picture', '2000');
+        }
+      } catch (error) {
+        console.log('error = ', error);
+      }
+      return;
+    }
     props.onChange && props.onChange(e);
   };
 

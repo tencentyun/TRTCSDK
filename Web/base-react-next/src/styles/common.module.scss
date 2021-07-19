@@ -55,6 +55,19 @@ $default-padding: 20px;
         padding: 0px;
         display: flex;
         flex-direction: column;
+        .select-container {
+          margin-bottom: 16px;
+        }
+        .beauty-container {
+          display: flex;
+          align-items: center;
+          margin-top: 24px;
+          .beauty-label {
+            margin-bottom: 0px;
+            margin-right: 12px;
+            width: 60px;
+          }
+        }
         .button-container {
           width: 260px;
           display: flex;
@@ -81,6 +94,9 @@ $default-padding: 20px;
               }
             }
           }
+        }
+        .video-container {
+          margin-top: 16px;
         }
       }
     }

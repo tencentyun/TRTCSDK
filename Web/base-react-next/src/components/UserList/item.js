@@ -1,3 +1,4 @@
+import a18n from 'a18n';
 import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import VideocamIcon from '@material-ui/icons/Videocam';
@@ -34,7 +35,7 @@ function UserItem(props) {
           className={clsx(styles['item-label'], styles[`item-label${isMobile ? '-mobile' : ''}${type === 'local' ? '-self' : ''}`])} title={config.userID}>
           {config.userID}</span>
         {
-          type === 'local' && <span>（我）</span>
+          type === 'local' && <span>{a18n('（我）')}</span>
         }
       </div>
       <div className={`${styles['item-icon']} ${styles[type]}`}>
@@ -62,7 +63,8 @@ function UserItem(props) {
           && (config.subscribedAudio ? <VolumeUpIcon /> : <VolumeOffIcon />)
         }
       </div>
-  </li>);
+  </li>
+  );
 }
 export default UserItem;
 

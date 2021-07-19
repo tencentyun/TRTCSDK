@@ -12,7 +12,7 @@ module.exports = {
       '@components': path.resolve(__dirname, 'src/components'),
       '@styles': path.resolve(__dirname, 'src/styles'),
       '@utils': path.resolve(__dirname, 'src/utils'),
-      '@i18n': path.resolve(__dirname, 'src/i18n'),
+      '@locales': path.resolve(__dirname, 'src/locales'),
       '@config': path.resolve(__dirname, 'src/config'),
       '@api': path.resolve(__dirname, 'src/api'),
       '@app': path.resolve(__dirname, 'src/app'),

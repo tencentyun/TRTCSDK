@@ -1,3 +1,4 @@
+import a18n from 'a18n';
 import React from 'react';
 import TRTC from 'trtc-js-sdk';
 import { isUndefined } from '@utils/utils';
@@ -62,8 +63,17 @@ export default class RTC extends React.Component {
 
     const checkResult = await TRTC.checkSystemRequirements();
     if (!checkResult.result) {
-      alert('当前浏览器不支持 WebRTC SDK, 请更换其他浏览器');
+      alert(a18n('当前浏览器不支持 WebRTC SDK, 请更换其他浏览器'));
     }
+
+    const that = this;
+    window.addEventListener('beforeunload', (event) => {
+      if (that.isJoined) {
+        event.preventDefault();
+        // eslint-disable-next-line no-param-reassign
+        event.returnValue = 'Are you sure you want to close';
+      }
+    });
   }
 
   async componentWillUnmount() {
@@ -147,7 +157,7 @@ export default class RTC extends React.Component {
       return;
     }
     this.isPublishing = true;
-    !this.localStream && await this.initLocalStream();
+    !this.localStream && (await this.initLocalStream());
     try {
       await this.client.publish(this.localStream);
       toast.success('publish localStream success!', 2000);
@@ -189,7 +199,7 @@ export default class RTC extends React.Component {
           break;
       }
     }
-    this.localStream && await this.destroyLocalStream();
+    this.localStream && (await this.destroyLocalStream());
   }
 
   async handleSubscribe(remoteStream, config = { audio: true, video: true }) {

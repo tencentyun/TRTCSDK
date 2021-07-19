@@ -1,3 +1,4 @@
+import a18n from 'a18n';
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
 import React, { useState, useEffect } from 'react';
@@ -16,10 +17,10 @@ import SideBar from '@components/SideBar';
 import styles from '@styles/common.module.scss';
 import toast from '@components/Toast';
 import { SDKAPPID } from '@app/config';
-
+import Cookies from 'js-cookie';
 const mobile = require('is-mobile');
 const DynamicDeviceSelect = dynamic(import('@components/DeviceSelect'), { ssr: false });
-const DynamicRtc = dynamic(import('@components/RtcClient/improve-mixTranscode-rtc-client'), { ssr: false });
+const DynamicRtc = dynamic(import('@components/BaseRTC'), { ssr: false });
 const DynamicShareRtc = dynamic(import('@components/ShareRTC'), { ssr: false });
 
 const initMixOutputParam = {
@@ -41,6 +42,7 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
   },
   'mix-input': {
     width: '260px',
@@ -64,6 +66,7 @@ const mixModePreset = 'preset-layout'; // 混流模式--预排版模式
 const mixModeManual = 'manual'; // 混流模式--全手动模式
 let mixedVideoPlayer = null;
 let mixInputParamList = [];
+let mixOutputParam = initMixOutputParam;
 export default function BasicRtc(props) {
   const { activeId, navConfig } = props;
   const video = true;
@@ -89,8 +92,13 @@ export default function BasicRtc(props) {
   const [outputWidth, setOutputWidth] = useState('1280');
   const [outputHeight, setOutputHeight] = useState('720');
   const [isMixed, setIsMixed] = useState(false);
+  const [mountFlag, setMountFlag] = useState(false);
 
   useEffect(() => {
+    const language = Cookies.get('trtc-lang') || getUrlParam('lang') || navigator.language || 'zh-CN';
+    a18n.setLocale(language);
+    setMountFlag(true);
+
     handlePageUrl();
     setUseStringRoomID(getUrlParam('useStringRoomID') === 'true');
     setIsMobile(mobile());
@@ -99,6 +107,20 @@ export default function BasicRtc(props) {
   const handleJoin = async () => {
     await RTC.handleJoin();
     await RTC.handlePublish();
+
+    // 本地流添加至
+    const [videoTrack] = RTC.localStream.getMediaStream().getVideoTracks();
+    const localInfo = {
+      id: 'local_stream',
+      userId: RTC.localStream.getUserId(),
+      width: videoTrack && videoTrack.getSettings().width,
+      height: videoTrack && videoTrack.getSettings().height,
+      locationX: 0,
+      locationY: 0,
+      pureAudio: false,
+      zOrder: 1,
+    };
+    mixInputParamList.push(localInfo);
   };
 
   const handlePublish = async () => {
@@ -110,6 +132,10 @@ export default function BasicRtc(props) {
   };
 
   const handleLeave = async () => {
+    mixInputParamList = [];
+    mixOutputParam = initMixOutputParam;
+    setIsMixed(false);
+
     shareRTC && shareRTC.handleLeave();
     await RTC.handleLeave();
   };
@@ -422,23 +448,68 @@ export default function BasicRtc(props) {
     }
   };
 
-  // 开始混流
+  // 混流
   const startMixTranscode = async () => {
-    const mixOutputParam = {
-      ...initMixOutputParam,
-      streamId: outputStreamID || initMixOutputParam.streamId,
-      videoWidth: +outputWidth || initMixOutputParam.videoWidth,
-      videoHeight: +outputHeight || initMixOutputParam.videoHeight,
+    let mixUsers = mixInputParamList;
+    if (mixMode === mixModePreset) {
+      mixUsers = [
+        {
+          width: 960,
+          height: 720,
+          locationX: 0,
+          locationY: 0,
+          pureAudio: false,
+          userId: shareID, // 用来进行屏幕分享
+          zOrder: 1,
+        },
+        {
+          width: 320,
+          height: 240,
+          locationX: 960,
+          locationY: 0,
+          pureAudio: false,
+          userId: userID, // 本地摄像头占位, 传入推摄像头的 client userId
+          zOrder: 1,
+        },
+        {
+          width: 320,
+          height: 240,
+          locationX: 960,
+          locationY: 240,
+          pureAudio: false,
+          userId: '$PLACE_HOLDER_REMOTE$', // 远端流占位
+          zOrder: 1,
+        },
+        {
+          width: 320,
+          height: 240,
+          locationX: 960,
+          locationY: 480,
+          pureAudio: false,
+          userId: '$PLACE_HOLDER_REMOTE$', // 远端流占位
+          zOrder: 1,
+        },
+      ];
+    }
+    mixOutputParam = {
+      ...mixOutputParam,
+      streamId: outputStreamID,
+      videoWidth: Number(outputWidth),
+      videoHeight: Number(outputHeight),
     };
+
     try {
-      await RTC.startMixTranscode(mixMode, mixInputParamList, mixOutputParam, shareID);
-
+      const config = {
+        ...mixOutputParam,
+        mixUsers,
+        mode: mixMode,
+      };
+      console.log('--- mix config = ', config);
+      await RTC.client.startMixTranscode(config);
       const streamId = mixOutputParam.streamId || `${SDKAPPID}_${roomID}_${userID}_main`;
-      const url = `https://3891.liveplay.myqcloud.com/trtc_1400188366/${streamId}.flv`;
-
+      const url = `https://3891.liveplay.myqcloud.com/trtc_${SDKAPPID}/${streamId}.flv`;
       setTimeout(() => {
         playMixedStream(url);
-        // playMixedStreamFlv(url);
       }, 3000);
 
       toast.success('startMixTranscode success', 2000);
@@ -459,40 +530,22 @@ export default function BasicRtc(props) {
     // eslint-disable-next-line no-undef
     mixedVideoPlayer = new TcPlayer('mixed-stream-video', {
       flv: url, // 请替换成实际可用的播放地址
-      // m3u8: url,
       h5_flv: true,
       autoplay: true, // iOS 下 safari 浏览器，以及大部分移动端浏览器是不开放视频自动播放这个能力的
-      width: '335', // 视频的显示宽度，请尽量使用视频分辨率宽度
+      width: '340', // 视频的显示宽度，请尽量使用视频分辨率宽度
       height: '250', // 视频的显示高度，请尽量使用视频分辨率高度
     });
   };
 
-  // const playMixedStreamFlv = (url) => {
-  //   // toast.info(`has MediaSource object = ${flvjs.isSupported()}`);
-  //   // toast.info(`mse support = ${flvjs.getFeatureList() && flvjs.getFeatureList().mseLiveFlvPlayback}`);
-
-  //   if (flvjs.isSupported()) {
-  //     const videoElement = document.getElementById('videoElementItem');
-  //     const flvPlayer = flvjs.createPlayer({
-  //         type: 'flv',
-  //         url: url
-  //     });
-  //     flvPlayer.attachMediaElement(videoElement);
-  //     flvPlayer.load();
-  //     flvPlayer.play();
-  //   }
-  // };
-
   // 停止混流
   const stopMixTranscode = async () => {
-    setIsMixed(false);
-    if (!RTC || !RTC.mixedMCU) {
+    if (!isMixed) {
       return;
     }
+    setIsMixed(false);
     console.log('stop-mix-transcode');
     try {
       await RTC.client.stopMixTranscode();
-      RTC.mixedMCU = false;
       mixedVideoPlayer.destroy();
       mixedVideoPlayer = null;
       console.log('stopMixTranscode success');
@@ -516,7 +569,7 @@ export default function BasicRtc(props) {
                 content: styles['accordion-summary-content'],
               }}
             >
-              <Typography>操作</Typography>
+              {mountFlag && <Typography>{a18n('操作')}</Typography>}
             </AccordionSummary>
             <AccordionDetails className={styles['accordion-details-container']}>
               <UserIDInput disabled={isJoined} onChange={value => setUserID(value)}></UserIDInput>
@@ -544,20 +597,20 @@ export default function BasicRtc(props) {
                 content: styles['accordion-summary-content'],
               }}
             >
-              <Typography>混流转码</Typography>
+              {mountFlag && <Typography>{a18n('混流转码')}</Typography>}
             </AccordionSummary>
             <AccordionDetails className={styles['accordion-details-container']}>
               <RadioGroup value={mixMode} className={classes['mix-mod-switch-container']}
                 onChange={() => setMixMode(mixMode === mixModePreset ? mixModeManual : mixModePreset)}
               >
-                <Typography>Mode：</Typography>
-                <FormControlLabel value={mixModeManual} control={<Radio />} label="全手动" className={classes['role-select']} />
-                <FormControlLabel value={mixModePreset} control={<Radio />} label="预排版" />
+                {mountFlag && <Typography>{a18n('模式')}</Typography>}
+                <FormControlLabel value={mixModeManual} control={<Radio />} label={a18n('全手动')} className={classes['role-select']} />
+                <FormControlLabel value={mixModePreset} control={<Radio />} label={a18n('预排版')} />
               </RadioGroup>
 
               <TextField className={clsx(classes['mix-input'], isMobile && classes['mix-input-mobile'])} id="outputStreamID" value={outputStreamID} label="outputStreamID" onChange={event => setOutputStreamID(event.target.value)}/>
-              <TextField className={clsx(classes['mix-input'], isMobile && classes['mix-input-mobile'])} id="outputWidth" value={outputWidth} label="outputWidth" onChange={event => setOutputWidth(event.target.value)}/>
-              <TextField className={clsx(classes['mix-input'], isMobile && classes['mix-input-mobile'])} id="outputHeight" value={outputHeight} label="outputHeight" onChange={event => setOutputHeight(event.target.value)}/>
+              <TextField className={clsx(classes['mix-input'], isMobile && classes['mix-input-mobile'])} id="outputWidth" type='number' value={outputWidth} label="outputWidth" onChange={event => setOutputWidth(event.target.value)}/>
+              <TextField className={clsx(classes['mix-input'], isMobile && classes['mix-input-mobile'])} id="outputHeight" type='number' value={outputHeight} label="outputHeight" onChange={event => setOutputHeight(event.target.value)}/>
 
               <div className={clsx(styles['button-container'], isMobile && styles['mobile-device'])}>
                 <Button id="start-mix" variant="contained" color="primary" onClick={startMixTranscode}>START MIX</Button>
@@ -576,7 +629,7 @@ export default function BasicRtc(props) {
         {
           !isMobile
           && <div className={clsx(styles['footer-container'])}>
-              <Typography>移动端体验</Typography>
+              {mountFlag && <Typography>{a18n('移动端体验')}</Typography>}
               <QRCoder roomID={roomID} ></QRCoder>
             </div>
         }
@@ -612,16 +665,8 @@ export default function BasicRtc(props) {
 
         {/* 混流效果预览 */}
         {isMixed && <div className={classes['mixed-stream-container']}>
-          <span>混流效果预览：</span>
+          <span>{a18n('混流效果预览')}</span>
           <div id="mixed-stream-video"></div>
-
-          {/* <video
-            className={clsx(classes['mixed-stream-video'])}
-            id="videoElementItem"
-            autoPlay
-            width={320}
-            height={280}
-          >Your browser is too old which doesn't support HTML5 video.</video> */}
         </div>}
       </div>
     </div>);
@@ -629,10 +674,9 @@ export default function BasicRtc(props) {
   return (
     <div className={clsx(styles['page-container'], isMobile && styles['mobile-device'])}>
       <Head>
-        <title>基础音视频通话</title>
+        <title>{a18n`${a18n(props.activeTitle)}-TRTC 腾讯实时音视频`}</title>
         <meta name="description" content="basic rtc communication by Tencent webRTC" />
         <script src="https://imgcache.qq.com/open/qcloud/video/vcplayer/TcPlayer-2.3.3.js" charSet="utf-8"></script>
-        {/* <script src="./flv.min.js"></script> */}
       </Head>
       {
         userID
@@ -672,6 +716,7 @@ export default function BasicRtc(props) {
         extendActiveId={activeId}
         activeTitle={props.activeTitle}
         data={navConfig}
+        mountFlag={mountFlag}
         onActiveExampleChange={handlePageChange}
         isMobile={isMobile}
       >

@@ -1,3 +1,4 @@
+import a18n from 'a18n';
 import React from 'react';
 import TRTC from 'trtc-js-sdk';
 import { getLatestUserSig } from '@app/index';
@@ -63,11 +64,11 @@ export default class ShareRTC extends React.Component {
     } catch (error) {
       switch (error.name) {
         case 'NotReadableError':
-          alert('屏幕分享失败，请确保系统允许当前浏览器获取屏幕内容');
+          alert(a18n('屏幕分享失败，请确保系统允许当前浏览器获取屏幕内容'));
           throw error;
         case 'NotAllowedError':
           if (error.message === 'Permission denied by system') {
-            alert('屏幕分享失败，请确保系统允许当前浏览器获取屏幕内容');
+            alert(a18n('屏幕分享失败，请确保系统允许当前浏览器获取屏幕内容'));
           } else {
             console.log('User refused to share the screen');
           }
