@@ -1,0 +1,23 @@
+.switch-role {
+  .video-view-preview {
+    flex-direction: column;
+
+    .user-role-section {
+      margin: 1rem 0;
+      display: flex;
+      flex-direction: row;
+    }
+
+    .video-list-section {
+      display: flex;
+      flex-direction: row;
+    }
+    
+    .video-wrapper {
+      #localVideoWrapper, #remoteVideoWrapper {
+        width: 200px;
+        height: 150px;
+      }
+    }
+  }
+}

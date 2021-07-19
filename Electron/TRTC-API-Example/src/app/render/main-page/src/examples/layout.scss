@@ -1,0 +1,77 @@
+.example-item {
+  padding: 1rem;
+  width: 80%;
+  margin: 0 auto;
+  overflow: auto;
+
+  .example-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1.5;
+  }
+
+  .example-desc {
+    margin-bottom: 1rem;
+    font-size: 1rem;
+  }
+
+  .example-button-bar {
+    margin: 0.5rem 0;
+    button {
+      margin: 0 0.5rem;
+      font-size: 1.12rem;
+    }
+  }
+
+  .video-view-preview {
+    padding: 1rem 2rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+
+  .video-wrapper {
+    flex: 0 0 auto;
+    width: 50%;
+    padding: 0 0.5rem;
+
+    .user-desc {
+      margin-bottom: 1rem;
+    }
+
+    #localVideoWrapper,
+    #remoteVideoWrapper {
+      width: 320px;
+      height: 184px;
+      box-shadow: 2px 2px 18px 4px #c0c0c0;
+      background-color: lightblue;
+    }
+
+    .local-statistic,
+    .remote-statistic{
+      margin-top: 1rem;
+    }
+  }
+
+  .config-form {
+    margin: 1rem 0;
+    .form-line {
+      padding: 0.5rem 0.25rem;
+    }
+
+    input[type="radio"] + label {
+      margin-right: 0.5rem;
+      &:last-child {
+        margin-right: 0;
+      }
+
+      &:hover {
+        color: blue;
+      }
+    }
+
+    input[type="range"] {
+      width: 12rem;
+    }
+  }
+}
