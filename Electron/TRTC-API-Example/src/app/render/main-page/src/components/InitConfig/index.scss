@@ -1,0 +1,22 @@
+.init-config {
+  .config-form {
+    .form-line {
+      padding-left: 0 !important;
+    }
+  }
+  input {
+    height: 2rem;
+    width: 20rem;
+
+    &:invalid {
+      border-color: red;
+      border-radius: 0.25rem;
+    }
+  }
+
+  .error-msg {
+    margin-left: 4rem;
+    margin-top: 0.125rem;
+    color: red;
+  }
+}

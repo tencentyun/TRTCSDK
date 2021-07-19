@@ -1,0 +1,22 @@
+.connect-other-room {
+  .connect-action-section {
+    display: flex;
+    flex-direction: column;
+    margin: 10px 0;
+    .room-id-wrapper, .connect-room-id-wrapper {
+      margin: 10px 0;
+    }
+    .connect-room-btn {
+      margin: 10px 0;
+      width: 100px;
+    }
+  }
+
+  .video-view-preview {
+    flex-direction: column;
+    .video-list-section {
+      display: flex;
+      flex-direction: row;
+    }
+  }
+}

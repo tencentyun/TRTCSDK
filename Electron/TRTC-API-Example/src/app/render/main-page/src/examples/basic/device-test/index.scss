@@ -1,0 +1,19 @@
+.device-test{
+  .device-test-item {
+    margin: 1rem 0;
+
+    .notice-label {
+      color: red;
+      font-style: italic;
+    }
+  }
+
+  .camera-test{
+    display: inline-flex;
+
+    #localVideoWrapper {
+      width: 320px;
+      height: 180px;
+    }
+  }
+}
