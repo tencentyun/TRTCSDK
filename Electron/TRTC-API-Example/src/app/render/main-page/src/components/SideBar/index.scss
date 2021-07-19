@@ -1,0 +1,20 @@
+.side-bar {
+  .active-group-item {
+    padding-left: 48px;
+    background-color: #1890fe;
+    &:hover {
+      background-color: #1890fe;
+    }
+  }
+  
+  .nested {
+    padding-left: 48px;
+  }
+
+  .active-item {
+    background-color: #1890fe;
+    &:hover {
+      background-color: #1890fe;
+    }
+  }
+}
