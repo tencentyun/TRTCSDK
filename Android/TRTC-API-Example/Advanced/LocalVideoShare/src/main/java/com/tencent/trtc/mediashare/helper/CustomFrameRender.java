@@ -69,6 +69,7 @@ public class CustomFrameRender implements TRTCCloudListener.TRTCVideoRenderListe
     private static final int MSG_DESTROY             = 3;
     private static final int RENDER_TYPE_TEXTURE     = 0;
     private static final int RENDER_TYPE_I420        = 1;
+    private static final int MSG_PLAY_AUDIO          = 5;
 
     private       int                mRenderType     = RENDER_TYPE_TEXTURE;
     private       int                mSteamType;
@@ -123,22 +124,7 @@ public class CustomFrameRender implements TRTCCloudListener.TRTCVideoRenderListe
         if (audioFrame == null) {
             return;
         }
-        if (mAudioTrack == null) {
-            int channelConfig;
-            if (audioFrame.channel == 1) {
-                channelConfig = AudioFormat.CHANNEL_OUT_MONO;
-            } else if (audioFrame.channel == 2) {
-                channelConfig = AudioFormat.CHANNEL_OUT_STEREO;
-            } else {
-                Log.e(TAG, "audioFrame channel [" + audioFrame.channel + "] is error !");
-                return;
-            }
-            mAudioTrack = new AudioTrack(AudioManager.STREAM_MUSIC,
-                    audioFrame.sampleRate, channelConfig, AudioFormat.ENCODING_PCM_16BIT,
-                    AudioTrack.getMinBufferSize(audioFrame.sampleRate, channelConfig, AudioFormat.ENCODING_PCM_16BIT), AudioTrack.MODE_STREAM);
-            mAudioTrack.play();
-        }
-        mAudioTrack.write(audioFrame.data, 0, audioFrame.data.length);
+        mGLHandler.obtainMessage(MSG_PLAY_AUDIO, audioFrame).sendToTarget();
     }
 
     public CustomFrameRender(String userId, int steamType) {
@@ -329,8 +315,29 @@ public class CustomFrameRender implements TRTCCloudListener.TRTCVideoRenderListe
             case MSG_DESTROY:
                 destroyInternal();
                 break;
+            case MSG_PLAY_AUDIO:
+                playAudioFrame((TRTCCloudDef.TRTCAudioFrame) msg.obj);
         }
         return false;
+    }
+
+    private void playAudioFrame(TRTCCloudDef.TRTCAudioFrame audioFrame) {
+        if (mAudioTrack == null) {
+            int channelConfig;
+            if (audioFrame.channel == 1) {
+                channelConfig = AudioFormat.CHANNEL_OUT_MONO;
+            } else if (audioFrame.channel == 2) {
+                channelConfig = AudioFormat.CHANNEL_OUT_STEREO;
+            } else {
+                Log.e(TAG, "audioFrame channel [" + audioFrame.channel + "] is error !");
+                return;
+            }
+            mAudioTrack = new AudioTrack(AudioManager.STREAM_MUSIC,
+                    audioFrame.sampleRate, channelConfig, AudioFormat.ENCODING_PCM_16BIT,
+                    AudioTrack.getMinBufferSize(audioFrame.sampleRate, channelConfig, AudioFormat.ENCODING_PCM_16BIT), AudioTrack.MODE_STREAM);
+            mAudioTrack.play();
+        }
+        mAudioTrack.write(audioFrame.data, 0, audioFrame.data.length);
     }
 
 
