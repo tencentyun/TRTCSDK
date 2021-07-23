@@ -7,6 +7,19 @@
 > - 建议您及时更新至最新版本，以便获得更好的产品稳定性及在线支持。
 > - 版本升级注意事项请参见：[升级指引](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/tutorial-00-info-update-guideline.html)。
 
+## Version 4.11.2 @2021.07.23
+
+**Improvement**
+
+- 支持 turn server 调度，提升连接成功率。
+- [Client.getRemoteMutedState](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/Client.html#getRemoteMutedState) 新增属性 hasSmall，标识远端是否有推小流。
+
+**Bug Fixed**
+
+- 修复 LocalStorage 被禁用时，无法使用 SDK 的问题。
+- 修复偶现 publish 异常时，接口未 rejected 的问题。
+
+
 ## Version 4.11.1 @2021.06.25
 
 **Improvement**
@@ -18,11 +31,11 @@
 
 **Feature**
 
-- 支持大小流，参考教程：[开启大小流传输](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/tutorial-27-advanced-small-stream.html)。
+支持大小流，参考教程：[开启大小流传输](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/tutorial-27-advanced-small-stream.html)。
 
 **Improvement**
 
-- 优化事件通知时序。
+优化事件通知时序。
 
 ## Version 4.10.3 @2021.06.11
 
@@ -55,7 +68,7 @@
 
 **Improvement**
 
-- 优化 [Client.switchRole](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/Client.html#switchRole) 接口的实现逻辑。
+优化 [Client.switchRole](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/Client.html#switchRole) 接口的实现逻辑。
 
 **Bug Fixed**
 
@@ -71,14 +84,14 @@
 
 **Improvement**
 
-- 优化 [LocalStream.switchDevice](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/LocalStream.html#switchDevice)，[LocalStream.addTrack](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/LocalStream.html#addTrack)，[LocalStream.removeTrack](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/LocalStream.html#removeTrack) 接口的参数校验逻辑。
+优化 [LocalStream.switchDevice](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/LocalStream.html#switchDevice)、[LocalStream.addTrack](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/LocalStream.html#addTrack)、[LocalStream.removeTrack](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/LocalStream.html#removeTrack) 接口的参数校验逻辑。
 
 ## Version 4.9.0 @ 2021.03.19
 
 **Feature**
 
-- 云端混流支持预排版模式，参考：[Client.startMixTranscode](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/Client.html#startMixTranscode) 接口。
-- 支持音量回调，参考：[Client.enableAudioVolumeEvaluation](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/Client.html#enableAudioVolumeEvaluation) 接口。
+- 云端混流支持预排版模式，请参见 [Client.startMixTranscode](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/Client.html#startMixTranscode) 接口。
+- 支持音量回调，请参见 [Client.enableAudioVolumeEvaluation](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/Client.html#enableAudioVolumeEvaluation) 接口。
 
 **Improvement**
 
@@ -91,7 +104,7 @@ Websocket 的默认端口改为 443。
 
 **Breaking Change**
 
-- [TRTC.checkSystemRequirements](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/TRTC.html#.checkSystemRequirements) 返回详细检测结果，具体请参见 [接口文档](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/TRTC.html#.checkSystemRequirements) 及 [升级指引](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/tutorial-00-info-update-guideline.html) 。
+[TRTC.checkSystemRequirements](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/TRTC.html#.checkSystemRequirements) 返回详细检测结果，具体请参见 [接口文档](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/TRTC.html#.checkSystemRequirements) 及 [升级指引](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/tutorial-00-info-update-guideline.html) 。
 
 ## Version 4.8.6 @ 2021.03.01
 
