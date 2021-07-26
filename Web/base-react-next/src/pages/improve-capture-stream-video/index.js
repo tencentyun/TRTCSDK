@@ -10,12 +10,11 @@ import UserIDInput from '@components/UserIDInput';
 import RoomIDInput from '@components/RoomIDInput';
 import { getNavConfig } from '@api/nav';
 import { getUrlParam } from '@utils/utils';
-import { handlePageUrl, handlePageChange } from '@utils/common';
+import { handlePageUrl, handlePageChange, getLanguage } from '@utils/common';
 import { Button, Accordion, AccordionSummary, AccordionDetails, Typography } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import SideBar from '@components/SideBar';
 import styles from '@styles/common.module.scss';
-import Cookies from 'js-cookie';
 const mobile = require('is-mobile');
 const DynamicRtc = dynamic(import('@components/RtcClient/improve-capture-stream-video-rtc-client'), { ssr: false });
 const DynamicShareRtc = dynamic(import('@components/ShareRTC'), { ssr: false });
@@ -39,7 +38,7 @@ export default function BasicRtc(props) {
   const [mountFlag, setMountFlag] = useState(false);
 
   useEffect(() => {
-    const language = Cookies.get('trtc-lang') || getUrlParam('lang') || navigator.language || 'zh-CN';
+    const language = getLanguage();
     a18n.setLocale(language);
     setMountFlag(true);
 
@@ -449,7 +448,6 @@ export default function BasicRtc(props) {
     <div className={clsx(styles['page-container'], isMobile && styles['mobile-device'])}>
       <Head>
         <title>{a18n`${a18n(props.activeTitle)}-TRTC 腾讯实时音视频`}</title>
-        <meta name="description" content="basic rtc communication by Tencent webRTC" />
       </Head>
       {
         userID

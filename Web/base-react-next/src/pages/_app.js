@@ -6,7 +6,7 @@ import Notification from '@components/Toast/notification';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import '@styles/globals.scss';
 import Cookies from 'js-cookie';
-import { getUrlParam } from '@utils/utils';
+import { getLanguage } from '@utils/common';
 import { MyContext } from '@utils/context-manager';
 import ConfirmDialog from '@components/Modal/confirmDialog';
 import 'rtc-device-detector-react/dist/index.css';
@@ -32,7 +32,7 @@ function MyApp({ Component, pageProps }) {
   };
 
   useEffect(() => {
-    const language = Cookies.get('trtc-lang') || getUrlParam('lang') || navigator.language || 'zh-CN';
+    const language = getLanguage();
     a18n.setLocale(language);
     setLanguage(language);
   }, []);
@@ -41,6 +41,8 @@ function MyApp({ Component, pageProps }) {
     <div suppressHydrationWarning style={{ height: '100%' }}>
       <Head>
         <link rel="icon" href="/favicon.ico" />
+        <meta name="description" content="腾讯云实时音视频在线演示"></meta>
+        <meta name="keywords" content="WebRTC, Tencent, RTC, TRTC, 音视频解决方案, 语音通话, 视频通话, 互动直播"></meta>
         <script src="./graph.js" type="text/javascript"></script>
         <script src="https://cdn-go.cn/aegis/aegis-sdk/latest/aegis.min.js"></script>
         <script src="./statistic.js"></script>

@@ -18,9 +18,8 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import TopBar from '@components/TopBar';
 import clsx from 'clsx';
+import { getLanguage } from '@utils/common';
 import styles from './index.module.scss';
-import Cookies from 'js-cookie';
-import { getUrlParam } from '@utils/utils';
 
 const drawerWidth = 260;
 const useStyles = makeStyles(() => ({
@@ -59,7 +58,17 @@ const useStyles = makeStyles(() => ({
  * @param {element} props.extendPage 外部页面组件, 如果传递外部页面组件时, 此时不会渲染 props.data 中对应的页面组件
  */
 function SideBar(props) {
-  const { data = [], extendActiveId, isMobile = false, activeTitle = '', mountFlag = false } = props;
+  let { data = [] } = props;
+  const { extendActiveId, isMobile = false, activeTitle = '', mountFlag = false } = props;
+  // 美颜 demo 不支持移动端, 需要从 sideBar 去除, 通过页面的 props 传递, 只能在 sideBar 中处理
+  if (isMobile) {
+    data = data.map(obj => ((obj.content || []).length > 0
+      ? {
+        ...obj,
+        content: obj.content.filter(subObj => subObj.path !== 'improve-beauty'),
+      }
+      : obj));
+  }
   const theme = useTheme();
   const classes = useStyles();
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -89,7 +98,7 @@ function SideBar(props) {
   };
 
   useEffect(() => {
-    const language = Cookies.get('trtc-lang') || getUrlParam('lang') || navigator.language || 'zh-CN';
+    const language = getLanguage();
     setLanguage(language);
   }, [props]);
 
@@ -100,7 +109,7 @@ function SideBar(props) {
         <img src={language === 'zh-CN' ? './trtc-logo-cn-w.png' : './trtc-logo-en-w.png'} alt="me" width="230" height="30"></img>
       </div>
       <Divider />
-      {(props.data || []).map((item) => {
+      {(data || []).map((item) => {
         const CustomIcon = item.icon;
         if (item.type === 'group') {
           return (

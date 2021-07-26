@@ -2,9 +2,8 @@ import { Tooltip, Select, MenuItem } from '@material-ui/core';
 import a18n from 'a18n';
 import React, { useState, useEffect, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Cookies from 'js-cookie';
-import { getUrlParam } from '@utils/utils';
 import { MyContext } from '@utils/context-manager';
+import { getLanguage } from '@utils/common';
 
 const useStyles = makeStyles(props => ({
   'language-select': {
@@ -21,7 +20,7 @@ export default function LanguageChange(props) {
   const { changeLanguage } = useContext(MyContext);
 
   useEffect(() => {
-    const language = Cookies.get('trtc-lang') || getUrlParam('lang') || navigator.language || 'zh-CN';
+    const language = getLanguage();
     a18n.setLocale(language);
     setLanguage(language);
   }, []);
@@ -33,8 +32,9 @@ export default function LanguageChange(props) {
   };
 
   const selectComponent = () => <Select value={language} className={classes['language-select']} onChange={languageChange}>
-    <MenuItem value='zh-CN'>{a18n('中文')}</MenuItem>
-    <MenuItem value='en'>{a18n('英文')}</MenuItem>
+    {/* // @a18n-ignore */}
+    <MenuItem value='zh-CN'>中文</MenuItem>
+    <MenuItem value='en'>English</MenuItem>
   </Select>;
 
   return toolTipsVisible
