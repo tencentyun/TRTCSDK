@@ -1,6 +1,7 @@
 import { SDKAPPID, SECRETKEY } from '@app/config';
 import Cookies from 'js-cookie';
 import Router from 'next/router';
+import { getUrlParam } from '@utils/utils';
 
 /**
  * 页面跳转
@@ -58,3 +59,17 @@ export function handlePageChange(data) {
   }
   goToPage(data.path);
 };
+
+export function getLanguage() {
+  let language = Cookies.get('trtc-lang') || getUrlParam('lang') || navigator.language || 'zh-CN';
+  language = language.replace(/_/, '-').toLowerCase();
+
+  if (language === 'zh-cn' || language === 'zh') {
+    language = 'zh-CN';
+  } else if (language === 'zh-tw' || language === 'zh-hk') {
+    language = 'zh-TW';
+  } else if (language === 'en' || language === 'en-us' || language === 'en-GB') {
+    language = 'en';
+  }
+  return language;
+}

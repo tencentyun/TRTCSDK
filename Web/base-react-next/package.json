@@ -35,7 +35,6 @@
     "react-dom": "17.0.2",
     "react-i18next": "^11.8.15",
     "rtc-beauty-plugin": "^0.0.3",
-    "rtc-detect-beta-0.0.1": "^0.0.1",
     "rtc-device-detector-react": "1.0.0",
     "sass": "^1.32.12",
     "trtc-audio-mixer": "^0.0.9",
