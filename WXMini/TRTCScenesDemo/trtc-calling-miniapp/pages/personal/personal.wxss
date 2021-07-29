@@ -1,0 +1,93 @@
+/* pages/personal/personal.wxss */
+.personal-page{
+    width: 100vw;
+    height: 100vh;
+}
+
+.personal-page-bg{
+    width: 100vw;
+    /* height: 100vh; */
+}
+.personal-page-main {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.personal-page-main .personal-title {
+    padding: 52px 0 37px;
+    text-align: center;
+    font-size: 18px;
+    color: #000000;
+    letter-spacing: 0;
+    line-height: 28px;
+    font-weight: 600;
+}
+
+.personal-header {
+    margin-top: 55px;
+    background: #ffffff;
+    border-radius: 20px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.personal-header-avatar {
+    width: 110px;
+    height: 110px;
+    border-radius: 110px;
+    display: block;
+    position: absolute;
+    top: -55px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+}
+.personal-header-name {
+    margin-top: 68px;
+    font-size: 20px;
+    color: #333333;
+    letter-spacing: 0;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+}
+.personal-header-name>image {
+    width: 16px;
+    height: 16px;
+}
+.personal-header-ID {
+    margin-top: 56px;
+    padding: 10px 0;
+    font-size: 16px;
+    color: #999999;
+    letter-spacing: 0;
+    font-weight: 400;
+}
+.personal-list-item{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 12px;
+}
+.personal-list-item .aside-left {
+    display: flex;
+    align-items: center;
+}
+.personal-list-item .aside-left .icon {
+    width: 32px;
+    height: 32px;
+}
+.personal-list-item .aside-left text {
+    padding: 0 12px;
+    font-size: 16px;
+    color: #333333;
+    letter-spacing: 0;
+    font-weight: 400;
+}
+.personal-list-item .aside-right {
+    width: 16px;
+    height: 16px;
+}

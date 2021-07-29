@@ -4,6 +4,7 @@ import { EVENT, TRTC_EVENT, ACTION_TYPE, BUSINESS_ID, CALL_STATUS, CMD_TYPE_LIST
 import UserController from './controller/user-controller'
 import formateTime from './utils/formate-time'
 import TSignaling from './utils/tsignaling-wx'
+import TIM from "./utils/tim-wx-sdk";
 
 // TODO 组件挂载和模版方式分离，目前使用的方式，只能把TRTCCalling挂载在index页面上
 
@@ -11,6 +12,7 @@ const TAG_NAME = 'TRTCCalling-Component'
 
 // 在trtc-calling中只维护一个tsignaling实例，否则的话可能会引起信令层状态的混乱，上层的多个Tsignal信令会同时处理底层的IM消息
 let tsignaling = null
+let tim = null
 
 // 组件旨在跨终端维护一个通话状态管理机，以事件发布机制驱动上层进行管理，并通过API调用进行状态变更。
 // 组件设计思路将UI和状态管理分离。您可以通过修改`template`文件夹下的文件，适配您的业务场景，
@@ -21,34 +23,11 @@ Component({
     config: {
       type: Object,
       value: {
-        sdkAppID: wx.$globalData.sdkAppID,
+        sdkAppID: 0,
         userID: '',
         userSig: '',
-        type: 0,
-      },
-      observer: function(newVal, oldVal) {
-        this.setData({
-          config: newVal,
-        })
-      },
-    },
-    pusherAvatar: {
-      type: String,
-      value: '',
-      observer: function(newVal, oldVal) {
-        this.setData({
-          pusherAvatar: newVal,
-        })
-      },
-    },
-    avatarList: {
-      type: Object,
-      value: {},
-      observer: function(newVal, oldVal) {
-        this.setData({
-          avatarList: newVal,
-        })
-      },
+        type: 0
+      }
     },
   },
   data: {
@@ -76,6 +55,13 @@ Component({
     _isGroupCall: false, // 当前通话是否是群通话
     _groupID: '', // 群组ID
     _unHandledInviteeList: [], // 未处理的被邀请着列表
+    tim: null, //TIM实例
+    localUser: null, // 本地用户资料
+    remoteUsers: [], // 远程用户资料
+    isSponsor: true, // true:呼叫者，false:被呼叫对象
+    timer: null, // 聊天时长定时器
+    chatTimeNum: 0, //聊天时长
+    chatTime: '00:00:00' //聊天时长格式化
   },
 
   methods: {
@@ -97,7 +83,6 @@ Component({
         console.log(TAG_NAME, 'onNewInvitationReceived', `是否在通话：${this.data.callStatus === CALL_STATUS.CALLING || this.data.callStatus === CALL_STATUS.CONNECTED}, inviteID:${event.data.inviteID} inviter:${event.data.inviter} inviteeList:${event.data.inviteeList} data:${event.data.data}`)
         const { inviteID, inviter, inviteeList, groupID = '' } = event.data
         const data = JSON.parse(event.data.data)
-        
         // 当前在通话中或在呼叫/被呼叫中，接收的新的邀请时，忙线拒绝
         if (this.data.callStatus === CALL_STATUS.CALLING || this.data.callStatus === CALL_STATUS.CONNECTED) {
 
@@ -151,11 +136,13 @@ Component({
         this.data.invitationAccept.inviteID = inviteID
         // 被邀请人进入calling状态
         // 当前invitation未处理完成时，下一个invitation都将会忙线
+        this._getUserProfile([inviter]);
         this._setCallStatus(CALL_STATUS.CALLING)
         this.setData({
           config: this.data.config,
           invitation: this.data.invitation,
           invitationAccept: this.data.invitationAccept,
+          isSponsor: false
         }, () => {
           console.log(`${TAG_NAME} NEW_INVITATION_RECEIVED invitation: `, this.data.callStatus, this.data.invitation)
           this._emitter.emit(EVENT.INVITED, {
@@ -306,6 +293,14 @@ Component({
       })
       tsignaling.on(TSignaling.EVENT.SDK_READY, () => {
         console.log(TAG_NAME, 'TSignaling SDK ready')
+        let promise = tim.getMyProfile();
+        promise.then((imResponse) => {
+          this.setData({
+            localUser: {...imResponse.data},
+          })
+        }).catch(function(imError) {
+          console.warn('getMyProfile error:', imError); // 获取个人资料失败的相关信息
+        });
       })
       tsignaling.on(TSignaling.EVENT.SDK_NOT_READY, () => {
         this._emitter.emit(EVENT.ERROR, {
@@ -520,9 +515,11 @@ Component({
         console.log(`${TAG_NAME} call(userID: ${userID}, type: ${type}) success`)
         // 发起人进入calling状态
         this._setCallStatus(CALL_STATUS.CALLING)
+        this._getUserProfile([userID])
         this.data.invitationAccept.inviteID = res.inviteID
         this.setData({
           invitationAccept: this.data.invitationAccept,
+          isSponsor: true
         })
         return res.data.message
       }).catch((error) => {
@@ -561,9 +558,11 @@ Component({
         console.log(TAG_NAME, 'inviteInGroup OK', res)
         // 发起人进入calling状态
         this._setCallStatus(CALL_STATUS.CALLING)
+        this._getUserProfile(params.groupID)
         this.data.invitationAccept.inviteID = res.inviteID
         this.setData({
           invitationAccept: this.data.invitationAccept,
+          isSponsor: true
         })
         return res.data.message
       }).catch((error) => {
@@ -584,6 +583,7 @@ Component({
           call_type: this.data.config.type,
         })),
       })
+      console.log('trtccaling accept------',acceptRes);
       if (acceptRes.code === 0) {
         console.log(TAG_NAME, '接受成功')
         // 被邀请人进入通话状态
@@ -727,6 +727,24 @@ Component({
       this.setData({
         callStatus: status,
       })
+      switch (status) {
+        case CALL_STATUS.CONNECTED:
+          this.data.timer = setInterval(()=>{
+            this.data.chatTimeNum++;
+            this.setData({
+              chatTime: formateTime(this.data.chatTimeNum),
+              chatTimeNum: this.data.chatTimeNum
+            })
+          },1000)
+          break;
+        case CALL_STATUS.IDLE:
+          this.data.timer && clearInterval(this.data.timer);
+          this.setData({
+            chatTime: "00:00:00",
+            chatTimeNum: 0
+          })
+            break;
+      }
     },
     _reset() {
       return new Promise( (resolve, reject) => {
@@ -739,6 +757,8 @@ Component({
           enableCamera: true,
           volume: 0,
         },
+        // 存在定时器，清除定时器
+        this.data.timer && clearInterval(this.data.timer);
         // 清空状态
         this.setData({
           pusherConfig: this.data.pusherConfig,
@@ -757,6 +777,8 @@ Component({
           _isGroupCall: false,
           _groupID: '',
           _unHandledInviteeList: [],
+          chatTimeNum: 0,
+          chatTime: '00:00:00'
         }, () => {
           resolve()
         })
@@ -862,6 +884,19 @@ Component({
       }, () => {
         console.log(`${TAG_NAME}, setHandsFree() result: ${this.data.soundMode}`)
       })
+    },
+
+    _toggleSwitchCamera() {
+      const isFront = this.data.pusherConfig.frontCamera === 'front' ? false: true
+      this.switchCamera(isFront)
+    },
+
+    _toggleCamera() {
+      if (!this.data.pusherConfig.enableCamera) {
+        this.openCamera()
+      }else {
+        this.closeCamera()
+      }
     },
 
     _toggleAudio() {
@@ -1099,21 +1134,109 @@ Component({
    * {@link https://iwiki.woa.com/pages/viewpage.action?pageId=820079397}
    */
    handleNewMessage(data, params) {
-    let info =  {
-      extraInfo: '',
-      ...data,
-      version: 4,
-      businessID: 'av_call',
-      platform: 'MiniApp',
-      data: {
-        cmd: CMD_TYPE_LIST[data.call_type],
-        room_id: data.room_id,
-        message: '',
-        ...params
+      let info =  {
+        extraInfo: '',
+        ...data,
+        version: 4,
+        businessID: 'av_call',
+        platform: 'MiniApp',
+        data: {
+          cmd: CMD_TYPE_LIST[data.call_type],
+          room_id: data.room_id,
+          message: '',
+          ...params
+        }
+      }
+      return info;
+    },
+    switchAudioCall() {
+      // const message = {
+      //   call_type: this.data.config.type,
+      //   room_id: roomID,
+      //   switch_to_audio_call: 'switch_to_audio_call'
+      // }
+      // const otherMessage = {
+      //   cmd: 'switchToAudio',
+      // }
+  
+      // tsignaling.invite({
+      //   userID:'',
+      //   data: JSON.stringify(
+      //     this.handleNewSignaling(message, otherMessage)),
+      //   timeout: 0,
+      // });
+    },
+    switchVideoCall() {
+      // const message = {
+      //   call_type: this.data.config.type,
+      //   room_id: roomID
+      // }
+      // const otherMessage = {
+      //   cmd: 'switchToVideo',
+      // } 
+      // tsignaling.invite({
+      //   userID:'',
+      //   data: JSON.stringify(
+      //     this.handleNewSignaling(message, otherMessage)),
+      //   timeout: 0,
+      // });
+    },
+    // 获取用户信息
+    _getUserProfile(userList) {
+      console.log(tim);
+      let promise = tim.getUserProfile({
+        userIDList: userList
+      });
+      promise.then((imResponse) => {
+        console.log('获取用户信息=----------',imResponse);
+        console.log(imResponse.data);
+        this.setData({
+          remoteUsers:imResponse.data
+        })
+      }).catch(function(imError) {
+        console.warn('getUserProfile error:', imError); // 获取其他用户资料失败的相关信息
+      });
+    },
+    // 图像解析不出来的缺省图设置
+    _handleErrorImage() {
+      const remoteUsers = this.data.remoteUsers
+      remoteUsers[0].avatar = './static/avatar2_100.png'
+      this.setData({
+        remoteUsers: remoteUsers
+      })
+    },
+    // pusher 的网络状况
+    _pusherNetStatus(e) {
+      const data = e.detail.info;
+      console.log('本地网络状况-----',data);
+      if (data.netQualityLevel> 4) {
+        wx.showToast({
+          icon: "none",
+          title: '您当前网络不佳',
+        })
+      }
+    },
+    // player 的网络状况
+    _playNetStatus(e) {
+      const data = e.detail.info;
+      console.log('对方网络状况-----',data);
+      const userId = e.target.dataset.userid;
+      let name = "对方";
+      if (this.data.streamList > 1) {
+         this.data.remoteUsers.map((item)=>{
+          if (item.userId === userId) {
+            name = "用户" + item.nick;
+          }
+        })
+      }
+      
+      if (data.netQualityLevel> 4) {
+        wx.showToast({
+          icon: "none",
+          title: name + '当前网络不佳',
+        })
       }
     }
-    return info;
-  }
   },
 
   /**
@@ -1123,14 +1246,6 @@ Component({
     created: function() {
       // 在组件实例刚刚被创建时执行
       console.log(TAG_NAME, 'created', ENV, this.data.config)
-      if (!tsignaling) {
-        // tsignaling = new TSignaling({ SDKAppID: this.data.config.sdkAppID, tim: wx.$app })
-        // tim为非必填参数，如果您的小程序中已存在IM实例，可以通过这个参数将其传入，避免IM实例的重复创建
-        tsignaling = new TSignaling({ SDKAppID: this.data.config.sdkAppID })
-      }
-      wx.setKeepScreenOn({
-        keepScreenOn: true,
-      })
     },
     attached: function() {
       // 在组件实例进入页面节点树时执行
@@ -1141,7 +1256,18 @@ Component({
     },
     ready: function() {
       // 在组件在视图层布局完成后执行
-      console.log(TAG_NAME, 'ready')
+      console.log(TAG_NAME, 'ready', ENV, this.data.config)
+      if (!tsignaling) {
+        // tsignaling = new TSignaling({ SDKAppID: this.data.config.sdkAppID, tim: wx.$app })
+        // tim为非必填参数，如果您的小程序中已存在IM实例，可以通过这个参数将其传入，避免IM实例的重复创建
+        tim = TIM.create({
+          SDKAppID: this.data.config.sdkAppID
+        })
+        tsignaling = new TSignaling({ SDKAppID: this.data.config.sdkAppID, tim: tim})
+      }
+      wx.setKeepScreenOn({
+        keepScreenOn: true,
+      })
     },
     detached: function() {
       // 在组件实例被从页面节点树移除时执行

@@ -1,17 +1,39 @@
 {
   "pages": [
     "pages/login/login",
+    "pages/videoCall/videoCall",
+    "pages/personal/personal",
     "pages/index/index",
     "pages/audioCall/audioCall",
-    "pages/videoCall/videoCall"
+    "pages/cancellation/index",
+    "pages/about/index"
   ],
   "window": {
     "backgroundColor": "#888",
     "backgroundTextStyle": "dark",
     "navigationBarBackgroundColor": "#000",
     "navigationBarTitleText": "腾讯视频云",
-    "navigationBarTextStyle": "white",
+    "navigationBarTextStyle": "black",
     "navigationStyle": "custom"
+  },
+  "tabBar": {
+    "custom": true,
+    "selectedColor": "#dd8c00",
+    "color": "#000000",
+    "backgroundColor": "#f7f7f7",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/personal/personal",
+        "text": "个人中心"
+      }
+    ]
+  },
+  "usingComponents": {
+    "tabBar": "custom-tab-bar/index"
   },
   "style": "v2",
   "sitemapLocation": "sitemap.json"

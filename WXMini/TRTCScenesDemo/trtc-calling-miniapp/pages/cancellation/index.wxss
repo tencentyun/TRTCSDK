@@ -1,0 +1,95 @@
+.container {
+    padding: 20rpx 0;
+    background: #F4F5F9;
+    background-repeat:no-repeat;
+    background-size: cover;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    box-sizing: border-box;
+  }
+  
+  .container .title{
+    position: relative;
+    width: 100vw;
+    font-size: 18px;
+    color: #000000;
+    letter-spacing: 0;
+    text-align: center;
+    line-height: 28px;
+    font-weight: 600;
+    background: #FFFFFF;
+    margin-top: 3.8vh;
+    padding: 1.2vh 0;
+  }
+  .btn-goback{
+      position: absolute;
+      left: 2vw;
+      top: 1.2vh;
+      width: 8vw;
+      height: 8vw;
+      z-index: 9;
+  }
+  .container .main {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.container .main image {
+  height: 15vh;
+}
+.container .main text {
+  text-align: center;
+}
+.container .main .account {
+  padding: 20px 0;
+  color: #999999;
+}
+.container .main button {
+  width: 100%;
+  background: #006eff;
+}
+
+.mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.popup {
+  background: #ffffff;
+  width: 80%;
+  border-radius: 20rpx;
+  overflow: hidden;
+}
+.popup-main {
+  padding: 60rpx 0;
+  text-align: center;
+  font-weight: 500;
+}
+.popup-footer {
+  display: flex;
+
+}
+.popup-footer button {
+  flex: 1;
+}
+.popup-footer .cancel {
+  background: #ffffff;
+  color: #006eff;
+}
+.popup-footer .submit {
+  background: #ffffff;
+  color: #df192a;
+}

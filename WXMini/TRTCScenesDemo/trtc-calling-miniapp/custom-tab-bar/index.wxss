@@ -1,0 +1,67 @@
+/* custom-tab-bar/index.wxss */
+.custom-item-text { 
+    font-size: 10px;
+    letter-spacing: 0;
+    font-weight: 500;
+}
+.custom-tab{
+    position: absolute; 
+    z-index: 9;
+    bottom: 0; 
+    left: 0; 
+    right: 0; 
+    padding-top: 16px;
+}
+
+.custom-tab .custom-box{
+    background: #FFFFFF;
+    border-top: 1px solid #eeeeee; 
+    box-shadow: 0px 0px 8px 0px rgba(215, 215, 215, 0.5); 
+    display: flex; 
+    display: -webkit-box; 
+    display: -ms-flex; 
+    display: -webkit-flex; 
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    cursor: pointer; 
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+}
+.custom-tab .custom-box .custom-item{ 
+    padding: 8px 0;
+    flex-grow: 1; 
+    flex-basis: 0; 
+    -webkit-flex-basis: 0;
+    color: #C7CED7; 
+}
+.custom-tab .custom-box .custom-item.active{ 
+    color: #007BFC; 
+}
+.custom-tab .custom-box .custom-item image{ 
+    width: 22px; 
+    height: 22px; 
+    margin-bottom: 2rpx; 
+    display: inline-block; 
+}
+
+.custom-logo {
+    position: absolute;
+    z-index: 100;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: 64px;
+    height: 64px;
+    border-radius: 64px;
+    /* border-top: 1px solid #eeeeee;s */
+    background: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.custom-logo image {
+    width: 56px;
+    height: 56px;
+
+}

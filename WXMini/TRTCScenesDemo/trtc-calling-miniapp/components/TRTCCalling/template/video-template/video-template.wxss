@@ -1,16 +1,16 @@
-.pusher-video {
+.player {
   position: absolute;
-  right: 0;
-  top: 0;
-  width: 160px;
-  height: 260px;
+  right: 16px;
+  top: 107px;
+  width: 100px;
+  height: 178px;
   z-index: 3;
 }
-.player {
+.pusher-video {
   position: absolute;
   width: 100%;
   height: 100%;
-  background-color: #f75c45;
+  /* background-color: #f75c45; */
   z-index: 1;
 }
 .stream-box {
@@ -18,15 +18,18 @@
   float: left;
   width: 50vw;
   height: 260px;
-  background-color: #f75c45;
+  /* background-color: #f75c45; */
   z-index: 3;
 }
 .handle-btns {
   position: absolute;
-  z-index: 3;
-  bottom: 3vh;
+  bottom: 10vh;
   width: 100vw;
   z-index: 3;
+  display: flex;
+  flex-direction: column;
+}
+.handle-btns .btn-list {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -43,8 +46,8 @@
   border-radius: 50%;
 }
 .btn-image{
-  width: 4vh;
-  height: 4vh;
+  width: 8vh;
+  height: 8vh;
 }
 .btn-hangup  {
   width: 8vh;
@@ -56,6 +59,10 @@
   align-items: center;
   border-radius: 50%;
 }
+.btn-hangup>.btn-image {
+  width: 4vh;
+  height: 4vh;
+}
 
 .TRTCCalling-call-audio {
   width: 100%;
@@ -65,4 +72,33 @@
 image {
   width: 100%;
   height: 100%;
+}
+.other-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 18px;
+  color: #FFFFFF;
+  letter-spacing: 0;
+  font-weight: 400;
+  padding: 16px;
+}
+.btn-footer {
+  position: relative;
+}
+
+.btn-footer .multi-camera {
+  width: 32px;
+  height: 32px;
+  position: absolute;
+  right: 12%;
+  top: 32px;
+}
+
+.btn-footer .camera {
+  width: 32px;
+  height: 32px;
+  position: fixed;
+  left: 16px;
+  top: 107px;
 }
