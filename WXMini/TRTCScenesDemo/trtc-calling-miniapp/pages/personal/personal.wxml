@@ -1,0 +1,25 @@
+<!--pages/personal/personal.wxml-->
+<view class="personal-page">
+    <image class="personal-page-bg" src="https://web.sdk.qcloud.com/component/miniApp/resources/personal-bg.png" />
+    <view class="personal-page-main">
+        <view class="personal-title">
+            <text class="personal-title-text">个人中心</text>
+        </view>
+        <view class="personal-header" hover-class="none">
+            <image class="personal-header-avatar" src="../Resources/avatar1_100.png" lazy-load="true" />
+            <view class="personal-header-ID">
+                <label class="personal-header-ID-label">ID:</label>
+                <text class="personal-header-ID-text">{{userId}}</text>
+            </view>
+        </view>
+        <view class="personal-main personal-list">
+            <view class="personal-list-item" wx:for="{{list}}" wx:key="*this" data-item="{{item}}" bindtap='handleRouter'>
+                <view class="aside-left">
+                    <image class="icon" src="{{item.icon}}" lazy-load="true" />
+                    <text>{{item.name}}</text>
+                </view>
+                <image class="icon aside-right" src="../Resources/icon/right.png" lazy-load="true" />
+            </view>
+        </view>
+    </view>
+</view>

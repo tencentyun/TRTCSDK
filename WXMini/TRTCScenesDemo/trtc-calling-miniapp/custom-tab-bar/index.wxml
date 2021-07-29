@@ -1,0 +1,14 @@
+<view class="custom-tab">
+  <view class="custom-box">
+    <view class="custom-item {{ selected === index ? 'active' : '' }}"
+      data-path="{{ item.pagePath }}" data-num="{{ index }}" bindtap="_switchTab" wx:for="{{ list }}" wx:key="*this">
+      <view>
+        <image src="{{ selected === index ? item.selectedIconPath : item.iconPath }}"></image>
+      </view>
+      <text class="custom-item-text">{{ item.text }}</text>
+    </view>
+  </view>
+    <view class="custom-logo">
+        <image src="/pages/Resources/icon/compass.png"></image>
+    </view>
+</view>

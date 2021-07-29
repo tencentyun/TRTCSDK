@@ -32,10 +32,9 @@ Page({
       })
     } else {
       wx.$globalData.userID = this.data.userID
-      wx.redirectTo({
-      // 若把入口加到腾讯视频云小程序下，则带参数进行传递
-        url: `../index/index`,
-      })
+      wx.switchTab({
+        url: '../index/index',
+      });
     }
   },
 })

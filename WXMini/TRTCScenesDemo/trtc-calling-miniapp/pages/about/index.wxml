@@ -1,0 +1,15 @@
+<view class="container">
+    <view class="title">
+        <image class="btn-goback" src="../Resources/back.png" bind:tap="onBack" />
+        <text>关于我们</text>
+    </view>
+    <view class="list">
+        <view class="list-item" wx:for="{{list}}" wx:key="index" data-item="{{item}}" bindtap='handleRouter'>
+            <view class="aside-left">
+                <text>{{item.name}}</text>
+            </view>
+            <image wx:if="{{item.path}}" class="icon aside-right" src="../Resources/right.png" lazy-load="true" />
+            <text wx:else>{{item.value}}</text>
+        </view>
+    </view>
+</view>

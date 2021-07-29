@@ -1,0 +1,28 @@
+<view class="container">
+    <view class="title">
+        <image class="btn-goback" src="../Resources/back.png" bind:tap="onBack" />
+        <text>注销账号</text>
+    </view>
+    <view class="main">
+        <image src="../Resources/cancellation.svg" />
+        <text selectable="false" space="false" decode="false">
+            注销后，您将无法使用当前账号，相关数据也将删除无法找回
+        </text>
+        <view class="account" hover-class="none" hover-stop-propagation="false">
+            <label>当前账户：</label>
+            <text class="">{{userId}}</text>
+        </view>
+        <button type="primary" bind:tap="handleCancellation">确认注销</button>
+    </view>
+</view>
+<view class="mask" wx:if="{{toggle}}" catch:tap="close">
+    <view class="popup">
+        <view class="popup-main">
+            <text>确定要注销账户吗?</text>
+        </view>
+        <view class="popup-footer">
+            <button class="cancel" type="primary" catch:tap="close">再等等</button>
+            <button class="submit" type="primary" catch:tap="submit">我确定</button>
+        </view>
+    </view>
+</view>

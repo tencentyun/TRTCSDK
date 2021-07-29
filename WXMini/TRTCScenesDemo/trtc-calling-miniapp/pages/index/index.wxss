@@ -1,6 +1,6 @@
 .container {
-  background-image: url(https://mc.qcloudimg.com/static/img/7da57e0050d308e2e1b1e31afbc42929/bg.png);
-  background-color: #333;
+  /* background-image: url(https://mc.qcloudimg.com/static/img/7da57e0050d308e2e1b1e31afbc42929/bg.png); */
+  background: #F4F5F9;
   background-repeat:no-repeat;
   background-size: cover;
   width: 100vw;
@@ -12,10 +12,17 @@
 }
 
 .container .title{
-  color: #FFFFFF;
-  padding-top: 65rpx;
-  padding-bottom: 40rpx;
-  line-height: 60rpx;
+  position: relative;
+  width: 100vw;
+  font-size: 18px;
+  color: #000000;
+  letter-spacing: 0;
+  text-align: center;
+  line-height: 28px;
+  font-weight: 600;
+  background: #FFFFFF;
+  margin-top: 3.8vh;
+  padding: 1.2vh 0;
 }
 .tips {
   color: #ffffff;
@@ -23,38 +30,42 @@
   text-align: center;
 }
 .guide-box {
+  width: 100vw;
+  box-sizing: border-box;
+  padding: 16px;
   display: flex;
-  flex-wrap: wrap;
-  text-align: center;
-  padding: 100rpx 5vw;
+  flex-direction: column;
 }
 .single-box {
-  width: 35vw;
-  height: 33vw;
-  background-color: rgba(0, 0, 0, 0.55);
-  text-align: center;
-  vertical-align: top;
-  margin: 5vw ;
-  margin-bottom: 60rpx;
+  flex: 1;
+  border-radius: 10px;
+  background-color: #ffffff;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
 }
 .icon {
   display: block;
-  width: 72rpx;
-  height: 72rpx;
-  margin: 20px auto 0;
+  width: 180px;
+  height: 144px;
+}
+.single-content {
+  padding: 36px 30px 36px 20px;
+  color: #333333;
 }
 .label {
   display: block;
-  margin-top: 10px;
-  color: #CFE4FF;
-  font-size: 28rpx;
+  font-size: 18px;
+  color: #333333;
+  letter-spacing: 0;
+  font-weight: 500;
 }
 .desc {
   display: block;
-  margin-top: 2px;
-  color: #CFE4FF;
-  font-size: 28rpx;
-  white-space: nowrap;
+  font-size: 14px;
+  color: #333333;
+  letter-spacing: 0;
+  font-weight: 500;
 }
 .logo-box {
   position: absolute;
