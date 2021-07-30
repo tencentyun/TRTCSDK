@@ -10,7 +10,7 @@
  TRTC APP 支持第三方美颜功能
  本文件展示如何集成第三方美颜功能
  1、进入TRTC房间。        API:[self.trtcCloud enterRoom:params appScene:TRTCAppSceneLIVE];
- 2、设置远端视频的自定义渲染回调。      API:[self.trtcCloud setLocalVideoRenderDelegate:self pixelFormat:(TRTCVideoPixelFormat_NV12) bufferType:(TRTCVideoBufferType_PixelBuffer)];
+ 2、设置远端视频的自定义渲染回调。      API:[self.trtcCloud setLocalVideoProcessDelegete:self pixelFormat:TRTCVideoPixelFormat_Texture_2D bufferType:TRTCVideoBufferType_Texture];
  3、使用第三方美颜SDK<Demo中使用的是Faceunity>: API: [[FUManager shareManager] renderItemsToPixelBuffer:frame.pixelBuffer];
  参考文档：https://cloud.tencent.com/document/product/647/34066
  第三方美颜：https://github.com/Faceunity/FUTRTCDemo
@@ -19,9 +19,8 @@
  Third-Party Beauty Filters
  The TRTC app supports third-party beauty filters.
  This document shows how to integrate third-party beauty filters.
- 1. Enter a room: [self.trtcCloud enterRoom:params appScene:TRTCAppSceneLIVE]
- 2. Set the callback of remote video data for custom rendering: [self.trtcCloud setLocalVideoRenderDelegate:self pixelFormat:(TRTCVideoPixelFormat_NV12)
- bufferType:(TRTCVideoBufferType_PixelBuffer)]
+ 1. Enter a room: [self.trtcCloud enterRoom:params appScene:TRTCAppSceneLIVE];
+ 2. Set the callback of remote video data for custom rendering: [self.trtcCloud setLocalVideoProcessDelegete:self pixelFormat:TRTCVideoPixelFormat_Texture_2D bufferType:TRTCVideoBufferType_Texture];
  3. Use a third-party filter SDK <FaceUnity is used in the demo>: [[FUManager shareManager] renderItemsToPixelBuffer:frame.pixelBuffer];
  Documentation: https://cloud.tencent.com/document/product/647/34066
  Third-party beauty filter: https://github.com/Faceunity/FUTRTCDemo
@@ -32,7 +31,7 @@
 
 static const NSInteger RemoteUserMaxNum = 6;
 
-@interface ThirdBeautyViewController () <TRTCCloudDelegate, TRTCVideoRenderDelegate>
+@interface ThirdBeautyViewController () <TRTCCloudDelegate, TRTCVideoFrameDelegate>
 @property (weak, nonatomic) IBOutlet UIView *leftRemoteViewA;
 @property (weak, nonatomic) IBOutlet UIView *leftRemoteViewB;
 @property (weak, nonatomic) IBOutlet UIView *leftRemoteViewC;
@@ -239,9 +238,10 @@ static const NSInteger RemoteUserMaxNum = 6;
     }
 }
 
-#pragma mark - TRTCVideoRenderDelegate
-- (void)onRenderVideoFrame:(TRTCVideoFrame *)frame userId:(NSString *)userId streamType:(TRTCVideoStreamType)streamType {
-//    [[FUManager shareManager] renderItemsToPixelBuffer:frame.pixelBuffer];
+#pragma mark - TRTCVideoFrameDelegate
+- (uint32_t)onProcessVideoFrame:(TRTCVideoFrame *_Nonnull)srcFrame dstFrame:(TRTCVideoFrame *_Nonnull)dstFrame {
+//    dstFrame.textureId = [[FUManager shareManager] renderItemWithTexture:srcFrame.textureId Width:srcFrame.width Height:srcFrame.height];
+    return 0;
 }
 
 #pragma mark - StartPushStream & StopPushStream
@@ -256,13 +256,7 @@ static const NSInteger RemoteUserMaxNum = 6;
     params.userSig = [GenerateTestUserSig genTestUserSig:self.userIdTextField.text];
     params.role = TRTCRoleAnchor;
     
-    NSDictionary *dict = @{
-                                @"api" : @"setCustomRenderMode",
-                                @"params" : @{@"mode" : @(1)}
-                            };
-
-    [self.trtcCloud callExperimentalAPI:[NSString convertToJsonData:dict]];
-    [self.trtcCloud setLocalVideoRenderDelegate:self pixelFormat:(TRTCVideoPixelFormat_NV12) bufferType:(TRTCVideoBufferType_PixelBuffer)];
+    [self.trtcCloud setLocalVideoProcessDelegete:self pixelFormat:TRTCVideoPixelFormat_Texture_2D bufferType:TRTCVideoBufferType_Texture];
     [self.trtcCloud enterRoom:params appScene:TRTCAppSceneLIVE];
     [self.trtcCloud startLocalAudio:TRTCAudioQualityMusic];
     
