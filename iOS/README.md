@@ -1,8 +1,19 @@
+## 场景化解决方案
+
+TUI场景化解决方案是腾讯云TRTC针对直播、语聊、视频通话等推出的低代码解决方案，依托腾讯在音视频&通信领域的技术积累，帮助开发者快速实现相关业务场景，聚焦核心业务，助力业务起飞，欢迎使用～
+
+- [视频互动直播-TUILiveRoom](https://github.com/tencentyun/TUILiveRoom/)
+- [实时语音/视频通话-TUICalling](https://github.com/tencentyun/TUICalling/)
+- [多人视频会议-TUIMeeting](https://github.com/tencentyun/TUIMeeting/)
+- [语音聊天室-TUIVoiceRoom](https://github.com/tencentyun/TUIVoiceRoom/)
+- [语音沙龙-TUIChatSalon](https://github.com/tencentyun/TUIChatSalon)
+
+> 说明：TRTCSceneDemo所有源码，可以移步到仓库:[LiteAVClassic](https://github.com/tencentyun/LiteAVClassic)查看～
+
 ## 目录结构说明
 
 本目录包含 iOS 版 TRTC-API-Example 源代码：
 - TRTC-API-Example-OC： 最简单的示例代码，使用Objective-C语言。包括视频通话、语音通话的基础功能以及一些高级功能。
-- 
 ```
 ├─ TRTC-API-Example-OC // TRTC API Example，包括视频通话、语音通话的基础功能以及一些高级功能
 │  ├─ Basic                 // 演示 TRTC 基本功能示例代码

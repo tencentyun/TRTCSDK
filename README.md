@@ -1,6 +1,17 @@
 # 腾讯云实时音视频终端组件 TRTC SDK
 
+## 工程动态
+
+TUI场景化解决方案是腾讯云TRTC针对直播、语聊、视频通话等推出的低代码解决方案，依托腾讯在音视频&通信领域的技术积累，帮助开发者快速实现相关业务场景，聚焦核心业务，助力业务起飞，欢迎使用～
+
+- [视频互动直播-TUILiveRoom](https://github.com/tencentyun/TUILiveRoom/)
+- [实时语音/视频通话-TUICalling](https://github.com/tencentyun/TUICalling/)
+- [多人视频会议-TUIMeeting](https://github.com/tencentyun/TUIMeeting/)
+- [语音聊天室-TUIVoiceRoom](https://github.com/tencentyun/TUIVoiceRoom/)
+- [语音沙龙-TUIChatSalon](https://github.com/tencentyun/TUIChatSalon)
+
 ## SDK 下载
+
 访问 Github 较慢的客户可以考虑使用国内下载地址： [DOWNLOAD](https://cloud.tencent.com/document/product/647/32689) 。
 
 | 所属平台 | Zip下载 | Demo运行说明 | SDK集成指引 | API 列表 |

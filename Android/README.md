@@ -1,3 +1,15 @@
+## 场景化解决方案
+
+TUI场景化解决方案是腾讯云TRTC针对直播、语聊、视频通话等推出的低代码解决方案，依托腾讯在音视频&通信领域的技术积累，帮助开发者快速实现相关业务场景，聚焦核心业务，助力业务起飞，欢迎使用～
+
+- [视频互动直播-TUILiveRoom](https://github.com/tencentyun/TUILiveRoom/)
+- [实时语音/视频通话-TUICalling](https://github.com/tencentyun/TUICalling/)
+- [多人视频会议-TUIMeeting](https://github.com/tencentyun/TUIMeeting/)
+- [语音聊天室-TUIVoiceRoom](https://github.com/tencentyun/TUIVoiceRoom/)
+- [语音沙龙-TUIChatSalon](https://github.com/tencentyun/TUIChatSalon)
+
+> 说明：TRTCSceneDemo所有源码，可以移步到仓库:[LiteAVClassic](https://github.com/tencentyun/LiteAVClassic)查看～
+
 ## 目录结构说明
 
 本目录包含 Android 版 TRTC-API-Example源码：
@@ -36,6 +48,8 @@
 |  ├─ LiteAVSDK_Enterprise_x.y.zzzz.aar   // 如果您下载的是企业版 zip 包，解压后将出现此文件夹，其中 x.y.zzzz 表示 SDK 版本号 
 ```
 
+
+
 ## SDK 分类和下载
 
 腾讯云 TRTC SDK 基于 LiteAVSDK 统一框架设计和实现，该框架包含直播、点播、短视频、RTC、AI美颜在内的多项功能：
@@ -66,13 +80,3 @@
 - [场景方案：语音沙龙](https://cloud.tencent.com/document/product/647/53537)
 - [场景方案：视频会议](https://cloud.tencent.com/document/product/647/45667)
 
-## 场景化解决方案
-8.8版本以后，TRTCSceneDemo所有源码，已全部拆分，移到对应的仓库，更新为TUI组件化方案。
-
-TUI组件化解决方案是腾讯云TRTC针对直播、语聊、视频通话等推出的低代码解决方案，依托腾讯在音视频&通信领域的技术积累，帮助开发者快速实现相关业务场景，聚焦核心业务，助力业务起飞！
-
-- [视频互动直播-TUILiveRoom](https://github.com/tencentyun/TUILiveRoom/)
-- [实时语音/视频通话-TUICalling](https://github.com/tencentyun/TUICalling/)
-- [多人视频会议-TUIMeeting](https://github.com/tencentyun/TUIMeeting/)
-- [语音聊天室-TUIVoiceRoom](https://github.com/tencentyun/TUIVoiceRoom/)
-- [语音沙龙-TUIChatSalon](https://github.com/tencentyun/TUIChatSalon)
