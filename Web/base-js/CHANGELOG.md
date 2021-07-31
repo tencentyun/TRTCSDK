@@ -7,6 +7,17 @@
 > - 建议您及时更新至最新版本，以便获得更好的产品稳定性及在线支持。
 > - 版本升级注意事项请参见：[升级指引](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/tutorial-00-info-update-guideline.html)。
 
+## Version 4.11.3 @2021.07.30
+
+**Improvement**
+
+- 优化 publish & subscribe 接口异常处理逻辑。
+- 优化混音插件的恢复策略。
+
+**Bug Fixed**
+
+- 修复偶现 peer-leave 通知不准的问题。
+
 ## Version 4.11.2 @2021.07.23
 
 **Improvement**
