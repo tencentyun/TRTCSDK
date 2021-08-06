@@ -4,7 +4,7 @@ import { EVENT, TRTC_EVENT, ACTION_TYPE, BUSINESS_ID, CALL_STATUS, CMD_TYPE_LIST
 import UserController from './controller/user-controller'
 import formateTime from './utils/formate-time'
 import TSignaling from './utils/tsignaling-wx'
-import TIM from "./utils/tim-wx-sdk";
+import TIM from './utils/tim-wx-sdk'
 
 // TODO 组件挂载和模版方式分离，目前使用的方式，只能把TRTCCalling挂载在index页面上
 
@@ -26,10 +26,25 @@ Component({
         sdkAppID: 0,
         userID: '',
         userSig: '',
-        type: 0
+        type: 0,
+      },
+    },
+  },
+  observers: {
+    'streamList': function(streamList) {
+      for (let i = 0; i < streamList.length; i++) {
+        if (!streamList[i].avatar && !streamList[i].nick) {
+          console.log(`observers ${streamList[i].userID} has not avatar and nick`, streamList[i])
+          this._getStreamProfile([streamList[i].userID]).then((imResponse)=>{
+            console.log(`get ${streamList[i].userID}`, imResponse)
+            streamList[i].avatar = imResponse.data[0].avatar
+            streamList[i].nick = imResponse.data[0].nick
+          })
+        }
       }
     },
   },
+
   data: {
     callStatus: CALL_STATUS.IDLE, // 用户当前的通话状态
     soundMode: 'speaker', // 声音模式 听筒/扬声器
@@ -55,13 +70,14 @@ Component({
     _isGroupCall: false, // 当前通话是否是群通话
     _groupID: '', // 群组ID
     _unHandledInviteeList: [], // 未处理的被邀请着列表
-    tim: null, //TIM实例
+    tim: null, // TIM实例
     localUser: null, // 本地用户资料
     remoteUsers: [], // 远程用户资料
     isSponsor: true, // true:呼叫者，false:被呼叫对象
     timer: null, // 聊天时长定时器
-    chatTimeNum: 0, //聊天时长
-    chatTime: '00:00:00' //聊天时长格式化
+    chatTimeNum: 0, // 聊天时长
+    chatTime: '00:00:00', // 聊天时长格式化
+    screen: 'pusher', // 视屏通话中，显示大屏幕的流（只限1v1聊天）
   },
 
   methods: {
@@ -80,20 +96,19 @@ Component({
       tsignaling.off(TSignaling.EVENT.REMOTE_USER_LEAVE)
       tsignaling.off(TSignaling.EVENT.KICKED_OUT)
       tsignaling.on(TSignaling.EVENT.NEW_INVITATION_RECEIVED, (event) => {
-        console.log(TAG_NAME, 'onNewInvitationReceived', `是否在通话：${this.data.callStatus === CALL_STATUS.CALLING || this.data.callStatus === CALL_STATUS.CONNECTED}, inviteID:${event.data.inviteID} inviter:${event.data.inviter} inviteeList:${event.data.inviteeList} data:${event.data.data}`)
+        console.log(TAG_NAME, 'onNewInvitationReceived', `callStatus：${this.data.callStatus === CALL_STATUS.CALLING || this.data.callStatus === CALL_STATUS.CONNECTED}, inviteID:${event.data.inviteID} inviter:${event.data.inviter} inviteeList:${event.data.inviteeList} data:${event.data.data}`)
         const { inviteID, inviter, inviteeList, groupID = '' } = event.data
         const data = JSON.parse(event.data.data)
         // 当前在通话中或在呼叫/被呼叫中，接收的新的邀请时，忙线拒绝
         if (this.data.callStatus === CALL_STATUS.CALLING || this.data.callStatus === CALL_STATUS.CONNECTED) {
-
           tsignaling.reject({
             inviteID: inviteID,
             data: JSON.stringify(
               this.handleNewMessage({
-              version: 0,
-              call_type: data.call_type,
-              line_busy: 'line_busy',
-            },{ message: 'lineBusy' })),
+                version: 0,
+                call_type: data.call_type,
+                line_busy: 'line_busy',
+              }, { message: 'lineBusy' })),
           })
           this._emitter.emit(EVENT.CALL_END)
           return
@@ -136,13 +151,13 @@ Component({
         this.data.invitationAccept.inviteID = inviteID
         // 被邀请人进入calling状态
         // 当前invitation未处理完成时，下一个invitation都将会忙线
-        this._getUserProfile([inviter]);
+        this._getUserProfile([inviter])
         this._setCallStatus(CALL_STATUS.CALLING)
         this.setData({
           config: this.data.config,
           invitation: this.data.invitation,
           invitationAccept: this.data.invitationAccept,
-          isSponsor: false
+          isSponsor: false,
         }, () => {
           console.log(`${TAG_NAME} NEW_INVITATION_RECEIVED invitation: `, this.data.callStatus, this.data.invitation)
           this._emitter.emit(EVENT.INVITED, {
@@ -179,9 +194,9 @@ Component({
           return
         }
         const data = JSON.parse(event.data.data)
-        if (data.line_busy === '' || 
-            data.line_busy === 'line_busy'|| 
-            (data.data && data.data.message && 
+        if (data.line_busy === '' ||
+            data.line_busy === 'line_busy' ||
+            (data.data && data.data.message &&
             data.data.message === 'lineBusy')) {
           this._emitter.emit(EVENT.LINE_BUSY, {
             inviteID: event.data.inviteID,
@@ -213,15 +228,16 @@ Component({
       })
       tsignaling.on(TSignaling.EVENT.INVITATION_CANCELLED, (event) => {
         // 收到的邀请收到该邀请取消的回调
-        console.log(TAG_NAME, 'onInvitationCancelled邀请取消', `inviteID:${event.data.inviteID} inviter:${event.data.invitee} data:${event.data.data}`)
+        console.log(TAG_NAME, 'onInvitationCancelled', `inviteID:${event.data.inviteID} inviter:${event.data.invitee} data:${event.data.data}`)
         this._setCallStatus(CALL_STATUS.IDLE)
         this._emitter.emit(EVENT.CALLING_CANCEL, {
           inviteID: event.data.inviteID,
           invitee: event.data.invitee,
         })
+        this._reset()
       })
       tsignaling.on(TSignaling.EVENT.INVITATION_TIMEOUT, (event) => {
-        console.log(TAG_NAME, 'onInvitationTimeout 邀请超时', `inviteID:${event.data.inviteID} inviteeList:${event.data.inviteeList}`)
+        console.log(TAG_NAME, 'onInvitationTimeout', `inviteID:${event.data.inviteID} inviteeList:${event.data.inviteeList}`)
         const { groupID = '', inviteID, inviter, inviteeList, isSelfTimeout } = event.data
         if (this.data.callStatus !== CALL_STATUS.CONNECTED) {
           // 自己发起通话且先超时，即对方不在线，isSelfTimeout是对方是否在线的标识
@@ -293,14 +309,14 @@ Component({
       })
       tsignaling.on(TSignaling.EVENT.SDK_READY, () => {
         console.log(TAG_NAME, 'TSignaling SDK ready')
-        let promise = tim.getMyProfile();
+        const promise = tim.getMyProfile()
         promise.then((imResponse) => {
           this.setData({
-            localUser: {...imResponse.data},
+            localUser: { ...imResponse.data },
           })
         }).catch(function(imError) {
-          console.warn('getMyProfile error:', imError); // 获取个人资料失败的相关信息
-        });
+          console.warn('getMyProfile error:', imError) // 获取个人资料失败的相关信息
+        })
       })
       tsignaling.on(TSignaling.EVENT.SDK_NOT_READY, () => {
         this._emitter.emit(EVENT.ERROR, {
@@ -331,7 +347,7 @@ Component({
       })
       // 监听TRTC SDK抛出的事件
       this.userController.on(TRTC_EVENT.REMOTE_USER_JOIN, (event)=>{
-        console.log(TAG_NAME, '远端用户进房', event, event.data.userID)
+        console.log(TAG_NAME, 'REMOTE_USER_JOIN', event, event.data.userID)
         this.setData({
           playerList: event.data.userList,
         }, () => {
@@ -351,7 +367,7 @@ Component({
       })
       // 远端用户离开
       this.userController.on(TRTC_EVENT.REMOTE_USER_LEAVE, (event)=>{
-        console.log(TAG_NAME, '远端用户离开', event, event.data.userID)
+        console.log(TAG_NAME, 'REMOTE_USER_LEAVE', event, event.data.userID)
         if (event.data.userID) {
           this.setData({
             playerList: event.data.userList,
@@ -390,7 +406,7 @@ Component({
       })
       // 视频状态 true
       this.userController.on(TRTC_EVENT.REMOTE_VIDEO_ADD, (event)=>{
-        console.log(TAG_NAME, '远端视频可用', event, event.data.stream.userID)
+        console.log(TAG_NAME, 'REMOTE_VIDEO_ADD', event, event.data.stream.userID)
         const stream = event.data.stream
         this.setData({
           playerList: event.data.userList,
@@ -402,7 +418,7 @@ Component({
       })
       // 视频状态 false
       this.userController.on(TRTC_EVENT.REMOTE_VIDEO_REMOVE, (event)=>{
-        console.log(TAG_NAME, '远端视频移除', event, event.data.stream.userID)
+        console.log(TAG_NAME, 'REMOTE_VIDEO_REMOVE', event, event.data.stream.userID)
         const stream = event.data.stream
         this.setData({
           playerList: event.data.userList,
@@ -417,7 +433,7 @@ Component({
       })
       // 音频可用
       this.userController.on(TRTC_EVENT.REMOTE_AUDIO_ADD, (event)=>{
-        console.log(TAG_NAME, '远端音频可用', event)
+        console.log(TAG_NAME, 'REMOTE_AUDIO_ADD', event)
         const stream = event.data.stream
         this.setData({
           playerList: event.data.userList,
@@ -433,7 +449,7 @@ Component({
       })
       // 音频不可用
       this.userController.on(TRTC_EVENT.REMOTE_AUDIO_REMOVE, (event)=>{
-        console.log(TAG_NAME, '远端音频移除', event, event.data.stream.userID)
+        console.log(TAG_NAME, 'REMOTE_AUDIO_REMOVE', event, event.data.stream.userID)
         const stream = event.data.stream
         this.setData({
           playerList: event.data.userList,
@@ -458,7 +474,7 @@ Component({
           userID: this.data.config.userID,
           userSig: this.data.config.userSig,
         }).then( () => {
-          console.log(TAG_NAME, 'login', 'IM登入成功')
+          console.log(TAG_NAME, 'login', 'IM login success')
           this._initEventEmitter()
           resolve()
         })
@@ -472,9 +488,9 @@ Component({
         userID: this.data.config.userID,
         userSig: this.data.config.userSig,
       }).then( () => {
-        console.log(TAG_NAME, 'login', 'IM登出成功')
+        console.log(TAG_NAME, 'logout', 'IM logout success')
       }).catch( () => {
-        console.error(TAG_NAME, 'login', 'IM登出失败')
+        console.error(TAG_NAME, 'logout', 'M logout failure')
       })
     },
     /**
@@ -512,14 +528,16 @@ Component({
           })),
         timeout: 30,
       }).then( (res) => {
-        console.log(`${TAG_NAME} call(userID: ${userID}, type: ${type}) success`)
+        console.log(`${TAG_NAME} call(userID: ${userID}, type: ${type}) success, ${res}`)
         // 发起人进入calling状态
+        this.data.config.type = type
         this._setCallStatus(CALL_STATUS.CALLING)
         this._getUserProfile([userID])
         this.data.invitationAccept.inviteID = res.inviteID
         this.setData({
+          config: this.data.config,
           invitationAccept: this.data.invitationAccept,
-          isSponsor: true
+          isSponsor: true,
         })
         return res.data.message
       }).catch((error) => {
@@ -550,19 +568,21 @@ Component({
         timeout: 30,
         data: JSON.stringify(
           this.handleNewMessage({
-          version: 0,
-          call_type: params.type,
-          room_id: roomID,
-        })),
+            version: 0,
+            call_type: params.type,
+            room_id: roomID,
+          })),
       }).then((res) => {
         console.log(TAG_NAME, 'inviteInGroup OK', res)
         // 发起人进入calling状态
+        this.data.config.type = params.type
         this._setCallStatus(CALL_STATUS.CALLING)
-        this._getUserProfile(params.groupID)
+        this._getUserProfile(params.userIDList)
         this.data.invitationAccept.inviteID = res.inviteID
         this.setData({
+          config: this.data.config,
           invitationAccept: this.data.invitationAccept,
-          isSponsor: true
+          isSponsor: true,
         })
         return res.data.message
       }).catch((error) => {
@@ -579,13 +599,13 @@ Component({
         inviteID: this.data.invitation.inviteID,
         data: JSON.stringify(
           this.handleNewMessage({
-          version: 0,
-          call_type: this.data.config.type,
-        })),
+            version: 0,
+            call_type: this.data.config.type,
+          })),
       })
-      console.log('trtccaling accept------',acceptRes);
+      console.log('trtccaling accept------', acceptRes)
       if (acceptRes.code === 0) {
-        console.log(TAG_NAME, '接受成功')
+        console.log(TAG_NAME, 'accept OK')
         // 被邀请人进入通话状态
         this._setCallStatus(CALL_STATUS.CONNECTED)
         if (this._getGroupCallFlag()) {
@@ -595,7 +615,7 @@ Component({
         this._enterTRTCRoom()
         return acceptRes.data.message
       }
-      console.error(TAG_NAME, '接受失败', acceptRes)
+      console.error(TAG_NAME, 'accept failed', acceptRes)
       return acceptRes
     },
     /**
@@ -607,9 +627,9 @@ Component({
           inviteID: this.data.invitation.inviteID,
           data: JSON.stringify(
             this.handleNewMessage({
-            version: 0,
-            call_type: this.data.config.type,
-          })),
+              version: 0,
+              call_type: this.data.config.type,
+            })),
         })
         if (rejectRes.code === 0) {
           console.log(TAG_NAME, 'reject OK', rejectRes)
@@ -628,6 +648,9 @@ Component({
      */
     hangup() {
       const inviterFlag = !this.data.invitation.inviteID && this.data.invitationAccept.inviteID // 是否是邀请者
+      console.log('挂断inviterFlag', inviterFlag)
+      console.log('挂断invitation', this.data.invitation.inviteID)
+      console.log('挂断invitationAccept', this.data.invitationAccept.inviteID)
       let cancelRes = null
       if (inviterFlag && this.data.callStatus === CALL_STATUS.CALLING) {
         console.log(TAG_NAME, 'cancel() inviteID: ', this.data.invitationAccept.inviteID)
@@ -635,9 +658,9 @@ Component({
           inviteID: this.data.invitationAccept.inviteID,
           data: JSON.stringify(
             this.handleNewMessage({
-            version: 0,
-            call_type: this.data.config.type,
-          })),
+              version: 0,
+              call_type: this.data.config.type,
+            })),
         }).then((res) => {
           cancelRes = res
         })
@@ -672,10 +695,10 @@ Component({
           inviteeList: userIDList,
           data: JSON.stringify(
             this.handleNewMessage({
-            version: 0,
-            call_type: callType,
-            call_end: 0, // 群call_end 目前设置为0
-          },{ cmd: 'hangup' })),
+              version: 0,
+              call_type: callType,
+              call_end: 0, // 群call_end 目前设置为0
+            }, { cmd: 'hangup' })),
           timeout: 0,
         })
       } else {
@@ -684,10 +707,10 @@ Component({
           userID: userIDList[0],
           data: JSON.stringify(
             this.handleNewMessage({
-            version: 0,
-            call_type: callType,
-            call_end: callEnd,
-          },{ cmd: 'hangup' })),
+              version: 0,
+              call_type: callType,
+              call_end: callEnd,
+            }, { cmd: 'hangup' })),
         })
       }
       this._setCallStatus(CALL_STATUS.IDLE)
@@ -730,20 +753,20 @@ Component({
       switch (status) {
         case CALL_STATUS.CONNECTED:
           this.data.timer = setInterval(()=>{
-            this.data.chatTimeNum++;
+            this.data.chatTimeNum++
             this.setData({
               chatTime: formateTime(this.data.chatTimeNum),
-              chatTimeNum: this.data.chatTimeNum
+              chatTimeNum: this.data.chatTimeNum,
             })
-          },1000)
-          break;
+          }, 1000)
+          break
         case CALL_STATUS.IDLE:
-          this.data.timer && clearInterval(this.data.timer);
+          this.data.timer && clearInterval(this.data.timer)
           this.setData({
-            chatTime: "00:00:00",
-            chatTimeNum: 0
+            chatTime: '00:00:00',
+            chatTimeNum: 0,
           })
-            break;
+          break
       }
     },
     _reset() {
@@ -757,8 +780,10 @@ Component({
           enableCamera: true,
           volume: 0,
         },
+        wx.createLivePusherContext().setMICVolume({ volume: 1 })
+        this.data.config.type = this.data.type
         // 存在定时器，清除定时器
-        this.data.timer && clearInterval(this.data.timer);
+        this.data.timer && clearInterval(this.data.timer)
         // 清空状态
         this.setData({
           pusherConfig: this.data.pusherConfig,
@@ -778,7 +803,8 @@ Component({
           _groupID: '',
           _unHandledInviteeList: [],
           chatTimeNum: 0,
-          chatTime: '00:00:00'
+          chatTime: '00:00:00',
+          config: this.data.config,
         }, () => {
           resolve()
         })
@@ -887,14 +913,14 @@ Component({
     },
 
     _toggleSwitchCamera() {
-      const isFront = this.data.pusherConfig.frontCamera === 'front' ? false: true
+      const isFront = this.data.pusherConfig.frontCamera === 'front' ? false : true
       this.switchCamera(isFront)
     },
 
     _toggleCamera() {
       if (!this.data.pusherConfig.enableCamera) {
         this.openCamera()
-      }else {
+      } else {
         this.closeCamera()
       }
     },
@@ -1126,15 +1152,15 @@ Component({
           return ''
       }
     },
-      /**
+    /**
    * 信令数据处理
    * @param data 第一层数据
    * @param params 第二层数据
    * @returns 处理后的数据
    * {@link https://iwiki.woa.com/pages/viewpage.action?pageId=820079397}
    */
-   handleNewMessage(data, params) {
-      let info =  {
+    handleNewMessage(data, params) {
+      const info = {
         extraInfo: '',
         ...data,
         version: 4,
@@ -1144,10 +1170,10 @@ Component({
           cmd: CMD_TYPE_LIST[data.call_type],
           room_id: data.room_id,
           message: '',
-          ...params
-        }
+          ...params,
+        },
       }
-      return info;
+      return info
     },
     switchAudioCall() {
       // const message = {
@@ -1158,7 +1184,7 @@ Component({
       // const otherMessage = {
       //   cmd: 'switchToAudio',
       // }
-  
+
       // tsignaling.invite({
       //   userID:'',
       //   data: JSON.stringify(
@@ -1173,7 +1199,7 @@ Component({
       // }
       // const otherMessage = {
       //   cmd: 'switchToVideo',
-      // } 
+      // }
       // tsignaling.invite({
       //   userID:'',
       //   data: JSON.stringify(
@@ -1183,60 +1209,75 @@ Component({
     },
     // 获取用户信息
     _getUserProfile(userList) {
-      console.log(tim);
-      let promise = tim.getUserProfile({
-        userIDList: userList
-      });
+      const promise = this._getStreamProfile(userList)
       promise.then((imResponse) => {
-        console.log('获取用户信息=----------',imResponse);
-        console.log(imResponse.data);
+        console.log('getUserProfile success', imResponse)
+        console.log(imResponse.data)
         this.setData({
-          remoteUsers:imResponse.data
+          remoteUsers: imResponse.data,
         })
       }).catch(function(imError) {
-        console.warn('getUserProfile error:', imError); // 获取其他用户资料失败的相关信息
-      });
+        console.warn('getUserProfile error:', imError) // 获取其他用户资料失败的相关信息
+      })
+    },
+    async _getStreamProfile(userList) {
+      try {
+        const imResponse = tim.getUserProfile({ userIDList: userList })
+        return imResponse
+      } catch (imError) {
+        console.warn('getUserProfile error:', imError) // 获取其他用户资料失败的相关信息
+      }
     },
     // 图像解析不出来的缺省图设置
     _handleErrorImage() {
       const remoteUsers = this.data.remoteUsers
       remoteUsers[0].avatar = './static/avatar2_100.png'
       this.setData({
-        remoteUsers: remoteUsers
+        remoteUsers: remoteUsers,
       })
     },
     // pusher 的网络状况
     _pusherNetStatus(e) {
-      const data = e.detail.info;
-      console.log('本地网络状况-----',data);
-      if (data.netQualityLevel> 4) {
+      const data = e.detail.info
+      console.log('local network', data)
+      if (data.netQualityLevel > 4) {
         wx.showToast({
-          icon: "none",
+          icon: 'none',
           title: '您当前网络不佳',
         })
       }
     },
     // player 的网络状况
     _playNetStatus(e) {
-      const data = e.detail.info;
-      console.log('对方网络状况-----',data);
-      const userId = e.target.dataset.userid;
-      let name = "对方";
+      const data = e.detail.info
+      console.log('remote network', data)
+      const userId = e.target.dataset.userid
+      let name = '对方'
       if (this.data.streamList > 1) {
-         this.data.remoteUsers.map((item)=>{
+        this.data.remoteUsers.map((item)=>{
           if (item.userId === userId) {
-            name = "用户" + item.nick;
+            name = '用户' + item.nick
           }
         })
       }
-      
-      if (data.netQualityLevel> 4) {
+
+      if (data.netQualityLevel > 4) {
         wx.showToast({
-          icon: "none",
+          icon: 'none',
           title: name + '当前网络不佳',
         })
       }
-    }
+    },
+    //  切换大小屏 (仅支持1v1聊天)
+    _switchScreen(e) {
+      const screen = e.currentTarget.dataset.screen
+      console.log('get screen', screen, e)
+      if (this.data.streamList.length === 1 && screen !== this.data.screen) {
+        this.setData({
+          screen: screen,
+        })
+      }
+    },
   },
 
   /**
@@ -1261,9 +1302,9 @@ Component({
         // tsignaling = new TSignaling({ SDKAppID: this.data.config.sdkAppID, tim: wx.$app })
         // tim为非必填参数，如果您的小程序中已存在IM实例，可以通过这个参数将其传入，避免IM实例的重复创建
         tim = TIM.create({
-          SDKAppID: this.data.config.sdkAppID
+          SDKAppID: this.data.config.sdkAppID,
         })
-        tsignaling = new TSignaling({ SDKAppID: this.data.config.sdkAppID, tim: tim})
+        tsignaling = new TSignaling({ SDKAppID: this.data.config.sdkAppID, tim: tim })
       }
       wx.setKeepScreenOn({
         keepScreenOn: true,
@@ -1284,6 +1325,9 @@ Component({
     hide: function() {
       // 组件所在的页面被隐藏时执行
       console.log(TAG_NAME, 'hide')
+      if (this.data.callStatus === CALL_STATUS.CALLING) {
+        this._hangUp()
+      }
       this._reset()
     },
     resize: function(size) {

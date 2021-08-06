@@ -34,7 +34,7 @@ Page({
       wx.$globalData.userID = this.data.userID
       wx.switchTab({
         url: '../index/index',
-      });
+      })
     }
   },
 })

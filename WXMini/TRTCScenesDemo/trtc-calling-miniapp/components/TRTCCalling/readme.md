@@ -7,7 +7,7 @@
 ```json
 {
   "usingComponents": {
-    "TRTCCalling": "../../components/TUICalling/TRTCCalling",
+    "TRTCCalling": "../../components/TRTCCalling/TRTCCalling",
 }
 ```
 
@@ -42,7 +42,13 @@ Page({
     	// 登录TRTCCalling
       this.TRTCCalling.login();
   },
-  
+    /**
+   * 生命周期函数--监听页面卸载
+   */
+  onUnload: function () {
+    this.TRTCCalling.logout();
+  },
+
   bindTRTCCallingRoomEvent: function() {
     const TRTCCallingEvent = this.TRTCCalling.EVENT
     this.TRTCCalling.on(TRTCCallingEvent.INVITED, (event) => {
