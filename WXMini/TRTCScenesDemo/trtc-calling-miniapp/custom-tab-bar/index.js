@@ -14,18 +14,18 @@ Component({
     selected: '-1', // 当前选中菜单项，第一个是0
     list: [
       {
-        "pagePath":"/pages/index/index",
-        "text":"首页",
-        "iconPath": "/pages/Resources/icon/home.png",
-        "selectedIconPath": "/pages/Resources/icon/home-light.png"
+        'pagePath': '/pages/index/index',
+        'text': '首页',
+        'iconPath': '/pages/Resources/icon/home.png',
+        'selectedIconPath': '/pages/Resources/icon/home-light.png',
       },
       {
-        "pagePath":"/pages/personal/personal",
-        "text":"个人中心",
-        "iconPath": "/pages/Resources/icon/personal.png",
-        "selectedIconPath": "/pages/Resources/icon/personal-light.png"
-      }
-    ]
+        'pagePath': '/pages/personal/personal',
+        'text': '个人中心',
+        'iconPath': '/pages/Resources/icon/personal.png',
+        'selectedIconPath': '/pages/Resources/icon/personal-light.png',
+      },
+    ],
   },
 
   /**
@@ -33,9 +33,9 @@ Component({
    */
   methods: {
     _switchTab(e) {
-      let _path = e.currentTarget.dataset.path;
+      const _path = e.currentTarget.dataset.path
       wx.switchTab({ url: _path })
-    }
+    },
   },
 
   pageLifetimes: {
@@ -47,6 +47,6 @@ Component({
     },
     resize: function(size) {
       // 页面尺寸变化
-    }
-  }
+    },
+  },
 })

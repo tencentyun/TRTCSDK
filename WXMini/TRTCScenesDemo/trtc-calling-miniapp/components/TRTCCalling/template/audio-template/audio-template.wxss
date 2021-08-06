@@ -143,3 +143,10 @@
   font-weight: 400;
   padding: 16px;
 }
+
+.audio-name {
+  max-width: 150px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}

@@ -20,20 +20,33 @@
 }
 
 .call-operate {
-	width: 15vw;
-	height: 15vw;
-	border-radius: 15vw;
-	padding: 5px;
+	width: 8vh;
+	height: 8vh;
+	border-radius: 8vh;
 	margin: 0 15vw;
+	box-sizing: border-box;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.call-operate image {
+	width: 4vh;
+	height: 4vh;
+	background: none;
 }
 
 .tips {
 	font-size: 20px;
 	color: #FFFFFF;
 	letter-spacing: 0;
-	text-align: right;
-	text-shadow: 0 1px 2px rgba(0,0,0,0.40);
+	margin: 0 auto;
+	/* text-shadow: 0 1px 2px rgba(0,0,0,0.40); */
 	font-weight: 600;
+	max-width: 150px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 .tips-subtitle {
 	font-family: PingFangSC-Regular;
@@ -41,7 +54,7 @@
 	color: #FFFFFF;
 	letter-spacing: 0;
 	text-align: right;
-	text-shadow: 0 1px 2px rgba(0,0,0,0.30);
+	/* text-shadow: 0 1px 2px rgba(0,0,0,0.30); */
 	font-weight: 400;
 }
 
