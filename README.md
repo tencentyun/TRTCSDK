@@ -25,33 +25,28 @@ TUI场景化解决方案是腾讯云TRTC针对直播、语聊、视频通话等�
 | Electron | [下载](https://web.sdk.qcloud.com/trtc/electron/download/TXLiteAVSDK_TRTC_Electron_latest.zip) | [DOC](https://cloud.tencent.com/document/product/647/38548) | [DOC](https://cloud.tencent.com/document/product/647/38549) |[API](https://cloud.tencent.com/document/product/647/38551) |
 | 微信小程序 | [下载](https://web.sdk.qcloud.com/trtc/miniapp/download/trtc-room.zip) | [DOC](https://cloud.tencent.com/document/product/647/32399) | [DOC](https://cloud.tencent.com/document/product/647/32183) |[API](https://cloud.tencent.com/document/product/647/17018) |
 
-## Version 8.9 @ 2021.07.14
+## Version 9.0 @ 2021.08.06
 
 **欢迎加入**
 团队技术氛围浓厚，培训体系完善，产品线多样，有经验丰富的“老司机”手把手帮你入门音视频技术。<br>
 北京、西安、上海、深圳、广州均有岗位，如果您对音视频技术感兴趣，欢迎加入我们 [腾讯云 TRTC 研发团队](https://careers.tencent.com/jobdesc.html?postId=1297858141983088640) 。
 
-功能新增
-1. Android：自定义渲染支持指定外部 GLContext，可以更灵活使用 OpenGL 环境。
-1. Windows：采集系统播放声音（startSystemAudioLoopback）时支持指定扬声器设备。
-1. Windows：支持 NVIDIA 平台硬编码，提升推流性能表现。
-1. 全平台：新增云代理支持，针对企业防火墙内部的环境，安全配置更友好。
-1. 全平台：接口 muteLocalVideo 和 muteRemoteVideoStream 增加对流类型的支持。
-1. 全平台：统计状态回调 onStatistics 新增对本地网关延迟的统计 gatewayRtt，用于判断用户到 WiFi 路由器的网络质量。
-1. 全平台：音频录制接口 startAudioRecording 支持录制成更多的音频格式，详见 TRTCAudioRecordingParams。
+**功能新增**
+- iOS：支持设置系统采集音量，详见 [setSystemAudioLoopbackVolume](https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCCloud__ios.html#afc45226807d84673bab78b21d1be54ae)；
+- 全平台：支持设置自定义音轨的音量，详见 [setMixExternalAudioVolume](https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCCloud__cplusplus.html#ae0031e4af8bb120ef6de164d99886418)；
+- 全平台：状态回调可区分音频和视频的丢包率，详见 [TRTCRemoteStatistics](https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCStatistic__cplusplus.html#structliteav_1_1TRTCRemoteStatistics)；
 
-质量优化
-1. 全平台：优化某些场景下的声音播放出现颤抖的问题。
-1. Android：优化画面秒开速度。
-1. Android：升级音频前处理算法，通话声音更清晰。
+**质量优化**
+- 全平台：优化订阅流程，提升手动订阅的秒开速度；
+- 全平台：修复特定场景 onExitRoom 回调重复的问题；
 
-问题修复
-1. Windows：修复 VODPlayer 播片推流时本地录制音频文件会有重音的问题。
-1. Windows：修复高 DPI 环境下并启用过滤窗口时部分场景 crash 的问题。
-1. iOS：修复外录屏辅路推流设置横屏无效的问题。
-1. iOS：修复只开启远端自定义渲染并指定使用 RGBA 格式数据时的内存泄漏问题。
-1. 全平台：修复偶现进房失败问题。
-
+**问题修复**
+- Android：修复自定义采集动态设置码率和帧率无效的问题；
+- iOS：修复先开启录屏辅路，再开启摄像头推流导致的推流失败问题；
+- iOS：修复本地视频录制模糊的问题；
+- iOS：修复若干稳定性问题；
+- Winodws：修复屏幕分享时采集帧率异常的问题；
+- Windows：修复屏幕分享切换目标时，播放端会先显示一帧旧画面的问题；
 
 更早期的版本更新历史请点击  [More](https://cloud.tencent.com/document/product/647/46907)...
 
