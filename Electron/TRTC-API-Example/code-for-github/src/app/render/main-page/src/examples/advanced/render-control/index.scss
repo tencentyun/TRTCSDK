@@ -1,0 +1,12 @@
+.render-control{
+  .video-wrapper {
+    #localVideoWrapper,
+    #remoteVideoWrapper {
+      width: 300px;
+      height: 300px;
+      overflow: auto;
+      box-shadow: 2px 2px 18px 4px #c0c0c0;
+      background-color: lightblue;
+    }
+  }
+}

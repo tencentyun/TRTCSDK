@@ -1,0 +1,15 @@
+.dialog-container {
+  padding: 16px;
+  position: absolute;
+  top: 20%;
+  .dialog-header-container {
+    min-width: 400px;
+    .dialog-title-container {
+      display: flex;
+      align-items: center;
+      .dialog-title {
+        margin-left: 8px;
+      }
+    }
+  }
+}

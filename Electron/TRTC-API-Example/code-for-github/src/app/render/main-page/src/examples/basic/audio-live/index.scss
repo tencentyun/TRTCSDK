@@ -1,0 +1,39 @@
+.basic-audio-call {
+  .audio-microphone-preview {
+    padding: 1rem 2rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    text-align: center;
+    height: 7rem;
+
+    .icon-microphone {
+      flex: 0 0 auto;
+      width: 40%;
+      padding: 0 0.5rem;
+      position: relative;
+
+      svg {
+        position: absolute;
+        width: 5rem;
+        height: 5rem;
+        left: 50%;
+        transform: translate(-50%, 0);
+
+        &.foreground {
+          color: green;
+          opacity: 0.1;
+          transition-property: opacity;
+          transition-duration: 60ms;
+          transition-timing-function: ease-in-out;
+        }
+      }
+    }
+  }
+
+  .role-select-form {
+    input, label {
+      cursor: pointer;
+    }
+  }
+}

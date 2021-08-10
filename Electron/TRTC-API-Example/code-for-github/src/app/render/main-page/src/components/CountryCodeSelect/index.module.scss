@@ -1,0 +1,23 @@
+.country-code-select {
+  width: 70px;
+  overflow: hidden;
+  .root{
+    width: 300px;
+  }
+  .input{
+    width: 70px;
+  }
+}
+.country-code-select-popper{
+  width: 300px ;
+  .option{
+    font-size: 14px;
+    min-height: 40px;
+    padding-top: 0;
+    padding-bottom: 0;
+    &>span{
+      margin-right: 8px;
+      font-size: 16px;
+    }
+  }
+}

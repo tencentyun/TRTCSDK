@@ -1,0 +1,25 @@
+.home {
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+
+  .left-side-bar {
+    flex: 0 0 300px;
+    width: 300px;
+    overflow: auto;
+    color: white;
+    background-color: #00182f;
+  }
+
+  .side-bar-head {
+    display: flex;
+    height: 4rem;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  .main-content {
+    flex: 1 1 auto;
+    overflow: auto;
+  }
+}

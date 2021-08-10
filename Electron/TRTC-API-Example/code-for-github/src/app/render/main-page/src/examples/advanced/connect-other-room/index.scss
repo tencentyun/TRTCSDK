@@ -1,0 +1,28 @@
+.connect-other-room {
+  .connect-action-section {
+    display: flex;
+    flex-direction: column;
+    margin: 10px 0;
+    .room-id-wrapper, .connect-room-id-wrapper {
+      margin: 10px 0;
+    }
+    .connect-room-btn {
+      margin: 10px 0;
+      width: 110px;
+      height: 32px;
+      cursor: pointer;
+
+      &:hover {
+        box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12);
+      }
+    }
+  }
+
+  .video-view-preview {
+    flex-direction: column;
+    .video-list-section {
+      display: flex;
+      flex-direction: row;
+    }
+  }
+}
