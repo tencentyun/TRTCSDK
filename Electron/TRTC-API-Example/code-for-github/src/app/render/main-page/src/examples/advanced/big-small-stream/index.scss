@@ -1,0 +1,18 @@
+.big-small-stream {
+  .remote-preference {
+    display: flex;
+    flex-direction: row;
+    margin: 20px 0;
+    .preference-wrapper {
+      margin-right: 10px;
+    }
+  }
+
+  .video-view-preview {
+    flex-direction: column;
+    .video-list-section {
+      display: flex;
+      flex-direction: row;
+    }
+  }
+}

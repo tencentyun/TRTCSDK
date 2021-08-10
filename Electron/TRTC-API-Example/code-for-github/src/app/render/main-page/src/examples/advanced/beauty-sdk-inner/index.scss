@@ -1,0 +1,17 @@
+.beauty-sdk-inner{
+  .inline-flex {
+    display: inline-flex;
+  
+    .inline-flex-item {
+      padding-right: 1rem;
+  
+      &:last-child {
+        padding-right: 0;
+      }
+    }
+  }
+
+  .video-wrapper {
+    width: 100%;
+  }
+}
