@@ -46,19 +46,19 @@ function initialize() {
     });
   }
 
-  app.on('ready', () => {
+  app.whenReady().then(() => {
     createWindow();
+
+    app.on('activate', () => {
+      if (mainWindow === null) {
+        createWindow();
+      }
+    });
   });
 
   app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
       app.quit();
-    }
-  });
-
-  app.on('activate', () => {
-    if (mainWindow === null) {
-      createWindow();
     }
   });
 }

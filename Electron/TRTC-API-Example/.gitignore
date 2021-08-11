@@ -3,4 +3,4 @@ node_modules
 out
 release
 .DS_Store
-copy-for-github
+code-for-github

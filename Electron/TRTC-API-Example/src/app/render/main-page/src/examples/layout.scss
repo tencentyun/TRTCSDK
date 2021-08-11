@@ -1,6 +1,6 @@
 .example-item {
   padding: 1rem;
-  width: 80%;
+  width: 100%;
   margin: 0 auto;
   overflow: auto;
 
@@ -73,5 +73,36 @@
     input[type="range"] {
       width: 12rem;
     }
+  }
+}
+
+@media screen and (min-width: 1081px){
+  .example-item {
+    width: 95%;
+    min-width: 760px;
+  }
+}
+
+@media screen and (min-width: 1366px){
+  .example-item {
+    width: 90%;
+  }
+}
+
+@media screen and (min-width: 1600px){
+  .example-item {
+    width: 80%;
+  }
+}
+
+@media screen and (min-width: 1792px){
+  .example-item {
+    width: 75%;
+  }
+}
+
+@media screen and (min-width: 1920px){
+  .example-item {
+    width: 70%;
   }
 }

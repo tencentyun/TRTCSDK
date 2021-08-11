@@ -11,7 +11,10 @@ window.ROOT_PATH = path.join(__dirname);
 const genTestUserSig = require('./assets/debug/gen-test-user-sig');
 const { ipcRenderer, shell } = require('electron');
 
-// 接收主进程发送的应用路径
+/**
+ * Receive app path info from Main process. The app path will be used
+ * by examples which need to load a static resource such as MP3 or MP4 media.
+ */
 ipcRenderer.on('app-path', (event, appPath) => {
   window.appPath = appPath;
 });
@@ -22,7 +25,10 @@ window.genTestUserSig = genTestUserSig;
 window.globalUserId = window.localStorage.getItem('localUserId') || '';
 window.globalRoomId = window.parseInt(window.localStorage.getItem('roomId') || 0);
 
-// CDN旁路直播相关配置，参数获取，需要在 腾讯云控制台-》应用管理-》应用的 功能配置 区 启用旁路推流 设置
-window.CDN_LIVE_APP_ID = 0;
-window.CDN_LIVE_BIZ_ID = 0;
-window.CDN_LIVE_URL_PREFIX = '';
+/**
+ * Internationalization function
+ * Here is a stub function. The real function is defined in initA18n.js,
+ * which will be initialized when the UI page has loaded.
+ * This function is used be online example code.
+ */
+window.a18n = keyString => keyString;
