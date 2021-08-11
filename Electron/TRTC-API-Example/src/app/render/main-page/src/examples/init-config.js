@@ -1,3 +1,4 @@
+import a18n from 'a18n'
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Input from '@material-ui/core/Input';
@@ -56,19 +57,19 @@ function InitConfig(props) {
 
   return (
     <div className={classes['pre-config']}>
-      <div className={classes.notice}>温馨提示：开始体验前，请先设置房间ID 和用户ID。</div>
+      <div className={classes.notice}>{a18n('温馨提示：开始体验前，请先设置房间号和用户名。')}</div>
       <form className={classes.root} autoComplete="off">
         <FormControl className={classes['form-line']}>
-          <InputLabel htmlFor="room-id">房间ID</InputLabel>
-          <Input id="room-id" placeholder="数值类型，需大于零" type="number" value={roomId} onChange={handleRoomIdChange} />
+          <InputLabel htmlFor="room-id">{a18n('房间号')}</InputLabel>
+          <Input id="room-id" placeholder={a18n('数值类型，需大于零')} type="number" value={roomId} onChange={handleRoomIdChange} />
         </FormControl>
         <FormControl className={classes['form-line']}>
-          <InputLabel htmlFor="user-id">用户ID</InputLabel>
-          <Input id="user-id" placeholder="字符类型，房间内须唯一" value={userId} onChange={handleUserIdChange} />
+          <InputLabel htmlFor="user-id">{a18n('用户名')}</InputLabel>
+          <Input id="user-id" placeholder={a18n('字符类型，房间内须唯一')} value={userId} onChange={handleUserIdChange} />
         </FormControl>
       </form>
     </div>
-  )
+  );
 }
 
 export default InitConfig;

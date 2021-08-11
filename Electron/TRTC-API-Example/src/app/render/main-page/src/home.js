@@ -1,11 +1,13 @@
 import React from 'react';
 import { withRouter } from "react-router";
 import { Switch, Route, Redirect } from 'react-router-dom';
-import { getNavConfig } from '../api/nav';
-import SideBar from '../components/SideBar';
-import './home.scss'
+import { getNavConfig } from './api/nav';
+import SideBar from './components/SideBar';
+import './home.scss';
 
-import LogoImg from '../assets/img/logo-transparent.png'
+import { getLocale } from './initA18n';
+import LogoImgEN from './assets/img/trtc-logo-en-w.png';
+import LogoImgZH from './assets/img/trtc-logo-cn-w.png';
 
 class Home extends React.Component {
   constructor(props) {
@@ -34,7 +36,7 @@ class Home extends React.Component {
     }
   }
 
-  routeGenerate() {
+  generateRoute() {
     return <Switch>
       <Route exact path="/">
         <Redirect to="/home/basic/video-call" />
@@ -47,20 +49,25 @@ class Home extends React.Component {
     </Switch>;
   };
 
-  render() {
+  content() {
+    const lang = getLocale();
     return (
       <div className="home">
         <div className="left-side-bar">
           <div className="side-bar-head">
-            <img src={LogoImg} alt="me" width="230" height="30"></img>
+            <img src={/^zh\b/.test(lang) ? LogoImgZH : LogoImgEN} alt="me" width="230" height="30"></img>
           </div>
           <SideBar data={this.state.navConfig} activeId={this.state.activeId} onItemClick={this.handleRouteChange}></SideBar>
         </div>
         <main className="main-content">
-          {this.routeGenerate()}
+          {this.generateRoute()}
         </main>
       </div>
     )
+  }
+
+  render() {
+    return this.content();
   }
 }
 

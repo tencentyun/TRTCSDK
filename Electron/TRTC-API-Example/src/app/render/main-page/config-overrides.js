@@ -21,8 +21,8 @@ module.exports = function override(config, env) {
   config.resolve.alias = {
     ...config.resolve.alias,
     '@': path.resolve(__dirname),
-    '@app': path.resolve(__dirname, 'src/app'),
-    '@components': path.resolve(__dirname, 'src/rtc-components'),
+    '@app-info': path.resolve(__dirname, 'src/app-info'),
+    '@components': path.resolve(__dirname, 'src/components'),
     '@utils': path.resolve(__dirname, 'src/utils'),
     '@api': path.resolve(__dirname, 'src/api'),
     '@config': path.resolve(__dirname, 'src/config'),

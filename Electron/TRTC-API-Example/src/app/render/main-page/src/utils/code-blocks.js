@@ -6,7 +6,7 @@ export function getExampleCode(filePath) {
   if (process.env.NODE_ENV === 'development') {
     codePath = path.join('assets/', filePath)
   } else {
-    codePath = path.join(process.resourcesPath, '/app/', 'assets/', filePath)
+    codePath = path.join(process.resourcesPath, '/app.asar/', 'assets/', filePath)
   }
   return fs.readFileSync(codePath, {encoding: 'utf-8'})
 }
