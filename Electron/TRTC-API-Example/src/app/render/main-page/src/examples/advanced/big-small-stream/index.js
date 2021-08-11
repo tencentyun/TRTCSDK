@@ -1,3 +1,4 @@
+import a18n from 'a18n'
 import React from 'react';
 import ExampleLayout from '../../layout';
 import './index.scss';
@@ -6,20 +7,20 @@ function BigSmallStream() {
   return (
     <div className="advanced-scene big-small-stream">
       <ExampleLayout
-        title="大小画面"
+        title={a18n('大小画面')}
         renderDesc={() => {
           return (
             <React.Fragment>
-              <p>大小画面(双路编码), 可开启大小画面双路编码模式</p>
+              <p>{a18n('大小画面(双路编码), 可开启大小画面双路编码模式')}</p>
               <p>
-                如果当前用户是房间中的主要角色（例如主播、老师、主持人等），并且使用 PC 或者 Mac 环境，可以开启该模式。<br/>
-                开启该模式后，当前用户会同时输出【高清】和【低清】两路视频流（但只有一路音频流）。<br/>
-                对于开启该模式的当前用户，会占用更多的网络带宽，并且会更加消耗 CPU 计算资源。
+                {a18n('如果当前用户是房间中的主要角色（例如主播、老师、主持人等），并且使用 PC 或者 Mac 环境，可以开启该模式。')}<br/>
+                {a18n('开启该模式后，当前用户会同时输出【高清】和【低清】两路视频流（但只有一路音频流）。')}<br/>
+                {a18n('对于开启该模式的当前用户，会占用更多的网络带宽，并且会更加消耗 CPU 计算资源。')}
               </p>
               <p>
-                对于同一房间的远程观众而言：<br/>
-                - 如果用户的下行网络很好，可以选择观看【高清】画面<br/>
-                - 如果用户的下行网络较差，可以选择观看【低清】画面
+                {a18n('对于同一房间的远程观众而言：')}<br/>
+                {a18n('- 如果用户的下行网络很好，可以选择观看【高清】画面')}<br/>
+                {a18n('- 如果用户的下行网络较差，可以选择观看【低清】画面')}
               </p>
             </React.Fragment>
           );
@@ -34,7 +35,7 @@ function BigSmallStream() {
           <div className="video-list-section">
             <div className="video-wrapper local-user">
               <div className="user-desc">
-                <span className="user-type">本地用户</span>
+                <span className="user-type">{a18n('本地用户')}</span>
                 <span className="user-role" id="localUserRole"></span>
               </div>
               <div id="localVideoWrapper"></div>
@@ -49,7 +50,7 @@ function BigSmallStream() {
             </div>
             <div className="video-wrapper remote-user">
               <div className="user-desc">
-                <span className="user-type">远程用户</span>
+                <span className="user-type">{a18n('远程用户')}</span>
                 <span className="user-role" id="remoteUserRole"></span>
               </div>
               <div id="remoteVideoWrapper"></div>
@@ -66,7 +67,7 @@ function BigSmallStream() {
         </div>
       </ExampleLayout>
     </div>
-  )
+  );
 };
 
 export default BigSmallStream;

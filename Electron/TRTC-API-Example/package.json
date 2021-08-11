@@ -1,6 +1,6 @@
 {
   "name": "TRTC-Electron-API-Examples",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "TRTC Electron API Examples",
   "main": "main.js",
   "scripts": {
@@ -50,7 +50,7 @@
       "testbgm.mp3",
       "testspeak.mp3"
     ],
-    "asar": false,
+    "asar": true,
     "win": {
       "extraFiles": [
         {

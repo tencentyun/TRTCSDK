@@ -95,6 +95,10 @@ mac
 npm run package:mac
 ```
 
+## 快速体验
+
+可以下载已经构建好的安装包，快速体验：[Windows版](https://web.sdk.qcloud.com/trtc/electron/download/api-example/TRTC-Electron-API-Examples-windows.zip)、[Mac版](https://web.sdk.qcloud.com/trtc/electron/download/api-example/TRTC-Electron-API-Examples-mac.zip)。
+
 ## 常见问题
 
 ### 1. 查看密钥时只能获取公钥和私钥信息，要如何获取密钥？

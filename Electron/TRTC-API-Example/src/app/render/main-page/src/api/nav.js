@@ -9,13 +9,13 @@ const idObj = {};
 Object.values(config).forEach((item, index) => {
   const itemConfig = {};
   itemConfig.id = index + 1;
-  itemConfig.title = item.name['zh-CN'];
+  itemConfig.title = item.name;
   if (item.content && item.content.length > 0) {
     itemConfig.type = 'group';
     itemConfig.content = item.content.map((contentItem, index) => {
       const newItem = {
         id: (itemConfig.id * 100) + index,
-        title: contentItem.name['zh-CN'],
+        title: contentItem.name,
         path: contentItem.path,
         url: getPageUrl(contentItem.path),
         pageContent: contentItem.pageContent

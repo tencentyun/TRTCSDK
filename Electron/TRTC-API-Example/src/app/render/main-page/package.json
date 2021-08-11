@@ -11,6 +11,7 @@
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "@uiw/react-codemirror": "^3.0.10",
+    "a18n": "^1.5.4",
     "clsx": "^1.1.1",
     "cross-env": "^7.0.3",
     "js-cookie": "^2.2.1",
@@ -28,7 +29,11 @@
     "start": "cross-env BROWSER=none PORT=3000 react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "wrap": "npx a18n wrap src/examples --write && npx a18n wrap src/components --write && npx a18n wrap src/config --write",
+    "extract": "npx a18n extract src ./src/locales --locales zh-CN,en-US",
+    "excel": "json2excel ./src/locales/zh-CN.json ./src/locales/en-US.json ./src/locales/translation.xlsx",
+    "json": "json2excel -r ./src/locales/translation.xlsx"
   },
   "eslintConfig": {
     "extends": [
@@ -50,6 +55,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.14.6",
+    "json-excel-cli": "^1.0.17",
     "native-ext-loader": "^2.3.0",
     "react-app-rewired": "^2.1.8"
   }

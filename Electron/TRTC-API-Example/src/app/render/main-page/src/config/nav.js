@@ -1,3 +1,4 @@
+import a18n from 'a18n';
 import VideoCall from '../examples/basic/video-call';
 import AudioCall from '../examples/basic/audio-call';
 import VideoLive from '../examples/basic/video-live';
@@ -16,136 +17,85 @@ import RenderControl from '../examples/advanced/render-control';
 
 const navConfig = {
   basic: {
-    name: {
-      en: "Basic feature",
-      "zh-CN": "基础示例"
-    },
+    name: a18n('基础示例'),
     content: [
       {
-        name: {
-          en: "Video Call",
-          "zh-CN": "视频通话"
-        },
+        name: a18n('视频通话'),
         path: "basic/video-call",
         pageContent: VideoCall
       },
       {
-        name: {
-          en: "Audio Call",
-          "zh-CN": "语音通话"
-        },
+        name: a18n('语音通话'),
         path: "basic/audio-call",
         pageContent: AudioCall
       },
       {
-        name: {
-          en: "Screen Share",
-          "zh-CN": "屏幕分享"
-        },
+        name: a18n('屏幕分享'),
         path: "basic/screen-share",
         pageContent: ScreenShare
       },
       {
-        name: {
-          en: "Video Live",
-          "zh-CN": "视频互动直播"
-        },
+        name: a18n('视频互动直播'),
         path: "basic/video-live",
         pageContent: VideoLive
       },
       {
-        name: {
-          en: "Audio Live",
-          "zh-CN": "语音互动直播"
-        },
+        name: a18n('语音互动直播'),
         path: "basic/audio-live",
         pageContent: AudioLive
       },
       {
-        name: {
-          en: "Device Test",
-          "zh-CN": "设备检测"
-        },
+        name: a18n('设备检测'),
         path: "basic/device-test",
         pageContent: DeviceTest
       }
     ]
   },
   advanced: {
-    name: {
-      en: "Advance feature",
-      "zh-CN": "高级特性"
-    },
+    name: a18n('高级特性'),
     content: [
       {
-        name: {
-          en: "Video Quality",
-          "zh-CN": "画质设定"
-        },
+        name: a18n('画质设定'),
         path: "advanced/video-quality",
         pageContent: VideoQuality
       },
       {
-        name: {
-          en: "Mix Media Stream & CDN Live",
-          "zh-CN": "混流编码与CDN直播"
-        },
+        name: a18n('混流编码与CDN直播'),
         path: "advanced/media-stream-mix",
         pageContent: MediaStreamMix
       },
       {
-        name: {
-          en: "Big & Small Stream",
-          "zh-CN": "大小画面"
-        },
+        name: a18n('大小画面'),
         path: "advanced/big-small-stream",
         pageContent: BigSmallStream
       },
       {
-        name: {
-          en: "Render Control",
-          "zh-CN": "渲染控制"
-        },
+        name: a18n('渲染控制'),
         path: "advanced/render-control",
         pageContent: RenderControl
       },
       {
-        name: {
-          en: "Beauty",
-          "zh-CN": "内置美颜"
-        },
+        name: a18n('内置美颜'),
         path: "advanced/beauty",
         pageContent: Beauty
       },
       {
-        name: {
-          en: "Connect Other Room",
-          "zh-CN": "跨房连麦"
-        },
+        name: a18n('跨房连麦'),
         path: "advanced/connect-other-room",
         pageContent: ConnectOtherRoom
       },
       {
-        name: {
-          en: "Switch Role",
-          "zh-CN": "切换角色"
-        },
+        name: a18n('切换角色'),
         path: "advanced/switch-role",
         pageContent: SwitchRole
       },
       {
-        name: {
-          en: "Call Statistics",
-          "zh-CN": "通话统计"
-        },
+        name: a18n('通话统计'),
         path: "advanced/call-statistics",
         pageContent: CallStatistics
       },
       {
-        name: {
-          en: "Volume Control",
-          "zh-CN": "音量控制"
-        },
+        name: a18n('音量控制'),
         path: "advanced/volume-control",
         pageContent: VolumeControl
       }

@@ -2,11 +2,12 @@
     "compilerOptions": {
       "baseUrl": ".",
       "paths": {
-        "@components/*": ["src/rtc-components/*"],
+        "@components/*": ["src/components/*"],
         "@utils/*": ["src/utils/*"],
-        "@app/*": ["src/app/*"],
+        "@app-info/*": ["src/app-info/*"],
         "@api/*": ["src/api/*"],
-        "@config/*": ["src/config/*"]
+        "@config/*": ["src/config/*"],
+        "@assets/*": ["src/assets/*"]
       }
     }
   }

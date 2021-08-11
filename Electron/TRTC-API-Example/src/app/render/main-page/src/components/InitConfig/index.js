@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import a18n from 'a18n'
+import React, { useState } from 'react';
 import rand from '@utils/rand';
 import initConfigUtil from '@utils/init-config-util';
 import './index.scss';
@@ -39,10 +40,10 @@ function InitConfig(props) {
     const value = event.target.value;
     if(value < 1) {
       setRoomError(true);
-      setRoomErrorMsg('房间号为大于零整数');
+      setRoomErrorMsg(a18n('房间号为大于零整数'));
     } else if (value > Max_Room_Id) {
       setRoomError(true);
-      setRoomErrorMsg(`房间号不能超过${Max_Room_Id}`);
+      setRoomErrorMsg(a18n`房间号不能超过${Max_Room_Id}`);
     } else {
       setRoomError(false);
       setRoomErrorMsg(``);
@@ -53,9 +54,9 @@ function InitConfig(props) {
     <div className="init-config">
       <form className="config-form">
         <div className={`form-line ${roomError ? 'error' : ''}`}>
-          <label>房间号：</label>
+          <label>{a18n('房间号：')}</label>
           <input
-            placeholder="必填，数值类型，大于零整数" 
+            placeholder={a18n('必填，数值类型，大于零整数')} 
             type="number"
             value={roomId}
             required
@@ -69,9 +70,9 @@ function InitConfig(props) {
           }
         </div>
         <div className={`form-line ${roomError ? 'error' : ''}`}>
-          <label>用户名：</label>
+          <label>{a18n('用户名：')}</label>
           <input
-            placeholder="必填，字符类型，房间内须唯一"
+            placeholder={a18n('必填，字符类型，房间内须唯一')}
             type="text"
             value={userId}
             required
@@ -81,7 +82,7 @@ function InitConfig(props) {
         </div>
       </form>
     </div>
-  )
+  );
 }
 
 export default InitConfig;

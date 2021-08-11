@@ -1,8 +1,10 @@
+import a18n from 'a18n'
 import React, { useEffect, useState, useCallback } from 'react';
 import CodeMirror from '@uiw/react-codemirror';
 import 'codemirror/theme/monokai.css';
 import clsx from 'clsx';
 import Button from '@material-ui/core/Button';
+import ProfileMenu from '../components/ProfileMenu';
 import { getExampleCode } from '../utils/code-blocks';
 import InitConfig from '../components/InitConfig';
 
@@ -36,8 +38,28 @@ function Layout(props) {
     }
   }, [props.codePath, stopDemo]);
 
+  useEffect(() => {
+    const beforeUnloadHandler = (event) => {
+      if (isPreviewing) {
+        stopDemo();
+
+        event.preventDefault();
+        setTimeout(() => {
+          // window.location.reload(); // NOTICE: this way of "reload" is not save as Electron WindowBrowser.reload()
+          window.ipcRenderer.send('reload');
+        }, 1000)
+        return event.returnValue = 'Are you sure to leave or quit?';
+      }
+    }
+    window.addEventListener('beforeunload', beforeUnloadHandler, {capture: true});
+    return () => {
+      window.removeEventListener('beforeunload', beforeUnloadHandler, {capture: true});
+    }
+  }, [isPreviewing, stopDemo])
+
   return (
     <div className={clsx({'example-item': true, [props.type]: true})}>
+      <ProfileMenu />
       <h1 className="example-title">
         {props.title}
       </h1>
@@ -48,8 +70,8 @@ function Layout(props) {
       }
       <InitConfig />
       <div className="example-button-bar">
-        <Button variant="contained" onClick={execDemo} color="primary" disabled={isPreviewing}>运行</Button>
-        <Button variant="contained" onClick={stopDemo}>停止</Button>
+        <Button variant="contained" onClick={execDemo} color="primary" disabled={isPreviewing}>{a18n('运行')}</Button>
+        <Button variant="contained" onClick={stopDemo}>{a18n('停止')}</Button>
       </div>
       {isPreviewing && (
         <div ref={previewRef} className="preview-section" id="preview-wrapper">
@@ -74,7 +96,7 @@ function Layout(props) {
         />
       }
     </div>
-  )
+  );
 }
 
 export default Layout;

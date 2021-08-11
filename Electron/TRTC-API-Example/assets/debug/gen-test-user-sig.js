@@ -49,24 +49,35 @@ const genTestUserSig = function (userID) {
   const SECRETKEY = '';
 
   if (SDKAPPID === '' || SECRETKEY === '') {
-    const msg = '请先配置好您的账号信息： SDKAPPID 及 SECRETKEY，配置文件位置：assets/debug/gen-test-user-sig.js、preload.js';
+    const msg = window.a18n('请先配置好您的账号信息： SDKAPPID 及 SECRETKEY，配置文件位置：assets/debug/gen-test-user-sig.js');
     console && console.error(msg);
     alert && alert(msg);
   }
 
   /*
    * 混流接口功能实现需要补齐此账号信息。
-   * 获取途径：腾讯云网页控制台->实时音视频->您的应用(eg客服通话)->账号信息面板可以获取appid/bizid
+   * 获取途径：腾讯云网页控制台->搜索“实时音视频”->应用管理->选择需要的应用，点击“应用信息”->旁路直播信息部分获取 appid 和 bizid
+   * 
+   * CDN直播地址：开启旁路直播时，需要配置CDN直播域名
+   * 获取途径：腾讯云网页控制台->搜索“云直播”->域名管理->根据域名信息，构建云播放地址，格式为：https://播放域名/live/[streamId].flv
    */
   const APPID = 0;
   const BIZID = 0;
+  const LIVE_DOMAIN = '';
+
   const generator = new LibGenerateTestUserSig(SDKAPPID, SECRETKEY, EXPIRETIME);
   const userSig = generator.genTestUserSig(userID);
+
+  if (window.aegis && window.aegis.infoAll) {
+    window.aegis.infoAll(`SDKAppId: ${SDKAPPID} - userId: ${userID}`);
+  }
+
   return {
     sdkappid: SDKAPPID,
     userSig,
     appId: APPID,
     bizId: BIZID,
+    liveDomain: LIVE_DOMAIN
   };
 };
 module.exports = genTestUserSig;

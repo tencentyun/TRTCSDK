@@ -2,6 +2,11 @@
   .config-form {
     .form-line {
       padding-left: 0 !important;
+
+      label {
+        display: inline-block;
+        width: 5.5rem;
+      }
     }
   }
   input {

@@ -1,4 +1,4 @@
 src/app/render/main-page/src/rtc-components/**/*.js
-src/app/render/main-page/public/TcPlayer-2.3.3.js
+src/app/render/main-page/public/**
 assets/debug/gen-test-user-sig.js
 src/app/render/main-page/build/**

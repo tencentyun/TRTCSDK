@@ -1,3 +1,4 @@
+import a18n from 'a18n'
 import React from 'react';
 import ExampleLayout from '../../layout';
 
@@ -7,13 +8,13 @@ function VideoQuality() {
   return (
     <div className="advanced-scene video-quality">
       <ExampleLayout
-        title="画质设定"
+        title={a18n('画质设定')}
         renderDesc={() => {
           return (
             <React.Fragment>
               <p>
-                画面质量可通过设置视频编码器相关参数<br />
-                该设置决定了远端用户看到的画面质量（同时也是云端录制出的视频文件的画面质量）
+                {a18n('画面质量可通过设置视频编码器相关参数')}<br />
+                {a18n('该设置决定了远端用户看到的画面质量（同时也是云端录制出的视频文件的画面质量）')}
               </p>
             </React.Fragment>
           );
@@ -25,7 +26,7 @@ function VideoQuality() {
         <div className="video-view-preview">
           <div className="video-wrapper local-user">
             <div className="user-desc">
-              <span className="user-type">本地用户</span>
+              <span className="user-type">{a18n('本地用户')}</span>
               <span className="user-role" id="localUserRole"></span>
             </div>
             <div id="localVideoWrapper"></div>
@@ -40,7 +41,7 @@ function VideoQuality() {
           </div>
           <div className="video-wrapper remote-user">
             <div className="user-desc">
-              <span className="user-type">远程用户</span>
+              <span className="user-type">{a18n('远程用户')}</span>
               <span className="user-role" id="remoteUserRole"></span>
             </div>
             <div id="remoteVideoWrapper"></div>
@@ -57,7 +58,7 @@ function VideoQuality() {
       </ExampleLayout>
 
     </div>
-  )
+  );
 }
 
 export default VideoQuality;

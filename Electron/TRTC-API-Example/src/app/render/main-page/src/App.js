@@ -1,23 +1,21 @@
-import './App.css';
-
 import React, { Suspense } from 'react';
 import { HashRouter, Route, Switch } from 'react-router-dom';
+import ConfirmDialog from './components/Modal/confirmDialog';
+import Notification from './components/Toast/notification';
 
-import Home from './examples/home';
-// import Login from './login';
+import './App.css';
+import Home from './home';
 const App = () => {
   return (
     <HashRouter>
       <Suspense fallback={<div>Loading</div>}>
         <Switch>
-          {/* <Route exact path="/login" component={Login} /> */}
           <Route path="/home" component={Home} />
           <Route exact path="/" component={Home} />
-          {/* <Route exact path="/">
-            <Redirect to="/home" />
-          </Route> */}
         </Switch>
       </Suspense>
+      <Notification></Notification>
+      <ConfirmDialog></ConfirmDialog>
     </HashRouter>
   )
 };
