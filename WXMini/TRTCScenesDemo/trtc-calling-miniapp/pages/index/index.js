@@ -6,7 +6,7 @@ Page({
     statusBarHeight: wx.$globalData.statusBarHeight,
     entryInfos: [
       { icon: 'https://web.sdk.qcloud.com/component/miniApp/resources/audio-card.png', title: '语音通话', desc: '丢包率70%仍可正常语音通话', navigateTo: '../audioCall/audioCall' },
-      { icon: 'https://web.sdk.qcloud.com/component/miniApp/resources/video-card.png', title: '视频通话', desc: '包率50%仍可正常视频通话', navigateTo: '../videoCall/videoCall' },
+      { icon: 'https://web.sdk.qcloud.com/component/miniApp/resources/video-card.png', title: '视频通话', desc: '丢包率50%仍可正常视频通话', navigateTo: '../videoCall/videoCall' },
     ],
   },
 
