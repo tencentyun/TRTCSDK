@@ -84,7 +84,7 @@
 
 > 小程序 &lt;live-player&gt; 和 &lt;live-pusher&gt; 标签需要在手机微信上才能使用，微信开发者工具上无法使用。为了小程序能够使用腾讯云房间管理服务，您需要在手机微信上开启调试功能：手机微信扫码二维码后，单击右上角【...】>【打开调试】。
 
-<img src="https://web.sdk.qcloud.com/component/trtccalling/doc/miniapp/20200902035253.png" style="zoom:30%;" />
+<img src="https://web.sdk.qcloud.com/component/trtccalling/doc/miniapp/108fa6e3c2e8da33e547739c3ab93a31.png" style="zoom:30%;" />
 
 ## 常见问题
 
