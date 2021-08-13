@@ -29,13 +29,17 @@ Component({
         type: 0,
       },
     },
+    backgroundMute: {
+      type: Boolean,
+      value: false,
+    },
   },
   observers: {
     'streamList': function(streamList) {
       for (let i = 0; i < streamList.length; i++) {
         if (!streamList[i].avatar && !streamList[i].nick) {
           console.log(`observers ${streamList[i].userID} has not avatar and nick`, streamList[i])
-          this._getStreamProfile([streamList[i].userID]).then((imResponse)=>{
+          tim.getUserProfile({ userIDList: [streamList[i].userID] }).then((imResponse)=>{
             console.log(`get ${streamList[i].userID}`, imResponse)
             streamList[i].avatar = imResponse.data[0].avatar
             streamList[i].nick = imResponse.data[0].nick
@@ -77,7 +81,7 @@ Component({
     timer: null, // 聊天时长定时器
     chatTimeNum: 0, // 聊天时长
     chatTime: '00:00:00', // 聊天时长格式化
-    screen: 'pusher', // 视屏通话中，显示大屏幕的流（只限1v1聊天）
+    screen: 'pusher', // 视屏通话中，显示大屏幕的流（只限1v1聊天
   },
 
   methods: {
@@ -110,7 +114,7 @@ Component({
                 line_busy: 'line_busy',
               }, { message: 'lineBusy' })),
           })
-          this._emitter.emit(EVENT.CALL_END)
+          // this._emitter.emit(EVENT.CALL_END)
           return
         }
         // 此处判断inviteeList.length 大于2，用于在非群组下多人通话判断
@@ -221,9 +225,12 @@ Component({
                   inviteID: event.data.inviteID,
                   call_end: 0,
                 })
+                this._reset()
               }
             }
           })
+        } else {
+          this._reset()
         }
       })
       tsignaling.on(TSignaling.EVENT.INVITATION_CANCELLED, (event) => {
@@ -483,14 +490,24 @@ Component({
     /**
      * 登出接口，登出后无法再进行拨打操作
      */
-    logout() {
+    async logout() {
+      if (this.data.callStatus === CALL_STATUS.CALLING) {
+        if (this.data.isSponsor) {
+          await this.hangup()
+        } else {
+          await this.reject()
+        }
+      }
+      this._reset()
       tsignaling.logout({
         userID: this.data.config.userID,
         userSig: this.data.config.userSig,
-      }).then( () => {
+      }).then( (res) => {
         console.log(TAG_NAME, 'logout', 'IM logout success')
-      }).catch( () => {
-        console.error(TAG_NAME, 'logout', 'M logout failure')
+        return res
+      }).catch( (err) => {
+        console.error(TAG_NAME, 'logout', 'IM logout failure')
+        return err
       })
     },
     /**
@@ -633,7 +650,7 @@ Component({
         })
         if (rejectRes.code === 0) {
           console.log(TAG_NAME, 'reject OK', rejectRes)
-          this._setCallStatus(CALL_STATUS.IDLE)
+          this._reset()
           return rejectRes.data.message
         }
         console.log(TAG_NAME, 'reject failed', rejectRes)
@@ -646,7 +663,7 @@ Component({
      * 当您处于通话中，可以调用该函数挂断通话
      * 当您发起通话时，可用去了取消通话
      */
-    hangup() {
+    async hangup() {
       const inviterFlag = !this.data.invitation.inviteID && this.data.invitationAccept.inviteID // 是否是邀请者
       console.log('挂断inviterFlag', inviterFlag)
       console.log('挂断invitation', this.data.invitation.inviteID)
@@ -654,18 +671,20 @@ Component({
       let cancelRes = null
       if (inviterFlag && this.data.callStatus === CALL_STATUS.CALLING) {
         console.log(TAG_NAME, 'cancel() inviteID: ', this.data.invitationAccept.inviteID)
-        tsignaling.cancel({
-          inviteID: this.data.invitationAccept.inviteID,
-          data: JSON.stringify(
-            this.handleNewMessage({
-              version: 0,
-              call_type: this.data.config.type,
-            })),
-        }).then((res) => {
+        try {
+          const res = await tsignaling.cancel({
+            inviteID: this.data.invitationAccept.inviteID,
+            data: JSON.stringify(
+              this.handleNewMessage({
+                version: 0,
+                call_type: this.data.config.type,
+              })),
+          })
           cancelRes = res
-        })
+        } catch (error) {
+          console.log(TAG_NAME, 'inviteInGroup failed', error)
+        }
       }
-      this._setCallStatus(CALL_STATUS.IDLE)
       // 发起方取消通话时需要携带消息实例
       if (cancelRes) {
         this._emitter.emit(EVENT.CALL_END, {
@@ -683,6 +702,7 @@ Component({
       this._reset().then(() => {
         this._emitter.emit(EVENT.HANG_UP)
       })
+      return cancelRes
     },
     // 最后一位离开房间的用户发送该信令 (http://tapd.oa.com/Qcloud_MLVB/markdown_wikis/show/#1210146251001590857)
     async lastOneHangup(params) {
@@ -780,8 +800,9 @@ Component({
           enableCamera: true,
           volume: 0,
         },
+        this._setCallStatus(CALL_STATUS.IDLE)
         wx.createLivePusherContext().setMICVolume({ volume: 1 })
-        this.data.config.type = this.data.type
+        this.data.config.type = 0
         // 存在定时器，清除定时器
         this.data.timer && clearInterval(this.data.timer)
         // 清空状态
@@ -887,6 +908,7 @@ Component({
         pusherConfig: this.data.pusherConfig,
       }, () => {
         console.log(`${TAG_NAME}, setMicMute(${isMute}) enableMic: ${this.data.pusherConfig.enableMic}`)
+        // enableMic 会有一个 native 向客户端拿 audio 权限的一个过程，所以会导致开麦慢
         wx.createLivePusherContext().setMICVolume({ volume: isMute ? 0 : 1 })
       })
     },
@@ -1068,6 +1090,7 @@ Component({
         case 5001:
           // 20200421 仅有 Android 微信会触发该事件
           console.log(TAG_NAME, '小程序悬浮窗被关闭: ', code)
+          this.hangup()
           break
         case 1021:
           console.log(TAG_NAME, '网络类型发生变化，需要重新进房', code)
@@ -1209,7 +1232,7 @@ Component({
     },
     // 获取用户信息
     _getUserProfile(userList) {
-      const promise = this._getStreamProfile(userList)
+      const promise = tim.getUserProfile({ userIDList: userList })
       promise.then((imResponse) => {
         console.log('getUserProfile success', imResponse)
         console.log(imResponse.data)
@@ -1219,14 +1242,6 @@ Component({
       }).catch(function(imError) {
         console.warn('getUserProfile error:', imError) // 获取其他用户资料失败的相关信息
       })
-    },
-    async _getStreamProfile(userList) {
-      try {
-        const imResponse = tim.getUserProfile({ userIDList: userList })
-        return imResponse
-      } catch (imError) {
-        console.warn('getUserProfile error:', imError) // 获取其他用户资料失败的相关信息
-      }
     },
     // 图像解析不出来的缺省图设置
     _handleErrorImage() {
@@ -1269,7 +1284,7 @@ Component({
       }
     },
     //  切换大小屏 (仅支持1v1聊天)
-    _switchScreen(e) {
+    _toggleViewSize(e) {
       const screen = e.currentTarget.dataset.screen
       console.log('get screen', screen, e)
       if (this.data.streamList.length === 1 && screen !== this.data.screen) {
@@ -1277,6 +1292,10 @@ Component({
           screen: screen,
         })
       }
+    },
+    // 获取 tim 实例
+    getTim() {
+      return tim
     },
   },
 
@@ -1325,10 +1344,12 @@ Component({
     hide: function() {
       // 组件所在的页面被隐藏时执行
       console.log(TAG_NAME, 'hide')
-      if (this.data.callStatus === CALL_STATUS.CALLING) {
-        this._hangUp()
+      if (!this.data.backgroundMute) {
+        if (this.data.callStatus === CALL_STATUS.CALLING) {
+          this._hangUp()
+        }
+        this._reset()
       }
-      this._reset()
     },
     resize: function(size) {
       // 组件所在的页面尺寸变化时执行

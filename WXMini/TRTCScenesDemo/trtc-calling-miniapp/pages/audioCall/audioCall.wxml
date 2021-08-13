@@ -2,6 +2,7 @@
   <TRTCCalling
     id="TRTCCalling-component"
     config="{{config}}"
+    backgroundMute="{{true}}"
   ></TRTCCalling>
   <view class="trtc-calling-index">
     <view class="trtc-calling-index-title">

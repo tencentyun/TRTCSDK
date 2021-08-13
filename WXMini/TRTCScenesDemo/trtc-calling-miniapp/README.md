@@ -6,14 +6,26 @@
 
 ## 效果展示
 
-<img src="https://web.sdk.qcloud.com/component/trtccalling/doc/miniapp/audiocall.gif" style="width: 45%;" >
+<img src="https://webim-1252463788.cos.ap-shanghai.myqcloud.com/trtc-calling-doc-assets/audiocall.gif" style="width: 45%;" >
 
-<img src="https://web.sdk.qcloud.com/component/trtccalling/doc/miniapp/videocall.gif" style="width:45%;" >
+<img src="https://webim-1252463788.cos.ap-shanghai.myqcloud.com/trtc-calling-doc-assets/videocall.gif" style="width:45%;" >
+
+## 环境要求
+- 微信 App iOS 最低版本要求：7.0.9。
+- 微信 App Android 最低版本要求：7.0.8。
+- 小程序基础库最低版本要求：2.10.0。
+- 由于微信开发者工具不支持原生组件（即 &lt;live-pusher&gt; 和 &lt;live-player&gt; 标签），需要在真机上进行运行体验。
+- 由于小程序测试号不具备 &lt;live-pusher&gt; 和 &lt;live-player&gt; 的使用权限，需要申请常规小程序账号进行开发。
+- 不支持 uniapp 开发环境，请使用原生小程序开发环境。
 
 ## 前提条件
+1. 您已 [注册腾讯云](https://cloud.tencent.com/document/product/378/17985) 账号，并完成 [实名认证](https://cloud.tencent.com/document/product/378/3629)。
 
-您已 [注册腾讯云](https://cloud.tencent.com/document/product/378/17985) 账号，并完成 [实名认证](https://cloud.tencent.com/document/product/378/3629)。
-
+2. 出于政策和合规的考虑，微信暂未放开所有小程序对实时音视频功能（即 &lt;live-pusher&gt; 和 &lt;live-player&gt; 标签）的支持：
+- 小程序推拉流标签不支持个人小程序，只支持企业类小程序。
+- 小程序推拉流标签使用权限暂时只开放给有限 [类目](https://developers.weixin.qq.com/miniprogram/dev/component/live-pusher.html)。
+- 符合类目要求的小程序，需要在【[微信公众平台](https://mp.weixin.qq.com)】>【开发】>【开发管理】>【接口设置】中自助开通该组件权限，如下图所示：
+![](https://main.qcloudimg.com/raw/dc6d3c9102bd81443cb27b9810c8e981.png)
 ## 操作步骤
 
 <span id="step1"></span>
@@ -30,7 +42,7 @@
 
 ### 步骤2：下载 SDK 和 Demo 源码
 
-1. 您可以单击【[Github](https://github.com/tencentyun/TRTCSDK/tree/master/WXMini/TRTCScenesDemo)】跳转至 Github（或单击【[ZIP](https://web.sdk.qcloud.com/trtc/miniapp/download/trtc-room.zip)】），下载相关 SDK 及配套的 Demo 源码。
+1. 您可以单击【[Github](https://github.com/tencentyun/TRTCSDK/tree/master/WXMini/TRTCScenesDemo)】跳转至 Github（或单击【[ZIP](https://web.sdk.qcloud.com/component/trtccalling/download/trtc-calling-miniapp.zip)】），下载相关 SDK 及配套的 Demo 源码。
 
 <span id="step3"></span>
 
@@ -56,20 +68,8 @@
 
 >正确的 UserSig 签发方式是将 UserSig 的计算代码集成到您的服务端，并提供面向 App 的接口，在需要 UserSig 时由您的 App 向业务服务器发起请求获取动态 UserSig。更多详情请参见 [服务端生成 UserSig](https://cloud.tencent.com/document/product/647/17275#Server)。
 
-### 步骤4：开通小程序类目与推拉流标签权限
 
-出于政策和合规的考虑，微信暂未放开所有小程序对实时音视频功能（即 &lt;live-pusher&gt; 和 &lt;live-player&gt; 标签）的支持：
-
-- 小程序推拉流标签不支持个人小程序，只支持企业类小程序。
-
-- 小程序推拉流标签使用权限暂时只开放给有限 [类目](https://developers.weixin.qq.com/miniprogram/dev/component/live-pusher.html)。
-
-- 符合类目要求的小程序，需要在【[微信公众平台](https://mp.weixin.qq.com)】>【开发】>【接口设置】中自助开通该组件权限，如下图所示：
-
- ![](https://main.qcloudimg.com/raw/ad87091aaae2db6ad412136297886c15.png)
-
-
-**### 步骤5：编译运行**
+**### 步骤4：编译运行**
 
 1. 打开微信开发者工具，选择【小程序】，单击新建图标，选择【导入项目】。
 
@@ -85,7 +85,7 @@
 
 > 小程序 &lt;live-player&gt; 和 &lt;live-pusher&gt; 标签需要在手机微信上才能使用，微信开发者工具上无法使用。为了小程序能够使用腾讯云房间管理服务，您需要在手机微信上开启调试功能：手机微信扫码二维码后，单击右上角【...】>【打开调试】。
 
-<img src="https://web.sdk.qcloud.com/component/trtccalling/doc/miniapp/108fa6e3c2e8da33e547739c3ab93a31.png" style="zoom:30%;" />
+<img src="https://webim-1252463788.cos.ap-shanghai.myqcloud.com/trtc-calling-doc-assets/20200902035253.png" style="zoom:30%;" />
 
 ## 常见问题
 

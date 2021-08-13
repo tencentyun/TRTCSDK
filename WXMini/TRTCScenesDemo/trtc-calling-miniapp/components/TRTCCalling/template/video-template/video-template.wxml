@@ -1,5 +1,5 @@
 <template name="video-template">
-	<view class="{{streamList.length > 1 ? 'stream-box' : (screen === 'pusher' ? 'pusher-video' : 'player')}}" data-screen="pusher" catch:tap="_switchScreen">
+	<view class="{{streamList.length > 1 ? 'stream-box' : (screen === 'pusher' ? 'pusher-video' : 'player')}}" data-screen="pusher" catch:tap="_toggleViewSize">
     <live-pusher
       class="live"
       id="pusher"
@@ -17,7 +17,7 @@
     />
   </view>
 	<view wx:for="{{streamList}}" wx:key="streamID" class="view-container player-container">
-			<view class="{{streamList.length > 1 ? 'stream-box' : (screen === 'player' ? 'pusher-video' : 'player')}}" data-screen="player" catch:tap="_switchScreen">
+			<view class="{{streamList.length > 1 ? 'stream-box' : (screen === 'player' ? 'pusher-video' : 'player')}}" data-screen="player" catch:tap="_toggleViewSize">
 				<live-player
 			 	class="live"
 				id="{{item.streamID}}"
