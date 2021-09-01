@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1F52816D185FA752D9EEFB81 /* TXLiteAVSDK_TRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBCEDD558674771482CC90CE /* TXLiteAVSDK_TRTC.framework */; };
+		40D550EE26A6AEEE00FE9F13 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 40D550ED26A6AED600FE9F13 /* libsqlite3.0.tbd */; };
+		40D550F026A6AEFB00FE9F13 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40D550EF26A6AEFA00FE9F13 /* AssetsLibrary.framework */; };
 		4723A7BF26315F920094AC81 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4723A7BE26315F920094AC81 /* OpenGLES.framework */; };
 		4723A7C026315F9C0094AC81 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47ECB98B2626868400201FCB /* Accelerate.framework */; };
 		4723A7C226315FA30094AC81 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4723A7C126315FA30094AC81 /* CoreMedia.framework */; };
@@ -83,8 +86,7 @@
 		47E0732E2636A6C80027D05E /* SetAudioQualityViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 47E072ED2636A6C80027D05E /* SetAudioQualityViewController.xib */; };
 		47E0732F2636A6C80027D05E /* SetBGMViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 47E072F02636A6C80027D05E /* SetBGMViewController.xib */; };
 		47E073302636A6C80027D05E /* SetBGMViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E072F12636A6C80027D05E /* SetBGMViewController.m */; };
-		47E073FF2638FC120027D05E /* TXLiteAVSDK_TRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 477EC9D82626E44C007AAC4F /* TXLiteAVSDK_TRTC.framework */; };
-		47ECB9892626867C00201FCB /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 47ECB9882626867C00201FCB /* libc++.tbd */; };
+		47E073FF2638FC120027D05E /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
 		47ECB98C2626868400201FCB /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47ECB98B2626868400201FCB /* Accelerate.framework */; };
 		47ECB98E2626868E00201FCB /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 47ECB98D2626868E00201FCB /* libresolv.tbd */; };
 		880B3C4A2624411B002683FB /* GenerateTestUserSig.m in Sources */ = {isa = PBXBuildFile; fileRef = 880B3C482624411B002683FB /* GenerateTestUserSig.m */; };
@@ -109,6 +111,7 @@
 		889445E8262866DC00193FAD /* ScreenAudienceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 889445E6262866DC00193FAD /* ScreenAudienceViewController.xib */; };
 		88A2C846267062FF006FC026 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47ECB98B2626868400201FCB /* Accelerate.framework */; };
 		88A2C84726706305006FC026 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 47ECB9882626867C00201FCB /* libc++.tbd */; };
+		CF7C10D9C9D1322CCC80B0DD /* TXLiteAVSDK_TRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBCEDD558674771482CC90CE /* TXLiteAVSDK_TRTC.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -146,6 +149,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		40D550ED26A6AED600FE9F13 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
+		40D550EF26A6AEFA00FE9F13 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		4723A7BE26315F920094AC81 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		4723A7C126315FA30094AC81 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		4723A7C326315FAA0094AC81 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -174,7 +179,6 @@
 		477EC9C62626DC6E007AAC4F /* VoiceChatRoomEnterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VoiceChatRoomEnterViewController.h; sourceTree = "<group>"; };
 		477EC9C72626DC6E007AAC4F /* VoiceChatRoomEnterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VoiceChatRoomEnterViewController.m; sourceTree = "<group>"; };
 		477EC9C82626DC6E007AAC4F /* VoiceChatRoomEnterViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = VoiceChatRoomEnterViewController.xib; sourceTree = "<group>"; };
-		477EC9D82626E44C007AAC4F /* TXLiteAVSDK_TRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TXLiteAVSDK_TRTC.framework; sourceTree = "<group>"; };
 		477EC9F12626F77E007AAC4F /* TRTC-API-Example-OC-PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TRTC-API-Example-OC-PrefixHeader.pch"; sourceTree = "<group>"; };
 		477EC9F626270C69007AAC4F /* VoiceChatRoomAnchorViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VoiceChatRoomAnchorViewController.h; sourceTree = "<group>"; };
 		477EC9F726270C69007AAC4F /* VoiceChatRoomAnchorViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VoiceChatRoomAnchorViewController.m; sourceTree = "<group>"; };
@@ -301,6 +305,7 @@
 		889445E4262866DC00193FAD /* ScreenAudienceViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScreenAudienceViewController.h; sourceTree = "<group>"; };
 		889445E5262866DC00193FAD /* ScreenAudienceViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ScreenAudienceViewController.m; sourceTree = "<group>"; };
 		889445E6262866DC00193FAD /* ScreenAudienceViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ScreenAudienceViewController.xib; sourceTree = "<group>"; };
+		DBCEDD558674771482CC90CE /* TXLiteAVSDK_TRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TXLiteAVSDK_TRTC.framework; path = ../SDK/TXLiteAVSDK_TRTC.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -308,15 +313,16 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				40D550F026A6AEFB00FE9F13 /* AssetsLibrary.framework in Frameworks */,
+				40D550EE26A6AEEE00FE9F13 /* libsqlite3.0.tbd in Frameworks */,
 				4723A7C426315FAA0094AC81 /* AVFoundation.framework in Frameworks */,
-				47E073FF2638FC120027D05E /* TXLiteAVSDK_TRTC.framework in Frameworks */,
 				4723A7BF26315F920094AC81 /* OpenGLES.framework in Frameworks */,
 				47ECB98C2626868400201FCB /* Accelerate.framework in Frameworks */,
 				4723A7C026315F9C0094AC81 /* Accelerate.framework in Frameworks */,
 				47ECB98E2626868E00201FCB /* libresolv.tbd in Frameworks */,
 				4723A7C526315FB10094AC81 /* libc++.tbd in Frameworks */,
-				47ECB9892626867C00201FCB /* libc++.tbd in Frameworks */,
 				4723A7C226315FA30094AC81 /* CoreMedia.framework in Frameworks */,
+				1F52816D185FA752D9EEFB81 /* TXLiteAVSDK_TRTC.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -328,6 +334,7 @@
 				88A2C846267062FF006FC026 /* Accelerate.framework in Frameworks */,
 				8894458D26282AF800193FAD /* TXLiteAVSDK_ReplayKitExt.framework in Frameworks */,
 				8894456B26282A3200193FAD /* ReplayKit.framework in Frameworks */,
+				CF7C10D9C9D1322CCC80B0DD /* TXLiteAVSDK_TRTC.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -444,8 +451,8 @@
 		477EC9D22626E44C007AAC4F /* SDK */ = {
 			isa = PBXGroup;
 			children = (
-				477EC9D82626E44C007AAC4F /* TXLiteAVSDK_TRTC.framework */,
 				889444FD262824EA00193FAD /* TXLiteAVSDK_ReplayKitExt.framework */,
+				DBCEDD558674771482CC90CE /* TXLiteAVSDK_TRTC.framework */,
 			);
 			name = SDK;
 			path = ../SDK;
@@ -794,6 +801,8 @@
 		88ED6FE02624364700C75B9D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				40D550EF26A6AEFA00FE9F13 /* AssetsLibrary.framework */,
+				40D550ED26A6AED600FE9F13 /* libsqlite3.0.tbd */,
 				4723A7C326315FAA0094AC81 /* AVFoundation.framework */,
 				4723A7C126315FA30094AC81 /* CoreMedia.framework */,
 				4723A7BE26315F920094AC81 /* OpenGLES.framework */,
@@ -1239,6 +1248,12 @@
 				DEVELOPMENT_TEAM = F8A3GH6Q4W;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/../SDK";
+				HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/../SDK/TXLiteAVSDK_International.framework/Headers",
+					"$(PROJECT_DIR)/../SDK/TXLiteAVSDK_Professional.framework/Headers\n",
+					"$(PROJECT_DIR)/../SDK/TXLiteAVSDK_Enterprise.framework/Headers",
+					"$(PROJECT_DIR)/../SDK/TXLiteAVSDK_TRTC.framework/Headers",
+				);
 				INFOPLIST_FILE = Basic/ScreenShare/TXReplayKit_Screen/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1250,6 +1265,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = abyWildcardDev;
 				SKIP_INSTALL = YES;
+				SYSTEM_FRAMEWORK_SEARCH_PATHS = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1262,6 +1278,12 @@
 				DEVELOPMENT_TEAM = FN2V63AD2J;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/../SDK";
+				HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/../SDK/TXLiteAVSDK_International.framework/Headers",
+					"$(PROJECT_DIR)/../SDK/TXLiteAVSDK_Professional.framework/Headers\n",
+					"$(PROJECT_DIR)/../SDK/TXLiteAVSDK_Enterprise.framework/Headers",
+					"$(PROJECT_DIR)/../SDK/TXLiteAVSDK_TRTC.framework/Headers",
+				);
 				INFOPLIST_FILE = Basic/ScreenShare/TXReplayKit_Screen/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1273,6 +1295,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = com.tencent.fx.rtmpdemo2.Upload_Production_SignProvision;
 				SKIP_INSTALL = YES;
+				SYSTEM_FRAMEWORK_SEARCH_PATHS = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

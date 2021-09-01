@@ -10,7 +10,7 @@
  TRTC APP 支持第三方美颜功能
  本文件展示如何集成第三方美颜功能
  1、进入TRTC房间。        API:[self.trtcCloud enterRoom:params appScene:TRTCAppSceneLIVE];
- 2、设置远端视频的自定义渲染回调。      API:[self.trtcCloud setLocalVideoProcessDelegete:self pixelFormat:TRTCVideoPixelFormat_Texture_2D bufferType:TRTCVideoBufferType_Texture];
+ 2、设置远端视频的自定义渲染回调。      API:[self.trtcCloud setLocalVideoRenderDelegate:self pixelFormat:(TRTCVideoPixelFormat_NV12) bufferType:(TRTCVideoBufferType_PixelBuffer)];
  3、使用第三方美颜SDK<Demo中使用的是Faceunity>: API: [[FUManager shareManager] renderItemsToPixelBuffer:frame.pixelBuffer];
  参考文档：https://cloud.tencent.com/document/product/647/34066
  第三方美颜：https://github.com/Faceunity/FUTRTCDemo
@@ -19,8 +19,9 @@
  Third-Party Beauty Filters
  The TRTC app supports third-party beauty filters.
  This document shows how to integrate third-party beauty filters.
- 1. Enter a room: [self.trtcCloud enterRoom:params appScene:TRTCAppSceneLIVE];
- 2. Set the callback of remote video data for custom rendering: [self.trtcCloud setLocalVideoProcessDelegete:self pixelFormat:TRTCVideoPixelFormat_Texture_2D bufferType:TRTCVideoBufferType_Texture];
+ 1. Enter a room: [self.trtcCloud enterRoom:params appScene:TRTCAppSceneLIVE]
+ 2. Set the callback of remote video data for custom rendering: [self.trtcCloud setLocalVideoRenderDelegate:self pixelFormat:(TRTCVideoPixelFormat_NV12)
+ bufferType:(TRTCVideoBufferType_PixelBuffer)]
  3. Use a third-party filter SDK <FaceUnity is used in the demo>: [[FUManager shareManager] renderItemsToPixelBuffer:frame.pixelBuffer];
  Documentation: https://cloud.tencent.com/document/product/647/34066
  Third-party beauty filter: https://github.com/Faceunity/FUTRTCDemo
