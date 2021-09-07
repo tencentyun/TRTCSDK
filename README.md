@@ -28,11 +28,11 @@ TUI场景化解决方案是腾讯云TRTC针对直播、语聊、视频通话等�
 ## Version 9.1 @ 2021.09.04
 
 **功能新增**
-- 全平台: C++接口支持音频帧回调格式设置;
-- Windows：播片增加ac3格式的支持；
-- Windows：摄像头信息支持获取支持的分辨率列表；参见 ITXDeviceCollection.getDeviceProperties
-- Windows：支持 Nvidia，Intel，AMD 硬解；
-- Mac：新增本地媒体录制支持；
+- 全平台: C++接口支持设置 SDK 回调音频帧的格式;
+- Windows：视频播片分享（TXVodPlayer->attachTRTC）功能增加对ac3格式的支持；
+- Windows：通过 ITXDeviceCollection.getDeviceProperties 获取设备信息时，可以获取到摄像头支持的采集分辨率；
+- Windows：优化了对 Nvidia，Intel 和 AMD 平台的硬件解码能力支持。
+- Mac：新增本地媒体录制支持（startLocalRecording）；
 
 **问题修复**
 - 全平台：修复偶现的进房失败问题；
