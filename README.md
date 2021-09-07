@@ -25,28 +25,28 @@ TUI场景化解决方案是腾讯云TRTC针对直播、语聊、视频通话等�
 | Electron | [下载](https://web.sdk.qcloud.com/trtc/electron/download/TXLiteAVSDK_TRTC_Electron_latest.zip) | [DOC](https://cloud.tencent.com/document/product/647/38548) | [DOC](https://cloud.tencent.com/document/product/647/38549) |[API](https://cloud.tencent.com/document/product/647/38551) |
 | 微信小程序 | [下载](https://web.sdk.qcloud.com/component/trtccalling/download/trtc-calling-miniapp.zip) | [DOC](https://cloud.tencent.com/document/product/647/32399) | [DOC](https://cloud.tencent.com/document/product/647/32183) |[API](https://cloud.tencent.com/document/product/647/17018) |
 
-## Version 9.0 @ 2021.08.06
-
-**欢迎加入**
-团队技术氛围浓厚，培训体系完善，产品线多样，有经验丰富的“老司机”手把手帮你入门音视频技术。<br>
-北京、西安、上海、深圳、广州均有岗位，如果您对音视频技术感兴趣，欢迎加入我们 [腾讯云 TRTC 研发团队](https://careers.tencent.com/jobdesc.html?postId=1377086186140475392) 。
+## Version 9.1 @ 2021.09.04
 
 **功能新增**
-- iOS：支持设置系统采集音量，详见 [setSystemAudioLoopbackVolume](https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCCloud__ios.html#afc45226807d84673bab78b21d1be54ae)；
-- 全平台：支持设置自定义音轨的音量，详见 [setMixExternalAudioVolume](https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCCloud__cplusplus.html#ae0031e4af8bb120ef6de164d99886418)；
-- 全平台：状态回调可区分音频和视频的丢包率，详见 [TRTCRemoteStatistics](https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCStatistic__cplusplus.html#structliteav_1_1TRTCRemoteStatistics)；
-
-**质量优化**
-- 全平台：优化订阅流程，提升手动订阅的秒开速度；
-- 全平台：修复特定场景 onExitRoom 回调重复的问题；
+- 全平台: C++接口支持音频帧回调格式设置;
+- Windows：播片增加ac3格式的支持；
+- Windows：摄像头信息支持获取支持的分辨率列表；参见 ITXDeviceCollection.getDeviceProperties
+- Windows：支持 Nvidia，Intel，AMD 硬解；
+- Mac：新增本地媒体录制支持；
 
 **问题修复**
-- Android：修复自定义采集动态设置码率和帧率无效的问题；
-- iOS：修复先开启录屏辅路，再开启摄像头推流导致的推流失败问题；
-- iOS：修复本地视频录制模糊的问题；
-- iOS：修复若干稳定性问题；
-- Winodws：修复屏幕分享时采集帧率异常的问题；
-- Windows：修复屏幕分享切换目标时，播放端会先显示一帧旧画面的问题；
+- 全平台：修复偶现的进房失败问题；
+- Mac：修复屏幕分享时切换分辨率，预览画面闪一下的问题；
+- Android：修复子房间切回主房间时，辅路视频画面显示异常的问题；
+- Android：修复特定场景下偶现的帧率设置不生效问题；
+- Windows：修复观众切换为CDN流后无法拉流的问题；
+- Windows：修复播片功能播放特定格式视频画面消失的问题；
+
+**质量优化**
+- 全平台：优化弱网下音视频体验；
+- Android：优化退房时的音频状态管理；
+- Android：优化音频采集启动失败后的恢复逻辑，提升成功率；
+- Android：优化特定条件下视频画面过曝的问题
 
 更早期的版本更新历史请点击  [More](https://cloud.tencent.com/document/product/647/46907)...
 
