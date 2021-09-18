@@ -13,7 +13,7 @@
 #import "GenerateTestUserSig.h"
 #import "NSString+Common.h"
 #import "UIViewController+AlertViewController.h"
+#import <TXLiteAVSDK_TRTC/TRTCCloudDelegate.h>
 
-@import TXLiteAVSDK_TRTC;
 
 #endif /* TRTC_API_Example_OC_PrefixHeader_pch */

@@ -148,7 +148,7 @@
                       @{
                           @"title": Localize(@"TRTC-API-Example.Home.ThirdBeauty"),
                           @"desc": @"",
-                          @"class": @"ThirdBeautyViewController"
+                          @"class": @"ThirdBeautyEntranceViewController"
                       }
               ]}];
     }

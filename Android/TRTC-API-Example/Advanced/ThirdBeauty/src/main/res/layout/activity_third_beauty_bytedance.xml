@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/thirdbeauty_main_bg"
+    tools:context=".ThirdBeautyActivity">
+
+    <com.tencent.rtmp.ui.TXCloudVideoView
+        android:id="@+id/txcvv_main_local"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="15dp"
+            android:background="@mipmap/common_ic_back" />
+
+        <TextView
+            android:id="@+id/tv_room_number"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="15dp"
+            android:gravity="center_horizontal"
+            android:text="@string/thirdbeauty_title"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_above="@+id/ll_edit_info">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_weight="1.5"
+            android:orientation="vertical"
+            android:paddingLeft="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/thirdbeauty_set_blur_level"
+                android:textColor="@android:color/white"
+                android:textSize="14sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <SeekBar
+                    android:id="@+id/sb_blur_level"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="10"
+                    android:max="100"
+                    android:paddingTop="13dp"
+                    android:paddingBottom="13dp"
+                    android:progress="80"
+                    android:progressDrawable="@drawable/common_seekbar_style"
+                    android:thumb="@drawable/common_seekbar_thumb" />
+
+                <TextView
+                    android:id="@+id/tv_blur_level"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="4"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_edit_info"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_weight="1.5"
+            android:orientation="vertical"
+            android:paddingLeft="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/thirdbeauty_room_id"
+                android:textColor="@android:color/white"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/et_room_id"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:background="@drawable/common_edit_bg"
+                android:inputType="number"
+                android:paddingLeft="5dp"
+                android:text="1256732" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_weight="1.5"
+            android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/thirdbeauty_user_id"
+                android:textColor="@android:color/white"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/et_user_id"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:background="@drawable/common_edit_bg"
+                android:paddingLeft="5dp" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_start_push"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/common_button_bg"
+            android:text="@string/thirdbeauty_start_push"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <com.tencent.rtmp.ui.TXCloudVideoView
+        android:id="@+id/txcvv_video_remote1"
+        android:layout_width="90dp"
+        android:layout_height="160dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="70dp"
+        android:background="@android:color/darker_gray"
+        android:visibility="gone" />
+
+    <com.tencent.rtmp.ui.TXCloudVideoView
+        android:id="@+id/txcvv_video_remote2"
+        android:layout_width="90dp"
+        android:layout_height="160dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="240dp"
+        android:background="@android:color/darker_gray"
+        android:visibility="gone" />
+
+    <com.tencent.rtmp.ui.TXCloudVideoView
+        android:id="@+id/txcvv_video_remote3"
+        android:layout_width="90dp"
+        android:layout_height="160dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="410dp"
+        android:background="@android:color/darker_gray"
+        android:visibility="gone" />
+
+    <com.tencent.rtmp.ui.TXCloudVideoView
+        android:id="@+id/txcvv_video_remote4"
+        android:layout_width="90dp"
+        android:layout_height="160dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="410dp"
+        android:background="@android:color/darker_gray"
+        android:visibility="gone" />
+
+    <com.tencent.rtmp.ui.TXCloudVideoView
+        android:id="@+id/txcvv_video_remote5"
+        android:layout_width="90dp"
+        android:layout_height="160dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="240dp"
+        android:background="@android:color/darker_gray"
+        android:visibility="gone" />
+
+    <com.tencent.rtmp.ui.TXCloudVideoView
+        android:id="@+id/txcvv_video_remote6"
+        android:layout_width="90dp"
+        android:layout_height="160dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="70dp"
+        android:background="@android:color/darker_gray"
+        android:visibility="gone" />
+
+    <FrameLayout
+        android:id="@+id/fl_mask"
+        android:visibility="gone"
+        android:background="@android:color/black"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_gravity="center"
+            android:text="@string/thirdbeauty_wait_tip"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </FrameLayout>
+</RelativeLayout>
