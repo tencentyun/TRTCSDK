@@ -12,6 +12,9 @@
     text-overflow: ellipsis;
     flex: 1;
   }
+  .more-menu{
+    margin-right: -18px;
+  }
 }
 .menu-item-text {
   margin-left: 6px;
@@ -37,5 +40,5 @@
   // }
 }
 .top-bar-container-mobile {
-  width: calc(100% - 40px);
+  // width: calc(100% - 40px);
 }

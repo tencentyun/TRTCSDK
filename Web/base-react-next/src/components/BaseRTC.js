@@ -36,6 +36,7 @@ export default class RTC extends React.Component {
     this.isLeaving = false;
     this.userSig = '';
     this.privateMapKey = 255;
+    this.mirror = true;
     global.TRTC = TRTC;
   }
 
@@ -108,6 +109,7 @@ export default class RTC extends React.Component {
       userId: this.userID,
       cameraId: this.cameraID,
       microphoneId: this.microphoneID,
+      mirror: this.mirror,
     });
     await this.localStream.initialize();
     this.addStream && this.addStream(this.localStream);
@@ -122,7 +124,11 @@ export default class RTC extends React.Component {
   }
 
   playStream(stream, dom) {
-    stream.play(dom).catch();
+    if (stream.getType() === 'main' && stream.getUserId().indexOf('share') >= 0) {
+      stream.play(dom, { objectFit: 'contain' }).catch();
+    } else {
+      stream.play(dom).catch();
+    }
   }
 
   resumeStream(stream) {

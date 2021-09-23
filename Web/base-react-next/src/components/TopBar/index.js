@@ -14,9 +14,12 @@ import ShareIcon from '@material-ui/icons/Share';
 import QueuePlayNextIcon from '@material-ui/icons/QueuePlayNext';
 import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
 import GitHubIcon from '@material-ui/icons/GitHub';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import LanguageChange from '@components/LanguageChange';
 import DeviceDetector from '@components/DeviceDetector';
 import toast from '@components/Toast';
+import { unRegister } from '@api/http';
+import Modal from '@components/Modal';
 
 function TopBar({ title, isMobile = false }) {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
@@ -41,16 +44,22 @@ function TopBar({ title, isMobile = false }) {
   };
 
   const handleQuit = () => {
-    Cookies.remove('trtc-token');
-    Cookies.remove('userId');
-    Cookies.remove('phoneNumber');
+    Cookies.remove('trtc-api-example-token');
+    Cookies.remove('trtc-api-example-userId');
+    Cookies.remove('trtc-api-example-phoneNumber');
+    Cookies.remove('trtc-api-example-phoneArea');
     goToPage('login');
   };
 
   const handleCopyLink = () => {
     try {
       const roomID = document.getElementById('RoomID').value;
-      navigator && navigator.clipboard.writeText(`${location.href}?roomID=${roomID}`).then(() => {
+      const urlSearchParams = new URLSearchParams(window.location.search);
+      if (urlSearchParams.has('roomID')) {
+        urlSearchParams.set('roomID', roomID);
+      }
+      const queryString = urlSearchParams.toString() ? `?${urlSearchParams.toString()}` : `?roomID=${roomID}`;
+      navigator && navigator.clipboard.writeText(`${location.host}${location.pathname}${queryString}`).then(() => {
         toast.success(a18n('复制成功'), 2000);
       }, () => {
         toast.info(a18n('复制失败'), 2000);
@@ -60,14 +69,42 @@ function TopBar({ title, isMobile = false }) {
     }
   };
 
+  const handleUnregister = () => {
+    Modal.confirm({
+      title: a18n('注销'),
+      content: a18n('确定注销当前用户吗'),
+      onOk: () => {
+        const phoneArea = Cookies.get('trtc-api-example-phoneArea');
+        const phoneNumber = Cookies.get('trtc-api-example-phoneNumber');
+        unRegister(phoneArea, phoneNumber).then((res) => {
+          if (res.errorCode === 0) {
+            Cookies.remove('trtc-api-example-token');
+            Cookies.remove('trtc-api-example-userId');
+            Cookies.remove('trtc-api-example-phoneNumber');
+            Cookies.remove('trtc-api-example-phoneArea');
+            goToPage('login');
+          } else {
+            toast.info(res.errorMessage || 'unregister failure');
+          }
+        })
+          .catch((error) => {
+            console.info('unregister failed = ', error);
+          });
+      },
+    });
+  };
+
   const configList = [
-    { key: 'user', icon: PermIdentityOutlinedIcon, text: Cookies.get('phoneNumber') },
+    { key: 'user', icon: PermIdentityOutlinedIcon, text: Cookies.get('trtc-api-example-phoneNumber') },
     { key: 'device', icon: QueuePlayNextIcon, text: a18n('设备检测'), callback: handleDeviceDetector },
     { key: 'link', icon: ShareIcon, text: a18n('复制链接'), callback: handleCopyLink },
     { key: 'language', icon: TranslateIcon, text: a18n('语言切换') },
     { key: 'github', icon: GitHubIcon, text: a18n('GitHub 地址'), callback: handleGitHub },
     { key: 'log-out', icon: PowerSettingsNewIcon, text: a18n('退出登录'), callback: handleQuit },
   ];
+  if (unRegister && typeof unRegister === 'function') {
+    configList.splice(5, 0, { key: 'unregister', icon: ExitToAppIcon, text: a18n('注销'), callback: handleUnregister });
+  }
 
   return (
     <div className={clsx(styles['top-bar-container'], isMobile && styles['top-bar-container-mobile'])}>
@@ -78,6 +115,7 @@ function TopBar({ title, isMobile = false }) {
         aria-haspopup="true"
         onClick={openMenu}
         style={{ color: '#1890fe' }}
+        className={styles['more-menu']}
       >
         <MoreVertIcon />
       </IconButton>

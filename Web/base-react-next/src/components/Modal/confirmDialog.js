@@ -3,6 +3,7 @@ import InfoIcon from '@material-ui/icons/Info';
 import React, { useEffect, useState } from 'react';
 import Modal from './index';
 import styles from './confirmDialog.module.scss';
+import a18n from 'a18n';
 
 /**
  * 封装 Dialog 组件, 简化 Dialog 组件的使用
@@ -63,10 +64,10 @@ export default function ConfirmDialog() {
       </DialogContent>
       <DialogActions className={styles['dialog-action']}>
         <Button autoFocus onClick={handleCancel} color="primary">
-          Cancel
+          {a18n('取消')}
         </Button>
         <Button onClick={handleConfirm} color="primary">
-          Ok
+          {a18n('确定')}
         </Button>
       </DialogActions>
     </Dialog>

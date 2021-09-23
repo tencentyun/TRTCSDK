@@ -2,6 +2,7 @@ export const LANG = {
   EN: 'en',  // 英文
   zh_CN: 'zh_CN',  // 中文
 };
+export const ENV_IS_PRODUCTION = process.env.NODE_ENV === 'production';
 
 export const COUNTRIES = [
   { code: 'AD', label: 'Andorra', phone: '376' },
@@ -258,6 +259,7 @@ export const apiCodeMap = {
   0: '登录成功',
   '-1001': '缺少参数',
   '-1002': '手机号格式不对',
+  '-1003': '', // 短信验证码条数用完
   '-1004': '方法名不存在',
   '-1005': 'token错误，输入短信验证码重新登录',
   '-1006': 'token已过期，请重新登录',

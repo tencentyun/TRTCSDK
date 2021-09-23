@@ -1,4 +1,4 @@
-.user-list-title {
+.related-resources-wrapper {
   width: 100%;
   .expand-icon {
     float: right;
@@ -9,12 +9,8 @@
       transition: height 1s ease;
     }
   }
-  .user-list-container {
-    width: 100%;
-    padding: 0 0 20px;
-    margin: 0;
-    overflow: hidden;
-    transition: height 1s ease;
+  ul {
+    padding-left: 24px;
   }
   .accordion-container {
     box-shadow: none;

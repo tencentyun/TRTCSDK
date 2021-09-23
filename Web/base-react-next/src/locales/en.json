@@ -21,6 +21,12 @@
   "混音": "Mix Audio",
   "流录制": "Stream Recording",
   "美颜": "Beauty",
+  "水印": "Watermark",
+  "开启水印": "Enable Watermark",
+  "关闭水印": "Disable Watermark",
+  "开启水印教程": "Tutorial to enable watermark",
+  "开启美颜教程": "Tutorial to enable beauty",
+  "相关资源": "Related Resources",
   "API 文档": "API Documentation",
   "区号": "Country Code",
   "请允许网页访问%s的权限！": "Grant the webpage access to %s.",
@@ -33,6 +39,7 @@
   "设备检测": "Test Device",
   "复制链接": "Copy Link",
   "GitHub 地址": "To GitHub",
+  "注销": "UnRegister",
   "退出登录": "Log Out",
   "成员列表": "User List",
   "暂无成员": "No user yet",
@@ -103,5 +110,8 @@
   "登录成功": "Login success",
   "产生 userSig 签名错误": "Generate userSig signature error",
   "复制成功": "Copy success",
-  "复制失败": "Copy failed"
+  "复制失败": "Copy failed",
+  "确定注销当前用户吗": "Are you sure to unregister the current user",
+  "取消": "Cancel",
+  "确定": "OK"
 }

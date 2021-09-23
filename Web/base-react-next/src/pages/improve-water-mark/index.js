@@ -3,7 +3,6 @@ import Head from 'next/head';
 import dynamic from 'next/dynamic';
 import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
-import QRCoder from '@components/QrCoder';
 import Stream from '@components/Stream';
 import UserList from '@components/UserList';
 import UserIDInput from '@components/UserIDInput';
@@ -11,50 +10,18 @@ import RoomIDInput from '@components/RoomIDInput';
 import { getNavConfig } from '@api/nav';
 import { getUrlParam } from '@utils/utils';
 import { handlePageUrl, handlePageChange, getLanguage } from '@utils/common';
-import { Button, Accordion, AccordionSummary, AccordionDetails, makeStyles, Select, Typography, MenuItem, FormControl, InputLabel } from '@material-ui/core';
+import { Button, Accordion, AccordionSummary, AccordionDetails, Typography } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import SideBar from '@components/SideBar';
 import styles from '@styles/common.module.scss';
 import DeviceSelect from '@components/DeviceSelect';
-import { ENV_IS_PRODUCTION } from '@utils/constants';
+import RelatedResources from '@components/RelatedResources';
 const mobile = require('is-mobile');
-const DynamicRtc = dynamic(import('@components/RtcClient/improve-audio-bitrate-rtc-client'), { ssr: false });
+const DynamicRtc = dynamic(import('@components/RtcClient/improve-water-mark-rtc-client'), { ssr: false });
 const DynamicShareRtc = dynamic(import('@components/ShareRTC'), { ssr: false });
 
-const pcWidth = 260;
-const useStyles = makeStyles(theme => ({
-  'band-input': {
-    width: pcWidth,
-    marginBottom: theme.spacing(2),
-  },
-  'band-input-mobile': {
-    width: '100%',
-  },
-  'chart-line-cotainer': {
-    width: pcWidth,
-  },
-  'chart-line-cotainer-mobile': {
-    width: '100%',
-  },
-  'graph-container': {
-    width: pcWidth,
-  },
-  'graph-container-mobile': {
-    width: '100%',
-  },
-  'canvas-container': {
-    width: '100%',
-  },
-}));
-let bitrateSeries;
-let bitrateGraph;
-let packetSeries;
-let packetGraph;
-let timerId;
-let lastResult;
 export default function BasicRtc(props) {
   const { activeId, navConfig } = props;
-  const classes = useStyles();
   const video = true;
   const audio = true;
   const mode = 'rtc';
@@ -68,10 +35,9 @@ export default function BasicRtc(props) {
   const [localStreamConfig, setLocalStreamConfig] = useState(null);
   const [remoteStreamConfigList, setRemoteStreamConfigList] = useState([]);
   const [isJoined, setIsJoined] = useState(false);
-  const [isPublished, setIsPublished] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [audioBitRate, setAudioBitRate] = useState('standard');
   const [mountFlag, setMountFlag] = useState(false);
+  const [isWaterMarkEnabled, setIsWaterMarkEnabled] = useState(false);
 
   useEffect(() => {
     const language = getLanguage();
@@ -81,72 +47,34 @@ export default function BasicRtc(props) {
     handlePageUrl();
     setUseStringRoomID(getUrlParam('useStringRoomID') === 'true');
     setIsMobile(mobile());
-
-    /* eslint-disable */
-    bitrateSeries = TimelineDataSeries && new TimelineDataSeries();
-    bitrateGraph = TimelineGraphView && (new TimelineGraphView('bitrateGraph', 'bitrateCanvas'));
-    bitrateGraph.updateEndDate();
-
-    packetSeries = new TimelineDataSeries();
-    packetGraph = new TimelineGraphView('packetGraph', 'packetCanvas');
-    packetGraph.updateEndDate();
-    /* eslint-enable */
   }, []);
-  useEffect(() => {
-    if (isJoined) {
-      timerId = setInterval(() => {
-        if (!isPublished) {};
-
-        let bytes;
-        let packets;
-        RTC && RTC.client.getLocalAudioStats().then((stats) => {
-          (Object.keys(stats || {}) || []).forEach((userId) => {
-            console.log(`userId: ${userId} bytesSent: ${stats[userId].bytesSent} packetsSent: ${stats[userId].packetsSent}`);
-            bytes = stats[userId].bytesSent;
-            packets = stats[userId].packetsSent;
-            const now = new Date().getTime();
-            if (lastResult) {
-              // calculate bitrate
-              const bitrate = (8 * (bytes - lastResult.bytes)) / (now - lastResult.timestamp);
-              console.log(`audio bitrate: ${bitrate}`);
-              // append to chart
-              bitrateSeries.addPoint(now, bitrate);
-              bitrateGraph.setDataSeries([bitrateSeries]);
-              bitrateGraph.updateEndDate();
-              // calculate number of packets and append to chart
-              packetSeries.addPoint(now, packets - lastResult.packets);
-              packetGraph.setDataSeries([packetSeries]);
-              packetGraph.updateEndDate();
-            }
-            lastResult = { bytes, packets, timestamp: now };
-          });
-        });
-      }, 1000);
-    } else {
-      clearInterval(timerId);
-    }
-    return function clearTimer() {
-      clearInterval(timerId);
-    };
-  }, [isJoined]);
 
   const handleJoin = async () => {
     await RTC.handleJoin();
     await RTC.handlePublish();
-
-    await RTC.changeAudioBitRate(audioBitRate);
   };
 
-  const handlePublish = async () => {
-    await RTC.handlePublish();
+  const handleOpenWaterMark = () => {
+    RTC.startWaterMark({
+      localStream: RTC.localStream,
+      imageUrl: './trtc-logo-en-w.png',
+      width: 180,
+      height: 90,
+      mode: 'cover',
+      rotate: 30,
+      alpha: 0.3,
+    }).then(() => setIsWaterMarkEnabled(true));
   };
 
-  const handleUnPublish = async () => {
-    await RTC.handleUnPublish();
+  const handleCloseWaterMark = () => {
+    RTC.stopWaterMark();
+    setIsWaterMarkEnabled(false);
   };
 
   const handleLeave = async () => {
     shareRTC && shareRTC.handleLeave();
+    RTC.stopWaterMark();
+    setIsWaterMarkEnabled(false);
     await RTC.handleLeave();
   };
 
@@ -154,9 +82,6 @@ export default function BasicRtc(props) {
     switch (type) {
       case 'join':
         setIsJoined(value);
-        break;
-      case 'publish':
-        setIsPublished(value);
         break;
       default:
         break;
@@ -454,65 +379,46 @@ export default function BasicRtc(props) {
       {/* 操作区域 */}
       <div className={clsx(styles['control-container'], isMobile && styles['mobile-device'])}>
         <div className={clsx(styles['body-container'], isMobile && styles['mobile-device'])}>
-          {mountFlag
-            && <Accordion className={styles['accordion-container']} defaultExpanded={true}>
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1a-content"
-                id="panel1a-header"
-                classes={{
-                  root: styles['accordion-summary-container'],
-                  content: styles['accordion-summary-content'],
-                }}
-              >
-                {mountFlag && <Typography>{a18n('操作')}</Typography>}
-              </AccordionSummary>
-              <AccordionDetails className={styles['accordion-details-container']}>
-                <UserIDInput disabled={isJoined} onChange={value => setUserID(value)}></UserIDInput>
-                <RoomIDInput disabled={isJoined} onChange={value => setRoomID(value)}></RoomIDInput>
+          <Accordion className={styles['accordion-container']} defaultExpanded={true}>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+              classes={{
+                root: styles['accordion-summary-container'],
+                content: styles['accordion-summary-content'],
+              }}
+            >
+              {mountFlag && <Typography>{a18n('操作')}</Typography>}
+            </AccordionSummary>
+            <AccordionDetails className={styles['accordion-details-container']}>
+              <UserIDInput disabled={isJoined} onChange={value => setUserID(value)}></UserIDInput>
+              <RoomIDInput disabled={isJoined} onChange={value => setRoomID(value)}></RoomIDInput>
 
-                <FormControl className={clsx(classes['band-input'], isMobile && classes['band-input-mobile'])}>
-                  <InputLabel id="simple-select-label">AudioProfile</InputLabel>
-                  <Select value={audioBitRate} onChange={e => setAudioBitRate(e.target.value)}>
-                    <MenuItem value='standard'>{a18n('standard (48kHz/单声道/40kbps)')}</MenuItem>
-                    <MenuItem value='high'>{a18n('high (48kHz/单声道/128kbps)')}</MenuItem>
-                  </Select>
-                </FormControl>
+              <DeviceSelect deviceType="camera" onChange={value => setCameraID(value)}></DeviceSelect>
+              <DeviceSelect deviceType="microphone" onChange={value => setMicrophoneID(value)}></DeviceSelect>
 
-                <DeviceSelect deviceType="camera" onChange={value => setCameraID(value)}></DeviceSelect>
-                <DeviceSelect deviceType="microphone" onChange={value => setMicrophoneID(value)}></DeviceSelect>
+              <div className={clsx(styles['button-container'], isMobile && styles['mobile-device'])}>
+                <Button disabled={isJoined} id="join" variant="contained" color="primary" className={ isJoined ? styles.forbidden : ''} onClick={handleJoin}>JOIN</Button>
+                <Button id="leave" variant="contained" color="primary" onClick={handleLeave}>LEAVE</Button>
+                <Button disabled={!isJoined || isWaterMarkEnabled} className={clsx(styles['full-width'], (!isJoined || isWaterMarkEnabled) && styles.forbidden)} id="open-water-mark" variant="contained" color="primary" onClick={handleOpenWaterMark}>{a18n('开启水印')}</Button>
+                <Button disabled={!isWaterMarkEnabled} className={clsx(styles['full-width'], !isWaterMarkEnabled && styles.forbidden)} id="close-water-mark" variant="contained" color="primary" onClick={handleCloseWaterMark}>{a18n('关闭水印')}</Button>
+              </div>
 
-                <div className={clsx(styles['button-container'], isMobile && styles['mobile-device'])}>
-                  <Button id="join" variant="contained" color="primary" className={ isJoined ? styles.forbidden : ''} onClick={handleJoin}>JOIN</Button>
-                  <Button id="leave" variant="contained" color="primary" onClick={handleLeave}>LEAVE</Button>
-                  <Button id="publish" variant="contained" color="primary" className={ isPublished ? styles.forbidden : '' } onClick={handlePublish}>PUBLISH</Button>
-                  <Button id="unpublish" variant="contained" color="primary" onClick={handleUnPublish}>UNPUBLISH</Button>
-                </div>
-              </AccordionDetails>
-            </Accordion>
-          }
+            </AccordionDetails>
+          </Accordion>
           {/* 用户列表 */}
           <div className={clsx(styles['user-list-container'])}>
             <UserList localStreamConfig={localStreamConfig} remoteStreamConfigList={remoteStreamConfigList}>
             </UserList>
           </div>
-          <div className={clsx(classes['graph-container'], isMobile && classes['graph-container-mobile'])} id="bitrateGraph">
-            <div>Video Bitrate</div>
-            <canvas id="bitrateCanvas" className={classes['canvas-container']}></canvas>
-          </div>
-          <div className={clsx(classes['graph-container'], isMobile && classes['graph-container-mobile'])} id="packetGraph">
-            <div>Packets sent per second</div>
-            <canvas id="packetCanvas" className={classes['canvas-container']}></canvas>
-          </div>
+          {/* 相关资源 */}
+          <RelatedResources resources={[
+            { name: '开启水印教程',
+              link: 'https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/tutorial-29-advance-water-mark.html',
+            },
+          ]}></RelatedResources>
         </div>
-        {/* 生成二维码 */}
-        {
-          !isMobile && ENV_IS_PRODUCTION
-          && <div className={clsx(styles['footer-container'])}>
-              {mountFlag && <Typography>{a18n('移动端体验')}</Typography>}
-              <QRCoder roomID={roomID} ></QRCoder>
-            </div>
-        }
       </div>
       {/* 视频流显示区域 */}
       <div className={styles['stream-container']}>
@@ -528,18 +434,18 @@ export default function BasicRtc(props) {
         {/* 远端流 */}
         {
           remoteStreamConfigList.length > 0
-          && remoteStreamConfigList.map((remoteStreamConfig) => {
-            if (remoteStreamConfig.hasAudio || remoteStreamConfig.hasVideo) {
-              return <Stream
-                key={`${remoteStreamConfig.stream.getUserId()}_${remoteStreamConfig.stream.getType()}`}
-                stream = {remoteStreamConfig.stream}
-                config = {remoteStreamConfig}
-                init={dom => RTC.playStream(remoteStreamConfig.stream, dom)}
-                onChange = {e => handleRemoteChange(e)}>
-              </Stream>;
-            }
-            return null;
-          })
+            && remoteStreamConfigList.map((remoteStreamConfig) => {
+              if (remoteStreamConfig.hasAudio || remoteStreamConfig.hasVideo) {
+                return <Stream
+                  key={`${remoteStreamConfig.stream.getUserId()}_${remoteStreamConfig.stream.getType()}`}
+                  stream = {remoteStreamConfig.stream}
+                  config = {remoteStreamConfig}
+                  init={dom => RTC.playStream(remoteStreamConfig.stream, dom)}
+                  onChange = {e => handleRemoteChange(e)}>
+                </Stream>;
+              }
+              return null;
+            })
         }
       </div>
     </div>);
@@ -597,7 +503,7 @@ export default function BasicRtc(props) {
 }
 
 export const getStaticProps = () => {
-  const result = getNavConfig('improve-audio-bitrate');
+  const result = getNavConfig('improve-water-mark');
   return {
     props: {
       ...result,

@@ -18,6 +18,7 @@ import styles from '@styles/common.module.scss';
 import toast from '@components/Toast';
 import { SDKAPPID } from '@app/config';
 import DeviceSelect from '@components/DeviceSelect';
+import { ENV_IS_PRODUCTION } from '@utils/constants';
 const mobile = require('is-mobile');
 const DynamicRtc = dynamic(import('@components/BaseRTC'), { ssr: false });
 const DynamicShareRtc = dynamic(import('@components/ShareRTC'), { ssr: false });
@@ -42,6 +43,9 @@ const useStyles = makeStyles(() => ({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+  },
+  'role-select': {
+    marginRight: 0,
   },
   'mix-input': {
     width: '260px',
@@ -112,6 +116,7 @@ export default function BasicRtc(props) {
     const localInfo = {
       id: 'local_stream',
       userId: RTC.localStream.getUserId(),
+      roomId: roomID,
       width: videoTrack && videoTrack.getSettings().width,
       height: videoTrack && videoTrack.getSettings().height,
       locationX: 0,
@@ -488,7 +493,50 @@ export default function BasicRtc(props) {
           userId: '$PLACE_HOLDER_REMOTE$', // 远端流占位
           zOrder: 1,
         },
+        // 发起与房间 355624 中 'user_355624' 用户的混流
+        // {
+        //   roomId: 355624,
+        //   width: 320,
+        //   height: 240,
+        //   locationX: 960,
+        //   locationY: 720,
+        //   pureAudio: false,
+        //   userId: 'user_355624',
+        //   zOrder: 1,
+        // },
       ];
+    } else {
+      // 发起与 355623， 355624， 355625 指定房间用户的混流
+      // mixUsers.push(...[{
+      //   roomId: 355623,
+      //   width: 640,
+      //   height: 480,
+      //   locationX: 640,
+      //   locationY: 0,
+      //   pureAudio: false,
+      //   userId: 'user_355623',
+      //   zOrder: 2,
+      // },
+      // {
+      //   roomId: 355624,
+      //   width: 640,
+      //   height: 480,
+      //   locationX: 0,
+      //   locationY: 480,
+      //   pureAudio: false,
+      //   userId: 'user_355624',
+      //   zOrder: 3,
+      // },
+      // {
+      //   roomId: 355625,
+      //   width: 640,
+      //   height: 480,
+      //   locationX: 640,
+      //   locationY: 480,
+      //   pureAudio: false,
+      //   userId: 'user_355625',
+      //   zOrder: 4,
+      // }]);
     }
     mixOutputParam = {
       ...mixOutputParam,
@@ -603,8 +651,8 @@ export default function BasicRtc(props) {
                 onChange={() => setMixMode(mixMode === mixModePreset ? mixModeManual : mixModePreset)}
               >
                 {mountFlag && <Typography>{a18n('模式')}</Typography>}
-                <FormControlLabel value={mixModeManual} control={<Radio />} label={a18n('全手动')} className={classes['role-select']} />
-                <FormControlLabel value={mixModePreset} control={<Radio />} label={a18n('预排版')} />
+                <FormControlLabel value={mixModeManual} control={<Radio color='primary' />} label={a18n('全手动')} className={classes['role-select']} />
+                <FormControlLabel value={mixModePreset} control={<Radio color='primary' />} label={a18n('预排版')} className={classes['role-select']} />
               </RadioGroup>
 
               <TextField className={clsx(classes['mix-input'], isMobile && classes['mix-input-mobile'])} id="outputStreamID" value={outputStreamID} label="outputStreamID" onChange={event => setOutputStreamID(event.target.value)}/>
@@ -626,7 +674,7 @@ export default function BasicRtc(props) {
         </div>
         {/* 生成二维码 */}
         {
-          !isMobile
+          !isMobile && ENV_IS_PRODUCTION
           && <div className={clsx(styles['footer-container'])}>
               {mountFlag && <Typography>{a18n('移动端体验')}</Typography>}
               <QRCoder roomID={roomID} ></QRCoder>

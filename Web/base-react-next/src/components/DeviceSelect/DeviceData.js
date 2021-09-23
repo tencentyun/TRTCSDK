@@ -21,8 +21,6 @@ const getDeviceList = async (deviceType) => {
 };
 
 export default function DeviceData({ deviceType, updateDeviceList, updateActiveDeviceId }) {
-  // const [deviceList, setDeviceList] = useState([]);
-  // const [activeDeviceId, setActiveDeviceId] = useState('');
   useEffect(async () => {
     try {
       const mediaStream = await navigator.mediaDevices.getUserMedia({ audio: deviceType === 'microphone', video: deviceType === 'camera' });
@@ -39,16 +37,12 @@ export default function DeviceData({ deviceType, updateDeviceList, updateActiveD
     updateDeviceList && updateDeviceList(list);
     const activeDeviceId = list[0].deviceId;
     updateActiveDeviceId && updateActiveDeviceId(activeDeviceId);
-
-    // setDeviceList(list);
-    // setActiveDeviceId(activeDeviceId);
   }, []);
 
-  navigator.mediaDevices.ondevicechange = async () => {
+  navigator.mediaDevices.addEventListener('devicechange', async () => {
     const newList = await getDeviceList(deviceType);
     updateDeviceList && updateDeviceList(newList);
-    // setDeviceList(newList);
-  };
+  });
 
   return (
     <div></div>
