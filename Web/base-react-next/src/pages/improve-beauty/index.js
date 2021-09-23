@@ -15,6 +15,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import SideBar from '@components/SideBar';
 import styles from '@styles/common.module.scss';
 import DeviceSelect from '@components/DeviceSelect';
+import RelatedResources from '@components/RelatedResources';
 const mobile = require('is-mobile');
 const DynamicRtc = dynamic(import('@components/RtcClient/improve-beauty-rtc-client'), { ssr: false });
 const DynamicShareRtc = dynamic(import('@components/ShareRTC'), { ssr: false });
@@ -437,6 +438,13 @@ export default function BasicRtc(props) {
             <UserList localStreamConfig={localStreamConfig} remoteStreamConfigList={remoteStreamConfigList}>
             </UserList>
           </div>
+
+          {/* 相关资源 */}
+          <RelatedResources resources={[
+            { name: '开启美颜教程',
+              link: 'https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/tutorial-28-advanced-beauty.html',
+            },
+          ]}></RelatedResources>
         </div>
       </div>
       {/* 视频流显示区域 */}

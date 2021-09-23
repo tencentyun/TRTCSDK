@@ -39,7 +39,7 @@ export function handlePageUrl(path) {
   const hasLoginPage = SDKAPPID && SECRETKEY.length === 0;
   // 使用 api 接口获取 userSig ，且 Cookies 中没有 token 或 token 失效跳转到登录页面
   if (hasLoginPage) {
-    Cookies.get('trtc-token') ? (path && goToPage(path)) : goToPage('login');
+    Cookies.get('trtc-api-example-token') ? (path && goToPage(path)) : goToPage('login');
     return;
   }
   // 使用本地 SECRETKEY 获取 userSig 时跳转到指定页面
@@ -61,7 +61,7 @@ export function handlePageChange(data) {
 };
 
 export function getLanguage() {
-  let language = Cookies.get('trtc-lang') || getUrlParam('lang') || navigator.language || 'zh-CN';
+  let language = Cookies.get('trtc-api-example-lang') || getUrlParam('lang') || navigator.language || 'zh-CN';
   language = language.replace(/_/, '-').toLowerCase();
 
   if (language === 'zh-cn' || language === 'zh') {

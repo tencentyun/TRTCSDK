@@ -1,6 +1,6 @@
-WebRTC API Examples 展示了 [WebRTC API 接口](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/Client.html) 的使用场景，方便客户了解 API 接口功能并快速接入到现有工程中。
+[WebRTC API Examples](https://web.sdk.qcloud.com/trtc/webrtc/demo/api-sample/index.html) 展示了 [WebRTC API 接口](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/Client.html) 的使用场景，方便客户了解 API 接口功能并快速接入到现有工程中。
 
-WebRTC API Examples 基于 [React](https://react.docschina.org/) 和 [Next.js](https://www.nextjs.cn/) 开发，支持 SSG(Static Site Generation) 生成全站静态化网页，易于 SEO。如有需要，您可以阅读官网相关文档。
+[WebRTC API Examples](https://web.sdk.qcloud.com/trtc/webrtc/demo/api-sample/index.html) 使用 [Next.js](https://www.nextjs.cn/) 进行开发，如有需要，您可以阅读官网相关文档。
 
 本文主要介绍如何快速运行腾讯云 WebRTC API Examples。
 

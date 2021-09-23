@@ -141,6 +141,13 @@ export default {
           'zh-CN': a18n('美颜'),
         },
       },
+      {
+        path: 'improve-water-mark',
+        name: {
+          en: 'Improve Watermark',
+          'zh-CN': a18n('水印'),
+        },
+      },
     ],
   },
 

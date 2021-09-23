@@ -27,7 +27,7 @@ function MyApp({ Component, pageProps }) {
   const [language, setLanguage] = useState('');
   const changeLanguage = (language) => {
     a18n.setLocale(language);
-    Cookies.set('trtc-lang', language);
+    Cookies.set('trtc-api-example-lang', language);
     setLanguage(language);
   };
 
@@ -43,9 +43,10 @@ function MyApp({ Component, pageProps }) {
         <link rel="icon" href="/favicon.ico" />
         <meta name="description" content="腾讯云实时音视频在线演示"></meta>
         <meta name="keywords" content="WebRTC, Tencent, RTC, TRTC, 音视频解决方案, 语音通话, 视频通话, 互动直播"></meta>
-        <script src="./graph.js" type="text/javascript"></script>
         <script src="https://cdn-go.cn/aegis/aegis-sdk/latest/aegis.min.js"></script>
         <script src="./statistic.js"></script>
+        <script src="https://web.sdk.qcloud.com/trtc/webrtc/demo/latest/dist/trtc.js"></script>
+        <script src="./graph.js" type="text/javascript"></script>
       </Head>
       <ThemeProvider theme={theme}>
         <MyContext.Provider value={{ changeLanguage }}>
