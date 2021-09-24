@@ -25,28 +25,25 @@ TUI场景化解决方案是腾讯云TRTC针对直播、语聊、视频通话等�
 | Electron | [下载](https://web.sdk.qcloud.com/trtc/electron/download/TXLiteAVSDK_TRTC_Electron_latest.zip) | [DOC](https://cloud.tencent.com/document/product/647/38548) | [DOC](https://cloud.tencent.com/document/product/647/38549) |[API](https://cloud.tencent.com/document/product/647/38551) |
 | 微信小程序 | [下载](https://web.sdk.qcloud.com/component/trtccalling/download/trtc-calling-miniapp.zip) | [DOC](https://cloud.tencent.com/document/product/647/32399) | [DOC](https://cloud.tencent.com/document/product/647/32183) |[API](https://cloud.tencent.com/document/product/647/17018) |
 
-## Version 9.1 @ 2021.09.04
+## Version 9.2 @ 2021.09.24
 
 **功能新增**
-- 全平台: C++接口支持设置 SDK 回调音频帧的格式;
-- Windows：视频播片分享（TXVodPlayer->attachTRTC）功能增加对ac3格式的支持；
-- Windows：通过 ITXDeviceCollection.getDeviceProperties 获取设备信息时，可以获取到摄像头支持的采集分辨率；
-- Windows：优化了对 Nvidia，Intel 和 AMD 平台的硬件解码能力支持。
-- Mac：新增本地媒体录制支持（startLocalRecording）；
+- Android&iOS：支持 Socks5 代理；
+- Windows：TRTCAudioQualityMusic 高音质场景新增自适应回声消除功能，自动平衡音质与回声消除强度；
+- 全平台：新增设置语音音调功能；
 
 **问题修复**
-- 全平台：修复偶现的进房失败问题；
-- Mac：修复屏幕分享时切换分辨率，预览画面闪一下的问题；
-- Android：修复子房间切回主房间时，辅路视频画面显示异常的问题；
-- Android：修复特定场景下偶现的帧率设置不生效问题；
-- Windows：修复观众切换为CDN流后无法拉流的问题；
-- Windows：修复播片功能播放特定格式视频画面消失的问题；
+- Windows：修复 Mac 安装 Windows 的环境部分摄像头不吐数据问题；
+- Android：修复偶现 CDN/TRTC 互切后没有上行音频的问题；
+- iOS：修复 Web 端屏幕分享导致 iOS 接受端自定义渲染花屏的问题；
 
 **质量优化**
-- 全平台：优化弱网下音视频体验；
-- Android：优化退房时的音频状态管理；
-- Android：优化音频采集启动失败后的恢复逻辑，提升成功率；
-- Android：优化特定条件下视频画面过曝的问题
+- Android：优化硬解码时导致 ANR 的问题；
+- Android：优化摄像头本地预览角度兼容的问题；
+- Android：优化首帧秒开速度；
+- Android&iOS：优化合唱模式 3A 策略；
+- Windows：优化 AGC 算法，降低出现声音过小和声音过大的问题的概率；
+- 全平台：优化弱网环境抗抖动算法，视频播放更流畅；
 
 更早期的版本更新历史请点击  [More](https://cloud.tencent.com/document/product/647/46907)...
 
