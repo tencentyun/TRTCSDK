@@ -38,7 +38,7 @@
     "rtc-beauty-plugin": "^0.0.6",
     "rtc-device-detector-react": "^1.0.4",
     "sass": "^1.32.12",
-    "trtc-js-sdk": "^4.11.6"
+    "trtc-js-sdk": "latest"
   },
   "devDependencies": {
     "eslint-config-tencent": "^1.0.0",

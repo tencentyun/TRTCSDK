@@ -37,7 +37,7 @@ export default class RTC extends React.Component {
     this.userSig = '';
     this.privateMapKey = 255;
     this.mirror = true;
-    global.TRTC = TRTC;
+    global.$TRTC = TRTC;
   }
 
   // eslint-disable-next-line camelcase
