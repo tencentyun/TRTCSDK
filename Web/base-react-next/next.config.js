@@ -17,13 +17,6 @@ module.exports = {
       '@api': path.resolve(__dirname, 'src/api'),
       '@app': path.resolve(__dirname, 'src/app'),
     };
-    if (!config.externals) {
-      config.externals = [];
-    }
-    if (prod) { // yarn run build 时引用外部 trtc-js-sdk
-      config.externals.push({'trtc-js-sdk': 'TRTC'});
-    }
-
     return config;
   },
 };
