@@ -69,5 +69,5 @@ TUI场景化解决方案是腾讯云TRTC针对直播、语聊、视频通话等�
 >![](https://main.qcloudimg.com/raw/81662cce932b2500addac28baf6a83b3.jpg)
 
 ### Web 网页
-> [Chrome 打开体验](https://web.sdk.qcloud.com/trtc/webrtc/demo/latest/official-demo/index.html)
+> [Chrome 打开体验](https://web.sdk.qcloud.com/trtc/webrtc/demo/api-sample/basic-rtc.html)
 ![](https://main.qcloudimg.com/raw/56e2bbc928a11bac85e5b78ac171b3bc.jpg)
