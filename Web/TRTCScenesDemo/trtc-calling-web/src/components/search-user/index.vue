@@ -1,15 +1,15 @@
 <template>
   <div class="search-user-container" v-if="callStatus !== 'connected'">
     <div class="search-section">
-      <el-input class="inline-input" v-model="searchInput" maxlength="11" placeholder="请输入呼叫号码"></el-input>
+      <el-input class="inline-input" v-model="searchInput" maxlength="11" placeholder="请输入用户ID"></el-input>
     </div>
 
     <div v-show="callStatus !== 'connected'" class="search-user-list">
       <div v-if="callStatus === 'calling' && isInviter" class="calling-user-footer">
         <el-button class="user-item-join-btn calling">呼叫中...</el-button>
-        <el-button class="user-item-cancel-join-btn" @click="handleCancelCallBtnClick">取消</el-button>
+        <el-button class="user-item-cancel-join-btn" :disabled="cancel" :loading="cancel" @click="handleCancelCallBtnClick">取消</el-button>
       </div>
-      <el-button v-else @click="handleCallBtnClick(searchInput)" class="user-item-join-btn">呼叫</el-button>
+      <el-button v-else @click="handleCallBtnClick(searchInput)" :disabled="call" class="user-item-join-btn">呼叫</el-button>
     </div>
   </div>
 </template>
@@ -20,12 +20,22 @@ import { getSearchHistory } from "../../utils";
 
 export default {
   name: "SearchUser",
+  props:{
+    callFlag: {
+      type: Boolean
+    },
+    cancelFlag:{
+      type: Boolean
+    },
+  },
   data() {
     return {
       searchInput: "",
       callUserId: "",
       searchResultList: [],
-      searchHistoryUser: getSearchHistory()
+      searchHistoryUser: getSearchHistory(),
+      call: false,
+      cancel: false
     };
   },
   computed: {
@@ -52,23 +62,27 @@ export default {
       if (newStatus === "idle") {
         this.callUserId = "";
       }
+    },
+    callFlag(newVal) {
+      this.call = newVal
+    },
+    cancelFlag(newVal) {
+      this.cancel = newVal
     }
   },
   methods: {
     handleCallBtnClick: function(param) {
       if (param === this.loginUserInfo.userId) {
-        this.$message("请输入正确号码");
+        this.$message("请输入正确用户ID");
         return;
       }
+      this.call = true
       this.callUserId = param;
       this.$emit("callUser", { param });
     },
     handleCancelCallBtnClick: function() {
       // 对方刚接受邀请，但进房未成功
-      if (this.isAccepted && this.callStatus !== "connected") {
-        return;
-      }
-      this.callUserId = "";
+      this.cancel = true
       this.$emit("cancelCallUser");
     }
   }
