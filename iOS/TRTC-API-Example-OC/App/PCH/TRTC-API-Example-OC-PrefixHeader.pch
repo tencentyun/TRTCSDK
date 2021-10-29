@@ -12,7 +12,8 @@
 #import "UIColor+Hex.h"
 #import "GenerateTestUserSig.h"
 #import "NSString+Common.h"
-#import <TXLiteAVSDK_TRTC/TRTCCloud.h>
 #import "UIViewController+AlertViewController.h"
+#import <TXLiteAVSDK_TRTC/TRTCCloudDelegate.h>
+
 
 #endif /* TRTC_API_Example_OC_PrefixHeader_pch */

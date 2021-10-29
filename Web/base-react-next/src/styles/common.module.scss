@@ -40,7 +40,7 @@ $default-padding: 20px;
       box-shadow: none;
       background: #fafafa;
       min-height: auto !important;
-      margin: 0 0 20px;
+      // margin: 0 0 20px;
       &:before{
         display: none;
       }
@@ -93,10 +93,15 @@ $default-padding: 20px;
                 background-color: #eeeeee;
               }
             }
+            &.full-width {
+              width: 100%;
+            }
           }
         }
         .video-container {
           margin-top: 16px;
+          height: 166px;
+          width: 100%;
         }
       }
     }
@@ -116,13 +121,16 @@ $default-padding: 20px;
         }
       }
       .user-list-container {
-        @include padding-bottom();
+        // @include padding-bottom();
       }
     }
     .footer-container{
       flex: 0 0 auto;
-      padding: 0 $default-padding 0;
+      padding: $default-padding;
       // align-self: flex-end;
+      canvas {
+        display: block;
+      }
     }
   }
   .stream-container {

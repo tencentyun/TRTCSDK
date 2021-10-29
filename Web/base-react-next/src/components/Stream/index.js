@@ -109,13 +109,13 @@ const Stream = (props) => {
 
   return (
     <div className={`${styles.item} ${props.className}`}>
-      <main ref={refItem} className={styles['item-view']}>
+      <div ref={refItem} className={styles['item-view']}>
         {full && (<footer className={styles['item-view-exits']}>
           <span className={styles['item-view-exits-icon']} onClick={handleExitFull}>
             <FullscreenExitIcon style={{ color: '#fff' }} />
           </span>
         </footer>)}
-      </main>
+      </div>
       {
         config.resumeFlag
         && <div className={styles['item-play-btn-container']} onClick={handleResume}>

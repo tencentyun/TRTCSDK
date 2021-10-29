@@ -34,14 +34,15 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-i18next": "^11.8.15",
-    "rtc-beauty-plugin": "^0.0.3",
-    "rtc-device-detector-react": "1.0.0",
+    "rtc-audio-mixer": "0.0.1",
+    "rtc-beauty-plugin": "^0.0.6",
+    "rtc-device-detector-react": "^1.0.4",
     "sass": "^1.32.12",
-    "trtc-audio-mixer": "^0.0.9",
-    "trtc-js-sdk": "^4.10.0"
+    "trtc-js-sdk": "latest"
   },
   "devDependencies": {
     "eslint-config-tencent": "^1.0.0",
+    "eslint-plugin-react": "^7.24.0",
     "line-reader": "^0.4.0"
   }
 }

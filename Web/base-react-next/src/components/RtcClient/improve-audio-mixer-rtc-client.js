@@ -1,5 +1,5 @@
 import RTC from '@components/BaseRTC.js';
-import AudioMixerPlugin from 'trtc-audio-mixer';
+import AudioMixerPlugin from 'rtc-audio-mixer';
 
 export default class RTCClient extends RTC {
   constructor(options) {

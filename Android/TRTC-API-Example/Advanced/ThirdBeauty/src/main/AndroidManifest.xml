@@ -4,6 +4,8 @@
 
     <application>
         <activity android:name=".ThirdBeautyActivity"/>
+        <activity android:name=".ThirdBeautyEnterActivity"/>
+        <activity android:name=".ThirdBeautyByteDanceActivity"/>
     </application>
 
 </manifest>

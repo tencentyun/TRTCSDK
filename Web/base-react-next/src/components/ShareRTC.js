@@ -45,6 +45,7 @@ export default class ShareRTC extends React.Component {
       sdkAppId: SDKAPPID,
       userId: this.userID,
       userSig: this.userSig,
+      autoSubscribe: false,
     });
     this.handleClientEvents();
     return this.shareClient;

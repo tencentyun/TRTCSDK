@@ -28,6 +28,7 @@ import com.tencent.trtc.thirdbeauty.ThirdBeautyActivity;
 import com.tencent.trtc.videocall.VideoCallingEnterActivity;
 import com.tencent.trtc.videoquality.SetVideoQualityActivity;
 import com.tencent.trtc.voicechatoom.VoiceChatRoomEnterActivity;
+import com.tencent.trtc.thirdbeauty.ThirdBeautyEnterActivity;
 
 /**
  * TRTC API-Example 主页面
@@ -56,7 +57,7 @@ import com.tencent.trtc.voicechatoom.VoiceChatRoomEnterActivity;
  * - 收发SEI消息{@link SendAndReceiveSEIMessageActivity}
  * - 快速切换房间{@link SwitchRoomActivity}
  * - 跨房PK{@link RoomPKActivity}
- * - 第三方美颜{@link ThirdBeautyActivity}
+ * - 第三方美颜{@link ThirdBeautyEnterActivity}
  */
 public class MainActivity extends AppCompatActivity {
 
@@ -237,7 +238,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.ll_third_beauty).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, ThirdBeautyActivity.class);
+                Intent intent = new Intent(MainActivity.this, ThirdBeautyEnterActivity.class);
                 startActivity(intent);
             }
         });

@@ -101,7 +101,7 @@ function StreamBar(props) {
                 && isLocalStream
                 && (<span className={`${styles['bar-item']} ${styles['bar-item-screen']}`}>
                   {
-                    <Tooltip title={config.shareDesk ? 'Stop Share Desk' : 'Share Desk'} arrow>
+                    <Tooltip title={config.shareDesk ? 'Stop Share Screen' : 'Share Screen'} arrow>
                       {
                         config.shareDesk
                           ? <DesktopMacIcon className={styles.pointer} onClick={e => handleChange('shareDesk', e)} style={style}/>

@@ -16,6 +16,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import SideBar from '@components/SideBar';
 import styles from '@styles/common.module.scss';
 import DeviceSelect from '@components/DeviceSelect';
+import { ENV_IS_PRODUCTION } from '@utils/constants';
 const mobile = require('is-mobile');
 const DynamicRtc = dynamic(import('@components/RtcClient/improve-audio-mixer-rtc-client'), { ssr: false });
 const DynamicShareRtc = dynamic(import('@components/ShareRtcClient/improve-audio-mixer-rtc-client'), { ssr: false });
@@ -523,7 +524,7 @@ export default function BasicRtc(props) {
         </div>
         {/* 生成二维码 */}
         {
-          !isMobile
+          !isMobile && ENV_IS_PRODUCTION
           && <div className={clsx(styles['footer-container'])}>
               {mountFlag && <Typography>{a18n('移动端体验')}</Typography>}
               <QRCoder roomID={roomID} ></QRCoder>

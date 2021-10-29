@@ -25,28 +25,25 @@ TUI场景化解决方案是腾讯云TRTC针对直播、语聊、视频通话等�
 | Electron | [下载](https://web.sdk.qcloud.com/trtc/electron/download/TXLiteAVSDK_TRTC_Electron_latest.zip) | [DOC](https://cloud.tencent.com/document/product/647/38548) | [DOC](https://cloud.tencent.com/document/product/647/38549) |[API](https://cloud.tencent.com/document/product/647/38551) |
 | 微信小程序 | [下载](https://web.sdk.qcloud.com/component/trtccalling/download/trtc-calling-miniapp.zip) | [DOC](https://cloud.tencent.com/document/product/647/32399) | [DOC](https://cloud.tencent.com/document/product/647/32183) |[API](https://cloud.tencent.com/document/product/647/17018) |
 
-## Version 9.0 @ 2021.08.06
-
-**欢迎加入**
-团队技术氛围浓厚，培训体系完善，产品线多样，有经验丰富的“老司机”手把手帮你入门音视频技术。<br>
-北京、西安、上海、深圳、广州均有岗位，如果您对音视频技术感兴趣，欢迎加入我们 [腾讯云 TRTC 研发团队](https://careers.tencent.com/jobdesc.html?postId=1297858141983088640) 。
+## Version 9.2 @ 2021.09.24
 
 **功能新增**
-- iOS：支持设置系统采集音量，详见 [setSystemAudioLoopbackVolume](https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCCloud__ios.html#afc45226807d84673bab78b21d1be54ae)；
-- 全平台：支持设置自定义音轨的音量，详见 [setMixExternalAudioVolume](https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCCloud__cplusplus.html#ae0031e4af8bb120ef6de164d99886418)；
-- 全平台：状态回调可区分音频和视频的丢包率，详见 [TRTCRemoteStatistics](https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCStatistic__cplusplus.html#structliteav_1_1TRTCRemoteStatistics)；
-
-**质量优化**
-- 全平台：优化订阅流程，提升手动订阅的秒开速度；
-- 全平台：修复特定场景 onExitRoom 回调重复的问题；
+- Android&iOS：支持 Socks5 代理；
+- Windows：TRTCAudioQualityMusic 高音质场景新增自适应回声消除功能，自动平衡音质与回声消除强度；
+- 全平台：新增设置语音音调功能；
 
 **问题修复**
-- Android：修复自定义采集动态设置码率和帧率无效的问题；
-- iOS：修复先开启录屏辅路，再开启摄像头推流导致的推流失败问题；
-- iOS：修复本地视频录制模糊的问题；
-- iOS：修复若干稳定性问题；
-- Winodws：修复屏幕分享时采集帧率异常的问题；
-- Windows：修复屏幕分享切换目标时，播放端会先显示一帧旧画面的问题；
+- Windows：修复 Mac 安装 Windows 的环境部分摄像头不吐数据问题；
+- Android：修复偶现 CDN/TRTC 互切后没有上行音频的问题；
+- iOS：修复 Web 端屏幕分享导致 iOS 接受端自定义渲染花屏的问题；
+
+**质量优化**
+- Android：优化硬解码时导致 ANR 的问题；
+- Android：优化摄像头本地预览角度兼容的问题；
+- Android：优化首帧秒开速度；
+- Android&iOS：优化合唱模式 3A 策略；
+- Windows：优化 AGC 算法，降低出现声音过小和声音过大的问题的概率；
+- 全平台：优化弱网环境抗抖动算法，视频播放更流畅；
 
 更早期的版本更新历史请点击  [More](https://cloud.tencent.com/document/product/647/46907)...
 

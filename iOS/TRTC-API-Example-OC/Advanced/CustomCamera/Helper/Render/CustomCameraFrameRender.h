@@ -9,7 +9,6 @@
 
 
 #import <UIKit/UIKit.h>
-#import <TXLiteAVSDK_TRTC/TXLiteAVSDK.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

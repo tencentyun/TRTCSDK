@@ -1,0 +1,29 @@
+.related-resources-wrapper {
+  width: 100%;
+  .expand-icon {
+    float: right;
+  }
+  .hide {
+    .user-list-container {
+      height: 0px;
+      transition: height 1s ease;
+    }
+  }
+  ul {
+    padding-left: 24px;
+  }
+  .accordion-container {
+    box-shadow: none;
+    background: #fafafa;
+    .accordion-summary-container {
+      padding: 0px;
+      min-height: 48px;
+      .accordion-summary-content{
+        margin: 0;
+      }
+    }
+    .accordion-details-container {
+      padding: 0px;
+    }
+  }
+}

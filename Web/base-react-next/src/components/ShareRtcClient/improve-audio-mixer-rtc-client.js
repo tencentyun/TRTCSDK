@@ -1,5 +1,5 @@
 import ShareRTC from '@components/ShareRTC.js';
-import AudioMixerPlugin from 'trtc-audio-mixer';
+import AudioMixerPlugin from 'rtc-audio-mixer';
 
 export default class ShareRTCClient extends ShareRTC {
   constructor(options) {

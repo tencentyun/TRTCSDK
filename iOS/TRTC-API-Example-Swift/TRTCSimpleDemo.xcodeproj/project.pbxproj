@@ -43,6 +43,8 @@
 		817262A82416C68400265751 /* LivePushViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817262A72416C68400265751 /* LivePushViewController.swift */; };
 		81E3C986241820EA00366606 /* LiveSubVideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E3C985241820EA00366606 /* LiveSubVideoView.swift */; };
 		8AB4CC75885C25710FA89DD4 /* libPods-TRTCSimpleDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EF34C418731E393A9863343E /* libPods-TRTCSimpleDemo.a */; };
+		C61744B926E8A43500FD00B1 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD96E07D248DF98800294D1F /* Accelerate.framework */; };
+		C61744BA26E8A43E00FD00B1 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = FDCEFF4C241BBDEB000BFA0B /* libc++.tbd */; };
 		FD28D3F124162E2B0080B8A0 /* RTCEntranceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD28D3F024162E2B0080B8A0 /* RTCEntranceViewController.swift */; };
 		FD3B3A192423B5B8001720A3 /* GenerateTestUserSig.m in Sources */ = {isa = PBXBuildFile; fileRef = FD3B3A172423B5B8001720A3 /* GenerateTestUserSig.m */; };
 		FD96E07E248DF98800294D1F /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD96E07D248DF98800294D1F /* Accelerate.framework */; };
@@ -169,6 +171,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C61744BA26E8A43E00FD00B1 /* libc++.tbd in Frameworks */,
+				C61744B926E8A43500FD00B1 /* Accelerate.framework in Frameworks */,
 				453371862491F35100E18040 /* TXLiteAVSDK_ReplayKitExt.framework in Frameworks */,
 				4533717B2491F24400E18040 /* ReplayKit.framework in Frameworks */,
 			);
@@ -209,15 +213,6 @@
 				4533717F2491F24400E18040 /* Info.plist */,
 			);
 			path = TXReplayKit_Screen;
-			sourceTree = "<group>";
-		};
-		7B8256A224C6C9BE00C6282D /* LocalVideoTest */ = {
-			isa = PBXGroup;
-			children = (
-				7B8256CC24C6D7A500C6282D /* testCustomVideo */,
-				7B8256A324C6CA1F00C6282D /* QBImagePicker */,
-			);
-			path = LocalVideoTest;
 			sourceTree = "<group>";
 		};
 		7B8256A324C6CA1F00C6282D /* QBImagePicker */ = {
