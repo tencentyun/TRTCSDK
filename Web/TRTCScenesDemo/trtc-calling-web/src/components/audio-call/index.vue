@@ -4,7 +4,7 @@
       class="audio-call-section-header"
     >Welcome {{loginUserInfo && (loginUserInfo.name || loginUserInfo.userId)}}</div>
     <div class="audio-call-section-title">语音通话</div>
-    <search-user @callUser="handleCallUser" @cancelCallUser="handleCancelCallUser"></search-user>
+    <search-user  :callFlag="callFlag" :cancelFlag="cancelFlag" @callUser="handleCallUser" @cancelCallUser="handleCancelCallUser"></search-user>
     <div :class="{ 'audio-conference': true, 'is-show': isShowAudioCall }">
       <div class="audio-conference-header">语音通话区域</div>
 
@@ -39,7 +39,6 @@
 import { mapState } from "vuex";
 import SearchUser from "../search-user";
 import { getUserDetailInfoByUserid } from "../../service";
-import config from "../../config";
 
 export default {
   name: "AudioCall",
@@ -59,7 +58,9 @@ export default {
     return {
       isShowAudioCall: false,
       isAudioOn: true,
-      userId2User: {}
+      userId2User: {},
+      callFlag: false,
+      cancelFlag: false,
     };
   },
   mounted() {
@@ -92,23 +93,25 @@ export default {
   },
   methods: {
     handleCallUser: function({ param }) {
-      if (!param) {
-        this.$message.error("请输入拨叫号码");
-        return;
-      }
+      this.callFlag = true
       this.$trtcCalling.call({
         userID: param,
-        type: this.TrtcCalling.CALL_TYPE.AUDIO_CALL,
-        timeout: config.CallTimeout
-      });
-      this.$store.commit("userJoinMeeting", this.loginUserInfo.userId);
-      this.$store.commit("updateCallStatus", "calling");
-      this.$store.commit("updateIsInviter", true);
+        type: this.TrtcCalling.CALL_TYPE.VIDEO_CALL
+      }).then(()=>{
+        this.callFlag = false
+        this.$store.commit("userJoinMeeting", this.loginUserInfo.userId);
+        this.$store.commit("updateCallStatus", "calling");
+        this.$store.commit("updateIsInviter", true);
+      })
+      
     },
     handleCancelCallUser: function() {
-      this.$trtcCalling.hangup();
-      this.$store.commit("dissolveMeeting");
-      this.$store.commit("updateCallStatus", "idle");
+      this.cancelFlag = true
+      this.$trtcCalling.hangup().then(()=>{
+        this.cancelFlag = false
+        this.$store.commit("dissolveMeeting");
+        this.$store.commit("updateCallStatus", "idle");
+      })
     },
     toggleAudio: function() {
       this.isAudioOn = !this.isAudioOn;

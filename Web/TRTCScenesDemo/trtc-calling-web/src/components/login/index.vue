@@ -1,6 +1,6 @@
 <template>
   <div class="user-login">
-    <el-input placeholder="电话号码" v-model="UserID" maxlength="11" class="phone-num"></el-input>
+    <el-input placeholder="用户ID" v-model="UserID" maxlength="11" class="phone-num"></el-input>
     <el-button class="user-login-btn" @click="handleLogin">登陆</el-button>
   </div>
 </template>
@@ -21,7 +21,7 @@ export default {
     handleLogin: async function() {
       console.log("userid");
       if (!this.UserID) {
-        this.$message.error("请输入电话号码");
+        this.$message.error("请输入用户ID");
         return;
       }
 
