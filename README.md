@@ -25,25 +25,23 @@ TUI场景化解决方案是腾讯云TRTC针对直播、语聊、视频通话等�
 | Electron | [下载](https://web.sdk.qcloud.com/trtc/electron/download/TXLiteAVSDK_TRTC_Electron_latest.zip) | [DOC](https://cloud.tencent.com/document/product/647/38548) | [DOC](https://cloud.tencent.com/document/product/647/38549) |[API](https://cloud.tencent.com/document/product/647/38551) |
 | 微信小程序 | [下载](https://web.sdk.qcloud.com/component/trtccalling/download/trtc-calling-miniapp.zip) | [DOC](https://cloud.tencent.com/document/product/647/32399) | [DOC](https://cloud.tencent.com/document/product/647/32183) |[API](https://cloud.tencent.com/document/product/647/17018) |
 
-## Version 9.2 @ 2021.09.24
+## Version 9.3 @ 2021.11.03
 
 **功能新增**
-- Android&iOS：支持 Socks5 代理；
-- Windows：TRTCAudioQualityMusic 高音质场景新增自适应回声消除功能，自动平衡音质与回声消除强度；
-- 全平台：新增设置语音音调功能；
+- 全平台：优化对 TCP 传输协议的支持，更好地应对复杂的网络环境。
+- 全平台：优化测速功能，支持对当前网络带宽进行检测；
 
-**问题修复**
-- Windows：修复 Mac 安装 Windows 的环境部分摄像头不吐数据问题；
-- Android：修复偶现 CDN/TRTC 互切后没有上行音频的问题；
-- iOS：修复 Web 端屏幕分享导致 iOS 接受端自定义渲染花屏的问题；
+**故障修复**
+- 全平台：修复 point2PointDelay 有时获取不到，数值为0的问题；
+- 全平台：修复偶现解析失败 SEI 消息丢失的问题；
+- Mac：修复在MacOS 12 beta 上摄像头不出帧的问题；
+- iOS & Mac：修复特定顺序提前调用 startRemoteView 看不到画面的问题；
+- Windows：修复使用竖屏编码并开启美颜的情况下画面出现锯齿的问题；
+- Windows：修复第三方美颜开启情况下，切换分辨率后自定义渲染不回调的问题；
 
-**质量优化**
-- Android：优化硬解码时导致 ANR 的问题；
-- Android：优化摄像头本地预览角度兼容的问题；
-- Android：优化首帧秒开速度；
-- Android&iOS：优化合唱模式 3A 策略；
-- Windows：优化 AGC 算法，降低出现声音过小和声音过大的问题的概率；
-- 全平台：优化弱网环境抗抖动算法，视频播放更流畅；
+**功能优化**
+- 全平台：优化弱网情况下视频秒开速度；
+- 全平台：优化弱网调控策略，同场景下更流畅；
 
 更早期的版本更新历史请点击  [More](https://cloud.tencent.com/document/product/647/46907)...
 
