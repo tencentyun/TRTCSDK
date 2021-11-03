@@ -14318,10 +14318,10 @@ thunky@^1.0.2:
   resolved "https://registry.yarnpkg.com/thunky/-/thunky-1.1.0.tgz#5abaf714a9405db0504732bbccd2cedd9ef9537d"
   integrity sha512-eHY7nBftgThBqOyHGVN+l8gF0BucP09fMo0oO/Lb0w1OF80dJv+lDVpXG60WMQvkcxAkNybKsrEIE3ZtKGmPrA==
 
-tim-js-sdk@^2.6.5:
-  version "2.11.0"
-  resolved "https://registry.yarnpkg.com/tim-js-sdk/-/tim-js-sdk-2.11.0.tgz#dcc1a3728251e4bb593fd4cd17c45c1d728041e1"
-  integrity sha512-gV2HXuitkbtdTglEr+hBJSIMUyjDtRSqKXCbbVdQ2yWT1sqW0Wu5OvttFs2i8epvwYqhQMSnQtxoxs1vZIk/rg==
+tim-js-sdk@^2.15.0:
+  version "2.15.0"
+  resolved "https://registry.yarnpkg.com/tim-js-sdk/-/tim-js-sdk-2.15.0.tgz#ec620fcf4586fd8c7914c2fbb6a407ba8139578e"
+  integrity sha512-WuqZ/gkdLiDT8zZLh95Lt7BjlXXOll7S3weF/+cJhKH8QAU/21m3jXfAxtMes6FRrWNDTUXI2HbRf4pVT6KAXA==
 
 time-limit-promise@^1.0.2:
   version "1.0.4"
@@ -14523,18 +14523,18 @@ trough@^1.0.0:
   resolved "https://registry.yarnpkg.com/trough/-/trough-1.0.5.tgz#b8b639cefad7d0bb2abd37d433ff8293efa5f406"
   integrity sha512-rvuRbTarPXmMb79SmzEp8aqXNKcK+y0XaB298IXueQ8I2PsrATcPBCSPyK/dDNa2iWOhKlfNnOjdAOTBU/nkFA==
 
-trtc-electron-education@1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/trtc-electron-education/-/trtc-electron-education-1.2.0.tgz#ad8206829e4c83ce50bd9212d76743ee48069faa"
-  integrity sha512-ZlgkUwse/RVh3dRF2iL0M46IJMxygRZGpm+HZB5wTFyi0qHlmzG16Q+FvUyapwuAtqpcAftPRL77aY5NDYdLTg==
+trtc-electron-education@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/trtc-electron-education/-/trtc-electron-education-1.2.1.tgz#cd1054a167cac5aba0dcf2cd5d76c05fadd6827b"
+  integrity sha512-DE4JTbUqsQnyBDSl8zBpUD5rt7XlsioHR4LWKBR9fb2GouLdRimd/d2PYdYhKg8V89aUaWgcC3La0aRWtdvx4g==
   dependencies:
-    tim-js-sdk "^2.6.5"
-    trtc-electron-sdk "^8.4.1"
+    tim-js-sdk "^2.15.0"
+    trtc-electron-sdk "^8.9.102"
 
-trtc-electron-sdk@^8.4.1:
-  version "8.6.101"
-  resolved "https://registry.yarnpkg.com/trtc-electron-sdk/-/trtc-electron-sdk-8.6.101.tgz#a71d16cbcf38e87776e3be1e6c555cd134378ab0"
-  integrity sha512-N5j/7qjfRi39XVQj87CZz5U0ohWznQjaHwsk37d9SCNCQDxw0N688vQuP6t4Zqhm4of9t0zqNcjsWdEiSfP6Ag==
+trtc-electron-sdk@^8.9.102:
+  version "8.9.102"
+  resolved "https://registry.yarnpkg.com/trtc-electron-sdk/-/trtc-electron-sdk-8.9.102.tgz#9a141484194754133b0b71be99b66b2f9a463750"
+  integrity sha512-nW43sWqkwI5eRzR62LRyTspr0qkuSalxlpRTi/09dWj/5nvqdngKWVWsTth/+Z2RfUgupi3IAIanuF3im01nPA==
   dependencies:
     cos-nodejs-sdk-v5 "^2.8.2"
     download "^8.0.0"
