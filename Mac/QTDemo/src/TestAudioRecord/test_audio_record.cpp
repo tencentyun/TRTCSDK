@@ -1,7 +1,7 @@
 #include "test_audio_record.h"
 
 TestAudioRecord::TestAudioRecord(QWidget *parent):
-    QDialog(parent),
+    BaseDialog(parent),
     ui_audio_record_(new Ui::TestAudioRecordDialog)
 {
     ui_audio_record_->setupUi(this);
@@ -30,7 +30,7 @@ void TestAudioRecord::startAudioRecording()
 {
     QString file_path = ui_audio_record_->lineEditRecordFilePath->text();
     if(file_path.length() == 0) {
-        QMessageBox::warning(NULL, "WARNING", "please input valid path");
+        QMessageBox::warning(NULL, "Failed to start recording", "Enter a valid path.");
         return;
     }
     trtc::TRTCAudioRecordingParams params;
@@ -38,7 +38,6 @@ void TestAudioRecord::startAudioRecording()
     std::string temp = fileInfo.absoluteFilePath().toStdString();
     last_record_file_path = QString(temp.c_str());
     params.filePath = temp.c_str();
-    trtccloud_->startLocalAudio(trtc::TRTCAudioQualityDefault);
     int result = trtccloud_->startAudioRecording(params);
     handleWithRecordingResult(result);
 }
@@ -46,13 +45,12 @@ void TestAudioRecord::startAudioRecording()
 void TestAudioRecord::stopAudioRecording()
 {
     trtccloud_->stopAudioRecording();
-    trtccloud_->stopLocalAudio();
     qtimer_->stop();
     current_recording_time_seconds_ = 0;
     is_recording_ = false;
     ui_audio_record_->lineEditRecordFilePath->setText("");
-    ui_audio_record_->pushButtonStartStopRecord->setText(QString::fromUtf8("开始录制"));
-    ui_audio_record_->labelRecordingDuration->setText(QString::fromUtf8("00:00"));
+    ui_audio_record_->labelRecordingDuration->setText("00:00");
+    updateDynamicTextUI();
 }
 
 void TestAudioRecord::handleWithRecordingResult(int result)
@@ -60,20 +58,20 @@ void TestAudioRecord::handleWithRecordingResult(int result)
     switch (result) {
     case 0: {
         is_recording_ = true;
-        ui_audio_record_->pushButtonStartStopRecord->setText(QString::fromUtf8("停止录制"));
+        updateDynamicTextUI();
         qtimer_->start();
         break;
     }
     case -1: {
-        QMessageBox::warning(NULL, "ERROR", "recording already started");
+        QMessageBox::warning(NULL, "Failed to start recording", "Recording has started.");
         break;
     }
     case -2: {
-        QMessageBox::warning(NULL, "ERROR", "file or directory created failed");
+        QMessageBox::warning(NULL, "Failed to start recording", "Failed to create file or directory.");
         break;
     }
     case -3: {
-        QMessageBox::warning(NULL, "ERROR", "audio format not supported");
+        QMessageBox::warning(NULL, "Failed to start recording", "Unsupported audio format.");
         break;
     }
     default: {
@@ -116,7 +114,7 @@ void TestAudioRecord::on_pushButtonOpenPath_clicked()
 {
     QString file_path = last_record_file_path;
     if(!QFileInfo::exists(file_path)) {
-        QMessageBox::warning(NULL, "WARNING", "please at least record once");
+        QMessageBox::warning(NULL, "Failed to view last recording", "Cannot find the file.");
         return;
     }
     showPathInGraphicalShell(this, file_path);
@@ -127,6 +125,7 @@ void TestAudioRecord::closeEvent(QCloseEvent *event)
     if(is_recording_) {
         stopAudioRecording();
     }
+    BaseDialog::closeEvent(event);
 }
 
 QString TestAudioRecord::formatTimeString(qint64 timeSeconds)
@@ -159,4 +158,14 @@ void TestAudioRecord::showPathInGraphicalShell(QWidget *parent, const QString &p
 #endif
 }
 
+void TestAudioRecord::updateDynamicTextUI() {
+    if (is_recording_) {
+        ui_audio_record_->pushButtonStartStopRecord->setText(tr("停止录制"));
+    } else {
+        ui_audio_record_->pushButtonStartStopRecord->setText(tr("开始录制"));
+    }
+}
 
+void TestAudioRecord::retranslateUi() {
+    ui_audio_record_->retranslateUi(this);
+}

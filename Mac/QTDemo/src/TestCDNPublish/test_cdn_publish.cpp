@@ -5,7 +5,7 @@
 
 #include "room_info_holder.h"
 
-TestCdnPublish::TestCdnPublish(QWidget *parent):QDialog(parent),ui(new Ui::TestCdnPublishDialog){
+TestCdnPublish::TestCdnPublish(QWidget *parent):BaseDialog(parent),ui(new Ui::TestCdnPublishDialog){
     ui->setupUi(this);
     setWindowFlags(windowFlags()&~Qt::WindowContextHelpButtonHint);
     getTRTCShareInstance()->addCallback(this);
@@ -41,19 +41,20 @@ void TestCdnPublish::onStartPublishing (int err, const char *errMsg){
         is_publishing_ = true;
         std::string publish_streamid = ui->streamIdLineEt->text().toStdString();
         RoomInfoHolder::GetInstance().setCDNPublishStreamId(publish_streamid);
-        ui->switchPublishStatus->setText(QString::fromLocal8Bit("停止发布"));
-    }else{
-        QMessageBox::warning(this,"start publish failed",errMsg,QMessageBox::Yes);
+        updateDynamicTextUI();
+    } else {
+        QMessageBox::warning(this,"CDN publishing failed",errMsg,QMessageBox::Yes);
     }
     ui->switchPublishStatus->setEnabled(true);
     ui->streamIdLineEt->setEnabled(true);
 }
+
 void TestCdnPublish::onStopPublishing (int err, const char *errMsg){
     if(err == 0){
         is_publishing_ = false;
-        ui->switchPublishStatus->setText(QString::fromLocal8Bit("开始发布"));
-    }else if(is_manual_closing_ && std::strstr(errMsg,"-102069") != NULL){
-        QMessageBox::warning(this,QString::fromUtf8("全局自动旁路不支持关闭"),QString::fromUtf8("如需手动控制旁路推流, 控制台->应用管理->功能配置->修改旁路推送方式为<指定流旁路>"));
+        updateDynamicTextUI();
+    } else if (is_manual_closing_ && std::strstr(errMsg,"-102069") != NULL){
+        QMessageBox::warning(this,QString::fromUtf8("Cannot disable global auto-relayed push"),QString::fromUtf8("To manually control relayed push, go to Application Management > Function Configuration in the console, and set \"Relayed Push Mode\" to \"Specified stream for relayed push\"."));
         qDebug() << "err:" << err << "errMsg:" << errMsg;
     }
 
@@ -65,6 +66,7 @@ void TestCdnPublish::onStopPublishing (int err, const char *errMsg){
 
 void TestCdnPublish::showEvent(QShowEvent *event){
     ui->streamIdLineEt->setText(QString::fromStdString(RoomInfoHolder::GetInstance().getCDNPushishStreamId()));
+    BaseDialog::showEvent(event);
 }
 
 void TestCdnPublish::on_switchPublishStatus_clicked(){
@@ -75,7 +77,7 @@ void TestCdnPublish::on_switchPublishStatus_clicked(){
     } else {
         std::string streamid_str = ui->streamIdLineEt->text().toStdString();
         if(streamid_str.empty()){
-            QMessageBox::warning(this,"WARNING","must input streamid",QMessageBox::Yes);
+            QMessageBox::warning(this,"CDN publishing failed","Enter a stream ID.",QMessageBox::Yes);
             return;
         }
         startPublishing(streamid_str);
@@ -90,7 +92,19 @@ void TestCdnPublish::on_streamIdLineEt_textChanged(const QString &streamId){
         ui->switchPublishStatus->setEnabled(true);
     }
 
-    //修改stream_id 可重新开始发布
+    // Modify stream_id and publish again.
     is_publishing_ = false;
-    ui->switchPublishStatus->setText(QString::fromLocal8Bit("开始发布"));
+    updateDynamicTextUI();
+}
+
+void TestCdnPublish::updateDynamicTextUI() {
+    if (is_publishing_) {
+        ui->switchPublishStatus->setText(tr("停止发布"));
+    } else {
+        ui->switchPublishStatus->setText(tr("开始发布"));
+    }
+}
+
+void TestCdnPublish::retranslateUi() {
+    ui->retranslateUi(this);
 }

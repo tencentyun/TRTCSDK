@@ -22,21 +22,22 @@
 static std::mutex gl_mutex;
 
 static GLfloat vertices[] {
-    // 顶点坐标
+    // Vertex coordinates
     -1.0f, -1.0f,
     1.0f, -1.0f,
     -1.0f, 1.0f,
     1.0f, 1.0f,
-    // 纹理坐标
-    1.0f, 1.0f,
-    0.0f, 1.0f,
-    1.0f, 0.0f,
-    0.0f, 0.0f,
+    // Texture coordinates
+    0.0f, 1.0f - 0.0f,
+    1.0f, 1.0f - 0.0f,
+    0.0f, 1.0f - 1.0f,
+    1.0f, 1.0f - 1.0f,
 };
 
 GLYuvWidget::GLYuvWidget(QWidget *parent) :
     QOpenGLWidget(parent) {
     yuvPtr = static_cast<uchar *>(malloc(sizeof(char) * 1920 * 1080 * 3 / 2));
+    videoWH_max = 1920 * 1080;
 }
 
 GLYuvWidget::~GLYuvWidget() {
@@ -53,6 +54,13 @@ GLYuvWidget::~GLYuvWidget() {
 }
 
 void GLYuvWidget::slotShowYuv(uchar *ptr, uint width, uint height) {
+    if (width * height > videoWH_max) {
+        if (yuvPtr != nullptr) {
+            free(yuvPtr);
+        }
+        videoWH_max = width * height;
+        yuvPtr = static_cast<uchar*>(malloc(sizeof(char) * videoWH_max * 3 / 2));
+    }
     memcpy(yuvPtr, ptr, sizeof(char) * width * height * 3 / 2);
     videoW = static_cast<GLint>(width);
     videoH = static_cast<GLint>(height);
@@ -76,12 +84,12 @@ void GLYuvWidget::initializeGL() {
 
     QOpenGLShader vshader(QOpenGLShader::Vertex);
     const char *vsrc =
-   "attribute vec4 vertexIn; \
+   "attribute vec2 vertexIn; \
     attribute vec2 textureIn; \
     varying vec2 textureOut;  \
     void main(void)           \
     {                         \
-        gl_Position = vertexIn; \
+        gl_Position = vec4(vertexIn, 0.0, 1.0); \
         textureOut = textureIn; \
     }";
     vshader.compileSourceCode(vsrc);
@@ -114,6 +122,7 @@ void GLYuvWidget::initializeGL() {
     program.bind();
     program.enableAttributeArray(VERTEXIN);
     program.enableAttributeArray(TEXTUREIN);
+
     program.setAttributeBuffer(VERTEXIN,
                                GL_FLOAT,
                                0,
@@ -141,17 +150,7 @@ void GLYuvWidget::initializeGL() {
 
 void GLYuvWidget::paintGL() {
     gl_mutex.lock();
-    float widthScaling = 1;
-    float heightScaling = 1;
-    vertices[0] = -widthScaling;
-    vertices[1] = -heightScaling;
-    vertices[2] = widthScaling;
-    vertices[3] = -heightScaling;
-    vertices[4] = -widthScaling;
-    vertices[5] = heightScaling;
-    vertices[6] = widthScaling;
-    vertices[7] = heightScaling;
-    vbo.allocate(vertices, sizeof(vertices));
+
     glUseProgram(program.programId());
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, idY);

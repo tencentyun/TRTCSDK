@@ -6,19 +6,26 @@
  * 3.setLogCompressEnabled :启用或禁用 Log 的本地压缩
  * 4.setLogDirPath         :设置日志保存路径
  * 5.onLog                 :日志打印时的回调
- *
  */
+
+/**
+ * Logs
+ *
+ * 1. setLogLevel: set the log output level
+ * 2. setConsoleEnabled: enable or disable console log printing
+ * 3. setLogCompressEnabled: enable or disable local log compression
+ * 4. setLogDirPath: set the path to save logs
+ * 5. onLog: callback of log printing
+ */
+
 #ifndef TESTLOGSETTING_H
 #define TESTLOGSETTING_H
 
-#include <QDialog>
-
+#include "base_dialog.h"
 #include "TRTCCloudCallback.h"
 #include "ui_TestLogSettingDialog.h"
 
-
-
-class TestLogSetting:public QDialog,public trtc::ITRTCLogCallback
+class TestLogSetting:public BaseDialog,public trtc::ITRTCLogCallback
 {
     Q_OBJECT
 public:
@@ -26,7 +33,6 @@ public:
     ~TestLogSetting();
 
 private:
-
     void setLogLevel();
     void setConsoleEnabled();
     void setLogCompressEnabled();
@@ -46,6 +52,8 @@ private slots:
     void on_setConsoleEnabledCb_clicked(bool checked);
 
 private:
+    void retranslateUi() override;
+
     static constexpr const char* LOG_LEVEL_MSG[5] = {
         "Debug   ",
         "Warning ",

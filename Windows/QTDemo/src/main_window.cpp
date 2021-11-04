@@ -2,6 +2,11 @@
 
 #include <QMessageBox>
 #include <QDebug>
+#include <QTranslator>
+#include <QLocale>
+
+#include "base_dialog.h"
+#include "translator.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -11,6 +16,10 @@ MainWindow::MainWindow(QWidget *parent) :
     test_subcloud_setting_(test_user_video_group_),
     test_custom_capture_(test_user_video_group_),
     test_screen_share_setting_(test_user_video_group_){
+
+#ifdef _WIN32
+    wndproc_setting::initAndSetWndProc(reinterpret_cast<HWND>(this->winId()));
+#endif // _WIN32
 
     ui_mainwindow_->setupUi(this);
     getTRTCShareInstance()->addCallback(this);
@@ -24,7 +33,6 @@ MainWindow::MainWindow(QWidget *parent) :
     test_user_video_group_->setParent(ui_mainwindow_->videoListView);
     test_user_video_group_->hide();
 
-    enter_room_based_widgets_.push_back(&test_log_setting_);
     enter_room_based_widgets_.push_back(&test_cdn_publish_);
     enter_room_based_widgets_.push_back(&test_mixstream_publish_);
     enter_room_based_widgets_.push_back(&test_screen_share_setting_);
@@ -43,12 +51,15 @@ MainWindow::MainWindow(QWidget *parent) :
     module_widgets_.push_back(&test_audio_detect_);
     module_widgets_.push_back(&test_video_detect_);
     module_widgets_.push_back(&test_network_check_);
+    module_widgets_.push_back(&test_log_setting_);
 
     connect(&test_connect_other_room_, &TestConnectOtherRoom::onConnectOtherRoomResult, this, &MainWindow::onConnectOtherRoomResult);
     connect(&test_connect_other_room_, &TestConnectOtherRoom::onExitOtherRoomConnection, this, &MainWindow::onExitOtherRoomConnection);
     connect(&test_subcloud_setting_, &TestSubCloudSetting::onEnterSubRoom, this, &MainWindow::onEnterSubRoomResult);
     connect(&test_subcloud_setting_, &TestSubCloudSetting::onExitSubRoom, this, &MainWindow::onExitSubRoom);
+    connect(test_user_video_group_.get(), &TestUserVideoGroup::onVolumeEvaluationStateChanged, &test_subcloud_setting_, &TestSubCloudSetting::volumeEvaluationStateChanged);
 
+    Translator::getInstance()->initLanguage();
 }
 
 MainWindow::~MainWindow() {
@@ -92,7 +103,7 @@ void MainWindow::on_enterRoomButton_clicked() {
     if (app_scene == trtc::TRTCAppScene::TRTCAppSceneLIVE || app_scene == trtc::TRTCAppScene::TRTCAppSceneVoiceChatRoom) {
         int selelct_role_index = ui_mainwindow_->userRoleComB->currentIndex();
         if (selelct_role_index == -1){
-            QMessageBox::warning(NULL, "WARNING", "must select a role");
+            QMessageBox::warning(NULL, "Failed to enter the room", "You must select a role in live streaming scenarios.");
             return;
         }
         trtc::TRTCRoleType role_type = getCurrentSelectedRoleType();
@@ -134,6 +145,14 @@ void MainWindow::closeEvent(QCloseEvent *event) {
     }
 }
 
+void MainWindow::changeEvent(QEvent* event) {
+    if (QEvent::LanguageChange == event->type()) {
+        ui_mainwindow_->retranslateUi(this);
+        updateDynamicTextUI();
+    }
+    QWidget::changeEvent(event);
+}
+
 void MainWindow::on_btnNetworkChecker_clicked() {
     test_network_check_.show();
     test_network_check_.raise();
@@ -163,7 +182,7 @@ void MainWindow::on_btnEnterSubRoom_clicked(){
         test_subcloud_setting_.exitSubCloudRoom();
     }else{
     if (ui_mainwindow_->lineetSubRoomId->text().isEmpty()) {
-            QMessageBox::warning(this, "Enter Sub Room Failed", "room id is empty, please input sub room id", QMessageBox::Ok);
+            QMessageBox::warning(this, "Failed to enter the sub-room", "Enter a sub-room ID.", QMessageBox::Ok);
             return;
         }
         trtc::TRTCAppScene app_scene = getCurrentSelectedAppScene();
@@ -180,12 +199,12 @@ void MainWindow::on_btnEnterOtherRoom_clicked() {
     }
 
     if (ui_mainwindow_->lineEtOtherRoomId->text().isEmpty()) {
-        QMessageBox::warning(this, "Connect  Other Room Failed", "RoomId is Empty", QMessageBox::Ok);
+        QMessageBox::warning(this, "Failed to start a cross-room call", "Enter a room ID.", QMessageBox::Ok);
         return;
     }
 
     if (ui_mainwindow_->lineEtOtherUserId->text().isEmpty()) {
-        QMessageBox::warning(this, "Connect  Other Room Failed", "UserId is Empty", QMessageBox::Ok);
+        QMessageBox::warning(this, "Failed to start a cross-room call", "Enter a username.", QMessageBox::Ok);
         return;
     }
 
@@ -226,70 +245,50 @@ void MainWindow::on_userRoleComB_currentIndexChanged(int index){
     if(room_entered_) {
         trtc::TRTCAppScene app_scene = getCurrentSelectedAppScene();
 
-        // 只有直播场景支持角色切换
+        // Only live streaming scenarios support role switching
         if (app_scene == trtc::TRTCAppScene::TRTCAppSceneLIVE || app_scene == trtc::TRTCAppScene::TRTCAppSceneVoiceChatRoom) {
             test_base_scene_.switchRole(getCurrentSelectedRoleType());
         }
     }
 }
 
+void MainWindow::on_languageComboBox_currentIndexChanged(int index) {
+    changeLanguage(index);
+}
+
+void MainWindow::changeLanguage(int language) {
+    Translator::getInstance()->changeLanguage(language);
+}
+
 void MainWindow::updateModuleButtonStatus(bool isEnteredRoom){
-    //enter room, exit room
     ui_mainwindow_->enterRoomButton->setEnabled(!isEnteredRoom);
     ui_mainwindow_->exitRoomButton->setEnabled(isEnteredRoom);
     ui_mainwindow_->appSceneComboBox->setEnabled(!isEnteredRoom);
     ui_mainwindow_->roomNumLineEdit->setEnabled(!isEnteredRoom);
     ui_mainwindow_->userIdLineEdit->setEnabled(!isEnteredRoom);
-
-    //device manager
     ui_mainwindow_->pushButtonDeviceManager->setEnabled(isEnteredRoom);
-
-    //audio/video setting
     ui_mainwindow_->pushButtonAudioSetting->setEnabled(isEnteredRoom);
     ui_mainwindow_->pushButtonVideoSetting->setEnabled(isEnteredRoom);
-
-    //cdn publish, mix transcoding
     ui_mainwindow_->cdnPublishBt->setEnabled(isEnteredRoom);
     ui_mainwindow_->mixStreamPublish->setEnabled(isEnteredRoom);
-    ui_mainwindow_->pushButtonCdnPlayer->setEnabled(isEnteredRoom);
-
-    //screen share
     ui_mainwindow_->btScreenSharingSetting->setEnabled(isEnteredRoom);
-
-    //sub room
     ui_mainwindow_->btnEnterSubRoom->setEnabled(isEnteredRoom);
-    if(!isEnteredRoom) {
-        ui_mainwindow_->btnEnterSubRoom->setText(QString::fromUtf8("进房"));
-    }
-
-    //cross room pk
     ui_mainwindow_->btnEnterOtherRoom->setEnabled(isEnteredRoom);
-    if(!isEnteredRoom) {
-        ui_mainwindow_->btnEnterSubRoom->setText(QString::fromUtf8("进房"));
-    }
-
-    //audio record
     ui_mainwindow_->pushButtonAudioRecord->setEnabled(isEnteredRoom);
-
-    //bgm setting
     ui_mainwindow_->btnStartBGMSetting->setEnabled(isEnteredRoom);
-
-    //beauty and watermark
     ui_mainwindow_->pushButtonBeautyWaterMark->setEnabled(isEnteredRoom);
-
-    //custom capture , custom render
     ui_mainwindow_->btnCustomCapture->setEnabled(isEnteredRoom);
     ui_mainwindow_->btnCustomRender->setEnabled(isEnteredRoom);
-
-    //custom message, log setting
     ui_mainwindow_->pushButtonCustomMessage->setEnabled(isEnteredRoom);
+    updateDynamicTextUI();
 }
 
 void MainWindow::updateModuleDialogStatus(bool isEnteredRoom)
 {
     if(!isEnteredRoom) {
         for(auto widget : enter_room_based_widgets_) {
-            widget->hide();
+            widget->resetUI();
+            widget->close();
         }
     }
 }
@@ -378,23 +377,36 @@ void MainWindow::on_pushButtonCdnPlayer_clicked()
 void MainWindow::onConnectOtherRoomResult(bool result)
 {
     cross_room_pk_entered_ = result;
-    ui_mainwindow_->btnEnterOtherRoom->setText(cross_room_pk_entered_? QString::fromUtf8("退房") : QString::fromUtf8("进房"));
+    updateDynamicTextUI();
 }
 
 void MainWindow::onExitOtherRoomConnection()
 {
     cross_room_pk_entered_ = false;
-    ui_mainwindow_->btnEnterOtherRoom->setText(QString::fromUtf8("进房"));
+    updateDynamicTextUI();
 }
 
 void MainWindow::onEnterSubRoomResult(bool result)
 {
     subroom_entered_ = result;
-    ui_mainwindow_->btnEnterSubRoom->setText(subroom_entered_? QString::fromUtf8("退房") : QString::fromUtf8("进房"));
+    updateDynamicTextUI();
 }
 
 void MainWindow::onExitSubRoom()
 {
     subroom_entered_ = false;
-    ui_mainwindow_->btnEnterSubRoom->setText(QString::fromUtf8("进房"));
+    updateDynamicTextUI();
+}
+
+void MainWindow::updateDynamicTextUI() {
+    if (subroom_entered_) {
+        ui_mainwindow_->btnEnterSubRoom->setText(tr("退房", "dynamic"));
+    } else {
+        ui_mainwindow_->btnEnterSubRoom->setText(tr("进房", "dynamic"));
+    }
+    if (cross_room_pk_entered_) {
+        ui_mainwindow_->btnEnterOtherRoom->setText(tr("退房", "dynamic"));
+    } else {
+        ui_mainwindow_->btnEnterOtherRoom->setText(tr("进房", "dynamic"));
+    }
 }

@@ -381,7 +381,7 @@ background-color: rgba(0, 0, 0, 0);</string>
     <string notr="true">background-color: rgba(0, 0, 0, 0);</string>
    </property>
    <property name="text">
-    <string>roomid/userid</string>
+    <string notr="true">roomid/userid</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
@@ -400,7 +400,7 @@ background-color: rgba(0, 0, 0, 0);</string>
     <bool>false</bool>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: rgb(0, 0, 0);</string>
+    <string notr="true">background-color: rgba(0, 0, 0, 0);</string>
    </property>
   </widget>
   <widget class="QPushButton" name="fitScreenBt">
@@ -455,6 +455,23 @@ background-color: rgba(0, 0, 0, 0);</string>
     <string/>
    </property>
   </widget>
+  <widget class="QWidget" name="background" native="true">
+   <property name="geometry">
+    <rect>
+     <x>2</x>
+     <y>2</y>
+     <width>300</width>
+     <height>300</height>
+    </rect>
+   </property>
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(0, 0, 0);</string>
+   </property>
+  </widget>
+  <zorder>background</zorder>
   <zorder>videoPlaceHolder</zorder>
   <zorder>volumePb</zorder>
   <zorder>audioMuteBt</zorder>

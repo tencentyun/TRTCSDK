@@ -1,7 +1,7 @@
 #include "test_audio_detect.h"
 
 TestAudioDetect::TestAudioDetect(QWidget *parent) :
-    QDialog(parent),
+    BaseDialog(parent),
     ui_audio_test_(new Ui::TestAudioDetectDialog)
 {
     ui_audio_test_->setupUi(this);
@@ -31,34 +31,38 @@ void TestAudioDetect::onTestSpeakerVolume(uint32_t volume)
 void TestAudioDetect::startMicTest()
 {
     getTRTCShareInstance()->muteLocalAudio(false);
-    ui_audio_test_->pushButtonStartMicTest->setText(QString::fromUtf8("停止测试"));
+    mic_test_started_ = true;
     tx_device_manager_->startMicDeviceTest(300);
+    updateDynamicTextUI();
 }
 
 void TestAudioDetect::stopMicTest()
 {
-    ui_audio_test_->pushButtonStartMicTest->setText(QString::fromUtf8("开始测试"));
     ui_audio_test_->pushButtonStartMicTest->setChecked(false);
+    mic_test_started_ = false;
     tx_device_manager_->stopMicDeviceTest();
     ui_audio_test_->progressBarMicTestResult->setValue(0);
+    updateDynamicTextUI();
 }
 
 void TestAudioDetect::startSpeakerTest()
 {
-    ui_audio_test_->pushButtonStartSpeakerTest->setText(QString::fromUtf8("停止测试"));
     const QString qtmp_file = qtemp_dir_.path() + "/test.mp3";
     QByteArray qtmp_file_bytearray = qtmp_file.toLatin1();
     QFile::copy(":sound/audio/sound/test.mp3", qtmp_file);
     const char *file_path = qtmp_file_bytearray.data();
     tx_device_manager_->startSpeakerDeviceTest(file_path);
+    speaker_test_started_ = true;
+    updateDynamicTextUI();
 }
 
 void TestAudioDetect::stopSpeakerTest()
 {
-    ui_audio_test_->pushButtonStartSpeakerTest->setText(QString::fromUtf8("开始测试"));
     ui_audio_test_->pushButtonStartSpeakerTest->setChecked(false);
     tx_device_manager_->stopSpeakerDeviceTest();
     ui_audio_test_->progressBarSpeakerTestResult->setValue(0);
+    speaker_test_started_ = false;
+    updateDynamicTextUI();
 }
 
 void TestAudioDetect::initUIStatus()
@@ -186,10 +190,29 @@ void TestAudioDetect::on_pushButtonStartSpeakerTest_clicked(bool checked)
 void TestAudioDetect::showEvent(QShowEvent *event)
 {
     initUIStatus();
+    BaseDialog::showEvent(event);
 }
 
 void TestAudioDetect::closeEvent(QCloseEvent *event)
 {
     stopMicTest();
     stopSpeakerTest();
+    BaseDialog::closeEvent(event);
+}
+
+void TestAudioDetect::updateDynamicTextUI() {
+    if (mic_test_started_) {
+        ui_audio_test_->pushButtonStartMicTest->setText(tr("停止测试"));
+    } else {
+        ui_audio_test_->pushButtonStartMicTest->setText(tr("开始测试"));
+    }
+    if (speaker_test_started_) {
+        ui_audio_test_->pushButtonStartSpeakerTest->setText(tr("停止测试"));
+    } else {
+        ui_audio_test_->pushButtonStartSpeakerTest->setText(tr("开始测试"));
+    }
+}
+
+void TestAudioDetect::retranslateUi() {
+    ui_audio_test_->retranslateUi(this);
 }

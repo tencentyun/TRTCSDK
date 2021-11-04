@@ -8,19 +8,29 @@
  * - refreshCameraDevices()
  */
 
+/**
+ * Testing video capturing devices
+ *
+ * - Call getDeviceManager() to get an ITXDeviceManager instance to test the video capturing device.
+ * - For the specific method, please refer to:  startCameraTest()/stopCameraTest()
+ * -
+ * - Getting available devices:
+ * - refreshCameraDevices()
+ */
+
 #ifndef TESTVIDEODETECT_H
 #define TESTVIDEODETECT_H
 
-#include<QDialog>
 #include<QVector>
 #include<QString>
 #include<string>
 
+#include "base_dialog.h"
 #include "trtc_cloud_callback_default_impl.h"
 #include "ui_TestVideoDetectDialog.h"
 
 class TestVideoDetect:
-        public QDialog,
+        public BaseDialog,
         public TrtcCloudCallbackDefaultImpl
 {
     Q_OBJECT
@@ -45,7 +55,8 @@ public:
 
 private:
     void initUIStatus();
-
+    void retranslateUi() override;
+    void updateDynamicTextUI() override;
 private:
     struct DeviceInfoItem {
 
@@ -64,6 +75,7 @@ private:
     trtc::ITXDeviceManager *tx_device_manager_;
     QVector<DeviceInfoItem> qvector_device_info_camera_;
     bool device_info_ready_;
+    bool camera_test_started_ = false;
 };
 
 #endif // TESTVIDEODETECT_H

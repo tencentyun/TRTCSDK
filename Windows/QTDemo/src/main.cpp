@@ -3,6 +3,8 @@
 //  Copyright © 2020 tencent. All rights reserved.
 //
 #include "main_window.h"
+#include "translator.h"
+
 #include <QApplication>
 #include <QStyleFactory>
 #include <QTextCodec>
@@ -14,6 +16,7 @@ int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
+    app.installTranslator(&(Translator::getInstance()->getTranslator()));
 #ifdef _DEBUG
     getTRTCShareInstance()->setConsoleEnabled(true);
 #endif
@@ -29,7 +32,6 @@ int main(int argc, char *argv[]) {
     font.setStyleStrategy(QFont::PreferAntialias);
     font.setPointSize(13);
     app.setFont(font);
-
     MainWindow *mainWindow = new MainWindow();
     mainWindow->show();
 

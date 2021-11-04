@@ -53,13 +53,13 @@
         </font>
        </property>
        <property name="text">
-        <string/>
+        <string notr="true"/>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
        </property>
        <property name="placeholderText">
-        <string>sream_id</string>
+        <string>stream_id</string>
        </property>
       </widget>
      </item>
@@ -120,7 +120,7 @@
           <set>Qt::ImhDigitsOnly</set>
          </property>
          <property name="text">
-          <string>64</string>
+          <string notr="true">64</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -175,7 +175,7 @@
           <set>Qt::ImhDigitsOnly</set>
          </property>
          <property name="text">
-          <string>2</string>
+          <string notr="true">2</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -227,7 +227,7 @@
           <set>Qt::ImhDigitsOnly</set>
          </property>
          <property name="text">
-          <string>15</string>
+          <string notr="true">15</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -281,7 +281,7 @@
             <set>Qt::ImhDigitsOnly</set>
            </property>
            <property name="text">
-            <string>1920</string>
+            <string notr="true">1920</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
@@ -329,7 +329,7 @@
             <set>Qt::ImhDigitsOnly</set>
            </property>
            <property name="text">
-            <string>1080</string>
+            <string notr="true">1080</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
@@ -437,7 +437,7 @@
           <set>Qt::ImhDigitsOnly</set>
          </property>
          <property name="text">
-          <string>64</string>
+          <string notr="true">64</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -764,7 +764,7 @@
           <string/>
          </property>
          <property name="text">
-          <string/>
+          <string notr="true"/>
          </property>
          <property name="readOnly">
           <bool>false</bool>
@@ -820,7 +820,7 @@
         <enum>Qt::NoFocus</enum>
        </property>
        <property name="text">
-        <string>开始混流</string>
+        <string>开始发布</string>
        </property>
        <property name="checked">
         <bool>false</bool>

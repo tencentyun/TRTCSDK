@@ -8,21 +8,34 @@
  * - refreshSpeakerDevices()
  * -
  * - 设置当前使用设备：
- * - setCurrentDevice(); API文档参见https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__ITXDeviceManager__cplusplus.html#abedb16669f004919730e9c027b71808c
+ * - setCurrentDevice(); API文档参见：https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__ITXDeviceManager__cplusplus.html#abedb16669f004919730e9c027b71808c
+ */
+
+/**
+ * Device management
+ *
+ * - Call getDeviceManager() to get an ITXDeviceManager instance, get the device list, and set the device to use.
+ * - Getting the list of cameras/mics/speakers:
+ * - refreshMicDevices()
+ * - refreshCameraDevices()
+ * - refreshSpeakerDevices()
+ * -
+ * - Setting the device to use:
+ * - setCurrentDevice(). For details about the APIs, see: https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__ITXDeviceManager__cplusplus.html#abedb16669f004919730e9c027b71808c
  */
 
 #ifndef TESTDEVICEMANAGER_H
 #define TESTDEVICEMANAGER_H
 
-#include <QDialog>
 #include <QVector>
 #include <QString>
 #include <string>
 
+#include "base_dialog.h"
 #include "trtc_cloud_callback_default_impl.h"
 #include "ui_TestDeviceManagerDialog.h"
 
-class TestDeviceManager:public QDialog, public TrtcCloudCallbackDefaultImpl
+class TestDeviceManager:public BaseDialog, public TrtcCloudCallbackDefaultImpl
 {
     Q_OBJECT
 public:
@@ -30,7 +43,7 @@ public:
     ~TestDeviceManager();
 
     //============= ITRTCCloudCallback start =================//
-    void onDeviceChange(const char* deviceId, trtc::TRTCDeviceType type, trtc::TRTCDeviceState state) override;
+    // void onDeviceChange(const char* deviceId, trtc::TRTCDeviceType type, trtc::TRTCDeviceState state) override;
     //============= ITRTCCloudCallback end ===================//
 
 private:
@@ -57,9 +70,9 @@ public:
 
 private:
     void setupDeviceRelatedElements();
+    void retranslateUi() override;
 
     bool device_info_ready_;
-
     std::unique_ptr<Ui::TestDeviceMangerDialog> ui_device_manager_;
     trtc::ITXDeviceManager *tx_device_manager_;
     QVector<DeviceInfoItem> qvector_device_info_camera_;
@@ -70,8 +83,6 @@ private slots:
     void on_cameraChooseComboBox_currentIndexChanged(int index);
     void on_microphoneChooseComboBox_currentIndexChanged(int index);
     void on_loudspeakerChooseComboBox_currentIndexChanged(int index);
-
-
 };
 
 #endif // TESTDEVICEMANAGER_H

@@ -1,7 +1,7 @@
 #include "test_video_detect.h"
 
 TestVideoDetect::TestVideoDetect(QWidget *parent) :
-    QDialog(parent),
+    BaseDialog(parent),
     ui_video_test_(new Ui::TestVideoDetectDialog)
 {
     ui_video_test_->setupUi(this);
@@ -14,15 +14,17 @@ TestVideoDetect::~TestVideoDetect() {
 
 void TestVideoDetect::startCameraTest()
 {
-    ui_video_test_->pushButtonStartCameraTest->setText("停止测试 ");
     tx_device_manager_->startCameraDeviceTest(reinterpret_cast<void*>(ui_video_test_->videoview->winId()));
+    camera_test_started_ = true;
+    updateDynamicTextUI();
 }
 
 void TestVideoDetect::stopCameraTest()
 {
-    ui_video_test_->pushButtonStartCameraTest->setText("开始测试 ");
     ui_video_test_->pushButtonStartCameraTest->setChecked(false);
     tx_device_manager_->stopCameraDeviceTest();
+    camera_test_started_ = false;
+    updateDynamicTextUI();
 }
 
 void TestVideoDetect::on_pushButtonStartCameraTest_clicked(bool checked)
@@ -45,11 +47,13 @@ void TestVideoDetect::on_comboBoxCameraDevices_currentIndexChanged(int index)
 void TestVideoDetect::showEvent(QShowEvent *event)
 {
     initUIStatus();
+    BaseDialog::showEvent(event);
 }
 
 void TestVideoDetect::closeEvent(QCloseEvent *event)
 {
     stopCameraTest();
+    BaseDialog::closeEvent(event);
 }
 
 void TestVideoDetect::initUIStatus()
@@ -64,7 +68,6 @@ void TestVideoDetect::refreshCameraDevices()
     if(tx_device_manager_ == nullptr) {
         return;
     }
-    //camera
     qvector_device_info_camera_.clear();
     trtc::ITXDeviceCollection *device_collection_camera = tx_device_manager_->getDevicesList(trtc::TXMediaDeviceType::TXMediaDeviceTypeCamera);
     uint32_t camera_device_count = device_collection_camera->getCount();
@@ -89,4 +92,16 @@ void TestVideoDetect::refreshCameraDevices()
 
     device_collection_camera->release();
     device_info_ready_ = true;
+}
+
+void TestVideoDetect::updateDynamicTextUI() {
+    if (camera_test_started_) {
+        ui_video_test_->pushButtonStartCameraTest->setText(tr("停止测试"));
+    } else {
+        ui_video_test_->pushButtonStartCameraTest->setText(tr("开始测试"));
+    }
+}
+
+void TestVideoDetect::retranslateUi() {
+    ui_video_test_->retranslateUi(this);
 }

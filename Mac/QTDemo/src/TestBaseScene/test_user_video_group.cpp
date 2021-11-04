@@ -1,4 +1,4 @@
-#include "test_user_video_group.h"
+﻿#include "test_user_video_group.h"
 
 #include <QRect>
 #include <QGridLayout>
@@ -56,7 +56,7 @@ void TestUserVideoGroup::onRemoteUserLeaveRoom(const char *userId, int reason) {
         return;
     }
 
-     // Other Room User
+    // User in other room
     if(RoomInfoHolder::GetInstance().getOtherRoomUserId().compare(userId) == 0){
          removeUserVideoItem(RoomInfoHolder::GetInstance().getOtherRoomId(),userId);
     }else{
@@ -94,24 +94,7 @@ void TestUserVideoGroup::onUserSubStreamAvailable(const char *userId, bool avail
 }
 
 void TestUserVideoGroup::onUserVoiceVolume(trtc::TRTCVolumeInfo* userVolumes, uint32_t userVolumesCount, uint32_t totalVolume) {
-    for (auto video_item : visible_user_video_items_) {
-        for (uint32_t user_volums_index = 0; user_volums_index < userVolumesCount; user_volums_index++) {
-            auto user_volum_item = userVolumes + user_volums_index;
-
-            // 本地声音user_volum_item->userId 为空
-            if (video_item->getViewType() == TEST_VIDEO_ITEM::LocalView
-                && strlen(user_volum_item->userId) == 0) {
-                video_item->setVolume(user_volum_item->volume);
-                break;
-            }
-
-            if (strcmp(user_volum_item->userId, video_item->getUserId().c_str()) != 0) {
-                continue;
-            }
-            video_item->setVolume(user_volum_item->volume);
-            break;
-        }
-    }
+    handleUserVolume(userVolumes, userVolumesCount, totalVolume);
 }
 //============= ITRTCCloudCallback end ==================//
 
@@ -243,6 +226,8 @@ void TestUserVideoGroup::initView() {
         break;
     }
     ui_video_group_->checkBoxVolumeEvaluation->setChecked(true);
+    ui_video_group_->muteAllRemoteAudioCb->setChecked(false);
+    ui_video_group_->muteAllRemoteVideoCb->setChecked(false);
     trtc::TRTCQosControlMode control_mode = trtc::TRTCQosControlMode::TRTCQosControlModeServer;
     setNetworkQosParam(preference, control_mode);
 }
@@ -254,8 +239,8 @@ void TestUserVideoGroup::handleUserVideoAvailable(trtc::ITRTCCloud* cloud, int r
             if(available && cloud != nullptr) {
                 cloud->startRemoteView(userId, trtc::TRTCVideoStreamType::TRTCVideoStreamTypeBig, reinterpret_cast<trtc::TXView>((*iterator)->getVideoWId()));
             }
-            (*iterator)->updateAVMuteView(!available,TEST_VIDEO_ITEM::MuteVideo);
-            (*iterator)->setVideoMuteEnabled(available);
+            bool mute_all_remote_video = ui_video_group_->muteAllRemoteVideoCb->isChecked();
+            (*iterator)->updateAVAvailableStatus(available, mute_all_remote_video, TEST_VIDEO_ITEM::MuteVideo);
             break;
         }
     }
@@ -265,8 +250,8 @@ void TestUserVideoGroup::handleUserAudioAvailable(int roomId, const char *userId
 {
     for(std::vector<TestUserVideoItem*>::const_iterator iterator = visible_user_video_items_.begin(); iterator != visible_user_video_items_.end(); iterator++) {
         if(std::strcmp(userId, (*iterator)->getUserId().c_str()) == 0 && roomId == (*iterator)->getRoomId()) {
-            (*iterator)->updateAVMuteView(!available,TEST_VIDEO_ITEM::MuteAudio);
-            (*iterator)->setAudioMuteEnabled(available);
+            bool mute_all_remote_audio = ui_video_group_->muteAllRemoteAudioCb->isChecked();
+            (*iterator)->updateAVAvailableStatus(available, mute_all_remote_audio, TEST_VIDEO_ITEM::MuteAudio);
             break;
         }
     }
@@ -275,7 +260,7 @@ void TestUserVideoGroup::handleUserAudioAvailable(int roomId, const char *userId
 void TestUserVideoGroup::updateRemoteViewsMuteStatus(bool status, TEST_VIDEO_ITEM::MuteAllType muteType) {
     for (auto video_item : visible_user_video_items_) {
         if(video_item->getViewType() == TEST_VIDEO_ITEM::ViewItemType::RemoteView) {
-            video_item->updateAVMuteItems(status, muteType);
+            video_item->updateAVMuteStatus(status, muteType);
         }
     }
 }
@@ -308,6 +293,7 @@ void TestUserVideoGroup::on_pushButtonShowRemoteScreenShare_clicked()
 void TestUserVideoGroup::on_checkBoxVolumeEvaluation_stateChanged(int state)
 {
     getTRTCShareInstance()->enableAudioVolumeEvaluation((state == Qt::CheckState::Checked)? 300:0);
+    emit onVolumeEvaluationStateChanged(state == Qt::CheckState::Checked);
     if(state != Qt::CheckState::Checked) {
         for (auto video_item : visible_user_video_items_) {
             video_item->setVolume(0);
@@ -325,6 +311,13 @@ void TestUserVideoGroup::closeEvent(QCloseEvent* event)
 void TestUserVideoGroup::showEvent(QShowEvent* event)
 {
     initView();
+}
+
+void TestUserVideoGroup::changeEvent(QEvent* event) {
+    if (QEvent::LanguageChange == event->type()) {
+        ui_video_group_->retranslateUi(this);
+    }
+    QWidget::changeEvent(event);
 }
 
 void TestUserVideoGroup::onSubRoomUserEnterRoom(trtc::ITRTCCloud* subCloud,int roomId, std::string userId){
@@ -364,5 +357,26 @@ void TestUserVideoGroup::onSubRoomExit(int roomId){
 
     for(auto userItem : subRoomUsers){
         removeUserVideoItem(roomId, userItem.c_str());
+    }
+}
+
+void TestUserVideoGroup::handleUserVolume(trtc::TRTCVolumeInfo* userVolumes, uint32_t userVolumesCount, uint32_t totalVolume) {
+    for (auto video_item : visible_user_video_items_) {
+        for (uint32_t user_volums_index = 0; user_volums_index < userVolumesCount; user_volums_index++) {
+            auto user_volum_item = userVolumes + user_volums_index;
+
+            // The userId for local volume (user_volum_item) is empty.
+            if (video_item->getViewType() == TEST_VIDEO_ITEM::LocalView
+                && strlen(user_volum_item->userId) == 0) {
+                video_item->setVolume(user_volum_item->volume);
+                break;
+            }
+
+            if (strcmp(user_volum_item->userId, video_item->getUserId().c_str()) != 0) {
+                continue;
+            }
+            video_item->setVolume(user_volum_item->volume);
+            break;
+        }
     }
 }

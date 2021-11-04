@@ -45,7 +45,7 @@ void TestConnectOtherRoom::onConnectOtherRoom(const char* userId, TXLiteAVError 
         RoomInfoHolder::GetInstance().setOtherRoomUserId(user_id_);
     }else {
         success = false;
-        QMessageBox::warning(NULL, "Connect Other Room Failed", QString("errCode=%1,errMsg=%2").arg(errCode).arg(errMsg),QMessageBox::Ok);
+        QMessageBox::warning(NULL, "Failed to start a cross-room call", QString("errCode = %1, errMsg = %2").arg(errCode).arg(errMsg),QMessageBox::Ok);
     }
     emit onConnectOtherRoomResult(success);
 }

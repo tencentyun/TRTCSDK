@@ -1,7 +1,13 @@
 /**
  * TRTC 屏幕分享备选框显示组件
  *
- * - 负责TRTCScreenCaptureSourceInfo的UI预览，具体参考https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCTypeDef__cplusplus.html#structtrtc_1_1TRTCScreenCaptureSourceInfo
+ * - 负责TRTCScreenCaptureSourceInfo的UI预览，具体参考：https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCTypeDef__cplusplus.html#structtrtc_1_1TRTCScreenCaptureSourceInfo
+ */
+
+/**
+ * Screen sharing selection
+ *
+ * - Responsible for preview of ScreenCaptureSourceInfo. For details, see: https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCTypeDef__cplusplus.html#structtrtc_1_1TRTCScreenCaptureSourceInfo
  */
 
 #ifndef SCREENSHARESELECTIONITEM_H

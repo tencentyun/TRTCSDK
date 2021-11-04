@@ -22,7 +22,7 @@ class GLYuvWidget : public QOpenGLWidget, protected QOpenGLFunctions {
     ~GLYuvWidget() override;
 
  public slots:
-    // 显示一帧Yuv图像
+    // Display a frame of YUV image
     void slotShowYuv(uchar *ptr, uint width, uint height);
     static void lock();
     static void unlock();
@@ -33,12 +33,13 @@ class GLYuvWidget : public QOpenGLWidget, protected QOpenGLFunctions {
 
  private:
     QOpenGLBuffer vbo;
-    // opengl中y、u、v分量位置
+    // The Y, U, and V values in OpenGL
     GLint textureUniformY, textureUniformU, textureUniformV;
     QOpenGLTexture *textureY = nullptr, *textureU = nullptr, *textureV = nullptr;
-    // 自己创建的纹理对象ID，创建错误返回0
+    // ID of the texture object created by yourself. 0 indicates creation error.
     GLuint idY, idU, idV;
     GLint videoW, videoH;
+    GLuint videoWH_max;
     uchar *yuvPtr = nullptr;
     QOpenGLShaderProgram program;
 };

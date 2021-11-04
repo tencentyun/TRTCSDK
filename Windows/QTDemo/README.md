@@ -1,3 +1,5 @@
+中文 | [English](README.en.md)
+
 本文主要介绍如何快速运行腾讯云 TRTC QTDemo。
 
 ## 前言
@@ -14,7 +16,7 @@
   - [CDN 混流](./src/TestMixStreamPublish)
   - [CDN 流播放器](./src/TestCDNPlayer)
   - [音频检测](./src/TestAudioDetect)
-  - [视频检测](../src/TestVideoDetect)
+  - [视频检测](./src/TestVideoDetect)
   - [音频设置](./src/TestAudioSetting)
   - [视频设置](./src/TestVideoSetting)
   - [音频录制](./src/TestAudioRecord)
@@ -37,6 +39,7 @@
 
 ## 操作步骤
 [](id:step1)
+
 ### 步骤1：创建新的应用
 
 1. 登录实时音视频控制台，选择【开发辅助】>【[快速跑通 Demo ](https://console.cloud.tencent.com/trtc/quickstart)】。
@@ -51,6 +54,7 @@
 ![](https://main.qcloudimg.com/raw/3b115019ddfd0866108ed1add30810d8.png)
 
 [](id:step3)
+
 ### 步骤3：配置 Demo 工程文件
 1. 进入修改配置页，根据您下载的源码包，选择相应的开发环境。
 2. 找到并打开 `QTDemo/src/Util/defs.h` 文件。
@@ -87,7 +91,7 @@
 > `注意：`请您确保已将`SDK`文件夹下的`CPlusPlus`[下载](https://liteav.sdk.qcloud.com/download/latest/TXLiteAVSDK_TRTC_Win_latest.zip)并保存到`Windows/SDK`文件夹下，工程路径如下——
 >```
 >├─ QTDemo // QTDemo工程路径
->├─ SDK    // TRTC MAC SDK
+>├─ SDK    // TRTC Windows SDK
 >|  ├─ CPlusPlus //SDK 目录内放置此文件夹
 >```
 >
@@ -133,3 +137,4 @@
 - [场景方案：语音通话](https://cloud.tencent.com/document/product/647/42046)
 - [UserSig 相关问题](https://cloud.tencent.com/document/product/647/17275)
 - [应对防火墙限制相关问题](https://cloud.tencent.com/document/product/647/34399)
+

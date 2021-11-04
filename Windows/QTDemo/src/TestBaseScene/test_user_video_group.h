@@ -18,6 +18,26 @@
  * - onUserVoiceVolume：返回每个远端用户的音量和总音量，可以通过enableAudioVolumeEvaluation开启这个回调
  */
 
+/**
+ * Parent control for user display and status management in TRTC rooms
+ *
+ * - Users' entry and exit, audio/video availability, unified room management
+ * -
+ * - Unified room management:
+ * - setNetworkQosParam:  set QoS parameters
+ * - muteAllRemoteVideoStreams:  pause/resume receiving all remote video streams
+ * - muteAllRemoteAudio:   mute/unmute all users
+ * - showDebugView:  display the dashboard, including the floating views of status statistics and event messages, which are used for debugging
+ * -
+ * - Callbacks for user status:
+ * - onRemoteUserEnterRoom:  callback of the entry of a remote user
+ * - onRemoteUserLeaveRoom:  callback of the exit of a remote user
+ * - onUserVideoAvailable:  callback of whether a remote user has playable video. You can call startRemoteView to display the user’s video.
+ * - onUserAudioAvailable:  callback of whether a remote user has playable audio
+ * - onUserSubStreamAvailable:  callback of whether a remote user has enabled screen sharing. You can call startRemoteView to display the shared screen.
+ * - onUserVoiceVolume:  callback of the volume of each remote user and total remote volume. You can enable this callback by calling enableAudioVolumeEvaluation.
+ */
+
 #ifndef TESTVIDEOGROUP_H
 #define TESTVIDEOGROUP_H
 
@@ -55,6 +75,9 @@ private:
     void onUserVoiceVolume(trtc::TRTCVolumeInfo* userVolumes, uint32_t userVolumesCount, uint32_t totalVolume) override;
     //============= ITRTCCloudCallback end =================//
 
+signals:
+    void onVolumeEvaluationStateChanged(bool state);
+
 private slots:
     void on_networkModeCb_currentIndexChanged(int index);
 
@@ -69,9 +92,9 @@ private slots:
     void on_checkBoxVolumeEvaluation_stateChanged(int state);
 
 public:
-
     void closeEvent(QCloseEvent* event) override;
     void showEvent(QShowEvent* event) override;
+    void changeEvent(QEvent* event);
 
     void setMainRoomId(int mainRoomId);
     void addUserVideoItem(trtc::ITRTCCloud* cloud,int roomId,const char *userId,const TEST_VIDEO_ITEM::ViewItemType type);
@@ -80,6 +103,7 @@ public:
     void onSubRoomUserVideoAvailable(trtc::ITRTCCloud*, int roomId, std::string userId, bool available);
     void onSubRoomUserAudioAvailable(int roomId, std::string userId, bool available);
     void onSubRoomExit(int roomId);
+    void handleUserVolume(trtc::TRTCVolumeInfo* userVolumes, uint32_t userVolumesCount, uint32_t totalVolume);
 
 private:
     void removeUserVideoItem(int roomId,const char *userId);

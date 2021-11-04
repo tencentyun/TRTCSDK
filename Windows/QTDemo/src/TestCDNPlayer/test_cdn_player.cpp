@@ -7,10 +7,10 @@
 #include "defs.h"
 #include "ITRTCCloud.h"
 
-TestCdnPlayer::TestCdnPlayer(QWidget *parent):QDialog(parent),ui_test_cdn_player_(new Ui::TestCdnPlayerDialog){
+TestCdnPlayer::TestCdnPlayer(QWidget *parent):BaseDialog(parent),ui_test_cdn_player_(new Ui::TestCdnPlayerDialog){
     ui_test_cdn_player_->setupUi(this);
     setWindowFlags(windowFlags()&~Qt::WindowContextHelpButtonHint);
-    ui_test_cdn_player_->lineEtDomain->setText(QString::fromLocal8Bit(DOMAIN_URL));
+    ui_test_cdn_player_->domain_label->setText(QString::fromLocal8Bit(DOMAIN_URL));
     live_player_ = new TXLivePlayerProxy();
     live_player_->setRenderMode(TXLIVEPLAYERPROXY_RENDER_MODE_ADAPT);
 }
@@ -29,19 +29,17 @@ void TestCdnPlayer::on_btStart_clicked(){
 
     if (started_) {
         live_player_->stopPlay();
-        ui_test_cdn_player_->btStart->setText(QString::fromLocal8Bit("开始").toUtf8());
-        ui_test_cdn_player_->btPause->setText(QString::fromLocal8Bit("暂停").toUtf8());
     } else {
         QString stream_id = ui_test_cdn_player_->lineEtStreamId->text();
         QString domain = DOMAIN_URL;
 
         if (stream_id.isEmpty()) {
-            QMessageBox::warning(this, "start failed", "stream_id is invalid", QMessageBox::Ok);
+            QMessageBox::warning(this, "Failed to play CDN streams", "Enter a stream ID.", QMessageBox::Ok);
             return;
         }
 
         if (domain.isEmpty()) {
-            QMessageBox::warning(this, "start failed", "domain is invalid", QMessageBox::Ok);
+            QMessageBox::warning(this, "Failed to play CDN streams", "Enter a playback domain name.", QMessageBox::Ok);
             return;
         }
 
@@ -50,39 +48,48 @@ void TestCdnPlayer::on_btStart_clicked(){
         std::string play_url = stream_url.toStdString();
         live_player_->setRenderFrame(reinterpret_cast<trtc::TXView>(ui_test_cdn_player_->videoPlaceHolder->winId()));
         live_player_->startPlay(play_url.c_str());
-        ui_test_cdn_player_->btStart->setText(QString::fromLocal8Bit("结束").toUtf8());
-        ui_test_cdn_player_->btPause->setText(QString::fromLocal8Bit("暂停").toUtf8());
     }
-
     paused_ = false;
     started_ = !started_;
+    updateDynamicTextUI();
 }
 
 void TestCdnPlayer::on_btPause_clicked(){
     if (!started_) {
         return;
     }
-
     if (paused_) {
         live_player_->resume();
-        ui_test_cdn_player_->btPause->setText(QString::fromLocal8Bit("暂停").toUtf8());
     } else {
         live_player_->pause();
-        ui_test_cdn_player_->btPause->setText(QString::fromLocal8Bit("恢复").toUtf8());
     }
-
     paused_ = !paused_;
+    updateDynamicTextUI();
 }
 
 void TestCdnPlayer::closeEvent(QCloseEvent* event){
     if(started_){
         live_player_->stopPlay();
-        ui_test_cdn_player_->btStart->setText(QString::fromLocal8Bit("开始").toUtf8());
         started_ = false;
     }
+    paused_ = false;
+    updateDynamicTextUI();
+    BaseDialog::closeEvent(event);
+}
 
-    if(paused_){
-        ui_test_cdn_player_->btPause->setText(QString::fromLocal8Bit("暂停").toUtf8());
-        paused_ = false;
+void TestCdnPlayer::updateDynamicTextUI() {
+    if (started_) {
+        ui_test_cdn_player_->btStart->setText(tr("结束").toUtf8());
+    } else {
+        ui_test_cdn_player_->btStart->setText(tr("开始").toUtf8());
     }
+    if (paused_) {
+        ui_test_cdn_player_->btPause->setText(tr("恢复").toUtf8());
+    } else {
+        ui_test_cdn_player_->btPause->setText(tr("暂停").toUtf8());
+    }
+}
+
+void TestCdnPlayer::retranslateUi() {
+    ui_test_cdn_player_->retranslateUi(this);
 }

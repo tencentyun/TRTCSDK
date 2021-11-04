@@ -7,18 +7,30 @@
  * - startLocalVideoRender() / stopLocalVideoRender()
  * - startRemoteVideoRender() / stopRemoteVideoRender()
  * -
- * - 具体API说明可参见https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__ITRTCCloud__cplusplus.html#ad64031e060146f7985263aad994fc733
+ * - 具体API说明可参见：https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__ITRTCCloud__cplusplus.html#ad64031e060146f7985263aad994fc733
+ */
+
+/**
+ * Custom video rendering, i.e., receiving video data and rendering it by yourself instead of using the default rendering capability of the TRTC library
+ *
+ * - Method:  Call setLocalVideoRenderCallback()/setRemoteVideoRenderCallback() to set callbacks for the receiving of local/remote data so that you can render the data by yourself.
+ * -
+ * - For the specific method, please refer to:
+ * - startLocalVideoRender()/stopLocalVideoRender()
+ * - startRemoteVideoRender()/stopRemoteVideoRender()
+ * -
+ * - For details about the APIs, see: https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__ITRTCCloud__cplusplus.html#ad64031e060146f7985263aad994fc733
  */
 
 #ifndef TESTCUSTOMRENDER_H
 #define TESTCUSTOMRENDER_H
 
-#include <QDialog>
+#include "base_dialog.h"
 #include "ITRTCCloud.h"
 #include "gl_yuv_widget.h"
 #include "ui_TestCustomRenderDialog.h"
 
-class TestCustomRender:public QDialog,public trtc::ITRTCVideoRenderCallback
+class TestCustomRender:public BaseDialog, public trtc::ITRTCVideoRenderCallback
 {
     Q_OBJECT
 public:
@@ -56,7 +68,8 @@ private:
     void initViews();
     void destroyCustomRender();
     void adapterRenderViewSize(int width,int height);
-
+    void retranslateUi() override;
+    void updateDynamicTextUI() override;
 private:
     std::unique_ptr<Ui::TestCustomRenderDialog> ui_test_custom_render_;
     GLYuvWidget* gl_yuv_widget_ = nullptr;

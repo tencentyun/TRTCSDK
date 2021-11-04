@@ -1,7 +1,7 @@
 #include "test_audio_setting.h"
 
 TestAudioSetting::TestAudioSetting(QWidget *parent):
-    QDialog(parent),
+    BaseDialog(parent),
     ui_audio_setting_(new Ui::TestAudioSettingDialog)
 {
     ui_audio_setting_->setupUi(this);
@@ -9,6 +9,7 @@ TestAudioSetting::TestAudioSetting(QWidget *parent):
     trtccloud_ = getTRTCShareInstance();
     tx_device_manager_ = trtccloud_->getDeviceManager();
     tx_audio_effect_manager_ = trtccloud_->getAudioEffectManager();
+    initUIStatus();
 }
 
 TestAudioSetting::~TestAudioSetting() {
@@ -75,9 +76,9 @@ void TestAudioSetting::on_checkBoxSytemAudioLoopbak_stateChanged(int state)
     }
 }
 
-void TestAudioSetting::showEvent(QShowEvent *event)
-{
-    initUIStatus();
+void TestAudioSetting::showEvent(QShowEvent* event) {
+    updateRemoteUsersList();
+    BaseDialog::showEvent(event);
 }
 
 void TestAudioSetting::initUIStatus()
@@ -96,11 +97,22 @@ void TestAudioSetting::initUIStatus()
     ui_audio_setting_->horizontalSliderCurrentDeviceVolume->setValue(tx_device_manager_->getCurrentDeviceVolume(trtc::TXMediaDeviceType::TXMediaDeviceTypeSpeaker));
     ui_audio_setting_->checkBoxCurrentDeviceMute->setChecked(tx_device_manager_->getCurrentDeviceMute(trtc::TRTCDeviceType::TXMediaDeviceTypeSpeaker));
     ui_audio_setting_->horizontalSliderAudioCaptureVolume->setValue(trtccloud_->getAudioCaptureVolume());
+    updateRemoteUsersList();
+}
+
+void TestAudioSetting::updateRemoteUsersList() {
     std::vector<std::string> room_users;
     RoomInfoHolder::GetInstance().getRoomUsers(room_users);
+    ui_audio_setting_->comboBoxRemoteUsers->clear();
     for (std::string user : room_users) {
         ui_audio_setting_->comboBoxRemoteUsers->addItem(QString::fromLocal8Bit(user.c_str()));
     }
 }
 
+void TestAudioSetting::resetUI() {
+    initUIStatus();
+}
 
+void TestAudioSetting::retranslateUi() {
+    ui_audio_setting_->retranslateUi(this);
+}

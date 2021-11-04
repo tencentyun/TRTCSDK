@@ -2,7 +2,7 @@
 #include <QMessageBox>
 #include <QFile>
 
-TestBGMSetting::TestBGMSetting(QWidget* parent):QDialog(parent),ui_bgm_setting_(new Ui::TestBGMSettingDialog){
+TestBGMSetting::TestBGMSetting(QWidget* parent):BaseDialog(parent),ui_bgm_setting_(new Ui::TestBGMSettingDialog){
     ui_bgm_setting_->setupUi(this);
     setWindowFlags(windowFlags()&~Qt::WindowContextHelpButtonHint);
     audio_effect_manager_ = getTRTCShareInstance()->getAudioEffectManager();
@@ -78,32 +78,38 @@ void TestBGMSetting::onComplete(int id,int errCode){
 
 void TestBGMSetting::handleStart(int id,int errCode){
     if(errCode == 0){
-        ui_bgm_setting_->btnStartBgm->setText(QString::fromLocal8Bit("停止播放").toUtf8());
         changeBgmControlerStatus(true);
         started_bgm_status_ = true;
-    }else{
-        QMessageBox::warning(this,"Start PlayBgm Failed",QString::number(errCode),QMessageBox::Ok);
+        updateDynamicTextUI();
+    } else {
+        QMessageBox::warning(this,"Failed to play background music",QString::number(errCode),QMessageBox::Ok);
     }
     ui_bgm_setting_->btnStartBgm->setEnabled(true);
 }
+
 void TestBGMSetting::handlePlayProgress(int id,long curPtsMS,long durationMS){
     ui_bgm_setting_->progressbarBgmProgress->setValue(curPtsMS*100 / durationMS);
 }
 
 void TestBGMSetting::handleComplete(int id,int errCode){
     ui_bgm_setting_->progressbarBgmProgress->setValue(0);
-    ui_bgm_setting_->btnStartBgm->setText(QString::fromLocal8Bit("开始播放").toUtf8());
-    ui_bgm_setting_->btnPauseBgm->setText(QString::fromLocal8Bit("暂停播放").toUtf8());
+    started_bgm_status_ = false;
+    paused_bgm_status_ = false;
     changeBgmControlerStatus(false);
+    resetDefaultValue();
+    updateDynamicTextUI();
 }
+
 void TestBGMSetting::on_btnStartBgm_clicked(){
     if(started_bgm_status_){
         stopPlayBgmMusic();
-        ui_bgm_setting_->btnStartBgm->setText(QString::fromLocal8Bit("开始播放").toUtf8());
         ui_bgm_setting_->progressbarBgmProgress->setValue(0);
         changeBgmControlerStatus(false);
+        resetDefaultValue();
         started_bgm_status_ = false;
+        paused_bgm_status_ = false;
         bgm_music_id = -1;
+        updateDynamicTextUI();
     }else{
         ui_bgm_setting_->btnStartBgm->setEnabled(false);
         bgm_music_id = ui_bgm_setting_->comboxSelectBgmMusic->currentIndex();
@@ -122,7 +128,7 @@ void TestBGMSetting::on_btnStartBgm_clicked(){
 
         QFileInfo file_info(QDir::toNativeSeparators(finalPath));
         if (!file_info.exists()) {
-            QMessageBox::warning(this,"Start PlayBgm Failed","Bgm File Not Exists",QMessageBox::Ok);
+            QMessageBox::warning(this,"Failed to play background music","The music file does not exist.",QMessageBox::Ok);
             return;
         }
 
@@ -140,12 +146,11 @@ void TestBGMSetting::on_btnPauseBgm_clicked(){
     }
     if(paused_bgm_status_){
         resumePlayBgmMusic();
-        ui_bgm_setting_->btnPauseBgm->setText(QString::fromLocal8Bit("暂停播放").toUtf8());
-    }else{
+    } else {
         pausePlayBgmMusic();
-        ui_bgm_setting_->btnPauseBgm->setText(QString::fromLocal8Bit("恢复播放").toUtf8());
     }
     paused_bgm_status_ = !paused_bgm_status_;
+    updateDynamicTextUI();
 }
 
 void TestBGMSetting::on_btnRestSetting_clicked(){
@@ -207,7 +212,30 @@ void TestBGMSetting::closeEvent(QCloseEvent *event){
     if(started_bgm_status_){
         stopPlayBgmMusic();
         bgm_music_id = -1;
+        ui_bgm_setting_->progressbarBgmProgress->setValue(0);
+        started_bgm_status_ = false;
+        paused_bgm_status_ = false;
+        updateDynamicTextUI();
+        changeBgmControlerStatus(false);
+        resetDefaultValue();
     }
+    
+    BaseDialog::closeEvent(event);
+}
 
-    resetDefaultValue();
+void TestBGMSetting::updateDynamicTextUI() {
+    if (paused_bgm_status_) {
+        ui_bgm_setting_->btnPauseBgm->setText(tr("恢复播放").toUtf8());
+    } else {
+        ui_bgm_setting_->btnPauseBgm->setText(tr("暂停播放").toUtf8());
+    }
+    if (started_bgm_status_) {
+        ui_bgm_setting_->btnStartBgm->setText(tr("停止播放").toUtf8());
+    } else {
+        ui_bgm_setting_->btnStartBgm->setText(tr("开始播放").toUtf8());
+    }
+}
+
+void TestBGMSetting::retranslateUi() {
+    ui_bgm_setting_->retranslateUi(this);
 }

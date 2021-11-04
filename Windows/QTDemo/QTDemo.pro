@@ -49,8 +49,10 @@ SOURCE_PATHS = \
     $$PWD/src/TestVideoSetting/.
 
 SOURCES += \
+    src/base_dialog.cpp \
     src/main.cpp \
     src/main_window.cpp \
+    src/translator.cpp \
     src/TestAudioDetect/test_audio_detect.cpp \
     src/TestAudioRecord/test_audio_record.cpp \
     src/TestAudioSetting/test_audio_setting.cpp \
@@ -81,7 +83,9 @@ SOURCES += \
     src/Util/Widget/gl_yuv_widget.cpp
 
 HEADERS += \
+    src/base_dialog.h \
     src/main_window.h \
+    src/translator.h \
     src/TestAudioDetect/test_audio_detect.h \
     src/TestAudioRecord/test_audio_record.h \
     src/TestAudioSetting/test_audio_setting.h \
@@ -142,12 +146,16 @@ FORMS += \
 
 RESOURCES += \
     resources/audio.qrc \
-    resources/image.qrc
+    resources/image.qrc \
+    resources/translation.qrc
 
 QMAKE_CFLAGS_RELEASE   = $$QMAKE_CFLAGS_RELEASE_WITH_DEBUGINFO
 QMAKE_CXXFLAGS_RELEASE = $$QMAKE_CXXFLAGS_RELEASE_WITH_DEBUGINFO
 QMAKE_LFLAGS_RELEASE   = $$QMAKE_LFLAGS_RELEASE_WITH_DEBUGINFO
 
+TRANSLATIONS +=  \
+    QTDemo_I18N_en.ts \
+    QTDemo_I18N_ZH_cn.ts
 
 macx {
 
@@ -211,6 +219,9 @@ CONFIG += opengl
 CONFIG += debug_and_release
 
 
+LIBS += user32.lib
+
+
 debug {
 contains(QT_ARCH,i386) {
 LIBS += -L$$PWD/src/Util/win/zlib/x86 -lzlibstatic
@@ -231,6 +242,4 @@ LIBS +=	-L$$PWD/src/Util/win/zlib/x86_64 -lzlibstatic
 LIBS += -L$$PWD/../SDK/CPlusPlus/Win64/lib -lliteav
 }
 }
-
-
 }

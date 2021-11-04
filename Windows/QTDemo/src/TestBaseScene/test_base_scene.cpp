@@ -1,4 +1,4 @@
-#include "test_base_scene.h"
+﻿#include "test_base_scene.h"
 
 #include <QMessageBox>
 #include <QObject>
@@ -25,7 +25,8 @@ void TestBaseScene::enterRoom(uint32_t roomId, std::string userId, trtc::TRTCApp
     app_scene_ = appScene;
     role_type_ = roleType;
 
-    //云直播CDN，限制长度为64字节，可以不填写，一种推荐的方案是使用 “sdkappid_roomid_userid_main” 作为 streamid,避免多个应用冲突
+    // Stream ID for CDN live streaming, which is optional and cannot be longer than 64 bytes. 
+    // To avoid application conflicts, we recommend that you set it to "sdkappid_roomid_userid_main".
     std::ostringstream streamid_os;
     streamid_os << SDKAppID << "_" << room_id_ << "_" << user_id_ << "_" << "main";
     stream_id_ = streamid_os.str();
@@ -39,7 +40,16 @@ void TestBaseScene::enterRoom(uint32_t roomId, std::string userId, trtc::TRTCApp
      * 一旦您的密钥泄露，攻击者就可以计算出正确的 UserSig 来盗用您的腾讯云流量。
      * 正确的做法是将 UserSig 的计算代码和加密密钥放在您的业务服务器上，然后由 App 按需向您的服务器获取实时算出的 UserSig。
      * 由于破解服务器的成本要高于破解客户端 App，所以服务器计算的方案能够更好地保护您的加密密钥。
-     * 文档：https://cloud.tencent.com/document/product/269/32688#Server
+     * 文档：https://cloud.tencent.com/document/product/647/17275#Server
+     */
+
+    /** @note:  Do not use the code below in your commercial application. This is because:
+     * The code may be able to calculate UserSig correctly, but it is only for quick testing of the SDK’s basic features, not for commercial applications.
+     * SECRETKEY in client code can be easily decompiled and reversed, especially on web.
+     * Once your key is disclosed, attackers will be able to steal your Tencent Cloud traffic.
+     * The correct method is to deploy the UserSig calculation code and encryption key on your project server so that your application can request from your server a UserSig that is calculated whenever one is needed.
+     * Given that it is more difficult to hack a server than a client application, server-end calculation can better protect your key.
+     * Documentation:  https://intl.cloud.tencent.com/document/product/647/35166#Server
      */
     params.userSig = GenerateTestUserSig::genTestUserSig(params.userId, SDKAppID, SECRETKEY);
     params.role = role_type_;
@@ -64,11 +74,11 @@ void TestBaseScene::onEnterRoom(int result) {
         test_user_video_group_->setMainRoomId(room_id_);
         test_user_video_group_->show();
 
-        // 开启音频
-        getTRTCShareInstance()->enableAudioVolumeEvaluation(300); //startLocalAudio前调用有效
+        // Enable audio
+        getTRTCShareInstance()->enableAudioVolumeEvaluation(300); // Effective before the calling of startLocalAudio
         getTRTCShareInstance()->startLocalAudio(trtc::TRTCAudioQualityDefault);
 
-        //开启视频
+        // Enable video
         if(app_scene_ == trtc::TRTCAppScene::TRTCAppSceneVideoCall || app_scene_ == trtc::TRTCAppScene::TRTCAppSceneLIVE){
             getTRTCShareInstance()->setBeautyStyle(trtc::TRTCBeautyStyleSmooth, 6, 6, 6);
             getTRTCShareInstance()->startLocalPreview(test_user_video_group_->getLocalVideoTxView());
@@ -90,9 +100,9 @@ void TestBaseScene::onExitRoom(int reason) {
 
 void TestBaseScene::onSwitchRole(TXLiteAVError errCode, const char * errMsg){
     if (errCode == TXLiteAVError::ERR_NULL){
-        QMessageBox::about(NULL, "SwitchRole Success", "Switch Role Success");
+        QMessageBox::about(NULL, "Successfully", "Role changed successfully.");
     }else{
-        QMessageBox::warning(NULL, "SwitchRole Failed",errMsg);
+        QMessageBox::warning(NULL, "Failed to change the role",errMsg);
     }
 }
 //============= ITRTCCloudCallback end===================//

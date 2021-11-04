@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>424</width>
-    <height>285</height>
+    <width>345</width>
+    <height>262</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,15 +16,15 @@
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_17">
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_3">
        <property name="font">
         <font>
          <pointsize>14</pointsize>
         </font>
        </property>
        <property name="text">
-        <string>分辨率</string>
+        <string>视频帧率</string>
        </property>
       </widget>
      </item>
@@ -51,11 +51,11 @@
         <number>16</number>
        </property>
        <property name="maxVisibleItems">
-        <number>2</number>
+        <number>5</number>
        </property>
        <item>
         <property name="text">
-         <string>120_120   // 宽高比1:1</string>
+         <string>120_120  // 1:1</string>
         </property>
        </item>
        <item>
@@ -75,7 +75,7 @@
        </item>
        <item>
         <property name="text">
-         <string>160_120   // 宽高比4:3</string>
+         <string>160_120  // 4:3</string>
         </property>
        </item>
        <item>
@@ -115,7 +115,7 @@
        </item>
        <item>
         <property name="text">
-         <string>160_90     // 宽高比16:9</string>
+         <string>160_90   // 16:9</string>
         </property>
        </item>
        <item>
@@ -151,6 +151,28 @@
        <item>
         <property name="text">
          <string>1920_1080</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QComboBox" name="comboBoxVideoFps">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">selection-color: rgb(0, 0, 0);</string>
+       </property>
+       <item>
+        <property name="text">
+         <string>15fps</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>20fps</string>
         </property>
        </item>
       </widget>
@@ -201,78 +223,16 @@
        </item>
       </widget>
      </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="label_3">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_17">
        <property name="font">
         <font>
          <pointsize>14</pointsize>
         </font>
        </property>
        <property name="text">
-        <string>视频帧率</string>
+        <string>分辨率</string>
        </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="QComboBox" name="comboBoxVideoFps">
-       <property name="font">
-        <font>
-         <pointsize>14</pointsize>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">selection-color: rgb(0, 0, 0);</string>
-       </property>
-       <item>
-        <property name="text">
-         <string>15fps</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>20fps</string>
-        </property>
-       </item>
-      </widget>
-     </item>
-     <item row="3" column="0">
-      <widget class="QLabel" name="label_12">
-       <property name="font">
-        <font>
-         <pointsize>14</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>本地填充模式</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="1">
-      <widget class="QComboBox" name="comboBoxVideoFillMode">
-       <property name="font">
-        <font>
-         <pointsize>14</pointsize>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">selection-color: rgb(0, 0, 0);</string>
-       </property>
-       <property name="currentIndex">
-        <number>0</number>
-       </property>
-       <property name="maxVisibleItems">
-        <number>2</number>
-       </property>
-       <item>
-        <property name="text">
-         <string>FIt(长边对齐)</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>FIll(铺满屏幕)</string>
-        </property>
-       </item>
       </widget>
      </item>
     </layout>

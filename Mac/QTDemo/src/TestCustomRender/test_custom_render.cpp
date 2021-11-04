@@ -1,7 +1,7 @@
 #include "test_custom_render.h"
 #include "room_info_holder.h"
 TestCustomRender::TestCustomRender(QWidget *parent)
-    :QDialog(parent)
+    :BaseDialog(parent)
     , ui_test_custom_render_(new Ui::TestCustomRenderDialog) {
     ui_test_custom_render_->setupUi(this);
     setWindowFlags(windowFlags()&~Qt::WindowContextHelpButtonHint);
@@ -58,15 +58,17 @@ void TestCustomRender::onRenderVideoFrame(const char *userId, trtc::TRTCVideoStr
 
 void TestCustomRender::closeEvent(QCloseEvent* event){
     stopRender();
+    BaseDialog::closeEvent(event);
 }
 
-void TestCustomRender::showEvent(QShowEvent *){
+void TestCustomRender::showEvent(QShowEvent* event){
     refrshUsers();
+    BaseDialog::showEvent(event);
 }
 
 void TestCustomRender::on_btnStartCustomRender_clicked(){
     if(started_custom_render){
-        stopRender();;
+        stopRender();
         view_resized_ = false;
     }else{
         current_render_user_id = ui_test_custom_render_->combUserList->currentText().toStdString();
@@ -88,7 +90,6 @@ void TestCustomRender::refrshUsers()
 void TestCustomRender::initViews()
 {
     refrshUsers();
-
     gl_yuv_widget_ = new GLYuvWidget(ui_test_custom_render_->customRenderVideoPreview);
     gl_yuv_widget_->setHidden(true);
 }
@@ -107,10 +108,12 @@ void TestCustomRender::adapterRenderViewSize(int width,int height){
     int preview_view_width = ui_test_custom_render_->customRenderVideoPreview->width();
     int preview_view_height = ui_test_custom_render_->customRenderVideoPreview->height();
     if(width > preview_view_width){
+        gl_yuv_height_ = preview_view_width * gl_yuv_height_ / gl_yuv_width_;
         gl_yuv_width_ = preview_view_width;
     }
 
     if(height >preview_view_height){
+        gl_yuv_width_ = gl_yuv_width_ * preview_view_height / gl_yuv_height_;
         gl_yuv_height_ = preview_view_height;
     }
 
@@ -129,11 +132,9 @@ void TestCustomRender::startRender()
     }else{
         startRemoteVideoRender(current_render_user_id);
     }
-
     gl_yuv_widget_->setHidden(false);
-
-    ui_test_custom_render_->btnStartCustomRender->setText(QString::fromLocal8Bit("结束自定义视频渲染"));
     started_custom_render = true;
+    updateDynamicTextUI();
 }
 
 void TestCustomRender::stopRender()
@@ -144,10 +145,9 @@ void TestCustomRender::stopRender()
         } else {
             stopRemoteVideoRender(current_render_user_id);
         }
-
         gl_yuv_widget_->setHidden(true);
-        ui_test_custom_render_->btnStartCustomRender->setText(QString::fromLocal8Bit("开始自定义视频渲染"));
         started_custom_render = false;
+        updateDynamicTextUI();
     }
 }
 
@@ -162,3 +162,14 @@ void TestCustomRender::destroyCustomRender()
     }
 }
 
+void TestCustomRender::updateDynamicTextUI() {
+    if (started_custom_render) {
+        ui_test_custom_render_->btnStartCustomRender->setText(tr("结束自定义视频渲染"));
+    } else {
+        ui_test_custom_render_->btnStartCustomRender->setText(tr("开始自定义视频渲染"));
+    }
+}
+
+void TestCustomRender::retranslateUi() {
+    ui_test_custom_render_->retranslateUi(this);
+}

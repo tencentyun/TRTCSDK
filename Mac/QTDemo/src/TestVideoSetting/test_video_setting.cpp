@@ -1,7 +1,7 @@
 #include "test_video_setting.h"
 
 TestVideoSetting::TestVideoSetting(QWidget *parent):
-    QDialog(parent),
+    BaseDialog(parent),
     ui_video_setting_(new Ui::TestVideoSettingDialog)
 {
     ui_video_setting_->setupUi(this);
@@ -24,7 +24,7 @@ void TestVideoSetting::updateVideoEncoderParams()
     uint32_t bitrate = (uint32_t)(ui_video_setting_->horizontalSliderVideoBitrate->value());
     bool enable_adjust_resolution = ui_video_setting_->checkBoxEnableAdjustRes->isChecked();
 
-    QString bitrate_text(QString::fromUtf8("上行码率 "));
+    QString bitrate_text(tr("上行码率 "));
     bitrate_text = bitrate_text.append(QString::number(bitrate));
     bitrate_text = bitrate_text.append(QString::fromUtf8("kbps: "));
     ui_video_setting_->labelBitrateDesc->setText(bitrate_text);
@@ -36,15 +36,6 @@ void TestVideoSetting::updateVideoEncoderParams()
     param.videoFps = video_fps;
     param.enableAdjustRes = enable_adjust_resolution;
     trtccloud_->setVideoEncoderParam(param);
-}
-
-void TestVideoSetting::updateLocalRenderParams()
-{
-    trtc::TRTCVideoFillMode video_fill_mode = (ui_video_setting_->comboBoxVideoFillMode->currentIndex() == 0)? trtc::TRTCVideoFillMode::TRTCVideoFillMode_Fit : trtc::TRTCVideoFillMode::TRTCVideoFillMode_Fill;
-
-    trtc::TRTCRenderParams params;
-    params.fillMode = video_fill_mode;
-    trtccloud_->setLocalRenderParams(params);
 }
 
 void TestVideoSetting::on_comboBoxVideoResolution_currentIndexChanged(int index)
@@ -60,11 +51,6 @@ void TestVideoSetting::on_comboBoxResolutionMode_currentIndexChanged(int index)
 void TestVideoSetting::on_comboBoxVideoFps_currentIndexChanged(int index)
 {
     updateVideoEncoderParams();
-}
-
-void TestVideoSetting::on_comboBoxVideoFillMode_currentIndexChanged(int index)
-{
-    updateLocalRenderParams();
 }
 
 void TestVideoSetting::on_horizontalSliderVideoBitrate_valueChanged(int value)
@@ -107,4 +93,12 @@ void TestVideoSetting::setupVideoResolutionMap()
     video_resolution_hashmap_.insert(17, trtc::TRTCVideoResolution_960_540);
     video_resolution_hashmap_.insert(18, trtc::TRTCVideoResolution_1280_720);
     video_resolution_hashmap_.insert(19, trtc::TRTCVideoResolution_1920_1080);
+}
+
+void TestVideoSetting::retranslateUi() {
+    ui_video_setting_->retranslateUi(this);
+}
+
+void TestVideoSetting::resetUI() {
+    ui_video_setting_->checkBoxEnableEncSmallVideoStream->setChecked(false);
 }

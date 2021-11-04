@@ -81,6 +81,9 @@
        <property name="styleSheet">
         <string notr="true"/>
        </property>
+       <property name="currentText">
+        <string notr="true"/>
+       </property>
       </widget>
      </item>
      <item>

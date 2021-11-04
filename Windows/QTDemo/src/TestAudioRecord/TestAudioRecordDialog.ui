@@ -41,6 +41,9 @@
          <pointsize>14</pointsize>
         </font>
        </property>
+       <property name="text">
+        <string notr="true"/>
+       </property>
       </widget>
      </item>
      <item>

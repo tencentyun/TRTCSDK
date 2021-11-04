@@ -1,23 +1,18 @@
 #include "test_screen_share_setting.h"
 
 TestScreenShareSetting::TestScreenShareSetting(std::shared_ptr<TestUserVideoGroup> testUserVideoGroup,QWidget*parent) :
-    QDialog(parent)
-  ,ui_screen_share_setting_(new Ui::TestScreenShareSettingDialog)
-  ,test_user_video_group_(testUserVideoGroup){
+    BaseDialog(parent)
+  , ui_screen_share_setting_(new Ui::TestScreenShareSettingDialog)
+  , test_user_video_group_(testUserVideoGroup)
+  , test_screensharing_withscreen(testUserVideoGroup)
+  , test_screensharing_withwindow(testUserVideoGroup) {
     ui_screen_share_setting_->setupUi(this);
     setWindowFlags(windowFlags()&~Qt::WindowContextHelpButtonHint);
 }
 
 TestScreenShareSetting::~TestScreenShareSetting(){
-    if(test_screensharing_withwindow != nullptr){
-        delete test_screensharing_withwindow;
-        test_screensharing_withwindow = nullptr;
-    }
-
-    if (test_screensharing_withscreen != nullptr){
-        delete test_screensharing_withscreen;
-        test_screensharing_withscreen = nullptr;
-    }
+    test_screensharing_withwindow.close();
+    test_screensharing_withscreen.close();
 }
 
 void TestScreenShareSetting::setSubStreamMixVolume(int volume) {
@@ -46,17 +41,15 @@ void TestScreenShareSetting::updateScreenSharingParams() {
     property.enableHighLight = enable_highlight_;
     property.enableHighPerformance = enable_high_performance;
 
-    if (test_screensharing_withscreen != nullptr
-        && !test_screensharing_withscreen->isHidden())
-        test_screensharing_withscreen->updateScreenSharingParams(
+    if (!test_screensharing_withscreen.isHidden())
+        test_screensharing_withscreen.updateScreenSharingParams(
             property
             , video_enc_param
             , capture_rect_
             , video_stream_type
         );
-    if (test_screensharing_withwindow != nullptr
-        && !test_screensharing_withwindow->isHidden())
-        test_screensharing_withwindow->updataScreenSharingParams(
+    if (!test_screensharing_withwindow.isHidden())
+        test_screensharing_withwindow.updateScreenSharingParams(
             property
             , video_enc_param
             , capture_rect_
@@ -103,17 +96,9 @@ trtc::TRTCVideoResolution TestScreenShareSetting::indexConvertToVideoResolution(
 
 void TestScreenShareSetting::closeEvent(QCloseEvent *event)
 {
-    if (test_screensharing_withscreen != nullptr) {
-        test_screensharing_withscreen->hide();
-        delete test_screensharing_withscreen;
-        test_screensharing_withscreen = nullptr;
-    }
-
-    if (test_screensharing_withwindow != nullptr) {
-        test_screensharing_withwindow->hide();
-        delete test_screensharing_withwindow;
-        test_screensharing_withwindow = nullptr;
-    }
+    test_screensharing_withscreen.close();
+    test_screensharing_withwindow.close();
+    BaseDialog::closeEvent(event);
 }
 
 void TestScreenShareSetting::on_btUpdateScreenSharing_clicked(){
@@ -126,11 +111,7 @@ void TestScreenShareSetting::on_sliderScreenCaptureMixVolume_valueChanged(int va
 }
 
 void TestScreenShareSetting::on_btSharingAllScreen_clicked(){
-    if (test_screensharing_withscreen != nullptr) {
-        test_screensharing_withscreen->hide();
-        delete test_screensharing_withscreen;
-        test_screensharing_withscreen = nullptr;
-    }
+    test_screensharing_withscreen.close();
 
     configViewParams();
 
@@ -147,18 +128,13 @@ void TestScreenShareSetting::on_btSharingAllScreen_clicked(){
     property.enableHighLight = enable_highlight_;
     property.enableHighPerformance = enable_high_performance;
 
-
-    test_screensharing_withscreen = new TestScreenShareSelectScreen(test_user_video_group_,property,param,capture_rect_,this,video_stream_type);
-    test_screensharing_withscreen->show();
-    test_screensharing_withscreen->raise();
+    test_screensharing_withscreen.init(property, param, capture_rect_, video_stream_type);
+    test_screensharing_withscreen.show();
+    test_screensharing_withscreen.raise();
 }
 
 void TestScreenShareSetting::on_btSharingSelectedWindow_clicked(){
-    if (test_screensharing_withwindow != nullptr) {
-        test_screensharing_withwindow->hide();
-        delete test_screensharing_withwindow;
-        test_screensharing_withwindow = nullptr;
-    }
+    test_screensharing_withwindow.close();
 
     configViewParams();
 
@@ -175,8 +151,11 @@ void TestScreenShareSetting::on_btSharingSelectedWindow_clicked(){
     property.enableHighLight = enable_highlight_;
     property.enableHighPerformance = enable_high_performance;
 
+    test_screensharing_withwindow.init(property, param, capture_rect_, video_stream_type);
+    test_screensharing_withwindow.show();
+    test_screensharing_withwindow.raise();
+}
 
-    test_screensharing_withwindow = new TestScreenShareSelectWindow(test_user_video_group_,property, param, capture_rect_,this, video_stream_type);
-    test_screensharing_withwindow->show();
-    test_screensharing_withwindow->raise();
+void TestScreenShareSetting::retranslateUi() {
+    ui_screen_share_setting_->retranslateUi(this);
 }

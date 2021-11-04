@@ -50,8 +50,8 @@ private:
     void onError(TXLiteAVError errCode, const char *errMsg, void *extraInfo) override;
     void onWarning(TXLiteAVWarning warningCode, const char *warningMsg, void *extraInfo) override;
 
-    void onEnterRoom(int result) override;  //只用于更新UI
-    void onExitRoom(int reason) override;   //只用于更新UI
+    void onEnterRoom(int result) override;  //For updating UI only
+    void onExitRoom(int reason) override;   //For updating UI only
     //============= ITRTCCloudCallback end===================//
 
 private slots :
@@ -67,6 +67,7 @@ private slots :
 
     void on_appSceneComboBox_currentIndexChanged(int index);
     void on_userRoleComB_currentIndexChanged(int index);
+    void on_languageComboBox_currentIndexChanged(int index);
 
     void on_cdnPublishBt_clicked();
     void on_mixStreamPublish_clicked();
@@ -104,17 +105,15 @@ private slots :
     void onEnterSubRoomResult(bool result);
     void onExitSubRoom();
 public:
-
     void closeEvent(QCloseEvent *event) override;
-
+    void changeEvent(QEvent* event);
 private:
-
-    // update main window button enable status
     void updateModuleButtonStatus(bool isEnteredRoom);
     void updateModuleDialogStatus(bool isEnteredRoom);
     trtc::TRTCAppScene getCurrentSelectedAppScene();
     trtc::TRTCRoleType getCurrentSelectedRoleType();
-
+    void changeLanguage(int language);
+    void updateDynamicTextUI();
 private:
     std::unique_ptr<Ui::MainWindow> ui_mainwindow_;
 
@@ -160,8 +159,8 @@ private:
 
     TestAudioRecord test_audio_record_;
 
-    std::vector<QWidget*> module_widgets_;
-    std::vector<QWidget*> enter_room_based_widgets_;
+    std::vector<BaseDialog*> module_widgets_;
+    std::vector<BaseDialog*> enter_room_based_widgets_;
     bool room_entered_ = false;
     bool subroom_entered_ = false;
     bool cross_room_pk_entered_ = false;

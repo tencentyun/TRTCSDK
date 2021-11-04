@@ -5,13 +5,22 @@
  * -
  * - 音频采集 : 参考startCustomAudioData()/stopCustomAudioData()
  * - 视频采集 : 参考startCustomVideoData()/stopCustomVideoData()
- * - 具体API说明可参见https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__ITRTCCloud__cplusplus.html#aeeff994b8a298fa4948a11225312f629
+ * - 具体API说明可参见：https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__ITRTCCloud__cplusplus.html#aeeff994b8a298fa4948a11225312f629
+ */
+
+/**
+ * Custom capturing, i.e., capturing custom audio/video to send to the cloud
+ *
+ * - The key is using sendCustomVideoData()/sendCustomAudioData() to keep feeding video/audio captured by yourself into the SDK.
+ * -
+ * - Audio capturing:  startCustomAudioData()/stopCustomAudioData()
+ * - Video capturing:  startCustomVideoData()/stopCustomVideoData()
+ * - For details about the APIs, see: https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__ITRTCCloud__cplusplus.html#aeeff994b8a298fa4948a11225312f629
  */
 
 #ifndef TESTCUSTOMCAPTURE_H
 #define TESTCUSTOMCAPTURE_H
 
-#include <QDialog>
 #include <QFile>
 #include <QDir>
 #include <functional>
@@ -20,10 +29,10 @@
 #include "test_user_video_group.h"
 #include "ui_TestCustomCaptureDialog.h"
 #include "gl_yuv_widget.h"
-
+#include "base_dialog.h"
 
 class CustomCaptureWorker;
-class TestCustomCapture :public QDialog
+class TestCustomCapture :public BaseDialog
 {
     Q_OBJECT
 public:
@@ -46,7 +55,8 @@ public:
 
 private:
     void destroyCustomCapture();
-
+    void retranslateUi() override;
+    void updateDynamicTextUI() override;
 private:
     std::shared_ptr<TestUserVideoGroup> test_user_video_group_ = nullptr;
     std::unique_ptr<Ui::TestCustomCaptureDialog> ui_test_custom_capture_;

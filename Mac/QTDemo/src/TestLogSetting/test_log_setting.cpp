@@ -7,7 +7,7 @@
 #include "ITRTCCloud.h"
 
 TestLogSetting::TestLogSetting(QWidget *parent) :
-    QDialog(parent),
+    BaseDialog(parent),
     ui_test_log_setting_(new Ui::TestLogSettingDialog)
 {
     ui_test_log_setting_->setupUi(this);
@@ -72,4 +72,8 @@ void TestLogSetting::on_selectLogOutputDirBtn_clicked(){
 
 void TestLogSetting::on_setConsoleEnabledCb_clicked(bool checked){
     setConsoleEnabled();
+}
+
+void TestLogSetting::retranslateUi() {
+    ui_test_log_setting_->retranslateUi(this);
 }

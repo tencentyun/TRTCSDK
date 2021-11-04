@@ -1,13 +1,12 @@
-#include "test_user_video_item.h"
+﻿#include "test_user_video_item.h"
 
 TestUserVideoItem::TestUserVideoItem(QWidget * parent,trtc::ITRTCCloud* cloud, int roomid, std::string userid, TEST_VIDEO_ITEM::ViewItemType type)
     :QWidget(parent), ui_video_item_(new Ui::TestUserVideoItem), viewtype_(type) {
-    ui_video_item_->setupUi(this);
-    setWindowFlags(windowFlags()&~Qt::WindowContextHelpButtonHint);
     this->room_id_ = roomid;
     this->user_id_ = userid;
     this->trtccloud_ = cloud;
-
+    ui_video_item_->setupUi(this);
+    setWindowFlags(windowFlags()&~Qt::WindowContextHelpButtonHint);
     initViews();
     if(this->trtccloud_ != nullptr) {
         setRenderParams();
@@ -66,27 +65,28 @@ void TestUserVideoItem::setRemoteVideoStreamType() {
     trtccloud_->setRemoteVideoStreamType(user_id_.c_str(), video_stream_type_);
 }
 
+void TestUserVideoItem::changeEvent(QEvent* event) {
+    if (QEvent::LanguageChange == event->type()) {
+        ui_video_item_->retranslateUi(this);
+        updateDynamicTextUI();
+    }
+    QWidget::changeEvent(event);
+}
 
 void TestUserVideoItem::initViews() {
-    ui_video_item_->userInfoLabel->setText(tr("roomid:%1 / userid:%2").arg(room_id_).arg(user_id_.c_str()));
-    // 无法解决闪烁问题
-  //    setAttribute(Qt::WA_PaintOnScreen);
-//    setAttribute(Qt::WA_StaticContents);
-//    setAttribute(Qt::WA_NoSystemBackground);
-//    setAttribute(Qt::WA_OpaquePaintEvent);
-//    setAttribute(Qt::WA_DontCreateNativeAncestors);
-//    setAttribute(Qt::WA_NativeWindow);
-
+    updateDynamicTextUI();
     switch (viewtype_)
     {
     case TEST_VIDEO_ITEM::LocalView:
+        audio_available_ = true;
+        video_available_ = true;
         ui_video_item_->preSmallVideoBt->setHidden(true);
         break;
     case TEST_VIDEO_ITEM::RemoteView:
         ui_video_item_->audioMuteBt->setEnabled(false);
         ui_video_item_->videoMuteBt->setEnabled(false);
-        updateAVMuteView(true,TEST_VIDEO_ITEM::MuteVideo);
-        updateAVMuteView(true,TEST_VIDEO_ITEM::MuteAudio);
+        updateAVMuteView(TEST_VIDEO_ITEM::MuteVideo);
+        updateAVMuteView(TEST_VIDEO_ITEM::MuteAudio);
         break;
     case TEST_VIDEO_ITEM::ScreenSharingView:
         break;
@@ -95,45 +95,50 @@ void TestUserVideoItem::initViews() {
     }
 }
 
-void TestUserVideoItem::setVideoMuteEnabled(bool enabled)
-{
-    ui_video_item_->videoMuteBt->setEnabled(enabled);
-}
-
-void TestUserVideoItem::setAudioMuteEnabled(bool enabled)
-{
-    ui_video_item_->audioMuteBt->setEnabled(enabled);
-}
-
-void TestUserVideoItem::updateAVMuteItems(bool mute, TEST_VIDEO_ITEM::MuteAllType muteType) {
+void TestUserVideoItem::updateAVMuteStatus(bool mute, TEST_VIDEO_ITEM::MuteAllType muteType) {
     if(muteType == TEST_VIDEO_ITEM::MuteAudio){
-        if(!ui_video_item_->audioMuteBt->isEnabled()){
-            return;
-        }
-
         audio_mute_ = mute;
     }
 
     if(muteType == TEST_VIDEO_ITEM::MuteVideo){
-        if(!ui_video_item_->videoMuteBt->isEnabled()){
-            return;
-        }
         video_mute_ = mute;
     }
 
-    updateAVMuteView(mute,muteType);
+    updateAVMuteView(muteType);
+}
+
+void TestUserVideoItem::updateAVAvailableStatus(bool available, bool mute_all_remote, TEST_VIDEO_ITEM::MuteAllType muteType) {
+    if (muteType == TEST_VIDEO_ITEM::MuteAudio) {
+        if (mute_all_remote) {
+            audio_mute_ = true;
+        }
+        ui_video_item_->audioMuteBt->setEnabled(true);
+        audio_available_ = available;
+        updateAVMuteView(TEST_VIDEO_ITEM::MuteAudio);
+        ui_video_item_->audioMuteBt->setEnabled(available);
+    }
+
+    if (muteType == TEST_VIDEO_ITEM::MuteVideo) {
+        if (mute_all_remote) {
+            video_mute_ = true;
+        }
+        ui_video_item_->videoMuteBt->setEnabled(true);
+        video_available_ = available;
+        updateAVMuteView(TEST_VIDEO_ITEM::MuteVideo);
+        ui_video_item_->videoMuteBt->setEnabled(available);
+    }
 }
 
 void TestUserVideoItem::on_audioMuteBt_clicked() {
-    muteAudio(!audio_mute_);
-    updateAVMuteView(!audio_mute_, TEST_VIDEO_ITEM::MuteAudio);
     audio_mute_ = !audio_mute_;
+    muteAudio(audio_mute_);
+    updateAVMuteView(TEST_VIDEO_ITEM::MuteAudio);
 }
 
 void TestUserVideoItem::on_videoMuteBt_clicked() {
-    muteVideo(!video_mute_);
-    updateAVMuteView(!video_mute_, TEST_VIDEO_ITEM::MuteVideo);
     video_mute_ = !video_mute_;
+    muteVideo(video_mute_);
+    updateAVMuteView(TEST_VIDEO_ITEM::MuteVideo);
 }
 
 void TestUserVideoItem::on_fitScreenBt_clicked() {
@@ -182,19 +187,19 @@ void TestUserVideoItem::on_roateBt_clicked() {
     setRenderParams();
 }
 
-void TestUserVideoItem::updateAVMuteView(bool mute, TEST_VIDEO_ITEM::MuteAllType muteType){
+void TestUserVideoItem::updateAVMuteView(TEST_VIDEO_ITEM::MuteAllType muteType){
     if (muteType == TEST_VIDEO_ITEM::MuteAudio) {
-        QString audio_mutebt_stylesheet = mute
+        QString audio_mutebt_stylesheet = !audio_available_ || audio_mute_
             ? "QPushButton{border-image: url(:/switch/image/switch/audio_close.png);}"
             : "QPushButton{border-image: url(:/switch/image/switch/audio_normal.png);}";
         ui_video_item_->audioMuteBt->setStyleSheet(audio_mutebt_stylesheet);
 
-        if (mute) {
+        if (audio_mute_) {
             ui_video_item_->volumePb->setValue(0);
         }
 
     } else if (muteType == TEST_VIDEO_ITEM::MuteVideo) {
-        QString video_mutebt_stylesheet = mute
+        QString video_mutebt_stylesheet = !video_available_ || video_mute_
             ? "QPushButton{border-image: url(:/switch/image/switch/video_close.png);}"
             : "QPushButton{border-image: url(:/switch/image/switch/video_normal.png);}";
         ui_video_item_->videoMuteBt->setStyleSheet(video_mutebt_stylesheet);
@@ -220,7 +225,19 @@ int TestUserVideoItem::getRoomId() {
     return room_id_;
 }
 
+bool TestUserVideoItem::getAudioMuteStatus() {
+    return audio_mute_;
+}
+
+bool TestUserVideoItem::getVideoMuteStatus() {
+    return video_mute_;
+}
+
 TEST_VIDEO_ITEM::ViewItemType TestUserVideoItem::getViewType()
 {
     return viewtype_;
+}
+
+void TestUserVideoItem::updateDynamicTextUI() {
+    ui_video_item_->userInfoLabel->setText(QString("roomid: %1 / userid: %2").arg(room_id_).arg(user_id_.c_str()));
 }

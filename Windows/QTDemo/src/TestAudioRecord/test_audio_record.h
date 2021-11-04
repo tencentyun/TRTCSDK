@@ -7,13 +7,22 @@
  * - startAudioRecording();
  * - stopAudioRecording();
  * - handleWithRecordingResult(int result);
+ */
+
+/**
+ * Audio recording
+ *
+ * - The audio recording feature records all audio during a call, including local audio, remote audio, and background music, into a file.  This API works regardless of whether you have entered the room.  When exitRoom is called, audio recording will stop automatically.
  * -
-*/
+ * - For the specific method, please refer to:
+ * - startAudioRecording()
+ * - stopAudioRecording()
+ * - handleWithRecordingResult(int result)
+ */
 
 #ifndef TESTAUDIORECORD_H
 #define TESTAUDIORECORD_H
 
-#include <QDialog>
 #include <QDir>
 #include <QString>
 #include <QFileDialog>
@@ -27,10 +36,10 @@
 #include "ITRTCCloud.h"
 #include "ui_TestAudioRecordDialog.h"
 #include "trtc_cloud_callback_default_impl.h"
-
+#include "base_dialog.h"
 
 class TestAudioRecord:
-        public QDialog,
+        public BaseDialog,
         public TrtcCloudCallbackDefaultImpl
 {
     Q_OBJECT
@@ -60,9 +69,9 @@ private:
     //UI-related
     QString formatTimeString(qint64 timeSeconds);
     void showPathInGraphicalShell(QWidget *parent, const QString &path);
-
+    void retranslateUi() override;
+    void updateDynamicTextUI() override;
 private:
-
     bool is_recording_ = false;
     uint64_t current_recording_time_seconds_ = 0;
     uint64_t current_playback_position_seconds_ = 0;

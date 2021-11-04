@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>641</width>
-    <height>469</height>
+    <height>494</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -91,7 +91,7 @@
         </font>
        </property>
        <property name="text">
-        <string>0</string>
+        <string notr="true">0</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -203,7 +203,7 @@
       </font>
      </property>
      <property name="value">
-      <number>1</number>
+      <number>0</number>
      </property>
     </widget>
    </item>

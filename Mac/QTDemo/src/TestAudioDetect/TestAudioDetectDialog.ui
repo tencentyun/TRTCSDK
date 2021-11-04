@@ -64,6 +64,9 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+       <property name="currentText">
+        <string notr="true"/>
+       </property>
        <property name="currentIndex">
         <number>-1</number>
        </property>
@@ -117,7 +120,7 @@
         <enum>Qt::NoFocus</enum>
        </property>
        <property name="text">
-        <string>开始测试</string>
+        <string/>
        </property>
        <property name="checkable">
         <bool>true</bool>
@@ -187,6 +190,9 @@
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
+       </property>
+       <property name="currentText">
+        <string notr="true"/>
        </property>
        <property name="currentIndex">
         <number>-1</number>

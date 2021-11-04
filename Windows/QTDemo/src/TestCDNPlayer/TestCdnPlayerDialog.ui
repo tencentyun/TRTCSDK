@@ -43,14 +43,14 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEtDomain">
+      <widget class="QLabel" name="domain_label">
        <property name="font">
         <font>
          <pointsize>14</pointsize>
         </font>
        </property>
-       <property name="placeholderText">
-        <string>请输入播放域名</string>
+       <property name="text">
+        <string notr="true">DOMAIN_URL</string>
        </property>
       </widget>
      </item>
@@ -73,8 +73,11 @@
          <pointsize>14</pointsize>
         </font>
        </property>
+       <property name="text">
+        <string notr="true"/>
+       </property>
        <property name="placeholderText">
-        <string>streamid</string>
+        <string>stream_id</string>
        </property>
       </widget>
      </item>

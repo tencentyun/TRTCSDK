@@ -1,7 +1,7 @@
 #include "test_device_manager.h"
 
 TestDeviceManager::TestDeviceManager(QWidget *parent) :
-    QDialog(parent),
+    BaseDialog(parent),
     ui_device_manager_(new Ui::TestDeviceMangerDialog)
 {
     ui_device_manager_->setupUi(this);
@@ -14,24 +14,12 @@ TestDeviceManager::~TestDeviceManager() {
     getTRTCShareInstance()->removeCallback(this);
 }
 
-//============= ITRTCCloudCallback start =================//
-void TestDeviceManager::onDeviceChange(const char *deviceId, trtc::TRTCDeviceType type, trtc::TRTCDeviceState state)
-{
-    if(type == trtc::TXMediaDeviceType::TXMediaDeviceTypeMic) {
-        refreshMicDevices();
-    } else if(type == trtc::TXMediaDeviceType::TXMediaDeviceTypeCamera) {
-        refreshCameraDevices();
-    } else if(type == trtc::TXMediaDeviceType::TXMediaDeviceTypeSpeaker) {
-        refreshSpeakerDevices();
-    }
-}
-
 void TestDeviceManager::showEvent(QShowEvent *event)
 {
     device_info_ready_ = false;
     setupDeviceRelatedElements();
+    BaseDialog::showEvent(event);
 }
-//============= ITRTCCloudCallback end ===================//
 
 void TestDeviceManager::setupDeviceRelatedElements()
 {
@@ -143,4 +131,8 @@ void TestDeviceManager::on_loudspeakerChooseComboBox_currentIndexChanged(int ind
         const DeviceInfoItem &item = qvector_device_info_loudspeaker_.at(index);
         tx_device_manager_->setCurrentDevice(item.device_type_, item.device_id_.data());
     }
+}
+
+void TestDeviceManager::retranslateUi() {
+    ui_device_manager_->retranslateUi(this);
 }

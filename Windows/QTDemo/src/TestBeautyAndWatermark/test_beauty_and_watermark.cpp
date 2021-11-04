@@ -1,7 +1,7 @@
 #include "test_beauty_and_watermark.h"
 
 TestBeautyAndWaterMark::TestBeautyAndWaterMark(QWidget *parent):
-    QDialog(parent),
+    BaseDialog(parent),
     ui_beauty_and_watermark_(new Ui::TestBeautyAndWaterMarkDialog)
 {
     ui_beauty_and_watermark_->setupUi(this);
@@ -50,6 +50,7 @@ void TestBeautyAndWaterMark::showEvent(QShowEvent *event)
     ui_beauty_and_watermark_->horizontalSliderruddinessLevel->setValue(current_ruddiness_level_);
     ui_beauty_and_watermark_->horizontalSliderWhitenessLevel->setValue(current_whiteness_level_);
     updateBeautyStyle();
+    BaseDialog::showEvent(event);
 }
 
 void TestBeautyAndWaterMark::updateBeautyStyle()
@@ -101,4 +102,6 @@ void TestBeautyAndWaterMark::on_checkBoxWaterMark_stateChanged(int check_state)
     }
 }
 
-
+void TestBeautyAndWaterMark::retranslateUi() {
+    ui_beauty_and_watermark_->retranslateUi(this);
+}

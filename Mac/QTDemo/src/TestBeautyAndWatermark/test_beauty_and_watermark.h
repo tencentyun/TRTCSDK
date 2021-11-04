@@ -9,19 +9,29 @@
  * - 设置水印后，远端用户看到你的画面上会叠加水印浮层，注意水印只支持主路视频流
  */
 
+/**
+ * Beauty filters and watermarks
+ *
+ * - For beauty filters, please refer to:updateBeautyStyle:
+ * - Set the strength of beauty, skin brightening, and rosy skin effects.
+ * - The SDK has two built-in skin smoothing algorithms. One is "smooth", which features more obvious smoothing effect and is designed for showrooms.  The other is "natural", which retains more facial details and is more natural.
+ * -
+ * - For watermarks, please refer to:  setWatermark()/unsetWatermark()
+ * - After you set a watermark, a watermark image will be overlaid on the video seen by remote users. Note that you can add watermarks only to primary-stream videos.
+ */
 
 #ifndef TESTBEAUTYANDWATERMARK_H
 #define TESTBEAUTYANDWATERMARK_H
 
-#include<QDialog>
 #include<QTemporaryDir>
 #include<QPixmap>
 
 #include "ITRTCCloud.h"
 #include "ui_TestBeautyAndWaterMarkDialog.h"
+#include "base_dialog.h"
 
 class TestBeautyAndWaterMark:
-        public QDialog
+        public BaseDialog
 {
     Q_OBJECT
 public:
@@ -48,8 +58,9 @@ public:
     void showEvent(QShowEvent *event) override;
 
 private:
-    void initUIStatus();
+    void retranslateUi() override;
 
+private:
     std::unique_ptr<Ui::TestBeautyAndWaterMarkDialog> ui_beauty_and_watermark_;
     trtc::ITRTCCloud *trtccloud;
 

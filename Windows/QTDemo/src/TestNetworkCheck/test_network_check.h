@@ -8,20 +8,27 @@
  * - 测速回调： onSpeedTest()
  */
 
+/**
+ * Network speed testing
+ *
+ * - Start network speed testing, which should be avoided during video calls to ensure call quality
+ * - The test result can be used to optimize the SDK's server selection policy, so you are advised to run the test before the first call, which will help the SDK select the best server.  In addition, if the test result is not satisfactory, you can show a UI message asking users to change to a better network.
+ *
+ * - For the specific method, please refer to:  startSpeedTest()/stopSpeedTest()
+ * - Callback: onSpeedTest()
+ */
+
 #ifndef TESTNETWORKCHECK_H
 #define TESTNETWORKCHECK_H
 
-#include <QDialog>
 #include <stdlib.h>
 
+#include "base_dialog.h"
 #include "ui_TestNetworkCheckDialog.h"
 #include "ui_MainWindow.h"
 #include "trtc_cloud_callback_default_impl.h"
-/**
- * @brief Log 相关接口函数示例
- */
 
-class TestNetworkCheck:public QDialog, public TrtcCloudCallbackDefaultImpl
+class TestNetworkCheck:public BaseDialog, public TrtcCloudCallbackDefaultImpl
 {
     Q_OBJECT
 public:
@@ -46,6 +53,8 @@ public:
     void closeEvent(QCloseEvent *event) override;
 
 private:
+    void retranslateUi() override;
+    void updateDynamicTextUI() override;
     std::unique_ptr<Ui::TestNetworkCheckDialog> ui_test_network_check_;
     bool is_network_checking = false;
 };

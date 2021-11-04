@@ -15,16 +15,33 @@
  * - setVoiceCaptureVolume  :设置麦克风采集人声的音量
  */
 
+/**
+ * Background music and reverb effects
+ *
+ * In this module, you can use the methods below to set background music and reverb effects for anchors after room entry.
+ * - startPlayBgmMusic: start playing background music
+ * - stopPlayBgmMusic: stop playing background music
+ * - pausePlayBgmMusic: pause background music
+ * - resumePlayBgmMusic: resume background music
+ * - setVoiceReverbType: set reverb effects (karaoke, room, hall, deep, resonant, etc.)
+ * - setMusicPublishVolume: set the volume of the anchor’s background music heard by remote users
+ * - setMusicPlayoutVolume: set the volume of background music heard by the anchor
+ * - setAllMusicVolume: set the global (local and remote) playback volume of background music
+ * - setMusicPitch: change the pitch of background music
+ * - setMusicSpeedRate: change the playback speed of background music
+ * - setVoiceCaptureVolume: set the volume of audio captured by the mic
+ */
+
 #ifndef TESTBGMSETTING_H
 #define TESTBGMSETTING_H
 
-#include <QDialog>
 #include <QTemporaryDir>
 
 #include "ITRTCCloud.h"
 #include "ui_TestBGMSettingDialog.h"
+#include "base_dialog.h"
 
-class TestBGMSetting:public QDialog,public trtc::ITXMusicPlayObserver
+class TestBGMSetting:public BaseDialog,public trtc::ITXMusicPlayObserver
 {
     Q_OBJECT
 public:
@@ -89,7 +106,8 @@ public:
 private:
     void changeBgmControlerStatus(bool enable);
     void resetDefaultValue();
-
+    void retranslateUi() override;
+    void updateDynamicTextUI() override;
 private:
      std::unique_ptr<Ui::TestBGMSettingDialog> ui_bgm_setting_;
      trtc::ITXAudioEffectManager* audio_effect_manager_ = nullptr;

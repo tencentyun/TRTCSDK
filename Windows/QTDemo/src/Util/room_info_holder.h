@@ -45,7 +45,7 @@ private:
     std::vector<std::string> room_users_;
     int main_room_id_;
 
-    // coonect other room
+    // Cross-room call
     int other_room_id_;
     std::string other_room_userid_;
 

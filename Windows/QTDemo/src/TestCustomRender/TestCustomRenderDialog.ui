@@ -45,6 +45,9 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+       <property name="currentText">
+        <string notr="true">myself</string>
+       </property>
        <item>
         <property name="text">
          <string>myself</string>

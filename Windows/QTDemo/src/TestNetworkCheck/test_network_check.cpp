@@ -6,7 +6,7 @@
 #include "room_info_holder.h"
 
 TestNetworkCheck::TestNetworkCheck(QWidget *parent) :
-    QDialog(parent),
+    BaseDialog(parent),
     ui_test_network_check_(new Ui::TestNetworkCheckDialog)
 {
     ui_test_network_check_->setupUi(this);
@@ -25,17 +25,26 @@ void TestNetworkCheck::startSpeedTest(std::string& userId){
      * 一旦您的密钥泄露，攻击者就可以计算出正确的 UserSig 来盗用您的腾讯云流量。
      * 正确的做法是将 UserSig 的计算代码和加密密钥放在您的业务服务器上，然后由 App 按需向您的服务器获取实时算出的 UserSig。
      * 由于破解服务器的成本要高于破解客户端 App，所以服务器计算的方案能够更好地保护您的加密密钥。
-     * 文档：https://cloud.tencent.com/document/product/269/32688#Server
+     * 文档：https://cloud.tencent.com/document/product/647/17275#Server
+     */
+
+    /** @note:  Do not use the code below in your commercial application. This is because:
+     * The code may be able to calculate UserSig correctly, but it is only for quick testing of the SDK’s basic features, not for commercial applications.
+     * SECRETKEY in client code can be easily decompiled and reversed, especially on web.
+     * Once your key is disclosed, attackers will be able to steal your Tencent Cloud traffic.
+     * The correct method is to deploy the UserSig calculation code and encryption key on your project server so that your application can request from your server a UserSig that is calculated whenever one is needed.
+     * Given that it is more difficult to hack a server than a client application, server-end calculation can better protect your key.
+     * Documentation:  https://intl.cloud.tencent.com/document/product/647/35166#Server
      */
     getTRTCShareInstance()->startSpeedTest(SDKAppID, userId.c_str(),GenerateTestUserSig::genTestUserSig(userId.c_str(), SDKAppID,SECRETKEY));
-    ui_test_network_check_->startSpeedTest->setText(QString::fromLocal8Bit("停止测试").toUtf8());
     is_network_checking = true;
+    updateDynamicTextUI();
 }
 
 void TestNetworkCheck::stopSpeedTest(){
     getTRTCShareInstance()->stopSpeedTest();
-    ui_test_network_check_->startSpeedTest->setText(QString::fromLocal8Bit("开始测试").toUtf8());
     is_network_checking = false;
+    updateDynamicTextUI();
 }
 
 //============= ITRTCCloudCallback start===================//
@@ -51,8 +60,8 @@ void TestNetworkCheck::onSpeedTest(const trtc::TRTCSpeedTestResult &currentResul
     ui_test_network_check_->resultQtb->append(result);
 
     if(finishedCount == totalCount){
-        ui_test_network_check_->startSpeedTest->setText("开始测试");
         is_network_checking = false;
+        updateDynamicTextUI();
     }
 }
 
@@ -75,4 +84,17 @@ void TestNetworkCheck::on_startSpeedTest_clicked(){
 void TestNetworkCheck::closeEvent(QCloseEvent *event)
 {
     stopSpeedTest();
+    BaseDialog::closeEvent(event);
+}
+
+void TestNetworkCheck::updateDynamicTextUI() {
+    if (is_network_checking) {
+        ui_test_network_check_->startSpeedTest->setText(tr("停止测试"));
+    } else {
+        ui_test_network_check_->startSpeedTest->setText(tr("开始测试"));
+    }
+}
+
+void TestNetworkCheck::retranslateUi() {
+    ui_test_network_check_->retranslateUi(this);
 }

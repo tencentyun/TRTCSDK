@@ -4,25 +4,12 @@
 
 #include "screen_share_selection_item.h"
 
-TestScreenShareSelectScreen::TestScreenShareSelectScreen(
-        std::shared_ptr<TestUserVideoGroup> testUserVideoGroup,
-        trtc::TRTCScreenCaptureProperty captureProperty
-        ,trtc::TRTCVideoEncParam params
-        ,RECT captureRect
-        ,QWidget* parent
-        ,trtc::TRTCVideoStreamType type)
-    :QDialog(parent)
-    ,ui_test_screen_share_select_screen_(new Ui::TestScreenShareSelectScreenDialog)
-    ,test_user_video_group_(testUserVideoGroup){
+TestScreenShareSelectScreen::TestScreenShareSelectScreen(std::shared_ptr<TestUserVideoGroup> testUserVideoGroup ,QWidget* parent)
+    : BaseDialog(parent)
+    , ui_test_screen_share_select_screen_(new Ui::TestScreenShareSelectScreenDialog)
+    , test_user_video_group_(testUserVideoGroup){
     ui_test_screen_share_select_screen_->setupUi(this);
     setWindowFlags(windowFlags()&~Qt::WindowContextHelpButtonHint);
-    enc_param_ = params;
-    stream_type_ = type;
-    capture_property_ = captureProperty;
-    sharing_rect_ = captureRect;
-
-    initScreenSharingScreenSelections();
-
     getTRTCShareInstance()->addCallback(this);
 }
 
@@ -79,6 +66,17 @@ void TestScreenShareSelectScreen::initScreenCaptureSources(){
     screen_capture_list_ = getTRTCShareInstance()->getScreenCaptureSources(thumb_size, icon_size);
 }
 
+void TestScreenShareSelectScreen::init(trtc::TRTCScreenCaptureProperty captureProperty
+    , trtc::TRTCVideoEncParam params
+    , RECT rect
+    , trtc::TRTCVideoStreamType type) {
+    sharing_rect_ = rect;
+    enc_param_ = params;
+    capture_property_ = captureProperty;
+    stream_type_ = type;
+    initScreenSharingScreenSelections();
+}
+
 void TestScreenShareSelectScreen::updateScreenSharingParams(
         trtc::TRTCScreenCaptureProperty captureProperty
         ,trtc::TRTCVideoEncParam params
@@ -87,7 +85,7 @@ void TestScreenShareSelectScreen::updateScreenSharingParams(
     sharing_rect_ = rect;
     enc_param_ = params;
     capture_property_ = captureProperty;
-    if(!started){
+    if(!started_){
         stream_type_ = type;
         return;
     }
@@ -119,32 +117,34 @@ void TestScreenShareSelectScreen::initScreenSharingScreenSelections(){
 }
 
 //============= ITRTCCloudCallback start ===============//
-#ifdef win32
-void TestScreenSharingWithScreen::onScreenCaptureCovered() {
-    QMessageBox::warning(this,"ScreenCaptureCovered","Please Remove Covered Window",QMessageBox::Ok);
+#ifdef _WIN32
+void TestScreenShareSelectScreen::onScreenCaptureCovered() {
+    // QMessageBox::warning(this, "Warning", "The window to be shared is covered, please move the window.", QMessageBox::Ok);
 }
 #endif
 void TestScreenShareSelectScreen::onScreenCaptureStarted() {
-    started = !started;
-    ui_test_screen_share_select_screen_->btnPauseScreenCapture->setEnabled(false);
+    started_ = true;
+    paused_ = false;
+    ui_test_screen_share_select_screen_->btnPauseScreenCapture->setEnabled(true);
     ui_test_screen_share_select_screen_->btnStartScreenCapture->setEnabled(true);
-    ui_test_screen_share_select_screen_->btnStartScreenCapture->setText(QString::fromLocal8Bit("结束分享").toUtf8());
+    updateDynamicTextUI();
 }
 void TestScreenShareSelectScreen::onScreenCapturePaused(int reason) {
-    paused = !paused;
+    paused_ = true;
     ui_test_screen_share_select_screen_->btnPauseScreenCapture->setEnabled(true);
-    ui_test_screen_share_select_screen_->btnPauseScreenCapture->setText(QString::fromLocal8Bit("恢复分享").toUtf8());
+    updateDynamicTextUI();
 }
 void TestScreenShareSelectScreen::onScreenCaptureResumed(int reason) {
-    paused = !paused;
+    paused_ = false;
     ui_test_screen_share_select_screen_->btnPauseScreenCapture->setEnabled(true);
-    ui_test_screen_share_select_screen_->btnPauseScreenCapture->setText(QString::fromLocal8Bit("暂停分享").toUtf8());
+    updateDynamicTextUI();
 }
 void TestScreenShareSelectScreen::onScreenCaptureStoped(int reason) {
-    started = !started;
+    started_ = false;
+    paused_ = false;
     ui_test_screen_share_select_screen_->btnPauseScreenCapture->setEnabled(false);
     ui_test_screen_share_select_screen_->btnStartScreenCapture->setEnabled(true);
-    ui_test_screen_share_select_screen_->btnStartScreenCapture->setText(QString::fromLocal8Bit("开始分享").toUtf8());
+    updateDynamicTextUI();
 }
 //============= ITRTCCloudCallback end =================//
 
@@ -169,12 +169,19 @@ void TestScreenShareSelectScreen::addScreenSharingWindowItem(trtc::TRTCScreenCap
 
     all_sharing_items_.push_back(test_screensharing_item);
 }
+
 void TestScreenShareSelectScreen::closeEvent(QCloseEvent * closeEvent){
     exitScreenSharing();
+    for (auto sharing_item : all_sharing_items_) {
+        sharing_item->close();
+        delete sharing_item;
+    }
+    all_sharing_items_.clear();
+    BaseDialog::closeEvent(closeEvent);
 }
 
 void TestScreenShareSelectScreen::exitScreenSharing() {
-    if (started) {
+    if (started_) {
         stopScreenSharing();
     }
 
@@ -183,11 +190,11 @@ void TestScreenShareSelectScreen::exitScreenSharing() {
 
 void TestScreenShareSelectScreen::on_btnStartScreenCapture_clicked() {
     ui_test_screen_share_select_screen_->btnStartScreenCapture->setEnabled(false);
-    if (started) {
+    if (started_) {
         stopScreenSharing();
-    }else {
+    } else {
         if (select_item_ == nullptr) {
-            QMessageBox::warning(this, "StartScreenCapture Failed", "please select least one item");
+            QMessageBox::warning(this, "Failed to share the screen", "Select a screen to share.");
             return;
         }
         selectScreenCaptureTarget(select_item_->getScreenCaptureSourceinfo());
@@ -197,18 +204,18 @@ void TestScreenShareSelectScreen::on_btnStartScreenCapture_clicked() {
 
 void TestScreenShareSelectScreen::on_btnPauseScreenCapture_clicked() {
     ui_test_screen_share_select_screen_->btnPauseScreenCapture->setEnabled(false);
-    if (!started) {
+    if (!started_) {
         return;
     }
 
-    if (paused) {
+    if (paused_) {
         resumeScreenCapture();
     } else {
         pauseScreenCapture();
     }
 }
 void TestScreenShareSelectScreen::onScreenSharingItemStatusChanged(ScreenShareSelectionItem* item, bool status) {
-    if(!started){
+    if(!started_){
         if(select_item_ != nullptr && select_item_ != item && status){
             select_item_->setSelected(false);
         }
@@ -230,3 +237,19 @@ void TestScreenShareSelectScreen::onScreenSharingItemStatusChanged(ScreenShareSe
     }
 }
 
+void TestScreenShareSelectScreen::updateDynamicTextUI() {
+    if (started_) {
+        ui_test_screen_share_select_screen_->btnStartScreenCapture->setText(tr("结束分享").toUtf8());
+    } else {
+        ui_test_screen_share_select_screen_->btnStartScreenCapture->setText(tr("开始分享").toUtf8());
+    }
+    if (paused_) {
+        ui_test_screen_share_select_screen_->btnPauseScreenCapture->setText(tr("恢复分享").toUtf8());
+    } else {
+        ui_test_screen_share_select_screen_->btnPauseScreenCapture->setText(tr("暂停分享").toUtf8());
+    }
+}
+
+void TestScreenShareSelectScreen::retranslateUi() {
+    ui_test_screen_share_select_screen_->retranslateUi(this);
+}

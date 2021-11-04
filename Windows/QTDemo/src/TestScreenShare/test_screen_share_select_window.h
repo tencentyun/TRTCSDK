@@ -9,17 +9,28 @@
  * - 5. pauseScreenCapture()                : 暂停屏幕分享
  * - 6. resumeScreenCapture()               : 恢复屏幕分享
  * - 7. stopScreenSharing()                 : 停止屏幕分享
- * - 8. releaseScreenCaptureSourceList()    :遍历完窗口列表后，需要调用release释放资源。
+ * - 8. releaseScreenCaptureSourceList()    : 遍历完窗口列表后，需要调用release释放资源。
  */
 
+/**
+ * Screen sharing (window)
+ *
+ * - Implementation logic:
+ * - 1. initScreenCaptureSources():  call getScreenCaptureSources() to get the shareable screens and windows. Retain only windows (TRTCScreenCaptureSourceType = TRTCScreenCaptureSourceTypeWindow) from the results returned.
+ * - 2. initScreenSharingWindowSelections():  display the TRTCScreenCaptureSourceInfo list obtained on the UI for users to choose from.
+ * - 3. selectScreenCaptureTarget():  set screen sharing parameters. For details, see test_screen_share_setting.h.
+ * - 4. startScreenSharing():  start screen sharing
+ * - 5. pauseScreenCapture():  pause screen sharing
+ * - 6. resumeScreenCapture():  resume screen sharing
+ * - 7. stopScreenSharing():  stop screen sharing
+ * - 8. releaseScreenCaptureSourceList(): call release to release the resources after traversing the list
+ */
 
 #ifndef TESTSCREENSHARSELECTWINDOW_H
 #define TESTSCREENSHARSELECTWINDOW_H
 
-#include <QDialog>
-
 #include "ITRTCCloud.h"
-
+#include "base_dialog.h"
 #include "trtc_cloud_callback_default_impl.h"
 #include "ui_TestScreenShareSelectWindowDialog.h"
 #include "screen_share_selection_item.h"
@@ -31,20 +42,15 @@
 #endif
 
 class TestScreenShareSelectWindow:
-        public QDialog,
+        public BaseDialog,
         public TrtcCloudCallbackDefaultImpl
 {
     Q_OBJECT
 public:
-    TestScreenShareSelectWindow(std::shared_ptr<TestUserVideoGroup> testUserVideoGroup,trtc::TRTCScreenCaptureProperty captureProperty
-        , trtc::TRTCVideoEncParam params
-        ,RECT captureRect
-        , QWidget* parent = nullptr
-        , trtc::TRTCVideoStreamType type = trtc::TRTCVideoStreamTypeSub);
+    TestScreenShareSelectWindow(std::shared_ptr<TestUserVideoGroup> testUserVideoGroup, QWidget* parent = nullptr);
     ~TestScreenShareSelectWindow();
 
 private:
-
     void stopScreenSharing();
     void startScreenSharing();
 
@@ -58,14 +64,18 @@ private:
     void initScreenSharingWindowSelections();
 
 public:
-    void updataScreenSharingParams(trtc::TRTCScreenCaptureProperty& captureProperty
+    void init(trtc::TRTCScreenCaptureProperty captureProperty
+        , trtc::TRTCVideoEncParam params
+        , RECT rect
+        , trtc::TRTCVideoStreamType type);
+    void updateScreenSharingParams(trtc::TRTCScreenCaptureProperty& captureProperty
         , trtc::TRTCVideoEncParam& params
         , RECT& rect
         , trtc::TRTCVideoStreamType type);
 
 private:
     //============= ITRTCCloudCallback start ===============//
-#ifdef win32
+#ifdef _WIN32
     void onScreenCaptureCovered() override;
 #endif
     void onScreenCaptureStarted() override;
@@ -78,7 +88,8 @@ private:
         , int child_window_item_index);
     void closeEvent(QCloseEvent * closeEvent) override;
     void exitScreenSharing();
-
+    void retranslateUi() override;
+    void updateDynamicTextUI() override;
 private slots:
     void on_btPauseScreenCapture_clicked();
     void on_btnStartScreenCapture_clicked();
@@ -96,8 +107,8 @@ private:
     std::vector<ScreenShareSelectionItem*> all_sharing_items_;
     ScreenShareSelectionItem*  selected_sharing_source_item_ = nullptr;
 
-    bool started = false;
-    bool paused = false;
+    bool started_ = false;
+    bool paused_ = false;
 
 };
 

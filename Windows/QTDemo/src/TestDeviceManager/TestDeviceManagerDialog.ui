@@ -31,7 +31,7 @@
       <bool>true</bool>
      </property>
      <property name="currentText">
-      <string/>
+      <string notr="true"/>
      </property>
     </widget>
    </item>
@@ -62,6 +62,9 @@
      <property name="editable">
       <bool>true</bool>
      </property>
+     <property name="currentText">
+      <string notr="true"/>
+     </property>
     </widget>
    </item>
    <item row="2" column="1">
@@ -75,6 +78,9 @@
      </property>
      <property name="editable">
       <bool>true</bool>
+     </property>
+     <property name="currentText">
+      <string notr="true"/>
      </property>
     </widget>
    </item>
