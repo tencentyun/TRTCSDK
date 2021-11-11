@@ -1,6 +1,6 @@
 {
   "usingComponents": {
-    "TRTCCalling": "../../components/TRTCCalling/TRTCCalling"
+    "TUICalling": "../../components/TUICalling/TUICalling"
   },
   "navigationStyle": "custom",
   "disableScroll": true

@@ -1,9 +1,8 @@
 <view class="container">
-  <TRTCCalling
-    id="TRTCCalling-component"
+  <TUICalling
+    id="TUICalling-component"
     config="{{config}}"
-    backgroundMute="{{true}}"
-  ></TRTCCalling>
+  ></TUICalling>
   <view class="trtc-calling-index">
     <view class="trtc-calling-index-title">
       <image class="btn-goback" src="../Resources/back.png" bind:tap="onBack" />
