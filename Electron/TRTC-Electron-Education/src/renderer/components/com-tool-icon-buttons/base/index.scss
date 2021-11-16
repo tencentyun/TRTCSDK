@@ -1,0 +1,79 @@
+@import '../../../assets/style/variables.scss';
+
+.com-tool-icon-button-base {
+  display: inline-flex;
+  color: $color-gray-1;
+  text-align: center;
+
+  .icon-content {
+    padding: 0 0.25rem;
+    border-radius: 0.25rem;
+  }
+
+  .icon-button {
+    width: 2rem;
+    height: 2rem;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 1rem;
+    color: $color-gray-1;
+    background-color: $color-gray-12;
+    cursor: pointer;
+
+    &:hover {
+      box-shadow: 0.0625rem 0.0625rem 0.75rem 0.25rem $color-gray-1;
+      color: $color-highlight-6;
+      svg {
+        transform: scale(1.3);
+      }
+      &.muted {
+        color: $color-muted;
+      }
+    }
+    &:active {
+      box-shadow: 0.0625rem 0.0625rem 0.75rem 0.25rem $color-gray-13;
+      color: $color-gray-1;
+      background-color: linear-gradient(45deg, $color-gray-13 0%, $color-gray-1 90%);
+    }
+
+    &.muted {
+      color: $color-muted;
+    }
+  }
+
+  .icon-selector {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+
+    .MuiSvgIcon-root {
+      width: 1rem;
+      height: 1rem;
+    }
+
+    &:hover {
+      background-color: $color-gray-8;
+    }
+  }
+
+  .icon-title {
+    line-height: 1rem;
+    font-size: 0.75rem;
+  }
+
+  &.com-tool-icon-big {
+    .icon-button {
+      width: 3rem;
+      height: 3rem;
+      margin: 0.5rem 1rem 0.125rem 1rem;
+      border-radius: 1.5rem;
+    }
+
+    .icon-selector {
+      margin-left: -1rem;
+    }
+  }
+}

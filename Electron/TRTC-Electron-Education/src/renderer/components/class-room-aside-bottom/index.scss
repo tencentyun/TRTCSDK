@@ -1,0 +1,39 @@
+.bottom-list {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: #1f1f1f;
+  .im-bottom {
+    width: 100%;
+    height: 100%;
+    background-color: #434343;
+  }
+
+  .MuiAppBar-root {
+    height: 3rem !important;
+  }
+  .MuiAppBar-colorPrimary {
+    background-color: #434343 !important;
+  }
+  .MuiTab-root {
+    min-width: 50px !important;
+  }
+
+  .PrivateTabIndicator-colorSecondary-3 {
+    background-color: #fff !important;
+  }
+  #simple-tabpanel-0,
+  #simple-tabpanel-1,
+  #simple-tabpanel-2 {
+    width: 100%;
+    height: calc(100% - 3rem);
+  }
+
+  .vide-list-bottom {
+    height: 100%;
+  }
+  .messageCome {
+    background-color: red;
+  }
+}

@@ -1,0 +1,28 @@
+@import '../../../assets/style/variables.scss';
+
+.camera-device-list {
+  padding: 0;
+  box-shadow: 0.0625rem 0.0625rem 0.5rem 0.125rem $color-gray-2;
+  list-style: none;
+  color: $color-gray-1;
+  background-color: $color-gray-12;
+
+  .camera-device-item {
+    height: 1.5rem;
+    padding: 0 0.5rem;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $color-gray-8;
+    }
+  }
+
+  .check-wrapper {
+    width: 2rem;
+    line-height: 0;
+  }
+
+  .device-name {
+    line-height: 1.5rem;
+  }
+}

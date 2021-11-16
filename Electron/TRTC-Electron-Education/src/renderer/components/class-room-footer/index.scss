@@ -1,0 +1,14 @@
+@import '../../assets/style/variables.scss';
+
+
+.footer-tool {
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+
+  .vertical-line {
+    width: 0.0625rem;
+    height: 100%;
+    border-left: 0.0625rem solid $color-gray-3;
+  }
+}

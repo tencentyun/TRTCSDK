@@ -1,0 +1,12 @@
+@import '../../assets/style/variables.scss';
+
+.com-preview-screen {
+  width: 100%;
+  height: 100%;
+  background-color: $color-gray-8;
+
+  .screen-sharing-preview {
+    width: 100%;
+    height: 100%;
+  }
+}

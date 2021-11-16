@@ -1,0 +1,25 @@
+@import './variables.scss';
+
+.trtc-edu-app,
+.trtc-edu-popover {
+  .trtc-edu-icon-button {
+    padding: 0;
+    color: $color-gray-1;
+    cursor: pointer;
+
+    &:hover {
+      box-shadow: 0.0625rem 0.0625rem 0.75rem 0.25rem $color-gray-1;
+      color: $color-highlight-6;
+      background-color: $color-gray-13;
+    }
+    &:active {
+      box-shadow: 0.0625rem 0.0625rem 0.75rem 0.25rem $color-gray-13;
+      color: $color-gray-1;
+      background-color: linear-gradient(45deg, $color-gray-13 0%, $color-gray-1 90%);
+    }
+
+    &.muted {
+      color: $color-muted;
+    }
+  }
+}

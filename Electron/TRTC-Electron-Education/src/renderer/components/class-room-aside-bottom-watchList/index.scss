@@ -1,0 +1,13 @@
+.watchList {
+  overflow: auto;
+  width: 100%;
+  height: 100%;
+  .user {
+    width: 100%;
+    height: auto;
+    padding: 5px;
+    .name {
+      margin-left: 10px;
+    }
+  }
+}

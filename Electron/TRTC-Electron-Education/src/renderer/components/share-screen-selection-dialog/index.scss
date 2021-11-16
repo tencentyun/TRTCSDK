@@ -1,0 +1,53 @@
+@import '../../assets/style/variables.scss';
+
+.share-screen-selection {
+  background-color: $color-gray-1;
+
+  .preview-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .preview-list-item {
+    list-style: none;
+    display: inline-block;
+    margin: 0.5rem;
+    padding: 0.5rem;
+    width: 10rem;
+    height: 7.625rem;
+    border: 0.0625rem solid $color-gray-6;
+    border-radius: 0.5rem;
+    text-align: center;
+    &:hover {
+      border-color: $color-primary;
+    }
+
+    .preview-wrapper {
+      width: 100%;
+      height: 5.625rem;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+    }
+
+    .preview-name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+}
+
+.body-view-share-screen-select {
+  .screen-sharing-selection-dialog{
+    .MuiPaper-root {
+      width: 100%;
+      // max-width: 100%;
+      height: 100%;
+      max-height: 100%;
+      margin: 0;
+    }
+  }
+}

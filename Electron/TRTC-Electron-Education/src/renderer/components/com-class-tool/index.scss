@@ -1,0 +1,32 @@
+@import '../../assets/style/variables.scss';
+
+.trtc-edu-class-tool {
+  padding: 0.125rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+  color: $color-gray-1;
+
+  .vertical-line {
+    width: 0.0625rem;
+    height: 3rem;
+    border-left: 0.0625rem solid $color-gray-3;
+  }
+
+  .class-info {
+    display: inline-flex;
+
+    .class-time-span {
+      display: inline-flex;
+      padding: 0.375rem 1rem;
+      line-height: 1.5rem;
+
+      svg {
+        margin-right: 0.375rem;
+      }
+    }
+  }
+
+
+
+}

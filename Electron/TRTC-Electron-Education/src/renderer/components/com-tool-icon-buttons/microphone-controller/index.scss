@@ -1,0 +1,37 @@
+@import '../../../assets/style/variables.scss';
+
+.device-select-popover {
+  // box-shadow: 0.0625rem 0.0625rem 0.5rem 0.125rem $color-gray-2;
+  color: $color-gray-1;
+  background-color: $color-gray-12;
+
+  .device-list-title {
+    padding: 0.125rem 0.5rem;
+  }
+
+  .microphone-device-list,
+  .speaker-device-list {
+    padding: 0;
+    list-style: none;
+
+    .microphone-device-item,
+    .speaker-device-item {
+      height: 1.5rem;
+      padding: 0 0.5rem;
+      cursor: pointer;
+
+      &:hover {
+        background-color: $color-gray-8;
+      }
+    }
+
+    .check-wrapper {
+      width: 2rem;
+      line-height: 0;
+    }
+
+    .device-name {
+      line-height: 1.5rem;
+    }
+  }
+}

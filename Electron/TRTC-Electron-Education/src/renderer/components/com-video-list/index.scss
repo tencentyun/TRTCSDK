@@ -1,0 +1,70 @@
+@import '../../assets/style/variables.scss';
+
+.trtc-edu-video-list {
+  display: flex;
+  justify-content: space-around;
+  color: $color-gray-1;
+
+  .video-list-content {
+    display: inline-flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+
+  .trtc-edu-video-wrapper {
+    position: relative;
+  }
+
+  .video-muted {
+    width: 10rem;
+    height: 5.625rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+  }
+
+  .video-content {
+    width: 10rem; // 160px
+    height: 5.625rem; // 90px
+  }
+
+  .video-op-bar {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    background-color: $color-gray-8;
+
+    .user-info {
+      margin-left: 0.5rem;
+    }
+  }
+}
+
+.trtc-edu-video-list.list-mode-vertical {
+  display: block;
+  height: 100%;
+
+  .video-list-content {
+    display: block;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  .trtc-edu-video-wrapper {
+    display: block;
+    width: 100%;
+
+    .video-content {
+      width: 100%;
+      height: auto;
+    }
+    .video-muted {
+      width: 20rem;
+      height: 9.375rem;
+    }
+  }
+}

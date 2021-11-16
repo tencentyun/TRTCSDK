@@ -1,0 +1,62 @@
+@import '../../../assets/style/variables.scss';
+
+@keyframes hands-up-notification {
+  from {
+    transform: scale(1);
+  }
+  to {
+    color: $color-highlight-6;
+    transform: scale(1.3);
+  }
+}
+
+.com-tool-icon-hand-up{
+  .icon-button.icon-notification {
+    animation-name: hands-up-notification;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-out;
+    animation-direction: alternate-reverse;
+    animation: name duration timing-function delay iteration-count direction fill-mode;
+    box-shadow: 0.0625rem 0.0625rem 0.75rem 0.25rem $color-gray-1;
+  }
+}
+
+.hands-up-popover-content {
+  min-width: 8rem;
+  color: $color-gray-1;
+  background-color: $color-gray-12;
+
+  .hands-up-popover-toolbar {
+    display: flex;
+    flex-direction: row-reverse;
+    padding-right: 0.5rem;
+    padding-bottom: 0.125rem;
+  }
+
+  .hands-up-list {
+    padding: 0;
+    list-style: none;
+  }
+
+  .hands-up-list-item {
+    height: 1.5rem;
+    padding: 0 0.5rem;
+
+    &:hover {
+      background-color: $color-gray-8;
+    }
+  }
+
+  .hands-up-info {
+    width: 10rem;
+  }
+
+  .icon-group {
+    font-size: 0;
+  }
+
+  .icon-close-popover {
+    border-radius: 0.125rem;
+  }
+}

@@ -1,0 +1,32 @@
+.sign-in {
+  width: 150px;
+  height: 150px;
+  border: 1px solid #434347;
+  position: absolute;
+  background-color: #464347;
+  top: 70%;
+  left: 84%;
+  text-align: center;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 26px;
+  line-height: 150px;
+  z-index: 999;
+  cursor: pointer;
+}
+.sign-out {
+  width: 150px;
+  height: 150px;
+  border: 1px solid #434347;
+  position: absolute;
+  background-color: #464347;
+  top: 70%;
+  left: 84%;
+  text-align: center;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 26px;
+  line-height: 150px;
+  z-index: 999;
+  display: none;
+}

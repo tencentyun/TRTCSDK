@@ -1,0 +1,56 @@
+.im-content {
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  display: flex;
+  flex-direction: column;
+  .content-top-chat {
+    width: 100%;
+    height: calc(100% - 5rem);
+    overflow: scroll;
+    background-color: #434343;
+    overflow: auto;
+  }
+  .content-bottom-chat {
+    word-wrap: break-word;
+    margin: 5px 10px;
+    .content-bottom-chat-out {
+      background-color: #fff;
+      color: #000;
+      border-radius: 5px;
+      padding: 0 5px;
+      display: inline-block;
+    }
+    .content-bottom-chat-inner {
+      word-break: break-all;
+      font-size: 14px;
+    }
+  }
+  .content-bottom-chat.sent {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+  .content-bottom-chat.receive {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .content-bottom-submit {
+    width: 100%;
+    height: 5rem;
+    background-color: #1f1f1f;
+    .content-bottom-feel {
+      width: 100%;
+      height: 1rem;
+      background-color: #ccc;
+    }
+    .content-bottom-input {
+      width: 100%;
+      height: calc(100% - 1rem);
+      outline: none;
+      resize: none;
+      display: block;
+    }
+  }
+}

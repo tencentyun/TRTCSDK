@@ -1,0 +1,38 @@
+@import './assets/style/variables.scss';
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  background-color: transparent;
+}
+
+::-webkit-scrollbar {
+  width: 0.5rem;
+  height: 0.5rem;
+}
+
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-corner {
+  background-color: #fafafa;
+  box-shadow: inset 0 0 0.25rem rgba(0, 0, 0, 0.2);
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 0.25rem;
+  background-color: #c1c1c1;
+}
+
+.selected {
+  background-color: $color-primary;
+}
+
+#root {
+  height: 100%;
+  background-color: transparent;
+}
+
+@import './assets/style/base.scss';

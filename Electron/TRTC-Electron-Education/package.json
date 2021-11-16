@@ -1,0 +1,266 @@
+{
+  "name": "trtc-electron-education",
+  "productName": "trtc-electron-education",
+  "description": "Electron application boilerplate based on React, React Router, Webpack, React Fast Refresh for rapid application development",
+  "scripts": {
+    "build": "concurrently \"yarn build:main\" \"yarn build:renderer\"",
+    "build:main": "cross-env NODE_ENV=production webpack --config ./.erb/configs/webpack.config.main.prod.babel.js",
+    "build:renderer": "cross-env NODE_ENV=production webpack --config ./.erb/configs/webpack.config.renderer.prod.babel.js",
+    "rebuild": "electron-rebuild --parallel --types prod,dev,optional --module-dir src",
+    "lint": "cross-env NODE_ENV=development eslint . --cache --ext .js,.jsx,.ts,.tsx",
+    "package": "node -r @babel/register ./.erb/scripts/clean.js dist release && yarn build && electron-builder build --publish never",
+    "postinstall": "node -r @babel/register .erb/scripts/check-native-dep.js && electron-builder install-app-deps && yarn cross-env NODE_ENV=development webpack --config ./.erb/configs/webpack.config.renderer.dev.dll.babel.js && opencollective-postinstall && yarn-deduplicate yarn.lock",
+    "start": "node -r @babel/register ./.erb/scripts/check-port-in-use.js && yarn start:renderer",
+    "start:main": "cross-env NODE_ENV=development electron -r ./.erb/scripts/babel-register ./src/main/main.ts",
+    "start:renderer": "cross-env NODE_ENV=development webpack serve --config ./.erb/configs/webpack.config.renderer.dev.babel.js",
+    "test": "jest"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "cross-env NODE_ENV=development eslint --cache"
+    ],
+    "*.json,.{babelrc,eslintrc,prettierrc}": [
+      "prettier --ignore-path .eslintignore --parser json --write"
+    ],
+    "*.{css,scss}": [
+      "prettier --ignore-path .eslintignore --single-quote --write"
+    ],
+    "*.{html,md,yml}": [
+      "prettier --ignore-path .eslintignore --single-quote --write"
+    ]
+  },
+  "build": {
+    "productName": "trtc-electron-education-v2",
+    "appId": "com.tencent.trtc-electron-education",
+    "asar": true,
+    "asarUnpack": "**\\*.{node,dll}",
+    "files": [
+      "dist",
+      "node_modules",
+      "package.json"
+    ],
+    "afterSign": ".erb/scripts/notarize.js",
+    "mac": {
+      "extraFiles": [
+        {
+          "from": "node_modules/trtc-electron-sdk/build/Release/trtc_electron_sdk.node",
+          "to": "./Resources"
+        }
+      ],
+      "type": "distribution",
+      "hardenedRuntime": true,
+      "entitlements": "assets/entitlements.mac.plist",
+      "entitlementsInherit": "assets/entitlements.mac.plist",
+      "gatekeeperAssess": false
+    },
+    "win": {
+      "extraFiles": [
+        {
+          "from": "node_modules/trtc-electron-sdk/build/Release/",
+          "to": "./resources",
+          "filter": [
+            "**/*"
+          ]
+        }
+      ],
+      "target": [
+        "nsis"
+      ]
+    },
+    "directories": {
+      "app": "build/app",
+      "buildResources": "assets",
+      "output": "build/release"
+    },
+    "extraResources": [
+      "./assets/**"
+    ]
+  },
+  "author": {
+    "name": "Tencent Cloud",
+    "url": "https://cloud.tencent.com/"
+  },
+  "license": "MIT",
+  "keywords": [
+    "electron",
+    "boilerplate",
+    "react",
+    "typescript",
+    "ts",
+    "sass",
+    "webpack",
+    "hot",
+    "reload"
+  ],
+  "jest": {
+    "testURL": "http://localhost/",
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/.erb/mocks/fileMock.js",
+      "\\.(css|less|sass|scss)$": "identity-obj-proxy"
+    },
+    "moduleFileExtensions": [
+      "js",
+      "jsx",
+      "ts",
+      "tsx",
+      "json"
+    ],
+    "moduleDirectories": [
+      "node_modules",
+      "build/app/node_modules"
+    ],
+    "setupFiles": [
+      "./.erb/scripts/check-build-exists.js"
+    ]
+  },
+  "devDependencies": {
+    "@babel/core": "^7.14.8",
+    "@babel/plugin-proposal-class-properties": "^7.14.5",
+    "@babel/plugin-proposal-decorators": "^7.14.5",
+    "@babel/plugin-proposal-do-expressions": "^7.14.5",
+    "@babel/plugin-proposal-export-default-from": "^7.14.5",
+    "@babel/plugin-proposal-export-namespace-from": "^7.14.5",
+    "@babel/plugin-proposal-function-bind": "^7.14.5",
+    "@babel/plugin-proposal-function-sent": "^7.14.5",
+    "@babel/plugin-proposal-json-strings": "^7.14.5",
+    "@babel/plugin-proposal-logical-assignment-operators": "^7.14.5",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.14.5",
+    "@babel/plugin-proposal-optional-chaining": "^7.14.5",
+    "@babel/plugin-proposal-pipeline-operator": "^7.14.8",
+    "@babel/plugin-proposal-throw-expressions": "^7.14.5",
+    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
+    "@babel/plugin-syntax-import-meta": "^7.10.4",
+    "@babel/plugin-transform-react-constant-elements": "^7.14.5",
+    "@babel/plugin-transform-react-inline-elements": "^7.14.5",
+    "@babel/plugin-transform-runtime": "^7.14.5",
+    "@babel/preset-env": "^7.14.8",
+    "@babel/preset-react": "^7.14.5",
+    "@babel/preset-typescript": "^7.14.5",
+    "@babel/register": "^7.14.5",
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.4.3",
+    "@teamsupercell/typings-for-css-modules-loader": "^2.5.1",
+    "@testing-library/jest-dom": "^5.12.0",
+    "@testing-library/react": "^11.2.7",
+    "@types/enzyme": "^3.10.9",
+    "@types/enzyme-adapter-react-16": "^1.0.6",
+    "@types/history": "4.7.8",
+    "@types/jest": "^26.0.24",
+    "@types/node": "15.0.2",
+    "@types/react": "^17.0.9",
+    "@types/react-dom": "^17.0.9",
+    "@types/react-redux": "^7.1.18",
+    "@types/react-router": "^5.1.14",
+    "@types/react-router-dom": "^5.1.6",
+    "@types/react-test-renderer": "^17.0.1",
+    "@types/webpack-env": "^1.16.0",
+    "@typescript-eslint/eslint-plugin": "^4.22.1",
+    "@typescript-eslint/parser": "^4.22.1",
+    "babel-eslint": "^10.1.0",
+    "babel-jest": "^26.1.0",
+    "babel-loader": "^8.2.2",
+    "babel-plugin-dev-expression": "^0.2.2",
+    "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
+    "browserslist-config-erb": "^0.0.1",
+    "chalk": "^4.1.1",
+    "concurrently": "^6.0.2",
+    "core-js": "^3.11.3",
+    "cross-env": "^7.0.3",
+    "css-loader": "^5.2.4",
+    "css-minimizer-webpack-plugin": "^2.0.0",
+    "detect-port": "^1.3.0",
+    "electron": "^13.1.8",
+    "electron-builder": "^22.11.1",
+    "electron-devtools-installer": "^3.2.0",
+    "electron-notarize": "^1.0.0",
+    "electron-rebuild": "^2.3.5",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.6",
+    "enzyme-to-json": "^3.6.2",
+    "eslint": "^7.25.0",
+    "eslint-config-airbnb": "^18.2.0",
+    "eslint-config-airbnb-typescript": "^12.3.1",
+    "eslint-config-erb": "^3.0.0",
+    "eslint-config-prettier": "8.3.0",
+    "eslint-import-resolver-webpack": "^0.13.0",
+    "eslint-plugin-compat": "^3.9.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jest": "^24.3.6",
+    "eslint-plugin-jsx-a11y": "6.4.1",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-promise": "^5.1.0",
+    "eslint-plugin-react": "^7.23.2",
+    "eslint-plugin-react-hooks": "^4.0.8",
+    "file-loader": "^6.0.0",
+    "html-webpack-plugin": "^5.3.1",
+    "husky": "4.x.x",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^26.1.0",
+    "lint-staged": "^10.5.4",
+    "mini-css-extract-plugin": "^1.6.0",
+    "native-ext-loader": "^2.3.0",
+    "opencollective-postinstall": "^2.0.3",
+    "prettier": "^2.2.1",
+    "react-refresh": "^0.10.0",
+    "react-test-renderer": "^17.0.2",
+    "rimraf": "^3.0.0",
+    "sass": "^1.32.12",
+    "sass-loader": "^11.0.1",
+    "style-loader": "^2.0.0",
+    "terser-webpack-plugin": "^5.1.1",
+    "typescript": "^4.2.4",
+    "url-loader": "^4.1.0",
+    "webpack": "^5.36.2",
+    "webpack-bundle-analyzer": "^4.4.1",
+    "webpack-cli": "^4.6.0",
+    "webpack-dev-server": "^3.11.2",
+    "webpack-merge": "^5.7.3",
+    "yarn-deduplicate": "^3.1.0"
+  },
+  "dependencies": {
+    "@material-ui/core": "^4.12.3",
+    "@material-ui/icons": "^4.11.2",
+    "@material-ui/lab": "^4.0.0-alpha.60",
+    "@reduxjs/toolkit": "^1.6.1",
+    "a18n": "^1.5.4",
+    "axios": "^0.24.0",
+    "electron-debug": "^3.2.0",
+    "electron-log": "^4.3.5",
+    "electron-updater": "^4.3.8",
+    "history": "4.x.x",
+    "js-cookie": "^3.0.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-redux": "^7.2.5",
+    "react-router-dom": "^5.2.0",
+    "regenerator-runtime": "^0.13.5",
+    "tim-js-sdk": "^2.13.1",
+    "tim-upload-plugin": "^1.0.3",
+    "trtc-electron-sdk": "^8.9.102"
+  },
+  "devEngines": {
+    "node": ">=10.x",
+    "npm": ">=6.x",
+    "yarn": ">=1.21.3"
+  },
+  "browserslist": [],
+  "prettier": {
+    "overrides": [
+      {
+        "files": [
+          ".prettierrc",
+          ".babelrc",
+          ".eslintrc"
+        ],
+        "options": {
+          "parser": "json"
+        }
+      }
+    ],
+    "singleQuote": true
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  }
+}

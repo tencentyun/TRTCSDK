@@ -1,0 +1,39 @@
+@import '../../assets/style/variables.scss';
+
+.trtc-edu-class-room-top-view {
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+
+  -webkit-app-region: drag; // 支持窗口拖拽
+  button,
+  .icon-content,
+  .icon-selector {
+    -webkit-app-region: no-drag;
+  }
+  .titlebar {
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-app-region: drag;
+  }
+
+  .trtc-edu-class-tool {
+    width: 62.5rem;
+    margin: 0 auto;
+    background-color: $color-gray-11;
+    border-radius: 0.5rem 0.5rem 0 0;
+  }
+
+  .trtc-edu-video-list {
+    width: 100%;
+    height: 90px;
+    border-radius: 0.5rem;
+    background-color: $color-gray-13;
+  }
+}
+
+.trtc-edu-class-room-top-view.platform-win {
+  .trtc-edu-video-list {
+    -webkit-app-region: no-drag;
+  }
+}

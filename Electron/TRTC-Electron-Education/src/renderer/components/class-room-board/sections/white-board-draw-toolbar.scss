@@ -1,0 +1,12 @@
+@import '../../../assets/style/variables.scss';
+
+.white-board-draw-toolbar {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  border-radius: 0 1rem 1rem 0;
+  background-color: $color-gray-4;
+}

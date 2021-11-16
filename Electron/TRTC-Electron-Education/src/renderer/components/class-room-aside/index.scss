@@ -1,0 +1,19 @@
+.classAside {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  color: #fff;
+
+  .top {
+    width: 100%;
+    border-radius: 0.5rem;
+    padding: 0.5rem 0.25rem;
+    height: 10rem;
+  }
+  .bottom {
+    width: 100%;
+    height: calc(100% - 10rem);
+    background-color: #1f1f1f;
+  }
+}
