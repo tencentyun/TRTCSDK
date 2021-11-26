@@ -7,6 +7,25 @@
 > - 建议您及时更新至最新版本，以便获得更好的产品稳定性及在线支持。
 > - 版本升级注意事项请参见：[升级指引](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/tutorial-00-info-update-guideline.html)。
 
+## Version 4.11.9 @2021.11.26
+
+**Note**
+
+- 升级至该版本需注意：[升级指引](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/tutorial-00-info-update-guideline.html)。
+
+**Improvement**
+
+- 支持 SDK 在自动播放失败时，展示交互弹窗，以解决自动播放失败问题。详情参考：[自动播放受限处理建议](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/tutorial-21-advanced-auto-play-policy.html#h2-3)。
+- 优化【iOS 15.1 推流 crash 问题】的规避逻辑，详情参考：[iOS Safari 已知问题 case 7](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/tutorial-02-info-webrtc-issues.html#h2-4)。
+- 为规避可能出现的无声问题，[TRTC.getMicrophones](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/TRTC.html#getMicrophones) 不再返回 deviceId 为 'default' & 'communications' 的麦克风。详情参考：[Chrome 已知问题 case 8 & 9](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/tutorial-02-info-webrtc-issues.html#h2-2)。
+- 优化 switchDevice 策略。
+- 提升 webview 环境中的编解码支持度检测准确性。
+- 完善 [client.startPublishCDNStream](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/Client.html#startPublishCDNStream)、[client.stopPublishCDNStream](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/Client.html#stopPublishCDNStream)、[client.startMixTranscode](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/Client.html#startMixTranscode) 及 [client.stopMixTranscode](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/Client.html#stopMixTranscode) 接口的参数校验。
+
+**Bug Fixed**
+
+- 修复偶现 client.publish 报错不支持 TRTC 的问题。
+
 ## Version 4.11.8 @2021.11.05
 
 **Improvement**
@@ -389,13 +408,13 @@ createStream 接口增加 screenAudio 参数。
 **Feature**
 
 支持 Chrome >= 74 屏幕分享采集系统（Windows）或者当前 Tab 页面（Mac）的声音。
-  
+
 ## Version 4.3.14 @ 2020.04.29
 
 **Bug Fixes**
 
 修复小程序音频 muted unmute 事件。
-  
+
 ## Version 4.3.13 @ 2020.04.16
 
 **Improvement**
@@ -407,7 +426,7 @@ createStream 接口增加 screenAudio 参数。
 **Bug Fixes**
 
 修复一个潜在的 RTCPeerConnection 状态变化异常。
-  
+
 ## Version 4.3.11 @ 2020.03.28
 
 **Improvement**
@@ -464,9 +483,9 @@ createClient 增加 streamId userdefinerecordid 字段。
 ## Version 4.3.4 @ 2020.01-06
 
 **Improvement**
- 
+
 升级 core-js 至 v3.6.1。
-  
+
 **Bug Fixes**
 
 - unpublish 超时后向外部抛出异常事件。
