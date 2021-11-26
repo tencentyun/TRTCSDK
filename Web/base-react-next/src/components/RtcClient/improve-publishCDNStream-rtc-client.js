@@ -21,14 +21,14 @@ class Client extends RTC {
   // ref: https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/Client.html#startPublishCDNStream
 
   // example 1：“全局自动旁路”模式下，修改当前用户音视频流在腾讯云 CDN 对应的 StreamId
-  // handleStartPublishCDNStream() {
+  // async handleStartPublishCDNStream() {
   //   if (!this.streamID) {
   //     Toast.error('please input streamID');
   //     return;
   //   }
   //   const options = { streamId: this.streamID };
   //   try {
-  //     this.client.startPublishCDNStream(options);
+  //     await this.client.startPublishCDNStream(options);
   //     Toast.success('start publishCDNStream success', 2000);
   //   } catch (error) {
   //     console.error('start publishCDNStream error', error);
@@ -37,9 +37,9 @@ class Client extends RTC {
   // }
 
   // example 2：“指定流旁路”模式下，以默认 streamId: ${sdkAppId}_${roomId}_${userId}_main 发布当前用户音视频流到腾讯云 CDN
-  // handleStartPublishCDNStream() {
+  // async handleStartPublishCDNStream() {
   //   try {
-  //     this.client.startPublishCDNStream();
+  //     await this.client.startPublishCDNStream();
   //     Toast.success('start publishCDNStream success', 2000);
   //   } catch (error) {
   //     console.error('start publishCDNStream error', error);
@@ -48,13 +48,13 @@ class Client extends RTC {
   // }
 
   // example 3：“指定流旁路”模式下，以指定 streamId 发布当前用户音视频流到腾讯云 CDN
-  // handleStartPublishCDNStream() {
+  // async handleStartPublishCDNStream() {
   //   if (!this.streamID) {
   //     Toast.error('please input streamID');
   //   }
   //   const options = { streamId: this.streamID };
   //   try {
-  //     this.client.startPublishCDNStream(options);
+  //     await this.client.startPublishCDNStream(options);
   //     Toast.success('start publishCDNStream success', 2000);
   //   } catch (error) {
   //     console.error('start publishCDNStream error', error);
@@ -63,7 +63,7 @@ class Client extends RTC {
   // }
 
   // example 4: 将当前用户音视频流发布到指定的 CDN 地址
-  // handleStartPublishCDNStream() {
+  // async handleStartPublishCDNStream() {
   //   if (!this.appID || !this.bizID || !this.publishCDNUrl) {
   //     Toast.error('please input appID, bizID, publishCDNUrl');
   //   }
@@ -73,7 +73,7 @@ class Client extends RTC {
   //     url: this.publishCDNUrl,
   //   };
   //   try {
-  //     this.client.startPublishCDNStream(options);
+  //     await this.client.startPublishCDNStream(options);
   //     Toast.success('start publishCDNStream success', 2000);
   //   } catch (error) {
   //     console.error('start publishCDNStream error', error);
@@ -82,7 +82,7 @@ class Client extends RTC {
   // }
 
   // example 5: 修改当前用户音视频流在腾讯云 CDN 对应的 StreamId，并且发布当前用户音视频流到指定的 CDN 地址
-  handleStartPublishCDNStream() {
+  async handleStartPublishCDNStream() {
     if (!this.streamID || !this.appID || !this.bizID || !this.publishCDNUrl) {
       Toast.error('please input streamID, appID, bizID, publishCDNUrl');
       return;
@@ -94,7 +94,7 @@ class Client extends RTC {
       url: this.publishCDNUrl,
     };
     try {
-      this.client.startPublishCDNStream(options);
+      await this.client.startPublishCDNStream(options);
       Toast.success('start publishCDNStream success', 2000);
     } catch (error) {
       console.error('start publishCDNStream error', error);
@@ -104,9 +104,9 @@ class Client extends RTC {
 
 
   // ref: https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/Client.html#stopPublishCDNStream
-  handleStopPublishCDNStream() {
+  async handleStopPublishCDNStream() {
     try {
-      this.client.stopPublishCDNStream();
+      await this.client.stopPublishCDNStream();
       Toast.success('start publishCDNStream success', 2000);
     } catch (error) {
       console.error('start publishCDNStream error', error);
