@@ -29,7 +29,7 @@ TUI场景化解决方案是腾讯云TRTC针对直播、语聊、视频通话等�
 
 **功能新增**
 
-- 全平台：增加语音聚焦功能，您可以通过  [setRemoteAudioParallelParams](https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCCloud__cplusplus.html#a0e6e6434aaa03ce878280125a9c0fa4b) 接口让 SDK 只播放房间中音量最大的几路音频，这对于提升大型语音房间的性能表现非常有帮助。
+- 全平台：新增语音追光功能，适用于大型语音连麦场景，即使在多人同时开麦的嘈杂哦环境下，仍然能聚焦关键用户用户的声音，您可以通过  [setRemoteAudioParallelParams](https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCCloud__cplusplus.html#a0e6e6434aaa03ce878280125a9c0fa4b)  接口使用。
 - Mac：增加对系统声音采集 [startSystemAudioLoopback](https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCCloud__ios.html#a2979e32c019708dcc9209bb6d2db9486) 的双声道支持。
 - iOS：增加对 24 位 wav 格式的背景音乐文件的支持。
 - Android & iOS：本版本符合国家隐私安全规范的规定，已经经过腾讯内部多款产品的验证。
