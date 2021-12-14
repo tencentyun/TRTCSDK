@@ -10,7 +10,7 @@
 
 一款面向对象的 WebRTC SDK。
 
-[![NPM version](https://img.shields.io/npm/v/trtc-js-sdk)](https://www.npmjs.com/package/trtc-js-sdk) [![NPM downloads](https://img.shields.io/npm/dw/trtc-js-sdk)](https://www.npmjs.com/package/trtc-js-sdk) [![trtc.js](https://img.shields.io/bundlephobia/min/trtc-js-sdk)](https://www.npmjs.com/package/trtc-js-sdk) [![Documents](https://img.shields.io/badge/-Documents-blue)](https://web.sdk.qcloud.com/trtc/webrtc/doc/en/index.html) [![Stars](https://img.shields.io/github/stars/tencentyun/TRTCSDK?style=social)](https://github.com/tencentyun/TRTCSDK) 
+[![NPM version](https://img.shields.io/npm/v/trtc-js-sdk)](https://www.npmjs.com/package/trtc-js-sdk) [![NPM downloads](https://img.shields.io/npm/dw/trtc-js-sdk)](https://www.npmjs.com/package/trtc-js-sdk) [![trtc.js](https://img.shields.io/bundlephobia/min/trtc-js-sdk)](https://www.npmjs.com/package/trtc-js-sdk) [![Documents](https://img.shields.io/badge/-Documents-blue)](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/index.html) [![Stars](https://img.shields.io/github/stars/tencentyun/TRTCSDK?style=social)](https://github.com/tencentyun/TRTCSDK) 
 
 </div>
 
