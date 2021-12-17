@@ -11,20 +11,20 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function getDefaultText(defaultValue, useStringRoomID) {
+function getDefaultText(defaultValue, useStringRoomID, label) {
   if (defaultValue) {
     return defaultValue;
   }
   let defaultText = '';
   if (useStringRoomID) {
-    defaultText = getUrlParam('roomID') ? getUrlParam('roomID') : 'string-room';
+    defaultText = getUrlParam(label) ? getUrlParam(label) : `string-room-${Math.floor(Math.random() * 100)}`;
   } else {
-    defaultText = getUrlParam('roomID') ? parseInt(getUrlParam('roomID'), 10) : parseInt(Math.random() * 100000, 10);
+    defaultText = getUrlParam(label) ? parseInt(getUrlParam(label), 10) : parseInt(Math.random() * 100000, 10);
   }
   return defaultText;
 };
 
-export default function Input({ defaultValue, onChange, disabled }) {
+export default function Input({ label = 'roomID', defaultValue, onChange, disabled }) {
   const classes = useStyles();
   const [useStringRoomID, setUserStringRoomID] = useState(false);
   const [inputLabel, setInputLabel] = useState('RoomID');
@@ -36,7 +36,7 @@ export default function Input({ defaultValue, onChange, disabled }) {
     setUserStringRoomID(useStringRoomID);
     setInputLabel(useStringRoomID ? 'String RoomID' : 'RoomID');
 
-    const defaultText = getDefaultText(defaultValue, useStringRoomID);
+    const defaultText = getDefaultText(defaultValue, useStringRoomID, label);
     setDefaultText(defaultText);
 
     onChange && onChange(defaultText);

@@ -254,50 +254,20 @@ export default class RTC extends React.Component {
     }
   }
 
-  handleStartPublishCDNStream() {
-    this.client.startPublishCDNStream();
+  async handleStartPublishCDNStream() {
+    await this.client.startPublishCDNStream();
   }
 
-  handleSopPublishCDNStream() {
-    this.client.handleSopPublishCDNStream();
+  async handleSopPublishCDNStream() {
+    await this.client.handleSopPublishCDNStream();
   }
 
-  handleStartMixTranscode(otherRoomID, otherRoomUserID) {
-    const mixTranscodeConfig = {
-      videoWidth: 1280,
-      videoHeight: 480,
-      videoBitrate: 1500,
-      videoFramerate: 15,
-      mixUsers: [
-        {
-          userId: this.userID,
-          roomId: this.roomID, // roomId 字段自 v4.11.5 版本开始支持，支持跨房间混流
-          pureAudio: false,
-          width: 640,
-          height: 480,
-          locationX: 0,
-          locationY: 0,
-          streamType: 'main', // 指明该配置为远端主流
-          zOrder: 1,
-        },
-        {
-          userId: otherRoomUserID,
-          roomId: otherRoomID, // roomId 字段自 v4.11.5 版本开始支持，支持跨房间混流
-          pureAudio: false,
-          width: 640,
-          height: 480,
-          locationX: 640,
-          locationY: 0,
-          streamType: 'main', // 指明该配置为远端辅流
-          zOrder: 1,
-        },
-      ],
-    };
-    this.client.startMixTranscode(mixTranscodeConfig);
+  async handleStartMixTranscode(mixTranscodeConfig) {
+    await this.client.startMixTranscode(mixTranscodeConfig);
   }
 
-  handleStopMixTranscode() {
-    this.client.stopMixTranscode();
+  async handleStopMixTranscode() {
+    await this.client.stopMixTranscode();
   }
 
   muteVideo() {

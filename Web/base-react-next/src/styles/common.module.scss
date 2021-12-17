@@ -73,7 +73,10 @@ $default-padding: 20px;
           display: flex;
           justify-content: space-between;
           flex-wrap: wrap;
-          margin-bottom: -10px;
+          margin-bottom: 10px;
+          &:last-child {
+            margin-bottom: -10px;
+          }
           &.mobile-device {
             width: 100%;
           }
