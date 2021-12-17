@@ -15,6 +15,25 @@ export function getUrlParam(key) {
 }
 
 /**
+ * 从 window.location.href 获取search参数
+ * @param {*} key 要获取的 key
+ * @returns window.location.href 中指定key对应的value
+ * @example
+ * const value = getUrlParam(key);
+ */
+export function getUrlParamObj() {
+  const urlParamObj = {};
+  if (location.search) {
+    const paramUrl = location.search.slice(1);
+    paramUrl.split('&').forEach((item) => {
+      const [key, value] = item.split('=');
+      urlParamObj[key] = value;
+    });
+  }
+  return urlParamObj;
+}
+
+/**
  * 单词首字母大写
  * @param {String}} str
  */

@@ -21,7 +21,7 @@ const DynamicRtc = dynamic(import('@components/RtcClient/improve-water-mark-rtc-
 const DynamicShareRtc = dynamic(import('@components/ShareRTC'), { ssr: false });
 
 export default function BasicRtc(props) {
-  const { activeId, navConfig } = props;
+  const { activeId, navConfig, language } = props;
   const video = true;
   const audio = true;
   const mode = 'rtc';
@@ -413,11 +413,14 @@ export default function BasicRtc(props) {
             </UserList>
           </div>
           {/* 相关资源 */}
-          <RelatedResources resources={[
-            { name: '开启水印教程',
-              link: 'https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/tutorial-29-advance-water-mark.html',
-            },
-          ]}></RelatedResources>
+          <RelatedResources
+            language={language}
+            resources={[
+              { name: a18n('开启水印教程'),
+                link: 'https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/tutorial-29-advance-water-mark.html',
+                enLink: 'https://web.sdk.qcloud.com/trtc/webrtc/doc/en/tutorial-29-advance-water-mark.html',
+              },
+            ]}></RelatedResources>
         </div>
       </div>
       {/* 视频流显示区域 */}
