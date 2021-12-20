@@ -14,9 +14,9 @@
     "element-ui": "^2.13.2",
     "qs": "^6.9.4",
     "tim-js-sdk": "2.15.0",
-    "trtc-calling-js": "^1.0.1",
+    "trtc-calling-js": "^1.0.3",
     "trtc-js-sdk": "^4.11.1",
-    "tsignaling": "0.8.0",
+    "tsignaling": "0.9.0",
     "vue": "^2.6.11",
     "vue-router": "^3.3.4",
     "vuex": "^3.5.1"
