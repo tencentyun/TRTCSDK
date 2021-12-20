@@ -96,7 +96,7 @@ export default {
       this.callFlag = true
       this.$trtcCalling.call({
         userID: param,
-        type: this.TrtcCalling.CALL_TYPE.VIDEO_CALL
+        type: this.TrtcCalling.CALL_TYPE.AUDIO_CALL
       }).then(()=>{
         this.callFlag = false
         this.$store.commit("userJoinMeeting", this.loginUserInfo.userId);
