@@ -5,6 +5,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import styles from './list.module.scss';
 
 function RelatedResources(props) {
+  const isEnglish = props.language === 'en';
   return (
     <div className={styles['related-resources-wrapper']}>
       <Accordion className={styles['accordion-container']} defaultExpanded={true}>
@@ -22,8 +23,12 @@ function RelatedResources(props) {
         <AccordionDetails className={styles['accordion-details-container']}>
           <ul>
           {
-            props.resources.map(({ name, link }, index) => (
-              <li key={index}><Link target="_blank" rel="noopener noreferrer" href={link}>{a18n(name)}</Link></li>
+            props.resources.map(({ name, link, enLink }, index) => (
+              <li key={index}>
+                <Link target="_blank" rel="noopener noreferrer" href={ isEnglish && enLink ? enLink : link }>
+                  {name}
+                </Link>
+              </li>
             ))
           }
           </ul>

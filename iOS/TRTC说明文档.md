@@ -1,6 +1,6 @@
 ## 目录结构说明
 
-本目录包含 iOS 版 TRTC-API-Example 的源代码，最简单的示例代码，使用Objective-C语言。包括视频通话、语音通话等基础功能以及一些高级功能。- TRTC-API-Example-OC： 
+本目录包含 Android 版 TRTC-API-Example 的源代码，最简单的示例代码，使用Objective-C语言。包括视频通话、语音通话等基础功能以及一些高级功能。- TRTC-API-Example-OC： 
 
 ```
 ├─ TRTC-API-Example // TRTC API Example，包括视频通话、语音通话的基础功能以及一些高级功能

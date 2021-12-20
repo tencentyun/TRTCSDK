@@ -86,13 +86,6 @@ export default {
         },
       },
       {
-        path: 'improve-publishCDNStream',
-        name: {
-          en: 'Publish CDN Stream',
-          'zh-CN': a18n('向腾讯云/其他云CDN推送音视频流'),
-        },
-      },
-      {
         path: 'improve-bwe',
         name: {
           en: 'Band/Video Rate',
@@ -107,10 +100,24 @@ export default {
         },
       },
       {
+        path: 'improve-publishCDNStream',
+        name: {
+          en: 'Publish CDN Stream',
+          'zh-CN': a18n('向腾讯云/其他云CDN推送音视频流'),
+        },
+      },
+      {
         path: 'improve-mixTranscode',
         name: {
           en: 'Mix Transcode',
           'zh-CN': a18n('混流'),
+        },
+      },
+      {
+        path: 'improve-cross-room-link',
+        name: {
+          en: 'Cross-Room Link',
+          'zh-CN': a18n('跨房连麦'),
         },
       },
       {

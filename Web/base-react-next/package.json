@@ -35,10 +35,10 @@
     "react-dom": "17.0.2",
     "react-i18next": "^11.8.15",
     "rtc-audio-mixer": "0.0.1",
-    "rtc-beauty-plugin": "^0.0.6",
+    "rtc-beauty-plugin": "^0.0.7",
     "rtc-device-detector-react": "^1.0.4",
     "sass": "^1.32.12",
-    "trtc-js-sdk": "latest"
+    "trtc-js-sdk": "^4.11.7"
   },
   "devDependencies": {
     "eslint-config-tencent": "^1.0.0",

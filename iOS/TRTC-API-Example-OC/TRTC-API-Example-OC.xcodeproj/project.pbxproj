@@ -13,7 +13,6 @@
 		17A5C14026CCF723007E91B1 /* ThirdBeautyBytedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 17A5C13A26CCF723007E91B1 /* ThirdBeautyBytedViewController.xib */; };
 		17A5C14226CCF723007E91B1 /* ThirdBeautyEntranceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17A5C13C26CCF723007E91B1 /* ThirdBeautyEntranceViewController.m */; };
 		17A5C14326CCF723007E91B1 /* ThirdBeautyEntranceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 17A5C13E26CCF723007E91B1 /* ThirdBeautyEntranceViewController.xib */; };
-		2FCDA1C3833FAB202395CCBA /* TXLiteAVSDK_TRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BF6BE3939A2001D38AD68CA /* TXLiteAVSDK_TRTC.framework */; };
 		40D550EE26A6AEEE00FE9F13 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 40D550ED26A6AED600FE9F13 /* libsqlite3.0.tbd */; };
 		40D550F026A6AEFB00FE9F13 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40D550EF26A6AEFA00FE9F13 /* AssetsLibrary.framework */; };
 		4723A7BF26315F920094AC81 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4723A7BE26315F920094AC81 /* OpenGLES.framework */; };
@@ -94,6 +93,7 @@
 		47E073302636A6C80027D05E /* SetBGMViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E072F12636A6C80027D05E /* SetBGMViewController.m */; };
 		47ECB98C2626868400201FCB /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47ECB98B2626868400201FCB /* Accelerate.framework */; };
 		47ECB98E2626868E00201FCB /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 47ECB98D2626868E00201FCB /* libresolv.tbd */; };
+		686EA668B83E480339FA7FD9 /* TXLiteAVSDK_TRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54D2193B388D10807C4AF11E /* TXLiteAVSDK_TRTC.framework */; };
 		880B3C4A2624411B002683FB /* GenerateTestUserSig.m in Sources */ = {isa = PBXBuildFile; fileRef = 880B3C482624411B002683FB /* GenerateTestUserSig.m */; };
 		8821F2632626EB1C00F5852F /* VideoCallingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8821F2562626EB1B00F5852F /* VideoCallingViewController.m */; };
 		8821F2642626EB1C00F5852F /* VideoCallingEnterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8821F2572626EB1B00F5852F /* VideoCallingEnterViewController.xib */; };
@@ -116,8 +116,7 @@
 		889445E8262866DC00193FAD /* ScreenAudienceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 889445E6262866DC00193FAD /* ScreenAudienceViewController.xib */; };
 		88A2C846267062FF006FC026 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47ECB98B2626868400201FCB /* Accelerate.framework */; };
 		88A2C84726706305006FC026 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 47ECB9882626867C00201FCB /* libc++.tbd */; };
-		A1D1D27B90E50600C25EC6FF /* TXLiteAVSDK_TRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BF6BE3939A2001D38AD68CA /* TXLiteAVSDK_TRTC.framework */; };
-		C65F31572729388F00D9FB93 /* TXLiteAVSDK_TRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17A5C13426CCF54A007E91B1 /* TXLiteAVSDK_TRTC.framework */; };
+		A73158FDD32D6BBB4FB3BB0B /* TXLiteAVSDK_TRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54D2193B388D10807C4AF11E /* TXLiteAVSDK_TRTC.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -287,6 +286,7 @@
 		47ECB9882626867C00201FCB /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		47ECB98B2626868400201FCB /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		47ECB98D2626868E00201FCB /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
+		54D2193B388D10807C4AF11E /* TXLiteAVSDK_TRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TXLiteAVSDK_TRTC.framework; path = ../SDK/TXLiteAVSDK_TRTC.framework; sourceTree = "<group>"; };
 		880B3C482624411B002683FB /* GenerateTestUserSig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenerateTestUserSig.m; sourceTree = "<group>"; };
 		880B3C492624411B002683FB /* GenerateTestUserSig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GenerateTestUserSig.h; sourceTree = "<group>"; };
 		8821F2542626EB1B00F5852F /* VideoCallingEnterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoCallingEnterViewController.h; sourceTree = "<group>"; };
@@ -320,7 +320,6 @@
 		889445E4262866DC00193FAD /* ScreenAudienceViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScreenAudienceViewController.h; sourceTree = "<group>"; };
 		889445E5262866DC00193FAD /* ScreenAudienceViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ScreenAudienceViewController.m; sourceTree = "<group>"; };
 		889445E6262866DC00193FAD /* ScreenAudienceViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ScreenAudienceViewController.xib; sourceTree = "<group>"; };
-		9BF6BE3939A2001D38AD68CA /* TXLiteAVSDK_TRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TXLiteAVSDK_TRTC.framework; path = ../SDK/TXLiteAVSDK_TRTC.framework; sourceTree = "<group>"; };
 		C99BF07371D8A29601F2FC64 /* Pods_TXReplayKit_Screen.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TXReplayKit_Screen.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9B2CC51BDD884255109D5F7 /* Pods_TRTC_API_Example_OC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TRTC_API_Example_OC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -336,11 +335,10 @@
 				4723A7BF26315F920094AC81 /* OpenGLES.framework in Frameworks */,
 				47ECB98C2626868400201FCB /* Accelerate.framework in Frameworks */,
 				4723A7C026315F9C0094AC81 /* Accelerate.framework in Frameworks */,
-				C65F31572729388F00D9FB93 /* TXLiteAVSDK_TRTC.framework in Frameworks */,
 				47ECB98E2626868E00201FCB /* libresolv.tbd in Frameworks */,
 				4723A7C526315FB10094AC81 /* libc++.tbd in Frameworks */,
 				4723A7C226315FA30094AC81 /* CoreMedia.framework in Frameworks */,
-				2FCDA1C3833FAB202395CCBA /* TXLiteAVSDK_TRTC.framework in Frameworks */,
+				A73158FDD32D6BBB4FB3BB0B /* TXLiteAVSDK_TRTC.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -352,7 +350,7 @@
 				88A2C846267062FF006FC026 /* Accelerate.framework in Frameworks */,
 				8894458D26282AF800193FAD /* TXLiteAVSDK_ReplayKitExt.framework in Frameworks */,
 				8894456B26282A3200193FAD /* ReplayKit.framework in Frameworks */,
-				A1D1D27B90E50600C25EC6FF /* TXLiteAVSDK_TRTC.framework in Frameworks */,
+				686EA668B83E480339FA7FD9 /* TXLiteAVSDK_TRTC.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -470,7 +468,7 @@
 			isa = PBXGroup;
 			children = (
 				889444FD262824EA00193FAD /* TXLiteAVSDK_ReplayKitExt.framework */,
-				9BF6BE3939A2001D38AD68CA /* TXLiteAVSDK_TRTC.framework */,
+				54D2193B388D10807C4AF11E /* TXLiteAVSDK_TRTC.framework */,
 			);
 			name = SDK;
 			path = ../SDK;
