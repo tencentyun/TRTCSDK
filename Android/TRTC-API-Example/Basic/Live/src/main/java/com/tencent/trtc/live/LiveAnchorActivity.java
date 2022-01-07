@@ -228,8 +228,6 @@ public class LiveAnchorActivity extends TRTCBaseActivity implements View.OnClick
                 if (index == -1 && !userId.equals(mRoomId)) {
                     mRemoteUidList.add(userId);
                     refreshRemoteVideoViews();
-                } else if (userId.equals(mRoomId)) {
-                    mTRTCCloud.startRemoteView(userId, TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SMALL, mTxcvvAnchorPreviewView);
                 }
             } else {
                 if (index != -1 && !userId.equals(mRoomId)) {

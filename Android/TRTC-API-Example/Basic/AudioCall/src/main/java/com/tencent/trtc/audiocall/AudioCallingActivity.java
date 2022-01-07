@@ -236,18 +236,18 @@ public class AudioCallingActivity extends TRTCBaseActivity implements View.OnCli
         @Override
         public void onUserVoiceVolume(ArrayList<TRTCCloudDef.TRTCVolumeInfo> arrayList, int i) {
             Log.d(TAG, "onUserVoiceVolume:i = " + i);
-            if(arrayList != null && arrayList.size() > 0){
+            if (arrayList != null && arrayList.size() > 0) {
                 Log.d(TAG, "onUserVoiceVolume:arrayList.size = " + arrayList.size());
                 int index = 0;
-                for(TRTCCloudDef.TRTCVolumeInfo info : arrayList){
-                    if(info != null && !mUserId.equals(info.userId) && index < MAX_USER_COUNT){
+                for (TRTCCloudDef.TRTCVolumeInfo info : arrayList) {
+                    if (info != null && !mUserId.equals(info.userId) && index < MAX_USER_COUNT) {
                         Log.d(TAG, "onUserVoiceVolume:userId = " + info.userId + ", volume = " + info.volume);
                         mListVoiceInfo.get(index).setVisibility(View.VISIBLE);
                         mListVoiceInfo.get(index).setText(info.userId + ":" + info.volume);
                         index++;
                     }
                 }
-                for(int j = index; j < MAX_USER_COUNT; j++){
+                for (int j = index; j < MAX_USER_COUNT; j++) {
                     mListVoiceInfo.get(j).setVisibility(View.GONE);
                 }
             }
@@ -256,17 +256,17 @@ public class AudioCallingActivity extends TRTCBaseActivity implements View.OnCli
         @Override
         public void onNetworkQuality(TRTCCloudDef.TRTCQuality trtcQuality, ArrayList<TRTCCloudDef.TRTCQuality> arrayList) {
             Log.d(TAG, "onNetworkQuality");
-            if(arrayList != null && arrayList.size() > 0){
+            if (arrayList != null && arrayList.size() > 0) {
                 int index = 0;
-                for(TRTCCloudDef.TRTCQuality info: arrayList){
-                    if(info != null && index < MAX_USER_COUNT){
+                for (TRTCCloudDef.TRTCQuality info : arrayList) {
+                    if (info != null && index < MAX_USER_COUNT) {
                         Log.d(TAG, "onNetworkQuality:userId = " + info.userId + ", quality = " + info.quality);
                         mListNetWorkInfo.get(index).setText(info.userId + ":" + NetQuality.getMsg(info.quality));
                         mListNetWorkInfo.get(index).setVisibility(View.VISIBLE);
                         index++;
                     }
                 }
-                for(int j = index; j < MAX_USER_COUNT; j++){
+                for (int j = index; j < MAX_USER_COUNT; j++) {
                     mListNetWorkInfo.get(j).setVisibility(View.GONE);
                 }
             }
@@ -300,12 +300,12 @@ public class AudioCallingActivity extends TRTCBaseActivity implements View.OnCli
     }
 
     private void refreshUserView() {
-        if(mRemoteUserList != null){
-            for(int i = 0; i < MAX_USER_COUNT; i++){
-                if(i < mRemoteUserList.size()){
+        if (mRemoteUserList != null) {
+            for (int i = 0; i < MAX_USER_COUNT; i++) {
+                if (i < mRemoteUserList.size()) {
                     mListUserView.get(i).setVisibility(View.VISIBLE);
                     mListUserIdView.get(i).setText(mRemoteUserList.get(i));
-                }else{
+                } else {
                     mListUserView.get(i).setVisibility(View.GONE);
                 }
             }
