@@ -3,8 +3,10 @@
  * @param {String} phoneNumber
  * @param {Number} phoneArea
  */
-export function checkPhoneNumber(phoneNumber, phoneArea = 86) {
-  if (!phoneNumber) return false;
+export function checkPhoneNumber(phoneNumber, phoneArea) {
+  if (!phoneNumber || !phoneArea) {
+    return false;
+  }
   const reg = /^1[3|4|5|7|8|6|9][0-9]\d{8}$/;
 
   switch (phoneArea) {

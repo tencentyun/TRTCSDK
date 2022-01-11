@@ -111,9 +111,14 @@ export default class RTC extends React.Component {
       microphoneId: this.microphoneID,
       mirror: this.mirror,
     });
-    await this.localStream.initialize();
-    this.addStream && this.addStream(this.localStream);
-    return this.localStream;
+    try {
+      await this.localStream.initialize();
+      this.addStream && this.addStream(this.localStream);
+      return this.localStream;
+    } catch (error) {
+      this.localStream = null;
+      alert(`${JSON.stringify(error.message)}`);
+    }
   }
 
   destroyLocalStream() {
@@ -350,8 +355,14 @@ export default class RTC extends React.Component {
       console.error(error);
       alert(error);
     });
-    this.client.on('client-banned', (error) => {
+    this.client.on('client-banned', async (error) => {
       console.error(`client has been banned for ${error}`);
+
+      this.isPublished = false;
+      this.localStream = null;
+      this.setState && this.setState('publish', this.isPublished);
+      await this.handleLeave();
+
       alert(error);
     });
     // fired when a remote peer is joining the room
@@ -378,13 +389,13 @@ export default class RTC extends React.Component {
         console.log(`remote stream added: [${remoteUserID}] type: ${remoteStream.getType()}`);
         // subscribe to this remote stream
         this.handleSubscribe(remoteStream);
-        this.addStream && this.addStream(remoteStream);
       }
     });
     // fired when a remote stream has been subscribed
     this.client.on('stream-subscribed', (event) => {
       const { stream: remoteStream } = event;
       console.log('stream-subscribed userId: ', remoteStream.getUserId());
+      this.addStream && this.addStream(remoteStream);
     });
     // fired when the remote stream is removed, e.g. the remote user called Client.unpublish()
     this.client.on('stream-removed', (event) => {

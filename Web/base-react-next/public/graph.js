@@ -10,10 +10,6 @@
 'use strict';
 /* exported TimelineDataSeries, TimelineGraphView */
 
-// The maximum number of data points bufferred for each stats. Old data points
-// will be shifted out when the buffer is full.
-const MAX_STATS_DATA_POINT_BUFFER_SIZE = 1000;
-
 const TimelineDataSeries = (function() {
   /**
    * @constructor
@@ -30,6 +26,9 @@ const TimelineDataSeries = (function() {
     this.cacheStartTime_ = null;
     this.cacheStepSize_ = 0;
     this.cacheValues_ = [];
+    // The maximum number of data points bufferred for each stats. Old data points
+    // will be shifted out when the buffer is full.
+    this.maxStatsDataPointBufferSize = 1000;
   }
 
   TimelineDataSeries.prototype = {
@@ -60,7 +59,7 @@ const TimelineDataSeries = (function() {
       let time = new Date(timeTicks);
       this.dataPoints_.push(new DataPoint(time, value));
 
-      if (this.dataPoints_.length > MAX_STATS_DATA_POINT_BUFFER_SIZE) {
+      if (this.dataPoints_.length > this.maxStatsDataPointBufferSize) {
         this.dataPoints_.shift();
       }
     },

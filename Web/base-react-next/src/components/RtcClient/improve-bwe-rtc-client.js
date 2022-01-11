@@ -2,17 +2,17 @@ import RTC from '@components/BaseRTC';
 import toast from '@components/Toast';
 
 class Client extends RTC {
-  async handlePublish(videoBitRate = 480) {
+  async handlePublish(options) {
     if (!this.isJoined || this.isPublished) {
       return;
     }
     await this.initLocalStream();
 
     await this.localStream.setVideoProfile({
-      width: 640,
-      height: 480,
-      frameRate: 15,
-      bitrate: videoBitRate,
+      width: (options && options.videoWidth) || 640,
+      height: (options && options.videoHeight) || 480,
+      frameRate: (options && options.videoFps) || 15,
+      bitrate: (options && options.videoBitRate) || 900,
     });
 
     try {
