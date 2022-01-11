@@ -404,6 +404,7 @@ export default function BasicRtc(props) {
       try {
         const mediaStream = new MediaStream();
         mediaStream.addTrack(remoteStreamConfigList[0].stream.getAudioTrack());
+        mediaStream.addTrack(remoteStreamConfigList[0].stream.getVideoTrack());
         mediaRecorder = new MediaRecorder(mediaStream);
       } catch (error) {
         console.error('Exception while creating MediaRecorder:', error);

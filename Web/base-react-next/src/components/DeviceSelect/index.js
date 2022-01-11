@@ -35,11 +35,11 @@ export default function DeviceSelect({ deviceType, onChange }) {
   const [activeDevice, setActiveDevice] = useState({});
   const [activeDeviceId, setActiveDeviceId] = useState('');
 
-  const updateDeviceList = (list) => {
+  const updateDeviceList = (list = []) => {
     setDeviceList((prevList) => {
       if (prevList.length === 0) {
-        setActiveDevice(list[0]);
-        setActiveDeviceId(list[0].deviceId);
+        list[0] && setActiveDevice(list[0]);
+        list[0] && list[0].deviceId && setActiveDeviceId(list[0].deviceId);
       }
       return list;
     });

@@ -1,12 +1,13 @@
 import a18n from 'a18n';
 /* eslint-disable no-use-before-define */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styles from './index.module.scss';
 import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Input from '@material-ui/core/Input';
 import { COUNTRIES } from '../../utils/constants';
+import { getLanguage } from '@utils/common';
 
 // ISO 3166-1 alpha-2
 // ⚠️ No support for IE 11
@@ -25,6 +26,13 @@ function countryToFlag(isoCode) {
 
 export default function CountryCodeSelect(props) {
   const [defaultValue] = useState(() => (props.defaultValue ? props.defaultValue : 46));
+  const [mountFlag, setMountFlag] = useState(false);
+
+  useEffect(() => {
+    const language = getLanguage();
+    a18n.setLocale(language);
+    setMountFlag(true);
+  }, []);
 
   const handleChange = (event, newValue, reason) => {
     console.log('CountryCodeSelect handleChange', event, newValue, reason);
@@ -57,14 +65,15 @@ export default function CountryCodeSelect(props) {
           </React.Fragment>
         )}
         renderInput={params => (<div ref= {params.InputProps.ref}>
-              <Input
-                type= "text"
-                placeholder={a18n('区号')}
-                startAdornment= {
-                  <InputAdornment position="start">+</InputAdornment>
-                }
-                {...params.inputProps}
-              />
+              { mountFlag && <Input
+                  type= "text"
+                  placeholder={a18n('区号')}
+                  startAdornment= {
+                    <InputAdornment position="start">+</InputAdornment>
+                  }
+                  {...params.inputProps}
+                />
+              }
             </div>
         )}
       />

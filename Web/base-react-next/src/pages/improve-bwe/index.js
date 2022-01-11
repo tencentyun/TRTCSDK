@@ -11,7 +11,7 @@ import RoomIDInput from '@components/RoomIDInput';
 import { getNavConfig } from '@api/nav';
 import { getUrlParam } from '@utils/utils';
 import { handlePageUrl, handlePageChange, getLanguage } from '@utils/common';
-import { Button, Accordion, AccordionSummary, AccordionDetails, makeStyles, Select, TextField, Typography, MenuItem, FormControl, InputLabel } from '@material-ui/core';
+import { Button, Accordion, AccordionSummary, AccordionDetails, makeStyles, TextField, Typography } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import SideBar from '@components/SideBar';
 import styles from '@styles/common.module.scss';
@@ -64,9 +64,12 @@ export default function BasicRtc(props) {
   const [isJoined, setIsJoined] = useState(false);
   const [isPublished, setIsPublished] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [videoBitRate, setVideoBitRate] = useState(500);
-  const [bandValue, setBandValue] = useState('None');
-  const bandWidthList = ['None', '2000', '1000', '500', '250', '125'];
+  const [videoWidth, setVideoWidth] = useState(640);
+  const [videoHeight, setVideoHeight] = useState(480);
+  const [videoFps, setVideoFps] = useState(15);
+  const [videoBitRate, setVideoBitRate] = useState(900);
+  // const [bandValue, setBandValue] = useState('None');
+  // const bandWidthList = ['None', '2000', '1000', '500', '250', '125'];
   const [mountFlag, setMountFlag] = useState(false);
 
   useEffect(() => {
@@ -98,18 +101,21 @@ export default function BasicRtc(props) {
 
         let bytes;
         let packets;
+        let framesSent;
         RTC && RTC.client.getLocalVideoStats().then((stats) => {
           (Object.keys(stats || {}) || []).forEach((userId) => {
             console.log(`userId: ${userId} bytesSent: ${stats[userId].bytesSent} packetsSent: ${stats[userId].packetsSent}
             framesEncoded: ${stats[userId].framesEncoded} framesSent: ${stats[userId].framesSent} frameWidth: ${stats[userId].frameWidth}
-            frameHeight: stats[userId].frameHeight`);
+            frameHeight: ${stats[userId].frameHeight}`);
             bytes = stats[userId].bytesSent;
             packets = stats[userId].packetsSent;
+            framesSent = stats[userId].framesSent;
             const now = new Date().getTime();
             if (lastResult) {
               // calculate bitrate
               const bitrate = (8 * (bytes - lastResult.bytes)) / (now - lastResult.timestamp);
               console.log(`video bitrate: ${bitrate}`);
+              console.log(`video fps: ${(framesSent - lastResult.framesSent) / (now - lastResult.timestamp) * 1000}`);
               // append to chart
               bitrateSeries.addPoint(now, bitrate);
               bitrateGraph.setDataSeries([bitrateSeries]);
@@ -119,10 +125,10 @@ export default function BasicRtc(props) {
               packetGraph.setDataSeries([packetSeries]);
               packetGraph.updateEndDate();
             }
-            lastResult = { bytes, packets, timestamp: now };
+            lastResult = { bytes, packets, timestamp: now, framesSent };
           });
         });
-      }, 1000);
+      }, 3000);
     } else {
       clearInterval(timerId);
     }
@@ -133,11 +139,21 @@ export default function BasicRtc(props) {
 
   const handleJoin = async () => {
     await RTC.handleJoin();
-    await RTC.handlePublish(videoBitRate);
+    await RTC.handlePublish({
+      videoWidth,
+      videoHeight,
+      videoFps,
+      videoBitRate,
+    });
   };
 
   const handlePublish = async () => {
-    await RTC.handlePublish();
+    await RTC.handlePublish({
+      videoWidth,
+      videoHeight,
+      videoFps,
+      videoBitRate,
+    });
   };
 
   const handleUnPublish = async () => {
@@ -471,13 +487,34 @@ export default function BasicRtc(props) {
                 <RoomIDInput disabled={isJoined} onChange={value => setRoomID(value)}></RoomIDInput>
 
                 <TextField
+                  value={videoWidth}
+                  label="videoWidth"
+                  className={clsx(classes['band-input'], isMobile && classes['band-input-mobile'])}
+                  onChange={e => setVideoWidth(e.target.value)}
+                ></TextField>
+
+                <TextField
+                  value={videoHeight}
+                  label="videoHeight"
+                  className={clsx(classes['band-input'], isMobile && classes['band-input-mobile'])}
+                  onChange={e => setVideoHeight(e.target.value)}
+                ></TextField>
+
+                <TextField
+                  value={videoFps}
+                  label="VideoFps"
+                  className={clsx(classes['band-input'], isMobile && classes['band-input-mobile'])}
+                  onChange={e => setVideoFps(e.target.value)}
+                ></TextField>
+
+                <TextField
                   value={videoBitRate}
                   label="VideoBitrate(kbps)"
                   className={clsx(classes['band-input'], isMobile && classes['band-input-mobile'])}
                   onChange={e => setVideoBitRate(e.target.value)}
                 ></TextField>
 
-                <FormControl className={clsx(classes['band-input'], isMobile && classes['band-input-mobile'])}>
+                {/* <FormControl className={clsx(classes['band-input'], isMobile && classes['band-input-mobile'])}>
                   <InputLabel id="simple-select-label">BandWidth</InputLabel>
                   <Select
                     value={bandValue}
@@ -485,7 +522,7 @@ export default function BasicRtc(props) {
                   >
                     {bandWidthList.map(num => <MenuItem value={num} key={num}>{num}</MenuItem>)}
                   </Select>
-                </FormControl>
+                </FormControl> */}
 
                 <DeviceSelect deviceType="camera" onChange={value => setCameraID(value)}></DeviceSelect>
                 <DeviceSelect deviceType="microphone" onChange={value => setMicrophoneID(value)}></DeviceSelect>
