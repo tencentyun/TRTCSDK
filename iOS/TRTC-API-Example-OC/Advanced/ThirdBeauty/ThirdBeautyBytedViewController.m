@@ -19,6 +19,7 @@
  */
 
 #import "ThirdBeautyBytedViewController.h"
+#import <OpenGLES/ES2/gl.h>
 //#import "BEEffectManager.h"
 //#import "BEEffectResourceHelper.h"
 //#import "BEEffectDataManager.h"
