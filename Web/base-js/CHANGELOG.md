@@ -7,7 +7,19 @@
 > - 建议您及时更新至最新版本，以便获得更好的产品稳定性及在线支持。
 > - 版本升级注意事项请参见：[升级指引](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/tutorial-00-info-update-guideline.html)。
 
-## Version 4.11.12 @2021.01.11
+## Version 4.11.13 @2022.02.17
+
+**Improvement**
+
+- 更新 npm 包 Typescript 声明文件。
+- 优化 [stream.play](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/Stream.html#play) 参数校验逻辑。
+
+**Bug Fixed**
+
+- 修复 iOS 13 在未授权前偶现 [LocalStream.initialize](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/LocalStream.html#initialize) 失败报错的问题。
+- 修复 [AUDIO_VOLUME](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/module-ClientEvent.html#.AUDIO_VOLUME) 事件偶现取值为0的问题。
+
+## Version 4.11.12 @2022.01.11
 
 **Improvement**
 
