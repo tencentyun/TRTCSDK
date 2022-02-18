@@ -27,6 +27,9 @@ Object.values(config).forEach((item, index) => {
     idObj[item.path] = itemConfig.id;
     titleObj[item.path] = itemConfig.title;
   }
+  if (item.enPath) {
+    itemConfig.enPath = item.enPath;
+  }
   navConfig.push(itemConfig);
 });
 

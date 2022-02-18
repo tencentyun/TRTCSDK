@@ -57,7 +57,9 @@ export function handlePageChange(data) {
   if (data.type === 'group') {
     return;
   }
-  goToPage(data.path);
+  const language = getLanguage();
+  const path = language !== 'zh-CN' ? data.enPath || data.path : data.path;
+  goToPage(path);
 };
 
 export function getLanguage() {

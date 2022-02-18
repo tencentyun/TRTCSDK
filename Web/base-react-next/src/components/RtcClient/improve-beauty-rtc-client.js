@@ -1,6 +1,8 @@
 import RTC from '@components/BaseRTC.js';
 import RTCBeautyPlugin from 'rtc-beauty-plugin';
 import toast from '@components/Toast';
+import { publishUpload } from '@utils/utils';
+import { SDKAPPID } from '@app/config';
 
 export default class RTCClient extends RTC {
   async handlePublish() {
@@ -15,6 +17,7 @@ export default class RTCClient extends RTC {
       const stream = this.beautyPlugin.generateBeautyStream(this.localStream);
       await this.client.publish(stream);
       toast.success('publish localStream success!', 2000);
+      publishUpload(SDKAPPID);
 
       this.isPublishing = false;
       this.isPublished = true;
