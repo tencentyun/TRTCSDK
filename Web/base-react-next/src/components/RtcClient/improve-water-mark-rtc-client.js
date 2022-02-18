@@ -1,4 +1,5 @@
 import RTC from '@components/BaseRTC.js';
+import UAParser from 'ua-parser-js';
 
 export default class RTCClient extends RTC {
   constructor(options) {
@@ -9,6 +10,9 @@ export default class RTCClient extends RTC {
     this.videoElement = null;
     this.sourceVideoTrack = null;
     this.intervalId = -1;
+
+    const os = new UAParser().getOS();
+    this.IS_IOS_BEFORE_15 = os.name === 'iOS' && os.version.split('.')[0] < 15;
   }
 
   loadImage({ imageUrl, width, height }) {
@@ -26,23 +30,27 @@ export default class RTCClient extends RTC {
     if (!localStream || !localStream.hasVideo()) {
       throw 'local stream has not video track';
     }
-
-    const image = await this.loadImage({ imageUrl, width, height });
+    // 1. 创建 video 播放 localStream.getVideoTrack()，用于将视频渲染至 canvas 中
     this.videoElement = document.createElement('video');
     const mediaStream = new MediaStream();
     this.sourceVideoTrack = localStream.getVideoTrack();
     mediaStream.addTrack(this.sourceVideoTrack);
-
+    this.videoElement.playsInline = true;
+    this.videoElement.muted = true;
     this.videoElement.srcObject = mediaStream;
     await this.videoElement.play();
+    // 2. 加载水印图片
+    const image = await this.loadImage({ imageUrl, width, height });
 
+    // 3. 创建 canvas
     const canvas = document.createElement('canvas');
+    this.canvas = canvas;
     const ctx = canvas.getContext('2d');
     const { width: trackWidth, height: trackHeight, frameRate } = this.sourceVideoTrack.getSettings();
     canvas.width = trackWidth;
     canvas.height = trackHeight;
 
-
+    // 4. 渲染 canvas
     this.intervalId = setInterval(() => {
       ctx.drawImage(this.videoElement, 0, 0, canvas.width, canvas.height);
 
@@ -63,8 +71,19 @@ export default class RTCClient extends RTC {
       ctx.globalAlpha = 1;
     }, Math.floor(1000 / frameRate));
 
-    const canvasStream = canvas.captureStream();
+    if (this.IS_IOS_BEFORE_15) {
+      // 将 canvas 放置到 DOM 中渲染。
+      canvas.style.width = '100%';
+      canvas.style.height = '100%';
+      canvas.style.objectFit = 'cover';
+      // dom 为 localStream.play(elementId) 传入的 dom 对象
+      this.dom.appendChild(canvas);
+      // 停止播放
+      localStream.stop();
+    }
 
+    // 5. 从 canvas 中捕获视频流，并替换到 localStream 中
+    const canvasStream = canvas.captureStream();
     await localStream.replaceTrack(canvasStream.getVideoTracks()[0]);
 
     this.localStreamWithWaterMark = localStream;
@@ -77,6 +96,13 @@ export default class RTCClient extends RTC {
     if (this.localStreamWithWaterMark && this.sourceVideoTrack) {
       this.localStreamWithWaterMark.replaceTrack(this.sourceVideoTrack);
     }
+
+    if (this.IS_IOS_BEFORE_15) {
+      this.dom.removeChild(this.canvas);
+      this.canvas = null;
+      this.localStreamWithWaterMark.play(this.dom);
+    }
+
     this.localStreamWithWaterMark = null;
     if (this.videoElement) {
       this.videoElement.srcObject = null;

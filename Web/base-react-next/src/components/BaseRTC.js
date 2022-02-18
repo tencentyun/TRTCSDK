@@ -1,7 +1,7 @@
 import a18n from 'a18n';
 import React from 'react';
 import TRTC from 'trtc-js-sdk';
-import { isUndefined } from '@utils/utils';
+import { isUndefined, joinRoomUpload, publishUpload } from '@utils/utils';
 import { getLatestUserSig } from '@app/index';
 import { SDKAPPID } from '@app/config';
 import toast from '@components/Toast';
@@ -37,6 +37,7 @@ export default class RTC extends React.Component {
     this.userSig = '';
     this.privateMapKey = 255;
     this.mirror = true;
+    this.dom = null;
     global.$TRTC = TRTC;
   }
 
@@ -126,6 +127,7 @@ export default class RTC extends React.Component {
     this.localStream && this.localStream.stop();
     this.localStream && this.localStream.close();
     this.localStream = null;
+    this.dom = null;
   }
 
   playStream(stream, dom) {
@@ -133,6 +135,9 @@ export default class RTC extends React.Component {
       stream.play(dom, { objectFit: 'contain' }).catch();
     } else {
       stream.play(dom).catch();
+      if (stream === this.localStream) {
+        this.dom = dom;
+      }
     }
   }
 
@@ -149,6 +154,7 @@ export default class RTC extends React.Component {
     try {
       await this.client.join({ roomId: this.roomID });
       toast.success('join room success!', 2000);
+      joinRoomUpload(SDKAPPID);
 
       this.isJoining = false;
       this.isJoined = true;
@@ -172,6 +178,7 @@ export default class RTC extends React.Component {
     try {
       await this.client.publish(this.localStream);
       toast.success('publish localStream success!', 2000);
+      publishUpload(SDKAPPID);
 
       this.isPublishing = false;
       this.isPublished = true;
