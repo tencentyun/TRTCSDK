@@ -80,8 +80,8 @@ export function getCookie(cname) {
     return '';
   }
   const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${cname}=`);
-  return (parts.length === 2 && parts.pop()) || ''; // 默认返回空字符串 ''
+  const parts = value.split('; ').find(str => str.includes(`${cname}=`)) || '';
+  return parts.replace(`${cname}=`, '');
 }
 
 /**
@@ -160,4 +160,28 @@ export function getSupportedMimeTypes() {
     'video/mp4;codecs=h264,aac',
   ];
   return possibleTypes.filter(mimeType => MediaRecorder.isTypeSupported(mimeType));
+}
+
+/**
+ * 上报 TAM 数据
+ */
+export function uploadToTAM(eventType, sdkAppId) {
+  window && window.aegis && window.aegis.reportEvent({
+    name: eventType,
+    ext1: eventType,
+    ext2: 100, // webrtc samples-site 为 100
+    ext3: sdkAppId,
+  });
+}
+/**
+ * 进房成功上报到 TAM
+ */
+export function joinRoomUpload(sdkAppId) {
+  uploadToTAM('joinRoom', sdkAppId);
+}
+/**
+ * 推流成功上报到 TAM
+ */
+ export function publishUpload(sdkAppId) {
+  uploadToTAM('publish', sdkAppId);
 }

@@ -41,13 +41,13 @@ $default-padding: 20px;
       background: #fafafa;
       min-height: auto !important;
       // margin: 0 0 20px;
-      &:before{
+      &:before {
         display: none;
       }
       .accordion-summary-container {
         padding: 0px;
         min-height: 48px;
-        .accordion-summary-content{
+        .accordion-summary-content {
           margin: 0;
         }
       }
@@ -108,16 +108,16 @@ $default-padding: 20px;
         }
       }
     }
-    .body-container{
+    .body-container {
       padding: 10px 20px 0px;
       // overflow-y: scroll;
       flex: 1 1 auto;
       .video-container {
         width: 100%;
-        object-fit: 'cover';
+        object-fit: "cover";
         @include padding-bottom();
       }
-      .canvas-container{
+      .canvas-container {
         @include padding-bottom();
         canvas {
           display: block;
@@ -127,7 +127,7 @@ $default-padding: 20px;
         // @include padding-bottom();
       }
     }
-    .footer-container{
+    .footer-container {
       flex: 0 0 auto;
       padding: $default-padding;
       // align-self: flex-end;
@@ -144,5 +144,53 @@ $default-padding: 20px;
     flex: 1;
     overflow: auto;
     padding: 10px;
+  }
+}
+
+.caption-list {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 9999;
+  background-color: #000;
+  color: #fff;
+  padding: 0 24px 12px;
+  .caption-item {
+    margin-bottom: 12px;
+    max-height: 40px;
+    overflow-y: scroll;
+  }
+  .caption-item::-webkit-scrollbar {
+    display: none; /* Chrome Safari */
+  }
+}
+
+.text-minutes-wrapper {
+  position: absolute;
+  right: 0;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  height: 100%;
+  box-shadow: 4px 4px 4px gray;
+  padding: 12px 0 12px 24px;
+  background-color: #fff;
+  .text-minutes-list {
+    padding-bottom: 46px;
+    height: 100%;
+    overflow-y: scroll;
+    .userId {
+      color: blue;
+      margin-right: 24px;
+    }
+    .item {
+      margin-bottom: 12px;
+    }
+  }
+  .export-button {
+    position: sticky;
+    bottom: 0px;
   }
 }

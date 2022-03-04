@@ -30,12 +30,14 @@ export default function DeviceData({ deviceType, updateDeviceList, updateActiveD
         alert(a18n`请允许网页访问${deviceType === 'microphone' ? a18n('麦克风') : a18n('摄像头')}的权限！`);
       } else if (error.name === 'NotFoundError') {
         alert(a18n`请检查${deviceType === 'microphone' ? a18n('麦克风') : a18n('摄像头')}设备连接是否正常！`);
+      } else if (error.name === 'NotReadableError') {
+        alert(a18n`请检查${deviceType === 'microphone' ? a18n('麦克风') : a18n('摄像头')}设备是否被其它应用占用或未授权应用权限！`);
       }
     }
 
     const list = await getDeviceList(deviceType);
     updateDeviceList && updateDeviceList(list);
-    const activeDeviceId = list[0].deviceId;
+    const activeDeviceId = (list[0] && list[0].deviceId) || '';
     updateActiveDeviceId && updateActiveDeviceId(activeDeviceId);
   }, []);
 

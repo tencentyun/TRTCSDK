@@ -155,14 +155,51 @@ export default {
           'zh-CN': a18n('水印'),
         },
       },
+      {
+        path: 'improve-asr',
+        name: {
+          en: 'Improve ASR',
+          'zh-CN': a18n('实时语音识别'),
+        },
+      },
     ],
   },
 
-  api: {
+  API: {
     name: {
       en: 'API Document',
       'zh-CN': a18n('API 文档'),
     },
     path: 'https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/Client.html',
+    enPath: 'https://web.sdk.qcloud.com/trtc/webrtc/doc/en/Client.html'
   },
+  Demo: {
+    name: {
+      en: 'Demo Download',
+      'zh-CN': a18n('Demo 下载'),
+    },
+    path: 'https://github.com/tencentyun/TRTCSDK/tree/master/Web',
+  },
+  SDK: {
+    name: {
+      en: 'SDK Download',
+      'zh-CN': a18n('SDK 下载'),
+    },
+    path: 'https://www.npmjs.com/package/trtc-js-sdk',
+  },
+  Integration: {
+    name: {
+      en: 'Fast Integration',
+      'zh-CN': a18n('快速集成'),
+    },
+    path: 'https://cloud.tencent.com/document/product/647/16863',
+    enPath: 'https://intl.cloud.tencent.com/document/product/647/35607?lang=en'
+  },
+  Support: {
+    name: {
+      en: 'Technical Support',
+      'zh-CN': a18n('技术支持'),
+    },
+    path: 'https://cloud.tencent.com/document/product/647/19906',
+  }
 };
