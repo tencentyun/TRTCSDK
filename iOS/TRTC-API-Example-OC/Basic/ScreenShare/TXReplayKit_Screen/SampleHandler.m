@@ -50,20 +50,7 @@
 }
 
 - (void)processSampleBuffer:(CMSampleBufferRef)sampleBuffer withType:(RPSampleBufferType)sampleBufferType {
-    switch (sampleBufferType) {
-        case RPSampleBufferTypeVideo:
-            [[TXReplayKitExt sharedInstance] sendVideoSampleBuffer:sampleBuffer];
-            break;
-        case RPSampleBufferTypeAudioApp:
-            // Handle audio sample buffer for app audio
-            break;
-        case RPSampleBufferTypeAudioMic:
-            // Handle audio sample buffer for mic audio
-            break;
-            
-        default:
-            break;
-    }
+    [[TXReplayKitExt sharedInstance] sendSampleBuffer:sampleBuffer withType:sampleBufferType];
 }
 @end
 

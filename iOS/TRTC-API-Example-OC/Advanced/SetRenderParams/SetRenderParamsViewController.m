@@ -174,6 +174,7 @@ static const NSInteger maxRemoteUserNum = 6;
     encParams.videoBitrate = 550;
     encParams.videoFps = 15;
     
+    [self.trtcCloud setGSensorMode:TRTCGSensorMode_Disable];
     [self.trtcCloud setVideoEncoderParam:encParams];
     [self.trtcCloud startLocalAudio:TRTCAudioQualityMusic];
 }
