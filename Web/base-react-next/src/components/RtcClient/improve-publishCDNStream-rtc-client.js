@@ -1,5 +1,7 @@
 import RTC from '@components/BaseRTC';
 import Toast from '@components/Toast';
+import { publishCdnSuccessUpload, publishCdnFailedUpload } from '@utils/utils';
+import { SDKAPPID } from '@app/config';
 class Client extends RTC {
   constructor(options) {
     super(options);
@@ -96,9 +98,11 @@ class Client extends RTC {
     try {
       await this.client.startPublishCDNStream(options);
       Toast.success('start publishCDNStream success', 2000);
+      publishCdnSuccessUpload(SDKAPPID);
     } catch (error) {
       console.error('start publishCDNStream error', error);
       Toast.error('start publishCDNStream error', 2000);
+      publishCdnFailedUpload(SDKAPPID, `${JSON.stringify(error.message)}`);
     }
   }
 

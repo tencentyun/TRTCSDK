@@ -12,8 +12,14 @@
     text-overflow: ellipsis;
     flex: 1;
   }
-  .more-menu{
-    margin-right: -18px;
+  .top-bar-icon {
+    color: rgba(0, 0, 0, 0.87);
+    &:nth-last-child(1) {
+      margin-right: -14px;
+    }
+    &:hover {
+      color: #1890fe;
+    }
   }
 }
 .menu-item-text {

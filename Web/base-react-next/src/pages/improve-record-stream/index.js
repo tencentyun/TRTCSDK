@@ -9,7 +9,7 @@ import UserList from '@components/UserList';
 import UserIDInput from '@components/UserIDInput';
 import RoomIDInput from '@components/RoomIDInput';
 import { getNavConfig } from '@api/nav';
-import { getUrlParam, getSupportedMimeTypes } from '@utils/utils';
+import { getUrlParam, getSupportedMimeTypes, recordStreamSuccessUpload, recordStreamFailedUpload } from '@utils/utils';
 import { handlePageUrl, handlePageChange, getLanguage } from '@utils/common';
 import { Button, Accordion, AccordionSummary, AccordionDetails, Typography, Select, MenuItem, InputLabel } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -18,6 +18,7 @@ import styles from '@styles/common.module.scss';
 import toast from '@components/Toast';
 import DeviceSelect from '@components/DeviceSelect';
 import { ENV_IS_PRODUCTION } from '@utils/constants';
+import { SDKAPPID } from '@app/config';
 const mobile = require('is-mobile');
 const DynamicRtc = dynamic(import('@components/BaseRTC'), { ssr: false });
 const DynamicShareRtc = dynamic(import('@components/ShareRTC'), { ssr: false });
@@ -406,8 +407,10 @@ export default function BasicRtc(props) {
         mediaStream.addTrack(remoteStreamConfigList[0].stream.getAudioTrack());
         mediaStream.addTrack(remoteStreamConfigList[0].stream.getVideoTrack());
         mediaRecorder = new MediaRecorder(mediaStream);
+        recordStreamSuccessUpload(SDKAPPID);
       } catch (error) {
         console.error('Exception while creating MediaRecorder:', error);
+        recordStreamFailedUpload(SDKAPPID, `${JSON.stringify(error.message)}`);
         return;
       }
       console.log('Created MediaRecorder', mediaRecorder, 'with options', options);
