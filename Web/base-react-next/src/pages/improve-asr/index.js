@@ -9,7 +9,7 @@ import UserList from '@components/UserList';
 import UserIDInput from '@components/UserIDInput';
 import RoomIDInput from '@components/RoomIDInput';
 import { getNavConfig } from '@api/nav';
-import { getUrlParam } from '@utils/utils';
+import { getUrlParam, startAsrUpload } from '@utils/utils';
 import { handlePageUrl, handlePageChange, getLanguage } from '@utils/common';
 import { Button, Accordion, AccordionSummary, AccordionDetails, Typography, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -19,6 +19,7 @@ import DeviceSelect from '@components/DeviceSelect';
 import RelatedResources from '@components/RelatedResources';
 import Toast from '@components/Toast';
 import { getFederationToken } from '@api/http';
+import { SDKAPPID } from '@app/config';
 const mobile = require('is-mobile');
 const DynamicRtc = dynamic(import('@components/BaseRTC'), { ssr: false });
 const DynamicShareRtc = dynamic(import('@components/ShareRTC'), { ssr: false });
@@ -69,6 +70,7 @@ export default function BasicRtc(props) {
       startASR(stream);
     });
     Toast.success('实时语音识别已开启，尝试对着麦克风说几句话吧！');
+    startAsrUpload(SDKAPPID);
   };
   const handleStopASR = () => {
     setEnableASR(false);

@@ -1,7 +1,15 @@
 import a18n from 'a18n';
 import React from 'react';
 import TRTC from 'trtc-js-sdk';
-import { isUndefined, joinRoomUpload, publishUpload } from '@utils/utils';
+import {
+  isUndefined,
+  joinRoomSuccessUpload,
+  joinRoomFailedUpload,
+  publishSuccessUpload,
+  publishFailedUpload,
+  initLocalStreamSuccessUpload,
+  initLocalStreamFailedUpload,
+} from '@utils/utils';
 import { getLatestUserSig } from '@app/index';
 import { SDKAPPID } from '@app/config';
 import toast from '@components/Toast';
@@ -110,15 +118,16 @@ export default class RTC extends React.Component {
       userId: this.userID,
       cameraId: this.cameraID,
       microphoneId: this.microphoneID,
-      mirror: this.mirror,
     });
     try {
       await this.localStream.initialize();
       this.addStream && this.addStream(this.localStream);
+      initLocalStreamSuccessUpload(SDKAPPID);
       return this.localStream;
     } catch (error) {
       this.localStream = null;
       alert(`${JSON.stringify(error.message)}`);
+      initLocalStreamFailedUpload(SDKAPPID, `${JSON.stringify(error.message)}`);
     }
   }
 
@@ -132,7 +141,10 @@ export default class RTC extends React.Component {
 
   playStream(stream, dom) {
     if (stream.getType() === 'main' && stream.getUserId().indexOf('share') >= 0) {
-      stream.play(dom, { objectFit: 'contain' }).catch();
+      stream.play(dom, {
+        objectFit: 'contain',
+        mirror: this.mirror,
+      }).catch();
     } else {
       stream.play(dom).catch();
       if (stream === this.localStream) {
@@ -154,7 +166,7 @@ export default class RTC extends React.Component {
     try {
       await this.client.join({ roomId: this.roomID });
       toast.success('join room success!', 2000);
-      joinRoomUpload(SDKAPPID);
+      joinRoomSuccessUpload(SDKAPPID);
 
       this.isJoining = false;
       this.isJoined = true;
@@ -166,6 +178,7 @@ export default class RTC extends React.Component {
       this.isJoining = false;
       toast.error('join room failed!', 20000);
       console.error('join room failed', error);
+      joinRoomFailedUpload(SDKAPPID, `${JSON.stringify(error.message)}`);
     }
   }
 
@@ -178,7 +191,7 @@ export default class RTC extends React.Component {
     try {
       await this.client.publish(this.localStream);
       toast.success('publish localStream success!', 2000);
-      publishUpload(SDKAPPID);
+      publishSuccessUpload(SDKAPPID);
 
       this.isPublishing = false;
       this.isPublished = true;
@@ -187,6 +200,7 @@ export default class RTC extends React.Component {
       this.isPublishing = false;
       console.error('publish localStream failed', error);
       toast.error('publish localStream failed!', 2000);
+      publishFailedUpload(SDKAPPID, `${JSON.stringify(error.message)}`);
     }
   }
 
@@ -396,13 +410,13 @@ export default class RTC extends React.Component {
         console.log(`remote stream added: [${remoteUserID}] type: ${remoteStream.getType()}`);
         // subscribe to this remote stream
         this.handleSubscribe(remoteStream);
+        this.addStream && this.addStream(remoteStream);
       }
     });
     // fired when a remote stream has been subscribed
     this.client.on('stream-subscribed', (event) => {
       const { stream: remoteStream } = event;
       console.log('stream-subscribed userId: ', remoteStream.getUserId());
-      this.addStream && this.addStream(remoteStream);
     });
     // fired when the remote stream is removed, e.g. the remote user called Client.unpublish()
     this.client.on('stream-removed', (event) => {

@@ -171,14 +171,14 @@ export default {
       'zh-CN': a18n('API 文档'),
     },
     path: 'https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/Client.html',
-    enPath: 'https://web.sdk.qcloud.com/trtc/webrtc/doc/en/Client.html'
+    enPath: 'https://web.sdk.qcloud.com/trtc/webrtc/doc/en/Client.html',
   },
   Demo: {
     name: {
       en: 'Demo Download',
       'zh-CN': a18n('Demo 下载'),
     },
-    path: 'https://github.com/tencentyun/TRTCSDK/tree/master/Web',
+    path: 'https://github.com/LiteAVSDK/TRTC_Web',
   },
   SDK: {
     name: {
@@ -193,7 +193,7 @@ export default {
       'zh-CN': a18n('快速集成'),
     },
     path: 'https://cloud.tencent.com/document/product/647/16863',
-    enPath: 'https://intl.cloud.tencent.com/document/product/647/35607?lang=en'
+    enPath: 'https://intl.cloud.tencent.com/document/product/647/35607?lang=en',
   },
   Support: {
     name: {
@@ -201,5 +201,5 @@ export default {
       'zh-CN': a18n('技术支持'),
     },
     path: 'https://cloud.tencent.com/document/product/647/19906',
-  }
+  },
 };

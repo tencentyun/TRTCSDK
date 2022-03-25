@@ -8,7 +8,7 @@ import UserList from '@components/UserList';
 import UserIDInput from '@components/UserIDInput';
 import RoomIDInput from '@components/RoomIDInput';
 import { getNavConfig } from '@api/nav';
-import { getUrlParam } from '@utils/utils';
+import { getUrlParam, openWaterMarkUpload } from '@utils/utils';
 import { handlePageUrl, handlePageChange, getLanguage } from '@utils/common';
 import { Button, Accordion, AccordionSummary, AccordionDetails, Typography } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -16,6 +16,7 @@ import SideBar from '@components/SideBar';
 import styles from '@styles/common.module.scss';
 import DeviceSelect from '@components/DeviceSelect';
 import RelatedResources from '@components/RelatedResources';
+import { SDKAPPID } from '@app/config';
 const mobile = require('is-mobile');
 const DynamicRtc = dynamic(import('@components/RtcClient/improve-water-mark-rtc-client'), { ssr: false });
 const DynamicShareRtc = dynamic(import('@components/ShareRTC'), { ssr: false });
@@ -64,6 +65,7 @@ export default function BasicRtc(props) {
       rotate: 30,
       alpha: 0.3,
     }).then(() => setIsWaterMarkEnabled(true));
+    openWaterMarkUpload(SDKAPPID);
   };
 
   const handleCloseWaterMark = () => {

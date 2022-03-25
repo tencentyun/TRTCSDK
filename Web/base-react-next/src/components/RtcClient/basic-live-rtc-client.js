@@ -1,6 +1,9 @@
 import RTC from '@components/BaseRTC';
 import toast from '@components/Toast';
-import { joinRoomUpload } from '@utils/utils';
+import {
+  joinRoomSuccessUpload,
+  joinRoomFailedUpload,
+} from '@utils/utils';
 import { SDKAPPID } from '@app/config';
 class Client extends RTC {
   constructor(options) {
@@ -17,7 +20,7 @@ class Client extends RTC {
     try {
       await this.client.join({ roomId: this.roomID, role: this.role });
       toast.success('join room success!', 2000);
-      joinRoomUpload(SDKAPPID);
+      joinRoomSuccessUpload(SDKAPPID);
 
       this.isJoining = false;
       this.isJoined = true;
@@ -29,6 +32,7 @@ class Client extends RTC {
       this.isJoining = false;
       toast.error('join room failed!', 20000);
       console.error('join room failed', error);
+      joinRoomFailedUpload(SDKAPPID, `${JSON.stringify(error.message)}`);
     }
   }
 }

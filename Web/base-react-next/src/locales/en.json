@@ -1,6 +1,6 @@
 {
   "当前浏览器不支持 WebRTC SDK, 请更换其他浏览器": "The browser does not support WebRTC. Try a different one. ",
-  "屏幕分享失败，请确保系统允许当前浏览器获取屏幕内容": "Screen sharing failed. Make sure you have granted the browser access to screen recording.",
+  "屏幕分享失败，请确保系统允许当前浏览器获取屏幕内容": "Screen sharing failed. Make sure you have granted the browser access to screen recording. If you have already granted screen recording access, You need to do the following: Turn off system screen recording privileges -> Turn on system screen recording privileges again -> Close the current browser -> Turn on the browser again.",
   "基础应用": "Basic Features",
   "基础音视频通话": "Audio/Video Call",
   "观众进房": "Join Room",
@@ -37,8 +37,8 @@
   "请检查%s设备是否被其它应用占用！": "Check whether device %s is occupied by other applications.",
   "中文": "Chinese",
   "英文": "English",
-  "语言切换": "Language",
-  "设备检测": "Test Device",
+  "语言切换": "Switch Language",
+  "设备检测": "Device Testing",
   "复制链接": "Copy Link",
   "GitHub 地址": "To GitHub",
   "注销": "UnRegister",
@@ -133,5 +133,6 @@
   "Demo 下载": "Demo Download",
   "SDK 下载": "SDK Download",
   "快速集成": "Fast Integration",
-  "技术支持": "Technical Support"
+  "技术支持": "Technical Support",
+  "更多": "More"
 }
