@@ -1,0 +1,420 @@
+* {
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, 'Microsoft YaHei', PingFang SC, sans-serif, 'Segoe UI Symbol';
+}
+body{
+  padding-bottom: 40px;
+}
+.container {
+  padding: 0;
+  width: 100%;
+}
+
+.header {
+  height: 50px;
+  transparent: 10%;
+  padding: 10px 10px;
+  background-color: #00182F;
+  display: flex;
+  justify-content: space-between;
+}
+
+.content {
+  padding: 20px 0;
+}
+
+.github {
+  color: rgb(255, 255, 255);
+  fill: rgb(255, 255, 255);
+  padding: 10px;
+}
+
+a {
+  text-decoration: none;
+}
+
+h1 {
+  font-size: 20px;
+}
+
+li {
+  font-size: 14px;
+  line-height: 22px;
+}
+ul {
+  padding-left: 1rem;
+}
+.step {
+  padding: 10px 0;
+}
+
+.accordion-button:focus {
+  box-shadow: none !important;
+}
+
+.accordion-button:not(.collapsed) {
+  color: #212529;
+  background-color: white;
+}
+
+.input-list {
+  display: flex;
+  justify-content: space-between;
+}
+
+.input-group:nth-child(odd) {
+  margin-right: 10px;
+}
+
+.input-group-sm > .input-group-text {
+  width: 90px;
+}
+
+.wrapper > button {
+  margin-bottom: 10px;
+}
+.select-wrapper {
+  display: flex;
+}
+
+.pusher {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.log {
+  min-width: 180px;
+  width: calc(100% - 490px);
+  height: 360px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  padding: 6px;
+  overflow-y:  scroll;
+}
+.log > div {
+  font-size: 12px;
+}
+.tag {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 25px;
+  z-index: 999;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  padding: 0 4px;
+  flex-direction: row-reverse;
+}
+.tag > div {
+  height: 25px;
+  width: 25px;
+  cursor: pointer;
+}
+
+.muteAudio {
+  background: url(../icon/mic-mute.svg) center center no-repeat;
+}
+.unmuteAudio {
+  background: url(../icon/mic.svg) center center no-repeat;
+}
+
+.muteVideo {
+  background: url(../icon/camera-mute.svg) center center no-repeat;
+}
+.unmuteVideo {
+  background: url(../icon/camera.svg) center center no-repeat;
+}
+.success {
+  color: green;
+}
+.failed {
+  color: red;
+}
+.local {
+  width: 480px;
+  height: 360px;
+  margin: 0 0 10px 0;
+  position: relative;
+}
+
+.player {
+  display: flex;
+  width: 100%;
+  min-height: 100px;
+  flex-direction: row;
+}
+
+.log > p {
+  font-size: 12px;
+  line-height: 18px;
+}
+
+#language {
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.remote {
+  width: 25%;
+  min-height: 100px;
+  margin: 0 10px 10px 0;
+  position: relative;
+}
+
+#userIdContainer {
+  width: 100%;
+  color: white;
+  font-size: 12px;
+  line-height: 25px;
+}
+
+.en {
+  display: none;
+}
+
+.copy {
+  display: flex;
+  align-items: center;
+  margin-top: 4px;
+}
+.invite-input {
+  border: 1px solid #d5d5d5;
+  line-height: 30px;
+  font-size: 12px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 1px 6px;
+}
+.invite-btn {
+  position: relative;
+  display: inline-block;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 20px;
+  color: #333;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  background-color: #eee;
+  border: 1px solid #d5d5d5;
+  border-radius: 3px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-appearance: none;
+}
+
+@media (max-width: 540px) {
+  .log {
+    width: 100%;
+    height: 150px;
+    margin-right: 0;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    padding: 6px;
+    overflow-y:  scroll;
+  }
+  .local {
+    width: 100%;
+    height: 100%;
+    margin-right: 0;
+  }
+  .remote {
+    width: 100%;
+    margin-right: 0;
+  }
+}
+.bold {
+  font-weight: 500;
+}
+
+
+#console {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  border-radius: 4px;
+  padding: 2px 6px;
+  line-height: 18px;
+  font-size: 12px;
+  height: 20px;
+  width: auto;
+  background-color: #CCC;
+  cursor: pointer;
+}
+
+
+.tooltipped {
+  position: relative
+}
+
+.tooltipped:after {
+  position: absolute;
+  z-index: 1000000;
+  display: none;
+  padding: 5px 8px;
+  font: normal normal 11px/1.5 Helvetica,arial,nimbussansl,liberationsans,freesans,clean,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+  text-shadow: none;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: break-word;
+  white-space: pre;
+  pointer-events: none;
+  content: attr(aria-label);
+  background: rgba(0,0,0,.8);
+  border-radius: 3px;
+  -webkit-font-smoothing: subpixel-antialiased
+}
+
+.tooltipped:before {
+  position: absolute;
+  z-index: 1000001;
+  display: none;
+  width: 0;
+  height: 0;
+  color: rgba(0,0,0,.8);
+  pointer-events: none;
+  content: "";
+  /*border: 5px solid transparent*/
+}
+
+.tooltipped:hover:before,.tooltipped:hover:after,.tooltipped:active:before,.tooltipped:active:after,.tooltipped:focus:before,.tooltipped:focus:after {
+  display: inline-block;
+  text-decoration: none
+}
+
+.tooltipped-multiline:hover:after,.tooltipped-multiline:active:after,.tooltipped-multiline:focus:after {
+  display: table-cell
+}
+
+.tooltipped-s:after,.tooltipped-se:after,.tooltipped-sw:after {
+  top: 100%;
+  right: 50%;
+  margin-top: 5px
+}
+
+.tooltipped-s:before,.tooltipped-se:before,.tooltipped-sw:before {
+  top: auto;
+  right: 50%;
+  bottom: -5px;
+  margin-right: -5px;
+  border-bottom-color: rgba(0,0,0,.8)
+}
+
+.tooltipped-se:after {
+  right: auto;
+  left: 50%;
+  margin-left: -15px
+}
+
+.tooltipped-sw:after {
+  margin-right: -15px
+}
+
+.tooltipped-n:after,.tooltipped-ne:after,.tooltipped-nw:after {
+  right: 50%;
+  bottom: 100%;
+  margin-bottom: 5px
+}
+
+.tooltipped-n:before,.tooltipped-ne:before,.tooltipped-nw:before {
+  top: -5px;
+  right: 50%;
+  bottom: auto;
+  margin-right: -5px;
+  border-top-color: rgba(0,0,0,.8)
+}
+
+.tooltipped-ne:after {
+  right: auto;
+  left: 50%;
+  margin-left: -15px
+}
+
+.tooltipped-nw:after {
+  margin-right: -15px
+}
+
+.tooltipped-s:after,.tooltipped-n:after {
+  -webkit-transform: translateX(50%);
+  -ms-transform: translateX(50%);
+  transform: translateX(50%)
+}
+
+.tooltipped-w:after {
+  right: 100%;
+  bottom: 50%;
+  margin-right: 5px;
+  -webkit-transform: translateY(50%);
+  -ms-transform: translateY(50%);
+  transform: translateY(50%)
+}
+
+.tooltipped-w:before {
+  top: 50%;
+  bottom: 50%;
+  left: -5px;
+  margin-top: -5px;
+  border-left-color: rgba(0,0,0,.8)
+}
+
+.tooltipped-e:after {
+  bottom: 50%;
+  left: 100%;
+  margin-left: 5px;
+  -webkit-transform: translateY(50%);
+  -ms-transform: translateY(50%);
+  transform: translateY(50%)
+}
+
+.tooltipped-e:before {
+  top: 50%;
+  right: -5px;
+  bottom: 50%;
+  margin-top: -5px;
+  border-right-color: rgba(0,0,0,.8)
+}
+
+.tooltipped-multiline:after {
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  max-width: 250px;
+  word-break: break-word;
+  word-wrap: normal;
+  white-space: pre-line;
+  border-collapse: separate
+}
+
+.tooltipped-multiline.tooltipped-s:after,.tooltipped-multiline.tooltipped-n:after {
+  right: auto;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%)
+}
+
+.tooltipped-multiline.tooltipped-w:after,.tooltipped-multiline.tooltipped-e:after {
+  right: 100%
+}
+
+@media screen and (min-width: 0\0) {
+  .tooltipped-multiline:after {
+    width:250px
+  }
+}
+
+.tooltipped-sticky:before,.tooltipped-sticky:after {
+  display: inline-block
+}
+
+.tooltipped-sticky.tooltipped-multiline:after {
+  display: table-cell
+}

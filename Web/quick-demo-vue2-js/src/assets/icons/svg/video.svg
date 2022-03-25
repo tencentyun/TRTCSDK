@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="17px" height="18px" viewBox="0 0 17 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>摄像头</title>
+    <g id="部分控件" stroke="none" stroke-width="1" fill="" fill-rule="evenodd">
+        <g id="摄像头备份" transform="translate(-2.000000, -1.000000)" fill="">
+            <g id="摄像头" transform="translate(2.000000, 1.000000)">
+                <path d="M8.1,0 C12.5735065,0 16.2,3.62649353 16.2,8.1 C16.2,12.5735065 12.5735065,16.2 8.1,16.2 C3.62649353,16.2 0,12.5735065 0,8.1 C0,3.62649353 3.62649353,0 8.1,0 Z M8.1,3.6 C5.61471863,3.6 3.6,5.61471863 3.6,8.1 C3.6,10.5852814 5.61471863,12.6 8.1,12.6 C10.5852814,12.6 12.6,10.5852814 12.6,8.1 C12.6,5.61471863 10.5852814,3.6 8.1,3.6 Z" id="形状结合"></path>
+                <circle id="椭圆形" cx="8.1" cy="8.1" r="2.7"></circle>
+                <ellipse id="椭圆形" cx="8.1" cy="16.74" rx="6.48" ry="1.08"></ellipse>
+            </g>
+        </g>
+    </g>
+</svg>

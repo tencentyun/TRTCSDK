@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>TRTC 实时音视频</title>
+  <meta http-equiv='Content-Type' content='text/html; charset=UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1, user-scalable=no, shrink-to-fit=no'>
+  <!-- CSS only -->
+  <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css' rel='stylesheet'
+        integrity='sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3' crossorigin='anonymous'>
+  <link href='./css/base.css' rel='stylesheet' type='text/css' />
+  <!-- JavaScript Bundle with Popper -->
+  <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js'
+          integrity='sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p'
+          crossorigin='anonymous'></script>
+</head>
+
+<body>
+
+<!--nav bar-->
+<div class='container-fluid text-white header'>
+  <img class='zh-cn' src='https://web.sdk.qcloud.com/trtc/webrtc/assets/logo/trtc-logo-cn-w.png' style='height: 100%' />
+  <img class='en' src='https://web.sdk.qcloud.com/trtc/webrtc/assets/logo/trtc-logo-en-w.png' style='height: 100%' />
+  <div style='flex-direction: row;display: flex;justify-content: center;align-items: center'>
+    <div id='language'>中/En</div>
+    <a target="_blank" class='github' href='https://github.com/LiteAVSDK/TRTC_Web'>
+      <svg height='32' aria-hidden='true' viewBox='0 0 16 16' version='1.1' width='32' data-view-component='true'
+           class='octicon octicon-mark-github v-align-middle'>
+        <path fill-rule='evenodd'
+              d='M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z'></path>
+      </svg>
+    </a>
+  </div>
+</div>
+
+<div class='container-fluid'>
+  <div class='row justify-content-center'>
+    <div class='col-md-10 col-sm-12'>
+
+      <div class='content'>
+        <div class='accordion' id='accordionPanelsStayOpenExample'>
+          <div class='accordion-item'>
+            <h2 class='accordion-header' id='panelsStayOpen-headingOne'>
+              <button class='accordion-button collapsed bold' type='button' data-bs-toggle='collapse'
+                      data-bs-target='#panelsStayOpen-collapseOne' aria-expanded='true'
+                      aria-controls='panelsStayOpen-collapseOne'>
+                <div style='display: flex;flex-direction: column'>
+                  <span class='en'>Step 1 :  Check Current Environment</span>
+                  <span class='zh-cn'>步骤 1 : 判断当前环境是否满足条件</span>
+                </div>
+              </button>
+            </h2>
+            <div id='panelsStayOpen-collapseOne' class='accordion-collapse collapse show'
+                 aria-labelledby='panelsStayOpen-headingOne'>
+              <div class='accordion-body'>
+                <ul class='zh-cn'>
+                  <li>判断当前浏览器环境是否满足使用 TRTC，您可以访问 <a target="_blank"
+                    href='https://web.sdk.qcloud.com/trtc/webrtc/demo/detect/index.html'>TRTC 检测页面</a></li>
+                </ul>
+                <ul class='en'>
+                  <li>Determine if the current browser environment is suitable for using TRTC，You can visit <a target="_blank"
+                    href='https://web.sdk.qcloud.com/trtc/webrtc/demo/detect/index.html'>TRTC Detect Page</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class='accordion-item'>
+            <h1 class='accordion-header' id='panelsStayOpen-headingTwo'>
+              <button class='accordion-button collapsed bold' type='button' data-bs-toggle='collapse'
+                      data-bs-target='#panelsStayOpen-collapseTwo' aria-expanded='false'
+                      aria-controls='panelsStayOpen-collapseTwo'>
+                <div style='display: flex;flex-direction: column'>
+                  <span class='en'>Step 2 : Create New Application</span>
+                  <span class='zh-cn'>步骤 2 : 创建新的应用</span>
+                </div>
+              </button>
+            </h1>
+            <div id='panelsStayOpen-collapseTwo' class='accordion-collapse collapse'
+                 aria-labelledby='panelsStayOpen-headingTwo'>
+              <div class='accordion-body'>
+                <ul class='en'>
+                  <li>Login<a target="_blank" href='https://console.intl.cloud.tencent.com/trtc'> TRTC Console</a>, choose Development
+                    Assistance > <a target="_blank"
+                      href='https://console.intl.cloud.tencent.com/trtc/quickstart'>Demo Quick Run</a></li>
+                  <li>Click New, enter a name for the application, such as TestTRTC. If you have already created an
+                    application, click Existing.
+                  </li>
+                  <li>Add or edit tags according to actual needs, click Create.</li>
+                  <img src='image/step1-en.png' alt='create' style='width: 400px' />
+                </ul>
+                <ul class='zh-cn'>
+                  <li>登录<a target="_blank" href='https://console.cloud.tencent.com/trtc'>实时音视频控制台</a>，选择 开发辅助 > <a target="_blank"
+                    href='https://console.cloud.tencent.com/trtc/quickstart'>快速跑通Demo</a></li>
+                  <li>单击 新建应用 输入应用名称，例如 TestTRTC；若您已创建应用可单击 选择已有应用。</li>
+                  <li>根据实际业务需求添加或编辑标签，单击 创建。</li>
+                  <img src='image/step1.png' alt='创建应用' style='width: 400px' />
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class='accordion-item'>
+            <h2 class='accordion-header' id='panelsStayOpen-headingThree'>
+              <button class='accordion-button collapsed bold' type='button' data-bs-toggle='collapse'
+                      data-bs-target='#panelsStayOpen-collapseThree' aria-expanded='false'
+                      aria-controls='panelsStayOpen-collapseThree'>
+                <div style='display: flex;flex-direction: column'>
+                  <span class='en'>Step 3 : Get SDKAppID and SecretKey</span>
+                  <span class='zh-cn'>步骤 3 : 获取 SDKAppID 和 密钥 SecretKey</span>
+                </div>
+
+              </button>
+            </h2>
+            <div id='panelsStayOpen-collapseThree' class='accordion-collapse collapse'
+                 aria-labelledby='panelsStayOpen-headingThree'>
+              <div class='accordion-body'>
+                <ul class='en'>
+                  <li>Copy the SDKAppId and SecretKey into the input box</li>
+                  <img src='image/step2-en.png' alt='SDKAppId' style='width: 400px' />
+                </ul>
+                <ul class='zh-cn'>
+                  <li>复制 SDKAppId 和密钥（secretKey）填入输入框</li>
+                  <img src='image/step2.png' alt='SDKAppId' style='width: 400px' />
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class='accordion-item'>
+            <h2 class='accordion-header' id='panelsStayOpen-headingFour'>
+              <button class='accordion-button collapsed bold' type='button' data-bs-toggle='collapse'
+                      data-bs-target='#panelsStayOpen-collapseFour' aria-expanded='false'
+                      aria-controls='panelsStayOpen-collapseFour'>
+                <div style='display: flex;flex-direction: column'>
+                  <span class='en'>Step 4 : Start Video Call</span>
+                  <span class='zh-cn'>步骤 4 : 开始视频通话</span>
+                </div>
+              </button>
+            </h2>
+            <div id='panelsStayOpen-collapseFour' class='accordion-collapse collapse'
+                 aria-labelledby='panelsStayOpen-headingFour'>
+              <div class='accordion-body'>
+                <ul class='zh-cn'>
+                  <li>输入 userId 和 roomId</li>
+                  <li>点击 Join Room 按钮进入房间</li>
+                  <li>点击 Publish 发布本地流</li>
+                  <li>点击 Unpublish 取消发布本地流</li>
+                  <li>点击 Start Share Screen 发布屏幕分享流</li>
+                  <li>点击 Stop Share Screen 取消发布屏幕分享流</li>
+                </ul>
+                <ul class='en'>
+                  <li>Input userId and roomId</li>
+                  <li>Click Join Room to enter the room</li>
+                  <li>Click Publish to publish LocalStream</li>
+                  <li>Click Unpublish to unpublish LocalStream</li>
+                  <li>Click Start Share Screen to publish screen stream</li>
+                  <li>Click Stop Share Screen to unpublish screen stream</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h1 style='font-size: 14px'>
+        <span class='en'>Params</span>
+        <span class='zh-cn'>参数</span>
+      </h1>
+      <div class='input-list'>
+        <div class='input-group input-group-sm mb-3'>
+          <span class='input-group-text'>SDKAppId</span>
+          <input id='sdkAppId' type='number' class='form-control' placeholder='SDKAppId'
+                 value=''>
+        </div>
+        <div class='input-group input-group-sm mb-3'>
+          <span class='input-group-text'>SecretKey</span>
+          <input id='secretKey' type='text' class='form-control' placeholder='secretKey'
+                 value=''>
+        </div>
+      </div>
+      <div class='input-list'>
+        <div class='input-group input-group-sm mb-3'>
+          <span class='input-group-text'>UserId</span>
+          <input id='userId' type='text' class='form-control' placeholder='userId'>
+        </div>
+        <div class='input-group input-group-sm mb-3'>
+          <span class='input-group-text'>RoomId</span>
+          <input id='roomId' type='number' min='1' max='4294967294' class='form-control' placeholder='roomId'>
+        </div>
+      </div>
+      <h1 style='font-size: 14px'>
+        <span class='en'>Device</span>
+        <span class='zh-cn'>设备</span>
+      </h1>
+      <div class='select-wrapper'>
+        <div class='input-group mb-3'>
+          <select class='form-select' id='camera-select'>
+          </select>
+          <label class='input-group-text' for='camera-select'>Camera</label>
+        </div>
+        <div class='input-group mb-3'>
+          <select class='form-select' id='microphone-select'>
+          </select>
+          <label class='input-group-text' for='microphone-select'>Microphone</label>
+        </div>
+      </div>
+      <p style='font-size: 14px'>
+        <span class='en'>PS: Please make sure the current page allows camera and microphone permissions before joining the room.</span>
+        <span class='zh-cn'>PS: 进房之前请确认当前页面允许使用摄像头和麦克风</span>
+      </p>
+      <h1 style='font-size: 14px'>
+        <span class='en'>Operation</span>
+        <span class='zh-cn'>操作</span>
+      </h1>
+      <div class='wrapper'>
+        <button id='join' type='button' class='btn btn-primary btn-sm'>Join Room</button>
+        <button id='publish' type='button' class='btn btn-primary btn-sm'>Publish</button>
+        <button id='unpublish' type='button' class='btn btn-primary btn-sm'>Unpublish</button>
+        <button id='leave' type='button' class='btn btn-primary btn-sm'>Leave Room</button>
+      </div>
+      <div class='wrapper'>
+        <button id='startShare' type='button' class='btn btn-primary btn-sm'>Start Share Screen</button>
+        <button id='stopShare' type='button' class='btn btn-primary btn-sm'>Stop Share Screen</button>
+      </div>
+      <div class='alert alert-primary' role='alert' id='invite' style='display: none;flex-direction: column;'>
+        <span class='en'>Copy the link to invite friends to join the video call, one link can invite only one person, the link will be updated automatically after copying.</span>
+        <span class='zh-cn'>复制链接邀请好友加入视频通话，一条链接仅可邀请一人，复制后自动更新链接。</span>
+        <div class='copy'>
+          <button class='invite-btn' id='inviteBtn' data-clipboard-target='#inviteUrl'>
+            <img src='./icon/clippy.svg' width='12px' height='12px' alt='Copy to clipboard'>
+          </button>
+          <input id='inviteUrl' class='invite-input' value='https://github.com/zenorocha/clipboard.js.git'>
+        </div>
+      </div>
+      <div class='pusher'>
+        <div class='log' id='log'>
+          <strong>Log:</strong>
+        </div>
+        <div class='local' id='local'></div>
+      </div>
+      <div class='player' id='remote-container'></div>
+    </div>
+
+  </div>
+</div>
+<div id='console'>Open vConsole</div>
+<script src='https://cdn.bootcss.com/vConsole/3.3.4/vconsole.min.js'></script>
+<script src='https://web.sdk.qcloud.com/trtc/webrtc/demo/latest/dist/trtc.js'></script>
+<script src='https://cdn-go.cn/aegis/aegis-sdk/latest/aegis.min.js'></script>
+<script src='js/libs/clipboard.min.js'></script>
+<script src='js/libs/lib-generate-test-usersig.min.js'></script>
+<script src='js/libs/generateTestUserSig.js'></script>
+<script src='js/tooltip.js'></script>
+<script src='js/common.js'></script>
+<script src='js/client.js'></script>
+<script src='js/shareClient.js'></script>
+<script src='js/index.js' type='module'></script>
+</body>
+
+</html>
