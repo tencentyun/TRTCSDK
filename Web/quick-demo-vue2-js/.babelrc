@@ -1,0 +1,13 @@
+{
+  "compact": false,
+  "presets": [["@babel/preset-env", { "modules": false }]],
+  "plugins": [
+    [
+      "component",
+      {
+        "libraryName": "element-ui",
+        "styleLibraryName": "~src/assets/style/theme"
+      }
+    ]
+  ]
+}

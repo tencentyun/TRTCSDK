@@ -1,0 +1,19 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+  
+html,
+body {
+  font-family: century-gothic, sans-serif;
+}
+
+a {
+  text-decoration: none;
+  color: #006EFF;
+}
+
+a:link, a:visited, a:hover, a:active {
+  color: #006EFF;
+}

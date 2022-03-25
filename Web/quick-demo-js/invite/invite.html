@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>TRTC 实时音视频</title>
+  <meta http-equiv='Content-Type' content='text/html; charset=UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1, user-scalable=no, shrink-to-fit=no'>
+  <!-- CSS only -->
+  <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css' rel='stylesheet'
+        integrity='sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3' crossorigin='anonymous'>
+  <link href='../css/base.css' rel='stylesheet' type='text/css' />
+  <!-- JavaScript Bundle with Popper -->
+  <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js'
+          integrity='sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p'
+          crossorigin='anonymous'></script>
+</head>
+
+<body>
+<!--nav bar-->
+<div class='container-fluid text-white header'>
+  <img class='zh-cn' src='https://web.sdk.qcloud.com/trtc/webrtc/assets/logo/trtc-logo-cn-w.png' style='height: 100%' />
+  <img class='en' src='https://web.sdk.qcloud.com/trtc/webrtc/assets/logo/trtc-logo-en-w.png' style='height: 100%' />
+  <div style='flex-direction: row;display: flex;justify-content: center;align-items: center'>
+    <div id='language'>中/En</div>
+    <a class='github' href='https://github.com/LiteAVSDK/TRTC_Web' target="_blank">
+      <svg height='32' aria-hidden='true' viewBox='0 0 16 16' version='1.1' width='32' data-view-component='true'
+           class='octicon octicon-mark-github v-align-middle'>
+        <path fill-rule='evenodd'
+              d='M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z'></path>
+      </svg>
+    </a>
+  </div>
+</div>
+
+<div class='container-fluid'>
+  <div class='row justify-content-center'>
+    <div class='col-md-10 col-sm-12'>
+      <div class='content'>
+        <div class='alert alert-primary' role='alert'>
+          <span class='zh-cn'>你被邀请参加视频通话！</span>
+          <span class='en'>You are invited to this video chat room！</span>
+        </div>
+        <button type='button' class='btn btn-primary' id='join' style='margin-bottom: 10px'>Join</button>
+        <button type='button' class='btn btn-primary' id='leave' style='margin-bottom: 10px'>Leave</button>
+        <div class='local' style='max-width: 640px;' id='local'></div>
+        <div class='player' id='remote-container'></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<div id='console'>Open vConsole</div>
+<script src='https://cdn.bootcss.com/vConsole/3.3.4/vconsole.min.js'></script>
+<script src='https://web.sdk.qcloud.com/trtc/webrtc/demo/latest/dist/trtc.js'></script>
+<script src='https://cdn-go.cn/aegis/aegis-sdk/latest/aegis.min.js'></script>
+<script src='inviteClient.js'></script>
+<script>
+  window.lang_ = getLanguageKey();
+
+  const joinBtn = document.getElementById('join');
+  const leaveBtn = document.getElementById('leave');
+  const language = document.getElementById('language');
+
+  language.addEventListener('click', () => {
+    if (window.lang_ === 'zh-cn') {
+      const zhList = document.querySelectorAll('.zh-cn');
+      for (const item of zhList) {
+        item.style.display = 'none';
+      }
+      const enList = document.querySelectorAll('.en');
+      for (const item of enList) {
+        item.style.display = 'block';
+      }
+      window.lang_ = 'en'
+    } else if (window.lang_ === 'en') {
+      const zhList = document.querySelectorAll('.zh-cn');
+      for (const item of zhList) {
+        item.style.display = 'block';
+      }
+      const enList = document.querySelectorAll('.en');
+      for (const item of enList) {
+        item.style.display = 'none';
+      }
+      window.lang_ = 'zh-cn';
+    }
+  })
+  let playerContainer = document.getElementById('remote-container');
+
+  const userId = getQueryString('userId');
+  const sdkAppId = parseInt(getQueryString('sdkAppId'));
+  const userSig = getQueryString('userSIg');
+  const roomId = parseInt(getQueryString('roomId'));
+  if (!userId || !sdkAppId || !userSig) {
+    const origin = window.location.origin;
+    const pathname = window.location.pathname.replace('invite/invite.html', 'index.html');
+    window.location.href = `${origin}${pathname}`;
+  }
+  const state = { url:window.location.href.split("?")[0] };
+  window.history.pushState(state,'', 'invite.html');
+  initDevice();
+  let client = new Client({ sdkAppId, userId, userSig, roomId });
+  joinBtn.addEventListener('click', async () => {
+    await client.join();
+    await client.publish();
+  });
+  leaveBtn.addEventListener('click', async () => {
+    if (client) {
+      await client.leave();
+    }
+  });
+  function getQueryString(name) {
+    var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+    var r = window.location.search.substr(1)
+      .match(reg);
+    if (r != null) {
+      return unescape(r[2]);
+    }
+    return null;
+  }
+
+  function addStreamView(remoteId) {
+    let remoteDiv = document.getElementById(remoteId);
+    if (!remoteDiv) {
+      remoteDiv = document.createElement('div');
+      remoteDiv.setAttribute('id', remoteId);
+      remoteDiv.setAttribute('class', 'remote');
+      playerContainer.appendChild(remoteDiv);
+    }
+  }
+
+  function removeStreamView(remoteId) {
+    const remoteDiv = document.getElementById(remoteId);
+    if (remoteDiv) {
+      playerContainer.removeChild(remoteDiv);
+    }
+  }
+
+  async function initDevice() {
+    try {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          audio: true,
+          video: true
+        });
+        stream?.getTracks()
+          .forEach(track => track.stop());
+        if (!stream) {
+          joinBtn.disabled = true;
+        }
+      } catch (error) {
+        if (window.lang_ === 'en') {
+          window.alert('If you do not allow the current page to access the microphone and camera permissions, you may fail when publishing a local stream.');
+        } else {
+          window.alert('如果不允许当前页面访问麦克风和摄像头权限，您在发布本地流的时候可能会失败。');
+        }
+        joinBtn.disabled = true;
+      }
+    } catch (e) {
+      console.error('get device failed', e);
+    }
+  }
+
+  function getLanguageKey () {
+    let lang = (navigator.language || navigator.userLanguage).toLowerCase();
+    if (lang.indexOf('zh') > -1) {
+      lang = 'zh-cn';
+    } else {
+      lang = 'en';
+    }
+    return lang;
+  }
+</script>
+</body>
+
+</html>
