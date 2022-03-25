@@ -8,7 +8,7 @@ import UserList from '@components/UserList';
 import UserIDInput from '@components/UserIDInput';
 import RoomIDInput from '@components/RoomIDInput';
 import { getNavConfig } from '@api/nav';
-import { getUrlParam } from '@utils/utils';
+import { getUrlParam, beautyOperationUpload } from '@utils/utils';
 import { handlePageUrl, handlePageChange, getLanguage } from '@utils/common';
 import { Button, Accordion, AccordionSummary, AccordionDetails, Typography, Slider } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -16,6 +16,7 @@ import SideBar from '@components/SideBar';
 import styles from '@styles/common.module.scss';
 import DeviceSelect from '@components/DeviceSelect';
 import RelatedResources from '@components/RelatedResources';
+import { SDKAPPID } from '@app/config';
 const mobile = require('is-mobile');
 const DynamicRtc = dynamic(import('@components/RtcClient/improve-beauty-rtc-client'), { ssr: false });
 const DynamicShareRtc = dynamic(import('@components/ShareRTC'), { ssr: false });
@@ -385,6 +386,7 @@ export default function BasicRtc(props) {
           RTC.beautyPlugin.setBeautyParam({ ruddy: number / 100 });
           break;
       }
+      beautyOperationUpload(SDKAPPID, type);
     }
   };
 

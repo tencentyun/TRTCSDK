@@ -59,7 +59,7 @@ export default class ShareRTC extends React.Component {
       screen: true,
       userId: this.userID,
     });
-    this.localStream.setScreenProfile('1080p');
+    this.localStream.setScreenProfile({ width: 1920, height: 1080, frameRate: 15, bitrate: 2000 });
     try {
       await this.localStream.initialize();
     } catch (error) {
@@ -68,7 +68,7 @@ export default class ShareRTC extends React.Component {
           alert(a18n('屏幕分享失败，请确保系统允许当前浏览器获取屏幕内容'));
           throw error;
         case 'NotAllowedError':
-          if (error.message === 'Permission denied by system') {
+          if (error.message.includes('Permission denied by system')) {
             alert(a18n('屏幕分享失败，请确保系统允许当前浏览器获取屏幕内容'));
           } else {
             console.log('User refused to share the screen');

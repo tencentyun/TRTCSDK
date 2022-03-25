@@ -1,8 +1,8 @@
 import a18n from 'a18n';
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styles from './index.module.scss';
 import Cookies from 'js-cookie';
-import { goToPage } from '@utils/common';
+import { goToPage, getLanguage } from '@utils/common';
 import clsx from 'clsx';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -15,15 +15,25 @@ import QueuePlayNextIcon from '@material-ui/icons/QueuePlayNext';
 import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
 import GitHubIcon from '@material-ui/icons/GitHub';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import LanguageChange from '@components/LanguageChange';
 import DeviceDetector from '@components/DeviceDetector';
 import toast from '@components/Toast';
 import { unRegister } from '@api/http';
 import Modal from '@components/Modal';
+import Tooltip from '@material-ui/core/Tooltip';
+import { MyContext } from '@utils/context-manager';
 
 function TopBar({ title, isMobile = false }) {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [language, setLanguage] = useState('');
+  const { changeLanguage } = useContext(MyContext);
+
+  useEffect(() => {
+    const language = getLanguage();
+    a18n.setLocale(language);
+    setLanguage(language);
+  }, []);
+
   const openMenu = (event) => {
     setIsOpenMenu(true);
     setAnchorEl(event.target);
@@ -39,7 +49,7 @@ function TopBar({ title, isMobile = false }) {
   };
 
   const handleGitHub = () => {
-    window.open('https://github.com/tencentyun/TRTCSDK/tree/master/Web/base-react-next', '_blank');
+    window.open('https://github.com/LiteAVSDK/TRTC_Web/tree/main/base-react-next', '_blank');
     handleClose();
   };
 
@@ -69,6 +79,12 @@ function TopBar({ title, isMobile = false }) {
     }
   };
 
+  const handleLanguageChange = () => {
+    const newLanguage = language === 'zh-CN' ? 'en' : 'zh-CN';
+    setLanguage(newLanguage);
+    changeLanguage(newLanguage);
+  };
+
   const handleUnregister = () => {
     Modal.confirm({
       title: a18n('注销'),
@@ -94,31 +110,52 @@ function TopBar({ title, isMobile = false }) {
     });
   };
 
-  const configList = [
+  const menuConfigList = [
     { key: 'user', icon: PermIdentityOutlinedIcon, text: Cookies.get('trtc-api-example-phoneNumber') },
-    { key: 'device', icon: QueuePlayNextIcon, text: a18n('设备检测'), callback: handleDeviceDetector },
-    { key: 'link', icon: ShareIcon, text: a18n('复制链接'), callback: handleCopyLink },
-    { key: 'language', icon: TranslateIcon, text: a18n('语言切换') },
-    { key: 'github', icon: GitHubIcon, text: a18n('GitHub 地址'), callback: handleGitHub },
     { key: 'log-out', icon: PowerSettingsNewIcon, text: a18n('退出登录'), callback: handleQuit },
   ];
+  const functionConfigList = [
+    { key: 'device', icon: QueuePlayNextIcon, text: a18n('设备检测'), callback: handleDeviceDetector },
+    { key: 'link', icon: ShareIcon, text: a18n('复制链接'), callback: handleCopyLink },
+    { key: 'language', icon: TranslateIcon, text: a18n('语言切换'), callback: handleLanguageChange },
+    { key: 'github', icon: GitHubIcon, text: a18n('GitHub 地址'), callback: handleGitHub },
+  ];
   if (unRegister && typeof unRegister === 'function') {
-    configList.splice(5, 0, { key: 'unregister', icon: ExitToAppIcon, text: a18n('注销'), callback: handleUnregister });
+    menuConfigList.splice(-1, 0, { key: 'unregister', icon: ExitToAppIcon, text: a18n('注销'), callback: handleUnregister });
+  }
+  if (isMobile) {
+    menuConfigList.splice(1, 0, ...functionConfigList);
   }
 
   return (
     <div className={clsx(styles['top-bar-container'], isMobile && styles['top-bar-container-mobile'])}>
       <p className={styles['top-bar-title']}>{title}</p>
-      <IconButton
-        aria-label="more"
-        aria-controls="long-menu"
-        aria-haspopup="true"
-        onClick={openMenu}
-        style={{ color: '#1890fe' }}
-        className={styles['more-menu']}
-      >
-        <MoreVertIcon />
-      </IconButton>
+
+      {
+        !isMobile && functionConfigList.map(configItem => <Tooltip key={configItem.key} title={ configItem.text }>
+          <IconButton
+            aria-label="more"
+            aria-controls="long-menu"
+            aria-haspopup="true"
+            onClick={configItem.callback}
+            className={styles['top-bar-icon']}
+          >
+            <configItem.icon style={{ fontSize: '20px' }}></configItem.icon>
+          </IconButton>
+        </Tooltip>)
+      }
+
+      <Tooltip title={a18n('更多')}>
+        <IconButton
+          aria-label="more"
+          aria-controls="long-menu"
+          aria-haspopup="true"
+          onClick={openMenu}
+          className={styles['top-bar-icon']}
+        >
+          <MoreVertIcon />
+        </IconButton>
+      </Tooltip>
 
       <Menu
           id="simple-menu"
@@ -128,10 +165,9 @@ function TopBar({ title, isMobile = false }) {
           onClose={handleClose}
         >
         {
-          configList.map(configItem => <MenuItem key={configItem.key} onClick={configItem.callback}>
+          menuConfigList.map(configItem => <MenuItem key={configItem.key} onClick={configItem.callback}>
               <configItem.icon style={{ color: '#1890fe', fontSize: '20px' }}></configItem.icon>
               <span className={styles['menu-item-text']}>{configItem.text}</span>
-              {configItem.key === 'language' && <LanguageChange toolTipsVisible={false}></LanguageChange>}
             </MenuItem>)
         }
       </Menu>

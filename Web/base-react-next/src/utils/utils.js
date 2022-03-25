@@ -165,23 +165,44 @@ export function getSupportedMimeTypes() {
 /**
  * 上报 TAM 数据
  */
-export function uploadToTAM(eventType, sdkAppId) {
+export function uploadToTAM(eventString, sdkAppId) {
   window && window.aegis && window.aegis.reportEvent({
-    name: eventType,
-    ext1: eventType,
-    ext2: 100, // webrtc samples-site 为 100
+    name: eventString.split('#')[0] || '',
+    ext1: eventString,
+    ext2: 'webrtcSamplesSite', // webrtc samples-site 为 100
     ext3: sdkAppId,
   });
 }
-/**
- * 进房成功上报到 TAM
- */
-export function joinRoomUpload(sdkAppId) {
-  uploadToTAM('joinRoom', sdkAppId);
-}
-/**
- * 推流成功上报到 TAM
- */
- export function publishUpload(sdkAppId) {
-  uploadToTAM('publish', sdkAppId);
-}
+// https://doc.weixin.qq.com/sheet/e3_AJQAlgbNACk3JTdvUgfSKGQ6PYbJ5?scode=AJEAIQdfAAoO04FJEHAMEAfQZdACo
+// 进房成功、失败上报到 TAM
+export const joinRoomSuccessUpload = sdkAppId => uploadToTAM('joinRoom-success', sdkAppId);
+export const joinRoomFailedUpload = (sdkAppId, errorMsg) => {
+  console.warn(errorMsg);
+  uploadToTAM(`joinRoom-failed#error: ${errorMsg}`, sdkAppId);
+};
+// 推流成功、失败上报到 TAM
+export const publishSuccessUpload = sdkAppId => uploadToTAM('publish-success', sdkAppId);
+export const publishFailedUpload = (sdkAppId, errorMsg) => {
+  uploadToTAM(`publish-failed#error: ${errorMsg}`, sdkAppId);
+};
+// 初始化流成功、失败上报到 TAM
+export const initLocalStreamSuccessUpload = sdkAppId => uploadToTAM('initLocalStream-success', sdkAppId);
+export const initLocalStreamFailedUpload = (sdkAppId, errorMsg) => {
+  uploadToTAM(`initLocalStream-failed#error: ${errorMsg}`, sdkAppId);
+};
+// 使用美颜操作上报到 TAM
+export const beautyOperationUpload = (sdkAppId, type) => {
+  uploadToTAM(`beautyOperation-success#type: ${type}`, sdkAppId);
+};
+// 流录制成功、失败上报到 TAM
+export const recordStreamSuccessUpload = sdkAppId => uploadToTAM('recordStream-success', sdkAppId);
+export const recordStreamFailedUpload = (sdkAppId, errorMsg) => {
+  uploadToTAM(`recordStream-failed#error: ${errorMsg}`, sdkAppId);
+};
+// 开启水印上报到 TAM
+export const openWaterMarkUpload = sdkAppId => uploadToTAM('openWaterMark-success', sdkAppId);
+// 使用语音识别上报到 TAM
+export const startAsrUpload = sdkAppId => uploadToTAM('startAsr-success', sdkAppId);
+// 推流 CDN 成功、失败上报到 TAM
+export const publishCdnSuccessUpload = sdkAppId => uploadToTAM('publishCdn-success', sdkAppId);
+export const publishCdnFailedUpload = sdkAppId => uploadToTAM('publishCdn-failed', sdkAppId);
