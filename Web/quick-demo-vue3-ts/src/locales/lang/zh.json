@@ -1,0 +1,19 @@
+{
+  "title": "TRTC 实时音视频",
+  "logo": "https://web.sdk.qcloud.com/trtc/webrtc/assets/logo/trtc-logo-cn-w.png",
+  "step1": "步骤 1 : 判断当前环境是否满足条件",
+  "step2": "步骤 2 : 创建新的应用",
+  "step3": "步骤 3 : 获取 SDKAppID 和 密钥 SecretKey",
+  "step4": "步骤 4 : 开始视频通话",
+  "param": "参数",
+  "alert": "注意️：本 Demo 仅用于调试，正式上线前请将 UserSig 计算代码和密钥迁移到您的后台服务器上，以避免加密密钥泄露导致的流量盗用。",
+  "click": "查看文档",
+  "url": "https://cloud.tencent.com/document/product/647/17275",
+  "device": "设备",
+  "operation": "操作",
+  "permit": "请授权您的麦克风和摄像头权限",
+  "paramsNeed": "请检查参数 SDKAppId, secretKey, userId, roomId 是否输入正确！",
+  "invite": "复制链接邀请好友加入视频通话，一条链接仅可邀请一人，复制后自动更新链接。",
+  "inviteUrl": "你被邀请参加视频通话！",
+  "check": "请重新获取邀请链接！"
+}

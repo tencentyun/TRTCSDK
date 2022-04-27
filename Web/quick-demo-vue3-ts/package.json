@@ -1,0 +1,46 @@
+{
+  "name": "quick-vue3",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "npm install && npm run serve",
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "aegis-web-sdk": "^1.35.25",
+    "clipboard": "^2.0.10",
+    "core-js": "^3.8.3",
+    "element-plus": "^2.1.10",
+    "mitt": "^3.0.0",
+    "pinia": "^2.0.13",
+    "trtc-js-sdk": "latest",
+    "vue": "^3.2.13",
+    "vue-i18n": "9",
+    "vue-router": "^4.0.3",
+    "vue3-clipboard": "^1.0.0"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.4.0",
+    "@typescript-eslint/parser": "^5.4.0",
+    "@vue/cli-plugin-babel": "~5.0.0",
+    "@vue/cli-plugin-eslint": "~5.0.0",
+    "@vue/cli-plugin-router": "~5.0.0",
+    "@vue/cli-plugin-typescript": "~5.0.0",
+    "@vue/cli-service": "~5.0.0",
+    "@vue/eslint-config-airbnb": "^6.0.0",
+    "@vue/eslint-config-typescript": "^9.1.0",
+    "eslint": "^7.32.0",
+    "eslint-config-tencent": "^1.0.4",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-vue": "^8.0.3",
+    "eslint-plugin-vuejs-accessibility": "^1.1.0",
+    "stylus": "^0.55.0",
+    "stylus-loader": "^6.1.0",
+    "typescript": "~4.5.5",
+    "unplugin-auto-import": "^0.7.1",
+    "unplugin-element-plus": "^0.4.0",
+    "unplugin-vue-components": "^0.19.3"
+  }
+}

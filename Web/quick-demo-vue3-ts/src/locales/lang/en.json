@@ -1,0 +1,19 @@
+{
+  "title": "Tencent Cloud TRTC",
+  "logo": "https://web.sdk.qcloud.com/trtc/webrtc/assets/logo/trtc-logo-en-w.png",
+  "step1": "Step 1 :  Check Current Environment",
+  "step2": "Step 2 : Create New Application",
+  "step3": "Step 3 : Get SDKAppID and SecretKey",
+  "step4": "Step 4 : Start Video Call",
+  "param": "Params",
+  "alert": "Notes: this Demo is only applicable for debugging. Before official launch, please migrate the UserSig calculation code and key to your backend server to avoid unauthorized traffic use caused by the leakage of encryption key.",
+  "click": "View documents",
+  "url": "https://intl.cloud.tencent.com/document/product/647/35166",
+  "device": "Device",
+  "operation": "Operation",
+  "permit": "Please enable your microphone and camera for current page.",
+  "paramsNeed": "Please enter the correct SDKAppId, secretKey, userId, roomId！",
+  "invite": "Copy the link to invite friends to join the video call, one link can invite only one person, the link will be updated automatically after copying.",
+  "inviteUrl": "You are invited to this video chat room！",
+  "check": "Please reacquire the invitation link!"
+}
