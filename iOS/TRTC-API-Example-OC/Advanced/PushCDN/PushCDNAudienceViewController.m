@@ -26,22 +26,22 @@
 
 #import "PushCDNAudienceViewController.h"
 
-@interface PushCDNAudienceViewController ()<TXLivePlayListener>
+@interface PushCDNAudienceViewController ()<V2TXLivePlayerObserver>
 
 @property (weak, nonatomic) IBOutlet UILabel *streamIDLabel;
 @property (weak, nonatomic) IBOutlet UITextField *streamIDTextField;
 @property (weak, nonatomic) IBOutlet UIView *playerView;
 @property (weak, nonatomic) IBOutlet UIButton *startPlayButton;
 
-@property (strong, nonatomic) TXLivePlayer *livePlayer;
+@property (strong, nonatomic) V2TXLivePlayer *livePlayer;
 
 @end
 
 @implementation PushCDNAudienceViewController
 
-- (TXLivePlayer *)livePlayer {
+- (V2TXLivePlayer *)livePlayer {
     if (!_livePlayer) {
-        _livePlayer = [[TXLivePlayer alloc] init];
+        _livePlayer = [[V2TXLivePlayer alloc] init];
     }
     return _livePlayer;
 }
@@ -62,17 +62,17 @@
 
 - (void)startPlay {
     NSString *streamUrl = [NSString stringWithFormat:@"%@/%@.flv",kCDN_URL,self.streamIDTextField.text];
-    [self.livePlayer setDelegate:self];
-    [self.livePlayer setupVideoWidget:CGRectZero containView:self.playerView insertIndex:0];
-    int ret = [self.livePlayer startPlay:streamUrl type:PLAY_TYPE_LIVE_FLV];
+    [self.livePlayer setObserver:self];
+    [self.livePlayer setRenderView:self.playerView];
+    V2TXLiveCode ret = [self.livePlayer startPlay:streamUrl];
     if (ret != 0) {
-        NSLog(@"play error. code: %d", ret);
+        NSLog(@"play error. code: %ld", ret);
     }
 }
 
 - (void)stopPlay {
-    [self.livePlayer setDelegate:nil];
-    [self.livePlayer removeVideoWidget];
+    [self.livePlayer setObserver:nil];
+    [self.livePlayer setRenderView:nil];
     [self.livePlayer stopPlay];
 }
 
@@ -93,14 +93,15 @@
     }
 }
 
-#pragma mark - TXLivePlayListener
-- (void)onPlayEvent:(int)EvtID withParam:(NSDictionary *)param {
-    NSLog(@"event: %d", EvtID);
+#pragma mark - V2TXLivePlayerObserver
+- (void)onVideoPlaying:(id<V2TXLivePlayer>)player firstPlay:(BOOL)firstPlay extraInfo:(NSDictionary *)extraInfo {
+    NSLog(@"onVideoPlaying");
 }
 
-- (void)onNetStatus:(NSDictionary *)param {
-    
+- (void)onError:(id<V2TXLivePlayer>)player code:(V2TXLiveCode)code message:(NSString *)msg extraInfo:(NSDictionary *)extraInfo {
+    NSLog(@"onError: message: %@",msg);
 }
+
 
 - (void)dealloc {
     [self stopPlay];
