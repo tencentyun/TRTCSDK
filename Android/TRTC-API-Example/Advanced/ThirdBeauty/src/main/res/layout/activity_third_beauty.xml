@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/thirdbeauty_main_bg"
-    tools:context=".ThirdBeautyActivity">
+    tools:context=".ThirdBeautyFaceUnityActivity">
 
     <com.tencent.rtmp.ui.TXCloudVideoView
         android:id="@+id/txcvv_main_local"

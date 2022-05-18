@@ -318,6 +318,9 @@ https://cloud.tencent.com/document/product/647/16827";
 "TRTC-API-Example.ThirdBeauty.userId" = "用户ID";
 "TRTC-API-Example.ThirdBeauty.startPush" = "开始推流";
 "TRTC-API-Example.ThirdBeauty.stopPush" = "停止推流";
+"TRTC-API-Example.ThirdBeauty.faceunity" = "相芯美颜";
+"TRTC-API-Example.ThirdBeauty.xmagic" = "腾讯特效美颜";
+"TRTC-API-Example.ThirdBeauty.bytedance" = "火山美颜";
 
 "TRTC-API-Example.CustomCamera.viewTitle" = "房间号: xxx";
 "TRTC-API-Example.CustomCamera.roomId" = "房间号";

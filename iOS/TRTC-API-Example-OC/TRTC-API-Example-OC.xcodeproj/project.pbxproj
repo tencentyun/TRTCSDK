@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0FB5D4D64CEC30830CF8F7AC /* TXLiteAVSDK_TRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C0EEEF96429D2F794B7401C /* TXLiteAVSDK_TRTC.framework */; };
 		17A5BD8626CBABBC007E91B1 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 17A5BD8326CBABBC007E91B1 /* README.md */; };
 		17A5BE0726CBCC21007E91B1 /* TRTC-API-Example-OC-PrefixHeader.pch in Sources */ = {isa = PBXBuildFile; fileRef = 477EC9F12626F77E007AAC4F /* TRTC-API-Example-OC-PrefixHeader.pch */; };
 		17A5C13F26CCF723007E91B1 /* ThirdBeautyBytedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17A5C13926CCF722007E91B1 /* ThirdBeautyBytedViewController.m */; };
@@ -73,8 +72,8 @@
 		47E073082636A6C80027D05E /* AVCamPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E072A72636A6C80027D05E /* AVCamPreviewView.m */; };
 		47E073092636A6C80027D05E /* SetRenderParamsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E072AA2636A6C80027D05E /* SetRenderParamsViewController.m */; };
 		47E0730A2636A6C80027D05E /* SetRenderParamsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 47E072AB2636A6C80027D05E /* SetRenderParamsViewController.xib */; };
-		47E0730B2636A6C80027D05E /* ThirdBeautyViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 47E072AE2636A6C80027D05E /* ThirdBeautyViewController.xib */; };
-		47E0730C2636A6C80027D05E /* ThirdBeautyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E072AF2636A6C80027D05E /* ThirdBeautyViewController.m */; };
+		47E0730B2636A6C80027D05E /* ThirdBeautyFaceunityViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 47E072AE2636A6C80027D05E /* ThirdBeautyFaceunityViewController.xib */; };
+		47E0730C2636A6C80027D05E /* ThirdBeautyFaceunityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E072AF2636A6C80027D05E /* ThirdBeautyFaceunityViewController.m */; };
 		47E073202636A6C80027D05E /* JoinMultipleRoomViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 47E072CE2636A6C80027D05E /* JoinMultipleRoomViewController.xib */; };
 		47E073212636A6C80027D05E /* JoinMultipleRoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E072CF2636A6C80027D05E /* JoinMultipleRoomViewController.m */; };
 		47E073222636A6C80027D05E /* SubCloudHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E072D22636A6C80027D05E /* SubCloudHelper.m */; };
@@ -94,8 +93,17 @@
 		47E073302636A6C80027D05E /* SetBGMViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E072F12636A6C80027D05E /* SetBGMViewController.m */; };
 		47ECB98C2626868400201FCB /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47ECB98B2626868400201FCB /* Accelerate.framework */; };
 		47ECB98E2626868E00201FCB /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 47ECB98D2626868E00201FCB /* libresolv.tbd */; };
-		84E684382A035D1ED76108D9 /* TXLiteAVSDK_TRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C0EEEF96429D2F794B7401C /* TXLiteAVSDK_TRTC.framework */; };
 		880B3C4A2624411B002683FB /* GenerateTestUserSig.m in Sources */ = {isa = PBXBuildFile; fileRef = 880B3C482624411B002683FB /* GenerateTestUserSig.m */; };
+		880DC43C28042D9C00278CAC /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 880DC43B28042D9C00278CAC /* VideoToolbox.framework */; };
+		880DC43F28042DEB00278CAC /* TXSoundTouch.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 880DC43D28042DEB00278CAC /* TXSoundTouch.xcframework */; };
+		880DC44028042DEB00278CAC /* TXFFmpeg.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 880DC43E28042DEB00278CAC /* TXFFmpeg.xcframework */; };
+		880DC44128042DF100278CAC /* TXFFmpeg.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 880DC43E28042DEB00278CAC /* TXFFmpeg.xcframework */; };
+		880DC44228042DF100278CAC /* TXFFmpeg.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 880DC43E28042DEB00278CAC /* TXFFmpeg.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		880DC44328042DF100278CAC /* TXSoundTouch.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 880DC43D28042DEB00278CAC /* TXSoundTouch.xcframework */; };
+		880DC44428042DF100278CAC /* TXSoundTouch.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 880DC43D28042DEB00278CAC /* TXSoundTouch.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		880DC44628042E0300278CAC /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 880DC44528042E0300278CAC /* MetalKit.framework */; };
+		880DC44828042E3C00278CAC /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 880DC44728042E3B00278CAC /* CoreTelephony.framework */; };
+		880DC44A28042E7200278CAC /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 880DC44928042E7200278CAC /* SystemConfiguration.framework */; };
 		8821F2632626EB1C00F5852F /* VideoCallingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8821F2562626EB1B00F5852F /* VideoCallingViewController.m */; };
 		8821F2642626EB1C00F5852F /* VideoCallingEnterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8821F2572626EB1B00F5852F /* VideoCallingEnterViewController.xib */; };
 		8821F2652626EB1C00F5852F /* VideoCallingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8821F2582626EB1B00F5852F /* VideoCallingViewController.xib */; };
@@ -117,6 +125,10 @@
 		889445E8262866DC00193FAD /* ScreenAudienceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 889445E6262866DC00193FAD /* ScreenAudienceViewController.xib */; };
 		88A2C846267062FF006FC026 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47ECB98B2626868400201FCB /* Accelerate.framework */; };
 		88A2C84726706305006FC026 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 47ECB9882626867C00201FCB /* libc++.tbd */; };
+		C65F31572729388F00D9FB93 /* TXLiteAVSDK_TRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17A5C13426CCF54A007E91B1 /* TXLiteAVSDK_TRTC.framework */; };
+		EB147B20282E477900C0E2DC /* ThirdBeautyTencentEffectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB147B1F282E477900C0E2DC /* ThirdBeautyTencentEffectViewController.m */; };
+		EB147B22282E477E00C0E2DC /* ThirdBeautyTencentEffectViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB147B21282E477E00C0E2DC /* ThirdBeautyTencentEffectViewController.xib */; };
+		EBAF1EF3283243C600BE7998 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBAF1EF2283243C600BE7998 /* MobileCoreServices.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -136,6 +148,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				880DC44228042DF100278CAC /* TXFFmpeg.xcframework in Embed Frameworks */,
+				880DC44428042DF100278CAC /* TXSoundTouch.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -252,9 +266,9 @@
 		47E072AA2636A6C80027D05E /* SetRenderParamsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SetRenderParamsViewController.m; sourceTree = "<group>"; };
 		47E072AB2636A6C80027D05E /* SetRenderParamsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SetRenderParamsViewController.xib; sourceTree = "<group>"; };
 		47E072AC2636A6C80027D05E /* SetRenderParamsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SetRenderParamsViewController.h; sourceTree = "<group>"; };
-		47E072AE2636A6C80027D05E /* ThirdBeautyViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ThirdBeautyViewController.xib; sourceTree = "<group>"; };
-		47E072AF2636A6C80027D05E /* ThirdBeautyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThirdBeautyViewController.m; sourceTree = "<group>"; };
-		47E072CC2636A6C80027D05E /* ThirdBeautyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThirdBeautyViewController.h; sourceTree = "<group>"; };
+		47E072AE2636A6C80027D05E /* ThirdBeautyFaceunityViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ThirdBeautyFaceunityViewController.xib; sourceTree = "<group>"; };
+		47E072AF2636A6C80027D05E /* ThirdBeautyFaceunityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThirdBeautyFaceunityViewController.m; sourceTree = "<group>"; };
+		47E072CC2636A6C80027D05E /* ThirdBeautyFaceunityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThirdBeautyFaceunityViewController.h; sourceTree = "<group>"; };
 		47E072CE2636A6C80027D05E /* JoinMultipleRoomViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JoinMultipleRoomViewController.xib; sourceTree = "<group>"; };
 		47E072CF2636A6C80027D05E /* JoinMultipleRoomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JoinMultipleRoomViewController.m; sourceTree = "<group>"; };
 		47E072D02636A6C80027D05E /* SubCloudHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubCloudHelper.h; sourceTree = "<group>"; };
@@ -288,6 +302,12 @@
 		47ECB98D2626868E00201FCB /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
 		880B3C482624411B002683FB /* GenerateTestUserSig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenerateTestUserSig.m; sourceTree = "<group>"; };
 		880B3C492624411B002683FB /* GenerateTestUserSig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GenerateTestUserSig.h; sourceTree = "<group>"; };
+		880DC43B28042D9C00278CAC /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = System/Library/Frameworks/VideoToolbox.framework; sourceTree = SDKROOT; };
+		880DC43D28042DEB00278CAC /* TXSoundTouch.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = TXSoundTouch.xcframework; sourceTree = "<group>"; };
+		880DC43E28042DEB00278CAC /* TXFFmpeg.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = TXFFmpeg.xcframework; sourceTree = "<group>"; };
+		880DC44528042E0300278CAC /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
+		880DC44728042E3B00278CAC /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		880DC44928042E7200278CAC /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		8821F2542626EB1B00F5852F /* VideoCallingEnterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoCallingEnterViewController.h; sourceTree = "<group>"; };
 		8821F2562626EB1B00F5852F /* VideoCallingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoCallingViewController.m; sourceTree = "<group>"; };
 		8821F2572626EB1B00F5852F /* VideoCallingEnterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VideoCallingEnterViewController.xib; sourceTree = "<group>"; };
@@ -319,9 +339,12 @@
 		889445E4262866DC00193FAD /* ScreenAudienceViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScreenAudienceViewController.h; sourceTree = "<group>"; };
 		889445E5262866DC00193FAD /* ScreenAudienceViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ScreenAudienceViewController.m; sourceTree = "<group>"; };
 		889445E6262866DC00193FAD /* ScreenAudienceViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ScreenAudienceViewController.xib; sourceTree = "<group>"; };
-		8C0EEEF96429D2F794B7401C /* TXLiteAVSDK_TRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TXLiteAVSDK_TRTC.framework; path = ../SDK/TXLiteAVSDK_TRTC.framework; sourceTree = "<group>"; };
 		C99BF07371D8A29601F2FC64 /* Pods_TXReplayKit_Screen.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TXReplayKit_Screen.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9B2CC51BDD884255109D5F7 /* Pods_TRTC_API_Example_OC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TRTC_API_Example_OC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		EB147B1E282E477200C0E2DC /* ThirdBeautyTencentEffectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThirdBeautyTencentEffectViewController.h; sourceTree = "<group>"; };
+		EB147B1F282E477900C0E2DC /* ThirdBeautyTencentEffectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThirdBeautyTencentEffectViewController.m; sourceTree = "<group>"; };
+		EB147B21282E477E00C0E2DC /* ThirdBeautyTencentEffectViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ThirdBeautyTencentEffectViewController.xib; sourceTree = "<group>"; };
+		EBAF1EF2283243C600BE7998 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -330,15 +353,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				40D550F026A6AEFB00FE9F13 /* AssetsLibrary.framework in Frameworks */,
+				880DC44A28042E7200278CAC /* SystemConfiguration.framework in Frameworks */,
 				40D550EE26A6AEEE00FE9F13 /* libsqlite3.0.tbd in Frameworks */,
+				880DC44828042E3C00278CAC /* CoreTelephony.framework in Frameworks */,
+				880DC44128042DF100278CAC /* TXFFmpeg.xcframework in Frameworks */,
+				880DC44328042DF100278CAC /* TXSoundTouch.xcframework in Frameworks */,
 				4723A7C426315FAA0094AC81 /* AVFoundation.framework in Frameworks */,
 				4723A7BF26315F920094AC81 /* OpenGLES.framework in Frameworks */,
 				47ECB98C2626868400201FCB /* Accelerate.framework in Frameworks */,
 				4723A7C026315F9C0094AC81 /* Accelerate.framework in Frameworks */,
+				C65F31572729388F00D9FB93 /* TXLiteAVSDK_TRTC.framework in Frameworks */,
+				880DC44628042E0300278CAC /* MetalKit.framework in Frameworks */,
 				47ECB98E2626868E00201FCB /* libresolv.tbd in Frameworks */,
+				EBAF1EF3283243C600BE7998 /* MobileCoreServices.framework in Frameworks */,
 				4723A7C526315FB10094AC81 /* libc++.tbd in Frameworks */,
 				4723A7C226315FA30094AC81 /* CoreMedia.framework in Frameworks */,
-				84E684382A035D1ED76108D9 /* TXLiteAVSDK_TRTC.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -348,9 +377,11 @@
 			files = (
 				88A2C84726706305006FC026 /* libc++.tbd in Frameworks */,
 				88A2C846267062FF006FC026 /* Accelerate.framework in Frameworks */,
+				880DC43C28042D9C00278CAC /* VideoToolbox.framework in Frameworks */,
+				880DC43F28042DEB00278CAC /* TXSoundTouch.xcframework in Frameworks */,
 				8894458D26282AF800193FAD /* TXLiteAVSDK_ReplayKitExt.framework in Frameworks */,
+				880DC44028042DEB00278CAC /* TXFFmpeg.xcframework in Frameworks */,
 				8894456B26282A3200193FAD /* ReplayKit.framework in Frameworks */,
-				0FB5D4D64CEC30830CF8F7AC /* TXLiteAVSDK_TRTC.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -467,8 +498,9 @@
 		477EC9D22626E44C007AAC4F /* SDK */ = {
 			isa = PBXGroup;
 			children = (
+				880DC43E28042DEB00278CAC /* TXFFmpeg.xcframework */,
+				880DC43D28042DEB00278CAC /* TXSoundTouch.xcframework */,
 				889444FD262824EA00193FAD /* TXLiteAVSDK_ReplayKitExt.framework */,
-				8C0EEEF96429D2F794B7401C /* TXLiteAVSDK_TRTC.framework */,
 			);
 			name = SDK;
 			path = ../SDK;
@@ -626,9 +658,12 @@
 		47E072AD2636A6C80027D05E /* ThirdBeauty */ = {
 			isa = PBXGroup;
 			children = (
-				47E072CC2636A6C80027D05E /* ThirdBeautyViewController.h */,
-				47E072AF2636A6C80027D05E /* ThirdBeautyViewController.m */,
-				47E072AE2636A6C80027D05E /* ThirdBeautyViewController.xib */,
+				EB147B1E282E477200C0E2DC /* ThirdBeautyTencentEffectViewController.h */,
+				EB147B1F282E477900C0E2DC /* ThirdBeautyTencentEffectViewController.m */,
+				EB147B21282E477E00C0E2DC /* ThirdBeautyTencentEffectViewController.xib */,
+				47E072CC2636A6C80027D05E /* ThirdBeautyFaceunityViewController.h */,
+				47E072AF2636A6C80027D05E /* ThirdBeautyFaceunityViewController.m */,
+				47E072AE2636A6C80027D05E /* ThirdBeautyFaceunityViewController.xib */,
 				17A5C13D26CCF723007E91B1 /* ThirdBeautyBytedViewController.h */,
 				17A5C13926CCF722007E91B1 /* ThirdBeautyBytedViewController.m */,
 				17A5C13A26CCF723007E91B1 /* ThirdBeautyBytedViewController.xib */,
@@ -824,6 +859,11 @@
 		88ED6FE02624364700C75B9D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				EBAF1EF2283243C600BE7998 /* MobileCoreServices.framework */,
+				880DC44928042E7200278CAC /* SystemConfiguration.framework */,
+				880DC44728042E3B00278CAC /* CoreTelephony.framework */,
+				880DC44528042E0300278CAC /* MetalKit.framework */,
+				880DC43B28042D9C00278CAC /* VideoToolbox.framework */,
 				40D550EF26A6AEFA00FE9F13 /* AssetsLibrary.framework */,
 				40D550ED26A6AED600FE9F13 /* libsqlite3.0.tbd */,
 				4723A7C326315FAA0094AC81 /* AVFoundation.framework */,
@@ -950,9 +990,10 @@
 				477EC9B626269568007AAC4F /* HomeTableViewCell.xib in Resources */,
 				17A5BD8626CBABBC007E91B1 /* README.md in Resources */,
 				477EC97C26268B0A007AAC4F /* LaunchScreen.storyboard in Resources */,
+				EB147B22282E477E00C0E2DC /* ThirdBeautyTencentEffectViewController.xib in Resources */,
 				47E073042636A6C80027D05E /* CustomCaptureViewController.xib in Resources */,
 				889444F32627DC0F00193FAD /* ScreenEntranceViewController.xib in Resources */,
-				47E0730B2636A6C80027D05E /* ThirdBeautyViewController.xib in Resources */,
+				47E0730B2636A6C80027D05E /* ThirdBeautyFaceunityViewController.xib in Resources */,
 				47E0725F263656110027D05E /* InfoPlist.strings in Resources */,
 				47E072F62636A6C80027D05E /* PushCDNSelectRoleViewController.xib in Resources */,
 				8821F2672626EB1C00F5852F /* AudioCallingViewController.xib in Resources */,
@@ -1011,7 +1052,8 @@
 				477ECA0A2627D344007AAC4F /* UIViewController+AlertViewController.m in Sources */,
 				47E073222636A6C80027D05E /* SubCloudHelper.m in Sources */,
 				47E072F22636A6C80027D05E /* RoomPkViewController.m in Sources */,
-				47E0730C2636A6C80027D05E /* ThirdBeautyViewController.m in Sources */,
+				47E0730C2636A6C80027D05E /* ThirdBeautyFaceunityViewController.m in Sources */,
+				EB147B20282E477900C0E2DC /* ThirdBeautyTencentEffectViewController.m in Sources */,
 				477EC97F26268B0A007AAC4F /* AppDelegate.m in Sources */,
 				4723A8902631666E0094AC81 /* NSString+Common.m in Sources */,
 				889445E7262866DC00193FAD /* ScreenAudienceViewController.m in Sources */,

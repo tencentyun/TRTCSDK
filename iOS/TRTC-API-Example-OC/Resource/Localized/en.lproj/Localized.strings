@@ -317,6 +317,9 @@ On-Cloud MixTranscoding
 "TRTC-API-Example.ThirdBeauty.userId" = "User ID";
 "TRTC-API-Example.ThirdBeauty.startPush" = "Start Push";
 "TRTC-API-Example.ThirdBeauty.stopPush" = "End Push";
+"TRTC-API-Example.ThirdBeauty.faceunity" = "Faceunity Beauty Filters";
+"TRTC-API-Example.ThirdBeauty.xmagic" = "Tencent Effect Beauty Filters";
+"TRTC-API-Example.ThirdBeauty.bytedance" = "ByteDance Beauty Filters";
 
 "TRTC-API-Example.CustomCamera.viewTitle" = "Room ID: xxx";
 "TRTC-API-Example.CustomCamera.roomId" = "Room ID";

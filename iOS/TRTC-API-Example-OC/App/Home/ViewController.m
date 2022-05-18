@@ -23,7 +23,7 @@
 #import "SendAndReceiveSEIMessageViewController.h"
 #import "JoinMultipleRoomViewController.h"
 #import "RoomPkViewController.h"
-#import "ThirdBeautyViewController.h"
+#import "ThirdBeautyEntranceViewController.h"
 #import "CustomCaptureViewController.h"
 #import "LocalVideoShareViewController.h"
 #import "StringRoomIdViewController.h"
