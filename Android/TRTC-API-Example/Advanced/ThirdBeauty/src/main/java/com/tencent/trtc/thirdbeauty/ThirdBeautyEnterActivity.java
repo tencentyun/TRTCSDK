@@ -19,16 +19,20 @@ public class ThirdBeautyEnterActivity extends TRTCBaseActivity implements View.O
     private void initViews() {
         findViewById(R.id.btn_faceunity).setOnClickListener(this);
         findViewById(R.id.btn_bytedance).setOnClickListener(this);
+        findViewById(R.id.btn_xmagic).setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
         int id = view.getId();
         if (id == R.id.btn_faceunity) {
-            Intent intent = new Intent(ThirdBeautyEnterActivity.this, ThirdBeautyActivity.class);
+            Intent intent = new Intent(ThirdBeautyEnterActivity.this, ThirdBeautyFaceUnityActivity.class);
             startActivity(intent);
         } else if (id == R.id.btn_bytedance) {
             Intent intent = new Intent(ThirdBeautyEnterActivity.this, ThirdBeautyByteDanceActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.btn_xmagic) {
+            Intent intent = new Intent(ThirdBeautyEnterActivity.this, ThirdBeautyTencentEffectActivity.class);
             startActivity(intent);
         }
     }

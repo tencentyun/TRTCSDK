@@ -1,5 +1,5 @@
 //
-//  ThirdBeautyViewController.m
+//  ThirdBeautyFaceunityViewController.m
 //  TRTC-API-Example-OC
 //
 //  Created by adams on 2021/4/22.
@@ -27,12 +27,12 @@
  Third-party beauty filter: https://github.com/Faceunity/FUTRTCDemo
  */
 
-#import "ThirdBeautyViewController.h"
+#import "ThirdBeautyFaceunityViewController.h"
 //#import "FUManager.h"
 
 static const NSInteger RemoteUserMaxNum = 6;
 
-@interface ThirdBeautyViewController () <TRTCCloudDelegate, TRTCVideoFrameDelegate>
+@interface ThirdBeautyFaceunityViewController () <TRTCCloudDelegate, TRTCVideoFrameDelegate>
 @property (weak, nonatomic) IBOutlet UIView *leftRemoteViewA;
 @property (weak, nonatomic) IBOutlet UIView *leftRemoteViewB;
 @property (weak, nonatomic) IBOutlet UIView *leftRemoteViewC;
@@ -65,7 +65,7 @@ static const NSInteger RemoteUserMaxNum = 6;
 
 @end
 
-@implementation ThirdBeautyViewController
+@implementation ThirdBeautyFaceunityViewController
 
 //- (FUBeautyParam *)beautyParam {
 //    if (!_beautyParam) {
@@ -251,7 +251,7 @@ static const NSInteger RemoteUserMaxNum = 6;
     params.userSig = [GenerateTestUserSig genTestUserSig:self.userIdTextField.text];
     params.role = TRTCRoleAnchor;
     
-    [self.trtcCloud setLocalVideoProcessDelegete:self pixelFormat:TRTCVideoPixelFormat_Texture_2D bufferType:TRTCVideoBufferType_Texture];
+//    [self.trtcCloud setLocalVideoProcessDelegete:self pixelFormat:TRTCVideoPixelFormat_Texture_2D bufferType:TRTCVideoBufferType_Texture];
     [self.trtcCloud enterRoom:params appScene:TRTCAppSceneLIVE];
     [self.trtcCloud startLocalAudio:TRTCAudioQualityMusic];
     

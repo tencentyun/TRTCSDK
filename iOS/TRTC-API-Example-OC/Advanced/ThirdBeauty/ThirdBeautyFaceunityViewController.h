@@ -1,5 +1,5 @@
 //
-//  ThirdBeautyViewController.h
+//  ThirdBeautyFaceunityViewController.h
 //  TRTC-API-Example-OC
 //
 //  Created by adams on 2021/4/22.
@@ -9,7 +9,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ThirdBeautyViewController : UIViewController
+@interface ThirdBeautyFaceunityViewController : UIViewController
 
 @end
 
