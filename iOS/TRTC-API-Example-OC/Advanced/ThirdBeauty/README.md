@@ -15,7 +15,7 @@ ThirdBeauty:
 	- FUManager.m
 	拖入到工程中，并勾选上 Copy items if needed.
 5. 证书添加：authpack.h中的证书key请联系Faceunity获取测试证书并替换到此处（替换后请注释掉或删除此错误警告）。
-6. 取消ThirdBeautyViewController.m文件中的以下注释：
+6. 取消ThirdBeautyFaceunityViewController.m文件中的以下注释：
 
 	```
 	//#import "FUManager.h"

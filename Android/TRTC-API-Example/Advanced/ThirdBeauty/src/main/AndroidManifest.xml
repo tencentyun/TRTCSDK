@@ -3,9 +3,10 @@
     package="com.tencent.trtc.thirdbeauty">
 
     <application>
-        <activity android:name=".ThirdBeautyActivity"/>
-        <activity android:name=".ThirdBeautyEnterActivity"/>
-        <activity android:name=".ThirdBeautyByteDanceActivity"/>
+        <activity android:name=".ThirdBeautyTencentEffectActivity" />
+        <activity android:name=".ThirdBeautyFaceUnityActivity" />
+        <activity android:name=".ThirdBeautyEnterActivity" />
+        <activity android:name=".ThirdBeautyByteDanceActivity" />
     </application>
 
 </manifest>

@@ -1,35 +1,37 @@
 //
-//  ThirdBeautyBytedViewController.m
+//  ThirdBeautyTencentEffectViewController.m
 //  TRTC-API-Example-OC
 //
-//  Created by adams on 2021/4/22.
+//  Created by summer on 2022/5/11.
+//  Copyright © 2022 Tencent. All rights reserved.
 //
 
-/**
- 第三方美颜接入火山美颜功能
+/*
+ 第三方美颜功能示例
  接入步骤：
- 第一步：集成火山美颜SDK（可参考火山美颜提供的接入文档：http://ailab-cv-sdk.bytedance.com/docs/2036/157784/）
- 1.1、拷贝 iossample 项目中的 Core/Core 目录下的文件到自己项目中
- <p>
- 第二步：打开火山美颜的调用代码
- 2.1、依次取消此文件内被注释的所有代码
- <p>
- 第三步：在TRTC中使用火山美颜功能
- 3.1、编译并运行此工程
+ 第一步：集成腾讯特效SDK并拷贝资源（可参考腾讯特效提供的接入文档：https://cloud.tencent.com/document/product/616/65887 ）
+ 第二步：腾讯特效SDK的鉴权与初始化,详见[self setupBeautySDK],License获取请参考 {https://cloud.tencent.com/document/product/616/65878}
+ 第三步：在TRTC中使用腾讯特效美颜，详见[self.trtcCloud setLocalVideoProcessDelegete:self pixelFormat:TRTCVideoPixelFormat_Texture_2D bufferType:TRTCVideoBufferType_Texture]
+ 
+ 注意：腾讯特效提供的 License 与 applicationId 一一对应的，测试过程中需要修改 applicationId 为 License对应的applicationId
+ 
+ Access steps：
+ First step：Integrate Tencent Effect SDK and copy resources（You can refer to the access document provided by Tencent Effects：https://cloud.tencent.com/document/product/616/65888）
+ Second step：Authentication and initialization of Tencent Effect SDK,
+ see details[self setupBeautySDK],to obtain the license, please refer to {https://cloud.tencent.com/document/product/616/65878}
+ Third step：Using Tencent Effect in TRTC，see details[self.trtcCloud setLocalVideoProcessDelegete:self pixelFormat:TRTCVideoPixelFormat_Texture_2D bufferType:TRTCVideoBufferType_Texture]
+ 
+ Note：The applicationId and License provided by Tencent Effects are in one-to-one correspondence.
+ During the test process, the applicationId needs to be modified to the applicationId corresponding to the License.
  */
 
-#import "ThirdBeautyBytedViewController.h"
-#import <OpenGLES/ES2/gl.h>
-//#import "BEEffectManager.h"
-//#import "BEEffectResourceHelper.h"
-//#import "BEEffectDataManager.h"
-//#import "BEGLUtils.h"
-//#import "BEGLView.h"
+#import "ThirdBeautyTencentEffectViewController.h"
+//#import "XMagic.h"
+//#import "TELicenseCheck.h"
 
 static const NSInteger RemoteUserMaxNum = 6;
 
-@interface ThirdBeautyBytedViewController () <TRTCCloudDelegate, TRTCVideoFrameDelegate>
-
+@interface ThirdBeautyTencentEffectViewController () <TRTCCloudDelegate, TRTCVideoFrameDelegate>
 @property (weak, nonatomic) IBOutlet UIView *leftRemoteViewA;
 @property (weak, nonatomic) IBOutlet UIView *leftRemoteViewB;
 @property (weak, nonatomic) IBOutlet UIView *leftRemoteViewC;
@@ -58,22 +60,12 @@ static const NSInteger RemoteUserMaxNum = 6;
 @property (strong, nonatomic) TRTCCloud *trtcCloud;
 @property (strong, nonatomic) NSMutableOrderedSet *remoteUserIdSet;
 
-// {zh} / 特效 SDK {en} /Special effects SDK
-//@property (nonatomic, strong) BEEffectManager *manager;
-//@property (nonatomic, strong) BEImageUtils *imageUtils;
-//@property (nonatomic, strong) BEEffectDataManager *dataManager;
-@property (nonatomic, assign) BOOL initData;
+//@property (nonatomic, strong) XMagic *xMagicKit;
+//@property (nonatomic, assign) CGSize renderSize;
 
 @end
 
-@implementation ThirdBeautyBytedViewController
-
-//- (BEEffectDataManager *)dataManager {
-//    if (_dataManager == nil) {
-//        _dataManager = [[BEEffectDataManager alloc] initWithType:BEEffectCamera];
-//    }
-//    return _dataManager;
-//}
+@implementation ThirdBeautyTencentEffectViewController
 
 - (NSMutableOrderedSet *)remoteUserIdSet {
     if (!_remoteUserIdSet) {
@@ -82,25 +74,26 @@ static const NSInteger RemoteUserMaxNum = 6;
     return _remoteUserIdSet;
 }
 
-- (TRTCCloud *)trtcCloud {
-    if (!_trtcCloud) {
-        _trtcCloud = [TRTCCloud sharedInstance];
-    }
-    return _trtcCloud;
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.initData = NO;
-    self.trtcCloud.delegate = self;
+    _trtcCloud = [TRTCCloud sharedInstance];
+    _trtcCloud.delegate = self;
     [self setupDefaultUIConfig];
+    [self setupBeautySDK];
     [self addKeyboardObserver];
 }
 
+- (void)setupBeautySDK {
+//    [TELicenseCheck setTELicense:@"https://license.vod2.myqcloud.com/license/v2/1258289294_1/v_cube.license" key:@"3c16909893f53b9600bc63941162cea3" completion:^(NSInteger authresult, NSString * _Nonnull errorMsg) {
+//        if (authresult == TELicenseCheckOk) {
+//            NSLog(@"XMagic 授权成功");
+//        } else {
+//            NSLog(@"XMagic 授权失败");
+//        }
+//    }];
+}
 
 - (void)setupDefaultUIConfig {
-    
-//    self.imageUtils = [[BEImageUtils alloc] init];
     
     self.roomIdTextField.text = [NSString generateRandomRoomNumber];
     self.userIdTextField.text = [NSString generateRandomUserId];
@@ -109,14 +102,14 @@ static const NSInteger RemoteUserMaxNum = 6;
     self.roomIdLabel.text = Localize(@"TRTC-API-Example.ThirdBeauty.roomId");
     self.userIdLabel.text = Localize(@"TRTC-API-Example.ThirdBeauty.userId");
     self.setBeautyLabel.text = Localize(@"TRTC-API-Example.ThirdBeauty.SetBeautyLevel");
-    float value = self.setBeautySlider.value;
-    self.beautyNumLabel.text = [NSString stringWithFormat:@"%.2f",value];
+    NSInteger value = self.setBeautySlider.value * 6;
+    self.beautyNumLabel.text = [NSString stringWithFormat:@"%ld",value];
     
     [self.startPushStreamButton setTitle:Localize(@"TRTC-API-Example.ThirdBeauty.startPush") forState:UIControlStateNormal];
     [self.startPushStreamButton setTitle:Localize(Localize(@"TRTC-API-Example.ThirdBeauty.stopPush")) forState:UIControlStateSelected];
     
     self.startPushStreamButton.titleLabel.adjustsFontSizeToFitWidth = true;
-  
+    
     self.leftRemoteLabelA.adjustsFontSizeToFitWidth = true;
     self.leftRemoteLabelA.tag = 300;
     self.leftRemoteLabelB.adjustsFontSizeToFitWidth = true;
@@ -151,7 +144,55 @@ static const NSInteger RemoteUserMaxNum = 6;
     
 }
 
-#pragma mark - sdk lifecycle
+- (void)buildBeautySDK {
+//    if (_renderSize.width == 0 || _renderSize.height == 0) {
+//        return;
+//    }
+//    NSString *beautyConfigPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+//    beautyConfigPath = [beautyConfigPath stringByAppendingPathComponent:@"beauty_config.json"];
+//    NSFileManager *localFileManager=[[NSFileManager alloc] init];
+//    BOOL isDir = YES;
+//    NSDictionary * beautyConfigJson = @{};
+//    if ([localFileManager fileExistsAtPath:beautyConfigPath isDirectory:&isDir] && !isDir) {
+//        NSString *beautyConfigJsonStr = [NSString stringWithContentsOfFile:beautyConfigPath encoding:NSUTF8StringEncoding error:nil];
+//        NSError *jsonError;
+//        NSData *objectData = [beautyConfigJsonStr dataUsingEncoding:NSUTF8StringEncoding];
+//        beautyConfigJson = [NSJSONSerialization JSONObjectWithData:objectData
+//                                                           options:NSJSONReadingMutableContainers
+//                                                             error:&jsonError];
+//    }
+//    NSDictionary *assetsDict = @{@"core_name":@"LightCore.bundle",
+//                                 @"root_path":[[NSBundle mainBundle] bundlePath],
+//                                 @"plugin_3d":@"Light3DPlugin.bundle",
+//                                 @"plugin_hand":@"LightHandPlugin.bundle",
+//                                 @"plugin_segment":@"LightSegmentPlugin.bundle",
+//                                 @"beauty_config":beautyConfigJson
+//    };
+//    _xMagicKit = [[XMagic alloc] initWithRenderSize:_renderSize assetsDict:assetsDict];
+//
+//    //去掉磨皮
+//    [self.xMagicKit configPropertyWithType:@"beauty" withName:@"beauty.smooth" withData:@"0.0" withExtraInfo:nil];
+    
+}
+
+//- (int)processVideoFrameWithTextureId:(int)textureId textureWidth:(int)textureWidth textureHeight:(int)textureHeight {
+//    if (textureWidth != _renderSize.width || textureHeight != _renderSize.height) {
+//        _renderSize = CGSizeMake(textureWidth, textureHeight);
+//        if (!_xMagicKit) {
+//            [self buildBeautySDK];
+//        } else {
+//            [_xMagicKit setRenderSize:_renderSize];
+//        }
+//    }
+//    YTProcessInput *input = [[YTProcessInput alloc] init];
+//    input.textureData = [[YTTextureData alloc] init];
+//    input.textureData.texture = textureId;
+//    input.textureData.textureWidth = textureWidth;
+//    input.textureData.textureHeight = textureHeight;
+//    input.dataType = kYTTextureData;
+//    YTProcessOutput *output = [self.xMagicKit process:input withOrigin:YtLightImageOriginTopLeft withOrientation:YtLightCameraRotation0];
+//    return output.textureData.texture;
+//}
 
 - (void)showRemoteUserViewWith:(NSString *)userId {
     if (self.remoteUserIdSet.count < RemoteUserMaxNum) {
@@ -196,11 +237,11 @@ static const NSInteger RemoteUserMaxNum = 6;
 }
 
 - (BOOL)keyboardWillHide:(NSNotification *)noti {
-     CGFloat animationDuration = [[[noti userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
-     [UIView animateWithDuration:animationDuration animations:^{
-         self.bottomConstraint.constant = 25;
-     }];
-     return YES;
+    CGFloat animationDuration = [[[noti userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
+    [UIView animateWithDuration:animationDuration animations:^{
+        self.bottomConstraint.constant = 25;
+    }];
+    return YES;
 }
 
 #pragma mark - IBActions
@@ -215,11 +256,10 @@ static const NSInteger RemoteUserMaxNum = 6;
 
 #pragma mark - Slider ValueChange
 - (IBAction)setBeautySliderValueChange:(UISlider *)sender {
-    float value = sender.value ;
-    self.beautyNumLabel.text = [NSString stringWithFormat:@"%.2f",value];
-//    [self.manager updateComposerNodes:[NSArray arrayWithObject:@"beauty_IOS_live"]];
-//    [self.manager updateComposerNodeIntensity:@"beauty_IOS_live" key:@"whiten" intensity:value];
-//    [self.manager setStickerPath:@"baibianfaxing"];
+//    NSDictionary *extraInfo = [NSDictionary dictionary];
+//    [self.xMagicKit configPropertyWithType:@"beauty" withName:@"beauty.smooth" withData:[NSString stringWithFormat:@"%f",sender.value*100] withExtraInfo:extraInfo];
+    NSInteger value = sender.value * 6;
+    self.beautyNumLabel.text = [NSString stringWithFormat:@"%ld",value];
 }
 
 #pragma mark - TRTCCloudDelegate
@@ -237,43 +277,22 @@ static const NSInteger RemoteUserMaxNum = 6;
     }
 }
 
-#pragma mark - TRTCVideoFrameDelegate
-- (uint32_t)onProcessVideoFrame:(TRTCVideoFrame *_Nonnull)srcFrame dstFrame:(TRTCVideoFrame *_Nonnull)dstFrame {
-    if (!self.initData) {
-        self.initData = YES;
-        [self initSDK];
-    }
-//    int ret = [self.manager processTexture:srcFrame.textureId outputTexture:dstFrame.textureId width:srcFrame.width height:srcFrame.height rotate:[self getDeviceOrientation] timeStamp:srcFrame.timestamp];
-    glEnableVertexAttribArray(0);
-    glEnableVertexAttribArray(1);
-   
-    return 0;
+- (void)onError:(TXLiteAVError)errCode errMsg:(NSString *)errMsg extInfo:(NSDictionary *)extInfo  {
+    NSLog(@"");
 }
 
-//- (bef_ai_rotate_type)getDeviceOrientation {
-//    UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
-//    switch (orientation) {
-//        case UIDeviceOrientationPortrait:
-//            return BEF_AI_CLOCKWISE_ROTATE_0;
-//
-//        case UIDeviceOrientationPortraitUpsideDown:
-//            return BEF_AI_CLOCKWISE_ROTATE_180;
-//
-//        case UIDeviceOrientationLandscapeLeft:
-//            return BEF_AI_CLOCKWISE_ROTATE_270;
-//
-//        case UIDeviceOrientationLandscapeRight:
-//            return BEF_AI_CLOCKWISE_ROTATE_90;
-//
-//        default:
-//            return BEF_AI_CLOCKWISE_ROTATE_0;
-//    }
-//}
+
+
+#pragma mark - TRTCVideoFrameDelegate
+- (uint32_t)onProcessVideoFrame:(TRTCVideoFrame *_Nonnull)srcFrame dstFrame:(TRTCVideoFrame *_Nonnull)dstFrame {
+//    dstFrame.textureId = [self processVideoFrameWithTextureId:srcFrame.textureId textureWidth:srcFrame.width textureHeight:srcFrame.height];
+    return 0;
+}
 
 #pragma mark - StartPushStream & StopPushStream
 - (void)startPushStream {
     self.title = LocalizeReplace(Localize(@"TRTC-API-Example.ThirdBeauty.Title"), self.roomIdTextField.text);
-    [self.trtcCloud startLocalPreview:true view:self.view];
+    [self.trtcCloud startLocalPreview:YES view:self.view];
 
     TRTCParams *params = [[TRTCParams alloc] init];
     params.sdkAppId = SDKAppID;
@@ -281,11 +300,11 @@ static const NSInteger RemoteUserMaxNum = 6;
     params.userId = self.userIdTextField.text;
     params.userSig = [GenerateTestUserSig genTestUserSig:self.userIdTextField.text];
     params.role = TRTCRoleAnchor;
-    
+
 //    [self.trtcCloud setLocalVideoProcessDelegete:self pixelFormat:TRTCVideoPixelFormat_Texture_2D bufferType:TRTCVideoBufferType_Texture];
     [self.trtcCloud enterRoom:params appScene:TRTCAppSceneLIVE];
     [self.trtcCloud startLocalAudio:TRTCAudioQualityMusic];
-    
+
     TRTCVideoEncParam *videoEncParam = [[TRTCVideoEncParam alloc] init];
     videoEncParam.videoFps = 24;
     videoEncParam.resMode = TRTCVideoResolutionModePortrait;
@@ -319,45 +338,11 @@ static const NSInteger RemoteUserMaxNum = 6;
     [self.trtcCloud stopLocalPreview];
     [self.trtcCloud stopLocalAudio];
     [self.trtcCloud exitRoom];
+//    if (_xMagicKit) {
+//        [_xMagicKit deinit];
+//        _xMagicKit = nil;
+//    }
     [TRTCCloud destroySharedIntance];
-    [self destroySDK];
-
-}
-
-- (void)initSDK {
-//    self.manager = [[BEEffectManager alloc] initWithResourceProvider:[BEEffectResourceHelper new]];
-//    [self.manager initTask];
-//    [self resetToDefaultEffect:self.dataManager.buttonItemArrayWithDefaultIntensity];
-}
-
-//- (void)resetToDefaultEffect:(NSArray<BEEffectItem *> *)items {
-//    [self.manager setFilterPath:@""];
-//    [self.manager setStickerPath:@""];
-//
-//    [self updateComposerNode:items];
-//    for (BEEffectItem *item in items) {
-//        [self updateComposerNodeIntensity:item];
-//    }
-//}
-
-//- (void)updateComposerNode:(NSArray<BEEffectItem *> *)items {
-//    NSMutableArray<NSString *> *nodes = [NSMutableArray arrayWithCapacity:items.count];
-//    NSMutableArray<NSString *> *tags = [NSMutableArray arrayWithCapacity:items.count];
-//    for (BEEffectItem *item in items) {
-//        [nodes addObject:item.model.path];
-//        [tags addObject:item.model.tag == nil ? @"" : item.model.tag];
-//    }
-//    [self.manager updateComposerNodes:nodes withTags:tags];
-//}
-//
-//- (void)updateComposerNodeIntensity:(BEEffectItem *)item {
-//    for (int i = 0; i < item.model.keyArray.count; i++) {
-//        [self.manager updateComposerNodeIntensity:item.model.path key:item.model.keyArray[i] intensity:[item.intensityArray[i] floatValue]];
-//    }
-//}
-
-- (void)destroySDK {
-//    [self.manager destroyTask];
 }
 
 @end

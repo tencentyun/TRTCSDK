@@ -8,6 +8,7 @@
     <string name="thirdbeauty_please_input_roomid_and_userid">Enter a room ID and username</string>
     <string name="thirdbeauty_faceunity">Faceunity Beauty</string>
     <string name="thirdbeauty_bytedance">Bytedance Beauty</string>
+    <string name="thirdbeauty_encent_effect">Tencent Effect Beauty</string>
     <string name="thirdbeauty_video_sr_not_support">Video super sub only supports Qualcomm processors and requires more than 660</string>
     <string name="thirdbeauty_video_sr_pixel_not_support">Pixel devices are not supported by video hyperscore</string>
     <string name="thirdbeauty_video_sr_resolution_not_support">Super sub currently only supports resolutions of 720p and below</string>>

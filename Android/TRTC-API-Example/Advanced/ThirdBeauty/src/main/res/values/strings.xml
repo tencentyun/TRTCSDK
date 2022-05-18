@@ -8,6 +8,7 @@
     <string name="thirdbeauty_please_input_roomid_and_userid">请输入房间号和用户ID</string>
     <string name="thirdbeauty_faceunity">相芯美颜</string>
     <string name="thirdbeauty_bytedance">字节美颜</string>
+    <string name="thirdbeauty_encent_effect">腾讯特效美颜</string>
     <string name="thirdbeauty_video_sr_not_support">视频超分只支持高通处理器，且需要660以上</string>
     <string name="thirdbeauty_video_sr_pixel_not_support">视频超分不支持pixel 设备</string>
     <string name="thirdbeauty_video_sr_resolution_not_support">超分目前只支持720p及以下分辨率</string>>
