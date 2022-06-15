@@ -3,10 +3,21 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0405FADC2859E1B200DE7D20 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0405FADB2859E1B200DE7D20 /* AVFoundation.framework */; };
+		0405FADE2859E1C200DE7D20 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0405FADD2859E1C200DE7D20 /* AudioToolbox.framework */; };
+		0405FAE02859E1C900DE7D20 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0405FADF2859E1C900DE7D20 /* VideoToolbox.framework */; };
+		0405FAE12859E1D300DE7D20 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0405FADF2859E1C900DE7D20 /* VideoToolbox.framework */; };
+		0405FAE32859E24D00DE7D20 /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0405FAE22859E24D00DE7D20 /* MetalKit.framework */; };
+		0405FAE52859E25C00DE7D20 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0405FAE42859E25C00DE7D20 /* SystemConfiguration.framework */; };
+		0405FAE72859E26B00DE7D20 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0405FAE62859E26B00DE7D20 /* CoreTelephony.framework */; };
+		0405FAE82859E2BE00DE7D20 /* TXFFmpeg.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0405FAD72859E18C00DE7D20 /* TXFFmpeg.xcframework */; };
+		0405FAE92859E2BE00DE7D20 /* TXFFmpeg.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0405FAD72859E18C00DE7D20 /* TXFFmpeg.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		0405FAEA2859E2C100DE7D20 /* TXSoundTouch.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0405FAD92859E19800DE7D20 /* TXSoundTouch.xcframework */; };
+		0405FAEB2859E2C100DE7D20 /* TXSoundTouch.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0405FAD92859E19800DE7D20 /* TXSoundTouch.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		280690A22490BE6D00FAAE90 /* ScreenEntranceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 280690A02490BE6D00FAAE90 /* ScreenEntranceViewController.swift */; };
 		280690A32490BE6D00FAAE90 /* ScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 280690A12490BE6D00FAAE90 /* ScreenViewController.swift */; };
 		28C0A3FC249101F000E50613 /* TRTCBroadcastExtensionLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C0A3FB249101F000E50613 /* TRTCBroadcastExtensionLauncher.swift */; };
@@ -84,6 +95,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				0405FAE92859E2BE00DE7D20 /* TXFFmpeg.xcframework in Embed Frameworks */,
+				0405FAEB2859E2C100DE7D20 /* TXSoundTouch.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -91,6 +104,14 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0405FAD72859E18C00DE7D20 /* TXFFmpeg.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = TXFFmpeg.xcframework; path = ../SDK/TXFFmpeg.xcframework; sourceTree = "<group>"; };
+		0405FAD92859E19800DE7D20 /* TXSoundTouch.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = TXSoundTouch.xcframework; path = ../SDK/TXSoundTouch.xcframework; sourceTree = "<group>"; };
+		0405FADB2859E1B200DE7D20 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		0405FADD2859E1C200DE7D20 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		0405FADF2859E1C900DE7D20 /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = System/Library/Frameworks/VideoToolbox.framework; sourceTree = SDKROOT; };
+		0405FAE22859E24D00DE7D20 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
+		0405FAE42859E25C00DE7D20 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		0405FAE62859E26B00DE7D20 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		280690A02490BE6D00FAAE90 /* ScreenEntranceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenEntranceViewController.swift; sourceTree = "<group>"; };
 		280690A12490BE6D00FAAE90 /* ScreenViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenViewController.swift; sourceTree = "<group>"; };
 		280690A92490C04D00FAAE90 /* ReplayKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReplayKit.framework; path = System/Library/Frameworks/ReplayKit.framework; sourceTree = SDKROOT; };
@@ -171,6 +192,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0405FAE12859E1D300DE7D20 /* VideoToolbox.framework in Frameworks */,
 				C61744BA26E8A43E00FD00B1 /* libc++.tbd in Frameworks */,
 				C61744B926E8A43500FD00B1 /* Accelerate.framework in Frameworks */,
 				453371862491F35100E18040 /* TXLiteAVSDK_ReplayKitExt.framework in Frameworks */,
@@ -182,11 +204,19 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0405FAE72859E26B00DE7D20 /* CoreTelephony.framework in Frameworks */,
+				0405FAE52859E25C00DE7D20 /* SystemConfiguration.framework in Frameworks */,
+				0405FAE32859E24D00DE7D20 /* MetalKit.framework in Frameworks */,
+				0405FAE02859E1C900DE7D20 /* VideoToolbox.framework in Frameworks */,
+				0405FADE2859E1C200DE7D20 /* AudioToolbox.framework in Frameworks */,
+				FD96E07E248DF98800294D1F /* Accelerate.framework in Frameworks */,
+				0405FADC2859E1B200DE7D20 /* AVFoundation.framework in Frameworks */,
 				FDD9E0302440840900FD5B5A /* libresolv.tbd in Frameworks */,
 				FDCEFF4F241BBDF1000BFA0B /* libiconv.tbd in Frameworks */,
+				0405FAEA2859E2C100DE7D20 /* TXSoundTouch.xcframework in Frameworks */,
 				FDCEFF4D241BBDEB000BFA0B /* libc++.tbd in Frameworks */,
-				FD96E07E248DF98800294D1F /* Accelerate.framework in Frameworks */,
 				FDCEFF4B241BBDD6000BFA0B /* TXLiteAVSDK_TRTC.framework in Frameworks */,
+				0405FAE82859E2BE00DE7D20 /* TXFFmpeg.xcframework in Frameworks */,
 				8AB4CC75885C25710FA89DD4 /* libPods-TRTCSimpleDemo.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -351,6 +381,14 @@
 		C2D3A67E7F4AD77B3A644C16 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0405FAE62859E26B00DE7D20 /* CoreTelephony.framework */,
+				0405FAE42859E25C00DE7D20 /* SystemConfiguration.framework */,
+				0405FAE22859E24D00DE7D20 /* MetalKit.framework */,
+				0405FADF2859E1C900DE7D20 /* VideoToolbox.framework */,
+				0405FADD2859E1C200DE7D20 /* AudioToolbox.framework */,
+				0405FADB2859E1B200DE7D20 /* AVFoundation.framework */,
+				0405FAD92859E19800DE7D20 /* TXSoundTouch.xcframework */,
+				0405FAD72859E18C00DE7D20 /* TXFFmpeg.xcframework */,
 				28C0A3D42490CAB000E50613 /* TXLiteAVSDK_ReplayKitExt.framework */,
 				FDD9E02F2440840900FD5B5A /* libresolv.tbd */,
 				FDCEFF4E241BBDF1000BFA0B /* libiconv.tbd */,
@@ -596,6 +634,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 5GHU44CJHG;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Screen/TXReplayKit_Screen/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -618,6 +657,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 5GHU44CJHG;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Screen/TXReplayKit_Screen/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (

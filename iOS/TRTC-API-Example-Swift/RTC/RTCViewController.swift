@@ -75,12 +75,12 @@ class RTCViewController: UIViewController {
          * 视频通话场景推荐使用“自然”美颜效果
          */
         let beautyManager = trtcCloud.getBeautyManager()
-        beautyManager?.setBeautyStyle(TXBeautyStyle.nature)
-        beautyManager?.setBeautyLevel(5)
-        beautyManager?.setWhitenessLevel(1)
+        beautyManager.setBeautyStyle(TXBeautyStyle.nature)
+        beautyManager.setBeautyLevel(5)
+        beautyManager.setWhitenessLevel(1)
         
         /// 调整仪表盘显示位置
-        trtcCloud.setDebugViewMargin(userId, margin: TXEdgeInsets.init(top: 80, left: 0, bottom: 0, right: 0))
+        trtcCloud.setDebugViewMargin(userId ?? "", margin: TXEdgeInsets.init(top: 80, left: 0, bottom: 0, right: 0))
     }
     
     override func viewWillAppear(_ animated: Bool) {
