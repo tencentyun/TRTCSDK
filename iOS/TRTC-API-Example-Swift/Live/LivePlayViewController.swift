@@ -77,9 +77,9 @@ class LivePlayViewController: UIViewController {
          * 互动直播场景推荐使用“光滑”美颜效果
          */
         let beautyManager = trtcCloud.getBeautyManager()
-        beautyManager?.setBeautyStyle(TXBeautyStyle.smooth)
-        beautyManager?.setBeautyLevel(5)
-        beautyManager?.setWhitenessLevel(1)
+        beautyManager.setBeautyStyle(TXBeautyStyle.smooth)
+        beautyManager.setBeautyLevel(5)
+        beautyManager.setWhitenessLevel(1)
         
         /// 调整仪表盘显示位置
         trtcCloud.setDebugViewMargin(roomOwner, margin: TXEdgeInsets.init(top: 80, left: 0, bottom: 0, right: 0))
