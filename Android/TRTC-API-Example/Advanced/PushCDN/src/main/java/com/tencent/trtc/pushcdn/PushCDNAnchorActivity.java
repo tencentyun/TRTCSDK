@@ -177,7 +177,7 @@ public class PushCDNAnchorActivity extends TRTCBaseActivity implements View.OnCl
             remote.width  = 135;
             remote.height = 240;
             remote.roomId = mRoomId;
-            mixUser.inputType = TRTCCloudDef.TRTC_MixInputType_AudioVideo;
+            remote.inputType = TRTCCloudDef.TRTC_MixInputType_AudioVideo;
             config.mixUsers.add(remote);
         }
         mTRTCCloud.setMixTranscodingConfig(config);
