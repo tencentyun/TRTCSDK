@@ -46,7 +46,7 @@ void TestCdnPlayer::on_btStart_clicked(){
         QString stream_url = QString("http://%1/live/%2.flv").arg(domain).arg(stream_id);
 
         std::string play_url = stream_url.toStdString();
-        live_player_->setRenderFrame(reinterpret_cast<trtc::TXView>(ui_test_cdn_player_->videoPlaceHolder->winId()));
+        live_player_->setRenderFrame(reinterpret_cast<liteav::TXView>(ui_test_cdn_player_->videoPlaceHolder->winId()));
         live_player_->startPlay(play_url.c_str());
     }
     paused_ = false;

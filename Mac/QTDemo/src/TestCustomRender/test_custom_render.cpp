@@ -16,40 +16,40 @@ TestCustomRender::~TestCustomRender() {
 void TestCustomRender::startLocalVideoRender(){
     getTRTCShareInstance()->startLocalPreview(nullptr);
     getTRTCShareInstance()->setLocalVideoRenderCallback(
-                trtc::TRTCVideoPixelFormat_I420
-                ,trtc::TRTCVideoBufferType_Buffer
+                liteav::TRTCVideoPixelFormat_I420
+                ,liteav::TRTCVideoBufferType_Buffer
                 ,this);
 }
 void TestCustomRender::startRemoteVideoRender(std::string& userId){
     getTRTCShareInstance()->setRemoteVideoRenderCallback(
                 userId.c_str()
-                ,trtc::TRTCVideoPixelFormat_I420
-                ,trtc::TRTCVideoBufferType_Buffer
+                ,liteav::TRTCVideoPixelFormat_I420
+                ,liteav::TRTCVideoBufferType_Buffer
                 ,this);
 }
 
 void TestCustomRender::stopLocalVideoRender(){
     getTRTCShareInstance()->setLocalVideoRenderCallback(
-                trtc::TRTCVideoPixelFormat_Unknown
-                ,trtc::TRTCVideoBufferType_Unknown
+                liteav::TRTCVideoPixelFormat_Unknown
+                ,liteav::TRTCVideoBufferType_Unknown
                 ,nullptr);
 
 }
 void TestCustomRender::stopRemoteVideoRender(std::string& userId){
     getTRTCShareInstance()->setRemoteVideoRenderCallback(
                 userId.c_str()
-                ,trtc::TRTCVideoPixelFormat_Unknown
-                ,trtc::TRTCVideoBufferType_Unknown
+                ,liteav::TRTCVideoPixelFormat_Unknown
+                ,liteav::TRTCVideoBufferType_Unknown
                 ,nullptr);
 }
 
 //============= ITRTCVideoRenderCallback start ===================//
-void TestCustomRender::onRenderVideoFrame(const char *userId, trtc::TRTCVideoStreamType streamType, trtc::TRTCVideoFrame *frame){
+void TestCustomRender::onRenderVideoFrame(const char *userId, liteav::TRTCVideoStreamType streamType, liteav::TRTCVideoFrame *frame){
     if(gl_yuv_widget_ == nullptr){
         return;
     }
 
-    if(streamType == trtc::TRTCVideoStreamType::TRTCVideoStreamTypeBig){
+    if(streamType == liteav::TRTCVideoStreamType::TRTCVideoStreamTypeBig){
         emit renderViewSize(frame->width,frame->height);
         gl_yuv_widget_->slotShowYuv(reinterpret_cast<uchar*>(frame->data),frame->width,frame->height);
     }

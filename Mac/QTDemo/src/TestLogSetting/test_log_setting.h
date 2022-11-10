@@ -25,7 +25,7 @@
 #include "TRTCCloudCallback.h"
 #include "ui_TestLogSettingDialog.h"
 
-class TestLogSetting:public BaseDialog,public trtc::ITRTCLogCallback
+class TestLogSetting:public BaseDialog,public liteav::ITRTCLogCallback
 {
     Q_OBJECT
 public:
@@ -38,7 +38,7 @@ private:
     void setLogCompressEnabled();
     void setLogDirPath();
     //============= ITRTCLogCallback start =================//
-    void onLog(const char *log, trtc::TRTCLogLevel level, const char *module) override;
+    void onLog(const char *log, liteav::TRTCLogLevel level, const char *module) override;
     //============= ITRTCLogCallback end ===================//
 
 private slots:

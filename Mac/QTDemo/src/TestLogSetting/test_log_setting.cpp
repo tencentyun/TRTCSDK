@@ -20,7 +20,7 @@ TestLogSetting::~TestLogSetting(){
 }
 
 void TestLogSetting::setLogLevel(){
-    trtc::TRTCLogLevel log_level = static_cast<trtc::TRTCLogLevel>(ui_test_log_setting_->setLogLevelCb->currentIndex());
+    liteav::TRTCLogLevel log_level = static_cast<liteav::TRTCLogLevel>(ui_test_log_setting_->setLogLevelCb->currentIndex());
     getTRTCShareInstance()->setLogLevel(log_level);
 }
 
@@ -51,7 +51,7 @@ void TestLogSetting::setLogDirPath(){
 
 
 //============= ITRTCLogCallback start =================//
-void TestLogSetting::onLog(const char *log, trtc::TRTCLogLevel level, const char *module){
+void TestLogSetting::onLog(const char *log, liteav::TRTCLogLevel level, const char *module){
 
     QByteArray localMsg = QString::fromUtf8(log).toLocal8Bit();
     QString current_date_time = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");

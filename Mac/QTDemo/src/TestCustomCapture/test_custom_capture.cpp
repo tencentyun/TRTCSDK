@@ -39,8 +39,8 @@ void TestCustomCapture::startCustomAudioData(QString path) {
             }
             QByteArray array;
             array = file.read(buffer_size);
-            trtc::TRTCAudioFrame frame;
-            frame.audioFormat = trtc::TRTCAudioFrameFormatPCM;
+            liteav::TRTCAudioFrame frame;
+            frame.audioFormat = liteav::TRTCAudioFrameFormatPCM;
             frame.length = buffer_size;
             frame.data = array.data();
             frame.sampleRate = 48000;
@@ -77,14 +77,14 @@ void TestCustomCapture::startCustomVideoData(QString path) {
 
             QByteArray array;
             array = file.read(buffer_size);
-            trtc::TRTCVideoFrame frame;
+            liteav::TRTCVideoFrame frame;
 
             if (ui_test_custom_capture_->cbEnableCustomTimeCapture) {
                 frame.timestamp = getTRTCShareInstance()->generateCustomPTS();
             }
 
-            frame.videoFormat = trtc::TRTCVideoPixelFormat_I420;
-            frame.bufferType = trtc::TRTCVideoBufferType_Buffer;
+            frame.videoFormat = liteav::TRTCVideoPixelFormat_I420;
+            frame.bufferType = liteav::TRTCVideoBufferType_Buffer;
             frame.length = buffer_size;
             frame.data = array.data();
             frame.width = 320;
@@ -102,7 +102,7 @@ void TestCustomCapture::startCustomVideoData(QString path) {
 
 void TestCustomCapture::stopCustomAudioData() {
     getTRTCShareInstance()->enableCustomAudioCapture(false);
-    getTRTCShareInstance()->startLocalAudio(trtc::TRTCAudioQualityDefault);
+    getTRTCShareInstance()->startLocalAudio(liteav::TRTCAudioQualityDefault);
 }
 
 void TestCustomCapture::stopCustomVideoData() {

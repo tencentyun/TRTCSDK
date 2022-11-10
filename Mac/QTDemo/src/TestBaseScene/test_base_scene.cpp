@@ -18,7 +18,7 @@ TestBaseScene::~TestBaseScene() {
     getTRTCShareInstance()->removeCallback(this);
 }
 
-void TestBaseScene::enterRoom(uint32_t roomId, std::string userId, trtc::TRTCAppScene appScene, trtc::TRTCRoleType roleType) {
+void TestBaseScene::enterRoom(uint32_t roomId, std::string userId, liteav::TRTCAppScene appScene, liteav::TRTCRoleType roleType) {
 
     room_id_ = roomId;
     user_id_ = userId;
@@ -31,7 +31,7 @@ void TestBaseScene::enterRoom(uint32_t roomId, std::string userId, trtc::TRTCApp
     streamid_os << SDKAppID << "_" << room_id_ << "_" << user_id_ << "_" << "main";
     stream_id_ = streamid_os.str();
 
-    trtc::TRTCParams params;
+    liteav::TRTCParams params;
     params.sdkAppId = SDKAppID;
     params.userId = user_id_.c_str();
     /** @note: 请不要将如下代码发布到您的线上正式版本的 App 中，原因如下：
@@ -63,7 +63,7 @@ void TestBaseScene::exitRoom() {
     getTRTCShareInstance()->exitRoom();
 }
 
-void TestBaseScene::switchRole(trtc::TRTCRoleType roleType){
+void TestBaseScene::switchRole(liteav::TRTCRoleType roleType){
     getTRTCShareInstance()->switchRole(roleType);
 }
 
@@ -76,11 +76,11 @@ void TestBaseScene::onEnterRoom(int result) {
 
         // Enable audio
         getTRTCShareInstance()->enableAudioVolumeEvaluation(300); // Effective before the calling of startLocalAudio
-        getTRTCShareInstance()->startLocalAudio(trtc::TRTCAudioQualityDefault);
+        getTRTCShareInstance()->startLocalAudio(liteav::TRTCAudioQualityDefault);
 
         // Enable video
-        if(app_scene_ == trtc::TRTCAppScene::TRTCAppSceneVideoCall || app_scene_ == trtc::TRTCAppScene::TRTCAppSceneLIVE){
-            getTRTCShareInstance()->setBeautyStyle(trtc::TRTCBeautyStyleSmooth, 6, 6, 6);
+        if(app_scene_ == liteav::TRTCAppScene::TRTCAppSceneVideoCall || app_scene_ == liteav::TRTCAppScene::TRTCAppSceneLIVE){
+            getTRTCShareInstance()->setBeautyStyle(liteav::TRTCBeautyStyleSmooth, 6, 6, 6);
             getTRTCShareInstance()->startLocalPreview(test_user_video_group_->getLocalVideoTxView());
         }
 

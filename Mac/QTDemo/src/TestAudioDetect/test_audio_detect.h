@@ -87,10 +87,10 @@ private:
     struct DeviceInfoItem {
     std::string device_name_;
     std::string device_id_;
-    trtc::TXMediaDeviceType device_type_;
+    liteav::TXMediaDeviceType device_type_;
 
     DeviceInfoItem() {}
-    DeviceInfoItem(std::string device_name, std::string device_id, trtc::TXMediaDeviceType device_type) :
+    DeviceInfoItem(std::string device_name, std::string device_id, liteav::TXMediaDeviceType device_type) :
         device_name_(device_name), device_id_(device_id), device_type_(device_type) {}
     };
 
@@ -98,7 +98,7 @@ private:
     bool device_info_ready_ = false;
     QTemporaryDir qtemp_dir_;
     std::unique_ptr<Ui::TestAudioDetectDialog> ui_audio_test_;
-    trtc::ITXDeviceManager *tx_device_manager_;
+    liteav::ITXDeviceManager *tx_device_manager_;
     QVector<DeviceInfoItem> qvector_device_info_mic_;
     QVector<DeviceInfoItem> qvector_device_info_speaker_;
     bool mic_test_started_ = false;

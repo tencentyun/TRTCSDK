@@ -48,7 +48,7 @@ class TestUserVideoItem:public QWidget,public TrtcCloudCallbackDefaultImpl{
 
 public:
     TestUserVideoItem(QWidget *parent = nullptr,
-                      trtc::ITRTCCloud* cloud = nullptr,
+                      liteav::ITRTCCloud* cloud = nullptr,
                       int roomid = 0,
                       std::string userid = nullptr,
                       TEST_VIDEO_ITEM::ViewItemType type = TEST_VIDEO_ITEM::ViewItemType::RemoteView);
@@ -82,7 +82,7 @@ public:
     void changeEvent(QEvent* event);
 private:
     std::unique_ptr<Ui::TestUserVideoItem> ui_video_item_;
-    trtc::ITRTCCloud* trtccloud_;
+    liteav::ITRTCCloud* trtccloud_;
     int room_id_;
     std::string user_id_;
     TEST_VIDEO_ITEM::ViewItemType viewtype_;
@@ -92,10 +92,10 @@ private:
     bool audio_mute_ = false;
     bool video_mute_ = false;
 
-    trtc::TRTCVideoRotation rotation_ = trtc::TRTCVideoRotation0;
-    trtc::TRTCVideoFillMode fill_mode_ = trtc::TRTCVideoFillMode_Fit;
-    trtc::TRTCVideoMirrorType mirror_type_ = trtc::TRTCVideoMirrorType_Disable;
-    trtc::TRTCVideoStreamType video_stream_type_ = trtc::TRTCVideoStreamType::TRTCVideoStreamTypeBig;
+    liteav::TRTCVideoRotation rotation_ = liteav::TRTCVideoRotation0;
+    liteav::TRTCVideoFillMode fill_mode_ = liteav::TRTCVideoFillMode_Fit;
+    liteav::TRTCVideoMirrorType mirror_type_ = liteav::TRTCVideoMirrorType_Disable;
+    liteav::TRTCVideoStreamType video_stream_type_ = liteav::TRTCVideoStreamType::TRTCVideoStreamTypeBig;
 };
 
 #endif // USERVIDEOITEM_H

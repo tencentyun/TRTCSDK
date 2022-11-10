@@ -36,7 +36,7 @@ public:
 private :
     void updateScreenSharingParams();
     void setSubStreamMixVolume(int volume);
-    void setSubStreamEncoderParam(trtc::TRTCVideoStreamType streamType,trtc::TRTCVideoEncParam& videoEncParam);
+    void setSubStreamEncoderParam(liteav::TRTCVideoStreamType streamType,liteav::TRTCVideoEncParam& videoEncParam);
 private slots:
     void on_btUpdateScreenSharing_clicked();
     void on_btSharingAllScreen_clicked();
@@ -45,7 +45,7 @@ private slots:
 
 private:
     void configViewParams();
-    inline trtc::TRTCVideoResolution indexConvertToVideoResolution(int index);
+    inline liteav::TRTCVideoResolution indexConvertToVideoResolution(int index);
     void retranslateUi() override;
 public:
     void closeEvent(QCloseEvent *event) override;
@@ -56,9 +56,9 @@ private:
     TestScreenShareSelectScreen test_screensharing_withscreen;
     TestScreenShareSelectWindow test_screensharing_withwindow;
 
-    trtc::TRTCVideoResolution video_resolution_ = trtc::TRTCVideoResolution_1280_720;
-    trtc::TRTCVideoResolutionMode res_mode_ = trtc::TRTCVideoResolutionModeLandscape;
-    trtc::TRTCVideoStreamType video_stream_type = trtc::TRTCVideoStreamTypeSub;
+    liteav::TRTCVideoResolution video_resolution_ = liteav::TRTCVideoResolution_1280_720;
+    liteav::TRTCVideoResolutionMode res_mode_ = liteav::TRTCVideoResolutionModeLandscape;
+    liteav::TRTCVideoStreamType video_stream_type = liteav::TRTCVideoStreamTypeSub;
     uint32_t mix_volume = 50;
     uint32_t videofps_ = 15;
     uint32_t video_bitrate_ = 1200;

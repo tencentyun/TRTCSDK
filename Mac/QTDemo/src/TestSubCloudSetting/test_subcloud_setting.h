@@ -47,7 +47,7 @@ public:
     explicit TestSubCloudSetting(std::shared_ptr<TestUserVideoGroup> testUserVideoGroup);
     ~TestSubCloudSetting();
 
-    void enterSubCloudRoom(uint32_t roomId, std::string userId, trtc::TRTCAppScene appScene);
+    void enterSubCloudRoom(uint32_t roomId, std::string userId, liteav::TRTCAppScene appScene);
     void exitSubCloudRoom();
 
 public slots:
@@ -61,14 +61,14 @@ private:
     void onUserAudioAvailable(const char* userId, bool available) override;
     void onRemoteUserEnterRoom (const char *userId) override;
     void onRemoteUserLeaveRoom (const char *userId, int reason) override;
-    void onUserVoiceVolume(trtc::TRTCVolumeInfo* userVolumes, uint32_t userVolumesCount, uint32_t totalVolume) override;
+    void onUserVoiceVolume(liteav::TRTCVolumeInfo* userVolumes, uint32_t userVolumesCount, uint32_t totalVolume) override;
     //============= ITRTCCloudCallback end =================//
 signals:
     void onEnterSubRoom(bool result);
     void onExitSubRoom();
 
 private:
-    trtc::ITRTCCloud *sub_cloud_ = nullptr;
+    liteav::ITRTCCloud *sub_cloud_ = nullptr;
     std::shared_ptr<TestUserVideoGroup> test_user_video_group_;
 
     uint32_t room_id_;

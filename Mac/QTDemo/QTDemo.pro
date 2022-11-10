@@ -164,20 +164,61 @@ DEPENDPATH += $${SOURCE_PATHS}
 
 QMAKE_INFO_PLIST += Info.plist
 
+# 添加TXLiteAVSDK_TRTC_Mac.framework头文件
+INCLUDEPATH += $$PWD/../SDK/TXLiteAVSDK_TRTC_Mac.framework/Headers/cpp_interface
+INCLUDEPATH += $$PWD/../SDK/TXLiteAVSDK_TRTC_Mac.framework/Headers
+
 # 添加库依赖
-LIBS += "-F$$PWD/src/Util/mac/usersig"
 LIBS += "-F$$PWD/../SDK"
 LIBS += -framework TXLiteAVSDK_TRTC_Mac
+
+# 引用的系统库
+QMAKE_CXXFLAGS += -x objective-c++
 LIBS += -framework Accelerate
 LIBS += -framework AudioUnit
 LIBS += -lbz2
 LIBS += -lresolv
-#without c++11 & AppKit library compiler can't solve address for symbols
 LIBS += -framework AppKit
+LIBS += -framework Foundation
+LIBS += -framework CoreFoundation
+LIBS += -framework Cocoa
+LIBS += -framework Security
+LIBS += -framework SystemConfiguration
+LIBS += -framework JavaScriptCore
+LIBS += -framework CoreMedia
+LIBS += -framework CoreAudio
+LIBS += -framework CoreVideo
+LIBS += -framework CoreImage
+LIBS += -framework AVFoundation
+LIBS += -framework AudioToolbox
+LIBS += -framework VideoToolbox
+LIBS += -framework MetalKit
+LIBS += -framework Metal
+LIBS += -framework CoreTelephony
+LIBS += -framework CoreGraphics
+LIBS += -framework OpenGL
+LIBS += -framework OpenAL
+LIBS += -framework QuartzCore
+LIBS += -lz
+LIBS += -ObjC
 
-# 添加TXLiteAVSDK_TRTC_Mac.framework头文件
-INCLUDEPATH += $$PWD/../SDK/TXLiteAVSDK_TRTC_Mac.framework/Headers/cpp_interface \
-               $$PWD/../SDK/TXLiteAVSDK_TRTC_Mac.framework/Headers
+# TXFFmpeg库的使用
+LIBS += -F$$PWD/../SDK/TXFFmpeg.xcframework/macos-arm64_x86_64
+LIBS += -framework TXFFmpeg
+TXFFmpeg_FRAMEWORK.files = $$PWD/../SDK/TXFFmpeg.xcframework/macos-arm64_x86_64/TXFFmpeg.framework
+TXFFmpeg_FRAMEWORK.path = /Contents/Frameworks
+QMAKE_BUNDLE_DATA += TXFFmpeg_FRAMEWORK
+
+# TXSoundTouch库的使用
+LIBS += -F$$PWD/../SDK/TXSoundTouch.xcframework/macos-arm64_x86_64
+LIBS += -framework TXSoundTouch
+TXSoundTouch_FRAMEWORK.files = $$PWD/../SDK/TXSoundTouch.xcframework/macos-arm64_x86_64/TXSoundTouch.framework
+TXSoundTouch_FRAMEWORK.path = /Contents/Frameworks
+QMAKE_BUNDLE_DATA += TXSoundTouch_FRAMEWORK
+
+# 运行时库路径rpath的添加
+QMAKE_LFLAGS += -Wl -ObjC
+QMAKE_LFLAGS += -Wl,-rpath,@executable_path/../Frameworks/
 
 macx: LIBS += -L$$PWD/src/Util/mac/usersig/ -lTXLiteAVTestUserSig
 macx: PRE_TARGETDEPS += $$PWD/src/Util/mac/usersig/libTXLiteAVTestUserSig.a
@@ -187,8 +228,7 @@ CONFIG += console
 INCLUDEPATH += $$PWD/src/Util/mac/usersig/include
 DEPENDPATH += $$PWD/src/Util/mac/usersig/include
 
-DISTFILES += \
-    src/Util/mac/usersig/libTXLiteAVTestUserSig.a
+DISTFILES += $$PWD/src/Util/mac/usersig/libTXLiteAVTestUserSig.a
 
 SOURCES += \
     $$PWD/src/Util/mac/cdnplayer/tx_liveplayer_proxy.mm

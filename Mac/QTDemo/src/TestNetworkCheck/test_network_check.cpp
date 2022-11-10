@@ -49,7 +49,7 @@ void TestNetworkCheck::stopSpeedTest(){
 
 //============= ITRTCCloudCallback start===================//
 
-void TestNetworkCheck::onSpeedTest(const trtc::TRTCSpeedTestResult &currentResult, uint32_t finishedCount, uint32_t totalCount){
+void TestNetworkCheck::onSpeedTest(const liteav::TRTCSpeedTestResult &currentResult, uint32_t finishedCount, uint32_t totalCount){
     QString result = QString("Progress: " + QString::number(finishedCount) + "/" + QString::number(totalCount)+"\n");
     result.append("ip:").append(QString::fromStdString(currentResult.ip))
             .append(" quality:").append(currentResult.quality)

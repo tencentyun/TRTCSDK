@@ -31,7 +31,7 @@ void TestCdnPublish::stopPublishing(){
 
 void TestCdnPublish::startPublishing(std::string streamId){
     if(!is_publishing_) {
-        getTRTCShareInstance()->startPublishing(streamId.c_str(),trtc::TRTCVideoStreamTypeBig);
+        getTRTCShareInstance()->startPublishing(streamId.c_str(),liteav::TRTCVideoStreamTypeBig);
     }
 }
 

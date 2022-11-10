@@ -36,7 +36,7 @@ void TXLivePlayerProxy::resume()
 
 void TXLivePlayerProxy::setRenderFrame(void* handle)
 {
-    live_player_->setRenderFrame(reinterpret_cast<trtc::TXView>(handle));
+    live_player_->setRenderFrame(reinterpret_cast<liteav::TXView>(handle));
 }
 
 void TXLivePlayerProxy::setRenderMode(TXLivePlayerProxy_RenderMode render_mode)

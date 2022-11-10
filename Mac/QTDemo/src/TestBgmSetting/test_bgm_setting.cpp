@@ -21,7 +21,7 @@ TestBGMSetting::~TestBGMSetting(){
 
 void TestBGMSetting::startPlayBgmMusic(std::string& path,int loopCount,bool publish,bool isShortFile)
 {
-    trtc::AudioMusicParam audio_music_param(bgm_music_id,const_cast<char*>(path.c_str()));
+    liteav::AudioMusicParam audio_music_param(bgm_music_id,const_cast<char*>(path.c_str()));
     audio_music_param.loopCount = loopCount;
     audio_music_param.publish = publish;
     audio_music_param.isShortFile = isShortFile;
@@ -41,7 +41,7 @@ void TestBGMSetting::resumePlayBgmMusic(){
     audio_effect_manager_->resumePlayMusic(bgm_music_id);
 }
 
-void TestBGMSetting::setVoiceReverbType(trtc::TXVoiceReverbType type){
+void TestBGMSetting::setVoiceReverbType(liteav::TXVoiceReverbType type){
     audio_effect_manager_->setVoiceReverbType(type);
 }
 
@@ -158,7 +158,7 @@ void TestBGMSetting::on_btnRestSetting_clicked(){
 }
 
 void TestBGMSetting::on_comboxSetVoiceReverbType_currentIndexChanged(int index){
-    setVoiceReverbType(static_cast<trtc::TXVoiceReverbType>(index));
+    setVoiceReverbType(static_cast<liteav::TXVoiceReverbType>(index));
 }
 
 void TestBGMSetting::on_sliderSetVoiceCaptureVolum_valueChanged(int value){

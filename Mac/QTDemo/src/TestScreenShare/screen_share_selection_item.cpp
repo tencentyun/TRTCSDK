@@ -1,6 +1,6 @@
 #include "screen_share_selection_item.h"
 
-ScreenShareSelectionItem::ScreenShareSelectionItem(trtc::TRTCScreenCaptureSourceInfo& screenCaptureSourceInfo
+ScreenShareSelectionItem::ScreenShareSelectionItem(liteav::TRTCScreenCaptureSourceInfo& screenCaptureSourceInfo
     ,QWidget * parent)
     :QWidget(parent)
     ,ui_screen_share_selection_item_(new Ui::ScreenShareSelectionItem)
@@ -44,9 +44,9 @@ void ScreenShareSelectionItem::mouseReleaseEvent(QMouseEvent *ev){
     ui_screen_share_selection_item_->radioButtonSelected->setChecked(!is_selected);
 }
 
-trtc::TRTCScreenCaptureSourceInfo ScreenShareSelectionItem::getScreenCaptureSourceinfo() const
+liteav::TRTCScreenCaptureSourceInfo ScreenShareSelectionItem::getScreenCaptureSourceinfo() const
 {
-    return static_cast<trtc::TRTCScreenCaptureSourceInfo>(screen_capture_sourceinfo_);
+    return static_cast<liteav::TRTCScreenCaptureSourceInfo>(screen_capture_sourceinfo_);
 }
 
 void ScreenShareSelectionItem::on_radioButtonSelected_clicked(bool checked){

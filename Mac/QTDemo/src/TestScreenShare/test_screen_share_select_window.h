@@ -37,8 +37,8 @@
 #include "test_user_video_group.h"
 
 #ifndef _WIN32
-    #define RECT trtc::RECT
-    #define SIZE trtc::SIZE
+    #define RECT liteav::RECT
+    #define SIZE liteav::SIZE
 #endif
 
 class TestScreenShareSelectWindow:
@@ -58,20 +58,20 @@ private:
     void pauseScreenCapture();
     void releaseScreenCaptureSourceList();
 
-    void selectScreenCaptureTarget(trtc::TRTCScreenCaptureSourceInfo sourceInfo);
+    void selectScreenCaptureTarget(liteav::TRTCScreenCaptureSourceInfo sourceInfo);
 
     void initScreenCaptureSources();
     void initScreenSharingWindowSelections();
 
 public:
-    void init(trtc::TRTCScreenCaptureProperty captureProperty
-        , trtc::TRTCVideoEncParam params
+    void init(liteav::TRTCScreenCaptureProperty captureProperty
+        , liteav::TRTCVideoEncParam params
         , RECT rect
-        , trtc::TRTCVideoStreamType type);
-    void updateScreenSharingParams(trtc::TRTCScreenCaptureProperty& captureProperty
-        , trtc::TRTCVideoEncParam& params
+        , liteav::TRTCVideoStreamType type);
+    void updateScreenSharingParams(liteav::TRTCScreenCaptureProperty& captureProperty
+        , liteav::TRTCVideoEncParam& params
         , RECT& rect
-        , trtc::TRTCVideoStreamType type);
+        , liteav::TRTCVideoStreamType type);
 
 private:
     //============= ITRTCCloudCallback start ===============//
@@ -84,7 +84,7 @@ private:
     void onScreenCaptureStoped(int reason) override;
     //============= ITRTCCloudCallback end =================//
 
-    void addScreenSharingWindowItem(trtc::TRTCScreenCaptureSourceInfo screen_capture_source_info
+    void addScreenSharingWindowItem(liteav::TRTCScreenCaptureSourceInfo screen_capture_source_info
         , int child_window_item_index);
     void closeEvent(QCloseEvent * closeEvent) override;
     void exitScreenSharing();
@@ -98,11 +98,11 @@ private slots:
 private:
     std::unique_ptr<Ui::TestScreenShareSelectWindowDialog> ui_screen_share_select_window_;
     std::shared_ptr<TestUserVideoGroup> test_user_video_group_;
-    trtc::TRTCVideoStreamType stream_type_;
-    trtc::TRTCVideoEncParam enc_param_;
+    liteav::TRTCVideoStreamType stream_type_;
+    liteav::TRTCVideoEncParam enc_param_;
     RECT sharing_rect_;
-    trtc::TRTCScreenCaptureProperty capture_property_;
-    trtc::ITRTCScreenCaptureSourceList* screen_capture_list_ = nullptr;
+    liteav::TRTCScreenCaptureProperty capture_property_;
+    liteav::ITRTCScreenCaptureSourceList* screen_capture_list_ = nullptr;
 
     std::vector<ScreenShareSelectionItem*> all_sharing_items_;
     ScreenShareSelectionItem*  selected_sharing_source_item_ = nullptr;

@@ -37,14 +37,14 @@ void TestDeviceManager::refreshMicDevices()
     if(tx_device_manager_ == nullptr) {
         return;
     }
-    trtc::ITXDeviceCollection* device_collection_microphone = tx_device_manager_->getDevicesList(trtc::TXMediaDeviceType::TXMediaDeviceTypeMic);
+    liteav::ITXDeviceCollection* device_collection_microphone = tx_device_manager_->getDevicesList(liteav::TXMediaDeviceType::TXMediaDeviceTypeMic);
     uint32_t microphone_device_count = device_collection_microphone->getCount();
     if(microphone_device_count != 0) {
-        trtc::ITXDeviceInfo *current_microphone_device = tx_device_manager_->getCurrentDevice(trtc::TXMediaDeviceType::TXMediaDeviceTypeMic);
+        liteav::ITXDeviceInfo *current_microphone_device = tx_device_manager_->getCurrentDevice(liteav::TXMediaDeviceType::TXMediaDeviceTypeMic);
         ui_device_manager_->microphoneChooseComboBox->clear();
         uint32_t current_selected_microphone_device_index = 0;
         for(uint32_t index = 0; index < microphone_device_count; index++) {
-            const DeviceInfoItem item = DeviceInfoItem(device_collection_microphone->getDeviceName(index), device_collection_microphone->getDevicePID(index), trtc::TXMediaDeviceType::TXMediaDeviceTypeMic);
+            const DeviceInfoItem item = DeviceInfoItem(device_collection_microphone->getDeviceName(index), device_collection_microphone->getDevicePID(index), liteav::TXMediaDeviceType::TXMediaDeviceTypeMic);
             qvector_device_info_microphone_.append(item);
             ui_device_manager_->microphoneChooseComboBox->addItem(QString::fromStdString(item.device_name_));
             if(strcmp(item.device_id_.data(), current_microphone_device->getDevicePID()) == 0) {
@@ -63,14 +63,14 @@ void TestDeviceManager::refreshCameraDevices()
     if(tx_device_manager_ == nullptr) {
         return;
     }
-    trtc::ITXDeviceCollection* device_collection_camera = tx_device_manager_->getDevicesList(trtc::TXMediaDeviceType::TXMediaDeviceTypeCamera);
+    liteav::ITXDeviceCollection* device_collection_camera = tx_device_manager_->getDevicesList(liteav::TXMediaDeviceType::TXMediaDeviceTypeCamera);
     uint32_t camera_device_count = device_collection_camera->getCount();
     if(camera_device_count != 0) {
-        trtc::ITXDeviceInfo *current_camera_device = tx_device_manager_->getCurrentDevice(trtc::TXMediaDeviceType::TXMediaDeviceTypeCamera);
+        liteav::ITXDeviceInfo *current_camera_device = tx_device_manager_->getCurrentDevice(liteav::TXMediaDeviceType::TXMediaDeviceTypeCamera);
         ui_device_manager_->cameraChooseComboBox->clear();
         uint32_t current_selected_camera_device_index = 0;
         for(uint32_t index = 0; index < camera_device_count; index++) {
-            const DeviceInfoItem item = DeviceInfoItem(device_collection_camera->getDeviceName(index), device_collection_camera->getDevicePID(index), trtc::TXMediaDeviceType::TXMediaDeviceTypeCamera);
+            const DeviceInfoItem item = DeviceInfoItem(device_collection_camera->getDeviceName(index), device_collection_camera->getDevicePID(index), liteav::TXMediaDeviceType::TXMediaDeviceTypeCamera);
             qvector_device_info_camera_.append(item);
             ui_device_manager_->cameraChooseComboBox->addItem(QString::fromStdString(item.device_name_));
             if(strcmp(item.device_id_.data(), current_camera_device->getDevicePID()) == 0) {
@@ -89,14 +89,14 @@ void TestDeviceManager::refreshSpeakerDevices()
     if(tx_device_manager_ == nullptr) {
         return;
     }
-    trtc::ITXDeviceCollection* device_collection_loudspeaker = tx_device_manager_->getDevicesList(trtc::TXMediaDeviceType::TXMediaDeviceTypeSpeaker);
+    liteav::ITXDeviceCollection* device_collection_loudspeaker = tx_device_manager_->getDevicesList(liteav::TXMediaDeviceType::TXMediaDeviceTypeSpeaker);
     uint32_t loudspeaker_device_count = device_collection_loudspeaker->getCount();
     if(loudspeaker_device_count != 0) {
-        trtc::ITXDeviceInfo *current_loudspeaker_device = tx_device_manager_->getCurrentDevice(trtc::TXMediaDeviceType::TXMediaDeviceTypeSpeaker);
+        liteav::ITXDeviceInfo *current_loudspeaker_device = tx_device_manager_->getCurrentDevice(liteav::TXMediaDeviceType::TXMediaDeviceTypeSpeaker);
         ui_device_manager_->loudspeakerChooseComboBox->clear();
         uint32_t current_selected_loudspeaker_device_index = 0;
         for(uint32_t index = 0; index < loudspeaker_device_count; index++) {
-            const DeviceInfoItem item = DeviceInfoItem(device_collection_loudspeaker->getDeviceName(index), device_collection_loudspeaker->getDevicePID(index), trtc::TXMediaDeviceType::TXMediaDeviceTypeSpeaker);
+            const DeviceInfoItem item = DeviceInfoItem(device_collection_loudspeaker->getDeviceName(index), device_collection_loudspeaker->getDevicePID(index), liteav::TXMediaDeviceType::TXMediaDeviceTypeSpeaker);
             qvector_device_info_loudspeaker_.append(item);
             ui_device_manager_->loudspeakerChooseComboBox->addItem(QString::fromStdString(item.device_name_));
             if(strcmp(item.device_id_.data(), current_loudspeaker_device->getDevicePID()) == 0) {
