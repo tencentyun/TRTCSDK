@@ -1,6 +1,6 @@
 ﻿#include "test_user_video_item.h"
 
-TestUserVideoItem::TestUserVideoItem(QWidget * parent,trtc::ITRTCCloud* cloud, int roomid, std::string userid, TEST_VIDEO_ITEM::ViewItemType type)
+TestUserVideoItem::TestUserVideoItem(QWidget * parent,liteav::ITRTCCloud* cloud, int roomid, std::string userid, TEST_VIDEO_ITEM::ViewItemType type)
     :QWidget(parent), ui_video_item_(new Ui::TestUserVideoItem), viewtype_(type) {
     this->room_id_ = roomid;
     this->user_id_ = userid;
@@ -45,7 +45,7 @@ void TestUserVideoItem::muteVideo(bool mute) {
 }
 
 void TestUserVideoItem::setRenderParams() {
-    trtc::TRTCRenderParams param;
+    liteav::TRTCRenderParams param;
     param.rotation = rotation_;
     param.fillMode = fill_mode_;
     param.mirrorType = mirror_type_;
@@ -56,7 +56,7 @@ void TestUserVideoItem::setRenderParams() {
     }
 
     if (viewtype_ == TEST_VIDEO_ITEM::RemoteView) {
-        trtccloud_->setRemoteRenderParams(user_id_.c_str(), trtc::TRTCVideoStreamTypeBig, param);
+        trtccloud_->setRemoteRenderParams(user_id_.c_str(), liteav::TRTCVideoStreamTypeBig, param);
         return;
     }
 
@@ -143,12 +143,12 @@ void TestUserVideoItem::on_videoMuteBt_clicked() {
 
 void TestUserVideoItem::on_fitScreenBt_clicked() {
     QString fill_mode_bt_stylesheet;
-    if (fill_mode_ == trtc::TRTCVideoFillMode_Fill) {
-        fill_mode_ = trtc::TRTCVideoFillMode_Fit;
+    if (fill_mode_ == liteav::TRTCVideoFillMode_Fill) {
+        fill_mode_ = liteav::TRTCVideoFillMode_Fit;
         fill_mode_bt_stylesheet = "QPushButton{border-image: url(:/switch/image/switch/fit_open.png);}";
 
-    } else if (fill_mode_ == trtc::TRTCVideoFillMode_Fit) {
-        fill_mode_ = trtc::TRTCVideoFillMode_Fill;
+    } else if (fill_mode_ == liteav::TRTCVideoFillMode_Fit) {
+        fill_mode_ = liteav::TRTCVideoFillMode_Fill;
         fill_mode_bt_stylesheet = "QPushButton{border-image: url(:/switch/image/switch/fill_open.png);}";
     }
     ui_video_item_->fitScreenBt->setStyleSheet(fill_mode_bt_stylesheet);
@@ -157,11 +157,11 @@ void TestUserVideoItem::on_fitScreenBt_clicked() {
 
 void TestUserVideoItem::on_preSmallVideoBt_clicked() {
     QString small_pre__bt_stylesheet;
-    if (video_stream_type_ == trtc::TRTCVideoStreamTypeBig) {
-        video_stream_type_ = trtc::TRTCVideoStreamTypeSmall;
+    if (video_stream_type_ == liteav::TRTCVideoStreamTypeBig) {
+        video_stream_type_ = liteav::TRTCVideoStreamTypeSmall;
         small_pre__bt_stylesheet = "QPushButton{border-image: url(:/switch/image/switch/small_open.png);}";
-    } else if (video_stream_type_ == trtc::TRTCVideoStreamTypeSmall) {
-        video_stream_type_ = trtc::TRTCVideoStreamTypeBig;
+    } else if (video_stream_type_ == liteav::TRTCVideoStreamTypeSmall) {
+        video_stream_type_ = liteav::TRTCVideoStreamTypeBig;
         small_pre__bt_stylesheet = "QPushButton{border-image: url(:/switch/image/switch/big_open.png);}";
     }
     ui_video_item_->preSmallVideoBt->setStyleSheet(small_pre__bt_stylesheet);
@@ -170,11 +170,11 @@ void TestUserVideoItem::on_preSmallVideoBt_clicked() {
 
 void TestUserVideoItem::on_mirrorBt_clicked() {
     QString mirror_bt_stylesheet;
-    if (mirror_type_ == trtc::TRTCVideoMirrorType_Enable) {
+    if (mirror_type_ == liteav::TRTCVideoMirrorType_Enable) {
         mirror_bt_stylesheet = "QPushButton{border-image: url(:/switch/image/switch/mirror_close.png);}";
-        mirror_type_ = trtc::TRTCVideoMirrorType_Disable;
-    } else if (mirror_type_ == trtc::TRTCVideoMirrorType_Disable) {
-        mirror_type_ = trtc::TRTCVideoMirrorType_Enable;
+        mirror_type_ = liteav::TRTCVideoMirrorType_Disable;
+    } else if (mirror_type_ == liteav::TRTCVideoMirrorType_Disable) {
+        mirror_type_ = liteav::TRTCVideoMirrorType_Enable;
         mirror_bt_stylesheet = "QPushButton{border-image: url(:/switch/image/switch/mirror_open.png);}";
     }
     ui_video_item_->mirrorBt->setStyleSheet(mirror_bt_stylesheet);
@@ -183,7 +183,7 @@ void TestUserVideoItem::on_mirrorBt_clicked() {
 
 void TestUserVideoItem::on_roateBt_clicked() {
     int roate_index = rotation_;
-    rotation_ = static_cast<trtc::TRTCVideoRotation>((++roate_index) % 4);
+    rotation_ = static_cast<liteav::TRTCVideoRotation>((++roate_index) % 4);
     setRenderParams();
 }
 

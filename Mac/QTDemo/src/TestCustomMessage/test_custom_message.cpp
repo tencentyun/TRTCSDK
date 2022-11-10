@@ -30,7 +30,7 @@ void TestCustomMessage::onRecvSEIMsg(const char *userId, const uint8_t *message,
     text = "userId: " + QString(userId) +
             ", message: " + QString(reinterpret_cast<const char *>(message)) +
             ", messageSize: " + QString(QString::number(messageSize));
-    ui_custom_message_->textBrowserMsgDetail->setText(text);
+    ui_custom_message_->textEditMsgDetail->setText(text);
 }
 
 void TestCustomMessage::onMissCustomCmdMsg(const char *userId, int32_t cmdID, int32_t errCode, int32_t missed)
@@ -40,7 +40,7 @@ void TestCustomMessage::onMissCustomCmdMsg(const char *userId, int32_t cmdID, in
             ", cmdID: " + QString(QString::number(cmdID)) +
             ", errCode: " + QString(QString::number(errCode)) +
             ", missed: " + QString(QString::number(missed));
-    ui_custom_message_->textBrowserMsgDetail->setText(text);
+    ui_custom_message_->textEditMsgDetail->setText(text);
 }
 
 void TestCustomMessage::onRecvCustomCmdMsg(const char *userId, int32_t cmdID, uint32_t seq, const uint8_t *message, uint32_t messageSize)
@@ -51,7 +51,7 @@ void TestCustomMessage::onRecvCustomCmdMsg(const char *userId, int32_t cmdID, ui
             ", seq: " + QString(QString::number(seq)) +
             ", message: " + QString(reinterpret_cast<const char *>(message)) +
             ", messageSize: " + QString(QString::number(messageSize));
-    ui_custom_message_->textBrowserMsgDetail->setText(text);
+    ui_custom_message_->textEditMsgDetail->setText(text);
 }
 //============= ITRTCCloudCallback end ===================//
 
@@ -117,7 +117,7 @@ void TestCustomMessage::on_pushButtonSendSEIMsg_clicked()
 
 void TestCustomMessage::closeEvent(QCloseEvent *event)
 {
-    ui_custom_message_->textBrowserMsgDetail->setText("");
+    ui_custom_message_->textEditMsgDetail->setText("");
     BaseDialog::closeEvent(event);
 }
 

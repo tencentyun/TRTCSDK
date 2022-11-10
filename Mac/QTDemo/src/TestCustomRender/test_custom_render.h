@@ -30,7 +30,7 @@
 #include "gl_yuv_widget.h"
 #include "ui_TestCustomRenderDialog.h"
 
-class TestCustomRender:public BaseDialog, public trtc::ITRTCVideoRenderCallback
+class TestCustomRender:public BaseDialog, public liteav::ITRTCVideoRenderCallback
 {
     Q_OBJECT
 public:
@@ -45,7 +45,7 @@ private:
     void stopRemoteVideoRender(std::string& userId);
 
     //============= ITRTCVideoRenderCallback start ===================//
-    void onRenderVideoFrame(const char *userId, trtc::TRTCVideoStreamType streamType, trtc::TRTCVideoFrame *frame) override;
+    void onRenderVideoFrame(const char *userId, liteav::TRTCVideoStreamType streamType, liteav::TRTCVideoFrame *frame) override;
     //=============  ITRTCVideoRenderCallback end  ===================//
 
 private slots:

@@ -41,7 +41,7 @@ private:
 
 private :
     //============= ITRTCCloudCallback start =================//
-    void onSpeedTest(const trtc::TRTCSpeedTestResult &currentResult, uint32_t finishedCount, uint32_t totalCount);
+    void onSpeedTest(const liteav::TRTCSpeedTestResult &currentResult, uint32_t finishedCount, uint32_t totalCount);
     //============= ITRTCCloudCallback end ===================//
 
 private slots:

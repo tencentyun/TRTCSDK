@@ -69,17 +69,17 @@ void TestVideoDetect::refreshCameraDevices()
         return;
     }
     qvector_device_info_camera_.clear();
-    trtc::ITXDeviceCollection *device_collection_camera = tx_device_manager_->getDevicesList(trtc::TXMediaDeviceType::TXMediaDeviceTypeCamera);
+    liteav::ITXDeviceCollection *device_collection_camera = tx_device_manager_->getDevicesList(liteav::TXMediaDeviceType::TXMediaDeviceTypeCamera);
     uint32_t camera_device_count = device_collection_camera->getCount();
     if(camera_device_count != 0) {
 
-        trtc::ITXDeviceInfo *current_camera_device = tx_device_manager_->getCurrentDevice(trtc::TXMediaDeviceType::TXMediaDeviceTypeCamera);
+        liteav::ITXDeviceInfo *current_camera_device = tx_device_manager_->getCurrentDevice(liteav::TXMediaDeviceType::TXMediaDeviceTypeCamera);
         ui_video_test_->comboBoxCameraDevices->clear();
         uint32_t current_selected_camera_device_index = 0;
 
         for(uint32_t index = 0; index < camera_device_count; index++) {
 
-            const DeviceInfoItem item = DeviceInfoItem(device_collection_camera->getDeviceName(index), device_collection_camera->getDevicePID(index), trtc::TXMediaDeviceType::TXMediaDeviceTypeCamera);
+            const DeviceInfoItem item = DeviceInfoItem(device_collection_camera->getDeviceName(index), device_collection_camera->getDevicePID(index), liteav::TXMediaDeviceType::TXMediaDeviceTypeCamera);
             qvector_device_info_camera_.append(item);
             ui_video_test_->comboBoxCameraDevices->addItem(QString::fromStdString(item.device_name_));
 

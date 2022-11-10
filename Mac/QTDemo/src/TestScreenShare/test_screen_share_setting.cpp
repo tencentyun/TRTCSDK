@@ -19,13 +19,13 @@ void TestScreenShareSetting::setSubStreamMixVolume(int volume) {
     getTRTCShareInstance()->setSubStreamMixVolume(volume);
 }
 
-void TestScreenShareSetting::setSubStreamEncoderParam(trtc::TRTCVideoStreamType streamType, trtc::TRTCVideoEncParam & videoEncParam){
+void TestScreenShareSetting::setSubStreamEncoderParam(liteav::TRTCVideoStreamType streamType, liteav::TRTCVideoEncParam & videoEncParam){
     getTRTCShareInstance()->setSubStreamEncoderParam(videoEncParam);
 }
 
 void TestScreenShareSetting::updateScreenSharingParams() {
 
-    trtc::TRTCVideoEncParam video_enc_param;
+    liteav::TRTCVideoEncParam video_enc_param;
     video_enc_param.enableAdjustRes = enable_adjustres_;
     video_enc_param.minVideoBitrate = min_video_bitrate_;
     video_enc_param.resMode = res_mode_;
@@ -36,7 +36,7 @@ void TestScreenShareSetting::updateScreenSharingParams() {
     setSubStreamEncoderParam(video_stream_type, video_enc_param);
     setSubStreamMixVolume(mix_volume);
 
-    trtc::TRTCScreenCaptureProperty property;
+    liteav::TRTCScreenCaptureProperty property;
     property.enableCaptureMouse = enable_capturemouse_;
     property.enableHighLight = enable_highlight_;
     property.enableHighPerformance = enable_high_performance;
@@ -59,8 +59,8 @@ void TestScreenShareSetting::updateScreenSharingParams() {
 void TestScreenShareSetting::configViewParams(){
 
     video_resolution_ = indexConvertToVideoResolution(ui_screen_share_setting_->comBVideoResolution->currentIndex());
-    res_mode_ = static_cast<trtc::TRTCVideoResolutionMode>(ui_screen_share_setting_->comBResMode->currentIndex());
-    video_stream_type = ui_screen_share_setting_->comBPushStreamMode->currentIndex() == 0?trtc::TRTCVideoStreamTypeSub:trtc::TRTCVideoStreamTypeBig;
+    res_mode_ = static_cast<liteav::TRTCVideoResolutionMode>(ui_screen_share_setting_->comBResMode->currentIndex());
+    video_stream_type = ui_screen_share_setting_->comBPushStreamMode->currentIndex() == 0?liteav::TRTCVideoStreamTypeSub:liteav::TRTCVideoStreamTypeBig;
     mix_volume = ui_screen_share_setting_->sliderScreenCaptureMixVolume->value();
 
     videofps_ = ui_screen_share_setting_->lineEtvideoFps->text().toUInt();
@@ -78,20 +78,20 @@ void TestScreenShareSetting::configViewParams(){
     capture_rect_.right = ui_screen_share_setting_->lineEtRight->text().toUInt();
 }
 
-trtc::TRTCVideoResolution TestScreenShareSetting::indexConvertToVideoResolution(int index){
+liteav::TRTCVideoResolution TestScreenShareSetting::indexConvertToVideoResolution(int index){
     if(index < 4){
-        return static_cast<trtc::TRTCVideoResolution> (trtc::TRTCVideoResolution_120_120+ index * 2);
+        return static_cast<liteav::TRTCVideoResolution> (liteav::TRTCVideoResolution_120_120+ index * 2);
     }
 
     if(index < 12){
-        return static_cast<trtc::TRTCVideoResolution> (trtc::TRTCVideoResolution_160_120+ (index-4) * 2);
+        return static_cast<liteav::TRTCVideoResolution> (liteav::TRTCVideoResolution_160_120+ (index-4) * 2);
     }
 
     if(index < 20){
-        return static_cast<trtc::TRTCVideoResolution> (trtc::TRTCVideoResolution_160_90+ (index - 12) * 2);
+        return static_cast<liteav::TRTCVideoResolution> (liteav::TRTCVideoResolution_160_90+ (index - 12) * 2);
     }
 
-    return trtc::TRTCVideoResolution_1280_720;
+    return liteav::TRTCVideoResolution_1280_720;
 }
 
 void TestScreenShareSetting::closeEvent(QCloseEvent *event)
@@ -115,7 +115,7 @@ void TestScreenShareSetting::on_btSharingAllScreen_clicked(){
 
     configViewParams();
 
-    trtc::TRTCVideoEncParam param;
+    liteav::TRTCVideoEncParam param;
     param.enableAdjustRes = enable_adjustres_;
     param.minVideoBitrate = min_video_bitrate_;
     param.resMode = res_mode_;
@@ -123,7 +123,7 @@ void TestScreenShareSetting::on_btSharingAllScreen_clicked(){
     param.videoFps = videofps_;
     param.videoResolution = video_resolution_;
 
-    trtc::TRTCScreenCaptureProperty property;
+    liteav::TRTCScreenCaptureProperty property;
     property.enableCaptureMouse = enable_capturemouse_;
     property.enableHighLight = enable_highlight_;
     property.enableHighPerformance = enable_high_performance;
@@ -138,7 +138,7 @@ void TestScreenShareSetting::on_btSharingSelectedWindow_clicked(){
 
     configViewParams();
 
-    trtc::TRTCVideoEncParam param;
+    liteav::TRTCVideoEncParam param;
     param.enableAdjustRes = enable_adjustres_;
     param.minVideoBitrate = min_video_bitrate_;
     param.resMode = res_mode_;
@@ -146,7 +146,7 @@ void TestScreenShareSetting::on_btSharingSelectedWindow_clicked(){
     param.videoFps = videofps_;
     param.videoResolution = video_resolution_;
 
-    trtc::TRTCScreenCaptureProperty property;
+    liteav::TRTCScreenCaptureProperty property;
     property.enableCaptureMouse = enable_capturemouse_;
     property.enableHighLight = enable_highlight_;
     property.enableHighPerformance = enable_high_performance;

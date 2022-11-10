@@ -5,7 +5,7 @@
 
 #include "ITRTCCloud.h"
 
-class TrtcCloudCallbackDefaultImpl:public trtc::ITRTCCloudCallback
+class TrtcCloudCallbackDefaultImpl:public liteav::ITRTCCloudCallback
 {
 public:
     virtual void onWarning(TXLiteAVWarning warningCode, const char* warningMsg, void* extraInfo) override{

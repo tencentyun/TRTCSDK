@@ -102,9 +102,9 @@ private:
 private:
     std::unique_ptr<Ui::TestMixStreamPublishDialog> ui_test_mix_stream_publish_;
 
-    trtc::TRTCTranscodingConfig trtc_transcoding_config;
+    liteav::TRTCTranscodingConfig trtc_transcoding_config;
     //============= TRTCTranscodingConfig start ===============//
-    trtc::TRTCTranscodingConfigMode mix_config_mode_ = trtc::TRTCTranscodingConfigMode_Unknown;
+    liteav::TRTCTranscodingConfigMode mix_config_mode_ = liteav::TRTCTranscodingConfigMode_Unknown;
     uint32_t    video_width_      = 360;
     uint32_t    video_height_     = 640;
     uint32_t    video_bitrate_    = 64;

@@ -43,7 +43,7 @@ public:
     ~TestDeviceManager();
 
     //============= ITRTCCloudCallback start =================//
-    // void onDeviceChange(const char* deviceId, trtc::TRTCDeviceType type, trtc::TRTCDeviceState state) override;
+    // void onDeviceChange(const char* deviceId, liteav::TRTCDeviceType type, liteav::TRTCDeviceState state) override;
     //============= ITRTCCloudCallback end ===================//
 
 private:
@@ -56,10 +56,10 @@ private:
 
     std::string device_name_;
     std::string device_id_;
-    trtc::TXMediaDeviceType device_type_;
+    liteav::TXMediaDeviceType device_type_;
 
     DeviceInfoItem(){}
-    DeviceInfoItem(std::string device_name, std::string device_id, trtc::TXMediaDeviceType device_type) :
+    DeviceInfoItem(std::string device_name, std::string device_id, liteav::TXMediaDeviceType device_type) :
             device_name_(device_name), device_id_(device_id), device_type_(device_type) {}
 
     };
@@ -74,7 +74,7 @@ private:
 
     bool device_info_ready_;
     std::unique_ptr<Ui::TestDeviceMangerDialog> ui_device_manager_;
-    trtc::ITXDeviceManager *tx_device_manager_;
+    liteav::ITXDeviceManager *tx_device_manager_;
     QVector<DeviceInfoItem> qvector_device_info_camera_;
     QVector<DeviceInfoItem> qvector_device_info_microphone_;
     QVector<DeviceInfoItem> qvector_device_info_loudspeaker_;

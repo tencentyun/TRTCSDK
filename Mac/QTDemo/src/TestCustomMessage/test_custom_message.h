@@ -61,7 +61,7 @@ public:
 
 private:
     std::unique_ptr<Ui::TestCustomMessageDialog> ui_custom_message_;
-    trtc::ITRTCCloud *trtccloud_;
+    liteav::ITRTCCloud *trtccloud_;
 };
 
 #endif // TESTCUSTOMMESSAGE_H

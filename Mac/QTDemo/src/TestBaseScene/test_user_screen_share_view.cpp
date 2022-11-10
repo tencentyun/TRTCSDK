@@ -14,7 +14,7 @@ TestUserScreenShareView::~TestUserScreenShareView()
 }
 
 void TestUserScreenShareView::stopUserScreenShare(std::string userId){
-    getTRTCShareInstance()->stopRemoteView(userId.c_str(),trtc::TRTCVideoStreamTypeSub);
+    getTRTCShareInstance()->stopRemoteView(userId.c_str(),liteav::TRTCVideoStreamTypeSub);
 }
 
 void TestUserScreenShareView::retranslateUi() {

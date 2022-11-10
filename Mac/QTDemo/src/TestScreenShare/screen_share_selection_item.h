@@ -20,9 +20,9 @@ class ScreenShareSelectionItem:public QWidget
 {
     Q_OBJECT
 public:
-    explicit ScreenShareSelectionItem(trtc::TRTCScreenCaptureSourceInfo& screenCaptureSourceInfo, QWidget* parent = nullptr);
+    explicit ScreenShareSelectionItem(liteav::TRTCScreenCaptureSourceInfo& screenCaptureSourceInfo, QWidget* parent = nullptr);
     ~ScreenShareSelectionItem();
-    trtc::TRTCScreenCaptureSourceInfo getScreenCaptureSourceinfo() const;
+    liteav::TRTCScreenCaptureSourceInfo getScreenCaptureSourceinfo() const;
     bool isSelected() const;
     void setSelected(bool selected);
 
@@ -40,7 +40,7 @@ private:
 
 private:
     std::unique_ptr<Ui::ScreenShareSelectionItem> ui_screen_share_selection_item_;
-    trtc::TRTCScreenCaptureSourceInfo screen_capture_sourceinfo_;
+    liteav::TRTCScreenCaptureSourceInfo screen_capture_sourceinfo_;
 };
 
 #endif // SCREENSHARESELECTIONITEM_H

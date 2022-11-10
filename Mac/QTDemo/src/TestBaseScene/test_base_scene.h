@@ -50,9 +50,9 @@ public:
     explicit TestBaseScene(std::shared_ptr<TestUserVideoGroup> testUserVideoGroup);
     ~TestBaseScene();
 
-    void enterRoom(uint32_t roomId, std::string userId, trtc::TRTCAppScene appScene, trtc::TRTCRoleType roleType = trtc::TRTCRoleType::TRTCRoleAnchor);
+    void enterRoom(uint32_t roomId, std::string userId, liteav::TRTCAppScene appScene, liteav::TRTCRoleType roleType = liteav::TRTCRoleType::TRTCRoleAnchor);
     void exitRoom();
-    void switchRole(trtc::TRTCRoleType roleType);
+    void switchRole(liteav::TRTCRoleType roleType);
 
     //============= ITRTCCloudCallback start =================//
     void onEnterRoom(int result);
@@ -64,8 +64,8 @@ private:
     std::shared_ptr<TestUserVideoGroup> test_user_video_group_;
     uint32_t room_id_;
     std::string user_id_;
-    trtc::TRTCAppScene app_scene_;
-    trtc::TRTCRoleType role_type_;
+    liteav::TRTCAppScene app_scene_;
+    liteav::TRTCRoleType role_type_;
     std::string stream_id_;
 
 };

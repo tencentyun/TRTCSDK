@@ -57,8 +57,8 @@ private:
 
 private:
     std::unique_ptr<Ui::TestVideoSettingDialog> ui_video_setting_;
-    QHash<int, trtc::TRTCVideoResolution> video_resolution_hashmap_;
-    trtc::ITRTCCloud *trtccloud_;
+    QHash<int, liteav::TRTCVideoResolution> video_resolution_hashmap_;
+    liteav::ITRTCCloud *trtccloud_;
 };
 
 #endif // TESTVIDEOSETTING_H

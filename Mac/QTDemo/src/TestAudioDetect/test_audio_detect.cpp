@@ -88,17 +88,17 @@ void TestAudioDetect::refreshMicDevices()
     }
     //microphone
     qvector_device_info_mic_.clear();
-    trtc::ITXDeviceCollection *device_collection_microphone = tx_device_manager_->getDevicesList(trtc::TXMediaDeviceType::TXMediaDeviceTypeMic);
+    liteav::ITXDeviceCollection *device_collection_microphone = tx_device_manager_->getDevicesList(liteav::TXMediaDeviceType::TXMediaDeviceTypeMic);
     uint32_t microphone_device_count = device_collection_microphone->getCount();
     if(microphone_device_count != 0) {
 
-        trtc::ITXDeviceInfo *current_microphone_device = tx_device_manager_->getCurrentDevice(trtc::TXMediaDeviceType::TXMediaDeviceTypeMic);
+        liteav::ITXDeviceInfo *current_microphone_device = tx_device_manager_->getCurrentDevice(liteav::TXMediaDeviceType::TXMediaDeviceTypeMic);
         ui_audio_test_->comboBoxMic->clear();
         uint32_t current_selected_microphone_device_index = 0;
 
         for(uint32_t index = 0; index < microphone_device_count; index++) {
 
-            const DeviceInfoItem item = DeviceInfoItem(device_collection_microphone->getDeviceName(index), device_collection_microphone->getDevicePID(index), trtc::TXMediaDeviceType::TXMediaDeviceTypeMic);
+            const DeviceInfoItem item = DeviceInfoItem(device_collection_microphone->getDeviceName(index), device_collection_microphone->getDevicePID(index), liteav::TXMediaDeviceType::TXMediaDeviceTypeMic);
             qvector_device_info_mic_.append(item);
             ui_audio_test_->comboBoxMic->addItem(QString::fromStdString(item.device_name_));
 
@@ -119,17 +119,17 @@ void TestAudioDetect::refreshSpeakerDevices()
     }
     //loudspeaker
     qvector_device_info_speaker_.clear();
-    trtc::ITXDeviceCollection *device_collection_loudspeaker = tx_device_manager_->getDevicesList(trtc::TXMediaDeviceType::TXMediaDeviceTypeSpeaker);
+    liteav::ITXDeviceCollection *device_collection_loudspeaker = tx_device_manager_->getDevicesList(liteav::TXMediaDeviceType::TXMediaDeviceTypeSpeaker);
     uint32_t loudspeaker_device_count = device_collection_loudspeaker->getCount();
     if(loudspeaker_device_count != 0) {
 
-        trtc::ITXDeviceInfo *current_loudspeaker_device = tx_device_manager_->getCurrentDevice(trtc::TXMediaDeviceType::TXMediaDeviceTypeSpeaker);
+        liteav::ITXDeviceInfo *current_loudspeaker_device = tx_device_manager_->getCurrentDevice(liteav::TXMediaDeviceType::TXMediaDeviceTypeSpeaker);
         ui_audio_test_->comboBoxSpeaker->clear();
         uint32_t current_selected_loudspeaker_device_index = 0;
 
         for(uint32_t index = 0; index < loudspeaker_device_count; index++) {
 
-            const DeviceInfoItem item = DeviceInfoItem(device_collection_loudspeaker->getDeviceName(index), device_collection_loudspeaker->getDevicePID(index), trtc::TXMediaDeviceType::TXMediaDeviceTypeSpeaker);
+            const DeviceInfoItem item = DeviceInfoItem(device_collection_loudspeaker->getDeviceName(index), device_collection_loudspeaker->getDevicePID(index), liteav::TXMediaDeviceType::TXMediaDeviceTypeSpeaker);
             qvector_device_info_speaker_.append(item);
             ui_audio_test_->comboBoxSpeaker->addItem(QString::fromStdString(item.device_name_));
 
@@ -161,12 +161,12 @@ void TestAudioDetect::on_comboBoxSpeaker_currentIndexChanged(int index)
 
 void TestAudioDetect::on_sliderSpeakerVolume_valueChanged(int value)
 {
-    tx_device_manager_->setCurrentDeviceVolume(trtc::TXMediaDeviceTypeSpeaker, (uint32_t)value);
+    tx_device_manager_->setCurrentDeviceVolume(liteav::TXMediaDeviceTypeSpeaker, (uint32_t)value);
 }
 
 void TestAudioDetect::on_sliderMicVolume_valueChanged(int value)
 {
-    tx_device_manager_->setCurrentDeviceVolume(trtc::TXMediaDeviceTypeMic, (uint32_t)value);
+    tx_device_manager_->setCurrentDeviceVolume(liteav::TXMediaDeviceTypeMic, (uint32_t)value);
 }
 
 void TestAudioDetect::on_pushButtonStartMicTest_clicked(bool checked)

@@ -110,8 +110,8 @@ public:
 private:
     void updateModuleButtonStatus(bool isEnteredRoom);
     void updateModuleDialogStatus(bool isEnteredRoom);
-    trtc::TRTCAppScene getCurrentSelectedAppScene();
-    trtc::TRTCRoleType getCurrentSelectedRoleType();
+    liteav::TRTCAppScene getCurrentSelectedAppScene();
+    liteav::TRTCRoleType getCurrentSelectedRoleType();
     void changeLanguage(int language);
     void updateDynamicTextUI();
 private:

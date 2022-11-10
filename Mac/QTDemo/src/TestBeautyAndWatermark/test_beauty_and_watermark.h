@@ -62,10 +62,10 @@ private:
 
 private:
     std::unique_ptr<Ui::TestBeautyAndWaterMarkDialog> ui_beauty_and_watermark_;
-    trtc::ITRTCCloud *trtccloud;
+    liteav::ITRTCCloud *trtccloud;
 
     QTemporaryDir qtemp_dir_;
-    trtc::TRTCBeautyStyle current_beauty_style_ = trtc::TRTCBeautyStyle::TRTCBeautyStyleSmooth;
+    liteav::TRTCBeautyStyle current_beauty_style_ = liteav::TRTCBeautyStyle::TRTCBeautyStyleSmooth;
     uint32_t current_beauty_level_ = 5;
     uint32_t current_whiteness_level_ = 5;
     uint32_t current_ruddiness_level_ = 5;

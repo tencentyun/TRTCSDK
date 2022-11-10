@@ -61,7 +61,7 @@ public:
     ~TestUserVideoGroup();
 
 private:
-    void setNetworkQosParam(trtc::TRTCVideoQosPreference preference, trtc::TRTCQosControlMode controlMode);
+    void setNetworkQosParam(liteav::TRTCVideoQosPreference preference, liteav::TRTCQosControlMode controlMode);
     void muteAllRemoteVideoStreams(bool mute);
     void muteAllRemoteAudio(bool mute);
     void showDebugView(bool show);
@@ -72,7 +72,7 @@ private:
     void onUserVideoAvailable(const char* userId, bool available) override;
     void onUserAudioAvailable(const char* userId, bool available) override;
     void onUserSubStreamAvailable(const char *userId, bool available) override;
-    void onUserVoiceVolume(trtc::TRTCVolumeInfo* userVolumes, uint32_t userVolumesCount, uint32_t totalVolume) override;
+    void onUserVoiceVolume(liteav::TRTCVolumeInfo* userVolumes, uint32_t userVolumesCount, uint32_t totalVolume) override;
     //============= ITRTCCloudCallback end =================//
 
 signals:
@@ -97,24 +97,24 @@ public:
     void changeEvent(QEvent* event);
 
     void setMainRoomId(int mainRoomId);
-    void addUserVideoItem(trtc::ITRTCCloud* cloud,int roomId,const char *userId,const TEST_VIDEO_ITEM::ViewItemType type);
-    void onSubRoomUserEnterRoom(trtc::ITRTCCloud* subCloud,int roomId,std::string userId);
+    void addUserVideoItem(liteav::ITRTCCloud* cloud,int roomId,const char *userId,const TEST_VIDEO_ITEM::ViewItemType type);
+    void onSubRoomUserEnterRoom(liteav::ITRTCCloud* subCloud,int roomId,std::string userId);
     void onSubRoomUserLeaveRoom(int roomId,std::string userId);
-    void onSubRoomUserVideoAvailable(trtc::ITRTCCloud*, int roomId, std::string userId, bool available);
+    void onSubRoomUserVideoAvailable(liteav::ITRTCCloud*, int roomId, std::string userId, bool available);
     void onSubRoomUserAudioAvailable(int roomId, std::string userId, bool available);
     void onSubRoomExit(int roomId);
-    void handleUserVolume(trtc::TRTCVolumeInfo* userVolumes, uint32_t userVolumesCount, uint32_t totalVolume);
+    void handleUserVolume(liteav::TRTCVolumeInfo* userVolumes, uint32_t userVolumesCount, uint32_t totalVolume);
 
 private:
     void removeUserVideoItem(int roomId,const char *userId);
     void removeAllUsers();
     void initView();
-    void handleUserVideoAvailable(trtc::ITRTCCloud* cloud, int roomId, const char* userId, bool available);
+    void handleUserVideoAvailable(liteav::ITRTCCloud* cloud, int roomId, const char* userId, bool available);
     void handleUserAudioAvailable(int roomId, const char* userId, bool available);
     void updateRemoteViewsMuteStatus(bool status, TEST_VIDEO_ITEM::MuteAllType muteType);
 
 public:
-    trtc::TXView getLocalVideoTxView();
+    liteav::TXView getLocalVideoTxView();
     static const int ROW_NUM = 3;
 
 private:

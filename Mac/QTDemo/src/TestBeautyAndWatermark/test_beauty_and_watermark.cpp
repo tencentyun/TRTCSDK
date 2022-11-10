@@ -22,9 +22,9 @@ void TestBeautyAndWaterMark::setWatermark()
     QByteArray qtmp_file_bytearray = qtmp_file.toLatin1();
     QFile::copy(":watermark/image/watermark/watermark.png", qtmp_file);
     const char *file_path = qtmp_file_bytearray.data();
-    trtccloud->setWaterMark(trtc::TRTCVideoStreamType::TRTCVideoStreamTypeBig,
+    trtccloud->setWaterMark(liteav::TRTCVideoStreamType::TRTCVideoStreamTypeBig,
                             file_path,
-                            trtc::TRTCWaterMarkSrcType::TRTCWaterMarkSrcTypeFile,
+                            liteav::TRTCWaterMarkSrcType::TRTCWaterMarkSrcTypeFile,
                             0,
                             0,
                             0.3,
@@ -34,9 +34,9 @@ void TestBeautyAndWaterMark::setWatermark()
 
 void TestBeautyAndWaterMark::unsetWatermark()
 {
-    trtccloud->setWaterMark(trtc::TRTCVideoStreamType::TRTCVideoStreamTypeBig,
+    trtccloud->setWaterMark(liteav::TRTCVideoStreamType::TRTCVideoStreamTypeBig,
                             nullptr,
-                            trtc::TRTCWaterMarkSrcType::TRTCWaterMarkSrcTypeFile,
+                            liteav::TRTCWaterMarkSrcType::TRTCWaterMarkSrcTypeFile,
                             0,
                             0,
                             0.1,
@@ -66,9 +66,9 @@ void TestBeautyAndWaterMark::updateBeautyStyle()
 void TestBeautyAndWaterMark::on_comboBoxBeautyStyle_currentIndexChanged(int index)
 {
     if(index == 0) {
-        current_beauty_style_ = trtc::TRTCBeautyStyle::TRTCBeautyStyleSmooth;
+        current_beauty_style_ = liteav::TRTCBeautyStyle::TRTCBeautyStyleSmooth;
     } else if (index == 1) {
-        current_beauty_style_ = trtc::TRTCBeautyStyle::TRTCBeautyStyleNature;
+        current_beauty_style_ = liteav::TRTCBeautyStyle::TRTCBeautyStyleNature;
     }
     updateBeautyStyle();
 }

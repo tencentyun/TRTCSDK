@@ -95,7 +95,7 @@ void TestMixStreamPublish::startPresetLayoutTemplate(){
     RoomInfoHolder::GetInstance().setMixTranscodingStreamId(streamid_str);
 
     std::string roomid_str = std::to_string(RoomInfoHolder::GetInstance().getMainRoomId());
-    trtc::TRTCMixUser* mix_users_array = NULL;
+    liteav::TRTCMixUser* mix_users_array = NULL;
 
     // The number of users whose streams are mixed. 4 is used in the demo.
     int current_mix_size = 4;
@@ -103,7 +103,7 @@ void TestMixStreamPublish::startPresetLayoutTemplate(){
     int remote_item_height = video_height_ / 4;
     int remote_item_width = remote_item_height;
 
-    mix_users_array = new trtc::TRTCMixUser[current_mix_size];
+    mix_users_array = new liteav::TRTCMixUser[current_mix_size];
 
     mix_users_array[0].userId = "$PLACE_HOLDER_LOCAL_MAIN$";
 
@@ -121,8 +121,8 @@ void TestMixStreamPublish::startPresetLayoutTemplate(){
         // The value is a placeholder, not the actual user ID.
         mix_users_array[current_pos].userId = "$PLACE_HOLDER_REMOTE$";
         mix_users_array[current_pos].roomId = roomid_str.c_str();
-        mix_users_array[current_pos].streamType = trtc::TRTCVideoStreamTypeBig;
-        mix_users_array[current_pos].inputType = trtc::TRTCMixInputTypeAudioVideo;
+        mix_users_array[current_pos].streamType = liteav::TRTCVideoStreamTypeBig;
+        mix_users_array[current_pos].inputType = liteav::TRTCMixInputTypeAudioVideo;
         mix_users_array[current_pos].zOrder = 1;
 
         // Start from 0 (left to right)
@@ -160,7 +160,7 @@ void TestMixStreamPublish::startManualTemplate(){
     RoomInfoHolder::GetInstance().setMixTranscodingStreamId(streamid_str);
 
     std::string roomid_str = std::to_string(RoomInfoHolder::GetInstance().getMainRoomId());
-    trtc::TRTCMixUser* mix_users_array = NULL;
+    liteav::TRTCMixUser* mix_users_array = NULL;
 
     // The number of users whose streams are mixed.
     int current_mix_size;
@@ -174,7 +174,7 @@ void TestMixStreamPublish::startManualTemplate(){
 
     current_mix_size = mix_usersarray_size > max_mix_size ? max_mix_size : mix_usersarray_size;
 
-    mix_users_array = new trtc::TRTCMixUser[current_mix_size];
+    mix_users_array = new liteav::TRTCMixUser[current_mix_size];
 
     mix_users_array[0].userId = local_user_id.c_str();
 
@@ -186,9 +186,9 @@ void TestMixStreamPublish::startManualTemplate(){
     mix_users_array[0].roomId = roomid_str.c_str();
 
     if (screen_shared_started_) {
-        mix_users_array[0].streamType = trtc::TRTCVideoStreamTypeSub;
+        mix_users_array[0].streamType = liteav::TRTCVideoStreamTypeSub;
     } else {
-        mix_users_array[0].streamType = trtc::TRTCVideoStreamTypeBig;
+        mix_users_array[0].streamType = liteav::TRTCVideoStreamTypeBig;
     }
 
     int current_pos = 1;
@@ -199,21 +199,21 @@ void TestMixStreamPublish::startManualTemplate(){
 
         mix_users_array[current_pos].userId = remote_info->user_id_.c_str();
         mix_users_array[current_pos].roomId = roomid_str.c_str();
-        mix_users_array[current_pos].streamType = trtc::TRTCVideoStreamTypeBig;
+        mix_users_array[current_pos].streamType = liteav::TRTCVideoStreamTypeBig;
 
         if (remote_info->video_available_) {
-            mix_users_array[current_pos].inputType = trtc::TRTCMixInputTypePureVideo;
+            mix_users_array[current_pos].inputType = liteav::TRTCMixInputTypePureVideo;
         }
 
         if (remote_info->audio_available_) {
-            mix_users_array[current_pos].inputType = trtc::TRTCMixInputTypePureAudio;
+            mix_users_array[current_pos].inputType = liteav::TRTCMixInputTypePureAudio;
         }
 
         if (remote_info->video_available_ && remote_info->audio_available_) {
-            mix_users_array[current_pos].inputType = trtc::TRTCMixInputTypeAudioVideo;
+            mix_users_array[current_pos].inputType = liteav::TRTCMixInputTypeAudioVideo;
         }
 
-        mix_users_array[current_pos].inputType = trtc::TRTCMixInputTypeAudioVideo;
+        mix_users_array[current_pos].inputType = liteav::TRTCMixInputTypeAudioVideo;
         mix_users_array[current_pos].zOrder = 1;
 
         // Start from 0 (left to right)
@@ -298,7 +298,7 @@ void TestMixStreamPublish::onUserVideoAvailable(const char * userId, bool availa
         }
     }
 
-    if (mix_config_mode_ == trtc::TRTCTranscodingConfigMode_Manual && started_transcoding_){
+    if (mix_config_mode_ == liteav::TRTCTranscodingConfigMode_Manual && started_transcoding_){
         updateTranscodingConfig();
     }
 }
@@ -327,21 +327,21 @@ void TestMixStreamPublish::onUserAudioAvailable(const char * userId, bool availa
         }
     }
 
-    if (mix_config_mode_ == trtc::TRTCTranscodingConfigMode_Manual && started_transcoding_) {
+    if (mix_config_mode_ == liteav::TRTCTranscodingConfigMode_Manual && started_transcoding_) {
         updateTranscodingConfig();
     }
 }
 
 void TestMixStreamPublish::onScreenCaptureStarted(){
     screen_shared_started_ = true;
-    if (mix_config_mode_ == trtc::TRTCTranscodingConfigMode_Manual && started_transcoding_) {
+    if (mix_config_mode_ == liteav::TRTCTranscodingConfigMode_Manual && started_transcoding_) {
         updateTranscodingConfig();
     }
 }
 
 void TestMixStreamPublish::onScreenCaptureStoped(int reason){
     screen_shared_started_ = false;
-    if (mix_config_mode_ == trtc::TRTCTranscodingConfigMode_Manual && started_transcoding_) {
+    if (mix_config_mode_ == liteav::TRTCTranscodingConfigMode_Manual && started_transcoding_) {
         updateTranscodingConfig();
     }
 }
@@ -362,7 +362,7 @@ void TestMixStreamPublish::initUI(){
     connect(ui_test_mix_stream_publish_->radioButtonPresetLayout, SIGNAL(clicked(bool)), this, SLOT(on_config_mode_checked_change()));
     connect(ui_test_mix_stream_publish_->radioButtonScreenSharing, SIGNAL(clicked(bool)), this, SLOT(on_config_mode_checked_change()));
     connect(ui_test_mix_stream_publish_->radioButtonPureAudio, SIGNAL(clicked(bool)), this, SLOT(on_config_mode_checked_change()));
-    mix_config_mode_ = trtc::TRTCTranscodingConfigMode_Manual;
+    mix_config_mode_ = liteav::TRTCTranscodingConfigMode_Manual;
     ui_test_mix_stream_publish_->startMixStreamPublishBt->setEnabled(isStartMixStreamBtAvailable());
 }
 
@@ -372,19 +372,19 @@ void TestMixStreamPublish::on_streamIdLineEt_textChanged(const QString &streamId
 
 void TestMixStreamPublish::updateTranscodingConfig()
 {
-    if (mix_config_mode_ == trtc::TRTCTranscodingConfigMode_Template_PureAudio) {
+    if (mix_config_mode_ == liteav::TRTCTranscodingConfigMode_Template_PureAudio) {
         startPureAudioTemplate();
     }
 
-    if (mix_config_mode_ == trtc::TRTCTranscodingConfigMode_Template_ScreenSharing) {
+    if (mix_config_mode_ == liteav::TRTCTranscodingConfigMode_Template_ScreenSharing) {
         startScreenSharingTemplate();
     }
 
-    if (mix_config_mode_ == trtc::TRTCTranscodingConfigMode_Template_PresetLayout) {
+    if (mix_config_mode_ == liteav::TRTCTranscodingConfigMode_Template_PresetLayout) {
         startPresetLayoutTemplate();
     }
 
-    if (mix_config_mode_ == trtc::TRTCTranscodingConfigMode_Manual) {
+    if (mix_config_mode_ == liteav::TRTCTranscodingConfigMode_Manual) {
         startManualTemplate();
     }
 }
@@ -393,19 +393,19 @@ void TestMixStreamPublish::on_config_mode_checked_change()
 {
     switch(config_mode_button_group.checkedId()) {
     case 0: {
-        mix_config_mode_ = trtc::TRTCTranscodingConfigMode_Manual;
+        mix_config_mode_ = liteav::TRTCTranscodingConfigMode_Manual;
         break;
     }
     case 1: {
-        mix_config_mode_ = trtc::TRTCTranscodingConfigMode_Template_PresetLayout;
+        mix_config_mode_ = liteav::TRTCTranscodingConfigMode_Template_PresetLayout;
         break;
     }
     case 2: {
-        mix_config_mode_ = trtc::TRTCTranscodingConfigMode_Template_ScreenSharing;
+        mix_config_mode_ = liteav::TRTCTranscodingConfigMode_Template_ScreenSharing;
         break;
     }
     case 3: {
-        mix_config_mode_ = trtc::TRTCTranscodingConfigMode_Template_PureAudio;
+        mix_config_mode_ = liteav::TRTCTranscodingConfigMode_Template_PureAudio;
         break;
     }
     default: {
@@ -427,7 +427,7 @@ bool TestMixStreamPublish::getTranscodingConfig(){
     audio_bitrate_ = ui_test_mix_stream_publish_->audioBitrateEt->text().toInt();
     audio_channels_ = (ui_test_mix_stream_publish_->audioChannelsComB->currentIndex() == 0)?1:2;
 
-    if (mix_config_mode_ == trtc::TRTCTranscodingConfigMode_Unknown) {
+    if (mix_config_mode_ == liteav::TRTCTranscodingConfigMode_Unknown) {
         QMessageBox::warning(this, "Failed to publish mixed streams", "Select a layout mode.", QMessageBox::Ok);
         return false;
     }

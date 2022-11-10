@@ -80,9 +80,9 @@ private:
 
 private:
     std::unique_ptr<Ui::TestAudioSettingDialog> ui_audio_setting_;
-    trtc::ITRTCCloud *trtccloud_;
-    trtc::ITXDeviceManager *tx_device_manager_;
-    trtc::ITXAudioEffectManager *tx_audio_effect_manager_;
+    liteav::ITRTCCloud *trtccloud_;
+    liteav::ITXDeviceManager *tx_device_manager_;
+    liteav::ITXAudioEffectManager *tx_audio_effect_manager_;
     QString current_selected_remote_user_id_;
 
 };

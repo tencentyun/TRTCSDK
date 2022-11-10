@@ -41,7 +41,7 @@
 #include "ui_TestBGMSettingDialog.h"
 #include "base_dialog.h"
 
-class TestBGMSetting:public BaseDialog,public trtc::ITXMusicPlayObserver
+class TestBGMSetting:public BaseDialog,public liteav::ITXMusicPlayObserver
 {
     Q_OBJECT
 public:
@@ -55,7 +55,7 @@ private:
     void pausePlayBgmMusic();
     void resumePlayBgmMusic();
 
-    void setVoiceReverbType(trtc::TXVoiceReverbType type);
+    void setVoiceReverbType(liteav::TXVoiceReverbType type);
     void setMusicPublishVolume(int volume);
     void setMusicPlayoutVolume(int volume);
     void setAllMusicVolume(int volume);
@@ -110,7 +110,7 @@ private:
     void updateDynamicTextUI() override;
 private:
      std::unique_ptr<Ui::TestBGMSettingDialog> ui_bgm_setting_;
-     trtc::ITXAudioEffectManager* audio_effect_manager_ = nullptr;
+     liteav::ITXAudioEffectManager* audio_effect_manager_ = nullptr;
      QTemporaryDir qtemp_dir_;
      int bgm_music_id = -1;
      bool started_bgm_status_ = false;

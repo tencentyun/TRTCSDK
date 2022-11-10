@@ -18,8 +18,8 @@ TestUserVideoGroup::~TestUserVideoGroup() {
     visible_user_video_items_.clear();
 }
 
-void TestUserVideoGroup::setNetworkQosParam(trtc::TRTCVideoQosPreference preference, trtc::TRTCQosControlMode controlMode) {
-    trtc::TRTCNetworkQosParam param;
+void TestUserVideoGroup::setNetworkQosParam(liteav::TRTCVideoQosPreference preference, liteav::TRTCQosControlMode controlMode) {
+    liteav::TRTCNetworkQosParam param;
     param.controlMode = controlMode;
     param.preference = preference;
     getTRTCShareInstance()->setNetworkQosParam(param);
@@ -80,27 +80,27 @@ void TestUserVideoGroup::onUserSubStreamAvailable(const char *userId, bool avail
 {
     if (available) {
         current_screen_sharing_user_id_ = userId;
-        getTRTCShareInstance()->startRemoteView(userId, trtc::TRTCVideoStreamTypeSub, (trtc::TXView)(user_screen_share_view_->winId()));
+        getTRTCShareInstance()->startRemoteView(userId, liteav::TRTCVideoStreamTypeSub, (liteav::TXView)(user_screen_share_view_->winId()));
         user_screen_share_view_->setWindowTitle(QString("screen share from userId: %1").arg(userId));
         user_screen_share_view_->show();
         user_screen_share_view_->raise();
         ui_video_group_->pushButtonShowRemoteScreenShare->setEnabled(true);
     } else {
-        getTRTCShareInstance()->stopRemoteView(userId, trtc::TRTCVideoStreamTypeSub);
+        getTRTCShareInstance()->stopRemoteView(userId, liteav::TRTCVideoStreamTypeSub);
         user_screen_share_view_->close();
         current_screen_sharing_user_id_ = "";
         ui_video_group_->pushButtonShowRemoteScreenShare->setEnabled(false);
     }
 }
 
-void TestUserVideoGroup::onUserVoiceVolume(trtc::TRTCVolumeInfo* userVolumes, uint32_t userVolumesCount, uint32_t totalVolume) {
+void TestUserVideoGroup::onUserVoiceVolume(liteav::TRTCVolumeInfo* userVolumes, uint32_t userVolumesCount, uint32_t totalVolume) {
     handleUserVolume(userVolumes, userVolumesCount, totalVolume);
 }
 //============= ITRTCCloudCallback end ==================//
 
-trtc::TXView TestUserVideoGroup::getLocalVideoTxView() {
+liteav::TXView TestUserVideoGroup::getLocalVideoTxView() {
     if (visible_user_video_items_.size() > 0 && visible_user_video_items_[0]->getViewType() == TEST_VIDEO_ITEM::LocalView) {
-        return reinterpret_cast<trtc::TXView>(visible_user_video_items_[0]->getVideoWId());
+        return reinterpret_cast<liteav::TXView>(visible_user_video_items_[0]->getVideoWId());
     }
     return NULL;
 }
@@ -110,7 +110,7 @@ void TestUserVideoGroup::setMainRoomId(int mainRoomId)
     main_room_id_ = mainRoomId;
 }
 
-void TestUserVideoGroup::addUserVideoItem(trtc::ITRTCCloud* cloud,int roomId,const char *userId, const TEST_VIDEO_ITEM::ViewItemType type){
+void TestUserVideoGroup::addUserVideoItem(liteav::ITRTCCloud* cloud,int roomId,const char *userId, const TEST_VIDEO_ITEM::ViewItemType type){
     std::vector<TestUserVideoItem*>::const_iterator iterator = visible_user_video_items_.begin();
 
     while (iterator != visible_user_video_items_.end()) {
@@ -199,45 +199,45 @@ void TestUserVideoGroup::removeAllUsers()
 }
 
 void TestUserVideoGroup::on_networkModeCb_currentIndexChanged(int index) {
-    trtc::TRTCVideoQosPreference preference = trtc::TRTCVideoQosPreference::TRTCVideoQosPreferenceSmooth;
+    liteav::TRTCVideoQosPreference preference = liteav::TRTCVideoQosPreference::TRTCVideoQosPreferenceSmooth;
     switch (index) {
     case 0:
-        preference = trtc::TRTCVideoQosPreference::TRTCVideoQosPreferenceClear;
+        preference = liteav::TRTCVideoQosPreference::TRTCVideoQosPreferenceClear;
         break;
     case 1:
-        preference = trtc::TRTCVideoQosPreference::TRTCVideoQosPreferenceSmooth;
+        preference = liteav::TRTCVideoQosPreference::TRTCVideoQosPreferenceSmooth;
         break;
     }
 
-    trtc::TRTCQosControlMode control_mode = trtc::TRTCQosControlMode::TRTCQosControlModeServer;
+    liteav::TRTCQosControlMode control_mode = liteav::TRTCQosControlMode::TRTCQosControlModeServer;
     setNetworkQosParam(preference, control_mode);
 }
 
 void TestUserVideoGroup::initView() {
     addUserVideoItem(getTRTCShareInstance(),main_room_id_,"myself", TEST_VIDEO_ITEM::LocalView);
-    trtc::TRTCVideoQosPreference preference = trtc::TRTCVideoQosPreference::TRTCVideoQosPreferenceSmooth;
+    liteav::TRTCVideoQosPreference preference = liteav::TRTCVideoQosPreference::TRTCVideoQosPreferenceSmooth;
     int index = ui_video_group_->networkModeCb->currentIndex();
     switch (index) {
     case 0:
-        preference = trtc::TRTCVideoQosPreference::TRTCVideoQosPreferenceClear;
+        preference = liteav::TRTCVideoQosPreference::TRTCVideoQosPreferenceClear;
         break;
     case 1:
-        preference = trtc::TRTCVideoQosPreference::TRTCVideoQosPreferenceSmooth;
+        preference = liteav::TRTCVideoQosPreference::TRTCVideoQosPreferenceSmooth;
         break;
     }
     ui_video_group_->checkBoxVolumeEvaluation->setChecked(true);
     ui_video_group_->muteAllRemoteAudioCb->setChecked(false);
     ui_video_group_->muteAllRemoteVideoCb->setChecked(false);
-    trtc::TRTCQosControlMode control_mode = trtc::TRTCQosControlMode::TRTCQosControlModeServer;
+    liteav::TRTCQosControlMode control_mode = liteav::TRTCQosControlMode::TRTCQosControlModeServer;
     setNetworkQosParam(preference, control_mode);
 }
 
-void TestUserVideoGroup::handleUserVideoAvailable(trtc::ITRTCCloud* cloud, int roomId, const char* userId, bool available)
+void TestUserVideoGroup::handleUserVideoAvailable(liteav::ITRTCCloud* cloud, int roomId, const char* userId, bool available)
 {
     for(std::vector<TestUserVideoItem*>::const_iterator iterator = visible_user_video_items_.begin(); iterator != visible_user_video_items_.end(); iterator++) {
         if(std::strcmp(userId, (*iterator)->getUserId().c_str()) == 0 && roomId == (*iterator)->getRoomId()) {
             if(available && cloud != nullptr) {
-                cloud->startRemoteView(userId, trtc::TRTCVideoStreamType::TRTCVideoStreamTypeBig, reinterpret_cast<trtc::TXView>((*iterator)->getVideoWId()));
+                cloud->startRemoteView(userId, liteav::TRTCVideoStreamType::TRTCVideoStreamTypeBig, reinterpret_cast<liteav::TXView>((*iterator)->getVideoWId()));
             }
             bool mute_all_remote_video = ui_video_group_->muteAllRemoteVideoCb->isChecked();
             (*iterator)->updateAVAvailableStatus(available, mute_all_remote_video, TEST_VIDEO_ITEM::MuteVideo);
@@ -284,7 +284,7 @@ void TestUserVideoGroup::on_pushButtonShowRemoteScreenShare_clicked()
     if(!current_screen_sharing_user_id_.isEmpty() && !user_screen_share_view_->isVisible()) {
         std::string user_id = current_screen_sharing_user_id_.toStdString();
         user_screen_share_view_->stopUserScreenShare(user_id);
-        getTRTCShareInstance()->startRemoteView(user_id.c_str(), trtc::TRTCVideoStreamTypeSub, (trtc::TXView)(user_screen_share_view_->winId()));
+        getTRTCShareInstance()->startRemoteView(user_id.c_str(), liteav::TRTCVideoStreamTypeSub, (liteav::TXView)(user_screen_share_view_->winId()));
         user_screen_share_view_->show();
         user_screen_share_view_->raise();
     }
@@ -320,7 +320,7 @@ void TestUserVideoGroup::changeEvent(QEvent* event) {
     QWidget::changeEvent(event);
 }
 
-void TestUserVideoGroup::onSubRoomUserEnterRoom(trtc::ITRTCCloud* subCloud,int roomId, std::string userId){
+void TestUserVideoGroup::onSubRoomUserEnterRoom(liteav::ITRTCCloud* subCloud,int roomId, std::string userId){
     addUserVideoItem(subCloud,roomId,userId.c_str(),TEST_VIDEO_ITEM::RemoteView);
 }
 
@@ -328,7 +328,7 @@ void TestUserVideoGroup::onSubRoomUserLeaveRoom(int roomId, std::string userId){
     removeUserVideoItem(roomId,userId.c_str());
 }
 
-void TestUserVideoGroup::onSubRoomUserVideoAvailable(trtc::ITRTCCloud* subCloud, int roomId, std::string userId, bool available)
+void TestUserVideoGroup::onSubRoomUserVideoAvailable(liteav::ITRTCCloud* subCloud, int roomId, std::string userId, bool available)
 {
     const char* user_id = userId.c_str();
     handleUserVideoAvailable(subCloud, roomId, user_id, available);
@@ -360,7 +360,7 @@ void TestUserVideoGroup::onSubRoomExit(int roomId){
     }
 }
 
-void TestUserVideoGroup::handleUserVolume(trtc::TRTCVolumeInfo* userVolumes, uint32_t userVolumesCount, uint32_t totalVolume) {
+void TestUserVideoGroup::handleUserVolume(liteav::TRTCVolumeInfo* userVolumes, uint32_t userVolumesCount, uint32_t totalVolume) {
     for (auto video_item : visible_user_video_items_) {
         for (uint32_t user_volums_index = 0; user_volums_index < userVolumesCount; user_volums_index++) {
             auto user_volum_item = userVolumes + user_volums_index;

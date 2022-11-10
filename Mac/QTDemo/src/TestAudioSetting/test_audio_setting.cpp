@@ -49,12 +49,12 @@ void TestAudioSetting::on_checkBoxApplicationMute_stateChanged(int state)
 
 void TestAudioSetting::on_horizontalSliderCurrentDeviceVolume_valueChanged(int value)
 {
-    tx_device_manager_->setCurrentDeviceVolume(trtc::TRTCDeviceType::TXMediaDeviceTypeSpeaker, value);
+    tx_device_manager_->setCurrentDeviceVolume(liteav::TRTCDeviceType::TXMediaDeviceTypeSpeaker, value);
 }
 
 void TestAudioSetting::on_checkBoxCurrentDeviceMute_stateChanged(int state)
 {
-    tx_device_manager_->setCurrentDeviceMute(trtc::TRTCDeviceType::TXMediaDeviceTypeSpeaker, state == Qt::CheckState::Checked);
+    tx_device_manager_->setCurrentDeviceMute(liteav::TRTCDeviceType::TXMediaDeviceTypeSpeaker, state == Qt::CheckState::Checked);
 }
 
 void TestAudioSetting::on_horizontalSliderAudioCaptureVolume_valueChanged(int value)
@@ -94,8 +94,8 @@ void TestAudioSetting::initUIStatus()
     ui_audio_setting_->horizontalSliderSystemAudioLoopbackVolume->setValue(100);
     ui_audio_setting_->checkBoxSytemAudioLoopbak->setChecked(false);
 
-    ui_audio_setting_->horizontalSliderCurrentDeviceVolume->setValue(tx_device_manager_->getCurrentDeviceVolume(trtc::TXMediaDeviceType::TXMediaDeviceTypeSpeaker));
-    ui_audio_setting_->checkBoxCurrentDeviceMute->setChecked(tx_device_manager_->getCurrentDeviceMute(trtc::TRTCDeviceType::TXMediaDeviceTypeSpeaker));
+    ui_audio_setting_->horizontalSliderCurrentDeviceVolume->setValue(tx_device_manager_->getCurrentDeviceVolume(liteav::TXMediaDeviceType::TXMediaDeviceTypeSpeaker));
+    ui_audio_setting_->checkBoxCurrentDeviceMute->setChecked(tx_device_manager_->getCurrentDeviceMute(liteav::TRTCDeviceType::TXMediaDeviceTypeSpeaker));
     ui_audio_setting_->horizontalSliderAudioCaptureVolume->setValue(trtccloud_->getAudioCaptureVolume());
     updateRemoteUsersList();
 }

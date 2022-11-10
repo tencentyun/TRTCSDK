@@ -97,16 +97,16 @@ void MainWindow::onExitRoom(int reason) {
 //============= ITRTCCloudCallback end===================//
 
 void MainWindow::on_enterRoomButton_clicked() {
-    trtc::TRTCAppScene app_scene = getCurrentSelectedAppScene();
+    liteav::TRTCAppScene app_scene = getCurrentSelectedAppScene();
     uint32_t room_id = ui_mainwindow_->roomNumLineEdit->text().toUInt();
     std::string user_id = ui_mainwindow_->userIdLineEdit->text().toStdString();
-    if (app_scene == trtc::TRTCAppScene::TRTCAppSceneLIVE || app_scene == trtc::TRTCAppScene::TRTCAppSceneVoiceChatRoom) {
+    if (app_scene == liteav::TRTCAppScene::TRTCAppSceneLIVE || app_scene == liteav::TRTCAppScene::TRTCAppSceneVoiceChatRoom) {
         int selelct_role_index = ui_mainwindow_->userRoleComB->currentIndex();
         if (selelct_role_index == -1){
             QMessageBox::warning(NULL, "Failed to enter the room", "You must select a role in live streaming scenarios.");
             return;
         }
-        trtc::TRTCRoleType role_type = getCurrentSelectedRoleType();
+        liteav::TRTCRoleType role_type = getCurrentSelectedRoleType();
         test_base_scene_.enterRoom(room_id, user_id, app_scene, role_type);
     } else {
         test_base_scene_.enterRoom(room_id, user_id, app_scene);
@@ -185,7 +185,7 @@ void MainWindow::on_btnEnterSubRoom_clicked(){
             QMessageBox::warning(this, "Failed to enter the sub-room", "Enter a sub-room ID.", QMessageBox::Ok);
             return;
         }
-        trtc::TRTCAppScene app_scene = getCurrentSelectedAppScene();
+        liteav::TRTCAppScene app_scene = getCurrentSelectedAppScene();
         uint32_t room_id = ui_mainwindow_->lineetSubRoomId->text().toUInt();
         std::string user_id = ui_mainwindow_->userIdLineEdit->text().toStdString();
         test_subcloud_setting_.enterSubCloudRoom(room_id, user_id, app_scene);
@@ -227,13 +227,13 @@ void MainWindow::on_roomNumLineEdit_textChanged(const QString &roomNum) {
 void MainWindow::on_appSceneComboBox_currentIndexChanged(int index) {
     switch (index)
     {
-    case trtc::TRTCAppScene::TRTCAppSceneAudioCall:
-    case trtc::TRTCAppScene::TRTCAppSceneVideoCall:
+    case liteav::TRTCAppScene::TRTCAppSceneAudioCall:
+    case liteav::TRTCAppScene::TRTCAppSceneVideoCall:
         ui_mainwindow_->userRoleComB->setEnabled(false);
         ui_mainwindow_->userRoleComB->setCurrentIndex(-1);
         break;
-    case trtc::TRTCAppScene::TRTCAppSceneVoiceChatRoom:
-    case trtc::TRTCAppScene::TRTCAppSceneLIVE:
+    case liteav::TRTCAppScene::TRTCAppSceneVoiceChatRoom:
+    case liteav::TRTCAppScene::TRTCAppSceneLIVE:
         ui_mainwindow_->userRoleComB->setEnabled(true);
         break;
     default:
@@ -243,10 +243,10 @@ void MainWindow::on_appSceneComboBox_currentIndexChanged(int index) {
 
 void MainWindow::on_userRoleComB_currentIndexChanged(int index){
     if(room_entered_) {
-        trtc::TRTCAppScene app_scene = getCurrentSelectedAppScene();
+        liteav::TRTCAppScene app_scene = getCurrentSelectedAppScene();
 
         // Only live streaming scenarios support role switching
-        if (app_scene == trtc::TRTCAppScene::TRTCAppSceneLIVE || app_scene == trtc::TRTCAppScene::TRTCAppSceneVoiceChatRoom) {
+        if (app_scene == liteav::TRTCAppScene::TRTCAppSceneLIVE || app_scene == liteav::TRTCAppScene::TRTCAppSceneVoiceChatRoom) {
             test_base_scene_.switchRole(getCurrentSelectedRoleType());
         }
     }
@@ -293,22 +293,22 @@ void MainWindow::updateModuleDialogStatus(bool isEnteredRoom)
     }
 }
 
-trtc::TRTCAppScene MainWindow::getCurrentSelectedAppScene()
+liteav::TRTCAppScene MainWindow::getCurrentSelectedAppScene()
 {
-    trtc::TRTCAppScene appScene = trtc::TRTCAppScene::TRTCAppSceneVideoCall;
+    liteav::TRTCAppScene appScene = liteav::TRTCAppScene::TRTCAppSceneVideoCall;
     int current_index = ui_mainwindow_->appSceneComboBox->currentIndex();
     switch(current_index) {
     case 0:
-        appScene = trtc::TRTCAppScene::TRTCAppSceneVideoCall;
+        appScene = liteav::TRTCAppScene::TRTCAppSceneVideoCall;
         break;
     case 1:
-        appScene = trtc::TRTCAppScene::TRTCAppSceneLIVE;
+        appScene = liteav::TRTCAppScene::TRTCAppSceneLIVE;
         break;
     case 2:
-        appScene = trtc::TRTCAppScene::TRTCAppSceneAudioCall;
+        appScene = liteav::TRTCAppScene::TRTCAppSceneAudioCall;
         break;
     case 3:
-        appScene = trtc::TRTCAppScene::TRTCAppSceneVoiceChatRoom;
+        appScene = liteav::TRTCAppScene::TRTCAppSceneVoiceChatRoom;
         break;
     default:
         break;
@@ -316,9 +316,9 @@ trtc::TRTCAppScene MainWindow::getCurrentSelectedAppScene()
     return appScene;
 }
 
-trtc::TRTCRoleType MainWindow::getCurrentSelectedRoleType()
+liteav::TRTCRoleType MainWindow::getCurrentSelectedRoleType()
 {
-    return ui_mainwindow_->userRoleComB->currentIndex() != 0? trtc::TRTCRoleType::TRTCRoleAudience : trtc::TRTCRoleType::TRTCRoleAnchor;
+    return ui_mainwindow_->userRoleComB->currentIndex() != 0? liteav::TRTCRoleType::TRTCRoleAudience : liteav::TRTCRoleType::TRTCRoleAnchor;
 }
 
 void MainWindow::on_pushButtonDeviceManager_clicked()

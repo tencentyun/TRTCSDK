@@ -79,7 +79,7 @@ private:
     QString last_record_file_path;
 
     std::unique_ptr<Ui::TestAudioRecordDialog> ui_audio_record_;
-    trtc::ITRTCCloud *trtccloud_;
+    liteav::ITRTCCloud *trtccloud_;
     QTimer *qtimer_ = new QTimer();
 
 };

@@ -62,17 +62,17 @@ private:
 
     std::string device_name_;
     std::string device_id_;
-    trtc::TXMediaDeviceType device_type_;
+    liteav::TXMediaDeviceType device_type_;
 
     DeviceInfoItem(){}
-    DeviceInfoItem(std::string device_name, std::string device_id, trtc::TXMediaDeviceType device_type) :
+    DeviceInfoItem(std::string device_name, std::string device_id, liteav::TXMediaDeviceType device_type) :
             device_name_(device_name), device_id_(device_id), device_type_(device_type) {}
 
     };
 
 private:
     std::unique_ptr<Ui::TestVideoDetectDialog> ui_video_test_;
-    trtc::ITXDeviceManager *tx_device_manager_;
+    liteav::ITXDeviceManager *tx_device_manager_;
     QVector<DeviceInfoItem> qvector_device_info_camera_;
     bool device_info_ready_;
     bool camera_test_started_ = false;

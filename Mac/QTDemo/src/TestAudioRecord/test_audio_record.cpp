@@ -33,7 +33,7 @@ void TestAudioRecord::startAudioRecording()
         QMessageBox::warning(NULL, "Failed to start recording", "Enter a valid path.");
         return;
     }
-    trtc::TRTCAudioRecordingParams params;
+    liteav::TRTCAudioRecordingParams params;
     QFileInfo fileInfo(file_path);
     std::string temp = fileInfo.absoluteFilePath().toStdString();
     last_record_file_path = QString(temp.c_str());

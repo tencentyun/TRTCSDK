@@ -18,8 +18,8 @@ TestVideoSetting::~TestVideoSetting() {
 
 void TestVideoSetting::updateVideoEncoderParams()
 {
-    trtc::TRTCVideoResolution resolution  = video_resolution_hashmap_.value(ui_video_setting_->comboBoxVideoResolution->currentIndex());
-    trtc::TRTCVideoResolutionMode resolution_mode = (ui_video_setting_->comboBoxResolutionMode->currentIndex() == 0)? trtc::TRTCVideoResolutionMode::TRTCVideoResolutionModeLandscape : trtc::TRTCVideoResolutionMode::TRTCVideoResolutionModePortrait;
+    liteav::TRTCVideoResolution resolution  = video_resolution_hashmap_.value(ui_video_setting_->comboBoxVideoResolution->currentIndex());
+    liteav::TRTCVideoResolutionMode resolution_mode = (ui_video_setting_->comboBoxResolutionMode->currentIndex() == 0)? liteav::TRTCVideoResolutionMode::TRTCVideoResolutionModeLandscape : liteav::TRTCVideoResolutionMode::TRTCVideoResolutionModePortrait;
     uint32_t video_fps = (ui_video_setting_->comboBoxVideoFps->currentIndex()) == 0 ? 15 : 20;
     uint32_t bitrate = (uint32_t)(ui_video_setting_->horizontalSliderVideoBitrate->value());
     bool enable_adjust_resolution = ui_video_setting_->checkBoxEnableAdjustRes->isChecked();
@@ -29,7 +29,7 @@ void TestVideoSetting::updateVideoEncoderParams()
     bitrate_text = bitrate_text.append(QString::fromUtf8("kbps: "));
     ui_video_setting_->labelBitrateDesc->setText(bitrate_text);
 
-    trtc::TRTCVideoEncParam param;
+    liteav::TRTCVideoEncParam param;
     param.resMode = resolution_mode;
     param.videoResolution = resolution;
     param.videoBitrate = bitrate;
@@ -65,34 +65,34 @@ void TestVideoSetting::on_checkBoxEnableAdjustRes_stateChanged(int arg1)
 
 void TestVideoSetting::on_checkBoxEnableEncSmallVideoStream_stateChanged(int arg1)
 {
-    trtc::TRTCVideoEncParam param;
-    param.resMode = (ui_video_setting_->comboBoxResolutionMode->currentIndex() == 0)? trtc::TRTCVideoResolutionMode::TRTCVideoResolutionModeLandscape : trtc::TRTCVideoResolutionMode::TRTCVideoResolutionModePortrait;
-    param.videoResolution = trtc::TRTCVideoResolution_640_360;
+    liteav::TRTCVideoEncParam param;
+    param.resMode = (ui_video_setting_->comboBoxResolutionMode->currentIndex() == 0)? liteav::TRTCVideoResolutionMode::TRTCVideoResolutionModeLandscape : liteav::TRTCVideoResolutionMode::TRTCVideoResolutionModePortrait;
+    param.videoResolution = liteav::TRTCVideoResolution_640_360;
     trtccloud_->enableSmallVideoStream(ui_video_setting_->checkBoxEnableEncSmallVideoStream->isChecked(), param);
 }
 
 void TestVideoSetting::setupVideoResolutionMap()
 {
-    video_resolution_hashmap_.insert(0, trtc::TRTCVideoResolution_120_120);
-    video_resolution_hashmap_.insert(1, trtc::TRTCVideoResolution_160_160);
-    video_resolution_hashmap_.insert(2, trtc::TRTCVideoResolution_270_270);
-    video_resolution_hashmap_.insert(3, trtc::TRTCVideoResolution_480_480);
-    video_resolution_hashmap_.insert(4, trtc::TRTCVideoResolution_160_120);
-    video_resolution_hashmap_.insert(5, trtc::TRTCVideoResolution_240_180);
-    video_resolution_hashmap_.insert(6, trtc::TRTCVideoResolution_280_210);
-    video_resolution_hashmap_.insert(7, trtc::TRTCVideoResolution_320_240);
-    video_resolution_hashmap_.insert(8, trtc::TRTCVideoResolution_400_300);
-    video_resolution_hashmap_.insert(9, trtc::TRTCVideoResolution_480_360);
-    video_resolution_hashmap_.insert(10, trtc::TRTCVideoResolution_640_480);
-    video_resolution_hashmap_.insert(11, trtc::TRTCVideoResolution_960_720);
-    video_resolution_hashmap_.insert(12, trtc::TRTCVideoResolution_160_90);
-    video_resolution_hashmap_.insert(13, trtc::TRTCVideoResolution_256_144);
-    video_resolution_hashmap_.insert(14, trtc::TRTCVideoResolution_320_180);
-    video_resolution_hashmap_.insert(15, trtc::TRTCVideoResolution_480_270);
-    video_resolution_hashmap_.insert(16, trtc::TRTCVideoResolution_640_360);
-    video_resolution_hashmap_.insert(17, trtc::TRTCVideoResolution_960_540);
-    video_resolution_hashmap_.insert(18, trtc::TRTCVideoResolution_1280_720);
-    video_resolution_hashmap_.insert(19, trtc::TRTCVideoResolution_1920_1080);
+    video_resolution_hashmap_.insert(0, liteav::TRTCVideoResolution_120_120);
+    video_resolution_hashmap_.insert(1, liteav::TRTCVideoResolution_160_160);
+    video_resolution_hashmap_.insert(2, liteav::TRTCVideoResolution_270_270);
+    video_resolution_hashmap_.insert(3, liteav::TRTCVideoResolution_480_480);
+    video_resolution_hashmap_.insert(4, liteav::TRTCVideoResolution_160_120);
+    video_resolution_hashmap_.insert(5, liteav::TRTCVideoResolution_240_180);
+    video_resolution_hashmap_.insert(6, liteav::TRTCVideoResolution_280_210);
+    video_resolution_hashmap_.insert(7, liteav::TRTCVideoResolution_320_240);
+    video_resolution_hashmap_.insert(8, liteav::TRTCVideoResolution_400_300);
+    video_resolution_hashmap_.insert(9, liteav::TRTCVideoResolution_480_360);
+    video_resolution_hashmap_.insert(10, liteav::TRTCVideoResolution_640_480);
+    video_resolution_hashmap_.insert(11, liteav::TRTCVideoResolution_960_720);
+    video_resolution_hashmap_.insert(12, liteav::TRTCVideoResolution_160_90);
+    video_resolution_hashmap_.insert(13, liteav::TRTCVideoResolution_256_144);
+    video_resolution_hashmap_.insert(14, liteav::TRTCVideoResolution_320_180);
+    video_resolution_hashmap_.insert(15, liteav::TRTCVideoResolution_480_270);
+    video_resolution_hashmap_.insert(16, liteav::TRTCVideoResolution_640_360);
+    video_resolution_hashmap_.insert(17, liteav::TRTCVideoResolution_960_540);
+    video_resolution_hashmap_.insert(18, liteav::TRTCVideoResolution_1280_720);
+    video_resolution_hashmap_.insert(19, liteav::TRTCVideoResolution_1920_1080);
 }
 
 void TestVideoSetting::retranslateUi() {

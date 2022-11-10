@@ -13,11 +13,11 @@ TestSubCloudSetting::~TestSubCloudSetting(){
     exitSubCloudRoom();
 }
 
-void TestSubCloudSetting::enterSubCloudRoom(uint32_t roomId, std::string userId, trtc::TRTCAppScene appScene) {
+void TestSubCloudSetting::enterSubCloudRoom(uint32_t roomId, std::string userId, liteav::TRTCAppScene appScene) {
     sub_cloud_ = getTRTCShareInstance()->createSubCloud();
 
-    trtc::TRTCParams params;
-    params.role = trtc::TRTCRoleAudience;
+    liteav::TRTCParams params;
+    params.role = liteav::TRTCRoleAudience;
     room_id_ = roomId;
     params.roomId = room_id_;
     params.sdkAppId = SDKAppID;
@@ -100,7 +100,7 @@ void TestSubCloudSetting::onRemoteUserLeaveRoom(const char *userId, int reason){
     test_user_video_group_->onSubRoomUserLeaveRoom(room_id_, userId);
 }
 
-void TestSubCloudSetting::onUserVoiceVolume(trtc::TRTCVolumeInfo* userVolumes, uint32_t userVolumesCount, uint32_t totalVolume) {
+void TestSubCloudSetting::onUserVoiceVolume(liteav::TRTCVolumeInfo* userVolumes, uint32_t userVolumesCount, uint32_t totalVolume) {
     test_user_video_group_->handleUserVolume(userVolumes, userVolumesCount, totalVolume);
 }
 

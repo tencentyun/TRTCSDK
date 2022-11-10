@@ -26,7 +26,7 @@ void TestScreenShareSelectScreen::stopScreenSharing(){
 }
 
 void TestScreenShareSelectScreen::startScreenSharing(){
-    getTRTCShareInstance()->startScreenCapture(reinterpret_cast<trtc::TXView>(ui_test_screen_share_select_screen_->screenSharedPreview->winId()),
+    getTRTCShareInstance()->startScreenCapture(reinterpret_cast<liteav::TXView>(ui_test_screen_share_select_screen_->screenSharedPreview->winId()),
         stream_type_,
         &enc_param_);
 }
@@ -46,7 +46,7 @@ void TestScreenShareSelectScreen::releaseScreenCaptureSourceList(){
     }
 }
 
-void TestScreenShareSelectScreen::selectScreenCaptureTarget(trtc::TRTCScreenCaptureSourceInfo sourceInfo){
+void TestScreenShareSelectScreen::selectScreenCaptureTarget(liteav::TRTCScreenCaptureSourceInfo sourceInfo){
     getTRTCShareInstance()->selectScreenCaptureTarget(
         sourceInfo
         , sharing_rect_
@@ -66,10 +66,10 @@ void TestScreenShareSelectScreen::initScreenCaptureSources(){
     screen_capture_list_ = getTRTCShareInstance()->getScreenCaptureSources(thumb_size, icon_size);
 }
 
-void TestScreenShareSelectScreen::init(trtc::TRTCScreenCaptureProperty captureProperty
-    , trtc::TRTCVideoEncParam params
+void TestScreenShareSelectScreen::init(liteav::TRTCScreenCaptureProperty captureProperty
+    , liteav::TRTCVideoEncParam params
     , RECT rect
-    , trtc::TRTCVideoStreamType type) {
+    , liteav::TRTCVideoStreamType type) {
     sharing_rect_ = rect;
     enc_param_ = params;
     capture_property_ = captureProperty;
@@ -78,10 +78,10 @@ void TestScreenShareSelectScreen::init(trtc::TRTCScreenCaptureProperty capturePr
 }
 
 void TestScreenShareSelectScreen::updateScreenSharingParams(
-        trtc::TRTCScreenCaptureProperty captureProperty
-        ,trtc::TRTCVideoEncParam params
+        liteav::TRTCScreenCaptureProperty captureProperty
+        ,liteav::TRTCVideoEncParam params
         ,RECT rect
-        ,trtc::TRTCVideoStreamType type){
+        ,liteav::TRTCVideoStreamType type){
     sharing_rect_ = rect;
     enc_param_ = params;
     capture_property_ = captureProperty;
@@ -102,11 +102,11 @@ void TestScreenShareSelectScreen::initScreenSharingScreenSelections(){
     }
 
     int screen_capture_size = screen_capture_list_->getCount();
-    trtc::TRTCScreenCaptureSourceInfo screen_capture_source_info;
+    liteav::TRTCScreenCaptureSourceInfo screen_capture_source_info;
     int child_window_item_index = 0;
     for (int screen_index = 0; screen_index < screen_capture_size; screen_index++) {
         screen_capture_source_info = screen_capture_list_->getSourceInfo(screen_index);
-        if (screen_capture_source_info.type == trtc::TRTCScreenCaptureSourceTypeScreen) {
+        if (screen_capture_source_info.type == liteav::TRTCScreenCaptureSourceTypeScreen) {
             addScreenSharingWindowItem(screen_capture_source_info, child_window_item_index);
         }else{
             break;
@@ -148,7 +148,7 @@ void TestScreenShareSelectScreen::onScreenCaptureStoped(int reason) {
 }
 //============= ITRTCCloudCallback end =================//
 
-void TestScreenShareSelectScreen::addScreenSharingWindowItem(trtc::TRTCScreenCaptureSourceInfo screen_capture_source_info, int child_window_item_index)
+void TestScreenShareSelectScreen::addScreenSharingWindowItem(liteav::TRTCScreenCaptureSourceInfo screen_capture_source_info, int child_window_item_index)
 {
     ScreenShareSelectionItem* test_screensharing_item = new ScreenShareSelectionItem(screen_capture_source_info
         , ui_test_screen_share_select_screen_->widgetScreenWindows);
