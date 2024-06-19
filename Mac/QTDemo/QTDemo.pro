@@ -162,77 +162,68 @@ macx {
 INCLUDEPATH += $${SOURCE_PATHS}
 DEPENDPATH += $${SOURCE_PATHS}
 
+SOURCES += \
+    $$PWD/src/Util/mac/cdnplayer/tx_liveplayer_proxy.mm
+INCLUDEPATH += $$PWD/src/Util/mac/usersig/include
+DEPENDPATH += $$PWD/src/Util/mac/usersig/include
+
+LIBS += -L$$PWD/src/Util/mac/usersig/ -lTXLiteAVTestUserSig
+PRE_TARGETDEPS += $$PWD/src/Util/mac/usersig/libTXLiteAVTestUserSig.a
+DISTFILES += $$PWD/src/Util/mac/usersig/libTXLiteAVTestUserSig.a
+
 QMAKE_INFO_PLIST += Info.plist
-
-# 添加TXLiteAVSDK_TRTC_Mac.framework头文件
-INCLUDEPATH += $$PWD/../SDK/TXLiteAVSDK_TRTC_Mac.framework/Headers/cpp_interface
-INCLUDEPATH += $$PWD/../SDK/TXLiteAVSDK_TRTC_Mac.framework/Headers
-
-# 添加库依赖
-LIBS += "-F$$PWD/../SDK"
-LIBS += -framework TXLiteAVSDK_TRTC_Mac
-
-# 引用的系统库
 QMAKE_CXXFLAGS += -x objective-c++
+QMAKE_CXXFLAGS += -std=gnu++11
+CONFIG += console
+
+# 系统库
 LIBS += -framework Accelerate
-LIBS += -framework AudioUnit
-LIBS += -lbz2
-LIBS += -lresolv
-LIBS += -framework AppKit
-LIBS += -framework Foundation
-LIBS += -framework CoreFoundation
-LIBS += -framework Cocoa
 LIBS += -framework Security
-LIBS += -framework SystemConfiguration
-LIBS += -framework JavaScriptCore
-LIBS += -framework CoreMedia
-LIBS += -framework CoreAudio
-LIBS += -framework CoreVideo
-LIBS += -framework CoreImage
+LIBS += -framework CoreFoundation
+LIBS += -framework AudioUnit
 LIBS += -framework AVFoundation
 LIBS += -framework AudioToolbox
-LIBS += -framework VideoToolbox
-LIBS += -framework MetalKit
-LIBS += -framework Metal
-LIBS += -framework CoreTelephony
-LIBS += -framework CoreGraphics
-LIBS += -framework OpenGL
-LIBS += -framework OpenAL
+LIBS += -framework CoreAudio
+LIBS += -framework CoreMedia
+LIBS += -framework CoreVideo
+LIBS += -framework IOSurface
 LIBS += -framework QuartzCore
+LIBS += -framework SystemConfiguration
+LIBS += -framework VideoToolBox
+LIBS += -framework ScreenCaptureKit
+LIBS += -framework CoreGraphics
 LIBS += -lz
-LIBS += -ObjC
+# for x86_64
+LIBS += -framework Metal
+LIBS += -framework CoreGraphics
+LIBS += -framework CoreText
+LIBS += -framework CoCoa
+LIBS += -framework CoreFoundation
 
-# TXFFmpeg库的使用
-LIBS += -F$$PWD/../SDK/TXFFmpeg.xcframework/macos-arm64_x86_64
-LIBS += -framework TXFFmpeg
-TXFFmpeg_FRAMEWORK.files = $$PWD/../SDK/TXFFmpeg.xcframework/macos-arm64_x86_64/TXFFmpeg.framework
+TXLITEAVSDKDIR = $$PWD/../SDK/TXLiteAVSDK_TRTC_Mac.xcframework/macos-arm64_x86_64
+TXFFMPEGDIR = $$PWD/../SDK/TXFFmpeg.xcframework/macos-arm64_x86_64
+TXSOUNDTOUCHDIR = $$PWD/../SDK/TXSoundTouch.xcframework/macos-arm64_x86_64
+
+# TXLiteAVSDK_TRTC_Mac
+INCLUDEPATH += $${TXLITEAVSDKDIR}/TXLiteAVSDK_TRTC_Mac.framework/Headers
+INCLUDEPATH += $${TXLITEAVSDKDIR}/TXLiteAVSDK_TRTC_Mac.framework/Headers/cpp_interface
+LIBS += -F$${TXLITEAVSDKDIR} -framework TXLiteAVSDK_TRTC_Mac
+
+# TXFFmpeg
+LIBS += -F$${TXFFMPEGDIR} -framework TXFFmpeg
+TXFFmpeg_FRAMEWORK.files = $${TXFFMPEGDIR}/TXFFmpeg.framework
 TXFFmpeg_FRAMEWORK.path = /Contents/Frameworks
 QMAKE_BUNDLE_DATA += TXFFmpeg_FRAMEWORK
 
-# TXSoundTouch库的使用
-LIBS += -F$$PWD/../SDK/TXSoundTouch.xcframework/macos-arm64_x86_64
-LIBS += -framework TXSoundTouch
-TXSoundTouch_FRAMEWORK.files = $$PWD/../SDK/TXSoundTouch.xcframework/macos-arm64_x86_64/TXSoundTouch.framework
+# TXSoundTouch
+LIBS += -F$${TXSOUNDTOUCHDIR} -framework TXSoundTouch
+TXSoundTouch_FRAMEWORK.files = $${TXSOUNDTOUCHDIR}//TXSoundTouch.framework
 TXSoundTouch_FRAMEWORK.path = /Contents/Frameworks
 QMAKE_BUNDLE_DATA += TXSoundTouch_FRAMEWORK
 
 # 运行时库路径rpath的添加
 QMAKE_LFLAGS += -Wl -ObjC
 QMAKE_LFLAGS += -Wl,-rpath,@executable_path/../Frameworks/
-
-macx: LIBS += -L$$PWD/src/Util/mac/usersig/ -lTXLiteAVTestUserSig
-macx: PRE_TARGETDEPS += $$PWD/src/Util/mac/usersig/libTXLiteAVTestUserSig.a
-QMAKE_CXXFLAGS += -std=gnu++11
-CONFIG += console
-
-INCLUDEPATH += $$PWD/src/Util/mac/usersig/include
-DEPENDPATH += $$PWD/src/Util/mac/usersig/include
-
-DISTFILES += $$PWD/src/Util/mac/usersig/libTXLiteAVTestUserSig.a
-
-SOURCES += \
-    $$PWD/src/Util/mac/cdnplayer/tx_liveplayer_proxy.mm
-
 }
 
 

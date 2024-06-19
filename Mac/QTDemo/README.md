@@ -73,7 +73,7 @@
 > 
 >**Mac:** 下载并安装 [Qt Creator](https://www.qt.io/download-qt-installer?hsCtaTracking=99d9dd4f-5681-48d2-b096-470725510d34%7C074ddad0-fdef-4e53-8aa8-5e8a876d6ab4)，然后用 Qt Creator 打开 `QTDemo.pro` ，到 `QTDemo/base/Defs.h` 头文件中配置好对应的 `SECRETKEY` 和 `SDKAppID` 即可开始编译运行调试；
 >
-> `注意：`请您确保已将`TXLiteAVSDK_TRTC_Mac.framework`[下载](https://liteav.sdk.qcloud.com/download/latest/TXLiteAVSDK_TRTC_Mac_latest.tar.bz2)并保存到 `Mac/SDK` 文件夹下。最终的工程路径如下——
+> `注意：`请您确保已将`TXLiteAVSDK_TRTC_Mac.xcframework`[下载](https://liteav.sdk.qcloud.com/download/latest/TXLiteAVSDK_TRTC_Mac_latest.tar.bz2)并保存到 `Mac/SDK` 文件夹下。最终的工程路径如下——
 >```
 >├─ QTDemo // QTDemo工程路径
 >├─ SDK    // TRTC MAC SDK
