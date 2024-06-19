@@ -77,7 +77,7 @@ You have [signed up for a Tencent Cloud account](https://intl.cloud.tencent.com/
 > 
 >**macOS:** Download and install [Qt Creator](https://www.qt.io/download-qt-installer?hsCtaTracking=99d9dd4f-5681-48d2-b096-470725510d34%7C074ddad0-fdef-4e53-8aa8-5e8a876d6ab4), open `QTDemo.pro` with Qt Creator, paste the `SECRETKEY` and `SDKAppID` in `QTDemo/base/Defs.h`, and compile and run the demo.
 >
-> Note: Make sure you have [downloaded](https://liteav.sdk.qcloud.com/download/latest/TXLiteAVSDK_TRTC_Mac_latest.tar.bz2) and saved `TXLiteAVSDK_TRTC_Mac.framework` to the `Mac/SDK` folder. The downloaded package includes:
+> Note: Make sure you have [downloaded](https://liteav.sdk.qcloud.com/download/latest/TXLiteAVSDK_TRTC_Mac_latest.tar.bz2) and saved `TXLiteAVSDK_TRTC_Mac.xcframework` to the `Mac/SDK` folder. The downloaded package includes:
 >```
 >├─ QTDemo // QT demo project
 >├─ SDK    // TRTC SDK for macOS
