@@ -77,6 +77,12 @@
       ]
     },
     "mac": {
+      "entitlements": "entitlements.mac.plist",
+      "hardenedRuntime": true,
+      "extendInfo": {
+        "NSMicrophoneUsageDescription": "请允许本程序访问您的麦克风",
+        "NSCameraUsageDescription": "请允许本程序访问您的摄像头"
+      },
       "extraFiles": [
         {
           "from": "node_modules/trtc-electron-sdk/build/Release",
