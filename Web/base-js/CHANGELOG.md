@@ -1,11 +1,363 @@
 版本号`major.minor.patch`具体规则如下：
-  - major：主版本号，如有重大版本重构则该字段递增，通常各主版本间接口不兼容。
-  - minor：次版本号，各次版本号间接口保持兼容，如有接口新增或优化则该字段递增。
-  - patch：补丁号，如有功能改善或缺陷修复则该字段递增。
 
->!
+- major：主版本号，如有重大版本重构则该字段递增，通常各主版本间接口不兼容。
+- minor：次版本号，各次版本号间接口保持兼容，如有接口新增或优化则该字段递增。
+- patch：补丁号，如有功能改善或缺陷修复则该字段递增。
+
+> !
 > - 建议您及时更新至最新版本，以便获得更好的产品稳定性及在线支持。
 > - 版本升级注意事项请参见：[升级指引](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/tutorial-00-info-update-guideline.html)。
+
+## Version 4.15.21 @2024.04.12
+
+**Improvement**
+
+- 优化重连逻辑，提升重连成功率
+- 优化自动恢复采集逻辑，提升采集恢复成功率
+
+**Bug Fixed**
+
+- 修复 iOS 17 偶现视频渲染异常的问题
+- 修复移动端切换前后置偶现异常的问题
+- 修复弱网偶现订阅无声的问题。
+
+## Version 4.15.20 @2024.01.15
+
+**Bug Fixed**
+
+- 修复通过主流推屏幕分享分辨率不及预期的问题。
+
+## Version 4.15.19 @2023.12.15
+
+**Improvement**
+
+- 优化视频编码逻辑。
+- 优化设备采集逻辑，提升设备采集成功率。
+- 优化进房参数校验逻辑。即同一个页面下的多个 client 实例，若以相同的 userId 进同一个房间，会被 SDK 拦截，这是不允许的行为。
+
+## Version 4.15.18 @2023.11.24
+
+**Bug Fixed**
+
+- 修复偶现取消推流报错的问题。
+- 修复低版本 Chrome 纯视频推流码率低的问题。
+- 修复 iOS 17 无法获取 Stat 统计数据的问题。
+
+## Version 4.15.17 @2023.11.09
+
+**Bug Fixed**
+
+- 修复开启混音插件后不能切换麦克风的问题。
+
+## Version 4.15.16 @2023.11.01
+
+**Bug Fixed**
+
+- 修复移动端切换前后置摄像头不生效的问题。
+- 修复华为设备切换摄像头后，3A 失效导致回声的问题。
+- 规避 iOS 17 视频播放出现短时闪屏的问题。[webkit issue](https://bugs.webkit.org/show_bug.cgi?id=259364)。
+
+## Version 4.15.15 @2023.10.13
+
+**Improvement**
+
+- 优化设备采集逻辑，提升设备采集成功率。
+- 规避 Mac Firefox 采集 360p 失败的问题。
+
+## Version 4.15.14 @2023.08.16
+
+**Feature**
+
+- {@link LocalStream#setAudioProfile LocalStream.setAudioProfile} 支持动态调用。
+
+**Improvement**
+
+- 优化进房流程，降低进房耗时。
+- 规避 Android Chrome 115 低于 360p 分辨率偶现无法编码的 [Chrome Bug](https://bugs.chromium.org/p/chromium/issues/detail?id=1469318)。
+
+**Bug Fixed**
+
+- 修复 iOS Safari 11 推流失败的问题。
+
+## Version 4.15.13 @2023.08.04
+
+**Improvement**
+
+- 优化重连逻辑，提升弱网抗性。
+
+**Bug Fixed**
+
+- 修复设置低分辨率屏幕分享采集失效的问题。
+- 修复在 IE 加载 SDK 出现代码报错的问题。
+
+## Version 4.15.12 @2023.07.20
+
+**Feature**
+
+- 支持 PSTN 下行音频。
+
+**Improvement**
+
+- 提升屏幕分享流畅度。
+- 规避部分联想设备出现采集摄像头 NotReadableError 的问题。
+
+## Version 4.15.11 @2023.07.14
+
+**Feature**
+
+- 支持辅流接收 SEI。
+
+## Version 4.15.10 @2023.06.28
+
+**Improvement**
+
+- 优化调度逻辑，解决印度地区无法上报日志的问题。
+- 优化设备采集逻辑，当同一个设备出现多次采集异常，SDK 会尝试切换到其他设备采集。
+
+## Version 4.15.9 @2023.06.08
+
+**Bug Fixed**
+
+- 修复带 '#' 的字符串房间号进房失败的问题（建议 v4.15.7 ~ v4.15.8 升级至 v4.15.9）。
+
+**Improvement**
+
+- 优化恢复采集逻辑，规避在 iOS 微信 H5 通话过程中，收到微信来电后，trtc 通话异常的问题。
+
+## Version 4.15.8 @2023.05.25
+
+**Feature**
+
+- 支持订阅云端混流回推 TRTC 房间的流。
+  - 当有混流回推 TRTC 流时，SDK 通过 'stream-added' 事件回调，调用 subscribe 接口订阅即可。
+  - 后续通过 'stream-updated' 事件的 event.mixUserList 参数通知参与该混流的主播列表。
+
+## Version 4.15.7 @2023.05.05
+
+**Improvement**
+
+- 提升系统音频音质。
+- 规避插入新麦克风后，切换 'default' 麦克风不生效的问题。
+
+## Version 4.15.6 @2023.03.31
+
+**Improvement**
+
+- 优化小流订阅策略，降低流类型切换产生到带宽损耗。
+- 优化恢复采集策略。
+
+## Version 4.15.5 @2023.03.08
+
+**Improvement**
+
+- 优化[包月套餐](https://cloud.tencent.com/document/product/647/85386)计费策略。
+
+## Version 4.15.4 @2023.03.03
+
+**Improvement**
+
+- 支持直接订阅小流。
+- 优化进房流程。
+- 兼容 Chrome 112 版本，解决仪表盘查不到视频码率的问题。
+
+## Version 4.15.3 @2023.02.17
+
+**Improvement**
+
+- 支持[包月套餐](https://cloud.tencent.com/document/product/647/85386)计费策略。
+- 优化设备恢复采集逻辑。
+
+**Bug Fixed**
+
+- 修复 Chrome 109+ 版本，屏幕分享无法采集当前页面的问题。
+- 修复采集到非指定 cameraId 的摄像头的问题（偶现）。
+
+## Version 4.15.2 @2022.12.30
+
+**Improvement**
+
+- 优化重连逻辑。
+- 优化进房参数校验逻辑。
+
+## Version 4.15.1 @2022.12.09
+
+**Feature**
+
+- [云端混流](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/Client.html#startMixTranscode)及[转推 CDN](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/Client.html#startPublishCDNStream) 接口支持辅流。
+
+**Improvement**
+
+- 优化小流渲染逻辑，修复偶现小流宽高比与大流不符的问题。
+- 优化断网重连逻辑，修复断网重连后辅流丢失、及偶现被踢的问题。
+- 优化 switchDevice 逻辑，修复切换设备后，上行推流异常的问题。
+
+## Version 4.15.0 @2022.11.20
+
+**Feature**
+
+- 支持推辅流，可实现一个 Client 同时推摄像头 + 屏幕分享。参考：[屏幕分享教程](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/tutorial-16-basic-screencast.html)。
+- 支持空间音频。参考：[实现空间音频](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/tutorial-36-advanced-spatial-audio.html)。
+- [LocalStream.removeTrack](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/LocalStream.html#removeTrack) 支持 remove audioTrack。
+
+**Bug Fixed**
+
+- 修复远端用户开启小流时，频繁 publish & unpublish 会偶现导致拉流异常的问题。
+
+## Version 4.14.7 @2022.11.04
+
+**Improvement**
+
+- 规避 MacOS Ventura 上 在 Safari 16 进行屏幕分享时黑屏的问题。[Webkit issue](https://bugs.webkit.org/show_bug.cgi?id=247310)。
+
+## Version 4.14.6 @2022.10.28
+
+**Improvement**
+
+- 支持开启大小流的同时，调用 localStream 中操作 track 的相关接口(addTrack/removeTrack/replaceTrack/switchDevice)。
+- 优化设备采集逻辑，当指定 deviceId 对应的设备不可用时，浏览器会自动选择一个可用的设备采集。
+- 优化设备恢复采集逻辑。
+
+## Version 4.14.4 @2022.09.30
+
+**Improvement**
+
+- 规避 Mac Firefox 摄像头采集低于 352 * 288 分辨率报错的问题。[Firefox issue](https://bugzilla.mozilla.org/show_bug.cgi?id=1529907)。
+- 优化任务调度，降低资源消耗。
+
+**Bug Fixed**
+
+- 修复使用 localStream.replaceTrack 替换 videoTrack 后，拔插摄像头偶现 videoTrack 失效的问题。
+
+## Version 4.14.3 @2022.09.09
+
+**Bug Fixed**
+
+- 修复在 JavaScript 严格模式下，Chrome 隐私模式偶现获取设备列表失败的问题。
+- 修复页面未产生交互情况下进房，音量获取异常的问题。
+
+## Version 4.14.2 @2022.08.26
+
+**Feature**
+
+- [TRTC.getCameras](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/TRTC.html#getCameras) 和 [TRTC.getMicrophone](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/TRTC.html#getMicrophones) 获取到的设备列表，支持调用原生接口 [getCapabilities](https://developer.mozilla.org/en-US/docs/Web/API/InputDeviceInfo/getCapabilities)。
+
+**Improvement**
+
+- 优化 iOS 端（接电话、闹铃、唤醒 Siri）等场景下，设备采集异常的恢复逻辑。
+- 优化 H264 支持度检测逻辑，规避 Android Chrome 88 以下首次打开浏览器检测不支持 H264 的问题。
+
+## Version 4.14.1 @2022.08.11
+
+**Feature**
+
+- 支持发送 SEI 消息，[Client.sendSEIMessage](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/Client.html#sendSEIMessage)。
+
+**Improvement**
+
+- 提升 [Client.switchRole](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/Client.html#switchRole) 接口健壮性。
+
+## Version 4.14.0 @2022.08.05
+
+**Breaking Change**
+
+- 修改 [Client.on('client-banned')](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/module-ClientEvent.html#CLIENT_BANNED) 事件的回调参数，升级时需注意。
+
+**Feature**
+
+- 支持设置采集音量，[LocalStream.setAudioCaptureVolume](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/LocalStream.html#setAudioCaptureVolume)。
+
+**Improvement**
+
+- 修改 [Client.on('client-banned')](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/module-ClientEvent.html#CLIENT_BANNED) 事件回调参数，增加被动退房原因。
+- 规避 Firefox 屏幕分享采集分辨率与预期不符的问题。
+- 规避 iOS Safari 偶现播放本地流黑屏的问题。
+- 优化低端 PC 设备的小流编码性能。
+
+**Bug Fixed**
+
+- 修复特定场景下，屏幕分享码率不及预期的问题。
+
+## Version 4.13.0 @2022.07.08
+
+**Feature**
+
+- 新增接口 [Client.destroy](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/Client.html#destroy)，完善 [Client](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/Client.html) 生命周期。
+
+**Improvement**
+
+- 优化小流编码性能，提升流畅度。
+- 新增自动恢复采集成功事件 [DEVICE_AUTO_RECOVERED](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/module-StreamEvent.html#.DEVICE_AUTO_RECOVERED)。
+
+**Bug Fixed**
+
+- 修复 [Client.startMixTranscode](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/Client.html#startMixTranscode) 接口发起云端混流，断网超过 30s 且恢复网络后未继续混流的问题。
+
+- 修复 [Client.startPublishCDNStream](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/Client.html#startPublishCDNStream) 接口推流到 CDN，断网超过 30s 且恢复网络后 CDN 流断开的问题。
+
+## Version 4.12.7 @2022.06.17
+
+**Improvement**
+
+- [Client.startMixTranscode](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/Client.html#startMixTranscode) 支持通过 mixUser.renderMode 参数设置混入流渲染模式。
+- 默认 video profile 变更为 `480p_2`，在保障画质的情况下，降低上行带宽消耗。参考 [LocalStream.setVideoProfile](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/LocalStream.html#setVideoProfile)。
+- 提升自动恢复播放成功率。
+- 提升断网重连后，mute 状态准确性。
+- 规避 Mac Safari 15.1 muteVideo 页面崩溃的问题。[webkit bug](https://bugs.webkit.org/show_bug.cgi?id=232006)。
+
+**Bug Fixed**
+
+- 修复大小流场景下（非自动订阅），偶现未抛出 `stream-added` 事件的问题。
+
+## Version 4.12.6 @2022.06.10
+
+**Improvement**
+
+- client.join 新增防重复进房逻辑，详情参考：[升级指引](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/tutorial-00-info-update-guideline.html)
+
+## Version 4.12.5 @2022.05.20
+
+**Bug Fixed**
+
+- 修复在 IE 中加载 npm 包 trtc.umd.js 文件报错的问题。
+- 修复偶现订阅状态变更，拉小流异常的问题。
+- 规避 Chrome 70 及以下版本，移动 div 容器导致播放暂停的问题。
+
+## Version 4.12.4 @2022.05.07
+
+**Improvement**
+
+- 优化进房流程，降低进房耗时。
+- 优化小流切换逻辑。
+
+**Bug Fixed**
+
+- 修复偶现未抛出 stream-added 事件的问题。
+- 规避 Firefox 无法使用罗技摄像头采集 480p 的问题。
+- 修复 iPad WKWebview 引入 sdk 报错的问题。
+
+## Version 4.12.3 @2022.04.19
+
+**Improvement**
+
+- 优化 iOS 13、14 高分辨率采集逻辑。
+- 优化事件监听逻辑，避免 SDK 捕获到业务侧的错误。
+- 新增 Safari 音量上报，便于仪表盘排障。
+
+**Bug Fixed**
+
+- 修复 live 模式偶现断网重连异常的问题。
+- 修复 iOS 11 获取音量异常的问题。
+
+## Version 4.12.2 @2022.04.02
+
+**Improvement**
+
+- 优化音量计算逻辑，降低内存占用及性能开销。
+
+**Bug Fixed**
+
+- 修复偶现页面长时间切后台被踢问题（收到 client-banned 事件）。
+- 规避 iOS 15.2 ~ 15.4 切换摄像头后，出现回音的问题。参考：[iOS Safari 已知问题 case 11](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/tutorial-02-info-webrtc-issues.html#h2-4)。
 
 ## Version 4.12.1 @2022.03.18
 
@@ -69,7 +421,6 @@
 
 - 修复 iOS 15.1 开启桌面版网页通话时，出现页面 crash 的问题。详情参考：[iOS Safari 已知问题 case 7](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/tutorial-02-info-webrtc-issues.html#h2-4)。
 - 修复 [LocalStream.setAudioProfile('high')](https://web.sdk.qcloud.com/trtc/webrtc/doc/zh-cn/LocalStream.html#setAudioProfile) 码率设置成 192kbps 的问题。
-
 
 ## Version 4.11.11 @2021.12.17
 
@@ -139,7 +490,6 @@
 - 修复偶现断网重连后，收不到 stream-added 事件的问题。
 - 修复偶现长时间屏幕分享帧率掉0的问题。
 
-
 ## Version 4.11.4 @2021.08.20
 
 **Improvement**
@@ -177,7 +527,6 @@
 
 - 修复 LocalStorage 被禁用时，无法使用 SDK 的问题。
 - 修复偶现 publish 异常时，接口未 rejected 的问题。
-
 
 ## Version 4.11.1 @2021.06.25
 
@@ -270,7 +619,7 @@ Websocket 的默认端口改为 443。
 **Improvement**
 
 支持拉流立体声播放。
->! iOS 平台暂不支持。
+> ! iOS 平台暂不支持。
 
 **Bug Fixed**
 
@@ -569,7 +918,7 @@ createClient 增加 streamId userdefinerecordid 字段。
 - unpublish 超时后向外部抛出异常事件。
 - 修复第三方库引起 V8 负优化问题。
 
-## Version 4.3.3  @ 2019.12.25
+## Version 4.3.3 @ 2019.12.25
 
 **Improvement**
 
