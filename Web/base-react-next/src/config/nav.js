@@ -162,6 +162,13 @@ export default {
           'zh-CN': a18n('实时语音识别'),
         },
       },
+      {
+        path: 'improve-ai-denoiser',
+        name: {
+          en: 'Improve AI Denoiser',
+          'zh-CN': a18n('AI 降噪'),
+        },
+      },
     ],
   },
 

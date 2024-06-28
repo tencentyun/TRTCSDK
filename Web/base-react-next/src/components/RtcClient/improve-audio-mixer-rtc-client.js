@@ -26,7 +26,7 @@ export default class RTCClient extends RTC {
   };
 
   addLowMix() {
-    if (this.lowMix) {
+    if (this.lowMix && this.already.length < 2) {
       this.already.push(this.lowMix);
       console.log('already mix', this.already);
       const origin = this.localStream.getAudioTrack();
@@ -42,6 +42,7 @@ export default class RTCClient extends RTC {
   leaveRoom() {
     this.lowMixStop();
     this.lowMix = null;
+    this.already = [];
   }
 
   lowMixStart() {

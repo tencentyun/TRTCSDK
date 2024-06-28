@@ -66,6 +66,21 @@ function StreamBar(props) {
     setIsMobile(mobile());
   }, []);
 
+  // TODO: 若后续需新增其他的快捷键，建议将新增个专门的模块来管理快捷键。
+  useEffect(() => {
+    if (isLocalStream) {
+      document.onkeyup = (event) => {
+        if (event.code === 'Space' && config.stream) {
+          handleChange('audio', event);
+        }
+      };
+    }
+
+    return () => {
+      document.onkeydown = null;
+      document.onkeyup = null;
+    };
+  });
   return (
     <div className={`${props.className}`}>
       {

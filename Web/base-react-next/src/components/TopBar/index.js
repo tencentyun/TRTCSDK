@@ -69,7 +69,7 @@ function TopBar({ title, isMobile = false }) {
         urlSearchParams.set('roomID', roomID);
       }
       const queryString = urlSearchParams.toString() ? `?${urlSearchParams.toString()}` : `?roomID=${roomID}`;
-      navigator && navigator.clipboard.writeText(`${location.host}${location.pathname}${queryString}`).then(() => {
+      navigator && navigator.clipboard.writeText(`${location.href}${queryString}`).then(() => {
         toast.success(a18n('复制成功'), 2000);
       }, () => {
         toast.info(a18n('复制失败'), 2000);

@@ -29,7 +29,7 @@ const initMixOutputParam = {
   videoHeight: 720,
   videoFramerate: 15,
   videoBitrate: 1500,
-  videoGop: 2,
+  videoGOP: 2,
   audioSampleRate: 48000,
   audioBitrate: 64,
   audioChannels: 1,

@@ -44,7 +44,7 @@ export default class RTC extends React.Component {
     this.isLeaving = false;
     this.userSig = '';
     this.privateMapKey = 255;
-    this.mirror = true;
+    this.mirror = false;
     this.dom = null;
     global.$TRTC = TRTC;
   }
@@ -327,19 +327,19 @@ export default class RTC extends React.Component {
   }
 
   muteVideo() {
-    this.localStream.muteVideo();
+    this.localStream && this.localStream.muteVideo();
   }
 
   muteAudio() {
-    this.localStream.muteAudio();
+    this.localStream && this.localStream.muteAudio();
   }
 
   unmuteVideo() {
-    this.localStream.unmuteVideo();
+    this.localStream && this.localStream.unmuteVideo();
   }
 
   unmuteAudio() {
-    this.localStream.unmuteAudio();
+    this.localStream && this.localStream.unmuteAudio();
   }
 
   startGetAudioLevel() {
@@ -376,15 +376,15 @@ export default class RTC extends React.Component {
       console.error(error);
       alert(error);
     });
-    this.client.on('client-banned', async (error) => {
-      console.error(`client has been banned for ${error}`);
+    this.client.on('client-banned', async (event) => {
+      console.error(`client has been banned for ${event.reason}`);
 
       this.isPublished = false;
       this.localStream = null;
       this.setState && this.setState('publish', this.isPublished);
       await this.handleLeave();
 
-      alert(error);
+      alert(event.reason);
     });
     // fired when a remote peer is joining the room
     this.client.on('peer-join', (event) => {

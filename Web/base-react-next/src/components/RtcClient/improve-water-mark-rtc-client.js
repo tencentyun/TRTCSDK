@@ -11,8 +11,11 @@ export default class RTCClient extends RTC {
     this.sourceVideoTrack = null;
     this.intervalId = -1;
 
-    const os = new UAParser().getOS();
+    const uaParser = new UAParser();
+    const os = uaParser.getOS();
+    const browser = uaParser.getBrowser();
     this.IS_IOS_BEFORE_15 = os.name === 'iOS' && os.version.split('.')[0] < 15;
+    this.IS_MAC_SAFARI_15 = os.name === 'Mac OS' && browser.name === 'Safari' && browser.version.split('.')[0] >= 15;
   }
 
   loadImage({ imageUrl, width, height }) {
@@ -71,42 +74,44 @@ export default class RTCClient extends RTC {
       ctx.globalAlpha = 1;
     }, Math.floor(1000 / frameRate));
 
-    if (this.IS_IOS_BEFORE_15) {
+    // 5. 从 canvas 中捕获视频流，并替换到 localStream 中
+    const canvasStream = canvas.captureStream();
+    await localStream.replaceTrack(canvasStream.getVideoTracks()[0]);
+
+    // 规避 iOS/Mac Safari 水印异常的问题
+    if (this.IS_IOS_BEFORE_15 || this.IS_MAC_SAFARI_15) {
+      // 停止播放
+      localStream.stop();
       // 将 canvas 放置到 DOM 中渲染。
       canvas.style.width = '100%';
       canvas.style.height = '100%';
       canvas.style.objectFit = 'cover';
+      canvas.style.transform = 'rotateY(180deg)'; // 本地视频是镜像显示的，此处对齐
       // dom 为 localStream.play(elementId) 传入的 dom 对象
       this.dom.appendChild(canvas);
-      // 停止播放
-      localStream.stop();
     }
-
-    // 5. 从 canvas 中捕获视频流，并替换到 localStream 中
-    const canvasStream = canvas.captureStream();
-    await localStream.replaceTrack(canvasStream.getVideoTracks()[0]);
 
     this.localStreamWithWaterMark = localStream;
     return localStream;
   }
 
-  stopWaterMark() {
+  async stopWaterMark() {
     clearInterval(this.intervalId);
     this.intervalId = -1;
     if (this.localStreamWithWaterMark && this.sourceVideoTrack) {
-      this.localStreamWithWaterMark.replaceTrack(this.sourceVideoTrack);
+      await this.localStreamWithWaterMark.replaceTrack(this.sourceVideoTrack);
     }
 
-    if (this.IS_IOS_BEFORE_15) {
-      this.dom.removeChild(this.canvas);
-      this.canvas = null;
-      this.localStreamWithWaterMark.play(this.dom);
-    }
-
-    this.localStreamWithWaterMark = null;
     if (this.videoElement) {
       this.videoElement.srcObject = null;
       this.videoElement = null;
     }
+
+    if (this.IS_IOS_BEFORE_15 || this.IS_MAC_SAFARI_15) {
+      this.canvas && this.dom.removeChild(this.canvas);
+      this.canvas = null;
+      await this.localStreamWithWaterMark.play(this.dom);
+    }
+    this.localStreamWithWaterMark = null;
   }
 }

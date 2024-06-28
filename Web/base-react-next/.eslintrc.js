@@ -1,8 +1,8 @@
 module.exports = {
-  parser: 'babel-eslint',
+  parser: '@babel/eslint-parser',
   globals: {
-    "SpeechRecognizer": 'readonly',
-    "ASR": 'readonly'
+    SpeechRecognizer: 'readonly',
+    ASR: 'readonly',
   },
   extends: ['eslint-config-tencent', 'plugin:react/recommended'],
   rules: {
@@ -10,7 +10,7 @@ module.exports = {
   },
   settings: {
     react: {
-      version: "detect",
+      version: 'detect',
     },
-  }
+  },
 };

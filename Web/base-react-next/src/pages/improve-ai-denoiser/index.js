@@ -1,30 +1,28 @@
-/* eslint-disable no-param-reassign */
 import a18n from 'a18n';
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
+import QRCoder from '@components/QrCoder';
 import Stream from '@components/Stream';
 import UserList from '@components/UserList';
 import UserIDInput from '@components/UserIDInput';
 import RoomIDInput from '@components/RoomIDInput';
 import { getNavConfig } from '@api/nav';
-import { getUrlParam, startAsrUpload } from '@utils/utils';
+import { getUrlParam } from '@utils/utils';
 import { handlePageUrl, handlePageChange, getLanguage } from '@utils/common';
-import { Button, Accordion, AccordionSummary, AccordionDetails, Typography, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio, TextField } from '@material-ui/core';
+import { Button, Accordion, AccordionSummary, AccordionDetails, Typography } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import SideBar from '@components/SideBar';
 import styles from '@styles/common.module.scss';
 import DeviceSelect from '@components/DeviceSelect';
-import RelatedResources from '@components/RelatedResources';
-import Toast from '@components/Toast';
-import { SDKAPPID } from '@app/config';
+import { ENV_IS_PRODUCTION } from '@utils/constants';
 const mobile = require('is-mobile');
-const DynamicRtc = dynamic(import('@components/BaseRTC'), { ssr: false });
+const DynamicRtc = dynamic(import('@components/RtcClient/improve-ai-denoiser-client'), { ssr: false });
 const DynamicShareRtc = dynamic(import('@components/ShareRTC'), { ssr: false });
 
 export default function BasicRtc(props) {
-  const { activeId, navConfig, language } = props;
+  const { activeId, navConfig } = props;
   const video = true;
   const audio = true;
   const mode = 'rtc';
@@ -38,18 +36,9 @@ export default function BasicRtc(props) {
   const [localStreamConfig, setLocalStreamConfig] = useState(null);
   const [remoteStreamConfigList, setRemoteStreamConfigList] = useState([]);
   const [isJoined, setIsJoined] = useState(false);
+  const [isPublished, setIsPublished] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [mountFlag, setMountFlag] = useState(false);
-  const [captionList, setCaptionList] = useState([]);
-  const [textMinutesResultList, setTextMinutesResultList] = useState([]);
-  const [asrList] = useState(new Map());
-  const [enableASR, setEnableASR] = useState(false);
-  const [scene, setScene] = useState('caption');
-  const [appId, setAppId] = useState(0);
-  const [secretId, setSecretId] = useState('');
-  const [secretKey, setSecretKey] = useState('');
-  const [token, setToken] = useState('');
-  const asrFormRef = React.useRef();
 
   useEffect(() => {
     const language = getLanguage();
@@ -59,153 +48,19 @@ export default function BasicRtc(props) {
     handlePageUrl();
     setUseStringRoomID(getUrlParam('useStringRoomID') === 'true');
     setIsMobile(mobile());
-
-    const param = new URLSearchParams(location.search);
-    const appId = param.get('appId');
-    const secretId = param.get('secretId');
-    const secretKey = param.get('secretKey');
-    appId && setAppId(appId);
-    secretId && setSecretId(secretId);
-    secretKey && setSecretKey(secretKey);
   }, []);
-
-  const handleStartASR = () => {
-    if (!asrFormRef.current.reportValidity()) {
-      return;
-    }
-
-    setEnableASR(true);
-    if (localStreamConfig.stream) {
-      startASR(localStreamConfig.stream);
-    }
-    remoteStreamConfigList.forEach(({ stream }) => {
-      startASR(stream);
-    });
-    Toast.success('实时语音识别已开启，尝试对着麦克风说几句话吧！');
-    startAsrUpload(SDKAPPID);
-  };
-  const handleStopASR = () => {
-    setEnableASR(false);
-    stopASR();
-  };
-
-  const startASR = (stream) => {
-    if (asrList.has(stream.getUserId())) {
-      return;
-    }
-    const asr = new ASR({
-      secretKey,
-      secretId,
-      appId,
-      token: token || undefined,
-      // 实时识别接口参数
-      engine_model_type: '16k_zh', // 引擎
-      voice_format: 1,
-      // 以下为非必填参数，可跟据业务自行修改
-      hotword_id: '08003a00000000000000000000000000',
-      needvad: 1,
-      filter_dirty: 1,
-      filter_modal: 1,
-      filter_punc: 1,
-      convert_num_mode: 1,
-      word_info: 2,
-      audioTrack: stream.getAudioTrack(),
-    });
-    const userId = stream.getUserId();
-    installASREvents(asr, userId, localStreamConfig.stream === stream);
-    asr.start();
-    asrList.set(userId, asr);
-  };
-
-  const stopASR = () => {
-    asrList.forEach((asr) => {
-      uninstallASREvents(asr);
-      asr.stop();
-    });
-    setTextMinutesResultList([]);
-    setCaptionList([]);
-    asrList.clear();
-  };
-
-  /**
-   * 监听 ASR 事件
-   * 实时字幕组成：已识别成功的文字 + 正在识别的文字
-   * @memberof RtcClient
-   */
-  const installASREvents = (asr, userId, isMe) => {
-    // 一句话识别成功
-    asr.OnSentenceEnd = (res) => {
-      if (res.voice_text_str.length !== 0) {
-        if (scene === 'text-minutes') {
-          textMinutesResultList.push({
-            userId,
-            date: new Date(),
-            text: res.voice_text_str,
-            isMe,
-          });
-          setTextMinutesResultList(textMinutesResultList);
-          return;
-        }
-
-        const prevASRResult = captionList.find(item => item.userId === userId);
-        if (prevASRResult) {
-          const split = prevASRResult.currentResultIndex === -1 ? '' : '，';
-          prevASRResult.resultText = prevASRResult.resultText + split + res.voice_text_str;
-          prevASRResult.currentResultIndex = res.index;
-        } else {
-          captionList.push({
-            userId,
-            resultText: res.voice_text_str, // 已识别成功的文字，由多句已识别的话组成。
-            currentResultIndex: res.index, // 每句话都有 index 标识，currentResultIndex 为最近已识别成功的 index 值。
-            changingText: '', // 正在识别的文字
-            changingIndex: -1, // 正在识别文字的 index 标识。
-          });
-        }
-        setCaptionList(captionList);
-        // this.renderASRResultList();
-      }
-    };
-
-    // 实时字幕场景
-    if (scene === 'caption') {
-      // 一句话正在识别
-      asr.OnRecognitionResultChange = (res) => {
-        if (res.voice_text_str.length !== 0) {
-          const prevASRResult = captionList.find(item => item.userId === userId);
-          if (prevASRResult) {
-            prevASRResult.changingText = res.voice_text_str;
-            prevASRResult.changingIndex = res.index;
-          } else {
-            captionList.push({
-              userId,
-              resultText: '',
-              currentResultIndex: -1,
-              changingIndex: res.index,
-              changingText: res.voice_text_str,
-            });
-          }
-        }
-        setCaptionList(captionList);
-      };
-    }
-
-    // 识别错误
-    asr.OnError = (res) => {
-      Toast.error(`语音识别失败：${res}`);
-      // alert(`语音识别失败: ${res}`);
-      console.log('语音识别失败', res, typeof res);
-    };
-  };
-
-  const uninstallASREvents = (asr) => {
-    asr.OnError = () => {};
-    asr.OnSentenceEnd = () => {};
-    asr.OnRecognitionResultChange = () => {};
-  };
 
   const handleJoin = async () => {
     await RTC.handleJoin();
     await RTC.handlePublish();
+  };
+
+  const handlePublish = async () => {
+    await RTC.handlePublish();
+  };
+
+  const handleUnPublish = async () => {
+    await RTC.handleUnPublish();
   };
 
   const handleLeave = async () => {
@@ -213,10 +68,21 @@ export default function BasicRtc(props) {
     await RTC.handleLeave();
   };
 
+  const handleOpenDenoiser = async () => {
+    await RTC.handleOpenDenoiser();
+  };
+
+  const handleCloseDenoiser = async () => {
+    await RTC.handleCloseDenoiser();
+  };
+
   const setState = (type, value) => {
     switch (type) {
       case 'join':
         setIsJoined(value);
+        break;
+      case 'publish':
+        setIsPublished(value);
         break;
       default:
         break;
@@ -280,9 +146,6 @@ export default function BasicRtc(props) {
         });
         break;
       default: {
-        if (enableASR) {
-          startASR(stream);
-        }
         setRemoteStreamConfigList((preList) => {
           const newRemoteStreamConfigList = preList.length > 0
             ? preList.filter(streamConfig => !(streamConfig.userID === userID
@@ -417,15 +280,6 @@ export default function BasicRtc(props) {
         break;
       }
     }
-
-    if (asrList.has(userID)) {
-      const asr = asrList.get(userID);
-      uninstallASREvents(asr);
-      asr.stop();
-      asrList.delete(userID);
-      setTextMinutesResultList(textMinutesResultList.filter(item => item.userId !== userID));
-      setCaptionList(captionList.filter(item => item.userId !== userID));
-    }
   };
 
   // 移除用户
@@ -544,64 +398,31 @@ export default function BasicRtc(props) {
 
               <DeviceSelect deviceType="camera" onChange={value => setCameraID(value)}></DeviceSelect>
               <DeviceSelect deviceType="microphone" onChange={value => setMicrophoneID(value)}></DeviceSelect>
-              <br/>
+
               <div className={clsx(styles['button-container'], isMobile && styles['mobile-device'])}>
-                <Button disabled={isJoined} id="join" variant="contained" color="primary" className={ isJoined ? styles.forbidden : ''} onClick={handleJoin}>JOIN</Button>
+                <Button id="join" variant="contained" color="primary" className={ isJoined ? styles.forbidden : ''} onClick={handleJoin}>JOIN</Button>
                 <Button id="leave" variant="contained" color="primary" onClick={handleLeave}>LEAVE</Button>
+                <Button id="publish" variant="contained" color="primary" className={ isPublished ? styles.forbidden : '' } onClick={handlePublish}>PUBLISH</Button>
+                <Button id="unpublish" variant="contained" color="primary" onClick={handleUnPublish}>UNPUBLISH</Button>
+                <Button id="openDenoiser" variant="contained" color="primary" onClick={handleOpenDenoiser} style={{ width: '100%' }}>OPEN NOISER DENOISER</Button>
+                <Button id="closeDenoiser" variant="contained" color="primary" onClick={handleCloseDenoiser} style={{ width: '100%' }}>CLOSE NOISER DENOISER</Button>
               </div>
             </AccordionDetails>
           </Accordion>
-
-          <Accordion className={styles['accordion-container']} defaultExpanded={true}>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1a-content"
-              id="panel1a-header"
-              classes={{
-                root: styles['accordion-summary-container'],
-                content: styles['accordion-summary-content'],
-              }}
-            >
-              {mountFlag && <Typography>{a18n('实时语音识别')}</Typography>}
-            </AccordionSummary>
-            <AccordionDetails className={styles['accordion-details-container']}>
-              <form ref={asrFormRef}>
-                <TextField required label="语音识别 appId" value={appId} onChange={event => setAppId(event.target.value)}  style={{ width: '100%' }} />
-                <TextField required label='语音识别 secretId' value={secretId} onChange={event => setSecretId(event.target.value)}  style={{ width: '100%' }} />
-                <TextField required label='语音识别 secretKey' value={secretKey} onChange={event => setSecretKey(event.target.value)}  style={{ width: '100%' }} />
-                <TextField label='语音识别 setToken' value={token} onChange={event => setToken(event.target.value)}  style={{ width: '100%' }} />
-              </form>
-              <br></br>
-              <FormControl component="fieldset">
-                <FormLabel component="legend">场景</FormLabel>
-                <RadioGroup row aria-label="scene" name="row-radio-buttons-group" value={scene} onChange={e => setScene(e.target.value)}>
-                  <FormControlLabel value="caption" control={<Radio disabled={enableASR} color="primary"/>} label="实时字幕" />
-                  <FormControlLabel value="text-minutes" control={<Radio disabled={enableASR} color="primary"/>} label="会议纪要" />
-                </RadioGroup>
-              </FormControl>
-
-              <div className={clsx(styles['button-container'], isMobile && styles['mobile-device'])}>
-                <Button disabled={enableASR || !isJoined} id="start-asr" variant="contained" color="primary" className={ enableASR || !isJoined ? styles.forbidden : ''} onClick={handleStartASR}>START</Button>
-                <Button disabled={!enableASR || !isJoined} id="stop-asr" variant="contained" color="primary" className={ !enableASR || !isJoined ? styles.forbidden : ''} onClick={handleStopASR}>STOP</Button>
-              </div>
-            </AccordionDetails>
-          </Accordion>
-
           {/* 用户列表 */}
           <div className={clsx(styles['user-list-container'])}>
             <UserList localStreamConfig={localStreamConfig} remoteStreamConfigList={remoteStreamConfigList}>
             </UserList>
           </div>
-          {/* 相关资源 */}
-          <RelatedResources
-            language={language}
-            resources={[
-              { name: a18n('TRTC Web SDK 接入实时语音识别'),
-                link: 'https://cloud.tencent.com/document/product/1093/68499',
-                enLink: 'https://cloud.tencent.com/document/product/1093/68499',
-              },
-            ]}></RelatedResources>
         </div>
+        {/* 生成二维码 */}
+        {
+          !isMobile && ENV_IS_PRODUCTION
+          && <div className={clsx(styles['footer-container'])}>
+              {mountFlag && <Typography>{a18n('移动端体验')}</Typography>}
+              <QRCoder roomID={roomID} ></QRCoder>
+            </div>
+        }
       </div>
       {/* 视频流显示区域 */}
       <div className={styles['stream-container']}>
@@ -630,15 +451,14 @@ export default function BasicRtc(props) {
               return null;
             })
         }
-        { scene === 'caption' ? <CaptionList captionList={captionList}/> : <TextMinutesList textMinutesResultList={textMinutesResultList} /> }
       </div>
     </div>);
-
 
   return (
     <div className={clsx(styles['page-container'], isMobile && styles['mobile-device'])}>
       <Head>
         <title>{a18n`${a18n(props.activeTitle)}-TRTC 腾讯实时音视频`}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, shrink-to-fit=no" />
       </Head>
       {
         userID
@@ -688,64 +508,10 @@ export default function BasicRtc(props) {
 }
 
 export const getStaticProps = () => {
-  const result = getNavConfig('improve-asr');
+  const result = getNavConfig('improve-ai-denoiser');
   return {
     props: {
       ...result,
     },
   };
 };
-
-function CaptionItem(props) {
-  const { item } = props;
-  const ref = useRef(null);
-  useEffect(() => {
-    ref.current.scrollTop = ref.current.scrollHeight;
-  });
-  return (
-    <div >
-      <div>{item.userId}:</div>
-      <div ref={ref} className={clsx(styles['caption-item'])}>{item.resultText}{item.changingIndex > item.currentResultIndex ? item.changingText : ''}</div>
-    </div>
-  );
-}
-
-
-function CaptionList(props) {
-  const { captionList } = props;
-
-  return (<div className={clsx(styles['caption-list'])}>
-    <h3>实时字幕：</h3>
-    {
-     captionList.map(item => <CaptionItem key={item.userId} item={item} />)
-    }
-  </div>);
-}
-
-function TextMinutesList(props) {
-  const { textMinutesResultList } = props;
-
-  const exportTxt = () => {
-    const blob = new Blob(textMinutesResultList.map(item => `${item.userId}${item.isMe ? '(我)' : ''} ${item.date.toLocaleString()} \n${item.text} \n`));
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = '会议纪要.txt';
-    a.click();
-  };
-
-  return (<div className={clsx(styles['text-minutes-wrapper'])}>
-    <div className={clsx(styles['text-minutes-list'])}>
-    <h3>文字会议纪要：</h3>
-    {
-     textMinutesResultList.map(item => (
-        <div key={item.userId + item.date} className={clsx(styles.item)}>
-          <div><span className={clsx(styles.userId)}>{item.userId}{item.isMe ? '(我)' : ''}</span> {item.date.toLocaleString()}</div>
-          <div>{item.text}</div>
-        </div>))
-    }
-    </div>
-    {
-      textMinutesResultList.length > 0 && <Button onClick={exportTxt} color="primary" variant="contained" className={clsx(styles['export-button'])}>导出 txt 文件</Button>
-    }
-    </div>);
-}

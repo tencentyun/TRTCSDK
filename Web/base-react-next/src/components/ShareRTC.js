@@ -131,8 +131,8 @@ export default class ShareRTC extends React.Component {
       console.error(error);
       alert(error);
     });
-    this.shareClient.on('client-banned', (error) => {
-      console.error(`client has been banned for ${error}`);
+    this.shareClient.on('client-banned', (event) => {
+      console.error(`client has been banned for ${event.reason}`);
     });
   }
 

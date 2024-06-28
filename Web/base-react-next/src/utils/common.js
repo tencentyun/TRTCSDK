@@ -1,31 +1,46 @@
 import { SDKAPPID, SECRETKEY } from '@app/config';
 import Cookies from 'js-cookie';
 import Router from 'next/router';
-import { getUrlParam } from '@utils/utils';
+import { getUrlParam, getUrlParamObj } from '@utils/utils';
 
 /**
  * 页面跳转
  * @param {string} pathUrl 和文件夹名称保持一致
+ * @param {boolean} withoutHistory 是否不保留历史记录，默认保留
  */
 export function goToPage(pathUrl, withoutHistory = false) {
   if (/(http|https):\/\/([\w.]+\/?)\S*/.test(pathUrl)) {
     window.open(pathUrl, '_blank');
     return;
   }
+
+  // 确认跳转页面链接
   const isProd = process.env.NODE_ENV === 'production';
-  const tempArray = /\?/.test(pathUrl) ? pathUrl.split('?') : [pathUrl, ''];
-  const prodHref = `${location.pathname.slice(0, location.pathname.lastIndexOf('/') + 1) + tempArray[0]}.html`;
-  const pathName = isProd ? prodHref : `/${tempArray[0]}`;
-  console.log('gotoPage = ', pathName);
-  const query = tempArray[1]
-    ? tempArray[1].split('&').reduce((cur, str) => ({ ...cur, [str.split('=')[0]]: str.split('=')[1] }), {})
-    : Router.query;
+  const [toPathName, toPathSearch] = /\?/.test(pathUrl) ? pathUrl.split('?') : [pathUrl, ''];
+  const toHref = isProd
+    ? `${location.pathname.slice(0, location.pathname.lastIndexOf('/') + 1) + toPathName}.html`
+    : `/${toPathName}`;
+  console.log('gotoPage = ', toHref);
+
+  // 确认跳转页面参数
+  const customQueryObj = getUrlParamObj();
+  const queryObj = toPathSearch
+    ? Object.assign(toPathSearch.split('&').reduce((cur, str) => ({ ...cur, [str.split('=')[0]]: str.split('=')[1] }), {}), customQueryObj)
+    : customQueryObj;
+  if (toPathName === 'login') {
+    queryObj.from = Router.pathname.slice(1);
+  } else {
+    delete queryObj.from;
+  }
+  const queryString = Object.keys(queryObj).reduce((cur, key) => (cur ? `${cur}&${key}=${queryObj[key]}` : `${cur}${key}=${queryObj[key]}`), '');
+
+  // 页面跳转
   if (withoutHistory) {
-    Router.replace(pathName);
+    Router.replace(queryString ? `${toHref}?${queryString}` : `${toHref}`);
   } else {
     Router.push({
-      pathname: pathName,
-      query,
+      pathname: toHref,
+      query: queryObj,
     });
   }
 }
@@ -63,7 +78,7 @@ export function handlePageChange(data) {
 };
 
 export function getLanguage() {
-  let language = Cookies.get('trtc-api-example-lang') || getUrlParam('lang') || navigator.language || 'zh-CN';
+  let language = getUrlParam('lang') || Cookies.get('trtc-api-example-lang') || navigator.language || 'zh-CN';
   language = language.replace(/_/, '-').toLowerCase();
 
   if (language === 'zh-cn' || language === 'zh') {

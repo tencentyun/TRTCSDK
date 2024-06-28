@@ -26,6 +26,7 @@ a18n.addLocaleResource('zh-CN', require('@locales/zh-CN.json'));
 function MyApp({ Component, pageProps }) {
   const [language, setLanguage] = useState('');
   const [isASRPath, setIsASRPath] = useState(false);
+  const [isBrowser, setIsBrowser] = useState(true);
   const changeLanguage = (language) => {
     a18n.setLocale(language);
     Cookies.set('trtc-api-example-lang', language);
@@ -33,8 +34,12 @@ function MyApp({ Component, pageProps }) {
   };
 
   useEffect(() => {
+    if (navigator.userAgent.toLowerCase().includes('miniprogram')) {
+      setIsBrowser(false);
+    }
     const language = getLanguage();
     a18n.setLocale(language);
+    Cookies.set('trtc-api-example-lang', language);
     setLanguage(language);
     setIsASRPath(location.href.includes('improve-asr'));
   }, []);
@@ -56,7 +61,7 @@ function MyApp({ Component, pageProps }) {
       </Head>
       <ThemeProvider theme={theme}>
         <MyContext.Provider value={{ changeLanguage }}>
-          <Component {...pageProps} language={language} />
+          <Component {...pageProps} language={language} isBrowser={isBrowser} />
         </MyContext.Provider>
       </ThemeProvider>
       <Notification></Notification>
