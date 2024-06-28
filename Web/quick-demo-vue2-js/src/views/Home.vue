@@ -1,18 +1,18 @@
 <!--
  * @Description: quick demo - vue2 版本页面
  * @Date: 2022-03-14 16:56:36
- * @LastEditTime: 2022-03-21 18:07:19
+ * @LastEditTime: 2022-03-29 17:01:32
 -->
 <template>
   <div id="app">
     <!-- 头部栏 -->
     <comp-nav></comp-nav>
-    <div class="content">
+    <div class="content" :class="$isMobile && 'content-mobile'">
       <!-- quick demo 使用指引 -->
       <comp-guidance></comp-guidance>
       <!-- sdkAppId、secretKey、userId、roomId 参数输入区域 -->
       <p class="label">{{ $t('Params') }}</p>
-      <div class="param-container">
+      <div class="param-container" :class="$isMobile && 'param-container-mobile'">
         <comp-info-input
           label="sdkAppId" type="number" @change="handleValueChange($event, 'sdkAppId')"></comp-info-input>
         <comp-info-input
@@ -22,9 +22,17 @@
         <comp-info-input
           label="roomId" type="number" @change="handleValueChange($event, 'roomId')"></comp-info-input>
       </div>
+      <div class='alert'>
+        <el-alert
+          type="error"
+          :closable="false"
+        >
+          <span>{{ $t("Alert")}} <a target="_blank" :href="$t('Url')">{{ $t("Click")}}</a></span>
+        </el-alert>
+      </div>
       <!-- 设备选择区域 -->
       <p class="label">{{ $t('Device Select') }}</p>
-      <div class="param-container">
+      <div class="param-container" :class="$isMobile && 'param-container-mobile'">
         <comp-device-select
           deviceType="camera" @change="handleValueChange($event, 'cameraId')"></comp-device-select>
         <comp-device-select
@@ -92,6 +100,14 @@ export default {
     width: 80%;
     margin: 0 auto;
     max-width: 1320px;
+    .alert {
+      padding-top: 20px;
+      font-size: 16px !important;
+    }
+    &.content-mobile {
+      width: 100%;
+      padding: 0 16px 20px;
+    }
     .label {
       margin: 14px 0 6px;
       text-align: left;
@@ -109,6 +125,12 @@ export default {
       div:nth-last-child(2), div:nth-last-child(1) {
         margin-bottom: 0;
       }
+      &.param-container-mobile {
+        div {
+          width: 100%;
+          margin-bottom: 10px;
+        }
+      }
     }
   }
 }
@@ -118,11 +140,17 @@ export default {
 {
 	"en": {
 		"Params": "Params",
-    "Device Select": "Device Select"
+    "Device Select": "Device Select",
+    "Alert": "Notes: this Demo is only applicable for debugging. Before official launch, please migrate the UserSig calculation code and key to your backend server to avoid unauthorized traffic use caused by the leakage of encryption key.",
+    "Click": "View documents",
+    "Url": "https://intl.cloud.tencent.com/document/product/647/35166"
 	},
 	"zh": {
 		"Params": "参数",
-    "Device Select": "设备选择"
+    "Device Select": "设备选择",
+    "Alert": "注意️：本 Demo 仅用于调试，正式上线前请将 UserSig 计算代码和密钥迁移到您的后台服务器上，以避免加密密钥泄露导致的流量盗用。",
+    "Click": "查看文档",
+    "Url": "https://cloud.tencent.com/document/product/647/17275"
 	}
 }
 </i18n>

@@ -7,6 +7,8 @@
 html,
 body {
   font-family: century-gothic, sans-serif;
+  width: 100%;
+  height: 100%;
 }
 
 a {

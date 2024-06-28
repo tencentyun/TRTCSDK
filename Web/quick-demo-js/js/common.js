@@ -28,6 +28,16 @@ let cameraSelect = document.getElementById('camera-select');
 let microphoneSelect = document.getElementById('microphone-select');
 let invite = document.getElementById('invite')
 let inviteUrl = document.getElementById('inviteUrl')
+let github = document.getElementById('github')
+
+github.addEventListener('click', () => {
+	aegis.reportEvent({
+		name: 'jumpGithub',
+		ext1: 'jumpGithub',
+		ext2: 'webrtcQuickDemoJs',
+		ext3: sdkAppId,
+	});
+})
 
 language.addEventListener('click', () => {
 	if (window.lang_ === 'zh-cn') {
@@ -110,4 +120,37 @@ function getQueryString(name) {
 		return unescape(r[2]);
 	}
 	return null;
+}
+
+const DEMOKEY = 'webrtcQuickDemoJs';
+const isProd = location.origin === 'https://web.sdk.qcloud.com';
+const AEGIS_ID = {
+	dev: 'iHWefAYqvXVdajviap',
+	prod: 'iHWefAYqpBFdmIMeDi',
+};
+
+const aegis = new Aegis({
+	id: isProd ? AEGIS_ID.prod : AEGIS_ID.dev,
+	uin: '', // 用户唯一 ID（可选）
+	reportApiSpeed: true, // 接口测速
+	reportAssetSpeed: true // 静态资源测速
+})
+
+
+function reportSuccessEvent(name, sdkAppId) {
+	aegis.reportEvent({
+		name,
+		ext1: `${name}-success`,
+		ext2: DEMOKEY,
+		ext3: sdkAppId,
+	});
+}
+
+function reportFailedEvent({name, error, type = 'rtc', sdkAppId, roomId}) {
+	aegis.reportEvent({
+		name,
+		ext1: `${name}-failed#${roomId}*${type}*${error.message}`,
+		ext2: DEMOKEY,
+		ext3: sdkAppId,
+	});
 }

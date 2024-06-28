@@ -1,7 +1,7 @@
 /*
  * @Description: 通用函数
  * @Date: 2022-03-10 15:17:05
- * @LastEditTime: 2022-03-22 21:38:33
+ * @LastEditTime: 2022-03-29 15:20:26
  */
 
 /**
@@ -42,3 +42,8 @@ export function getLanguage() {
   }
   return language;
 }
+
+/**
+ * 当前浏览器是否为移动端浏览器
+ */
+export const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);

@@ -1,12 +1,12 @@
 <!--
  * @Description: 邀请页面
  * @Date: 2022-03-16 16:58:10
- * @LastEditTime: 2022-03-22 20:31:04
+ * @LastEditTime: 2022-03-29 15:57:33
 -->
 <template>
   <div class="invite-container">
     <comp-nav></comp-nav>
-    <div class="content">
+    <div class="content" :class="$isMobile && 'content-mobile'">
       <div class="invite-tips">
         {{ $t("You've been invited to a video call")}}
       </div>
@@ -27,7 +27,7 @@ import CompRoom from '@/components/comp-room.vue';
 import { getUrlParam, clearUrlParam } from '@/utils/utils.js';
 
 export default {
-  name: 'invite',
+  name: 'InviteApp',
   data() {
     return {
       sdkAppId: 0,
@@ -56,6 +56,10 @@ export default {
     margin: 0 auto;
     max-width: 1320px;
     padding-top: 30px;
+    &.content-mobile {
+      width: 100%;
+      padding: 30px 16px 20px;
+    }
     .invite-tips {
       width: 100%;
       height: 60px;

@@ -1,7 +1,7 @@
 <!--
  * @Description: 指引组件
  * @Date: 2022-03-14 16:56:36
- * @LastEditTime: 2022-03-21 19:40:21
+ * @LastEditTime: 2022-03-29 15:27:22
 -->
 <template>
 	<div class="guidance-container">
@@ -19,7 +19,7 @@
         </ul>
 			</el-collapse-item>
 			<el-collapse-item name="2">
-				<template slot="title" class="">
+				<template slot="title">
 					<span v-if="isEnLang" class="collapse-title">Step 2 : Create New Application</span>
 					<span v-if="isZhLang" class="collapse-title">步骤 2 : 创建新的应用</span>
 				</template>
@@ -40,7 +40,7 @@
 				</ul>
 			</el-collapse-item>
 			<el-collapse-item name="3">
-				<template slot="title" class="">
+				<template slot="title">
 					<span v-if="isEnLang" class="collapse-title">Step 3 : Get SDKAppID and SecretKey</span>
 					<span v-if="isZhLang" class="collapse-title">步骤 3 : 获取 SDKAppID 和 密钥 SecretKey</span>
 				</template>
@@ -54,7 +54,7 @@
 				</ul>
 			</el-collapse-item>
 			<el-collapse-item name="4">
-				<template slot="title" class="">
+				<template slot="title">
           <span v-if="isEnLang" class="collapse-title">Step 4 : Start Video Call</span>
 					<span v-if="isZhLang" class="collapse-title">步骤 4 : 开始视频通话</span>
 				</template>
@@ -70,11 +70,11 @@
 				<ul v-if="isZhLang" class="collapse-content">
 					<li>输入 userId 和 roomId</li>
 					<li>点击【进入房间】按钮进入房间</li>
-					<li>点击【发布流】按钮发布本地流</li>
-					<li>点击【取消发布流】按钮取消发布本地流</li>
+					<li>点击【发布流】按钮发布音视频</li>
+					<li>点击【取消发布流】按钮取消发布音视频</li>
 					<li>点击【离开房间】按钮离开房间</li>
-					<li>点击【开始共享屏幕】按钮布屏幕分享流</li>
-					<li>点击【停止共享屏幕】按钮取消发布屏幕分享流</li>
+					<li>点击【开始共享屏幕】按钮布屏幕分享</li>
+					<li>点击【停止共享屏幕】按钮取消发布屏幕分享</li>
 				</ul>
 			</el-collapse-item>
 	</el-collapse>
@@ -86,7 +86,7 @@ export default {
   name: 'compGuidance',
   data() {
     return {
-      activeNames: ['1'],
+      activeNames: ['1', '4'],
     };
   },
   computed: {
@@ -111,6 +111,7 @@ export default {
 	.collapse-title {
 		font-size: 16px;
 		font-weight: bold;
+    line-height: 18px;
 	}
 	.collapse-content {
 		font-size: 14px;

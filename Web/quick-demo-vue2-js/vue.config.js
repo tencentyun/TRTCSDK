@@ -14,25 +14,21 @@ module.exports = {
   chainWebpack: (config) => {
     config.resolve.alias.set('@', resolve('./src'));
 
-    // 配置处理svg
-    const svgRule = config.module.rule('svg'); // 找到svg-loader
-    svgRule.uses.clear(); // 清除已有的loader, 如果不这样做会添加在此loader之后
-    svgRule.exclude.add(/node_modules/); // 正则匹配排除node_modules目录
-    svgRule // 添加svg新的loader处理
+    config.module
+      .rule('svg')
+      .exclude.add(path.join(__dirname, 'src/assets/icons')) // 排除存放svg目录
+      .end();
+    config.module
+      .rule('icons') // 添加新规则
       .test(/\.svg$/)
+      .include.add(path.join(__dirname, 'src/assets/icons')) // 新规则应用于存放svg的目录
+      .end()
       .use('svg-sprite-loader')
       .loader('svg-sprite-loader')
       .options({
         symbolId: 'icon-[name]',
-      });
-
-    // 修改images loader 添加svg处理
-    const imagesRule = config.module.rule('images');
-    imagesRule.exclude.add(resolve('src/assets/icons'));
-    config.module
-      .rule('images')
-      .test(/\.(png|jpe?g|gif|svg)(\?.*)?$/);
-    config.plugins.delete('named-chunks');
+      })
+      .end();
   },
 
   devServer: {

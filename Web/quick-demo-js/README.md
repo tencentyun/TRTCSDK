@@ -6,7 +6,7 @@
 
 ## 体验实时音视频功能
 
-为方便调试，TRTC 提供了一个 [在线 Web 端原生 JS 示例 Demo](https://web.sdk.qcloud.com/trtc/webrtc/demo/quick/index.html) ，在该页面下，输入您应用的 SDKAppId, SecretKey, 传入相同的 RoomID 即可加入同一房间与进行视频互通。当成功开始音视频通话时，可以听到远端的音频，看到远端的视频画面。
+为方便调试，TRTC 提供了一个 [在线 Web 端原生 JS 示例 Demo](https://web.sdk.qcloud.com/trtc/webrtc/demo/quick-demo-js/index.html) ，在该页面下，输入您应用的 SDKAppId, SecretKey, 传入相同的 RoomID 即可加入同一房间与进行视频互通。当成功开始音视频通话时，可以听到远端的音频，看到远端的视频画面。
 
 ## 前提条件
 您已 [注册腾讯云](https://cloud.tencent.com/document/product/378/17985) 账号，并完成 [实名认证](https://cloud.tencent.com/document/product/378/3629) 。

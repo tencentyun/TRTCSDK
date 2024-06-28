@@ -1,7 +1,7 @@
 <!--
  * @Description: 设备选择组件
  * @Date: 2022-03-10 15:47:24
- * @LastEditTime: 2022-03-18 11:33:14
+ * @LastEditTime: 2022-03-29 17:02:21
 -->
 <template>
   <div class="select-container">
@@ -61,11 +61,13 @@ export default {
     },
   },
   mounted() {
-    navigator.mediaDevices.addEventListener('devicechange', this.initDeviceList);
-    this.getDeviceList();
+    navigator.mediaDevices.getUserMedia({ audio: true, video: true }).then(() => {
+      this.getDeviceList();
+    });
+    navigator.mediaDevices.addEventListener('devicechange', this.getDeviceList);
   },
   beforeDestroy() {
-    navigator.mediaDevices.removeEventListener('devicechange', this.initDeviceList);
+    navigator.mediaDevices.removeEventListener('devicechange', this.getDeviceList);
   },
 };
 </script>

@@ -138,7 +138,7 @@ export default {
         this.isUnPublishing = false;
         this.isPublished = false;
 
-        this.addSuccessLog('localStream unpublish successfully');
+        this.addSuccessLog('localStream unpublish successfully.');
         this.reportSuccessEvent('unpublish');
       } catch (error) {
         this.isUnPublishing = false;
@@ -155,7 +155,7 @@ export default {
           audio: isUndefined(config.audio) ? true : config.audio,
           video: isUndefined(config.video) ? true : config.video,
         });
-        this.addSuccessLog(`Subscribe [${remoteStream.getUserId()}] success`);
+        this.addSuccessLog(`Subscribe [${remoteStream.getUserId()}] success.`);
         this.reportSuccessEvent('subscribe');
       } catch (error) {
         console.error(`subscribe ${remoteStream.getUserId()} with audio: ${config.audio} video: ${config.video} error`, error);
@@ -167,7 +167,7 @@ export default {
     async unSubscribe(remoteStream) {
       try {
         await this.client.unsubscribe(remoteStream);
-        this.addSuccessLog(`unsubscribe [${remoteStream.getUserId()}] success`);
+        this.addSuccessLog(`unsubscribe [${remoteStream.getUserId()}] success.`);
         this.reportSuccessEvent('unsubscribe');
       } catch (error) {
         console.error(`unsubscribe ${remoteStream.getUserId()} error`, error);
@@ -190,7 +190,7 @@ export default {
         this.isLeaving = false;
         this.isJoined = false;
 
-        this.addSuccessLog('Leave room success');
+        this.addSuccessLog('Leave room success.');
         this.reportSuccessEvent('leaveRoom');
       } catch (error) {
         this.isLeaving = false;
@@ -205,7 +205,7 @@ export default {
       if (this.localStream) {
         this.localStream.muteVideo();
         this.isMutedVideo = true;
-        this.addSuccessLog('LocalStream muted video');
+        this.addSuccessLog('LocalStream muted video.');
       }
     },
 
@@ -213,7 +213,7 @@ export default {
       if (this.localStream) {
         this.localStream.muteAudio();
         this.isMutedAudio = true;
-        this.addSuccessLog('LocalStream muted audio');
+        this.addSuccessLog('LocalStream muted audio.');
       }
     },
 
@@ -221,7 +221,7 @@ export default {
       if (this.localStream) {
         this.localStream.unmuteVideo();
         this.isMutedVideo = false;
-        this.addSuccessLog('LocalStream unmuted video');
+        this.addSuccessLog('LocalStream unmuted video.');
       }
     },
 
@@ -229,7 +229,7 @@ export default {
       if (this.localStream) {
         this.localStream.unmuteAudio();
         this.isMutedAudio = false;
-        this.addSuccessLog('LocalStream unmuted audio');
+        this.addSuccessLog('LocalStream unmuted audio.');
       }
     },
 
@@ -237,11 +237,11 @@ export default {
       try {
         if (this.localStream) {
           this.localStream.switchDevice(type, deviceId);
-          this.addSuccessLog(`Switch ${type} device success`);
+          this.addSuccessLog(`Switch ${type} device success.`);
         }
       } catch (error) {
         console.error('switchDevice failed', error);
-        this.addFailedLog(`Switch ${type} device failed`);
+        this.addFailedLog(`Switch ${type} device failed.`);
       }
     },
 
@@ -266,13 +266,12 @@ export default {
         console.error(error);
         alert(error);
       });
-      this.client.on('client-banned', async (error) => {
-        console.error(`client has been banned for ${error}`);
+      this.client.on('client-banned', async (event) => {
+        console.warn(`client has been banned for ${event.reason}`);
 
         this.isPublished = false;
         this.localStream = null;
         await this.leave();
-        alert(error);
       });
       // fired when a remote peer is joining the room
       this.client.on('peer-join', (event) => {
@@ -296,7 +295,7 @@ export default {
           console.log(`remote stream added: [${remoteUserId}] type: ${remoteStream.getType()}`);
           // subscribe to this remote stream
           this.subscribe(remoteStream);
-          this.addSuccessLog(`RemoteStream added: [${remoteUserId}]`);
+          this.addSuccessLog(`RemoteStream added: [${remoteUserId}].`);
         }
       });
       // fired when a remote stream has been subscribed
@@ -324,28 +323,28 @@ export default {
       this.client.on('stream-updated', (event) => {
         const { stream: remoteStream } = event;
         console.log(`type: ${remoteStream.getType()} stream-updated hasAudio: ${remoteStream.hasAudio()} hasVideo: ${remoteStream.hasVideo()}`);
-        this.addSuccessLog(`RemoteStream updated: [${remoteStream.getUserId()}] audio:${remoteStream.hasAudio()} video:${remoteStream.hasVideo()}`);
+        this.addSuccessLog(`RemoteStream updated: [${remoteStream.getUserId()}] audio:${remoteStream.hasAudio()}, video:${remoteStream.hasVideo()}.`);
       });
 
       this.client.on('mute-audio', (event) => {
         const { userId } = event;
         console.log(`${userId} mute audio`);
-        this.addSuccessLog(`[${event.userId}] mute audio`);
+        this.addSuccessLog(`[${event.userId}] mute audio.`);
       });
       this.client.on('unmute-audio', (event) => {
         const { userId } = event;
         console.log(`${userId} unmute audio`);
-        this.addSuccessLog(`[${event.userId}] unmute audio`);
+        this.addSuccessLog(`[${event.userId}] unmute audio.`);
       });
       this.client.on('mute-video', (event) => {
         const { userId } = event;
         console.log(`${userId} mute video`);
-        this.addSuccessLog(`[${event.userId}] mute video`);
+        this.addSuccessLog(`[${event.userId}] mute video.`);
       });
       this.client.on('unmute-video', (event) => {
         const { userId } = event;
         console.log(`${userId} unmute video`);
-        this.addSuccessLog(`[${event.userId}] unmute video`);
+        this.addSuccessLog(`[${event.userId}] unmute video.`);
       });
 
       this.client.on('connection-state-changed', (event) => {

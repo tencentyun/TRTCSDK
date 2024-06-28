@@ -1,66 +1,63 @@
-本文主要介绍如何快速跑通腾讯云 TRTC Web quick demo (vue2 版本）。
+This document describes how to run the TRTC web quick demo (Vue.js 2.0).
 
+English | [简体中文](./README-zh_CN.md)
 
-## 在线体验
+## Tryout
 
-为了方便快速体验，TRTC 提供了 [Web quick demo (vue2 版本) 在线体验地址](https://web.sdk.qcloud.com/trtc/webrtc/demo/quick-demo-vue2-js/index.html) 。
+We offer an [online web demo (Vue.js 2.0)](https://web.sdk.qcloud.com/trtc/webrtc/demo/quick-demo-vue2-js/index.html) for you to try out TRTC features.
 
-在体验页面中，输入您应用的 SDKAppId 及 密钥（SecretKey）即可加入房间。获取 SDKAppId 及 SecretKey 请参考 <a href="#getAppInfo">[获取应用信息]</a>。
+Enter your application’s `SDKAppID` and secret key on the webpage to enter a room. For how to get the `SDKAppID` and secret key, see <a href="#getAppInfo">[Getting Application Information]</a>.
 
-加入房间后您可以通过分享邀请链接与被邀请人一起体验 TRTC Web 语音及视频互通功能。
+After joining a room, you can use a share link to invite others to try the audio/video call feature with you.
 
-## 本地运行
+## Local Run
 
-#### 下载 Demo 源码
+#### Download the demo source code
 
-通过 [GitHub](https://github.com/LiteAVSDK/TRTC_Web) 下载 TRTC_Web 源码包，TRTC Web quick demo (vue2 版本) 源码在 `TRTC_Web/quick-demo-vue2-js`目录下。
+Download the source code of the TRTC web quick demo (Vue.js 2.0) at [GitHub](https://github.com/LiteAVSDK/TRTC_Web) (in `TRTC_Web/quick-demo-vue2-js`).
 
-#### 运行 Demo
+#### Run the demo
 
-- 安装依赖
+Note: A node environment of v14.16.0 and above is recommended.
 
-  ```shell
-  npm install
-  ```
-
-- 本地运行 Demo
+- Run the demo locally
 
   ```shell
-  npm run serve
+  npm start
   ```
 
-- 默认浏览器会自动打开 [http://localhost:8080/](http://localhost:8080/) 地址
+- The [http://localhost:8080/](http://localhost:8080/) address will be opened in your default browser automatically.
 
   > !
   >
-  > 端口号以 npm run serve 运行之后的实际端口号为准，默认为 8080；
+  > The default port number is 8080. Please use the number of the actual port used to run the demo locally.
   >
-  > TRTC Web SDK 支持的浏览器请参考：[TRTC Web SDK 支持的平台](https://cloud.tencent.com/document/product/647/17249#.E6.94.AF.E6.8C.81.E7.9A.84.E5.B9.B3.E5.8F.B0);
+  > For the browsers supported by the TRTC web SDK, see [Supported Platforms](https://intl.cloud.tencent.com/document/product/647/41664#supported-platforms).
   >
-  > TRTC Web SDK 域名协议限制请参考：[TRTC Web SDK 域名协议限制](https://cloud.tencent.com/document/product/647/17249#url-.E5.9F.9F.E5.90.8D.E5.8D.8F.E8.AE.AE.E9.99.90.E5.88.B6);
+  > For the URL protocols supported by the TRTC web SDK, see [URL Protocol Support](https://intl.cloud.tencent.com/document/product/647/41664#url-protocol-support).
   >
-  > TRTC Web SDK 域名及端口白名单配置请参考：[TRTC Web SDK 域名及端口白名单配置](https://cloud.tencent.com/document/product/647/34399#webrtc-.E9.9C.80.E8.A6.81.E9.85.8D.E7.BD.AE.E5.93.AA.E4.BA.9B.E7.AB.AF.E5.8F.A3.E6.88.96.E5.9F.9F.E5.90.8D.E4.B8.BA.E7.99.BD.E5.90.8D.E5.8D.95.EF.BC.9F);
+  > For information about the ports and domain names used by the TRTC web SDK, see [Dealing with Firewall Restrictions](https://intl.cloud.tencent.com/document/product/647/35164#what-ports-and-domain-names-should-i-add-to-the-allowlist-of-my-firewall-for-webrtc.3F).
 
-+ 填写 SDKAppId 和 SecretKey。获取 SDKAppId 及 SecretKey 请参考 <a href="#getAppInfo">[获取应用信息]</a>。
++ Enter the `SDKAppID` and secret key. For detailed directions, see <a href="#getAppInfo">[Getting Application Information]</a>.
 
-#### 体验 Demo
+#### Try the demo
 
-- 点击【进入房间】按钮进入房间
-- 点击【发布流】按钮发布本地流
-- 点击【取消发布流】按钮取消发布本地流
-- 点击【离开房间】按钮离开房间
-- 点击【开始共享屏幕】按钮布屏幕分享流
-- 点击【停止共享屏幕】按钮取消发布屏幕分享流
+- Click **Join Room** to enter a room.
+- Click **Publish** to publish the local stream.
+- Click **Unpublish** to stop publishing the local stream.
+- Click **Leave Room** to leave the room.
+- Click **Start Screen Share** to share the screen.
+- Click **Stop Screen Share** to stop sharing the screen.
 
-#### 其他
+#### Others
 
-- 当您需要将代码打包部署到生产环境时，执行以下命令进行本地打包
+- To package the code to deploy to production, run the command below:
 
   ```shell
   npm run build
   ```
 
-- 当您在修改代码过程中出现 eslint 报错时，可以执行以下命令进行 eslint 修复
+- If an "eslint" error occurs when you modify the code, run the command below to troubleshoot the issue:
 
   ```shell
   npm run lint:fix
@@ -68,21 +65,21 @@
 
 <span id="getAppInfo"></span>
 
-## 获取应用信息
+## Getting Application Information
 
-#### 通过控制台创建应用
+#### Create an application
 
-- 登录 [腾讯云实时音视频控制台](https://console.cloud.tencent.com/trtc) ，选择【开发辅助】> 【[快速跑通 Demo](https://console.cloud.tencent.com/trtc/quickstart)】。
+- Log in to the [TRTC console](https://console.cloud.tencent.com/trtc), and select **Development Assistance > [Demo Quick Run](https://console.cloud.tencent.com/trtc/quickstart)** on the left sidebar.
 
-- 单击【新建应用】输入应用名称，例如 TestTRTC；若您已创建应用可单击选择已有应用。
+- Select **New** and enter an application name such as `TestTRTC`. If you have already created an application, select **Existing**.
 
-- 根据实际业务需求添加或编辑标签，单击【创建】。
+- Add or edit tags according to your actual needs and click **Create**.
 
-  ![img](https://qcloudimg.tencent-cloud.cn/raw/7a75d25ff107b1bcc32fa67db9348442.png)
+  ![img](https://qcloudimg.tencent-cloud.cn/raw/7805a202a8e0c96b748116f17aa8524c.png)
 
-#### 获取 sdkAppId 和 userSig
+#### Get the `SDKAppID` and `userSig`
 
-- 复制 SDKAppId 和密钥（secretKey）。
+- Copy the `SDKApppID` and secret key.
 
-  ![img](https://qcloudimg.tencent-cloud.cn/raw/fae7429a873a5d42df3f9dd701db2685.png)
+  ![img](https://qcloudimg.tencent-cloud.cn/raw/85489ab5999afbd64604a4e3c76f2249.png)
 

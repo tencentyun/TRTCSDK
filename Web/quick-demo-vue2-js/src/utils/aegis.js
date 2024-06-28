@@ -1,13 +1,13 @@
 /*
  * @Description: Agies
  * @Date: 2022-03-18 17:42:38
- * @LastEditTime: 2022-03-23 17:28:30
+ * @LastEditTime: 2022-04-07 17:42:51
  */
 
 import Vue from 'vue';
 import Aegis from 'aegis-web-sdk';
 
-const isProd =  process.env.NODE_ENV === 'production';
+const isProd = location.origin === 'https://web.sdk.qcloud.com';
 
 const AEGIS_ID = {
   dev: 'iHWefAYqvXVdajviap',

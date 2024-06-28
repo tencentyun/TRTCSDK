@@ -1,7 +1,7 @@
 <!--
  * @Description: 房间显示
  * @Date: 2022-03-16 17:40:28
- * @LastEditTime: 2022-03-23 17:51:41
+ * @LastEditTime: 2022-03-29 16:13:06
 -->
 <template>
   <div class="rtc-container">
@@ -10,30 +10,37 @@
     <div class="control-container">
       <div class="rtc-control-container">
         <el-button
+          class="button"
           type="primary"
           size="small" :disabled="isJoining || isJoined" @click="handleJoinRoom">{{ $t('Join Room') }}</el-button>
         <el-button
           v-if="isHostMode"
+          class="button"
           type="primary"
           size="small" :disabled="isPublishing || isPublished" @click="handlePublish">{{ $t('Publish') }}</el-button>
         <el-button
           v-if="isHostMode"
+          class="button"
           type="primary" size="small" @click="handleUnpublish">{{ $t('Unpublish') }}</el-button>
         <el-button
+          class="button"
           type="primary" size="small" @click="handleLeave">{{ $t('Leave Room') }}</el-button>
       </div>
       <div v-if="isHostMode" class="screen-share-control-container">
         <el-button
+          class="button"
           type="primary"
           size="small"
           :disabled="isShareJoined && isSharePublished"
           @click="handleStartScreenShare">{{ $t('Start Screen Share') }}</el-button>
-        <el-button type="primary" size="small" @click="handleStopScreenShare">{{ $t('Stop Screen Share') }}</el-button>
+        <el-button
+          class="button"
+          type="primary" size="small" @click="handleStopScreenShare">{{ $t('Stop Screen Share') }}</el-button>
       </div>
     </div>
 
     <!-- 显示邀请链接 -->
-    <div v-if="inviteLink" class="invite-link-container">
+    <div v-if="showInviteLink" class="invite-link-container">
       <span v-if="isEnLang">Copy the link to invite friends to join the video call, one link can invite only one person,
         the link will be updated automatically after copying.</span>
       <span v-else>复制链接邀请好友加入视频通话，一条链接仅可邀请一人，复制后自动更新链接。</span>
@@ -54,7 +61,7 @@
       </el-input>
     </div>
 
-    <div class="info-container">
+    <div class="info-container" :class="$isMobile && 'info-container-mobile'">
       <!-- Log 展示区域 -->
       <div v-if="isHostMode" class="log-container" ref="logContainer">
         <p class="log-label">Log:</p>
@@ -66,7 +73,7 @@
       </div>
 
       <!-- 本地流区域 -->
-      <div class="local-stream-container">
+      <div v-if="localStream" class="local-stream-container">
         <!-- 本地流播放区域 -->
         <div id="localStream" class="local-stream-content"></div>
         <!-- 本地流操作栏 -->
@@ -134,6 +141,9 @@ export default {
     },
     isEnLang() {
       return this.$i18n.locale === 'en';
+    },
+    showInviteLink() {
+      return this.isHostMode && (this.isJoined || this.isShareJoined) && this.inviteLink;
     },
   },
   watch: {
@@ -216,6 +226,7 @@ export default {
       await this.initShareLocalStream();
       await this.handleShareJoin();
       await this.handleSharePublish();
+      this.generateInviteLink();
     },
 
     // 点击【停止屏幕分享按钮】
@@ -283,6 +294,9 @@ export default {
     div:not(:nth-last-child(1)) {
       margin-bottom: 10px;
     }
+    .button:not(:first-child) {
+      margin-left: 2px;
+    }
   }
 
   .invite-link-container {
@@ -305,7 +319,6 @@ export default {
 
   .info-container {
     width: 100%;
-    height: 360px;
     display: flex;
     justify-content: space-between;
     .log-container {
@@ -356,6 +369,18 @@ export default {
           height: 20px;
         }
       }
+    }
+  }
+
+  .info-container-mobile {
+    display: block;
+    .log-container {
+      margin-right: 0;
+    }
+    .local-stream-container {
+      width: 320px;
+      height: 240px;
+      margin-top: 10px;
     }
   }
 

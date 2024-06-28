@@ -3,13 +3,18 @@ module.exports = {
     node: true,
   },
   extends: [
-    'eslint-config-tencent',
     'plugin:vue/essential',
     'plugin:vue/base',
     'eslint:recommended',
   ],
   parserOptions: {
-    parser: 'babel-eslint',
+    parser: '@babel/eslint-parser',
   },
-  rules: {},
+  rules: {
+    'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    'vue/multi-word-component-names': 'off',
+    'no-underscore-dangle': ['error', { allow: ['message_'] }],
+    'max-len': 'off',
+  },
 };

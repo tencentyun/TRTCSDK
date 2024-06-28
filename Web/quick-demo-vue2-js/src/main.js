@@ -1,16 +1,17 @@
 /*
  * @Description: 全局样式
  * @Date: 2022-03-09 16:42:16
- * @LastEditTime: 2022-03-18 17:46:59
+ * @LastEditTime: 2022-03-29 16:36:04
  */
 import Vue from 'vue';
 import App from './App.vue';
-
+import TRTC from 'trtc-js-sdk';
 import '@/utils/aegis.js';
 
 import '@/assets/style/global.css';
 import '@/assets/icons';
 import '@/assets/style/theme/index.css';
+import { isMobile } from '@/utils/utils';
 
 import {
   Collapse,
@@ -22,6 +23,7 @@ import {
   Message,
   MessageBox,
   Tooltip,
+  Alert,
 } from 'element-ui';
 
 import router from './router';
@@ -56,13 +58,15 @@ Vue.use(Option);
 Vue.use(Input);
 Vue.use(Button);
 Vue.use(Tooltip);
+Vue.use(Alert);
 Vue.prototype.$alert = MessageBox.alert;
 Vue.prototype.$message = new DonMessage();
+Vue.prototype.$isMobile = isMobile;
 
 Vue.config.productionTip = false;
 
 document.title = i18n.t('title');
-
+TRTC.Logger.setLogLevel(TRTC.Logger.LogLevel.DEBUG);
 new Vue({
   router,
   i18n,
